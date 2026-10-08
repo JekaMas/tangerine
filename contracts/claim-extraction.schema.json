@@ -1,0 +1,270 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://teacher-error-trainer.invalid/schemas/claim-extraction.json",
+  "title": "claim-extraction",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0",
+      "description": "This field identifies the data contract version, not a claim of implementation readiness."
+    },
+    "clauses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claim_span": {
+            "type": "object",
+            "properties": {
+              "start_cp": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "This offset is the included start of a Unicode codepoint span."
+              },
+              "end_cp": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "This offset is the excluded end of a Unicode codepoint span."
+              },
+              "exact_text": {
+                "type": "string",
+                "description": "This text must equal the original substring at the specified codepoint offsets."
+              }
+            },
+            "required": [
+              "start_cp",
+              "end_cp",
+              "exact_text"
+            ],
+            "additionalProperties": false,
+            "description": "This span quotes the full claim from the original answer."
+          },
+          "stance": {
+            "type": "string",
+            "enum": [
+              "assert_error",
+              "assert_acceptable",
+              "question",
+              "meta",
+              "retracted"
+            ],
+            "description": "This field distinguishes an error assertion, permitted-form assertion, question, comment, or retraction."
+          },
+          "target_span": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "start_cp": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "This offset is the included start of a Unicode codepoint span."
+                  },
+                  "end_cp": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "This offset is the excluded end of a Unicode codepoint span."
+                  },
+                  "exact_text": {
+                    "type": "string",
+                    "description": "This text must equal the original substring at the specified codepoint offsets."
+                  }
+                },
+                "required": [
+                  "start_cp",
+                  "end_cp",
+                  "exact_text"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This span quotes the target that the teacher identified in the original answer."
+          },
+          "category_span": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "start_cp": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "This offset is the included start of a Unicode codepoint span."
+                  },
+                  "end_cp": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "This offset is the excluded end of a Unicode codepoint span."
+                  },
+                  "exact_text": {
+                    "type": "string",
+                    "description": "This text must equal the original substring at the specified codepoint offsets."
+                  }
+                },
+                "required": [
+                  "start_cp",
+                  "end_cp",
+                  "exact_text"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This span quotes the category from the original teacher answer."
+          },
+          "correction_span": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "start_cp": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "This offset is the included start of a Unicode codepoint span."
+                  },
+                  "end_cp": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "This offset is the excluded end of a Unicode codepoint span."
+                  },
+                  "exact_text": {
+                    "type": "string",
+                    "description": "This text must equal the original substring at the specified codepoint offsets."
+                  }
+                },
+                "required": [
+                  "start_cp",
+                  "end_cp",
+                  "exact_text"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This span quotes the proposed correction from the original answer."
+          },
+          "rationale_span": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "start_cp": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "This offset is the included start of a Unicode codepoint span."
+                  },
+                  "end_cp": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "This offset is the excluded end of a Unicode codepoint span."
+                  },
+                  "exact_text": {
+                    "type": "string",
+                    "description": "This text must equal the original substring at the specified codepoint offsets."
+                  }
+                },
+                "required": [
+                  "start_cp",
+                  "end_cp",
+                  "exact_text"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This span quotes the explanation from the original teacher answer."
+          },
+          "explicit_retraction_of_span": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "start_cp": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "This offset is the included start of a Unicode codepoint span."
+                  },
+                  "end_cp": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "This offset is the excluded end of a Unicode codepoint span."
+                  },
+                  "exact_text": {
+                    "type": "string",
+                    "description": "This text must equal the original substring at the specified codepoint offsets."
+                  }
+                },
+                "required": [
+                  "start_cp",
+                  "end_cp",
+                  "exact_text"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This span identifies the original assertion that the teacher explicitly retracts."
+          }
+        },
+        "required": [
+          "claim_span",
+          "stance",
+          "target_span",
+          "category_span",
+          "correction_span",
+          "rationale_span",
+          "explicit_retraction_of_span"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "description": "These records preserve the extracted claims and their original answer spans."
+    },
+    "unparsed_spans": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "start_cp": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "This offset is the included start of a Unicode codepoint span."
+          },
+          "end_cp": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "This offset is the excluded end of a Unicode codepoint span."
+          },
+          "exact_text": {
+            "type": "string",
+            "description": "This text must equal the original substring at the specified codepoint offsets."
+          }
+        },
+        "required": [
+          "start_cp",
+          "end_cp",
+          "exact_text"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "description": "These spans preserve substantive answer text that the extractor cannot resolve."
+    }
+  },
+  "required": [
+    "schema_version",
+    "clauses",
+    "unparsed_spans"
+  ],
+  "additionalProperties": false
+}

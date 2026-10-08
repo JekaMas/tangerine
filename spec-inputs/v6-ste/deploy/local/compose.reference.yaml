@@ -1,0 +1,143 @@
+# This file defines the deployment contract, not an implemented application.
+# Supply real released images. Do not add substitute services.
+name: teacher-error-trainer
+services:
+  postgres:
+    image: ${POSTGRES_IMAGE:?Release image lock required}
+    environment:
+      POSTGRES_DB: tet
+      POSTGRES_USER: tet_owner
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set local database password}
+    volumes:
+    - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - pg_isready -U tet_owner -d tet
+      interval: 3s
+      timeout: 3s
+      retries: 30
+  minio:
+    image: ${MINIO_IMAGE:?Release image lock required}
+    command:
+    - server
+    - /data
+    environment:
+      MINIO_ROOT_USER: tet_init
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?Set init-only storage password}
+    volumes:
+    - media:/data
+  migrate:
+    image: ${TET_API_IMAGE:?Released API image required}
+    command:
+    - tet
+    - migrate
+    environment:
+      DB_HOST: postgres
+      DB_NAME: tet
+      DB_USER: tet_owner
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_APP_USER: tet_app
+      DB_APP_PASSWORD: ${DB_APP_PASSWORD:?Set application database password}
+    depends_on:
+      postgres:
+        condition: service_healthy
+  media-init:
+    image: ${TET_API_IMAGE:?Released API image required}
+    command:
+    - tet
+    - media-init
+    - --wait-seconds=90
+    - --private-bucket=exercises
+    environment:
+      S3_ENDPOINT: http://minio:9000
+      S3_ROOT_USER: tet_init
+      S3_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      S3_ACCESS_KEY: tet_api
+      S3_SECRET_KEY: ${S3_SECRET_KEY:?Set scoped application storage password}
+    depends_on:
+      minio:
+        condition: service_started
+  speech:
+    image: ${TET_SPEECH_IMAGE:?Released speech image required}
+    environment:
+      APP_MODE: live
+      AZURE_SPEECH_KEY: ${AZURE_SPEECH_KEY:?Real provider configuration required}
+      AZURE_SPEECH_REGION: ${AZURE_SPEECH_REGION:?Real provider configuration required}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:?Real provider configuration required}
+      INTERNAL_SHARED_SECRET: ${INTERNAL_SHARED_SECRET:?Set internal authentication secret}
+    healthcheck:
+      test:
+      - CMD
+      - python
+      - -m
+      - tet_speech.healthcheck
+      interval: 5s
+      timeout: 3s
+      retries: 30
+  api:
+    image: ${TET_API_IMAGE:?Released API image required}
+    command:
+    - tet
+    - serve
+    environment:
+      APP_ENV: local
+      APP_MODE: live
+      AUTH_MODE: dev
+      DB_HOST: postgres
+      DB_NAME: tet
+      DB_USER: tet_app
+      DB_PASSWORD: ${DB_APP_PASSWORD}
+      S3_ENDPOINT: http://minio:9000
+      S3_ACCESS_KEY: tet_api
+      S3_SECRET_KEY: ${S3_SECRET_KEY}
+      SPEECH_URL: http://speech:8090
+      INTERNAL_SHARED_SECRET: ${INTERNAL_SHARED_SECRET}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:?Real provider configuration required}
+      PROVIDER_PROFILE: openai-gpt41-20250414
+      SESSION_SECRET: ${SESSION_SECRET:?Set session signing secret}
+      REQUEST_DEADLINE_SECONDS: '270'
+    depends_on:
+      speech:
+        condition: service_healthy
+      initialize:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+      - CMD
+      - tet
+      - healthcheck
+      - --ready
+      interval: 5s
+      timeout: 3s
+      retries: 30
+  web:
+    image: ${TET_WEB_IMAGE:?Released web image required}
+    environment:
+      INTERNAL_API_ORIGIN: http://api:8080
+      PROXY_TIMEOUT_SECONDS: '300'
+    ports:
+    - 127.0.0.1:3000:3000
+    depends_on:
+      api:
+        condition: service_healthy
+  initialize:
+    image: ${TET_API_IMAGE:?Released API image required}
+    command:
+    - tet
+    - initialize
+    - --idempotent
+    - --accounts-only
+    environment:
+      DB_HOST: postgres
+      DB_NAME: tet
+      DB_USER: tet_owner
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      media-init:
+        condition: service_completed_successfully
+volumes:
+  pgdata: null
+  media: null

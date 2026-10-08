@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://teacher-error-trainer.invalid/schemas/render-plan.json",
+  "title": "render-plan",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0",
+      "description": "This field identifies the data contract version, not a claim of implementation readiness."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This value uniquely identifies the record within its declared entity and version scope."
+    },
+    "blueprint_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This identifier refers to the source blueprint version."
+    },
+    "profile_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This identifier selects the registered provider or method profile required by the parent record."
+    },
+    "turns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This value uniquely identifies the record within its declared entity and version scope."
+          },
+          "speaker_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This identifier links an utterance or record to its stated speaker."
+          },
+          "voice_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This field identifies the exact provider voice used for the audio turn."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en-US",
+              "en-GB"
+            ],
+            "description": "This field identifies the English locale for the stated voice or operation."
+          },
+          "ops": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "text",
+                    "phoneme",
+                    "pause",
+                    "prosody"
+                  ],
+                  "description": "This field selects the exact operation or judgment type from the parent enumeration."
+                },
+                "text": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "This field contains literal text for the specific typed operation or feedback item."
+                },
+                "ipa": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "This field contains IPA for the operation or correction specified by its parent object."
+                },
+                "rate_percent": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "This field gives the requested rate control as a percentage."
+                },
+                "pitch_semitones": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "This field gives the requested pitch change in semitones."
+                },
+                "pause_ms": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "This field gives the requested pause duration in milliseconds."
+                },
+                "authorized_asset_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "This historical substitution field has no active authorized value in this revision."
+                },
+                "source_unit_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "This identifier links an operation to the planned or verified source unit."
+                }
+              },
+              "required": [
+                "kind",
+                "text",
+                "ipa",
+                "rate_percent",
+                "pitch_semitones",
+                "pause_ms",
+                "authorized_asset_id",
+                "source_unit_id"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1,
+            "description": "These typed operations specify how the provider must construct one audio turn."
+          }
+        },
+        "required": [
+          "id",
+          "speaker_id",
+          "voice_id",
+          "locale",
+          "ops"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "description": "These entries preserve the ordered audio turns and their speakers."
+    },
+    "required_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "plain_text",
+          "ipa",
+          "prosody",
+          "timed_pause",
+          "multi_turn"
+        ]
+      },
+      "minItems": 0,
+      "description": "These capability names must all exist in the selected active provider profile."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "blueprint_id",
+    "profile_id",
+    "turns",
+    "required_capabilities"
+  ],
+  "additionalProperties": false
+}

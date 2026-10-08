@@ -1,6 +1,6 @@
 # Tangerine
 
-Teacher Error Trainer, started from the nine supplied specification/audit files. Work and code are in English. The real local runtime foundation is implemented; full language scoring, author/reviewer/publication workflows, provider integration and validated content are still incomplete. Read audit/completeness.md before treating this as a complete trainer.
+Teacher Error Trainer, started from nine initial files and the recovered complete 95-file v6-ste specification archive. Work and code are in English. The real local runtime foundation is implemented; full language scoring, author/reviewer/publication workflows, provider integration and validated content are still incomplete. Read audit/completeness.md before treating this as a complete trainer.
 
 ## Start the local foundation
 
@@ -40,6 +40,8 @@ Restore refuses any project that already owns resources and creates separate Pos
 
 The application was observed healthy at localhost:3000, while Docker management operations later timed out or returned HTTP 500. Fresh restart/architecture checks remain failed, and the source/image reconciliation after the speech arithmetic fix is pending. Full AMD64 runtime acceptance has not run. Exact results and preserved failures are in the canonical acceptance record.
 
-## Required next inputs
+## Current specification and next dependencies
 
-Recover the original referenced taxonomy, contracts, prompts, validation policy and scoring requirements. Review the separate DEC-001–DEC-008 drafts without treating them as approvals. Provider keys, qualified independent reviewers, permitted real audio/teacher answers and fixed held-out validation policy are necessary for the full release. None is replaced with invented evidence.
+The original taxonomy, 15 schemas, five prompts, policy/reference documents and 48 original requirements are recovered. Read [the completeness review](audit/completeness.md), [complete source research](audit/corpus-release-research.md), [all-source inventory](audit/full-source-inventory.json) and [configurable LLM contract](docs/llm-configuration.md). The plan covers all 122 categories/control leaves and full versions/components of all eight listed sources. No corpus was acquired or review fabricated.
+
+The latest increment is specification-only. DeepSeek 4.1 fast is planned through model deepseek-flash, low reasoning and the existing server secret reference; no Codex setting or service code was changed and no inference call was made. Eight decisions, source-use access/permissions, real qualified reviews/teacher answers, exact methods/aliases and provider/held-out qualification remain dependencies. The current application is still the incomplete local foundation.

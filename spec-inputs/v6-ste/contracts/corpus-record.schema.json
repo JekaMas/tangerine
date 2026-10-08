@@ -1,0 +1,269 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://teacher-error-trainer.invalid/schemas/corpus-record.json",
+  "title": "corpus-record",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0",
+      "description": "This field identifies the data contract version, not a claim of implementation readiness."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This value uniquely identifies the record within its declared entity and version scope."
+    },
+    "source_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This identifier refers to a source in the source registry."
+    },
+    "release_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This field identifies the exact acquired dataset release."
+    },
+    "source_uri": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This field records the actual source location without claiming download or permission."
+    },
+    "raw_asset_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "This hash identifies the acquired raw source file."
+    },
+    "licence": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "This identifier refers to a source in the source registry."
+        },
+        "source_record_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "This identifier locates the actual original record inside the named source release."
+        },
+        "rights_approval_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "This reference identifies the actual approval for this source use."
+        },
+        "uses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "local_analysis",
+              "commercial_evaluation",
+              "derivative_exercises",
+              "distribution",
+              "model_training",
+              "external_api_transfer",
+              "voice_use"
+            ]
+          },
+          "minItems": 0,
+          "description": "These operations are the exact uses permitted by the retained license approval."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "approved",
+            "pending",
+            "blocked"
+          ],
+          "description": "This field states the parent operation result from its declared enumeration."
+        },
+        "licence_evidence_hash": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "This hash identifies the retained evidence for source permissions."
+        }
+      },
+      "required": [
+        "source_id",
+        "source_record_id",
+        "rights_approval_id",
+        "uses",
+        "status",
+        "licence_evidence_hash"
+      ],
+      "additionalProperties": false,
+      "description": "This object preserves the actual source license and permitted uses."
+    },
+    "split": {
+      "type": "string",
+      "enum": [
+        "dev",
+        "calibration",
+        "holdout",
+        "source_train",
+        "source_test",
+        "quarantine"
+      ],
+      "description": "This field records the fixed data partition for the source record."
+    },
+    "group_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 1,
+      "description": "These IDs keep related records together during data-split assignment."
+    },
+    "origin": {
+      "type": "string",
+      "enum": [
+        "external_human_speech",
+        "external_written",
+        "original_synthetic",
+        "original_human"
+      ],
+      "description": "This field records actual source origin. It must not promote a substitute to genuine evidence."
+    },
+    "text": {
+      "type": "string",
+      "description": "This field contains literal text for the specific typed operation or feedback item."
+    },
+    "speaker_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "This identifier links an utterance or record to its stated speaker."
+    },
+    "l1": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "This field records the declared first language. It does not imply a particular error."
+    },
+    "age_group": {
+      "type": "string",
+      "enum": [
+        "adult",
+        "child",
+        "unknown",
+        "not_applicable"
+      ],
+      "description": "This field retains the source age group without an inferred age."
+    },
+    "raw_annotations_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "This identifier refers to the unchanged source annotation asset."
+    },
+    "normalized_case_version_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "This identifier links a source record to its separately reviewed case version."
+    },
+    "parser_version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This field identifies the exact source import parser."
+    },
+    "transform_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "description": "These IDs identify the actual transformations from raw data to this record."
+    },
+    "quality_status": {
+      "type": "string",
+      "enum": [
+        "accepted",
+        "quarantined",
+        "not_reviewed"
+      ],
+      "description": "This field states source-record quality without inventing approval."
+    },
+    "source_score_scale": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "This field preserves the original score scale and its definition."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "source_id",
+    "release_id",
+    "source_uri",
+    "raw_asset_sha256",
+    "licence",
+    "split",
+    "group_ids",
+    "origin",
+    "text",
+    "speaker_id",
+    "l1",
+    "age_group",
+    "raw_annotations_asset_id",
+    "normalized_case_version_id",
+    "parser_version",
+    "transform_ids",
+    "quality_status",
+    "source_score_scale"
+  ],
+  "additionalProperties": false
+}

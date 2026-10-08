@@ -1,0 +1,37 @@
+version: 1.0.0
+status: specification_only_not_live_qualified
+baseline_registry: domain/providers.v1.yaml
+silent_fallback: false
+authority: User request of 2026-10-08 explicitly selects configurable LLM and DeepSeek 4.1 fast development testing; no production equivalence is asserted.
+planned_development_default: deepseek-v41-flash-local-test-v1
+profiles:
+- id: deepseek-v41-flash-local-test-v1
+  environment: local_development_testing
+  provider: deepseek
+  model: deepseek-flash
+  marketing_release: DeepSeek-V4.1-Flash
+  base_url: https://api.deepseek.com/
+  wire_api: responses
+  reasoning_effort: low
+  stream: false
+  tools: []
+  max_output_tokens: 12000
+  output_limit_status: candidate_must_be_qualified_with_complete_original_schemas
+  sampling_policy: Send only provider-supported qualified settings; do not copy unsupported OpenAI temperature fields.
+  response_contract: Full original closed schemas plus server semantic guards; strict transport schema support must be qualified without weakening constraints.
+  retention_policy: Require a qualified explicit retention setting and approved source-use transfer; do not assume OpenAI store:false semantics.
+  roles:
+  - case_generation
+  - linguistic_audit
+  - blind_claim_extraction
+  - claim_mapping
+  - mapping_audit
+  - feedback
+  blocked_role: linguistic_audit until DEC-001 exact contract approval
+  credentials:
+  - DEEPSEEK_API_KEY
+  credential_value_stored: false
+  live_verified: false
+  heldout_verified: false
+  alias_policy: Record requested and returned model identity; requalify detected moving-alias changes.
+  prompt_policy: Versioned binding to unchanged original prompt hashes; not an edit to the baseline manifest.

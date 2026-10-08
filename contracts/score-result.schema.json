@@ -1,0 +1,4984 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://teacher-error-trainer.invalid/schemas/score-result.json",
+  "title": "score-result",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0",
+      "description": "This field identifies the data contract version, not a claim of implementation readiness."
+    },
+    "attempt_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This identifier refers to the frozen teacher attempt."
+    },
+    "case_version_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This identifier refers to one immutable case version."
+    },
+    "decision_set_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "This hash identifies the immutable set of decisions used for the score."
+    },
+    "scoring_policy_version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This field identifies the exact formula and counting policy."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "review_required"
+      ],
+      "description": "This field states the parent operation result from its declared enumeration."
+    },
+    "counts": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "true_errors": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "This count gives all confirmed true-error units in the case."
+            },
+            "tp": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "This count gives distinct supported true detections."
+            },
+            "fn": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "This count gives missed true units."
+            },
+            "fp": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "This count gives resolved false error assertions after duplicate removal."
+            },
+            "designated_decoys": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "This count gives the reviewed permitted controls in the case."
+            },
+            "decoy_false_positives": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "This count gives designated permitted units wrongly marked as errors."
+            },
+            "duplicate_claims": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "This count identifies claims excluded from extra credit because they repeat a prior claim."
+            },
+            "unresolved_claims": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "This count gives score-relevant claims that still require review."
+            }
+          },
+          "required": [
+            "true_errors",
+            "tp",
+            "fn",
+            "fp",
+            "designated_decoys",
+            "decoy_false_positives",
+            "duplicate_claims",
+            "unresolved_claims"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "This object contains raw counts, not reduced metric fractions."
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "detection.precision": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures supported error assertions among all distinct error assertions."
+        },
+        "detection.recall": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures the true detection units that the teacher found."
+        },
+        "detection.f1": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio combines detection precision and recall. If true opportunities exist and the teacher finds none, its value is zero."
+        },
+        "detection.miss_rate": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures true units that the teacher missed."
+        },
+        "detection.false_discovery_rate": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures unsupported error assertions among all distinct error assertions."
+        },
+        "classification.coverage": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures detected units with a category that the teacher explicitly supplied."
+        },
+        "classification.family_accuracy": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures correct primary domains among explicitly categorized detections."
+        },
+        "classification.exact_accuracy": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures exact permitted taxonomy IDs among explicitly categorized detections."
+        },
+        "classification.hierarchical_accuracy": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures tree-based category credit among explicitly categorized detections."
+        },
+        "classification.hierarchical_recall": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures category credit across all true units. Missing detections and missing categories contribute zero."
+        },
+        "correction.attempt_rate": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures proposed corrections among detected units that permit correction."
+        },
+        "correction.strict_accuracy": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures fully correct corrections among proposed corrections of true detections."
+        },
+        "correction.graded_accuracy": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures proposition-based correction credit among proposed corrections. The model cannot choose an arbitrary partial score."
+        },
+        "correction.strict_recall": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures fully corrected units among all true units that permit correction."
+        },
+        "correction.graded_recall": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures correction credit across all true correction opportunities. Missed units contribute zero."
+        },
+        "correction.assertion_precision": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures fully correct repairs among repairs of true detections and unnecessary repairs."
+        },
+        "explanation.coverage": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures proposed explanations among detected units that permit explanation."
+        },
+        "explanation.strict_accuracy": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures fully correct explanations among proposed explanations of true detections."
+        },
+        "explanation.graded_accuracy": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures proposition-based explanation credit among proposed explanations."
+        },
+        "explanation.graded_recall": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures explanation credit across all true explanation opportunities. Missed units contribute zero."
+        },
+        "decoy.overcorrection_rate": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures designated permitted units that the teacher wrongly marks as errors."
+        },
+        "decoy.unflagged_rate": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures designated permitted units that the teacher does not mark as errors. Silence does not prove conscious recognition."
+        },
+        "decoy.explicit_acceptability_accuracy": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures correct explicit judgments among explicitly judged negative controls."
+        },
+        "acceptability.explicit_accuracy": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio measures correct explicit judgments among mapped units. Unsupported off-key assertions remain false positives outside this denominator."
+        },
+        "weighted.precision": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio applies fixed severity weights to true detections. Each false positive has penalty one."
+        },
+        "weighted.recall": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio applies the case weights to detected and missed opportunities. The case fixes these weights before answer entry."
+        },
+        "weighted.f1": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the numeric result or null under the parent applicability rule."
+            },
+            "numerator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact numerator of the stored ratio."
+            },
+            "denominator": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field contains the exact denominator of the stored ratio."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "available",
+                "not_applicable",
+                "review_required"
+              ],
+              "description": "This field states the parent operation result from its declared enumeration."
+            },
+            "reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_opportunities",
+                    "no_assertions",
+                    "not_requested",
+                    "unresolved",
+                    "not_observable_in_this_mode"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+            }
+          },
+          "required": [
+            "value",
+            "numerator",
+            "denominator",
+            "status",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "description": "This ratio combines weighted precision and recall. It does not replace the unweighted metrics."
+        }
+      },
+      "required": [
+        "detection.precision",
+        "detection.recall",
+        "detection.f1",
+        "detection.miss_rate",
+        "detection.false_discovery_rate",
+        "classification.coverage",
+        "classification.family_accuracy",
+        "classification.exact_accuracy",
+        "classification.hierarchical_accuracy",
+        "classification.hierarchical_recall",
+        "correction.attempt_rate",
+        "correction.strict_accuracy",
+        "correction.graded_accuracy",
+        "correction.strict_recall",
+        "correction.graded_recall",
+        "correction.assertion_precision",
+        "explanation.coverage",
+        "explanation.strict_accuracy",
+        "explanation.graded_accuracy",
+        "explanation.graded_recall",
+        "decoy.overcorrection_rate",
+        "decoy.unflagged_rate",
+        "decoy.explicit_acceptability_accuracy",
+        "acceptability.explicit_accuracy",
+        "weighted.precision",
+        "weighted.recall",
+        "weighted.f1"
+      ],
+      "additionalProperties": false,
+      "description": "This object contains the registered metric results and applicability reasons."
+    },
+    "domain_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "enum": [
+              "grammar",
+              "lexis",
+              "pronunciation.segmental",
+              "pronunciation.suprasegmental",
+              "fluency",
+              "discourse",
+              "pragmatics_register",
+              "acceptable_variant",
+              "unattributed_fp"
+            ],
+            "description": "This field names the primary reporting domain for the observation."
+          },
+          "true_errors": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "This count gives all confirmed true-error units in the case."
+          },
+          "tp": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "This count gives distinct supported true detections."
+          },
+          "fn": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "This count gives missed true units."
+          },
+          "fp": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "This count gives resolved false error assertions after duplicate removal."
+          },
+          "precision": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the numeric result or null under the parent applicability rule."
+              },
+              "numerator": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the exact numerator of the stored ratio."
+              },
+              "denominator": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the exact denominator of the stored ratio."
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "available",
+                  "not_applicable",
+                  "review_required"
+                ],
+                "description": "This field states the parent operation result from its declared enumeration."
+              },
+              "reason": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "no_opportunities",
+                      "no_assertions",
+                      "not_requested",
+                      "unresolved",
+                      "not_observable_in_this_mode"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+              }
+            },
+            "required": [
+              "value",
+              "numerator",
+              "denominator",
+              "status",
+              "reason"
+            ],
+            "additionalProperties": false,
+            "description": "This ratio contains detection precision under the stated counting policy."
+          },
+          "recall": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the numeric result or null under the parent applicability rule."
+              },
+              "numerator": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the exact numerator of the stored ratio."
+              },
+              "denominator": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the exact denominator of the stored ratio."
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "available",
+                  "not_applicable",
+                  "review_required"
+                ],
+                "description": "This field states the parent operation result from its declared enumeration."
+              },
+              "reason": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "no_opportunities",
+                      "no_assertions",
+                      "not_requested",
+                      "unresolved",
+                      "not_observable_in_this_mode"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+              }
+            },
+            "required": [
+              "value",
+              "numerator",
+              "denominator",
+              "status",
+              "reason"
+            ],
+            "additionalProperties": false,
+            "description": "This ratio contains detection recall under the stated counting policy."
+          },
+          "f1": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the numeric result or null under the parent applicability rule."
+              },
+              "numerator": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the exact numerator of the stored ratio."
+              },
+              "denominator": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the exact denominator of the stored ratio."
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "available",
+                  "not_applicable",
+                  "review_required"
+                ],
+                "description": "This field states the parent operation result from its declared enumeration."
+              },
+              "reason": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "no_opportunities",
+                      "no_assertions",
+                      "not_requested",
+                      "unresolved",
+                      "not_observable_in_this_mode"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+              }
+            },
+            "required": [
+              "value",
+              "numerator",
+              "denominator",
+              "status",
+              "reason"
+            ],
+            "additionalProperties": false,
+            "description": "This ratio contains the F1 value under the stated counting policy."
+          },
+          "metrics": {
+            "type": "object",
+            "properties": {
+              "detection.precision": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures supported error assertions among all distinct error assertions."
+              },
+              "detection.recall": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures the true detection units that the teacher found."
+              },
+              "detection.f1": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio combines detection precision and recall. If true opportunities exist and the teacher finds none, its value is zero."
+              },
+              "detection.miss_rate": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures true units that the teacher missed."
+              },
+              "detection.false_discovery_rate": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures unsupported error assertions among all distinct error assertions."
+              },
+              "classification.coverage": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures detected units with a category that the teacher explicitly supplied."
+              },
+              "classification.family_accuracy": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures correct primary domains among explicitly categorized detections."
+              },
+              "classification.exact_accuracy": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures exact permitted taxonomy IDs among explicitly categorized detections."
+              },
+              "classification.hierarchical_accuracy": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures tree-based category credit among explicitly categorized detections."
+              },
+              "classification.hierarchical_recall": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures category credit across all true units. Missing detections and missing categories contribute zero."
+              },
+              "correction.attempt_rate": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures proposed corrections among detected units that permit correction."
+              },
+              "correction.strict_accuracy": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures fully correct corrections among proposed corrections of true detections."
+              },
+              "correction.graded_accuracy": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures proposition-based correction credit among proposed corrections. The model cannot choose an arbitrary partial score."
+              },
+              "correction.strict_recall": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures fully corrected units among all true units that permit correction."
+              },
+              "correction.graded_recall": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures correction credit across all true correction opportunities. Missed units contribute zero."
+              },
+              "correction.assertion_precision": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures fully correct repairs among repairs of true detections and unnecessary repairs."
+              },
+              "explanation.coverage": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures proposed explanations among detected units that permit explanation."
+              },
+              "explanation.strict_accuracy": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures fully correct explanations among proposed explanations of true detections."
+              },
+              "explanation.graded_accuracy": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures proposition-based explanation credit among proposed explanations."
+              },
+              "explanation.graded_recall": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures explanation credit across all true explanation opportunities. Missed units contribute zero."
+              },
+              "decoy.overcorrection_rate": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures designated permitted units that the teacher wrongly marks as errors."
+              },
+              "decoy.unflagged_rate": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures designated permitted units that the teacher does not mark as errors. Silence does not prove conscious recognition."
+              },
+              "decoy.explicit_acceptability_accuracy": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures correct explicit judgments among explicitly judged negative controls."
+              },
+              "acceptability.explicit_accuracy": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio measures correct explicit judgments among mapped units. Unsupported off-key assertions remain false positives outside this denominator."
+              },
+              "weighted.precision": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio applies fixed severity weights to true detections. Each false positive has penalty one."
+              },
+              "weighted.recall": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio applies the case weights to detected and missed opportunities. The case fixes these weights before answer entry."
+              },
+              "weighted.f1": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the numeric result or null under the parent applicability rule."
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact numerator of the stored ratio."
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field contains the exact denominator of the stored ratio."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "not_applicable",
+                      "review_required"
+                    ],
+                    "description": "This field states the parent operation result from its declared enumeration."
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "no_opportunities",
+                          "no_assertions",
+                          "not_requested",
+                          "unresolved",
+                          "not_observable_in_this_mode"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+                  }
+                },
+                "required": [
+                  "value",
+                  "numerator",
+                  "denominator",
+                  "status",
+                  "reason"
+                ],
+                "additionalProperties": false,
+                "description": "This ratio combines weighted precision and recall. It does not replace the unweighted metrics."
+              }
+            },
+            "required": [
+              "detection.precision",
+              "detection.recall",
+              "detection.f1",
+              "detection.miss_rate",
+              "detection.false_discovery_rate",
+              "classification.coverage",
+              "classification.family_accuracy",
+              "classification.exact_accuracy",
+              "classification.hierarchical_accuracy",
+              "classification.hierarchical_recall",
+              "correction.attempt_rate",
+              "correction.strict_accuracy",
+              "correction.graded_accuracy",
+              "correction.strict_recall",
+              "correction.graded_recall",
+              "correction.assertion_precision",
+              "explanation.coverage",
+              "explanation.strict_accuracy",
+              "explanation.graded_accuracy",
+              "explanation.graded_recall",
+              "decoy.overcorrection_rate",
+              "decoy.unflagged_rate",
+              "decoy.explicit_acceptability_accuracy",
+              "acceptability.explicit_accuracy",
+              "weighted.precision",
+              "weighted.recall",
+              "weighted.f1"
+            ],
+            "additionalProperties": false,
+            "description": "This object contains the registered metric results and applicability reasons."
+          }
+        },
+        "required": [
+          "domain",
+          "true_errors",
+          "tp",
+          "fn",
+          "fp",
+          "precision",
+          "recall",
+          "f1",
+          "metrics"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "description": "These results partition opportunities by their primary reporting domain."
+    },
+    "composite": {
+      "type": "object",
+      "properties": {
+        "value_0_100": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "This field contains the policy composite on the 0 to 100 scale, or null."
+        },
+        "enabled_components": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "detection",
+              "classification",
+              "correction",
+              "explanation"
+            ]
+          },
+          "minItems": 0,
+          "description": "These component names identify the fixed inputs used by the composite."
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+        }
+      },
+      "required": [
+        "value_0_100",
+        "enabled_components",
+        "reason"
+      ],
+      "additionalProperties": false,
+      "description": "This object contains the policy-derived aggregate score and its applicability."
+    },
+    "item_decision_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "description": "These IDs identify the saved decisions that support the feedback item."
+    },
+    "semantic_judgments_present": {
+      "type": "boolean",
+      "description": "This flag states that the result depends on semantic judgments in addition to arithmetic."
+    },
+    "sufficient_statistics": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "G": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of all confirmed true-error units."
+            },
+            "D": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of designated permitted controls."
+            },
+            "TP": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of distinct true units with a supported error assertion."
+            },
+            "FP": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of resolved false error assertions after duplicate removal."
+            },
+            "FN": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "`G-TP`."
+            },
+            "LC": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of TP units with an explicit valid category."
+            },
+            "LF": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of those categories in the correct reporting domain."
+            },
+            "LE": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of those categories in the permitted exact-leaf set."
+            },
+            "GC": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of all correction-eligible true units."
+            },
+            "TC": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of correction-eligible TP units."
+            },
+            "CA": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of those TP units with a supplied correction."
+            },
+            "CK": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of supplied eligible corrections with credit exactly one."
+            },
+            "GE": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of all explanation-eligible true units."
+            },
+            "TE": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of explanation-eligible TP units."
+            },
+            "EA": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of those TP units with a supplied explanation."
+            },
+            "EK": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of supplied eligible explanations with credit exactly one."
+            },
+            "FC": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of FP assertions with an unnecessary correction."
+            },
+            "DF": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of distinct designated controls wrongly flagged."
+            },
+            "DA": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of designated controls explicitly identified as permitted."
+            },
+            "SN": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of explicit judgments mapped to true units or controls."
+            },
+            "SA": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of those judgments that agree with the key."
+            },
+            "WTP": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Sum of weights for detected true units."
+            },
+            "WFN": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Sum of weights for missed true units."
+            },
+            "H": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "This field contains the exact numerator of the stored ratio."
+                },
+                "denominator": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "This field contains the exact denominator of the stored ratio."
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false,
+              "description": "Sum of hierarchical credit for the TP units."
+            },
+            "CQ": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "This field contains the exact numerator of the stored ratio."
+                },
+                "denominator": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "This field contains the exact denominator of the stored ratio."
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false,
+              "description": "Sum of correction credit for eligible TP units."
+            },
+            "EQ": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "This field contains the exact numerator of the stored ratio."
+                },
+                "denominator": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "This field contains the exact denominator of the stored ratio."
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false,
+              "description": "Sum of explanation credit for eligible TP units."
+            },
+            "WFP": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "`FP`, with the existing fixed false-assertion weight of one."
+            }
+          },
+          "required": [
+            "G",
+            "D",
+            "TP",
+            "FP",
+            "FN",
+            "LC",
+            "LF",
+            "LE",
+            "GC",
+            "TC",
+            "CA",
+            "CK",
+            "GE",
+            "TE",
+            "EA",
+            "EK",
+            "FC",
+            "DF",
+            "DA",
+            "SN",
+            "SA",
+            "WTP",
+            "WFN",
+            "H",
+            "CQ",
+            "EQ",
+            "WFP"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "These counts and sums permit exact recomputation of the metric ratios."
+    }
+  },
+  "required": [
+    "schema_version",
+    "attempt_id",
+    "case_version_id",
+    "decision_set_sha256",
+    "scoring_policy_version",
+    "status",
+    "counts",
+    "metrics",
+    "domain_results",
+    "composite",
+    "item_decision_ids",
+    "semantic_judgments_present",
+    "sufficient_statistics"
+  ],
+  "additionalProperties": false
+}

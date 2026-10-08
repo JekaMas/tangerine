@@ -6,11 +6,13 @@ The supplied Teacher Error Trainer material defines a full listening-and-written
 
 ## What Changes
 
-- Import all nine supplied files without changing provider profiles or metric formulas.
+- Preserve all nine initial imports and all 95 members of the complete v6-ste archive with immutable provenance.
 - Review every task point, missing source contract and unresolved decision.
 - Implement the real local runtime, authentication, migrations and empty database-backed exercise library.
 - Preserve the author, blind reviewers, publication, teacher and dispute workflows.
-- Preserve all 122 taxonomy categories, 27 core and 15 auxiliary metrics; missing original data remains a dependency.
+- Preserve all 122 exact taxonomy categories, 15 schemas, five original prompts, 27 core and 15 auxiliary metrics and all original 48 requirements/96 scenarios.
+- Require full named releases/components for all eight listed source profiles, with explicit permissions and unavailable-data blockers.
+- Specify a configurable versioned LLM registry and user-selected DeepSeek 4.1 fast development profile, retaining original baseline bytes and speech profiles.
 - Require positive and negative cases for every property, with planned versus observed evidence separated.
 - Prepare separately scoped DEC-001 through DEC-008 proposals without claiming approval.
 
@@ -22,10 +24,31 @@ The supplied Teacher Error Trainer material defines a full listening-and-written
 - `local-runtime`: real services, private storage, authentication, migration readiness and persistence.
 - `domain-scoring`: full taxonomy, evidence ownership, exact metrics and Unicode claims.
 - `author-review-publication`: authoring, independent blind review and immutable publication.
-- `provider-integration`: fixed real profiles, capability receipts and server-only credentials.
+- `provider-integration`: explicitly selected versioned real profiles, capability receipts and server-only credentials.
 - `teacher-workflow`: synchronous preserved answers, audited scoring, feedback, review and explicit retries.
 - `corpus-validation`: permitted acquisition, all-category coverage, real answers and split protection.
 - `release-acceptance`: fixed builds, recovery, full browser acceptance and two architectures.
+
+- `configurable-llm`: explicit full-scope/configuration/deadline planning requirements.
+- `full-source-coverage`: explicit full-scope/configuration/deadline planning requirements.
+- `full-taxonomy-coverage`: explicit full-scope/configuration/deadline planning requirements.
+- `full-validation-policy`: explicit full-scope/configuration/deadline planning requirements.
+- `recovered-runtime-contract`: explicit full-scope/configuration/deadline planning requirements.
+- `v6-assessment-sessions`: recovered exact v6 requirements, with namespaced verification IDs.
+- `v6-case-generation`: recovered exact v6 requirements, with namespaced verification IDs.
+- `v6-case-verification`: recovered exact v6 requirements, with namespaced verification IDs.
+- `v6-change-approval`: recovered exact v6 requirements, with namespaced verification IDs.
+- `v6-content-lifecycle`: recovered exact v6 requirements, with namespaced verification IDs.
+- `v6-data-provenance`: recovered exact v6 requirements, with namespaced verification IDs.
+- `v6-error-taxonomy`: recovered exact v6 requirements, with namespaced verification IDs.
+- `v6-exercise-blueprints`: recovered exact v6 requirements, with namespaced verification IDs.
+- `v6-llm-evaluation`: recovered exact v6 requirements, with namespaced verification IDs.
+- `v6-local-deployment`: recovered exact v6 requirements, with namespaced verification IDs.
+- `v6-platform-foundation`: recovered exact v6 requirements, with namespaced verification IDs.
+- `v6-provider-contracts`: recovered exact v6 requirements, with namespaced verification IDs.
+- `v6-speech-rendering`: recovered exact v6 requirements, with namespaced verification IDs.
+- `v6-teacher-metrics`: recovered exact v6 requirements, with namespaced verification IDs.
+- `v6-validation-corpus`: recovered exact v6 requirements, with namespaced verification IDs.
 
 ### Modified Capabilities
 
@@ -33,4 +56,4 @@ None. This repository has no existing main product specifications.
 
 ## Impact
 
-A new independent repository with Next.js, Go API, PostgreSQL, private MinIO and Python speech service. External OpenAI/Azure calls require local credentials. Full semantic implementation depends on original referenced taxonomy/contracts/prompts not present in the supplied files; it cannot be replaced by inferred data. Docker runtime evidence depends on a running daemon.
+A new independent repository with Next.js, Go API, PostgreSQL, private MinIO and Python speech service. External model/speech calls require server-only credentials, permissions and qualification. Original source bodies are now recovered; eight decisions, genuine reviews/corpus and empirical evidence remain dependencies. The latest increment is specification-only: no implementation, provider inference or corpus acquisition. Docker runtime evidence is unchanged.

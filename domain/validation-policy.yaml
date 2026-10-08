@@ -1,0 +1,45 @@
+version: 1.0.0
+threshold_status: engineering_acceptance_policy_not_empirical_result
+gold:
+  required_source: TET-GOLD-1
+  taxonomy_leaves: 122
+  minimum_stimuli_per_leaf: 6
+  minimum_total_stimuli: 732
+  independent_reviewers: 2
+  disagreement_action: third_adjudicator_or_block
+gates:
+- id: VAL-STRUCT
+  measure: schema_unknown_ids_fabricated_quotes
+  limit: exactly 0 accepted violations
+  source: Approved adversarial cases. No synthetic case has approval in this package.
+- id: VAL-MAP
+  measure: gold mapping precision
+  limit: '>=0.98 overall and >=0.95 each observable domain; >=100 human-labelled eligible mapping decisions/domain'
+  source: The held-out corpus. Report abstentions separately from precision.
+- id: VAL-COVER
+  measure: non_abstained_decisions / eligible_decisions
+  limit: '>=0.90 overall and each domain'
+  source: The same held-out corpus as the mapping gate.
+- id: VAL-REPAIR
+  measure: strict correction verdict agreement with human adjudication
+  limit: '>=0.95 on >=100 attempts/domain; all critical counterexamples correct'
+  source: The held-out corpus and its real adjudications.
+- id: VAL-REPEAT
+  measure: repeat mapping agreement
+  limit: '>=0.99 on 3 runs of identical holdout input/config; disagreements -> review in production'
+  source: The same fixed input and provider configuration.
+- id: VAL-AUDIO
+  measure: observed-target approval
+  limit: Every target and negative control requires two resolved approvals for the final audio hash. Automatic
+    publication is forbidden.
+  source: The actual published case bank.
+- id: VAL-SCORE
+  measure: reference conformance
+  limit: Every approved oracle or property test requires exact rational equality.
+  source: Exact symbolic formulas and separately approved test data.
+- id: VAL-ISOLATION
+  measure: pre-submit answer leakage and cross-role access
+  limit: 0 successful attacks in defined E2E test suite
+  source: The implemented application and its approved access tests.
+release_rule: Every gate requires evidence for the fixed versions. Insufficient data must not pass. Threshold
+  changes require approval and an unrevealed holdout or disclosed reuse.

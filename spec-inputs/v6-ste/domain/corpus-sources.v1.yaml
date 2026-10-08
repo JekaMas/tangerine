@@ -1,0 +1,114 @@
+version: 1.0.0
+profiles:
+- id: TET-GOLD-1
+  kind: first_party_gold
+  source_ids: []
+  required: true
+  acquisition: Author original scripts and synthesize original audio under docs/corpus-acquisition.md.
+    Obtain the required reviewer agreements before use.
+  format: contracts/corpus-record.schema.json JSONL plus content-addressed WAV assets
+  rights: The project must hold actual source agreements. A proposed agreement does not grant rights.
+  default_status: not_created
+  use: Use separate development, calibration, and holdout manifests. Use approved cases for the exercise
+    bank.
+  prohibited: Do not invent reviews, consents, measurements, or source hashes. Do not publish contract
+    fixtures as real exercises.
+- id: SPEECHOCEAN762
+  kind: external_pronunciation_benchmark
+  source_ids:
+  - SRC-SO
+  - SRC-SO-FORMAT
+  required: false
+  acquisition: Get speechocean762.tar.gz from OpenSLR 101. Record the exact release and file hashes. Keep
+    a separately acquired repository revision separate.
+  format: WAVE; train/test/{text,utt2spk,wav.scp}; scores.json; scores-detail.json
+  rights: The official page states CC BY 4.0. Retain attribution and change notices. Obtain separate permission
+    for each personal-data upload.
+  default_status: not_downloaded
+  use: Use supported ratings for pronunciation calibration. Use observed-phone labels only where the acquired
+    source actually provides them.
+  prohibited: Do not infer a substituted phone from a low score. Do not claim other-population validity.
+    Do not clone source voices.
+- id: L2-ARCTIC
+  kind: external_read_speech
+  source_ids:
+  - SRC-L2
+  - SRC-L2-FORMAT
+  required: false
+  acquisition: Get the official PSI Lab release and documentation after permission. Preserve speaker IDs,
+    WAV, transcripts, and original TextGrid tiers.
+  format: Speaker-scoped WAV, transcripts and TextGrid tiers; preserve original tier names and revision-specific
+    manual/automatic distinction.
+  rights: The source states CC BY-NC 4.0. Commercial product use requires separate written permission
+    for that exact use.
+  default_status: licence_blocked
+  use: After permission, use manually annotated portions for contrast-level pronunciation calibration.
+  prohibited: Do not redistribute or upload source voices without permission. Automatic alignment is not
+    a manual pronunciation observation.
+- id: WILOCNESS-2.1
+  kind: external_written_gec
+  source_ids:
+  - SRC-BEA
+  required: false
+  acquisition: Use the W&I+LOCNESS version 2.1 link on the official BEA page. Read the release license
+    before M2 extraction.
+  format: M2 sentence lines S and annotation lines A; token-offset spans and annotator IDs.
+  rights: The official source states noncommercial terms. Product use requires separate permission.
+  default_status: licence_blocked
+  use: After permission, extract written edit patterns. Preserve annotator IDs and correction alternatives.
+    Keep speech-difficulty claims separate.
+  prohibited: Do not synthesize or redistribute source essays without permission. Do not merge annotators
+    into extra errors. Keep holdout text out of prompts.
+- id: FCE-2.1
+  kind: external_written_gec
+  source_ids:
+  - SRC-BEA
+  required: false
+  acquisition: Use the FCE version 2.1 link on the official BEA page. Preserve this release and its separate
+    license.
+  format: M2 and accompanying README/licence
+  rights: The official source states noncommercial terms. Product use requires separate permission.
+  default_status: licence_blocked
+  use: After permission, apply the written-edit procedure. Preserve essay and learner groups.
+  prohibited: Do not treat public download access as commercial permission.
+- id: EFCAMDAT
+  kind: restricted_discovery_only
+  source_ids:
+  - SRC-EFCAM
+  required: false
+  acquisition: Use the Cambridge resource directory to find the maintainer. Request the applicable agreement.
+    Do not bypass an unavailable access service.
+  format: No accepted ingest format until a specific release and agreement are inspected.
+  rights: This review does not establish product-use permission.
+  default_status: licence_blocked
+  use: This source is not a v1 dependency. Import requires an approved release contract.
+  prohibited: Do not substitute an unverified mirror or infer rights from a source name.
+- id: DOUBAO-STUDY-RECORDS
+  kind: unavailable_research_records
+  source_ids:
+  - SRC-DOUBAO
+  required: false
+  acquisition: No public data download or permission exists in this review. A future use requires an actual
+    author agreement and participant permissions.
+  format: Not supplied
+  rights: The paper does not grant a license to participant recordings.
+  default_status: unavailable
+  use: Use the paper as research context only.
+  prohibited: Do not list 545 videos as acquired project assets. Do not invent a corpus or participant
+    consent.
+- id: MOODRICK-NIR-DATA
+  kind: unavailable_vendor_data
+  source_ids:
+  - SRC-MOODRICK
+  - SRC-NIR-SIM
+  required: false
+  acquisition: No public annotated corpus or redistribution permission exists in this review. A future
+    use requires a vendor agreement.
+  format: Not supplied
+  rights: This review does not establish data-use permission.
+  default_status: unavailable
+  use: Use public product pages for comparison only.
+  prohibited: Do not copy private answer banks, prompts, or rubrics into the project corpus.
+default_external_cloud_upload: deny_until_source_use_approval
+downloaded_assets_in_this_package: 0
+human_reviewed_audio_assets_in_this_package: 0

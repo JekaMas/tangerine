@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://teacher-error-trainer.invalid/schemas/feedback.json",
+  "title": "feedback",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0",
+      "description": "This field identifies the data contract version, not a claim of implementation readiness."
+    },
+    "language": {
+      "enum": [
+        "ru",
+        "en"
+      ],
+      "type": "string",
+      "description": "This field selects the requested interface or processing language."
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "decision_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This identifier refers to one saved semantic decision."
+          },
+          "approved_rationale_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "description": "These IDs refer to reviewed explanations that feedback can cite."
+          },
+          "correction_option_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "description": "These IDs refer to the reviewed correction alternatives used in feedback."
+          },
+          "explanation": {
+            "type": "string",
+            "description": "This flag or object describes explanation requirements or judgments in its parent contract."
+          },
+          "status": {
+            "enum": [
+              "final",
+              "needs_review"
+            ],
+            "type": "string",
+            "description": "This field states the parent operation result from its declared enumeration."
+          }
+        },
+        "required": [
+          "decision_id",
+          "approved_rationale_ids",
+          "correction_option_ids",
+          "explanation",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "description": "These records contain the typed feedback entries defined by this parent object."
+    }
+  },
+  "required": [
+    "schema_version",
+    "language",
+    "items"
+  ],
+  "additionalProperties": false
+}

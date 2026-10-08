@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://teacher-error-trainer.invalid/schemas/evidence.json",
+  "title": "evidence",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0",
+      "description": "This field identifies the data contract version, not a claim of implementation readiness."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This value uniquely identifies the record within its declared entity and version scope."
+    },
+    "case_version_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This identifier refers to one immutable case version."
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "source",
+        "mutation",
+        "render",
+        "audio_qc",
+        "asr",
+        "alignment",
+        "phoneme_score",
+        "observed_phone",
+        "prosody",
+        "human_review",
+        "semantic_mapping",
+        "score"
+      ],
+      "description": "This field selects the typed evidence or source-reference class."
+    },
+    "subject_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 1,
+      "description": "These IDs identify the exact units or entities supported by this evidence."
+    },
+    "parent_evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "description": "These IDs link the evidence to the actual earlier records that it depends on."
+    },
+    "asset_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "This hash identifies the actual stored asset bytes."
+    },
+    "raw_private_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "This identifier locates restricted original evidence on the server."
+    },
+    "provider_profile_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "This identifier selects one versioned provider configuration."
+    },
+    "method_version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This field identifies the exact method used for the evidence."
+    },
+    "observed": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "This field records evidence produced by the named method."
+    },
+    "numeric_measure": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "This field contains an actual measurement with its method and unit."
+    },
+    "unit": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "This field identifies the measurement unit declared by the parent object."
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This identifier refers to a source in the source registry."
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1,
+            "description": "This field locates the cited evidence within the named source."
+          },
+          "evidence_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This hash identifies the exact evidence payload."
+          }
+        },
+        "required": [
+          "source_id",
+          "locator",
+          "evidence_hash"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "description": "These references locate actual supporting material in named sources."
+    },
+    "epistemic_status": {
+      "type": "string",
+      "enum": [
+        "requested",
+        "inferred",
+        "measured",
+        "human_observed"
+      ],
+      "description": "This field separates requests, inference, measurement, and human observation."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "This field records the actual creation time with its timezone."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "case_version_id",
+    "type",
+    "subject_ids",
+    "parent_evidence_ids",
+    "asset_sha256",
+    "raw_private_asset_id",
+    "provider_profile_id",
+    "method_version",
+    "observed",
+    "numeric_measure",
+    "unit",
+    "source_refs",
+    "epistemic_status",
+    "created_at"
+  ],
+  "additionalProperties": false
+}

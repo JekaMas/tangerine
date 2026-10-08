@@ -8,7 +8,7 @@ Preserve the observable provider integration requirements of Teacher Error Train
 
 ### Requirement: PRV-01 Use the retained real profiles
 
-The system SHALL use gpt-4.1-2025-04-14, Azure registered voices, whisper-1 and Azure Pronunciation Assessment without silent fallback.
+The system SHALL preserve gpt-4.1-2025-04-14 as the original LLM baseline and permit the explicitly configured, versioned DeepSeek fast development profile in docs/llm-configuration.md. Azure registered voices, whisper-1 and Azure Pronunciation Assessment remain the speech baseline. The selected operation SHALL never silently fall back to another profile.
 
 #### Scenario: PRV-01 supported and rejected inputs
 

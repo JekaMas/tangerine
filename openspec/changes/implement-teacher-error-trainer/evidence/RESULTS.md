@@ -1,3 +1,7 @@
+# Current scope note — 2026-10-08
+
+The results below are the retained foundation observation, not a new run. The complete original archive has since been recovered; any missing-source statements below describe the earlier input state. Current scope is specification/research only. See audit/completeness.md and evidence/spec-recheck-20261008/ for current source/spec checks. Historical implementation failures and proof boundaries are unchanged.
+
 # Tangerine implementation and acceptance record
 
 Date: 2026-10-08. Verdict: **INCOMPLETE — local foundation implemented; full Teacher Error Trainer not accepted.**
