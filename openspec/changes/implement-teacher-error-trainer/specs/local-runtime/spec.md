@@ -17,7 +17,7 @@ The system SHALL use Next.js, Go API, PostgreSQL, private MinIO and Python speec
 
 ### Requirement: RUN-02 Gate startup on initialization
 
-The system SHALL wait for healthy dependencies and successful migration, private media initialization and account initialization before web readiness.
+The system SHALL wait for healthy dependencies and successful migration and private media initialization; it SHALL require no account initialization before web readiness.
 
 #### Scenario: RUN-02 supported and rejected inputs
 
@@ -33,14 +33,14 @@ The system SHALL read published exercises from PostgreSQL and display an empty l
 - **WHEN** the authorized operation receives supported inputs or a violating input
 - **THEN** it SHALL read an actually published exercise from the database, and SHALL show an empty state for zero rows and never synthesize a demonstration
 
-### Requirement: RUN-04 Authenticate local accounts
+### Requirement: RUN-04 Open one local workspace without accounts
 
-The system SHALL initialize the local owner idempotently, hash passwords, persist expiring sessions, revoke on logout and require authentication for protected data.
+The system SHALL open one installation-owned local workspace without accounts, passwords, login, logout, session cookies, access roles or tenant configuration. Teaching, preparation and review are activities available to the local operator. docs/simple-local-product.md governs the trust boundary; lifecycle and genuine review guards remain mandatory.
 
 #### Scenario: RUN-04 supported and rejected inputs
 
 - **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL log in with a configured account and read its session, and SHALL reject wrong passwords, expired/revoked sessions and unauthorized requests
+- **THEN** it SHALL open the library and saved local data without a login or session, and SHALL reject configuration that enables unsupported remote exposure rather than introducing account or tenant setup
 
 ### Requirement: RUN-05 Enforce same-origin access
 
@@ -49,7 +49,7 @@ The system SHALL proxy browser API requests on the same origin and reject cross-
 #### Scenario: RUN-05 supported and rejected inputs
 
 - **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL send an authenticated mutation from the configured local origin, and SHALL reject a cross-origin mutation and keep credentials out of responses
+- **THEN** it SHALL send a same-origin local mutation from the configured local origin, and SHALL reject a cross-origin mutation and keep credentials out of responses
 
 ### Requirement: RUN-06 Persist and recover real data
 
@@ -68,3 +68,35 @@ The system SHALL distinguish liveness from dependency readiness and return non-s
 
 - **WHEN** the authorized operation receives supported inputs or a violating input
 - **THEN** it SHALL report ready after real dependencies and migrations are available, and SHALL report unavailable when any required dependency fails
+
+### Requirement: RUN-08 Start from keys and the supplied bundle
+
+The release SHALL supply the simple local launcher, key-only setup and default configurable LLM profile in docs/simple-local-product.md. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their keys and permitted source transfer. Speech keys remain separate when required.
+
+#### Scenario: RUN-08 simple supported startup
+
+- **GIVEN** Docker is running and the supplied local bundle is available.
+- **WHEN** the user fills provider keys and starts the supplied launcher.
+- **THEN** The local interface becomes available without login or manual infrastructure configuration; a key-free workspace still opens its truthful empty library or plays approved stored audio.
+
+#### Scenario: RUN-08 missing operation key
+
+- **GIVEN** The selected LLM or speech operation has no required key or source-use permission.
+- **WHEN** the user invokes that operation.
+- **THEN** The interface identifies the missing operation-specific configuration without a provider call, fallback, invented result or blocking unrelated stored playback.
+
+### Requirement: RUN-09 Use activity views with honest disclosure boundaries
+
+The interface SHALL offer Library, Prepare, Review and Results in one local workspace, without an admin console, role switcher or public API setup. Teacher and blind-review projections SHALL withhold keys at their specified stages; the local operator can access authoring separately, so no adversarial role isolation is claimed. Review decisions SHALL retain actual person/qualification/independence evidence without reviewer accounts.
+
+#### Scenario: RUN-09 ordinary local activities
+
+- **GIVEN** A local operator and genuine independently supplied reviewer observations.
+- **WHEN** the operator prepares, reviews and opens an eligible published exercise.
+- **THEN** The activities require no account or role assignment and preserve distinct reviewer evidence, final hashes and teacher-view key omission.
+
+#### Scenario: RUN-09 disclosure or false reviewer evidence
+
+- **GIVEN** A teacher payload includes a pre-submit key or publication uses duplicate-person or fabricated approval evidence.
+- **WHEN** projection and publication guards are checked.
+- **THEN** The key-bearing teacher payload fails validation and the invalid review cannot publish; local naming alone cannot prove external independence.

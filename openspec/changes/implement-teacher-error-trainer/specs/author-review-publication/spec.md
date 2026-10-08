@@ -22,7 +22,7 @@ The system SHALL require two distinct qualified humans to listen without the pla
 #### Scenario: REV-01 supported and rejected inputs
 
 - **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL retain two independent blind annotations and qualifying competence, and SHALL reject one person using two accounts, early key disclosure or missing acoustic qualification
+- **THEN** it SHALL retain two independent blind annotations and qualifying competence, and SHALL reject one person recorded as two reviewers, early key disclosure or missing acoustic qualification
 
 ### Requirement: REV-02 Resolve disagreement without erasure
 

@@ -8,12 +8,12 @@ Preserve the observable teacher workflow requirements of Teacher Error Trainer w
 
 ### Requirement: TCH-01 Save original submissions first
 
-The system SHALL save the original Russian/English free answer and SHA-256 before provider processing and restrict attempts to authorized published exercises.
+The system SHALL save the original Russian/English free answer and SHA-256 before provider processing and restrict attempts to published exercises in the local workspace using contracts/local/attempt.schema.json version 1.1.0; no tenant or authenticated user field is required.
 
 #### Scenario: TCH-01 supported and rejected inputs
 
 - **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL submit to a published exercise and read back the identical saved answer, and SHALL reject unpublished/foreign exercises and preserve the answer after provider failure
+- **THEN** it SHALL submit to a published exercise and read back the identical saved answer, and SHALL reject unpublished, unknown or mismatched-version exercises and preserve the answer after provider failure
 
 ### Requirement: TCH-02 Separate blind extraction and audits
 

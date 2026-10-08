@@ -1,3 +1,7 @@
+# Current local setup overlay
+
+The simple local product in docs/simple-local-product.md supplies the default DeepSeek profile and processing-stage bindings. Normal setup asks only for operation-specific provider keys, not an account, API configuration, role assignment or individual stage bindings. The roles below are LLM processing stages. Other providers remain configurable through explicit server-side profiles; missing keys stop only dependent operations. Speech profiles can require their own keys. These are specifications, not implemented or qualified adapters.
+
 # Configurable LLM contract
 
 This is a specification, not a configured application adapter. The user explicitly requested configurable LLM support and DeepSeek 4.1 fast for testing on 2026-10-08. That request authorizes this development profile plan; it is not evidence of a live call, approved test gold or production calibration. The original four profiles and five prompt hashes remain unchanged in domain/providers.v1.yaml and prompts/manifest.yaml.

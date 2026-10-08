@@ -16,7 +16,7 @@ The application MUST start locally through Docker Compose with real provider con
 - **THEN** Startup fails without a substitute application or fake success response.
 
 ### Requirement: LOCAL-02 Limited access
-Only the web port MUST bind to host loopback by default. Each container MUST receive only the secrets for its role. Provider keys MUST NOT enter browser assets or image layers.
+Only the web port MUST bind to host loopback and MUST reject non-loopback exposure configuration. Each container MUST receive only the secrets for its service. Provider keys MUST NOT enter browser assets or image layers.
 
 #### Scenario: LOCAL-02 Permitted behavior
 - **GIVEN** The operator uses the default local topology.
@@ -24,7 +24,7 @@ Only the web port MUST bind to host loopback by default. Each container MUST rec
 - **THEN** Database and storage ports remain inside the container network.
 
 #### Scenario: LOCAL-02 Boundary behavior
-- **GIVEN** The deployment selects development authentication outside local mode.
+- **GIVEN** The deployment configures a non-loopback web binding or exposes an internal service port.
 - **WHEN** The API starts.
 - **THEN** The API refuses that configuration.
 

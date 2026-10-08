@@ -9,28 +9,28 @@
 - [x] 1.5 Recover all 95 archive members; preserve exact user-supplied provenance, original 122-category registry, 15 schemas, five prompts, validation policy and original 48 requirements/96 scenarios; reconcile without weakening scope. This is source recovery, not semantic or empirical acceptance.
 - [ ] 1.6 Resolve each of the eight decisions separately with actual scoped owner messages; verify dependent operation positive/negative cases. BLOCKED: eight exact property drafts remain unapproved; original bodies are recovered, but genuinely missing method/alias/audit/counting/capability definitions remain.
 
-## 2. Real local runtime foundation
+## 2. Historical runtime foundation and pending local alignment
 
 - [ ] 2.1 Build API/web/speech/MinIO images and validate healthy Compose startup at 127.0.0.1:3000; retain actual build/image/runtime receipts.
-- [x] 2.2 Verify real migration and account initialization idempotency, hash persistence and rejection of invalid configuration.
+- [x] 2.2 Historical receipt: real migration/account initialization idempotency and hash persistence. Account setup is superseded by the local product scope; this checkbox does not prove current no-account startup.
 - [x] 2.3 Verify private storage and readiness failure when a real dependency is unavailable.
-- [x] 2.4 Verify login, logout, unauthorized and cross-origin denial through the actual web proxy; inspect browser secret boundaries.
+- [x] 2.4 Historical receipt: login/logout and cross-origin boundary checks. Login/session checks are legacy after the user scope change; current no-account/projection checks remain future work.
 - [x] 2.5 Verify that the first-start library is empty and reads PostgreSQL; never insert a fabricated published exercise.
-- [ ] 2.6 Restart and restore actual DB/media data with hashes and account/session readback; retain positive/negative recovery evidence.
+- [ ] 2.6 Restart and restore actual DB/media data with hashes and local workspace/attempt readback; retain positive/negative recovery evidence.
 
 ## 3. Domain model and scoring
 
 - [x] 3.1 Implement exact registry arithmetic for all 27 core formulas and positive/negative arithmetic vectors, N/A and display rounding; verify retained formulas and actual Python results. Scope: arithmetic only, no semantic scoring acceptance.
-- [ ] 3.2 Implement full source-bound taxonomy/key/context contracts and authorization constraints; verify every valid/invalid category and ownership seam. Original bodies recovered; future implementation and exact permission/decision/oracle evidence are still required.
+- [ ] 3.2 Implement full source-bound taxonomy/key/context contracts and local evidence/source/state constraints; verify every valid/invalid category and ownership seam. Original bodies recovered; future implementation and exact permission/decision/oracle evidence are still required.
 - [ ] 3.3 Implement Unicode extraction, repeats, contradictions, retractions and all scoring counters/domain breakdowns; use independently approved/real claims and original contracts.
 - [ ] 3.4 Implement 15 auxiliary owners with approved measurement methods and null unobserved teacher metrics; run each positive/negative property case.
 
 ## 4. Author, reviewers, publication and disputes
 
 - [ ] 4.1 Implement author preparation and real synthetic audio from original RenderPlan; verify valid/invalid constraints and retained target errors.
-- [ ] 4.2 Implement blind review UI and two genuinely independent qualified people, including phonetics competence for acoustic cases; verify key denial and same-person rejection.
+- [ ] 4.2 Implement blind review UI and two genuinely independent qualified people, including phonetics competence for acoustic cases; verify blind-view key omission and same-person rejection without reviewer accounts.
 - [ ] 4.3 Preserve disagreement and third adjudication, and enforce immutable publication and new-version approval invalidation; verify full browser paths.
-- [ ] 4.4 Implement dispute evidence and append-only result versions with authorization; verify previous-result readback and rejection paths.
+- [ ] 4.4 Implement dispute evidence and append-only result versions with real local adjudication evidence; verify previous-result readback and rejection paths.
 
 ## 5. Real provider integration
 
@@ -83,8 +83,8 @@
 - [ ] 11.5.2 Close GAP-002 / SPEC-002: Public and private transport projections. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice.
 - [ ] 11.5.3 Close GAP-003 / SPEC-003: Complete persistent entity and constraint model. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
 - [ ] 11.5.4 Close GAP-004 / SPEC-004: Database and object-store commit protocol. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.5 Close GAP-005 / SPEC-005: Role/action/resource authorization matrix. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice.
-- [ ] 11.5.6 Close GAP-006 / SPEC-006: Account and session lifecycle contract. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice.
+- [x] 11.5.5 GAP-005 / SPEC-005: former account/access-role choice superseded by the explicit simple-local user request. Defined in docs/simple-local-product.md; no implementation or behavior acceptance is claimed.
+- [x] 11.5.6 GAP-006 / SPEC-006: former account/access-role choice superseded by the explicit simple-local user request. Defined in docs/simple-local-product.md; no implementation or behavior acceptance is claimed.
 - [ ] 11.5.7 Close GAP-007 / SPEC-007: Case lifecycle transition and guard table. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice.
 - [ ] 11.5.8 Close GAP-008 / SPEC-008: Attempt and evaluation recovery transition table. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
 - [ ] 11.5.9 Close GAP-009 / SPEC-009: Dispute and adjudicated result revision records. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice.
@@ -135,10 +135,14 @@
 - [ ] 11.5.54 Close GAP-054 / SPEC-054: Complete deployment/configuration and release manifest schema. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
 - [ ] 11.5.55 Close GAP-055 / SPEC-055: Specification authority, version compatibility and drift closure. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
 
+## 12. Simple local product reconciliation
+
+- [x] 12.1 Specify key-only local setup, one workspace and activity views; remove account/session/tenant/access-role/public API obligations without weakening linguistic or corpus coverage.
+- [x] 12.2 Define explicit local attempt schema 1.1.0 and authority overlay; preserve original 1.0.0 and source bytes. Record all 55 gap dispositions, with two superseded and 53 open.
+- [x] 12.3 Validate active OpenSpec, graph/discovery, local schema delta, source preservation and spec-only diff. Strict/graph checks and 163 static checks passed. Preserve 82 historical observations: 63 passed and 3 failed remain valid for unchanged scope; 16 are invalidated for current local requirements. No behavior rerun; see evidence/simple-local-20261008.
+- [ ] 12.4 Future implementation only: align migration/startup/proxy/UI and remove mandatory login/accounts/sessions; implement supplied launcher and automatic persistent internal secrets. Check positive fresh/restart/key-free-library behavior and negative remote exposure, failed dependency, browser-secret and cross-origin boundaries.
+- [ ] 12.5 Future implementation only: integrate ordinary Prepare/Review/Results views, genuine person evidence and minimal internal operation contracts; check positive complete user paths and negative duplicate-person, key leak, unreviewed publication and wrong-version references.
+
 ## Resume notes
 
-Current authorized scope: exhaustive specification exploration/research/update only. The full archive is recovered, but the specification is NOT gap-free:55 grouped definition findings are recorded in audit/spec-fullness-20261008/GAPS.md. Closure11.5.1–55 remains open; do not equate structural coverage with complete definitions. Do not resume implementation, Docker recovery, corpus acquisition or inference calls from older notes. Full original source recovery is complete and the prior source replacement question is superseded. The unchanged second decisions file adds no approval. Eight decisions, exact rights/access, qualified real reviewers/gold/teacher answers, method/alias contracts and provider/held-out qualification remain open.
-
-The active graph has331 requirements,346 properties and1066 case edges; new nodes are blocked/planned. Prior foundation receipts remain unchanged: 79 passed, 3 failed, 126 not_run on the earlier 208-case graph. Their proof boundary is local infrastructure/arithmetic, not current full trainer acceptance. Do not rerun these valid greens for document changes or copy their counts into the expanded graph as a new run. See audit/completeness.md, docs/llm-configuration.md and evidence/spec-recheck-20261008/. Do not archive the product change.
-
-Exhaustive audit handoff:55 grouped definition gaps remain open (33 engineering contracts,13 product choices,6 linguistic policies,3 source-owner inputs). Use audit/spec-fullness-20261008/USER-INPUT.md for the22 input items and GAPS.md for every missing field/rule. Structural validation passed; it does not close the definitions. No product implementation, inference, acquisition or approval was performed.
+Current authorized scope: specification exploration/research/update only. The latest user selects a simple local product with provider keys, without complex API/authentication. docs/simple-local-product.md and audit/simple-local-20261008/gap-disposition.json govern current scope. GAP-005/006 are superseded choices; 53 definitions remain open (33 engineering and 20 input items). Do not implement, call providers, acquire corpora, install dependencies, operate Docker or claim gap-free readiness. Preserve the complete 122-leaf/8-source/42-metric scope and genuine review/evidence requirements. The existing login foundation and its receipts are historical; new no-account/launcher behavior is not implemented. The active evidence graph retains planned positive and negative boundaries and marks changed proof as invalidated. See evidence/simple-local-20261008 for this spec-only receipt. Do not archive the unfinished product change.

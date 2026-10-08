@@ -1,9 +1,9 @@
 ## ADDED Requirements
 
-The current user request requires complete definitions, not another implementation increment. These obligations close the exact findings in audit/spec-fullness-20261008/GAPS.md. They preserve original taxonomy IDs, formulas, source bytes and genuine decision/evidence boundaries. Engineering may draft complete contracts; unprovided product/linguistic/source-owner choices stay explicit. A listed closure obligation is not a completed definition or implemented test.
+The current user request requires complete definitions, not another implementation increment. These obligations track the historical findings in audit/spec-fullness-20261008/GAPS.md under the current local scope in docs/simple-local-product.md and audit/simple-local-20261008/gap-disposition.json. GAP-005/006 are superseded design choices, not open account/role requirements. They preserve original taxonomy IDs, formulas, source bytes and genuine decision/evidence boundaries. Engineering may draft complete contracts; unprovided product/linguistic/source-owner choices stay explicit. A listed closure obligation is not a completed definition or implemented test.
 
 ### Requirement: SPEC-001 Complete product and internal API operation contracts
-The specification SHALL close GAP-001 with an exact versioned definition of the following: No complete method/path/operation inventory or transport contract defines request bodies, response bodies, headers, authentication, revision preconditions, pagination, idempotency scope, or errors for author/review/publication/disputes/import/admin/speech operations. The definition SHALL preserve these existing rules: Role-aware API behavior, selected submission statuses and private media are required; domain schemas are supplied. It SHALL identify every remaining owner/source dependency and SHALL NOT replace unknown definitions or genuine evidence with an invented default.
+The specification SHALL close GAP-001 with an exact versioned definition of the following: No complete method/path/operation inventory or transport contract defines request bodies, response bodies, headers, revision preconditions, pagination, idempotency scope, or errors for local preparation/review/publication/disputes/import/settings/speech operations. The definition SHALL preserve these existing rules: Minimal internal UI/service contracts, selected submission statuses and private media are required; no public API, account endpoints or tenant transport is required; domain schemas are supplied. It SHALL identify every remaining owner/source dependency and SHALL NOT replace unknown definitions or genuine evidence with an invented default.
 
 #### Scenario: SPEC-001 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-001 contract and its source references are under review.
@@ -11,20 +11,20 @@ The specification SHALL close GAP-001 with an exact versioned definition of the 
 - **THEN** Every in-scope operation has one versioned request/response/security/error contract and links to its flow and owner. An omitted operation, undefined payload/status or unbound route prevents an API-complete claim.
 
 ### Requirement: SPEC-002 Public and private transport projections
-The specification SHALL close GAP-002 with an exact versioned definition of the following: No field allowlists define library, exercise-start, media, pre-key review, post-key review, attempt, result, dispute, author and admin views. Post-submit key visibility and historical/quarantined views are not fully defined. The definition SHALL preserve these existing rules: Pre-submit key/transcript/count leakage is forbidden; post-submit results and private review views are required. It SHALL identify every remaining owner/source dependency and SHALL NOT replace unknown definitions or genuine evidence with an invented default.
+The specification SHALL close GAP-002 with an exact versioned definition of the following: No field allowlists define library, exercise-start, media, pre-key review, post-key review, attempt, result, dispute, preparation and local settings views. Post-submit key visibility and historical/quarantined views are not fully defined. The definition SHALL preserve these existing rules: Pre-submit key/transcript/count leakage is forbidden; post-submit results and private review views are required. It SHALL identify every remaining owner/source dependency and SHALL NOT replace unknown definitions or genuine evidence with an invented default.
 
 #### Scenario: SPEC-002 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-002 contract and its source references are under review.
 - **WHEN** Its supported behavior and omitted or contradictory boundary are checked.
-- **THEN** Every state/role projection emits only its explicitly allowed fields, including errors, caches and metadata. A hidden field in any pre-submit or blind-review projection is rejected.
+- **THEN** Every activity/state projection emits only its explicitly allowed fields, including errors, caches and metadata. A hidden field in any pre-submit or blind-review projection is rejected.
 
 ### Requirement: SPEC-003 Complete persistent entity and constraint model
-The specification SHALL close GAP-003 with an exact versioned definition of the following: The referenced full table list does not exist. Domain entities, columns/types/nullability, keys, unique constraints, indexes, referential actions, revisions and record ownership are not enumerated. The definition SHALL preserve these existing rules: Tenant-aware references, immutable versions and transactional audit are required; existing foundation tables are provisional. It SHALL identify every remaining owner/source dependency and SHALL NOT replace unknown definitions or genuine evidence with an invented default.
+The specification SHALL close GAP-003 with an exact versioned definition of the following: The referenced full table list does not exist. Domain entities, columns/types/nullability, keys, unique constraints, indexes, referential actions, revisions and record ownership are not enumerated. The definition SHALL preserve these existing rules: Single-workspace case/unit/version references, immutable versions and transactional audit are required; existing foundation tables are provisional. It SHALL identify every remaining owner/source dependency and SHALL NOT replace unknown definitions or genuine evidence with an invented default.
 
 #### Scenario: SPEC-003 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-003 contract and its source references are under review.
 - **WHEN** Its supported behavior and omitted or contradictory boundary are checked.
-- **THEN** Every field and reference maps to a declared durable entity/constraint and one immutable version identity. Dangling, cross-tenant, duplicate or mutable historical references fail the declared constraints.
+- **THEN** Every field and reference maps to a declared durable entity/constraint and one immutable version identity. Dangling, cross-case/version, duplicate or mutable historical references fail the declared constraints.
 
 ### Requirement: SPEC-004 Database and object-store commit protocol
 The specification SHALL close GAP-004 with an exact versioned definition of the following: PostgreSQL and MinIO have no joint transaction specification. Pending uploads, hash verification, object promotion, orphan handling, overwrite/race behavior and crash recovery are unspecified. The definition SHALL preserve these existing rules: Domain/audit changes commit together; asset bytes are private and immutable. It SHALL identify every remaining owner/source dependency and SHALL NOT replace unknown definitions or genuine evidence with an invented default.
@@ -34,21 +34,21 @@ The specification SHALL close GAP-004 with an exact versioned definition of the 
 - **WHEN** Its supported behavior and omitted or contradictory boundary are checked.
 - **THEN** Only a durable hash-verified immutable object can become visible through a committed authorized record. A partial upload, DB rollback, competing overwrite or crash cannot publish a missing or changed object.
 
-### Requirement: SPEC-005 Role/action/resource authorization matrix
-The specification SHALL close GAP-005 with an exact versioned definition of the following: Publisher/adjudicator are workflow labels with no mapping to the four roles. Read/write/publish/quarantine/adjudicate/import/configure rights, same-person restrictions and admin scope are not a complete matrix. The definition SHALL preserve these existing rules: Teacher, author, reviewer and administrator are named; tenant isolation and authenticated actions are mandatory. It SHALL identify every remaining owner/source dependency and SHALL NOT replace unknown definitions or genuine evidence with an invented default.
+### Requirement: SPEC-005 Single workspace activities without access roles
+The specification SHALL follow docs/simple-local-product.md: one local workspace with teaching, preparation, review and publication activities and no role/action/resource authorization matrix. Genuine person independence, qualification, lifecycle and source-use guards SHALL remain mandatory. The user request supersedes the former GAP-005 access-role product choice.
 
 #### Scenario: SPEC-005 Complete definition and rejection boundary
-- **GIVEN** The exact GAP-005 contract and its source references are under review.
-- **WHEN** Its supported behavior and omitted or contradictory boundary are checked.
-- **THEN** Every operation has a deny-by-default role/resource/state rule and immutable actor evidence. Unauthorized, other-tenant, self-conflicting or model-origin actions are denied.
+- **GIVEN** The user-selected simple local product scope.
+- **WHEN** Its supported behavior and violating boundary are checked.
+- **THEN** Every activity is available without role assignment while invalid source/state/review evidence is rejected. A model approval or one person represented as two reviewers cannot publish a case.
 
-### Requirement: SPEC-006 Account and session lifecycle contract
-The specification SHALL close GAP-006 with an exact versioned definition of the following: The full account/role assignment lifecycle, session expiry/renewal/revocation, cookie policy, login throttling and local bootstrap recovery are not frozen product contracts. Existing foundation behavior is not a complete domain spec. The definition SHALL preserve these existing rules: Real local accounts, hashed secrets/tokens, CSRF/same-origin and production rejection of development authentication are defined. It SHALL identify every remaining owner/source dependency and SHALL NOT replace unknown definitions or genuine evidence with an invented default.
+### Requirement: SPEC-006 Local startup without accounts or sessions
+The specification SHALL follow docs/simple-local-product.md: no account bootstrap, passwords, login/logout, session cookies, invitations or account recovery. Loopback-only exposure, same-origin checks and server-only provider/internal-service secrets SHALL remain mandatory. The user request supersedes the former GAP-006 account-lifecycle product choice.
 
 #### Scenario: SPEC-006 Complete definition and rejection boundary
-- **GIVEN** The exact GAP-006 contract and its source references are under review.
-- **WHEN** Its supported behavior and omitted or contradictory boundary are checked.
-- **THEN** Account/session transitions and revocation effects are defined for each actor and operation. Disabled/expired/revoked sessions and unauthorized role assignment cannot authorize domain actions.
+- **GIVEN** The user-selected simple local product scope.
+- **WHEN** Its supported behavior and violating boundary are checked.
+- **THEN** A fresh workspace opens without login or session state. Unsupported remote exposure, cross-origin mutations and browser-visible secrets are rejected; no password setup is required.
 
 ### Requirement: SPEC-007 Case lifecycle transition and guard table
 The specification SHALL close GAP-007 with an exact versioned definition of the following: No exhaustive transition table binds each state pair to actor, guard, revision, evidence requirements, audit payload and invalid transition result; treatment of in-progress attempts during quarantine is unspecified. The definition SHALL preserve these existing rules: Case states, main progression, quarantine, retirement and new-version immutability are defined. It SHALL identify every remaining owner/source dependency and SHALL NOT replace unknown definitions or genuine evidence with an invented default.
@@ -83,12 +83,12 @@ The specification SHALL close GAP-010 with an exact versioned definition of the 
 - **THEN** A reviewer can save discoveries without seeing planned IDs; pre-key annotations remain immutable after disclosure. Key-dependent labels, changed pre-key notes or post-key records cannot masquerade as independent blind evidence.
 
 ### Requirement: SPEC-011 Reviewer independence and qualification records
-The specification SHALL close GAP-011 with an exact versioned definition of the following: Qualification record schema/authority/expiry, identity linkage, independence beyond duplicate accounts, author conflicts and adjudicator qualification/decision rules are unspecified. The definition SHALL preserve these existing rules: Two accounts belonging to one person are insufficient; acoustic review requires phonetics competence and disagreement requires a third adjudicator or blocking. It SHALL identify every remaining owner/source dependency and SHALL NOT replace unknown definitions or genuine evidence with an invented default.
+The specification SHALL close GAP-011 with an exact versioned definition of the following: Qualification record schema/authority/expiry, identity linkage, independence beyond duplicate local person entries, author conflicts and adjudicator qualification/decision rules are unspecified. The definition SHALL preserve these existing rules: Two reviewer records belonging to one person are insufficient; acoustic review requires phonetics competence and disagreement requires a third adjudicator or blocking. It SHALL identify every remaining owner/source dependency and SHALL NOT replace unknown definitions or genuine evidence with an invented default.
 
 #### Scenario: SPEC-011 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-011 contract and its source references are under review.
 - **WHEN** Its supported behavior and omitted or contradictory boundary are checked.
-- **THEN** Each counted reviewer has valid authenticated person/qualification/conflict evidence for the exact review. Alias identities, expired qualifications, missing competence or unresolved disagreement cannot approve publication.
+- **THEN** Each counted reviewer has genuine recorded person/qualification/conflict evidence for the exact review. Alias identities, expired qualifications, missing competence or unresolved disagreement cannot approve publication.
 
 ### Requirement: SPEC-012 Teacher-answer gold annotation data contract
 The specification SHALL close GAP-012 with an exact versioned definition of the following: No closed teacher-answer annotation schema defines source spans, fragmentation, stance/category/repair/rationale judgments, expected mappings, uncertainty, rater identity, adjudication or frozen pre-model label sets. The definition SHALL preserve these existing rules: Real answers and independent labels before model results are required for correct/partial/vague/repeated/contradictory/false/off-key classes. It SHALL identify every remaining owner/source dependency and SHALL NOT replace unknown definitions or genuine evidence with an invented default.
@@ -232,7 +232,7 @@ The specification SHALL close GAP-029 with an exact versioned definition of the 
 #### Scenario: SPEC-029 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-029 contract and its source references are under review.
 - **WHEN** Its supported behavior and omitted or contradictory boundary are checked.
-- **THEN** Each role receives only its complete permitted input under a frozen validated binding. Extraction keys, raw identities, unknown settings or cross-tenant cached output cannot enter the role.
+- **THEN** Each role receives only its complete permitted input under a frozen validated binding. Extraction keys, raw identities, unknown settings or wrong-case/version cached output cannot enter the role.
 
 ### Requirement: SPEC-030 Provider-specific strict-schema projection and response parsing
 The specification SHALL close GAP-030 with an exact versioned definition of the following: The per-provider supported keyword projection, preserved application validation mapping and responses output/refusal/incomplete parser are not specified. DeepSeek trusted-instruction and reasoning/output handling need exact transport rules. The definition SHALL preserve these existing rules: The full application schemas cannot be weakened; unsupported wire projections block the profile. It SHALL identify every remaining owner/source dependency and SHALL NOT replace unknown definitions or genuine evidence with an invented default.
@@ -411,7 +411,7 @@ The specification SHALL close GAP-051 with an exact versioned definition of the 
 - **THEN** Each retained or deleted artifact has a defined permitted lifecycle and future transfer/publication guard. Expired/revoked permission or a delete request cannot silently retain active use or destroy audit references inconsistently.
 
 ### Requirement: SPEC-052 Request quotas, concurrency, costs and import resource bounds
-The specification SHALL close GAP-052 with an exact versioned definition of the following: Numeric limits/units/reset rules, tenant/user concurrency, reservation/settlement, request/file/archive limits and exhausted-budget failure codes are absent. The definition SHALL preserve these existing rules: Requests/costs are limited; provider usage is recorded; exhausted generation quotas cannot block permitted playback; imports must reject unbounded decompression. It SHALL identify every remaining owner/source dependency and SHALL NOT replace unknown definitions or genuine evidence with an invented default.
+The specification SHALL close GAP-052 with an exact versioned definition of the following: Local numeric limits/units, operation concurrency, provider usage accounting, request/file/archive limits and exhausted-budget failure codes need exact engineering definitions; per-user/tenant quotas and billing services are excluded. The definition SHALL preserve these existing rules: Requests/costs are limited; provider usage is recorded; exhausted generation quotas cannot block permitted playback; imports must reject unbounded decompression. It SHALL identify every remaining owner/source dependency and SHALL NOT replace unknown definitions or genuine evidence with an invented default.
 
 #### Scenario: SPEC-052 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-052 contract and its source references are under review.

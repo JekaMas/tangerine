@@ -2,7 +2,11 @@
 
 Teacher Error Trainer, started from nine initial files and the recovered complete 95-file v6-ste specification archive. Work and code are in English. The real local runtime foundation is implemented; full language scoring, author/reviewer/publication workflows, provider integration and validated content are still incomplete. Read audit/completeness.md before treating this as a complete trainer.
 
-## Start the local foundation
+## Current product specification
+
+The target product is a simple single-person local app: provide provider keys, run the supplied launcher and open localhost. It requires no accounts, login, tenants, access-role configuration or public API setup. See [simple local product](docs/simple-local-product.md). The launcher and no-account mode are specified future work; the existing foundation below still has login and manual infrastructure secrets and does not meet that new setup contract. No implementation is authorized in this increment.
+
+## Start the historical local foundation
 
 Docker Desktop must be running. Local development secrets were generated in deploy/local/.env for this checkout; the file is ignored and secret values are never printed in evidence. The owner email is owner@localhost. Read INITIAL_PASSWORD locally from that file to sign in.
 

@@ -2,24 +2,24 @@
 
 ## ADDED Requirements
 
-### Requirement: PLAT-01 Authorization and audit
-The API MUST enforce tenant, role, and resource permissions. It MUST record privileged changes with the actor and source evidence. Model output MUST NOT authorize access or create an approval.
+### Requirement: PLAT-01 Local provenance and audit
+The application MUST use one local workspace without tenant or access-role authorization. State-changing operations MUST commit their audit and exact case/version/source evidence together. Human-review records MUST identify genuine people and qualifications without requiring accounts. Model output MUST NOT satisfy a human-review guard or create an approval. docs/simple-local-product.md defines the current scope.
 
 #### Scenario: PLAT-01 Permitted behavior
-- **GIVEN** An authorized reviewer records a decision.
+- **GIVEN** The operator records a genuine qualified reviewer decision.
 - **WHEN** The API commits the review.
-- **THEN** The audit links that authenticated reviewer to the case version.
+- **THEN** The audit links the recorded reviewer evidence to the case version.
 
 #### Scenario: PLAT-01 Boundary behavior
-- **GIVEN** A user requests another tenant resource.
-- **WHEN** The API resolves authorization.
-- **THEN** The API denies access without protected content.
+- **GIVEN** A review references another case version or presents a model response as a human decision.
+- **WHEN** The application validates evidence ownership and review guards.
+- **THEN** The application rejects the mutation and preserves the case and audit history.
 
 ### Requirement: PLAT-02 Costs and failures
-The platform MUST limit requests and record provider usage. Provider failures MUST preserve saved attempts. Quotas MUST NOT prevent playback of an existing authorized case.
+The platform MUST limit requests and record provider usage. Provider failures MUST preserve saved attempts. Quotas MUST NOT prevent playback of an existing published local case.
 
 #### Scenario: PLAT-02 Permitted behavior
-- **GIVEN** A tenant exhausts its generation budget.
+- **GIVEN** The local generation budget is exhausted.
 - **WHEN** A teacher opens an existing published exercise.
 - **THEN** The teacher can still play its stored audio.
 

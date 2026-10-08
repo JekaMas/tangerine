@@ -6,7 +6,7 @@
 The application MUST play stored audio and accept one free-form answer in English or Russian. It MUST evaluate a submitted answer synchronously. It MUST NOT require time labels, spoken answers, or streaming.
 
 #### Scenario: SES-01 Permitted behavior
-- **GIVEN** An authorized teacher has a published case.
+- **GIVEN** A person using the local teaching view has a published case.
 - **WHEN** The teacher submits an answer.
 - **THEN** The interface waits and shows the permitted result.
 
@@ -29,17 +29,17 @@ The API MUST save the original answer and request hash before a provider request
 - **THEN** The API returns HTTP 409 and keeps the original answer.
 
 ### Requirement: SES-03 Private answer key
-The API MUST use separate teacher responses and authorized media access. Before submission, it MUST NOT send hidden transcripts, keys, or error counts. This prohibition includes HTML, errors, caches, and object metadata.
+The API MUST use separate teacher-view responses and local published media access. Before submission, it MUST NOT send hidden transcripts, keys, or error counts. This prohibition includes HTML, errors, caches, and object metadata.
 
 #### Scenario: SES-03 Permitted behavior
-- **GIVEN** A teacher has permission to start a case.
+- **GIVEN** A published local case is available in the teaching view.
 - **WHEN** The API sends the case response.
 - **THEN** The response contains public context and audio access, but no hidden key.
 
 #### Scenario: SES-03 Boundary behavior
-- **GIVEN** A teacher has no author permission.
-- **WHEN** The teacher requests a private author resource.
-- **THEN** The API denies access without protected content.
+- **GIVEN** A teacher response is requested before submission.
+- **WHEN** The response projection is built from a case with a hidden key.
+- **THEN** The response omits hidden author fields in its payload, errors and metadata. The local operator can separately open preparation; no role isolation is claimed.
 
 ### Requirement: SES-04 Failure and review states
 A provider failure MUST preserve the answer. The API MUST return an explicit failure or review state. Unresolved decisions MUST NOT produce final aggregate metrics.

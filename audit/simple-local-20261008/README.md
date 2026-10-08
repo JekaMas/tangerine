@@ -1,0 +1,5 @@
+# Simple local scope reconciliation — 2026-10-08
+
+Current authority: the user asks for a simple local product with provider keys and no complex API or authentication. This is a specification-only update. docs/simple-local-product.md defines the current product policy; active deltas, plan and evidence graph are reconciled. Original archive/recovered bytes and earlier test receipts are retained. The historical exhaustive 55-gap report stays a snapshot; gap-disposition.json removes two obsolete choices and retains 53 open definitions, with 20 user/source/policy input items in USER-INPUT.md. Engineering can draft the other 33 without inventing linguistic or source-owner evidence.
+
+Only minimal internal operation contracts are required. Source, corpus, taxonomy, scoring and genuine review completeness are unchanged. Local UI disclosure is not role isolation against the installation owner. Existing authentication code and its receipts are legacy, not proof of the future mode. Future launcher, no-account migration, provider execution and behavior checks remain unimplemented. Validation receipts are in the canonical change evidence/simple-local-20261008.
