@@ -1,0 +1,1632 @@
+{
+  "schema_version": 1,
+  "scope": "Current simple local product; specification gaps only; no implementation or evidence claim.",
+  "historical_register": "audit/spec-fullness-20261008/gaps.json",
+  "scope_register": "audit/simple-local-20261008/gap-disposition.json",
+  "summary": {
+    "count": 53,
+    "owners": {
+      "engineering_definition": 33,
+      "product_choice": 11,
+      "linguistic_policy": 6,
+      "source_owner_input": 3
+    },
+    "removed": [
+      "GAP-005: account/access-role authorization matrix",
+      "GAP-006: account/session lifecycle"
+    ]
+  },
+  "gaps": [
+    {
+      "id": "GAP-001",
+      "title": "Complete product and internal API operation contracts",
+      "category": "api",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/runtime-v1.md",
+          "line": 53,
+          "anchor": "Use explicit public response objects."
+        },
+        {
+          "path": "openspec/changes/implement-teacher-error-trainer/specs/v6-platform-foundation/spec.md",
+          "line": 5,
+          "anchor": "Authorization and audit"
+        }
+      ],
+      "already_defined": "One local workspace; same-origin internal calls; preserved domain schemas, selected submission statuses and private media. No public API/SDK, login/account endpoints or tenant setup is required.",
+      "missing_definition": "The minimal interface/service operation inventory still lacks exact method/path, payloads, required/nullable fields, limits, headers, revision preconditions, pagination where needed, idempotency scope, success/error outcomes and atomic effects for local preparation, review, publication, answers/results, disputes, import, settings, media and speech.",
+      "answer_needed": "Engineering should define each remaining internal operation and remove superseded account/tenant/admin API rows. Specify request/response fields, validation, statuses and state/DB/media effects; ordinary users configure no API.",
+      "closure_positive": "Every in-scope operation has one versioned request/response/security/error contract and links to its flow and owner.",
+      "closure_negative": "An omitted operation, undefined payload/status or unbound route prevents an API-complete claim.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Define only minimal internal UI/service and local import/recovery operations; remove login/account/tenant/admin/public SDK endpoints and authentication headers.",
+      "why_it_matters": "The interface needs an unambiguous contract for every action so the browser, backend and speech service agree on what to save and return. This concerns private implementation calls, not a public API product.",
+      "active_requirement": "SPEC-001",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-002",
+      "title": "Public and private transport projections",
+      "category": "api",
+      "status": "open_definition",
+      "resolution_owner": "product_choice",
+      "locations": [
+        {
+          "path": "docs/runtime-v1.md",
+          "line": 53,
+          "anchor": "Do not serialize an internal case object"
+        },
+        {
+          "path": "contracts/ground-truth.schema.json",
+          "line": 34,
+          "anchor": "\"public_context\""
+        }
+      ],
+      "already_defined": "Teacher and blind-review views omit keys at their required stages. All activities belong to the same local operator; there is no adversarial separation between access roles.",
+      "missing_definition": "Complete activity/state field allowlists are absent for Library, exercise start/media, pre-key/post-key Review, attempts/results, disputes, Prepare and local settings. Post-submit transcript/key visibility and historical/quarantined projections remain undefined.",
+      "answer_needed": "Choose whether post-submit teaching results expose the whole transcript/key or only result-linked excerpts; define what a user can see for quarantined/historical exercises. Engineering can then define all field allowlists, including errors, caches and metadata.",
+      "closure_positive": "Each activity/state response contains only its declared fields, while ordinary local navigation remains available without accounts.",
+      "closure_negative": "A pre-submit teacher or pre-key review response cannot expose a hidden field; no unsupported promise of secrecy from the installation owner is made.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Define teacher, authoring, blind-review and result view projections; no adversarial separation from the local operator.",
+      "why_it_matters": "Hiding a key on screen is insufficient if it still appears in the response, error, cache or media metadata. The missing decision is what each activity reveals at each stage, especially after submission.",
+      "active_requirement": "SPEC-002",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-003",
+      "title": "Complete persistent entity and constraint model",
+      "category": "data",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/runtime-v1.md",
+          "line": 49,
+          "anchor": "Use the tables listed in the design"
+        },
+        {
+          "path": "openspec/changes/implement-teacher-error-trainer/design.md",
+          "line": 15,
+          "anchor": "foundation exercise catalog"
+        }
+      ],
+      "already_defined": "One workspace local; immutable versions and transactional audit; active attempt schema 1.1.0 removes tenant_id/user_id and requires workspace_id=local. The complete durable model is not defined by the provisional foundation tables.",
+      "missing_definition": "All domain entities still need columns/types/nullability, primary/foreign/unique keys, indexes, referential actions, revision rules, evidence ownership and local migration compatibility.",
+      "answer_needed": "Engineering should specify the full local entity dictionary for cases/units/assets/attempts/results, genuine people/qualifications/reviews, rights/manifests/transforms, evaluation stages, disclosures, audit, disputes and result revisions. Exclude user accounts/roles/tenants; define compatibility with preserved earlier data.",
+      "closure_positive": "Every field and reference maps to a declared durable entity/constraint and one immutable version identity.",
+      "closure_negative": "Dangling, wrong-case/version, duplicate or mutable historical references fail declared constraints.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "One local workspace and explicit attempt 1.1.0 overlay; define durable entities/constraints and compatibility without account/tenant ownership.",
+      "why_it_matters": "JSON schemas describe individual records, but not how all records relate durably. Missing constraints can attach a result or approval to the wrong version, duplicate a logical attempt or leave broken media references.",
+      "active_requirement": "SPEC-003",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-004",
+      "title": "Database and object-store commit protocol",
+      "category": "data",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/runtime-v1.md",
+          "line": 50,
+          "anchor": "Keep provider responses and evidence in private storage"
+        },
+        {
+          "path": "docs/contract-invariants.md",
+          "line": 51,
+          "anchor": "Hashes identify stored immutable byte payloads"
+        }
+      ],
+      "already_defined": "Domain/audit changes commit together; asset bytes are private and immutable.",
+      "missing_definition": "PostgreSQL and MinIO have no joint transaction specification. Pending uploads, hash verification, object promotion, orphan handling, overwrite/race behavior and crash recovery are unspecified.",
+      "answer_needed": "Define the durable asset states and ordered upload/hash/DB-link operations, visibility guards, cleanup permission and recovery for every crash boundary without a background queue.",
+      "closure_positive": "Only a durable hash-verified immutable object can become visible through a committed valid local record.",
+      "closure_negative": "A partial upload, DB rollback, competing overwrite or crash cannot publish a missing or changed object.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "A database commit and audio upload can fail independently. Without a defined protocol, a published exercise can point to missing or partly written audio, or an orphan object can survive unnoticed.",
+      "active_requirement": "SPEC-004",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-007",
+      "title": "Case lifecycle transition and guard table",
+      "category": "flows",
+      "status": "open_definition",
+      "resolution_owner": "product_choice",
+      "locations": [
+        {
+          "path": "openspec/changes/implement-teacher-error-trainer/design.md",
+          "line": 46,
+          "anchor": "Case lifecycle is draft"
+        },
+        {
+          "path": "contracts/ground-truth.schema.json",
+          "line": 29,
+          "anchor": "\"quarantined\""
+        }
+      ],
+      "already_defined": "Case states, main progression, quarantine, retirement and new-version immutability are defined.",
+      "missing_definition": "No exhaustive transition table binds each state pair to actor, guard, revision, evidence requirements, audit payload and invalid transition result; treatment of in-progress attempts during quarantine is unspecified.",
+      "answer_needed": "Choose how quarantine/retirement affects already-open or evaluating attempts and whether/how a quarantined version can return to review. Engineering should complete every state transition with local operation, revision precondition, source/evidence guards, atomic effects, audit and error. No role-permission matrix is required.",
+      "closure_positive": "Every allowed transition specifies all guards/effects and all other transitions are denied.",
+      "closure_negative": "Stale revisions, incomplete gates or forbidden transitions cannot alter a case.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Lifecycle guards concern case state, source permission and real evidence, not application role assignment.",
+      "why_it_matters": "Naming draft/rendered/needs_review/verified/published/quarantined/retired states does not define every allowed move. The treatment of a currently running attempt when its exercise is quarantined is a product decision.",
+      "active_requirement": "SPEC-007",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-008",
+      "title": "Attempt and evaluation recovery transition table",
+      "category": "flows",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/runtime-v1.md",
+          "line": 28,
+          "anchor": "current revision and token must match"
+        },
+        {
+          "path": "contracts/attempt.schema.json",
+          "line": 92,
+          "anchor": "\"evaluation_failed\""
+        }
+      ],
+      "already_defined": "Original save before providers, explicit user retry, 300-second lease and 270-second deadline are defined.",
+      "missing_definition": "State-specific field invariants, retry eligibility/limits, result lookup during a lease, interrupted evaluation, expired-lease takeover and case/policy changes at retry are not a complete transition contract.",
+      "answer_needed": "Engineering should define every attempt transition, HTTP outcome, valid retry/reuse rule and lease takeover condition while preserving the original answer/case/policy. Specify the behavior of saved attempts after the case is quarantined/retired, consistently with GAP-007; local retries require no account.",
+      "closure_positive": "A permitted retry preserves the original answer/case/policy and can commit only under its current lease/revision.",
+      "closure_negative": "An active/stale lease, altered answer or forbidden state transition cannot create a final result.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "A saved answer must survive cancellation, disconnection and retry without two evaluations overwriting each other. The broad deadline/lease rules exist; the exact state-by-state recovery behavior does not.",
+      "active_requirement": "SPEC-008",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-009",
+      "title": "Dispute and adjudicated result revision records",
+      "category": "flows",
+      "status": "open_definition",
+      "resolution_owner": "product_choice",
+      "locations": [
+        {
+          "path": "docs/verification-v1.md",
+          "line": 72,
+          "anchor": "explicit result revision"
+        },
+        {
+          "path": "openspec/changes/implement-teacher-error-trainer/specs/v6-content-lifecycle/spec.md",
+          "line": 31,
+          "anchor": "Disputed answers"
+        }
+      ],
+      "already_defined": "Local dispute/review activities; plausible off-key claims require review; a confirmed key defect creates a new version and explicit result revision. No adjudicator account or access role is required.",
+      "missing_definition": "There is no closed dispute/adjudication/result-revision schema, complete states, evidence visibility rule, reviewer selection or old-to-new unit mapping. Existing attempts affected by a corrected key have no explicit re-evaluation policy.",
+      "answer_needed": "Choose whether corrections revise only a disputed attempt or also other historical attempts, how revised results are displayed and how users request reconsideration. Engineering should define dispute/adjudication/revision schemas and states, exact old/new unit mapping and recalculation/readback without overwriting history.",
+      "closure_positive": "A valid evidence-backed local resolution appends a traceable new result preserving original answer/result/key references.",
+      "closure_negative": "A reviewer cannot silently overwrite scores, guess unit correspondences or revise unrelated attempts.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Local review/dispute records and immutable result revisions; no adjudicator account or role permissions.",
+      "why_it_matters": "Correcting an exercise key may change an earlier result. The application must distinguish the original result from a reviewed revision and specify which historical attempts may be reconsidered.",
+      "active_requirement": "SPEC-009",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-010",
+      "title": "Independent blind-listening annotation contract",
+      "category": "review",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/verification-v1.md",
+          "line": 56,
+          "anchor": "Each person records observed errors"
+        },
+        {
+          "path": "contracts/ground-truth.schema.json",
+          "line": 1129,
+          "anchor": "\"approved_unit_ids\""
+        }
+      ],
+      "already_defined": "Two qualified people listen before the planned key and record observations/intervals; review records contain phase and decision.",
+      "missing_definition": "The supplied record mostly references planned unit IDs plus free text. It lacks a structured independently discovered observation set, interval/category/control/uncertainty fields, frozen pre-key submission and key-disclosure event.",
+      "answer_needed": "Define the blind annotation schema and phase transition: independently observed units/controls, exact audio intervals, taxonomy uncertainty, original note, submit hash/time, then permitted correspondence with planned units and corrections.",
+      "closure_positive": "A reviewer can save discoveries without seeing planned IDs; pre-key annotations remain immutable after disclosure.",
+      "closure_negative": "Key-dependent labels, changed pre-key notes or post-key records cannot masquerade as independent blind evidence.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "Reviewing planned errors after seeing the key does not establish independent discovery. The data format must preserve what each person actually heard before disclosure, including uncertainty and controls.",
+      "active_requirement": "SPEC-010",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-011",
+      "title": "Reviewer independence and qualification records",
+      "category": "review",
+      "status": "open_definition",
+      "resolution_owner": "product_choice",
+      "locations": [
+        {
+          "path": "docs/verification-v1.md",
+          "line": 58,
+          "anchor": "evidence of phonetics competence"
+        },
+        {
+          "path": "contracts/ground-truth.schema.json",
+          "line": 1110,
+          "anchor": "\"qualification_evidence_id\""
+        }
+      ],
+      "already_defined": "Two genuinely different qualified people are required; acoustic review needs phonetics competence; unresolved disagreement needs a third qualified adjudicator or blocks publication. Names/accounts cannot manufacture independence. Local records do not authenticate external identity.",
+      "missing_definition": "The accepted person/qualification/conflict evidence, verifier responsibility, validity/expiry, author conflicts and adjudicator eligibility/outcome rules remain unspecified. Closed evidence records are also needed.",
+      "answer_needed": "Specify acceptable competence/identity/independence evidence and who attests it locally; decide conflicts and third-adjudicator eligibility, and whether two resolved final approvals must be recorded after adjudication. No reviewer accounts are required.",
+      "closure_positive": "Every counted review links genuine distinct-person, qualification/conflict and exact final-artifact evidence.",
+      "closure_negative": "Duplicate-person aliases, unsupported/expired competence or unresolved disagreement cannot satisfy publication.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Real person/qualification/conflict attestations without authenticated reviewer accounts; genuine independence still requires evidence.",
+      "why_it_matters": "Local names and IDs are not proof that two reviewers are different qualified people. The missing policy defines acceptable evidence and conflict rules without introducing reviewer accounts.",
+      "active_requirement": "SPEC-011",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-012",
+      "title": "Teacher-answer gold annotation data contract",
+      "category": "review",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/corpus-acquisition.md",
+          "line": 149,
+          "anchor": "Human annotators define expected claims"
+        },
+        {
+          "path": "contracts/corpus-record.schema.json",
+          "line": 186,
+          "anchor": "\"raw_annotations_asset_id\""
+        }
+      ],
+      "already_defined": "Real answers and independent labels before model results are required for correct/partial/vague/repeated/contradictory/false/off-key classes.",
+      "missing_definition": "No closed teacher-answer annotation schema defines source spans, fragmentation, stance/category/repair/rationale judgments, expected mappings, uncertainty, rater identity, adjudication or frozen pre-model label sets.",
+      "answer_needed": "Define that gold record and annotation handbook, all required answer classes, how unknown/missing judgments are retained, and how labels bind the exact answer/case/policy/split.",
+      "closure_positive": "Real answer gold preserves raw text and separate pre-adjudication labels with an auditable final mapping.",
+      "closure_negative": "Model-seen labels, fabricated answers or missing substantive clauses cannot qualify as independent gold.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "LLM quality cannot be evaluated against its own answers. Real teacher text needs independently recorded expected interpretations, including partial, contradictory, retracted and off-key claims.",
+      "active_requirement": "SPEC-012",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-013",
+      "title": "Detection-event boundaries and overlapping category resolution",
+      "category": "taxonomy",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/contract-invariants.md",
+          "line": 28,
+          "anchor": "Secondary labels must not create extra detection units"
+        },
+        {
+          "path": "domain/error-taxonomy.v1.yaml",
+          "line": 46,
+          "anchor": "annotation_priority:"
+        }
+      ],
+      "already_defined": "All 122 leaves define inclusion/exclusion; use the narrowest supported category, separate independent repairs and retain secondary labels.",
+      "missing_definition": "No complete event-boundary/overlap handbook resolves equally narrow categories, shared repair spans, repeated occurrences, multi-utterance events or ambiguity across reporting domains.",
+      "answer_needed": "Specify the reviewed unitization procedure and ambiguity outcome for overlapping taxonomy cases; define identity of one event, independent repairs and primary versus secondary labels for each relevant contrast.",
+      "closure_positive": "The same evidence supports one reproducible primary event count with explicit secondary labels or review.",
+      "closure_negative": "Overlapping labels, ambiguous primary domains or repeated labels cannot inflate opportunities.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "One observable problem can fit several categories, and several independent errors can share a span. Without unitization rules, the same audio can produce different opportunity counts and different scores.",
+      "active_requirement": "SPEC-013",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-014",
+      "title": "Frozen English/Russian aliases and taxonomy ancestors",
+      "category": "taxonomy",
+      "status": "open_definition",
+      "resolution_owner": "linguistic_policy",
+      "locations": [
+        {
+          "path": "docs/scoring-v1.md",
+          "line": 68,
+          "anchor": "alias"
+        },
+        {
+          "path": "audit/open-decisions.json",
+          "line": 34,
+          "anchor": "Category alias map"
+        }
+      ],
+      "already_defined": "Explicit categories earn separate credit; unknown synonyms must not be guessed.",
+      "missing_definition": "The approved bilingual alias map is absent. Accepted parent/family nodes, canonical spellings, ambiguous aliases, normalization and version migration are not enumerated.",
+      "answer_needed": "Supply exact English/Russian alias entries with target ID(s), parent-versus-leaf status, ambiguity behavior and normalization/version rules. Retain unresolved unknown wording.",
+      "closure_positive": "Only an approved unambiguous explicit alias receives the declared category/hierarchy credit.",
+      "closure_negative": "Unknown, ambiguous, invented or other-version aliases cannot earn guessed category credit.",
+      "related_decisions": [
+        "DEC-003"
+      ],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "The 122 category IDs are present, but teacher wording can use English/Russian names, synonyms or broader families. Credit needs a fixed reviewed mapping rather than model guesses.",
+      "active_requirement": "SPEC-014",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-015",
+      "title": "Severity assignment and fixed weight binding",
+      "category": "scoring",
+      "status": "open_definition",
+      "resolution_owner": "product_choice",
+      "locations": [
+        {
+          "path": "contracts/ground-truth.schema.json",
+          "line": 717,
+          "anchor": "\"severity\""
+        },
+        {
+          "path": "contracts/ground-truth.schema.json",
+          "line": 727,
+          "anchor": "\"weight\""
+        }
+      ],
+      "already_defined": "Four severity labels, weights 1\u20134 and FP weight one exist; weights are frozen before the answer.",
+      "missing_definition": "No severity rubric binds labels to weight values or explains whether labels and weights may vary independently; communication/context evidence and author/reviewer authority are unspecified.",
+      "answer_needed": "Define the severity rubric and exact severity-to-weight mapping, or explicitly authorize independent reviewed weights with required evidence. Do not change inherited composite weights.",
+      "closure_positive": "Each case weight has an approved reproducible severity policy and pre-attempt record.",
+      "closure_negative": "Post-answer weight changes or inconsistent unsupported severity assignments fail.",
+      "related_decisions": [
+        "DEC-008"
+      ],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "Weighted recall/F1 depends on the weight attached to each error. The allowed weights exist, but the policy that assigns them consistently before an answer is missing.",
+      "active_requirement": "SPEC-015",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-016",
+      "title": "Rated difficulty evidence protocol",
+      "category": "scoring",
+      "status": "open_definition",
+      "resolution_owner": "product_choice",
+      "locations": [
+        {
+          "path": "contracts/ground-truth.schema.json",
+          "line": 744,
+          "anchor": "\"difficulty_evidence_ref\""
+        },
+        {
+          "path": "contracts/case-candidate.schema.json",
+          "line": 416,
+          "anchor": "\"unrated\""
+        }
+      ],
+      "already_defined": "Generated candidates are unrated; reviewed records allow easy/medium/hard/expert with evidence.",
+      "missing_definition": "No rating method, population, sample sufficiency or difficulty-to-evidence rule exists for the non-unrated enum values.",
+      "answer_needed": "Either freeze v1 difficulty to unrated everywhere until a separately specified study, or define the complete rating method and evidence requirements for every enabled rating.",
+      "closure_positive": "A rated value is displayed only under its declared measurement protocol; otherwise it remains unrated.",
+      "closure_negative": "Author intuition or unrelated corpus CEFR cannot become a measured difficulty rating.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "A displayed difficulty label would imply evidence about a defined population. The current enum alone does not justify easy, hard or expert labels; leaving every exercise unrated is an explicit available choice.",
+      "active_requirement": "SPEC-016",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-017",
+      "title": "Variety, register and judgment consistency table",
+      "category": "taxonomy",
+      "status": "open_definition",
+      "resolution_owner": "linguistic_policy",
+      "locations": [
+        {
+          "path": "contracts/ground-truth.schema.json",
+          "line": 64,
+          "anchor": "\"assessment_basis\""
+        },
+        {
+          "path": "contracts/ground-truth.schema.json",
+          "line": 351,
+          "anchor": "\"status_label\""
+        }
+      ],
+      "already_defined": "Public variety/context constraints and separation of error, permitted variant and naturalness are mandatory.",
+      "missing_definition": "Accepted-variety/register strings have no registry or full expected_judgment/status_label/basis/eligibility compatibility table. Authoring conflict validation and public-context sufficiency lack a complete review rubric.",
+      "answer_needed": "Define allowed variety/register/basis values or an explicit reviewed free-text contract, permitted label combinations and required public facts for each context-dependent leaf.",
+      "closure_positive": "Every scored context-dependent event uses a reviewed public constraint and compatible status/eligibility.",
+      "closure_negative": "A hidden dialect constraint, incompatible status or accent preference cannot count as a true error.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "A pronunciation or grammar form may be acceptable in one variety or register and unsuitable in another. Scoring must rely on visible agreed context, not a hidden preference for one accent or style.",
+      "active_requirement": "SPEC-017",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-018",
+      "title": "Claim identity, extraction partition and completeness",
+      "category": "scoring",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/contract-invariants.md",
+          "line": 19,
+          "anchor": "unique stable ID after server assignment"
+        },
+        {
+          "path": "contracts/claim-extraction.schema.json",
+          "line": 233,
+          "anchor": "\"unparsed_spans\""
+        }
+      ],
+      "already_defined": "Exact codepoint spans, server-assigned claim IDs and preservation of unparsed substantive text are required.",
+      "missing_definition": "Stable-ID construction, clause ordering, allowed span overlaps/nesting, attachment containment and checking that all substantive assertions were extracted or marked unparsed are not fully specified.",
+      "answer_needed": "Define the deterministic ID/order algorithm and extraction coverage rules, including repeated/overlapping spans, category-only comments, cross-clause correction attachments and unsupported omissions.",
+      "closure_positive": "The frozen answer deterministically produces stable checked claims and explicit unresolved substantive coverage.",
+      "closure_negative": "Fabricated/overlapping-invalid spans or silently omitted substantive assertions cannot score as complete.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "Claims must quote the exact saved answer and have reproducible identities. Otherwise repeated runs, attached corrections and audit comparison can refer to different assertions or overlook substantive text.",
+      "active_requirement": "SPEC-018",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-019",
+      "title": "Fragment consolidation, duplicate and retraction normalization",
+      "category": "scoring",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/scoring-v1.md",
+          "line": 99,
+          "anchor": "Compatible fragments can form one response"
+        },
+        {
+          "path": "spec-inputs/v6-ste/reference/scorer.py",
+          "line": 94,
+          "anchor": "unresolved duplicate or contradictory unit decisions"
+        }
+      ],
+      "already_defined": "Exact duplicates count once; compatible fragments may combine; explicit retraction uses the final endorsed statement; contradictions require review.",
+      "missing_definition": "The transformation from several clauses to one unit decision is absent. The reference scorer rejects multiple nonduplicate assignments; exact grouping, attachment, retraction chains and provenance are not defined.",
+      "answer_needed": "Specify the normalization record/algorithm for compatible fragments, exact duplicates and scoped retractions, including ordering and transitive references; preserve each original clause and avoid best-of selection.",
+      "closure_positive": "Compatible fragments form one traceable scorer decision and valid duplicates/retractions retain all source evidence.",
+      "closure_negative": "Cycles, conflicting repairs or arbitrary last-write/best-of grouping cannot produce final credit.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "A teacher may split one argument across sentences, repeat it or explicitly withdraw it. A scorer needs a defined normalization step that preserves all clauses and does not select only the favorable fragment.",
+      "active_requirement": "SPEC-019",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-020",
+      "title": "Evaluator and cross-schema conditional truth tables",
+      "category": "scoring",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "contracts/evaluator-output.schema.json",
+          "line": 252,
+          "anchor": "\"reason_code\""
+        },
+        {
+          "path": "docs/contract-invariants.md",
+          "line": 63,
+          "anchor": "correction verdict must agree"
+        }
+      ],
+      "already_defined": "Closed structural schemas and several membership/stance/evidence invariants are supplied.",
+      "missing_definition": "A full permitted tuple table is absent for decision/unit/stance/reason/duplicate and supplied/option/propositions/status/unresolved_reason, and for candidate failure/realization/verification/review states.",
+      "answer_needed": "Specify every conditional required/null/empty/value relation and eligibility rule, with explicit reject versus review outcomes; include all 15 schemas and enum branches.",
+      "closure_positive": "Every accepted cross-field tuple has a declared semantic invariant and derivation.",
+      "closure_negative": "A structurally valid but contradictory tuple is rejected before publication/scoring.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "Valid JSON can still contain an impossible combination of fields. The application needs explicit semantic rules for every conditional combination, including nulls, empty lists and review versus rejection.",
+      "active_requirement": "SPEC-020",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-021",
+      "title": "Approved rationale registry and explanation-null binding",
+      "category": "scoring",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "spec-inputs/v6-ste/reference/validators.py",
+          "line": 39,
+          "anchor": "rationale is not a correction option"
+        },
+        {
+          "path": "contracts/feedback.schema.json",
+          "line": 29,
+          "anchor": "\"approved_rationale_ids\""
+        },
+        {
+          "path": "contracts/ground-truth.schema.json",
+          "line": 907,
+          "anchor": "\"rationale_required_propositions\""
+        }
+      ],
+      "already_defined": "Key units have rationale propositions/text. The reference validator explicitly requires explanation.option_id=null; no explanation-option registry is needed under that rule.",
+      "missing_definition": "Feedback approved_rationale_ids still lacks an explicit identity/entity contract linking the unit rationale to approved text, language and evidence. The explanation-null requirement needs an active cross-field binding rather than inference from schema shape alone.",
+      "answer_needed": "Define the approved-rationale identities (ID, unit/version, language, approved text, evidence) and bind explanation.option_id=null explicitly across active schema invariants/prompts; do not invent explanation options.",
+      "closure_positive": "Each explanation/feedback reference resolves to the exact approved unit/version/language record.",
+      "closure_negative": "A nonexistent, correction-only, wrong-language or other-version rationale ID is rejected.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "The explanation option field is already defined as null; an explanation-option catalog is not missing. What remains is a stable record for the approved rationale that feedback cites and consistent enforcement of that null rule.",
+      "active_requirement": "SPEC-021",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-022",
+      "title": "Semantic decisions to deterministic rubric and scorer input",
+      "category": "scoring",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/scoring-v1.md",
+          "line": 78,
+          "anchor": "required propositions"
+        },
+        {
+          "path": "contracts/scoring-input.schema.json",
+          "line": 145,
+          "anchor": "\"correction_credit\""
+        }
+      ],
+      "already_defined": "q is satisfied required propositions / required propositions; forbidden assertions force zero, approved alternatives earn one, missing supplied work earns zero and novel alternatives require review.",
+      "missing_definition": "No complete binding algorithm selects a reviewed option, validates normalized alternative matches, maps proposition findings/status to exact fractions and converts excluded units/ignore/retractions into scorer records.",
+      "answer_needed": "Define this transformation field-by-field, including multiple alternatives, extra false clauses, ineligible corrections, null options, acceptable controls and exclusions. violated_proposition_ids already means forbidden propositions in data-dictionary.md.",
+      "closure_positive": "Code derives exact fractions and sufficient statistics solely from validated source claims and fixed reviewed options.",
+      "closure_negative": "Model fractions, teacher-unsupplied content or cherry-picked contradictory options cannot enter the scorer.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "The LLM provides bounded semantic findings; code must turn them into the exact rubric and counters. The missing specification is the conversion algorithm, not permission for the model to invent fractions or grades.",
+      "active_requirement": "SPEC-022",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-023",
+      "title": "Mapper/auditor comparison equality contract",
+      "category": "scoring",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/providers-v1.md",
+          "line": 29,
+          "anchor": "Compare claim IDs, stance, target, and proposition sets"
+        },
+        {
+          "path": "prompts/audit-map-v1.txt",
+          "line": 4,
+          "anchor": "schema"
+        }
+      ],
+      "already_defined": "Audit is a separate blind-to-first-output consistency request; relevant disagreement requires review, never favorable retries.",
+      "missing_definition": "The canonical compared projection, set/order treatment, handling of duplicates/evidence/option/status/reasons and definition of score-relevant versus harmless differences are unspecified.",
+      "answer_needed": "Define comparison fields and normalization, with a difference-to-review table and records for both outputs. State how extraction-level stance differences can be compared when mapper outputs do not carry stance.",
+      "closure_positive": "Two semantically equivalent records compare consistently without hiding any score-relevant difference.",
+      "closure_negative": "Different target, option, stance or proposition credit cannot be ignored as harmless formatting.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "A separate audit request can legitimately reorder equivalent records or reveal a substantive disagreement. The application needs an exact comparison rule that distinguishes the two without hiding scoring differences.",
+      "active_requirement": "SPEC-023",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-024",
+      "title": "Exact score transport, composite rational and numeric bounds",
+      "category": "scoring",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/scoring-v1.md",
+          "line": 111,
+          "anchor": "exact reduced rational"
+        },
+        {
+          "path": "contracts/score-result.schema.json",
+          "line": 4681,
+          "anchor": "\"value_0_100\""
+        }
+      ],
+      "already_defined": "Core ratios retain exact numerator/denominator, sufficient statistics and one-decimal half-up displays; the composite formula is explicit.",
+      "missing_definition": "The composite has only a floating value and no exact fraction. Integer caps, safe cross-language representation, decimal serialization and complete display rounding for composite/auxiliary values are unspecified.",
+      "answer_needed": "Define exact composite storage/transport, all numeric ranges and overflow policy, serialization and display rules. Decide bounded JSON integers versus decimal-string arbitrary integers without silently weakening existing schemas.",
+      "closure_positive": "Every score can be reproduced exactly across services from saved statistics and policy.",
+      "closure_negative": "Overflow, binary-float drift or a rounded display reused as an exact value is rejected.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "Exact arithmetic is not preserved automatically when values pass between Python, Go, JSON and the browser. The composite and integer/decimal transport rules must prevent overflow and reuse of rounded values.",
+      "active_requirement": "SPEC-024",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-025",
+      "title": "Auxiliary and provisional result response contracts",
+      "category": "scoring",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "domain/metrics.v1.yaml",
+          "line": 235,
+          "anchor": "auxiliary_metrics:"
+        },
+        {
+          "path": "contracts/score-result.schema.json",
+          "line": 103,
+          "anchor": "\"metrics\""
+        }
+      ],
+      "already_defined": "All 27 core and 15 auxiliary formulas are retained; unresolved decisions withhold final aggregates and unobserved teacher traits are null.",
+      "missing_definition": "The score-result schema enumerates core ratios only. No complete output shape binds auxiliary values/methods/units/missing reasons or provisional item evidence and review issue lists.",
+      "answer_needed": "Define the separate auxiliary/provisional result schema, each N/A/review/insufficient/not-observable reason, and exactly which evidence can be displayed pending adjudication.",
+      "closure_positive": "All 42 named measurements have an explicit output location/status/method, without final aggregates for unresolved decisions.",
+      "closure_negative": "Missing measurements cannot disappear, become zero/perfect, or be displayed as final confirmed misses.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "Preserving 42 formula names does not give all 42 a defined response representation. The interface needs explicit observed, unavailable, inapplicable and provisional fields rather than silently omitting measurements.",
+      "active_requirement": "SPEC-025",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-026",
+      "title": "Grounded bilingual feedback and missed-unit references",
+      "category": "feedback",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "contracts/feedback.schema.json",
+          "line": 24,
+          "anchor": "\"decision_id\""
+        },
+        {
+          "path": "prompts/feedback-v1.txt",
+          "line": 9,
+          "anchor": "rationale"
+        }
+      ],
+      "already_defined": "Feedback may explain validated findings/misses in English or Russian, cite reviewed material and introduce no new errors or grades.",
+      "missing_definition": "Missed units have no extracted teacher decision ID; the supplied feedback shape requires one. Approved bilingual rationale text/IDs and a deterministic check of free-text factual grounding are absent.",
+      "answer_needed": "Define feedback item types for detected/missed/false-positive/pending findings, their exact references and approved bilingual fallback text; define unsupported paraphrase handling and requested versus detected language.",
+      "closure_positive": "Every feedback statement traces to a validated result or approved rationale in the selected language.",
+      "closure_negative": "Invented decision IDs, new repairs/grades or untranslated unsupported fallback content fail.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "A missed error has no corresponding extracted teacher claim. Feedback must have a valid way to reference that gold unit and must use supported English/Russian rationale rather than fabricated claim IDs or facts.",
+      "active_requirement": "SPEC-026",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-027",
+      "title": "Feedback-only failure versus evaluation-failure outcome",
+      "category": "feedback",
+      "status": "open_definition",
+      "resolution_owner": "product_choice",
+      "locations": [
+        {
+          "path": "docs/runtime-v1.md",
+          "line": 40,
+          "anchor": "provider refusal or invalid structure produces HTTP 502"
+        },
+        {
+          "path": "docs/runtime-v1.md",
+          "line": 44,
+          "anchor": "If feedback generation fails"
+        }
+      ],
+      "already_defined": "Metric computation and feedback are distinct; approved stored rationale is allowed if feedback fails.",
+      "missing_definition": "The blanket provider-failure status conflicts with an undefined completed-score-plus-fallback response. Persisted attempt/result state and HTTP status for feedback-only refusal/truncation/schema/timeout are not frozen.",
+      "answer_needed": "Specify the feedback-only failure exception and response/state table, including whether a valid score remains complete, how fallback provenance is represented and which explicit retry repeats only feedback.",
+      "closure_positive": "Feedback failure preserves valid numeric evidence and shows an explicitly labelled approved fallback under the declared response status.",
+      "closure_negative": "A failed semantic stage cannot use this fallback exception to fabricate a completed score.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "The semantic score may already be valid when the final feedback request fails. The specification must decide whether that attempt stays complete with approved fallback text or becomes a failure, and what an explicit retry repeats.",
+      "active_requirement": "SPEC-027",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-028",
+      "title": "Linguistic audit role prompt, schema and decisions",
+      "category": "providers",
+      "status": "open_definition",
+      "resolution_owner": "linguistic_policy",
+      "locations": [
+        {
+          "path": "audit/open-decisions.json",
+          "line": 5,
+          "anchor": "linguistic_audit output contract"
+        },
+        {
+          "path": "domain/providers.v1.yaml",
+          "line": 13,
+          "anchor": "linguistic_audit"
+        }
+      ],
+      "already_defined": "The role is advisory and configurable; a separate draft proposal exists, not an approved active contract.",
+      "missing_definition": "The active manifest has no exact linguistic-audit input/output/prompt version with target/span findings, refusal rules, allowed evidence and integration into candidate review.",
+      "answer_needed": "Resolve DEC-001 using the exact proposed or replacement input, prompt, closed schema and finding-to-candidate rules; record the scoped decision without treating a model as a human reviewer.",
+      "closure_positive": "The selected active linguistic-audit contract is complete and version-bound before the role is enabled.",
+      "closure_negative": "Reused unrelated schemas or invented human approvals cannot activate the role.",
+      "related_decisions": [
+        "DEC-001"
+      ],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "This advisory stage must inspect a candidate under its own exact prompt/input/output contract. The existing five prompts do not supply this additional contract, and a draft proposal is not an active approved definition.",
+      "active_requirement": "SPEC-028",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-029",
+      "title": "Complete role input and configuration binding schemas",
+      "category": "providers",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/llm-configuration.md",
+          "line": 7,
+          "anchor": "versioned role binding"
+        },
+        {
+          "path": "prompts/manifest.yaml",
+          "line": 1,
+          "anchor": "version:"
+        }
+      ],
+      "already_defined": "Versioned configurable providers, supplied default DeepSeek development profile and processing-stage bindings; documented disclosure/hash rules. Processing-stage roles do not represent human access roles.",
+      "missing_definition": "There is no closed schema for each stage input DTO, effective role binding, configuration registry, provider receipt or stage-cache record. Required input fields and maximum sizes are mostly prose.",
+      "answer_needed": "Engineering should specify closed stage input, effective binding/configuration, receipt and cache records: allowed fields/sizes, settings/defaults, hash/version derivation and exact case/answer/stage/profile scope. Normal startup uses supplied defaults and provider keys. Exclude tenant/account authorization fields.",
+      "closure_positive": "Each role receives only its complete permitted input under a frozen validated binding.",
+      "closure_negative": "Blind extraction cannot receive the key; raw identity/consent records, unknown settings or wrong-case/version cached outputs cannot enter a stage.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Processing-stage roles are LLM pipeline bindings, not user access roles; supplied defaults remove manual stage configuration from normal setup.",
+      "why_it_matters": "The selected provider profile is described, but the program needs closed input/configuration/receipt/cache records. These roles are processing stages, not human permissions, and ordinary setup uses supplied defaults.",
+      "active_requirement": "SPEC-029",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-030",
+      "title": "Provider-specific strict-schema projection and response parsing",
+      "category": "providers",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/contract-invariants.md",
+          "line": 82,
+          "anchor": "supported strict-schema subset"
+        },
+        {
+          "path": "domain/providers.configurable.v1.yaml",
+          "line": 21,
+          "anchor": "response_contract:"
+        }
+      ],
+      "already_defined": "Trusted prompt/input separation, documented DeepSeek Responses/low-reasoning binding and completed-visible-output rules are described in docs/llm-configuration.md. Every full application constraint must remain enforced; documented fields do not prove live conformance.",
+      "missing_definition": "A complete per-provider/per-schema keyword disposition and wire payload/response/error mapping is absent. Exact output block assembly, refusal/incomplete handling and interaction with local semantic validation need a complete specification.",
+      "answer_needed": "Define the OpenAI and DeepSeek transport adapters as specifications: instruction/input separation, reasoning effort, format payload, output-text selection, incomplete/refusal handling and every schema keyword disposition. Research notes resolve documented fields, not live support.",
+      "closure_positive": "The adapter preserves every application constraint and accepts only a completed structurally and semantically valid stage payload.",
+      "closure_negative": "Developer-as-user instructions, reasoning text, dropped constraints or JSON repair cannot become accepted stage output.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "A provider response can be syntactically valid while incomplete, refused or incompatible with the full schema. Adapter definitions must preserve constraints and select visible completed output separately from reasoning.",
+      "active_requirement": "SPEC-030",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-031",
+      "title": "Retry, deadline and input/output capacity protocol",
+      "category": "providers",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/runtime-v1.md",
+          "line": 32,
+          "anchor": "Allow at most one transport retry"
+        },
+        {
+          "path": "domain/providers.configurable.v1.yaml",
+          "line": 18,
+          "anchor": "max_output_tokens:"
+        }
+      ],
+      "already_defined": "Stage/global deadlines, no semantic retries, explicit recovery and candidate generation/render attempt caps are present.",
+      "missing_definition": "Retry count scope (request versus stage), retryable status/error list, backoff within reserve, generation-attempt versus transport-attempt accounting, disconnect cancellation and prompt/token overflow are not complete contracts.",
+      "answer_needed": "Define retryable failures and counter scope, actual deadline propagation, generation budgets, input/output token estimation and deterministic oversize behavior without truncating claims or key content.",
+      "closure_positive": "Every retry is counted and fits the remaining budget; oversized work returns the declared safe outcome with saved source input.",
+      "closure_negative": "429/5xx loops, reasoning-token exhaustion, silent truncation or late commits cannot bypass limits.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "One retry rule cannot be interpreted separately by each layer. Deadlines, retry counters and token limits must have a single meaning so provider failures cannot cause loops, truncated evidence or late writes.",
+      "active_requirement": "SPEC-031",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-032",
+      "title": "Typed render operator and hard-capability catalog",
+      "category": "audio",
+      "status": "open_definition",
+      "resolution_owner": "product_choice",
+      "locations": [
+        {
+          "path": "contracts/render-plan.schema.json",
+          "line": 91,
+          "anchor": "\"rate_percent\""
+        },
+        {
+          "path": "contracts/blueprint.schema.json",
+          "line": 193,
+          "anchor": "\"hard_render_constraints\""
+        }
+      ],
+      "already_defined": "Four typed render operations and five capability names exist; arbitrary XML and remote audio are forbidden.",
+      "missing_definition": "Per-operator required/null fields, rate/pitch/pause ranges, locale/voice/capability compatibility and hard-constraint precedence/conflict rules are not closed. DEC-004 still uses unrestricted strings.",
+      "answer_needed": "Define the capability catalog and each operator payload/range, legal combinations and conflict results. State exactly which parameters constitute pace, accent, stress and prosody constraints.",
+      "closure_positive": "A complete typed plan is validated against a fixed profile/capability catalog before synthesis.",
+      "closure_negative": "Unknown hard constraints, irrelevant payload fields and incompatible voice/locale/target combinations fail.",
+      "related_decisions": [
+        "DEC-004"
+      ],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "Typed operations text/phoneme/pause/prosody are present, but types alone do not define valid parameter combinations or guaranteed capabilities. Unsupported accent/stress/pace constraints must fail explicitly.",
+      "active_requirement": "SPEC-032",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-033",
+      "title": "SSML compilation and final-audio assembly specification",
+      "category": "audio",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/providers-v1.md",
+          "line": 42,
+          "anchor": "Compile SSML from the typed render operations"
+        },
+        {
+          "path": "docs/providers-v1.md",
+          "line": 48,
+          "anchor": "Keep the turn offsets"
+        }
+      ],
+      "already_defined": "Azure REST, escaped typed SSML and a 24-kHz mono PCM16 master are prescribed; final bytes require review.",
+      "missing_definition": "The compiler grammar, per-turn call ordering, punctuation/prosody scope, concatenation/gaps, resampling, delivery codec, timestamp frame rounding and transformation manifest are not fully defined.",
+      "answer_needed": "Specify the exact SSML lowering and audio pipeline, including ordered turn-to-utterance mapping, sample/clock conversion, trimming/mixing/normalization policy and immutable final hash boundaries.",
+      "closure_positive": "The final delivered asset and every turn/unit interval are reproducibly linked to exact plan and transformations.",
+      "closure_negative": "A reordered turn, changed encoded file, unsupported phoneme or altered intentional target cannot inherit prior review.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "Review applies to the actual delivered audio bytes. The compilation and conversion steps must preserve turn order, intentional errors and exact time intervals so a different encoded asset cannot inherit approval.",
+      "active_requirement": "SPEC-033",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-034",
+      "title": "Audio quality measurement method and boundary rules",
+      "category": "audio",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/verification-v1.md",
+          "line": 26,
+          "anchor": "Integrated loudness"
+        },
+        {
+          "path": "docs/verification-v1.md",
+          "line": 31,
+          "anchor": "20-millisecond RMS windows"
+        }
+      ],
+      "already_defined": "Peak .9999, -18\u00b12 LUFS, \u2264-1 dBTP, silence thresholds and finite/mono/duration checks are specified.",
+      "missing_definition": "Loudness/true-peak algorithm/version, decoding/sample normalization, RMS hop/window-edge treatment, near-silence grouping and planned-pause overlap classification are absent.",
+      "answer_needed": "Define method versions and formulas/options for loudness/true peak/RMS, exact inclusive thresholds and interval rounding, all-silent/too-short/NaN treatment and how planned versus unplanned silence is decided.",
+      "closure_positive": "Every QC value has its final-byte subject, method, unit and reproducible boundary classification.",
+      "closure_negative": "A method-less value, padding-dependent silence or upstream-file measurement cannot approve final delivery.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "A threshold without a measurement method is ambiguous. Different loudness, true-peak or silence algorithms can disagree on the same waveform, particularly at window boundaries and planned pauses.",
+      "active_requirement": "SPEC-034",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-035",
+      "title": "Speech tokenizer, reviewed intervals and disfluency event rules",
+      "category": "audio",
+      "status": "open_definition",
+      "resolution_owner": "linguistic_policy",
+      "locations": [
+        {
+          "path": "domain/metrics.v1.yaml",
+          "line": 253,
+          "anchor": "spoken_token_count"
+        },
+        {
+          "path": "audit/open-decisions.json",
+          "line": 62,
+          "anchor": "Speech tokenization and pause measurement"
+        }
+      ],
+      "already_defined": "Elapsed speech includes internal pauses; articulation uses reviewed speech intervals; disfluency counts only reviewed events.",
+      "missing_definition": "Exact contraction/number/filler/repetition tokenization, interval union rules, active speech/pauses and countable disfluency event identities are absent.",
+      "answer_needed": "Resolve DEC-005 with the full tokenizer and interval/event protocol, including punctuation, partial words, overlaps, zero-duration and intended pause treatment.",
+      "closure_positive": "Every rate/density numerator and denominator can be recomputed from a fixed reviewed annotation/method.",
+      "closure_negative": "Different tokenizers, overlapping intervals or ordinary permitted fillers cannot produce comparable error metrics.",
+      "related_decisions": [
+        "DEC-005"
+      ],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "Speech rate, articulation rate and disfluency density depend on exactly what counts as a token, speech interval and event. Different treatment of contractions, fillers or repetitions would change the metrics.",
+      "active_requirement": "SPEC-035",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-036",
+      "title": "Prosody feature/unit/method and valid missingness table",
+      "category": "audio",
+      "status": "open_definition",
+      "resolution_owner": "linguistic_policy",
+      "locations": [
+        {
+          "path": "contracts/ground-truth.schema.json",
+          "line": 563,
+          "anchor": "\"f0_range_semitones\""
+        },
+        {
+          "path": "audit/open-decisions.json",
+          "line": 76,
+          "anchor": "Prosody feature methods and units"
+        }
+      ],
+      "already_defined": "Eleven named prosody features distinguish requested bounds, observation and evidence; unsupported numeric methods remain unavailable.",
+      "missing_definition": "There is no complete feature-to-unit/method table, F0 reference/log conversion, slope/range extraction, voiced-frame selection, syllable/phrase boundaries or label vocabularies.",
+      "answer_needed": "Resolve DEC-006 for every enabled feature: method/version, valid units, bounds, interval/voicing policy, evidence type and human-only/unknown outcome.",
+      "closure_positive": "Every observed feature has a valid method/unit/subject combination and separates intended from measured values.",
+      "closure_negative": "Invalid feature units, unvoiced F0 or provider naturalness scores cannot masquerade as measured target evidence.",
+      "related_decisions": [
+        "DEC-006"
+      ],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "Requested prosody is not observed prosody. Each enabled feature needs a valid unit, extraction/annotation method and missingness rule before its numeric value can support a judgment.",
+      "active_requirement": "SPEC-036",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-037",
+      "title": "ASR and pronunciation advisory normalization",
+      "category": "audio",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/providers-v1.md",
+          "line": 65,
+          "anchor": "chunks of no more than 25 seconds"
+        },
+        {
+          "path": "domain/providers.v1.yaml",
+          "line": 89,
+          "anchor": "pronunciation_assessment_header:"
+        }
+      ],
+      "already_defined": "Whisper raw hypothesis precedes alignment; Azure advisory chunks use 16-kHz mono PCM, max25s; prosody en-US only.",
+      "missing_definition": "Chunk boundaries/reference slices, overlap/stitching, tick/second-to-ms conversion, missing/NoMatch handling and typed provider-field normalization are incomplete.",
+      "answer_needed": "Define each raw response field retained, status/range/unit mapping and chunk-to-final-audio interval conversion; distinguish transport streaming from prohibited live product interaction.",
+      "closure_positive": "Each advisory observation retains its raw response and exact final-audio/chunk/version mapping.",
+      "closure_negative": "Missing fields, reference-conditioned scores or wrong offset units cannot create observed IPA or automatic gold.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "ASR and pronunciation-assessment outputs are advisory. Their timestamps, chunks and scale/status conversions must map to the final audio and must not be interpreted as observed phonemes or automatic gold.",
+      "active_requirement": "SPEC-037",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-038",
+      "title": "Full synthetic target capability and canary specification",
+      "category": "audio",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "domain/error-taxonomy.v1.yaml",
+          "line": 35,
+          "anchor": "render_route:"
+        },
+        {
+          "path": "audit/open-decisions.json",
+          "line": 90,
+          "anchor": "Requested accent and full acoustic generation"
+        }
+      ],
+      "already_defined": "Every taxonomy target remains in scope; three render attempts then blocking; no active human-recording/provider fallback.",
+      "missing_definition": "Per-leaf/voice/locale target requests, observable realization criteria and canary change-detection protocol are incomplete. Taxonomy recording-route alternatives are not active profiles.",
+      "answer_needed": "Define target capability records for all 122 leaves/controls and acoustic feature combinations, exact observable success/failure and required review. Real DEC-007 calls are evidence work, not missing definitions.",
+      "closure_positive": "Each target has a complete requested-versus-observed qualification contract, even if evidence later fails.",
+      "closure_negative": "An unproven/failed target cannot be dropped, replaced or marked observed from SSML settings.",
+      "related_decisions": [
+        "DEC-007"
+      ],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "Synthesis controls do not prove the intended error was realized. Every target needs a defined observable qualification criterion and drift check, even when real synthesis later fails that criterion.",
+      "active_requirement": "SPEC-038",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-039",
+      "title": "Full source manifest, legal scope and transformation contracts",
+      "category": "corpora",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/corpus-acquisition.md",
+          "line": 52,
+          "anchor": "manifest.json"
+        },
+        {
+          "path": "contracts/corpus-record.schema.json",
+          "line": 215,
+          "anchor": "\"transform_ids\""
+        }
+      ],
+      "already_defined": "Eight profiles, immutable raw records, private quarantine, full-release obligations and per-use rights are required.",
+      "missing_definition": "No closed release manifest/permissions/import report/transformation schema defines required components/count units, parser identities, checksums, rejection reconciliation and normalized grouping/label relations.",
+      "answer_needed": "Define those records for each profile, including release/source format, all files/partitions, observed counts and rights uses/expiry. Unknown acquisition hashes remain null pending evidence, not invented constants.",
+      "closure_positive": "All acquired components/counts and rejected rows reconcile to an exact manifest with each transformation and allowed use.",
+      "closure_negative": "Samples, omitted components, mixed releases or unapproved transfer cannot satisfy a full-source claim.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "A source name or expected webpage count cannot establish full ingestion. Complete manifests must reconcile each supplied file, partition, label, accepted/rejected record and transformation with permitted uses.",
+      "active_requirement": "SPEC-039",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-040",
+      "title": "Complete SpeechOcean762 parser and source scale profile",
+      "category": "corpora",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "domain/corpus-sources.v1.yaml",
+          "line": 24,
+          "anchor": "train/test/{text,utt2spk,wav.scp}"
+        },
+        {
+          "path": "docs/corpus-acquisition.md",
+          "line": 72,
+          "anchor": "mixed or unknown completeness scale"
+        }
+      ],
+      "already_defined": "Full selected train/test components, speaker grouping/age/gender metadata, aggregate/detail scores and all five raters are already required in the current full-source inventory. Low scores do not identify substituted phones.",
+      "missing_definition": "The exact selected-release parser/output schemas, field/scale/marker semantics, aggregate-versus-rater reconciliation, uncertainty handling and approved ARPAbet/IPA conversion rules remain incomplete. Metadata presence is no longer an omitted planning requirement.",
+      "answer_needed": "Supply the exact selected release format and conversion tables; retain all metadata and scores-detail versus aggregate fields independently, define unknown/inserted phone markers and quarantine mixed scales.",
+      "closure_positive": "All selected-release fields and raters are retained with declared source scales and original marker uncertainty.",
+      "closure_negative": "Dropped child/speaker metadata, inferred phones, mixed scales or guessed IPA mapping fails full faithful import.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "The inventory already includes speaker/age/gender metadata. What remains is a faithful parser/scale/conversion contract for every component and all raters, rather than a reduced subset or inferred phone labels.",
+      "active_requirement": "SPEC-040",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-041",
+      "title": "Complete L2-ARCTIC v5 read and suitcase parser profile",
+      "category": "corpora",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "domain/corpus-sources.v1.yaml",
+          "line": 39,
+          "anchor": "original TextGrid tiers"
+        },
+        {
+          "path": "docs/corpus-acquisition.md",
+          "line": 91,
+          "anchor": "Unknown tiers or phone markers"
+        }
+      ],
+      "already_defined": "Full24-speaker read release and22-speaker suitcase extension remain required in the inventory; automatic/manual tiers stay distinct.",
+      "missing_definition": "No complete v5 directory/tier/marker grammar, CPL/PPL/s/a/d/err/* conversion profile, 44.1-kHz clock mapping or approved phone/taxonomy mapping is supplied.",
+      "answer_needed": "Specify the full v5 parser for README/LICENSE/PROMPTS and wav/transcript/textgrid/annotation plus suitcase; preserve all source labels before approved conversion and define unknown-tier quarantine.",
+      "closure_positive": "Every component and manual/automatic label is retained with exact source-clock and annotation provenance.",
+      "closure_negative": "Automatic alignments, err/* uncertainty or unsupported phone conversions cannot become manual narrow-category gold.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "The full v5 scope includes read speech and the suitcase extension. Automatic alignments, manual labels and uncertain markers must remain distinguishable when mapped into the project.",
+      "active_requirement": "SPEC-041",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-042",
+      "title": "Complete W&I+LOCNESS and FCE v2.1 M2 parser profiles",
+      "category": "corpora",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/corpus-acquisition.md",
+          "line": 110,
+          "anchor": "source-category mapping file"
+        },
+        {
+          "path": "audit/full-source-inventory.json",
+          "line": 97,
+          "anchor": "WILOCNESS-2.1"
+        }
+      ],
+      "already_defined": "Half-open source token spans, one-annotator edits, alternatives/noop and CEFR granularity are required; separate releases/licences retained.",
+      "missing_definition": "Approved ERRANT-to-project leaf mappings are absent; per-release partition metadata/group IDs, detection-only labels, historical fields, edit-order ties and full parser output schema are incomplete.",
+      "answer_needed": "Define both exact v2.1 profiles and mappings including noop, UNK/Um, insertions/overlaps/multiple alternatives and source token-to-codepoint correspondence. Specify handling of unavailable test labels; pin evaluation-tool version separately.",
+      "closure_positive": "All supplied components/annotators/edits/native controls and original group metadata are faithfully retained.",
+      "closure_negative": "Combined annotators, invented learner IDs/test labels or guessed narrow leaf mapping fails import.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "Written edit corpora have annotator-specific alternatives, insertions and token offsets. Mapping them into the listening taxonomy requires declared conversion rules and preservation of all original annotation identities.",
+      "active_requirement": "SPEC-042",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-043",
+      "title": "EFCAMDAT full release and derivative ingest scope",
+      "category": "corpora",
+      "status": "open_definition",
+      "resolution_owner": "source_owner_input",
+      "locations": [
+        {
+          "path": "domain/corpus-sources.v1.yaml",
+          "line": 81,
+          "anchor": "No accepted ingest format"
+        },
+        {
+          "path": "audit/full-source-inventory.json",
+          "line": 164,
+          "anchor": "full second release (XML)"
+        }
+      ],
+      "already_defined": "Full second-release XML is identified; first release and cleaned/error-coded derivatives are distinct; baseline is discovery-only.",
+      "missing_definition": "The current full-source request and discovery-only baseline are not a completed ingest contract. Full XML schema, labels/offsets, prompt/task/learner grouping, selected derivative scope and permitted intended use are unspecified.",
+      "answer_needed": "Confirm second release only or also separately versioned Shatz2020/Oksuz2025 derivatives. Supply the applicable release schema/documentation and intended research/product/transfer use under an actual agreement. Access evidence remains separate.",
+      "closure_positive": "Every selected EFCAMDAT release has its own complete component/parser/use contract.",
+      "closure_negative": "Discovery metadata, cleaned subsets, inaccessible labels or academic access alone cannot satisfy full product ingest.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "The full second release and cleaned derivatives are different source artifacts. A complete contract must identify which are included, their formats/grouping/annotations and the actual permitted intended uses.",
+      "active_requirement": "SPEC-043",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-044",
+      "title": "Doubao underlying study-record release contract",
+      "category": "corpora",
+      "status": "open_definition",
+      "resolution_owner": "source_owner_input",
+      "locations": [
+        {
+          "path": "domain/corpus-sources.v1.yaml",
+          "line": 93,
+          "anchor": "Not supplied"
+        },
+        {
+          "path": "docs/corpus-acquisition.md",
+          "line": 162,
+          "anchor": "Doubao study records"
+        }
+      ],
+      "already_defined": "The study is a research reference; no supplied downloadable participant-record corpus or rights exists.",
+      "missing_definition": "There is no identified full release, schema, annotation inventory, participant grouping or permission contract for the reported study records.",
+      "answer_needed": "Provide an actual author-authorized release identifier/documentation, all recording/annotation components and allowed uses, or explicitly keep this source research-only with an unresolved all-corpora-acquired obligation. Do not invent545 assets.",
+      "closure_positive": "A real full release contract or an explicit scoped research-only disposition is recorded without hiding missing data.",
+      "closure_negative": "Paper sample counts or questionnaire percentages cannot stand in for an acquired labelled corpus.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "The attachments cite a study without supplying a full participant-data release contract. A paper count cannot be turned into downloadable recordings or a right to use those recordings.",
+      "active_requirement": "SPEC-044",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-045",
+      "title": "Moodrick and NIR vendor-data scope and contracts",
+      "category": "corpora",
+      "status": "open_definition",
+      "resolution_owner": "source_owner_input",
+      "locations": [
+        {
+          "path": "domain/corpus-sources.v1.yaml",
+          "line": 99,
+          "anchor": "MOODRICK-NIR-DATA"
+        },
+        {
+          "path": "domain/corpus-sources.v1.yaml",
+          "line": 105,
+          "anchor": "No public annotated corpus"
+        }
+      ],
+      "already_defined": "Both vendors are comparison sources; private answer banks/prompts/rubrics have no supplied data licence.",
+      "missing_definition": "No full annotated release or exact comparison-only versus corpus-ingest definition exists for both vendors under the latest full-source requirement.",
+      "answer_needed": "For each vendor separately, provide an authorized full-release data contract/rights or explicitly select public comparison-only scope. An all-sources-acquired claim remains blocked where no release exists.",
+      "closure_positive": "Both vendor sources have exact documented scope and no fictional assets or inferred providers.",
+      "closure_negative": "Product descriptions, demo percentages or another vendor product disclosure cannot qualify as this corpus.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "Moodrick and NIR are two separate vendor sources in one profile. Each needs its own data-release/use contract or explicit comparison-only disposition; public product descriptions cannot provide private answer banks.",
+      "active_requirement": "SPEC-045",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-046",
+      "title": "Leakage grouping, split allocation and duplicate protocol",
+      "category": "corpora",
+      "status": "open_definition",
+      "resolution_owner": "product_choice",
+      "locations": [
+        {
+          "path": "docs/corpus-acquisition.md",
+          "line": 38,
+          "anchor": "Keep connected groups in one split"
+        },
+        {
+          "path": "docs/corpus-acquisition.md",
+          "line": 37,
+          "anchor": "script family"
+        }
+      ],
+      "already_defined": "Development/calibration/holdout preserve related speaker/learner/script/derivative groups; upstream benchmark splits are retained.",
+      "missing_definition": "Canonical group identities, connection/duplicate equivalence, split allocation ratios/seed, upstream-versus-project split distinction and infeasible connected components are not specified.",
+      "answer_needed": "Define grouping/normalization/duplicate rules and assignment algorithm. Resolve cases where shared CMU prompts connect many L2 speakers into one component; do not weaken the speaker/script disjointness to manufacture holdout.",
+      "closure_positive": "Frozen group manifests prove every intended independence boundary and report infeasible splits explicitly.",
+      "closure_negative": "Connected derivatives/speakers/scripts cannot cross splits or be accepted through a changed leakage definition.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "Related speakers, scripts and derivative records can leak answers from development into evaluation. Split rules must specify connected groups and honestly handle a group too large to divide independently.",
+      "active_requirement": "SPEC-046",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-047",
+      "title": "Gold stimulus, asset and negative-control counting",
+      "category": "corpora",
+      "status": "open_definition",
+      "resolution_owner": "linguistic_policy",
+      "locations": [
+        {
+          "path": "docs/corpus-acquisition.md",
+          "line": 120,
+          "anchor": "three independent contrast pairs per leaf"
+        },
+        {
+          "path": "domain/validation-policy.yaml",
+          "line": 7,
+          "anchor": "minimum_total_stimuli:"
+        }
+      ],
+      "already_defined": "122 leaves, six candidate stimuli per leaf/732 total and one contrast pair per split are preserved policy candidates.",
+      "missing_definition": "Counting unit for multi-target files, acceptable-variant counterparts, approved observations versus assets and independent pair families remains unresolved.",
+      "answer_needed": "Resolve DEC-002 with separate asset/stimulus/observation/pair/control counts and exact per-leaf/per-split counting, including permitted-variant leaves; do not alter the inherited floor implicitly.",
+      "closure_positive": "Each leaf/control satisfies its approved counting rule with exact record IDs and independent final-audio reviews.",
+      "closure_negative": "Multi-label files, duplicated stimuli or treating a permitted variant as an error cannot inflate coverage.",
+      "related_decisions": [
+        "DEC-002"
+      ],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "One multi-target recording can support several observations but is not several independent recordings. The counting policy must distinguish assets, stimuli, target observations, contrast pairs and acceptable controls.",
+      "active_requirement": "SPEC-047",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-048",
+      "title": "Agreement and semantic evaluation denominator protocols",
+      "category": "formulas",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "domain/metrics.v1.yaml",
+          "line": 238,
+          "anchor": "agreements/N"
+        },
+        {
+          "path": "domain/metrics.v1.yaml",
+          "line": 275,
+          "anchor": "eligible_gold_decisions"
+        }
+      ],
+      "already_defined": "Raw agreement/kappa and semantic coverage/exact mapping equations exist; pre-adjudication labels and abstentions must be retained.",
+      "missing_definition": "The annotation unit/label inventory, alignment and missing-rater handling, exact resolved/eligible/gold-decision definitions and class/stratum weighting are not specified enough to calculate comparable values.",
+      "answer_needed": "Define eligible events and label matching for each auxiliary evaluation metric, including ignored/meta/duplicates/retractions/key defects/abstentions and Cohen-kappa pairs. Preserve kappa undefined at N=0 or Pe=1.",
+      "closure_positive": "Every numerator/denominator is traceable to the same frozen independently labelled population.",
+      "closure_negative": "Adjudicated unanimity, dropped abstentions or changed eligibility cannot improve apparent agreement.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "Agreement, coverage and precision depend on who and what is counted. Removing abstentions or using post-adjudication unanimity would falsely improve the reported performance.",
+      "active_requirement": "SPEC-048",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-049",
+      "title": "Elapsed attempt start and validated playback event contracts",
+      "category": "formulas",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "domain/metrics.v1.yaml",
+          "line": 280,
+          "anchor": "submitted_at-started_at"
+        },
+        {
+          "path": "contracts/attempt.schema.json",
+          "line": 102,
+          "anchor": "\"submitted_at\""
+        }
+      ],
+      "already_defined": "Elapsed time and accepted playback-event count are descriptive metrics. Original answer submission time is present; neither the baseline nor active local attempt schema contains started_at. Client events do not prove listening.",
+      "missing_definition": "started_at is absent from attempt.schema; its trigger/clock/restart behavior is undefined. No playback-event schema/validation/deduplication or event transport contract exists.",
+      "answer_needed": "Define started_at creation and server-authoritative time semantics, plus event identity/type/audio/attempt/time validation, replay counting rules and duplicate/out-of-order handling.",
+      "closure_positive": "Elapsed time and replay count recompute from declared saved timestamps and accepted event IDs.",
+      "closure_negative": "Client-forged duration, duplicate plays or missing start cannot become an ability score.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "The elapsed-time formula refers to a start timestamp not present in the active attempt schema. Playback also needs a saved deduplicated event definition; neither metric proves listening or teaching ability.",
+      "active_requirement": "SPEC-049",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-050",
+      "title": "Complete heldout acceptance protocol and critical cases",
+      "category": "validation",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "domain/validation-policy.yaml",
+          "line": 25,
+          "anchor": "all critical counterexamples correct"
+        },
+        {
+          "path": "domain/validation-policy.yaml",
+          "line": 29,
+          "anchor": "3 runs of identical"
+        }
+      ],
+      "already_defined": "Mapping/coverage/correction/repeat gates have numeric limits and minimum denominators; every domain and fixed configuration requires evidence.",
+      "missing_definition": "Exact gold-mapping precision equality, correction-attempt eligibility, critical-counterexample inventory, domain assignment, three-run agreement estimator and configuration/prompt freeze protocol are incomplete.",
+      "answer_needed": "Engineering should define every acceptance population, correctness relation, domain/abstention handling and critical case inventory, then specify pairwise versus unanimous comparison for three repeated runs and exact configuration freeze. Preserve separate mapping-decision and correction-attempt sample floors. Reconcile the inherited VAL-ISOLATION cross-role wording with local teacher/blind-review projection checks; user accounts/access-role attack tests are outside the chosen scope.",
+      "closure_positive": "Each gate calculates the frozen defined statistic with adequate actual strata and untouched holdout evidence.",
+      "closure_negative": "Tiny/subset domains, omitted critical failures or threshold tuning on exposed holdout cannot pass.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Retain the full source finding and positive/negative closure criteria; local simplicity supplies no missing linguistic, source or scoring definition.",
+      "why_it_matters": "The numeric acceptance thresholds already exist as policy candidates. The missing definitions specify their exact event populations, correctness comparisons, critical cases and repeatability estimator before measurement.",
+      "active_requirement": "SPEC-050",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-051",
+      "title": "Retention, deletion and permission revocation lifecycle",
+      "category": "data",
+      "status": "open_definition",
+      "resolution_owner": "product_choice",
+      "locations": [
+        {
+          "path": "docs/corpus-acquisition.md",
+          "line": 140,
+          "anchor": "Collect real teacher answers"
+        },
+        {
+          "path": "contracts/approval-record.schema.json",
+          "line": 68,
+          "anchor": "\"expires_at\""
+        }
+      ],
+      "already_defined": "Raw answers/evidence are immutable, private, consent-bound and tied to approved use; owner approvals can expire or be revoked.",
+      "missing_definition": "No exact retention periods or deletion/revocation contract reconciles immutable history, personal/source data, provider responses, backups and affected future use.",
+      "answer_needed": "Choose retention periods and deletion/revocation behavior for local source/personal data, answers, provider records, historical results and backups. Define what can remain as a tombstone/hash/audit reference, future-use restrictions and disclosure/consent text/version. Engineering should specify local actions and storage effects; no tenant/account offboarding is required.",
+      "closure_positive": "Each retained or deleted artifact has a defined permitted lifecycle and future transfer/publication guard.",
+      "closure_negative": "Expired/revoked permission or a delete request cannot silently retain active use or destroy audit references inconsistently.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Define simple local retention/deletion/revocation actions and operator duties; no tenant/account offboarding.",
+      "why_it_matters": "Immutable audit history must be reconciled with personal/source-data deletion and permission withdrawal. Local storage does not remove the need to define future-use restrictions and what happens to backups.",
+      "active_requirement": "SPEC-051",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-052",
+      "title": "Request quotas, concurrency, costs and import resource bounds",
+      "category": "operations",
+      "status": "open_definition",
+      "resolution_owner": "product_choice",
+      "locations": [
+        {
+          "path": "openspec/changes/implement-teacher-error-trainer/specs/v6-platform-foundation/spec.md",
+          "line": 19,
+          "anchor": "platform MUST limit requests"
+        },
+        {
+          "path": "docs/corpus-acquisition.md",
+          "line": 24,
+          "anchor": "unbounded decompression"
+        }
+      ],
+      "already_defined": "Bounded local work/imports and recorded provider usage; stored approved audio remains playable when cloud generation is disabled or its budget is exhausted. No per-user/tenant quota, billing or reservation service is required.",
+      "missing_definition": "Local defaults/units for spend, concurrency and request/file/archive/member/expanded-byte limits, provider-failure/retry usage accounting, admission errors and limit configuration remain unspecified.",
+      "answer_needed": "Choose local cost/concurrency/import safety defaults or authorize engineering defaults with explicit configuration bounds. Define treatment of failed/cancelled/retried calls and playback exemption; do not introduce per-user/tenant quotas or billing.",
+      "closure_positive": "Declared local limits deterministically bound concurrent operations/imports and usage accounting.",
+      "closure_negative": "Concurrent calls, retry double-counting or archive expansion cannot bypass limits or prevent unrelated stored playback.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Define local operation concurrency, bounded resources and provider usage; no per-user/tenant quotas or billing.",
+      "why_it_matters": "A simple local app still needs bounded provider spend, concurrent work and archive expansion. This is local resource policy, not tenant billing, per-user quotas or a reservation platform.",
+      "active_requirement": "SPEC-052",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-053",
+      "title": "Backup/restore consistency and compatibility protocol",
+      "category": "operations",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/runtime-v1.md",
+          "line": 78,
+          "anchor": "backup procedure must include frozen answers"
+        },
+        {
+          "path": "openspec/changes/implement-teacher-error-trainer/design.md",
+          "line": 35,
+          "anchor": "stored checksums"
+        }
+      ],
+      "already_defined": "Named volumes, checksummed migrations and non-destructive local recovery; the launcher supplies backup/restore as a local tool, not a management service.",
+      "missing_definition": "Full domain DB/media snapshot boundary, manifest schema, restore validation/order/rollback, schema/profile compatibility and historical private evidence coverage are not completely specified.",
+      "answer_needed": "Engineering should define the complete DB/media/evidence backup manifest and consistent snapshot boundary, ordered backup/restore/hash validation, schema/profile compatibility, conflict/rollback procedure and included/excluded data. Preserve server secrets separately and describe recovery without manual infrastructure administration.",
+      "closure_positive": "A validated compatible backup restores every declared domain/media reference and historical answer/result.",
+      "closure_negative": "Missing assets, tampered manifests, incompatible migrations or an existing conflicting target cannot produce a healthy partial restore.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Define consistent launcher backup/restore and hash/compatibility checks; no management service.",
+      "why_it_matters": "A backup is useful only if database rows, audio and immutable historical evidence form one consistent restorable snapshot. The full manifest, compatibility and partial-failure procedure must be defined.",
+      "active_requirement": "SPEC-053",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-054",
+      "title": "Complete deployment/configuration and release manifest schema",
+      "category": "operations",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/runtime-v1.md",
+          "line": 82,
+          "anchor": "publisher must supply built images"
+        },
+        {
+          "path": "domain/providers.configurable.v1.yaml",
+          "line": 2,
+          "anchor": "specification_only_not_live_qualified"
+        }
+      ],
+      "already_defined": "Docker prerequisite; supplied launcher and key-only setup; automatic persistent internal secrets and migrations; bundled prescribed services, loopback web port, server-only keys and amd64/arm64 support. These are chosen product requirements, not already implemented startup.",
+      "missing_definition": "The exact launcher/bootstrap and recovery procedure, internal secret generation/storage/reuse/rotation, all setting types/defaults/validation/ownership/overrides and release compatibility/provenance manifest still need engineering definitions. No user account/role or manual DB/storage setup is required.",
+      "answer_needed": "Engineering should specify the launcher/first-run/restart/failure path; every provider and internal setting with defaults, destination and validation; generated secret persistence and safe rotation; complete image/dependency/config/migration/prompt/policy manifest and architecture qualification. Users supply only operation-specific provider keys.",
+      "closure_positive": "An operator supplies only declared local secrets/settings; all nonsecret release identities and compatibility are frozen.",
+      "closure_negative": "Unknown settings, unresolved image references, leaked env or unqualified architecture cannot be accepted as a release.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Define supplied launcher, generated persistent internal secrets and key-only configuration; no manual infrastructure setup.",
+      "why_it_matters": "The one-command/key-only user experience is already chosen. The missing engineering detail is how the supplied bundle, automatic internal secrets, configuration validation and versioned release artifacts deliver it.",
+      "active_requirement": "SPEC-054",
+      "locations_are_historical": true
+    },
+    {
+      "id": "GAP-055",
+      "title": "Specification authority, version compatibility and drift closure",
+      "category": "governance",
+      "status": "open_definition",
+      "resolution_owner": "engineering_definition",
+      "locations": [
+        {
+          "path": "docs/authority.md",
+          "line": 3,
+          "anchor": "user"
+        },
+        {
+          "path": "openspec/changes/implement-teacher-error-trainer/design.md",
+          "line": 44,
+          "anchor": "only active original-text adjustment"
+        }
+      ],
+      "already_defined": "Actual user requests outrank imported instructions; original bytes remain preserved; docs/simple-local-product.md and active deltas explicitly supersede account/tenant/access-role requirements, and attempt 1.1.0 is the active local overlay.",
+      "missing_definition": "A complete domain-by-domain authority/overlay/version map and compatibility/migration/cache invalidation table is missing. Each remaining source/overlay/implementation divergence needs explicit disposition, including legacy isolation/authorization language.",
+      "answer_needed": "Engineering should identify the authoritative artifact and exact overlay order for every domain, accepted version combinations and migration/cache rules; resolve each tracked divergence while retaining historical source/test proof. No account/role requirement should be revived by an imported artifact.",
+      "closure_positive": "Every active requirement resolves to one consistent definition and every known gap has exact closure evidence.",
+      "closure_negative": "Duplicate contradictory definitions, stale missing-file claims or structural counts cannot establish semantic completeness.",
+      "related_decisions": [],
+      "approval_ref": null,
+      "current_scope": "Explicit local overlay supersedes old auth/tenant semantics; exact data migration and version compatibility remain open.",
+      "why_it_matters": "The current user authority and local overlay are explicit. The remaining work is a complete artifact-by-artifact compatibility map and drift disposition, so preserved historical sources do not reintroduce obsolete behavior.",
+      "active_requirement": "SPEC-055",
+      "locations_are_historical": true
+    }
+  ]
+}
