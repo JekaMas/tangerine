@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "scope": "Historical inspected arm64 foundation image IDs; source changed afterward as recorded below. Full release remains incomplete.",
+  "base_images": [
+    {
+      "reference": "golang:1.26.5-bookworm",
+      "digest": "sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd"
+    },
+    {
+      "reference": "node:22.22.0-bookworm-slim",
+      "digest": "sha256:dd9d21971ec4395903fa6143c2b9267d048ae01ca6d3ea96f16cb30df6187d94"
+    },
+    {
+      "reference": "python:3.14.7-slim-bookworm",
+      "digest": "sha256:82bc3c539b8813ada9d68c63b40158fa002f7f33de9bf3312a3dfdc0620dff56"
+    },
+    {
+      "reference": "debian:bookworm-slim",
+      "digest": "sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587"
+    },
+    {
+      "reference": "postgres:17-bookworm",
+      "digest": "sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826"
+    }
+  ],
+  "registry_manifest_evidence": "Official registry index manifests inspected with actual amd64/arm64 entries; architecture availability is not execution proof.",
+  "built_images": [
+    {
+      "reference": "tangerine-api:0.1.0",
+      "local_image_id": "sha256:a79d3dfc87d2d96bd67758347fee80918e02da8a61d29c943b82a88e0126ec1e",
+      "os": "linux",
+      "architecture": "arm64",
+      "repo_digests": [],
+      "created": "2026-10-08T16:37:05.894013888Z",
+      "proof": "actual local image inspected; no invented registry digest"
+    },
+    {
+      "reference": "tangerine-web:0.1.0",
+      "local_image_id": "sha256:361597fd849ad45a6bdb6997a76ea5bcb2ac8e3ebf4972cd91c898ae6069a0f0",
+      "os": "linux",
+      "architecture": "arm64",
+      "repo_digests": [],
+      "created": "2026-10-08T16:36:47.132720837Z",
+      "proof": "actual local image inspected; no invented registry digest"
+    },
+    {
+      "reference": "tangerine-speech:0.1.0",
+      "local_image_id": "sha256:687bd715620ebae066e21b92a7f9e174fd6ae001175867383d21f339219ee7a3",
+      "os": "linux",
+      "architecture": "arm64",
+      "repo_digests": [],
+      "created": "2026-10-08T16:38:21.573243381Z",
+      "proof": "actual local image inspected; no invented registry digest"
+    },
+    {
+      "reference": "tangerine-minio:7aac2a2c5b7c",
+      "local_image_id": "sha256:26783e44f4b07eb50e3c3c2d84e9f213879108c0cccd3ecd9ec72f4a506e0ec9",
+      "os": "linux",
+      "architecture": "arm64",
+      "repo_digests": [],
+      "created": "2026-10-08T16:38:08.369483083Z",
+      "proof": "actual local image inspected; no invented registry digest"
+    },
+    {
+      "reference": "postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826",
+      "local_image_id": "sha256:bb96c2f03a0b490277250ef12f9fd17e43244db37811cca90711e135bd98ece2",
+      "os": "linux",
+      "architecture": "arm64",
+      "repo_digests": [
+        "postgres@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826"
+      ],
+      "created": "2026-10-06T01:35:55.623745483Z",
+      "proof": "actual local image inspected; no invented registry digest"
+    }
+  ],
+  "speech_binaries": {
+    "ffmpeg": {
+      "version": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers",
+      "sha256": "249e6abb898538aeae5165a6cee0748b73f4791afb02e088d19bc5321dfe2a4e"
+    },
+    "ffprobe": {
+      "version": "ffprobe version 5.1.9-0+deb12u1 Copyright (c) 2007-2026 the FFmpeg developers",
+      "sha256": "5f47ad172b221b4e5bfaacfd9dd0aab092d02d83dd990a331ad8d62ac47817f1"
+    }
+  },
+  "minio_source": {
+    "commit": "7aac2a2c5b7c882e68c1ce017d8256be2feea27f",
+    "archive_sha256": "71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6"
+  },
+  "not_run": [
+    "complete trainer provider/content acceptance",
+    "amd64 actual foundation run"
+  ],
+  "source_reconciliation": {
+    "speech": "Exact-ratio owner changed after the initial inspected image. New speech build succeeded; recreation and current image readback pending Docker control-plane recovery.",
+    "minio": "Go probe formatting changed source bytes after initial builds; affected source/build reconciliation pending.",
+    "amd64": "Initial emulated builds passed; runtime not_run and changed speech/probe sources need rebuild before source conformance acceptance."
+  }
+}

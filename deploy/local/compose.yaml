@@ -1,0 +1,131 @@
+name: tangerine
+
+x-api-environment: &api-environment
+  DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in the local env file}
+  MINIO_ENDPOINT: minio:9000
+  MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:?Set MINIO_ROOT_USER}
+  MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD}
+  MINIO_BUCKET: tangerine-audio
+  APP_ORIGIN: http://localhost:3000
+  SPEECH_URL: http://speech:8090
+
+x-api-image: &api-image
+  image: tangerine-api:0.1.0
+  build:
+    context: ../..
+    dockerfile: services/api/Dockerfile
+
+services:
+  postgres:
+    image: postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826
+    environment:
+      POSTGRES_DB: tangerine
+      POSTGRES_USER: tangerine
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U tangerine -d tangerine']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    networks: [private]
+
+  minio:
+    image: tangerine-minio:7aac2a2c5b7c
+    build:
+      context: ../..
+      dockerfile: deploy/local/minio.Dockerfile
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:?Set MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD}
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: [CMD, /usr/local/bin/probe, 'http://127.0.0.1:9000/minio/health/ready']
+      interval: 5s
+      timeout: 6s
+      retries: 12
+    networks: [private]
+
+  migrate:
+    <<: *api-image
+    command: [migrate]
+    environment: *api-environment
+    depends_on:
+      postgres: {condition: service_healthy}
+    networks: [private]
+
+  media-init:
+    <<: *api-image
+    command: [media-init]
+    environment: *api-environment
+    depends_on:
+      minio: {condition: service_healthy}
+    networks: [private]
+
+  initialize:
+    <<: *api-image
+    command: [initialize]
+    environment:
+      <<: *api-environment
+      INITIAL_EMAIL: ${INITIAL_EMAIL:?Set INITIAL_EMAIL}
+      INITIAL_PASSWORD: ${INITIAL_PASSWORD:?Set INITIAL_PASSWORD}
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+    networks: [private]
+
+  speech:
+    image: tangerine-speech:0.1.0
+    build:
+      context: ../..
+      dockerfile: services/speech/Dockerfile
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      AZURE_SPEECH_KEY: ${AZURE_SPEECH_KEY:-}
+      AZURE_SPEECH_REGION: ${AZURE_SPEECH_REGION:-}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8090/health/ready',timeout=6)"]
+      interval: 5s
+      timeout: 7s
+      retries: 12
+    networks: [private, egress]
+
+  api:
+    <<: *api-image
+    environment: *api-environment
+    depends_on:
+      initialize: {condition: service_completed_successfully}
+      media-init: {condition: service_completed_successfully}
+      speech: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, /usr/local/bin/tangerine, healthcheck]
+      interval: 5s
+      timeout: 7s
+      retries: 12
+    networks: [private, egress]
+
+  web:
+    image: tangerine-web:0.1.0
+    build:
+      context: ../..
+      dockerfile: services/web/Dockerfile
+    environment:
+      API_INTERNAL_URL: http://api:8080
+      APP_ORIGIN: http://localhost:3000
+    depends_on:
+      api: {condition: service_healthy}
+    ports: ['127.0.0.1:3000:3000']
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:3000/health/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 8s
+      retries: 12
+    networks: [private, egress]
+
+networks:
+  private: {internal: true}
+  egress: {}
+volumes:
+  postgres-data: {}
+  minio-data: {}

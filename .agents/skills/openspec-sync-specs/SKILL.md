@@ -1,0 +1,40 @@
+---
+name: openspec-sync-specs
+description: Synchronize approved delta specifications.
+metadata:
+  owner: agent-workflow
+---
+
+# OpenSpec sync
+
+Rendered from the pinned shared integration; edit canonical source, not this copy.
+Read applicable project instructions and `.agents/workflow-project.json`.
+Use `.agents/workflow/docs/operations.md` for relevant operation loading and
+`docs/development/OPENSPEC_WORKFLOW.md` for project commands. Keep user authority and task scope.
+
+Inspect each delta and corresponding main spec. Apply authorized additions/modifications/removals while preserving unrelated requirements and full modified requirement context. Validate the affected specs and inspect the diff. Do not change product acceptance or implement unrelated behavior.
+
+Resolve `openspec status --change <name> --json` first. Use returned
+`planningHome.root` for main specs and `artifactPaths.specs.existingOutputPaths`
+for delta files; preserve selected-root flags and any caller-selected exact
+subset. Report an invalid selected path and stop before writes; do not silently discard
+it. An empty set performs no writes.
+Before writing, retrieve one current `openspec instructions specs --change <name>
+--json` response, or reuse a valid snapshot supplied by archive. Failed/invalid
+lookup blocks writes; omitted rules in a valid response means no configured rules.
+Apply content rules without changing root, scope or selection. Handle ADDED,
+MODIFIED, REMOVED and RENAMED requirements explicitly. Store-backed writes need
+authority for the returned root. Retain full modified requirement/scenario content
+and preserve unrelated requirements. There is no `instructions sync` operation.
+
+After merging, resolve retained links from the main-spec location. Keep
+change-specific execution notes in change evidence rather than copying dangling
+relative links or premature completion claims into durable requirements.
+
+For each newly introduced capability, supply a meaningful `## Purpose` before
+synchronization; native archive can otherwise insert a placeholder that fails
+strict main-spec validation. After sync/archive, run
+`openspec validate <capability> --type spec --strict --json --no-interactive`
+for every affected main spec, preserving the selected store/root. Inspect its
+requirements, links and scenarios. A successful archive command alone is not
+valid synchronization; repair any resulting spec defect and revalidate.

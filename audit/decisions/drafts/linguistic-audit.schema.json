@@ -1,0 +1,83 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "case_id": {
+      "type": "string"
+    },
+    "revision": {
+      "type": "string"
+    },
+    "input_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "findings",
+        "abstain"
+      ]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "context_conflict",
+              "planned_error_drift",
+              "unsupported_target",
+              "ambiguous_variant"
+            ]
+          },
+          "start_codepoint": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "end_codepoint": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "quoted_surface": {
+            "type": "string"
+          },
+          "taxonomy_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "rationale": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "start_codepoint",
+          "end_codepoint",
+          "quoted_surface",
+          "taxonomy_id",
+          "rationale"
+        ]
+      }
+    },
+    "abstention_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "case_id",
+    "revision",
+    "input_sha256",
+    "status",
+    "findings",
+    "abstention_reason"
+  ]
+}

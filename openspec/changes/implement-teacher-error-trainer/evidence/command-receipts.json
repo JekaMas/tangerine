@@ -1,0 +1,211 @@
+{
+  "commands": [
+    {
+      "id": "arithmetic-original",
+      "command": "python3 -B -m unittest discover -s tests -v",
+      "cwd": ".",
+      "exit_code": 0,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence-python-tests.log",
+      "artifact_sha256": "75eace51cb0b288f781f53693e177a6c1b6d0fb4c4cc05c8b162ff6c697e21a4",
+      "receipt_origin": "actual functions.exec/exec_command or write_stdin completion observed in this task",
+      "claim_boundary": "only the named observed local check; not linguistic or full release evidence"
+    },
+    {
+      "id": "arithmetic-after-fix",
+      "command": "python3 -B -m unittest discover -s tests -p test_metrics.py -v",
+      "cwd": ".",
+      "exit_code": 0,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence/arithmetic-after-exact-type-guard.log",
+      "artifact_sha256": "c41a68a679afb6a58dd6667e098c111bca7c0383a2e537a5522c0f34c8cf9e43",
+      "receipt_origin": "actual functions.exec/exec_command or write_stdin completion observed in this task",
+      "claim_boundary": "only the named observed local check; not linguistic or full release evidence"
+    },
+    {
+      "id": "ratio-before",
+      "command": "python3 -B -m unittest discover -s tests -p test_ratio_boundary.py -v",
+      "cwd": ".",
+      "exit_code": 1,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence/ratio-boundary-before.log",
+      "artifact_sha256": "aa7380ae0b625a6265a86664bd8ce8be5600619612ae8a5c0032ea713813268f",
+      "receipt_origin": "actual functions.exec/exec_command or write_stdin completion observed in this task",
+      "claim_boundary": "only the named observed local check; not linguistic or full release evidence"
+    },
+    {
+      "id": "ratio-after",
+      "command": "python3 -B -m unittest discover -s tests -p test_ratio_boundary.py -v",
+      "cwd": ".",
+      "exit_code": 0,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence/ratio-boundary-after.log",
+      "artifact_sha256": "5b2b2c5841da787088651e844587221441c996acfe97db883309c71668c3181c",
+      "receipt_origin": "actual functions.exec/exec_command or write_stdin completion observed in this task",
+      "claim_boundary": "only the named observed local check; not linguistic or full release evidence"
+    },
+    {
+      "id": "go-security",
+      "command": "GOWORK=off go test -json -count=1 ./...",
+      "cwd": "services/api",
+      "exit_code": 0,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence-go-tests.jsonl",
+      "artifact_sha256": "1cb3647d7f99dfa28f301fb497c0ef4fb90da58b81859cebc68a0ae45a3bb382",
+      "receipt_origin": "actual functions.exec/exec_command or write_stdin completion observed in this task",
+      "claim_boundary": "only the named observed local check; not linguistic or full release evidence"
+    },
+    {
+      "id": "go-vet",
+      "command": "GOWORK=off go vet ./...",
+      "cwd": "services/api",
+      "exit_code": 0,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence-go-vet.log",
+      "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt_origin": "actual functions.exec/exec_command or write_stdin completion observed in this task",
+      "claim_boundary": "only the named observed local check; not linguistic or full release evidence"
+    },
+    {
+      "id": "web-build",
+      "command": "NEXT_TELEMETRY_DISABLED=1 npm run build",
+      "cwd": "services/web",
+      "exit_code": 0,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence-web-build.log",
+      "artifact_sha256": "44acf336b7fa6f2c56c3f47af4bf9ece42576419fc65465f7e7f8dbdc02fd0ba",
+      "receipt_origin": "actual functions.exec/exec_command or write_stdin completion observed in this task",
+      "claim_boundary": "only the named observed local check; not linguistic or full release evidence"
+    },
+    {
+      "id": "compose-start",
+      "command": "docker compose --env-file deploy/local/.env -f deploy/local/compose.yaml up --build --wait --wait-timeout 180",
+      "cwd": ".",
+      "exit_code": 0,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence-compose-start.log",
+      "artifact_sha256": "ee11720368ac1931dafc1d21083cd6b13aed4f53298736d7a2b4f7473d63fc79",
+      "receipt_origin": "actual functions.exec/exec_command or write_stdin completion observed in this task",
+      "claim_boundary": "only the named observed local check; not linguistic or full release evidence"
+    },
+    {
+      "id": "runtime",
+      "command": "TANGERINE_RUN_LIVE=1 python3 -B -m unittest discover -s tests -p test_runtime.py -v",
+      "cwd": ".",
+      "exit_code": 0,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence-runtime-tests.log",
+      "artifact_sha256": "7f28811ffa10a4250ad669c66d460d30b862bdb918ebc016a1c51103a8d0b3a4",
+      "receipt_origin": "actual functions.exec/exec_command or write_stdin completion observed in this task",
+      "claim_boundary": "only the named observed local check; not linguistic or full release evidence"
+    },
+    {
+      "id": "backup",
+      "command": "TANGERINE_BACKUP_UNDER_TEST=data/backups/foundation-20261008 python3 -B -m unittest discover -s tests -p test_backup.py -v",
+      "cwd": ".",
+      "exit_code": 0,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence-backup-tests.log",
+      "artifact_sha256": "08f8ec47454fb141b1601c8bbd78b0cebbe995ba85ebce8acd2f4f479939d847",
+      "receipt_origin": "actual functions.exec/exec_command or write_stdin completion observed in this task",
+      "claim_boundary": "only the named observed local check; not linguistic or full release evidence"
+    },
+    {
+      "id": "readiness-failure",
+      "command": "TANGERINE_ALLOW_DEPENDENCY_STOP=1 python3 -B -m unittest discover -s tests -p test_readiness_failure.py -v",
+      "cwd": ".",
+      "exit_code": 0,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence-readiness-failure.log",
+      "artifact_sha256": "da3b477425040bf5ee367bace50064ba78fa192040b7c925d158b90c29af4efa",
+      "receipt_origin": "actual functions.exec/exec_command or write_stdin completion observed in this task",
+      "claim_boundary": "only the named observed local check; not linguistic or full release evidence"
+    },
+    {
+      "id": "storage-original",
+      "command": "TANGERINE_RUN_STORAGE=1 python3 -B -m unittest discover -s tests -p test_storage_runtime.py -v",
+      "cwd": ".",
+      "exit_code": 0,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence/storage-runtime-tests.log",
+      "artifact_sha256": "ab05182023718c2df0df0fe8716e43b513b4526e70e325e800882a5863f6576a",
+      "receipt_origin": "actual functions.exec/exec_command or write_stdin completion observed in this task",
+      "claim_boundary": "only the named observed local check; not linguistic or full release evidence"
+    },
+    {
+      "id": "storage-secret-safe",
+      "command": "TANGERINE_RUN_STORAGE=1 PYTHONPATH=tests python3 -B -m unittest test_storage_runtime.StorageRuntimeTests.test_initialization_idempotent_positive test_storage_runtime.StorageRuntimeTests.test_restart_persists_session_and_state_positive -v",
+      "cwd": ".",
+      "exit_code": 1,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence/storage-secret-safe-assertions.log",
+      "artifact_sha256": "09f4f02797f40168a92c6578df86815c0694eb0d5b5d770acdccb4216ff4c320",
+      "receipt_origin": "actual functions.exec/exec_command or write_stdin completion observed in this task",
+      "claim_boundary": "only the named observed local check; not linguistic or full release evidence"
+    },
+    {
+      "id": "arm64-architecture",
+      "command": "TANGERINE_CHECK_ARCH=arm64 TANGERINE_CHECK_PROJECT=tangerine python3 -B -m unittest discover -s tests -p test_architecture.py -v",
+      "cwd": ".",
+      "exit_code": 1,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence/arm64-architecture-tests.log",
+      "artifact_sha256": "2273cd53153daffdbd72e169b634a588f3557070a0ab769989c042aff31794fa",
+      "receipt_origin": "actual functions.exec/exec_command or write_stdin completion observed in this task",
+      "claim_boundary": "only the named observed local check; not linguistic or full release evidence"
+    },
+    {
+      "id": "amd64-build",
+      "command": "docker compose --env-file deploy/local/.env -f deploy/local/compose.yaml -f deploy/local/compose.amd64.yaml --project-name tangerine-amd64 build",
+      "cwd": ".",
+      "exit_code": 0,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence/amd64-build.log",
+      "artifact_sha256": "581fc946cc0584764bcc6477f8435a716eb38e8ec83c7dde4032d5b8ecee07cd",
+      "receipt_origin": "actual functions.exec/exec_command or write_stdin completion observed in this task",
+      "claim_boundary": "only the named observed local check; not linguistic or full release evidence"
+    },
+    {
+      "id": "shared-workflow",
+      "command": "make -C .agents/workflow check",
+      "cwd": ".",
+      "exit_code": 0,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence/workflow-check.log",
+      "artifact_sha256": "3b107f16f1f14953c28093fbb46be930161f01ef7501cc06fe12842e3ad51208",
+      "receipt_origin": "actual functions.exec/exec_command or write_stdin completion observed in this task",
+      "claim_boundary": "only the named observed local check; not linguistic or full release evidence"
+    },
+    {
+      "id": "storage-config",
+      "command": "GOWORK=off go test -json -count=1 -run '^TestStorageConfiguration' ./internal/app",
+      "cwd": "services/api",
+      "exit_code": 0,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence/storage-config-tests.jsonl",
+      "artifact_sha256": "0377a566f63be0d140448c1aefb8faee3663596139478eaadbef7839e4c683bf",
+      "receipt_origin": "Actual exec_command/write_stdin completion observed in this task; two named Go test pass events verified.",
+      "claim_boundary": "Storage/bootstrap configuration admission only; no network connection success inferred."
+    },
+    {
+      "id": "go-vet-added-config-tests",
+      "command": "GOWORK=off go vet ./internal/app",
+      "cwd": "services/api",
+      "exit_code": 0,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence/go-vet-added-config-tests.log",
+      "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt_origin": "Actual exec_command/write_stdin completion observed in this task",
+      "claim_boundary": "Named static/structural check only; no full trainer acceptance."
+    },
+    {
+      "id": "graph-after-discovery-repair",
+      "command": "python3 -B .agents/workflow/scripts/evidence_graph_check.py --root . --change implement-teacher-error-trainer validate",
+      "cwd": ".",
+      "exit_code": 0,
+      "artifact": "openspec/changes/implement-teacher-error-trainer/evidence/graph-validation-after-discovery-repair.jsonl",
+      "artifact_sha256": "e565b7691f2efdd333deb55348b6b63540c00f9c65d632688b25c3268e247f6b",
+      "receipt_origin": "Actual exec_command/write_stdin completion observed in this task",
+      "claim_boundary": "Named static/structural check only; no full trainer acceptance."
+    },
+    {
+      "id": "final-openspec-guidance",
+      "command": "OPENSPEC_TELEMETRY=0 DO_NOT_TRACK=1 OPENSPEC_NO_UPDATE_CHECK=1 python3 -B .agents/workflow/scripts/local_verify.py openspec --cwd . --change implement-teacher-error-trainer --scope openspec --require-project-guidance --output-dir audit/local-verification",
+      "cwd": ".",
+      "exit_code": 0,
+      "artifact": "audit/local-verification-command.log",
+      "artifact_sha256": "772f76cc3427e7383f2344bf747687269a8fc84f7155ab40331c2c5f946e712e",
+      "receipt_origin": "Actual exec_command/write_stdin completion observed in this task",
+      "claim_boundary": "Named static/structural check only; no full trainer acceptance."
+    }
+  ],
+  "unperformed": [
+    "all real provider calls",
+    "qualified human audio reviews",
+    "full author/reviewer/teacher loop",
+    "complete corpus and holdout evaluation",
+    "amd64 startup/run"
+  ]
+}

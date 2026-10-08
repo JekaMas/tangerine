@@ -1,0 +1,301 @@
+version: 1.0.0
+units: Each ratio has a value from 0 to 1. Store its exact numerator and denominator. Show percent with
+  half-up rounding to one decimal.
+zero_denominator: A zero denominator produces null and not_applicable. State no_opportunities or no_assertions.
+  Do not replace null with zero or one.
+unresolved: An unresolved claim or contradictory group requires review. Do not publish final ratios or
+  a composite. Label supported partial evidence as provisional.
+metrics:
+- id: detection.precision
+  name: Detection precision
+  formula: TP/(TP+FP)
+  description: This ratio measures supported error assertions among all distinct error assertions.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: detection.recall
+  name: Detection recall
+  formula: TP/G
+  description: This ratio measures the true detection units that the teacher found.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: detection.f1
+  name: Detection F1
+  formula: 2*TP/(2*TP+FP+FN)
+  description: This ratio combines detection precision and recall. If true opportunities exist and the
+    teacher finds none, its value is zero.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: detection.miss_rate
+  name: Miss rate
+  formula: FN/G
+  description: This ratio measures true units that the teacher missed.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: detection.false_discovery_rate
+  name: False discovery rate
+  formula: FP/(TP+FP)
+  description: This ratio measures unsupported error assertions among all distinct error assertions.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: classification.coverage
+  name: Explicit category coverage
+  formula: LC/TP
+  description: This ratio measures detected units with a category that the teacher explicitly supplied.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: classification.family_accuracy
+  name: Reporting-domain accuracy
+  formula: LF/LC
+  description: This ratio measures correct primary domains among explicitly categorized detections.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: classification.exact_accuracy
+  name: Exact category accuracy
+  formula: LE/LC
+  description: This ratio measures exact permitted taxonomy IDs among explicitly categorized detections.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: classification.hierarchical_accuracy
+  name: Hierarchical category accuracy
+  formula: H/LC
+  description: This ratio measures tree-based category credit among explicitly categorized detections.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: classification.hierarchical_recall
+  name: Overall hierarchical classification credit
+  formula: H/G
+  description: This ratio measures category credit across all true units. Missing detections and missing
+    categories contribute zero.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: correction.attempt_rate
+  name: Correction attempt rate
+  formula: CA/TC
+  description: This ratio measures proposed corrections among detected units that permit correction.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: correction.strict_accuracy
+  name: Strict correction accuracy
+  formula: CK/CA
+  description: This ratio measures fully correct corrections among proposed corrections of true detections.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: correction.graded_accuracy
+  name: Graded correction accuracy
+  formula: CQ/CA
+  description: This ratio measures proposition-based correction credit among proposed corrections. The
+    model cannot choose an arbitrary partial score.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: correction.strict_recall
+  name: Strict correction recall
+  formula: CK/GC
+  description: This ratio measures fully corrected units among all true units that permit correction.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: correction.graded_recall
+  name: Graded correction recall
+  formula: CQ/GC
+  description: This ratio measures correction credit across all true correction opportunities. Missed
+    units contribute zero.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: correction.assertion_precision
+  name: Correction assertion precision
+  formula: CK/(CA+FC)
+  description: This ratio measures fully correct repairs among repairs of true detections and unnecessary
+    repairs.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: explanation.coverage
+  name: Explanation coverage
+  formula: EA/TE
+  description: This ratio measures proposed explanations among detected units that permit explanation.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: explanation.strict_accuracy
+  name: Strict explanation accuracy
+  formula: EK/EA
+  description: This ratio measures fully correct explanations among proposed explanations of true detections.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: explanation.graded_accuracy
+  name: Graded explanation accuracy
+  formula: EQ/EA
+  description: This ratio measures proposition-based explanation credit among proposed explanations.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: explanation.graded_recall
+  name: Overall explanation credit
+  formula: EQ/GE
+  description: This ratio measures explanation credit across all true explanation opportunities. Missed
+    units contribute zero.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: decoy.overcorrection_rate
+  name: Designated-decoy overcorrection
+  formula: DF/D
+  description: This ratio measures designated permitted units that the teacher wrongly marks as errors.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: decoy.unflagged_rate
+  name: Designated-decoy unflagged rate
+  formula: (D-DF)/D
+  description: This ratio measures designated permitted units that the teacher does not mark as errors.
+    Silence does not prove conscious recognition.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: decoy.explicit_acceptability_accuracy
+  name: Explicit decoy judgment accuracy
+  formula: DA/(DA+DF)
+  description: This ratio measures correct explicit judgments among explicitly judged negative controls.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: acceptability.explicit_accuracy
+  name: Explicit binary acceptability accuracy
+  formula: SA/SN
+  description: This ratio measures correct explicit judgments among mapped units. Unsupported off-key
+    assertions remain false positives outside this denominator.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: weighted.precision
+  name: Severity-weighted precision
+  formula: WTP/(WTP+WFP)
+  description: This ratio applies fixed severity weights to true detections. Each false positive has penalty
+    one.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: weighted.recall
+  name: Severity-weighted recall
+  formula: WTP/(WTP+WFN)
+  description: This ratio applies the case weights to detected and missed opportunities. The case fixes
+    these weights before answer entry.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+- id: weighted.f1
+  name: Severity-weighted F1
+  formula: 2*WTP/(2*WTP+WFP+WFN)
+  description: This ratio combines weighted precision and recall. It does not replace the unweighted metrics.
+  inputs: See the symbol table in docs/scoring-v1.md.
+  zero_rule: Apply the registry zero_denominator rule.
+  aggregation: Pool raw decisions and calculate the ratio again. Do not average percentages.
+  authority: reference/scorer.py
+auxiliary_metrics:
+- id: annotation.agreement
+  name: Raw inter-rater agreement
+  formula: agreements/N
+  description: Compare the same nominal labels before adjudication. If no labeled units exist, the result
+    is null.
+- id: annotation.cohen_kappa
+  name: Cohen kappa
+  formula: (Po-Pe)/(1-Pe); Pe=sum_label(p_rater1(label)*p_rater2(label))
+  description: Use two independent raters before adjudication. Report the label counts and marginal proportions.
+    If N is zero or Pe equals one, return null.
+- id: verification.wer
+  name: Unconstrained transcript word error rate
+  formula: (substitutions+deletions+insertions)/reference_word_count
+  description: Compare the approved surface transcript with raw ASR text through unit-cost Levenshtein
+    distance. WER does not establish pronunciation.
+- id: audio.speech_rate_wpm
+  name: Speech rate WPM
+  formula: 60*spoken_token_count/elapsed_speech_span_seconds
+  description: Measure the interval from the first spoken token to the last spoken token. Include internal
+    pauses.
+- id: audio.articulation_rate_wpm
+  name: Articulation rate WPM
+  formula: 60*spoken_token_count/active_speech_seconds
+  description: Use reviewed speech intervals only. Record the VAD method separately. This measure is not
+    elapsed speech rate.
+- id: audio.pause_ratio
+  name: Internal pause ratio
+  formula: internal_silent_seconds/elapsed_speech_span_seconds
+  description: Use the declared silence detector and its version. Identify intended pauses separately.
+- id: audio.disfluency_density
+  name: Disfluencies per 100 words
+  formula: 100*reviewed_disfluency_events/spoken_token_count
+  description: Count only reviewed events. An ordinary filler is not automatically an error.
+- id: evaluation.coverage
+  name: Semantic decision coverage
+  formula: resolved_decisions/eligible_decisions
+  description: Report this ratio beside mapping precision. Abstention must not hide low coverage.
+- id: evaluation.exact_mapping_agreement
+  name: Mapping agreement with adjudicated gold
+  formula: identical_claim_to_unit_decisions/eligible_gold_decisions
+  description: Compare exact claim-to-unit decisions with adjudicated gold. Count wrong mappings and abstentions
+    as disagreement.
+- id: telemetry.elapsed_seconds
+  name: Elapsed attempt wall time
+  formula: submitted_at-started_at
+  description: Measure elapsed wall time only. Idle time does not measure teaching ability.
+- id: telemetry.replay_count
+  name: Audio play-event count
+  formula: count(validated_play_events)
+  description: Count accepted playback events only. Client events do not prove that the teacher listened.
+- id: teacher.talk_time
+  name: Teacher talk time
+  formula: null
+  description: This mode does not observe teacher speech duration. The value is null.
+- id: teacher.pronunciation
+  name: Teacher spoken pronunciation
+  formula: null
+  description: This mode does not observe teacher pronunciation. The value is null.
+- id: teacher.classroom_management
+  name: Classroom management
+  formula: null
+  description: This mode does not observe classroom management. The value is null.
+- id: teacher.engagement
+  name: Real student engagement
+  formula: null
+  description: This mode does not observe engagement of real students. The value is null.
