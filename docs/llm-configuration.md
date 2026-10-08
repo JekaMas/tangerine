@@ -1,3 +1,9 @@
+# Current configurable LLM draft
+
+The current exact contract namespace is specification/v2/contracts/llm-profile.schema.json, configuration.schema.json, effective-binding.schema.json and specification/v2/docs/provider-contracts.md. DeepSeek flash/low is the selected testing default; supported explicit profiles and per-stage bindings remain configurable, without silent fallback. All six candidate prompts including linguistic audit are supplied; GAP-028/DEC-001 linguistic-policy acceptance remains pending. Original provider/prompt registries and the older development overlay below are preserved historical inputs; they are not a second active decoder. The existing Codex secret reference has not been changed or copied, and no call has occurred. Missing speech keys affect only dependent operations. See the current gap reconciliation for field ownership, budgets and wire/runtime evidence limits.
+
+## Historical configuration proposal
+
 # Current local setup overlay
 
 The simple local product in docs/simple-local-product.md supplies the default DeepSeek profile and processing-stage bindings. Normal setup asks only for operation-specific provider keys, not an account, API configuration, role assignment or individual stage bindings. The roles below are LLM processing stages. Other providers remain configurable through explicit server-side profiles; missing keys stop only dependent operations. Speech profiles can require their own keys. These are specifications, not implemented or qualified adapters.

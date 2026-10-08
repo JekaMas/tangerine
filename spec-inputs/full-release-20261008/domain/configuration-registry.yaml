@@ -1,0 +1,69 @@
+version: 2.0.0
+owner_supplied:
+  DEEPSEEK_API_KEY:
+    type: secret
+    required_for: deepseek provider calls
+    destination:
+    - api
+    default: null
+  OPENAI_API_KEY:
+    type: secret
+    required_for: OpenAI LLM or Whisper calls
+    destination:
+    - api
+    - speech
+    default: null
+  AZURE_SPEECH_KEY:
+    type: secret
+    required_for: Azure speech calls
+    destination:
+    - speech
+    default: null
+  AZURE_SPEECH_REGION:
+    type: region_identifier
+    required_for: Azure speech calls
+    destination:
+    - speech
+    default: null
+  INTENDED_USES:
+    type: explicit_set
+    required_for: source ingestion/derivation/transfer
+    default: []
+  VENDOR_CREDENTIAL_REFS:
+    type: exact_local_secret_references
+    required_for: authorized configured vendor adapters
+    default: []
+internal:
+  workspace_id: local
+  web_host_binding: 127.0.0.1:3000
+  paid_concurrency: 1
+  answer_codepoints: 20000
+  target_units: 1000
+  clauses: 1000
+  request_deadline_seconds: 270
+  lease_seconds: 300
+  api_timeout_seconds: 285
+  proxy_timeout_seconds: 300
+  browser_timeout_seconds: 310
+  transport_retries_per_request: 1
+  render_attempts_per_candidate: 3
+  llm_profile: deepseek-flash-low-v1
+  speech_profile: azure-standard-en-v1
+  daily_guard_usd: '10'
+  monthly_guard_usd: '100'
+  archive_compressed_bytes: 34359738368
+  archive_expanded_bytes: 137438953472
+  archive_members: 250000
+  archive_member_bytes: 34359738368
+  list_page_default: 50
+  list_page_max: 100
+publisher_supplied:
+- all application image digests
+- all dependency lockfiles
+- all model/voice/profile bindings
+- all source adapter implementations
+- all schema and prompt hashes
+- all real architecture qualification receipts
+unknown_key: configuration_error
+secret_rule: Never copy values into images, logs, prompts, public environment variables,
+  or returned DTOs.

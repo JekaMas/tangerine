@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/attempt-summary.schema.json",
+  "title": "attempt-summary",
+  "type": "object",
+  "description": "A local history row.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The attempt.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "case_version_id": {
+      "type": "string",
+      "description": "The exact selected version.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "state": {
+      "type": "string",
+      "description": "The actual state.",
+      "enum": [
+        "started",
+        "saved",
+        "evaluating",
+        "completed",
+        "evaluation_failed",
+        "review_required"
+      ]
+    },
+    "started_at": {
+      "type": "string",
+      "description": "The original server start.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "submitted_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The actual submission.",
+          "maxLength": 35,
+          "minLength": 20,
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The actual submission."
+    },
+    "result_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The actual latest result.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The actual latest result."
+    }
+  },
+  "required": [
+    "id",
+    "case_version_id",
+    "state",
+    "started_at",
+    "submitted_at",
+    "result_id"
+  ],
+  "additionalProperties": false
+}

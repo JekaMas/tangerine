@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/import-request.schema.json",
+  "title": "import-request",
+  "type": "object",
+  "description": "Import the complete selected release. Resumption does not redefine completeness.",
+  "properties": {
+    "release_id": {
+      "type": "string",
+      "description": "The acquired full release.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "format_binding_id": {
+      "type": "string",
+      "description": "The supplied exact source format.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "permission_ids": {
+      "type": "array",
+      "description": "Actual valid use grants.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "continue_after_record": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "An exact checkpoint record locator.",
+          "maxLength": 500,
+          "minLength": 0
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "An exact checkpoint record locator."
+    }
+  },
+  "required": [
+    "release_id",
+    "format_binding_id",
+    "permission_ids",
+    "continue_after_record"
+  ],
+  "additionalProperties": false
+}

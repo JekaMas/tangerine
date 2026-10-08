@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/feedback-input.schema.json",
+  "title": "feedback-input",
+  "type": "object",
+  "description": "The explanation input. No new error, correction option, or numeric grade is permitted.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "attempt_id": {
+      "type": "string",
+      "description": "The original attempt.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "result_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The completed result if one exists.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The completed result if one exists."
+    },
+    "requested_language": {
+      "type": "string",
+      "description": "The response language.",
+      "enum": [
+        "en",
+        "ru"
+      ]
+    },
+    "decisions": {
+      "$ref": "evaluator-output.schema.json"
+    },
+    "ground_truth": {
+      "$ref": "evaluation-key.schema.json",
+      "description": "The exact permitted evaluation projection."
+    },
+    "rationales": {
+      "type": "array",
+      "description": "Approved text in the requested language.",
+      "items": {
+        "$ref": "rationale.schema.json"
+      },
+      "minItems": 0,
+      "maxItems": 1000
+    },
+    "issues": {
+      "type": "array",
+      "description": "Unresolved findings.",
+      "items": {
+        "$ref": "judgment-issue.schema.json"
+      },
+      "minItems": 0,
+      "maxItems": 1000
+    },
+    "score_result": {
+      "anyOf": [
+        {
+          "$ref": "score-result.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The value, or null when the contract states that it is absent."
+    },
+    "extraction": {
+      "$ref": "claim-extraction.schema.json",
+      "description": "The exact original teacher claims."
+    }
+  },
+  "required": [
+    "schema_version",
+    "attempt_id",
+    "result_id",
+    "requested_language",
+    "decisions",
+    "ground_truth",
+    "rationales",
+    "issues",
+    "score_result",
+    "extraction"
+  ],
+  "additionalProperties": false
+}

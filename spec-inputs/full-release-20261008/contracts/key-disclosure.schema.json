@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/key-disclosure.schema.json",
+  "title": "key-disclosure",
+  "type": "object",
+  "description": "The post-submit or post-blind phase disclosure.",
+  "properties": {
+    "disclosure": {
+      "$ref": "disclosure-record.schema.json"
+    },
+    "key": {
+      "$ref": "evaluation-key.schema.json",
+      "description": "The permitted linguistic key without personal/private source documents."
+    },
+    "rationales": {
+      "type": "array",
+      "description": "Approved available rationale records.",
+      "items": {
+        "$ref": "rationale.schema.json"
+      },
+      "minItems": 0,
+      "maxItems": 1000
+    }
+  },
+  "required": [
+    "disclosure",
+    "key",
+    "rationales"
+  ],
+  "additionalProperties": false
+}

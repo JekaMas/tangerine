@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/capability-record.schema.json",
+  "title": "capability-record",
+  "type": "object",
+  "description": "A measured capability. A plan alone cannot create this record.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The real qualification record.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "taxonomy_id": {
+      "type": "string",
+      "description": "An existing leaf.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "profile_sha256": {
+      "type": "string",
+      "description": "The complete provider profile.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "voice_id": {
+      "type": "string",
+      "description": "The exact voice.",
+      "maxLength": 100,
+      "minLength": 1
+    },
+    "locale": {
+      "type": "string",
+      "description": "The locale.",
+      "maxLength": 30,
+      "minLength": 1
+    },
+    "constraint_ids": {
+      "type": "array",
+      "description": "The tested target combination.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "positive_audio_sha256": {
+      "type": "string",
+      "description": "The actual erroneous or marked target delivery.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "control_audio_sha256": {
+      "type": "string",
+      "description": "The actual control delivery.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "review_decision_ids": {
+      "type": "array",
+      "description": "The actual independent resolved decisions.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "measurement_ids": {
+      "type": "array",
+      "description": "The actual acoustic observations.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "status": {
+      "type": "string",
+      "description": "The observed qualification.",
+      "enum": [
+        "qualified",
+        "failed",
+        "needs_review",
+        "revoked"
+      ]
+    },
+    "measured_at": {
+      "type": "string",
+      "description": "The actual measurement time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "provider_receipt_ids": {
+      "type": "array",
+      "description": "The actual synthesis calls.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "id",
+    "taxonomy_id",
+    "profile_sha256",
+    "voice_id",
+    "locale",
+    "constraint_ids",
+    "positive_audio_sha256",
+    "control_audio_sha256",
+    "review_decision_ids",
+    "measurement_ids",
+    "status",
+    "measured_at",
+    "provider_receipt_ids"
+  ],
+  "additionalProperties": false
+}

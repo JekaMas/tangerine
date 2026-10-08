@@ -1,0 +1,146 @@
+version: 2.0.0
+status: specification_only_not_live_qualified
+silent_fallback: false
+selection_rationale: These profiles name documented services. They are baseline
+  candidates, not evidence of the best model or successful task calibration.
+profiles:
+  - id: deepseek-flash-low-v1
+    provider: deepseek
+    model: deepseek-flash
+    endpoint: https://api.deepseek.com/responses
+    reasoning_effort: low
+    temperature: null
+    stream: false
+    store: false
+    tools: []
+    max_output_tokens: 12000
+    context_budget_tokens: 128000
+    credentials:
+      - DEEPSEEK_API_KEY
+    roles:
+      - case_generation
+      - linguistic_audit
+      - blind_claim_extraction
+      - claim_mapping
+      - mapping_audit
+      - feedback
+    immutable_model_snapshot: false
+    drift_policy: Require actual canary receipts after any observed provider/model
+      change. An alias is not an immutable model snapshot.
+    live_verified: false
+    source_url: https://api-docs.deepseek.com/guides/responses_api/
+  - id: openai-gpt41-20250414
+    provider: openai
+    model: gpt-4.1-2025-04-14
+    endpoint: https://api.openai.com/v1/responses
+    roles:
+      - case_generation
+      - linguistic_audit
+      - blind_claim_extraction
+      - claim_mapping
+      - mapping_audit
+      - feedback
+    temperature: 0
+    stream: false
+    store: false
+    tools: []
+    max_output_tokens: 12000
+    response_format: strict json_schema via text.format
+    credentials:
+      - OPENAI_API_KEY
+    source_ids:
+      - SRC-GPT41
+      - SRC-STRUCTURED
+    live_verified: false
+    context_budget_tokens: 128000
+  - id: azure-standard-en-v1
+    provider: azure_speech
+    endpoint_template: https://{region}.tts.speech.microsoft.com/cognitiveservices/v1
+    roles:
+      - tts
+    voices:
+      en-US:
+        - en-US-JennyNeural
+        - en-US-GuyNeural
+      en-GB:
+        - en-GB-SoniaNeural
+        - en-GB-RyanNeural
+    output_format: riff-24khz-16bit-mono-pcm
+    request_format: The adapter compiles SSML from the typed RenderPlan. It does not
+      accept arbitrary user XML.
+    credentials:
+      - AZURE_SPEECH_KEY
+      - AZURE_SPEECH_REGION
+    capabilities:
+      - plain_text
+      - ipa
+      - prosody
+      - timed_pause
+      - multi_turn
+    not_guaranteed:
+      - specific learner accent strength
+      - arbitrary learner-like prosody
+      - exact realized phone sequence
+      - fixed engine snapshot
+    source_ids:
+      - SRC-AZURE-IPA
+      - SRC-AZURE-VOICES
+    live_verified: false
+  - id: openai-whisper1-v1
+    provider: openai
+    model: whisper-1
+    endpoint: https://api.openai.com/v1/audio/transcriptions
+    roles:
+      - asr_timing_advisory
+    response_format: verbose_json
+    timestamp_granularities:
+      - word
+    language: en
+    prompt: null
+    credentials:
+      - OPENAI_API_KEY
+    authority: This profile supplies an ASR hypothesis and proposed word intervals.
+      It does not supply observed phone labels or proof of forced alignment.
+    source_ids:
+      - SRC-ASR
+    live_verified: false
+  - id: azure-pa-rest-enus-v1
+    provider: azure_speech
+    endpoint_template: https://{region}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=en-US&format=detailed
+    roles:
+      - phoneme_score_advisory
+      - prosody_score_advisory
+    max_chunk_ms: 25000
+    input_format: PCM WAV 16000 Hz mono 16-bit
+    pronunciation_assessment_header:
+      ReferenceText: reviewed SURFACE text for the selected utterance
+      GradingSystem: HundredMark
+      Granularity: Phoneme
+      Dimension: Comprehensive
+      EnableMiscue: "True"
+      EnableProsodyAssessment: "True"
+    credentials:
+      - AZURE_SPEECH_KEY
+      - AZURE_SPEECH_REGION
+    authority: A low reference score does not identify a substituted phone. This
+      profile supports prosody for en-US only. No automatic publication
+      threshold exists.
+    source_ids:
+      - SRC-AZURE-REST
+      - SRC-AZURE-PA
+    live_verified: false
+local_audio: The speech container uses FFmpeg and ffprobe. The release must
+  record real binary versions, build parameters, and SHA-256 hashes.
+default_llm_profile: deepseek-flash-low-v1
+configurable_registry:
+  schema: contracts/llm-profile.schema.json
+  selection: Each configured stage override or explicitly selected default
+    resolves one unique ID with that stage in roles
+  default: deepseek-flash-low-v1
+  freeze: Persist exact effective binding per stage before answer evaluation; a
+    changed profile starts separate reconsideration.
+  no_fallback: true
+  compatibility: Only installed documented adapters support calls; arbitrary
+    profile configuration alone cannot qualify a new protocol.
+  secrets: Local environment/mounted secret reference only; never copy Codex
+    credentials automatically.

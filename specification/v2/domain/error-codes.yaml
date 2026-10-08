@@ -1,0 +1,170 @@
+version: 2.0.0
+rules:
+- Messages contain no input values, keys, source names, or raw provider content.
+- Retryable means an explicit retry is permitted after guards. It is not an instruction
+  to retry a semantic failure automatically.
+codes:
+- code: INVALID_JSON
+  http_status: 400
+  explicit_retry_possible: false
+  message_en: The request is not one valid JSON object.
+- code: INVALID_UTF8
+  http_status: 400
+  explicit_retry_possible: false
+  message_en: The input is not valid UTF-8.
+- code: ORIGIN_DENIED
+  http_status: 403
+  explicit_retry_possible: false
+  message_en: This request origin is not permitted.
+- code: INTERNAL_CREDENTIAL_DENIED
+  http_status: 403
+  explicit_retry_possible: false
+  message_en: The private service credential is not valid.
+- code: RIGHTS_BLOCKED
+  http_status: 403
+  explicit_retry_possible: false
+  message_en: The requested source use is not permitted.
+- code: NOT_FOUND
+  http_status: 404
+  explicit_retry_possible: false
+  message_en: The requested record does not exist.
+- code: IDEMPOTENCY_CONFLICT
+  http_status: 409
+  explicit_retry_possible: false
+  message_en: This request key already identifies different input.
+- code: INVALID_TRANSITION
+  http_status: 409
+  explicit_retry_possible: false
+  message_en: This action is not permitted in the current state.
+- code: LEASE_ACTIVE
+  http_status: 409
+  explicit_retry_possible: false
+  message_en: A current evaluation still owns this attempt.
+- code: LEASE_STALE
+  http_status: 409
+  explicit_retry_possible: false
+  message_en: This evaluation no longer owns the attempt.
+- code: CASE_QUARANTINED
+  http_status: 409
+  explicit_retry_possible: false
+  message_en: The case requires review before a final score.
+- code: CASE_UNAVAILABLE
+  http_status: 409
+  explicit_retry_possible: false
+  message_en: The case is not available for a new attempt.
+- code: MAINTENANCE_ACTIVE
+  http_status: 409
+  explicit_retry_possible: true
+  message_en: Local maintenance currently prevents this write.
+- code: REVISION_STALE
+  http_status: 412
+  explicit_retry_possible: false
+  message_en: The record changed after this request was prepared.
+- code: INPUT_CAPACITY_EXCEEDED
+  http_status: 413
+  explicit_retry_possible: false
+  message_en: The complete input exceeds the declared operation limit.
+- code: ARCHIVE_LIMIT_EXCEEDED
+  http_status: 413
+  explicit_retry_possible: false
+  message_en: The source archive exceeds the declared safe limits.
+- code: SCHEMA_INVALID
+  http_status: 422
+  explicit_retry_possible: false
+  message_en: The request does not satisfy its contract.
+- code: SEMANTIC_TUPLE_INVALID
+  http_status: 422
+  explicit_retry_possible: false
+  message_en: The record fields contradict the domain contract.
+- code: EVIDENCE_SCOPE_INVALID
+  http_status: 422
+  explicit_retry_possible: false
+  message_en: The evidence does not belong to this exact subject.
+- code: DIGEST_MISMATCH
+  http_status: 422
+  explicit_retry_possible: false
+  message_en: The actual bytes differ from the declared digest.
+- code: REQUIRED_EVIDENCE_MISSING
+  http_status: 422
+  explicit_retry_possible: false
+  message_en: Required genuine evidence is absent.
+- code: APPROVAL_MISSING
+  http_status: 422
+  explicit_retry_possible: false
+  message_en: The exact required approval is absent.
+- code: CAPABILITY_UNQUALIFIED
+  http_status: 422
+  explicit_retry_possible: false
+  message_en: The selected provider has no valid target qualification.
+- code: CONSTRAINT_CONFLICT
+  http_status: 422
+  explicit_retry_possible: false
+  message_en: The requested constraints cannot be used together.
+- code: SOURCE_FORMAT_UNBOUND
+  http_status: 422
+  explicit_retry_possible: false
+  message_en: The source format has no verified native binding.
+- code: SOURCE_INCOMPLETE
+  http_status: 422
+  explicit_retry_possible: false
+  message_en: The complete required source inventory does not reconcile.
+- code: UNSAFE_ARCHIVE_MEMBER
+  http_status: 422
+  explicit_retry_possible: false
+  message_en: The archive contains a prohibited path or member type.
+- code: NUMERIC_CAPACITY_EXCEEDED
+  http_status: 422
+  explicit_retry_possible: false
+  message_en: The exact numeric value exceeds its declared bounds.
+- code: INCOMPATIBLE_VERSION
+  http_status: 422
+  explicit_retry_possible: false
+  message_en: The record or release versions are not compatible.
+- code: LOCAL_BUDGET_EXCEEDED
+  http_status: 429
+  explicit_retry_possible: false
+  message_en: The configured local cost budget is exhausted.
+- code: LOCAL_CONCURRENCY_LIMIT
+  http_status: 429
+  explicit_retry_possible: true
+  message_en: Another costly foreground operation is active.
+- code: PROVIDER_FAILURE
+  http_status: 502
+  explicit_retry_possible: true
+  message_en: The provider did not return a successful response.
+- code: PROVIDER_REFUSAL
+  http_status: 502
+  explicit_retry_possible: false
+  message_en: The provider refused the requested stage.
+- code: PROVIDER_INCOMPLETE
+  http_status: 502
+  explicit_retry_possible: false
+  message_en: The provider output is incomplete.
+- code: PROVIDER_OUTPUT_INVALID
+  http_status: 502
+  explicit_retry_possible: false
+  message_en: The provider output does not satisfy the stage contract.
+- code: PROVIDER_SCHEMA_INCOMPATIBLE
+  http_status: 502
+  explicit_retry_possible: false
+  message_en: The provider cannot use the required output structure.
+- code: MISSING_CREDENTIALS
+  http_status: 503
+  explicit_retry_possible: false
+  message_en: Required provider credentials are absent.
+- code: INFRASTRUCTURE_UNAVAILABLE
+  http_status: 503
+  explicit_retry_possible: true
+  message_en: A required local service is unavailable.
+- code: RELEASE_INCOMPLETE
+  http_status: 503
+  explicit_retry_possible: false
+  message_en: Required release artifacts are absent or unqualified.
+- code: DEADLINE_EXCEEDED
+  http_status: 504
+  explicit_retry_possible: true
+  message_en: The operation exceeded its fixed deadline.
+- code: CANCELLED
+  http_status: 409
+  explicit_retry_possible: true
+  message_en: The operator cancelled the operation.

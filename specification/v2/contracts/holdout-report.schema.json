@@ -1,0 +1,216 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/holdout-report.schema.json",
+  "title": "holdout-report",
+  "type": "object",
+  "description": "An acceptance receipt with real denominators and no synthetic success.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The real acceptance run.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "configuration_sha256": {
+      "type": "string",
+      "description": "The exact tested profiles, methods, and versions.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "split_manifest_sha256": {
+      "type": "string",
+      "description": "The frozen unseen allocation.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "gold_annotation_ids": {
+      "type": "array",
+      "description": "The actual independent gold records.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "run_receipt_ids": {
+      "type": "array",
+      "description": "The actual model and pipeline runs.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "gate_results": {
+      "type": "array",
+      "description": "All required overall and domain gates.",
+      "items": {
+        "type": "object",
+        "description": "One gate outcome.",
+        "properties": {
+          "gate_id": {
+            "type": "string",
+            "description": "A named acceptance gate.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "domain": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The reporting domain.",
+                "enum": [
+                  "grammar",
+                  "lexis",
+                  "pronunciation.segmental",
+                  "pronunciation.suprasegmental",
+                  "fluency",
+                  "discourse",
+                  "pragmatics_register",
+                  "acceptable_variant"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The reporting domain."
+          },
+          "numerator": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The actual success count.",
+                "maxLength": 4096,
+                "minLength": 1,
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The actual success count."
+          },
+          "denominator": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The exact eligible population.",
+                "maxLength": 4096,
+                "minLength": 1,
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The exact eligible population."
+          },
+          "value": {
+            "anyOf": [
+              {
+                "$ref": "exact-rational.schema.json"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The value, or null when the contract states that it is absent."
+          },
+          "status": {
+            "type": "string",
+            "description": "The measured gate state.",
+            "enum": [
+              "pass",
+              "fail",
+              "insufficient_evidence",
+              "not_run"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "description": "The exact population or execution finding.",
+            "maxLength": 5000,
+            "minLength": 0
+          }
+        },
+        "required": [
+          "gate_id",
+          "domain",
+          "numerator",
+          "denominator",
+          "value",
+          "status",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 200
+    },
+    "critical_case_ids": {
+      "type": "array",
+      "description": "Actual, approved critical cases.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "holdout_exposed": {
+      "type": "boolean",
+      "description": "Whether developers tuned against this holdout."
+    },
+    "started_at": {
+      "type": "string",
+      "description": "The real run start.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "finished_at": {
+      "type": "string",
+      "description": "The real run finish.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "configuration_sha256",
+    "split_manifest_sha256",
+    "gold_annotation_ids",
+    "run_receipt_ids",
+    "gate_results",
+    "critical_case_ids",
+    "holdout_exposed",
+    "started_at",
+    "finished_at"
+  ],
+  "additionalProperties": false
+}

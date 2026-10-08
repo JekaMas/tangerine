@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/prepare-view.schema.json",
+  "title": "prepare-view",
+  "type": "object",
+  "description": "The complete preparation view with explicit absent data.",
+  "properties": {
+    "head": {
+      "$ref": "case-head.schema.json"
+    },
+    "candidate": {
+      "$ref": "case-candidate.schema.json"
+    },
+    "ground_truth": {
+      "anyOf": [
+        {
+          "$ref": "ground-truth.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The value, or null when the contract states that it is absent."
+    },
+    "render_plan": {
+      "anyOf": [
+        {
+          "$ref": "render-plan.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The value, or null when the contract states that it is absent."
+    },
+    "verification": {
+      "anyOf": [
+        {
+          "$ref": "verification-report.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The value, or null when the contract states that it is absent."
+    },
+    "issues": {
+      "type": "array",
+      "description": "Every unresolved concern.",
+      "items": {
+        "$ref": "judgment-issue.schema.json"
+      },
+      "minItems": 0,
+      "maxItems": 1000
+    }
+  },
+  "required": [
+    "head",
+    "candidate",
+    "ground_truth",
+    "render_plan",
+    "verification",
+    "issues"
+  ],
+  "additionalProperties": false
+}

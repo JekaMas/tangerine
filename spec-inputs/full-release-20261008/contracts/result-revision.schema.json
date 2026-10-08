@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/result-revision.schema.json",
+  "title": "result-revision",
+  "type": "object",
+  "description": "An append-only reconsideration result.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The appended result revision.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "attempt_id": {
+      "type": "string",
+      "description": "The unchanged original answer.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "original_result_id": {
+      "type": "string",
+      "description": "The original result.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "previous_revision_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The preceding revision.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The preceding revision."
+    },
+    "new_result_id": {
+      "type": "string",
+      "description": "The complete recomputed result.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "dispute_id": {
+      "type": "string",
+      "description": "The resolved reason.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "unit_correspondence_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The reviewed key mapping.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The reviewed key mapping."
+    },
+    "audio_sha256": {
+      "type": "string",
+      "description": "The recording the teacher heard.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "selection_event_id": {
+      "type": "string",
+      "description": "The explicit operator action selecting this attempt.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "created_at": {
+      "type": "string",
+      "description": "The append time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "attempt_id",
+    "original_result_id",
+    "previous_revision_id",
+    "new_result_id",
+    "dispute_id",
+    "unit_correspondence_id",
+    "audio_sha256",
+    "selection_event_id",
+    "created_at"
+  ],
+  "additionalProperties": false
+}

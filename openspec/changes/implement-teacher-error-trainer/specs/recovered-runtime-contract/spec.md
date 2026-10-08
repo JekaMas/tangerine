@@ -20,7 +20,7 @@ Attempts SHALL persist original UTF-8/hash and idempotency atomically before pro
 
 ### Requirement: SYNC-02 Distinguish lifecycle statuses
 
-The stored attempt state SHALL follow the recovered lifecycle: draft -> submitted -> evaluating -> complete, review_required or evaluation_failed. The API SHALL return 200 for complete/review_required, 409 EVALUATION_IN_PROGRESS for an active lease, 502 for refusal/schema failure and 504 for deadline. UI labels ready/needs_review/technical_error SHALL be explicitly derived from those states and never replace contract enums. Quarantine/disputes SHALL preserve immutable saved answers and append result revisions.
+The stored attempt state SHALL follow the explicit v2 draft lifecycle in specification/v2/docs/lifecycle.md: started -> saved -> evaluating -> completed, review_required or evaluation_failed. The recovered draft/submitted/complete enums remain historical schemas only. The API SHALL return 200 for completed/review_required, 409 EVALUATION_ACTIVE for an active lease, 502 for refusal/schema failure and 504 for deadline. UI labels ready/needs_review/technical_error SHALL be explicitly derived from those states and never replace contract enums. Quarantine/disputes SHALL preserve immutable saved answers and append result revisions.
 
 #### Scenario: SYNC-02 Complete supported behavior
 

@@ -1,0 +1,424 @@
+{
+  "proof_boundary": "Written contract reconciliation; no empirical acceptance. Corrected means draft definition fixed, not application behavior.",
+  "findings": [
+    {
+      "id": "FRC-001",
+      "title": "GitHub source setup versus mandatory prebuilt releases",
+      "status": "corrected",
+      "related_gaps": [
+        "GAP-054"
+      ],
+      "paths": [
+        "docs/local-delivery.md",
+        "contracts/backup-manifest.schema.json",
+        "domain/configuration-registry.yaml",
+        "domain/providers.v1.yaml",
+        "db/schema.sql"
+      ],
+      "issue": "Imported source requires mandatory prebuilt images, release manifest and SBOMs after the user explicitly rejected that distribution.",
+      "resolution_or_input": "Define scripts/tangerine start/stop/status/logs/backup/restore, Docker/Compose prerequisites, source-complete ZIP, automatic internal initialization and named failures. Remove software release manifest; retain contract vectors, source and backup manifests.",
+      "closure_positive": "Written source ZIP startup uses local builds without Git or workflow submodules.",
+      "closure_negative": "Absence of prebuilt app images cannot block startup; failed builds cannot report readiness.",
+      "owner": "engineering"
+    },
+    {
+      "id": "FRC-002",
+      "title": "Contradictory structured-hash encodings",
+      "status": "corrected",
+      "related_gaps": [
+        "GAP-018",
+        "GAP-055"
+      ],
+      "paths": [
+        "docs/runtime-and-storage.md",
+        "docs/math-and-judgments.md"
+      ],
+      "issue": "Generic sorted-key JSON and RFC8785 are both described as canonical; claim IDs lack delimiter/serialization definition.",
+      "resolution_or_input": "Use UTF-8 JCS, exact kind projections, safe numeric constraints and JCS ordered arrays for claim/split identities. Original answer/source hashes still cover raw bytes.",
+      "closure_positive": "Same valid projected document yields one defined cross-language digest.",
+      "closure_negative": "Undelimited concatenation, duplicate keys or Unicode normalization cannot produce an accepted substitute digest.",
+      "owner": "engineering"
+    },
+    {
+      "id": "FRC-003",
+      "title": "Random request identity inside idempotency scope",
+      "status": "corrected",
+      "related_gaps": [
+        "GAP-001",
+        "GAP-008"
+      ],
+      "paths": [
+        "docs/runtime-and-storage.md",
+        "db/schema.sql"
+      ],
+      "issue": "Narrative uses operation_id while DDL uses operation_name. A fresh per-request UUID defeats deduplication.",
+      "resolution_or_input": "Stable operation name plus workspace/key; compare canonical target/query/body/If-Match request identity; retain original result.",
+      "closure_positive": "Same intended action finds its saved operation without another paid call.",
+      "closure_negative": "Changed target/revision/body under the same key conflicts.",
+      "owner": "engineering"
+    },
+    {
+      "id": "FRC-004",
+      "title": "Key-disclosure contradiction and private reference leakage",
+      "status": "corrected",
+      "related_gaps": [
+        "GAP-002"
+      ],
+      "paths": [
+        "docs/lifecycle.md",
+        "docs/interface-contract.md",
+        "contracts/key-disclosure.schema.json",
+        "contracts/teacher-key.schema.json",
+        "contracts/teacher-rationale.schema.json"
+      ],
+      "issue": "Keys are both forbidden forever and disclosed after submission. Returned rationale includes private approval/evidence IDs; evaluation-key also has nested evidence IDs.",
+      "resolution_or_input": "Explicit pre-submit ban; gated proposed post-submit disclosure uses dedicated redacted key/rationale schemas, while internal records retain evidence.",
+      "closure_positive": "Post-submit allowed linguistic material has an exact projection.",
+      "closure_negative": "Pre-submit key or private reviewer/evidence identifiers cannot enter teacher views.",
+      "owner": "engineering"
+    },
+    {
+      "id": "FRC-005",
+      "title": "Fixed two-profile selection conflicts with configurable LLMs",
+      "status": "corrected",
+      "related_gaps": [
+        "GAP-029",
+        "GAP-054"
+      ],
+      "paths": [
+        "contracts/configuration.schema.json",
+        "contracts/llm-profile.schema.json",
+        "contracts/effective-binding.schema.json",
+        "docs/provider-contracts.md"
+      ],
+      "issue": "Configuration enum admits only two models and always requires Azure region even for an LLM-only local use.",
+      "resolution_or_input": "Configure explicit profile ID/model/endpoint/adapter/settings/secret reference registry, select exact ID, freeze all six stages, never fallback; nullable Azure region becomes operation-dependent. DeepSeek default remains unqualified.",
+      "closure_positive": "Explicit supported profile can be selected; missing unused Azure keys do not block local reading.",
+      "closure_negative": "Unknown adapter, mismatched settings/recipient or missing selected key cannot silently use another model.",
+      "owner": "engineering"
+    },
+    {
+      "id": "FRC-006",
+      "title": "Request versus server versus source field ownership is incomplete",
+      "status": "remaining_definition",
+      "related_gaps": [
+        "GAP-001",
+        "GAP-003",
+        "GAP-010",
+        "GAP-029"
+      ],
+      "paths": [
+        "domain/operation-ownership.yaml",
+        "docs/interface-contract.md",
+        "contracts/person.schema.json",
+        "contracts/review-context.schema.json",
+        "contracts/dispute.schema.json"
+      ],
+      "issue": "Many create/submit endpoints require full-record IDs, server timestamps, digests or revisions while ownership says server assigns them. The referenced prior reservation has no corresponding general operation. An automated scan flags 26 operations; frozen precondition hashes are legitimate, not all flagged fields are errors.",
+      "resolution_or_input": "For each flagged operation supply a field-by-field input/server/import/precondition classification and separate creation DTO where necessary. Define actual reservation or direct server assignment without inventing source dates, person identity or approval. See operation-field-ownership.json.",
+      "closure_positive": "Valid source metadata and client input create a server-owned envelope with exact recorded identities.",
+      "closure_negative": "Client-chosen local receipt/lease/approval/time cannot pass, and genuine imported evidence is not rejected just for containing source IDs.",
+      "owner": "engineering"
+    },
+    {
+      "id": "FRC-007",
+      "title": "Audio assembly names a nonexistent gap field",
+      "status": "corrected",
+      "related_gaps": [
+        "GAP-033"
+      ],
+      "paths": [
+        "docs/audio-methods.md",
+        "contracts/render-plan.schema.json"
+      ],
+      "issue": "Narrative gap_ms disagrees with schema gap_after_ms; final-turn trailing gap was implicit.",
+      "resolution_or_input": "Use exact integer gap_after_ms*24 samples after each turn including final turn if nonzero; retain all planned intervals.",
+      "closure_positive": "Assembly has one exact sample-clock rule.",
+      "closure_negative": "No invented field, rounding drift or trimmed trailing gap changes delivery bytes.",
+      "owner": "engineering"
+    },
+    {
+      "id": "FRC-008",
+      "title": "Synthetic voice grouping and gold split feasibility",
+      "status": "remaining_policy",
+      "related_gaps": [
+        "GAP-046",
+        "GAP-047"
+      ],
+      "paths": [
+        "docs/splits-and-validation.md",
+        "docs/review-and-gold.md",
+        "domain/providers.v1.yaml",
+        "contracts/split-manifest.schema.json"
+      ],
+      "issue": "Grouping uses speaker identity and pair families, but does not define whether shared synthetic voice/profile joins all generated stimuli. Four reused voices and multi-voice dialogues can create one connected group, making one pair/leaf/split impossible.",
+      "resolution_or_input": "Choose and document distinct genuine learner/speaker, synthetic character, provider voice, prompt and participant grouping axes; define which are strict held-out axes and how global IDs are assigned. Provide feasible full-scope allocation or report impossibility; do not cut real leakage edges.",
+      "closure_positive": "Chosen grouping has independently allocatable full coverage with every edge preserved.",
+      "closure_negative": "Reused identities or arbitrary per-case renaming cannot make leaked holdout look independent.",
+      "owner": "product and qualified linguistic reviewer"
+    },
+    {
+      "id": "FRC-009",
+      "title": "Required target/profile qualification matrix is not enumerated",
+      "status": "remaining_definition",
+      "related_gaps": [
+        "GAP-032",
+        "GAP-036",
+        "GAP-038",
+        "GAP-047"
+      ],
+      "paths": [
+        "domain/target-capabilities.yaml",
+        "docs/audio-methods.md",
+        "domain/providers.v1.yaml"
+      ],
+      "issue": "All 122 leaf entries exist, but required_observation repeats a generic two-review rule. No finite list defines required voice/locale/acoustic target combinations, per-combination exact constraints, comparison/control instructions and measurement/human-label requirements. Presence of 122 entries is not a complete capability matrix.",
+      "resolution_or_input": "Bind every leaf to required supported profile/voice/locale/operator combinations, target/control plan, public context and hard observation criteria. Identify human judgment cases and exact acoustic methods/units where numeric criteria are required. Unsupported combinations remain blockers. No actual canary audio/approval is fabricated.",
+      "closure_positive": "Every required combination has one precise positive/control qualification protocol.",
+      "closure_negative": "A different word/voice, generic approval, requested accent or absent observation cannot qualify the combination.",
+      "owner": "engineering with qualified linguistic reviewers"
+    },
+    {
+      "id": "FRC-010",
+      "title": "DDL immutability, erasure and frozen-version references conflict",
+      "status": "remaining_definition",
+      "related_gaps": [
+        "GAP-003",
+        "GAP-051",
+        "GAP-053",
+        "GAP-055"
+      ],
+      "paths": [
+        "db/schema.sql",
+        "docs/persistence.md"
+      ],
+      "issue": "document_immutable blocks UPDATE only, while ordinary DELETE is possible where no FK prevents it. Audit immutability and restrictive references conflict with rights-aware erasure. object_node.case_version_id points to a mutable entity_head, with no database guard that the head continues to identify that exact immutable case version.",
+      "resolution_or_input": "Supply the exact write privileges/trigger and maintenance erasure/tombstone procedure, reference closure, permitted audit retention and immutable case-version identity constraints. The SQL is a design reference until these definitions are consistent. Inspect actual SQL in PostgreSQL after implementation authorization.",
+      "closure_positive": "Only version-bound documents can support references; a permitted erasure produces honest unavailable/tombstone reads.",
+      "closure_negative": "Normal delete, head retargeting, audit-reference destruction or forbidden personal-data retention cannot evade guards.",
+      "owner": "engineering"
+    },
+    {
+      "id": "FRC-011",
+      "title": "Current repository was called unavailable in the package",
+      "status": "corrected_definition_integration_unobserved",
+      "related_gaps": [
+        "GAP-055"
+      ],
+      "paths": [
+        "../../services/api/internal/app/migrations/001_foundation.sql",
+        "../../services/api/internal/app/http.go",
+        "docs/migration-compatibility.md"
+      ],
+      "issue": "The supplied report did not have repository 203c1f1. The actual checkout at 6b625ef is accessible and still has account/session/catalog foundation only.",
+      "resolution_or_input": "Record exact owning files/hashes and fresh/legacy compatibility plan; retain old receipts. No v2 SQL, account removal or app behavior is implemented/observed.",
+      "closure_positive": "Current source availability and known drift have explicit dispositions.",
+      "closure_negative": "An accessible checkout or a schema vector cannot establish applied migrations or simple no-account runtime.",
+      "owner": "engineering"
+    },
+    {
+      "id": "FRC-012",
+      "title": "Non-evaluation operation budgets and cost admission are incomplete",
+      "status": "remaining_definition",
+      "related_gaps": [
+        "GAP-031",
+        "GAP-052"
+      ],
+      "paths": [
+        "domain/configuration-registry.yaml",
+        "docs/runtime-and-storage.md",
+        "docs/maintenance-and-limits.md",
+        "domain/operations.yaml"
+      ],
+      "issue": "270 seconds is exact for teacher evaluation; generation, linguistic audit, render, measurement, full imports and reconsideration batches lack separate exact admission/time/output/recovery budgets. Price-profile fields and reservation calculation/unknown-charge reconciliation are prose, without a complete closed price/cost contract.",
+      "resolution_or_input": "Define each foreground operation deadline, cancellation/restart, per-call limits, nested-call concurrency admission, full-import atomic/partial boundary and cost profile/reservation state transition. Bind real pricing units/date/recipient; unknown cost is never zero. These are engineering definitions, not requests to execute paid work.",
+      "closure_positive": "Every listed foreground operation has bounded progress, cancellation and truthful costs.",
+      "closure_negative": "Nested operations, long imports, retries or unknown bills cannot bypass local guards or produce fake full completion.",
+      "owner": "engineering"
+    },
+    {
+      "id": "FRC-013",
+      "title": "Blind review response lacks its promised public context",
+      "status": "corrected",
+      "related_gaps": [
+        "GAP-002",
+        "GAP-010"
+      ],
+      "paths": [
+        "contracts/blind-review-view.schema.json",
+        "domain/operations.yaml",
+        "contracts/openapi.yaml",
+        "docs/interface-contract.md"
+      ],
+      "issue": "get_review returned private review-context with author person IDs but no public context/constraints promised to the blind reviewer.",
+      "resolution_or_input": "Dedicated blind-review-view includes exact public context/constraints, phase, own submission ID and opaque audio route only. Private context remains durable evidence.",
+      "closure_positive": "Blind reviewer can judge the same disclosed task context without the key.",
+      "closure_negative": "Author identities, planned unit IDs/counts/categories or private context cannot appear in that DTO.",
+      "owner": "engineering"
+    },
+    {
+      "id": "FRC-014",
+      "title": "Browser Origin applied to private speech service requests",
+      "status": "corrected",
+      "related_gaps": [
+        "GAP-001",
+        "GAP-054"
+      ],
+      "paths": [
+        "contracts/openapi.yaml",
+        "docs/provider-contracts.md"
+      ],
+      "issue": "Imported OpenAPI adds browser Origin to every mutation including /internal/v1/render and measure, despite private API-to-speech service credentials. It also excludes 127.0.0.1 origin while binding that address.",
+      "resolution_or_input": "Use private X-Tangerine-Service-Key for internal speech; exact browser same-origin checks accept localhost/127 only when Host matches. No human accounts.",
+      "closure_positive": "Private speech calls and local browser mutations have distinct exact transport guards.",
+      "closure_negative": "Missing private credential or cross-origin mutation cannot use the other boundary to pass.",
+      "owner": "engineering"
+    },
+    {
+      "id": "FRC-015",
+      "title": "Critical acceptance cases and gold alignment need exact inventory",
+      "status": "remaining_definition",
+      "related_gaps": [
+        "GAP-048",
+        "GAP-050"
+      ],
+      "paths": [
+        "docs/splits-and-validation.md",
+        "docs/math-and-judgments.md",
+        "contracts/teacher-gold.schema.json",
+        "contracts/holdout-report.schema.json"
+      ],
+      "issue": "Critical classes are named, but no complete case ID/provenance/expected-decision inventory is supplied. When extraction differs between gold/model/repeated runs, exact decision populations still need a frozen correspondence; otherwise unresolved/omitted claims can shift denominators.",
+      "resolution_or_input": "Specify immutable gold event/claim alignment IDs, treatment of unmatched/spurious/omitted decisions for every statistic, and each critical case\u2019s exact expected semantic outcome and source. The cases themselves require real or separately authorized evidence. Do not invent teacher answers to fill them.",
+      "closure_positive": "All numerators/denominators trace to one fixed complete gold population and actual critical-case ledger.",
+      "closure_negative": "Dropped omissions, retractions, changed alignment or generic class labels cannot pass exact acceptance.",
+      "owner": "engineering and qualified gold annotators"
+    },
+    {
+      "id": "FRC-016",
+      "title": "Audio implementation binding and comparison-token normalization are underspecified",
+      "status": "remaining_definition",
+      "related_gaps": [
+        "GAP-034",
+        "GAP-035",
+        "GAP-036",
+        "GAP-037"
+      ],
+      "paths": [
+        "docs/audio-methods.md",
+        "domain/audio-methods.yaml"
+      ],
+      "issue": "The text asks for a pinned resampler/options and recorded measurement commands without supplying them. WER refers to reviewed comparison-token policy without an exact case/apostrophe/punctuation/numeral normalization for the ASR hypothesis. Semantic human tokens alone do not define deterministic hypothesis tokenization.",
+      "resolution_or_input": "Define versioned FFmpeg resample/ebur128 command options, Praat/binding compatibility constraints, clock conversion and deterministic WER tokenization for both reference/hypothesis, including actual spoken numerals, contractions, fillers and missingness. Preserve separate human judgment and advisory roles.",
+      "closure_positive": "Same raw bytes/transcripts and method binding give reproducible measurements/token lists.",
+      "closure_negative": "Different default filters, guessed numeral expansions or ASR inference cannot masquerade as the same method.",
+      "owner": "engineering with qualified linguistic reviewer"
+    },
+    {
+      "id": "FRC-017",
+      "title": "Full-release archive handling must account for inert ancillary scripts",
+      "status": "remaining_definition",
+      "related_gaps": [
+        "GAP-039",
+        "GAP-040",
+        "GAP-041",
+        "GAP-042",
+        "GAP-052"
+      ],
+      "paths": [
+        "docs/sources/acquisition-and-rights.md",
+        "contracts/source-release.schema.json"
+      ],
+      "issue": "The full-source requirement retains all supplied members, but blanket executable-member rejection can reject an official release containing helper scripts. No disposition distinguishes inert ancillary source material from executable processing input.",
+      "resolution_or_input": "Define full member accounting, fail/quarantine dispositions, preservation location and no-execution handling for official scripts/executable bits. Path/symlink/device/expansion restrictions must remain. A rejected member cannot disappear from full completeness counts.",
+      "closure_positive": "All authorized native release members have a retained/quarantined/rejected counted disposition.",
+      "closure_negative": "Executing a helper or dropping it uncounted cannot create a complete safe ingest.",
+      "owner": "engineering"
+    },
+    {
+      "id": "FRC-018",
+      "title": "Normalized semantic groups lack an exact scorer projection",
+      "status": "remaining_definition",
+      "related_gaps": [
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-023",
+        "GAP-022"
+      ],
+      "paths": [
+        "contracts/normalization.schema.json",
+        "contracts/evaluator-output.schema.json",
+        "contracts/scoring-input.schema.json",
+        "docs/math-and-judgments.md",
+        "reference/scorer.py"
+      ],
+      "issue": "The prose permits compatible correction/explanation fragments to combine under an earliest endorsed representative. The scorer accepts only one already-derived decision per unit and rejects duplicate decisions whose credit/fields differ. No total conversion specifies how normalized multi-claim groups become supplied/category/option/proposition/credit fields without discarding source fragments or choosing favorable alternatives. Static formula equality cannot prove this conversion.",
+      "resolution_or_input": "Define the exact deterministic normalization-plus-mapping to scoring-input projection: retracted/ignored members, representative identity, merged source spans, category consistency, reviewed equivalent alternatives, satisfied/forbidden proposition aggregation, FP unnecessary-correction counts, unresolved groups and raw duplicate telemetry. Preserve all actual source claims and apply each independent event once. Resolve material interpretation choices with linguistic policy, not arithmetic fixtures.",
+      "closure_positive": "Complete compatible source fragments yield exactly one evidence-backed event/credit projection with no fabricated teacher content.",
+      "closure_negative": "Dropped false clauses, favorable repair selection, conflicting categories or duplicate counts cannot become a complete score.",
+      "owner": "engineering with qualified linguistic reviewer"
+    },
+    {
+      "id": "FRC-019",
+      "title": "Open-source software and original-bank license is not selected",
+      "status": "remaining_policy",
+      "related_gaps": [
+        "GAP-039",
+        "GAP-054"
+      ],
+      "paths": [
+        "../../README.md",
+        "docs/local-delivery.md",
+        "docs/sources/acquisition-and-rights.md"
+      ],
+      "issue": "The product is called open source, but no project LICENSE or chosen software license is supplied. Dependency/source-corpus licenses are not a license for Tangerine, its original illustrations or a distributable reviewed bank.",
+      "resolution_or_input": "Select the project software license and attribution/copyright owner; specify separate license/consent/redistribution terms for original reviewed audio, taxonomy content and any shipped bank. MIT or Apache-2.0 can be proposed, but this review does not grant author rights or publish a license. Preserve third-party attribution and exclude unlicensed/NC/private corpus data from public source distribution.",
+      "closure_positive": "A source ZIP states exact rights for software and every included data/content class.",
+      "closure_negative": "Calling a repository open source or having provider keys cannot grant redistribution of private/noncommercial data.",
+      "owner": "project owner and actual content rights holders"
+    },
+    {
+      "id": "FRC-020",
+      "title": "Correction acceptance gate contradicts control-only domain eligibility",
+      "status": "remaining_policy",
+      "related_gaps": [
+        "GAP-017",
+        "GAP-047",
+        "GAP-048",
+        "GAP-050"
+      ],
+      "paths": [
+        "domain/validation-policy.yaml",
+        "docs/splits-and-validation.md",
+        "docs/math-and-judgments.md",
+        "contracts/scoring-input.schema.json"
+      ],
+      "issue": "VAL-REPAIR states at least 100 actual correction attempts per observable domain. acceptable_variant is an observable reporting domain, but its controls are prohibited from correction eligibility/credit. Counting unnecessary corrections as eligible repairs or relabeling acceptable variants as errors would change the metric populations.",
+      "resolution_or_input": "Define the exact gate-by-domain/component applicability matrix. State whether correction precision is required only for genuine correction-opportunity domains and supply a separate zero-credit/overcorrection control gate. Preserve all domains and existing thresholds; any correction to applicability must be an explicit policy decision rather than silently treating no eligible data as passing.",
+      "closure_positive": "Each gate has a possible legitimate gold population and explicit control-domain checks.",
+      "closure_negative": "No-opportunity domains, spurious corrections or relabeled acceptable variants cannot satisfy the repair sample floor.",
+      "owner": "product and qualified linguistic reviewers"
+    },
+    {
+      "id": "FRC-021",
+      "title": "First-run usable content delivery remains undecided",
+      "status": "remaining_policy",
+      "related_gaps": [
+        "GAP-039",
+        "GAP-047",
+        "GAP-054"
+      ],
+      "paths": [
+        "docs/local-delivery.md",
+        "docs/review-and-gold.md",
+        "domain/corpus-sources.v1.yaml"
+      ],
+      "issue": "The setup correctly preserves an empty bank without genuine content. The requested download-run-use-as-is product does not yet specify whether the GitHub source package includes a real reviewed original bank or begins empty and requires authoring plus two qualified human reviews. Provider keys alone cannot create publication approvals or access private corpus releases.",
+      "resolution_or_input": "Choose and document the first-run content contract: include a genuinely reviewed redistributable original bank (with exact permitted audio/key/review provenance) or explicitly document an initially empty workspace and preparation/review requirements. Specify how real bundled content is imported and validated without creating fake approvals or automatic network corpus acquisition. Keep project full-source research/qualification gates distinct from each installation\u2019s usable-content checks.",
+      "closure_positive": "A fresh download has the promised usable content or clearly specified actual preparation prerequisites.",
+      "closure_negative": "An empty bank, unreviewed generated case or unavailable private corpus cannot masquerade as an as-is ready exercise bank.",
+      "owner": "project owner with real data/consent holders"
+    }
+  ]
+}

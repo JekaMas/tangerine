@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/backup-request.schema.json",
+  "title": "backup-request",
+  "type": "object",
+  "description": "An explicit backup operation.",
+  "properties": {
+    "destination_name": {
+      "type": "string",
+      "description": "A basename in the configured export volume.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.-]+$"
+    },
+    "confirmation_plan_sha256": {
+      "type": "string",
+      "description": "The exact reviewed maintenance plan.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "destination_name",
+    "confirmation_plan_sha256"
+  ],
+  "additionalProperties": false
+}

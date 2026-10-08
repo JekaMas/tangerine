@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/mapping-input.schema.json",
+  "title": "mapping-input",
+  "type": "object",
+  "description": "The mapping input. The independent audit receives the same record and no first mapping output.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "answer_text": {
+      "type": "string",
+      "description": "The exact saved teacher answer.",
+      "maxLength": 20000,
+      "minLength": 0
+    },
+    "answer_sha256": {
+      "type": "string",
+      "description": "The original UTF-8 digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "extraction": {
+      "$ref": "claim-extraction.schema.json"
+    },
+    "ground_truth": {
+      "$ref": "evaluation-key.schema.json",
+      "description": "The exact permitted evaluation projection."
+    },
+    "alias_registry_sha256": {
+      "type": "string",
+      "description": "The exact permitted bilingual registry.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "rationales": {
+      "type": "array",
+      "description": "Approved rationale records in the exact case.",
+      "items": {
+        "$ref": "rationale.schema.json"
+      },
+      "minItems": 0,
+      "maxItems": 1000
+    },
+    "evidence": {
+      "type": "array",
+      "description": "Permitted subject-scoped evidence without private identity documents.",
+      "items": {
+        "$ref": "evidence.schema.json"
+      },
+      "minItems": 0,
+      "maxItems": 10000
+    },
+    "alias_entries": {
+      "type": "array",
+      "description": "The complete applicable registry slice.",
+      "items": {
+        "type": "object",
+        "description": "One frozen alias entry.",
+        "properties": {
+          "normalized_alias": {
+            "type": "string",
+            "description": "A frozen normalized alias.",
+            "maxLength": 300,
+            "minLength": 1
+          },
+          "language": {
+            "type": "string",
+            "description": "The response language.",
+            "enum": [
+              "en",
+              "ru"
+            ]
+          },
+          "target_ids": {
+            "type": "array",
+            "description": "All approved target IDs. Multiple targets remain ambiguous.",
+            "items": {
+              "type": "string",
+              "description": "An existing identifier.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 100000,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "normalized_alias",
+          "language",
+          "target_ids"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 2000
+    }
+  },
+  "required": [
+    "schema_version",
+    "answer_text",
+    "answer_sha256",
+    "extraction",
+    "ground_truth",
+    "alias_registry_sha256",
+    "rationales",
+    "evidence",
+    "alias_entries"
+  ],
+  "additionalProperties": false
+}

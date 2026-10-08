@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/configuration-view.schema.json",
+  "title": "configuration-view",
+  "type": "object",
+  "description": "A redacted configuration view.",
+  "properties": {
+    "configuration_sha256": {
+      "type": "string",
+      "description": "The effective nonsecret digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "profile_ids": {
+      "type": "array",
+      "description": "Configured profiles.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "credentials": {
+      "type": "array",
+      "description": "No credential value is returned.",
+      "items": {
+        "type": "object",
+        "description": "Secret presence only.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The credential name.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "present": {
+            "type": "boolean",
+            "description": "Whether the secret exists."
+          },
+          "last_checked_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Actual local configuration check.",
+                "maxLength": 35,
+                "minLength": 20,
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Actual local configuration check."
+          }
+        },
+        "required": [
+          "name",
+          "present",
+          "last_checked_at"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 100
+    },
+    "source_statuses": {
+      "type": "array",
+      "description": "All required sources.",
+      "items": {
+        "$ref": "source-status.schema.json"
+      },
+      "minItems": 0,
+      "maxItems": 50
+    },
+    "intended_uses": {
+      "type": "array",
+      "description": "Explicit use codes.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "limits": {
+      "$ref": "configuration.schema.json#/properties/limits",
+      "description": "The explicit nonsecret limits."
+    }
+  },
+  "required": [
+    "configuration_sha256",
+    "profile_ids",
+    "credentials",
+    "source_statuses",
+    "intended_uses",
+    "limits"
+  ],
+  "additionalProperties": false
+}

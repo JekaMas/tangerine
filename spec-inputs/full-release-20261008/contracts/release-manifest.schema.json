@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/release-manifest.schema.json",
+  "title": "release-manifest",
+  "type": "object",
+  "description": "A real release manifest. Null or invented image hashes are not permitted.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The real release identity.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "source_commit": {
+      "type": "string",
+      "description": "The actual source commit.",
+      "maxLength": 64,
+      "minLength": 7,
+      "pattern": "^[a-f0-9]{7,64}$"
+    },
+    "images": {
+      "type": "array",
+      "description": "Both target architectures for every service.",
+      "items": {
+        "type": "object",
+        "description": "An actual image artifact.",
+        "properties": {
+          "service": {
+            "type": "string",
+            "description": "The built service.",
+            "enum": [
+              "web",
+              "api",
+              "speech",
+              "postgres",
+              "minio",
+              "initializer"
+            ]
+          },
+          "platform": {
+            "type": "string",
+            "description": "The tested target.",
+            "enum": [
+              "linux/amd64",
+              "linux/arm64"
+            ]
+          },
+          "digest": {
+            "type": "string",
+            "description": "The actual image digest.",
+            "maxLength": 71,
+            "minLength": 71,
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "sbom_asset_id": {
+            "type": "string",
+            "description": "The actual dependency inventory.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "qualification_receipt_id": {
+            "type": "string",
+            "description": "The actual architecture-specific acceptance.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          }
+        },
+        "required": [
+          "service",
+          "platform",
+          "digest",
+          "sbom_asset_id",
+          "qualification_receipt_id"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 20
+    },
+    "files": {
+      "type": "array",
+      "description": "Exact contracts, prompts, configuration, and method assets.",
+      "items": {
+        "type": "object",
+        "description": "One file in a real acquired release.",
+        "properties": {
+          "relative_path": {
+            "type": "string",
+            "description": "A canonical relative POSIX path without traversal.",
+            "maxLength": 2000,
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "description": "The actual complete file digest.",
+            "maxLength": 64,
+            "minLength": 64,
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "bytes": {
+            "type": "string",
+            "description": "The actual byte count.",
+            "maxLength": 4096,
+            "minLength": 1,
+            "pattern": "^(0|[1-9][0-9]*)$"
+          },
+          "component": {
+            "type": "string",
+            "description": "The prescribed component kind.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "partition": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The original partition label.",
+                "maxLength": 200,
+                "minLength": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The original partition label."
+          },
+          "required": {
+            "type": "boolean",
+            "description": "Whether the release contract requires this file."
+          }
+        },
+        "required": [
+          "relative_path",
+          "sha256",
+          "bytes",
+          "component",
+          "partition",
+          "required"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 100000
+    },
+    "migration_chain": {
+      "type": "array",
+      "description": "The exact migration chain.",
+      "items": {
+        "type": "string",
+        "description": "An ordered migration digest.",
+        "maxLength": 64,
+        "minLength": 64,
+        "pattern": "^[a-f0-9]{64}$"
+      },
+      "minItems": 1,
+      "maxItems": 1000
+    },
+    "dependency_lock_asset_ids": {
+      "type": "array",
+      "description": "The actual language/tool lockfiles.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "created_at": {
+      "type": "string",
+      "description": "The build time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "manifest_sha256": {
+      "type": "string",
+      "description": "The canonical release digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "source_commit",
+    "images",
+    "files",
+    "migration_chain",
+    "dependency_lock_asset_ids",
+    "created_at",
+    "manifest_sha256"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/teacher-gold.schema.json",
+  "title": "teacher-gold",
+  "type": "object",
+  "description": "Human labels for an actual teacher answer. Original rater records remain immutable.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The real teacher-answer annotation.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "answer_asset_id": {
+      "type": "string",
+      "description": "The immutable real answer bytes.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "answer_sha256": {
+      "type": "string",
+      "description": "The exact answer digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "case_version_id": {
+      "type": "string",
+      "description": "The presented case.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "case_sha256": {
+      "type": "string",
+      "description": "The frozen key digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "audio_sha256": {
+      "type": "string",
+      "description": "The exact recording.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "person_id": {
+      "type": "string",
+      "description": "The real rater.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "qualification_ids": {
+      "type": "array",
+      "description": "The rater competence evidence.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "model_output_seen": {
+      "const": false,
+      "description": "No model output before the independent label submission."
+    },
+    "extraction": {
+      "$ref": "claim-extraction.schema.json"
+    },
+    "normalizations": {
+      "type": "array",
+      "description": "The independently annotated grouping.",
+      "items": {
+        "$ref": "normalization.schema.json"
+      },
+      "minItems": 0,
+      "maxItems": 1000
+    },
+    "decisions": {
+      "$ref": "evaluator-output.schema.json"
+    },
+    "split": {
+      "type": "string",
+      "description": "The frozen project partition.",
+      "enum": [
+        "dev",
+        "calibration",
+        "holdout"
+      ]
+    },
+    "group_id": {
+      "type": "string",
+      "description": "The leakage-connected group.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "submitted_at": {
+      "type": "string",
+      "description": "The independent submission time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "adjudication_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "A later separate adjudication.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "A later separate adjudication."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "answer_asset_id",
+    "answer_sha256",
+    "case_version_id",
+    "case_sha256",
+    "audio_sha256",
+    "person_id",
+    "qualification_ids",
+    "model_output_seen",
+    "extraction",
+    "normalizations",
+    "decisions",
+    "split",
+    "group_id",
+    "submitted_at",
+    "adjudication_id"
+  ],
+  "additionalProperties": false
+}

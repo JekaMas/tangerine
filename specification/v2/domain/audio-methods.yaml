@@ -1,0 +1,43 @@
+version: 2.0.0
+status: defined_not_measured
+delivery:
+  codec: PCM_S16LE_WAV
+  sample_rate_hz: 24000
+  channels: 1
+qc:
+  sample_peak_reject_gte: 0.9999
+  integrated_lufs_min: -20
+  integrated_lufs_max: -16
+  true_peak_dbtp_max: -1
+  rms_window_samples: 480
+  rms_hop_samples: 240
+  silence_dbfs_lte: -45
+  unplanned_silence_fail_ms_gte: 2000
+f0:
+  engine: Praat autocorrelation via pinned praat-parselmouth
+  time_step_seconds: 0.01
+  pitch_floor_hz: 60
+  pitch_ceiling_hz: 500
+  max_candidates: 15
+  very_accurate: true
+  silence_threshold: 0.03
+  voicing_threshold: 0.45
+  octave_cost: 0.01
+  octave_jump_cost: 0.35
+  voiced_unvoiced_cost: 0.14
+  minimum_voiced_frames: 20
+  semitone_reference_hz: 100
+features:
+- lexical_stress
+- nuclear_stress
+- f0_range_semitones
+- f0_slope_semitones_per_second
+- syllable_duration_ratio
+- rhythm
+- boundary
+- weak_form
+- linking
+- assimilation
+- elision
+binding_rule: Exact binary versions, hashes, and implementation conformance are release
+  evidence, not invented values.

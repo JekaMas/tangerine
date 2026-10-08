@@ -1,0 +1,318 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/configuration.schema.json",
+  "title": "configuration",
+  "type": "object",
+  "description": "The complete local operator configuration, without internal database setup.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "workspace_id": {
+      "const": "local",
+      "description": "The sole workspace."
+    },
+    "llm_profile": {
+      "type": "string",
+      "description": "An ID in the supplied llm_profiles registry; no fallback selection.",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "feedback_language": {
+      "type": "string",
+      "description": "The response language.",
+      "enum": [
+        "en",
+        "ru"
+      ]
+    },
+    "intended_uses": {
+      "type": "array",
+      "description": "Deny unselected uses.",
+      "items": {
+        "type": "string",
+        "description": "An explicitly selected operational use.",
+        "enum": [
+          "local_analysis",
+          "internal_training",
+          "commercial_evaluation",
+          "derivative_exercises",
+          "distribution",
+          "model_training",
+          "external_api_transfer",
+          "voice_use"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 8,
+      "uniqueItems": true
+    },
+    "credential_refs": {
+      "type": "object",
+      "description": "Secrets are mounted separately.",
+      "properties": {
+        "deepseek": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The configured DeepSeek secret reference.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The configured DeepSeek secret reference."
+        },
+        "openai": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The configured OpenAI secret reference.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The configured OpenAI secret reference."
+        },
+        "azure": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The configured Azure secret reference.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The configured Azure secret reference."
+        }
+      },
+      "required": [
+        "deepseek",
+        "openai",
+        "azure"
+      ],
+      "additionalProperties": false
+    },
+    "azure_region": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The actual configured Azure region.",
+          "maxLength": 60,
+          "minLength": 1,
+          "pattern": "^[a-z0-9]+$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Required only for selected Azure operations; missing speech settings do not prevent local reading or LLM-only use."
+    },
+    "connectors": {
+      "type": "array",
+      "description": "Separate corpus and vendor configurations.",
+      "items": {
+        "$ref": "connector-configuration.schema.json"
+      },
+      "minItems": 0,
+      "maxItems": 30
+    },
+    "limits": {
+      "type": "object",
+      "description": "Explicit resource limits. They do not reduce source scope.",
+      "properties": {
+        "daily_micro_usd": {
+          "type": "string",
+          "description": "The local daily cost ceiling.",
+          "maxLength": 4096,
+          "minLength": 1,
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "monthly_micro_usd": {
+          "type": "string",
+          "description": "The local monthly cost ceiling.",
+          "maxLength": 4096,
+          "minLength": 1,
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "concurrent_paid_operations": {
+          "const": 1,
+          "description": "One foreground costly operation."
+        },
+        "archive_bytes": {
+          "type": "string",
+          "description": "The maximum compressed source size.",
+          "maxLength": 4096,
+          "minLength": 1,
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "expanded_bytes": {
+          "type": "string",
+          "description": "The maximum expanded size.",
+          "maxLength": 4096,
+          "minLength": 1,
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "archive_members": {
+          "type": "integer",
+          "description": "The maximum member count.",
+          "minimum": 1,
+          "maximum": 10000000
+        },
+        "member_bytes": {
+          "type": "string",
+          "description": "The maximum single member size.",
+          "maxLength": 4096,
+          "minLength": 1,
+          "pattern": "^(0|[1-9][0-9]*)$"
+        }
+      },
+      "required": [
+        "daily_micro_usd",
+        "monthly_micro_usd",
+        "concurrent_paid_operations",
+        "archive_bytes",
+        "expanded_bytes",
+        "archive_members",
+        "member_bytes"
+      ],
+      "additionalProperties": false
+    },
+    "configuration_sha256": {
+      "type": "string",
+      "description": "The canonical effective configuration digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "llm_profiles": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "llm-profile.schema.json"
+      },
+      "description": "Explicit server-side profiles. ID uniqueness is a semantic invariant. All six stages use the selected profile."
+    },
+    "stage_profiles": {
+      "type": "object",
+      "description": "Advanced explicit role overrides; null inherits the explicitly selected default profile, never an error fallback.",
+      "properties": {
+        "case_generation": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit selected profile ID for case_generation or declared default inheritance."
+        },
+        "linguistic_audit": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit selected profile ID for linguistic_audit or declared default inheritance."
+        },
+        "blind_claim_extraction": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit selected profile ID for blind_claim_extraction or declared default inheritance."
+        },
+        "claim_mapping": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit selected profile ID for claim_mapping or declared default inheritance."
+        },
+        "mapping_audit": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit selected profile ID for mapping_audit or declared default inheritance."
+        },
+        "feedback": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit selected profile ID for feedback or declared default inheritance."
+        }
+      },
+      "required": [
+        "case_generation",
+        "linguistic_audit",
+        "blind_claim_extraction",
+        "claim_mapping",
+        "mapping_audit",
+        "feedback"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "workspace_id",
+    "llm_profile",
+    "feedback_language",
+    "intended_uses",
+    "credential_refs",
+    "azure_region",
+    "connectors",
+    "limits",
+    "configuration_sha256",
+    "llm_profiles",
+    "stage_profiles"
+  ],
+  "additionalProperties": false
+}

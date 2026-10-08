@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Proposed linguistic audit output",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The candidate contract version."
+    },
+    "candidate_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 of the exact referenced bytes."
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "no_findings",
+        "findings",
+        "insufficient_input"
+      ],
+      "description": "The advisory result. no_findings is not approval."
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "untracked_text_error",
+              "invalid_correction",
+              "missing_context",
+              "unsupported_acceptability",
+              "target_count_mismatch",
+              "overlapping_unit_ambiguity",
+              "unverifiable_acoustic_claim",
+              "acceptable_control_conflict",
+              "invalid_proposition",
+              "other_requires_review"
+            ],
+            "description": "The permitted finding class."
+          },
+          "subject_kind": {
+            "type": "string",
+            "enum": [
+              "utterance",
+              "planned_unit",
+              "public_context"
+            ],
+            "description": "The supplied subject type."
+          },
+          "subject_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "The existing subject ID. Use public_context for the context object."
+          },
+          "span": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "utterance_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                    "description": "A supplied utterance ID."
+                  },
+                  "start": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991,
+                    "description": "A nonnegative exact index within the JavaScript safe integer range."
+                  },
+                  "end": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991,
+                    "description": "A nonnegative exact index within the JavaScript safe integer range."
+                  }
+                },
+                "required": [
+                  "utterance_id",
+                  "start",
+                  "end"
+                ],
+                "additionalProperties": false,
+                "description": "A half-open Unicode codepoint interval in the supplied surface text."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The quoted surface interval, or null for a context-only finding."
+          },
+          "quote": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Exact text in the supplied interval."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The exact quoted text, or null when no span exists."
+          },
+          "context_field": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "A permitted supplied context path."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The exact context field for a context finding."
+          },
+          "message": {
+            "type": "string",
+            "description": "An advisory explanation. It is not proof of sound realization."
+          },
+          "suggested_action": {
+            "type": "string",
+            "enum": [
+              "revise_candidate",
+              "request_human_review",
+              "supply_context",
+              "exclude_unit"
+            ],
+            "description": "An advisory action, never a publication decision."
+          }
+        },
+        "required": [
+          "code",
+          "subject_kind",
+          "subject_id",
+          "span",
+          "quote",
+          "context_field",
+          "message",
+          "suggested_action"
+        ],
+        "additionalProperties": false,
+        "description": "One advisory finding tied to supplied input."
+      },
+      "description": "All reported findings."
+    },
+    "missing_input_fields": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "An absent required input field path."
+      },
+      "description": "Paths that prevent the audit."
+    }
+  },
+  "required": [
+    "schema_version",
+    "candidate_sha256",
+    "outcome",
+    "findings",
+    "missing_input_fields"
+  ],
+  "additionalProperties": false,
+  "description": "A proposed linguistic-audit output. Requires GAP-028 approval.",
+  "$id": "https://tangerine.invalid/schemas/linguistic-audit.schema.json"
+}

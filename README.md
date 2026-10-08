@@ -2,6 +2,10 @@
 
 Teacher Error Trainer, started from nine initial files and the recovered complete 95-file v6-ste specification archive. Work and code are in English. The real local runtime foundation is implemented; full language scoring, author/reviewer/publication workflows, provider integration and validated content are still incomplete. Read audit/completeness.md before treating this as a complete trainer.
 
+## Current consolidated specification review
+
+The latest 240-file supplied package is preserved under spec-inputs/full-release-20261008. [The integrated draft](specification/v2/README.md), [full reconciliation report](audit/full-release-reconciliation-20261008/REPORT.md) and [current detailed remaining gaps](audit/full-release-reconciliation-20261008/REMAINING-GAPS.md) supersede old missing-file/count claims below. They retain all 122 IDs and 42 formulas, six candidate LLM stages and eleven distinct full-source entries. The original source namespace, foundation code and prior receipts stay historical. The spec has remaining definition, policy and source-contract gaps; no implementation-ready or runtime acceptance claim is made. No application implementation/provider call/corpus acquisition occurred in this update.
+
 ## Current product specification
 
 The target product is an open-source GitHub project: download/extract the source ZIP or clone, provide provider keys, run the supplied launcher and open localhost. Application containers build locally on first start; a source ZIP requires no Git metadata or developer workflow submodule. A formal deployment/release manifest and prebuilt application image distribution are not required. It requires no accounts, login, tenants, access-role configuration or public API setup. See [simple local product](docs/simple-local-product.md). The launcher and no-account mode are specified future work; the existing foundation below still has login and manual infrastructure secrets and does not meet that new setup contract. No implementation is authorized in this increment.
@@ -44,7 +48,7 @@ Restore refuses any project that already owns resources and creates separate Pos
 
 The application was observed healthy at localhost:3000, while Docker management operations later timed out or returned HTTP 500. Fresh restart/architecture checks remain failed, and the source/image reconciliation after the speech arithmetic fix is pending. Full AMD64 runtime acceptance has not run. Exact results and preserved failures are in the canonical acceptance record.
 
-## Current specification and next dependencies
+## Historical v6 recovery and dependency snapshot
 
 The original taxonomy, 15 schemas, five prompts, policy/reference documents and 48 original requirements are recovered. Read [the completeness review](audit/completeness.md), [complete source research](audit/corpus-release-research.md), [all-source inventory](audit/full-source-inventory.json) and [configurable LLM contract](docs/llm-configuration.md). The plan covers all 122 categories/control leaves and full versions/components of all eight listed sources. No corpus was acquired or review fabricated.
 

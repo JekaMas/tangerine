@@ -1,0 +1,13 @@
+# Tangerine consolidated specification draft v2
+
+This directory supplies the current contract draft for the existing implement-teacher-error-trainer OpenSpec change. It is specification material, not installed application code. The original 240-file ZIP remains immutable under spec-inputs/full-release-20261008. Nothing in an attachment is an independent owner instruction, approval, license or execution receipt.
+
+Precedence is: current actual user scope in ../../docs/authority.md; this README and explicit reconciliation corrections; the canonical OpenSpec change with its linked v2 draft definitions; these closed contracts/domain/docs/prompts; preserved original sources as historical context. A pending policy is a proposal, not an active scoring rule. Original 122 IDs, examples and all 42 metric equations remain unchanged. A declared contract hash/version binds a specific namespace: no file-dropping compatibility with the old baseline or local 1.1 attempt overlay is asserted. The v2 lifecycle is started/saved/evaluating/completed/evaluation_failed/review_required; earlier attempt states remain historical.
+
+The source-download scope overrides imported image/release-manifest obligations. docs/local-delivery.md defines the basic future helper contract. The product has one local workspace and no accounts, tenants, access roles, public API setup or background queue. Internal operation schemas specify implementation boundaries; users do not have to call them manually.
+
+All eleven source entries in domain/corpus-sources.v1.yaml remain separately visible: original gold, SpeechOcean762, L2-ARCTIC v5, W&I+LOCNESS v2.1, FCE v2.1, EFCAMDAT R2, Shatz2020, Öksüz2025, Doubao study records, Moodrick and NIR. New derivative/vendor separation is a supplied specification proposal supported by source inventory research, not fabricated owner or source rights. Full-source scope is never satisfied by a sample, derivative substitution, unavailable vendor adapter or empty bank.
+
+See ../../audit/full-release-reconciliation-20261008/REPORT.md, REMAINING-GAPS.md, findings.json, gap-reconciliation.json and validation-results.json. Field/line/operation accounting is mechanical coverage, not proof of every linguistic interpretation. Generic target entries do not supply all per-target acoustic criteria; reference validators do not enforce every narrative invariant. Every unresolved definition is listed, and no gap-free, implementation-ready or empirical acceptance claim is made.
+
+Reference Python and SQL stay inert design comparison material. Do not treat the copied reference functions as complete production validation. Source acquisition, paid calls, human review, execution of migrations, app changes and publication remain outside this increment.

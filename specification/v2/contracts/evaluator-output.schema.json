@@ -1,0 +1,294 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/evaluator-output.schema.json",
+  "title": "evaluator-output",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0",
+      "description": "This field identifies the data contract version, not a claim of implementation readiness."
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claim_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This identifier refers to one extracted teacher claim."
+          },
+          "unit_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This identifier refers to the exact reviewed detection unit."
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "matched_error",
+              "false_positive",
+              "confirmed_acceptable",
+              "wrong_acceptance",
+              "unresolved",
+              "ignore"
+            ],
+            "description": "This field states the supported mapping outcome for one claim."
+          },
+          "duplicate_of_claim_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This identifier refers to an earlier compatible nonduplicate claim."
+          },
+          "category_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This field contains the mapped category that the teacher explicitly supplied."
+          },
+          "correction": {
+            "type": "object",
+            "properties": {
+              "supplied": {
+                "type": "boolean",
+                "description": "This flag records whether the source teacher text actually contains the relevant component."
+              },
+              "option_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This identifier selects one existing reviewed correction option."
+              },
+              "satisfied_proposition_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                "minItems": 0,
+                "description": "These existing required propositions match the actual teacher answer."
+              },
+              "violated_proposition_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                "minItems": 0,
+                "description": "These existing forbidden propositions occur in the actual teacher response."
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "accepted",
+                  "rejected",
+                  "partial",
+                  "not_supplied",
+                  "unresolved"
+                ],
+                "description": "This field states the parent operation result from its declared enumeration."
+              },
+              "support_evidence_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                "minItems": 0,
+                "description": "These IDs identify existing evidence within the judgment scope."
+              },
+              "unresolved_reason": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "novel_alternative",
+                      "unclear_meaning",
+                      "unsupported_rationale",
+                      "insufficient_context"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This code states why the correction or explanation cannot receive a resolved judgment."
+              }
+            },
+            "required": [
+              "supplied",
+              "option_id",
+              "satisfied_proposition_ids",
+              "violated_proposition_ids",
+              "status",
+              "support_evidence_ids",
+              "unresolved_reason"
+            ],
+            "additionalProperties": false,
+            "description": "This flag or object describes correction requirements or decisions in its parent contract."
+          },
+          "explanation": {
+            "type": "object",
+            "properties": {
+              "supplied": {
+                "type": "boolean",
+                "description": "This flag records whether the source teacher text actually contains the relevant component."
+              },
+              "option_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This identifier selects one existing reviewed correction option."
+              },
+              "satisfied_proposition_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                "minItems": 0,
+                "description": "These existing required propositions match the actual teacher answer."
+              },
+              "violated_proposition_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                "minItems": 0,
+                "description": "These existing forbidden propositions occur in the actual teacher response."
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "accepted",
+                  "rejected",
+                  "partial",
+                  "not_supplied",
+                  "unresolved"
+                ],
+                "description": "This field states the parent operation result from its declared enumeration."
+              },
+              "support_evidence_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                "minItems": 0,
+                "description": "These IDs identify existing evidence within the judgment scope."
+              },
+              "unresolved_reason": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "novel_alternative",
+                      "unclear_meaning",
+                      "unsupported_rationale",
+                      "insufficient_context"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This code states why the correction or explanation cannot receive a resolved judgment."
+              }
+            },
+            "required": [
+              "supplied",
+              "option_id",
+              "satisfied_proposition_ids",
+              "violated_proposition_ids",
+              "status",
+              "support_evidence_ids",
+              "unresolved_reason"
+            ],
+            "additionalProperties": false,
+            "description": "This flag or object describes explanation requirements or judgments in its parent contract."
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "description": "These IDs identify actual supporting records within the permitted subject and version scope."
+          },
+          "reason_code": {
+            "type": "string",
+            "enum": [
+              "supported",
+              "unsupported_error",
+              "ambiguous_location",
+              "insufficient_localization",
+              "potential_key_defect",
+              "contradiction",
+              "meta_or_question",
+              "duplicate"
+            ],
+            "description": "This code states the supported cause for the mapping outcome."
+          },
+          "note": {
+            "type": "string",
+            "description": "This text records contextual information without authority to override a failed gate."
+          }
+        },
+        "required": [
+          "claim_id",
+          "unit_id",
+          "decision",
+          "duplicate_of_claim_id",
+          "category_id",
+          "correction",
+          "explanation",
+          "evidence_ids",
+          "reason_code",
+          "note"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "description": "These records contain one supported outcome for every extracted claim."
+    }
+  },
+  "required": [
+    "schema_version",
+    "decisions"
+  ],
+  "additionalProperties": false
+}

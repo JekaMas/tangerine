@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/feedback.schema.json",
+  "title": "feedback",
+  "type": "object",
+  "description": "Grounded feedback with valid references for missed units.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "language": {
+      "type": "string",
+      "description": "The response language.",
+      "enum": [
+        "en",
+        "ru"
+      ]
+    },
+    "items": {
+      "type": "array",
+      "description": "The feedback items.",
+      "items": {
+        "type": "object",
+        "description": "A language-specific explanation. Unverified paraphrases cannot appear as factual feedback.",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "description": "The feedback subject kind.",
+            "enum": [
+              "detected",
+              "missed",
+              "false_positive",
+              "acceptable",
+              "pending"
+            ]
+          },
+          "decision_ids": {
+            "type": "array",
+            "description": "Existing decisions. Empty for a missed unit.",
+            "items": {
+              "type": "string",
+              "description": "An existing identifier.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 100000,
+            "uniqueItems": true
+          },
+          "unit_ids": {
+            "type": "array",
+            "description": "Existing units. Empty only for an off-key assertion.",
+            "items": {
+              "type": "string",
+              "description": "An existing identifier.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 100000,
+            "uniqueItems": true
+          },
+          "issue_ids": {
+            "type": "array",
+            "description": "Actual unresolved issues.",
+            "items": {
+              "type": "string",
+              "description": "An existing identifier.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 100000,
+            "uniqueItems": true
+          },
+          "rationale_ids": {
+            "type": "array",
+            "description": "Approved text in the exact case and requested language.",
+            "items": {
+              "type": "string",
+              "description": "An existing identifier.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 100000,
+            "uniqueItems": true
+          },
+          "text": {
+            "type": "string",
+            "description": "A bounded explanation with no new fact or score.",
+            "maxLength": 12000,
+            "minLength": 1
+          },
+          "grounding_status": {
+            "type": "string",
+            "description": "The validation outcome.",
+            "enum": [
+              "approved_text",
+              "human_approved_paraphrase",
+              "unverified_paraphrase"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "description": "The finding finality.",
+            "enum": [
+              "final",
+              "needs_review"
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "decision_ids",
+          "unit_ids",
+          "issue_ids",
+          "rationale_ids",
+          "text",
+          "grounding_status",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 3000
+    },
+    "origin": {
+      "type": "string",
+      "description": "The actual explanation source.",
+      "enum": [
+        "llm",
+        "stored_rationale",
+        "mixed"
+      ]
+    },
+    "receipt_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The actual LLM receipt.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The actual LLM receipt."
+    }
+  },
+  "required": [
+    "schema_version",
+    "language",
+    "items",
+    "origin",
+    "receipt_id"
+  ],
+  "additionalProperties": false
+}

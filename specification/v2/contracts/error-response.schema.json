@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/error-response.schema.json",
+  "title": "error-response",
+  "type": "object",
+  "description": "A common error response.",
+  "properties": {
+    "code": {
+      "type": "string",
+      "description": "The fixed error code from domain/error-codes.yaml.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "enum": [
+        "INVALID_JSON",
+        "INVALID_UTF8",
+        "ORIGIN_DENIED",
+        "INTERNAL_CREDENTIAL_DENIED",
+        "RIGHTS_BLOCKED",
+        "NOT_FOUND",
+        "IDEMPOTENCY_CONFLICT",
+        "INVALID_TRANSITION",
+        "LEASE_ACTIVE",
+        "LEASE_STALE",
+        "CASE_QUARANTINED",
+        "CASE_UNAVAILABLE",
+        "MAINTENANCE_ACTIVE",
+        "REVISION_STALE",
+        "INPUT_CAPACITY_EXCEEDED",
+        "ARCHIVE_LIMIT_EXCEEDED",
+        "SCHEMA_INVALID",
+        "SEMANTIC_TUPLE_INVALID",
+        "EVIDENCE_SCOPE_INVALID",
+        "DIGEST_MISMATCH",
+        "REQUIRED_EVIDENCE_MISSING",
+        "APPROVAL_MISSING",
+        "CAPABILITY_UNQUALIFIED",
+        "CONSTRAINT_CONFLICT",
+        "SOURCE_FORMAT_UNBOUND",
+        "SOURCE_INCOMPLETE",
+        "UNSAFE_ARCHIVE_MEMBER",
+        "NUMERIC_CAPACITY_EXCEEDED",
+        "INCOMPATIBLE_VERSION",
+        "LOCAL_BUDGET_EXCEEDED",
+        "LOCAL_CONCURRENCY_LIMIT",
+        "PROVIDER_FAILURE",
+        "PROVIDER_REFUSAL",
+        "PROVIDER_INCOMPLETE",
+        "PROVIDER_OUTPUT_INVALID",
+        "PROVIDER_SCHEMA_INCOMPATIBLE",
+        "MISSING_CREDENTIALS",
+        "INFRASTRUCTURE_UNAVAILABLE",
+        "RELEASE_INCOMPLETE",
+        "DEADLINE_EXCEEDED",
+        "CANCELLED"
+      ]
+    },
+    "message": {
+      "type": "string",
+      "description": "Safe interface text. No key, secret, or provider payload.",
+      "maxLength": 1000,
+      "minLength": 0
+    },
+    "request_id": {
+      "type": "string",
+      "description": "The local request identifier.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "retryable": {
+      "type": "boolean",
+      "description": "Whether the named operation permits explicit retry."
+    },
+    "object_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "An existing local object, if its identity is permitted in this view.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "An existing local object, if its identity is permitted in this view."
+    },
+    "details": {
+      "type": "array",
+      "description": "Validation locations.",
+      "items": {
+        "type": "object",
+        "description": "A safe field error.",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "A field path, not its secret value.",
+            "maxLength": 500,
+            "minLength": 0
+          },
+          "reason": {
+            "type": "string",
+            "description": "A fixed validation reason.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "enum": [
+              "required",
+              "unknown_field",
+              "type",
+              "range",
+              "length",
+              "format",
+              "pattern",
+              "enum",
+              "duplicate",
+              "scope",
+              "conflict",
+              "missing_evidence",
+              "missing_permission",
+              "missing_approval",
+              "incompatible_version",
+              "unsupported",
+              "unavailable",
+              "capacity"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 100
+    }
+  },
+  "required": [
+    "code",
+    "message",
+    "request_id",
+    "retryable",
+    "object_id",
+    "details"
+  ],
+  "additionalProperties": false
+}

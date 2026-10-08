@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/difficulty-study.schema.json",
+  "title": "difficulty-study",
+  "type": "object",
+  "description": "Full difficulty functionality. No author intuition can fill a measured rating.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The real difficulty measurement.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "case_version_id": {
+      "type": "string",
+      "description": "The frozen item.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "unit_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "A unit-level rating or null for item-level.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "A unit-level rating or null for item-level."
+    },
+    "population_definition": {
+      "type": "string",
+      "description": "The actual declared target teacher population.",
+      "maxLength": 5000,
+      "minLength": 1
+    },
+    "eligible_teacher_answer_ids": {
+      "type": "array",
+      "description": "Actual independent first exposures in that population.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "successes": {
+      "type": "string",
+      "description": "Correctly detected applicable events.",
+      "maxLength": 4096,
+      "minLength": 1,
+      "pattern": "^(0|[1-9][0-9]*)$"
+    },
+    "trials": {
+      "type": "string",
+      "description": "All eligible actual opportunities.",
+      "maxLength": 4096,
+      "minLength": 1,
+      "pattern": "^(0|[1-9][0-9]*)$"
+    },
+    "method_id": {
+      "const": "wilson-difficulty-v1",
+      "description": "The fixed interval and band method."
+    },
+    "lower_bound": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The computed Wilson lower bound.",
+          "maxLength": 4097,
+          "minLength": 1,
+          "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The computed Wilson lower bound."
+    },
+    "upper_bound": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The computed Wilson upper bound.",
+          "maxLength": 4097,
+          "minLength": 1,
+          "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The computed Wilson upper bound."
+    },
+    "rating": {
+      "type": "string",
+      "description": "A supported rating or a data-dependent unavailable state.",
+      "enum": [
+        "unrated",
+        "easy",
+        "medium",
+        "hard",
+        "expert"
+      ]
+    },
+    "missing_reason": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Why no rating is supported.",
+          "enum": [
+            "insufficient_population",
+            "insufficient_sample",
+            "interval_crosses_band",
+            "key_defect",
+            "invalid_population"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Why no rating is supported."
+    },
+    "created_at": {
+      "type": "string",
+      "description": "The real measurement time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "case_version_id",
+    "unit_id",
+    "population_definition",
+    "eligible_teacher_answer_ids",
+    "successes",
+    "trials",
+    "method_id",
+    "lower_bound",
+    "upper_bound",
+    "rating",
+    "missing_reason",
+    "created_at"
+  ],
+  "additionalProperties": false
+}

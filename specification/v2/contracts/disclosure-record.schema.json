@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/disclosure-record.schema.json",
+  "title": "disclosure-record",
+  "type": "object",
+  "description": "Evidence of an actual disclosure action.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The disclosure event.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "activity_id": {
+      "type": "string",
+      "description": "The attempt or review context.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "activity_kind": {
+      "type": "string",
+      "description": "The kind of local activity.",
+      "enum": [
+        "teacher",
+        "blind_review",
+        "source_transfer"
+      ]
+    },
+    "disclosed_sha256": {
+      "type": "string",
+      "description": "The exact content or provider disclosure.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "prior_submission_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The required saved submission.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The required saved submission."
+    },
+    "acknowledged_by_person_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The real person, if a person record is part of this activity.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The real person, if a person record is part of this activity."
+    },
+    "created_at": {
+      "type": "string",
+      "description": "The database disclosure time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "activity_id",
+    "activity_kind",
+    "disclosed_sha256",
+    "prior_submission_id",
+    "acknowledged_by_person_id",
+    "created_at"
+  ],
+  "additionalProperties": false
+}

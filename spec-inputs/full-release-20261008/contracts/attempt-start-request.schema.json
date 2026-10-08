@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/attempt-start-request.schema.json",
+  "title": "attempt-start-request",
+  "type": "object",
+  "description": "Start one local attempt.",
+  "properties": {
+    "case_version_id": {
+      "type": "string",
+      "description": "The selected published case.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "case_sha256": {
+      "type": "string",
+      "description": "The visible selection digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "requested_language": {
+      "type": "string",
+      "description": "The response language.",
+      "enum": [
+        "en",
+        "ru"
+      ]
+    }
+  },
+  "required": [
+    "case_version_id",
+    "case_sha256",
+    "requested_language"
+  ],
+  "additionalProperties": false
+}

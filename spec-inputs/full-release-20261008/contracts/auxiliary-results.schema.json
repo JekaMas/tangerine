@@ -1,0 +1,1813 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/auxiliary-results.schema.json",
+  "title": "auxiliary-results",
+  "type": "object",
+  "description": "Auxiliary measurements with explicit absence.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "attempt_id": {
+      "type": "string",
+      "description": "The exact attempt.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "case_version_id": {
+      "type": "string",
+      "description": "The exact case.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "measurements": {
+      "type": "object",
+      "description": "All 15 named auxiliary slots are present.",
+      "properties": {
+        "annotation.agreement": {
+          "type": "object",
+          "description": "A typed measurement. Exactly one numeric representation exists when observed.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "The observation status.",
+              "enum": [
+                "observed",
+                "not_applicable",
+                "not_observable",
+                "not_run",
+                "insufficient_evidence",
+                "review_required",
+                "failed"
+              ]
+            },
+            "exact": {
+              "anyOf": [
+                {
+                  "$ref": "exact-rational.schema.json"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The value, or null when the contract states that it is absent."
+            },
+            "decimal_value": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A measured non-rational value in canonical decimal form.",
+                  "maxLength": 4097,
+                  "minLength": 1,
+                  "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A measured non-rational value in canonical decimal form."
+            },
+            "unit": {
+              "type": "string",
+              "description": "The measurement unit.",
+              "enum": [
+                "ratio",
+                "seconds",
+                "count",
+                "words_per_minute",
+                "events_per_100_words"
+              ]
+            },
+            "method_id": {
+              "type": "string",
+              "description": "The exact method contract.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "evidence_ids": {
+              "type": "array",
+              "description": "The actual source evidence.",
+              "items": {
+                "type": "string",
+                "description": "An existing identifier.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              "minItems": 0,
+              "maxItems": 100000,
+              "uniqueItems": true
+            },
+            "reason_code": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "The specified absence or failure reason.",
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The specified absence or failure reason."
+            },
+            "display": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A derived display value, never a source for scoring.",
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A derived display value, never a source for scoring."
+            }
+          },
+          "required": [
+            "status",
+            "exact",
+            "decimal_value",
+            "unit",
+            "method_id",
+            "evidence_ids",
+            "reason_code",
+            "display"
+          ],
+          "additionalProperties": false
+        },
+        "annotation.cohen_kappa": {
+          "type": "object",
+          "description": "A typed measurement. Exactly one numeric representation exists when observed.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "The observation status.",
+              "enum": [
+                "observed",
+                "not_applicable",
+                "not_observable",
+                "not_run",
+                "insufficient_evidence",
+                "review_required",
+                "failed"
+              ]
+            },
+            "exact": {
+              "anyOf": [
+                {
+                  "$ref": "exact-rational.schema.json"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The value, or null when the contract states that it is absent."
+            },
+            "decimal_value": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A measured non-rational value in canonical decimal form.",
+                  "maxLength": 4097,
+                  "minLength": 1,
+                  "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A measured non-rational value in canonical decimal form."
+            },
+            "unit": {
+              "type": "string",
+              "description": "The measurement unit.",
+              "enum": [
+                "ratio",
+                "seconds",
+                "count",
+                "words_per_minute",
+                "events_per_100_words"
+              ]
+            },
+            "method_id": {
+              "type": "string",
+              "description": "The exact method contract.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "evidence_ids": {
+              "type": "array",
+              "description": "The actual source evidence.",
+              "items": {
+                "type": "string",
+                "description": "An existing identifier.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              "minItems": 0,
+              "maxItems": 100000,
+              "uniqueItems": true
+            },
+            "reason_code": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "The specified absence or failure reason.",
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The specified absence or failure reason."
+            },
+            "display": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A derived display value, never a source for scoring.",
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A derived display value, never a source for scoring."
+            }
+          },
+          "required": [
+            "status",
+            "exact",
+            "decimal_value",
+            "unit",
+            "method_id",
+            "evidence_ids",
+            "reason_code",
+            "display"
+          ],
+          "additionalProperties": false
+        },
+        "verification.wer": {
+          "type": "object",
+          "description": "A typed measurement. Exactly one numeric representation exists when observed.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "The observation status.",
+              "enum": [
+                "observed",
+                "not_applicable",
+                "not_observable",
+                "not_run",
+                "insufficient_evidence",
+                "review_required",
+                "failed"
+              ]
+            },
+            "exact": {
+              "anyOf": [
+                {
+                  "$ref": "exact-rational.schema.json"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The value, or null when the contract states that it is absent."
+            },
+            "decimal_value": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A measured non-rational value in canonical decimal form.",
+                  "maxLength": 4097,
+                  "minLength": 1,
+                  "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A measured non-rational value in canonical decimal form."
+            },
+            "unit": {
+              "type": "string",
+              "description": "The measurement unit.",
+              "enum": [
+                "ratio",
+                "seconds",
+                "count",
+                "words_per_minute",
+                "events_per_100_words"
+              ]
+            },
+            "method_id": {
+              "type": "string",
+              "description": "The exact method contract.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "evidence_ids": {
+              "type": "array",
+              "description": "The actual source evidence.",
+              "items": {
+                "type": "string",
+                "description": "An existing identifier.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              "minItems": 0,
+              "maxItems": 100000,
+              "uniqueItems": true
+            },
+            "reason_code": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "The specified absence or failure reason.",
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The specified absence or failure reason."
+            },
+            "display": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A derived display value, never a source for scoring.",
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A derived display value, never a source for scoring."
+            }
+          },
+          "required": [
+            "status",
+            "exact",
+            "decimal_value",
+            "unit",
+            "method_id",
+            "evidence_ids",
+            "reason_code",
+            "display"
+          ],
+          "additionalProperties": false
+        },
+        "audio.speech_rate_wpm": {
+          "type": "object",
+          "description": "A typed measurement. Exactly one numeric representation exists when observed.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "The observation status.",
+              "enum": [
+                "observed",
+                "not_applicable",
+                "not_observable",
+                "not_run",
+                "insufficient_evidence",
+                "review_required",
+                "failed"
+              ]
+            },
+            "exact": {
+              "anyOf": [
+                {
+                  "$ref": "exact-rational.schema.json"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The value, or null when the contract states that it is absent."
+            },
+            "decimal_value": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A measured non-rational value in canonical decimal form.",
+                  "maxLength": 4097,
+                  "minLength": 1,
+                  "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A measured non-rational value in canonical decimal form."
+            },
+            "unit": {
+              "type": "string",
+              "description": "The measurement unit.",
+              "enum": [
+                "ratio",
+                "seconds",
+                "count",
+                "words_per_minute",
+                "events_per_100_words"
+              ]
+            },
+            "method_id": {
+              "type": "string",
+              "description": "The exact method contract.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "evidence_ids": {
+              "type": "array",
+              "description": "The actual source evidence.",
+              "items": {
+                "type": "string",
+                "description": "An existing identifier.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              "minItems": 0,
+              "maxItems": 100000,
+              "uniqueItems": true
+            },
+            "reason_code": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "The specified absence or failure reason.",
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The specified absence or failure reason."
+            },
+            "display": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A derived display value, never a source for scoring.",
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A derived display value, never a source for scoring."
+            }
+          },
+          "required": [
+            "status",
+            "exact",
+            "decimal_value",
+            "unit",
+            "method_id",
+            "evidence_ids",
+            "reason_code",
+            "display"
+          ],
+          "additionalProperties": false
+        },
+        "audio.articulation_rate_wpm": {
+          "type": "object",
+          "description": "A typed measurement. Exactly one numeric representation exists when observed.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "The observation status.",
+              "enum": [
+                "observed",
+                "not_applicable",
+                "not_observable",
+                "not_run",
+                "insufficient_evidence",
+                "review_required",
+                "failed"
+              ]
+            },
+            "exact": {
+              "anyOf": [
+                {
+                  "$ref": "exact-rational.schema.json"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The value, or null when the contract states that it is absent."
+            },
+            "decimal_value": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A measured non-rational value in canonical decimal form.",
+                  "maxLength": 4097,
+                  "minLength": 1,
+                  "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A measured non-rational value in canonical decimal form."
+            },
+            "unit": {
+              "type": "string",
+              "description": "The measurement unit.",
+              "enum": [
+                "ratio",
+                "seconds",
+                "count",
+                "words_per_minute",
+                "events_per_100_words"
+              ]
+            },
+            "method_id": {
+              "type": "string",
+              "description": "The exact method contract.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "evidence_ids": {
+              "type": "array",
+              "description": "The actual source evidence.",
+              "items": {
+                "type": "string",
+                "description": "An existing identifier.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              "minItems": 0,
+              "maxItems": 100000,
+              "uniqueItems": true
+            },
+            "reason_code": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "The specified absence or failure reason.",
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The specified absence or failure reason."
+            },
+            "display": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A derived display value, never a source for scoring.",
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A derived display value, never a source for scoring."
+            }
+          },
+          "required": [
+            "status",
+            "exact",
+            "decimal_value",
+            "unit",
+            "method_id",
+            "evidence_ids",
+            "reason_code",
+            "display"
+          ],
+          "additionalProperties": false
+        },
+        "audio.pause_ratio": {
+          "type": "object",
+          "description": "A typed measurement. Exactly one numeric representation exists when observed.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "The observation status.",
+              "enum": [
+                "observed",
+                "not_applicable",
+                "not_observable",
+                "not_run",
+                "insufficient_evidence",
+                "review_required",
+                "failed"
+              ]
+            },
+            "exact": {
+              "anyOf": [
+                {
+                  "$ref": "exact-rational.schema.json"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The value, or null when the contract states that it is absent."
+            },
+            "decimal_value": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A measured non-rational value in canonical decimal form.",
+                  "maxLength": 4097,
+                  "minLength": 1,
+                  "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A measured non-rational value in canonical decimal form."
+            },
+            "unit": {
+              "type": "string",
+              "description": "The measurement unit.",
+              "enum": [
+                "ratio",
+                "seconds",
+                "count",
+                "words_per_minute",
+                "events_per_100_words"
+              ]
+            },
+            "method_id": {
+              "type": "string",
+              "description": "The exact method contract.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "evidence_ids": {
+              "type": "array",
+              "description": "The actual source evidence.",
+              "items": {
+                "type": "string",
+                "description": "An existing identifier.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              "minItems": 0,
+              "maxItems": 100000,
+              "uniqueItems": true
+            },
+            "reason_code": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "The specified absence or failure reason.",
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The specified absence or failure reason."
+            },
+            "display": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A derived display value, never a source for scoring.",
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A derived display value, never a source for scoring."
+            }
+          },
+          "required": [
+            "status",
+            "exact",
+            "decimal_value",
+            "unit",
+            "method_id",
+            "evidence_ids",
+            "reason_code",
+            "display"
+          ],
+          "additionalProperties": false
+        },
+        "audio.disfluency_density": {
+          "type": "object",
+          "description": "A typed measurement. Exactly one numeric representation exists when observed.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "The observation status.",
+              "enum": [
+                "observed",
+                "not_applicable",
+                "not_observable",
+                "not_run",
+                "insufficient_evidence",
+                "review_required",
+                "failed"
+              ]
+            },
+            "exact": {
+              "anyOf": [
+                {
+                  "$ref": "exact-rational.schema.json"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The value, or null when the contract states that it is absent."
+            },
+            "decimal_value": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A measured non-rational value in canonical decimal form.",
+                  "maxLength": 4097,
+                  "minLength": 1,
+                  "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A measured non-rational value in canonical decimal form."
+            },
+            "unit": {
+              "type": "string",
+              "description": "The measurement unit.",
+              "enum": [
+                "ratio",
+                "seconds",
+                "count",
+                "words_per_minute",
+                "events_per_100_words"
+              ]
+            },
+            "method_id": {
+              "type": "string",
+              "description": "The exact method contract.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "evidence_ids": {
+              "type": "array",
+              "description": "The actual source evidence.",
+              "items": {
+                "type": "string",
+                "description": "An existing identifier.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              "minItems": 0,
+              "maxItems": 100000,
+              "uniqueItems": true
+            },
+            "reason_code": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "The specified absence or failure reason.",
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The specified absence or failure reason."
+            },
+            "display": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A derived display value, never a source for scoring.",
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A derived display value, never a source for scoring."
+            }
+          },
+          "required": [
+            "status",
+            "exact",
+            "decimal_value",
+            "unit",
+            "method_id",
+            "evidence_ids",
+            "reason_code",
+            "display"
+          ],
+          "additionalProperties": false
+        },
+        "evaluation.coverage": {
+          "type": "object",
+          "description": "A typed measurement. Exactly one numeric representation exists when observed.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "The observation status.",
+              "enum": [
+                "observed",
+                "not_applicable",
+                "not_observable",
+                "not_run",
+                "insufficient_evidence",
+                "review_required",
+                "failed"
+              ]
+            },
+            "exact": {
+              "anyOf": [
+                {
+                  "$ref": "exact-rational.schema.json"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The value, or null when the contract states that it is absent."
+            },
+            "decimal_value": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A measured non-rational value in canonical decimal form.",
+                  "maxLength": 4097,
+                  "minLength": 1,
+                  "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A measured non-rational value in canonical decimal form."
+            },
+            "unit": {
+              "type": "string",
+              "description": "The measurement unit.",
+              "enum": [
+                "ratio",
+                "seconds",
+                "count",
+                "words_per_minute",
+                "events_per_100_words"
+              ]
+            },
+            "method_id": {
+              "type": "string",
+              "description": "The exact method contract.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "evidence_ids": {
+              "type": "array",
+              "description": "The actual source evidence.",
+              "items": {
+                "type": "string",
+                "description": "An existing identifier.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              "minItems": 0,
+              "maxItems": 100000,
+              "uniqueItems": true
+            },
+            "reason_code": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "The specified absence or failure reason.",
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The specified absence or failure reason."
+            },
+            "display": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A derived display value, never a source for scoring.",
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A derived display value, never a source for scoring."
+            }
+          },
+          "required": [
+            "status",
+            "exact",
+            "decimal_value",
+            "unit",
+            "method_id",
+            "evidence_ids",
+            "reason_code",
+            "display"
+          ],
+          "additionalProperties": false
+        },
+        "evaluation.exact_mapping_agreement": {
+          "type": "object",
+          "description": "A typed measurement. Exactly one numeric representation exists when observed.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "The observation status.",
+              "enum": [
+                "observed",
+                "not_applicable",
+                "not_observable",
+                "not_run",
+                "insufficient_evidence",
+                "review_required",
+                "failed"
+              ]
+            },
+            "exact": {
+              "anyOf": [
+                {
+                  "$ref": "exact-rational.schema.json"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The value, or null when the contract states that it is absent."
+            },
+            "decimal_value": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A measured non-rational value in canonical decimal form.",
+                  "maxLength": 4097,
+                  "minLength": 1,
+                  "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A measured non-rational value in canonical decimal form."
+            },
+            "unit": {
+              "type": "string",
+              "description": "The measurement unit.",
+              "enum": [
+                "ratio",
+                "seconds",
+                "count",
+                "words_per_minute",
+                "events_per_100_words"
+              ]
+            },
+            "method_id": {
+              "type": "string",
+              "description": "The exact method contract.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "evidence_ids": {
+              "type": "array",
+              "description": "The actual source evidence.",
+              "items": {
+                "type": "string",
+                "description": "An existing identifier.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              "minItems": 0,
+              "maxItems": 100000,
+              "uniqueItems": true
+            },
+            "reason_code": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "The specified absence or failure reason.",
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The specified absence or failure reason."
+            },
+            "display": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A derived display value, never a source for scoring.",
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A derived display value, never a source for scoring."
+            }
+          },
+          "required": [
+            "status",
+            "exact",
+            "decimal_value",
+            "unit",
+            "method_id",
+            "evidence_ids",
+            "reason_code",
+            "display"
+          ],
+          "additionalProperties": false
+        },
+        "telemetry.elapsed_seconds": {
+          "type": "object",
+          "description": "A typed measurement. Exactly one numeric representation exists when observed.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "The observation status.",
+              "enum": [
+                "observed",
+                "not_applicable",
+                "not_observable",
+                "not_run",
+                "insufficient_evidence",
+                "review_required",
+                "failed"
+              ]
+            },
+            "exact": {
+              "anyOf": [
+                {
+                  "$ref": "exact-rational.schema.json"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The value, or null when the contract states that it is absent."
+            },
+            "decimal_value": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A measured non-rational value in canonical decimal form.",
+                  "maxLength": 4097,
+                  "minLength": 1,
+                  "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A measured non-rational value in canonical decimal form."
+            },
+            "unit": {
+              "type": "string",
+              "description": "The measurement unit.",
+              "enum": [
+                "ratio",
+                "seconds",
+                "count",
+                "words_per_minute",
+                "events_per_100_words"
+              ]
+            },
+            "method_id": {
+              "type": "string",
+              "description": "The exact method contract.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "evidence_ids": {
+              "type": "array",
+              "description": "The actual source evidence.",
+              "items": {
+                "type": "string",
+                "description": "An existing identifier.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              "minItems": 0,
+              "maxItems": 100000,
+              "uniqueItems": true
+            },
+            "reason_code": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "The specified absence or failure reason.",
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The specified absence or failure reason."
+            },
+            "display": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A derived display value, never a source for scoring.",
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A derived display value, never a source for scoring."
+            }
+          },
+          "required": [
+            "status",
+            "exact",
+            "decimal_value",
+            "unit",
+            "method_id",
+            "evidence_ids",
+            "reason_code",
+            "display"
+          ],
+          "additionalProperties": false
+        },
+        "telemetry.replay_count": {
+          "type": "object",
+          "description": "A typed measurement. Exactly one numeric representation exists when observed.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "The observation status.",
+              "enum": [
+                "observed",
+                "not_applicable",
+                "not_observable",
+                "not_run",
+                "insufficient_evidence",
+                "review_required",
+                "failed"
+              ]
+            },
+            "exact": {
+              "anyOf": [
+                {
+                  "$ref": "exact-rational.schema.json"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The value, or null when the contract states that it is absent."
+            },
+            "decimal_value": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A measured non-rational value in canonical decimal form.",
+                  "maxLength": 4097,
+                  "minLength": 1,
+                  "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A measured non-rational value in canonical decimal form."
+            },
+            "unit": {
+              "type": "string",
+              "description": "The measurement unit.",
+              "enum": [
+                "ratio",
+                "seconds",
+                "count",
+                "words_per_minute",
+                "events_per_100_words"
+              ]
+            },
+            "method_id": {
+              "type": "string",
+              "description": "The exact method contract.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "evidence_ids": {
+              "type": "array",
+              "description": "The actual source evidence.",
+              "items": {
+                "type": "string",
+                "description": "An existing identifier.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              "minItems": 0,
+              "maxItems": 100000,
+              "uniqueItems": true
+            },
+            "reason_code": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "The specified absence or failure reason.",
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The specified absence or failure reason."
+            },
+            "display": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A derived display value, never a source for scoring.",
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A derived display value, never a source for scoring."
+            }
+          },
+          "required": [
+            "status",
+            "exact",
+            "decimal_value",
+            "unit",
+            "method_id",
+            "evidence_ids",
+            "reason_code",
+            "display"
+          ],
+          "additionalProperties": false
+        },
+        "teacher.talk_time": {
+          "type": "object",
+          "description": "A typed measurement. Exactly one numeric representation exists when observed.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "The observation status.",
+              "enum": [
+                "observed",
+                "not_applicable",
+                "not_observable",
+                "not_run",
+                "insufficient_evidence",
+                "review_required",
+                "failed"
+              ]
+            },
+            "exact": {
+              "anyOf": [
+                {
+                  "$ref": "exact-rational.schema.json"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The value, or null when the contract states that it is absent."
+            },
+            "decimal_value": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A measured non-rational value in canonical decimal form.",
+                  "maxLength": 4097,
+                  "minLength": 1,
+                  "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A measured non-rational value in canonical decimal form."
+            },
+            "unit": {
+              "type": "string",
+              "description": "The measurement unit.",
+              "enum": [
+                "ratio",
+                "seconds",
+                "count",
+                "words_per_minute",
+                "events_per_100_words"
+              ]
+            },
+            "method_id": {
+              "type": "string",
+              "description": "The exact method contract.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "evidence_ids": {
+              "type": "array",
+              "description": "The actual source evidence.",
+              "items": {
+                "type": "string",
+                "description": "An existing identifier.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              "minItems": 0,
+              "maxItems": 100000,
+              "uniqueItems": true
+            },
+            "reason_code": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "The specified absence or failure reason.",
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The specified absence or failure reason."
+            },
+            "display": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A derived display value, never a source for scoring.",
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A derived display value, never a source for scoring."
+            }
+          },
+          "required": [
+            "status",
+            "exact",
+            "decimal_value",
+            "unit",
+            "method_id",
+            "evidence_ids",
+            "reason_code",
+            "display"
+          ],
+          "additionalProperties": false
+        },
+        "teacher.pronunciation": {
+          "type": "object",
+          "description": "A typed measurement. Exactly one numeric representation exists when observed.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "The observation status.",
+              "enum": [
+                "observed",
+                "not_applicable",
+                "not_observable",
+                "not_run",
+                "insufficient_evidence",
+                "review_required",
+                "failed"
+              ]
+            },
+            "exact": {
+              "anyOf": [
+                {
+                  "$ref": "exact-rational.schema.json"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The value, or null when the contract states that it is absent."
+            },
+            "decimal_value": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A measured non-rational value in canonical decimal form.",
+                  "maxLength": 4097,
+                  "minLength": 1,
+                  "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A measured non-rational value in canonical decimal form."
+            },
+            "unit": {
+              "type": "string",
+              "description": "The measurement unit.",
+              "enum": [
+                "ratio",
+                "seconds",
+                "count",
+                "words_per_minute",
+                "events_per_100_words"
+              ]
+            },
+            "method_id": {
+              "type": "string",
+              "description": "The exact method contract.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "evidence_ids": {
+              "type": "array",
+              "description": "The actual source evidence.",
+              "items": {
+                "type": "string",
+                "description": "An existing identifier.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              "minItems": 0,
+              "maxItems": 100000,
+              "uniqueItems": true
+            },
+            "reason_code": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "The specified absence or failure reason.",
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The specified absence or failure reason."
+            },
+            "display": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A derived display value, never a source for scoring.",
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A derived display value, never a source for scoring."
+            }
+          },
+          "required": [
+            "status",
+            "exact",
+            "decimal_value",
+            "unit",
+            "method_id",
+            "evidence_ids",
+            "reason_code",
+            "display"
+          ],
+          "additionalProperties": false
+        },
+        "teacher.classroom_management": {
+          "type": "object",
+          "description": "A typed measurement. Exactly one numeric representation exists when observed.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "The observation status.",
+              "enum": [
+                "observed",
+                "not_applicable",
+                "not_observable",
+                "not_run",
+                "insufficient_evidence",
+                "review_required",
+                "failed"
+              ]
+            },
+            "exact": {
+              "anyOf": [
+                {
+                  "$ref": "exact-rational.schema.json"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The value, or null when the contract states that it is absent."
+            },
+            "decimal_value": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A measured non-rational value in canonical decimal form.",
+                  "maxLength": 4097,
+                  "minLength": 1,
+                  "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A measured non-rational value in canonical decimal form."
+            },
+            "unit": {
+              "type": "string",
+              "description": "The measurement unit.",
+              "enum": [
+                "ratio",
+                "seconds",
+                "count",
+                "words_per_minute",
+                "events_per_100_words"
+              ]
+            },
+            "method_id": {
+              "type": "string",
+              "description": "The exact method contract.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "evidence_ids": {
+              "type": "array",
+              "description": "The actual source evidence.",
+              "items": {
+                "type": "string",
+                "description": "An existing identifier.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              "minItems": 0,
+              "maxItems": 100000,
+              "uniqueItems": true
+            },
+            "reason_code": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "The specified absence or failure reason.",
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The specified absence or failure reason."
+            },
+            "display": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A derived display value, never a source for scoring.",
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A derived display value, never a source for scoring."
+            }
+          },
+          "required": [
+            "status",
+            "exact",
+            "decimal_value",
+            "unit",
+            "method_id",
+            "evidence_ids",
+            "reason_code",
+            "display"
+          ],
+          "additionalProperties": false
+        },
+        "teacher.engagement": {
+          "type": "object",
+          "description": "A typed measurement. Exactly one numeric representation exists when observed.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "The observation status.",
+              "enum": [
+                "observed",
+                "not_applicable",
+                "not_observable",
+                "not_run",
+                "insufficient_evidence",
+                "review_required",
+                "failed"
+              ]
+            },
+            "exact": {
+              "anyOf": [
+                {
+                  "$ref": "exact-rational.schema.json"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The value, or null when the contract states that it is absent."
+            },
+            "decimal_value": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A measured non-rational value in canonical decimal form.",
+                  "maxLength": 4097,
+                  "minLength": 1,
+                  "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A measured non-rational value in canonical decimal form."
+            },
+            "unit": {
+              "type": "string",
+              "description": "The measurement unit.",
+              "enum": [
+                "ratio",
+                "seconds",
+                "count",
+                "words_per_minute",
+                "events_per_100_words"
+              ]
+            },
+            "method_id": {
+              "type": "string",
+              "description": "The exact method contract.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "evidence_ids": {
+              "type": "array",
+              "description": "The actual source evidence.",
+              "items": {
+                "type": "string",
+                "description": "An existing identifier.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              "minItems": 0,
+              "maxItems": 100000,
+              "uniqueItems": true
+            },
+            "reason_code": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "The specified absence or failure reason.",
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The specified absence or failure reason."
+            },
+            "display": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A derived display value, never a source for scoring.",
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A derived display value, never a source for scoring."
+            }
+          },
+          "required": [
+            "status",
+            "exact",
+            "decimal_value",
+            "unit",
+            "method_id",
+            "evidence_ids",
+            "reason_code",
+            "display"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "annotation.agreement",
+        "annotation.cohen_kappa",
+        "verification.wer",
+        "audio.speech_rate_wpm",
+        "audio.articulation_rate_wpm",
+        "audio.pause_ratio",
+        "audio.disfluency_density",
+        "evaluation.coverage",
+        "evaluation.exact_mapping_agreement",
+        "telemetry.elapsed_seconds",
+        "telemetry.replay_count",
+        "teacher.talk_time",
+        "teacher.pronunciation",
+        "teacher.classroom_management",
+        "teacher.engagement"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "attempt_id",
+    "case_version_id",
+    "measurements"
+  ],
+  "additionalProperties": false
+}

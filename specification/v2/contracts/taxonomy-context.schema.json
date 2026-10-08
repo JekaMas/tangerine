@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/taxonomy-context.schema.json",
+  "title": "taxonomy-context",
+  "type": "object",
+  "description": "Bounded context sent to linguistic stages. Every string comes from a versioned registry.",
+  "properties": {
+    "taxonomy_sha256": {
+      "type": "string",
+      "description": "A SHA-256 digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "entries": {
+      "type": "array",
+      "description": "The exact relevant taxonomy entries.",
+      "items": {
+        "type": "object",
+        "description": "A real registry projection, not only a version identifier.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "An identifier.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "domain": {
+            "type": "string",
+            "description": "An identifier.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "definition": {
+            "type": "string",
+            "description": "The exact definition from the frozen registry.",
+            "maxLength": 20000,
+            "minLength": 1
+          },
+          "inclusion": {
+            "type": "array",
+            "description": "All inclusion conditions.",
+            "items": {
+              "type": "string",
+              "description": "A fixed inclusion condition.",
+              "maxLength": 20000,
+              "minLength": 1
+            },
+            "minItems": 0,
+            "maxItems": 100
+          },
+          "exclusion": {
+            "type": "array",
+            "description": "All exclusion conditions.",
+            "items": {
+              "type": "string",
+              "description": "A fixed exclusion condition.",
+              "maxLength": 20000,
+              "minLength": 1
+            },
+            "minItems": 0,
+            "maxItems": 100
+          },
+          "correction_requirements": {
+            "type": "array",
+            "description": "Correction requirements.",
+            "items": {
+              "type": "string",
+              "description": "A fixed correction requirement.",
+              "maxLength": 20000,
+              "minLength": 1
+            },
+            "minItems": 0,
+            "maxItems": 100
+          },
+          "verification_requirements": {
+            "type": "array",
+            "description": "Realization requirements.",
+            "items": {
+              "type": "string",
+              "description": "A fixed realization criterion.",
+              "maxLength": 20000,
+              "minLength": 1
+            },
+            "minItems": 0,
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "id",
+          "domain",
+          "definition",
+          "inclusion",
+          "exclusion",
+          "correction_requirements",
+          "verification_requirements"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 122
+    },
+    "judgment_rules": {
+      "type": "array",
+      "description": "The actual context rules.",
+      "items": {
+        "type": "object",
+        "description": "A frozen context rule.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "An identifier.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "condition": {
+            "type": "string",
+            "description": "The stated public condition.",
+            "maxLength": 20000,
+            "minLength": 1
+          },
+          "permitted_judgments": {
+            "type": "array",
+            "description": "Allowed judgments.",
+            "items": {
+              "type": "string",
+              "enum": [
+                "true_error",
+                "acceptable",
+                "excluded"
+              ],
+              "description": "An allowed judgment."
+            },
+            "minItems": 0,
+            "maxItems": 3
+          }
+        },
+        "required": [
+          "id",
+          "condition",
+          "permitted_judgments"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 1000
+    }
+  },
+  "required": [
+    "taxonomy_sha256",
+    "entries",
+    "judgment_rules"
+  ],
+  "additionalProperties": false
+}

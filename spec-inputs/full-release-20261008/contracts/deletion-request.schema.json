@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/deletion-request.schema.json",
+  "title": "deletion-request",
+  "type": "object",
+  "description": "A deletion plan that overrides future use while preserving permitted tombstones.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The explicit deletion or revocation request.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "subjects": {
+      "type": "array",
+      "description": "Every selected subject.",
+      "items": {
+        "type": "object",
+        "description": "An explicitly typed reference.",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "description": "The kind of the referenced object.",
+            "enum": [
+              "case",
+              "unit",
+              "utterance",
+              "attempt",
+              "asset",
+              "claim",
+              "review",
+              "record",
+              "release",
+              "configuration"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "The identifier in the declared kind.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "version_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The exact version when the object is versioned.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The exact version when the object is versioned."
+          }
+        },
+        "required": [
+          "kind",
+          "id",
+          "version_id"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 100000
+    },
+    "reason": {
+      "type": "string",
+      "description": "The actual basis.",
+      "enum": [
+        "operator_delete",
+        "consent_withdrawal",
+        "license_revocation",
+        "retention_cleanup"
+      ]
+    },
+    "confirmation_sha256": {
+      "type": "string",
+      "description": "The exact confirmed deletion plan.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "state": {
+      "type": "string",
+      "description": "The erasure state.",
+      "enum": [
+        "requested",
+        "blocked_active_reference",
+        "restricted",
+        "erasing",
+        "erased"
+      ]
+    },
+    "retain_hashes": {
+      "type": "boolean",
+      "description": "Whether the documented rights basis permits retaining hashes."
+    },
+    "affected_result_ids": {
+      "type": "array",
+      "description": "Results that must show restricted evidence.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "revocation_epoch": {
+      "type": "integer",
+      "description": "The new workspace restriction epoch.",
+      "minimum": 0,
+      "maximum": 2147483647
+    },
+    "created_at": {
+      "type": "string",
+      "description": "The request time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "completed_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The actual erasure completion time.",
+          "maxLength": 35,
+          "minLength": 20,
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The actual erasure completion time."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "subjects",
+    "reason",
+    "confirmation_sha256",
+    "state",
+    "retain_hashes",
+    "affected_result_ids",
+    "revocation_epoch",
+    "created_at",
+    "completed_at"
+  ],
+  "additionalProperties": false
+}

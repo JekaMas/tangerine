@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/linguistic-audit-input.schema.json",
+  "title": "linguistic-audit-input",
+  "type": "object",
+  "description": "Text-only advisory audit input. It contains no invented audio observations.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "candidate": {
+      "$ref": "case-candidate.schema.json"
+    },
+    "candidate_sha256": {
+      "type": "string",
+      "description": "The exact candidate.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "blueprint": {
+      "$ref": "blueprint.schema.json"
+    },
+    "taxonomy_version": {
+      "type": "string",
+      "description": "The exact taxonomy registry.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "alias_version": {
+      "type": "string",
+      "description": "The exact alias registry.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "context_policy_version": {
+      "type": "string",
+      "description": "The public judgment policy.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "taxonomy_context": {
+      "$ref": "taxonomy-context.schema.json"
+    }
+  },
+  "required": [
+    "schema_version",
+    "candidate",
+    "candidate_sha256",
+    "blueprint",
+    "taxonomy_version",
+    "alias_version",
+    "context_policy_version",
+    "taxonomy_context"
+  ],
+  "additionalProperties": false
+}

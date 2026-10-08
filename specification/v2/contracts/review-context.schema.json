@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/review-context.schema.json",
+  "title": "review-context",
+  "type": "object",
+  "description": "A local review activity with explicit independence evidence.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The review context.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "case_version_id": {
+      "type": "string",
+      "description": "The exact case.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "audio_sha256": {
+      "type": "string",
+      "description": "The final delivery digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "person_id": {
+      "type": "string",
+      "description": "The actual reviewer.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "qualification_ids": {
+      "type": "array",
+      "description": "Applicable unexpired competence records.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "author_person_ids": {
+      "type": "array",
+      "description": "The real case authors.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "conflicts": {
+      "type": "array",
+      "description": "Declared conflicts.",
+      "items": {
+        "type": "string",
+        "description": "An actual conflict or prior exposure.",
+        "maxLength": 2000,
+        "minLength": 1
+      },
+      "minItems": 0,
+      "maxItems": 50
+    },
+    "prior_key_exposure": {
+      "type": "boolean",
+      "description": "Whether this person saw this key before blind submission."
+    },
+    "other_review_exposure": {
+      "type": "boolean",
+      "description": "Whether this person saw another blind submission."
+    },
+    "phase": {
+      "type": "string",
+      "description": "The activity phase.",
+      "enum": [
+        "blind_open",
+        "blind_submitted",
+        "key_disclosed",
+        "final_submitted",
+        "invalidated"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "description": "The creation time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "case_version_id",
+    "audio_sha256",
+    "person_id",
+    "qualification_ids",
+    "author_person_ids",
+    "conflicts",
+    "prior_key_exposure",
+    "other_review_exposure",
+    "phase",
+    "created_at"
+  ],
+  "additionalProperties": false
+}

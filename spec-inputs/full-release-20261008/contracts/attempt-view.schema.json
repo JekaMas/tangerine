@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/attempt-view.schema.json",
+  "title": "attempt-view",
+  "type": "object",
+  "description": "The teacher-visible attempt. It contains no key or private evidence.",
+  "properties": {
+    "attempt_id": {
+      "type": "string",
+      "description": "The original attempt.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "revision": {
+      "type": "integer",
+      "description": "The local mutable revision.",
+      "minimum": 0,
+      "maximum": 2147483647
+    },
+    "state": {
+      "type": "string",
+      "description": "The attempt state.",
+      "enum": [
+        "started",
+        "saved",
+        "evaluating",
+        "completed",
+        "evaluation_failed",
+        "review_required"
+      ]
+    },
+    "started_at": {
+      "type": "string",
+      "description": "The original start time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "submitted_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The original freeze time.",
+          "maxLength": 35,
+          "minLength": 20,
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The original freeze time."
+    },
+    "answer_text": {
+      "type": "string",
+      "description": "The actual current draft or frozen answer.",
+      "maxLength": 20000,
+      "minLength": 0
+    },
+    "requested_language": {
+      "type": "string",
+      "description": "The response language.",
+      "enum": [
+        "en",
+        "ru"
+      ]
+    },
+    "case": {
+      "$ref": "library-item.schema.json"
+    },
+    "task_components": {
+      "$ref": "attempt.schema.json#/properties/task_components",
+      "description": "Frozen or start-selected components."
+    },
+    "audio_path": {
+      "type": "string",
+      "description": "The same-origin media path.",
+      "maxLength": 500,
+      "minLength": 1
+    },
+    "results_path": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The result lookup path after submission.",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The result lookup path after submission."
+    }
+  },
+  "required": [
+    "attempt_id",
+    "revision",
+    "state",
+    "started_at",
+    "submitted_at",
+    "answer_text",
+    "requested_language",
+    "case",
+    "task_components",
+    "audio_path",
+    "results_path"
+  ],
+  "additionalProperties": false
+}

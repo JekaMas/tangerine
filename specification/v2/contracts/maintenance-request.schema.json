@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/maintenance-request.schema.json",
+  "title": "maintenance-request",
+  "type": "object",
+  "description": "Explicit local maintenance.",
+  "properties": {
+    "action": {
+      "type": "string",
+      "description": "The local action.",
+      "enum": [
+        "inspect_recovery",
+        "apply_recovery",
+        "plan_cleanup",
+        "apply_cleanup",
+        "plan_backup",
+        "plan_restore",
+        "inspect_release"
+      ]
+    },
+    "subject_ids": {
+      "type": "array",
+      "description": "The exact affected objects.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "confirmed_plan_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The actual previewed plan, required for a destructive action.",
+          "maxLength": 64,
+          "minLength": 64,
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The actual previewed plan, required for a destructive action."
+    }
+  },
+  "required": [
+    "action",
+    "subject_ids",
+    "confirmed_plan_sha256"
+  ],
+  "additionalProperties": false
+}

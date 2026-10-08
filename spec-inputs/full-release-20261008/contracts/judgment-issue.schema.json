@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/judgment-issue.schema.json",
+  "title": "judgment-issue",
+  "type": "object",
+  "description": "An unresolved semantic or evidence question.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The issue identity.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "code": {
+      "type": "string",
+      "description": "The reason.",
+      "enum": [
+        "ambiguous_location",
+        "unparsed_substantive_text",
+        "contradiction",
+        "potential_key_defect",
+        "novel_alternative",
+        "unsupported_rationale",
+        "unknown_alias",
+        "audit_disagreement",
+        "uncertain_audio",
+        "case_quarantined",
+        "insufficient_evidence"
+      ]
+    },
+    "claim_ids": {
+      "type": "array",
+      "description": "The related real claims.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "unit_ids": {
+      "type": "array",
+      "description": "The related existing units.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "evidence_ids": {
+      "type": "array",
+      "description": "The supporting evidence.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "explanation": {
+      "type": "string",
+      "description": "The bounded issue description.",
+      "maxLength": 4000,
+      "minLength": 1
+    },
+    "blocks_final_score": {
+      "const": true,
+      "description": "Every unresolved score-relevant issue blocks final aggregates."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "code",
+    "claim_ids",
+    "unit_ids",
+    "evidence_ids",
+    "explanation",
+    "blocks_final_score"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/common.schema.json",
+  "title": "common",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "description": "An identifier.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "sha256": {
+      "type": "string",
+      "description": "A SHA-256 digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "span": {
+      "type": "object",
+      "description": "A half-open text interval. End must be greater than start except an insertion location.",
+      "properties": {
+        "start": {
+          "type": "integer",
+          "description": "Inclusive Unicode codepoint offset.",
+          "minimum": 0,
+          "maximum": 2000000
+        },
+        "end": {
+          "type": "integer",
+          "description": "Exclusive Unicode codepoint offset.",
+          "minimum": 0,
+          "maximum": 2000000
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "additionalProperties": false
+    },
+    "samples": {
+      "type": "object",
+      "description": "An interval on an identified audio clock. End must exceed start.",
+      "properties": {
+        "start": {
+          "type": "integer",
+          "description": "Inclusive sample index.",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "end": {
+          "type": "integer",
+          "description": "Exclusive sample index.",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "sample_rate_hz": {
+          "type": "integer",
+          "description": "The sample clock in Hz as an integer.",
+          "enum": [
+            16000,
+            24000,
+            44100,
+            48000
+          ]
+        }
+      },
+      "required": [
+        "start",
+        "end",
+        "sample_rate_hz"
+      ],
+      "additionalProperties": false
+    },
+    "rational": {
+      "type": "object",
+      "description": "An exact rational. GCD of the magnitudes is one. Zero is 0/1.",
+      "properties": {
+        "numerator": {
+          "type": "string",
+          "description": "The signed reduced numerator.",
+          "maxLength": 4097,
+          "minLength": 1,
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "denominator": {
+          "type": "string",
+          "description": "The positive reduced denominator.",
+          "maxLength": 4096,
+          "minLength": 1,
+          "pattern": "^[1-9][0-9]*$"
+        }
+      },
+      "required": [
+        "numerator",
+        "denominator"
+      ],
+      "additionalProperties": false
+    },
+    "subject": {
+      "type": "object",
+      "description": "An explicitly typed reference.",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "description": "The kind of the referenced object.",
+          "enum": [
+            "case",
+            "unit",
+            "utterance",
+            "attempt",
+            "asset",
+            "claim",
+            "review",
+            "record",
+            "release",
+            "configuration"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "description": "The identifier in the declared kind.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        "version_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The exact version when the object is versioned.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The exact version when the object is versioned."
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "version_id"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "description": "Common definitions. This empty root is not a domain record.",
+  "properties": {},
+  "required": [],
+  "additionalProperties": false
+}

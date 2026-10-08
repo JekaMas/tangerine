@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/transition-request.schema.json",
+  "title": "transition-request",
+  "type": "object",
+  "description": "A case transition request.",
+  "properties": {
+    "action": {
+      "type": "string",
+      "description": "The requested lifecycle action.",
+      "enum": [
+        "request_review",
+        "verify",
+        "publish",
+        "quarantine",
+        "reopen_review",
+        "retire",
+        "supersede"
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "description": "The exact operator reason.",
+      "maxLength": 4000,
+      "minLength": 1
+    },
+    "evidence_ids": {
+      "type": "array",
+      "description": "Real supporting records.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "action",
+    "reason",
+    "evidence_ids"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "path": "docs/lifecycle.md",
+    "reason": "Reviewer documents, consent records, raw provider replies, and private source provenance never enter teacher DTOs. Keys are forbidden before submission. After frozen submission, only the separately gated key-disclosure projection may expose the reviewed linguistic key under GAP-002\u2019s proposed policy."
+  },
+  {
+    "path": "docs/lifecycle.md",
+    "reason": "Remove two verbatim repeated operation-state sections."
+  },
+  {
+    "path": "docs/runtime-and-storage.md",
+    "reason": "Use RFC 8785 JSON Canonicalization Scheme (JCS), encoded as UTF-8, for structured hash projections. Reject duplicate keys, unpaired surrogates, non-finite numbers and integers outside the interoperable safe-integer range unless the schema represents them as decimal strings. Generic key sorting is not an equivalent encoder. No Unicode normalization is applied by JCS."
+  },
+  {
+    "path": "docs/runtime-and-storage.md",
+    "reason": "The database key is `(workspace_id, operation_name, idempotency_key)`, where operation_name is the stable domain/operations.yaml operation ID, not the per-request UUID. Hash a JCS object containing the operation name, normalized concrete path (including target), query parameters, If-Match revision or null, and parsed body (or exact binary-body SHA-256). A changed target, body, query or revision under the same key returns IDEMPOTENCY_CONFLICT. The original receipt remains immutable."
+  },
+  {
+    "path": "docs/math-and-judgments.md",
+    "reason": "Assign `clm_` plus the first 32 hexadecimal SHA-256 digits of UTF-8 JCS encoding of the ordered array [answer_sha256, start_cp, end_cp, exact_text]. Offset values are safe integers. Do not concatenate undelimited strings. Hash collisions or competing interpretations of an identical span require review and cannot overwrite the original clause."
+  },
+  {
+    "path": "docs/audio-methods.md",
+    "reason": "Append each turn\u2019s samples in order and insert exactly gap_after_ms*24 zero samples after it; gap_after_ms is the render-plan integer field. Apply it to every turn, including the final turn, when nonzero. No unspecified gap_ms field exists. These planned intervals are retained on the final sample clock."
+  },
+  {
+    "path": "contracts/key-disclosure.schema.json",
+    "reason": "Separate private rationale record from post-submit teacher allowlist."
+  },
+  {
+    "path": "db/schema.sql",
+    "reason": "contract_vector_sha256 char(64) NOT NULL CHECK (contract_vector_sha256 ~ '^[0-9a-f]{64}$')"
+  },
+  {
+    "path": "docs/maintenance-and-limits.md",
+    "reason": "Record migration history, configuration hashes, the exact contract-vector digest, and the current revocation/tombstone ledger. No formal software release manifest is required."
+  },
+  {
+    "path": "GAP-055 / SPEC-055 artifact binding",
+    "reason": "Imported audit/input-lock.json was not copied into the active namespace; bind the real retained source import-manifest.json, active provenance and current compatibility/drift records instead of a dangling artifact."
+  }
+]

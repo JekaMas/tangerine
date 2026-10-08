@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/asset-reservation-request.schema.json",
+  "title": "asset-reservation-request",
+  "type": "object",
+  "description": "Reserve a full local upload.",
+  "properties": {
+    "purpose": {
+      "type": "string",
+      "description": "The exact asset purpose.",
+      "enum": [
+        "audio_master",
+        "audio_delivery",
+        "provider_input",
+        "provider_output",
+        "source_component",
+        "review_evidence",
+        "permission_document",
+        "source_annotations",
+        "configuration",
+        "backup",
+        "export",
+        "canonical_json"
+      ]
+    },
+    "owner": {
+      "type": "object",
+      "description": "An explicitly typed reference.",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "description": "The kind of the referenced object.",
+          "enum": [
+            "case",
+            "unit",
+            "utterance",
+            "attempt",
+            "asset",
+            "claim",
+            "review",
+            "record",
+            "release",
+            "configuration"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "description": "The identifier in the declared kind.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        "version_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The exact version when the object is versioned.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The exact version when the object is versioned."
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "version_id"
+      ],
+      "additionalProperties": false
+    },
+    "expected_byte_count": {
+      "type": "string",
+      "description": "The expected total file size.",
+      "maxLength": 4096,
+      "minLength": 1,
+      "pattern": "^(0|[1-9][0-9]*)$"
+    },
+    "expected_sha256": {
+      "type": "string",
+      "description": "The caller supplied file digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "mime_type": {
+      "type": "string",
+      "description": "The claimed type, checked against actual bytes.",
+      "maxLength": 120,
+      "minLength": 0
+    }
+  },
+  "required": [
+    "purpose",
+    "owner",
+    "expected_byte_count",
+    "expected_sha256",
+    "mime_type"
+  ],
+  "additionalProperties": false
+}

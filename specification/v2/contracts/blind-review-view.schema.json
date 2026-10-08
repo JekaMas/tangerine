@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/blind-review-view.schema.json",
+  "title": "Blind review view",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "review_context_id": {
+      "type": "string",
+      "description": "The review context.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "phase": {
+      "type": "string",
+      "description": "The activity phase.",
+      "enum": [
+        "blind_open",
+        "blind_submitted",
+        "key_disclosed",
+        "final_submitted",
+        "invalidated"
+      ]
+    },
+    "public_context": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 20000,
+      "description": "Exact public context shown to the teacher; no hidden target hint."
+    },
+    "public_constraints": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 20000,
+      "description": "Exact public variety/task constraints; no planned targets."
+    },
+    "audio_path": {
+      "type": "string",
+      "pattern": "^/api/v1/reviews/[A-Za-z0-9_.:-]+/audio$",
+      "description": "Private same-origin proxy route without target metadata."
+    },
+    "blind_submission_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Own frozen blind submission identity or null."
+    }
+  },
+  "required": [
+    "review_context_id",
+    "phase",
+    "public_context",
+    "public_constraints",
+    "audio_path",
+    "blind_submission_id"
+  ]
+}

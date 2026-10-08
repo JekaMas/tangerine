@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/blind-annotation.schema.json",
+  "title": "blind-annotation",
+  "type": "object",
+  "description": "An immutable pre-key annotation. Planned unit IDs are forbidden.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The annotation submission.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "review_context_id": {
+      "type": "string",
+      "description": "The blind review context.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "audio_sha256": {
+      "type": "string",
+      "description": "The exact heard bytes.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "observations": {
+      "type": "array",
+      "description": "All independently discovered observations.",
+      "items": {
+        "type": "object",
+        "description": "An observation made before planned-key disclosure.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The independently discovered observation.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "utterance_hint": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "A quoted or descriptive location without planned IDs.",
+                "maxLength": 1000,
+                "minLength": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A quoted or descriptive location without planned IDs."
+          },
+          "intervals": {
+            "type": "array",
+            "description": "Observed locations in final audio.",
+            "items": {
+              "type": "object",
+              "description": "An interval on an identified audio clock. End must exceed start.",
+              "properties": {
+                "start": {
+                  "type": "integer",
+                  "description": "Inclusive sample index.",
+                  "minimum": 0,
+                  "maximum": 2147483647
+                },
+                "end": {
+                  "type": "integer",
+                  "description": "Exclusive sample index.",
+                  "minimum": 1,
+                  "maximum": 2147483647
+                },
+                "sample_rate_hz": {
+                  "type": "integer",
+                  "description": "The sample clock in Hz as an integer.",
+                  "enum": [
+                    16000,
+                    24000,
+                    44100,
+                    48000
+                  ]
+                }
+              },
+              "required": [
+                "start",
+                "end",
+                "sample_rate_hz"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1,
+            "maxItems": 30
+          },
+          "observed_text": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "What the reviewer heard.",
+                "maxLength": 20000,
+                "minLength": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "What the reviewer heard."
+          },
+          "observed_ipa": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "An actual phonetic observation.",
+                "maxLength": 3000,
+                "minLength": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "An actual phonetic observation."
+          },
+          "candidate_taxonomy_ids": {
+            "type": "array",
+            "description": "Zero or more candidate category IDs.",
+            "items": {
+              "type": "string",
+              "description": "An existing identifier.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 100000,
+            "uniqueItems": true
+          },
+          "judgment": {
+            "type": "string",
+            "description": "The independent judgment.",
+            "enum": [
+              "true_error",
+              "acceptable",
+              "uncertain"
+            ]
+          },
+          "note": {
+            "type": "string",
+            "description": "The original reviewer explanation.",
+            "maxLength": 10000,
+            "minLength": 0
+          },
+          "certainty": {
+            "type": "string",
+            "description": "The declared certainty.",
+            "enum": [
+              "clear",
+              "uncertain"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "utterance_hint",
+          "intervals",
+          "observed_text",
+          "observed_ipa",
+          "candidate_taxonomy_ids",
+          "judgment",
+          "note",
+          "certainty"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 1000
+    },
+    "unlocalized_notes": {
+      "type": "array",
+      "description": "Preserved unresolved observations.",
+      "items": {
+        "type": "string",
+        "description": "A note without a reliable location.",
+        "maxLength": 5000,
+        "minLength": 0
+      },
+      "minItems": 0,
+      "maxItems": 100
+    },
+    "heard_entire_recording_attestation": {
+      "type": "boolean",
+      "description": "The human states that the entire recording was heard."
+    },
+    "submitted_at": {
+      "type": "string",
+      "description": "The database submission time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "submission_sha256": {
+      "type": "string",
+      "description": "The canonical submission digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "review_context_id",
+    "audio_sha256",
+    "observations",
+    "unlocalized_notes",
+    "heard_entire_recording_attestation",
+    "submitted_at",
+    "submission_sha256"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,170 @@
+There are **53 remaining grouped specification gaps**. Each covers several related fields or rules; this is not a count of individual missing fields.
+
+**33 are engineering definitions I can draft. The other 20 comprise 11 product choices, six linguistic policies and three source-owner information requests.** You do not need to design database tables, internal endpoints or serialization yourself.
+
+I saved the complete detailed register in [REMAINING-GAPS.md](/Users/jekamas/projects/0xatelerix/tangerine/audit/simple-local-20261008/REMAINING-GAPS.md). Every entry includes existing definitions, missing rules, why they matter, who closes them, exact required input, source references, and positive/negative closure criteria. The full list follows.
+
+The former GAP-005 and GAP-006 are excluded: your local-product instruction removed access-role authorization and account/session requirements.
+
+1. **GAP-001 — Complete internal operation contracts. Owner: engineering.**  
+   The product activities and several response statuses are specified, but the browser, backend and speech service lack one complete contract for every internal operation. Missing details include request/response fields, validation, revision preconditions, idempotency, pagination where needed, errors and atomic effects. **Closure:** specify the minimal operations for preparation, review, publication, submissions, results, disputes, imports, settings and media. This requires no public API or user API configuration.
+
+2. **GAP-002 — Exactly what each view reveals. Owner: product choice.**  
+   Teacher views must hide transcripts, keys and error counts before submission; blind review must hide the planned key until independent observations are saved. Complete field allowlists and post-submit disclosure rules are missing. **Your choice:** after submission, should the teacher see the entire transcript/key or only excerpts supporting the result? Also decide what remains visible for historical or quarantined exercises. Engineering can then define every response projection.
+
+3. **GAP-003 — Complete persistent data model. Owner: engineering.**  
+   Individual JSON schemas exist, and the local attempt overlay removes account/tenant ownership. The complete durable model does not: entities, columns, nullability, keys, uniqueness, relationships, indexes, deletion effects and revision constraints remain incomplete. **Closure:** define all local cases, units, assets, attempts, results, people, qualifications, reviews, permissions, manifests, transformations, evaluation stages, disputes and audit records, including migration compatibility.
+
+4. **GAP-004 — Consistency between database records and audio storage. Owner: engineering.**  
+   PostgreSQL transactions and object uploads can fail separately. The spec does not fully define pending uploads, hash verification, object visibility, database linking, orphan cleanup, overwrite races or crash recovery. **Closure:** specify the ordered protocol and recovery at every failure boundary so an exercise cannot become available with missing, partial or changed audio. Recovery must respect the existing prohibition on a background queue.
+
+5. **GAP-007 — Complete exercise lifecycle rules. Owner: product choice.**  
+   States such as draft, rendered, needs_review, verified, published, quarantined and retired exist. Not every transition has exact preconditions, effects, revision checks and failure outcomes. **Your choice:** what happens to an already-open or evaluating attempt when its exercise is quarantined or retired? How can a quarantined version return to review? Engineering then completes the transition table, including concurrent publication and re-rendering.
+
+6. **GAP-008 — Attempt recovery and retry rules. Owner: engineering.**  
+   Saving the answer before provider calls, explicit user retry, the 270-second evaluation deadline and 300-second lease are defined. State-specific recovery is incomplete. **Closure:** define valid retry states, lease takeover, result lookup during evaluation, interrupted requests, reusable stage results, stale-write rejection and HTTP outcomes. Retries must preserve the original answer, case and policy and follow the quarantine/retirement choice in GAP-007.
+
+7. **GAP-009 — Disputes and revised historical results. Owner: product choice.**  
+   Plausible unlisted claims require review, and corrected keys require versioned history. Complete dispute/adjudication schemas, states and old-to-new unit mappings are missing. **Your choice:** should a corrected key revise only the disputed attempt or also other affected historical attempts? How should revised results appear, and how can the local user request reconsideration? Earlier scores and evidence must remain available.
+
+8. **GAP-010 — Structured independent blind-review annotations. Owner: engineering.**  
+   Two people must listen before seeing the planned key. Existing records do not fully represent independently discovered observations, intervals, possible categories, acceptable controls and uncertainty. **Closure:** define the pre-key annotation schema, immutable submission hash/time, key-disclosure event and subsequent correspondence to planned units. Post-key edits must not masquerade as original independent observations.
+
+9. **GAP-011 — Reviewer qualifications and independence evidence. Owner: product choice.**  
+   Two genuinely different qualified people are required; acoustic review requires phonetics competence; disagreement requires a third qualified adjudicator or blocks publication. Accepted evidence and conflict rules remain undefined. **Your choice:** what competence evidence is acceptable, who attests it locally, how long it remains valid, which author/reviewer conflicts are prohibited, and what approvals are required after adjudication? Reviewer accounts are unnecessary.
+
+10. **GAP-012 — Gold annotations for real teacher answers. Owner: engineering.**  
+    Real answers and independent labels are required, but there is no complete annotation contract covering spans, fragments, stance, categories, corrections, rationales, expected mappings, uncertainty and adjudication. **Closure:** define the schema and annotation handbook for correct, partial, vague, repeated, contradictory, false and off-key claims. Preserve raw text and separate pre-adjudication labels, bound to exact case, policy and split versions.
+
+11. **GAP-013 — What counts as one error event. Owner: engineering, with linguistic review.**  
+    The 122 taxonomy leaves have inclusion/exclusion rules, but overlapping categories and shared repair spans do not have a complete unitization procedure. **Closure:** define primary versus secondary labels, independent repair opportunities, repeated occurrences, multi-utterance events and unresolved ambiguity. The same evidence must produce reproducible counts rather than additional opportunities whenever another category label fits.
+
+12. **GAP-014 — Approved English/Russian category aliases. Owner: linguistic policy.**  
+    Category IDs exist, but the accepted bilingual terminology registry is missing. Parent/family terms, synonyms, ambiguous wording and normalization rules are not fully enumerated. **Required input:** a reviewed alias map identifying accepted wording, target IDs, parent-versus-leaf credit and ambiguity outcomes. Unknown wording must stay unresolved rather than receive a guessed category.
+
+13. **GAP-015 — Severity-to-weight policy. Owner: product choice.**  
+    Severity labels, weights 1–4 and false-positive weight one exist. The spec does not fully bind labels to weights or explain whether they can vary independently. **Your choice:** approve a reproducible severity rubric and label-to-weight mapping, or permit independently reviewed weights with defined evidence. Weights must be fixed before the answer. This does not change the inherited composite-component weights.
+
+14. **GAP-016 — Evidence for exercise difficulty ratings. Owner: product choice.**  
+    Generated candidates remain unrated, but reviewed records allow easy, medium, hard and expert without a complete measurement protocol. **Your choice:** keep all v1 exercises unrated, or specify the population, rating method, sample requirements and evidence supporting each rating. Author intuition or unrelated corpus CEFR labels cannot establish measured listening-task difficulty.
+
+15. **GAP-017 — Variety, register and acceptable-form policy. Owner: linguistic policy.**  
+    The spec distinguishes true errors, permitted variants and naturalness preferences. Allowed context values and judgment combinations are incomplete. **Required input:** accepted variety/register values or a reviewed free-text policy, compatible judgment/status/eligibility combinations, and the public context required for each context-dependent category. Hidden dialect constraints or accent preferences must not determine error scores.
+
+16. **GAP-018 — Stable claim identities and extraction completeness. Owner: engineering.**  
+    Claims must quote exact codepoint spans from the saved answer. Stable ID construction, ordering, permitted overlaps, attached corrections and completeness checks remain undefined. **Closure:** specify deterministic identities and coverage rules, including category-only comments and cross-clause attachments. Every substantive assertion must become a checked claim or an explicit unresolved fragment; silent omission cannot count as successful extraction.
+
+17. **GAP-019 — Combining fragments, duplicates and retractions. Owner: engineering.**  
+    Exact duplicates count once; compatible fragments may combine; explicit retractions preserve the final endorsed position; contradictions require review. The transformation into scorer-ready decisions is incomplete. **Closure:** define grouping, ordering, attachment and retraction-chain rules with provenance for every original clause. Prevent cycles, arbitrary last-write behavior and selection of only the most favorable fragment.
+
+18. **GAP-020 — Cross-field semantic validity rules. Owner: engineering.**  
+    Closed JSON schemas exist, but valid JSON can contain contradictory combinations. Conditional relationships between decisions, units, stance, reasons, duplicates, correction options, propositions and unresolved states are incomplete. **Closure:** enumerate allowed tuples and required/null/empty relationships across the schemas, including candidate realization and review states. Specify whether each invalid or uncertain combination causes rejection or review.
+
+19. **GAP-021 — Approved rationale identities and explanation binding. Owner: engineering.**  
+    The existing reference rule already requires `explanation.option_id = null`; an explanation-option registry is not missing. Feedback still lacks a complete identity contract for approved rationale records. **Closure:** define rationale ID, unit/version, language, approved text and evidence, and enforce the null rule consistently in active invariants and prompts. Reject nonexistent, wrong-language or wrong-version references.
+
+20. **GAP-022 — Conversion from semantic findings to deterministic scores. Owner: engineering.**  
+    Rubric rules exist: required-proposition satisfaction determines fractional credit, forbidden assertions force zero, approved alternatives can earn full credit, and novel alternatives require review. The complete conversion algorithm is missing. **Closure:** specify option matching, normalization, false clauses, exclusions, controls, duplicates/retractions and scorer-record construction. Code must derive fractions and counters; the LLM must not supply grades.
+
+21. **GAP-023 — Exact mapper-versus-auditor comparison. Owner: engineering.**  
+    Mapping and audit are separate requests, and substantive disagreement requires review. The compared fields and equivalence rules are incomplete. **Closure:** define canonical projections, ordering/set treatment, duplicate handling and score-relevant differences across target, option, stance, evidence and proposition credit. Both outputs remain preserved; favorable retries cannot resolve disagreement.
+
+22. **GAP-024 — Exact numeric storage, transport and rounding. Owner: engineering.**  
+    Core ratios retain exact sufficient statistics and fractions. The composite lacks a complete exact representation, and cross-language integer limits and decimal serialization remain unspecified. **Closure:** define exact composite storage, numeric ranges, overflow behavior, JSON representation and display rounding for composite/auxiliary values. A rounded display or binary floating-point approximation must not replace the exact result.
+
+23. **GAP-025 — Complete auxiliary and provisional result formats. Owner: engineering.**  
+    All 27 core and 15 auxiliary formulas are present, but the result schema does not fully represent auxiliary measurements or provisional findings. **Closure:** define output locations, values, units, methods, applicability and missing/review reasons for all 42 measurements. Specify evidence available during unresolved review. Missing values cannot silently disappear or become zero/perfect scores.
+
+24. **GAP-026 — Grounded English/Russian feedback. Owner: engineering.**  
+    Feedback must explain validated findings without adding errors or grades. A missed gold unit has no extracted teacher-claim ID, yet the current feedback shape expects one. **Closure:** define distinct item types and references for detected, missed, false-positive and pending findings; approved bilingual rationale/fallback text; requested language; and rejection of unsupported paraphrases or invented references.
+
+25. **GAP-027 — What happens when only feedback fails. Owner: product choice.**  
+    Numeric scoring and feedback are separate, but blanket provider-failure rules conflict with the possibility of a valid score plus approved fallback rationale. **Your choice:** does feedback-only failure leave the attempt complete with labelled fallback text, or produce a failure state? Specify HTTP/result status and whether explicit retry repeats only feedback. Failed semantic scoring cannot use this exception.
+
+26. **GAP-028 — Complete linguistic-audit stage. Owner: linguistic policy.**  
+    This advisory stage has a proposal but lacks an approved active input, prompt and output contract. The five recovered prompts do not supply it. **Required input:** resolve DEC-001 by selecting or revising the exact prompt/schema, allowed evidence, target/span findings, refusal behavior and candidate-review integration. Its output remains advisory and cannot become a human approval.
+
+27. **GAP-029 — Closed processing-stage/configuration/receipt schemas. Owner: engineering.**  
+    Configurable profiles, default DeepSeek selection, prompt/schema hashes and disclosure boundaries are described. Complete schemas for stage inputs, effective bindings, provider receipts and caches are missing. **Closure:** define fields, sizes, defaults, version/hash derivation and exact case/answer/stage/profile identity. These are LLM processing stages; ordinary local setup needs no role assignment or per-stage configuration.
+
+28. **GAP-030 — Complete provider adapter contracts. Owner: engineering.**  
+    DeepSeek transport, trusted instruction placement, reasoning selection and completed-output handling are partly documented. A complete per-provider/per-schema specification is missing. **Closure:** define request payloads, every schema-keyword disposition, visible-output assembly, refusal/incomplete/error handling and application validation. Constraints cannot be dropped, reasoning cannot become answer content, and JSON repair cannot manufacture a successful result.
+
+29. **GAP-031 — Retry accounting, deadlines and capacity limits. Owner: engineering.**  
+    Overall/stage budgets and restrictions on semantic retries exist. Retryable errors, counter scope, backoff, generation-versus-transport attempts, disconnect handling and token overflow remain incomplete. **Closure:** specify one end-to-end protocol, including safe oversized-input/output behavior. No silent truncation of claims or keys, unlimited 429/5xx loops, or writes after deadline/lease expiry are permitted.
+
+30. **GAP-032 — Complete rendering operators and capability rules. Owner: product choice.**  
+    `text`, `phoneme`, `pause` and `prosody` operations exist, but required fields, ranges, compatible voices/locales and conflicting constraints are incomplete. **Your choice:** define which pace, accent, stress and prosody requests are hard requirements and what unsupported/conflicting requests should do. Engineering then completes the typed catalog and validation. Provider controls alone do not prove capability.
+
+31. **GAP-033 — Exact SSML and final-audio pipeline. Owner: engineering.**  
+    The prescribed synthesis service and master audio format exist. Compilation grammar, per-turn calls, gaps, resampling, encoding, timestamp rounding and transformation provenance are incomplete. **Closure:** specify the full ordered pipeline from typed plan to delivered bytes, with turn/unit intervals and immutable hashes. Review must bind the final delivered asset, preserving intentional targets through every conversion.
+
+32. **GAP-034 — Reproducible audio quality measurements. Owner: engineering.**  
+    Peak, loudness, true-peak and silence thresholds are specified, but complete measurement methods are not. **Closure:** define algorithm/version/options, sample normalization, RMS windows/hops, interval rounding, inclusive boundaries and all-silent/short/invalid input handling. Planned versus unwanted silence also needs a precise classification rule. Measurements must concern the final audio bytes.
+
+33. **GAP-035 — Tokenization, speech intervals and disfluency counting. Owner: linguistic policy.**  
+    Speech rate, articulation rate and disfluency measurements exist, but their counting rules are incomplete. **Required input:** resolve DEC-005 for contractions, numbers, fillers, repetitions, partial words, punctuation, overlapping intervals, pauses and event identities. The same reviewed recording must yield reproducible numerators and denominators; ordinary permitted fillers cannot automatically become errors.
+
+34. **GAP-036 — Prosody feature methods and valid missingness. Owner: linguistic policy.**  
+    Eleven named features distinguish requested and observed prosody, but the feature-to-unit/method catalog is incomplete. **Required input:** resolve DEC-006 with extraction/annotation methods, versions, bounds, F0 reference/conversion, voiced-frame selection, syllable/phrase boundaries and label vocabularies. Define when a feature is numeric, human-only or unknown. Requested settings cannot stand in for measurements.
+
+35. **GAP-037 — ASR and pronunciation-assessment normalization. Owner: engineering.**  
+    Advisory services and some format/chunk restrictions are specified. Chunk slicing, overlap/stitching, timestamp conversion, missing/NoMatch handling and provider-field normalization remain incomplete. **Closure:** define raw fields, units, ranges, statuses and mapping to exact final-audio intervals. Advisory scores must not become observed phonemes, automatic error gold or proof of realized pronunciation targets.
+
+36. **GAP-038 — Per-target synthetic capability and drift checks. Owner: engineering.**  
+    All taxonomy targets remain in scope, with bounded rendering attempts and no silent substitute. Complete per-leaf/voice/locale requests and observable success criteria are missing. **Closure:** define qualification and canary records for every target/control and relevant acoustic combination. Actual synthesis/listening is subsequent evidence work. A failed target cannot be dropped or declared realized from SSML settings.
+
+37. **GAP-039 — Complete release, permission, import and transformation records. Owner: engineering.**  
+    Eight full source profiles, immutable raw data and permitted-use boundaries are required. Their closed record formats are incomplete. **Closure:** define manifests covering release identity, every component/partition/file, count units, checksums, parser versions, accepted/rejected records, transformations, grouping, labels and permitted uses/expiry. Unknown observed hashes remain unknown until acquisition; samples cannot satisfy full-release acceptance.
+
+38. **GAP-040 — Full SpeechOcean762 parser and scale definitions. Owner: engineering.**  
+    Train/test, speaker/age/gender metadata, aggregate/detail scores and all five raters are already in scope. What remains is the exact parser and raw-to-normalized contract. **Closure:** define source fields, scales, markers, uncertainty, aggregate/rater reconciliation and approved phone conversions. Low accuracy cannot identify a substituted phone, and mixed scales or omitted populations must be rejected.
+
+39. **GAP-041 — Full L2-ARCTIC v5 parser, including suitcase. Owner: engineering.**  
+    The read release and suitcase extension are required, with manual and automatic annotations kept separate. Directory/tier/marker grammar and conversions remain incomplete. **Closure:** define all supplied components, source clocks, transcripts/TextGrids, uncertainty markers and approved phone/taxonomy mappings. Automatic alignment or uncertain labels cannot silently become manually established narrow-category gold.
+
+40. **GAP-042 — Full W&I+LOCNESS and FCE v2.1 parsers. Owner: engineering.**  
+    Source token spans, annotators, alternatives and release separation are recognized, but complete normalized outputs and category mappings are missing. **Closure:** define partition/group metadata, token-to-codepoint conversion, insertions, overlaps, multiple alternatives, noop and uncertainty/detection-only labels. Preserve native controls and unavailable-label status; do not merge annotators into additional errors or guess project leaves.
+
+41. **GAP-043 — EFCAMDAT release and derivative scope. Owner: source-owner information.**  
+    The full second-release XML is identified, but it is distinct from cleaned/error-coded derivatives. The exact selected scope, XML/annotation contract, grouping and permitted intended use remain unresolved. **Required input:** confirm whether separately versioned derivatives are also included and supply the applicable documentation/use agreement. A cleaned subset, discovery listing or access permission alone cannot satisfy full product ingest.
+
+42. **GAP-044 — Actual Doubao study-record release. Owner: source-owner information.**  
+    The supplied materials cite research without identifying a usable full participant-record release. Release identity, files, annotations, grouping and permissions are absent. **Required input:** an actual authorized data-release contract, or an explicit research-only disposition that retains the unresolved full-corpus obligation. Study sample counts cannot be represented as acquired recordings.
+
+43. **GAP-045 — Separate Moodrick and NIR data contracts. Owner: source-owner information.**  
+    These are two vendor sources within one profile; no supplied full annotated release/use contract establishes their private data. **Required input:** resolve each vendor separately with an authorized release contract or explicit comparison-only scope. Public descriptions, demonstrations or another vendor’s disclosures cannot establish access to answer banks, prompts or rubrics. Missing releases continue to block an all-sources-acquired claim.
+
+44. **GAP-046 — Leakage-safe grouping and split allocation. Owner: product choice.**  
+    Development/calibration/holdout must keep related speakers, learners, scripts and derivatives together. Exact group identities, duplicate rules, allocation algorithm/ratios and infeasible-group handling remain undefined. **Your choice:** approve the grouping/split policy, including what happens when shared prompts connect too many records into one component. Engineering can draft it; independence must not be weakened simply to produce a holdout.
+
+45. **GAP-047 — Exact gold coverage counting. Owner: linguistic policy.**  
+    The inherited candidate floor is six stimuli per leaf, 732 total, with contrast pairs across splits. It does not settle what counts as a stimulus or independent observation. **Required input:** resolve DEC-002 for assets, stimuli, target observations, contrast pairs, acceptable controls and multi-target recordings. Repeated labels or reused audio cannot inflate independent coverage.
+
+46. **GAP-048 — Agreement and semantic metric denominators. Owner: engineering.**  
+    Agreement, kappa, coverage and mapping equations exist. Annotation units, alignment, eligibility, missing-rater/abstention treatment and weighting remain incomplete. **Closure:** define the exact population behind each numerator and denominator, including duplicates, retractions, ignored claims and key defects. Preserve pre-adjudication disagreement and undefined kappa cases; dropping abstentions cannot improve reported performance.
+
+47. **GAP-049 — Attempt start time and playback events. Owner: engineering.**  
+    Elapsed time refers to `started_at`, which is absent from both baseline and active local attempt schemas. Playback-event identity and validation are also missing. **Closure:** define the start trigger, authoritative clock, restart behavior and event/audio/attempt binding, with duplicate/out-of-order handling. These remain descriptive measurements; client playback reports do not prove listening or ability.
+
+48. **GAP-050 — Exact heldout acceptance procedure. Owner: engineering.**  
+    Thresholds already exist as policy candidates. Exact correctness comparisons, eligible populations, domain assignment, critical cases and three-run repeatability calculations remain incomplete. **Closure:** define every gate and configuration freeze, preserving separate mapping-decision and correction-attempt sample floors. Also reconcile inherited cross-role isolation wording with the chosen local view-disclosure model. Insufficient samples or exposed/tuned holdout cannot pass.
+
+49. **GAP-051 — Retention, deletion and revoked permissions. Owner: product choice.**  
+    Answers and evidence are immutable/private, but that does not define their retention or withdrawal behavior. **Your choice:** retention periods by data class, deletion effects, what may remain as hashes/tombstones/audit references, treatment of existing results and backups, and disclosure/consent text. Engineering then defines local operations. Revocation must stop prohibited future use without silently corrupting historical references.
+
+50. **GAP-052 — Local cost, concurrency and import limits. Owner: product choice.**  
+    The local app must bound provider work and archive expansion while allowing stored playback. Defaults and accounting are missing. **Your choice:** approve cost/concurrency/import defaults or authorize engineering to propose them, including failed/cancelled/retried calls and archive member/expanded-byte limits. This is local resource policy; no tenant billing or per-user quota service is required.
+
+51. **GAP-053 — Complete consistent backup/restore protocol. Owner: engineering.**  
+    Persistent volumes and checksummed migrations exist, but the full domain/media/evidence snapshot contract is incomplete. **Closure:** define included data, manifest, consistent snapshot boundary, ordered backup/restore, hashes, schema/profile compatibility, conflicts and partial-failure recovery. Preserve secrets separately. A restore must not report success with missing audio, broken references or incompatible historical records.
+
+52. **GAP-054 — Exact simple launcher and release configuration. Owner: engineering.**  
+    One-command startup, provider-key setup and automatic internal infrastructure are already chosen. The detailed delivery contract is missing. **Closure:** define first-run/restart/failure behavior, generated internal-secret persistence and rotation, every setting’s type/default/validation/destination, and the versioned image/dependency/config/migration/prompt/policy manifest. Both architectures require qualification. Users should not manually configure databases, storage or accounts.
+
+53. **GAP-055 — Complete authority and version-compatibility map. Owner: engineering.**  
+    User authority and the simple-local overlay are explicit, but not every overlapping artifact/version has a complete compatibility disposition. **Closure:** identify the authoritative definition for each domain, overlay order, accepted version combinations, migration/cache rules and every remaining divergence. Preserved baseline authentication/isolation text must not revive removed requirements, and historical test receipts must retain their original proof boundaries.
+
+**Separate from these definition gaps**, actual corpus bytes, permissions, qualified reviewers, final-audio observations, real teacher answers, provider conformance, heldout measurements and complete runtime acceptance remain outstanding evidence or implementation work. Writing a complete specification cannot manufacture those observations.
+
+The clarification report passed **116 completeness and consistency checks** against the current register. No specification gap was closed by restating it, and no application code was implemented. The report is committed locally as `203c1f1`.

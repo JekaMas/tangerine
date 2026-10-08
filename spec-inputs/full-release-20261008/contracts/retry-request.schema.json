@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/retry-request.schema.json",
+  "title": "retry-request",
+  "type": "object",
+  "description": "An explicit retry of the same operation.",
+  "properties": {
+    "answer_sha256": {
+      "type": "string",
+      "description": "The already frozen answer.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "configuration_sha256": {
+      "type": "string",
+      "description": "The already frozen evaluation configuration.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "answer_sha256",
+    "configuration_sha256"
+  ],
+  "additionalProperties": false
+}

@@ -17,7 +17,7 @@ The system SHALL retain all nine imports and their original hashes, distinguishi
 
 ### Requirement: SRC-02 Keep missing original contracts explicit
 
-The system SHALL preserve the 122-category scope and identify missing taxonomy, schemas, prompts, validation policy and reference code without inventing them.
+The system SHALL preserve the 122-category scope and original source bytes, track all supplied recovered and v2 draft contracts/prompts/policy/reference code, and identify remaining exact definitions, source rights and genuine evidence without inventing them. The six-stage candidate now includes linguistic audit; presence does not approve DEC-001.
 
 #### Scenario: SRC-02 supported and rejected inputs
 

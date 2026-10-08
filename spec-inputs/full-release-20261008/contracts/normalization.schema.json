@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/normalization.schema.json",
+  "title": "normalization",
+  "type": "object",
+  "description": "A trace from original fragments to one effective decision.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The normalized group identity.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "answer_sha256": {
+      "type": "string",
+      "description": "The original answer digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "extraction_sha256": {
+      "type": "string",
+      "description": "The frozen extraction digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "member_claim_ids": {
+      "type": "array",
+      "description": "Every source fragment in this group.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "representative_claim_id": {
+      "type": "string",
+      "description": "The earliest effective claim.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "duplicate_claim_ids": {
+      "type": "array",
+      "description": "Exact duplicates whose evidence remains preserved.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "retracted_claim_ids": {
+      "type": "array",
+      "description": "Explicitly withdrawn earlier claims.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "retraction_links": {
+      "type": "array",
+      "description": "Retraction links.",
+      "items": {
+        "type": "object",
+        "description": "An acyclic backward link.",
+        "properties": {
+          "from_claim_id": {
+            "type": "string",
+            "description": "The later retracting statement.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "to_claim_id": {
+            "type": "string",
+            "description": "The earlier withdrawn statement.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          }
+        },
+        "required": [
+          "from_claim_id",
+          "to_claim_id"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 2000
+    },
+    "status": {
+      "type": "string",
+      "description": "The normalization outcome.",
+      "enum": [
+        "resolved",
+        "review_required"
+      ]
+    },
+    "issue_codes": {
+      "type": "array",
+      "description": "Reasons for unresolved contradictions or location.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "answer_sha256",
+    "extraction_sha256",
+    "member_claim_ids",
+    "representative_claim_id",
+    "duplicate_claim_ids",
+    "retracted_claim_ids",
+    "retraction_links",
+    "status",
+    "issue_codes"
+  ],
+  "additionalProperties": false
+}

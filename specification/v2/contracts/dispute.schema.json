@@ -1,0 +1,242 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/dispute.schema.json",
+  "title": "dispute",
+  "type": "object",
+  "description": "A local dispute without account or permission roles.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The local dispute.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "attempt_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The affected attempt, if this dispute arose from an answer.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The affected attempt, if this dispute arose from an answer."
+    },
+    "case_version_id": {
+      "type": "string",
+      "description": "The disputed version.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "result_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The disputed result.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The disputed result."
+    },
+    "state": {
+      "type": "string",
+      "description": "The dispute state.",
+      "enum": [
+        "open",
+        "under_review",
+        "resolved",
+        "dismissed",
+        "withdrawn"
+      ]
+    },
+    "claim_ids": {
+      "type": "array",
+      "description": "Affected teacher statements.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "unit_ids": {
+      "type": "array",
+      "description": "Affected known units.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "evidence_ids": {
+      "type": "array",
+      "description": "Supporting evidence.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "statement": {
+      "type": "string",
+      "description": "The actual dispute text.",
+      "maxLength": 20000,
+      "minLength": 1
+    },
+    "resolution": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The resolved finding.",
+          "enum": [
+            "key_defect",
+            "mapping_defect",
+            "original_result_supported",
+            "insufficient_evidence"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The resolved finding."
+    },
+    "resolution_note": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The genuine resolution explanation.",
+          "maxLength": 20000,
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The genuine resolution explanation."
+    },
+    "adjudicator_person_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The genuine adjudicator.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The genuine adjudicator."
+    },
+    "new_case_version_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The corrected immutable case.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The corrected immutable case."
+    },
+    "unit_correspondence_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The reviewed old/new unit map.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The reviewed old/new unit map."
+    },
+    "created_at": {
+      "type": "string",
+      "description": "The database creation time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "resolved_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The database resolution time.",
+          "maxLength": 35,
+          "minLength": 20,
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The database resolution time."
+    },
+    "revision": {
+      "type": "integer",
+      "description": "The compare-and-swap revision.",
+      "minimum": 0,
+      "maximum": 2147483647
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "attempt_id",
+    "case_version_id",
+    "result_id",
+    "state",
+    "claim_ids",
+    "unit_ids",
+    "evidence_ids",
+    "statement",
+    "resolution",
+    "resolution_note",
+    "adjudicator_person_id",
+    "new_case_version_id",
+    "unit_correspondence_id",
+    "created_at",
+    "resolved_at",
+    "revision"
+  ],
+  "additionalProperties": false
+}

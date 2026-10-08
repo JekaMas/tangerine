@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/import-report.schema.json",
+  "title": "import-report",
+  "type": "object",
+  "description": "An import report. Observed equals accepted plus quarantined plus rejected.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The foreground import receipt.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "release_id": {
+      "type": "string",
+      "description": "The actual source release.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "parser_id": {
+      "type": "string",
+      "description": "The implemented parser.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "parser_version": {
+      "type": "string",
+      "description": "Its fixed version.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "state": {
+      "type": "string",
+      "description": "The exact import state.",
+      "enum": [
+        "inventory",
+        "parsing",
+        "quarantined",
+        "complete",
+        "cancelled",
+        "failed"
+      ]
+    },
+    "observed_records": {
+      "type": "string",
+      "description": "All read source records.",
+      "maxLength": 4096,
+      "minLength": 1,
+      "pattern": "^(0|[1-9][0-9]*)$"
+    },
+    "accepted_records": {
+      "type": "string",
+      "description": "Records accepted into typed staging.",
+      "maxLength": 4096,
+      "minLength": 1,
+      "pattern": "^(0|[1-9][0-9]*)$"
+    },
+    "quarantined_records": {
+      "type": "string",
+      "description": "Records retained but not available for use.",
+      "maxLength": 4096,
+      "minLength": 1,
+      "pattern": "^(0|[1-9][0-9]*)$"
+    },
+    "rejected_records": {
+      "type": "string",
+      "description": "Unusable records with explicit reasons.",
+      "maxLength": 4096,
+      "minLength": 1,
+      "pattern": "^(0|[1-9][0-9]*)$"
+    },
+    "component_counts": {
+      "type": "array",
+      "description": "All release components.",
+      "items": {
+        "type": "object",
+        "description": "A component reconciliation.",
+        "properties": {
+          "component": {
+            "type": "string",
+            "description": "The component.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "expected": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The source-declared count.",
+                "maxLength": 4096,
+                "minLength": 1,
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The source-declared count."
+          },
+          "observed": {
+            "type": "string",
+            "description": "The actual count.",
+            "maxLength": 4096,
+            "minLength": 1,
+            "pattern": "^(0|[1-9][0-9]*)$"
+          },
+          "complete": {
+            "type": "boolean",
+            "description": "Whether all contract obligations are met."
+          }
+        },
+        "required": [
+          "component",
+          "expected",
+          "observed",
+          "complete"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 1000
+    },
+    "issues": {
+      "type": "array",
+      "description": "All findings, paged through an attached full report for large sources.",
+      "items": {
+        "type": "object",
+        "description": "An import finding.",
+        "properties": {
+          "source_locator": {
+            "type": "string",
+            "description": "The exact file/record location.",
+            "maxLength": 3000,
+            "minLength": 1
+          },
+          "code": {
+            "type": "string",
+            "description": "The fixed parser error.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "detail": {
+            "type": "string",
+            "description": "A bounded raw-format explanation.",
+            "maxLength": 4000,
+            "minLength": 0
+          }
+        },
+        "required": [
+          "source_locator",
+          "code",
+          "detail"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 100000
+    },
+    "full_issue_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The complete untruncated issue report.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The complete untruncated issue report."
+    },
+    "source_manifest_sha256": {
+      "type": "string",
+      "description": "The exact release manifest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "started_at": {
+      "type": "string",
+      "description": "The start time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "finished_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The finish time.",
+          "maxLength": 35,
+          "minLength": 20,
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The finish time."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "release_id",
+    "parser_id",
+    "parser_version",
+    "state",
+    "observed_records",
+    "accepted_records",
+    "quarantined_records",
+    "rejected_records",
+    "component_counts",
+    "issues",
+    "full_issue_asset_id",
+    "source_manifest_sha256",
+    "started_at",
+    "finished_at"
+  ],
+  "additionalProperties": false
+}

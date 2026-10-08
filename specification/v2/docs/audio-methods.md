@@ -1,0 +1,123 @@
+# Audio compilation and measurements
+
+The delivery file is an uncompressed WAV with mono signed 16-bit PCM at 24,000 Hz.
+It is the same byte payload that reviewers approve. There is no separately approved lossy derivative.
+A later codec conversion creates a new asset and requires fresh final-file checks and approval.
+
+## SSML compiler
+
+Create one `speak` root with version 1.0, the synthesis namespace, and the selected xml:lang.
+Create one voice element for the exact registered voice.
+Escape all text and attribute data with a proper XML serializer. Never concatenate user XML.
+A text operation emits its surface text without correction.
+A phoneme operation emits one phoneme element with alphabet=ipa, ph=intended IPA, and original spelling as element text.
+A pause operation emits break time as an integer followed by ms.
+A prosody operation emits only non-null rate, pitch, and volume controls.
+Rate uses an explicit signed percentage. Pitch uses an explicit signed semitone value followed by st.
+Volume uses an explicit signed decibel value followed by dB.
+A contour requires strictly increasing positions from 0 to 100 and an allowed baseline voice capability.
+Do not combine contour with a separate pitch value for the same scope.
+At least one prosody control must be present. Nested or overlapping scopes are invalid.
+Remote audio, lexicon URLs, arbitrary tags, style identifiers, and vendor extensions are forbidden unless separately approved.
+Call turns in source order. Each turn references exactly one existing utterance and speaker.
+Preserve every provider response, its format, plan hash, and actual call receipt.
+
+## Assembly
+
+Decode each actual response and reject any unexpected clock, channels, malformed data, or truncated frame.
+Do not trim leading or trailing silence automatically. Do not time-stretch, pitch-shift, normalize loudness, or repair target speech silently.
+Append each turn’s samples in order and insert exactly gap_after_ms*24 zero samples after it; gap_after_ms is the render-plan integer field. Apply it to every turn, including the final turn, when nonzero. No unspecified gap_ms field exists. These planned intervals are retained on the final sample clock.
+Keep source-response and final-turn offsets as integer sample indices.
+An observed interval uses half-open sample bounds. Convert to milliseconds only for display.
+Start milliseconds use floor(1000*start/24000). End milliseconds use ceil(1000*end/24000).
+The master-to-advisory 16-kHz conversion uses the pinned FFmpeg resampler and its recorded options.
+It does not change the final delivery identity. Advisory offsets map back by exact rational clock conversion.
+
+## Mechanical quality
+
+Normalize PCM16 sample x to x/32768 for numerical measurements.
+Reject NaN, infinity, inconsistent byte counts, zero channels, or a zero-length file.
+Sample peak is max(abs(x)). Reject peak>=0.9999.
+Calculate integrated loudness with the release-pinned FFmpeg `ebur128` filter under ITU-R BS.1770 gating.
+Enable true-peak calculation and record the actual FFmpeg version, build configuration, binary hash, and measurement command.
+Require integrated loudness from -20 through -16 LUFS inclusive.
+Require true peak<=-1 dBTP. Treat unavailable integrated loudness as a failed measurable-audio gate, not zero.
+A recording that is too short for the method requires human review and cannot silently pass the numeric gate.
+
+Use 480-sample RMS windows and a 240-sample hop for silence at 24 kHz.
+For a final partial window, divide by its actual sample count. Do not zero-pad the denominator.
+RMS is sqrt(sum(x*x)/N). A window is silent when RMS<=10^(-45/20).
+Map a silent window to its covered sample interval. Merge intersecting or touching intervals.
+A planned pause covers only its exact inserted-sample interval, not every nearby provider silence.
+Subtract the union of planned-pause intervals before measuring unwanted silence.
+Keep wanted and unwanted silence separate. A targeted pause is still part of elapsed speech duration.
+An unwanted interval of at least 2,000 ms fails QC. Boundary equality is a failure.
+All-silent audio fails regardless of planned pauses or duration targets.
+
+## Speech tokens and intervals
+
+A reviewed token is one completed lexical word that was actually spoken.
+Contractions such as don't count as one lexical token. The original spelling and boundaries remain available.
+Count each completed repetition. Record partial-word attempts and nonlexical fillers separately.
+Expand a number only to the actual spoken words documented by review. Do not guess its spoken form from digits.
+Punctuation is not a token. A hyphenated form follows its reviewed spoken lexical realization.
+Keep raw tokens, normalized comparison tokens, final-sample boundaries, and source annotation IDs.
+
+Speech WPM = 60*lexical_token_count/elapsed_speech_seconds.
+Elapsed speech runs from the first reviewed spoken onset through the final reviewed spoken offset, including internal pauses.
+Articulation WPM uses the union of reviewed speech intervals as its denominator.
+Merge overlaps before summing durations. Do not count an overlap twice.
+Zero duration with nonzero tokens is invalid. An empty valid population is unavailable, not zero WPM.
+Disfluency density counts only genuine reviewed error events under the public context.
+Ordinary fillers and self-repair are not automatically errors. They can remain descriptive events.
+
+## Prosody features
+
+| Feature | Unit | Method | Missingness |
+|---|---|---|---|
+| lexical_stress | category | Two resolved human annotations of lexical syllable prominence. | Uncertain syllabification or stress requires review. |
+| nuclear_stress | category | Human phrase boundary and final main prominence annotation. | Unknown phrase boundary requires review. |
+| f0_range_semitones | semitones | Praat autocorrelation F0, then P95 minus P5 on semitones. | Fewer than 20 eligible voiced frames is not_measurable. |
+| f0_slope_semitones_per_second | semitones_per_second | Least-squares slope on eligible F0 frames in the reviewed phrase. | Fewer than 20 frames or zero time variance is not_measurable. |
+| syllable_duration_ratio | ratio | Reviewed target syllable samples divided by reviewed reference syllable samples. | Missing boundary or zero reference duration requires review. |
+| rhythm | category | Human annotation: target_matched, target_not_matched, uncertain. | Uncertain remains review_required. |
+| boundary | category | Human annotation: rising, falling, level, complex, uncertain. | Uncertain remains review_required. |
+| weak_form | category | Human annotation of the actual segment sequence and context. | No reliable observation requires review. |
+| linking | category | Human annotation: present, absent, uncertain, with exact boundary. | Unknown boundary requires review. |
+| assimilation | category | Human observed input/output segment relation. | Unsupported perceived segment requires review. |
+| elision | category | Human observed retained/deleted segment relation. | A low ASR confidence is insufficient. |
+
+Use the release-pinned Praat engine through the pinned Python binding.
+Use autocorrelation with time step 0.01 s, floor 60 Hz, ceiling 500 Hz, 15 candidates, and very accurate mode.
+Set silence threshold 0.03, voicing threshold 0.45, octave cost 0.01, octave-jump cost 0.35, and voiced/unvoiced cost 0.14.
+Exclude unvoiced frames, nonfinite F0, and frames outside reviewed voiced intervals. Do not interpolate missing frames.
+Convert F0 to semitones with `12*log2(F0/100 Hz)`.
+Use linear percentile interpolation at index `(N-1)*p` after sorting values.
+Use the same frozen frame method for every compared recording.
+These parameters are a declared engineering method, not proof that all voices fit its pitch range.
+Record a range mismatch and require a separately versioned approved method, not an automatic pitch-range switch.
+
+## Advisory normalization
+
+Whisper receives the audio without a reference transcript prompt and returns verbose JSON with word timestamps.
+Preserve the raw hypothesis before any reference-conditioned operation.
+Tokenize WER with the reviewed comparison-token policy. Use edit distance with substitution, deletion, and insertion cost one.
+A missing ASR hypothesis is unavailable. It is not zero WER or an observed pronunciation label.
+
+Azure assessment uses non-overlapping chunks at reviewed utterance boundaries, each no longer than 25 seconds.
+Split a longer utterance only at a reviewed word boundary. If none exists, leave that advisory result unavailable.
+Use exactly the surface words inside the chunk for ReferenceText. Do not include canonical corrections.
+Preserve raw Offset and Duration ticks. One tick is 100 nanoseconds.
+Map chunk-relative intervals to final samples using floor for start and ceil for end, plus the exact chunk origin.
+Retain RecognitionStatus, NBest text/confidence, word/syllable/phoneme scores, errors, and raw response fields.
+NoMatch, missing score, and unsupported prosody remain explicit statuses.
+Do not map absent fields to zero. Do not infer observed IPA from a reference-conditioned score.
+
+## Target qualification and drift
+
+Every one of the 122 taxonomy leaves has a target contract, including its permitted controls.
+A qualification key contains provider, model/engine observation, voice, locale, render operations, method versions, and target combination.
+A success requires actual target and control audio, exact final hashes, required measurements, and two genuine resolved human approvals.
+Allow at most three explicit render attempts for a candidate. A failure never deletes the target requirement.
+Before a changed profile serves new content, re-render the frozen canary set and obtain the required observations.
+Keep old published bytes and their approval evidence. Do not retroactively assert that an alias stayed unchanged.

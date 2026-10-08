@@ -1,0 +1,571 @@
+version: 2.0.0
+rules:
+- For create and submit actions, the server assigns envelope identity, current event
+  time, digest, and revision. The client cannot authorize these values.
+- For an imported historical evidence record, retain its supplied source ID/time as
+  source metadata. Assign a separate current import envelope.
+- A request referencing an existing object must match its exact immutable identity
+  and digest. Mismatched client copies fail.
+- A human statement is actual submitted content, not a server claim that the person
+  or credential is authentic.
+- An LLM must not create a person, approval, receipt, source release, or ownership
+  record.
+server_authority_field_names:
+- workspace_id
+- id
+- created_at
+- submitted_at
+- started_at
+- verified_at
+- linked_at
+- submission_sha256
+- configuration_sha256
+- request_id
+- receipt_id
+- lease_epoch
+- lease_token
+- lease_expires_at
+- revision
+- case_sha256
+- plan_sha256
+- binding_sha256
+operations:
+- id: health
+  request_schema: null
+  response_schema: health
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Read actual local readiness without a paid call.
+- id: list_cases
+  request_schema: null
+  response_schema: list:library-item
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: List eligible cases with the safe projection.
+- id: get_blueprint
+  request_schema: null
+  response_schema: blueprint
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Read the exact immutable authoring version.
+- id: write_blueprint
+  request_schema: blueprint-write
+  response_schema: blueprint
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Assign identity and persist a new immutable blueprint.
+- id: generate
+  request_schema: generation-request
+  response_schema: candidate-envelope
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Save intent, apply grants and caps, call the real provider, validate and
+    persist the output.
+- id: linguistic_audit
+  request_schema: null
+  response_schema: linguistic-audit
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Use the frozen candidate and dedicated audit role; no human approval.
+- id: render
+  request_schema: render-request
+  response_schema: operation-result
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Synthesize exact turns and link final bytes under the storage protocol.
+- id: measure
+  request_schema: null
+  response_schema: verification-report
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Measure the linked final WAV and save every missing or failed observation.
+- id: get_case
+  request_schema: null
+  response_schema: prepare-view
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Read preparation evidence without secret values.
+- id: transition
+  request_schema: transition-request
+  response_schema: operation-result
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Apply exactly one permitted lifecycle row atomically.
+- id: create_person
+  request_schema: person
+  response_schema: person
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Store a real supplied attestation; reject duplicate-person conflict.
+- id: get_person
+  request_schema: null
+  response_schema: person
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Read private actual person evidence in review activity.
+- id: qualification
+  request_schema: qualification
+  response_schema: qualification
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Store actual competence evidence.
+- id: start_review
+  request_schema: review-context
+  response_schema: review-context
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Validate person, conflicts, phase, and exact audio.
+- id: get_review
+  request_schema: null
+  response_schema: review-context
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Return context without the planned key before blind submission.
+- id: blind_submit
+  request_schema: blind-annotation
+  response_schema: blind-annotation
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Freeze independent observations and hash.
+- id: review_disclose
+  request_schema: null
+  response_schema: key-disclosure
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Require blind submission; save disclosure and then return key.
+- id: review_decide
+  request_schema: review-decision
+  response_schema: review-decision
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Require exact matching context/key/audio and actual human decision.
+- id: rationale
+  request_schema: rationale
+  response_schema: rationale
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Store a versioned actual reviewed bilingual rationale.
+- id: teacher_gold
+  request_schema: teacher-gold
+  response_schema: teacher-gold
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Save real pre-model independent labels and exact provenance.
+- id: start_attempt
+  request_schema: attempt-start-request
+  response_schema: teacher-start-view
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Create started_at and freeze selected case identity.
+- id: get_attempt
+  request_schema: null
+  response_schema: attempt-view
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Return safe pre-submit selection and answer capacity only.
+- id: draft_answer
+  request_schema: answer-write
+  response_schema: operation-result
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Save exact draft only while started.
+- id: submit_answer
+  request_schema: answer-write
+  response_schema: result-envelope
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Commit answer before calls, then execute synchronous evaluation.
+- id: retry_evaluation
+  request_schema: retry-request
+  response_schema: result-envelope
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Fence old lease and reuse only exact matching completed stages.
+- id: retry_feedback
+  request_schema: retry-request
+  response_schema: result-envelope
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Repeat only feedback against the saved complete score.
+- id: attempt_results
+  request_schema: null
+  response_schema: result-envelope
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Read completed or explicitly provisional result without starting calls.
+- id: teacher_disclose
+  request_schema: null
+  response_schema: key-disclosure
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Require frozen submission and current disclosure policy.
+- id: play_event
+  request_schema: playback-event
+  response_schema: operation-result
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Deduplicate and validate client evidence; never infer ability.
+- id: audio
+  request_schema: null
+  response_schema: binary:audio/wav
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Resolve linked exact audio after availability and rights checks.
+- id: review_audio
+  request_schema: null
+  response_schema: binary:audio/wav
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Return exact review audio, with no target metadata.
+- id: list_attempts
+  request_schema: null
+  response_schema: list:attempt-summary
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: List local attempt identities and safe state summaries.
+- id: create_dispute
+  request_schema: dispute
+  response_schema: dispute
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Save actual user claim and original attempt/result references.
+- id: get_dispute
+  request_schema: null
+  response_schema: dispute
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Read original dispute and its resolution history.
+- id: resolve_dispute
+  request_schema: dispute
+  response_schema: operation-result
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Require supported adjudication and any new reviewed key mapping.
+- id: unit_map
+  request_schema: unit-correspondence
+  response_schema: unit-correspondence
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Require same audio for historical rescoring.
+- id: reconsider
+  request_schema: reconsider-request
+  response_schema: list:result-revision
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Process explicitly selected attempts; append revisions, never overwrite.
+- id: list_sources
+  request_schema: null
+  response_schema: list:source-status
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Return all required sources including blocked sources and derivatives.
+- id: source_release
+  request_schema: source-release
+  response_schema: source-release
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Register actual complete manifests, never expected hashes as observed.
+- id: format_binding
+  request_schema: source-format-binding
+  response_schema: source-format-binding
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Store exact documented file/field semantics with real review evidence.
+- id: grant
+  request_schema: permission-grant
+  response_schema: permission-grant
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Register actual source-owner evidence for explicit uses and recipients.
+- id: revoke
+  request_schema: maintenance-request
+  response_schema: operation-result
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Increment permission epoch and block derived future use atomically.
+- id: import_source
+  request_schema: import-request
+  response_schema: import-report
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Parse full release with bounded safe extraction and reconciled counts.
+- id: read_import
+  request_schema: null
+  response_schema: import-report
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Show actual full, partial, or failed counts without starting work.
+- id: connector
+  request_schema: connector-configuration
+  response_schema: source-status
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Validate actual interface, adapter, rights, and secret references.
+- id: get_config
+  request_schema: null
+  response_schema: configuration-view
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Read nonsecret effective configuration only.
+- id: put_config
+  request_schema: configuration
+  response_schema: configuration-view
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Persist explicit configuration; invalidate affected caches, not historical
+    evidence.
+- id: reserve_asset
+  request_schema: asset-reservation-request
+  response_schema: asset
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Reserve new opaque immutable object identity.
+- id: upload_asset
+  request_schema: binary:application/octet-stream
+  response_schema: asset
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Stream and bound exact bytes, read back hash, retain reservation state.
+- id: get_asset
+  request_schema: null
+  response_schema: binary:application/octet-stream
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Require linked asset and permitted activity/rights.
+- id: get_operation
+  request_schema: null
+  response_schema: operation-status
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Lookup actual saved request state.
+- id: maintenance
+  request_schema: maintenance-request
+  response_schema: operation-result
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Inspect or apply only the explicit confirmed local maintenance plan.
+- id: backup
+  request_schema: backup-request
+  response_schema: backup-manifest
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Quiesce writes and create a full consistent snapshot.
+- id: restore
+  request_schema: restore-request
+  response_schema: operation-result
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Restore to fresh volumes, reapply revocations, verify before switch.
+- id: delete_plan
+  request_schema: deletion-request
+  response_schema: deletion-request
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Create exact rights-aware plan without deleting yet.
+- id: delete_apply
+  request_schema: maintenance-request
+  response_schema: operation-result
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Require plan digest and explicit confirmation; retain only permitted tombstones.
+- id: difficulty
+  request_schema: difficulty-study
+  response_schema: difficulty-study
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Calculate the frozen protocol from genuine first-exposure observations.
+- id: split
+  request_schema: split-manifest
+  response_schema: split-manifest
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Check connected-group isolation and immutable allocation.
+- id: qualification_report
+  request_schema: holdout-report
+  response_schema: holdout-report
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Accept only actual observed run receipts and complete eligible populations.
+- id: get_candidate
+  request_schema: null
+  response_schema: candidate-envelope
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Read exact saved candidate content and digest.
+- id: accept_candidate
+  request_schema: accept-candidate-request
+  response_schema: case-head
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Create a real draft case; audio and reviewed key remain absent.
+- id: write_key
+  request_schema: key-write
+  response_schema: prepare-view
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Save a prepublication key candidate; verify all existing references and
+    observations.
+- id: adjudicate
+  request_schema: adjudication
+  response_schema: adjudication
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: false
+  effect: Save a genuine third-person resolution without editing prior reviews.
+- id: get_adjudication
+  request_schema: null
+  response_schema: adjudication
+  server_assigns_envelope: false
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Read the actual adjudication and supporting references.
+- id: cancel_operation
+  request_schema: cancel-request
+  response_schema: operation-status
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: true
+  revision_precondition: true
+  effect: Fence future commits, cancel the active request, and preserve prior bytes.
+- id: speech_render
+  request_schema: render-plan
+  response_schema: speech-render-result
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Render the actual typed plan through real configured providers.
+- id: speech_measure
+  request_schema: measure-request
+  response_schema: list:audio-measurement
+  server_assigns_envelope: true
+  state_guard_reference: docs/lifecycle.md
+  idempotency: false
+  revision_precondition: false
+  effect: Measure the exact final asset with registered methods.

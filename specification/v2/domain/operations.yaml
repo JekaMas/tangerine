@@ -1,0 +1,610 @@
+version: 2.0.0
+base: local_same_origin_only
+operations:
+  - id: health
+    method: GET
+    path: /api/v1/health
+    request: null
+    response: health
+    success: 200
+    effect: Read actual local readiness without a paid call.
+    activity: configuration
+    revision: false
+  - id: list_cases
+    method: GET
+    path: /api/v1/library
+    request: null
+    response: list:library-item
+    success: 200
+    effect: List eligible cases with the safe projection.
+    activity: teacher
+    revision: false
+  - id: get_blueprint
+    method: GET
+    path: /api/v1/blueprints/{id}
+    request: null
+    response: blueprint
+    success: 200
+    effect: Read the exact immutable authoring version.
+    activity: prepare
+    revision: false
+  - id: write_blueprint
+    method: POST
+    path: /api/v1/blueprints
+    request: blueprint-write
+    response: blueprint
+    success: 201
+    effect: Assign identity and persist a new immutable blueprint.
+    activity: prepare
+    revision: false
+  - id: generate
+    method: POST
+    path: /api/v1/candidates:generate
+    request: generation-request
+    response: candidate-envelope
+    success: 200
+    effect: Save intent, apply grants and caps, call the real provider, validate and
+      persist the output.
+    activity: prepare
+    revision: false
+  - id: linguistic_audit
+    method: POST
+    path: /api/v1/candidates/{id}:audit
+    request: null
+    response: linguistic-audit
+    success: 200
+    effect: Use the frozen candidate and dedicated audit role; no human approval.
+    activity: prepare
+    revision: true
+  - id: render
+    method: POST
+    path: /api/v1/cases/{id}:render
+    request: render-request
+    response: operation-result
+    success: 200
+    effect: Synthesize exact turns and link final bytes under the storage protocol.
+    activity: prepare
+    revision: true
+  - id: measure
+    method: POST
+    path: /api/v1/cases/{id}:measure
+    request: null
+    response: verification-report
+    success: 200
+    effect: Measure the linked final WAV and save every missing or failed observation.
+    activity: prepare
+    revision: true
+  - id: get_case
+    method: GET
+    path: /api/v1/prepare/cases/{id}
+    request: null
+    response: prepare-view
+    success: 200
+    effect: Read preparation evidence without secret values.
+    activity: prepare
+    revision: false
+  - id: transition
+    method: POST
+    path: /api/v1/cases/{id}:transition
+    request: transition-request
+    response: operation-result
+    success: 200
+    effect: Apply exactly one permitted lifecycle row atomically.
+    activity: prepare
+    revision: true
+  - id: create_person
+    method: POST
+    path: /api/v1/people
+    request: person
+    response: person
+    success: 201
+    effect: Store a real supplied attestation; reject duplicate-person conflict.
+    activity: review
+    revision: false
+  - id: get_person
+    method: GET
+    path: /api/v1/people/{id}
+    request: null
+    response: person
+    success: 200
+    effect: Read private actual person evidence in review activity.
+    activity: review
+    revision: false
+  - id: qualification
+    method: POST
+    path: /api/v1/qualifications
+    request: qualification
+    response: qualification
+    success: 201
+    effect: Store actual competence evidence.
+    activity: review
+    revision: false
+  - id: start_review
+    method: POST
+    path: /api/v1/reviews
+    request: review-context
+    response: review-context
+    success: 201
+    effect: Validate person, conflicts, phase, and exact audio.
+    activity: review
+    revision: false
+  - id: get_review
+    method: GET
+    path: /api/v1/reviews/{id}
+    request: null
+    response: blind-review-view
+    success: 200
+    effect: Return context without the planned key before blind submission.
+    activity: review
+    revision: false
+  - id: blind_submit
+    method: POST
+    path: /api/v1/reviews/{id}/blind
+    request: blind-annotation
+    response: blind-annotation
+    success: 201
+    effect: Freeze independent observations and hash.
+    activity: review
+    revision: true
+  - id: review_disclose
+    method: POST
+    path: /api/v1/reviews/{id}:disclose
+    request: null
+    response: key-disclosure
+    success: 200
+    effect: Require blind submission; save disclosure and then return key.
+    activity: review
+    revision: true
+  - id: review_decide
+    method: POST
+    path: /api/v1/reviews/{id}/decisions
+    request: review-decision
+    response: review-decision
+    success: 201
+    effect: Require exact matching context/key/audio and actual human decision.
+    activity: review
+    revision: true
+  - id: rationale
+    method: POST
+    path: /api/v1/rationales
+    request: rationale
+    response: rationale
+    success: 201
+    effect: Store a versioned actual reviewed bilingual rationale.
+    activity: review
+    revision: false
+  - id: teacher_gold
+    method: POST
+    path: /api/v1/teacher-gold
+    request: teacher-gold
+    response: teacher-gold
+    success: 201
+    effect: Save real pre-model independent labels and exact provenance.
+    activity: review
+    revision: false
+  - id: start_attempt
+    method: POST
+    path: /api/v1/attempts
+    request: attempt-start-request
+    response: teacher-start-view
+    success: 201
+    effect: Create started_at and freeze selected case identity.
+    activity: teacher
+    revision: false
+  - id: get_attempt
+    method: GET
+    path: /api/v1/attempts/{id}
+    request: null
+    response: attempt-view
+    success: 200
+    effect: Return safe pre-submit selection and answer capacity only.
+    activity: teacher
+    revision: false
+  - id: draft_answer
+    method: PUT
+    path: /api/v1/attempts/{id}/answer
+    request: answer-write
+    response: operation-result
+    success: 200
+    effect: Save exact draft only while started.
+    activity: teacher
+    revision: true
+  - id: submit_answer
+    method: POST
+    path: /api/v1/attempts/{id}:submit
+    request: answer-write
+    response: result-envelope
+    success: 200
+    effect: Commit answer before calls, then execute synchronous evaluation.
+    activity: teacher
+    revision: true
+  - id: retry_evaluation
+    method: POST
+    path: /api/v1/attempts/{id}:retry
+    request: retry-request
+    response: result-envelope
+    success: 200
+    effect: Fence old lease and reuse only exact matching completed stages.
+    activity: teacher
+    revision: true
+  - id: retry_feedback
+    method: POST
+    path: /api/v1/attempts/{id}:retry-feedback
+    request: retry-request
+    response: result-envelope
+    success: 200
+    effect: Repeat only feedback against the saved complete score.
+    activity: teacher
+    revision: true
+  - id: attempt_results
+    method: GET
+    path: /api/v1/attempts/{id}/results
+    request: null
+    response: result-envelope
+    success: 200
+    effect: Read completed or explicitly provisional result without starting calls.
+    activity: teacher
+    revision: false
+  - id: teacher_disclose
+    method: POST
+    path: /api/v1/attempts/{id}:disclose
+    request: null
+    response: key-disclosure
+    success: 200
+    effect: Require frozen submission and current disclosure policy.
+    activity: teacher
+    revision: false
+  - id: play_event
+    method: POST
+    path: /api/v1/attempts/{id}/playback
+    request: playback-event
+    response: operation-result
+    success: 200
+    effect: Deduplicate and validate client evidence; never infer ability.
+    activity: teacher
+    revision: false
+  - id: audio
+    method: GET
+    path: /api/v1/attempts/{id}/audio
+    request: null
+    response: binary:audio/wav
+    success: 200
+    effect: Resolve linked exact audio after availability and rights checks.
+    activity: teacher
+    revision: false
+  - id: review_audio
+    method: GET
+    path: /api/v1/reviews/{id}/audio
+    request: null
+    response: binary:audio/wav
+    success: 200
+    effect: Return exact review audio, with no target metadata.
+    activity: review
+    revision: false
+  - id: list_attempts
+    method: GET
+    path: /api/v1/attempts
+    request: null
+    response: list:attempt-summary
+    success: 200
+    effect: List local attempt identities and safe state summaries.
+    activity: teacher
+    revision: false
+  - id: create_dispute
+    method: POST
+    path: /api/v1/disputes
+    request: dispute
+    response: dispute
+    success: 201
+    effect: Save actual user claim and original attempt/result references.
+    activity: dispute
+    revision: false
+  - id: get_dispute
+    method: GET
+    path: /api/v1/disputes/{id}
+    request: null
+    response: dispute
+    success: 200
+    effect: Read original dispute and its resolution history.
+    activity: dispute
+    revision: false
+  - id: resolve_dispute
+    method: POST
+    path: /api/v1/disputes/{id}:resolve
+    request: dispute
+    response: operation-result
+    success: 200
+    effect: Require supported adjudication and any new reviewed key mapping.
+    activity: dispute
+    revision: true
+  - id: unit_map
+    method: POST
+    path: /api/v1/unit-correspondences
+    request: unit-correspondence
+    response: unit-correspondence
+    success: 201
+    effect: Require same audio for historical rescoring.
+    activity: dispute
+    revision: false
+  - id: reconsider
+    method: POST
+    path: /api/v1/results:reconsider
+    request: reconsider-request
+    response: list:result-revision
+    success: 200
+    effect: Process explicitly selected attempts; append revisions, never overwrite.
+    activity: dispute
+    revision: false
+  - id: list_sources
+    method: GET
+    path: /api/v1/sources
+    request: null
+    response: list:source-status
+    success: 200
+    effect: Return all required sources including blocked sources and derivatives.
+    activity: sources
+    revision: false
+  - id: source_release
+    method: POST
+    path: /api/v1/source-releases
+    request: source-release
+    response: source-release
+    success: 201
+    effect: Register actual complete manifests, never expected hashes as observed.
+    activity: sources
+    revision: false
+  - id: format_binding
+    method: POST
+    path: /api/v1/source-formats
+    request: source-format-binding
+    response: source-format-binding
+    success: 201
+    effect: Store exact documented file/field semantics with real review evidence.
+    activity: sources
+    revision: false
+  - id: grant
+    method: POST
+    path: /api/v1/permissions
+    request: permission-grant
+    response: permission-grant
+    success: 201
+    effect: Register actual source-owner evidence for explicit uses and recipients.
+    activity: sources
+    revision: false
+  - id: revoke
+    method: POST
+    path: /api/v1/permissions/{id}:revoke
+    request: maintenance-request
+    response: operation-result
+    success: 200
+    effect: Increment permission epoch and block derived future use atomically.
+    activity: sources
+    revision: true
+  - id: import_source
+    method: POST
+    path: /api/v1/source-releases/{id}:import
+    request: import-request
+    response: import-report
+    success: 200
+    effect: Parse full release with bounded safe extraction and reconciled counts.
+    activity: sources
+    revision: true
+  - id: read_import
+    method: GET
+    path: /api/v1/imports/{id}
+    request: null
+    response: import-report
+    success: 200
+    effect: Show actual full, partial, or failed counts without starting work.
+    activity: sources
+    revision: false
+  - id: connector
+    method: PUT
+    path: /api/v1/connectors/{id}
+    request: connector-configuration
+    response: source-status
+    success: 200
+    effect: Validate actual interface, adapter, rights, and secret references.
+    activity: configuration
+    revision: true
+  - id: get_config
+    method: GET
+    path: /api/v1/configuration
+    request: null
+    response: configuration-view
+    success: 200
+    effect: Read nonsecret effective configuration only.
+    activity: configuration
+    revision: false
+  - id: put_config
+    method: PUT
+    path: /api/v1/configuration
+    request: configuration
+    response: configuration-view
+    success: 200
+    effect: Persist explicit configuration; invalidate affected caches, not
+      historical evidence.
+    activity: configuration
+    revision: true
+  - id: reserve_asset
+    method: POST
+    path: /api/v1/assets
+    request: asset-reservation-request
+    response: asset
+    success: 201
+    effect: Reserve new opaque immutable object identity.
+    activity: sources
+    revision: false
+  - id: upload_asset
+    method: PUT
+    path: /api/v1/assets/{id}/bytes
+    request: binary:application/octet-stream
+    response: asset
+    success: 200
+    effect: Stream and bound exact bytes, read back hash, retain reservation state.
+    activity: sources
+    revision: true
+  - id: get_asset
+    method: GET
+    path: /api/v1/prepare/assets/{id}/bytes
+    request: null
+    response: binary:application/octet-stream
+    success: 200
+    effect: Require linked asset and permitted activity/rights.
+    activity: prepare
+    revision: false
+  - id: get_operation
+    method: GET
+    path: /api/v1/operations/{id}
+    request: null
+    response: operation-status
+    success: 200
+    effect: Lookup actual saved request state.
+    activity: maintenance
+    revision: false
+  - id: maintenance
+    method: POST
+    path: /api/v1/maintenance
+    request: maintenance-request
+    response: operation-result
+    success: 200
+    effect: Inspect or apply only the explicit confirmed local maintenance plan.
+    activity: maintenance
+    revision: false
+  - id: backup
+    method: POST
+    path: /api/v1/backups
+    request: backup-request
+    response: backup-manifest
+    success: 201
+    effect: Quiesce writes and create a full consistent snapshot.
+    activity: maintenance
+    revision: false
+  - id: restore
+    method: POST
+    path: /api/v1/restores
+    request: restore-request
+    response: operation-result
+    success: 200
+    effect: Restore to fresh volumes, reapply revocations, verify before switch.
+    activity: maintenance
+    revision: false
+  - id: delete_plan
+    method: POST
+    path: /api/v1/deletions
+    request: deletion-request
+    response: deletion-request
+    success: 201
+    effect: Create exact rights-aware plan without deleting yet.
+    activity: maintenance
+    revision: false
+  - id: delete_apply
+    method: POST
+    path: /api/v1/deletions/{id}:apply
+    request: maintenance-request
+    response: operation-result
+    success: 200
+    effect: Require plan digest and explicit confirmation; retain only permitted
+      tombstones.
+    activity: maintenance
+    revision: true
+  - id: difficulty
+    method: POST
+    path: /api/v1/difficulty-studies
+    request: difficulty-study
+    response: difficulty-study
+    success: 201
+    effect: Calculate the frozen protocol from genuine first-exposure observations.
+    activity: review
+    revision: false
+  - id: split
+    method: POST
+    path: /api/v1/splits
+    request: split-manifest
+    response: split-manifest
+    success: 201
+    effect: Check connected-group isolation and immutable allocation.
+    activity: review
+    revision: false
+  - id: qualification_report
+    method: POST
+    path: /api/v1/holdout-reports
+    request: holdout-report
+    response: holdout-report
+    success: 201
+    effect: Accept only actual observed run receipts and complete eligible populations.
+    activity: review
+    revision: false
+  - id: get_candidate
+    method: GET
+    path: /api/v1/candidates/{id}
+    request: null
+    response: candidate-envelope
+    success: 200
+    effect: Read exact saved candidate content and digest.
+    activity: prepare
+    revision: false
+  - id: accept_candidate
+    method: POST
+    path: /api/v1/cases
+    request: accept-candidate-request
+    response: case-head
+    success: 201
+    effect: Create a real draft case; audio and reviewed key remain absent.
+    activity: prepare
+    revision: false
+  - id: write_key
+    method: PUT
+    path: /api/v1/cases/{id}/key
+    request: key-write
+    response: prepare-view
+    success: 200
+    effect: Save a prepublication key candidate; verify all existing references and
+      observations.
+    activity: review
+    revision: true
+  - id: adjudicate
+    method: POST
+    path: /api/v1/adjudications
+    request: adjudication
+    response: adjudication
+    success: 201
+    effect: Save a genuine third-person resolution without editing prior reviews.
+    activity: review
+    revision: false
+  - id: get_adjudication
+    method: GET
+    path: /api/v1/adjudications/{id}
+    request: null
+    response: adjudication
+    success: 200
+    effect: Read the actual adjudication and supporting references.
+    activity: review
+    revision: false
+  - id: cancel_operation
+    method: POST
+    path: /api/v1/operations/{id}:cancel
+    request: cancel-request
+    response: operation-status
+    success: 200
+    effect: Fence future commits, cancel the active request, and preserve prior bytes.
+    activity: maintenance
+    revision: true
+  - id: speech_render
+    method: POST
+    path: /internal/v1/render
+    request: render-plan
+    response: speech-render-result
+    success: 200
+    effect: Render the actual typed plan through real configured providers.
+    activity: internal_speech
+    revision: false
+  - id: speech_measure
+    method: POST
+    path: /internal/v1/measure
+    request: measure-request
+    response: list:audio-measurement
+    success: 200
+    effect: Measure the exact final asset with registered methods.
+    activity: internal_speech
+    revision: false

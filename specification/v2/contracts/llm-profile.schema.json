@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/llm-profile.schema.json",
+  "title": "Configured LLM profile",
+  "type": "object",
+  "description": "Server-side profile. Keys remain referenced, never embedded.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "maxLength": 128,
+      "description": "Registry profile ID."
+    },
+    "provider": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Explicit configured provider identity; adapter compatibility must be documented."
+    },
+    "model": {
+      "type": "string",
+      "description": "The exact requested model identifier.",
+      "maxLength": 200,
+      "minLength": 1
+    },
+    "endpoint": {
+      "type": "string",
+      "description": "Explicit HTTPS endpoint with documented adapter, approved recipient and host allowlist. Redirects cannot transmit keys to another host.",
+      "maxLength": 500,
+      "minLength": 1,
+      "format": "uri"
+    },
+    "reasoning_effort": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The provider-supported effort.",
+          "enum": [
+            "none",
+            "low",
+            "medium",
+            "high",
+            "max"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The provider-supported effort."
+    },
+    "temperature": {
+      "anyOf": [
+        {
+          "type": "number",
+          "description": "The effective sampling value; null when unused.",
+          "minimum": 0,
+          "maximum": 2
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The effective sampling value; null when unused."
+    },
+    "max_output_tokens": {
+      "type": "integer",
+      "description": "The stage output cap.",
+      "minimum": 1,
+      "maximum": 1000000
+    },
+    "context_budget_tokens": {
+      "type": "integer",
+      "description": "The application capacity budget, not a claim of provider maximum.",
+      "minimum": 1,
+      "maximum": 2000000
+    },
+    "adapter_version": {
+      "type": "string",
+      "description": "The adapter implementation contract.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "credential_ref": {
+      "type": "string",
+      "description": "The local secret reference, never the secret.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "store": {
+      "const": false,
+      "description": "Do not request provider response storage."
+    },
+    "stream": {
+      "const": false,
+      "description": "Use a completed response."
+    },
+    "tools": {
+      "type": "array",
+      "description": "No tools are permitted.",
+      "items": false,
+      "minItems": 0,
+      "maxItems": 0
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "case_generation",
+          "linguistic_audit",
+          "blind_claim_extraction",
+          "claim_mapping",
+          "mapping_audit",
+          "feedback"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "description": "Supported documented processing roles; selection cannot assign an unsupported stage."
+    }
+  },
+  "required": [
+    "id",
+    "provider",
+    "model",
+    "endpoint",
+    "reasoning_effort",
+    "temperature",
+    "max_output_tokens",
+    "context_budget_tokens",
+    "adapter_version",
+    "credential_ref",
+    "store",
+    "stream",
+    "tools",
+    "roles"
+  ],
+  "additionalProperties": false
+}

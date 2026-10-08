@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/effective-binding.schema.json",
+  "title": "effective-binding",
+  "type": "object",
+  "description": "A frozen LLM role configuration. Roles are processing stages, not human access roles.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The effective processing binding.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "stage": {
+      "type": "string",
+      "description": "The processing stage.",
+      "enum": [
+        "case_generation",
+        "linguistic_audit",
+        "blind_claim_extraction",
+        "claim_mapping",
+        "mapping_audit",
+        "feedback"
+      ]
+    },
+    "provider": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Explicit configured provider identity; adapter compatibility must be documented."
+    },
+    "model": {
+      "type": "string",
+      "description": "The exact requested model identifier.",
+      "maxLength": 200,
+      "minLength": 1
+    },
+    "endpoint": {
+      "type": "string",
+      "description": "The official HTTPS endpoint.",
+      "maxLength": 500,
+      "minLength": 1,
+      "format": "uri"
+    },
+    "reasoning_effort": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The provider-supported effort.",
+          "enum": [
+            "none",
+            "low",
+            "medium",
+            "high",
+            "max"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The provider-supported effort."
+    },
+    "temperature": {
+      "anyOf": [
+        {
+          "type": "number",
+          "description": "The effective sampling value; null when unused.",
+          "minimum": 0,
+          "maximum": 2
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The effective sampling value; null when unused."
+    },
+    "max_output_tokens": {
+      "type": "integer",
+      "description": "The stage output cap.",
+      "minimum": 1,
+      "maximum": 1000000
+    },
+    "context_budget_tokens": {
+      "type": "integer",
+      "description": "The application capacity budget, not a claim of provider maximum.",
+      "minimum": 1,
+      "maximum": 2000000
+    },
+    "prompt_id": {
+      "type": "string",
+      "description": "The exact trusted prompt.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "prompt_sha256": {
+      "type": "string",
+      "description": "The exact prompt bytes.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "input_schema_sha256": {
+      "type": "string",
+      "description": "The full input schema digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "output_schema_sha256": {
+      "type": "string",
+      "description": "The full output schema digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "wire_schema_sha256": {
+      "type": "string",
+      "description": "The projected wire schema digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "adapter_version": {
+      "type": "string",
+      "description": "The adapter implementation contract.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "credential_ref": {
+      "type": "string",
+      "description": "The local secret reference, never the secret.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "store": {
+      "const": false,
+      "description": "Do not request provider response storage."
+    },
+    "stream": {
+      "const": false,
+      "description": "Use a completed response."
+    },
+    "tools": {
+      "type": "array",
+      "description": "No tools are permitted.",
+      "items": false,
+      "minItems": 0,
+      "maxItems": 0
+    },
+    "timeout_seconds": {
+      "type": "integer",
+      "description": "The stage cap inside the request deadline.",
+      "minimum": 1,
+      "maximum": 270
+    },
+    "binding_sha256": {
+      "type": "string",
+      "description": "The canonical binding digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "stage",
+    "provider",
+    "model",
+    "endpoint",
+    "reasoning_effort",
+    "temperature",
+    "max_output_tokens",
+    "context_budget_tokens",
+    "prompt_id",
+    "prompt_sha256",
+    "input_schema_sha256",
+    "output_schema_sha256",
+    "wire_schema_sha256",
+    "adapter_version",
+    "credential_ref",
+    "store",
+    "stream",
+    "tools",
+    "timeout_seconds",
+    "binding_sha256"
+  ],
+  "additionalProperties": false
+}

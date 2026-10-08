@@ -4,13 +4,13 @@
 
 ### Requirement: FULL-01 Require full source releases
 
-The system SHALL retain all eight profiles in audit/full-source-inventory.json. Every obtainable authorized source SHALL have its full named release, all partitions, files, labels and populations inventoried. A sample, latest unpinned mirror or cleaned derivative SHALL NOT satisfy full-release acceptance. Historical required:false SHALL NOT excuse omission from this planning scope. Unavailable research/vendor data SHALL retain blocked acquisition status and prevent an all-sources-acquired claim.
+The system SHALL retain the original eight-profile provenance and all eleven separately bound entries in specification/v2/domain/corpus-sources.v1.yaml. Every obtainable authorized source SHALL have its full named release, all partitions, files, labels and populations inventoried. A sample, latest unpinned mirror or cleaned derivative SHALL NOT satisfy full-release acceptance. Historical required:false SHALL NOT excuse omission from this planning scope. Unavailable research/vendor data SHALL retain blocked acquisition status and prevent an all-sources-acquired claim.
 
 #### Scenario: FULL-01 Complete supported behavior
 
-- **GIVEN** Compare the eight exact source IDs and release manifests against the reviewed source inventory.
+- **GIVEN** Compare the eleven exact active source IDs and release manifests against the reviewed source inventory.
 - **WHEN** the authorized owner checks the full frozen contract
-- **THEN** All eight inventories name exact release components, permissions, acquired counts and missing data.
+- **THEN** All eleven inventories name exact release components, permissions, acquired counts and missing data.
 
 #### Scenario: FULL-01 Incomplete or forbidden behavior
 
@@ -114,9 +114,9 @@ The source plan SHALL retain FCE-2.1: official BEA FCE 2.1. Required components:
 - **WHEN** the caller requests acceptance
 - **THEN** A partial/unpinned FCE-2.1 release, unsupported label or missing permission cannot receive full-source PASS.
 
-### Requirement: DATAFULL-06 EFCAMDAT full release
+### Requirement: DATAFULL-06 EFCAMDAT-R2 full release
 
-The source plan SHALL retain EFCAMDAT: full second release (XML); cleaned/error-coded XLSX subcorpora are separately versioned derivatives. Required components: Full XML, task prompts, all available learner/task/proficiency groups; keep second release distinct from Shatz 2020 and Oksuz et al. 2025 derivatives; inspect accepted agreement, schema, offsets and annotation coverage before approved ingest contract. Rights/access boundary: access_and_licence_blocked; academic affiliation, university Google account and administrator approval required; baseline discovery-only profile not automatically ingest-enabled. Observed hashes/counts SHALL remain absent until acquired; every unavailable component SHALL be reported rather than invented.
+The source plan SHALL retain EFCAMDAT-R2 (legacy EFCAMDAT identity): full second release (XML); cleaned/error-coded XLSX subcorpora are separately versioned derivatives. Required components: Full XML, task prompts, all available learner/task/proficiency groups; keep second release distinct from Shatz 2020 and Oksuz et al. 2025 derivatives; inspect accepted agreement, schema, offsets and annotation coverage before approved ingest contract. Rights/access boundary: access_and_licence_blocked; academic affiliation, university Google account and administrator approval required; baseline discovery-only profile not automatically ingest-enabled. Observed hashes/counts SHALL remain absent until acquired; every unavailable component SHALL be reported rather than invented.
 
 #### Scenario: DATAFULL-06 Complete supported behavior
 
@@ -146,18 +146,60 @@ The source plan SHALL retain DOUBAO-STUDY-RECORDS: no publicly verified download
 - **WHEN** the caller requests acceptance
 - **THEN** A partial/unpinned DOUBAO-STUDY-RECORDS release, unsupported label or missing permission cannot receive full-source PASS.
 
-### Requirement: DATAFULL-08 MOODRICK-NIR-DATA full release
+### Requirement: DATAFULL-08 MOODRICK-DATA full release
 
-The source plan SHALL retain MOODRICK-NIR-DATA: no publicly verified annotated data release. Required components: Keep both vendor comparison sources; public simulator descriptions do not supply private answer banks, prompts, rubrics, teacher interaction data or consent. Rights/access boundary: unavailable; NIR public page inspected as comparison only; Moodrick page fetch timed out, so data availability is unverified beyond supplied review. Observed hashes/counts SHALL remain absent until acquired; every unavailable component SHALL be reported rather than invented.
+The source plan SHALL retain MOODRICK-DATA, the Moodrick member of historical MOODRICK-NIR-DATA: no supplied actual annotated data release. Required components: Retain Moodrick as a separate vendor comparison source; NIR is bound under DATAFULL-11. public simulator descriptions do not supply private answer banks, prompts, rubrics, teacher interaction data or consent. Rights/access boundary: unavailable; NIR public page inspected as comparison only; Moodrick page fetch timed out, so data availability is unverified beyond supplied review. Observed hashes/counts SHALL remain absent until acquired; every unavailable component SHALL be reported rather than invented.
 
 #### Scenario: DATAFULL-08 Complete supported behavior
 
-- **GIVEN** Inspect the exact MOODRICK-NIR-DATA release/component inventory, with real rights and immutable raw manifests when available.
+- **GIVEN** Inspect the exact MOODRICK-DATA release/component inventory, with real rights and immutable raw manifests when available.
 - **WHEN** the authorized owner checks the full frozen contract
-- **THEN** The full MOODRICK-NIR-DATA manifest reconciles every required component, or truthfully reports its blocked unavailable release without claiming acquired coverage.
+- **THEN** The full MOODRICK-DATA manifest reconciles every required component, or truthfully reports its blocked unavailable release without claiming acquired coverage.
 
 #### Scenario: DATAFULL-08 Incomplete or forbidden behavior
 
 - **GIVEN** an omitted, altered or unauthorized dependency in that same contract
 - **WHEN** the caller requests acceptance
-- **THEN** A partial/unpinned MOODRICK-NIR-DATA release, unsupported label or missing permission cannot receive full-source PASS.
+- **THEN** A partial/unpinned MOODRICK-DATA release, unsupported label or missing permission cannot receive full-source PASS.
+
+### Requirement: DATAFULL-09 EFCAMDAT-SHATZ2020 separate full release
+
+The source plan SHALL retain the complete separately versioned EFCAMDAT-SHATZ2020 entry and every required component in specification/v2/domain/corpus-sources.v1.yaml and specification/v2/docs/sources/efcamdat.md. It SHALL retain exact actual native-format/rights/count bindings or an explicit unavailable status. It SHALL NOT substitute another derivative/vendor, an account credential, partial data or a public description for the actual full release. The attached transcribed decisions are not evidence of actual rights or owner approvals.
+
+#### Scenario: DATAFULL-09 Complete separately bound release
+- **GIVEN** the exact authorized EFCAMDAT-SHATZ2020 full release and required native format are available.
+- **WHEN** every partition/member/record and permission is reconciled.
+- **THEN** its actual immutable manifest and transformations remain separate from all other profiles.
+
+#### Scenario: DATAFULL-09 Missing source or false equivalence
+- **GIVEN** the release/rights/format are absent or only another derivative/vendor is supplied.
+- **WHEN** full-source acceptance is requested.
+- **THEN** EFCAMDAT-SHATZ2020 stays blocked and no acquired coverage or equivalence is invented.
+
+### Requirement: DATAFULL-10 EFCAMDAT-OKSUZ2025 separate full release
+
+The source plan SHALL retain the complete separately versioned EFCAMDAT-OKSUZ2025 entry and every required component in specification/v2/domain/corpus-sources.v1.yaml and specification/v2/docs/sources/efcamdat.md. It SHALL retain exact actual native-format/rights/count bindings or an explicit unavailable status. It SHALL NOT substitute another derivative/vendor, an account credential, partial data or a public description for the actual full release. The attached transcribed decisions are not evidence of actual rights or owner approvals.
+
+#### Scenario: DATAFULL-10 Complete separately bound release
+- **GIVEN** the exact authorized EFCAMDAT-OKSUZ2025 full release and required native format are available.
+- **WHEN** every partition/member/record and permission is reconciled.
+- **THEN** its actual immutable manifest and transformations remain separate from all other profiles.
+
+#### Scenario: DATAFULL-10 Missing source or false equivalence
+- **GIVEN** the release/rights/format are absent or only another derivative/vendor is supplied.
+- **WHEN** full-source acceptance is requested.
+- **THEN** EFCAMDAT-OKSUZ2025 stays blocked and no acquired coverage or equivalence is invented.
+
+### Requirement: DATAFULL-11 NIR-DATA separate full release
+
+The source plan SHALL retain the complete separately versioned NIR-DATA entry and every required component in specification/v2/domain/corpus-sources.v1.yaml and specification/v2/docs/sources/private-vendors-and-study.md. It SHALL retain exact actual native-format/rights/count bindings or an explicit unavailable status. It SHALL NOT substitute another derivative/vendor, an account credential, partial data or a public description for the actual full release. The attached transcribed decisions are not evidence of actual rights or owner approvals.
+
+#### Scenario: DATAFULL-11 Complete separately bound release
+- **GIVEN** the exact authorized NIR-DATA full release and required native format are available.
+- **WHEN** every partition/member/record and permission is reconciled.
+- **THEN** its actual immutable manifest and transformations remain separate from all other profiles.
+
+#### Scenario: DATAFULL-11 Missing source or false equivalence
+- **GIVEN** the release/rights/format are absent or only another derivative/vendor is supplied.
+- **WHEN** full-source acceptance is requested.
+- **THEN** NIR-DATA stays blocked and no acquired coverage or equivalence is invented.

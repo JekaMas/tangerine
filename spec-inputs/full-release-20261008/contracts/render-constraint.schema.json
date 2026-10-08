@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/render-constraint.schema.json",
+  "title": "render-constraint",
+  "type": "object",
+  "description": "A closed constraint. Kind determines the permitted fields in the invariant table.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique constraint.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "kind": {
+      "type": "string",
+      "description": "The requested property.",
+      "enum": [
+        "plain_text",
+        "ipa",
+        "prosody",
+        "timed_pause",
+        "multi_turn",
+        "voice_identity",
+        "locale",
+        "accent_features",
+        "word_stress",
+        "phrase_stress",
+        "intonation",
+        "speech_rate"
+      ]
+    },
+    "speaker_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The constrained speaker.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The constrained speaker."
+    },
+    "unit_ids": {
+      "type": "array",
+      "description": "The affected units.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "expected_text": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "A specified voice, locale, label, or IPA.",
+          "maxLength": 3000,
+          "minLength": 0
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "A specified voice, locale, label, or IPA."
+    },
+    "minimum": {
+      "anyOf": [
+        {
+          "type": "number",
+          "description": "The inclusive lower bound."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The inclusive lower bound."
+    },
+    "maximum": {
+      "anyOf": [
+        {
+          "type": "number",
+          "description": "The inclusive upper bound."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The inclusive upper bound."
+    },
+    "unit": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The bound unit.",
+          "enum": [
+            "wpm",
+            "ms",
+            "semitones",
+            "semitones_per_second",
+            "percent",
+            "db",
+            "category"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The bound unit."
+    },
+    "feature": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The acoustic feature.",
+          "enum": [
+            "lexical_stress",
+            "nuclear_stress",
+            "f0_range_semitones",
+            "f0_slope_semitones_per_second",
+            "syllable_duration_ratio",
+            "rhythm",
+            "boundary",
+            "weak_form",
+            "linking",
+            "assimilation",
+            "elision"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The acoustic feature."
+    },
+    "requirement": {
+      "const": "hard",
+      "description": "Every explicitly requested property is hard."
+    },
+    "verification_method_id": {
+      "type": "string",
+      "description": "The method from domain/audio-methods.yaml.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    }
+  },
+  "required": [
+    "id",
+    "kind",
+    "speaker_id",
+    "unit_ids",
+    "expected_text",
+    "minimum",
+    "maximum",
+    "unit",
+    "feature",
+    "requirement",
+    "verification_method_id"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,270 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/provider-receipt.schema.json",
+  "title": "provider-receipt",
+  "type": "object",
+  "description": "A real provider call receipt. Unknown usage does not become zero.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The actual provider call.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "operation_id": {
+      "type": "string",
+      "description": "The foreground operation.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "stage": {
+      "type": "string",
+      "description": "The stage name.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "binding_sha256": {
+      "type": "string",
+      "description": "The frozen effective binding.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "input_sha256": {
+      "type": "string",
+      "description": "The exact bounded request data.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "wire_request_asset_id": {
+      "type": "string",
+      "description": "Private request bytes without credential headers.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "wire_response_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The actual received bytes.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The actual received bytes."
+    },
+    "provider_request_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The provider-supplied ID.",
+          "maxLength": 300,
+          "minLength": 0
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The provider-supplied ID."
+    },
+    "http_status": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "description": "The actual HTTP status.",
+          "minimum": 100,
+          "maximum": 599
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The actual HTTP status."
+    },
+    "outcome": {
+      "type": "string",
+      "description": "The actual call outcome.",
+      "enum": [
+        "complete",
+        "refusal",
+        "incomplete",
+        "transport_error",
+        "schema_error",
+        "semantic_error",
+        "cancelled",
+        "deadline"
+      ]
+    },
+    "error_code": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The safe normalized error code.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The safe normalized error code."
+    },
+    "input_tokens": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Provider-reported input tokens.",
+          "maxLength": 4096,
+          "minLength": 1,
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Provider-reported input tokens."
+    },
+    "cached_input_tokens": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Provider-reported cached tokens.",
+          "maxLength": 4096,
+          "minLength": 1,
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Provider-reported cached tokens."
+    },
+    "output_tokens": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Provider-reported output tokens.",
+          "maxLength": 4096,
+          "minLength": 1,
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Provider-reported output tokens."
+    },
+    "reasoning_tokens": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Provider-reported reasoning tokens.",
+          "maxLength": 4096,
+          "minLength": 1,
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Provider-reported reasoning tokens."
+    },
+    "cost_micro_usd": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Measured or conservatively estimated cost with its basis.",
+          "maxLength": 4096,
+          "minLength": 1,
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Measured or conservatively estimated cost with its basis."
+    },
+    "cost_basis": {
+      "type": "string",
+      "description": "The cost source.",
+      "enum": [
+        "provider_report",
+        "frozen_price_table",
+        "unknown"
+      ]
+    },
+    "transport_attempt": {
+      "type": "integer",
+      "description": "Zero for the original transport attempt and one for the permitted retry.",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "started_at": {
+      "type": "string",
+      "description": "The call start.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "finished_at": {
+      "type": "string",
+      "description": "The call finish.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "model_returned": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The actual returned model ID.",
+          "maxLength": 200,
+          "minLength": 0
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The actual returned model ID."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "operation_id",
+    "stage",
+    "binding_sha256",
+    "input_sha256",
+    "wire_request_asset_id",
+    "wire_response_asset_id",
+    "provider_request_id",
+    "http_status",
+    "outcome",
+    "error_code",
+    "input_tokens",
+    "cached_input_tokens",
+    "output_tokens",
+    "reasoning_tokens",
+    "cost_micro_usd",
+    "cost_basis",
+    "transport_attempt",
+    "started_at",
+    "finished_at",
+    "model_returned"
+  ],
+  "additionalProperties": false
+}

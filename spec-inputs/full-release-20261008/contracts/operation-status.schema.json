@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/operation-status.schema.json",
+  "title": "operation-status",
+  "type": "object",
+  "description": "Recovery lookup. It cannot start provider work.",
+  "properties": {
+    "operation_id": {
+      "type": "string",
+      "description": "The actual operation.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "state": {
+      "type": "string",
+      "description": "The persisted state.",
+      "enum": [
+        "reserved",
+        "running",
+        "complete",
+        "failed",
+        "cancelled",
+        "interrupted"
+      ]
+    },
+    "subject": {
+      "type": "object",
+      "description": "An explicitly typed reference.",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "description": "The kind of the referenced object.",
+          "enum": [
+            "case",
+            "unit",
+            "utterance",
+            "attempt",
+            "asset",
+            "claim",
+            "review",
+            "record",
+            "release",
+            "configuration"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "description": "The identifier in the declared kind.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        "version_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The exact version when the object is versioned.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The exact version when the object is versioned."
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "version_id"
+      ],
+      "additionalProperties": false
+    },
+    "started_at": {
+      "type": "string",
+      "description": "The server start.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "finished_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The actual completion.",
+          "maxLength": 35,
+          "minLength": 20,
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The actual completion."
+    },
+    "result": {
+      "anyOf": [
+        {
+          "$ref": "operation-result.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The value, or null when the contract states that it is absent."
+    },
+    "error": {
+      "anyOf": [
+        {
+          "$ref": "error-response.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The value, or null when the contract states that it is absent."
+    }
+  },
+  "required": [
+    "operation_id",
+    "state",
+    "subject",
+    "started_at",
+    "finished_at",
+    "result",
+    "error"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,104 @@
+name: tangerine
+services:
+  postgres:
+    image: ${POSTGRES_IMAGE:?publisher must supply a real digest}
+    env_file:
+    - .state/database.env
+    volumes:
+    - database:/var/lib/postgresql/data
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  minio:
+    image: ${MINIO_IMAGE:?publisher must supply a real digest}
+    command:
+    - server
+    - /data
+    env_file:
+    - .state/storage.env
+    volumes:
+    - objects:/data
+  migrate:
+    image: ${API_IMAGE:?publisher must supply a real digest}
+    command:
+    - tangerine
+    - migrate
+    env_file:
+    - .state/database.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: 'no'
+  storage-init:
+    image: ${API_IMAGE:?publisher must supply a real digest}
+    command:
+    - tangerine
+    - storage-init
+    - --wait-seconds
+    - '120'
+    env_file:
+    - .state/storage.env
+    depends_on:
+      minio:
+        condition: service_started
+    restart: 'no'
+  speech:
+    image: ${SPEECH_IMAGE:?publisher must supply a real digest}
+    env_file:
+    - .state/storage-client.env
+    - .state/internal.env
+    volumes:
+    - ./configuration:/configuration:ro
+    depends_on:
+      storage-init:
+        condition: service_completed_successfully
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      AZURE_SPEECH_KEY: ${AZURE_SPEECH_KEY:-}
+      AZURE_SPEECH_REGION: ${AZURE_SPEECH_REGION:-}
+  api:
+    image: ${API_IMAGE:?publisher must supply a real digest}
+    env_file:
+    - .state/database.env
+    - .state/storage-client.env
+    - .state/internal.env
+    volumes:
+    - ./configuration:/configuration:ro
+    - exports:/exports
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      storage-init:
+        condition: service_completed_successfully
+      speech:
+        condition: service_started
+    healthcheck:
+      test:
+      - CMD
+      - tangerine
+      - healthcheck
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    environment:
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+  web:
+    image: ${WEB_IMAGE:?publisher must supply a real digest}
+    env_file:
+    - .state/internal.env
+    environment:
+      INTERNAL_API_ORIGIN: http://api:8080
+    ports:
+    - 127.0.0.1:3000:3000
+    depends_on:
+      api:
+        condition: service_healthy
+volumes:
+  database: {}
+  objects: {}
+  exports: {}
