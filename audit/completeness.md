@@ -1,6 +1,6 @@
 # Specification completeness review — 2026-10-08
 
-Read [the complete current 53-gap explanation](simple-local-20261008/REMAINING-GAPS.md) for each definition, its existing scope, missing rules, required decision/artifact, owner and positive/negative closure. This clarification changes no contract and closes no gap.
+Read [the complete current 53-gap explanation](simple-local-20261008/REMAINING-GAPS.md) for each definition, its existing scope, missing rules, required decision/artifact, owner and positive/negative closure. The latest GAP-054 update narrows the setup contract to GitHub source ZIP/clone download-and-run. Formal deployment/release manifests and mandatory prebuilt application-image publication are excluded; no definition gap is declared closed.
 
 Current local-scope update: [simple local product](../docs/simple-local-product.md) governs the product; [gap dispositions](simple-local-20261008/gap-disposition.json) supersede GAP-005/006 and narrow internal API/data/operations requirements. **53 grouped definitions remain open**, including 33 engineering items and 20 product/linguistic/source-owner input items in [the current questionnaire](simple-local-20261008/USER-INPUT.md). No auth, tenant or public API definition is required. Earlier reports below describe the prior audit snapshot.
 

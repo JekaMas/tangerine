@@ -8,7 +8,7 @@ The supplied Teacher Error Trainer material defines a full listening-and-written
 
 - Preserve all nine initial imports and all 95 members of the complete v6-ste archive with immutable provenance.
 - Review every task point, missing source contract and unresolved decision.
-- Specify a simple single-person local product: one start command and provider keys, automatic bundled infrastructure, no accounts, tenants, access roles or public API setup; keep the truthful database-backed library.
+- Specify a simple single-person local product: a GitHub source ZIP/clone, one start command and provider keys, automatic bundled infrastructure, no accounts, tenants, access roles or public API setup; keep the truthful database-backed library.
 - Preserve the author, blind reviewers, publication, teacher and dispute workflows.
 - Preserve all 122 exact taxonomy categories, 15 schemas, five original prompts, 27 core and 15 auxiliary metrics and all original 48 requirements/96 scenarios.
 - Require full named releases/components for all eight listed source profiles, with explicit permissions and unavailable-data blockers.
@@ -27,7 +27,7 @@ The supplied Teacher Error Trainer material defines a full listening-and-written
 - `provider-integration`: explicitly selected versioned real profiles, capability receipts and server-only credentials.
 - `teacher-workflow`: synchronous preserved answers, audited scoring, feedback, review and explicit retries.
 - `corpus-validation`: permitted acquisition, all-category coverage, real answers and split protection.
-- `release-acceptance`: fixed builds, recovery, full browser acceptance and two architectures.
+- `release-acceptance`: runnable GitHub source, local builds, recovery, full browser acceptance and two architectures.
 
 - `configurable-llm`: explicit full-scope/configuration/deadline planning requirements.
 - `full-source-coverage`: explicit full-scope/configuration/deadline planning requirements.
@@ -56,7 +56,7 @@ None. This repository has no existing main product specifications.
 
 ## Current local scope
 
-See docs/simple-local-product.md. Author/reviewer/teacher are activities in one workspace. Genuine review and all language/data/scoring coverage remain required. Internal service contracts remain precise but are not a public API. The no-account mode and simple launcher are future deliverables; older authentication code is not aligned by this specification update.
+See docs/simple-local-product.md. Author/reviewer/teacher are activities in one workspace. Genuine review and all language/data/scoring coverage remain required. Internal service contracts remain precise but are not a public API. The project is distributed as open-source GitHub source; users build and run locally from ZIP or clone without a formal release manifest or prebuilt application-image publication. The no-account mode and simple launcher are future deliverables; older authentication code is not aligned by this specification update.
 
 ## Impact
 

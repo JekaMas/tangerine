@@ -3,17 +3,17 @@
 ## ADDED Requirements
 
 ### Requirement: LOCAL-01 Local containers
-The application MUST start locally through Docker Compose with real provider configuration. It MUST require no host language runtime or external database. Missing application images MUST remain a release blocker.
+The application MUST start from the open-source GitHub source ZIP or clone through the supplied local helper and Docker Compose with real provider configuration. The downloaded source MUST include all application build inputs and MUST NOT depend on Git metadata, workflow submodules or host language runtimes. Application images MUST build locally on first start; prebuilt application image distribution and a formal release manifest are not required. Missing inputs or a failed local build MUST produce a clear startup error.
 
 #### Scenario: LOCAL-01 Permitted behavior
-- **GIVEN** The release supplies real images and credentials.
-- **WHEN** The operator starts the Compose deployment.
+- **GIVEN** The user extracts the GitHub source ZIP with complete build inputs and provides keys for the intended provider operations.
+- **WHEN** The user invokes the supplied local start helper.
 - **THEN** The teacher interface uses the local web origin.
 
 #### Scenario: LOCAL-01 Boundary behavior
-- **GIVEN** The application image does not exist.
+- **GIVEN** A required source build input is absent or the local build fails.
 - **WHEN** The operator attempts startup.
-- **THEN** Startup fails without a substitute application or fake success response.
+- **THEN** Startup reports the actual build/input error without a substitute application or fake success response. Absence of a prebuilt application image alone is normal on first start.
 
 ### Requirement: LOCAL-02 Limited access
 Only the web port MUST bind to host loopback and MUST reject non-loopback exposure configuration. Each container MUST receive only the secrets for its service. Provider keys MUST NOT enter browser assets or image layers.

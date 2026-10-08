@@ -996,13 +996,13 @@
   {
     "id": "REL-01",
     "capability": "release-acceptance",
-    "title": "REL-01 Deliver fixed build artifacts",
-    "statement": "deliver source, Dockerfiles, working Compose, fixed dependencies, inspected image references/digests, migrations and exact startup instructions",
+    "title": "REL-01 Deliver a runnable GitHub source project",
+    "statement": "The project SHALL supply an open-source GitHub source ZIP or clone with complete application source, Dockerfiles, working Compose, dependency lock files, migrations, provider-key example and concise README start/stop/restart instructions. The supplied helper SHALL build application images locally and initialize internal services without manual setup. Starting from extracted source SHALL require no Git metadata or workflow submodules. A formal deployment/release manifest, signed bundle, prebuilt application image publication or production deployment platform is not required. Verification SHALL use the documented download-and-run path.",
     "scenario": "REL-01 supported and rejected inputs",
     "positive": "build and inspect the actual images used by the documented command",
     "negative": "block release for missing builds, moving image tags or invented digests",
     "owner": "deploy/local",
-    "source": "attached task and supplied registries; task-derived recovery ID",
+    "source": "User GitHub source-download clarification; active local overlay; startup behavior unimplemented.",
     "scenarios": [
       "REL-01 supported and rejected inputs"
     ]
@@ -1597,13 +1597,13 @@
     "id": "V6-LOCAL-01",
     "capability": "v6-local-deployment",
     "title": "LOCAL-01 Local containers",
-    "statement": "The application MUST start locally through Docker Compose with real provider configuration. It MUST require no host language runtime or external database. Missing application images MUST remain a release blocker.",
+    "statement": "The application MUST start from the open-source GitHub source ZIP or clone through the supplied local helper and Docker Compose with real provider configuration. The downloaded source MUST include all application build inputs and MUST NOT depend on Git metadata, workflow submodules or host language runtimes. Application images MUST build locally on first start; prebuilt application image distribution and a formal release manifest are not required. Missing inputs or a failed local build MUST produce a clear startup error.",
     "owner": "services/api/internal/local_deployment",
     "scenarios": [
       "LOCAL-01 Permitted behavior",
       "LOCAL-01 Boundary behavior"
     ],
-    "source": "Recovered v6 or explicit current-user full-source/configurable-LLM specification addition; planned only."
+    "source": "User GitHub source-download clarification; active local overlay; startup behavior unimplemented."
   },
   {
     "id": "V6-LOCAL-02",
@@ -4075,13 +4075,13 @@
   {
     "id": "SPEC-054",
     "capability": "specification-fullness",
-    "title": "SPEC-054 Complete deployment/configuration and release manifest schema",
-    "statement": "Close GAP-054: No complete versioned runtime configuration schema covers domains/roles/provider bindings/limits/locale/timeouts/storage/migrations, all env types/defaults/validation or complete release artifact/provenance compatibility. Preserve Topology, localhost port, server secrets, real services, exact workflow/tool pin and two architectures are required.",
+    "title": "SPEC-054 Basic GitHub download-and-run setup",
+    "statement": "The specification SHALL close GAP-054 by defining only the basic startup and configuration needed to download the open-source GitHub source ZIP or clone, provide provider keys, run the supplied helper and use the application locally. It SHALL specify prerequisites, included application build inputs, exact start/stop/restart commands, first-run initialization, automatic persistent internal secrets, provider-key settings/defaults/validation and clear build/key/port errors. Application images SHALL build locally; source-ZIP startup SHALL require no Git metadata, workflow submodules or developer planning tools. A formal deployment/release manifest, signed release bundle, prebuilt application image publication and production deployment system are excluded. This user clarification resolves the distribution choice; remaining setup details are ordinary engineering definitions.",
     "owner": "contracts",
     "scenarios": [
       "SPEC-054 Complete definition and rejection boundary"
     ],
-    "source": "Latest explicit user exhaustive specification request; GAP-054; definition unresolved, no implementation"
+    "source": "User GitHub source-download clarification; active local overlay; startup behavior unimplemented."
   },
   {
     "id": "SPEC-055",
@@ -4098,13 +4098,13 @@
     "id": "RUN-08",
     "capability": "local-runtime",
     "title": "RUN-08 Start from keys and the supplied bundle",
-    "statement": "The release SHALL supply the simple local launcher, key-only setup and default configurable LLM profile in docs/simple-local-product.md. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their keys and permitted source transfer. Speech keys remain separate when required.",
+    "statement": "The GitHub source project SHALL supply the simple local launcher, key-only setup and default configurable LLM profile in docs/simple-local-product.md. An extracted source ZIP SHALL build and run with Docker without Git metadata, workflow submodules, prebuilt application image distribution or a formal deployment/release manifest. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their keys and permitted source transfer. Speech keys remain separate when required.",
     "owner": "docs/simple-local-product.md",
     "scenarios": [
       "RUN-08 simple supported startup",
       "RUN-08 missing operation key"
     ],
-    "source": "Original preserved input with explicit current simple-local user scope overlay; no new behavior acceptance."
+    "source": "User GitHub source-download clarification; active local overlay; startup behavior unimplemented."
   },
   {
     "id": "RUN-09",

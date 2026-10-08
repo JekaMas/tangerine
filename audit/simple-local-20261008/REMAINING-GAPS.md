@@ -4,7 +4,7 @@ This is the complete current list of **53 grouped definition gaps** after the si
 
 **33 engineering definitions** can be drafted by engineering. **20 input items** consist of 11 product choices, six linguistic policies and three source-owner items. You do not need to design internal APIs, database tables or serialization yourself. Product/linguistic/source inputs are identified on every entry. Reply by GAP ID; engineering items can be assigned to engineering rather than answered field by field.
 
-The product remains one local workspace with provider keys and no accounts, sessions, access roles, tenants or public API setup. GAP-005 and GAP-006 are superseded and excluded. Internal contracts are implementation details. Reviewer qualifications and actual source-use permissions remain evidence responsibilities.
+The product is an open-source GitHub source-download-and-run project with one local workspace, provider keys and no accounts, sessions, access roles, tenants or public API setup. GAP-054 requires basic local setup only; formal deployment/release manifests and mandatory prebuilt application-image distribution are excluded. GAP-005 and GAP-006 are superseded and excluded. Internal contracts are implementation details. Reviewer qualifications and actual source-use permissions remain evidence responsibilities.
 
 “Already specified” describes existing definitions, not implementation or observation. “Needed to close” names the artifact or decision required. Positive/negative closure criteria describe the later checks; they are not newly executed tests. Actual recordings, permissions, provider behavior, reviewer observations and runtime acceptance remain separate evidence obligations.
 
@@ -63,7 +63,7 @@ The references preserve historical audit anchors. Line numbers are from the earl
 - [GAP-051 — Retention, deletion and permission revocation lifecycle](#gap-051) (product choice)
 - [GAP-052 — Request quotas, concurrency, costs and import resource bounds](#gap-052) (product choice)
 - [GAP-053 — Backup/restore consistency and compatibility protocol](#gap-053) (engineering definition)
-- [GAP-054 — Complete deployment/configuration and release manifest schema](#gap-054) (engineering definition)
+- [GAP-054 — Basic GitHub download-and-run setup](#gap-054) (engineering definition)
 - [GAP-055 — Specification authority, version compatibility and drift closure](#gap-055) (engineering definition)
 
 <a id="gap-001"></a>
@@ -1155,21 +1155,21 @@ The references preserve historical audit anchors. Line numbers are from the earl
 - [openspec/changes/implement-teacher-error-trainer/design.md](../../openspec/changes/implement-teacher-error-trainer/design.md) — historical audit line 35, anchor: stored checksums
 
 <a id="gap-054"></a>
-## GAP-054 — Complete deployment/configuration and release manifest schema
+## GAP-054 — Basic GitHub download-and-run setup
 
-**Who closes it:** Engineering — can be drafted without a new product decision. Active requirement: `SPEC-054`.
+**Who closes it:** Engineering — the user has resolved the distribution choice. Active requirement: `SPEC-054`.
 
-**Already specified:** Docker prerequisite; supplied launcher and key-only setup; automatic persistent internal secrets and migrations; bundled prescribed services, loopback web port, server-only keys and amd64/arm64 support. These are chosen product requirements, not already implemented startup.
+**Already specified:** The user explicitly chooses an open-source GitHub source project: download/extract ZIP or clone, provide provider keys and run locally. The repository supplies all build inputs and normal lock files; application images build locally, without Git metadata or workflow submodules. No formal deployment/release manifest or mandatory prebuilt application-image publication.
 
-**What remains missing:** The exact launcher/bootstrap and recovery procedure, internal secret generation/storage/reuse/rotation, all setting types/defaults/validation/ownership/overrides and release compatibility/provenance manifest still need engineering definitions. No user account/role or manual DB/storage setup is required.
+**What remains missing:** The basic setup still needs exact prerequisites and commands, first-run/restart behavior, provider-key/default settings and validation, automatic persistent internal initialization, and clear missing-Docker/key/build-input/port errors. These are engineering details of the chosen local source-download experience.
 
-**Why it matters:** The one-command/key-only user experience is already chosen. The missing engineering detail is how the supplied bundle, automatic internal secrets, configuration validation and versioned release artifacts deliver it.
+**Why it matters:** The distribution model is now settled. Engineering must make download-and-run actually work and document the small set of required settings, while avoiding a formal release/deployment platform.
 
-**Needed to close:** Engineering should specify the launcher/first-run/restart/failure path; every provider and internal setting with defaults, destination and validation; generated secret persistence and safe rotation; complete image/dependency/config/migration/prompt/policy manifest and architecture qualification. Users supply only operation-specific provider keys.
+**Needed to close:** Engineering should define a short README setup contract, source-complete ZIP inputs, key example/defaults, first-build/start/stop/restart path and automatic internal-secret/storage/migration initialization with explicit failures. No further distribution choice from the user, release manifest or production deployment design is required.
 
-**Positive closure:** An operator supplies only declared local secrets/settings; all nonsecret release identities and compatibility are frozen.
+**Positive closure:** A fresh source ZIP contains every application build input and starts locally with Docker, supplied defaults and provider keys through the documented helper, without Git metadata, workflow submodules or manual internal-service setup.
 
-**Negative closure:** Unknown settings, unresolved image references, leaked env or unqualified architecture cannot be accepted as a release.
+**Negative closure:** Missing prerequisites/build inputs, invalid required settings, failed build or port conflict produce clear errors without fake success or leaked secrets. Missing prebuilt application images alone must not prevent first-start local building.
 
 **Source context:**
 - [docs/runtime-v1.md](../../docs/runtime-v1.md) — historical audit line 82, anchor: publisher must supply built images

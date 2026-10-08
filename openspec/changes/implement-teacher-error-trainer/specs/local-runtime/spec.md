@@ -71,11 +71,11 @@ The system SHALL distinguish liveness from dependency readiness and return non-s
 
 ### Requirement: RUN-08 Start from keys and the supplied bundle
 
-The release SHALL supply the simple local launcher, key-only setup and default configurable LLM profile in docs/simple-local-product.md. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their keys and permitted source transfer. Speech keys remain separate when required.
+The GitHub source project SHALL supply the simple local launcher, key-only setup and default configurable LLM profile in docs/simple-local-product.md. An extracted source ZIP SHALL build and run with Docker without Git metadata, workflow submodules, prebuilt application image distribution or a formal deployment/release manifest. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their keys and permitted source transfer. Speech keys remain separate when required.
 
 #### Scenario: RUN-08 simple supported startup
 
-- **GIVEN** Docker is running and the supplied local bundle is available.
+- **GIVEN** Docker is running and the GitHub source ZIP has been extracted with all application build inputs.
 - **WHEN** the user fills provider keys and starts the supplied launcher.
 - **THEN** The local interface becomes available without login or manual infrastructure configuration; a key-free workspace still opens its truthful empty library or plays approved stored audio.
 

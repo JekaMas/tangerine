@@ -28,7 +28,7 @@ Recovered originals → preserve every category, schema, prompt and requirement;
 Unresolved DEC-001 through DEC-008 → separate proposals under audit/decisions, separate genuine owner decisions required.
 No genuine reviewed corpus or live qualification → no publication or empirical correctness claim. The DeepSeek secret reference is discovered, but no live call or source transfer is authorized this turn.
 Foundation tables are provisional infrastructure → reconcile exact domain schemas before adding domain tables or importing content.
-Live FFmpeg apt repository dependencies → fixed FFmpeg version is selected, but complete transitive package/build identity still needs capture in actual built images for release.
+Live FFmpeg apt repository dependencies → fixed FFmpeg version is selected, but normal build/lock inputs and local build compatibility still need verification; a complete transitive release manifest is not required by the GitHub source distribution.
 
 ## Migration Plan
 
@@ -41,7 +41,7 @@ The eight separate drafts are reviewable proposals, not approvals. Remaining gen
 
 ## Recovered full-contract overlay
 
-All fifteen original capability specifications are retained in active v6-* deltas. Original IDs remain literal; the graph uses V6- prefixes to avoid collisions with task-derived MET/APR IDs. Active original-text adjustments include PROV-01 configurable profile lookup and explicit local scope for PLAT-01/02, LOCAL-02, LIFE-01 and SES-01/03. Original IDs and archived bytes remain intact; docs/simple-local-product.md supersedes account/tenant/access-role semantics. Immutable archive bytes remain under spec-inputs/v6-ste; every adjustment is inspectable against that source. Original summary and delta documents cannot override current user authority.
+All fifteen original capability specifications are retained in active v6-* deltas. Original IDs remain literal; the graph uses V6- prefixes to avoid collisions with task-derived MET/APR IDs. Active original-text adjustments include PROV-01 configurable profile lookup and explicit local scope for PLAT-01/02, LOCAL-01/02, LIFE-01 and SES-01/03. Original IDs and archived bytes remain intact; docs/simple-local-product.md supersedes account/tenant/access-role semantics. Immutable archive bytes remain under spec-inputs/v6-ste; every adjustment is inspectable against that source. Original summary and delta documents cannot override current user authority.
 
 Case lifecycle is draft -> rendered -> needs_review -> verified -> published, with transactional state/source/evidence guards and audit. A nonretired case may enter quarantined with reason; renewed review goes to needs_review, never directly published. Published cases may retire while historical access remains. Payload changes create a distinct draft and invalidate old final-hash approvals. Attempt lifecycle is draft -> submitted -> evaluating -> complete/review_required/evaluation_failed; explicit expired-lease recovery and append-only adjudicated result revisions preserve original answer/result references. These source contract states differ from derived UI labels.
 
@@ -61,3 +61,7 @@ The latest user explicitly requires every data/flow/API/formula definition and a
 ## Current simple local product
 
 The latest user removes accounts, access roles, tenants and complex public APIs. docs/simple-local-product.md is the normative overlay and contracts/local/attempt.schema.json is the active local attempt contract. The bundled prescribed services stay internal; the future launcher performs readiness and initialization without manual infrastructure setup. Local person attestations preserve real review evidence without claiming authenticated independence. Teaching/blind-review disclosure is a view contract; the local owner can separately inspect authoring. Existing source contracts and login code stay historical until explicit future migration/alignment; no service code is changed here.
+
+## GitHub source distribution
+
+GAP-054 is narrowed by the actual user request to ordinary open-source download-and-run setup. The application source ZIP or clone supplies every build input, Dockerfiles/Compose, lock files, provider-key example, README and start helper. Docker builds application images locally on first start. Startup uses neither Git metadata nor the developer workflow submodule. The source distribution needs no formal deployment/release manifest, signed bundle, prebuilt application image publication or production deployment system. Basic configuration/defaults, automatic internal initialization and truthful error handling still need engineering definitions; no runtime behavior is implemented by this change. Normal compatibility, persistence, source/corpus provenance and language/provider quality checks remain required.

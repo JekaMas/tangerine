@@ -6,14 +6,14 @@ Preserve the observable release acceptance requirements of Teacher Error Trainer
 
 ## ADDED Requirements
 
-### Requirement: REL-01 Deliver fixed build artifacts
+### Requirement: REL-01 Deliver a runnable GitHub source project
 
-The system SHALL deliver source, Dockerfiles, working Compose, fixed dependencies, inspected image references/digests, migrations and exact startup instructions.
+The project SHALL supply an open-source GitHub source ZIP or clone with complete application source, Dockerfiles, working Compose, dependency lock files, migrations, provider-key example and concise README start/stop/restart instructions. The supplied helper SHALL build application images locally and initialize internal services without manual setup. Starting from extracted source SHALL require no Git metadata or workflow submodules. A formal deployment/release manifest, signed bundle, prebuilt application image publication or production deployment platform is not required. Verification SHALL use the documented download-and-run path.
 
 #### Scenario: REL-01 supported and rejected inputs
 
 - **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL build and inspect the actual images used by the documented command, and SHALL block release for missing builds, moving image tags or invented digests
+- **THEN** it SHALL build and start from the complete source ZIP with the documented command and provider keys, and SHALL report missing Docker, build inputs, invalid required settings or build failures without false success
 
 ### Requirement: REL-02 Prove the complete browser cycle
 

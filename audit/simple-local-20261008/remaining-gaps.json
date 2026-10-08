@@ -1570,7 +1570,7 @@
     },
     {
       "id": "GAP-054",
-      "title": "Complete deployment/configuration and release manifest schema",
+      "title": "Basic GitHub download-and-run setup",
       "category": "operations",
       "status": "open_definition",
       "resolution_owner": "engineering_definition",
@@ -1586,15 +1586,15 @@
           "anchor": "specification_only_not_live_qualified"
         }
       ],
-      "already_defined": "Docker prerequisite; supplied launcher and key-only setup; automatic persistent internal secrets and migrations; bundled prescribed services, loopback web port, server-only keys and amd64/arm64 support. These are chosen product requirements, not already implemented startup.",
-      "missing_definition": "The exact launcher/bootstrap and recovery procedure, internal secret generation/storage/reuse/rotation, all setting types/defaults/validation/ownership/overrides and release compatibility/provenance manifest still need engineering definitions. No user account/role or manual DB/storage setup is required.",
-      "answer_needed": "Engineering should specify the launcher/first-run/restart/failure path; every provider and internal setting with defaults, destination and validation; generated secret persistence and safe rotation; complete image/dependency/config/migration/prompt/policy manifest and architecture qualification. Users supply only operation-specific provider keys.",
-      "closure_positive": "An operator supplies only declared local secrets/settings; all nonsecret release identities and compatibility are frozen.",
-      "closure_negative": "Unknown settings, unresolved image references, leaked env or unqualified architecture cannot be accepted as a release.",
+      "already_defined": "The user explicitly chooses an open-source GitHub source project: download/extract ZIP or clone, provide provider keys and run locally. The repository supplies all build inputs and normal lock files; application images build locally, without Git metadata or workflow submodules. No formal deployment/release manifest or mandatory prebuilt application-image publication.",
+      "missing_definition": "The basic setup still needs exact prerequisites and commands, first-run/restart behavior, provider-key/default settings and validation, automatic persistent internal initialization, and clear missing-Docker/key/build-input/port errors. These are engineering details of the chosen local source-download experience.",
+      "answer_needed": "Engineering should define a short README setup contract, source-complete ZIP inputs, key example/defaults, first-build/start/stop/restart path and automatic internal-secret/storage/migration initialization with explicit failures. No further distribution choice from the user, release manifest or production deployment design is required.",
+      "closure_positive": "A fresh source ZIP contains every application build input and starts locally with Docker, supplied defaults and provider keys through the documented helper, without Git metadata, workflow submodules or manual internal-service setup.",
+      "closure_negative": "Missing prerequisites/build inputs, invalid required settings, failed build or port conflict produce clear errors without fake success or leaked secrets. Missing prebuilt application images alone must not prevent first-start local building.",
       "related_decisions": [],
       "approval_ref": null,
-      "current_scope": "Define supplied launcher, generated persistent internal secrets and key-only configuration; no manual infrastructure setup.",
-      "why_it_matters": "The one-command/key-only user experience is already chosen. The missing engineering detail is how the supplied bundle, automatic internal secrets, configuration validation and versioned release artifacts deliver it.",
+      "current_scope": "Open-source GitHub source ZIP or clone; build/run locally with provider keys and supplied defaults. Define basic setup and automatic internal initialization only. No formal deployment/release manifest or mandatory prebuilt application-image distribution.",
+      "why_it_matters": "The distribution model is now settled. Engineering must make download-and-run actually work and document the small set of required settings, while avoiding a formal release/deployment platform.",
       "active_requirement": "SPEC-054",
       "locations_are_historical": true
     },

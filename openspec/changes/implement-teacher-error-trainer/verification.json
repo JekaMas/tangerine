@@ -431,8 +431,8 @@
     {
       "id": "REL-01",
       "capability": "release-acceptance",
-      "title": "REL-01 Deliver fixed build artifacts",
-      "fingerprint": "752cb0d67d87c93477185c8def16e78f711e5947cd59e10161d27bab0c48216e"
+      "title": "REL-01 Deliver a runnable GitHub source project",
+      "fingerprint": "154abe5ad11bf45d0b8ddc5b999de3da55e2b624639a064a1f1a67f1ec683a06"
     },
     {
       "id": "REL-02",
@@ -714,7 +714,7 @@
       "id": "V6-LOCAL-01",
       "capability": "v6-local-deployment",
       "title": "LOCAL-01 Local containers",
-      "fingerprint": "f44508dbc94285b0e95216430af618c38563c621c433f1d0a7dc03aefecedc51"
+      "fingerprint": "52bacd06fec999cc899efd82e7d1e003dcab4d0b597fe84353256d9157740af8"
     },
     {
       "id": "V6-LOCAL-02",
@@ -1979,8 +1979,8 @@
     {
       "id": "SPEC-054",
       "capability": "specification-fullness",
-      "title": "SPEC-054 Complete deployment/configuration and release manifest schema",
-      "fingerprint": "2bb0bc878ec5b2062a9d094d63e512930695dcc10a9de72f2d926cf543b3b468"
+      "title": "SPEC-054 Basic GitHub download-and-run setup",
+      "fingerprint": "b6cdaddbddd399e19893dbd83ef3bdfd0ae6c233eb3da2c27a195e801f5b152c"
     },
     {
       "id": "SPEC-055",
@@ -1992,7 +1992,7 @@
       "id": "RUN-08",
       "capability": "local-runtime",
       "title": "RUN-08 Start from keys and the supplied bundle",
-      "fingerprint": "b838435fdafafd247fc6c25667821459f2a0d4f64c00a755f83ff88a6ba14e80"
+      "fingerprint": "41863c6b7d0e53df6e6c638bb0e73659532c7a877a4a685efc630e361481108d"
     },
     {
       "id": "RUN-09",
@@ -2936,12 +2936,12 @@
     {
       "id": "REL-01.P1",
       "requirement_id": "REL-01",
-      "statement": "deliver source, Dockerfiles, working Compose, fixed dependencies, inspected image references/digests, migrations and exact startup instructions",
+      "statement": "The project SHALL supply an open-source GitHub source ZIP or clone with complete application source, Dockerfiles, working Compose, dependency lock files, migrations, provider-key example and concise README start/stop/restart instructions. The supplied helper SHALL build application images locally and initialize internal services without manual setup. Starting from extracted source SHALL require no Git metadata or workflow submodules. A formal deployment/release manifest, signed bundle, prebuilt application image publication or production deployment platform is not required. Verification SHALL use the documented download-and-run path.",
       "scenarios": [
         "REL-01 supported and rejected inputs"
       ],
       "owner": "deploy/local",
-      "oracle": "The retained source requirement and separately recorded accepted/rejected observations, not model agreement.",
+      "oracle": "Actual user-selected GitHub source-download-and-run contract, independently observed successful startup and explicit failures; no invented manifest/build success.",
       "source_globs": [
         "deploy/local/**"
       ]
@@ -3830,13 +3830,13 @@
     {
       "id": "V6-LOCAL-01.P1",
       "requirement_id": "V6-LOCAL-01",
-      "statement": "The application MUST start locally through Docker Compose with real provider configuration. It MUST require no host language runtime or external database. Missing application images MUST remain a release blocker.",
+      "statement": "The application MUST start from the open-source GitHub source ZIP or clone through the supplied local helper and Docker Compose with real provider configuration. The downloaded source MUST include all application build inputs and MUST NOT depend on Git metadata, workflow submodules or host language runtimes. Application images MUST build locally on first start; prebuilt application image distribution and a formal release manifest are not required. Missing inputs or a failed local build MUST produce a clear startup error.",
       "scenarios": [
         "LOCAL-01 Permitted behavior",
         "LOCAL-01 Boundary behavior"
       ],
       "owner": "services/api/internal/local_deployment",
-      "oracle": "The exact recovered v6 contract and independently approved real observations/oracles; model agreement and imported historical greens are insufficient.",
+      "oracle": "Actual user-selected GitHub source-download-and-run contract, independently observed successful startup and explicit failures; no invented manifest/build success.",
       "source_globs": [
         "services/api/internal/local_deployment/**",
         "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/local-deployment/spec.md"
@@ -7366,12 +7366,12 @@
     {
       "id": "SPEC-054.P1",
       "requirement_id": "SPEC-054",
-      "statement": "Close GAP-054: No complete versioned runtime configuration schema covers domains/roles/provider bindings/limits/locale/timeouts/storage/migrations, all env types/defaults/validation or complete release artifact/provenance compatibility. Preserve Topology, localhost port, server secrets, real services, exact workflow/tool pin and two architectures are required.",
+      "statement": "The specification SHALL close GAP-054 by defining only the basic startup and configuration needed to download the open-source GitHub source ZIP or clone, provide provider keys, run the supplied helper and use the application locally. It SHALL specify prerequisites, included application build inputs, exact start/stop/restart commands, first-run initialization, automatic persistent internal secrets, provider-key settings/defaults/validation and clear build/key/port errors. Application images SHALL build locally; source-ZIP startup SHALL require no Git metadata, workflow submodules or developer planning tools. A formal deployment/release manifest, signed release bundle, prebuilt application image publication and production deployment system are excluded. This user clarification resolves the distribution choice; remaining setup details are ordinary engineering definitions.",
       "scenarios": [
         "SPEC-054 Complete definition and rejection boundary"
       ],
       "owner": "contracts",
-      "oracle": "Exact source-bound complete contract and independent reviewed closure of GAP-054; structural inventory alone is insufficient.",
+      "oracle": "Actual user-selected GitHub source-download-and-run contract, independently observed successful startup and explicit failures; no invented manifest/build success.",
       "source_globs": [
         "contracts/**",
         "domain/**",
@@ -7400,13 +7400,13 @@
     {
       "id": "RUN-08.P1",
       "requirement_id": "RUN-08",
-      "statement": "The release SHALL supply the simple local launcher, key-only setup and default configurable LLM profile in docs/simple-local-product.md. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their keys and permitted source transfer. Speech keys remain separate when required.",
+      "statement": "The GitHub source project SHALL supply the simple local launcher, key-only setup and default configurable LLM profile in docs/simple-local-product.md. An extracted source ZIP SHALL build and run with Docker without Git metadata, workflow submodules, prebuilt application image distribution or a formal deployment/release manifest. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their keys and permitted source transfer. Speech keys remain separate when required.",
       "scenarios": [
         "RUN-08 simple supported startup",
         "RUN-08 missing operation key"
       ],
       "owner": "docs/simple-local-product.md",
-      "oracle": "The exact current local policy, state/source/evidence guards and independently observed boundary, not legacy login receipts.",
+      "oracle": "Actual user-selected GitHub source-download-and-run contract, independently observed successful startup and explicit failures; no invented manifest/build success.",
       "source_globs": [
         "docs/simple-local-product.md",
         "openspec/changes/implement-teacher-error-trainer/specs/local-runtime/spec.md",
@@ -10982,48 +10982,50 @@
       "property_id": "REL-01.P1",
       "polarity": "positive",
       "scenario": "REL-01 supported and rejected inputs",
-      "scenario_fingerprint": "4bcb38ff37124f88663c48a6bd79d59ac90d42c3f58e53bb31b0922fa8d3b581",
-      "setup": "Use the actual owner at deploy/local with the case described here: build and inspect the actual images used by the documented command",
-      "observable": "build and inspect the actual images used by the documented command",
-      "red_expectation": "A violating implementation admits the forbidden outcome or fails to preserve the required source fact.",
-      "green_expectation": "The actual owner satisfies the separately specified positive observation.",
+      "scenario_fingerprint": "4221c6081aa9cdf4bf334b7c378c28a54f7922de4642f0ea03145d556e50b883",
+      "setup": "After implementation authorization, exercise the documented GitHub source ZIP/clone setup with actual Docker/build inputs and provider-key configuration at the local boundary.",
+      "observable": "- **WHEN** the authorized operation receives supported inputs or a violating input\n- **THEN** it SHALL build and start from the complete source ZIP with the documented command and provider keys, and SHALL report missing Docker, build inputs, invalid required settings or build failures without false success",
+      "red_expectation": "The source ZIP cannot build without developer Git/submodules or a required published application image, or a failed setup is reported as success.",
+      "green_expectation": "Observe the declared positive startup/configuration boundary from the actual source distribution.",
       "test_id": "planned::REL-01::positive",
       "command_id": "pending",
-      "state": "planned",
+      "state": "blocked",
       "source_path": "tests/acceptance/test_full_scope.py",
       "source_sha256": null,
       "invalidation_dependencies": [
-        "deploy/local",
-        "docs/authority.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/release-acceptance/spec.md",
+        "docs/simple-local-product.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
         "note": "Boundary/data contract must be resolved before implementation; no artificial linguistic data authorized."
-      }
+      },
+      "blocker": "Specification-only authority: source-download startup/helper alignment and actual fresh build observations remain unimplemented/unperformed."
     },
     {
       "id": "REL-01.P1.NEGATIVE",
       "property_id": "REL-01.P1",
       "polarity": "negative",
       "scenario": "REL-01 supported and rejected inputs",
-      "scenario_fingerprint": "4bcb38ff37124f88663c48a6bd79d59ac90d42c3f58e53bb31b0922fa8d3b581",
-      "setup": "Use the actual owner at deploy/local with the case described here: block release for missing builds, moving image tags or invented digests",
-      "observable": "block release for missing builds, moving image tags or invented digests",
-      "red_expectation": "A violating implementation admits the forbidden outcome or fails to preserve the required source fact.",
-      "green_expectation": "The actual owner satisfies the separately specified negative observation.",
+      "scenario_fingerprint": "4221c6081aa9cdf4bf334b7c378c28a54f7922de4642f0ea03145d556e50b883",
+      "setup": "After implementation authorization, exercise the documented GitHub source ZIP/clone setup with actual Docker/build inputs and provider-key configuration at the local boundary.",
+      "observable": "- **WHEN** the authorized operation receives supported inputs or a violating input\n- **THEN** it SHALL build and start from the complete source ZIP with the documented command and provider keys, and SHALL report missing Docker, build inputs, invalid required settings or build failures without false success",
+      "red_expectation": "The source ZIP cannot build without developer Git/submodules or a required published application image, or a failed setup is reported as success.",
+      "green_expectation": "Observe the declared negative startup/configuration boundary from the actual source distribution.",
       "test_id": "planned::REL-01::negative",
       "command_id": "pending",
-      "state": "planned",
+      "state": "blocked",
       "source_path": "tests/acceptance/test_full_scope.py",
       "source_sha256": null,
       "invalidation_dependencies": [
-        "deploy/local",
-        "docs/authority.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/release-acceptance/spec.md",
+        "docs/simple-local-product.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
         "note": "Boundary/data contract must be resolved before implementation; no artificial linguistic data authorized."
-      }
+      },
+      "blocker": "Specification-only authority: source-download startup/helper alignment and actual fresh build observations remain unimplemented/unperformed."
     },
     {
       "id": "REL-02.P1.POSITIVE",
@@ -15582,100 +15584,100 @@
       "property_id": "V6-LOCAL-01.P1",
       "polarity": "positive",
       "scenario": "LOCAL-01 Permitted behavior",
-      "scenario_fingerprint": "8bb5c10efc4b64f6f6959c9a1ea68a2d1dad70dfe491c7c982f2262c34826c41",
-      "setup": "The release supplies real images and credentials. Preserve the exact recovered scenario; use only source-permitted real evidence or separately approved restricted boundary inputs.",
-      "observable": "The teacher interface uses the local web origin.",
-      "red_expectation": "The owner accepts the violating state/output, loses provenance or contradicts the exact recovered scenario.",
-      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior.",
+      "scenario_fingerprint": "d20198b13891434e414a34afa344f4901715d2320dc094a50eeb535188273da6",
+      "setup": "After implementation authorization, exercise the documented GitHub source ZIP/clone setup with actual Docker/build inputs and provider-key configuration at the local boundary.",
+      "observable": "- **GIVEN** The user extracts the GitHub source ZIP with complete build inputs and provides keys for the intended provider operations.\n- **WHEN** The user invokes the supplied local start helper.\n- **THEN** The teacher interface uses the local web origin.",
+      "red_expectation": "The source ZIP cannot build without developer Git/submodules or a required published application image, or a failed setup is reported as success.",
+      "green_expectation": "Observe the declared positive startup/configuration boundary from the actual source distribution.",
       "test_id": "planned::V6-LOCAL-01::S1::positive",
       "command_id": "pending",
       "state": "blocked",
       "source_path": "tests/acceptance/test_recovered_v6.py",
       "source_sha256": null,
       "invalidation_dependencies": [
-        "services/api/internal/local_deployment",
-        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/local-deployment/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-local-deployment/spec.md",
+        "docs/simple-local-product.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
         "note": "No new artificial linguistic case or live-provider run authorized this spec-only turn."
       },
-      "blocker": "Planned only: implementation, approved test inputs and genuine provider/corpus/human evidence have not been obtained."
+      "blocker": "Specification-only authority: source-download startup/helper alignment and actual fresh build observations remain unimplemented/unperformed."
     },
     {
       "id": "V6-LOCAL-01.P1.S1.NEGATIVE",
       "property_id": "V6-LOCAL-01.P1",
       "polarity": "negative",
       "scenario": "LOCAL-01 Permitted behavior",
-      "scenario_fingerprint": "8bb5c10efc4b64f6f6959c9a1ea68a2d1dad70dfe491c7c982f2262c34826c41",
-      "setup": "The release supplies real images and credentials. Preserve the exact recovered scenario; use only source-permitted real evidence or separately approved restricted boundary inputs.",
-      "observable": "Prove rejection of a violating transition/output at this exact boundary: The teacher interface uses the local web origin.",
-      "red_expectation": "The owner accepts the violating state/output, loses provenance or contradicts the exact recovered scenario.",
-      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior.",
+      "scenario_fingerprint": "d20198b13891434e414a34afa344f4901715d2320dc094a50eeb535188273da6",
+      "setup": "After implementation authorization, exercise the documented GitHub source ZIP/clone setup with actual Docker/build inputs and provider-key configuration at the local boundary.",
+      "observable": "- **GIVEN** The user extracts the GitHub source ZIP with complete build inputs and provides keys for the intended provider operations.\n- **WHEN** The user invokes the supplied local start helper.\n- **THEN** The teacher interface uses the local web origin.",
+      "red_expectation": "The source ZIP cannot build without developer Git/submodules or a required published application image, or a failed setup is reported as success.",
+      "green_expectation": "Observe the declared negative startup/configuration boundary from the actual source distribution.",
       "test_id": "planned::V6-LOCAL-01::S1::negative",
       "command_id": "pending",
       "state": "blocked",
       "source_path": "tests/acceptance/test_recovered_v6.py",
       "source_sha256": null,
       "invalidation_dependencies": [
-        "services/api/internal/local_deployment",
-        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/local-deployment/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-local-deployment/spec.md",
+        "docs/simple-local-product.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
         "note": "No new artificial linguistic case or live-provider run authorized this spec-only turn."
       },
-      "blocker": "Planned only: implementation, approved test inputs and genuine provider/corpus/human evidence have not been obtained."
+      "blocker": "Specification-only authority: source-download startup/helper alignment and actual fresh build observations remain unimplemented/unperformed."
     },
     {
       "id": "V6-LOCAL-01.P1.S2.POSITIVE",
       "property_id": "V6-LOCAL-01.P1",
       "polarity": "positive",
       "scenario": "LOCAL-01 Boundary behavior",
-      "scenario_fingerprint": "640a635c949af999b71d6cbc65b05b6243f162db66bf7f684d42083b73cefb3f",
-      "setup": "The application image does not exist. Preserve the exact recovered scenario; use only source-permitted real evidence or separately approved restricted boundary inputs.",
-      "observable": "Startup fails without a substitute application or fake success response.",
-      "red_expectation": "The owner accepts the violating state/output, loses provenance or contradicts the exact recovered scenario.",
-      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior.",
+      "scenario_fingerprint": "71016b374edbe3b5da32eae500d826fc3350a01b5e5d0fbd4d5fe1209d67dd24",
+      "setup": "After implementation authorization, exercise the documented GitHub source ZIP/clone setup with actual Docker/build inputs and provider-key configuration at the local boundary.",
+      "observable": "- **GIVEN** A required source build input is absent or the local build fails.\n- **WHEN** The operator attempts startup.\n- **THEN** Startup reports the actual build/input error without a substitute application or fake success response. Absence of a prebuilt application image alone is normal on first start.",
+      "red_expectation": "The source ZIP cannot build without developer Git/submodules or a required published application image, or a failed setup is reported as success.",
+      "green_expectation": "Observe the declared positive startup/configuration boundary from the actual source distribution.",
       "test_id": "planned::V6-LOCAL-01::S2::positive",
       "command_id": "pending",
       "state": "blocked",
       "source_path": "tests/acceptance/test_recovered_v6.py",
       "source_sha256": null,
       "invalidation_dependencies": [
-        "services/api/internal/local_deployment",
-        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/local-deployment/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-local-deployment/spec.md",
+        "docs/simple-local-product.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
         "note": "No new artificial linguistic case or live-provider run authorized this spec-only turn."
       },
-      "blocker": "Planned only: implementation, approved test inputs and genuine provider/corpus/human evidence have not been obtained."
+      "blocker": "Specification-only authority: source-download startup/helper alignment and actual fresh build observations remain unimplemented/unperformed."
     },
     {
       "id": "V6-LOCAL-01.P1.S2.NEGATIVE",
       "property_id": "V6-LOCAL-01.P1",
       "polarity": "negative",
       "scenario": "LOCAL-01 Boundary behavior",
-      "scenario_fingerprint": "640a635c949af999b71d6cbc65b05b6243f162db66bf7f684d42083b73cefb3f",
-      "setup": "The application image does not exist. Preserve the exact recovered scenario; use only source-permitted real evidence or separately approved restricted boundary inputs.",
-      "observable": "Prove rejection of a violating transition/output at this exact boundary: Startup fails without a substitute application or fake success response.",
-      "red_expectation": "The owner accepts the violating state/output, loses provenance or contradicts the exact recovered scenario.",
-      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior.",
+      "scenario_fingerprint": "71016b374edbe3b5da32eae500d826fc3350a01b5e5d0fbd4d5fe1209d67dd24",
+      "setup": "After implementation authorization, exercise the documented GitHub source ZIP/clone setup with actual Docker/build inputs and provider-key configuration at the local boundary.",
+      "observable": "- **GIVEN** A required source build input is absent or the local build fails.\n- **WHEN** The operator attempts startup.\n- **THEN** Startup reports the actual build/input error without a substitute application or fake success response. Absence of a prebuilt application image alone is normal on first start.",
+      "red_expectation": "The source ZIP cannot build without developer Git/submodules or a required published application image, or a failed setup is reported as success.",
+      "green_expectation": "Observe the declared negative startup/configuration boundary from the actual source distribution.",
       "test_id": "planned::V6-LOCAL-01::S2::negative",
       "command_id": "pending",
       "state": "blocked",
       "source_path": "tests/acceptance/test_recovered_v6.py",
       "source_sha256": null,
       "invalidation_dependencies": [
-        "services/api/internal/local_deployment",
-        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/local-deployment/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-local-deployment/spec.md",
+        "docs/simple-local-product.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
         "note": "No new artificial linguistic case or live-provider run authorized this spec-only turn."
       },
-      "blocker": "Planned only: implementation, approved test inputs and genuine provider/corpus/human evidence have not been obtained."
+      "blocker": "Specification-only authority: source-download startup/helper alignment and actual fresh build observations remain unimplemented/unperformed."
     },
     {
       "id": "V6-LOCAL-02.P1.S1.POSITIVE",
@@ -35352,54 +35354,50 @@
       "property_id": "SPEC-054.P1",
       "polarity": "positive",
       "scenario": "SPEC-054 Complete definition and rejection boundary",
-      "scenario_fingerprint": "e5d0df17271afcf329b9cd532aab570d71d910c5df34db2d898b8d42d0393fc5",
-      "setup": "Review the full versioned GAP-054 artifact and exact referenced source definitions; no artificial linguistic input or provider substitute is authorized.",
-      "observable": "An operator supplies only declared local secrets/settings; all nonsecret release identities and compatibility are frozen.",
-      "red_expectation": "The missing/conflicting definition is accepted as complete or a preserved source rule is weakened.",
-      "green_expectation": "An operator supplies only declared local secrets/settings; all nonsecret release identities and compatibility are frozen.",
+      "scenario_fingerprint": "79592e5b9909a07a1c762095c7dad1d40137df5c0b6dd72afcfacd744558cc28",
+      "setup": "After implementation authorization, exercise the documented GitHub source ZIP/clone setup with actual Docker/build inputs and provider-key configuration at the local boundary.",
+      "observable": "- **GIVEN** The exact GAP-054 contract and its source references are under review.\n- **WHEN** Its supported behavior and omitted or contradictory boundary are checked.\n- **THEN** The extracted source contains a complete documented local setup using provider keys and supplied defaults; required internal infrastructure is automatic. Missing prerequisites/build inputs, invalid settings or a failed build yield clear errors without success, manual account/database setup or browser-visible secrets.",
+      "red_expectation": "The source ZIP cannot build without developer Git/submodules or a required published application image, or a failed setup is reported as success.",
+      "green_expectation": "Observe the declared positive startup/configuration boundary from the actual source distribution.",
       "test_id": "planned::SPEC-054::positive",
       "command_id": "pending",
       "state": "blocked",
       "source_path": "tests/acceptance/test_specification_fullness.py",
       "source_sha256": null,
       "invalidation_dependencies": [
-        "contracts",
-        "domain",
-        "docs",
-        "audit/spec-fullness-20261008/gaps.json"
+        "openspec/changes/implement-teacher-error-trainer/specs/specification-fullness/spec.md",
+        "docs/simple-local-product.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
         "note": "Planned closure case only; no executable test, constructed teacher input or provider evidence."
       },
-      "blocker": "GAP-054 definition is open; current authority permits spec research/update only."
+      "blocker": "Specification-only authority: source-download startup/helper alignment and actual fresh build observations remain unimplemented/unperformed."
     },
     {
       "id": "SPEC-054.P1.NEGATIVE",
       "property_id": "SPEC-054.P1",
       "polarity": "negative",
       "scenario": "SPEC-054 Complete definition and rejection boundary",
-      "scenario_fingerprint": "e5d0df17271afcf329b9cd532aab570d71d910c5df34db2d898b8d42d0393fc5",
-      "setup": "Review the full versioned GAP-054 artifact and exact referenced source definitions; no artificial linguistic input or provider substitute is authorized.",
-      "observable": "Unknown settings, unresolved image references, leaked env or unqualified architecture cannot be accepted as a release.",
-      "red_expectation": "The missing/conflicting definition is accepted as complete or a preserved source rule is weakened.",
-      "green_expectation": "Unknown settings, unresolved image references, leaked env or unqualified architecture cannot be accepted as a release.",
+      "scenario_fingerprint": "79592e5b9909a07a1c762095c7dad1d40137df5c0b6dd72afcfacd744558cc28",
+      "setup": "After implementation authorization, exercise the documented GitHub source ZIP/clone setup with actual Docker/build inputs and provider-key configuration at the local boundary.",
+      "observable": "- **GIVEN** The exact GAP-054 contract and its source references are under review.\n- **WHEN** Its supported behavior and omitted or contradictory boundary are checked.\n- **THEN** The extracted source contains a complete documented local setup using provider keys and supplied defaults; required internal infrastructure is automatic. Missing prerequisites/build inputs, invalid settings or a failed build yield clear errors without success, manual account/database setup or browser-visible secrets.",
+      "red_expectation": "The source ZIP cannot build without developer Git/submodules or a required published application image, or a failed setup is reported as success.",
+      "green_expectation": "Observe the declared negative startup/configuration boundary from the actual source distribution.",
       "test_id": "planned::SPEC-054::negative",
       "command_id": "pending",
       "state": "blocked",
       "source_path": "tests/acceptance/test_specification_fullness.py",
       "source_sha256": null,
       "invalidation_dependencies": [
-        "contracts",
-        "domain",
-        "docs",
-        "audit/spec-fullness-20261008/gaps.json"
+        "openspec/changes/implement-teacher-error-trainer/specs/specification-fullness/spec.md",
+        "docs/simple-local-product.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
         "note": "Planned closure case only; no executable test, constructed teacher input or provider evidence."
       },
-      "blocker": "GAP-054 definition is open; current authority permits spec research/update only."
+      "blocker": "Specification-only authority: source-download startup/helper alignment and actual fresh build observations remain unimplemented/unperformed."
     },
     {
       "id": "SPEC-055.P1.POSITIVE",
@@ -35460,52 +35458,50 @@
       "property_id": "RUN-08.P1",
       "polarity": "positive",
       "scenario": "RUN-08 simple supported startup",
-      "scenario_fingerprint": "3a4d4fde87afe6a72b94596c6fb384247f3afcaa24b77e051d13db4dba550888",
-      "setup": "After implementation authorization, exercise the exact local activity described by RUN-08 simple supported startup with actual local dependencies and source-permitted evidence.",
-      "observable": "- **GIVEN** Docker is running and the supplied local bundle is available.\n- **WHEN** the user fills provider keys and starts the supplied launcher.\n- **THEN** The local interface becomes available without login or manual infrastructure configuration; a key-free workspace still opens its truthful empty library or plays approved stored audio.",
-      "green_expectation": "Observe the specified positive boundary for The release SHALL supply the simple local launcher, key-only setup and default configurable LLM profile in docs/simple-local-product.md. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their keys and permitted source transfer. Speech keys remain separate when required.",
-      "red_expectation": "The implementation requires removed account/tenant/role setup or violates the declared state, disclosure, evidence or resource boundary.",
+      "scenario_fingerprint": "501ebd149301e85b3d2ebfb1c93cdee017ba2d0ad39648c55995cb2db3f6bf82",
+      "setup": "After implementation authorization, exercise the documented GitHub source ZIP/clone setup with actual Docker/build inputs and provider-key configuration at the local boundary.",
+      "observable": "- **GIVEN** Docker is running and the GitHub source ZIP has been extracted with all application build inputs.\n- **WHEN** the user fills provider keys and starts the supplied launcher.\n- **THEN** The local interface becomes available without login or manual infrastructure configuration; a key-free workspace still opens its truthful empty library or plays approved stored audio.",
+      "green_expectation": "Observe the declared positive startup/configuration boundary from the actual source distribution.",
+      "red_expectation": "The source ZIP cannot build without developer Git/submodules or a required published application image, or a failed setup is reported as success.",
       "test_id": "planned::local-scope::RUN-08.P1.S1.POSITIVE",
       "command_id": "pending",
       "state": "blocked",
       "source_path": "tests/acceptance/test_simple_local.py",
       "source_sha256": null,
       "invalidation_dependencies": [
-        "docs/simple-local-product.md",
         "openspec/changes/implement-teacher-error-trainer/specs/local-runtime/spec.md",
-        "contracts/local/attempt.schema.json"
+        "docs/simple-local-product.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
         "note": "Planned local-mode case only. No test double, application test or provider observation is created in this specification update."
       },
-      "blocker": "Specification-only authority; corresponding local mode/launcher/activity behavior is not implemented or observed. Real evidence dependencies remain."
+      "blocker": "Specification-only authority: source-download startup/helper alignment and actual fresh build observations remain unimplemented/unperformed."
     },
     {
       "id": "RUN-08.P1.S1.NEGATIVE",
       "property_id": "RUN-08.P1",
       "polarity": "negative",
       "scenario": "RUN-08 simple supported startup",
-      "scenario_fingerprint": "3a4d4fde87afe6a72b94596c6fb384247f3afcaa24b77e051d13db4dba550888",
-      "setup": "After implementation authorization, exercise the exact local activity described by RUN-08 simple supported startup with actual local dependencies and source-permitted evidence.",
-      "observable": "- **GIVEN** Docker is running and the supplied local bundle is available.\n- **WHEN** the user fills provider keys and starts the supplied launcher.\n- **THEN** The local interface becomes available without login or manual infrastructure configuration; a key-free workspace still opens its truthful empty library or plays approved stored audio.",
-      "green_expectation": "Observe the specified negative boundary for The release SHALL supply the simple local launcher, key-only setup and default configurable LLM profile in docs/simple-local-product.md. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their keys and permitted source transfer. Speech keys remain separate when required.",
-      "red_expectation": "The implementation requires removed account/tenant/role setup or violates the declared state, disclosure, evidence or resource boundary.",
+      "scenario_fingerprint": "501ebd149301e85b3d2ebfb1c93cdee017ba2d0ad39648c55995cb2db3f6bf82",
+      "setup": "After implementation authorization, exercise the documented GitHub source ZIP/clone setup with actual Docker/build inputs and provider-key configuration at the local boundary.",
+      "observable": "- **GIVEN** Docker is running and the GitHub source ZIP has been extracted with all application build inputs.\n- **WHEN** the user fills provider keys and starts the supplied launcher.\n- **THEN** The local interface becomes available without login or manual infrastructure configuration; a key-free workspace still opens its truthful empty library or plays approved stored audio.",
+      "green_expectation": "Observe the declared negative startup/configuration boundary from the actual source distribution.",
+      "red_expectation": "The source ZIP cannot build without developer Git/submodules or a required published application image, or a failed setup is reported as success.",
       "test_id": "planned::local-scope::RUN-08.P1.S1.NEGATIVE",
       "command_id": "pending",
       "state": "blocked",
       "source_path": "tests/acceptance/test_simple_local.py",
       "source_sha256": null,
       "invalidation_dependencies": [
-        "docs/simple-local-product.md",
         "openspec/changes/implement-teacher-error-trainer/specs/local-runtime/spec.md",
-        "contracts/local/attempt.schema.json"
+        "docs/simple-local-product.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
         "note": "Planned local-mode case only. No test double, application test or provider observation is created in this specification update."
       },
-      "blocker": "Specification-only authority; corresponding local mode/launcher/activity behavior is not implemented or observed. Real evidence dependencies remain."
+      "blocker": "Specification-only authority: source-download startup/helper alignment and actual fresh build observations remain unimplemented/unperformed."
     },
     {
       "id": "RUN-08.P1.S2.POSITIVE",
@@ -35513,25 +35509,24 @@
       "polarity": "positive",
       "scenario": "RUN-08 missing operation key",
       "scenario_fingerprint": "da278694dd31d7e379ca96529bbd62729dc4a33a827cac0e451e3279d4200290",
-      "setup": "After implementation authorization, exercise the exact local activity described by RUN-08 missing operation key with actual local dependencies and source-permitted evidence.",
+      "setup": "After implementation authorization, exercise the documented GitHub source ZIP/clone setup with actual Docker/build inputs and provider-key configuration at the local boundary.",
       "observable": "- **GIVEN** The selected LLM or speech operation has no required key or source-use permission.\n- **WHEN** the user invokes that operation.\n- **THEN** The interface identifies the missing operation-specific configuration without a provider call, fallback, invented result or blocking unrelated stored playback.",
-      "green_expectation": "Observe the specified positive boundary for The release SHALL supply the simple local launcher, key-only setup and default configurable LLM profile in docs/simple-local-product.md. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their keys and permitted source transfer. Speech keys remain separate when required.",
-      "red_expectation": "The implementation requires removed account/tenant/role setup or violates the declared state, disclosure, evidence or resource boundary.",
+      "green_expectation": "Observe the declared positive startup/configuration boundary from the actual source distribution.",
+      "red_expectation": "The source ZIP cannot build without developer Git/submodules or a required published application image, or a failed setup is reported as success.",
       "test_id": "planned::local-scope::RUN-08.P1.S2.POSITIVE",
       "command_id": "pending",
       "state": "blocked",
       "source_path": "tests/acceptance/test_simple_local.py",
       "source_sha256": null,
       "invalidation_dependencies": [
-        "docs/simple-local-product.md",
         "openspec/changes/implement-teacher-error-trainer/specs/local-runtime/spec.md",
-        "contracts/local/attempt.schema.json"
+        "docs/simple-local-product.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
         "note": "Planned local-mode case only. No test double, application test or provider observation is created in this specification update."
       },
-      "blocker": "Specification-only authority; corresponding local mode/launcher/activity behavior is not implemented or observed. Real evidence dependencies remain."
+      "blocker": "Specification-only authority: source-download startup/helper alignment and actual fresh build observations remain unimplemented/unperformed."
     },
     {
       "id": "RUN-08.P1.S2.NEGATIVE",
@@ -35539,25 +35534,24 @@
       "polarity": "negative",
       "scenario": "RUN-08 missing operation key",
       "scenario_fingerprint": "da278694dd31d7e379ca96529bbd62729dc4a33a827cac0e451e3279d4200290",
-      "setup": "After implementation authorization, exercise the exact local activity described by RUN-08 missing operation key with actual local dependencies and source-permitted evidence.",
+      "setup": "After implementation authorization, exercise the documented GitHub source ZIP/clone setup with actual Docker/build inputs and provider-key configuration at the local boundary.",
       "observable": "- **GIVEN** The selected LLM or speech operation has no required key or source-use permission.\n- **WHEN** the user invokes that operation.\n- **THEN** The interface identifies the missing operation-specific configuration without a provider call, fallback, invented result or blocking unrelated stored playback.",
-      "green_expectation": "Observe the specified negative boundary for The release SHALL supply the simple local launcher, key-only setup and default configurable LLM profile in docs/simple-local-product.md. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their keys and permitted source transfer. Speech keys remain separate when required.",
-      "red_expectation": "The implementation requires removed account/tenant/role setup or violates the declared state, disclosure, evidence or resource boundary.",
+      "green_expectation": "Observe the declared negative startup/configuration boundary from the actual source distribution.",
+      "red_expectation": "The source ZIP cannot build without developer Git/submodules or a required published application image, or a failed setup is reported as success.",
       "test_id": "planned::local-scope::RUN-08.P1.S2.NEGATIVE",
       "command_id": "pending",
       "state": "blocked",
       "source_path": "tests/acceptance/test_simple_local.py",
       "source_sha256": null,
       "invalidation_dependencies": [
-        "docs/simple-local-product.md",
         "openspec/changes/implement-teacher-error-trainer/specs/local-runtime/spec.md",
-        "contracts/local/attempt.schema.json"
+        "docs/simple-local-product.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
         "note": "Planned local-mode case only. No test double, application test or provider observation is created in this specification update."
       },
-      "blocker": "Specification-only authority; corresponding local mode/launcher/activity behavior is not implemented or observed. Real evidence dependencies remain."
+      "blocker": "Specification-only authority: source-download startup/helper alignment and actual fresh build observations remain unimplemented/unperformed."
     },
     {
       "id": "RUN-09.P1.S1.POSITIVE",

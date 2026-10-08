@@ -4,7 +4,7 @@ Teacher Error Trainer, started from nine initial files and the recovered complet
 
 ## Current product specification
 
-The target product is a simple single-person local app: provide provider keys, run the supplied launcher and open localhost. It requires no accounts, login, tenants, access-role configuration or public API setup. See [simple local product](docs/simple-local-product.md). The launcher and no-account mode are specified future work; the existing foundation below still has login and manual infrastructure secrets and does not meet that new setup contract. No implementation is authorized in this increment.
+The target product is an open-source GitHub project: download/extract the source ZIP or clone, provide provider keys, run the supplied launcher and open localhost. Application containers build locally on first start; a source ZIP requires no Git metadata or developer workflow submodule. A formal deployment/release manifest and prebuilt application image distribution are not required. It requires no accounts, login, tenants, access-role configuration or public API setup. See [simple local product](docs/simple-local-product.md). The launcher and no-account mode are specified future work; the existing foundation below still has login and manual infrastructure secrets and does not meet that new setup contract. No implementation is authorized in this increment.
 
 ## Start the historical local foundation
 
