@@ -6,32 +6,32 @@ Preserve the observable corpus validation requirements of Teacher Error Trainer 
 
 ## ADDED Requirements
 
-### Requirement: COR-01 Protect source permissions
+### Requirement: COR-01 Keep source notices and actual provenance
 
-The system SHALL acquire exact corpus releases only with scope-specific permission, preserve raw hashes in quarantine and keep corpora out of normal startup and public images.
+The system SHALL support complete operator-supplied full releases, preserve actual source notices/agreements and provenance, and exclude corpus acquisition from startup. No human legal-review or per-transfer signature service SHALL be required.
 
 #### Scenario: COR-01 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL import a permitted immutable release with actual legal/source receipts, and SHALL deny unapproved uses, guessed mirrors or startup corpus downloads
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL ingest a complete supplied release and report actual source-use metadata, and SHALL never infer a third-party license from a key or claim missing data acquired
 
-### Requirement: COR-02 Normalize safely and transparently
+### Requirement: COR-02 Lossless inert source intake
 
-The system SHALL reject traversal, external links, executable content, unbounded decompression and command execution; preserve original tokens, annotators, source scales and transformations with invalid rows quarantined.
+The system SHALL preserve every supplied file including ancillary scripts as inert bytes, never execute source content, reject unsafe extraction paths and account all native fields/records without truncation.
 
 #### Scenario: COR-02 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL import a bounded archive and retain accepted/rejected provenance, and SHALL quarantine unsafe archives, invalid offsets or unknown scales rather than guess
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL retain scripts/docs/raw unknown fields with exact file dispositions, and SHALL never execute wav.scp pipelines/macros or omit members to claim full intake
 
-### Requirement: COR-03 Cover every category honestly
+### Requirement: COR-03 Report complete category coverage
 
-The system SHALL cover all 122 leaves and required controls using independently reviewed real synthesis, and keep the inherited 732 floor pending DEC-002 rather than treating it as a resolved counting rule.
+The system SHALL retain122-leaf/full-source coverage and the732-stimulus benchmark target with LLM/native label provenance. Coverage SHALL be a report rather than a prerequisite for local use.
 
 #### Scenario: COR-03 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL reconcile per-leaf assets, observations and controls under approved counting, and SHALL refuse coverage when a variant becomes an error or counts have no approved unit
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL report true per-leaf coverage and missing benchmark populations, and SHALL never claim absent observations complete or require human gold before an exercise is usable
 
 ### Requirement: COR-04 Collect real teacher answers
 

@@ -1,0 +1,14 @@
+# Primary-source research and its specification consequences
+
+Reviewed during2026-10-08/09; no datasets, software prerequisites or provider inference were acquired/run.
+
+- [SpeechOcean owner repository](https://github.com/jimbozhang/speechocean762): retain aggregate/detail outputs and all5raters independently; preserve source phone markers and scale distinctions rather than reconstruct a perceived phone from scalar scores. Complete source files stay inventoried.
+- [L2-ARCTIC owner documentation](https://psi.engr.tamu.edu/l2-arctic-corpus-docs/): retain read and suitcase collections, actual source clocks, all tier data and manual versus automatic labels. Documented missing suitcase speakers are source facts, not omissions to invent away.
+- [BEA2019 owner distribution](https://www.cl.cam.ac.uk/research/nl/bea2019st/) and [ERRANT author repository](https://github.com/chrisjbryant/errant): preserve native M2 tokens/noops/all annotator alternatives and M/U/R category grammar. Newer ERRANT output is not relabelled as original BEAv2.1data. All known and unknown tag families remain raw; contextual LLM conversion is inferred.
+- [Cambridge EFCAMDAT access](https://ef-lab.mmll.cam.ac.uk/EFCAMDAT.html): separate original XML and two named derivatives; public access guidance is not the private workbook data dictionary or an acquired release. Generic bindings preserve all actual cells/fields without invented headers.
+- [NIR product page](https://niracademy.com/nir-sim/): product context does not supply an actual private source export/schema/API. Keep NIR separate from Moodrick and offer complete local export intake.
+- [DeepSeek Responses](https://api-docs.deepseek.com/api/create-response/) and [Responses guide](https://api-docs.deepseek.com/guides/responses_api/): documented model selection is deepseek-flash/deepseek-v4-pro; request handling is stateless and developer-role compatibility differs. Text/image input support does not establish direct audio input. The current profile therefore uses text plus actual speech evidence and records modality. One fresh open timed out; official indexed documentation and the guide were retrievable. No live call verifies these contracts here.
+
+All conclusions about adapter design are engineering inferences from these primary sources plus approved supplied contracts. None establishes local actual corpus counts, participant consent, a private vendor endpoint, provider accuracy or auditory model capability.
+
+License choice references: [OSI MIT text](https://opensource.org/license/mit) permits broad reuse subject to retaining its notice. [Apache2.0 text](https://www.apache.org/licenses/LICENSE-2.0) includes an explicit contributor patent grant. The recommendation is an engineering choice for this small local source project; no license was applied without the remaining owner selection.

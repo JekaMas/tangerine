@@ -2,41 +2,44 @@
 
 ## ADDED Requirements
 
-### Requirement: VER-01 Publication checks
-The application MUST apply the applicable gates in `docs/verification-v1.md`. It MUST store `contracts/verification-report.schema.json` output. Structural failures, missing rights, and corrupt audio MUST block publication.
+### Requirement: VER-01 Playable audio and quality report
+
+The application SHALL require actual playable audio and a machine-produced/imported key; quality thresholds and capability checks SHALL be reports/warnings rather than human or full-release gates.
 
 #### Scenario: VER-01 Permitted behavior
-- **GIVEN** All applicable gates contain supporting PASS evidence.
-- **WHEN** Authorized reviewers approve the case.
-- **THEN** The case becomes eligible for publication.
+
+- **WHEN** the supported local action completes
+- **THEN** it SHALL use a real playable case with explicit quality warnings
 
 #### Scenario: VER-01 Boundary behavior
-- **GIVEN** ASR agrees with the transcript.
-- **WHEN** The intended error is absent from the audio.
-- **THEN** The case fails its target check despite the ASR agreement.
 
-### Requirement: VER-02 Acoustic evidence
-The application MUST distinguish a requested sound from an observed sound. It MUST NOT infer phone identity from a canonical accuracy score. Unsupported automatic measurements MUST remain unavailable until qualified human observation.
+- **WHEN** its stated failure or missing-evidence condition occurs
+- **THEN** it SHALL never fabricate a playable asset for corrupt or missing bytes
+
+### Requirement: VER-02 Actual acoustic evidence
+
+The application SHALL distinguish requested, measured, native-annotated and model-inferred sound. Missing acoustic observations SHALL remain unknown without requiring humans.
 
 #### Scenario: VER-02 Permitted behavior
-- **GIVEN** A reviewer hears the target substitution.
-- **WHEN** The reviewer records its interval and observed IPA.
-- **THEN** The evidence retains the reviewer identity and audio hash.
+
+- **WHEN** the supported local action completes
+- **THEN** it SHALL retain method/modality and actual requested-versus-observed fields
 
 #### Scenario: VER-02 Boundary behavior
-- **GIVEN** A voice lacks supported automatic prosody assessment.
-- **WHEN** The adapter evaluates that audio.
-- **THEN** The result requires review and contains no invented score.
 
-### Requirement: VER-03 Independent reviews
-Two distinct qualified reviewers MUST listen independently before they read the key. They MUST approve each unit and the final audio. A disagreement MUST require a third adjudicator or keep publication blocked.
+- **WHEN** its stated failure or missing-evidence condition occurs
+- **THEN** it SHALL never derive precise heard phone from canonical score or text-only model
+
+### Requirement: VER-03 LLM review without peers
+
+The application SHALL perform machine case review/adjudication through the configurable stages and retain original findings, with no distinct-person, competence or two-approval requirement.
 
 #### Scenario: VER-03 Permitted behavior
-- **GIVEN** Two independent reviewers approve all final units.
-- **WHEN** The publisher requests publication.
-- **THEN** Both approvals must identify the same final audio hash.
+
+- **WHEN** the supported local action completes
+- **THEN** it SHALL obtain one actual LLM review
 
 #### Scenario: VER-03 Boundary behavior
-- **GIVEN** Reviewers approved an earlier audio version.
-- **WHEN** The author changes the audio.
-- **THEN** The previous approvals cannot authorize the changed file.
+
+- **WHEN** its stated failure or missing-evidence condition occurs
+- **THEN** it SHALL never block ordinary use on human approvals

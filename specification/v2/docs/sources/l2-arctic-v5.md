@@ -21,7 +21,7 @@ Retain original transcript text and all TextGrid tiers in source order.
 Parse TextGrid using its declared long or short syntax, quoted-string escape rules, and source clock.
 Store exact decimal boundary strings and a derived rational second value.
 Validate monotonic tier intervals, nonnegative duration, file duration bounds, and speaker/utterance links.
-An unknown tier remains raw and quarantined for semantic conversion.
+An unknown tier remains raw and raw-only until its semantic conversion is defined.
 A supplied comments tier stays separate from words and phones.
 
 ## Provenance of annotations

@@ -18,37 +18,33 @@ The application SHALL configure provider, model, API base URL, wire format, reas
 - **WHEN** the caller requests acceptance
 - **THEN** Unknown role, client endpoint, missing key, unsupported setting or unavailable selected model stops the affected operation without fallback.
 
-### Requirement: CFG-02 Qualify strict output and failures
+### Requirement: CFG-02 Tolerant semantic output projection
 
-A configured LLM SHALL qualify each full original closed schema and prompt contract before use. JSON syntax alone is insufficient. Unsupported schema keywords or transport formats SHALL fail qualification without deleting constraints; extra fields, fabricated spans, wrong-subject references, truncation, refusal and malformed output SHALL fail server checks or become the specified review/failure state. LLM output SHALL never create numerical grades, observed acoustics or human approvals.
+The system SHALL normalize harmless reply fences/prefixes/additive fields, project supported wire schemas and allow one same-profile JSON fallback/output repair under the deadline. Canonical semantic references and quote content SHALL remain valid.
 
 #### Scenario: CFG-02 Complete supported behavior
 
-- **GIVEN** Exercise each real configured role with its full schema and approved accepted/rejected boundary input after implementation authorization.
-- **WHEN** the authorized owner checks the full frozen contract
-- **THEN** Schema support, server invariants and named positive/negative real-provider receipts are recorded for every role, including DEC-001 only after its exact contract decision.
+- **WHEN** the supported local action completes
+- **THEN** it SHALL accept a uniquely valid projected semantic object despite harmless wrapping
 
 #### Scenario: CFG-02 Incomplete or forbidden behavior
 
-- **GIVEN** an omitted, altered or unauthorized dependency in that same contract
-- **WHEN** the caller requests acceptance
-- **THEN** A schema-valid unsupported semantic claim, numeric grade, repaired JSON retry or stripped constraint cannot qualify the profile.
+- **WHEN** its stated failure or missing-evidence condition occurs
+- **THEN** it SHALL preserve failure for conflicting valid objects or fabricated source content after repair
 
-### Requirement: CFG-03 Freeze provider provenance and caches
+### Requirement: CFG-03 Record provider provenance and usable cache
 
-Attempts SHALL freeze profile/model/requested and returned model metadata, endpoint, prompt and schema hashes, reasoning/supported settings, input/case/answer hashes and versions. Exact matching stage results alone are reusable. Profile changes or moving-alias drift SHALL invalidate affected calibration/cache evidence and require qualification and applicable held-out evaluation before production acceptance. Development-profile selection is authorized by the current user; it does not prove empirical equivalence or approve speech-provider substitutions.
+The system SHALL freeze actual effective profile, request/returned model and input versions and reuse only matching completed semantic stages. Changed profiles SHALL work without mandatory canary or holdout qualification; diagnostics retain actual versions.
 
 #### Scenario: CFG-03 Complete supported behavior
 
-- **GIVEN** Retry the same saved answer with unchanged profile, then explicitly select a new profile or observe returned-model alias drift.
-- **WHEN** the authorized owner checks the full frozen contract
-- **THEN** Only identical frozen-stage inputs reuse receipts; changed configuration starts a separately recorded evaluation/profile version.
+- **WHEN** the supported local action completes
+- **THEN** it SHALL run the explicitly changed profile and record its actual receipts
 
 #### Scenario: CFG-03 Incomplete or forbidden behavior
 
-- **GIVEN** an omitted, altered or unauthorized dependency in that same contract
-- **WHEN** the caller requests acceptance
-- **THEN** Old provider results or gold measurements cannot qualify a changed model, settings, schema, prompt or profile.
+- **WHEN** its stated failure or missing-evidence condition occurs
+- **THEN** it SHALL never silently switch provider or reuse another input binding
 
 ### Requirement: CFG-04 Keep credentials server private
 

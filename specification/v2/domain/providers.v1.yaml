@@ -24,11 +24,15 @@ profiles:
       - claim_mapping
       - mapping_audit
       - feedback
+      - case_review
+      - adjudication
     immutable_model_snapshot: false
-    drift_policy: Require actual canary receipts after any observed provider/model
-      change. An alias is not an immutable model snapshot.
+    drift_policy: Record actual returned model; optional canary report does not
+      block local use.
     live_verified: false
     source_url: https://api-docs.deepseek.com/guides/responses_api/
+    response_format: Prefer supported structured output; same-profile JSON fallback
+      and tolerant projection.
   - id: openai-gpt41-20250414
     provider: openai
     model: gpt-4.1-2025-04-14
@@ -40,12 +44,15 @@ profiles:
       - claim_mapping
       - mapping_audit
       - feedback
+      - case_review
+      - adjudication
     temperature: 0
     stream: false
     store: false
     tools: []
     max_output_tokens: 12000
-    response_format: strict json_schema via text.format
+    response_format: Prefer supported structured output; same-profile JSON fallback
+      and tolerant projection.
     credentials:
       - OPENAI_API_KEY
     source_ids:
@@ -53,6 +60,8 @@ profiles:
       - SRC-STRUCTURED
     live_verified: false
     context_budget_tokens: 128000
+    drift_policy: Record actual returned model; optional canary report does not
+      block local use.
   - id: azure-standard-en-v1
     provider: azure_speech
     endpoint_template: https://{region}.tts.speech.microsoft.com/cognitiveservices/v1

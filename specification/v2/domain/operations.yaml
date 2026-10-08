@@ -43,8 +43,8 @@ operations:
     request: generation-request
     response: candidate-envelope
     success: 200
-    effect: Save intent, apply grants and caps, call the real provider, validate and
-      persist the output.
+    effect: Save content, call selected real LLM and retain output; optional
+      configured cap only.
     activity: prepare
     revision: false
   - id: linguistic_audit
@@ -95,10 +95,10 @@ operations:
   - id: create_person
     method: POST
     path: /api/v1/people
-    request: person
+    request: create-person-request
     response: person
     success: 201
-    effect: Store a real supplied attestation; reject duplicate-person conflict.
+    effect: Import supplied native person metadata only; never a review prerequisite.
     activity: review
     revision: false
   - id: get_person
@@ -113,19 +113,20 @@ operations:
   - id: qualification
     method: POST
     path: /api/v1/qualifications
-    request: qualification
+    request: qualification-request
     response: qualification
     success: 201
-    effect: Store actual competence evidence.
+    effect: Import native competence metadata only; never a review prerequisite.
     activity: review
     revision: false
   - id: start_review
     method: POST
     path: /api/v1/reviews
-    request: review-context
+    request: start-review-request
     response: review-context
     success: 201
-    effect: Validate person, conflicts, phase, and exact audio.
+    effect: Call configured case_review LLM; save modality, findings and receipt, no
+      human identity.
     activity: review
     revision: false
   - id: get_review
@@ -140,7 +141,7 @@ operations:
   - id: blind_submit
     method: POST
     path: /api/v1/reviews/{id}/blind
-    request: blind-annotation
+    request: blind-submit-request
     response: blind-annotation
     success: 201
     effect: Freeze independent observations and hash.
@@ -158,16 +159,16 @@ operations:
   - id: review_decide
     method: POST
     path: /api/v1/reviews/{id}/decisions
-    request: review-decision
+    request: review-decide-request
     response: review-decision
     success: 201
-    effect: Require exact matching context/key/audio and actual human decision.
+    effect: Store actual machine review for matching case/audio, no peer approval.
     activity: review
     revision: true
   - id: rationale
     method: POST
     path: /api/v1/rationales
-    request: rationale
+    request: rationale-request
     response: rationale
     success: 201
     effect: Store a versioned actual reviewed bilingual rationale.
@@ -176,10 +177,10 @@ operations:
   - id: teacher_gold
     method: POST
     path: /api/v1/teacher-gold
-    request: teacher-gold
+    request: teacher-gold-request
     response: teacher-gold
     success: 201
-    effect: Save real pre-model independent labels and exact provenance.
+    effect: Store LLM or native imported labels with exact origin; no new human rater.
     activity: review
     revision: false
   - id: start_attempt
@@ -257,7 +258,7 @@ operations:
   - id: play_event
     method: POST
     path: /api/v1/attempts/{id}/playback
-    request: playback-event
+    request: play-event-request
     response: operation-result
     success: 200
     effect: Deduplicate and validate client evidence; never infer ability.
@@ -269,7 +270,7 @@ operations:
     request: null
     response: binary:audio/wav
     success: 200
-    effect: Resolve linked exact audio after availability and rights checks.
+    effect: Resolve linked exact audio after availability and source notices.
     activity: teacher
     revision: false
   - id: review_audio
@@ -293,7 +294,7 @@ operations:
   - id: create_dispute
     method: POST
     path: /api/v1/disputes
-    request: dispute
+    request: create-dispute-request
     response: dispute
     success: 201
     effect: Save actual user claim and original attempt/result references.
@@ -311,16 +312,16 @@ operations:
   - id: resolve_dispute
     method: POST
     path: /api/v1/disputes/{id}:resolve
-    request: dispute
+    request: resolve-dispute-request
     response: operation-result
     success: 200
-    effect: Require supported adjudication and any new reviewed key mapping.
+    effect: Invoke LLM adjudication against exact saved case/answer, append resolution.
     activity: dispute
     revision: true
   - id: unit_map
     method: POST
     path: /api/v1/unit-correspondences
-    request: unit-correspondence
+    request: unit-map-request
     response: unit-correspondence
     success: 201
     effect: Require same audio for historical rescoring.
@@ -347,7 +348,7 @@ operations:
   - id: source_release
     method: POST
     path: /api/v1/source-releases
-    request: source-release
+    request: source-release-request
     response: source-release
     success: 201
     effect: Register actual complete manifests, never expected hashes as observed.
@@ -356,7 +357,7 @@ operations:
   - id: format_binding
     method: POST
     path: /api/v1/source-formats
-    request: source-format-binding
+    request: format-binding-request
     response: source-format-binding
     success: 201
     effect: Store exact documented file/field semantics with real review evidence.
@@ -365,7 +366,7 @@ operations:
   - id: grant
     method: POST
     path: /api/v1/permissions
-    request: permission-grant
+    request: grant-request
     response: permission-grant
     success: 201
     effect: Register actual source-owner evidence for explicit uses and recipients.
@@ -401,7 +402,7 @@ operations:
   - id: connector
     method: PUT
     path: /api/v1/connectors/{id}
-    request: connector-configuration
+    request: connector-request
     response: source-status
     success: 200
     effect: Validate actual interface, adapter, rights, and secret references.
@@ -419,7 +420,7 @@ operations:
   - id: put_config
     method: PUT
     path: /api/v1/configuration
-    request: configuration
+    request: put-config-request
     response: configuration-view
     success: 200
     effect: Persist explicit configuration; invalidate affected caches, not
@@ -492,7 +493,7 @@ operations:
   - id: delete_plan
     method: POST
     path: /api/v1/deletions
-    request: deletion-request
+    request: delete-plan-request
     response: deletion-request
     success: 201
     effect: Create exact rights-aware plan without deleting yet.
@@ -511,7 +512,7 @@ operations:
   - id: difficulty
     method: POST
     path: /api/v1/difficulty-studies
-    request: difficulty-study
+    request: difficulty-request
     response: difficulty-study
     success: 201
     effect: Calculate the frozen protocol from genuine first-exposure observations.
@@ -520,7 +521,7 @@ operations:
   - id: split
     method: POST
     path: /api/v1/splits
-    request: split-manifest
+    request: split-request
     response: split-manifest
     success: 201
     effect: Check connected-group isolation and immutable allocation.
@@ -529,7 +530,7 @@ operations:
   - id: qualification_report
     method: POST
     path: /api/v1/holdout-reports
-    request: holdout-report
+    request: qualification-report-request
     response: holdout-report
     success: 201
     effect: Accept only actual observed run receipts and complete eligible populations.
@@ -566,10 +567,10 @@ operations:
   - id: adjudicate
     method: POST
     path: /api/v1/adjudications
-    request: adjudication
+    request: adjudicate-request
     response: adjudication
     success: 201
-    effect: Save a genuine third-person resolution without editing prior reviews.
+    effect: Call configured adjudication LLM and append supported resolution.
     activity: review
     revision: false
   - id: get_adjudication
@@ -593,7 +594,7 @@ operations:
   - id: speech_render
     method: POST
     path: /internal/v1/render
-    request: render-plan
+    request: speech-render-request
     response: speech-render-result
     success: 200
     effect: Render the actual typed plan through real configured providers.

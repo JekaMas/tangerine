@@ -20,7 +20,7 @@ The system SHALL retain the original eight-profile provenance and all eleven sep
 
 ### Requirement: FULL-02 Verify release manifests and rights
 
-The importer SHALL freeze upstream release/version, archive and every raw-file SHA-256, licence/attribution/permission hashes, parser/mapping versions, record/label/partition counts, exclusions and duplicate groups. It SHALL reconcile expected and observed counts with documented reasons. Rights for product use, redistribution and provider transfer SHALL be checked separately. Acquisition is independent of original reviewed gold coverage.
+The importer SHALL freeze upstream release/version, archive and every raw-file SHA-256, licence/attribution/permission hashes, parser/mapping versions, record/label/partition counts, exclusions and duplicate groups. It SHALL reconcile expected and observed counts with documented reasons. Actual source terms for each use SHALL be retained, without a grant-closure service or human legal-review ceremony. Acquisition is independent of original reviewed gold coverage.
 
 #### Scenario: FULL-02 Complete supported behavior
 
@@ -36,7 +36,7 @@ The importer SHALL freeze upstream release/version, archive and every raw-file S
 
 ### Requirement: DATAFULL-01 TET-GOLD-1 full release
 
-The source plan SHALL retain TET-GOLD-1: project-owned versioned full-domain release. Required components: JSONL, content-addressed WAV, all eight domains, independent review/consent records, development/calibration/holdout manifests. Rights/access boundary: not_created; DEC-002 counting and genuine qualified review still required. Observed hashes/counts SHALL remain absent until acquired; every unavailable component SHALL be reported rather than invented.
+The source plan SHALL retain TET-GOLD-1: project-owned versioned full-domain release. Required components: JSONL, content-addressed WAV, all eight domains, machine reviews and imported native annotation/consent records when supplied, development/calibration/holdout manifests. Rights/access boundary: not_created; approved counting and LLM/native label provenance. Observed hashes/counts SHALL remain absent until acquired; every unavailable component SHALL be reported rather than invented.
 
 #### Scenario: DATAFULL-01 Complete supported behavior
 

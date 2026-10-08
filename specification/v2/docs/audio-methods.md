@@ -1,8 +1,8 @@
 # Audio compilation and measurements
 
 The delivery file is an uncompressed WAV with mono signed 16-bit PCM at 24,000 Hz.
-It is the same byte payload that reviewers approve. There is no separately approved lossy derivative.
-A later codec conversion creates a new asset and requires fresh final-file checks and approval.
+It is the same byte payload that the machine review records. There is no separately approved lossy derivative.
+A later codec conversion creates a new asset and records new measurements and machine review.
 
 ## SSML compiler
 
@@ -18,7 +18,7 @@ Volume uses an explicit signed decibel value followed by dB.
 A contour requires strictly increasing positions from 0 to 100 and an allowed baseline voice capability.
 Do not combine contour with a separate pitch value for the same scope.
 At least one prosody control must be present. Nested or overlapping scopes are invalid.
-Remote audio, lexicon URLs, arbitrary tags, style identifiers, and vendor extensions are forbidden unless separately approved.
+Remote audio, lexicon URLs, arbitrary tags, style identifiers, and vendor extensions are available only through a documented compiler capability.
 Call turns in source order. Each turn references exactly one existing utterance and speaker.
 Preserve every provider response, its format, plan hash, and actual call receipt.
 
@@ -37,12 +37,12 @@ It does not change the final delivery identity. Advisory offsets map back by exa
 
 Normalize PCM16 sample x to x/32768 for numerical measurements.
 Reject NaN, infinity, inconsistent byte counts, zero channels, or a zero-length file.
-Sample peak is max(abs(x)). Reject peak>=0.9999.
+Sample peak is max(abs(x)). Report peak>=0.9999 as a QC warning.
 Calculate integrated loudness with the release-pinned FFmpeg `ebur128` filter under ITU-R BS.1770 gating.
 Enable true-peak calculation and record the actual FFmpeg version, build configuration, binary hash, and measurement command.
-Require integrated loudness from -20 through -16 LUFS inclusive.
-Require true peak<=-1 dBTP. Treat unavailable integrated loudness as a failed measurable-audio gate, not zero.
-A recording that is too short for the method requires human review and cannot silently pass the numeric gate.
+The reported loudness target is -20 through -16 LUFS inclusive.
+The reported true-peak target is <=-1 dBTP. Treat unavailable integrated loudness as a unavailable quality measure, not zero.
+A recording that is too short for the method is not_measurable for this method and displays a quality warning.
 
 Use 480-sample RMS windows and a 240-sample hop for silence at 24 kHz.
 For a final partial window, divide by its actual sample count. Do not zero-pad the denominator.
@@ -51,7 +51,7 @@ Map a silent window to its covered sample interval. Merge intersecting or touchi
 A planned pause covers only its exact inserted-sample interval, not every nearby provider silence.
 Subtract the union of planned-pause intervals before measuring unwanted silence.
 Keep wanted and unwanted silence separate. A targeted pause is still part of elapsed speech duration.
-An unwanted interval of at least 2,000 ms fails QC. Boundary equality is a failure.
+An unwanted interval of at least 2,000 ms reports a QC warning. Boundary equality is a failure.
 All-silent audio fails regardless of planned pauses or duration targets.
 
 ## Speech tokens and intervals
@@ -75,17 +75,17 @@ Ordinary fillers and self-repair are not automatically errors. They can remain d
 
 | Feature | Unit | Method | Missingness |
 |---|---|---|---|
-| lexical_stress | category | Two resolved human annotations of lexical syllable prominence. | Uncertain syllabification or stress requires review. |
-| nuclear_stress | category | Human phrase boundary and final main prominence annotation. | Unknown phrase boundary requires review. |
+| lexical_stress | category | LLM inference from actual acoustic observations of lexical syllable prominence. | Uncertain syllabification or stress uses LLM reconsideration or remains an explicit unknown observation. |
+| nuclear_stress | category | Automatically aligned phrase boundary and final main prominence annotation. | Unknown phrase boundary uses LLM reconsideration or remains an explicit unknown observation. |
 | f0_range_semitones | semitones | Praat autocorrelation F0, then P95 minus P5 on semitones. | Fewer than 20 eligible voiced frames is not_measurable. |
 | f0_slope_semitones_per_second | semitones_per_second | Least-squares slope on eligible F0 frames in the reviewed phrase. | Fewer than 20 frames or zero time variance is not_measurable. |
-| syllable_duration_ratio | ratio | Reviewed target syllable samples divided by reviewed reference syllable samples. | Missing boundary or zero reference duration requires review. |
-| rhythm | category | Human annotation: target_matched, target_not_matched, uncertain. | Uncertain remains review_required. |
-| boundary | category | Human annotation: rising, falling, level, complex, uncertain. | Uncertain remains review_required. |
-| weak_form | category | Human annotation of the actual segment sequence and context. | No reliable observation requires review. |
-| linking | category | Human annotation: present, absent, uncertain, with exact boundary. | Unknown boundary requires review. |
-| assimilation | category | Human observed input/output segment relation. | Unsupported perceived segment requires review. |
-| elision | category | Human observed retained/deleted segment relation. | A low ASR confidence is insufficient. |
+| syllable_duration_ratio | ratio | Reviewed target syllable samples divided by reviewed reference syllable samples. | Missing boundary or zero reference duration uses LLM reconsideration or remains an explicit unknown observation. |
+| rhythm | category | LLM interpretation of acoustic observations: target_matched, target_not_matched, uncertain. | Uncertain remains review_required. |
+| boundary | category | LLM interpretation of acoustic observations: rising, falling, level, complex, uncertain. | Uncertain remains review_required. |
+| weak_form | category | LLM interpretation of acoustic observations of the actual segment sequence and context. | No reliable observation uses LLM reconsideration or remains an explicit unknown observation. |
+| linking | category | LLM interpretation of acoustic observations: present, absent, uncertain, with exact boundary. | Unknown boundary uses LLM reconsideration or remains an explicit unknown observation. |
+| assimilation | category | Native annotation or measured/model-inferred input/output segment relation. | Unsupported perceived segment uses LLM reconsideration or remains an explicit unknown observation. |
+| elision | category | Native annotation or measured/model-inferred retained/deleted segment relation. | A low ASR confidence is insufficient. |
 
 Use the release-pinned Praat engine through the pinned Python binding.
 Use autocorrelation with time step 0.01 s, floor 60 Hz, ceiling 500 Hz, 15 candidates, and very accurate mode.
@@ -117,7 +117,17 @@ Do not map absent fields to zero. Do not infer observed IPA from a reference-con
 
 Every one of the 122 taxonomy leaves has a target contract, including its permitted controls.
 A qualification key contains provider, model/engine observation, voice, locale, render operations, method versions, and target combination.
-A success requires actual target and control audio, exact final hashes, required measurements, and two genuine resolved human approvals.
+A supported capability report uses actual target/control audio, exact final hashes, relevant measurements and one LLM review with explicit evidence modality. No capability report is a normal-use prerequisite.
 Allow at most three explicit render attempts for a candidate. A failure never deletes the target requirement.
-Before a changed profile serves new content, re-render the frozen canary set and obtain the required observations.
-Keep old published bytes and their approval evidence. Do not retroactively assert that an alias stayed unchanged.
+Changed profiles may serve new content immediately; optional canary diagnostics retain the exact actual profile and observations.
+Keep old published bytes and their review evidence. Do not retroactively assert that an alias stayed unchanged.
+
+## Concrete method bindings and warning semantics
+
+Define method family ffmpeg-ebur128-v1: execute the installed FFmpeg on the private final WAV with `-nostdin -hide_banner -i <wav> -filter_complex ebur128=peak=true -f null -`; parse its final integrated-I and true-peak summaries, preserve stderr as private method evidence, and report null if no valid summary is available. Define resample-v1 with `-ar 16000 -ac 1 -sample_fmt s16` for an advisory derivative only. Define praat-ac-v1 through praat-parselmouth using the exact autocorrelation parameters above. Build-time dependency lockfiles select actual package/binary versions; runtime receipts record them. Do not hardcode an invented binary hash into a spec. Missing FFmpeg/Praat is measurement_unavailable, not a zero score or startup approval request.
+
+Token method lexical-v1 uses actual independent ASR/source tokens and times: Unicode NFC for comparison only, lowercase, strip leading/trailing Unicode punctuation, preserve internal apostrophes and hyphens, remove empty comparison tokens; no digit expansion except actual aligned spoken words. Source words and source offsets remain unchanged. WER uses these comparison tokens and cost1 for S/D/I. Token boundaries are actual source/alignment/ASR intervals; uncertainty is retained.
+
+Every target-capability entry defines its exact linguistic inclusion/exclusion predicate from the full taxonomy. A selected blueprint expands a finite matrix of its targetIDs × chosen voiceIDs × chosen locales × operation signatures × methodIDs; test each requested combination, not an arbitrary universal cartesian product before use. The full report covers122leaves and preserves failed/unobserved combinations. Repeated synthetic voice identity is stratification metadata, not proof of common learner identity.
+
+Mechanical thresholds and acoustic predicates remain quality measurements and warnings. Corrupt/unplayable audio fails delivery. A valid playable WAV outside loudness/silence bounds is shown with a warning and may be used; it does not require a human waiver. No scalar score or transcript proves a requested phoneme/prosody was realized. A text-only LLM marks unavailable acoustic observations unknown; an explicitly audio-capable adapter may produce model-inferred auditory labels, still distinct from native source labels and numerical measurements.

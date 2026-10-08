@@ -216,6 +216,34 @@
       "description": "The compare-and-swap revision.",
       "minimum": 0,
       "maximum": 2147483647
+    },
+    "origin": {
+      "type": "string",
+      "enum": [
+        "llm",
+        "source_import"
+      ],
+      "description": "Actual label origin; never a claim of new human peer review."
+    },
+    "provider_receipt_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "uniqueItems": true
+    },
+    "input_modality": {
+      "type": "string",
+      "enum": [
+        "text",
+        "text_with_speech_evidence",
+        "audio",
+        "native_annotation"
+      ],
+      "description": "Actual input modality; transcript-only models never claim direct hearing."
     }
   },
   "required": [
@@ -236,7 +264,10 @@
     "unit_correspondence_id",
     "created_at",
     "resolved_at",
-    "revision"
+    "revision",
+    "origin",
+    "provider_receipt_ids",
+    "input_modality"
   ],
   "additionalProperties": false
 }

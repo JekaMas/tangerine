@@ -51,7 +51,7 @@ A low accuracy score alone cannot populate an observed substituted phoneme.
 
 Normalize unambiguous documented ARPAbet symbols through the separate symbol table.
 Keep lexical stress digits as source annotations. Never manufacture them from an absent symbol.
-A pronunciation claim needs actual source labels or new genuine review, not a guessed conversion from scalar scores.
+A pronunciation claim needs actual source labels or LLM semantic inference with explicit provenance, not a guessed conversion from scalar scores.
 
 ## Outputs and completion
 

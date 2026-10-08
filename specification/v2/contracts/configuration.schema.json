@@ -133,18 +133,34 @@
       "description": "Explicit resource limits. They do not reduce source scope.",
       "properties": {
         "daily_micro_usd": {
-          "type": "string",
-          "description": "The local daily cost ceiling.",
-          "maxLength": 4096,
-          "minLength": 1,
-          "pattern": "^(0|[1-9][0-9]*)$"
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The local daily cost ceiling.",
+              "maxLength": 4096,
+              "minLength": 1,
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Optional cost cap; null disables it by default."
         },
         "monthly_micro_usd": {
-          "type": "string",
-          "description": "The local monthly cost ceiling.",
-          "maxLength": 4096,
-          "minLength": 1,
-          "pattern": "^(0|[1-9][0-9]*)$"
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The local monthly cost ceiling.",
+              "maxLength": 4096,
+              "minLength": 1,
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Optional cost cap; null disables it by default."
         },
         "concurrent_paid_operations": {
           "const": 1,
@@ -287,6 +303,32 @@
             }
           ],
           "description": "Explicit selected profile ID for feedback or declared default inheritance."
+        },
+        "case_review": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit profile or null inherits the selected default for case_review"
+        },
+        "adjudication": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit profile or null inherits the selected default for adjudication"
         }
       },
       "required": [
@@ -295,9 +337,16 @@
         "blind_claim_extraction",
         "claim_mapping",
         "mapping_audit",
-        "feedback"
+        "feedback",
+        "case_review",
+        "adjudication"
       ],
       "additionalProperties": false
+    },
+    "mapping_audit_enabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Optional diagnostic only; default answer checking uses one mapper."
     }
   },
   "required": [
@@ -312,7 +361,8 @@
     "limits",
     "configuration_sha256",
     "llm_profiles",
-    "stage_profiles"
+    "stage_profiles",
+    "mapping_audit_enabled"
   ],
   "additionalProperties": false
 }

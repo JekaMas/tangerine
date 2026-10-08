@@ -8,30 +8,30 @@ Preserve the observable teacher workflow requirements of Teacher Error Trainer w
 
 ### Requirement: TCH-01 Save original submissions first
 
-The system SHALL save the original Russian/English free answer and SHA-256 before provider processing and restrict attempts to published exercises in the local workspace using contracts/local/attempt.schema.json version 1.1.0; no tenant or authenticated user field is required.
+The system SHALL save original English/Russian answer bytes/hash before calls and use the sole active specification/v2 attempt schema/lifecycle in one local workspace.
 
 #### Scenario: TCH-01 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL submit to a published exercise and read back the identical saved answer, and SHALL reject unpublished, unknown or mismatched-version exercises and preserve the answer after provider failure
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL read back exact saved original before LLM processing, and SHALL never decode an old local1.1 record as active by dropping fields
 
-### Requirement: TCH-02 Separate blind extraction and audits
+### Requirement: TCH-02 LLM checking and native arithmetic
 
-The system SHALL extract claims without the key, map with the key in a separate request, audit consistency separately, calculate numbers in code and generate grounded feedback only afterwards.
+The system SHALL extract without the key, map with the key through the configurable LLM, calculate authoritative numbers in code and generate feedback. Mapping audit SHALL remain optional.
 
 #### Scenario: TCH-02 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL trace a real attempt through all separately versioned stages, and SHALL reject key leakage into blind extraction or numbers invented by feedback
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL complete answer checking without a human or repeat audit, and SHALL never let LLM prose replace exact equations or invent teacher correction content
 
-### Requirement: TCH-03 Distinguish processing outcomes
+### Requirement: TCH-03 Persist actual processing outcomes
 
-The system SHALL persist ready, needs_review and technical_error outcomes distinctly and display confirmed/missed errors, false positives, corrections, explanations, domain metrics and exercise evidence.
+The system SHALL display completed, review_required and evaluation_failed outcomes from the active lifecycle, where review_required means provisional LLM reconsideration rather than a human queue.
 
 #### Scenario: TCH-03 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL display a saved ready result with source evidence and raw counters, and SHALL display needs_review or technical_error without a fake final score
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL show saved metrics and clearly unresolved interpretations, and SHALL never treat an optional audit failure or harmless reply wrapper as missing human approval
 
 ### Requirement: TCH-04 Keep synchronous bounded processing
 

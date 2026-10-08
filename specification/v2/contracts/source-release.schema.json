@@ -64,18 +64,34 @@
       "uniqueItems": true
     },
     "format_profile_id": {
-      "type": "string",
-      "description": "The exact parser profile.",
-      "maxLength": 128,
-      "minLength": 1,
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The exact parser profile.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null while lossless raw intake precedes semantic binding; no invented native mapping."
     },
     "format_profile_sha256": {
-      "type": "string",
-      "description": "The frozen source-format mapping.",
-      "maxLength": 64,
-      "minLength": 64,
-      "pattern": "^[a-f0-9]{64}$"
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The frozen source-format mapping.",
+          "maxLength": 64,
+          "minLength": 64,
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null while lossless raw intake precedes semantic binding; no invented native mapping."
     },
     "files": {
       "type": "array",

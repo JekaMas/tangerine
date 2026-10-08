@@ -44,7 +44,7 @@ Keep original ERRANT operation and category separately.
 M, U, and R express missing, unnecessary, and replacement edits. They do not select a project leaf by themselves.
 The source labels such as DET, PREP, VERB:TENSE, VERB:SVA, NOUN:NUM, SPELL, and PUNCT supply candidate categories.
 Use `domain/source-label-map.yaml` for permitted broad candidates.
-A broad source label cannot become a narrower 122-leaf identity without sufficient context and approved linguistic mapping.
+A broad source label cannot become a narrower 122-leaf identity without sufficient context and context-supported LLM mapping.
 Spelling and punctuation labels can remain written-only records. Do not synthesize a pronunciation error from spelling automatically.
 The complete raw and normalized source data remains available even when a record is not eligible as a listening gold unit.
 

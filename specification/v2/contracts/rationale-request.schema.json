@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/rationale-request.schema.json",
+  "title": "rationale-request",
+  "type": "object",
+  "description": "Exact creation/submit content projection for rationale. Response preserves the full stored record; server assigns envelope.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "case_version_id": {
+      "type": "string",
+      "description": "The case version.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "unit_id": {
+      "type": "string",
+      "description": "The unit.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "language": {
+      "type": "string",
+      "description": "The response language.",
+      "enum": [
+        "en",
+        "ru"
+      ]
+    },
+    "text": {
+      "type": "string",
+      "description": "The approved explanation text.",
+      "maxLength": 12000,
+      "minLength": 1
+    },
+    "required_proposition_ids": {
+      "type": "array",
+      "description": "The exact required rationale propositions.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "forbidden_proposition_ids": {
+      "type": "array",
+      "description": "The exact forbidden rationale propositions.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "evidence_ids": {
+      "type": "array",
+      "description": "The supporting evidence.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "review_decision_ids": {
+      "type": "array",
+      "description": "The actual approving decisions.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "case_version_id",
+    "unit_id",
+    "language",
+    "text",
+    "required_proposition_ids",
+    "forbidden_proposition_ids",
+    "evidence_ids",
+    "review_decision_ids"
+  ],
+  "additionalProperties": false
+}

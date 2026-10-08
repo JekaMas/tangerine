@@ -1,52 +1,23 @@
-# Moodrick, NIR, and Doubao records
+# Complete private/export and study adapter protocol
 
-Moodrick and NIR are separate source owners. Never combine their permissions or infer one product's interface from another product.
-The attached specification proposes use of actually licensed public material and explicitly authorized private solutions; no grant is supplied.
-The operator can supply account and key references in local configuration.
-This decision does not establish that a private API, annotated corpus, or export exists.
+DOUBAO-STUDY-RECORDS, MOODRICK-DATA and NIR-DATA are separate full-source identities. No paper, demo, public description or one vendor's export substitutes for another. Their actual data, agreements and private interfaces are external operational inputs, not unresolved product policy.
 
-## Supported access contracts
+## Complete local export path
 
-Use one of three explicit access modes:
+This path is supported without a vendor API: supply a directory/archive containing every data file plus its actual release documentation. Intake stores every member and all native fields losslessly. A source-release record names source_id, actual release_version, origin, documentation assets, component/partition files, actual hashes/sizes and documented expected counts. Unknown expected counts are explicitly null during planning; acquired files always have actual hashes. No fabricated full-release count is required.
 
-1. Import a complete authorized local release with its actual source format and permissions.
-2. Download a complete authorized export from an exact documented HTTPS location.
-3. Use an installed versioned private adapter backed by actual vendor API documentation and authorization.
+A source-format-binding maps each native selector to its meaning using exact sheet/header/XML/JSON/path locators, source raw type, null markers and documented conversion. Preserve all original fields through raw-record even if not mapped. Required semantic meanings: native record/writing/response identity; source release/component/partition; prompt/task text and identity; original response; learner/speaker/group identity when supplied; corrected response/options; scores with scale; errors/categories/spans with offset clock; rubric/feedback; annotator/model origin; timestamps; media links and original audio clock. An absent meaning is null/raw_only, never a guessed field or substituted learner. Conversion emits corpus-record/evidence/transformation with exact raw links and missingness. LLM context may propose semantic122-leaf mappings, marked inferred rather than original source labels.
 
-A connector configuration names the vendor, selected release, real account reference, secret reference, adapter ID, exact allowed hosts, and use grants.
-It also names actual interface documentation and a complete field binding.
-Do not derive endpoint paths from a product homepage, browser bundles, or guessed REST conventions.
-Do not scrape a paid interface in place of an API unless the terms and owner approval explicitly permit that exact workflow.
-Do not put passwords into an LLM prompt or browser application bundle.
+If private headers are unavailable, preserve raw intake and show format_unbound for semantic conversion until a documented binding is supplied. This fully defines product behavior without asserting undocumented vendor headers. A default native-column mapping cannot honestly be invented from a product page.
 
-The private adapter must define authentication, all request/response fields, pagination, export completion, failures, retry limits, and source counts.
-A page-size limit does not authorize a partial-source claim.
-The adapter stores raw replies and exact versioned transformations before semantic use.
-Missing credentials produce `credentials_missing`. Missing rights produce `rights_missing`.
-Missing vendor documentation or an installed adapter produces `interface_missing`, not a fake success.
-Unknown field semantics produce `format_unbound`.
-A complete local authorized export can satisfy data access without inventing a network API.
+## Optional documented remote adapter
 
-## Public material
+A configured adapter must supply exact HTTPS endpoint/authentication/header/query/body/response schema, credential reference, actual allowed host, dataset version, native count unit and completion marker. Initial request uses the documented initial cursor; each response retains raw bytes, record array, next_cursor or documented end flag and optional source total. Repeat only transient connection/408/429/502/503/504 once within270s operation; respect Retry-After within deadline. Never retry authentication/undocumented format by guessing another endpoint. A next cursor already seen -> pagination_cycle; absent declared completion marker -> incomplete_export. Empty page alone is not EOF unless documented. Resuming uses the saved cursor/page hash; duplicate native IDs keep conflicting raw versions and report conflict. Actual count reconciliation is mandatory for declaring that export complete.
 
-Public product descriptions can support the research comparison.
-They do not establish rights to private prompts, teacher answers, rubric implementations, or annotated answer banks.
-Do not copy a competitor's demonstration score into a gold metric or claim it is a validated formula.
-NIR OBSERVE discloses Groq processing on its public page. That statement does not identify NIR SIM's private backend or an API for this product.
-The current package does not include a documented Moodrick or NIR annotated-data API or data release.
-Both remain explicit source-interface/rights prerequisites for private ingestion.
+Missing credentials -> credentials_missing. No actual API documentation/adapter -> interface_missing with complete local-export alternative. Unknown native semantic binding -> format_unbound. Missing required members/pages -> incomplete. Rights notices/agreements remain actual metadata; do not create a grant. Operator-supplied login/password is never sent to an LLM or browser bundle. No scrape is substituted for an undocumented private API.
 
-## Doubao research records
+## Doubao participant data
 
-The cited paper describes an intervention and collected records. Its participant data is not included in the supplied material.
-Acquire records only through a real author-authorized release with participant consent and permitted-use documentation.
-The release must identify every participant pseudonym, recording, journal, questionnaire, interview, transcription, and annotation actually supplied.
-Keep the collection unit for each count explicit. A video count is not a count of verified error instances.
-Preserve the original languages, instrument versions, missing records, and study-cycle membership.
-Do not manufacture 545 audio assets, extract participant identities, or infer consent from publication of the paper.
-Without the actual release and format documentation, underlying-study ingestion remains externally blocked.
-The full-source requirement remains visible. It is not silently reclassified as completed research-only acquisition.
+Retain the complete actual participant/group allocation, all responses and attempts, prompt/instruction versions, condition/assignment, pre/post/follow-up records, scores/rubrics, feedback/model settings, exclusions/missingness, media and consent/de-identification metadata as supplied. Preserve participant-response relationships and actual study timepoints. Published summary tables are documentary data, never reconstructed individual records. Missing release remains not_acquired; no generated participants or rows fill it.
 
-## Authority correction
-
-The archive’s statements about owner approval are attached transcriptions, not independently verified human messages. The current user authorizes research and specification updates; this draft records separate Moodrick/NIR paths and full named source components as proposals, not granted licenses, credentials, vendor APIs or publication rights. Actual grants must bind a real agreement and the exact data/recipient/use.
+Moodrick/NIR public descriptions may inform comparison; private prompts, answer banks, rubrics and exports need actual supplied data/documentation. This adapter contract is finalized; unavailable private native schemas and bytes remain explicitly listed operational dependencies. No runtime source is falsely complete.

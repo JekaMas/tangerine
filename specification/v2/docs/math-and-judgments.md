@@ -13,19 +13,19 @@ Repeated occurrences have distinct event IDs when each occurrence independently 
 A discourse event can span several utterances. It still has one reviewed primary unit.
 Use the most specific supported leaf. Equal competing primary leaves require review, not arbitrary alphabetical priority.
 Secondary labels preserve other valid analyses but do not change denominators.
-Two reviewers must resolve unit boundaries before the item enters gold.
+The LLM assigns unit boundaries with evidence/provenance before a machine-labelled item enters the benchmark.
 
 ## Claim identity and coverage
 
 Preserve UTF-8 bytes and count offsets in decoded Unicode codepoints. Reject invalid UTF-8 and unpaired surrogates.
 No NFC transformation changes the saved answer or its source offsets.
 Sort extracted clauses by start offset, end offset, and their original output position.
-Assign `clm_` plus the first 32 hexadecimal SHA-256 digits of UTF-8 JCS encoding of the ordered array [answer_sha256, start_cp, end_cp, exact_text]. Offset values are safe integers. Do not concatenate undelimited strings. Hash collisions or competing interpretations of an identical span require review and cannot overwrite the original clause.
+Assign `clm_` plus the first 32 hexadecimal SHA-256 digits of UTF-8 JCS encoding of the ordered array [answer_sha256, start_cp, end_cp, exact_text]. Offset values are safe integers. Do not concatenate undelimited strings. Hash collisions or competing interpretations of an identical span use LLM reconsideration and cannot overwrite the original clause.
 If identical spans contain different interpretations, retain them as an unresolved extraction conflict.
 Check the complete span partition. Each codepoint belongs to a claim, attachment, unparsed span, non-assertive span, or whitespace.
 Coverage cells form an ordered disjoint partition. Original source spans can overlap only for a declared contained attachment.
 A substantive assertion cannot disappear because it is difficult to classify.
-Models can mislabel non-assertive text. A separate coverage review must expose that uncertainty.
+The server derives coverage; substantive missing interpretation invokes LLM repair, without a separate required audit.
 Schema or arithmetic checks alone cannot prove extraction completeness.
 
 ## Consolidation
@@ -54,7 +54,7 @@ Do not choose only the most favorable alternative from contradictory endorsed re
 | Unparsed substantive content | Unknown | Unresolved | Review. No final counts. |
 
 A wrong explicit category does not cancel a correctly identified detection.
-An unknown explicit alias preserves detection evidence but blocks any final score that its category interpretation can change.
+An unknown explicit category preserves detection and has zero classification credit unless the LLM supports an existing taxonomy mapping.
 Missing category text gives zero classification coverage. It is not an unknown-alias dispute.
 
 ## Correction and explanation tuple rules
@@ -66,14 +66,14 @@ The required proposition set must be nonempty. Every satisfied or violated ID mu
 If a forbidden assertion exists, code sets credit to zero.
 Otherwise code sets credit to the count of satisfied required propositions divided by the count of all required propositions.
 A complete normalized approved alternative sets all required propositions satisfied only if no additional contradictory clause remains.
-A novel plausible alternative produces review. It cannot silently add a new key option.
+The LLM accepts a valid novel alternative that satisfies existing semantic propositions; a genuine rubric defect invokes LLM adjudication and creates a new key version.
 A correction for an ineligible control cannot earn correction credit. An unnecessary correction attached to FP increments FC once.
 
 An explanation always has option_id=null.
 Its propositions belong to the unit rationale, not a correction option.
 A category label alone is not an explanation. Unsupplied explanations contribute zero when the task requires them.
-An unknown additional claim in an explanation produces review. A verified false assertion triggers the fixed forbidden-proposition rule.
-An unsupported evaluator tuple is rejected, not repaired.
+An additional explanation claim is judged by the LLM under the same proposition rubric. A verified false assertion triggers the fixed forbidden-proposition rule.
+An unsupported evaluator tuple invokes the one permitted output repair, then explicit failure if still invalid.
 
 ## Mapper and auditor comparison
 
@@ -82,7 +82,7 @@ Canonicalize record order by server claim ID. Sort fields declared as sets and r
 Compare target IDs, stance source references, group membership, retractions, decision kind, option identity, proposition sets, unresolved reasons, and exclusions.
 Compare evidence scope and approved rationale identities. A different free-text explanation alone does not change arithmetic.
 An alternative evidence reference is harmless only when both resolve to the same exact subject, observation, version, and digest.
-Every score-relevant difference produces review. Persist both outputs and the exact difference.
+Optional audit differences are retained diagnostics. Only genuine unresolved scorable meaning invokes LLM adjudication/provisional status.
 Do not rerun a semantic stage to search for agreement.
 
 ## Exact numbers
@@ -131,3 +131,19 @@ Elapsed time and playback counts are descriptive, not ability scores.
 
 Detection and classification have composite opportunities only when G is positive. Correction requires GC positive. Explanation requires GE positive.
 On a control-only exercise, keep control and false-assertion metrics. Do not manufacture a composite score from absent true-error opportunities.
+
+## Current LLM-only normalization and scorer projection
+
+These preprocessing rules preserve all numerical equations and define the default single-mapper workflow.
+
+The server derives the coverage partition from validated clause/attachment spans and original answer. It fills whitespace/non-assertive intervals itself; uncovered substantive text is passed to the LLM repair/reconsideration step. Recover a span only from a unique exact quoted substring; convert documented UTF-16 offsets to original Unicode codepoint offsets when the quoted bytes match. An ambiguous repeated quote stays unresolved. No rewritten answer is substituted.
+
+Claims are source-order sorted by start_cp,end_cp,local_ref. Explicit backwards retraction deactivates its target for arithmetic while preserving it. Exact duplicates attach to the earliest active representative. Compatible noncontradictory fragments for the same localized assertion combine their actual correction/reason spans; the union is source ordered and retains member claim IDs. Contradiction is sent to LLM adjudication; it cannot select a favorable fragment merely for a higher grade.
+
+A resolved group maps to one decision. true_error+assert_error -> matched_error; true_error+assert_acceptable -> wrong_acceptance; acceptable+assert_error -> false_positive with its control unit; acceptable+assert_acceptable -> confirmed_acceptable. An unsupported off-key assertion -> false_positive with unit_id=null. A supported off-key defect -> provisional key-defect adjudication. Meta/question/retracted -> ignore. Unresolved substantive assertion -> unresolved. Duplicates point to the representative's decision and are excluded once. No decision is replicated across all matching units.
+
+Category recognition accepts semantic synonyms justified by context and maps them to an existing122-leaf ID, preferring the most specific supported leaf. Unknown category -> null classification credit; supported detection remains. Existing ancestor compatibility remains as defined by the original classification metric. Correct alternatives and paraphrases are judged by the LLM against existing required/forbidden propositions, not rejected because their wording was absent. A new correction may select the existing option whose semantic constraints it satisfies; if none fits despite correctness, adjudicate a rubric defect and append a version.
+
+For the scorer, supplied flags come only from real spans. A selected option with any violated forbidden proposition has numerator0. Otherwise numerator is the number of its satisfied required propositions, denominator is the number of required propositions. No supplied content -> supplied=false, credit0/1. A zero-required rubric is defective rather than automatically perfect. Explanation follows its unit rationale and option_id=null. IDs outside the unit are invalid and repaired.
+
+Default checking uses one mapper. Optional audit compares and reports differences; it does not null a supported grade. LLM adjudication settles genuine score-relevant ambiguity; unresolved after that remains provisional. Historical reference scorer/validators encode stricter old preprocessing: their arithmetic remains an inert oracle, and their former human/alias/repeat-audit restrictions are not runtime contracts.

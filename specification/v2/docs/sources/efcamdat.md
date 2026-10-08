@@ -35,8 +35,8 @@ The label map retains AG, AR, AS, CO, C, D, EX, HL, IS, MW, NS, NSW, PH, PL, PO,
 Broad labels generate candidate mappings only. Unknown labels remain preserved and unbound.
 
 The guide's XML examples do not prove that a privately supplied full release uses an identical complete schema.
-Before activation, compare actual release documentation and all observed elements with the exact `source-format-binding`.
-Unknown required semantics keep the release unbound. They do not disappear from the full-source inventory.
+During semantic conversion, compare actual release documentation and all observed elements with the exact `source-format-binding`.
+Unknown required semantics keep that semantic projection unbound; complete raw intake remains usable. They do not disappear from the full-source inventory.
 
 ## Shatz2020 and Oksuz2025 derivatives
 
@@ -50,7 +50,7 @@ An unsupplied meaning remains explicitly missing. The importer cannot invent a l
 
 The actual private workbook headers, full data dictionaries, and permissions were not supplied for this package.
 Therefore the native derivative bindings are not falsely marked complete.
-The format-binding schema and ingestion process are defined; source-specific bindings remain external prerequisites.
+The format-binding schema and ingestion process are defined; source-specific native names are external operational inputs, while the complete generic binding/intake protocol is finalized.
 This package contains no acquired derivative records and no invented full-release counts.
 
 ## Leakage and use
@@ -58,9 +58,11 @@ This package contains no acquired derivative records and no invented full-releas
 Join records across releases by genuine source writing/learner/task identities and documented derivative links.
 When a direct link is absent, use exact text hashes only as possible duplicate evidence, not as proof of identity.
 Keep related original and derivative records in the same connected split group.
-Before an external LLM receives an excerpt, evaluate every contributing source grant for that recipient and purpose.
+Use the saved source-use setting and retain source restrictions/transfer provenance for an external excerpt; no grant-dependency service or repeated approval is required.
 A cleaned record does not automatically remove restrictions from the original data.
 
 ## Current research boundary
 
 Cambridge currently lists original XML, Shatz2020 cleaned and Öksüz error-coded data separately under approved academic access. This supports separate release bindings and prevents derivative substitution. It supplies neither local acquisition nor exact private workbook headers/use agreements. Counts remain source expectations. No attached owner-scope JSON grants rights or proves an independent owner decision.
+
+The generic private-export protocol defines exact lossless workbook intake, required meanings, missingness and failure/completion behavior for both derivatives. Every actual sheet/column/cell is retained even before semantic binding. No source-specific private header is fabricated. Missing actual agreements/data are operational dependencies; the approved specification requires no further product owner sign-off.

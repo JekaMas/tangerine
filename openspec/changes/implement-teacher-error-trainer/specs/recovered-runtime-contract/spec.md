@@ -2,21 +2,19 @@
 
 ## ADDED Requirements
 
-### Requirement: SYNC-01 Preserve deadline lease and request identity
+### Requirement: SYNC-01 Deadline lease and output repair
 
-Attempts SHALL persist original UTF-8/hash and idempotency atomically before providers, permit empty answers, and reject over 20,000 Unicode codepoints. Same key/different payload SHALL return 409. Revision/token compare-and-swap SHALL enforce a 300-second lease; stale returns cannot commit and network calls cannot hold a DB transaction. A single propagated 270-second attempt deadline SHALL cover extraction 40, mapping 70, audit 70, feedback 40 and at least five seconds for persistence. API write/proxy/browser timeouts SHALL be 285/300/310 seconds. At most one transport retry per request budget is permitted, with no JSON repair loop or background recovery.
+The system SHALL preserve submitted bytes/idempotency before calls, keep the270s deadline and300s lease, perform calls outside transactions and fence stale results. Stage budgets and one transport retry/one format repair are defined in specification/v2/docs/provider-contracts.md.
 
 #### Scenario: SYNC-01 Complete supported behavior
 
-- **GIVEN** Use empty/max/oversize answers, same/different idempotency payloads, overlapping requests, expired lease and late-stage provider returns with controlled time boundaries.
-- **WHEN** the authorized owner checks the full frozen contract
-- **THEN** A saved answer survives failure/disconnection; eligible explicit retry uses the same attempt and only the current lease can commit within the shared deadline.
+- **WHEN** the supported local action completes
+- **THEN** it SHALL save the answer and normalized repaired result within the current lease
 
 #### Scenario: SYNC-01 Incomplete or forbidden behavior
 
-- **GIVEN** an omitted, altered or unauthorized dependency in that same contract
-- **WHEN** the caller requests acceptance
-- **THEN** A stale result, renewed per-stage global deadline, DB transaction spanning network, oversized Unicode input or favorable JSON retry is rejected.
+- **WHEN** its stated failure or missing-evidence condition occurs
+- **THEN** it SHALL never commit stale results, invent missing semantic content or create background retries
 
 ### Requirement: SYNC-02 Distinguish lifecycle statuses
 

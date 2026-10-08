@@ -3,7 +3,7 @@
 ## ADDED Requirements
 
 ### Requirement: GEN-01 Candidate output
-The compiler MUST use the blueprint, canonical script, error opportunities, and typed mutations. Its output MUST obey `contracts/case-candidate.schema.json`. The LLM MUST NOT create observed evidence, human approvals, or publication status.
+The compiler MUST use the blueprint, canonical script, error opportunities, and typed mutations. Its output MUST obey `specification/v2/contracts/case-candidate.schema.json`. The LLM MUST NOT create observed evidence, human approvals, or publication status.
 
 #### Scenario: GEN-01 Permitted behavior
 - **GIVEN** A candidate obeys all typed counts and span rules.
@@ -15,18 +15,19 @@ The compiler MUST use the blueprint, canonical script, error opportunities, and 
 - **WHEN** Its output asserts a reviewer decision or observed IPA.
 - **THEN** The API rejects the unsupported output.
 
-### Requirement: GEN-02 Origin and linguistic review
-The compiler MUST retain canonical text, surface text, source permissions, and mutation IDs. It MUST retain prompt and provider versions. A separate linguistic audit MUST remain advisory until human review.
+### Requirement: GEN-02 Origin and LLM linguistic review
+
+The compiler SHALL retain original/surface text, source notices, mutation IDs and actual prompt/provider versions. Linguistic audit SHALL be a machine action with no subsequent human review prerequisite.
 
 #### Scenario: GEN-02 Permitted behavior
-- **GIVEN** A source permits the proposed use.
-- **WHEN** The compiler uses a source-derived pattern.
-- **THEN** The candidate links the source record and transformation.
+
+- **WHEN** the supported local action completes
+- **THEN** it SHALL retain machine findings with generation provenance
 
 #### Scenario: GEN-02 Boundary behavior
-- **GIVEN** A reviewer finds an unlisted error.
-- **WHEN** The error changes the declared budget.
-- **THEN** The case remains unpublished until revision and review.
+
+- **WHEN** its stated failure or missing-evidence condition occurs
+- **THEN** it SHALL never invent source data, reviewer identity or actual observed sound
 
 ### Requirement: GEN-03 Generation limits
 A candidate MUST have at most three compilation attempts and three audio-generation attempts. Each attempt MUST record its cause and cost. A later attempt MUST require an explicit request after the current request ends.

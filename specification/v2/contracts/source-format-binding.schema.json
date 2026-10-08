@@ -3,7 +3,7 @@
   "$id": "https://tangerine.invalid/schemas/source-format-binding.schema.json",
   "title": "source-format-binding",
   "type": "object",
-  "description": "A source-owner-specific binding. This package does not fabricate bindings for inaccessible private formats.",
+  "description": "Current LLM processing record or lossless imported source record; no human peer review prerequisite.",
   "properties": {
     "schema_version": {
       "const": "2.0.0",
@@ -156,11 +156,19 @@
       "description": "The separately reviewed complete label map."
     },
     "review_person_id": {
-      "type": "string",
-      "description": "The real person who checked documentation against acquired bytes.",
-      "maxLength": 128,
-      "minLength": 1,
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The real person who checked documentation against acquired bytes.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Legacy imported value; null for LLM processing."
     },
     "reviewed_at": {
       "type": "string",
@@ -168,6 +176,34 @@
       "maxLength": 35,
       "minLength": 20,
       "format": "date-time"
+    },
+    "origin": {
+      "type": "string",
+      "enum": [
+        "llm",
+        "source_import"
+      ],
+      "description": "Actual label origin; never a claim of new human peer review."
+    },
+    "provider_receipt_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "uniqueItems": true
+    },
+    "input_modality": {
+      "type": "string",
+      "enum": [
+        "text",
+        "text_with_speech_evidence",
+        "audio",
+        "native_annotation"
+      ],
+      "description": "Actual input modality; transcript-only models never claim direct hearing."
     }
   },
   "required": [
@@ -181,7 +217,10 @@
     "fields",
     "label_map_asset_id",
     "review_person_id",
-    "reviewed_at"
+    "reviewed_at",
+    "origin",
+    "provider_receipt_ids",
+    "input_modality"
   ],
   "additionalProperties": false
 }

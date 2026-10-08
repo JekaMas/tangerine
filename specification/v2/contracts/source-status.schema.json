@@ -91,6 +91,19 @@
       },
       "minItems": 0,
       "maxItems": 100
+    },
+    "raw_complete": {
+      "type": "boolean",
+      "description": "All actual required supplied members/records inventoried with reconciled disposition; independent of semantic mapping."
+    },
+    "normalized_complete": {
+      "type": "boolean",
+      "description": "All required native semantics have an actual binding, or documented label-absence states; no guessed labels."
+    },
+    "raw_only_records": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)$",
+      "description": "Accepted raw records whose project semantic conversion is not yet available; subset of accepted_records, never extra encountered records."
     }
   },
   "required": [
@@ -100,7 +113,10 @@
     "release_ids",
     "import_report_ids",
     "missing_component_names",
-    "reasons"
+    "reasons",
+    "raw_complete",
+    "normalized_complete",
+    "raw_only_records"
   ],
   "additionalProperties": false
 }

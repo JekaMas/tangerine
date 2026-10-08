@@ -1,78 +1,21 @@
-# Local interface operations
+# Internal local interface
 
-The canonical operation inventory is `domain/operations.yaml`. OpenAPI is `contracts/openapi.yaml`.
-Every request schema is closed. Unknown properties, query parameters, or state actions are rejected.
-Every mutation uses Idempotency-Key. Every revision-dependent operation uses If-Match.
-All returned mutable entities include ETag with the quoted decimal revision in the HTTP header.
+The full operation inventory remains domain/operations.yaml with exact method/path/request/response references in contracts/openapi.yaml. These are internal UI/service interfaces, not a user-managed public API. One local workspace has no accounts, roles or complex authentication.
 
-## Shared outcomes
+## Exact field ownership
 
-Malformed JSON, duplicate keys, invalid UTF-8, and unknown fields return 400.
-Unavailable IDs return 404. A cross-case reference is invalid evidence, not a successful lookup.
-A state or lease conflict returns 409. A stale revision returns 412.
-A declared capacity overflow returns 413. A semantic constraint or missing required evidence returns 422.
-Local admission/cost guards return 429. A required local dependency failure returns 503.
-Provider or output-structure failure returns 502. An elapsed request deadline returns 504.
-A semantic uncertainty returns the declared review_required result with HTTP 200 because the request completed without a final score.
-A feedback-only failure returns HTTP 200 with a valid score and an explicit commentary disposition.
-Errors include only declared safe fields. Raw prompts, keys, hidden targets, and provider bodies stay private.
+For every mutation, its named request schema is the canonical content schema unless an explicit request projection is listed. domain/operation-ownership.yaml contains request_fields, server_fields and imported_source_fields per operation. Full stored-record schemas are never posted with fabricated server IDs/times. A create/submit request consists of exactly request_fields; the server assigns every server_field. No preliminary generic reservation exists or is needed. If a record is imported, its original identity/time/author fields are stored in the raw asset/source metadata; its new local envelope uses actual local identity/time. Referenced case/audio/configuration hashes in request_fields are legitimate equality preconditions.
 
-## List operations
+Use Idempotency-Key for mutation retry deduplication and If-Match on revision-dependent updates. The browser/helper supplies these automatically. Equal operation/key/content returns the saved outcome; conflicting content409. ETag is quoted decimal revision. Safe error statuses remain400 malformed content,404 missing ID,409 conflicting state,412 stale revision,413 configured size,422 invalid semantic reference,429 concurrency/optional cap,502 exhausted provider normalization failure,503 unavailable required dependency and504 deadline. A completed provisional result/feedback-only failure returns200 with explicit status.
 
-Use stable keyset pagination ordered by database creation sequence and object ID.
-The default page size is 50 and the maximum is 100.
-The opaque cursor binds operation, filter, snapshot revision, last key, and an internal HMAC.
-Reject a malformed, stale-incompatible, wrong-operation, or altered cursor.
-Do not silently ignore a page of source records or treat a paged list as the complete corpus.
-The operator can request the next page until next_cursor is null.
+Local JSON requests ignore harmless unknown additive fields after retaining raw request diagnostics; fields claiming server identity/success/lease/publication approval are not trusted. Wrong scorable references or wrong required content are errors. Canonical storage projection remains closed. Provider normalization is defined separately. Do not reject a harmless reply fence/unknown vendor field as a new product boundary.
 
-## Media
+Lists use stable creation-sequence/objectID keyset pagination, default50/max100. Cursor contains the last key and selected filter/snapshot; no secret signing scheme is necessary for one local workspace. Invalid cursor400, next_cursor=null at actual completion. Reading one page never establishes full-corpus acquisition.
 
-The API resolves the exact case or review asset on each request and rechecks current rights and availability.
-Support a single valid HTTP byte range for native audio seeking.
-Return 206 with correct Content-Range and Content-Length, or 416 for an unsatisfiable/multiple range.
-Use the final asset hash as the ETag. Do not put target words or categories in response headers, filenames, or object metadata.
-Return Cache-Control private,no-store for assessment and review APIs.
-No internal MinIO hostname or signed secret URL reaches the browser.
+## Review and disclosure
 
-## Disclosure allowlists
+start_review triggers case_review through the configured LLM. get_review returns blind-review-view for imported/diagnostic observations. blind_submit/review_disclose/review_decide remain internal processing operations that store machine observations/disclosure/decision; no human person or qualification is requested. create_person/qualification/get_person retain imported native metadata only, without a review UI prerequisite. teacher_gold accepts native imported labels or LLM labels with explicit origin. resolve_dispute/adjudicate/reconsider use the LLM and append versions.
 
-Library uses only library-item.
-An unsubmitted attempt uses teacher-start-view or attempt-view. Neither contains a key, transcript, or planned event count.
-A blind review uses review-context plus audio before submission. Planned unit IDs are absent.
-Key disclosure has a separate POST operation and persisted prerequisite/disclosure records.
-After submission, key-disclosure supplies the full linguistic key and approved rationale text under the proposed product policy.
-The teacher projection removes raw review decisions, person identifiers, private provenance, and raw provider records.
-Prepare uses prepare-view. It is never reused as a teacher response.
-Configuration uses configuration-view, which exposes secret presence only.
-Historical or quarantined results include status and rights warnings. They do not bypass a current revocation.
+Before answer submission, teacher DTOs exclude the key, transcript and planned-event count. After submission teacher-key/teacher-rationale expose the full approved pedagogical content, excluding raw provider records, secret values, private native persons and source personal metadata. Settings show key presence only. Preparation views are separate from teacher projections.
 
-## Caller-supplied record fields
-
-Evidence-import endpoints accept actual preexisting IDs and timestamps only as imported evidence fields.
-The API assigns the local storage envelope ID, insertion time, audit event, and mutable revision itself.
-For local review actions, the API supplies submission/disclosure timestamps and hashes.
-Reject client attempts to set a completed server receipt, lease token, provider success, or publication approval as an implementation shortcut.
-An imported actual human decision remains subject to genuine identity, source evidence, and conflict checks.
-
-## Server-owned fields
-
-`domain/operation-ownership.yaml` binds all operation identities and authoritative envelope fields.
-The browser cannot select a lease epoch, current timestamp, receipt, content digest, or approval identity by posting a full record.
-A create request either omits server fields through its request schema or the API compares their supplied values and replaces no conflict silently.
-For a request that still uses a full record schema, allocate its identity through a prior server reservation.
-The subsequent submit must use that exact reservation and unchanged source content. The server assigns submission time and the stored digest.
-Source issuer dates and source record IDs remain source metadata, distinct from the current server envelope.
-
-## Error codes
-
-`domain/error-codes.yaml` supplies fixed codes, safe English messages, statuses, and explicit retry eligibility.
-A translated message cannot include hidden values or alter the code meaning.
-Use 403 for an invalid private service credential. This is not a human account boundary.
-Application errors never contain raw provider payloads or the answer key.
-
-## Corrected view boundaries and remaining ownership work
-
-get_review returns blind-review-view, not the private review-context record. It contains public context/constraints and audio path, without author identities or planned units. Persisted review-context remains private evidence. Post-submission teacher key disclosure returns teacher-key and teacher-rationale allowlists. Private evaluation-key/rationale records remain inputs to the semantic pipeline; their evidence/reviewer IDs are not copied into teacher DTOs.
-
-The imported prior-reservation rule is not yet a complete API protocol: no listed generic reservation supports all full-record creation requests. FRC-006 enumerates affected operations and requires exact request-versus-server-versus-import field ownership before implementation. Known precondition hashes in start_attempt/retry/restore are legitimate compared inputs, not automatically server-field defects. Do not drop fields or accept arbitrary client approvals to evade this unresolved rule.
+Audio resolves private linked bytes, supports a valid single HTTP range206,416 otherwise, and uses final hash ETag. No MinIO hostname/key or signed credential URL reaches the browser. UI/service binds local interfaces; internal service key is helper-generated, with no human authentication setup. Metadata used by the teacher view does not reveal target words before submission.

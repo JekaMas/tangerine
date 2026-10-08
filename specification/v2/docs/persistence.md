@@ -44,9 +44,9 @@ Do not apply an unrestricted generic field exclusion list to evidence, rights, o
 ## Deletion
 
 Normal application writes cannot mutate historical documents or audit events.
-Explicit rights-aware erasure uses a separately reviewed maintenance transaction.
+Explicit local erasure uses a user-requested maintenance transaction; no peer review or legal approval UI is required.
 It first creates a deletion plan and finds all incoming references and affected results.
-It removes bytes only after the plan's actual confirmation and applicable legal retention decision.
+It removes bytes only after the plan's actual confirmation in the local deletion plan.
 Keep only permitted tombstone metadata. A hash can itself be restricted personal data and is not automatically retainable.
 A deleted source makes dependent future uses unavailable. It does not produce a misleading healthy dangling reference.
 The application reads a typed unavailable tombstone instead of pretending that the original evidence exists.
@@ -57,4 +57,8 @@ Implement and test this explicit erasure procedure before release. The reference
 Keep historical schema documents and hashes. Never reinterpret old payloads as the new version without an explicit transformation.
 Migrate only a documented source schema/version/hash combination.
 Preserve the original payload and its historical score. Store transformed data and new scores as new documents.
-The repository foundation at 6b625ef has accounts, sessions and a catalog-only migration. Its exact file/hash and drift are recorded in audit/full-release-reconciliation-20261008/repository-drift.md. This DDL is an unexecuted design reference; the source-to-v2 migration and controlled-erasure SQL still require FRC-011/FRC-010 closure.
+The repository foundation at 6b625ef has accounts, sessions and a catalog-only migration. Its exact file/hash and drift are recorded in audit/full-release-reconciliation-20261008/repository-drift.md. This DDL is an unexecuted design reference; the source-to-v2 migration are specified below and remain unimplemented.
+
+## Exact deletion and immutable scope procedure
+
+case_version_id references an immutable document, never a mutable entity head. In maintenance, freeze writes; determine the requested document/asset set and all incoming references. The deletion preview names any dependent records that must also be removed, or reports conflict without deleting. Apply the selected closure in one DB transaction: SET LOCAL tangerine.maintenance_delete=on; remove caches/playback/leases/operation links, object_reference edges, object_node rows and affected entity_head rows in dependency order; delete actual document payloads; null/remove audit links/details; insert only the requested minimal tombstones with no personal payload or retained hash unless selected. The immutable guard permits DELETE only in maintenance, and never UPDATE of a historical payload. Delete orphaned media bytes after committed DB removal; a failure leaves a recorded orphan for retry. No unerasable hash-chain payload survives deletion. Incoming references outside the selected closure block that deletion apply, not ordinary LLM use. This is a specified transaction, not executed SQL evidence.

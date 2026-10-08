@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/connector-request.schema.json",
+  "title": "connector-request",
+  "type": "object",
+  "description": "Exact creation/submit content projection for connector. Response preserves the full stored record; server assigns envelope.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "source_id": {
+      "type": "string",
+      "description": "The exact vendor or corpus.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "mode": {
+      "type": "string",
+      "description": "The actual supported access path.",
+      "enum": [
+        "local_full_release",
+        "authorized_https_export",
+        "documented_private_api"
+      ]
+    },
+    "account_label": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "A nonsecret description of the entitled account.",
+          "maxLength": 300,
+          "minLength": 0
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "A nonsecret description of the entitled account."
+    },
+    "credential_ref": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The mounted secret reference.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The mounted secret reference."
+    },
+    "contract_asset_ids": {
+      "type": "array",
+      "description": "Actual authorization and interface documents.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "adapter_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "A shipped, reviewed adapter with a fixed wire contract.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "A shipped, reviewed adapter with a fixed wire contract."
+    },
+    "adapter_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The actual adapter implementation.",
+          "maxLength": 64,
+          "minLength": 64,
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The actual adapter implementation."
+    },
+    "allowed_hosts": {
+      "type": "array",
+      "description": "No wildcard or user-supplied arbitrary URL.",
+      "items": {
+        "type": "string",
+        "description": "An exact permitted HTTPS host.",
+        "maxLength": 253,
+        "minLength": 1
+      },
+      "minItems": 0,
+      "maxItems": 20,
+      "uniqueItems": true
+    },
+    "selected_use": {
+      "type": "array",
+      "description": "The distinct intended uses.",
+      "items": {
+        "type": "string",
+        "description": "The requested source use.",
+        "enum": [
+          "local_analysis",
+          "internal_training",
+          "commercial_evaluation",
+          "derivative_exercises",
+          "distribution",
+          "model_training",
+          "external_api_transfer",
+          "voice_use"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 8,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "source_id",
+    "mode",
+    "account_label",
+    "credential_ref",
+    "contract_asset_ids",
+    "adapter_id",
+    "adapter_sha256",
+    "allowed_hosts",
+    "selected_use"
+  ],
+  "additionalProperties": false
+}

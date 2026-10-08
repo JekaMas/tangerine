@@ -15,92 +15,92 @@ The system SHALL retain all nine imports and their original hashes, distinguishi
 - **WHEN** the authorized operation receives supported inputs or a violating input
 - **THEN** it SHALL compare every destination with its supplied SHA-256, and SHALL reject a modified import or a historical receipt presented as current
 
-### Requirement: SRC-02 Keep missing original contracts explicit
+### Requirement: SRC-02 Sole active complete namespace
 
-The system SHALL preserve the 122-category scope and original source bytes, track all supplied recovered and v2 draft contracts/prompts/policy/reference code, and identify remaining exact definitions, source rights and genuine evidence without inventing them. The six-stage candidate now includes linguistic audit; presence does not approve DEC-001.
+The project SHALL retain122original taxonomy IDs and immutable source bytes and resolve current contracts/prompts/policy to specification/v2, with supplied policies approved subject to simple local LLM-only workflows.
 
 #### Scenario: SRC-02 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL resolve a recovered original contract to authenticated provenance, and SHALL block semantic use when an ID or contract has no original source
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL resolve the active eight-stage bindings to actual schema/prompt files, and SHALL never run imported scripts or claim actual private bytes from a written contract
 
-### Requirement: APR-01 Protect restricted evidence
+### Requirement: APR-01 Label constructed versus real evidence
 
-The system SHALL require exact scoped approval for artificial linguistic cases and substitutes, and never manufacture human approvals or real corpus observations.
+The project SHALL permit labelled constructed positive/negative examples within approved scope without separate per-case approval; it SHALL distinguish them from actual participant/source/provider observations.
 
 #### Scenario: APR-01 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL run a separately approved restricted case within its scope, and SHALL refuse an unapproved artificial teacher answer or changed substitute
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL use a clearly labelled deterministic constructed case, and SHALL never present artificial data as a real corpus record or actual provider success
 
-### Requirement: DEC-001 Resolve linguistic_audit output contract
+### Requirement: DEC-001 Linguistic audit contract
 
-The system SHALL require a separately scoped real owner decision for DEC-001: Approve the exact prompt and wire contract before that role is implemented. While unresolved: Block this role. Do not repurpose a schema that allows invented human evidence..
+The supplied policy for DEC-001 SHALL be used as approved by the actual user, with exact definition in specification/v2/prompts/linguistic-audit-v1.txt and its input/output schemas. Current LLM-only review and normal-use simplification SHALL govern its application; no new human or owner-signature gate is required.
 
 #### Scenario: DEC-001 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL admit only the exact approved DEC-001 property and matching evidence, and SHALL refuse an unapproved, changed, expired or borrowed DEC-001 decision
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL use the approved written definition with its actual population/method, and SHALL never claim absent empirical observations or source rights from that policy approval
 
-### Requirement: DEC-002 Resolve Gold coverage counting
+### Requirement: DEC-002 Gold counting
 
-The system SHALL require a separately scoped real owner decision for DEC-002: Approve the exact pairing and counting rule for negative-control leaves and multi-target audio assets. While unresolved: Retain the planned numbers. Do not claim complete coverage until the counting rule is approved..
+The supplied policy for DEC-002 SHALL be used as approved by the actual user, with exact definition in specification/v2/docs/review-and-gold.md and splits-and-validation.md. Current LLM-only review and normal-use simplification SHALL govern its application; no new human or owner-signature gate is required.
 
 #### Scenario: DEC-002 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL admit only the exact approved DEC-002 property and matching evidence, and SHALL refuse an unapproved, changed, expired or borrowed DEC-002 decision
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL use the approved written definition with its actual population/method, and SHALL never claim absent empirical observations or source rights from that policy approval
 
-### Requirement: DEC-003 Resolve Category alias map
+### Requirement: DEC-003 Category synonyms
 
-The system SHALL require a separately scoped real owner decision for DEC-003: Approve the exact alias entries and their version before synonym-dependent category credit. While unresolved: Do not invent aliases. Correct detection can remain separate from unresolved category credit..
+The supplied policy for DEC-003 SHALL be used as approved by the actual user, with exact definition in specification/v2/domain/category-aliases.v1.yaml and docs/math-and-judgments.md. Current LLM-only review and normal-use simplification SHALL govern its application; no new human or owner-signature gate is required.
 
 #### Scenario: DEC-003 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL admit only the exact approved DEC-003 property and matching evidence, and SHALL refuse an unapproved, changed, expired or borrowed DEC-003 decision
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL use the approved written definition with its actual population/method, and SHALL never claim absent empirical observations or source rights from that policy approval
 
-### Requirement: DEC-004 Resolve Hard render constraints
+### Requirement: DEC-004 Typed rendering
 
-The system SHALL require a separately scoped real owner decision for DEC-004: Approve a typed capability catalog and conflict rules for each added constraint. While unresolved: Reject an unregistered hard constraint. Do not guess its meaning or weaken its target..
+The supplied policy for DEC-004 SHALL be used as approved by the actual user, with exact definition in specification/v2/contracts/render-plan.schema.json and docs/audio-methods.md. Current LLM-only review and normal-use simplification SHALL govern its application; no new human or owner-signature gate is required.
 
 #### Scenario: DEC-004 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL admit only the exact approved DEC-004 property and matching evidence, and SHALL refuse an unapproved, changed, expired or borrowed DEC-004 decision
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL use the approved written definition with its actual population/method, and SHALL never claim absent empirical observations or source rights from that policy approval
 
-### Requirement: DEC-005 Resolve Speech tokenization and pause measurement
+### Requirement: DEC-005 Speech tokenization
 
-The system SHALL require a separately scoped real owner decision for DEC-005: Approve the exact tokenizer and interval method before cross-case acoustic comparisons. While unresolved: Do not claim comparable rate or density values without the method version..
+The supplied policy for DEC-005 SHALL be used as approved by the actual user, with exact definition in specification/v2/docs/audio-methods.md lexical-v1. Current LLM-only review and normal-use simplification SHALL govern its application; no new human or owner-signature gate is required.
 
 #### Scenario: DEC-005 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL admit only the exact approved DEC-005 property and matching evidence, and SHALL refuse an unapproved, changed, expired or borrowed DEC-005 decision
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL use the approved written definition with its actual population/method, and SHALL never claim absent empirical observations or source rights from that policy approval
 
-### Requirement: DEC-006 Resolve Prosody feature methods and units
+### Requirement: DEC-006 Prosody methods
 
-The system SHALL require a separately scoped real owner decision for DEC-006: Approve the exact per-feature method, unit, and measurement boundary. While unresolved: Require observed human evidence for unsupported targets. Do not invent automatic numeric measurements..
+The supplied policy for DEC-006 SHALL be used as approved by the actual user, with exact definition in specification/v2/domain/audio-methods.yaml and docs/audio-methods.md. Current LLM-only review and normal-use simplification SHALL govern its application; no new human or owner-signature gate is required.
 
 #### Scenario: DEC-006 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL admit only the exact approved DEC-006 property and matching evidence, and SHALL refuse an unapproved, changed, expired or borrowed DEC-006 decision
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL use the approved written definition with its actual population/method, and SHALL never claim absent empirical observations or source rights from that policy approval
 
-### Requirement: DEC-007 Resolve Requested accent and full acoustic generation
+### Requirement: DEC-007 Full acoustic capability reporting
 
-The system SHALL require a separately scoped real owner decision for DEC-007: Obtain real capability evidence for each required case. A new provider or substitute needs its own owner decision. While unresolved: Fail an unrealized target. Preserve the full domain instead of silently removing the category..
+The supplied policy for DEC-007 SHALL be used as approved by the actual user, with exact definition in specification/v2/domain/target-capabilities.yaml and docs/audio-methods.md. Current LLM-only review and normal-use simplification SHALL govern its application; no new human or owner-signature gate is required.
 
 #### Scenario: DEC-007 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL admit only the exact approved DEC-007 property and matching evidence, and SHALL refuse an unapproved, changed, expired or borrowed DEC-007 decision
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL use the approved written definition with its actual population/method, and SHALL never claim absent empirical observations or source rights from that policy approval
 
-### Requirement: DEC-008 Resolve Existing numerical acceptance policy
+### Requirement: DEC-008 Numerical report policy
 
-The system SHALL require a separately scoped real owner decision for DEC-008: Approve each changed numerical property explicitly. Measure the fixed policy on real held-out data before release. While unresolved: Describe these values as inherited policy candidates, not validated teaching norms..
+The supplied policy for DEC-008 SHALL be used as approved by the actual user, with exact definition in specification/v2/domain/validation-policy.yaml and docs/splits-and-validation.md. Current LLM-only review and normal-use simplification SHALL govern its application; no new human or owner-signature gate is required.
 
 #### Scenario: DEC-008 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL admit only the exact approved DEC-008 property and matching evidence, and SHALL refuse an unapproved, changed, expired or borrowed DEC-008 decision
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL use the approved written definition with its actual population/method, and SHALL never claim absent empirical observations or source rights from that policy approval

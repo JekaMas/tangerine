@@ -28,20 +28,20 @@ Write the bytes under that key. Finish a multipart upload before further checks.
 Read the complete stored object and calculate its size and SHA-256.
 A length or digest mismatch marks the reservation failed. It cannot become linked.
 In one database transaction, lock the reservation and owning version.
-Make sure that the operation, expected revision, current grant, and digest match.
+Make sure that the operation, expected revision and digest match.
 Set the asset to `linked`, add exact ownership references, update the owner, and append the audit event.
-Media delivery requires the linked state and valid current-use grants.
+Media delivery requires the linked state and available actual bytes; source-use notices remain visible.
 The audio hash identifies final WAV bytes, not an upstream stream or a provider promise.
 
 | Crash boundary | Recovery on an explicit recovery request |
 |---|---|
-| Reservation only | Show an incomplete upload. Erase it only under an approved cleanup plan. |
+| Reservation only | Show an incomplete upload. Erase it only under an explicit local cleanup plan. |
 | Partial upload | Abort its exact multipart upload. Retain the failed operation receipt. |
 | Bytes exist, no verified digest | Read and hash those same bytes. Do not call synthesis again. |
 | Verified bytes, no database link | Reapply all current guards and attempt the link once. |
 | Link committed, response lost | Return the committed identity through idempotency lookup. |
 | Owner revision changed | Keep the asset unavailable as an orphan. Do not attach it to the new version. |
-| Permission revoked | Block transfer and linking. Apply the declared deletion or retention disposition. |
+| Source notice changed | Report the changed notice; explicit local cleanup follows the selected plan. |
 
 Garbage collection is an explicit maintenance operation. It presents the exact asset IDs and bytes before confirmation.
 Referenced assets are ineligible. Backup manifests and immutable history count as references until their retention permits removal.
@@ -52,7 +52,7 @@ Submission first commits the exact answer, answer digest, case version, final au
 The attempt's start time comes from the database transaction that creates the attempt.
 The evaluation lease stores a random token, an increasing epoch, its owner request, and a 300-second expiry.
 The end-to-end evaluation deadline is 270 seconds from lease acquisition.
-Every stage write compares attempt revision, token, epoch, deadline, and current case/grant status in one transaction.
+Every stage write compares attempt revision, token, epoch, deadline and current case status in one transaction.
 A stale writer cannot publish a result even if its provider call returns successfully.
 No transaction remains open while an external call executes.
 
@@ -64,10 +64,10 @@ A profile change creates a separate explicit reconsideration operation, not a re
 ## Stage reuse
 
 Reuse only a completed stage whose full cache identity matches.
-The identity includes answer, case, audio, stage input, provider profile, model, prompts, schemas, invariant version, and current permission epoch.
+Store source-use restrictions/revocation notices as metadata; normal operations use local settings, with no permission-epoch or grant-closure service. Actual source terms and unknown observations remain visible.
 Reapply local semantic checks to the stored output before reuse.
-Do not reuse a partial, refused, repaired, or score-relevant disputed response.
-A mapper/auditor disagreement is not a transient error. Do not retry until a favorable result appears.
+Do not reuse partial/refused or genuinely disputed output; a successfully repaired validated output is reusable under its exact binding.
+Mapping audit is optional; disagreements are diagnostic. Genuine score-relevant uncertainty may use one LLM adjudication, never retries selected for favorable grades.
 
 ## Deadlines and transport attempts
 
@@ -76,7 +76,7 @@ The request retains at least five seconds for persistence and return.
 The effective stage timeout is the lesser of its stage cap and remaining request time minus that reserve.
 There is at most one additional transport attempt across the whole evaluation request.
 Retry only a connection failure before response bytes, HTTP 408, HTTP 429, or HTTP 502/503/504.
-Do not retry authentication, schema, refusal, incomplete output, semantic disagreement, or other HTTP failures.
+Retain refusal as refusal; allow one output repair for malformed/incomplete replies within the existing deadline, as defined in provider-contracts.md.
 Use Retry-After only when it parses as a nonnegative delay and fits the remaining budget.
 Without a usable Retry-After, wait one second. If the delay and minimum five-second call budget do not fit, stop.
 Count each call in the usage ledger, including failed or uncertain-charge calls.
@@ -91,11 +91,11 @@ The API timeout is 285 seconds, the proxy timeout 300 seconds, and the browser t
 ## Input capacity
 
 Do not truncate the answer, key, correction alternatives, evidence, or role instructions to fit a provider.
-Use the shipped tokenizer for a documented model. For an unknown tokenizer, count UTF-8 bytes for all trusted instructions, serialized user DTOs, wire schema and protocol framing as a conservative local bound; include the reserved output budget. A profile without a documented compatible capacity/counting rule remains unqualified.
+Use the shipped tokenizer for a documented model. For an unknown tokenizer, count UTF-8 bytes for all trusted instructions, serialized user DTOs, wire schema and protocol framing as a conservative local bound; include the reserved output budget. An unknown tokenizer uses the configured conservative bound; this is an input-size setting, not a separate qualification prerequisite.
 The profile must declare a context capacity and an output reservation.
 If input bound plus output reservation exceeds capacity, return `INPUT_CAPACITY` before the call.
 An output that reaches a provider cap without complete status returns `OUTPUT_INCOMPLETE`.
-No JSON repair or unrequested summary can replace the missing material.
+Provider output normalization and one same-profile repair request are permitted as defined in provider-contracts.md; omitted source answer/evidence is never fabricated.
 
 ## Hash projections
 

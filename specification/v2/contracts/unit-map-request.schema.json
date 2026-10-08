@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/unit-map-request.schema.json",
+  "title": "unit-map-request",
+  "type": "object",
+  "description": "Exact creation/submit content projection for unit_map. Response preserves the full stored record; server assigns envelope.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "old_case_version_id": {
+      "type": "string",
+      "description": "The former key version.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "new_case_version_id": {
+      "type": "string",
+      "description": "The corrected key version.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "audio_sha256": {
+      "type": "string",
+      "description": "The same recording used by both keys.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "relations": {
+      "type": "array",
+      "description": "All old and new units must be covered once.",
+      "items": {
+        "type": "object",
+        "description": "An explicit version correspondence.",
+        "properties": {
+          "old_unit_ids": {
+            "type": "array",
+            "description": "Old units, empty for a newly established event.",
+            "items": {
+              "type": "string",
+              "description": "An existing identifier.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 100000,
+            "uniqueItems": true
+          },
+          "new_unit_ids": {
+            "type": "array",
+            "description": "New units, empty for a removed event.",
+            "items": {
+              "type": "string",
+              "description": "An existing identifier.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 100000,
+            "uniqueItems": true
+          },
+          "kind": {
+            "type": "string",
+            "description": "The reviewed relation.",
+            "enum": [
+              "same",
+              "split",
+              "merge",
+              "added",
+              "removed"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "description": "Evidence for this relation.",
+            "maxLength": 5000,
+            "minLength": 1
+          }
+        },
+        "required": [
+          "old_unit_ids",
+          "new_unit_ids",
+          "kind",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 2000
+    },
+    "review_decision_ids": {
+      "type": "array",
+      "description": "Actual approvals of the correspondence.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "old_case_version_id",
+    "new_case_version_id",
+    "audio_sha256",
+    "relations",
+    "review_decision_ids"
+  ],
+  "additionalProperties": false
+}

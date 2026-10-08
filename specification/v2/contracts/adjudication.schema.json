@@ -3,7 +3,7 @@
   "$id": "https://tangerine.invalid/schemas/adjudication.schema.json",
   "title": "adjudication",
   "type": "object",
-  "description": "A human resolution. It does not fabricate the two required final approvals.",
+  "description": "Current LLM processing record or lossless imported source record; no human peer review prerequisite.",
   "properties": {
     "id": {
       "type": "string",
@@ -27,11 +27,19 @@
       "pattern": "^[a-f0-9]{64}$"
     },
     "adjudicator_person_id": {
-      "type": "string",
-      "description": "A genuine third qualified person.",
-      "maxLength": 128,
-      "minLength": 1,
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Native imported adjudicator metadata; null for the current LLM adjudication.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Legacy imported value; null for LLM processing."
     },
     "qualification_ids": {
       "type": "array",
@@ -110,6 +118,34 @@
       "maxLength": 35,
       "minLength": 20,
       "format": "date-time"
+    },
+    "origin": {
+      "type": "string",
+      "enum": [
+        "llm",
+        "source_import"
+      ],
+      "description": "Actual label origin; never a claim of new human peer review."
+    },
+    "provider_receipt_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "uniqueItems": true
+    },
+    "input_modality": {
+      "type": "string",
+      "enum": [
+        "text",
+        "text_with_speech_evidence",
+        "audio",
+        "native_annotation"
+      ],
+      "description": "Actual input modality; transcript-only models never claim direct hearing."
     }
   },
   "required": [
@@ -123,7 +159,37 @@
     "evidence_ids",
     "resolution",
     "reason",
-    "created_at"
+    "created_at",
+    "origin",
+    "provider_receipt_ids",
+    "input_modality"
   ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "origin": {
+            "const": "llm"
+          }
+        },
+        "required": [
+          "origin"
+        ]
+      },
+      "then": {
+        "properties": {
+          "adjudicator_person_id": {
+            "const": null
+          },
+          "qualification_ids": {
+            "maxItems": 0
+          },
+          "provider_receipt_ids": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
 }

@@ -33,14 +33,14 @@ The system SHALL read published exercises from PostgreSQL and display an empty l
 - **WHEN** the authorized operation receives supported inputs or a violating input
 - **THEN** it SHALL read an actually published exercise from the database, and SHALL show an empty state for zero rows and never synthesize a demonstration
 
-### Requirement: RUN-04 Open one local workspace without accounts
+### Requirement: RUN-04 One local workspace without accounts
 
-The system SHALL open one installation-owned local workspace without accounts, passwords, login, logout, session cookies, access roles or tenant configuration. Teaching, preparation and review are activities available to the local operator. docs/simple-local-product.md governs the trust boundary; lifecycle and genuine review guards remain mandatory.
+The system SHALL provide one local workspace without accounts, login, roles, tenant configuration or human reviewer qualification. LLMs SHALL check answers/reviews/disputes.
 
 #### Scenario: RUN-04 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL open the library and saved local data without a login or session, and SHALL reject configuration that enables unsupported remote exposure rather than introducing account or tenant setup
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL start locally with operation-dependent keys and no reviewer setup, and SHALL never create a mandatory human identity form
 
 ### Requirement: RUN-05 Enforce same-origin access
 
@@ -85,18 +85,16 @@ The GitHub source project SHALL supply the simple local launcher, key-only setup
 - **WHEN** the user invokes that operation.
 - **THEN** The interface identifies the missing operation-specific configuration without a provider call, fallback, invented result or blocking unrelated stored playback.
 
-### Requirement: RUN-09 Use activity views with honest disclosure boundaries
+### Requirement: RUN-09 Simple activity views
 
-The interface SHALL offer Library, Prepare, Review and Results in one local workspace, without an admin console, role switcher or public API setup. Teacher and blind-review projections SHALL withhold keys at their specified stages; the local operator can access authoring separately, so no adversarial role isolation is claimed. Review decisions SHALL retain actual person/qualification/independence evidence without reviewer accounts.
+The system SHALL provide Library, Prepare, machine Review, Results, Sources and Settings with honest pre-submit key disclosure and no human-review ceremony. Imported annotations SHALL remain visible as source data.
 
 #### Scenario: RUN-09 ordinary local activities
 
-- **GIVEN** A local operator and genuine independently supplied reviewer observations.
-- **WHEN** the operator prepares, reviews and opens an eligible published exercise.
-- **THEN** The activities require no account or role assignment and preserve distinct reviewer evidence, final hashes and teacher-view key omission.
+- **WHEN** the supported local action completes
+- **THEN** it SHALL use all activities in one local installation
 
 #### Scenario: RUN-09 disclosure or false reviewer evidence
 
-- **GIVEN** A teacher payload includes a pre-submit key or publication uses duplicate-person or fabricated approval evidence.
-- **WHEN** projection and publication guards are checked.
-- **THEN** The key-bearing teacher payload fails validation and the invalid review cannot publish; local naming alone cannot prove external independence.
+- **WHEN** its stated failure or missing-evidence condition occurs
+- **THEN** it SHALL never relabel imported persons as new machine-created humans

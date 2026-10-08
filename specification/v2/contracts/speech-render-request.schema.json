@@ -1,0 +1,368 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/speech-render-request.schema.json",
+  "title": "speech-render-request",
+  "type": "object",
+  "description": "Exact creation/submit content projection for speech_render. Response preserves the full stored record; server assigns envelope.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "case_version_id": {
+      "type": "string",
+      "description": "The candidate version.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "blueprint_sha256": {
+      "type": "string",
+      "description": "The blueprint digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "provider_profile_id": {
+      "type": "string",
+      "description": "The configured synthesis profile.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "profile_sha256": {
+      "type": "string",
+      "description": "Its frozen digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "required_capabilities": {
+      "type": "array",
+      "description": "All hard capabilities.",
+      "items": {
+        "type": "string",
+        "description": "A capability.",
+        "enum": [
+          "plain_text",
+          "ipa",
+          "prosody",
+          "timed_pause",
+          "multi_turn",
+          "voice_identity",
+          "locale",
+          "accent_features",
+          "word_stress",
+          "phrase_stress",
+          "intonation",
+          "speech_rate"
+        ]
+      },
+      "minItems": 0,
+      "maxItems": 12,
+      "uniqueItems": true
+    },
+    "turns": {
+      "type": "array",
+      "description": "Every utterance in order.",
+      "items": {
+        "type": "object",
+        "description": "One ordered turn. No remote audio or arbitrary XML is allowed.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The render turn.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "utterance_id": {
+            "type": "string",
+            "description": "Its exact source utterance.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "speaker_id": {
+            "type": "string",
+            "description": "The blueprint speaker.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "voice_id": {
+            "type": "string",
+            "description": "An approved voice from the frozen provider profile.",
+            "maxLength": 100,
+            "minLength": 1
+          },
+          "locale": {
+            "type": "string",
+            "description": "The exact voice locale.",
+            "enum": [
+              "en-US",
+              "en-GB"
+            ]
+          },
+          "operations": {
+            "type": "array",
+            "description": "Ordered non-overlapping operations.",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "description": "Literal speech.",
+                  "properties": {
+                    "kind": {
+                      "const": "text",
+                      "description": "Literal surface text."
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "Exact surface text. Do not correct intentional errors.",
+                      "maxLength": 10000,
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "description": "IPA realization. This is not evidence of the resulting sound.",
+                  "properties": {
+                    "kind": {
+                      "const": "phoneme",
+                      "description": "An explicit phoneme operation."
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "The original spelling.",
+                      "maxLength": 2000,
+                      "minLength": 1
+                    },
+                    "ipa": {
+                      "type": "string",
+                      "description": "The intended IPA sequence.",
+                      "maxLength": 2000,
+                      "minLength": 1
+                    },
+                    "target_unit_id": {
+                      "type": "string",
+                      "description": "The target unit or opportunity.",
+                      "maxLength": 128,
+                      "minLength": 1,
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "text",
+                    "ipa",
+                    "target_unit_id"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "description": "An explicit pause.",
+                  "properties": {
+                    "kind": {
+                      "const": "pause",
+                      "description": "A timed silent interval."
+                    },
+                    "duration_ms": {
+                      "type": "integer",
+                      "description": "The requested pause in milliseconds.",
+                      "minimum": 1,
+                      "maximum": 10000
+                    },
+                    "target_unit_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "description": "The target unit, if the pause is assessed.",
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "The target unit, if the pause is assessed."
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "duration_ms",
+                    "target_unit_id"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "description": "A single non-nested scope. At least one control must be supplied.",
+                  "properties": {
+                    "kind": {
+                      "const": "prosody",
+                      "description": "A scoped prosody operation."
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "The exact text in this scope.",
+                      "maxLength": 10000,
+                      "minLength": 1
+                    },
+                    "rate_percent": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "description": "Relative change from the voice rate.",
+                          "minimum": -50,
+                          "maximum": 100
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Relative change from the voice rate."
+                    },
+                    "pitch_semitones": {
+                      "anyOf": [
+                        {
+                          "type": "number",
+                          "description": "Relative pitch in semitones.",
+                          "minimum": -12,
+                          "maximum": 12
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Relative pitch in semitones."
+                    },
+                    "volume_db": {
+                      "anyOf": [
+                        {
+                          "type": "number",
+                          "description": "Relative volume in decibels.",
+                          "minimum": -12,
+                          "maximum": 6
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Relative volume in decibels."
+                    },
+                    "contour": {
+                      "type": "array",
+                      "description": "Strictly increasing contour positions.",
+                      "items": {
+                        "type": "object",
+                        "description": "A contour point.",
+                        "properties": {
+                          "position_percent": {
+                            "type": "integer",
+                            "description": "Position in the scope.",
+                            "minimum": 0,
+                            "maximum": 100
+                          },
+                          "pitch_semitones": {
+                            "type": "number",
+                            "description": "Relative pitch.",
+                            "minimum": -12,
+                            "maximum": 12
+                          }
+                        },
+                        "required": [
+                          "position_percent",
+                          "pitch_semitones"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "minItems": 0,
+                      "maxItems": 20
+                    },
+                    "target_unit_ids": {
+                      "type": "array",
+                      "description": "The affected existing units.",
+                      "items": {
+                        "type": "string",
+                        "description": "An existing identifier.",
+                        "maxLength": 128,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                      },
+                      "minItems": 0,
+                      "maxItems": 100000,
+                      "uniqueItems": true
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "text",
+                    "rate_percent",
+                    "pitch_semitones",
+                    "volume_db",
+                    "contour",
+                    "target_unit_ids"
+                  ],
+                  "additionalProperties": false
+                }
+              ],
+              "description": "Exactly one supported operation."
+            },
+            "minItems": 1,
+            "maxItems": 1000
+          },
+          "gap_after_ms": {
+            "type": "integer",
+            "description": "A separate gap after this turn.",
+            "minimum": 0,
+            "maximum": 10000
+          }
+        },
+        "required": [
+          "id",
+          "utterance_id",
+          "speaker_id",
+          "voice_id",
+          "locale",
+          "operations",
+          "gap_after_ms"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 1000
+    },
+    "audio_format": {
+      "const": "riff_pcm_s16le_24000_mono",
+      "description": "The exact master and delivery format."
+    },
+    "plan_sha256": {
+      "type": "string",
+      "description": "The canonical plan digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "schema_version",
+    "case_version_id",
+    "blueprint_sha256",
+    "provider_profile_id",
+    "profile_sha256",
+    "required_capabilities",
+    "turns",
+    "audio_format",
+    "plan_sha256"
+  ],
+  "additionalProperties": false
+}

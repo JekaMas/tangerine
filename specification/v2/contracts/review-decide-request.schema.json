@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/review-decide-request.schema.json",
+  "title": "review-decide-request",
+  "type": "object",
+  "description": "Exact creation/submit content projection for review_decide. Response preserves the full stored record; server assigns envelope.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "review_context_id": {
+      "type": "string",
+      "description": "The exact review context.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "case_version_id": {
+      "type": "string",
+      "description": "The reviewed version.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "case_sha256": {
+      "type": "string",
+      "description": "The reviewed key and context digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "audio_sha256": {
+      "type": "string",
+      "description": "The final delivery digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "schema_version",
+    "review_context_id",
+    "case_version_id",
+    "case_sha256",
+    "audio_sha256"
+  ],
+  "additionalProperties": false
+}

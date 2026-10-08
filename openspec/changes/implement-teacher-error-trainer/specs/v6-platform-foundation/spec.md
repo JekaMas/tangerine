@@ -2,31 +2,33 @@
 
 ## ADDED Requirements
 
-### Requirement: PLAT-01 Local provenance and audit
-The application MUST use one local workspace without tenant or access-role authorization. State-changing operations MUST commit their audit and exact case/version/source evidence together. Human-review records MUST identify genuine people and qualifications without requiring accounts. Model output MUST NOT satisfy a human-review guard or create an approval. docs/simple-local-product.md defines the current scope.
+### Requirement: PLAT-01 Local data provenance
+
+The application SHALL commit content/state references atomically in one workspace. LLM review records SHALL name actual receipts; person/qualification/approval records SHALL be imported metadata rather than required new human workflow.
 
 #### Scenario: PLAT-01 Permitted behavior
-- **GIVEN** The operator records a genuine qualified reviewer decision.
-- **WHEN** The API commits the review.
-- **THEN** The audit links the recorded reviewer evidence to the case version.
+
+- **WHEN** the supported local action completes
+- **THEN** it SHALL save actual machine review with no person identity
 
 #### Scenario: PLAT-01 Boundary behavior
-- **GIVEN** A review references another case version or presents a model response as a human decision.
-- **WHEN** The application validates evidence ownership and review guards.
-- **THEN** The application rejects the mutation and preserves the case and audit history.
 
-### Requirement: PLAT-02 Costs and failures
-The platform MUST limit requests and record provider usage. Provider failures MUST preserve saved attempts. Quotas MUST NOT prevent playback of an existing published local case.
+- **WHEN** its stated failure or missing-evidence condition occurs
+- **THEN** it SHALL never manufacture source annotations or human approval
+
+### Requirement: PLAT-02 Optional budgets and saved failures
+
+The platform SHALL record usage/cost or explicit unknown, with one paid foreground operation and optional disabled-by-default daily/monthly caps. All paid flows SHALL use the same policy.
 
 #### Scenario: PLAT-02 Permitted behavior
-- **GIVEN** The local generation budget is exhausted.
-- **WHEN** A teacher opens an existing published exercise.
-- **THEN** The teacher can still play its stored audio.
+
+- **WHEN** the supported local action completes
+- **THEN** it SHALL allow unknown-price local calls when caps are disabled and retain usage
 
 #### Scenario: PLAT-02 Boundary behavior
-- **GIVEN** A provider request reaches its deadline.
-- **WHEN** The adapter receives no valid result.
-- **THEN** The attempt remains recoverable without invented output.
+
+- **WHEN** its stated failure or missing-evidence condition occurs
+- **THEN** it SHALL never require per-call budget approval or block stored playback on cloud quota
 
 ### Requirement: PLAT-03 Truthful release records
 A release record MUST separate proposed behavior from measured results. Unperformed checks MUST use `not_run` or `blocked`. An unmet evidence requirement MUST NOT receive PASS.

@@ -1,11 +1,12 @@
-# Data dictionary
+# Complete data dictionary
 
-All active draft fields are indexed in language/field-index.json with exact pointers and hashes. domain/persistence-map.json declares storage classes. Each description must be read with its type/nullability/constraints and docs/cross-field-invariants.md. These are definitions, not source conformance or persisted application evidence. FRC-006/FRC-010/FRC-018 remain ownership, persistence and semantic projection gaps.
+Every active schema field/constraint/reference is indexed in language/field-index.json and domain/persistence-map.json. Request projections preserve original full-response data fields and assign local envelopes/counts/receipts on the server. LLM origin/modality/receipt fields replace human prerequisites while retaining native person/qualification data. Read each field with its closed canonical schema and owning cross-field/source/math/runtime contract. Metadata coverage is not application or linguistic evidence.
 
 | Record | Version | Storage | Fields |
 |---|---|---|---:|
 | accept-candidate-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
-| adjudication | schema hash | document.payload | 11 |
+| adjudicate-request | schema hash | Derived DTO or actual operation/stage input/output receipt | 5 |
+| adjudication | schema hash | document.payload | 18 |
 | answer-write | schema hash | document.payload | 2 |
 | approval-record | 1.0.0 | document.payload | 12 |
 | asset-reservation-request | schema hash | derived DTO or actual operation input/output receipt | 8 |
@@ -18,8 +19,9 @@ All active draft fields are indexed in language/field-index.json with exact poin
 | auxiliary-results | 2.0.0 | document.payload | 139 |
 | backup-manifest | 2.0.0 | document.payload | 25 |
 | backup-request | schema hash | derived DTO or actual operation input/output receipt | 2 |
-| blind-annotation | 2.0.0 | document.payload | 21 |
+| blind-annotation | 2.0.0 | document.payload | 27 |
 | blind-review-view | schema hash | Derived view; durable source record remains private | 6 |
+| blind-submit-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 3 |
 | blueprint-write | schema hash | document.payload | 31 |
 | blueprint | 2.0.0 | document.payload | 33 |
 | cancel-request | schema hash | derived DTO or actual operation input/output receipt | 1 |
@@ -30,13 +32,18 @@ All active draft fields are indexed in language/field-index.json with exact poin
 | claim-extraction | 2.0.0 | document.payload | 46 |
 | common | schema hash | derived DTO or actual operation input/output receipt | 10 |
 | configuration-view | schema hash | derived DTO or actual operation input/output receipt | 9 |
-| configuration | 2.0.0 | document.payload | 28 |
+| configuration | 2.0.0 | document.payload | 31 |
 | connector-configuration | 2.0.0 | document.payload | 12 |
+| connector-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 10 |
 | corpus-record | 1.0.0 | document.payload | 26 |
+| create-dispute-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 8 |
+| create-person-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 8 |
+| delete-plan-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 7 |
 | deletion-request | 2.0.0 | derived DTO or actual operation input/output receipt | 14 |
+| difficulty-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 6 |
 | difficulty-study | 2.0.0 | document.payload | 14 |
 | disclosure-record | 2.0.0 | document.payload | 8 |
-| dispute | 2.0.0 | document.payload | 18 |
+| dispute | 2.0.0 | document.payload | 21 |
 | effective-binding | 2.0.0 | document.payload | 22 |
 | error-opportunity | schema hash | document.payload | 11 |
 | error-response | schema hash | derived DTO or actual operation input/output receipt | 8 |
@@ -48,12 +55,14 @@ All active draft fields are indexed in language/field-index.json with exact poin
 | feedback-input | 2.0.0 | derived DTO or actual operation input/output receipt | 10 |
 | feedback-output | 2.0.0 | derived DTO or actual operation input/output receipt | 11 |
 | feedback | 2.0.0 | document.payload | 13 |
+| format-binding-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 13 |
 | generation-input | 2.0.0 | derived DTO or actual operation input/output receipt | 16 |
 | generation-request | schema hash | derived DTO or actual operation input/output receipt | 4 |
+| grant-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 15 |
 | ground-truth | 2.0.0 | document.payload | 118 |
 | health | schema hash | derived DTO or actual operation input/output receipt | 6 |
 | holdout-report | 2.0.0 | document.payload | 18 |
-| import-report | 2.0.0 | document.payload | 23 |
+| import-report | 2.0.0 | document.payload | 26 |
 | import-request | schema hash | derived DTO or actual operation input/output receipt | 4 |
 | judgment-issue | 2.0.0 | document.payload | 8 |
 | key-disclosure | schema hash | derived DTO or actual operation input/output receipt | 3 |
@@ -62,6 +71,8 @@ All active draft fields are indexed in language/field-index.json with exact poin
 | linguistic-audit-input | 2.0.0 | derived DTO or actual operation input/output receipt | 8 |
 | linguistic-audit | 2.0.0 | document.payload | 16 |
 | llm-profile | schema hash | Derived projection/configuration member; not an independent evidence document | 14 |
+| llm-review-input | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 13 |
+| llm-review-output | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 12 |
 | maintenance-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | mapping-input | 2.0.0 | derived DTO or actual operation input/output receipt | 12 |
 | measure-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
@@ -70,36 +81,49 @@ All active draft fields are indexed in language/field-index.json with exact poin
 | operation-status | schema hash | derived DTO or actual operation input/output receipt | 10 |
 | permission-grant | 2.0.0 | document.payload | 17 |
 | person | 2.0.0 | document.payload | 9 |
+| play-event-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 8 |
 | playback-event | 2.0.0 | document.payload | 10 |
 | prepare-view | schema hash | derived DTO or actual operation input/output receipt | 6 |
 | provider-receipt | 2.0.0 | document.payload | 22 |
+| put-config-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 29 |
+| qualification-report-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 5 |
+| qualification-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 11 |
 | qualification | 2.0.0 | document.payload | 12 |
+| rationale-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 9 |
 | rationale | 2.0.0 | document.payload | 11 |
 | raw-record | 2.0.0 | document.payload | 13 |
 | reconsider-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | render-constraint | schema hash | document.payload | 11 |
 | render-plan | 2.0.0 | document.payload | 35 |
 | render-request | schema hash | derived DTO or actual operation input/output receipt | 2 |
+| resolve-dispute-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 8 |
 | restore-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | result-envelope | 2.0.0 | document.payload | 11 |
 | result-revision | 2.0.0 | document.payload | 11 |
 | retry-request | schema hash | derived DTO or actual operation input/output receipt | 2 |
-| review-context | 2.0.0 | document.payload | 12 |
-| review-decision | 2.0.0 | document.payload | 20 |
+| review-context | 2.0.0 | document.payload | 19 |
+| review-decide-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 5 |
+| review-decision | 2.0.0 | document.payload | 26 |
 | score-result | 2.0.0 | document.payload | 406 |
 | scoring-input | schema hash | derived DTO or actual operation input/output receipt | 28 |
-| source-format-binding | 2.0.0 | document.payload | 16 |
+| source-format-binding | 2.0.0 | document.payload | 19 |
+| source-release-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 20 |
 | source-release | 2.0.0 | document.payload | 26 |
-| source-status | schema hash | document.payload | 7 |
+| source-status | schema hash | document.payload | 10 |
+| speech-render-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 34 |
 | speech-render-result | schema hash | document.payload | 10 |
 | split-manifest | 2.0.0 | document.payload | 17 |
+| split-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 15 |
 | stage-cache | 2.0.0 | document.payload | 15 |
+| start-review-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 3 |
 | taxonomy-context | schema hash | derived DTO or actual operation input/output receipt | 13 |
-| teacher-gold | 2.0.0 | document.payload | 17 |
+| teacher-gold-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 18 |
+| teacher-gold | 2.0.0 | document.payload | 24 |
 | teacher-key | 2.0.0 | Derived view; durable source record remains private | 113 |
 | teacher-rationale | schema hash | Derived projection/configuration member; not an independent evidence document | 6 |
 | teacher-start-view | schema hash | derived DTO or actual operation input/output receipt | 11 |
 | transformation | 2.0.0 | document.payload | 12 |
 | transition-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | unit-correspondence | 2.0.0 | document.payload | 11 |
+| unit-map-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 10 |
 | verification-report | 1.0.0 | document.payload | 26 |

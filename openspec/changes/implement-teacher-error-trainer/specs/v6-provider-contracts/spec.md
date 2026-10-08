@@ -3,7 +3,7 @@
 ## ADDED Requirements
 
 ### Requirement: PROV-01 Named providers
-The application MUST use an explicitly selected active profile from `domain/providers.v1.yaml` or the versioned configurable registry described in `docs/llm-configuration.md`. The profile MUST name the service, model, role, and request format. A missing key or unavailable profile MUST stop that operation.
+The application MUST use an explicitly selected active profile from `specification/v2/domain/providers.v1.yaml` or the versioned configurable registry described in `specification/v2/docs/llm-configuration.md`. The profile MUST name the service, model, role, and request format. A missing key or unavailable profile MUST stop that operation.
 
 #### Scenario: PROV-01 Permitted behavior
 - **GIVEN** An active profile has real credentials.
@@ -28,15 +28,16 @@ The adapter MUST obey each profile capability and limitation. Requested IPA MUST
 - **WHEN** The operator starts generation.
 - **THEN** The operation stops with the unsupported constraint.
 
-### Requirement: PROV-03 Profile changes
-A provider change MUST require a new profile version and explicit owner approval. It MUST also require evaluation against the applicable gold data. The application MUST NOT silently change models, voices, or thresholds.
+### Requirement: PROV-03 Configured profile changes
+
+A changed provider profile SHALL be versioned and explicitly selected in settings. No additional owner signature, canary or heldout certification SHALL be required before local use.
 
 #### Scenario: PROV-03 Permitted behavior
-- **GIVEN** An owner approves one exact profile change.
-- **WHEN** The team obtains the required evaluation evidence.
-- **THEN** The release records the approval and measured results.
+
+- **WHEN** the supported local action completes
+- **THEN** it SHALL run the selected changed profile and record actual metadata
 
 #### Scenario: PROV-03 Boundary behavior
-- **GIVEN** A new profile has no held-out evaluation.
-- **WHEN** A publisher requests release.
-- **THEN** The profile remains blocked despite a valid JSON response.
+
+- **WHEN** its stated failure or missing-evidence condition occurs
+- **THEN** it SHALL never silently substitute a different provider/model

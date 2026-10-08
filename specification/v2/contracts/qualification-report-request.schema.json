@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/qualification-report-request.schema.json",
+  "title": "qualification-report-request",
+  "type": "object",
+  "description": "Exact creation/submit content projection for qualification_report. Response preserves the full stored record; server assigns envelope.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "configuration_sha256": {
+      "type": "string",
+      "description": "The exact tested profiles, methods, and versions.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "split_manifest_sha256": {
+      "type": "string",
+      "description": "The frozen unseen allocation.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "gold_annotation_ids": {
+      "type": "array",
+      "description": "The actual independent gold records.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "critical_case_ids": {
+      "type": "array",
+      "description": "Actual, approved critical cases.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "configuration_sha256",
+    "split_manifest_sha256",
+    "gold_annotation_ids",
+    "critical_case_ids"
+  ],
+  "additionalProperties": false
+}

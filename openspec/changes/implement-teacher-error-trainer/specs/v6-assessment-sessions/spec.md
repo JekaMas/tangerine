@@ -13,10 +13,10 @@ The application MUST play stored audio and accept one free-form answer in Englis
 #### Scenario: SES-01 Boundary behavior
 - **GIVEN** A published case contains true errors.
 - **WHEN** The teacher submits an empty answer.
-- **THEN** The backend applies the zero and N/A rules in `docs/scoring-v1.md`.
+- **THEN** The backend applies the zero and N/A rules in `specification/v2/docs/scoring-v1.md`.
 
 ### Requirement: SES-02 Saved answer and request identity
-The API MUST save the original answer and request hash before a provider request. It MUST obey the lease and revision rules in `docs/runtime-v1.md`. The same request key MUST NOT identify different answers.
+The API MUST save the original answer and request hash before a provider request. It MUST obey the lease and revision rules in `specification/v2/docs/runtime-v1.md`. The same request key MUST NOT identify different answers.
 
 #### Scenario: SES-02 Permitted behavior
 - **GIVEN** A submitted answer has a request key.

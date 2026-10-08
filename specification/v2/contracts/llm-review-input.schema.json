@@ -1,0 +1,116 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "purpose": {
+      "type": "string",
+      "enum": [
+        "case_review",
+        "answer_reconsideration",
+        "dispute"
+      ]
+    },
+    "public_context": {
+      "type": "string"
+    },
+    "candidate": {
+      "anyOf": [
+        {
+          "$ref": "case-candidate.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "ground_truth": {
+      "anyOf": [
+        {
+          "$ref": "ground-truth.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "answer": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extraction": {
+      "anyOf": [
+        {
+          "$ref": "claim-extraction.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "prior_decisions": {
+      "anyOf": [
+        {
+          "$ref": "evaluator-output.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "dispute_statement": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "measurements": {
+      "type": "array",
+      "items": {
+        "$ref": "audio-measurement.schema.json"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "evidence.schema.json"
+      }
+    },
+    "taxonomy_context": {
+      "$ref": "taxonomy-context.schema.json"
+    },
+    "input_modality": {
+      "type": "string",
+      "enum": [
+        "text",
+        "text_with_speech_evidence",
+        "audio",
+        "native_annotation"
+      ],
+      "description": "Actual input modality; transcript-only models never claim direct hearing."
+    }
+  },
+  "required": [
+    "schema_version",
+    "purpose",
+    "public_context",
+    "candidate",
+    "ground_truth",
+    "answer",
+    "extraction",
+    "prior_decisions",
+    "dispute_statement",
+    "measurements",
+    "evidence",
+    "taxonomy_context",
+    "input_modality"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/llm-review-input.schema.json",
+  "title": "llm-review-input",
+  "description": "Exact supported inputs for case review/adjudication; nullable fields are purpose-specific, not missing invented data."
+}

@@ -94,10 +94,18 @@
       "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
     },
     "permission_epoch": {
-      "type": "integer",
-      "description": "The source/consent revocation epoch at acceptance.",
-      "minimum": 0,
-      "maximum": 2147483647
+      "anyOf": [
+        {
+          "type": "integer",
+          "description": "Legacy imported bookkeeping, not a runtime prerequisite or cache key input.",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Legacy imported value; null for LLM processing."
     },
     "created_at": {
       "type": "string",

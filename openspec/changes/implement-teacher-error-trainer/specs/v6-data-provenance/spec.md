@@ -3,7 +3,7 @@
 ## ADDED Requirements
 
 ### Requirement: DATA-01 Source permissions
-Each corpus operation MUST have permission for that source and use. The importer MUST obey `domain/corpus-sources.v1.yaml`. Public access MUST NOT count as permission for commercial use, redistribution, or cloud upload.
+Each corpus operation MUST have permission for that source and use. The importer MUST obey `specification/v2/domain/corpus-sources.v1.yaml`. Public access MUST NOT count as permission for commercial use, redistribution, or cloud upload.
 
 #### Scenario: DATA-01 Permitted behavior
 - **GIVEN** A source has the required license and use approvals.

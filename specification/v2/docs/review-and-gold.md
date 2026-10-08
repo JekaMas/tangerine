@@ -1,80 +1,25 @@
-# Human evidence and gold records
+# LLM review, adjudication and benchmark data
 
-A person record is a local attestation about an actual human.
-The operator supplies identity and competence evidence and names the actual attester.
-The system does not infer identity from a login or create a second person by changing a name.
+There are no human peer reviews in the product. New reviews use the case_review stage; disputes and semantic reconsideration use adjudication. Both use llm-review-input and llm-review-output, a real configured provider receipt, and a local record envelope. Review context, blind observations, key disclosure, correspondences, reasons and prior decisions remain stored features. They are machine processing steps, not requests for people to attest competence.
 
-## Qualifications and conflicts
+Case review receives the candidate, public context/variety/register, taxonomy definitions, final audio identity, available transcription/alignment/phone/prosody/QC observations and proposed key. It checks every planned unit, acceptable control and unplanned condition; assigns one judgment and evidence basis per unit; records findings and a recommended disposition. One successful machine review suffices. Independent blind listening and two-rater agreement are optional benchmark diagnostics, not a publication gate.
 
-Accept a relevant teaching/linguistics qualification document or a documented competence assessment.
-A job title alone is not sufficient. Acoustic cases require phonetics competence in at least one counted reviewer.
-Use issuer expiry when it exists. Do not invent expiry for an undated permanent qualification.
-Re-attest current competence, conflicts, and independence for every review.
-The two counted reviewers must be different people. Neither can be a case author.
-They cannot see the key or the other blind submission before their own blind submission.
-Record known aliases, prior exposure, collaboration, and other conflicts. Unresolved identity or conflict evidence blocks the review.
+The model receives only modalities supported by its configured adapter. DeepSeek flash reviews text and genuine speech measurements; it does not directly hear audio. For an acoustic condition, distinguish measured evidence, native annotated evidence and inferred evidence. If no relevant observation exists, record unknown acoustic confirmation. A playable case may remain usable with this explicit quality warning; no invented observed phone or qualified voice claim is allowed. Failed synthesis, missing bytes or a corrupt WAV cannot produce a playable case.
 
-## Blind review
+Adjudication receives the exact frozen answer/case, extracted clauses, prior decisions, dispute statement and available evidence. It can support the original, correct a mapping, identify a key defect or return insufficient_evidence. A mapping correction appends a result revision and reruns arithmetic only on its supported decisions. A key defect creates a new case/key version and correspondence; old answers/results stay bound to old versions. A refusal/deadline retains the original result and offers an explicit retry. No third person or manual adjudicator is requested.
 
-A reviewer first receives final audio, public context, task purpose, and an empty observation form.
-The response has no planned unit IDs, target count, target categories, or corrections.
-The reviewer records every observed defect, permitted control, uncertainty, and interval independently.
-The API saves exact annotation text, server time, and a canonical submission hash.
-Only then can the reviewer request key disclosure. Save that disclosure as an immutable event.
-A later note creates a separate post-key record. It cannot change the blind submission.
+For origin=llm, person IDs are null, qualification arrays are empty and provider_receipt_ids identify actual calls. For origin=source_import, original person/annotation IDs and competence/consent metadata remain exactly as supplied. A legacy human field is not filled with a model name or fake person. An imported attestation remains source data and is never a required new UI step.
 
-After disclosure, the reviewer maps observations to planned units, identifies unplanned defects, and checks all accepted corrections.
-Unresolved unplanned defects block publication because the key is incomplete.
-Every target and control needs two explicit final approvals on the exact key and final audio.
-A third distinct qualified adjudicator resolves disagreement with recorded evidence and reasoning.
-Publication still needs two explicit final approvals after adjudication.
-An adjudicator is not a model, an automated report, or a fabricated person entry.
+TET-GOLD-1 remains the project benchmark collection. Preserve six stimuli per leaf, the 732-stimulus full-coverage target, positive/control pairs per split, and all answer/correction/explanation labels. LLM construction and checking may populate machine-labelled gold. Native human labels may also be imported. Record label origin and model/configuration overlap; machine agreement is not independent human validity. No benchmark population or participant minimum is needed to begin local use.
 
-## Real teacher-answer gold
+Difficulty remains an optional empirical report: at least 100 eligible genuine teacher answers per rated population; Wilson z=1.959963984540054, p=s/n, center=(p+z²/(2n))/(1+z²/n), margin=z*sqrt(p*(1-p)/n+z²/(4n²))/(1+z²/n). Clamp bounds to [0,1]. easy lower>=0.8; moderate lower>=0.5 and upper<0.8; hard lower>=0.2 and upper<0.5; very_hard upper<0.2; otherwise unrated. Unit success is correct detection; whole-case success is composite>=80. Missing/inadequate populations stay unrated; LLM answers are a separately named machine population, never participants.
 
-Collect the teacher's real answer with declared consent and intended uses.
-Store original bytes, case/key/audio identities, component requirements, requested language, and exposure history.
-Two independent annotators label claims and mappings before they see model results.
-Preserve each rater's original labels, uncertainty, and normalization.
-An adjudication record supplies the final label set without replacing the originals.
-Include correct, partial, vague, repeated, contradictory, retracted, false-positive, wrong-repair, acceptable-alternative, and off-key cases when they actually occur.
-Do not invent real answers to fill an absent stratum. Missing strata block the relevant acceptance claim.
+## Stage input/output matrix
 
-## Coverage counts
+case_review: purpose=case_review; candidate and ground_truth supplied, answer/extraction/prior_decisions/dispute_statement=null. answer reconsideration: purpose=answer_reconsideration; candidate=null, ground_truth, exact answer, saved extraction and prior_decisions supplied, dispute_statement=null. dispute: purpose=dispute with the same answer inputs plus exact user dispute_statement. All forms supply public_context, taxonomy_context, actual evidence/measurements arrays (empty when genuinely unavailable) and actual input_modality. No transcript is substituted for absent actual audio evidence.
 
-An asset is one unique byte payload. A stimulus is one presented recording/context pair.
-An observation is one reviewed target event inside a stimulus. A pair is two independently prepared contrasting stimuli.
-A pair family groups its script, speaker, content derivatives, and corresponding observations.
-One recording with five targets remains one stimulus and one asset, not five independent recordings.
-The required floor remains six distinct stimuli per taxonomy leaf and 732 distinct stimuli in total.
-Each leaf needs one pair in development, one in calibration, and one in holdout.
-For an error leaf, the pair has a target defect and a matched permitted control.
-For an acceptable-variant leaf, both members are acceptable under the disclosed context. Do not relabel either as an error.
-Count a stimulus toward the 732 floor only once, even if it covers several leaves.
-Every counted item needs the final-audio approvals and source-rights records.
+Each unit_judgment references an existing selected-case unit/taxonomy/evidence. resolution=supported retains key; mapping_defect requires a non-null complete evaluator-output for answer purposes; key_defect retains old key and proposes a new version; insufficient_evidence has no authoritative changed grade. Case review has decisions=null. The local adapter computes correspondences and review-decision/adjudication envelopes from these semantic findings and actual provider receipt; it never asks the LLM to mint local IDs, timestamps or a person. For unknown confirmation the key remains explicitly machine-inferred with a warning. Optional blind observations are distinguished by actual exposure and modality, not a fabricated heard_entire_recording attestation.
 
-## Difficulty protocol for the first release
+## Exact coverage counting
 
-Difficulty calculation is implemented in the first release. Labels require actual evidence, not author intuition.
-A study freezes its target, language, variety, component requirements, scoring version, and eligible population before collection.
-Count one first-exposure attempt per genuine participant for the target. Keep dependent repeats out of the denominator.
-For a unit, success means a supported detection of that exact error, or correct explicit acceptance of that control.
-For a whole exercise, success means a completed composite of at least 80 under the frozen required components.
-Report the study kind so these two populations cannot be mixed.
-Require at least 100 eligible independent participants. Record exclusions and recruitment criteria.
-Use p=k/n and a two-sided Wilson interval with z=1.959963984540054.
-
-```text
-center = (p + z*z/(2*n)) / (1 + z*z/n)
-half = z*sqrt(p*(1-p)/n + z*z/(4*n*n)) / (1 + z*z/n)
-lower = center-half
-upper = center+half
-```
-
-Label easy only when lower>=0.80.
-Label medium only when lower>=0.50 and upper<0.80.
-Label hard only when lower>=0.20 and upper<0.50.
-Label expert only when upper<0.20.
-Otherwise show unrated with `interval_crosses_band` or `insufficient_population`.
-These bands and sample floors are explicit engineering policy candidates. They are not validated teacher norms.
-A label does not change detection credit, severity weights, or corpus CEFR metadata.
+A stimulus is one distinct playable recording/context/key condition; aliases or duplicate identical audio/context/key do not create a second stimulus. An asset is one distinct final byte hash. A multi-target stimulus counts at most once for a given leaf and may report observations for several leaves, but contributes only one to the global distinct-stimulus count. The full benchmark still requires at least732distinct stimuli, not merely732unit labels. Each leaf has at least one positive/control pair in each of train/dev/test (six distinct leaf stimuli); true-error leaves pair a real target with a context-permitted contrast, and acceptable_variant leaves pair two permitted contexts/forms rather than fabricate an error. Each pair family stays in one connected split group. The three split pair families must be independent under the grouping policy. Reused synthetic voices do not merge those families. Counts distinguish assets, stimuli, unit observations and pair IDs; no missing population is declared complete. This is a benchmark feature definition, never a local-use gate.

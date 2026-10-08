@@ -15,28 +15,30 @@ Audio generation MUST use the registered provider and typed render plan. The ada
 - **WHEN** The adapter serializes a text node.
 - **THEN** The adapter escapes that content instead of executing it.
 
-### Requirement: TTS-02 Requested and actual sound
-The application MUST store requested and actual speech characteristics separately. A provider instruction MUST NOT establish observed pronunciation, pace, or accent strength. Each required target MUST pass its applicable review.
+### Requirement: TTS-02 Requested and observed sound
+
+The application SHALL retain requested versus actual characteristics, use available native/measured/model-inferred evidence and keep unobserved targets as explicit quality warnings.
 
 #### Scenario: TTS-02 Permitted behavior
-- **GIVEN** The generated file includes a measured duration and reviewed target intervals.
-- **WHEN** The application stores the evidence.
-- **THEN** The observations refer to that file hash.
+
+- **WHEN** the supported local action completes
+- **THEN** it SHALL report supported observations and missing target confirmation
 
 #### Scenario: TTS-02 Boundary behavior
-- **GIVEN** The provider ignores a requested pronunciation.
-- **WHEN** A reviewer hears the correct form instead.
-- **THEN** The case fails target realization.
 
-### Requirement: TTS-03 Speaker and audio origin
-Each audio turn MUST retain its speaker, utterance, and provider origin. Final audio MUST retain the turn offsets and hashes. Human recordings or substitute voices MUST require separate explicit owner approval.
+- **WHEN** its stated failure or missing-evidence condition occurs
+- **THEN** it SHALL never equate SSML request with realized sound or require human confirmation
+
+### Requirement: TTS-03 Speaker and audio provenance
+
+Each turn SHALL retain actual speaker/utterance/provider origin and final offsets/hashes. Imported human recordings SHALL retain actual source terms; configurable voices require no extra owner-signature ceremony.
 
 #### Scenario: TTS-03 Permitted behavior
-- **GIVEN** A plan contains two supported speaker voices.
-- **WHEN** The adapter makes the dialogue audio.
-- **THEN** The manifest preserves both speakers and all turn offsets.
+
+- **WHEN** the supported local action completes
+- **THEN** it SHALL keep all actual source/turn identities and offsets
 
 #### Scenario: TTS-03 Boundary behavior
-- **GIVEN** The requested synthetic voice cannot make a target.
-- **WHEN** No owner approval permits substitution.
-- **THEN** The operation stops without a human-recorded or different-voice replacement.
+
+- **WHEN** its stated failure or missing-evidence condition occurs
+- **THEN** it SHALL never call one synthetic voice a real common learner or invent voice consent

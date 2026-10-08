@@ -5,45 +5,50 @@ gold:
   taxonomy_leaves: 122
   minimum_stimuli_per_leaf: 6
   minimum_total_stimuli: 732
-  independent_reviewers: 2
-  disagreement_action: third_adjudicator_or_block
+  independent_reviewers: 0
+  disagreement_action: LLM adjudication or explicit insufficient_data
+  label_origins:
+    - llm
+    - source_import
 gates:
-- id: VAL-STRUCT
-  measure: schema_unknown_ids_fabricated_quotes
-  limit: exactly 0 accepted violations
-  source: Approved adversarial cases. No synthetic case has approval in this package.
-- id: VAL-MAP
-  measure: gold mapping precision
-  limit: '>=0.98 overall and >=0.95 each observable domain; >=100 human-labelled eligible
-    mapping decisions/domain'
-  source: The held-out corpus. Report abstentions separately from precision.
-- id: VAL-COVER
-  measure: non_abstained_decisions / eligible_decisions
-  limit: '>=0.90 overall and each domain'
-  source: The same held-out corpus as the mapping gate.
-- id: VAL-REPAIR
-  measure: strict correction verdict agreement with human adjudication
-  limit: '>=0.95 on >=100 attempts/domain; all critical counterexamples correct'
-  source: The held-out corpus and its real adjudications.
-- id: VAL-REPEAT
-  measure: repeat mapping agreement
-  limit: '>=0.99 on 3 runs of identical holdout input/config; disagreements -> review
-    in production'
-  source: The same fixed input and provider configuration.
-- id: VAL-AUDIO
-  measure: observed-target approval
-  limit: Every target and negative control requires two resolved approvals for the
-    final audio hash. Automatic publication is forbidden.
-  source: The actual published case bank.
-- id: VAL-SCORE
-  measure: reference conformance
-  limit: Every approved oracle or property test requires exact rational equality.
-  source: Exact symbolic formulas and separately approved test data.
-- id: VAL-ISOLATION
-  measure: pre-submit teacher and pre-key blind-review projection leakage
-  limit: 0 successful attacks in defined E2E test suite
-  source: The actual local application and separately approved boundary cases. No
-    user account or access-role attack model is required.
-release_rule: Every gate requires evidence for the fixed versions. Insufficient data
-  must not pass. Threshold changes require approval and an unrevealed holdout or disclosed
-  reuse.
+  - id: VAL-STRUCT
+    measure: schema_unknown_ids_fabricated_quotes
+    limit: exactly 0 accepted violations
+    source: Constructed labelled positive/negative cases permitted.
+  - id: VAL-MAP
+    measure: gold mapping precision
+    limit: ">=0.98 overall and >=0.95 each observable domain; >=100
+      provenance-labelled eligible mapping decisions/domain"
+    source: The held-out corpus. Report abstentions separately from precision.
+  - id: VAL-COVER
+    measure: non_abstained_decisions / eligible_decisions
+    limit: ">=0.90 overall and each domain"
+    source: The same held-out corpus as the mapping gate.
+  - id: VAL-REPAIR
+    measure: strict correction verdict agreement with human adjudication
+    limit: ">=0.95 on >=100 correction-eligible attempts per applicable domain;
+      acceptable_variant reports decoy/overcorrection, not a nonexistent repair
+      population"
+    source: The held-out corpus and its real adjudications.
+  - id: VAL-REPEAT
+    measure: repeat mapping agreement
+    limit: ">=0.99 on 3 runs of identical holdout input/config; diagnostic
+      disagreements only"
+    source: The same fixed input and provider configuration.
+  - id: VAL-AUDIO
+    measure: observed-target approval
+    limit: Report actual audio/measurements/LLM review for every target and control;
+      no human approvals or automatic-publication prohibition.
+    source: The actual published case bank.
+  - id: VAL-SCORE
+    measure: reference conformance
+    limit: Every approved oracle or property test requires exact rational equality.
+    source: Exact symbolic formulas and labelled deterministic test data.
+  - id: VAL-ISOLATION
+    measure: pre-submit teacher and pre-key blind-review projection leakage
+    limit: 0 successful attacks in defined E2E test suite
+    source: The actual local application and labelled positive/negative cases. No
+      user account or access-role attack model is required.
+release_rule: All criteria remain optional benchmark reports.
+  Missing/insufficient data cannot be reported as a pass; no report blocks local
+  startup, generated case use or answer checking.

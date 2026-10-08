@@ -4,8 +4,8 @@
 
 ### Requirement: MET-01 Named metric formulas
 The backend MUST implement all 27 core metrics and their sufficient statistics.
-It MUST use the exact formulas and null rules in `domain/metrics.v1.yaml`.
-Its domain results MUST obey `docs/scoring-v1.md` and the reference arithmetic.
+It MUST use the exact formulas and null rules in `specification/v2/domain/metrics.v1.yaml`.
+Its domain results MUST obey `specification/v2/docs/scoring-v1.md` and the reference arithmetic.
 
 #### Scenario: MET-01 Resolved results
 - **GIVEN** Every claim has a resolved decision under the frozen policy.

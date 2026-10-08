@@ -31,7 +31,7 @@ The system SHALL verify that intended grammar, phonetic substitutions, voice dif
 #### Scenario: PRV-03 supported and rejected inputs
 
 - **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL retain real audio and qualified listening evidence for each required target, and SHALL fail an unrealized acoustic target and preserve its category in scope
+- **THEN** it SHALL retain actual audio and modality-labelled measurement/native/model evidence for each target, and SHALL report an unrealized or unobserved target as a warning/capability failure while preserving its category and playable-case usability
 
 ### Requirement: PRV-04 Bound advisory speech assessment
 

@@ -6,7 +6,7 @@ The current draft and exhaustive reconciliation are specification/v2/README.md a
 
 The application MUST implement the complete operation inventory through its declared closed request and response contracts.
 
-The specification SHALL reconcile GAP-001 through `specification/v2/contracts/openapi.yaml` `specification/v2/domain/operations.yaml` `specification/v2/docs/interface-contract.md`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-006). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-001 through `specification/v2/contracts/openapi.yaml` `specification/v2/domain/operations.yaml` `specification/v2/docs/interface-contract.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-001 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-001 contract and its source references are under review.
@@ -35,7 +35,7 @@ The specification SHALL reconcile GAP-001 through `specification/v2/contracts/op
 
 The API MUST apply the activity and phase allowlists. Before submission, the teacher response contains no key, transcript, count, or target category.
 
-The specification SHALL reconcile GAP-002 through `specification/v2/contracts/library-item.schema.json` `specification/v2/contracts/teacher-start-view.schema.json` `specification/v2/contracts/prepare-view.schema.json` `specification/v2/contracts/key-disclosure.schema.json` `specification/v2/docs/interface-contract.md`. Current definition status: `policy_proposal_requires_explicit_decision_before_activation`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-002 through `specification/v2/contracts/library-item.schema.json` `specification/v2/contracts/teacher-start-view.schema.json` `specification/v2/contracts/prepare-view.schema.json` `specification/v2/contracts/key-disclosure.schema.json` `specification/v2/docs/interface-contract.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-002 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-002 contract and its source references are under review.
@@ -64,7 +64,7 @@ The specification SHALL reconcile GAP-002 through `specification/v2/contracts/li
 
 Every persistent field MUST belong to a named closed schema and a typed immutable document. References MUST bind the exact kind, scope, and digest.
 
-The specification SHALL reconcile GAP-003 through `specification/v2/db/schema.sql` `specification/v2/domain/persistence-map.json` `specification/v2/docs/persistence.md`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-006, FRC-010). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-003 through `specification/v2/db/schema.sql` `specification/v2/domain/persistence-map.json` `specification/v2/docs/persistence.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-003 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-003 contract and its source references are under review.
@@ -93,7 +93,7 @@ The specification SHALL reconcile GAP-003 through `specification/v2/db/schema.sq
 
 The application MUST reserve an asset, store complete bytes, verify their read-back digest, and commit the owning reference in that order.
 
-The specification SHALL reconcile GAP-004 through `specification/v2/contracts/asset.schema.json` `specification/v2/docs/runtime-and-storage.md`. Current definition status: `written_definition_supplied_not_runtime_accepted`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-004 through `specification/v2/contracts/asset.schema.json` `specification/v2/docs/runtime-and-storage.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-004 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-004 contract and its source references are under review.
@@ -119,7 +119,7 @@ The specification SHALL reconcile GAP-004 through `specification/v2/contracts/as
 - **THEN** the report distinguishes this written requirement from implementation and observed evidence.
 
 ### Requirement: SPEC-005 Single workspace activities without access roles
-The specification SHALL follow docs/simple-local-product.md: one local workspace with teaching, preparation, review and publication activities and no role/action/resource authorization matrix. Genuine person independence, qualification, lifecycle and source-use guards SHALL remain mandatory. The user request supersedes the former GAP-005 access-role product choice.
+The specification SHALL follow docs/simple-local-product.md: one local workspace with teaching, preparation, review and publication activities and no role/action/resource authorization matrix. No human peer reviewer or qualification SHALL be required; imported person data remains source metadata. The user request supersedes the former GAP-005 access-role product choice.
 
 #### Scenario: SPEC-005 Complete definition and rejection boundary
 - **GIVEN** The user-selected simple local product scope.
@@ -138,7 +138,7 @@ The specification SHALL follow docs/simple-local-product.md: no account bootstra
 
 Case transitions MUST obey the exhaustive guard table. Quarantine MUST prevent new attempts and final score commits until resolved review.
 
-The specification SHALL reconcile GAP-007 through `specification/v2/docs/lifecycle.md` `specification/v2/contracts/case-head.schema.json` `specification/v2/contracts/transition-request.schema.json`. Current definition status: `policy_proposal_requires_explicit_decision_before_activation`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-007 through `specification/v2/docs/lifecycle.md` `specification/v2/contracts/case-head.schema.json` `specification/v2/contracts/transition-request.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-007 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-007 contract and its source references are under review.
@@ -167,7 +167,7 @@ The specification SHALL reconcile GAP-007 through `specification/v2/docs/lifecyc
 
 Submission MUST preserve the answer before provider work. Only the current lease epoch can commit a result against frozen inputs.
 
-The specification SHALL reconcile GAP-008 through `specification/v2/contracts/attempt.schema.json` `specification/v2/docs/lifecycle.md` `specification/v2/docs/runtime-and-storage.md`. Current definition status: `written_definition_supplied_not_runtime_accepted`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-008 through `specification/v2/contracts/attempt.schema.json` `specification/v2/docs/lifecycle.md` `specification/v2/docs/runtime-and-storage.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-008 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-008 contract and its source references are under review.
@@ -196,7 +196,7 @@ The specification SHALL reconcile GAP-008 through `specification/v2/contracts/at
 
 An adjudication MUST append a traceable result revision. It MUST NOT overwrite the original answer, audio, key, or result.
 
-The specification SHALL reconcile GAP-009 through `specification/v2/contracts/dispute.schema.json` `specification/v2/contracts/adjudication.schema.json` `specification/v2/contracts/unit-correspondence.schema.json` `specification/v2/contracts/result-revision.schema.json` `specification/v2/docs/lifecycle.md`. Current definition status: `policy_proposal_requires_explicit_decision_before_activation`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-009 through `specification/v2/contracts/dispute.schema.json` `specification/v2/contracts/adjudication.schema.json` `specification/v2/contracts/unit-correspondence.schema.json` `specification/v2/contracts/result-revision.schema.json` `specification/v2/docs/lifecycle.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-009 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-009 contract and its source references are under review.
@@ -223,9 +223,9 @@ The specification SHALL reconcile GAP-009 through `specification/v2/contracts/di
 
 ### Requirement: SPEC-010 Independent blind-listening annotation contract
 
-A blind review MUST save independently observed intervals, labels, uncertainty, and notes before the planned-key disclosure event.
+A blind review MUST save native/measured/model-inferred intervals with explicit modality, labels, uncertainty, and notes before the planned-key disclosure event.
 
-The specification SHALL reconcile GAP-010 through `specification/v2/contracts/blind-annotation.schema.json` `specification/v2/contracts/review-context.schema.json` `specification/v2/contracts/disclosure-record.schema.json` `specification/v2/docs/review-and-gold.md`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-006). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-010 through `specification/v2/contracts/blind-annotation.schema.json` `specification/v2/contracts/review-context.schema.json` `specification/v2/contracts/disclosure-record.schema.json` `specification/v2/docs/review-and-gold.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-010 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-010 contract and its source references are under review.
@@ -252,9 +252,9 @@ The specification SHALL reconcile GAP-010 through `specification/v2/contracts/bl
 
 ### Requirement: SPEC-011 Reviewer independence and qualification records
 
-Counted reviews MUST reference distinct genuine people, applicable competence, declared conflicts, and the exact final artifact.
+New reviews MUST use actual LLM receipts and modality; native imported person/competence/conflict fields MUST remain preserved without being required for machine reviews.
 
-The specification SHALL reconcile GAP-011 through `specification/v2/contracts/person.schema.json` `specification/v2/contracts/qualification.schema.json` `specification/v2/contracts/review-decision.schema.json` `specification/v2/docs/review-and-gold.md`. Current definition status: `policy_proposal_requires_explicit_decision_before_activation`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-011 through `specification/v2/contracts/person.schema.json` `specification/v2/contracts/qualification.schema.json` `specification/v2/contracts/review-decision.schema.json` `specification/v2/docs/review-and-gold.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-011 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-011 contract and its source references are under review.
@@ -281,9 +281,9 @@ The specification SHALL reconcile GAP-011 through `specification/v2/contracts/pe
 
 ### Requirement: SPEC-012 Teacher-answer gold annotation data contract
 
-Teacher gold MUST retain actual original answers, independent pre-model annotations, disagreement, and adjudicated expected mappings.
+Teacher gold MUST retain actual original answers, machine/native labels with explicit provenance, disagreement, and adjudicated expected mappings.
 
-The specification SHALL reconcile GAP-012 through `specification/v2/contracts/teacher-gold.schema.json` `specification/v2/docs/review-and-gold.md` `specification/v2/docs/splits-and-validation.md`. Current definition status: `written_definition_supplied_not_runtime_accepted`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-012 through `specification/v2/contracts/teacher-gold.schema.json` `specification/v2/docs/review-and-gold.md` `specification/v2/docs/splits-and-validation.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-012 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-012 contract and its source references are under review.
@@ -312,7 +312,7 @@ The specification SHALL reconcile GAP-012 through `specification/v2/contracts/te
 
 The reviewed unitization MUST count one independent repair obligation as one event and preserve secondary categories without extra denominator credit.
 
-The specification SHALL reconcile GAP-013 through `specification/v2/docs/math-and-judgments.md` `specification/v2/domain/error-taxonomy.v1.yaml`. Current definition status: `written_definition_supplied_not_runtime_accepted`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-013 through `specification/v2/docs/math-and-judgments.md` `specification/v2/domain/error-taxonomy.v1.yaml`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-013 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-013 contract and its source references are under review.
@@ -341,7 +341,7 @@ The specification SHALL reconcile GAP-013 through `specification/v2/docs/math-an
 
 Explicit category interpretation MUST use the frozen English/Russian registry. An unknown or ambiguous alias cannot receive a guessed narrow category.
 
-The specification SHALL reconcile GAP-014 through `specification/v2/domain/category-aliases.v1.yaml` `specification/v2/docs/math-and-judgments.md`. Current definition status: `policy_proposal_requires_explicit_decision_before_activation`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-014 through `specification/v2/domain/category-aliases.v1.yaml` `specification/v2/docs/math-and-judgments.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-014 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-014 contract and its source references are under review.
@@ -370,7 +370,7 @@ The specification SHALL reconcile GAP-014 through `specification/v2/domain/categ
 
 Severity MUST bind to the fixed 1-to-4 weight rubric before answer entry. False assertions retain weight one.
 
-The specification SHALL reconcile GAP-015 through `specification/v2/domain/judgment-policy.yaml` `specification/v2/docs/review-and-gold.md` `specification/v2/docs/scoring-v1.md`. Current definition status: `policy_proposal_requires_explicit_decision_before_activation`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-015 through `specification/v2/domain/judgment-policy.yaml` `specification/v2/docs/review-and-gold.md` `specification/v2/docs/scoring-v1.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-015 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-015 contract and its source references are under review.
@@ -399,7 +399,7 @@ The specification SHALL reconcile GAP-015 through `specification/v2/domain/judgm
 
 Difficulty labels MUST use the specified target population, actual first-exposure outcomes, sample floor, and Wilson interval bands. Otherwise the label is unrated.
 
-The specification SHALL reconcile GAP-016 through `specification/v2/contracts/difficulty-study.schema.json` `specification/v2/docs/review-and-gold.md`. Current definition status: `policy_proposal_requires_explicit_decision_before_activation`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-016 through `specification/v2/contracts/difficulty-study.schema.json` `specification/v2/docs/review-and-gold.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-016 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-016 contract and its source references are under review.
@@ -428,7 +428,7 @@ The specification SHALL reconcile GAP-016 through `specification/v2/contracts/di
 
 Context-dependent judgments MUST use a visible variety, register, and assessment basis compatible with the judgment table.
 
-The specification SHALL reconcile GAP-017 through `specification/v2/domain/judgment-policy.yaml` `specification/v2/docs/review-and-gold.md`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-020). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-017 through `specification/v2/domain/judgment-policy.yaml` `specification/v2/docs/review-and-gold.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-017 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-017 contract and its source references are under review.
@@ -457,7 +457,7 @@ The specification SHALL reconcile GAP-017 through `specification/v2/domain/judgm
 
 Claim IDs MUST derive from the exact saved answer and Unicode spans. A disjoint coverage partition MUST preserve every substantive segment or mark it unresolved.
 
-The specification SHALL reconcile GAP-018 through `specification/v2/contracts/claim-extraction.schema.json` `specification/v2/docs/math-and-judgments.md` `specification/v2/reference/validators_v2.py`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-018). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-018 through `specification/v2/contracts/claim-extraction.schema.json` `specification/v2/docs/math-and-judgments.md` `specification/v2/reference/validators_v2.py`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-018 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-018 contract and its source references are under review.
@@ -486,7 +486,7 @@ The specification SHALL reconcile GAP-018 through `specification/v2/contracts/cl
 
 Normalization MUST preserve all source clauses, combine only compatible fragments, and apply only explicit backward retractions.
 
-The specification SHALL reconcile GAP-019 through `specification/v2/contracts/normalization.schema.json` `specification/v2/docs/math-and-judgments.md`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-018). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-019 through `specification/v2/contracts/normalization.schema.json` `specification/v2/docs/math-and-judgments.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-019 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-019 contract and its source references are under review.
@@ -515,7 +515,7 @@ The specification SHALL reconcile GAP-019 through `specification/v2/contracts/no
 
 Structural validity MUST be followed by the declared cross-field, scope, null, and eligibility rules. An impossible tuple is rejected.
 
-The specification SHALL reconcile GAP-020 through `specification/v2/docs/cross-field-invariants.md` `specification/v2/domain/semantic-invariants.yaml` `specification/v2/reference/validators_v2.py`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-018). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-020 through `specification/v2/docs/cross-field-invariants.md` `specification/v2/domain/semantic-invariants.yaml` `specification/v2/reference/validators_v2.py`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-020 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-020 contract and its source references are under review.
@@ -544,7 +544,7 @@ The specification SHALL reconcile GAP-020 through `specification/v2/docs/cross-f
 
 Explanation option_id MUST remain null. Feedback rationale identities MUST resolve to the same case, unit, language, approved text, and evidence.
 
-The specification SHALL reconcile GAP-021 through `specification/v2/contracts/rationale.schema.json` `specification/v2/contracts/evaluator-output.schema.json` `specification/v2/docs/math-and-judgments.md`. Current definition status: `written_definition_supplied_not_runtime_accepted`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-021 through `specification/v2/contracts/rationale.schema.json` `specification/v2/contracts/evaluator-output.schema.json` `specification/v2/docs/math-and-judgments.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-021 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-021 contract and its source references are under review.
@@ -573,7 +573,7 @@ The specification SHALL reconcile GAP-021 through `specification/v2/contracts/ra
 
 Code MUST derive rubric fractions from fixed required and forbidden propositions. Models MUST NOT provide authoritative grades.
 
-The specification SHALL reconcile GAP-022 through `specification/v2/docs/math-and-judgments.md` `specification/v2/contracts/scoring-input.schema.json` `specification/v2/reference/validators_v2.py` `specification/v2/reference/scorer.py`. Current definition status: `definition_incomplete_after_recheck`. FRC-018 requires the exact normalized multi-claim/retraction to scoring-input projection. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-022 through `specification/v2/docs/math-and-judgments.md` `specification/v2/contracts/scoring-input.schema.json` `specification/v2/reference/validators_v2.py` `specification/v2/reference/scorer.py`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-022 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-022 contract and its source references are under review.
@@ -602,7 +602,7 @@ The specification SHALL reconcile GAP-022 through `specification/v2/docs/math-an
 
 Mapper and auditor comparison MUST use the same frozen extraction and key, an exact compared projection, and explicit set normalization.
 
-The specification SHALL reconcile GAP-023 through `specification/v2/docs/math-and-judgments.md` `specification/v2/contracts/mapping-input.schema.json` `specification/v2/prompts/audit-map-v1.txt`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-018). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-023 through `specification/v2/docs/math-and-judgments.md` `specification/v2/contracts/mapping-input.schema.json` `specification/v2/prompts/audit-map-v1.txt`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-023 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-023 contract and its source references are under review.
@@ -631,7 +631,7 @@ The specification SHALL reconcile GAP-023 through `specification/v2/docs/math-an
 
 Exact metric and composite fractions MUST use bounded decimal-string numerators and positive denominators. Display rounding MUST NOT feed another calculation.
 
-The specification SHALL reconcile GAP-024 through `specification/v2/contracts/exact-rational.schema.json` `specification/v2/contracts/score-result.schema.json` `specification/v2/docs/math-and-judgments.md` `specification/v2/reference/scorer.py`. Current definition status: `written_definition_supplied_not_runtime_accepted`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-024 through `specification/v2/contracts/exact-rational.schema.json` `specification/v2/contracts/score-result.schema.json` `specification/v2/docs/math-and-judgments.md` `specification/v2/reference/scorer.py`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-024 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-024 contract and its source references are under review.
@@ -660,7 +660,7 @@ The specification SHALL reconcile GAP-024 through `specification/v2/contracts/ex
 
 All 42 named measurements MUST have an output location and explicit availability, unit, method, and reason. Unresolved scores MUST remain provisional.
 
-The specification SHALL reconcile GAP-025 through `specification/v2/contracts/auxiliary-results.schema.json` `specification/v2/contracts/result-envelope.schema.json` `specification/v2/domain/metrics.v1.yaml`. Current definition status: `written_definition_supplied_not_runtime_accepted`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-025 through `specification/v2/contracts/auxiliary-results.schema.json` `specification/v2/contracts/result-envelope.schema.json` `specification/v2/domain/metrics.v1.yaml`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-025 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-025 contract and its source references are under review.
@@ -689,7 +689,7 @@ The specification SHALL reconcile GAP-025 through `specification/v2/contracts/au
 
 Feedback MUST distinguish detected, missed, false-positive, acceptable, and pending items and use their valid reference types in the requested language.
 
-The specification SHALL reconcile GAP-026 through `specification/v2/contracts/feedback.schema.json` `specification/v2/contracts/feedback-output.schema.json` `specification/v2/prompts/feedback-v1.txt` `specification/v2/docs/interface-contract.md`. Current definition status: `written_definition_supplied_not_runtime_accepted`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-026 through `specification/v2/contracts/feedback.schema.json` `specification/v2/contracts/feedback-output.schema.json` `specification/v2/prompts/feedback-v1.txt` `specification/v2/docs/interface-contract.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-026 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-026 contract and its source references are under review.
@@ -718,7 +718,7 @@ The specification SHALL reconcile GAP-026 through `specification/v2/contracts/fe
 
 A feedback-only failure MUST preserve a valid semantic score and show approved stored rationale or an explicit unavailable commentary state.
 
-The specification SHALL reconcile GAP-027 through `specification/v2/docs/lifecycle.md` `specification/v2/contracts/result-envelope.schema.json` `specification/v2/contracts/retry-request.schema.json`. Current definition status: `policy_proposal_requires_explicit_decision_before_activation`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-027 through `specification/v2/docs/lifecycle.md` `specification/v2/contracts/result-envelope.schema.json` `specification/v2/contracts/retry-request.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-027 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-027 contract and its source references are under review.
@@ -747,7 +747,7 @@ The specification SHALL reconcile GAP-027 through `specification/v2/docs/lifecyc
 
 The advisory linguistic audit MUST use its exact prompt and closed input/output contract with source-bound findings. It cannot issue human or publication approval.
 
-The specification SHALL reconcile GAP-028 through `specification/v2/contracts/linguistic-audit-input.schema.json` `specification/v2/contracts/linguistic-audit.schema.json` `specification/v2/prompts/linguistic-audit-v1.txt`. Current definition status: `policy_proposal_requires_explicit_decision_before_activation`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-028 through `specification/v2/contracts/linguistic-audit-input.schema.json` `specification/v2/contracts/linguistic-audit.schema.json` `specification/v2/prompts/linguistic-audit-v1.txt`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-028 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-028 contract and its source references are under review.
@@ -776,7 +776,7 @@ The specification SHALL reconcile GAP-028 through `specification/v2/contracts/li
 
 Every model stage MUST receive its complete allowed input under a hashed provider, prompt, schema, policy, and permission binding.
 
-The specification SHALL reconcile GAP-029 through `specification/v2/contracts/effective-binding.schema.json` `specification/v2/contracts/provider-receipt.schema.json` `specification/v2/contracts/stage-cache.schema.json` `specification/v2/contracts/taxonomy-context.schema.json` `specification/v2/prompts/manifest.yaml`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-006). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-029 through `specification/v2/contracts/effective-binding.schema.json` `specification/v2/contracts/provider-receipt.schema.json` `specification/v2/contracts/stage-cache.schema.json` `specification/v2/contracts/taxonomy-context.schema.json` `specification/v2/prompts/manifest.yaml`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-029 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-029 contract and its source references are under review.
@@ -805,7 +805,7 @@ The specification SHALL reconcile GAP-029 through `specification/v2/contracts/ef
 
 Provider adapters MUST preserve full local constraints and accept only one completed visible output object under their documented transport.
 
-The specification SHALL reconcile GAP-030 through `specification/v2/domain/schema-projection.yaml` `specification/v2/docs/provider-contracts.md`. Current definition status: `written_definition_supplied_not_runtime_accepted`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-030 through `specification/v2/domain/schema-projection.yaml` `specification/v2/docs/provider-contracts.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-030 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-030 contract and its source references are under review.
@@ -834,7 +834,7 @@ The specification SHALL reconcile GAP-030 through `specification/v2/domain/schem
 
 One request-wide retry and deadline protocol MUST govern provider calls, cancellation, token capacity, and late writes.
 
-The specification SHALL reconcile GAP-031 through `specification/v2/docs/runtime-and-storage.md` `specification/v2/domain/configuration-registry.yaml`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-012). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-031 through `specification/v2/docs/runtime-and-storage.md` `specification/v2/domain/configuration-registry.yaml`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-031 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-031 contract and its source references are under review.
@@ -859,11 +859,11 @@ The specification SHALL reconcile GAP-031 through `specification/v2/docs/runtime
 - **WHEN** an implementer reports completion.
 - **THEN** the report distinguishes this written requirement from implementation and observed evidence.
 
-### Requirement: SPEC-032 Typed render operator and hard-capability catalog
+### Requirement: SPEC-032 Typed render operator and render capability catalog
 
 The renderer MUST use only closed text, phoneme, pause, and prosody operations compatible with the selected voice and every hard constraint.
 
-The specification SHALL reconcile GAP-032 through `specification/v2/contracts/render-constraint.schema.json` `specification/v2/contracts/render-plan.schema.json` `specification/v2/domain/audio-methods.yaml`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-009). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-032 through `specification/v2/contracts/render-constraint.schema.json` `specification/v2/contracts/render-plan.schema.json` `specification/v2/domain/audio-methods.yaml`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-032 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-032 contract and its source references are under review.
@@ -892,7 +892,7 @@ The specification SHALL reconcile GAP-032 through `specification/v2/contracts/re
 
 SSML compilation and final assembly MUST preserve turn order and target scope and bind reviews to the actual delivered mono PCM16 24-kHz WAV.
 
-The specification SHALL reconcile GAP-033 through `specification/v2/docs/audio-methods.md` `specification/v2/contracts/render-plan.schema.json` `specification/v2/contracts/transformation.schema.json`. Current definition status: `written_definition_supplied_not_runtime_accepted`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-033 through `specification/v2/docs/audio-methods.md` `specification/v2/contracts/render-plan.schema.json` `specification/v2/contracts/transformation.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-033 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-033 contract and its source references are under review.
@@ -921,7 +921,7 @@ The specification SHALL reconcile GAP-033 through `specification/v2/docs/audio-m
 
 Every quality threshold MUST use the declared decoding, loudness, peak, RMS, window, and interval method on final delivery bytes.
 
-The specification SHALL reconcile GAP-034 through `specification/v2/docs/audio-methods.md` `specification/v2/domain/audio-methods.yaml` `specification/v2/contracts/audio-measurement.schema.json`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-016). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-034 through `specification/v2/docs/audio-methods.md` `specification/v2/domain/audio-methods.yaml` `specification/v2/contracts/audio-measurement.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-034 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-034 contract and its source references are under review.
@@ -950,7 +950,7 @@ The specification SHALL reconcile GAP-034 through `specification/v2/docs/audio-m
 
 Speech rates and disfluency density MUST use the fixed tokenizer and reviewed interval/event rules, not estimated text length or an unversioned VAD.
 
-The specification SHALL reconcile GAP-035 through `specification/v2/docs/audio-methods.md` `specification/v2/domain/audio-methods.yaml`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-016). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-035 through `specification/v2/docs/audio-methods.md` `specification/v2/domain/audio-methods.yaml`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-035 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-035 contract and its source references are under review.
@@ -977,9 +977,9 @@ The specification SHALL reconcile GAP-035 through `specification/v2/docs/audio-m
 
 ### Requirement: SPEC-036 Prosody feature/unit/method and valid missingness table
 
-Each of the eleven prosody features MUST use its permitted unit, measurement or human annotation method, and explicit missingness rule.
+Each of the eleven prosody features MUST use its permitted unit, measurement, native annotation or modality-labelled LLM method, and explicit missingness rule.
 
-The specification SHALL reconcile GAP-036 through `specification/v2/domain/audio-methods.yaml` `specification/v2/docs/audio-methods.md` `specification/v2/contracts/audio-measurement.schema.json`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-009, FRC-016). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-036 through `specification/v2/domain/audio-methods.yaml` `specification/v2/docs/audio-methods.md` `specification/v2/contracts/audio-measurement.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-036 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-036 contract and its source references are under review.
@@ -1008,7 +1008,7 @@ The specification SHALL reconcile GAP-036 through `specification/v2/domain/audio
 
 ASR and pronunciation scores MUST retain raw responses and exact chunk-to-final-audio clocks. They remain advisory, not inferred observed IPA.
 
-The specification SHALL reconcile GAP-037 through `specification/v2/docs/audio-methods.md` `specification/v2/docs/provider-contracts.md` `specification/v2/contracts/evidence.schema.json`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-016). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-037 through `specification/v2/docs/audio-methods.md` `specification/v2/docs/provider-contracts.md` `specification/v2/contracts/evidence.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-037 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-037 contract and its source references are under review.
@@ -1033,11 +1033,11 @@ The specification SHALL reconcile GAP-037 through `specification/v2/docs/audio-m
 - **WHEN** an implementer reports completion.
 - **THEN** the report distinguishes this written requirement from implementation and observed evidence.
 
-### Requirement: SPEC-038 Full synthetic target capability and canary specification
+### Requirement: SPEC-038 Full synthetic target capability reports
 
-Every taxonomy target and requested acoustic combination MUST have requested-versus-observed qualification evidence and a version-bound drift check.
+Every taxonomy target and requested acoustic combination MUST retain requested-versus-observed evidence or explicit missingness; canary checks are optional diagnostics.
 
-The specification SHALL reconcile GAP-038 through `specification/v2/domain/target-capabilities.yaml` `specification/v2/contracts/capability-record.schema.json` `specification/v2/docs/audio-methods.md`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-009). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-038 through `specification/v2/domain/target-capabilities.yaml` `specification/v2/contracts/capability-record.schema.json` `specification/v2/docs/audio-methods.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-038 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-038 contract and its source references are under review.
@@ -1066,7 +1066,7 @@ The specification SHALL reconcile GAP-038 through `specification/v2/domain/targe
 
 Full-source ingestion MUST reconcile actual components, accepted and rejected records, transformations, permissions, and counts with one exact release manifest.
 
-The specification SHALL reconcile GAP-039 through `specification/v2/contracts/source-release.schema.json` `specification/v2/contracts/permission-grant.schema.json` `specification/v2/contracts/import-report.schema.json` `specification/v2/contracts/transformation.schema.json` `specification/v2/docs/sources/acquisition-and-rights.md`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-017, FRC-019, FRC-021). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-039 through `specification/v2/contracts/source-release.schema.json` `specification/v2/contracts/permission-grant.schema.json` `specification/v2/contracts/import-report.schema.json` `specification/v2/contracts/transformation.schema.json` `specification/v2/docs/sources/acquisition-and-rights.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-039 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-039 contract and its source references are under review.
@@ -1095,7 +1095,7 @@ The specification SHALL reconcile GAP-039 through `specification/v2/contracts/so
 
 SpeechOcean762 ingestion MUST retain all selected partitions, metadata, aggregate/detail scores, five raters, source scales, and uncertain phone markers.
 
-The specification SHALL reconcile GAP-040 through `specification/v2/docs/sources/speechocean762.md` `specification/v2/contracts/raw-record.schema.json` `specification/v2/domain/phone-symbols.yaml`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-017). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-040 through `specification/v2/docs/sources/speechocean762.md` `specification/v2/contracts/raw-record.schema.json` `specification/v2/domain/phone-symbols.yaml`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-040 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-040 contract and its source references are under review.
@@ -1124,7 +1124,7 @@ The specification SHALL reconcile GAP-040 through `specification/v2/docs/sources
 
 L2-ARCTIC v5 ingestion MUST preserve all read and suitcase components, clocks, original tiers, and manual-versus-automatic provenance.
 
-The specification SHALL reconcile GAP-041 through `specification/v2/docs/sources/l2-arctic-v5.md` `specification/v2/contracts/raw-record.schema.json` `specification/v2/domain/phone-symbols.yaml`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-017). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-041 through `specification/v2/docs/sources/l2-arctic-v5.md` `specification/v2/contracts/raw-record.schema.json` `specification/v2/domain/phone-symbols.yaml`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-041 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-041 contract and its source references are under review.
@@ -1153,7 +1153,7 @@ The specification SHALL reconcile GAP-041 through `specification/v2/docs/sources
 
 Each BEA v2.1 source MUST preserve token-to-codepoint positions, annotator alternatives, insertions, noop and detection-only labels, and unavailable test annotations.
 
-The specification SHALL reconcile GAP-042 through `specification/v2/docs/sources/bea-v21.md` `specification/v2/domain/source-label-map.yaml` `specification/v2/contracts/raw-record.schema.json`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-017). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-042 through `specification/v2/docs/sources/bea-v21.md` `specification/v2/domain/source-label-map.yaml` `specification/v2/contracts/raw-record.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-042 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-042 contract and its source references are under review.
@@ -1182,7 +1182,7 @@ The specification SHALL reconcile GAP-042 through `specification/v2/docs/sources
 
 The required EFCAMDAT scope MUST include R2, Shatz2020, and Oksuz2025 as separate releases. Each needs actual source-format and permitted-use bindings.
 
-The specification SHALL reconcile GAP-043 through `specification/v2/docs/sources/efcamdat.md` `specification/v2/domain/corpus-sources.v1.yaml` `specification/v2/contracts/source-format-binding.schema.json`. Current definition status: `external_contract_missing`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-043 through `specification/v2/docs/sources/efcamdat.md` `specification/v2/domain/corpus-sources.v1.yaml` `specification/v2/contracts/source-format-binding.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-043 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-043 contract and its source references are under review.
@@ -1211,7 +1211,7 @@ The specification SHALL reconcile GAP-043 through `specification/v2/docs/sources
 
 Study-record ingestion MUST require an actual author-authorized Doubao release and participant-use scope. Paper metadata cannot create recordings.
 
-The specification SHALL reconcile GAP-044 through `specification/v2/docs/sources/private-vendors-and-study.md` `specification/v2/contracts/source-release.schema.json` `specification/v2/domain/corpus-sources.v1.yaml`. Current definition status: `external_contract_missing`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-044 through `specification/v2/docs/sources/private-vendors-and-study.md` `specification/v2/contracts/source-release.schema.json` `specification/v2/domain/corpus-sources.v1.yaml`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-044 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-044 contract and its source references are under review.
@@ -1240,7 +1240,7 @@ The specification SHALL reconcile GAP-044 through `specification/v2/docs/sources
 
 Moodrick and NIR MUST have separate licensed or authorized private-source bindings. Account references cannot substitute for data rights or a documented interface.
 
-The specification SHALL reconcile GAP-045 through `specification/v2/docs/sources/private-vendors-and-study.md` `specification/v2/contracts/connector-configuration.schema.json` `specification/v2/contracts/source-format-binding.schema.json`. Current definition status: `external_contract_missing`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-045 through `specification/v2/docs/sources/private-vendors-and-study.md` `specification/v2/contracts/connector-configuration.schema.json` `specification/v2/contracts/source-format-binding.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-045 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-045 contract and its source references are under review.
@@ -1269,7 +1269,7 @@ The specification SHALL reconcile GAP-045 through `specification/v2/docs/sources
 
 Split allocation MUST preserve connected speaker, learner, script, task, and derivative groups under the fixed policy and retain upstream splits separately.
 
-The specification SHALL reconcile GAP-046 through `specification/v2/docs/splits-and-validation.md` `specification/v2/contracts/split-manifest.schema.json`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-008). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-046 through `specification/v2/docs/splits-and-validation.md` `specification/v2/contracts/split-manifest.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-046 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-046 contract and its source references are under review.
@@ -1298,7 +1298,7 @@ The specification SHALL reconcile GAP-046 through `specification/v2/docs/splits-
 
 Gold coverage MUST count assets, stimuli, target observations, pair families, and controls separately and retain the 732 distinct-stimulus floor.
 
-The specification SHALL reconcile GAP-047 through `specification/v2/docs/review-and-gold.md` `specification/v2/domain/validation-policy.yaml`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-008, FRC-009, FRC-020, FRC-021). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-047 through `specification/v2/docs/review-and-gold.md` `specification/v2/domain/validation-policy.yaml`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-047 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-047 contract and its source references are under review.
@@ -1327,7 +1327,7 @@ The specification SHALL reconcile GAP-047 through `specification/v2/docs/review-
 
 Agreement and semantic metrics MUST use the declared fixed event populations and retain missing labels, abstentions, and pre-adjudication disagreement.
 
-The specification SHALL reconcile GAP-048 through `specification/v2/docs/math-and-judgments.md` `specification/v2/docs/splits-and-validation.md` `specification/v2/contracts/holdout-report.schema.json`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-015, FRC-020). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-048 through `specification/v2/docs/math-and-judgments.md` `specification/v2/docs/splits-and-validation.md` `specification/v2/contracts/holdout-report.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-048 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-048 contract and its source references are under review.
@@ -1356,7 +1356,7 @@ The specification SHALL reconcile GAP-048 through `specification/v2/docs/math-an
 
 Attempt elapsed time MUST use the database start and submission clocks. Play counts MUST use deduplicated validated events bound to the heard asset.
 
-The specification SHALL reconcile GAP-049 through `specification/v2/contracts/attempt.schema.json` `specification/v2/contracts/playback-event.schema.json` `specification/v2/docs/interface-contract.md`. Current definition status: `written_definition_supplied_not_runtime_accepted`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json. An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-049 through `specification/v2/contracts/attempt.schema.json` `specification/v2/contracts/playback-event.schema.json` `specification/v2/docs/interface-contract.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-049 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-049 contract and its source references are under review.
@@ -1383,9 +1383,9 @@ The specification SHALL reconcile GAP-049 through `specification/v2/contracts/at
 
 ### Requirement: SPEC-050 Complete heldout acceptance protocol and critical cases
 
-Release acceptance MUST use frozen configuration, genuine heldout labels, exact compared decisions, separate sample floors, and all critical cases.
+Optional benchmark reporting MUST use frozen configuration, native/LLM heldout labels with explicit origin, exact compared decisions, separate sample floors, and all critical cases.
 
-The specification SHALL reconcile GAP-050 through `specification/v2/docs/splits-and-validation.md` `specification/v2/domain/validation-policy.yaml` `specification/v2/contracts/holdout-report.schema.json`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-015, FRC-020). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-050 through `specification/v2/docs/splits-and-validation.md` `specification/v2/domain/validation-policy.yaml` `specification/v2/contracts/holdout-report.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-050 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-050 contract and its source references are under review.
@@ -1410,11 +1410,11 @@ The specification SHALL reconcile GAP-050 through `specification/v2/docs/splits-
 - **WHEN** an implementer reports completion.
 - **THEN** the report distinguishes this written requirement from implementation and observed evidence.
 
-### Requirement: SPEC-051 Retention, deletion and permission revocation lifecycle
+### Requirement: SPEC-051 Retention, deletion and source-use notices lifecycle
 
-Retention and erasure MUST respect actual source and person restrictions and apply revocation before future display, transfer, restoration, or reuse.
+Retention and erasure MUST respect actual source and person restrictions and retain source-use notices and provide explicit local deletion without a permission-epoch service.
 
-The specification SHALL reconcile GAP-051 through `specification/v2/docs/maintenance-and-limits.md` `specification/v2/contracts/deletion-request.schema.json`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-010). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-051 through `specification/v2/docs/maintenance-and-limits.md` `specification/v2/contracts/deletion-request.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-051 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-051 contract and its source references are under review.
@@ -1443,7 +1443,7 @@ The specification SHALL reconcile GAP-051 through `specification/v2/docs/mainten
 
 One local resource policy MUST bound expensive concurrency, request capacity, cost reservations, and safe archive expansion without disabling stored playback.
 
-The specification SHALL reconcile GAP-052 through `specification/v2/domain/configuration-registry.yaml` `specification/v2/contracts/configuration.schema.json` `specification/v2/docs/maintenance-and-limits.md`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-012, FRC-017). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-052 through `specification/v2/domain/configuration-registry.yaml` `specification/v2/contracts/configuration.schema.json` `specification/v2/docs/maintenance-and-limits.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-052 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-052 contract and its source references are under review.
@@ -1472,7 +1472,7 @@ The specification SHALL reconcile GAP-052 through `specification/v2/domain/confi
 
 Backup and restore MUST use a consistent database/media/evidence boundary, exact hashes, compatibility checks, and non-destructive target activation.
 
-The specification SHALL reconcile GAP-053 through `specification/v2/contracts/backup-manifest.schema.json` `specification/v2/docs/maintenance-and-limits.md`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-010). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-053 through `specification/v2/contracts/backup-manifest.schema.json` `specification/v2/docs/maintenance-and-limits.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-053 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-053 contract and its source references are under review.
@@ -1501,7 +1501,7 @@ The specification SHALL reconcile GAP-053 through `specification/v2/contracts/ba
 
 The project MUST implement the exact simple GitHub source-download setup defined in specification/v2/docs/local-delivery.md. No prebuilt application images or formal software release manifest is required.
 
-The specification SHALL reconcile GAP-054 through `specification/v2/docs/local-delivery.md` `specification/v2/domain/configuration-registry.yaml` `specification/v2/contracts/configuration.schema.json`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-019, FRC-021). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-054 through `specification/v2/docs/local-delivery.md` `specification/v2/domain/configuration-registry.yaml` `specification/v2/contracts/configuration.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-054 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-054 contract and its source references are under review.
@@ -1530,7 +1530,7 @@ The specification SHALL reconcile GAP-054 through `specification/v2/docs/local-d
 
 Each domain MUST resolve to one active artifact and exact compatible versions. Unavailable repository bytes MUST NOT be claimed integrated.
 
-The specification SHALL reconcile GAP-055 through `specification/v2/docs/authority.md` `audit/full-release-reconciliation-20261008/import-manifest.json` `specification/v2/domain/version-compatibility.yaml` `specification/v2/README.md` `specification/v2/docs/migration-compatibility.md` `audit/full-release-reconciliation-20261008/repository-drift.md`. Current definition status: `definition_incomplete_after_recheck`. The exact remaining input and contradictions are in audit/full-release-reconciliation-20261008/REMAINING-GAPS.md and findings.json (FRC-010). An authored policy, generic schema or imported approval cannot substitute for the exact actual decision, source contract or evidence. This specification-only update does not claim implementation or empirical closure.
+The specification SHALL reconcile GAP-055 through `specification/v2/docs/authority.md` `audit/full-release-reconciliation-20261008/import-manifest.json` `specification/v2/domain/version-compatibility.yaml` `specification/v2/README.md` `specification/v2/docs/migration-compatibility.md` `audit/full-release-reconciliation-20261008/repository-drift.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-055 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-055 contract and its source references are under review.

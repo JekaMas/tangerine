@@ -1,12 +1,12 @@
 version: 2.0.0
 rules:
-  SCHEMA-CLOSED: Full Draft2020-12 validation including required, null, enum,
-    range, pattern, uniqueness, and conditional clauses. Unknown fields reject.
+  SCHEMA-CLOSED: Canonical stored records are closed; tolerant provider/request
+    projection retains unknown raw fields before canonical validation.
   REFERENCE-SCOPE: Every non-source-native reference resolves to the declared
     kind, scope, exact version, and hash. Invalid references reject.
-  REAL-EVIDENCE: Measured, human-observed, approved, acquired, and completed
-    values require their actual linked evidence. A requested or inferred value
-    cannot satisfy them.
+  REAL-EVIDENCE: Actual byte/measurement/provider claims require actual
+    observations; LLM judgments have model provenance. No human approval
+    prerequisite.
   VERSION-FROZEN: Historical answer, key, audio, policy, source, and evaluator
     identities cannot change in place.
   MISSING-EXPLICIT: Absent observations use the declared null/status/reason tuple.
@@ -55,7 +55,7 @@ schemas:
       - MISSING-EXPLICIT
     family: source
     family_contract: docs/sources/acquisition-and-rights.md
-    schema_sha256: 7f7a84448ea2f4d4317800e95c8d770d40b363f3922a07cd771e087ac6f258b0
+    schema_sha256: 8fb11fe5eb909e580694d7aea25f62ba9b4eb4973752a9699e491d9f97e4f49b
   source-status:
     schema: contracts/source-status.schema.json
     universal_rules:
@@ -66,7 +66,7 @@ schemas:
       - MISSING-EXPLICIT
     family: source
     family_contract: docs/sources/acquisition-and-rights.md
-    schema_sha256: fe5fd17e8d0cac75caf4d56a33bfab306a957b8e7e2a6bcbc20b3867aada1034
+    schema_sha256: 82d31913f6abc6ff5617e18891a1c9a8a5dc16d9dc3030e85123b1c0bce227ec
   connector-configuration:
     schema: contracts/connector-configuration.schema.json
     universal_rules:
@@ -88,7 +88,7 @@ schemas:
       - MISSING-EXPLICIT
     family: runtime
     family_contract: docs/runtime-and-storage.md
-    schema_sha256: db2e2689391ff9754afa01edac75a5cbee40c4365847fb868b5b3f8ade2e89db
+    schema_sha256: ec0f970fafb613289617a81d2d857b5b975ed5e7fcceb4956b6fe19ea8763492
   cancel-request:
     schema: contracts/cancel-request.schema.json
     universal_rules:
@@ -165,7 +165,7 @@ schemas:
       - MISSING-EXPLICIT
     family: runtime
     family_contract: docs/runtime-and-storage.md
-    schema_sha256: c790efb8b63a46560e3845c03f1f86a90d259c6b67f40b70340f8cfc59f92609
+    schema_sha256: bfb2fed7fac0b4bfa7cd49f4072c0bacfbdcb9d1cc89359e939297a7ff20258a
   adjudication:
     schema: contracts/adjudication.schema.json
     universal_rules:
@@ -176,7 +176,7 @@ schemas:
       - MISSING-EXPLICIT
     family: review
     family_contract: docs/review-and-gold.md
-    schema_sha256: 6bf9558b58b4638f66e801960abbf48d54a72bedb195e5bbfc45279eccfe512e
+    schema_sha256: 8570e9f8ea3daf66b7ed410169d725bbf5e4776bb4dc9ad5b06e95c531be53ac
   asset:
     schema: contracts/asset.schema.json
     universal_rules:
@@ -209,7 +209,7 @@ schemas:
       - MISSING-EXPLICIT
     family: review
     family_contract: docs/review-and-gold.md
-    schema_sha256: c56427649659e139cc5303a6e3533a227a939c5c528f38726775d6044af56827
+    schema_sha256: 987a33fe747c9f063ef9cb7868f4d43fde92d454b5d8ebdbd587e66e2078b98c
   prepare-view:
     schema: contracts/prepare-view.schema.json
     universal_rules:
@@ -286,7 +286,7 @@ schemas:
       - MISSING-EXPLICIT
     family: runtime
     family_contract: docs/runtime-and-storage.md
-    schema_sha256: f43397ad8217067b79aae92cef1ea7ccaf83d1e84378429198fa60a61974d208
+    schema_sha256: 7745d07ab1510357a7d205fe5bc916d05dad526a362f020f03d77f7182b93d35
   linguistic-audit:
     schema: contracts/linguistic-audit.schema.json
     universal_rules:
@@ -308,7 +308,7 @@ schemas:
       - MISSING-EXPLICIT
     family: runtime
     family_contract: docs/runtime-and-storage.md
-    schema_sha256: f8aa98fa7209fbdb6eda912a0aa5cad5e9856d0ccae5539c9ad8496a743624ad
+    schema_sha256: 062913baf597898c0dda8b97378c7ed09c830b7f280c1ca72ca60e17707ca931
   review-decision:
     schema: contracts/review-decision.schema.json
     universal_rules:
@@ -319,7 +319,7 @@ schemas:
       - MISSING-EXPLICIT
     family: review
     family_contract: docs/review-and-gold.md
-    schema_sha256: 4e282dfa720d6b01c8687ff7e1cc7749de5e0e14eb7781e79cd572eee1971b0c
+    schema_sha256: e8c18593ba01d5df452ad1ffeeab08ada460ccb4fc444d3bf04fc1a5d832bcbc
   retry-request:
     schema: contracts/retry-request.schema.json
     universal_rules:
@@ -363,7 +363,7 @@ schemas:
       - MISSING-EXPLICIT
     family: evaluation
     family_contract: docs/math-and-judgments.md
-    schema_sha256: 29fe6cbc4a20a8a08c8d6dffd8e0641fa5040ed2860ad0874fc134e2ac8c8727
+    schema_sha256: 49f071acde9f40f108058b4ab86bdae1ab946adbc9f2fad722e98a3b0bc350a5
   permission-grant:
     schema: contracts/permission-grant.schema.json
     universal_rules:
@@ -374,7 +374,7 @@ schemas:
       - MISSING-EXPLICIT
     family: source
     family_contract: docs/sources/acquisition-and-rights.md
-    schema_sha256: 2c30752957b70f1da799086f0a631f4b13682a7c5271e6290542cd8550d5ce16
+    schema_sha256: b443e839cd030381c5e2085e2dc7eebe6801358ba5f5267b54244f66c854823d
   configuration-view:
     schema: contracts/configuration-view.schema.json
     universal_rules:
@@ -429,7 +429,7 @@ schemas:
       - MISSING-EXPLICIT
     family: runtime
     family_contract: docs/runtime-and-storage.md
-    schema_sha256: 2f9aecb7d4891de1a8bf3ab2e916758a9c1e15f45fee572c3c8815f61f75b846
+    schema_sha256: 002aae5f10c5b8725027339ae09a15e8764bff51dc1f6c539987486cf3eca2fa
   transition-request:
     schema: contracts/transition-request.schema.json
     universal_rules:
@@ -495,7 +495,7 @@ schemas:
       - MISSING-EXPLICIT
     family: runtime
     family_contract: docs/runtime-and-storage.md
-    schema_sha256: 559b0b1c4ab235ad7a2c692652e8bb57ab3aad58424f1143a256cae5ab4601c9
+    schema_sha256: fc05097d42ecb73ba4ce7b25fff5a26075d847d17c990cde80132434e02343c5
   verification-report:
     schema: contracts/verification-report.schema.json
     universal_rules:
@@ -506,7 +506,7 @@ schemas:
       - MISSING-EXPLICIT
     family: runtime
     family_contract: docs/runtime-and-storage.md
-    schema_sha256: 2149a024d9389d2175d21475a824efe0e1496a62cfb358517c1adb756bf78af1
+    schema_sha256: 55d92d8d9429ba6beb25f89c0b5d8787c45554b0cd6a72f00c564b15902d650a
   reconsider-request:
     schema: contracts/reconsider-request.schema.json
     universal_rules:
@@ -550,7 +550,7 @@ schemas:
       - MISSING-EXPLICIT
     family: audio
     family_contract: docs/audio-methods.md
-    schema_sha256: 8b95662365b34542ea4a81641e9c02a4b8c2f94feea5309d291b1e9fee5c3f6b
+    schema_sha256: efd920c32bc2fb294d3bb4f6a9f5b920827433e4d8ae884bfbe5117475284fb6
   raw-record:
     schema: contracts/raw-record.schema.json
     universal_rules:
@@ -583,7 +583,7 @@ schemas:
       - MISSING-EXPLICIT
     family: runtime
     family_contract: docs/runtime-and-storage.md
-    schema_sha256: 7a489863f185f68157cccd48378d7f2e4b8cf299cdd3d940b410f96919be2224
+    schema_sha256: 78c75afb4e5ffe7e32f4ad1419000f1eb0e58efe2d93228501e0dd7a7eda1f00
   teacher-gold:
     schema: contracts/teacher-gold.schema.json
     universal_rules:
@@ -594,7 +594,7 @@ schemas:
       - MISSING-EXPLICIT
     family: review
     family_contract: docs/review-and-gold.md
-    schema_sha256: 6333aa2f50f8f54c3c4d088f7cfd94dc454b4d9428e4b15840da6e5a2cb4bdee
+    schema_sha256: e75ef2a56a14efc7109fc067159c29cd235d85b8bf1388e0a6126474d05a892d
   split-manifest:
     schema: contracts/split-manifest.schema.json
     universal_rules:
@@ -660,7 +660,7 @@ schemas:
       - MISSING-EXPLICIT
     family: source
     family_contract: docs/sources/acquisition-and-rights.md
-    schema_sha256: 3a725fb18d8d854454055e865098b7e66da8dd00cd8ff7f85044a864e92cde3d
+    schema_sha256: d39a8a992d43ee7c57bcbf8ced92c9e9fedd7182fdd493c51a979e2074ae410d
   generation-input:
     schema: contracts/generation-input.schema.json
     universal_rules:
@@ -693,7 +693,7 @@ schemas:
       - MISSING-EXPLICIT
     family: audio
     family_contract: docs/audio-methods.md
-    schema_sha256: 2946632ad32f7b3069abc95bd36f39ae27f4b048c5327b246f5ef455e2d4caf3
+    schema_sha256: 7e5d3af4b5674f0fecc43a7322d3303a44fea30f8beec156f03b5bff0534f25b
   library-item:
     schema: contracts/library-item.schema.json
     universal_rules:
@@ -726,7 +726,7 @@ schemas:
       - MISSING-EXPLICIT
     family: source
     family_contract: docs/sources/acquisition-and-rights.md
-    schema_sha256: 06508927eb737760fa0289a9615fb8f099611dc0e5e9fc1c0168bbd2886a5a83
+    schema_sha256: 612f376136d27a374beb98263b58fd2fa57d826f7a9989d10453354020844efd
   feedback-input:
     schema: contracts/feedback-input.schema.json
     universal_rules:
@@ -792,7 +792,7 @@ schemas:
       - MISSING-EXPLICIT
     family: review
     family_contract: docs/review-and-gold.md
-    schema_sha256: 626fcdc765773b0d21884e8bf1d1d71f8c434e3fd1729fb1c5dee4aa2ab20bc4
+    schema_sha256: 81380758c3bad59be457958ea6f8be09c10f0202c5adb445893e4010215fae20
   common:
     schema: contracts/common.schema.json
     universal_rules:
@@ -836,7 +836,7 @@ schemas:
       - MISSING-EXPLICIT
     family: runtime
     family_contract: docs/runtime-and-storage.md
-    schema_sha256: 04d27d5a482d43440f3413b95390999ba00bb175e8fc5a84b8d3dfcaa5949ff2
+    schema_sha256: d46b0998ea55b634017e4b9199a9c7bffca9545f9134ef0beea4cb2d98ba6e42
   exact-rational:
     schema: contracts/exact-rational.schema.json
     universal_rules:
@@ -913,7 +913,7 @@ schemas:
       - MISSING-EXPLICIT
     family: runtime
     family_contract: docs/runtime-and-storage.md
-    schema_sha256: 59b627b95d5ac8ac2a68726b905385c2b8f8d5dd20f76024114dddad5f56189b
+    schema_sha256: c22de2b8d833af8ef160a58278eba9c0716e8d2541e148f69692bb988ab5a140
   transformation:
     schema: contracts/transformation.schema.json
     universal_rules:
@@ -968,7 +968,7 @@ schemas:
       - MISSING-EXPLICIT
     family: review
     family_contract: docs/review-and-gold.md
-    schema_sha256: 92348be302ec3aa961aa1370a0fa56347ca0589355933b7b3efe996ec52c2ff9
+    schema_sha256: 15af6538182f8fac50d0f5896cb12314f360164df91012fe41f17dd650f90517
   person:
     schema: contracts/person.schema.json
     universal_rules:
@@ -979,7 +979,7 @@ schemas:
       - MISSING-EXPLICIT
     family: review
     family_contract: docs/review-and-gold.md
-    schema_sha256: f30d2f03f194b293db99d5ed453c337059943e7eadff4e3aee84b6499a2db1b7
+    schema_sha256: 747d5e7def23408484c02cbcda0ce0aaf37a9939a47b0e1328cc779bb1085a1d
   result-envelope:
     schema: contracts/result-envelope.schema.json
     universal_rules:
@@ -1034,7 +1034,7 @@ schemas:
       - MISSING-EXPLICIT
     family: runtime
     family_contract: docs/runtime-and-storage.md
-    schema_sha256: 428a6ea0840d60dc438cce015b904036027929e2d65c2f05e29e740db4aae292
+    schema_sha256: 3a948d069be4d9f65d2e7073088c747074666cc98d6611d0f1ab20b816e6caf3
   health:
     schema: contracts/health.schema.json
     universal_rules:
@@ -1076,7 +1076,7 @@ schemas:
       - MISSING-EXPLICIT
     family: runtime
     family_contract: docs/interface-contract.md
-    schema_sha256: e0e060ea7cd1682a33044b8a89077f53c5a076f4bceed137ec5a54b26cc0d20a
+    schema_sha256: 60b6dc86cfbf0a90e514b79edc413f8982214e6fd2d9d465992a390e2f4a7b8e
   blind-review-view:
     schema: contracts/blind-review-view.schema.json
     universal_rules:
@@ -1096,4 +1096,244 @@ schemas:
       - MISSING-EXPLICIT
     family: runtime
     family_contract: docs/interface-contract.md
-    schema_sha256: e906b16533118d5a5f96bd48ae6b81a19057ac3047420ffc6222fb4268433b1a
+    schema_sha256: c2e93639cea07d069e3ce3aeb855d238de9bb1adcfb7aed2adcaab7bae2ef37f
+  adjudicate-request:
+    schema: contracts/adjudicate-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: 3af3d35d2448b04fb31bf0b2467cf12e1f6966a2148f17ade8e0857f02b216ce
+  blind-submit-request:
+    schema: contracts/blind-submit-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: e28618dcb0002ee4d63d4d580eddb186c9e1538eefdfaefed0431bf430880fde
+  connector-request:
+    schema: contracts/connector-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: a31dbaaa55251b3b761d21180f09386170ea7593811b8e9674d5465407c59b09
+  create-dispute-request:
+    schema: contracts/create-dispute-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: 2954a129f1a820bf4f60090ecebc64080da05e7305553f47eec918784cd8476b
+  create-person-request:
+    schema: contracts/create-person-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: 9173b8bf9e92b568c88fb77a77708bb35ba6b62148b8de0b554b037401726409
+  delete-plan-request:
+    schema: contracts/delete-plan-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: 7c94e8fdd444ecdede970225431989a04ef2b38b997539da309157252e07ef4b
+  difficulty-request:
+    schema: contracts/difficulty-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: 1fc2f32ea77a79f3be898287531fb6bd1253ee16ad7be0e1f9e5a5c35d9da933
+  format-binding-request:
+    schema: contracts/format-binding-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: 442acced1fa0d487f511172970fd2ec9d9c7af5b3a293a25cc69662d53323ea2
+  grant-request:
+    schema: contracts/grant-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: 20b0e4cae6775c15a9525a4ebe72f1f99f6e7f0607081952f1e6a6ee49a2d31a
+  llm-review-input:
+    schema: contracts/llm-review-input.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: 878bbcfbd5fcc718203da95c75e65e612664fa9414395631f146a6b70b99f05b
+  llm-review-output:
+    schema: contracts/llm-review-output.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: 4b79ae4ae1b7ef38055cda030b2aa8aae371410d9499f2702456427d6c4d6429
+  play-event-request:
+    schema: contracts/play-event-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: 863d68c7eee1e3b5550f8e5fb538c2b209e7cf61b9e6d56fb02fcfa9fb77bcf4
+  put-config-request:
+    schema: contracts/put-config-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: a7d4bac86078ca1774e75820bdaf3aa5feb47f76e86b8ee1b36c5616d9a917cb
+  qualification-report-request:
+    schema: contracts/qualification-report-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: d4fedf3694d2ba992b5d7f5b700fe16b6b472c6aaa276e5204e0da3e4f267ea7
+  qualification-request:
+    schema: contracts/qualification-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: 4be357c9aeba861a0620802ac27c6b26ae03afb9ba742d59c87e929550665368
+  rationale-request:
+    schema: contracts/rationale-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: 32d694303971163aea1d8bc25a2da48048c1387ba4e8b11d10c03ff004e0b61b
+  resolve-dispute-request:
+    schema: contracts/resolve-dispute-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: 51705a3609fe60f11e344cc694e62c8b9632a42c3344200d37dbab6712ae951b
+  review-decide-request:
+    schema: contracts/review-decide-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: cf82aca0de49678fdd41268e1463d5db3f1d7c04934baeea0cd6c6604a3a9eed
+  source-release-request:
+    schema: contracts/source-release-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: d87dc0b2f93edce97047acba6f45c90e1f324647befef44226f106770c89ec32
+  speech-render-request:
+    schema: contracts/speech-render-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: 9a4f4127b1adf7f9ba610f3fabfb125caf122ae6ccaf8a3891bc47b7dfdd9282
+  split-request:
+    schema: contracts/split-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: 5da4744ad9f3ece208a3f886dd3b56970bf0413e9fa18f2e2889230d2dbc1231
+  start-review-request:
+    schema: contracts/start-review-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: 73dfff36e8649264c6dd97c002a39e3165166fed293512de9ff7a8b4aa9d5f20
+  teacher-gold-request:
+    schema: contracts/teacher-gold-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: 65797384e80ca699dd1a4af271ae4197df56bdba65638fa6f693404212f85ef7
+  unit-map-request:
+    schema: contracts/unit-map-request.schema.json
+    universal_rules:
+      - SCHEMA-CLOSED
+      - REFERENCE-SCOPE
+      - VERSION-FROZEN
+      - MISSING-EXPLICIT
+    family: runtime
+    family_contract: docs/interface-contract.md
+    schema_sha256: ed5d6bba9557a47f09e173d6fa991e7a248e9296876fd23161501744b4b74406

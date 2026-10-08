@@ -15,14 +15,14 @@ The project SHALL supply an open-source GitHub source ZIP or clone with complete
 - **WHEN** the authorized operation receives supported inputs or a violating input
 - **THEN** it SHALL build and start from the complete source ZIP with the documented command and provider keys, and SHALL report missing Docker, build inputs, invalid required settings or build failures without false success
 
-### Requirement: REL-02 Prove the complete browser cycle
+### Requirement: REL-02 Complete local LLM browser cycle
 
-The system SHALL demonstrate real author, independent reviewers and teacher flows with real providers, persistent answers, no early key leakage and no browser secrets.
+The system SHALL support preparation, real rendering, LLM case review, listening, answer checking, result/retry and LLM dispute flows with saved original data and no human peer reviewers.
 
 #### Scenario: REL-02 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL complete one real published case end to end through the browser, and SHALL demonstrate that provider failure preserves the answer without a fake result
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL complete a first playable case and checked answer through the documented UI, and SHALL preserve the answer and actual failure when a provider call fails
 
 ### Requirement: REL-03 Verify portability and restore
 

@@ -9,11 +9,11 @@ bindings:
     timeout_seconds: 220
     status: specification_binding_not_live_qualified
     input_schema_sha256: 33bb1bbbbb22d9a30464c5bf4e6e8ab6b8f94abb3b76f4b85eeace30d161022c
-    output_schema_sha256: 559b0b1c4ab235ad7a2c692652e8bb57ab3aad58424f1143a256cae5ab4601c9
+    output_schema_sha256: fc05097d42ecb73ba4ce7b25fff5a26075d847d17c990cde80132434e02343c5
   - stage: linguistic_audit
     prompt_id: linguistic-audit-v1
     path: prompts/linguistic-audit-v1.txt
-    prompt_sha256: bc412d71b04c6678495490891d7c824c8c6d8d952fdd6cfad62d0e5b3211854c
+    prompt_sha256: 0517110f4cf9fcf8f85c49724a40ddce14d13426bae8e2735e0be53b903cdb5a
     input_schema: linguistic-audit-input.schema.json
     output_schema: linguistic-audit.schema.json
     timeout_seconds: 220
@@ -23,17 +23,17 @@ bindings:
   - stage: blind_claim_extraction
     prompt_id: extract-v1
     path: prompts/extract-v1.txt
-    prompt_sha256: 2d39a3b49f145586a95cec1d4fdc090830c4b437eec2832e3dbb33c9eef1b95b
+    prompt_sha256: 246f1ec4a98a5a871f88f5b730afa955372de6da28713b9f283b6f82d13db39f
     input_schema: extraction-input.schema.json
     output_schema: claim-extraction.schema.json
     timeout_seconds: 40
     status: specification_binding_not_live_qualified
     input_schema_sha256: 2d0624c5942a45387fcf105289dcf9cb186ba4225af3b2f799e1b4818a8b271b
-    output_schema_sha256: 29fe6cbc4a20a8a08c8d6dffd8e0641fa5040ed2860ad0874fc134e2ac8c8727
+    output_schema_sha256: 49f071acde9f40f108058b4ab86bdae1ab946adbc9f2fad722e98a3b0bc350a5
   - stage: claim_mapping
     prompt_id: map-v1
     path: prompts/map-v1.txt
-    prompt_sha256: 8151c2791496c645537dc0db9bfaaba120392fd88203961b70b459f18b1f3a60
+    prompt_sha256: fa3c7042a562d52bf5d676da97c46d753c0502851fac1ad76594cbc3b55bd524
     input_schema: mapping-input.schema.json
     output_schema: evaluator-output.schema.json
     timeout_seconds: 70
@@ -43,7 +43,7 @@ bindings:
   - stage: mapping_audit
     prompt_id: audit-map-v1
     path: prompts/audit-map-v1.txt
-    prompt_sha256: 1152bd821038aa6e31efb279c5127e2eb3f26c22a681ef4bec302e1b1794fcfb
+    prompt_sha256: 5c55950315a2715c7ba9c6aaf695183aad35b997ff72cebf68b3cba6b7c1e947
     input_schema: mapping-input.schema.json
     output_schema: evaluator-output.schema.json
     timeout_seconds: 70
@@ -53,11 +53,32 @@ bindings:
   - stage: feedback
     prompt_id: feedback-v1
     path: prompts/feedback-v1.txt
-    prompt_sha256: 1812fe5636b2aa48b49ac327cd64d60288639a0fe9f56b4f33c990b90b84b4a9
+    prompt_sha256: 82122f62d29b77327b3c7719d6f9df41b48e9eb5a3d5eeace2626979f3ca8abe
     input_schema: feedback-input.schema.json
     output_schema: feedback-output.schema.json
     timeout_seconds: 40
     status: specification_binding_not_live_qualified
     input_schema_sha256: ef7cdec20987f86beddac89e21ffe6877ec261d22b1f464894a1502d962aea1f
     output_schema_sha256: 29db08d1612707d64f6f1b36769656da38b686b1e4b5dd310618c5677423aeae
-authority: No prompt constitutes a human approval or proof of semantic correctness.
+  - stage: case_review
+    prompt_id: case-review-v1
+    path: prompts/case-review-v1.txt
+    input_schema: llm-review-input.schema.json
+    output_schema: llm-review-output.schema.json
+    timeout_seconds: 220
+    status: specification_binding_not_live_qualified
+    prompt_sha256: 6533705dfaf97f0abdbb0f834f67613371e3a6e43b877ed7667971a877cf40ac
+    input_schema_sha256: 878bbcfbd5fcc718203da95c75e65e612664fa9414395631f146a6b70b99f05b
+    output_schema_sha256: 4b79ae4ae1b7ef38055cda030b2aa8aae371410d9499f2702456427d6c4d6429
+  - stage: adjudication
+    prompt_id: adjudication-v1
+    path: prompts/adjudication-v1.txt
+    input_schema: llm-review-input.schema.json
+    output_schema: llm-review-output.schema.json
+    timeout_seconds: 220
+    status: specification_binding_not_live_qualified
+    prompt_sha256: 6440f328c725fd8bf8db9bd837953d1711e879cebe13313b4b996a377288a442
+    input_schema_sha256: 878bbcfbd5fcc718203da95c75e65e612664fa9414395631f146a6b70b99f05b
+    output_schema_sha256: 4b79ae4ae1b7ef38055cda030b2aa8aae371410d9499f2702456427d6c4d6429
+authority: LLM semantic checks are machine judgments with receipts, not human
+  signatures or empirical certification.

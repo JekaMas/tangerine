@@ -29,7 +29,7 @@ Mapping MUST use only permitted unit, correction, proposition, and evidence IDs.
 - **THEN** The server rejects the out-of-scope evidence.
 
 ### Requirement: LLM-03 Backend metrics
-The LLM MUST NOT assign aggregate scores or arbitrary partial credit. The backend MUST derive counts and fractions from resolved decisions. It MUST preserve all formulas in `domain/metrics.v1.yaml`.
+The LLM MUST NOT assign aggregate scores or arbitrary partial credit. The backend MUST derive counts and fractions from resolved decisions. It MUST preserve all formulas in `specification/v2/domain/metrics.v1.yaml`.
 
 #### Scenario: LLM-03 Permitted behavior
 - **GIVEN** Every claim has a resolved decision.

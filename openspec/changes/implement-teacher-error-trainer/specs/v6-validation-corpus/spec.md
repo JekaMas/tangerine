@@ -2,18 +2,19 @@
 
 ## ADDED Requirements
 
-### Requirement: GOLD-01 Full category coverage
-The release MUST satisfy the category coverage rule in `domain/validation-policy.yaml`. Cases MUST have real audio and independent reviews. An unresolved counting rule MUST block the coverage claim.
+### Requirement: GOLD-01 Full category benchmark feature
+
+The project SHALL retain full122-leaf/732-stimulus coverage reports and machine/native label provenance without independent human reviewers or benchmark completion as a local-use gate.
 
 #### Scenario: GOLD-01 Permitted behavior
-- **GIVEN** A corpus manifest lists reviewed cases for every required category.
-- **WHEN** The publisher calculates coverage under an approved counting rule.
-- **THEN** The report names the actual records and missing coverage.
+
+- **WHEN** the supported local action completes
+- **THEN** it SHALL report actual complete/incomplete per-leaf populations
 
 #### Scenario: GOLD-01 Boundary behavior
-- **GIVEN** An empty manifest declares 732 planned stimuli.
-- **WHEN** A publisher requests a complete-corpus claim.
-- **THEN** The claim fails because a plan is not acquired evidence.
+
+- **WHEN** its stated failure or missing-evidence condition occurs
+- **THEN** it SHALL never claim machine self-agreement as independent human accuracy
 
 ### Requirement: GOLD-02 Separate data splits
 Development, calibration, and holdout data MUST have disjoint group manifests. The grouping MUST prevent speaker, script, and case-family leakage. Threshold changes MUST preserve the held-out evaluation boundary.

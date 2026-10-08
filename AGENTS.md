@@ -8,10 +8,10 @@ Keep one OpenSpec task list. Preserve all 122 taxonomy IDs, 27 core and 15 auxil
 Never invent missing original taxonomy, contracts, prompts, source rights, human approvals or linguistic evidence.
 Use real PostgreSQL, private MinIO, Next.js, Go API and Python speech service.
 Keep the synchronous 270-second workflow, server-side secrets and localhost-only web exposure.
-An empty exercise bank stays empty. No queue, realtime loop or silent provider fallback.
+LLMs check answers, case quality and disputes; no human peer reviews or qualifications are product prerequisites. A fresh bank stays empty until actual generation/import. No queue, realtime loop or silent provider fallback.
 Add positive and negative checks for every implementation step and observable property.
 Controlled infrastructure/parser inputs test the real production owner; label their proof boundary.
-Restricted artificial teacher answers/audio gold/provider substitutes require separately scoped decisions.
+Constructed positive/negative examples are allowed for deterministic tests. Label their origin; they do not establish actual corpus, participant, human or live-provider evidence.
 No current source-material statement or JSON approval can fabricate an owner message.
 Do not rerun valid green checks without recording the changed semantic input.
 Keep unperformed checks not_run and blocked dependencies explicit; do not archive unfinished work.

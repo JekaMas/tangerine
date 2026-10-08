@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/create-person-request.schema.json",
+  "title": "create-person-request",
+  "type": "object",
+  "description": "Exact creation/submit content projection for create_person. Response preserves the full stored record; server assigns envelope.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "display_name": {
+      "type": "string",
+      "description": "A locally supplied name.",
+      "maxLength": 200,
+      "minLength": 1
+    },
+    "identity_evidence_asset_ids": {
+      "type": "array",
+      "description": "Private evidence supplied by the operator.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "attester_person_id": {
+      "type": "string",
+      "description": "The actual person who made the attestation.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "attested_at": {
+      "type": "string",
+      "description": "The attestation time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "same_person_alias_ids": {
+      "type": "array",
+      "description": "Known duplicate identifiers for this person.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "consent_id": {
+      "type": "string",
+      "description": "The real applicable consent record.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "retired": {
+      "type": "boolean",
+      "description": "Whether new assignments are prohibited."
+    }
+  },
+  "required": [
+    "schema_version",
+    "display_name",
+    "identity_evidence_asset_ids",
+    "attester_person_id",
+    "attested_at",
+    "same_person_alias_ids",
+    "consent_id",
+    "retired"
+  ],
+  "additionalProperties": false
+}

@@ -3,7 +3,7 @@
   "$id": "https://tangerine.invalid/schemas/review-decision.schema.json",
   "title": "review-decision",
   "type": "object",
-  "description": "A human decision after key disclosure.",
+  "description": "Current LLM processing record or lossless imported source record; no human peer review prerequisite.",
   "properties": {
     "schema_version": {
       "const": "2.0.0",
@@ -60,7 +60,7 @@
     },
     "decision": {
       "type": "string",
-      "description": "The actual human decision.",
+      "description": "The LLM decision or imported native human decision.",
       "enum": [
         "approve",
         "reject",
@@ -175,11 +175,19 @@
       "description": "The actual adjudication that resolved a dispute."
     },
     "person_id": {
-      "type": "string",
-      "description": "The genuine reviewer.",
-      "maxLength": 128,
-      "minLength": 1,
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The imported native reviewer, null for LLM review.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Legacy imported value; null for LLM processing."
     },
     "submitted_at": {
       "type": "string",
@@ -187,6 +195,34 @@
       "maxLength": 35,
       "minLength": 20,
       "format": "date-time"
+    },
+    "origin": {
+      "type": "string",
+      "enum": [
+        "llm",
+        "source_import"
+      ],
+      "description": "Actual label origin; never a claim of new human peer review."
+    },
+    "provider_receipt_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "uniqueItems": true
+    },
+    "input_modality": {
+      "type": "string",
+      "enum": [
+        "text",
+        "text_with_speech_evidence",
+        "audio",
+        "native_annotation"
+      ],
+      "description": "Actual input modality; transcript-only models never claim direct hearing."
     }
   },
   "required": [
@@ -205,7 +241,34 @@
     "reason",
     "adjudication_id",
     "person_id",
-    "submitted_at"
+    "submitted_at",
+    "origin",
+    "provider_receipt_ids",
+    "input_modality"
   ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "origin": {
+            "const": "llm"
+          }
+        },
+        "required": [
+          "origin"
+        ]
+      },
+      "then": {
+        "properties": {
+          "person_id": {
+            "const": null
+          },
+          "provider_receipt_ids": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
 }

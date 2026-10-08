@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "encoding": "Exact schema pointers/hashes and declared storage class; not executed migration or full semantic field ownership proof",
+  "encoding": "Exact complete schema pointer/hash and storage-class coverage; no executed migration or semantic acceptance implied.",
   "records": [
     {
       "kind": "accept-candidate-request",
@@ -37,9 +37,59 @@
       ]
     },
     {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "adjudicate-request",
+      "schema": "contracts/adjudicate-request.schema.json",
+      "sha256": "3af3d35d2448b04fb31bf0b2467cf12e1f6966a2148f17ade8e0857f02b216ce",
+      "schema_version": null,
+      "fields": [
+        {
+          "name": "case_version_id",
+          "pointer": "/properties/case_version_id",
+          "required_in_parent": true,
+          "description": "The exact version.",
+          "schema_reference": null,
+          "rule_sha256": "16ecdd1750d6abc262eb28081b7b9923fc56a84dcef4578ee7931e72173d0df2"
+        },
+        {
+          "name": "audio_sha256",
+          "pointer": "/properties/audio_sha256",
+          "required_in_parent": true,
+          "description": "The exact heard file.",
+          "schema_reference": null,
+          "rule_sha256": "48908b4a8ef6b3fde3d4c6fc78e8b50cb196912ecda5353da03bee9b9cbaf8d4"
+        },
+        {
+          "name": "prior_review_decision_ids",
+          "pointer": "/properties/prior_review_decision_ids",
+          "required_in_parent": true,
+          "description": "The conflicting preserved reviews.",
+          "schema_reference": null,
+          "rule_sha256": "f9d611a15912182eaea4d3bcf3d5a55bc212e82acc1b0d5081515a488062ee52"
+        },
+        {
+          "name": "unit_ids",
+          "pointer": "/properties/unit_ids",
+          "required_in_parent": true,
+          "description": "The exact disputed units.",
+          "schema_reference": null,
+          "rule_sha256": "ee17a3492fe1f00541b4bdaf84ae79c4099622a1d1da4f930707548234a511e3"
+        },
+        {
+          "name": "evidence_ids",
+          "pointer": "/properties/evidence_ids",
+          "required_in_parent": true,
+          "description": "Actual supporting evidence.",
+          "schema_reference": null,
+          "rule_sha256": "02716eb54865f06bac3b64f841cdb49e152b8cc63bea6622a3c16c516108133b"
+        }
+      ]
+    },
+    {
       "kind": "adjudication",
       "schema": "contracts/adjudication.schema.json",
-      "sha256": "6bf9558b58b4638f66e801960abbf48d54a72bedb195e5bbfc45279eccfe512e",
+      "sha256": "8570e9f8ea3daf66b7ed410169d725bbf5e4776bb4dc9ad5b06e95c531be53ac",
       "schema_version": null,
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -72,9 +122,9 @@
           "name": "adjudicator_person_id",
           "pointer": "/properties/adjudicator_person_id",
           "required_in_parent": true,
-          "description": "A genuine third qualified person.",
+          "description": "Legacy imported value; null for LLM processing.",
           "schema_reference": null,
-          "rule_sha256": "717b79867d067d156036ed21cd9035f2c683e1b42869c49e114e18b0257f038b"
+          "rule_sha256": "8db7ed65fad15469f6da6b15c13e8027511d26a5de2d92c76310794ac7c3f811"
         },
         {
           "name": "qualification_ids",
@@ -131,6 +181,62 @@
           "description": "The actual decision time.",
           "schema_reference": null,
           "rule_sha256": "5899815b8a0c565f7eba3c0444c625140f19f31f148209c4306aa616824638f5"
+        },
+        {
+          "name": "origin",
+          "pointer": "/properties/origin",
+          "required_in_parent": true,
+          "description": "Actual label origin; never a claim of new human peer review.",
+          "schema_reference": null,
+          "rule_sha256": "5deb173b5f06d5f6e80d8a5a6338a21fe7fb3f71e98b7dac7de21c6d1eb526f1"
+        },
+        {
+          "name": "provider_receipt_ids",
+          "pointer": "/properties/provider_receipt_ids",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "6e2c66b26e0618bb678a62120c5555296c6fd8997f1b23771bba173232397ede"
+        },
+        {
+          "name": "input_modality",
+          "pointer": "/properties/input_modality",
+          "required_in_parent": true,
+          "description": "Actual input modality; transcript-only models never claim direct hearing.",
+          "schema_reference": null,
+          "rule_sha256": "e568a5f1607b95013f746da3814aa4a5440b0a2696ba1897da9156a445226037"
+        },
+        {
+          "name": "origin",
+          "pointer": "/allOf/0/if/properties/origin",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "ce2e93d8f76fec21365c91a4763e9b8a31bd4faa0817f4d4f343e8c2f80cf29e"
+        },
+        {
+          "name": "adjudicator_person_id",
+          "pointer": "/allOf/0/then/properties/adjudicator_person_id",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "5fcfb3a76360a2de847194bde7be4c48c6d3996b29cf85b088732c8eed1d7e70"
+        },
+        {
+          "name": "qualification_ids",
+          "pointer": "/allOf/0/then/properties/qualification_ids",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c6e95d25e769ba2e73cce6f5e3449527e8d34d93f596857a4c79137ec148cce3"
+        },
+        {
+          "name": "provider_receipt_ids",
+          "pointer": "/allOf/0/then/properties/provider_receipt_ids",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "a266681ad891d579e5dc01c7c6003450a8ee440cefd7763bcaa68c9d7cff111c"
         }
       ]
     },
@@ -163,7 +269,7 @@
     {
       "kind": "approval-record",
       "schema": "contracts/approval-record.schema.json",
-      "sha256": "59b627b95d5ac8ac2a68726b905385c2b8f8d5dd20f76024114dddad5f56189b",
+      "sha256": "c22de2b8d833af8ef160a58278eba9c0716e8d2541e148f69692bb988ab5a140",
       "schema_version": "1.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -881,7 +987,7 @@
     {
       "kind": "audio-measurement",
       "schema": "contracts/audio-measurement.schema.json",
-      "sha256": "2946632ad32f7b3069abc95bd36f39ae27f4b048c5327b246f5ef455e2d4caf3",
+      "sha256": "7e5d3af4b5674f0fecc43a7322d3303a44fea30f8beec156f03b5bff0534f25b",
       "schema_version": null,
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -970,9 +1076,9 @@
           "name": "evidence_asset_ids",
           "pointer": "/properties/evidence_asset_ids",
           "required_in_parent": true,
-          "description": "Raw measurements or human review evidence.",
+          "description": "Raw measurements, machine findings or imported native annotations.",
           "schema_reference": null,
-          "rule_sha256": "f14ad1fc445bdf0c663ac47bb19af1d214e16a879a934fab7feb6a96bc8d2b8b"
+          "rule_sha256": "ac03d976aa29b7e8c507b9d4afc72b04e6ee12a8c2afced1804806962bcc711e"
         },
         {
           "name": "reason",
@@ -2369,7 +2475,7 @@
     {
       "kind": "blind-annotation",
       "schema": "contracts/blind-annotation.schema.json",
-      "sha256": "626fcdc765773b0d21884e8bf1d1d71f8c434e3fd1729fb1c5dee4aa2ab20bc4",
+      "sha256": "81380758c3bad59be457958ea6f8be09c10f0202c5adb445893e4010215fae20",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -2426,9 +2532,9 @@
           "name": "heard_entire_recording_attestation",
           "pointer": "/properties/heard_entire_recording_attestation",
           "required_in_parent": true,
-          "description": "The human states that the entire recording was heard.",
+          "description": "Legacy imported value; null for LLM processing.",
           "schema_reference": null,
-          "rule_sha256": "f251e31281b170c8ce7a7251590f7e9f5b9c1e35a3d23d57b63adb38fa11841e"
+          "rule_sha256": "386030340e6d70696255a433971759f00d5b2cb6860eb9ddb1c92ca4032157a8"
         },
         {
           "name": "submitted_at",
@@ -2445,6 +2551,30 @@
           "description": "The canonical submission digest.",
           "schema_reference": null,
           "rule_sha256": "e660ac74713f43bd6ae3606ff45e5494ef3c983f9a69d49f306c8d49c5166d43"
+        },
+        {
+          "name": "origin",
+          "pointer": "/properties/origin",
+          "required_in_parent": true,
+          "description": "Actual label origin; never a claim of new human peer review.",
+          "schema_reference": null,
+          "rule_sha256": "5deb173b5f06d5f6e80d8a5a6338a21fe7fb3f71e98b7dac7de21c6d1eb526f1"
+        },
+        {
+          "name": "provider_receipt_ids",
+          "pointer": "/properties/provider_receipt_ids",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "6e2c66b26e0618bb678a62120c5555296c6fd8997f1b23771bba173232397ede"
+        },
+        {
+          "name": "input_modality",
+          "pointer": "/properties/input_modality",
+          "required_in_parent": true,
+          "description": "Actual input modality; transcript-only models never claim direct hearing.",
+          "schema_reference": null,
+          "rule_sha256": "e568a5f1607b95013f746da3814aa4a5440b0a2696ba1897da9156a445226037"
         },
         {
           "name": "id",
@@ -2541,6 +2671,30 @@
           "description": "The sample clock in Hz as an integer.",
           "schema_reference": null,
           "rule_sha256": "65046d4374dbbc193f21efefd011f9967b36cb4122548137b51d24b4cc3924c1"
+        },
+        {
+          "name": "origin",
+          "pointer": "/allOf/0/if/properties/origin",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "ce2e93d8f76fec21365c91a4763e9b8a31bd4faa0817f4d4f343e8c2f80cf29e"
+        },
+        {
+          "name": "heard_entire_recording_attestation",
+          "pointer": "/allOf/0/then/properties/heard_entire_recording_attestation",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "5fcfb3a76360a2de847194bde7be4c48c6d3996b29cf85b088732c8eed1d7e70"
+        },
+        {
+          "name": "provider_receipt_ids",
+          "pointer": "/allOf/0/then/properties/provider_receipt_ids",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "a266681ad891d579e5dc01c7c6003450a8ee440cefd7763bcaa68c9d7cff111c"
         }
       ]
     },
@@ -2599,6 +2753,40 @@
           "description": "Own frozen blind submission identity or null.",
           "schema_reference": null,
           "rule_sha256": "bfcb8762655dd0c1220e992932da48dc4e322d0e46d5ac1087efffe4f9878541"
+        }
+      ]
+    },
+    {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "blind-submit-request",
+      "schema": "contracts/blind-submit-request.schema.json",
+      "sha256": "e28618dcb0002ee4d63d4d580eddb186c9e1538eefdfaefed0431bf430880fde",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "review_context_id",
+          "pointer": "/properties/review_context_id",
+          "required_in_parent": true,
+          "description": "The blind review context.",
+          "schema_reference": null,
+          "rule_sha256": "a2aa73d41e9628b4aca825fff0343f76f01e3e86b51d253ad6b03a2242cbde10"
+        },
+        {
+          "name": "audio_sha256",
+          "pointer": "/properties/audio_sha256",
+          "required_in_parent": true,
+          "description": "The exact heard bytes.",
+          "schema_reference": null,
+          "rule_sha256": "96fd512be5dd2d6fb0d851a50a5cdfe2d6c9e3a1da924df0fa4c48c068c593b4"
         }
       ]
     },
@@ -3197,7 +3385,7 @@
     {
       "kind": "capability-record",
       "schema": "contracts/capability-record.schema.json",
-      "sha256": "8b95662365b34542ea4a81641e9c02a4b8c2f94feea5309d291b1e9fee5c3f6b",
+      "sha256": "efd920c32bc2fb294d3bb4f6a9f5b920827433e4d8ae884bfbe5117475284fb6",
       "schema_version": null,
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -3270,9 +3458,9 @@
           "name": "review_decision_ids",
           "pointer": "/properties/review_decision_ids",
           "required_in_parent": true,
-          "description": "The actual independent resolved decisions.",
+          "description": "Actual machine decisions or native source decisions with label origin.",
           "schema_reference": null,
-          "rule_sha256": "47dae6773fa5ef49ae1ff670f81d694dbc1fea9f9520ce28a27db22544bed05a"
+          "rule_sha256": "0674e07420b73e617cd7d94546af19d690c7f4ce114d6b94bee7d2d022a05083"
         },
         {
           "name": "measurement_ids",
@@ -3311,7 +3499,7 @@
     {
       "kind": "case-candidate",
       "schema": "contracts/case-candidate.schema.json",
-      "sha256": "559b0b1c4ab235ad7a2c692652e8bb57ab3aad58424f1143a256cae5ab4601c9",
+      "sha256": "fc05097d42ecb73ba4ce7b25fff5a26075d847d17c990cde80132434e02343c5",
       "schema_version": "1.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -3362,7 +3550,7 @@
           "required_in_parent": true,
           "description": "These records describe proposed targets before acoustic realization and review.",
           "schema_reference": null,
-          "rule_sha256": "38348eafbc04b1c652ecc144b306b7dffdc1e92bbc959be6202921539879b60f"
+          "rule_sha256": "982f7a20d42c1283dc2389066313852598f5c5b6aca0e93b3cedf1eede9cb112"
         },
         {
           "name": "id",
@@ -3474,7 +3662,7 @@
           "required_in_parent": true,
           "description": "This object separates the intended target, actual audio, and observed evidence.",
           "schema_reference": null,
-          "rule_sha256": "996b6abdf1b7baa72d5d435cc59177ff1cf1c4b3c1f27ea71fdf4e1011804ce6"
+          "rule_sha256": "a7dc95de3a3efd46adc6c1999820368ab18d557487af555ca9396c38b674d771"
         },
         {
           "name": "severity",
@@ -3632,9 +3820,9 @@
           "name": "observed_ipa",
           "pointer": "/properties/planned_units/items/properties/realization/properties/observed_ipa",
           "required_in_parent": true,
-          "description": "This field records the pronunciation that a qualified reviewer actually observed.",
+          "description": "This field records the pronunciation that a native annotation, measured evidence or modality-labelled LLM inference supports.",
           "schema_reference": null,
-          "rule_sha256": "2119e8ec2f3863dbd17b2395005b39a455eada82a07dcea24f54756d0363b4f8"
+          "rule_sha256": "36d1c14575642a8047e22b8ab5130972a99045447227f2cf4c184c42ce7a8f23"
         },
         {
           "name": "prosody",
@@ -3971,7 +4159,7 @@
     {
       "kind": "claim-extraction",
       "schema": "contracts/claim-extraction.schema.json",
-      "sha256": "29fe6cbc4a20a8a08c8d6dffd8e0641fa5040ed2860ad0874fc134e2ac8c8727",
+      "sha256": "49f071acde9f40f108058b4ab86bdae1ab946adbc9f2fad722e98a3b0bc350a5",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -4003,10 +4191,10 @@
         {
           "name": "coverage",
           "pointer": "/properties/coverage",
-          "required_in_parent": true,
-          "description": "Ordered source coverage. No omitted material.",
+          "required_in_parent": false,
+          "description": "Optional model hint; server derives complete canonical coverage from validated original spans.",
           "schema_reference": null,
-          "rule_sha256": "72329eaea6cb44ab5ab6bdd8066aa509d0b302b71a03c440b8c40a8a4b3b1aac"
+          "rule_sha256": "ba1cb2efb17087b8dfcfabeffcb58e6fe3f1fb7240048e30d88e0ae608cc70de"
         },
         {
           "name": "relations",
@@ -4521,7 +4709,7 @@
     {
       "kind": "configuration",
       "schema": "contracts/configuration.schema.json",
-      "sha256": "428a6ea0840d60dc438cce015b904036027929e2d65c2f05e29e740db4aae292",
+      "sha256": "3a948d069be4d9f65d2e7073088c747074666cc98d6611d0f1ab20b816e6caf3",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -4596,7 +4784,7 @@
           "required_in_parent": true,
           "description": "Explicit resource limits. They do not reduce source scope.",
           "schema_reference": null,
-          "rule_sha256": "2dbaddc4dbbb53d600fb59830410e139ebc67039fae3e7208f710715c5792e82"
+          "rule_sha256": "4e1bbd96d2f3a397b8f65685a26975968d095e3ecb42158e8d2663b7ab3ebd87"
         },
         {
           "name": "configuration_sha256",
@@ -4620,7 +4808,15 @@
           "required_in_parent": true,
           "description": "Advanced explicit role overrides; null inherits the explicitly selected default profile, never an error fallback.",
           "schema_reference": null,
-          "rule_sha256": "30e5b6491b5c93635596117fad2e47385708402d9c7b5700228956ffbe7717ad"
+          "rule_sha256": "1c61aef42e6b4f67cccb34af806d0d6c4c7c20639e1c4bce6167b12bf32f6279"
+        },
+        {
+          "name": "mapping_audit_enabled",
+          "pointer": "/properties/mapping_audit_enabled",
+          "required_in_parent": true,
+          "description": "Optional diagnostic only; default answer checking uses one mapper.",
+          "schema_reference": null,
+          "rule_sha256": "f7ccada427ed07da7a9e8595f901519cd2a59e103a7d6fc55ac684ae3ca38a22"
         },
         {
           "name": "deepseek",
@@ -4650,17 +4846,17 @@
           "name": "daily_micro_usd",
           "pointer": "/properties/limits/properties/daily_micro_usd",
           "required_in_parent": true,
-          "description": "The local daily cost ceiling.",
+          "description": "Optional cost cap; null disables it by default.",
           "schema_reference": null,
-          "rule_sha256": "528d4a3678685b1a0fa7dd8883f140ad0a20bd8265a700ab4cc5c57121bce621"
+          "rule_sha256": "5dde0404c266ab71ca6f6f001bf1c957ca29cd9af7be1b3ec84a6b2a125112e2"
         },
         {
           "name": "monthly_micro_usd",
           "pointer": "/properties/limits/properties/monthly_micro_usd",
           "required_in_parent": true,
-          "description": "The local monthly cost ceiling.",
+          "description": "Optional cost cap; null disables it by default.",
           "schema_reference": null,
-          "rule_sha256": "a84bbe3b82c1d3bb4d8ffcc1ad7c7e5a6af16d61eb67809233ea145f9be08311"
+          "rule_sha256": "0910abf464a0dd3dfeba758730555d025cfe75fb7eefddc20f15db1982a49d95"
         },
         {
           "name": "concurrent_paid_operations",
@@ -4749,6 +4945,22 @@
           "description": "Explicit selected profile ID for feedback or declared default inheritance.",
           "schema_reference": null,
           "rule_sha256": "0af9cc30d527fa98b4d62a633b754b5ab8389c611b5d878dcb4fe0e58e0f418c"
+        },
+        {
+          "name": "case_review",
+          "pointer": "/properties/stage_profiles/properties/case_review",
+          "required_in_parent": true,
+          "description": "Explicit profile or null inherits the selected default for case_review",
+          "schema_reference": null,
+          "rule_sha256": "0d5d0bba1c4933084bee8d7cd67e8a699462bc9da0cba453083ed36ac120ecea"
+        },
+        {
+          "name": "adjudication",
+          "pointer": "/properties/stage_profiles/properties/adjudication",
+          "required_in_parent": true,
+          "description": "Explicit profile or null inherits the selected default for adjudication",
+          "schema_reference": null,
+          "rule_sha256": "02dc5ad07451a7742570d284be415755e55c46a2209dd557fdec89d3c9655c98"
         }
       ]
     },
@@ -4855,6 +5067,96 @@
           "description": "The effective connector readiness.",
           "schema_reference": null,
           "rule_sha256": "13b4a13b4b396898b4d30b612dcd1d9a57a03371b6c115e335c44959ae95a09d"
+        }
+      ]
+    },
+    {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "connector-request",
+      "schema": "contracts/connector-request.schema.json",
+      "sha256": "a31dbaaa55251b3b761d21180f09386170ea7593811b8e9674d5465407c59b09",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "source_id",
+          "pointer": "/properties/source_id",
+          "required_in_parent": true,
+          "description": "The exact vendor or corpus.",
+          "schema_reference": null,
+          "rule_sha256": "625460756c5505f22478ffce549b56b059960f448fa8713c7ed23b8b38b20817"
+        },
+        {
+          "name": "mode",
+          "pointer": "/properties/mode",
+          "required_in_parent": true,
+          "description": "The actual supported access path.",
+          "schema_reference": null,
+          "rule_sha256": "2e137534e9e0b21fd40ad47feea93e7f5ced4985d7c360d3765f41f8c7403f73"
+        },
+        {
+          "name": "account_label",
+          "pointer": "/properties/account_label",
+          "required_in_parent": true,
+          "description": "A nonsecret description of the entitled account.",
+          "schema_reference": null,
+          "rule_sha256": "1c595ad8d943a66414c468fdac7b141ef00c4907c63997205f24b6f9dbf885bc"
+        },
+        {
+          "name": "credential_ref",
+          "pointer": "/properties/credential_ref",
+          "required_in_parent": true,
+          "description": "The mounted secret reference.",
+          "schema_reference": null,
+          "rule_sha256": "2f4a6866650a1a0bf0ecae6d055e224c71043cc3f7896dd44295dff69213035d"
+        },
+        {
+          "name": "contract_asset_ids",
+          "pointer": "/properties/contract_asset_ids",
+          "required_in_parent": true,
+          "description": "Actual authorization and interface documents.",
+          "schema_reference": null,
+          "rule_sha256": "7138f55b202a3db30df8f31b54cd20ce912a5495314ccec58a7569311f2194e7"
+        },
+        {
+          "name": "adapter_id",
+          "pointer": "/properties/adapter_id",
+          "required_in_parent": true,
+          "description": "A shipped, reviewed adapter with a fixed wire contract.",
+          "schema_reference": null,
+          "rule_sha256": "6336abf5e8f4126851f26ad73c7ada2449dfd6ccf3844e5180b06373f5018d2e"
+        },
+        {
+          "name": "adapter_sha256",
+          "pointer": "/properties/adapter_sha256",
+          "required_in_parent": true,
+          "description": "The actual adapter implementation.",
+          "schema_reference": null,
+          "rule_sha256": "11a3ec4a9ab2869d26a3a20b095f3937a48e2cf311e0ef8c7d54d5bdbef91851"
+        },
+        {
+          "name": "allowed_hosts",
+          "pointer": "/properties/allowed_hosts",
+          "required_in_parent": true,
+          "description": "No wildcard or user-supplied arbitrary URL.",
+          "schema_reference": null,
+          "rule_sha256": "663d64a15aaf56d7cdc17b9b72fdd45052f907a00beaf28f7fa6b074c74ca307"
+        },
+        {
+          "name": "selected_use",
+          "pointer": "/properties/selected_use",
+          "required_in_parent": true,
+          "description": "The distinct intended uses.",
+          "schema_reference": null,
+          "rule_sha256": "85817c7f869408e694d8f43f62cf8d652c48a7f2eb4f01cb85b5d7c8e37f831e"
         }
       ]
     },
@@ -5077,6 +5379,220 @@
       ]
     },
     {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "create-dispute-request",
+      "schema": "contracts/create-dispute-request.schema.json",
+      "sha256": "2954a129f1a820bf4f60090ecebc64080da05e7305553f47eec918784cd8476b",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "attempt_id",
+          "pointer": "/properties/attempt_id",
+          "required_in_parent": true,
+          "description": "The affected attempt, if this dispute arose from an answer.",
+          "schema_reference": null,
+          "rule_sha256": "dde23c093780cd8a0e9c50ca5918cea4c175b06221f606c0cc1b064857f7c8e0"
+        },
+        {
+          "name": "case_version_id",
+          "pointer": "/properties/case_version_id",
+          "required_in_parent": true,
+          "description": "The disputed version.",
+          "schema_reference": null,
+          "rule_sha256": "6fd87c32f8d23ee59483c3740bcfa3e483a5cdc9bab62195fd379820dbac8d9d"
+        },
+        {
+          "name": "result_id",
+          "pointer": "/properties/result_id",
+          "required_in_parent": true,
+          "description": "The disputed result.",
+          "schema_reference": null,
+          "rule_sha256": "7d3b82bcb96173e90f2882f08617c6a312b12b3c8b4b91de3770fc69c61e3bdc"
+        },
+        {
+          "name": "claim_ids",
+          "pointer": "/properties/claim_ids",
+          "required_in_parent": true,
+          "description": "Affected teacher statements.",
+          "schema_reference": null,
+          "rule_sha256": "74cf820ae8f44f8ca91963ca7545c44468e281f5b2a30a45864b4371dd3b921d"
+        },
+        {
+          "name": "unit_ids",
+          "pointer": "/properties/unit_ids",
+          "required_in_parent": true,
+          "description": "Affected known units.",
+          "schema_reference": null,
+          "rule_sha256": "7a1294ecb7650818aafd2360868eb85836edbfcda649a29cc26a78d5d529a3d3"
+        },
+        {
+          "name": "evidence_ids",
+          "pointer": "/properties/evidence_ids",
+          "required_in_parent": true,
+          "description": "Supporting evidence.",
+          "schema_reference": null,
+          "rule_sha256": "241efab8858caf3867099e506df9621bdfb47a90f28e4a973ae019d62f5996f7"
+        },
+        {
+          "name": "statement",
+          "pointer": "/properties/statement",
+          "required_in_parent": true,
+          "description": "The actual dispute text.",
+          "schema_reference": null,
+          "rule_sha256": "8f0f955e610fbecacbc95fd69fbf3fabbe7cc5b1963820739fd448f20ecf3907"
+        }
+      ]
+    },
+    {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "create-person-request",
+      "schema": "contracts/create-person-request.schema.json",
+      "sha256": "9173b8bf9e92b568c88fb77a77708bb35ba6b62148b8de0b554b037401726409",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "display_name",
+          "pointer": "/properties/display_name",
+          "required_in_parent": true,
+          "description": "A locally supplied name.",
+          "schema_reference": null,
+          "rule_sha256": "3d4050682645a58e58af78a1531f53d65874fd14f6e50a775d15a48568e40019"
+        },
+        {
+          "name": "identity_evidence_asset_ids",
+          "pointer": "/properties/identity_evidence_asset_ids",
+          "required_in_parent": true,
+          "description": "Private evidence supplied by the operator.",
+          "schema_reference": null,
+          "rule_sha256": "30f173c4d1cfe6c53e6950555d9729159f50bf988d48b0f149b7e97eb0f05fe5"
+        },
+        {
+          "name": "attester_person_id",
+          "pointer": "/properties/attester_person_id",
+          "required_in_parent": true,
+          "description": "The actual person who made the attestation.",
+          "schema_reference": null,
+          "rule_sha256": "18ac47f9fd0fa027ba193dc0f153bf433dda27733057ccd3f1cbad741dd6203f"
+        },
+        {
+          "name": "attested_at",
+          "pointer": "/properties/attested_at",
+          "required_in_parent": true,
+          "description": "The attestation time.",
+          "schema_reference": null,
+          "rule_sha256": "0a360a4221d159fcc10072d2d39d7e22aa0163deb467930c9a3c25ef39e8c3e4"
+        },
+        {
+          "name": "same_person_alias_ids",
+          "pointer": "/properties/same_person_alias_ids",
+          "required_in_parent": true,
+          "description": "Known duplicate identifiers for this person.",
+          "schema_reference": null,
+          "rule_sha256": "7afe4156ace55dd60cc2c4ea4f86bae6deb9dc394f93aa1834dfc5bf0cd122cc"
+        },
+        {
+          "name": "consent_id",
+          "pointer": "/properties/consent_id",
+          "required_in_parent": true,
+          "description": "The real applicable consent record.",
+          "schema_reference": null,
+          "rule_sha256": "5fa2d92191274985742bda15457c913230da3a18eb77dace078945a6ba6fb161"
+        },
+        {
+          "name": "retired",
+          "pointer": "/properties/retired",
+          "required_in_parent": true,
+          "description": "Whether new assignments are prohibited.",
+          "schema_reference": null,
+          "rule_sha256": "d01fc9bfdc6001e44e605f0436729acfc53186800f0fa2df00b990784d266eb6"
+        }
+      ]
+    },
+    {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "delete-plan-request",
+      "schema": "contracts/delete-plan-request.schema.json",
+      "sha256": "7c94e8fdd444ecdede970225431989a04ef2b38b997539da309157252e07ef4b",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "subjects",
+          "pointer": "/properties/subjects",
+          "required_in_parent": true,
+          "description": "Every selected subject.",
+          "schema_reference": null,
+          "rule_sha256": "b278867cc8a3f9bdfb6e9abbb3e50ff74ff67bb0bffffafa97fb07a31ac9f61b"
+        },
+        {
+          "name": "reason",
+          "pointer": "/properties/reason",
+          "required_in_parent": true,
+          "description": "The actual basis.",
+          "schema_reference": null,
+          "rule_sha256": "38b4e8b42782f367baa1bbf9a52336d1a5c8ddcce94304f4449264e2fef47b8b"
+        },
+        {
+          "name": "retain_hashes",
+          "pointer": "/properties/retain_hashes",
+          "required_in_parent": true,
+          "description": "Whether the documented rights basis permits retaining hashes.",
+          "schema_reference": null,
+          "rule_sha256": "d2153d532fa0d2291728b828ec9f7cf0c33cea6bfccd97b972857583b4068e71"
+        },
+        {
+          "name": "kind",
+          "pointer": "/properties/subjects/items/properties/kind",
+          "required_in_parent": true,
+          "description": "The kind of the referenced object.",
+          "schema_reference": null,
+          "rule_sha256": "dfb6c36b74e9d1333524274ec9a1d7b79ba1f50d4a0e3315044bfeef43271d1f"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/subjects/items/properties/id",
+          "required_in_parent": true,
+          "description": "The identifier in the declared kind.",
+          "schema_reference": null,
+          "rule_sha256": "acec96e38b3c0e4d48db72019cbc01e50a471cb129e6be2980930bd8ba1c8aea"
+        },
+        {
+          "name": "version_id",
+          "pointer": "/properties/subjects/items/properties/version_id",
+          "required_in_parent": true,
+          "description": "The exact version when the object is versioned.",
+          "schema_reference": null,
+          "rule_sha256": "b3bf02840c4365411331a6f6b295e77c641ccb67740c3c62ed90a8035a3de013"
+        }
+      ]
+    },
+    {
       "kind": "deletion-request",
       "schema": "contracts/deletion-request.schema.json",
       "sha256": "419c31575eafbd9e7226d7d68c37a6b75d2897e0a7de90c5a28feade242db9e7",
@@ -5195,6 +5711,64 @@
           "description": "The exact version when the object is versioned.",
           "schema_reference": null,
           "rule_sha256": "b3bf02840c4365411331a6f6b295e77c641ccb67740c3c62ed90a8035a3de013"
+        }
+      ]
+    },
+    {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "difficulty-request",
+      "schema": "contracts/difficulty-request.schema.json",
+      "sha256": "1fc2f32ea77a79f3be898287531fb6bd1253ee16ad7be0e1f9e5a5c35d9da933",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "case_version_id",
+          "pointer": "/properties/case_version_id",
+          "required_in_parent": true,
+          "description": "The frozen item.",
+          "schema_reference": null,
+          "rule_sha256": "98c288f0e8ce86fda15c636c64873e07558bfc183b4951238dd6777f5d197a11"
+        },
+        {
+          "name": "unit_id",
+          "pointer": "/properties/unit_id",
+          "required_in_parent": true,
+          "description": "A unit-level rating or null for item-level.",
+          "schema_reference": null,
+          "rule_sha256": "4bc6a5eab610e0c9c26909dae88e4ee6fc7cb72c627167e6e0bbd0b34c08809d"
+        },
+        {
+          "name": "population_definition",
+          "pointer": "/properties/population_definition",
+          "required_in_parent": true,
+          "description": "The actual declared target teacher population.",
+          "schema_reference": null,
+          "rule_sha256": "9fad3a28135e023e2d9c20a40aef56bd9397600ce8538866d2499c4154ccbac5"
+        },
+        {
+          "name": "eligible_teacher_answer_ids",
+          "pointer": "/properties/eligible_teacher_answer_ids",
+          "required_in_parent": true,
+          "description": "Actual independent first exposures in that population.",
+          "schema_reference": null,
+          "rule_sha256": "6a04dc62aff388aa362b1d5f57657da2a3ba0433e48bfccbda6c301d48e4bbf8"
+        },
+        {
+          "name": "method_id",
+          "pointer": "/properties/method_id",
+          "required_in_parent": true,
+          "description": "The fixed interval and band method.",
+          "schema_reference": null,
+          "rule_sha256": "4ac0ae5a41b145ea0d5522a12292ed59b033faab5d67b9264a71e7aee59c483c"
         }
       ]
     },
@@ -5397,7 +5971,7 @@
     {
       "kind": "dispute",
       "schema": "contracts/dispute.schema.json",
-      "sha256": "f8aa98fa7209fbdb6eda912a0aa5cad5e9856d0ccae5539c9ad8496a743624ad",
+      "sha256": "062913baf597898c0dda8b97378c7ed09c830b7f280c1ca72ca60e17707ca931",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -5545,13 +6119,37 @@
           "description": "The compare-and-swap revision.",
           "schema_reference": null,
           "rule_sha256": "122d3b69b4737b1d1fed91a67fca3adf59664afda36ee621aa4d0d504534f8b4"
+        },
+        {
+          "name": "origin",
+          "pointer": "/properties/origin",
+          "required_in_parent": true,
+          "description": "Actual label origin; never a claim of new human peer review.",
+          "schema_reference": null,
+          "rule_sha256": "5deb173b5f06d5f6e80d8a5a6338a21fe7fb3f71e98b7dac7de21c6d1eb526f1"
+        },
+        {
+          "name": "provider_receipt_ids",
+          "pointer": "/properties/provider_receipt_ids",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "6e2c66b26e0618bb678a62120c5555296c6fd8997f1b23771bba173232397ede"
+        },
+        {
+          "name": "input_modality",
+          "pointer": "/properties/input_modality",
+          "required_in_parent": true,
+          "description": "Actual input modality; transcript-only models never claim direct hearing.",
+          "schema_reference": null,
+          "rule_sha256": "e568a5f1607b95013f746da3814aa4a5440b0a2696ba1897da9156a445226037"
         }
       ]
     },
     {
       "kind": "effective-binding",
       "schema": "contracts/effective-binding.schema.json",
-      "sha256": "7a489863f185f68157cccd48378d7f2e4b8cf299cdd3d940b410f96919be2224",
+      "sha256": "78c75afb4e5ffe7e32f4ad1419000f1eb0e58efe2d93228501e0dd7a7eda1f00",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -5578,7 +6176,7 @@
           "required_in_parent": true,
           "description": "The processing stage.",
           "schema_reference": null,
-          "rule_sha256": "848e1f72f420a6bdc6e7a9b181b39ea954065b3c0249012cf4b29b67a8f18883"
+          "rule_sha256": "55df714fe21e60f1fbb43079dad63240e97791ffc457951f258796e04af4a02f"
         },
         {
           "name": "provider",
@@ -5909,7 +6507,7 @@
     {
       "kind": "evaluation-key",
       "schema": "contracts/evaluation-key.schema.json",
-      "sha256": "c790efb8b63a46560e3845c03f1f86a90d259c6b67f40b70340f8cfc59f92609",
+      "sha256": "bfb2fed7fac0b4bfa7cd49f4072c0bacfbdcb9d1cc89359e939297a7ff20258a",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -5984,7 +6582,7 @@
           "required_in_parent": true,
           "description": "These entries contain the reviewed detection opportunities and negative controls.",
           "schema_reference": null,
-          "rule_sha256": "df64a5f8f3d358d22badcf6ed4d7bcd49035c94dbad6e770a06df75e38fa3ae3"
+          "rule_sha256": "e6c2ae65f25b19732cfbe6c7009a1c210ade919530651d5302fe65816a62df8a"
         },
         {
           "name": "verification_policy_version",
@@ -6304,7 +6902,7 @@
           "required_in_parent": true,
           "description": "This object separates the intended target, actual audio, and observed evidence.",
           "schema_reference": null,
-          "rule_sha256": "122e4bdad39d680aa3b7aafb1e2b4fe539252cb39525c6b98c7cfa01288e0386"
+          "rule_sha256": "c7ff523923848c7b3c8228a646605a427841cfaa03b5934004a8f6c139dd52a9"
         },
         {
           "name": "severity",
@@ -6534,9 +7132,9 @@
           "name": "observed_ipa",
           "pointer": "/properties/units/items/properties/realization/properties/observed_ipa",
           "required_in_parent": true,
-          "description": "This field records the pronunciation that a qualified reviewer actually observed.",
+          "description": "This field records the pronunciation that a native annotation, measured evidence or modality-labelled LLM inference supports.",
           "schema_reference": null,
-          "rule_sha256": "9ac082e894910e89700b539e6c1b3832d3452dc5027e5bda528f16c4c978a654"
+          "rule_sha256": "981be299f995453574361f545edf9fa2f5198677f19a3d638a1a393ac2b91f1a"
         },
         {
           "name": "prosody",
@@ -7057,7 +7655,7 @@
     {
       "kind": "evidence",
       "schema": "contracts/evidence.schema.json",
-      "sha256": "04d27d5a482d43440f3413b95390999ba00bb175e8fc5a84b8d3dfcaa5949ff2",
+      "sha256": "d46b0998ea55b634017e4b9199a9c7bffca9545f9134ef0beea4cb2d98ba6e42",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -7092,7 +7690,7 @@
           "required_in_parent": true,
           "description": "This field selects the typed evidence or source-reference class.",
           "schema_reference": null,
-          "rule_sha256": "125f2727c47b3117f97ef76623ecccafc8964911518a2c77b634b2c3155706c9"
+          "rule_sha256": "7ff009c5de10a4b59112fab884a02d7857f88ee9893d330779aa6b6d0c4fb8f2"
         },
         {
           "name": "subject_ids",
@@ -7180,7 +7778,7 @@
           "required_in_parent": true,
           "description": "This field separates requests, inference, measurement, and human observation.",
           "schema_reference": null,
-          "rule_sha256": "fa9bd179d72068abb91a60de9441b431f620fc717d410e75267c9e0ffee6598a"
+          "rule_sha256": "046fba9b78f181715755a7825794cacdfdffb838f1dfc027b9ea780c23e6b8b4"
         },
         {
           "name": "created_at",
@@ -7635,6 +8233,120 @@
       ]
     },
     {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "format-binding-request",
+      "schema": "contracts/format-binding-request.schema.json",
+      "sha256": "442acced1fa0d487f511172970fd2ec9d9c7af5b3a293a25cc69662d53323ea2",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "source_id",
+          "pointer": "/properties/source_id",
+          "required_in_parent": true,
+          "description": "The source profile.",
+          "schema_reference": null,
+          "rule_sha256": "1e6c3f12d0eacf89f54605fc047a0221a0e3b321335809de68d6d7e4917d7db9"
+        },
+        {
+          "name": "release_version",
+          "pointer": "/properties/release_version",
+          "required_in_parent": true,
+          "description": "The real source release.",
+          "schema_reference": null,
+          "rule_sha256": "5d86fbd2dc96b4ab4e99d51a0d7eb04dae8847c6b1853b794f3b479fe664d777"
+        },
+        {
+          "name": "documentation_asset_ids",
+          "pointer": "/properties/documentation_asset_ids",
+          "required_in_parent": true,
+          "description": "The source-owner format documentation.",
+          "schema_reference": null,
+          "rule_sha256": "fc66ac5e5fdcd5c3e80b07b25226a7dcd2d4f3f74a57bb23ccbfb14bc9ab872b"
+        },
+        {
+          "name": "input_format",
+          "pointer": "/properties/input_format",
+          "required_in_parent": true,
+          "description": "The raw format.",
+          "schema_reference": null,
+          "rule_sha256": "dca2beca8dd3c27f47c8e0f98f6db8848d9072af4674f65624441d0e53f15293"
+        },
+        {
+          "name": "record_selector",
+          "pointer": "/properties/record_selector",
+          "required_in_parent": true,
+          "description": "An explicit XML path, worksheet/table name, or documented record boundary.",
+          "schema_reference": null,
+          "rule_sha256": "9c8991160edd64c39d870c2063dff53253891cddc7986de59a0baabd4f4a5006"
+        },
+        {
+          "name": "fields",
+          "pointer": "/properties/fields",
+          "required_in_parent": true,
+          "description": "Every relevant field and every raw-only field.",
+          "schema_reference": null,
+          "rule_sha256": "21fdb8073877b2c7d088cdc85f4c4b1d01d5c1acf92657fedaf7736e564c099e"
+        },
+        {
+          "name": "label_map_asset_id",
+          "pointer": "/properties/label_map_asset_id",
+          "required_in_parent": true,
+          "description": "The separately reviewed complete label map.",
+          "schema_reference": null,
+          "rule_sha256": "15e80af2ad542080866a97b018b454b8d6712382b0054cf18f835064acc494a2"
+        },
+        {
+          "name": "source_path",
+          "pointer": "/properties/fields/items/properties/source_path",
+          "required_in_parent": true,
+          "description": "The exact path/header supplied by the source.",
+          "schema_reference": null,
+          "rule_sha256": "819eb6bd913a23dd45b982ac0bfd611421640246872ce3f89f1c53e9de3c2fd7"
+        },
+        {
+          "name": "target_field",
+          "pointer": "/properties/fields/items/properties/target_field",
+          "required_in_parent": true,
+          "description": "The permitted normalized field.",
+          "schema_reference": null,
+          "rule_sha256": "b4ce53e9c176551183c6138998c7cfda8ddab394dcaea9c836d6bda3bece5943"
+        },
+        {
+          "name": "required",
+          "pointer": "/properties/fields/items/properties/required",
+          "required_in_parent": true,
+          "description": "Whether absence invalidates the mapping.",
+          "schema_reference": null,
+          "rule_sha256": "a18398f2a965fdfd1db1a4218c614d90d924494203f6fd823679f0782041271d"
+        },
+        {
+          "name": "conversion",
+          "pointer": "/properties/fields/items/properties/conversion",
+          "required_in_parent": true,
+          "description": "A fixed conversion.",
+          "schema_reference": null,
+          "rule_sha256": "27d8d9f97e9008201bacb93038711c25c1a722189e736d613c892d7dfb6c5a57"
+        },
+        {
+          "name": "null_values",
+          "pointer": "/properties/fields/items/properties/null_values",
+          "required_in_parent": true,
+          "description": "The exact source markers.",
+          "schema_reference": null,
+          "rule_sha256": "4194be34a9034a3d1d4432b7a87a80f6dcca4d209d7e9e03179ebdfe2aa7064e"
+        }
+      ]
+    },
+    {
       "kind": "generation-input",
       "schema": "contracts/generation-input.schema.json",
       "sha256": "33bb1bbbbb22d9a30464c5bf4e6e8ab6b8f94abb3b76f4b85eeace30d161022c",
@@ -7815,9 +8527,139 @@
       ]
     },
     {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "grant-request",
+      "schema": "contracts/grant-request.schema.json",
+      "sha256": "20b0e4cae6775c15a9525a4ebe72f1f99f6e7f0607081952f1e6a6ee49a2d31a",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "source_id",
+          "pointer": "/properties/source_id",
+          "required_in_parent": true,
+          "description": "The exact source owner.",
+          "schema_reference": null,
+          "rule_sha256": "ee869565232079d2254c35531a0648de54503205d2e262665fa0b47fd4d39c07"
+        },
+        {
+          "name": "release_ids",
+          "pointer": "/properties/release_ids",
+          "required_in_parent": true,
+          "description": "The covered release identifiers.",
+          "schema_reference": null,
+          "rule_sha256": "112efa3a678027b29b6fc3ee13c82290a3f3f13b708a2e8f19e4601c9dfb52d5"
+        },
+        {
+          "name": "grantee",
+          "pointer": "/properties/grantee",
+          "required_in_parent": true,
+          "description": "The actual licensed party.",
+          "schema_reference": null,
+          "rule_sha256": "f4265795049e9116c83b10aeb2d00458e7807dd07de0dc4b90d5820acb25792a"
+        },
+        {
+          "name": "grantor",
+          "pointer": "/properties/grantor",
+          "required_in_parent": true,
+          "description": "The actual rights holder.",
+          "schema_reference": null,
+          "rule_sha256": "6d62030d9c16c5d9e2f0ad2a76ef8736bd3f6f4e932aefb65d1470fcc3354b10"
+        },
+        {
+          "name": "uses",
+          "pointer": "/properties/uses",
+          "required_in_parent": true,
+          "description": "The explicit grants.",
+          "schema_reference": null,
+          "rule_sha256": "a16659cb67424ee5d5f6259d8fe1393bdb0e3dbbed5b9f7caed4728696193fb3"
+        },
+        {
+          "name": "scope_document_asset_ids",
+          "pointer": "/properties/scope_document_asset_ids",
+          "required_in_parent": true,
+          "description": "The actual license or signed agreement bytes.",
+          "schema_reference": null,
+          "rule_sha256": "3e738b8901cf5ecf587c75ba0a6e46ea8ddddad3aa1fbd7cffd9c31899d32e03"
+        },
+        {
+          "name": "credential_ref",
+          "pointer": "/properties/credential_ref",
+          "required_in_parent": true,
+          "description": "A secret reference for access, not permission evidence.",
+          "schema_reference": null,
+          "rule_sha256": "720f5a9c1ed55d62d3c7009763ac5421b429bbc1f42d1063abbe6adc956f1344"
+        },
+        {
+          "name": "recipients",
+          "pointer": "/properties/recipients",
+          "required_in_parent": true,
+          "description": "Recipient constraints.",
+          "schema_reference": null,
+          "rule_sha256": "034c67153bf10fac61c00db17b2043563da2895822716e1f211affa5da8aba47"
+        },
+        {
+          "name": "territories",
+          "pointer": "/properties/territories",
+          "required_in_parent": true,
+          "description": "Territory constraints.",
+          "schema_reference": null,
+          "rule_sha256": "b950b15b0746d6d26e35b49c3d05fc4854f01829c75836c6e12837d229f76c05"
+        },
+        {
+          "name": "valid_from",
+          "pointer": "/properties/valid_from",
+          "required_in_parent": true,
+          "description": "The actual grant start.",
+          "schema_reference": null,
+          "rule_sha256": "b15fff424c94f59a46a3c925c14a977f1764073083ab58242e343615ecd1ef6d"
+        },
+        {
+          "name": "valid_until",
+          "pointer": "/properties/valid_until",
+          "required_in_parent": true,
+          "description": "The actual grant expiry.",
+          "schema_reference": null,
+          "rule_sha256": "0afc72c437a9f42a3e8784a0096e103847c0c4c74c8a35b75878767b7fb1268e"
+        },
+        {
+          "name": "revoked_at",
+          "pointer": "/properties/revoked_at",
+          "required_in_parent": true,
+          "description": "The actual revocation time.",
+          "schema_reference": null,
+          "rule_sha256": "758d2d50a6b802e7630f2b4111660752cc2ea436191ee0e575a113d79cc6118f"
+        },
+        {
+          "name": "status",
+          "pointer": "/properties/status",
+          "required_in_parent": true,
+          "description": "The reviewed rights state.",
+          "schema_reference": null,
+          "rule_sha256": "6abf2e1e6c5186b15d726cb640671b3b131b6bb7fea2a2c4c07b008d01cd16a7"
+        },
+        {
+          "name": "attester_person_id",
+          "pointer": "/properties/attester_person_id",
+          "required_in_parent": true,
+          "description": "Legacy imported value; null for LLM processing.",
+          "schema_reference": null,
+          "rule_sha256": "af35d0a7fa09cac2656bf3c2b75f53131bac33c670d6a0eaf03fe823200053d9"
+        }
+      ]
+    },
+    {
       "kind": "ground-truth",
       "schema": "contracts/ground-truth.schema.json",
-      "sha256": "f43397ad8217067b79aae92cef1ea7ccaf83d1e84378429198fa60a61974d208",
+      "sha256": "7745d07ab1510357a7d205fe5bc916d05dad526a362f020f03d77f7182b93d35",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -7900,7 +8742,7 @@
           "required_in_parent": true,
           "description": "These entries contain the reviewed detection opportunities and negative controls.",
           "schema_reference": null,
-          "rule_sha256": "df64a5f8f3d358d22badcf6ed4d7bcd49035c94dbad6e770a06df75e38fa3ae3"
+          "rule_sha256": "e6c2ae65f25b19732cfbe6c7009a1c210ade919530651d5302fe65816a62df8a"
         },
         {
           "name": "review_decisions",
@@ -8236,7 +9078,7 @@
           "required_in_parent": true,
           "description": "This object separates the intended target, actual audio, and observed evidence.",
           "schema_reference": null,
-          "rule_sha256": "122e4bdad39d680aa3b7aafb1e2b4fe539252cb39525c6b98c7cfa01288e0386"
+          "rule_sha256": "c7ff523923848c7b3c8228a646605a427841cfaa03b5934004a8f6c139dd52a9"
         },
         {
           "name": "severity",
@@ -8466,9 +9308,9 @@
           "name": "observed_ipa",
           "pointer": "/properties/units/items/properties/realization/properties/observed_ipa",
           "required_in_parent": true,
-          "description": "This field records the pronunciation that a qualified reviewer actually observed.",
+          "description": "This field records the pronunciation that a native annotation, measured evidence or modality-labelled LLM inference supports.",
           "schema_reference": null,
-          "rule_sha256": "9ac082e894910e89700b539e6c1b3832d3452dc5027e5bda528f16c4c978a654"
+          "rule_sha256": "981be299f995453574361f545edf9fa2f5198677f19a3d638a1a393ac2b91f1a"
         },
         {
           "name": "prosody",
@@ -8983,7 +9825,7 @@
     {
       "kind": "import-report",
       "schema": "contracts/import-report.schema.json",
-      "sha256": "06508927eb737760fa0289a9615fb8f099611dc0e5e9fc1c0168bbd2886a5a83",
+      "sha256": "612f376136d27a374beb98263b58fd2fa57d826f7a9989d10453354020844efd",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -9115,6 +9957,30 @@
           "description": "The finish time.",
           "schema_reference": null,
           "rule_sha256": "94f1ab23f32304856bff1036467532dd20bb06edfeb1cfdac50ec2a7c7974592"
+        },
+        {
+          "name": "raw_complete",
+          "pointer": "/properties/raw_complete",
+          "required_in_parent": true,
+          "description": "All actual required supplied members/records inventoried with reconciled disposition; independent of semantic mapping.",
+          "schema_reference": null,
+          "rule_sha256": "12c717dc88fa4ddb09684febc9cf1eccf77620f8c7cd15f5d4f1bd674f503389"
+        },
+        {
+          "name": "normalized_complete",
+          "pointer": "/properties/normalized_complete",
+          "required_in_parent": true,
+          "description": "All required native semantics have an actual binding, or documented label-absence states; no guessed labels.",
+          "schema_reference": null,
+          "rule_sha256": "edefa803c1d23787bab5ce61bfeb3a282193521d9a8c36bc9f62b97833dfbe4c"
+        },
+        {
+          "name": "raw_only_records",
+          "pointer": "/properties/raw_only_records",
+          "required_in_parent": true,
+          "description": "Accepted raw records whose project semantic conversion is not yet available; subset of accepted_records, never extra encountered records.",
+          "schema_reference": null,
+          "rule_sha256": "5eed6133eafc614314866b0b07714c4e68b1e0c995b5bd8a5a440e92d53c5d33"
         },
         {
           "name": "component",
@@ -9641,7 +10507,7 @@
       "storage": "Derived projection/configuration member; not an independent evidence document",
       "kind": "llm-profile",
       "schema": "contracts/llm-profile.schema.json",
-      "sha256": "e0e060ea7cd1682a33044b8a89077f53c5a076f4bceed137ec5a54b26cc0d20a",
+      "sha256": "60b6dc86cfbf0a90e514b79edc413f8982214e6fd2d9d465992a390e2f4a7b8e",
       "schema_version": null,
       "fields": [
         {
@@ -9754,7 +10620,227 @@
           "required_in_parent": true,
           "description": "Supported documented processing roles; selection cannot assign an unsupported stage.",
           "schema_reference": null,
-          "rule_sha256": "4e254767e2b9ea2efc02d1c629127923c0be63cf7e6211c62eb0dc44dee60017"
+          "rule_sha256": "1e176b6589c85c40e52736caf125021ce82472b2dead7be91759f90531bd533d"
+        }
+      ]
+    },
+    {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "llm-review-input",
+      "schema": "contracts/llm-review-input.schema.json",
+      "sha256": "878bbcfbd5fcc718203da95c75e65e612664fa9414395631f146a6b70b99f05b",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "85a2d8aa93ae1cc535108ec2ee447f40f68925db0cd97bb3dc7c597388c444c6"
+        },
+        {
+          "name": "purpose",
+          "pointer": "/properties/purpose",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "d7e961afddbd7266ad3945d2744c1c53589251fe481f7d87bd3deb13684409e7"
+        },
+        {
+          "name": "public_context",
+          "pointer": "/properties/public_context",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "candidate",
+          "pointer": "/properties/candidate",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "a5f49da03199d7858184252f992b06382fb2e2cf16343590e9a71ed1f30b3a6d"
+        },
+        {
+          "name": "ground_truth",
+          "pointer": "/properties/ground_truth",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "3ffb08f8782a57c3d089cceecc62703f408bec513699e345805ba0c8d00f4be9"
+        },
+        {
+          "name": "answer",
+          "pointer": "/properties/answer",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "174e29b899b9ef9154a4d74f2c92ab3c556781ce17e916f91e14d80521818844"
+        },
+        {
+          "name": "extraction",
+          "pointer": "/properties/extraction",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "0538fac7ae1ab1a934ad678933747bff84dbf13390d1126285af90c03dd5198d"
+        },
+        {
+          "name": "prior_decisions",
+          "pointer": "/properties/prior_decisions",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "4fd591440da0f5f39eb88e80361e359d15a741f480f8b832d764f5df1cf2932a"
+        },
+        {
+          "name": "dispute_statement",
+          "pointer": "/properties/dispute_statement",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "174e29b899b9ef9154a4d74f2c92ab3c556781ce17e916f91e14d80521818844"
+        },
+        {
+          "name": "measurements",
+          "pointer": "/properties/measurements",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "8ea96cb3e2dfa590dd66d553832dcd8c356ed5a149ad53c7b6efcc1d08c96e71"
+        },
+        {
+          "name": "evidence",
+          "pointer": "/properties/evidence",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "278c173a70c18b790571f530301a15254d4f0f22de95dae2841c46d45a409187"
+        },
+        {
+          "name": "taxonomy_context",
+          "pointer": "/properties/taxonomy_context",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": "taxonomy-context.schema.json",
+          "rule_sha256": "9b52b5e580ceb6f949800dea3c828709d978b583242db972a3ede82959c67666"
+        },
+        {
+          "name": "input_modality",
+          "pointer": "/properties/input_modality",
+          "required_in_parent": true,
+          "description": "Actual input modality; transcript-only models never claim direct hearing.",
+          "schema_reference": null,
+          "rule_sha256": "e568a5f1607b95013f746da3814aa4a5440b0a2696ba1897da9156a445226037"
+        }
+      ]
+    },
+    {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "llm-review-output",
+      "schema": "contracts/llm-review-output.schema.json",
+      "sha256": "4b79ae4ae1b7ef38055cda030b2aa8aae371410d9499f2702456427d6c4d6429",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "85a2d8aa93ae1cc535108ec2ee447f40f68925db0cd97bb3dc7c597388c444c6"
+        },
+        {
+          "name": "resolution",
+          "pointer": "/properties/resolution",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "bddde7a5b479a5e7359a50fab75f52e1b91c934733a1ada4b2fe3eb3f22cbcf8"
+        },
+        {
+          "name": "unit_judgments",
+          "pointer": "/properties/unit_judgments",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "50d2f0a55e1f4409118734195e7395e9b26124e47a98b542b863575905af1120"
+        },
+        {
+          "name": "decisions",
+          "pointer": "/properties/decisions",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "4fd591440da0f5f39eb88e80361e359d15a741f480f8b832d764f5df1cf2932a"
+        },
+        {
+          "name": "issues",
+          "pointer": "/properties/issues",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "d7a19ad6de43b74d74eee1584d61d8a1cd8e3460563dc8378a32bea8f4cbeb1e"
+        },
+        {
+          "name": "reason",
+          "pointer": "/properties/reason",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "unit_id",
+          "pointer": "/properties/unit_judgments/items/properties/unit_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "5e9e761d3e8ecf694572124ac2454515af7a6a719206e2dd071eaf3848601c56"
+        },
+        {
+          "name": "taxonomy_id",
+          "pointer": "/properties/unit_judgments/items/properties/taxonomy_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "5e9e761d3e8ecf694572124ac2454515af7a6a719206e2dd071eaf3848601c56"
+        },
+        {
+          "name": "judgment",
+          "pointer": "/properties/unit_judgments/items/properties/judgment",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "a53ce532d106528e13388d50d9053bd810ff5174acc9871a3f121bb4922864d2"
+        },
+        {
+          "name": "confirmation",
+          "pointer": "/properties/unit_judgments/items/properties/confirmation",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "b79458047239ce94345ba63f062b59625469d1b27e26ce8da48b4d945dd356f2"
+        },
+        {
+          "name": "evidence_ids",
+          "pointer": "/properties/unit_judgments/items/properties/evidence_ids",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "6e2c66b26e0618bb678a62120c5555296c6fd8997f1b23771bba173232397ede"
+        },
+        {
+          "name": "reason",
+          "pointer": "/properties/unit_judgments/items/properties/reason",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
         }
       ]
     },
@@ -10221,7 +11307,7 @@
     {
       "kind": "permission-grant",
       "schema": "contracts/permission-grant.schema.json",
-      "sha256": "2c30752957b70f1da799086f0a631f4b13682a7c5271e6290542cd8550d5ce16",
+      "sha256": "b443e839cd030381c5e2085e2dc7eebe6801358ba5f5267b54244f66c854823d",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -10350,9 +11436,9 @@
           "name": "attester_person_id",
           "pointer": "/properties/attester_person_id",
           "required_in_parent": true,
-          "description": "The person responsible for the local rights assessment.",
+          "description": "Legacy imported value; null for LLM processing.",
           "schema_reference": null,
-          "rule_sha256": "1947f740a01666174a6e262a431efdbbcc34babe61d624b68683ac49559439da"
+          "rule_sha256": "af35d0a7fa09cac2656bf3c2b75f53131bac33c670d6a0eaf03fe823200053d9"
         },
         {
           "name": "created_at",
@@ -10367,7 +11453,7 @@
     {
       "kind": "person",
       "schema": "contracts/person.schema.json",
-      "sha256": "f30d2f03f194b293db99d5ed453c337059943e7eadff4e3aee84b6499a2db1b7",
+      "sha256": "747d5e7def23408484c02cbcda0ce0aaf37a9939a47b0e1328cc779bb1085a1d",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -10443,6 +11529,80 @@
           "description": "Whether new assignments are prohibited.",
           "schema_reference": null,
           "rule_sha256": "d01fc9bfdc6001e44e605f0436729acfc53186800f0fa2df00b990784d266eb6"
+        }
+      ]
+    },
+    {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "play-event-request",
+      "schema": "contracts/play-event-request.schema.json",
+      "sha256": "863d68c7eee1e3b5550f8e5fb538c2b209e7cf61b9e6d56fb02fcfa9fb77bcf4",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "attempt_id",
+          "pointer": "/properties/attempt_id",
+          "required_in_parent": true,
+          "description": "The existing attempt.",
+          "schema_reference": null,
+          "rule_sha256": "f81d6b7e7b30aab100c02ed8a72f9cf97845cadb441dce3c42ae37d80ea36c1a"
+        },
+        {
+          "name": "audio_sha256",
+          "pointer": "/properties/audio_sha256",
+          "required_in_parent": true,
+          "description": "The exact media resource.",
+          "schema_reference": null,
+          "rule_sha256": "db17aa780b7439c738ed0a42dabe59999477c8e0d8a0d4f28656551d62b50f0c"
+        },
+        {
+          "name": "kind",
+          "pointer": "/properties/kind",
+          "required_in_parent": true,
+          "description": "The player event.",
+          "schema_reference": null,
+          "rule_sha256": "8c18686f00379442cfd7aafaf3ad0f337fdd5c9203711d995f03b53a7d539057"
+        },
+        {
+          "name": "client_sequence",
+          "pointer": "/properties/client_sequence",
+          "required_in_parent": true,
+          "description": "A monotonically increasing sequence within this page instance.",
+          "schema_reference": null,
+          "rule_sha256": "98fc357219129295fd068c199b001b899d950bed6fbb22e660a79e0be3aa477a"
+        },
+        {
+          "name": "page_instance_id",
+          "pointer": "/properties/page_instance_id",
+          "required_in_parent": true,
+          "description": "The page instance identity.",
+          "schema_reference": null,
+          "rule_sha256": "12eecaea424f1241debd334299a58ceb10db4c9170bb91f29e1c6f1bba5b6d04"
+        },
+        {
+          "name": "position_sample",
+          "pointer": "/properties/position_sample",
+          "required_in_parent": true,
+          "description": "The position on the delivery clock.",
+          "schema_reference": null,
+          "rule_sha256": "c4e378d7c6bce21f6a2c860bb417133b8e9c998adf69a507d9e426c2b25847cb"
+        },
+        {
+          "name": "client_time_ms",
+          "pointer": "/properties/client_time_ms",
+          "required_in_parent": true,
+          "description": "The reported wall time. It is not authoritative.",
+          "schema_reference": null,
+          "rule_sha256": "d4854df27288a620f4fb59d432fac66a1d167fc0795a61fb5a614473448a7f77"
         }
       ]
     },
@@ -10597,7 +11757,7 @@
     {
       "kind": "provider-receipt",
       "schema": "contracts/provider-receipt.schema.json",
-      "sha256": "db2e2689391ff9754afa01edac75a5cbee40c4365847fb868b5b3f8ade2e89db",
+      "sha256": "ec0f970fafb613289617a81d2d857b5b975ed5e7fcceb4956b6fe19ea8763492",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -10750,9 +11910,9 @@
           "name": "transport_attempt",
           "pointer": "/properties/transport_attempt",
           "required_in_parent": true,
-          "description": "Zero for the original transport attempt and one for the permitted retry.",
+          "description": "Zero-based actual provider attempt, including at most one transport retry, wire fallback and one output repair.",
           "schema_reference": null,
-          "rule_sha256": "6ca5d643848ff93264bf1d5c2e07d97c32db153bd6f06e2f0acf196e71bb4041"
+          "rule_sha256": "468dcc37bf03d762f60560d6c1e4939cc610b01113d82584485cb6bfdd58eebd"
         },
         {
           "name": "started_at",
@@ -10781,9 +11941,399 @@
       ]
     },
     {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "put-config-request",
+      "schema": "contracts/put-config-request.schema.json",
+      "sha256": "a7d4bac86078ca1774e75820bdaf3aa5feb47f76e86b8ee1b36c5616d9a917cb",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "llm_profile",
+          "pointer": "/properties/llm_profile",
+          "required_in_parent": true,
+          "description": "An ID in the supplied llm_profiles registry; no fallback selection.",
+          "schema_reference": null,
+          "rule_sha256": "63e7d07ea5a4511fb0fb240f64de3f3dcbcd4c337cf65c5ca878449a61a2ebe2"
+        },
+        {
+          "name": "feedback_language",
+          "pointer": "/properties/feedback_language",
+          "required_in_parent": true,
+          "description": "The response language.",
+          "schema_reference": null,
+          "rule_sha256": "457fdf9e0a276f8df1a0c59b7027dfa08d2b5cc1f22568685a84b14601e19b97"
+        },
+        {
+          "name": "intended_uses",
+          "pointer": "/properties/intended_uses",
+          "required_in_parent": true,
+          "description": "Deny unselected uses.",
+          "schema_reference": null,
+          "rule_sha256": "a0b7cc23bce103ba30959b5ee28dbe68e9f5ee7ae2465c344b6da9e8295f378a"
+        },
+        {
+          "name": "credential_refs",
+          "pointer": "/properties/credential_refs",
+          "required_in_parent": true,
+          "description": "Secrets are mounted separately.",
+          "schema_reference": null,
+          "rule_sha256": "d57d140eeb9f075b7684f1646fff7b7ab4e46bac7c85f37cbe732abb853c399b"
+        },
+        {
+          "name": "azure_region",
+          "pointer": "/properties/azure_region",
+          "required_in_parent": true,
+          "description": "Required only for selected Azure operations; missing speech settings do not prevent local reading or LLM-only use.",
+          "schema_reference": null,
+          "rule_sha256": "f17453f93bb0c12469aea16ff0c02ddc51ef397265152d18a68d9a9024156606"
+        },
+        {
+          "name": "connectors",
+          "pointer": "/properties/connectors",
+          "required_in_parent": true,
+          "description": "Separate corpus and vendor configurations.",
+          "schema_reference": null,
+          "rule_sha256": "461ccd7175258c347a07abcc1f2bd4d24609f205598be9ed3529280fe84c5da0"
+        },
+        {
+          "name": "limits",
+          "pointer": "/properties/limits",
+          "required_in_parent": true,
+          "description": "Explicit resource limits. They do not reduce source scope.",
+          "schema_reference": null,
+          "rule_sha256": "171075a2f50a07ded8df32f59ddb5ec7577ce4033ab1a6833308933626176750"
+        },
+        {
+          "name": "llm_profiles",
+          "pointer": "/properties/llm_profiles",
+          "required_in_parent": true,
+          "description": "Explicit server-side profiles. ID uniqueness is a semantic invariant. All six stages use the selected profile.",
+          "schema_reference": null,
+          "rule_sha256": "ebbe38d3d5215e853286bcdfc8ab2d014319410f390a9053f87889b0e99095d0"
+        },
+        {
+          "name": "stage_profiles",
+          "pointer": "/properties/stage_profiles",
+          "required_in_parent": true,
+          "description": "Advanced explicit role overrides; null inherits the explicitly selected default profile, never an error fallback.",
+          "schema_reference": null,
+          "rule_sha256": "1c61aef42e6b4f67cccb34af806d0d6c4c7c20639e1c4bce6167b12bf32f6279"
+        },
+        {
+          "name": "mapping_audit_enabled",
+          "pointer": "/properties/mapping_audit_enabled",
+          "required_in_parent": true,
+          "description": "Optional diagnostic only; default answer checking uses one mapper.",
+          "schema_reference": null,
+          "rule_sha256": "f7ccada427ed07da7a9e8595f901519cd2a59e103a7d6fc55ac684ae3ca38a22"
+        },
+        {
+          "name": "deepseek",
+          "pointer": "/properties/credential_refs/properties/deepseek",
+          "required_in_parent": true,
+          "description": "The configured DeepSeek secret reference.",
+          "schema_reference": null,
+          "rule_sha256": "427132d8c0cd081af66c4e9c209ee424cce0e8fdfe6542e005795df2dac7fdb0"
+        },
+        {
+          "name": "openai",
+          "pointer": "/properties/credential_refs/properties/openai",
+          "required_in_parent": true,
+          "description": "The configured OpenAI secret reference.",
+          "schema_reference": null,
+          "rule_sha256": "bfca5fac5c7361b846758ef741cab7e9d4994ba6d7df8cf2af8d1c9c7ef292c0"
+        },
+        {
+          "name": "azure",
+          "pointer": "/properties/credential_refs/properties/azure",
+          "required_in_parent": true,
+          "description": "The configured Azure secret reference.",
+          "schema_reference": null,
+          "rule_sha256": "04fa42761b9acb2f1818264fdd166abe4677dab7dd9e36ea5f423a2a1a849adf"
+        },
+        {
+          "name": "daily_micro_usd",
+          "pointer": "/properties/limits/properties/daily_micro_usd",
+          "required_in_parent": true,
+          "description": "Legacy imported value; null for LLM processing.",
+          "schema_reference": null,
+          "rule_sha256": "d1e9bfe614e062b7779f306ec08052d9c899a2924d47912fe25bfa36a9949288"
+        },
+        {
+          "name": "monthly_micro_usd",
+          "pointer": "/properties/limits/properties/monthly_micro_usd",
+          "required_in_parent": true,
+          "description": "Legacy imported value; null for LLM processing.",
+          "schema_reference": null,
+          "rule_sha256": "c2af3c373d25f136940a45b48009638493e550eb4a8ae7503f3bd6bb76afc5b5"
+        },
+        {
+          "name": "concurrent_paid_operations",
+          "pointer": "/properties/limits/properties/concurrent_paid_operations",
+          "required_in_parent": true,
+          "description": "One foreground costly operation.",
+          "schema_reference": null,
+          "rule_sha256": "a2c9dc6bddb42380260b9d5d2def97dfad3580c6ac240d6bbde8fd2d2f1318d0"
+        },
+        {
+          "name": "archive_bytes",
+          "pointer": "/properties/limits/properties/archive_bytes",
+          "required_in_parent": true,
+          "description": "The maximum compressed source size.",
+          "schema_reference": null,
+          "rule_sha256": "2dcb9cdcba840b59cf1faaabc0b849bd8f3504ecb2b0c763cbbd1c58c210c288"
+        },
+        {
+          "name": "expanded_bytes",
+          "pointer": "/properties/limits/properties/expanded_bytes",
+          "required_in_parent": true,
+          "description": "The maximum expanded size.",
+          "schema_reference": null,
+          "rule_sha256": "f5a4acce019c035797da8d6c3be8474a49c831cb0d4443532271f88965c867ca"
+        },
+        {
+          "name": "archive_members",
+          "pointer": "/properties/limits/properties/archive_members",
+          "required_in_parent": true,
+          "description": "The maximum member count.",
+          "schema_reference": null,
+          "rule_sha256": "85a15e2a46685fdaa27bbad5a88fd06dc1e46ee60e3f56234b4dfc53b519530b"
+        },
+        {
+          "name": "member_bytes",
+          "pointer": "/properties/limits/properties/member_bytes",
+          "required_in_parent": true,
+          "description": "The maximum single member size.",
+          "schema_reference": null,
+          "rule_sha256": "d00e9001a1ca67f238346c4039ce203c7889d0b16a04259887a6145249b0aa3b"
+        },
+        {
+          "name": "case_generation",
+          "pointer": "/properties/stage_profiles/properties/case_generation",
+          "required_in_parent": true,
+          "description": "Explicit selected profile ID for case_generation or declared default inheritance.",
+          "schema_reference": null,
+          "rule_sha256": "05d835da4a9eb32361986e6c91aed74810bd3ba7c2abd8af9957e22cda294d0e"
+        },
+        {
+          "name": "linguistic_audit",
+          "pointer": "/properties/stage_profiles/properties/linguistic_audit",
+          "required_in_parent": true,
+          "description": "Explicit selected profile ID for linguistic_audit or declared default inheritance.",
+          "schema_reference": null,
+          "rule_sha256": "b91fac3c97f09089497f4612b0f73fa9386dfd2dc2de65c0f0739ed2109da922"
+        },
+        {
+          "name": "blind_claim_extraction",
+          "pointer": "/properties/stage_profiles/properties/blind_claim_extraction",
+          "required_in_parent": true,
+          "description": "Explicit selected profile ID for blind_claim_extraction or declared default inheritance.",
+          "schema_reference": null,
+          "rule_sha256": "f6236377cda791592bbf0be26aca332f745795d52252b3c2770f11bda284180e"
+        },
+        {
+          "name": "claim_mapping",
+          "pointer": "/properties/stage_profiles/properties/claim_mapping",
+          "required_in_parent": true,
+          "description": "Explicit selected profile ID for claim_mapping or declared default inheritance.",
+          "schema_reference": null,
+          "rule_sha256": "4c0c7f2a357af24ed58d7fcbadfe1999b3014711b23e127a5c6d9e26c7d9b8df"
+        },
+        {
+          "name": "mapping_audit",
+          "pointer": "/properties/stage_profiles/properties/mapping_audit",
+          "required_in_parent": true,
+          "description": "Explicit selected profile ID for mapping_audit or declared default inheritance.",
+          "schema_reference": null,
+          "rule_sha256": "ab67324e86f142f33158a6686beec0bd483f593a709142a68f2387dc3ddbf202"
+        },
+        {
+          "name": "feedback",
+          "pointer": "/properties/stage_profiles/properties/feedback",
+          "required_in_parent": true,
+          "description": "Explicit selected profile ID for feedback or declared default inheritance.",
+          "schema_reference": null,
+          "rule_sha256": "0af9cc30d527fa98b4d62a633b754b5ab8389c611b5d878dcb4fe0e58e0f418c"
+        },
+        {
+          "name": "case_review",
+          "pointer": "/properties/stage_profiles/properties/case_review",
+          "required_in_parent": true,
+          "description": "Explicit profile or null inherits the selected default for case_review",
+          "schema_reference": null,
+          "rule_sha256": "0d5d0bba1c4933084bee8d7cd67e8a699462bc9da0cba453083ed36ac120ecea"
+        },
+        {
+          "name": "adjudication",
+          "pointer": "/properties/stage_profiles/properties/adjudication",
+          "required_in_parent": true,
+          "description": "Explicit profile or null inherits the selected default for adjudication",
+          "schema_reference": null,
+          "rule_sha256": "02dc5ad07451a7742570d284be415755e55c46a2209dd557fdec89d3c9655c98"
+        }
+      ]
+    },
+    {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "qualification-report-request",
+      "schema": "contracts/qualification-report-request.schema.json",
+      "sha256": "d4fedf3694d2ba992b5d7f5b700fe16b6b472c6aaa276e5204e0da3e4f267ea7",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "configuration_sha256",
+          "pointer": "/properties/configuration_sha256",
+          "required_in_parent": true,
+          "description": "The exact tested profiles, methods, and versions.",
+          "schema_reference": null,
+          "rule_sha256": "788bb554eef7777544edc92a0bf229ccf66b9ee6bffbb14e1f840cd516cc4cfa"
+        },
+        {
+          "name": "split_manifest_sha256",
+          "pointer": "/properties/split_manifest_sha256",
+          "required_in_parent": true,
+          "description": "The frozen unseen allocation.",
+          "schema_reference": null,
+          "rule_sha256": "617816893cf335978d7ee4a5b5e235cfc8caf52e816854741a14a38497eacf11"
+        },
+        {
+          "name": "gold_annotation_ids",
+          "pointer": "/properties/gold_annotation_ids",
+          "required_in_parent": true,
+          "description": "The actual independent gold records.",
+          "schema_reference": null,
+          "rule_sha256": "5bb06eb38e4de604c216ebe394c7150cb2cffef059d66f630289c9e9e877257b"
+        },
+        {
+          "name": "critical_case_ids",
+          "pointer": "/properties/critical_case_ids",
+          "required_in_parent": true,
+          "description": "Actual, approved critical cases.",
+          "schema_reference": null,
+          "rule_sha256": "37852354b4ba31ddefe545cc5bb73dda7900eac9388c0fab00bb1052d302d162"
+        }
+      ]
+    },
+    {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "qualification-request",
+      "schema": "contracts/qualification-request.schema.json",
+      "sha256": "4be357c9aeba861a0620802ac27c6b26ae03afb9ba742d59c87e929550665368",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "person_id",
+          "pointer": "/properties/person_id",
+          "required_in_parent": true,
+          "description": "The genuine subject.",
+          "schema_reference": null,
+          "rule_sha256": "fb3c450b6b0243849205196e2f5ee377df1fd7eb2adb200793df12886ecaac80"
+        },
+        {
+          "name": "competence",
+          "pointer": "/properties/competence",
+          "required_in_parent": true,
+          "description": "The supported competence.",
+          "schema_reference": null,
+          "rule_sha256": "779e9733e7b086f8573353aab634b64fdebdba311598a323aa23bb17c6a67e4a"
+        },
+        {
+          "name": "basis",
+          "pointer": "/properties/basis",
+          "required_in_parent": true,
+          "description": "The evidence basis.",
+          "schema_reference": null,
+          "rule_sha256": "265b163cb972843c1c4303961962d397d901dc2b7ff678c5dce02f253ff281ed"
+        },
+        {
+          "name": "evidence_asset_ids",
+          "pointer": "/properties/evidence_asset_ids",
+          "required_in_parent": true,
+          "description": "Supporting documents.",
+          "schema_reference": null,
+          "rule_sha256": "8b3118d317c7f27afc4103e0dd2d458afbe064f12acdce355c41e0ef9796dfbf"
+        },
+        {
+          "name": "issuer",
+          "pointer": "/properties/issuer",
+          "required_in_parent": true,
+          "description": "The real issuing body or assessor.",
+          "schema_reference": null,
+          "rule_sha256": "eaafd0178bfecb93f58334a872fbfeac1af7b03657d05b91ec0e36e43667fdfe"
+        },
+        {
+          "name": "issued_at",
+          "pointer": "/properties/issued_at",
+          "required_in_parent": true,
+          "description": "The issue time if supplied.",
+          "schema_reference": null,
+          "rule_sha256": "dc9faff1dae2806e8d0aa993eb8e02cde169839236290c5f5bb6003e1542515c"
+        },
+        {
+          "name": "expires_at",
+          "pointer": "/properties/expires_at",
+          "required_in_parent": true,
+          "description": "The issuer expiry, not an invented expiry.",
+          "schema_reference": null,
+          "rule_sha256": "a7826490e67f36c0724cd644d63190d6937c18b8b53423789087de971d300729"
+        },
+        {
+          "name": "attester_person_id",
+          "pointer": "/properties/attester_person_id",
+          "required_in_parent": true,
+          "description": "The genuine local attester.",
+          "schema_reference": null,
+          "rule_sha256": "d0e1ac8c355afbf1d4e0610f8415202c37597c383b9ea1bea39a78abd59c238f"
+        },
+        {
+          "name": "attested_at",
+          "pointer": "/properties/attested_at",
+          "required_in_parent": true,
+          "description": "The local attestation time.",
+          "schema_reference": null,
+          "rule_sha256": "14bde7ebe9d445ffb53f417929d776d42d0f99a25d9b86bd0215b4621d1036ac"
+        },
+        {
+          "name": "revoked_at",
+          "pointer": "/properties/revoked_at",
+          "required_in_parent": true,
+          "description": "The revocation time.",
+          "schema_reference": null,
+          "rule_sha256": "868e1b9a65a5c7b6853537fb1b0f3fc34f54302545ae09e050926e797d128903"
+        }
+      ]
+    },
+    {
       "kind": "qualification",
       "schema": "contracts/qualification.schema.json",
-      "sha256": "c56427649659e139cc5303a6e3533a227a939c5c528f38726775d6044af56827",
+      "sha256": "987a33fe747c9f063ef9cb7868f4d43fde92d454b5d8ebdbd587e66e2078b98c",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -10883,6 +12433,88 @@
           "description": "The revocation time.",
           "schema_reference": null,
           "rule_sha256": "868e1b9a65a5c7b6853537fb1b0f3fc34f54302545ae09e050926e797d128903"
+        }
+      ]
+    },
+    {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "rationale-request",
+      "schema": "contracts/rationale-request.schema.json",
+      "sha256": "32d694303971163aea1d8bc25a2da48048c1387ba4e8b11d10c03ff004e0b61b",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "case_version_id",
+          "pointer": "/properties/case_version_id",
+          "required_in_parent": true,
+          "description": "The case version.",
+          "schema_reference": null,
+          "rule_sha256": "7541d602a5b7b3d6ee341947045b0822614151adc09e81682325b6cbf7ef094d"
+        },
+        {
+          "name": "unit_id",
+          "pointer": "/properties/unit_id",
+          "required_in_parent": true,
+          "description": "The unit.",
+          "schema_reference": null,
+          "rule_sha256": "3c782f03f1c13b2c8fbddb1638ef15ec9a5f138c14a94b49386a4c5c5fab27cb"
+        },
+        {
+          "name": "language",
+          "pointer": "/properties/language",
+          "required_in_parent": true,
+          "description": "The response language.",
+          "schema_reference": null,
+          "rule_sha256": "457fdf9e0a276f8df1a0c59b7027dfa08d2b5cc1f22568685a84b14601e19b97"
+        },
+        {
+          "name": "text",
+          "pointer": "/properties/text",
+          "required_in_parent": true,
+          "description": "The approved explanation text.",
+          "schema_reference": null,
+          "rule_sha256": "a7523d1621c93ab477d87a493e79830fb09041af733b4ff43c98ad72f767b33d"
+        },
+        {
+          "name": "required_proposition_ids",
+          "pointer": "/properties/required_proposition_ids",
+          "required_in_parent": true,
+          "description": "The exact required rationale propositions.",
+          "schema_reference": null,
+          "rule_sha256": "cc18564c73b9d8ac25d3d7da18ebbe4d8d3a289acb02f06c5f8119e632f389ae"
+        },
+        {
+          "name": "forbidden_proposition_ids",
+          "pointer": "/properties/forbidden_proposition_ids",
+          "required_in_parent": true,
+          "description": "The exact forbidden rationale propositions.",
+          "schema_reference": null,
+          "rule_sha256": "0b51e1012b1ca1d0c9f87b25eb4ebe971b70f63f0e0bcc0dfe17fdc1f0f3b3c2"
+        },
+        {
+          "name": "evidence_ids",
+          "pointer": "/properties/evidence_ids",
+          "required_in_parent": true,
+          "description": "The supporting evidence.",
+          "schema_reference": null,
+          "rule_sha256": "0ad4fcd3d826aa22b6270c004e83783d2c5b2b5207c7e6e9501b46a58c94adce"
+        },
+        {
+          "name": "review_decision_ids",
+          "pointer": "/properties/review_decision_ids",
+          "required_in_parent": true,
+          "description": "The actual approving decisions.",
+          "schema_reference": null,
+          "rule_sha256": "394bb7d5d0bb8a10fa84ae2b6c9906aa6b91680dffcfe7ca15715dda03cfd68c"
         }
       ]
     },
@@ -11547,6 +13179,80 @@
       ]
     },
     {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "resolve-dispute-request",
+      "schema": "contracts/resolve-dispute-request.schema.json",
+      "sha256": "51705a3609fe60f11e344cc694e62c8b9632a42c3344200d37dbab6712ae951b",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "attempt_id",
+          "pointer": "/properties/attempt_id",
+          "required_in_parent": true,
+          "description": "The affected attempt, if this dispute arose from an answer.",
+          "schema_reference": null,
+          "rule_sha256": "dde23c093780cd8a0e9c50ca5918cea4c175b06221f606c0cc1b064857f7c8e0"
+        },
+        {
+          "name": "case_version_id",
+          "pointer": "/properties/case_version_id",
+          "required_in_parent": true,
+          "description": "The disputed version.",
+          "schema_reference": null,
+          "rule_sha256": "6fd87c32f8d23ee59483c3740bcfa3e483a5cdc9bab62195fd379820dbac8d9d"
+        },
+        {
+          "name": "result_id",
+          "pointer": "/properties/result_id",
+          "required_in_parent": true,
+          "description": "The disputed result.",
+          "schema_reference": null,
+          "rule_sha256": "7d3b82bcb96173e90f2882f08617c6a312b12b3c8b4b91de3770fc69c61e3bdc"
+        },
+        {
+          "name": "claim_ids",
+          "pointer": "/properties/claim_ids",
+          "required_in_parent": true,
+          "description": "Affected teacher statements.",
+          "schema_reference": null,
+          "rule_sha256": "74cf820ae8f44f8ca91963ca7545c44468e281f5b2a30a45864b4371dd3b921d"
+        },
+        {
+          "name": "unit_ids",
+          "pointer": "/properties/unit_ids",
+          "required_in_parent": true,
+          "description": "Affected known units.",
+          "schema_reference": null,
+          "rule_sha256": "7a1294ecb7650818aafd2360868eb85836edbfcda649a29cc26a78d5d529a3d3"
+        },
+        {
+          "name": "evidence_ids",
+          "pointer": "/properties/evidence_ids",
+          "required_in_parent": true,
+          "description": "Supporting evidence.",
+          "schema_reference": null,
+          "rule_sha256": "241efab8858caf3867099e506df9621bdfb47a90f28e4a973ae019d62f5996f7"
+        },
+        {
+          "name": "statement",
+          "pointer": "/properties/statement",
+          "required_in_parent": true,
+          "description": "The actual dispute text.",
+          "schema_reference": null,
+          "rule_sha256": "8f0f955e610fbecacbc95fd69fbf3fabbe7cc5b1963820739fd448f20ecf3907"
+        }
+      ]
+    },
+    {
       "kind": "restore-request",
       "schema": "contracts/restore-request.schema.json",
       "sha256": "25540c87e2d806d5096f057a896ed41ff5b1799dfe4c113966bd888de72b8368",
@@ -11805,7 +13511,7 @@
     {
       "kind": "review-context",
       "schema": "contracts/review-context.schema.json",
-      "sha256": "92348be302ec3aa961aa1370a0fa56347ca0589355933b7b3efe996ec52c2ff9",
+      "sha256": "15af6538182f8fac50d0f5896cb12314f360164df91012fe41f17dd650f90517",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -11846,9 +13552,9 @@
           "name": "person_id",
           "pointer": "/properties/person_id",
           "required_in_parent": true,
-          "description": "The actual reviewer.",
+          "description": "Legacy imported value; null for LLM processing.",
           "schema_reference": null,
-          "rule_sha256": "ecbc986ca6f8a1cc685d4d68961773ee810ee1eda123be256a33f143769db9ce"
+          "rule_sha256": "b951338ed4789bca15043300e22564811b56489db5d5bb44a3512b672a334c2e"
         },
         {
           "name": "qualification_ids",
@@ -11905,13 +13611,119 @@
           "description": "The creation time.",
           "schema_reference": null,
           "rule_sha256": "46b17cce888ef4567195c9fbe2ecf3958c8a0968829c650003044d67d0ef668b"
+        },
+        {
+          "name": "origin",
+          "pointer": "/properties/origin",
+          "required_in_parent": true,
+          "description": "Actual label origin; never a claim of new human peer review.",
+          "schema_reference": null,
+          "rule_sha256": "5deb173b5f06d5f6e80d8a5a6338a21fe7fb3f71e98b7dac7de21c6d1eb526f1"
+        },
+        {
+          "name": "provider_receipt_ids",
+          "pointer": "/properties/provider_receipt_ids",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "6e2c66b26e0618bb678a62120c5555296c6fd8997f1b23771bba173232397ede"
+        },
+        {
+          "name": "input_modality",
+          "pointer": "/properties/input_modality",
+          "required_in_parent": true,
+          "description": "Actual input modality; transcript-only models never claim direct hearing.",
+          "schema_reference": null,
+          "rule_sha256": "e568a5f1607b95013f746da3814aa4a5440b0a2696ba1897da9156a445226037"
+        },
+        {
+          "name": "origin",
+          "pointer": "/allOf/0/if/properties/origin",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "ce2e93d8f76fec21365c91a4763e9b8a31bd4faa0817f4d4f343e8c2f80cf29e"
+        },
+        {
+          "name": "person_id",
+          "pointer": "/allOf/0/then/properties/person_id",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "5fcfb3a76360a2de847194bde7be4c48c6d3996b29cf85b088732c8eed1d7e70"
+        },
+        {
+          "name": "qualification_ids",
+          "pointer": "/allOf/0/then/properties/qualification_ids",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c6e95d25e769ba2e73cce6f5e3449527e8d34d93f596857a4c79137ec148cce3"
+        },
+        {
+          "name": "provider_receipt_ids",
+          "pointer": "/allOf/0/then/properties/provider_receipt_ids",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "a266681ad891d579e5dc01c7c6003450a8ee440cefd7763bcaa68c9d7cff111c"
+        }
+      ]
+    },
+    {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "review-decide-request",
+      "schema": "contracts/review-decide-request.schema.json",
+      "sha256": "cf82aca0de49678fdd41268e1463d5db3f1d7c04934baeea0cd6c6604a3a9eed",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "review_context_id",
+          "pointer": "/properties/review_context_id",
+          "required_in_parent": true,
+          "description": "The exact review context.",
+          "schema_reference": null,
+          "rule_sha256": "1e50e9cb5cfeee734e92faf031b31e836e64d02037a566d29ade6f6e465677c8"
+        },
+        {
+          "name": "case_version_id",
+          "pointer": "/properties/case_version_id",
+          "required_in_parent": true,
+          "description": "The reviewed version.",
+          "schema_reference": null,
+          "rule_sha256": "22c50aeedfbccd9562ba1453a3b2a8d6bd1974b7db5925fdead8057312038b38"
+        },
+        {
+          "name": "case_sha256",
+          "pointer": "/properties/case_sha256",
+          "required_in_parent": true,
+          "description": "The reviewed key and context digest.",
+          "schema_reference": null,
+          "rule_sha256": "b11abca482cf544a8e43b25bbf9acd11434cf97c76035a009d596aeabbe443ae"
+        },
+        {
+          "name": "audio_sha256",
+          "pointer": "/properties/audio_sha256",
+          "required_in_parent": true,
+          "description": "The final delivery digest.",
+          "schema_reference": null,
+          "rule_sha256": "7545932c659901b155f7b72eaed26eb02d66a884799c4a80f5aed1c59520e55a"
         }
       ]
     },
     {
       "kind": "review-decision",
       "schema": "contracts/review-decision.schema.json",
-      "sha256": "4e282dfa720d6b01c8687ff7e1cc7749de5e0e14eb7781e79cd572eee1971b0c",
+      "sha256": "e8c18593ba01d5df452ad1ffeeab08ada460ccb4fc444d3bf04fc1a5d832bcbc",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -11984,9 +13796,9 @@
           "name": "decision",
           "pointer": "/properties/decision",
           "required_in_parent": true,
-          "description": "The actual human decision.",
+          "description": "The LLM decision or imported native human decision.",
           "schema_reference": null,
-          "rule_sha256": "ea1eaadc9672a1f2c1026ad7da55a4fdfb4d303be3742e1019c18b3c588d14e2"
+          "rule_sha256": "87529697a0260cb973e06769e732599345f1debe7a9dae6ec52ce722d8227913"
         },
         {
           "name": "approved_unit_ids",
@@ -12032,9 +13844,9 @@
           "name": "person_id",
           "pointer": "/properties/person_id",
           "required_in_parent": true,
-          "description": "The genuine reviewer.",
+          "description": "Legacy imported value; null for LLM processing.",
           "schema_reference": null,
-          "rule_sha256": "69e40aa3671e04e15b04942f9a6d31c873a12821ae2de36dadf49fb230cb311f"
+          "rule_sha256": "b951338ed4789bca15043300e22564811b56489db5d5bb44a3512b672a334c2e"
         },
         {
           "name": "submitted_at",
@@ -12043,6 +13855,30 @@
           "description": "The decision time.",
           "schema_reference": null,
           "rule_sha256": "160af2c2421dec7dc13af5d6e64df522d22fbfee16428d993866418fac93791b"
+        },
+        {
+          "name": "origin",
+          "pointer": "/properties/origin",
+          "required_in_parent": true,
+          "description": "Actual label origin; never a claim of new human peer review.",
+          "schema_reference": null,
+          "rule_sha256": "5deb173b5f06d5f6e80d8a5a6338a21fe7fb3f71e98b7dac7de21c6d1eb526f1"
+        },
+        {
+          "name": "provider_receipt_ids",
+          "pointer": "/properties/provider_receipt_ids",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "6e2c66b26e0618bb678a62120c5555296c6fd8997f1b23771bba173232397ede"
+        },
+        {
+          "name": "input_modality",
+          "pointer": "/properties/input_modality",
+          "required_in_parent": true,
+          "description": "Actual input modality; transcript-only models never claim direct hearing.",
+          "schema_reference": null,
+          "rule_sha256": "e568a5f1607b95013f746da3814aa4a5440b0a2696ba1897da9156a445226037"
         },
         {
           "name": "observation_id",
@@ -12075,6 +13911,30 @@
           "description": "The reviewer justification.",
           "schema_reference": null,
           "rule_sha256": "b9e5b5531e3a868ba264b46dce18b7d1c0e2deb9e98933663c7f6832891f115b"
+        },
+        {
+          "name": "origin",
+          "pointer": "/allOf/0/if/properties/origin",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "ce2e93d8f76fec21365c91a4763e9b8a31bd4faa0817f4d4f343e8c2f80cf29e"
+        },
+        {
+          "name": "person_id",
+          "pointer": "/allOf/0/then/properties/person_id",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "5fcfb3a76360a2de847194bde7be4c48c6d3996b29cf85b088732c8eed1d7e70"
+        },
+        {
+          "name": "provider_receipt_ids",
+          "pointer": "/allOf/0/then/properties/provider_receipt_ids",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "a266681ad891d579e5dc01c7c6003450a8ee440cefd7763bcaa68c9d7cff111c"
         }
       ]
     },
@@ -15573,7 +17433,7 @@
     {
       "kind": "source-format-binding",
       "schema": "contracts/source-format-binding.schema.json",
-      "sha256": "7f7a84448ea2f4d4317800e95c8d770d40b363f3922a07cd771e087ac6f258b0",
+      "sha256": "8fb11fe5eb909e580694d7aea25f62ba9b4eb4973752a9699e491d9f97e4f49b",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -15654,9 +17514,9 @@
           "name": "review_person_id",
           "pointer": "/properties/review_person_id",
           "required_in_parent": true,
-          "description": "The real person who checked documentation against acquired bytes.",
+          "description": "Legacy imported value; null for LLM processing.",
           "schema_reference": null,
-          "rule_sha256": "aa77c917fef06f449824c275b01da1a0f14be86d0ada8e662bd20e70da83e0d6"
+          "rule_sha256": "5c171fab2afe2d291be8b3f293157ca0f0157387740d2e623c7d63db6caffdf7"
         },
         {
           "name": "reviewed_at",
@@ -15665,6 +17525,30 @@
           "description": "The real format review time.",
           "schema_reference": null,
           "rule_sha256": "3ec5579635d3995b92fc9c47e6c230039be9fa7d7a9fcbc1c1457ff337118b00"
+        },
+        {
+          "name": "origin",
+          "pointer": "/properties/origin",
+          "required_in_parent": true,
+          "description": "Actual label origin; never a claim of new human peer review.",
+          "schema_reference": null,
+          "rule_sha256": "5deb173b5f06d5f6e80d8a5a6338a21fe7fb3f71e98b7dac7de21c6d1eb526f1"
+        },
+        {
+          "name": "provider_receipt_ids",
+          "pointer": "/properties/provider_receipt_ids",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "6e2c66b26e0618bb678a62120c5555296c6fd8997f1b23771bba173232397ede"
+        },
+        {
+          "name": "input_modality",
+          "pointer": "/properties/input_modality",
+          "required_in_parent": true,
+          "description": "Actual input modality; transcript-only models never claim direct hearing.",
+          "schema_reference": null,
+          "rule_sha256": "e568a5f1607b95013f746da3814aa4a5440b0a2696ba1897da9156a445226037"
         },
         {
           "name": "source_path",
@@ -15709,9 +17593,179 @@
       ]
     },
     {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "source-release-request",
+      "schema": "contracts/source-release-request.schema.json",
+      "sha256": "d87dc0b2f93edce97047acba6f45c90e1f324647befef44226f106770c89ec32",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "source_id",
+          "pointer": "/properties/source_id",
+          "required_in_parent": true,
+          "description": "The exact source profile.",
+          "schema_reference": null,
+          "rule_sha256": "4f3968eaedc50326dea2a63aedb48a97e2657011be4231367b3464c3fb443c69"
+        },
+        {
+          "name": "source_version",
+          "pointer": "/properties/source_version",
+          "required_in_parent": true,
+          "description": "The source-owner release label.",
+          "schema_reference": null,
+          "rule_sha256": "6c5cc0213361582d14a8620244ad0bbd3f7e3c250a980f0b1c3e35260413876f"
+        },
+        {
+          "name": "origin_uri",
+          "pointer": "/properties/origin_uri",
+          "required_in_parent": true,
+          "description": "The actual acquisition location.",
+          "schema_reference": null,
+          "rule_sha256": "070a6599b731265cacce2323c05df12ba516d091a1ca9974703339c6752233ac"
+        },
+        {
+          "name": "documentation_asset_ids",
+          "pointer": "/properties/documentation_asset_ids",
+          "required_in_parent": true,
+          "description": "The acquired source format and license documents.",
+          "schema_reference": null,
+          "rule_sha256": "81cb5ec4497bae6152a3676be501b9880bacea403e55e6d61221511bc6da45ef"
+        },
+        {
+          "name": "permission_grant_ids",
+          "pointer": "/properties/permission_grant_ids",
+          "required_in_parent": true,
+          "description": "Applicable per-use evidence.",
+          "schema_reference": null,
+          "rule_sha256": "f184fcf17bf162602e9267b1e530e933431298323bcf43b1cb28809dd5c29547"
+        },
+        {
+          "name": "format_profile_id",
+          "pointer": "/properties/format_profile_id",
+          "required_in_parent": true,
+          "description": "Null while lossless raw intake precedes semantic binding; no invented native mapping.",
+          "schema_reference": null,
+          "rule_sha256": "250b7beb9bd9f4efb8a2fe525718798dec1948753bd45d537ce5aee106a0a4c3"
+        },
+        {
+          "name": "format_profile_sha256",
+          "pointer": "/properties/format_profile_sha256",
+          "required_in_parent": true,
+          "description": "Null while lossless raw intake precedes semantic binding; no invented native mapping.",
+          "schema_reference": null,
+          "rule_sha256": "51aaf525450cdf7078fca85ec58db4754384217647bb007feeb3be70d1187cbd"
+        },
+        {
+          "name": "files",
+          "pointer": "/properties/files",
+          "required_in_parent": true,
+          "description": "Every supplied file, including metadata and annotations.",
+          "schema_reference": null,
+          "rule_sha256": "34473c0d2bf7414bb8c7b366468c4cd510b37081d888e7da69cd9aada1abc192"
+        },
+        {
+          "name": "expected_counts",
+          "pointer": "/properties/expected_counts",
+          "required_in_parent": true,
+          "description": "All source-declared component populations.",
+          "schema_reference": null,
+          "rule_sha256": "5d1f29f9b4195282233a08ce4e25e64adfb11059532f53c4d3f4cdcc4e08e80e"
+        },
+        {
+          "name": "relative_path",
+          "pointer": "/properties/files/items/properties/relative_path",
+          "required_in_parent": true,
+          "description": "A canonical relative POSIX path without traversal.",
+          "schema_reference": null,
+          "rule_sha256": "9cc881b6504ba9e1cd323eecbfcf5f5a3585bb0622e7552eab045e6569c78792"
+        },
+        {
+          "name": "sha256",
+          "pointer": "/properties/files/items/properties/sha256",
+          "required_in_parent": true,
+          "description": "The actual complete file digest.",
+          "schema_reference": null,
+          "rule_sha256": "71c5ff41155302043f9cfb1ebce68a77d9f6288437e63e26a594d1aedf8f8db9"
+        },
+        {
+          "name": "bytes",
+          "pointer": "/properties/files/items/properties/bytes",
+          "required_in_parent": true,
+          "description": "The actual byte count.",
+          "schema_reference": null,
+          "rule_sha256": "f5db38e4ab9e3288a2c94177e959f24c1d5a51fb8e5747e405d67a99392657c0"
+        },
+        {
+          "name": "component",
+          "pointer": "/properties/files/items/properties/component",
+          "required_in_parent": true,
+          "description": "The prescribed component kind.",
+          "schema_reference": null,
+          "rule_sha256": "caa212093ebbb72213d8487774e966d9bfa81faae533e921c1798820d6bf8537"
+        },
+        {
+          "name": "partition",
+          "pointer": "/properties/files/items/properties/partition",
+          "required_in_parent": true,
+          "description": "The original partition label.",
+          "schema_reference": null,
+          "rule_sha256": "5f65ae6c0451301ab6f6e510ab0c7ceee9748de4b445a0c541e446fbcc208f8b"
+        },
+        {
+          "name": "required",
+          "pointer": "/properties/files/items/properties/required",
+          "required_in_parent": true,
+          "description": "Whether the release contract requires this file.",
+          "schema_reference": null,
+          "rule_sha256": "66a668d8c4b50a30f61f267484e32841c85695265a2d3059886fa4bf6ccc34d7"
+        },
+        {
+          "name": "unit",
+          "pointer": "/properties/expected_counts/items/properties/unit",
+          "required_in_parent": true,
+          "description": "The source count unit.",
+          "schema_reference": null,
+          "rule_sha256": "e9eafd1a897293292cb282cea46a919dc19c6f09d7782ca2e3e12de2739b18cf"
+        },
+        {
+          "name": "partition",
+          "pointer": "/properties/expected_counts/items/properties/partition",
+          "required_in_parent": true,
+          "description": "The exact source partition.",
+          "schema_reference": null,
+          "rule_sha256": "3e7ec8c3b50478cf10f4c39bd122bc333ec8edce7f2110c71138e8bea0b2ac1d"
+        },
+        {
+          "name": "value",
+          "pointer": "/properties/expected_counts/items/properties/value",
+          "required_in_parent": true,
+          "description": "The source-declared count, null if not declared.",
+          "schema_reference": null,
+          "rule_sha256": "1a4e4e0d88e559601b7e33071fc2e2e85e7dacc633887f0c7cac63868c108cfd"
+        },
+        {
+          "name": "basis_asset_id",
+          "pointer": "/properties/expected_counts/items/properties/basis_asset_id",
+          "required_in_parent": true,
+          "description": "The actual statement supporting the count.",
+          "schema_reference": null,
+          "rule_sha256": "0f24fb799108b4ca55b06c97535c6999c2a7ff445639e56f4c32a079519660e9"
+        }
+      ]
+    },
+    {
       "kind": "source-release",
       "schema": "contracts/source-release.schema.json",
-      "sha256": "3a725fb18d8d854454055e865098b7e66da8dd00cd8ff7f85044a864e92cde3d",
+      "sha256": "d39a8a992d43ee7c57bcbf8ced92c9e9fedd7182fdd493c51a979e2074ae410d",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -15776,17 +17830,17 @@
           "name": "format_profile_id",
           "pointer": "/properties/format_profile_id",
           "required_in_parent": true,
-          "description": "The exact parser profile.",
+          "description": "Null while lossless raw intake precedes semantic binding; no invented native mapping.",
           "schema_reference": null,
-          "rule_sha256": "9a01157d0dcd7384b3dd640bc785e4ea60963cdf483c87c7db93f695c29702be"
+          "rule_sha256": "250b7beb9bd9f4efb8a2fe525718798dec1948753bd45d537ce5aee106a0a4c3"
         },
         {
           "name": "format_profile_sha256",
           "pointer": "/properties/format_profile_sha256",
           "required_in_parent": true,
-          "description": "The frozen source-format mapping.",
+          "description": "Null while lossless raw intake precedes semantic binding; no invented native mapping.",
           "schema_reference": null,
-          "rule_sha256": "bc2a6b6495b06049887f420413fa68c2e78f6fe92b6612302d59618aaa015725"
+          "rule_sha256": "51aaf525450cdf7078fca85ec58db4754384217647bb007feeb3be70d1187cbd"
         },
         {
           "name": "files",
@@ -15929,7 +17983,7 @@
     {
       "kind": "source-status",
       "schema": "contracts/source-status.schema.json",
-      "sha256": "fe5fd17e8d0cac75caf4d56a33bfab306a957b8e7e2a6bcbc20b3867aada1034",
+      "sha256": "82d31913f6abc6ff5617e18891a1c9a8a5dc16d9dc3030e85123b1c0bce227ec",
       "schema_version": null,
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -15989,6 +18043,312 @@
           "description": "Current reasons.",
           "schema_reference": null,
           "rule_sha256": "04dbcb6e7f9cac440d969051662d27f774f1e307c5e41b5ab4b2412e82fdd727"
+        },
+        {
+          "name": "raw_complete",
+          "pointer": "/properties/raw_complete",
+          "required_in_parent": true,
+          "description": "All actual required supplied members/records inventoried with reconciled disposition; independent of semantic mapping.",
+          "schema_reference": null,
+          "rule_sha256": "12c717dc88fa4ddb09684febc9cf1eccf77620f8c7cd15f5d4f1bd674f503389"
+        },
+        {
+          "name": "normalized_complete",
+          "pointer": "/properties/normalized_complete",
+          "required_in_parent": true,
+          "description": "All required native semantics have an actual binding, or documented label-absence states; no guessed labels.",
+          "schema_reference": null,
+          "rule_sha256": "edefa803c1d23787bab5ce61bfeb3a282193521d9a8c36bc9f62b97833dfbe4c"
+        },
+        {
+          "name": "raw_only_records",
+          "pointer": "/properties/raw_only_records",
+          "required_in_parent": true,
+          "description": "Accepted raw records whose project semantic conversion is not yet available; subset of accepted_records, never extra encountered records.",
+          "schema_reference": null,
+          "rule_sha256": "5eed6133eafc614314866b0b07714c4e68b1e0c995b5bd8a5a440e92d53c5d33"
+        }
+      ]
+    },
+    {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "speech-render-request",
+      "schema": "contracts/speech-render-request.schema.json",
+      "sha256": "9a4f4127b1adf7f9ba610f3fabfb125caf122ae6ccaf8a3891bc47b7dfdd9282",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "case_version_id",
+          "pointer": "/properties/case_version_id",
+          "required_in_parent": true,
+          "description": "The candidate version.",
+          "schema_reference": null,
+          "rule_sha256": "9575db1dacdfea130216c47a01abce623108825dc8c554cd4c0b9c20f347038a"
+        },
+        {
+          "name": "blueprint_sha256",
+          "pointer": "/properties/blueprint_sha256",
+          "required_in_parent": true,
+          "description": "The blueprint digest.",
+          "schema_reference": null,
+          "rule_sha256": "fec2348aed505606990a0f4cf3ce216683d64d20629d620ac4d94a5e6baf728d"
+        },
+        {
+          "name": "provider_profile_id",
+          "pointer": "/properties/provider_profile_id",
+          "required_in_parent": true,
+          "description": "The configured synthesis profile.",
+          "schema_reference": null,
+          "rule_sha256": "046f47e53acb80e46cfb2e07d7789c4746c6c4b00c0a7f8a16469af81434867c"
+        },
+        {
+          "name": "profile_sha256",
+          "pointer": "/properties/profile_sha256",
+          "required_in_parent": true,
+          "description": "Its frozen digest.",
+          "schema_reference": null,
+          "rule_sha256": "88be22d0e3a96aed675728c3e11de7a79425eb70bce737e8916b788eb587e5ba"
+        },
+        {
+          "name": "required_capabilities",
+          "pointer": "/properties/required_capabilities",
+          "required_in_parent": true,
+          "description": "All hard capabilities.",
+          "schema_reference": null,
+          "rule_sha256": "311c250a926f3bcd5b9ff3c405809d1d0627593ee8c3ecf8c2ef62742b51eb93"
+        },
+        {
+          "name": "turns",
+          "pointer": "/properties/turns",
+          "required_in_parent": true,
+          "description": "Every utterance in order.",
+          "schema_reference": null,
+          "rule_sha256": "d6cf657717391e645096ffe65473f93647166486aa2ff3c1cbc036eb1ac64f67"
+        },
+        {
+          "name": "audio_format",
+          "pointer": "/properties/audio_format",
+          "required_in_parent": true,
+          "description": "The exact master and delivery format.",
+          "schema_reference": null,
+          "rule_sha256": "60412a7afd4f47c02e785e1484125400e4c5ff28114f825e4ab5f350a6e919d1"
+        },
+        {
+          "name": "plan_sha256",
+          "pointer": "/properties/plan_sha256",
+          "required_in_parent": true,
+          "description": "The canonical plan digest.",
+          "schema_reference": null,
+          "rule_sha256": "c263c66a3e68f82a238549f717f351222105aa67be7d98ebf44a7282d50dfc80"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/turns/items/properties/id",
+          "required_in_parent": true,
+          "description": "The render turn.",
+          "schema_reference": null,
+          "rule_sha256": "a017dba436c31a971af449dd540462ada60ec7794d5268a7a2512c9171c0c8a8"
+        },
+        {
+          "name": "utterance_id",
+          "pointer": "/properties/turns/items/properties/utterance_id",
+          "required_in_parent": true,
+          "description": "Its exact source utterance.",
+          "schema_reference": null,
+          "rule_sha256": "b3d7d536b8cd9d40119c5005f9f53182c9004c7f7a511c7816086575727f7022"
+        },
+        {
+          "name": "speaker_id",
+          "pointer": "/properties/turns/items/properties/speaker_id",
+          "required_in_parent": true,
+          "description": "The blueprint speaker.",
+          "schema_reference": null,
+          "rule_sha256": "2376d83ca8728c487ff8a34b4a95f0be8f5140a1abafd92ecee3bc05f8a78419"
+        },
+        {
+          "name": "voice_id",
+          "pointer": "/properties/turns/items/properties/voice_id",
+          "required_in_parent": true,
+          "description": "An approved voice from the frozen provider profile.",
+          "schema_reference": null,
+          "rule_sha256": "ee097bbeb3f65d24dbb2132e2874d7cc7868c032490e65aea489a430db2d30bb"
+        },
+        {
+          "name": "locale",
+          "pointer": "/properties/turns/items/properties/locale",
+          "required_in_parent": true,
+          "description": "The exact voice locale.",
+          "schema_reference": null,
+          "rule_sha256": "a62830e19e21591fb2384061b9823aa2fc6eae6cded3c73ff5bdcfb5a5d8fcf6"
+        },
+        {
+          "name": "operations",
+          "pointer": "/properties/turns/items/properties/operations",
+          "required_in_parent": true,
+          "description": "Ordered non-overlapping operations.",
+          "schema_reference": null,
+          "rule_sha256": "ada8258132f57b10b336aa866209445f18fe2d90b85a42e0115e7355c38073ce"
+        },
+        {
+          "name": "gap_after_ms",
+          "pointer": "/properties/turns/items/properties/gap_after_ms",
+          "required_in_parent": true,
+          "description": "A separate gap after this turn.",
+          "schema_reference": null,
+          "rule_sha256": "e195ea2c3fac97a42e5dc601b97f4b92c7d7b309dcf335008a8c653da610974b"
+        },
+        {
+          "name": "kind",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/0/properties/kind",
+          "required_in_parent": true,
+          "description": "Literal surface text.",
+          "schema_reference": null,
+          "rule_sha256": "18f6c4ca0b96ec02218448d28e9e1d24b46ec33cd7b42ed44af458b6fbbfbbb0"
+        },
+        {
+          "name": "text",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/0/properties/text",
+          "required_in_parent": true,
+          "description": "Exact surface text. Do not correct intentional errors.",
+          "schema_reference": null,
+          "rule_sha256": "2ea6f37528fb8225676f933d67843d70abdb2b0bc8524f5998d42d39b521ae2a"
+        },
+        {
+          "name": "kind",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/1/properties/kind",
+          "required_in_parent": true,
+          "description": "An explicit phoneme operation.",
+          "schema_reference": null,
+          "rule_sha256": "274c6bb1b4b163882bb663533df287e6968e7b3130072689787ad2955c5b471f"
+        },
+        {
+          "name": "text",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/1/properties/text",
+          "required_in_parent": true,
+          "description": "The original spelling.",
+          "schema_reference": null,
+          "rule_sha256": "50a356fa9f8ee6f64a56df527f432f942e263b17f71c80497feb60200f826bd8"
+        },
+        {
+          "name": "ipa",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/1/properties/ipa",
+          "required_in_parent": true,
+          "description": "The intended IPA sequence.",
+          "schema_reference": null,
+          "rule_sha256": "3dbc61296ba5c29441fe4d252df78d6aaa7ba3d0adef5a2921fe7fd6a10a57c1"
+        },
+        {
+          "name": "target_unit_id",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/1/properties/target_unit_id",
+          "required_in_parent": true,
+          "description": "The target unit or opportunity.",
+          "schema_reference": null,
+          "rule_sha256": "494ba3a6b34c08e293e2817fbf12d76b075bd95e8b24a9ce6d69db0258385637"
+        },
+        {
+          "name": "kind",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/2/properties/kind",
+          "required_in_parent": true,
+          "description": "A timed silent interval.",
+          "schema_reference": null,
+          "rule_sha256": "20eb3fdd9c0e11e5fd0a66c3ad2c66e826297bcf2ba9f4a96ab676b46dd9845c"
+        },
+        {
+          "name": "duration_ms",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/2/properties/duration_ms",
+          "required_in_parent": true,
+          "description": "The requested pause in milliseconds.",
+          "schema_reference": null,
+          "rule_sha256": "6605a4c1452916d62c0744d6cc9341c09fa8c8a2aaf91ecb331ca7aeb6c826cb"
+        },
+        {
+          "name": "target_unit_id",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/2/properties/target_unit_id",
+          "required_in_parent": true,
+          "description": "The target unit, if the pause is assessed.",
+          "schema_reference": null,
+          "rule_sha256": "2c8f60b9befdb07bc901c0611fbf33796b55cc7a5f37b37e53c91c3245869b20"
+        },
+        {
+          "name": "kind",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/3/properties/kind",
+          "required_in_parent": true,
+          "description": "A scoped prosody operation.",
+          "schema_reference": null,
+          "rule_sha256": "a5e56429c402f81f31a7430ede472a2d0967e4201c220f7ac7a08902ec89bead"
+        },
+        {
+          "name": "text",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/3/properties/text",
+          "required_in_parent": true,
+          "description": "The exact text in this scope.",
+          "schema_reference": null,
+          "rule_sha256": "901c02e796dddfc5e31c7f0b327f737bd0e621c625f3aee1fd95e4b343c5564e"
+        },
+        {
+          "name": "rate_percent",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/3/properties/rate_percent",
+          "required_in_parent": true,
+          "description": "Relative change from the voice rate.",
+          "schema_reference": null,
+          "rule_sha256": "c70ebedc2748f7dd5fcb1e6df100fefef707e6be62274ca56e9302ef0a9a7a6c"
+        },
+        {
+          "name": "pitch_semitones",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/3/properties/pitch_semitones",
+          "required_in_parent": true,
+          "description": "Relative pitch in semitones.",
+          "schema_reference": null,
+          "rule_sha256": "640597953df89f255a91dcc9af8af9492faaee0d1030e75b81b341a19467bcad"
+        },
+        {
+          "name": "volume_db",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/3/properties/volume_db",
+          "required_in_parent": true,
+          "description": "Relative volume in decibels.",
+          "schema_reference": null,
+          "rule_sha256": "a1ccdde3083b929f15ae81ee70ec4c18052098f07175bab4db78339a5d42747a"
+        },
+        {
+          "name": "contour",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/3/properties/contour",
+          "required_in_parent": true,
+          "description": "Strictly increasing contour positions.",
+          "schema_reference": null,
+          "rule_sha256": "cfdfc1dcf5eaf72c7ab17538ea7a582112b0f6b508370dd1d7ba3f689209842f"
+        },
+        {
+          "name": "target_unit_ids",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/3/properties/target_unit_ids",
+          "required_in_parent": true,
+          "description": "The affected existing units.",
+          "schema_reference": null,
+          "rule_sha256": "466a547dfa35216c3a830be2cc51d37c7b30f4af914d172898f37343fb273b2e"
+        },
+        {
+          "name": "position_percent",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/3/properties/contour/items/properties/position_percent",
+          "required_in_parent": true,
+          "description": "Position in the scope.",
+          "schema_reference": null,
+          "rule_sha256": "2be38ebf9461655a75aaabb3ea878f3c28233307d015395cffb6c473578bb758"
+        },
+        {
+          "name": "pitch_semitones",
+          "pointer": "/properties/turns/items/properties/operations/items/oneOf/3/properties/contour/items/properties/pitch_semitones",
+          "required_in_parent": true,
+          "description": "Relative pitch.",
+          "schema_reference": null,
+          "rule_sha256": "dae9587c2c6ba7403109fc9aa4e93a2754c65134cba9e1bbe51018e5076abcd9"
         }
       ]
     },
@@ -16229,9 +18589,139 @@
       ]
     },
     {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "split-request",
+      "schema": "contracts/split-request.schema.json",
+      "sha256": "5da4744ad9f3ece208a3f886dd3b56970bf0413e9fa18f2e2889230d2dbc1231",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "seed",
+          "pointer": "/properties/seed",
+          "required_in_parent": true,
+          "description": "The exact deterministic allocation seed.",
+          "schema_reference": null,
+          "rule_sha256": "434dbdde04602a21161ece589c23216fbfcd80d7c7b16a4af85f3e790cac3b91"
+        },
+        {
+          "name": "normalization_method",
+          "pointer": "/properties/normalization_method",
+          "required_in_parent": true,
+          "description": "The grouping normalization contract.",
+          "schema_reference": null,
+          "rule_sha256": "d10168c4ebf142ff69b05610e7f12cf4820c4dc8a785bc9bb76b9f595bfdd898"
+        },
+        {
+          "name": "ratio",
+          "pointer": "/properties/ratio",
+          "required_in_parent": true,
+          "description": "Percentages sum to 100.",
+          "schema_reference": null,
+          "rule_sha256": "b23dc335a87064d0c97a68aa490ae8d43964078fa7fa38dad3a8fd40092df1ca"
+        },
+        {
+          "name": "groups",
+          "pointer": "/properties/groups",
+          "required_in_parent": true,
+          "description": "All connected groups.",
+          "schema_reference": null,
+          "rule_sha256": "f24c8118fca1cf2ae0f67bdd3b49b27438acbe9269b18f6bb1fa6b5fe0629812"
+        },
+        {
+          "name": "dev",
+          "pointer": "/properties/ratio/properties/dev",
+          "required_in_parent": true,
+          "description": "The development percentage.",
+          "schema_reference": null,
+          "rule_sha256": "8cb359df1c5059c93848d3ba41d0d60287cc8892184f3008d69ec6e39f35b2f8"
+        },
+        {
+          "name": "calibration",
+          "pointer": "/properties/ratio/properties/calibration",
+          "required_in_parent": true,
+          "description": "The calibration percentage.",
+          "schema_reference": null,
+          "rule_sha256": "42cebef120a8893ebd6fddc50f5d1af76b2ca3c4060fb3a37dfb1a08425f4d02"
+        },
+        {
+          "name": "holdout",
+          "pointer": "/properties/ratio/properties/holdout",
+          "required_in_parent": true,
+          "description": "The holdout percentage.",
+          "schema_reference": null,
+          "rule_sha256": "3d3eacb045deb11edcca0fe39feafccbba1fc548375c457a19357531b6e4ecd1"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/groups/items/properties/id",
+          "required_in_parent": true,
+          "description": "The connected component identity.",
+          "schema_reference": null,
+          "rule_sha256": "737803d474b3d147361369c92a264d467feee9ca37f06ae8f5252deebd8e5537"
+        },
+        {
+          "name": "record_ids",
+          "pointer": "/properties/groups/items/properties/record_ids",
+          "required_in_parent": true,
+          "description": "Every member including derivatives.",
+          "schema_reference": null,
+          "rule_sha256": "c0633ce1c1c058212de6ef3d52304f50fe14d997145a9aefa9391d927cb95a5e"
+        },
+        {
+          "name": "speaker_ids",
+          "pointer": "/properties/groups/items/properties/speaker_ids",
+          "required_in_parent": true,
+          "description": "Known speakers in this component.",
+          "schema_reference": null,
+          "rule_sha256": "cb8b5b99cecb46cd1199e4ac57c7123ab6208567d9329d7c3a8ce2888b434038"
+        },
+        {
+          "name": "learner_ids",
+          "pointer": "/properties/groups/items/properties/learner_ids",
+          "required_in_parent": true,
+          "description": "Known learners in this component.",
+          "schema_reference": null,
+          "rule_sha256": "474b7293f1138c54b5e27c7cd6624dc7c3aa37159d469c67769fbc7afe59ed1e"
+        },
+        {
+          "name": "script_family_ids",
+          "pointer": "/properties/groups/items/properties/script_family_ids",
+          "required_in_parent": true,
+          "description": "Known related scripts.",
+          "schema_reference": null,
+          "rule_sha256": "5c4a79db208a3f9cb981d2422608b56148ed165dfd3dbc1b9cb256135199fa77"
+        },
+        {
+          "name": "split",
+          "pointer": "/properties/groups/items/properties/split",
+          "required_in_parent": true,
+          "description": "The assigned project split.",
+          "schema_reference": null,
+          "rule_sha256": "b61dd183514defe1ac78f97bf7e45a4b7acb4e8a5d4f946442f709fb61c7206c"
+        },
+        {
+          "name": "reason",
+          "pointer": "/properties/groups/items/properties/reason",
+          "required_in_parent": true,
+          "description": "Why allocation remains quarantined.",
+          "schema_reference": null,
+          "rule_sha256": "5aa1c568a19314640f7f7405a75c6f63a8f28dd998c331f5f0963c10abb628ae"
+        }
+      ]
+    },
+    {
       "kind": "stage-cache",
       "schema": "contracts/stage-cache.schema.json",
-      "sha256": "2f9aecb7d4891de1a8bf3ab2e916758a9c1e15f45fee572c3c8815f61f75b846",
+      "sha256": "002aae5f10c5b8725027339ae09a15e8764bff51dc1f6c539987486cf3eca2fa",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -16344,9 +18834,9 @@
           "name": "permission_epoch",
           "pointer": "/properties/permission_epoch",
           "required_in_parent": true,
-          "description": "The source/consent revocation epoch at acceptance.",
+          "description": "Legacy imported value; null for LLM processing.",
           "schema_reference": null,
-          "rule_sha256": "3b162f78b1a685a3df3f61a2c59c2bfecc03b3c1e75f529cb18f0e6505dd2bb9"
+          "rule_sha256": "967d7ecdb37e0da601c6a799fbe99847f0c261b75042d3d6f874d01d14d7ff77"
         },
         {
           "name": "created_at",
@@ -16355,6 +18845,40 @@
           "description": "The cache commit time.",
           "schema_reference": null,
           "rule_sha256": "204db404d386f87f20627039f6f02fa701d89f8051e0e8c5a58c1ecd410edcf9"
+        }
+      ]
+    },
+    {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "start-review-request",
+      "schema": "contracts/start-review-request.schema.json",
+      "sha256": "73dfff36e8649264c6dd97c002a39e3165166fed293512de9ff7a8b4aa9d5f20",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "case_version_id",
+          "pointer": "/properties/case_version_id",
+          "required_in_parent": true,
+          "description": "The exact case.",
+          "schema_reference": null,
+          "rule_sha256": "3d4d6f377a7efb713596b6e2a6493ff5900e5042168b6c65bcc4254cab17e3ce"
+        },
+        {
+          "name": "audio_sha256",
+          "pointer": "/properties/audio_sha256",
+          "required_in_parent": true,
+          "description": "The final delivery digest.",
+          "schema_reference": null,
+          "rule_sha256": "7545932c659901b155f7b72eaed26eb02d66a884799c4a80f5aed1c59520e55a"
         }
       ]
     },
@@ -16473,9 +18997,163 @@
       ]
     },
     {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "teacher-gold-request",
+      "schema": "contracts/teacher-gold-request.schema.json",
+      "sha256": "65797384e80ca699dd1a4af271ae4197df56bdba65638fa6f693404212f85ef7",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "answer_asset_id",
+          "pointer": "/properties/answer_asset_id",
+          "required_in_parent": true,
+          "description": "The immutable real answer bytes.",
+          "schema_reference": null,
+          "rule_sha256": "598624681ca5063bceab101baba1b4ccf67173b73a6f7fc4c9b1ea4c6f223de3"
+        },
+        {
+          "name": "answer_sha256",
+          "pointer": "/properties/answer_sha256",
+          "required_in_parent": true,
+          "description": "The exact answer digest.",
+          "schema_reference": null,
+          "rule_sha256": "16cae33b5c176a0a90984062fcef5ce94a09fa36af6e01b3918ffc7c74d1403f"
+        },
+        {
+          "name": "case_version_id",
+          "pointer": "/properties/case_version_id",
+          "required_in_parent": true,
+          "description": "The presented case.",
+          "schema_reference": null,
+          "rule_sha256": "917f27e6ae151aa638d0f56174ee7a9ac1b657755a6cf24aea069d105bb6ae54"
+        },
+        {
+          "name": "case_sha256",
+          "pointer": "/properties/case_sha256",
+          "required_in_parent": true,
+          "description": "The frozen key digest.",
+          "schema_reference": null,
+          "rule_sha256": "3bf3e69b4596f850ebed9d19e6daf26b6ec0ff3a654cbd2b60f0cf0f56474a48"
+        },
+        {
+          "name": "audio_sha256",
+          "pointer": "/properties/audio_sha256",
+          "required_in_parent": true,
+          "description": "The exact recording.",
+          "schema_reference": null,
+          "rule_sha256": "389597b3d6100b3308bddf3328b4e4f60c522089c1a36eafb94d8b1704efa7d4"
+        },
+        {
+          "name": "person_id",
+          "pointer": "/properties/person_id",
+          "required_in_parent": true,
+          "description": "Legacy imported value; null for LLM processing.",
+          "schema_reference": null,
+          "rule_sha256": "f89908f34f194872b1b93a3aaabf2c784634684cb09214c328844dd0d375f2e1"
+        },
+        {
+          "name": "qualification_ids",
+          "pointer": "/properties/qualification_ids",
+          "required_in_parent": true,
+          "description": "The rater competence evidence.",
+          "schema_reference": null,
+          "rule_sha256": "402b2bef3848b808cadb15c2ed1b7c1ff3035d96341ad221281bc118bbae29e2"
+        },
+        {
+          "name": "model_output_seen",
+          "pointer": "/properties/model_output_seen",
+          "required_in_parent": true,
+          "description": "No model output before the independent label submission.",
+          "schema_reference": null,
+          "rule_sha256": "3df00c66147bf7ecea9cb6d9d8b0ee9fc306274433d62c6a0da23b3394c07da6"
+        },
+        {
+          "name": "extraction",
+          "pointer": "/properties/extraction",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": "claim-extraction.schema.json",
+          "rule_sha256": "17f0ca19fe33331358231d75c51fd106e302c42257d3244f90a93996e308b076"
+        },
+        {
+          "name": "normalizations",
+          "pointer": "/properties/normalizations",
+          "required_in_parent": true,
+          "description": "The independently annotated grouping.",
+          "schema_reference": null,
+          "rule_sha256": "672da25825981140c62fe3cbfd8cbbcec863e6d6893703da0fee0e88228bbc31"
+        },
+        {
+          "name": "decisions",
+          "pointer": "/properties/decisions",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": "evaluator-output.schema.json",
+          "rule_sha256": "5060ce1709f663a66daf8fc61937739796bbcd2b9a321fa9fc39ad8f258fad3c"
+        },
+        {
+          "name": "split",
+          "pointer": "/properties/split",
+          "required_in_parent": true,
+          "description": "The frozen project partition.",
+          "schema_reference": null,
+          "rule_sha256": "f9a8be86d40eb07fe7408a0e74dad4abe049203b334a2777bd90bcd1c5d7c8f3"
+        },
+        {
+          "name": "group_id",
+          "pointer": "/properties/group_id",
+          "required_in_parent": true,
+          "description": "The leakage-connected group.",
+          "schema_reference": null,
+          "rule_sha256": "1b95b213eed53a60243db242e66ff9ee006b09903ef4de55412391c93b4200af"
+        },
+        {
+          "name": "adjudication_id",
+          "pointer": "/properties/adjudication_id",
+          "required_in_parent": true,
+          "description": "A later separate adjudication.",
+          "schema_reference": null,
+          "rule_sha256": "0ccf546e5a8efd8c4ce7f4d0db849ef00cfcb3c4a645f0254f213300e8e1fbbc"
+        },
+        {
+          "name": "origin",
+          "pointer": "/properties/origin",
+          "required_in_parent": true,
+          "description": "Actual label origin; never a claim of new human peer review.",
+          "schema_reference": null,
+          "rule_sha256": "5deb173b5f06d5f6e80d8a5a6338a21fe7fb3f71e98b7dac7de21c6d1eb526f1"
+        },
+        {
+          "name": "provider_receipt_ids",
+          "pointer": "/properties/provider_receipt_ids",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "6e2c66b26e0618bb678a62120c5555296c6fd8997f1b23771bba173232397ede"
+        },
+        {
+          "name": "input_modality",
+          "pointer": "/properties/input_modality",
+          "required_in_parent": true,
+          "description": "Actual input modality; transcript-only models never claim direct hearing.",
+          "schema_reference": null,
+          "rule_sha256": "e568a5f1607b95013f746da3814aa4a5440b0a2696ba1897da9156a445226037"
+        }
+      ]
+    },
+    {
       "kind": "teacher-gold",
       "schema": "contracts/teacher-gold.schema.json",
-      "sha256": "6333aa2f50f8f54c3c4d088f7cfd94dc454b4d9428e4b15840da6e5a2cb4bdee",
+      "sha256": "e75ef2a56a14efc7109fc067159c29cd235d85b8bf1388e0a6126474d05a892d",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -16540,9 +19218,9 @@
           "name": "person_id",
           "pointer": "/properties/person_id",
           "required_in_parent": true,
-          "description": "The real rater.",
+          "description": "Legacy imported value; null for LLM processing.",
           "schema_reference": null,
-          "rule_sha256": "0c0e057cf39a89588f7c547c6d5de1323b81ec685fcf90e2c9f38468f139b403"
+          "rule_sha256": "f89908f34f194872b1b93a3aaabf2c784634684cb09214c328844dd0d375f2e1"
         },
         {
           "name": "qualification_ids",
@@ -16615,6 +19293,62 @@
           "description": "A later separate adjudication.",
           "schema_reference": null,
           "rule_sha256": "0ccf546e5a8efd8c4ce7f4d0db849ef00cfcb3c4a645f0254f213300e8e1fbbc"
+        },
+        {
+          "name": "origin",
+          "pointer": "/properties/origin",
+          "required_in_parent": true,
+          "description": "Actual label origin; never a claim of new human peer review.",
+          "schema_reference": null,
+          "rule_sha256": "5deb173b5f06d5f6e80d8a5a6338a21fe7fb3f71e98b7dac7de21c6d1eb526f1"
+        },
+        {
+          "name": "provider_receipt_ids",
+          "pointer": "/properties/provider_receipt_ids",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "6e2c66b26e0618bb678a62120c5555296c6fd8997f1b23771bba173232397ede"
+        },
+        {
+          "name": "input_modality",
+          "pointer": "/properties/input_modality",
+          "required_in_parent": true,
+          "description": "Actual input modality; transcript-only models never claim direct hearing.",
+          "schema_reference": null,
+          "rule_sha256": "e568a5f1607b95013f746da3814aa4a5440b0a2696ba1897da9156a445226037"
+        },
+        {
+          "name": "origin",
+          "pointer": "/allOf/0/if/properties/origin",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "ce2e93d8f76fec21365c91a4763e9b8a31bd4faa0817f4d4f343e8c2f80cf29e"
+        },
+        {
+          "name": "person_id",
+          "pointer": "/allOf/0/then/properties/person_id",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "5fcfb3a76360a2de847194bde7be4c48c6d3996b29cf85b088732c8eed1d7e70"
+        },
+        {
+          "name": "qualification_ids",
+          "pointer": "/allOf/0/then/properties/qualification_ids",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c6e95d25e769ba2e73cce6f5e3449527e8d34d93f596857a4c79137ec148cce3"
+        },
+        {
+          "name": "provider_receipt_ids",
+          "pointer": "/allOf/0/then/properties/provider_receipt_ids",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "a266681ad891d579e5dc01c7c6003450a8ee440cefd7763bcaa68c9d7cff111c"
         }
       ]
     },
@@ -16623,7 +19357,7 @@
       "storage": "Derived view; durable source record remains private",
       "kind": "teacher-key",
       "schema": "contracts/teacher-key.schema.json",
-      "sha256": "e906b16533118d5a5f96bd48ae6b81a19057ac3047420ffc6222fb4268433b1a",
+      "sha256": "c2e93639cea07d069e3ce3aeb855d238de9bb1adcfb7aed2adcaab7bae2ef37f",
       "schema_version": "2.0.0",
       "fields": [
         {
@@ -16696,7 +19430,7 @@
           "required_in_parent": true,
           "description": "These entries contain the reviewed detection opportunities and negative controls.",
           "schema_reference": null,
-          "rule_sha256": "9fcc06e4c3c87984df6b46ed83422fef6993b33e34cd5c672bd209dc80e80aa7"
+          "rule_sha256": "2b8673eb064aec99e175cea1fe4eba9246ef267a71a3d173c80ac0a751dae64e"
         },
         {
           "name": "verification_policy_version",
@@ -17016,7 +19750,7 @@
           "required_in_parent": true,
           "description": "This object separates the intended target, actual audio, and observed evidence.",
           "schema_reference": null,
-          "rule_sha256": "7c3031221aa047219795a405004c3bb14c348bdb73798a09db6e6d50a713aa35"
+          "rule_sha256": "5e1573fc58b1cde315ec21ee295bca6af715139706c551f189cfb9730b28e162"
         },
         {
           "name": "severity",
@@ -17238,9 +19972,9 @@
           "name": "observed_ipa",
           "pointer": "/properties/units/items/properties/realization/properties/observed_ipa",
           "required_in_parent": true,
-          "description": "This field records the pronunciation that a qualified reviewer actually observed.",
+          "description": "This field records the pronunciation that a native annotation, measured evidence or modality-labelled LLM inference supports.",
           "schema_reference": null,
-          "rule_sha256": "9ac082e894910e89700b539e6c1b3832d3452dc5027e5bda528f16c4c978a654"
+          "rule_sha256": "981be299f995453574361f545edf9fa2f5198677f19a3d638a1a393ac2b91f1a"
         },
         {
           "name": "prosody",
@@ -17927,9 +20661,99 @@
       ]
     },
     {
+      "persistent_domain_record": false,
+      "storage": "Derived DTO or actual operation/stage input/output receipt",
+      "kind": "unit-map-request",
+      "schema": "contracts/unit-map-request.schema.json",
+      "sha256": "ed5d6bba9557a47f09e173d6fa991e7a248e9296876fd23161501744b4b74406",
+      "schema_version": "2.0.0",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "The local contract version.",
+          "schema_reference": null,
+          "rule_sha256": "c419d1348f69d7954635da73b06b0090ec8f5291d06f340e38ca1950197fcc79"
+        },
+        {
+          "name": "old_case_version_id",
+          "pointer": "/properties/old_case_version_id",
+          "required_in_parent": true,
+          "description": "The former key version.",
+          "schema_reference": null,
+          "rule_sha256": "d2f9c7a76e8044002ad0aaba651e8d3803bfa603af76882429f5e28c1d28fbf0"
+        },
+        {
+          "name": "new_case_version_id",
+          "pointer": "/properties/new_case_version_id",
+          "required_in_parent": true,
+          "description": "The corrected key version.",
+          "schema_reference": null,
+          "rule_sha256": "11230271d700134fa6abc3805c8119143454f0a433f2a7e3c8a3cd5a98b3cb96"
+        },
+        {
+          "name": "audio_sha256",
+          "pointer": "/properties/audio_sha256",
+          "required_in_parent": true,
+          "description": "The same recording used by both keys.",
+          "schema_reference": null,
+          "rule_sha256": "609dbcf3da64660bf1753f40ef7dd93f52e8ad6a8f88e1d26bcf46fb0dbb8eba"
+        },
+        {
+          "name": "relations",
+          "pointer": "/properties/relations",
+          "required_in_parent": true,
+          "description": "All old and new units must be covered once.",
+          "schema_reference": null,
+          "rule_sha256": "a8d88dbc7c5ede0c7639403728d2ed6ca67b94841ca768e4d5524569efa1dbaf"
+        },
+        {
+          "name": "review_decision_ids",
+          "pointer": "/properties/review_decision_ids",
+          "required_in_parent": true,
+          "description": "Actual approvals of the correspondence.",
+          "schema_reference": null,
+          "rule_sha256": "1245b1cb5d85874ca3b7dd15403f14a88121992e60d75b7866e0e8bbe2e9a6c5"
+        },
+        {
+          "name": "old_unit_ids",
+          "pointer": "/properties/relations/items/properties/old_unit_ids",
+          "required_in_parent": true,
+          "description": "Old units, empty for a newly established event.",
+          "schema_reference": null,
+          "rule_sha256": "0e4f2f0a00bdd2610d927bcea897397dc876a8ad18b31565e793f51ff7f6e046"
+        },
+        {
+          "name": "new_unit_ids",
+          "pointer": "/properties/relations/items/properties/new_unit_ids",
+          "required_in_parent": true,
+          "description": "New units, empty for a removed event.",
+          "schema_reference": null,
+          "rule_sha256": "dbb96ae9b8f307291fa8c75dc0be9ff7a0cc7a6cf9fbee0351fea83410a95aa2"
+        },
+        {
+          "name": "kind",
+          "pointer": "/properties/relations/items/properties/kind",
+          "required_in_parent": true,
+          "description": "The reviewed relation.",
+          "schema_reference": null,
+          "rule_sha256": "4b9db743bae05de2ddb2cd5bdaf8bd40bd36ca8b53f386e89de9465384005ae9"
+        },
+        {
+          "name": "reason",
+          "pointer": "/properties/relations/items/properties/reason",
+          "required_in_parent": true,
+          "description": "Evidence for this relation.",
+          "schema_reference": null,
+          "rule_sha256": "ec189ea460b9f072ed8c90883ba4cabfbd87a2f64f33a103b99431fe65a0d8d0"
+        }
+      ]
+    },
+    {
       "kind": "verification-report",
       "schema": "contracts/verification-report.schema.json",
-      "sha256": "2149a024d9389d2175d21475a824efe0e1496a62cfb358517c1adb756bf78af1",
+      "sha256": "55d92d8d9429ba6beb25f89c0b5d8787c45554b0cd6a72f00c564b15902d650a",
       "schema_version": "1.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -17986,9 +20810,9 @@
           "name": "reviews",
           "pointer": "/properties/reviews",
           "required_in_parent": true,
-          "description": "These records preserve independent review decisions and their evidence.",
+          "description": "These records preserve machine or native imported decisions and their evidence.",
           "schema_reference": null,
-          "rule_sha256": "a2ecc1a0480f64b0e50e57bdc9e02c68882160d5df8311a8f1d696341d12a0a0"
+          "rule_sha256": "16275f34cb219bb209b45b2bedeac16f57f6112cada0d866e29baca5e97e854b"
         },
         {
           "name": "outcome",
@@ -18074,9 +20898,9 @@
           "name": "reviewer_id",
           "pointer": "/properties/reviews/items/properties/reviewer_id",
           "required_in_parent": true,
-          "description": "This identifier refers to the actual genuine human reviewer.",
+          "description": "This identifier refers to the native imported reviewer; null for LLM review.",
           "schema_reference": null,
-          "rule_sha256": "e03c3029b2921aa85ffc74eb5f8b0759aa7be53d84d448d39986956f8416964c"
+          "rule_sha256": "2a8bd56b2ebf0cd6dd2371e59d605aadf5aa1bf92cc712126fbd63e7a9930033"
         },
         {
           "name": "qualification_evidence_id",

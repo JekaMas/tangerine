@@ -1,66 +1,11 @@
-# Retention, capacity, and recovery
+# Local limits, cleanup and recovery
 
-## Local resource policy
+One paid foreground operation runs at a time. Default daily/monthly spend caps are disabled (null); the operator may configure explicit amounts. All paid operations use the same concurrency/accounting: generate, linguistic_audit, render, measure with paid providers, submit_answer, retry_evaluation, retry_feedback, start_review, review_decide, adjudicate, resolve_dispute and reconsider. Pure reads/import/backup do not consume provider budget. Record provider usage and known price/version when available; unknown cost is displayed unknown and does not require approval for each call. When an optional hard cap is enabled, unknown price cannot guarantee the cap: return cost_unknown and offer disabling the cap/configuring a real price, not a fake estimate.
 
-Allow one paid foreground operation at a time. Stored playback and status reads remain available.
-Use one database admission lock and a persisted operation record. Do not create a tenant billing service.
-The proposed guard is USD 10 per UTC day and USD 100 per UTC calendar month.
-The operator can change those explicit guard values before work starts. No operation can change its own budget.
-A price profile must identify the actual provider price units, date, and source.
-A guard is an application estimate, not a guarantee that a provider invoice has that exact value.
-Reserve the upper-bound estimated call cost before a paid operation.
-Count actual known costs, outstanding reservations, failed calls, canceled calls, and transport retries separately.
-If billing is uncertain, retain the reservation as an unknown-charge amount until actual evidence reconciles it.
-Never treat unknown charge as zero or release the same reservation twice.
-Without a usable price profile, show cost_unknown and require explicit approval for that exact paid operation.
+Preserve answer20,000codepoints,1,000units/clauses,270s foreground deadline and one paid operation concurrency as engineering defaults; expose supported settings. Archive defaults32GiB compressed,128GiB expanded,250,000members,32GiB/member are adjustable to a full actual release. An over-limit import stops with retained progress and exact counts; it never truncates and declares complete. Source scripts/docs are retained inert. No extra approval ceremony authorizes ordinary supported input or a configured limit change.
 
-The proposed limits are 20,000 answer codepoints, 1,000 extracted clauses, and 1,000 target units per case.
-The whole request still must fit its provider profile and deadline. Do not truncate to these limits.
-The proposed full-source archive limits are 32 GiB compressed, 128 GiB expanded, and 250,000 members.
-A single expanded member cannot exceed 32 GiB. Nested archive expansion is forbidden.
-A larger required release needs an explicit increased bounded configuration, not a sample-only import.
-A source archive cannot set or bypass these limits.
+Temporary unlinked media/source/provider outputs are eligible for explicit cleanup after30days. Referenced case/answer/result/source records are retained until user deletion. The helper/UI offers a preview of affected records and an explicit local apply action. No legal hold, mandatory permission epochs or unerasable audit chain is added. Source restrictions/revocation notices remain metadata and warnings; no dependency-closure permission service is required. The operator controls further use under actual source terms.
 
-## Retention classes
+Backup puts the database export, referenced private media, source bytes/manifests, schemas/configuration excluding secret values, attempts/results, original annotations and all machine review/provider evidence into one archive with exact file hashes. Actual person/imported consent data remains private. Default backup omits credentials; supplied credential references remain so restore can report missing keys.
 
-Keep published content, genuine reviewer evidence, source grants, frozen answers, semantic receipts, and final results until explicit deletion or a binding rights condition.
-Make unreferenced failed/draft payloads and diagnostic logs eligible for explicit cleanup after 30 days.
-Eligibility does not authorize automatic deletion. Show the exact cleanup plan and obtain confirmation.
-A record required by a current case, dispute, result, qualification, or retained backup is not an unreferenced draft.
-Apply shorter binding consent/license terms where they restrict continued retention.
-Do not silently lengthen a third party's permitted retention period.
-
-A revocation increments the local permission epoch and blocks new source use, external transfer, derivative publication, and invalid cache reuse.
-Historical results remain readable only to the extent permitted by the actual retained evidence and grant.
-Show evidence_unavailable when removal prevents reconstruction. Do not show a healthy reconstructable evidence graph.
-Retain hashes or tombstones only when their continued retention is itself permitted.
-A hash is not automatically anonymous or unrestricted data.
-Provider-side retention and deletion follow the actual provider agreement. A local erase operation cannot claim remote erasure without a receipt.
-
-## Consistent backup
-
-Backup is an explicit foreground maintenance operation, not a recurring background service.
-Enter maintenance mode and reject new writes and paid work.
-Wait for active database mutations to finish and cancel or finish active provider work under its existing deadline.
-Freeze a database snapshot and the committed asset-reference set at a recorded audit sequence and permission epoch.
-Export every typed document, head, reference, raw answer, review, source record, provider receipt, and applicable rights record.
-Copy all referenced immutable media and evidence bytes into the backup.
-Record each object's path, count, hash, schema version, and source release identity in a manifest.
-Record migration history, configuration hashes, the exact contract-vector digest, and the current revocation/tombstone ledger. No formal software release manifest is required.
-Do not include cloud or internal secret values in an ordinary data backup. Preserve secrets in a separate explicitly protected procedure.
-Read back the completed backup and verify every asset and count before marking it complete.
-Then leave maintenance mode. A failed backup does not erase the running data.
-
-## Restore
-
-Inspect the uploaded archive using the same path and expansion restrictions as source imports.
-Reject tampered hashes, unknown schemas, missing assets, unsupported migrations, and inconsistent references before switching the active workspace.
-Restore into new isolated volumes. Do not merge an existing workspace silently.
-Apply compatible migrations only with the exact recorded source checksums and supported version path.
-Apply the most recent available revocation and deletion ledger before any restored content becomes readable or transferable.
-If that ledger is missing or older than the known installation epoch, block external use pending explicit reconciliation.
-Validate every restored document, typed reference, audio digest, and original answer/result link.
-Run actual local readiness checks on the restored instance.
-After explicit switch confirmation, point the launcher to the restored volumes.
-Preserve the prior volumes until the approved rollback/retention decision permits deletion.
-A partially restored environment cannot report healthy full restoration.
+Restore goes to fresh volumes, validates archive paths/hashes and schema compatibility, imports the database and copies linked bytes, then reports missing optional providers/data. A restored backup does not make a paid call or require a grant ledger. Keep the previous workspace until the operator explicitly switches. No implicit destructive merge; failed restore leaves previous workspace usable. Deletion removes requested records and bytes transactionally with actual reference accounting and a minimal tombstone; it does not keep deleted answer/audio in a hash-chain audit payload.

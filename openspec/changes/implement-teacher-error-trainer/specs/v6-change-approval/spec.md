@@ -2,10 +2,8 @@
 
 ## ADDED Requirements
 
-### Requirement: APR-01 Exact owner approval
-The team MUST obtain explicit owner approval for each new mock, fake, substitute, or product property.
-Approval MUST identify the exact change and its permitted scope.
-Silence, earlier general approval, and model output MUST NOT count as approval.
+### Requirement: APR-01 Current actual user scope
+The team SHALL use the actual user-approved product scope and permit labelled deterministic test examples without per-example or per-property approval. It SHALL never treat model output as actual source/provider observations or a human signature.
 
 #### Scenario: APR-01 Exact scope
 - **GIVEN** The owner approves one change with an exact scope.
@@ -13,13 +11,13 @@ Silence, earlier general approval, and model output MUST NOT count as approval.
 - **THEN** The release links the owner decision and changed artifacts.
 
 #### Scenario: APR-01 Scope expansion
-- **GIVEN** An approval covers one test double only.
+- **GIVEN** A deterministic test example is labelled constructed.
 - **WHEN** An implementer proposes another test double or a wider use.
-- **THEN** The new use remains blocked until separate owner approval.
+- **THEN** The new deterministic example is permitted within scope and cannot count as real source/provider evidence.
 
 ### Requirement: APR-02 No unauthorized substitutes
 The default application MUST use real services and genuine stored evidence.
-Missing keys, media, or measurements MUST stop the affected operation.
+Missing required keys/media MUST stop the affected call; missing optional measurements remain explicit unavailable observations.
 The application MUST NOT replace missing results with invented values.
 
 #### Scenario: APR-02 Real evidence

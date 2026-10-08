@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/split-request.schema.json",
+  "title": "split-request",
+  "type": "object",
+  "description": "Exact creation/submit content projection for split. Response preserves the full stored record; server assigns envelope.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "seed": {
+      "type": "string",
+      "description": "The exact deterministic allocation seed.",
+      "maxLength": 200,
+      "minLength": 1
+    },
+    "normalization_method": {
+      "type": "string",
+      "description": "The grouping normalization contract.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "ratio": {
+      "type": "object",
+      "description": "Percentages sum to 100.",
+      "properties": {
+        "dev": {
+          "type": "integer",
+          "description": "The development percentage.",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "calibration": {
+          "type": "integer",
+          "description": "The calibration percentage.",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "holdout": {
+          "type": "integer",
+          "description": "The holdout percentage.",
+          "minimum": 0,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "dev",
+        "calibration",
+        "holdout"
+      ],
+      "additionalProperties": false
+    },
+    "groups": {
+      "type": "array",
+      "description": "All connected groups.",
+      "items": {
+        "type": "object",
+        "description": "One indivisible connected component.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The connected component identity.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "record_ids": {
+            "type": "array",
+            "description": "Every member including derivatives.",
+            "items": {
+              "type": "string",
+              "description": "An existing identifier.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 100000,
+            "uniqueItems": true
+          },
+          "speaker_ids": {
+            "type": "array",
+            "description": "Known speakers in this component.",
+            "items": {
+              "type": "string",
+              "description": "An existing identifier.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 100000,
+            "uniqueItems": true
+          },
+          "learner_ids": {
+            "type": "array",
+            "description": "Known learners in this component.",
+            "items": {
+              "type": "string",
+              "description": "An existing identifier.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 100000,
+            "uniqueItems": true
+          },
+          "script_family_ids": {
+            "type": "array",
+            "description": "Known related scripts.",
+            "items": {
+              "type": "string",
+              "description": "An existing identifier.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 100000,
+            "uniqueItems": true
+          },
+          "split": {
+            "type": "string",
+            "description": "The assigned project split.",
+            "enum": [
+              "dev",
+              "calibration",
+              "holdout",
+              "quarantine"
+            ]
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Why allocation remains quarantined.",
+                "maxLength": 4000,
+                "minLength": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Why allocation remains quarantined."
+          }
+        },
+        "required": [
+          "id",
+          "record_ids",
+          "speaker_ids",
+          "learner_ids",
+          "script_family_ids",
+          "split",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 1000000
+    }
+  },
+  "required": [
+    "schema_version",
+    "seed",
+    "normalization_method",
+    "ratio",
+    "groups"
+  ],
+  "additionalProperties": false
+}

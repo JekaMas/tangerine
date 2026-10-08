@@ -15,38 +15,38 @@ The system SHALL let authors prepare monologues/dialogues with context, voices, 
 - **WHEN** the authorized operation receives supported inputs or a violating input
 - **THEN** it SHALL prepare an authorized case and retain its real provider output, and SHALL refuse unsupported hard constraints or failed synthesis without a fabricated asset
 
-### Requirement: REV-01 Require independent blind review
+### Requirement: REV-01 LLM case review
 
-The system SHALL require two distinct qualified humans to listen without the planned key before comparing their own annotations with the key; require verified phonetics competence for acoustic cases.
+The system SHALL review generated cases through a configurable LLM with actual modality/evidence and no human peer reviewers, identities or qualification prerequisites. It SHALL retain blind observations, key comparison, unit correspondence and machine findings.
 
 #### Scenario: REV-01 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL retain two independent blind annotations and qualifying competence, and SHALL reject one person recorded as two reviewers, early key disclosure or missing acoustic qualification
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL run a machine review and retain its actual receipt/evidence modality, and SHALL never demand a human reviewer or label transcript inference as direct hearing
 
-### Requirement: REV-02 Resolve disagreement without erasure
+### Requirement: REV-02 LLM adjudication preserves disagreement
 
-The system SHALL retain initial disagreement and use a third qualified adjudicator or leave the recording unpublished.
+The system SHALL use configurable LLM adjudication for supported case/answer disagreements, retain prior findings and append a resolution or explicit insufficient_evidence.
 
 #### Scenario: REV-02 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL retain initial labels and a separate adjudication decision, and SHALL refuse publication with unresolved disagreement or overwritten initial labels
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL append the supported LLM resolution to retained earlier findings, and SHALL never require a third person or overwrite prior disagreement
 
-### Requirement: PUB-01 Publish immutable reviewed versions
+### Requirement: PUB-01 Use immutable playable cases
 
-The system SHALL publish only after every required gate and create a new unapproved version whenever audio or key changes.
+The system SHALL allow a valid rendered case with a machine-produced key to be used locally with explicit quality warnings, without human approval or full-bank certification. Audio/key changes SHALL create a new immutable version.
 
 #### Scenario: PUB-01 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL publish a qualifying reviewed revision with immutable key/audio hashes, and SHALL reject approval reuse after key/audio mutation and edits to published revisions
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL use the first real playable case and retain its key/audio identity, and SHALL never invent audio, silently mutate historical keys or gate use on benchmark completion
 
-### Requirement: DSP-01 Version disputed results
+### Requirement: DSP-01 LLM dispute revisions
 
-The system SHALL show original teacher answer and evidence during disputes and append adjudicated result versions without deleting earlier results.
+The system SHALL give the LLM adjudicator the exact saved answer/key/evidence and append supported mapping/key/result revisions without requiring a human adjudicator.
 
 #### Scenario: DSP-01 supported and rejected inputs
 
-- **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL append a reviewed result linked to the preserved original, and SHALL reject unauthorized adjudication or replacement/deletion of result history
+- **WHEN** the local action receives the supported or failing input
+- **THEN** it SHALL append a supported corrected result with original available, and SHALL retain original result and failure when adjudication refuses or lacks evidence

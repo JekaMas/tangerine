@@ -1,94 +1,19 @@
-# Provider contracts
+# Configurable LLM and speech adapters
 
-The profile registry names the exact endpoints, models, voices, formats, and key variables.
-The default LLM profile is `deepseek-flash-low-v1`. The OpenAI snapshot remains an explicitly selectable alternative.
-This selection preserves the supplied report's configurable DeepSeek development scope.
-Neither profile has live qualification evidence in this package.
+Default future test binding is the existing user's DeepSeek fast profile, represented by deepseek-flash with reasoning_effort=low. Do not change Codex settings or copy its key into the repository. Local setup resolves a secret reference or DEEPSEEK_API_KEY supplied by the operator. Model/endpoint/effort/output limit/context budget and each stage profile are configurable. OpenAI profiles remain supported. There is no silent switch to a different provider/model after failure.
 
-## Role inputs
+The original six stages remain case_generation, linguistic_audit, blind_claim_extraction, claim_mapping, mapping_audit and feedback. Add case_review and adjudication. All inherit the selected default profile unless explicitly overridden. mapping_audit is disabled in ordinary answer checking and available as a diagnostic; linguistic_audit remains a preparation action. Case review can follow generation/render automatically. Adjudication is invoked for reconsideration or disputes.
 
-The prompt manifest binds every stage to one exact input and output schema.
-Generation receives a blueprint and only rights-cleared selected source excerpts. It never receives fabricated corpus records.
-The linguistic audit receives the exact candidate, public context, and correction definitions. It produces advisory findings only.
-Extraction receives the exact teacher answer, requested components, and language. It receives no transcript or key.
-Mapping and mapping audit receive the same frozen extraction, permitted evaluation key, actual alias entries, and scoped evidence.
-The audit does not receive the mapper result.
-Feedback receives accepted item decisions, original teacher claims, approved rationale text, issues, and an optional complete score.
-No role receives reviewer identity documents, consent documents, storage credentials, or provider keys in its text input.
+Save actual request/response bodies privately, normalized semantic output, selected profile/model, usage/cost when reported, timestamps and outcome. Model reasoning text is not a grade. Answer text and source excerpts are input data, not instructions. Blind extraction receives the answer and taxonomy vocabulary, without the key; mapping/review receives only the named frozen case and evidence. Tools are unnecessary for these calls.
 
-## OpenAI Responses
+Use the configured provider's documented request shape. OpenAI Responses and DeepSeek Responses adapters keep their actual visible output, reasoning, usage and completion statuses separate. DeepSeek is stateless; its developer role is not assumed to have OpenAI's authority semantics. The fixed trusted instruction is supplied through the supported system/instructions channel. Current official DeepSeek flash Responses documentation does not supply audio input; use text plus actual speech evidence, or a separately configured audio-capable adapter. Never label transcript-only inference as direct listening.
 
-Send POST to `https://api.openai.com/v1/responses` with Bearer authentication.
-Set `model` to `gpt-4.1-2025-04-14` for the baseline profile.
-Put the exact trusted prompt in `instructions`.
-Put the canonical input JSON in one user input message. Do not interpolate it into trusted instructions.
-Set `text.format` to the projected JSON schema with `type=json_schema`, a stable name, and `strict=true`.
-Set `stream=false`, `store=false`, `tools=[]`, and the fixed stage output cap.
-Use temperature zero for this non-reasoning snapshot. Do not send an unsupported reasoning control.
+Prefer native structured output when supported, but provider support for every JSON Schema keyword is not a prerequisite. Project supported wire constraints and enforce canonical record semantics locally. If the same provider rejects the structured-output option, retry that same profile once with plain JSON instructions. Retain both receipts. Unsupported schema keywords become local validation constraints rather than binding errors. Do not invent missing result fields.
 
-Require HTTP success and top-level response status `completed`.
-Read only assistant message content blocks of type `output_text`, in documented output order.
-A refusal block, tool-call block, incomplete status, failed status, or missing visible text is a failure.
-Concatenate only consecutive output_text blocks from that one assistant message.
-Require exactly one complete JSON object with no trailing non-whitespace text.
-Do not concatenate different assistant messages or reasoning text into a plausible object.
-Preserve raw response bytes before decoding. Apply full local schema and semantic checks after parsing.
+Normalize harmless Markdown fences, explanatory prefix/suffix and additive provider fields. Scan visible text in order for balanced JSON objects outside quoted strings; accept a unique object that projects to the stage schema. If multiple candidates are semantically identical after projection, accept one and retain all raw text. Different valid candidates are ambiguous and require a repair request. Duplicate object keys, an absent substantive field, wrong case/unit reference, fabricated quote or invalid credit proposition requires correction, not a fabricated default. Unknown additive fields are saved raw and ignored for arithmetic, not a reason to fail the whole reply.
 
-## DeepSeek Responses
+Allow one repair request per failed stage for malformed/truncated/ambiguous output, containing its saved input, safe validation errors and raw visible output. Explicit refusal is retained and not repeatedly challenged. Transport retries use the existing one-extra-request limit; structured-output fallback and one semantic repair each count as attempts, all within the foreground deadline. A repaired result records its receipt and is cacheable only after valid projection. Exhausted failure retains answer/earlier complete stages and offers user retry. No code invents teacher corrections, gold labels or missing audio.
 
-Send POST to `https://api.deepseek.com/responses` with Bearer authentication.
-Set the requested model to `deepseek-flash` and reasoning effort to `low`.
-This identifier is a provider alias, not an immutable snapshot.
-Use top-level `instructions` for trusted stage instructions.
-DeepSeek treats an input `developer` message as user input. Do not use it as the trusted boundary.
-Send the canonical stage DTO as untrusted user content.
-Use `text.format` JSON schema, `stream=false`, and the declared output cap.
-Do not rely on ignored parameters such as metadata, truncation, background processing, conversation state, or prompt-cache keys.
-Do not set temperature as a promised control in this reasoning profile.
-Read only the completed visible assistant output under the same single-object rule.
-Never use reasoning content as output JSON, repair material, evidence, or teacher feedback.
-Record returned model identity and input/output/reasoning token fields when present. Missing usage remains unknown.
+Default synchronous evaluation budgets remain extraction40s, mapping70s and feedback40s within270s overall; optional mapping audit70s fits only when enabled and remaining time permits. Automatic adjudication after a mapping uncertainty uses at most70s remaining; otherwise retain provisional and expose explicit reconsideration. Case generation/audit/review/adjudication actions each use a220s stage ceiling within their270s operation. Deadline controls cancellation and saved state, not human review.
 
-## Schema projection
-
-The full application schema remains authoritative after every provider response.
-The projection registry records a disposition for every keyword that the source schema uses.
-Copy type, properties, required, enum, and closed additionalProperties directly.
-Replace const with a one-value enum.
-Resolve local references from the exact hashed bundle. Retain reusable definitions to prevent uncontrolled size expansion.
-Copy supported anyOf branches. For a discriminated oneOf, send anyOf and enforce exclusive branch selection locally.
-Remove only annotation keywords such as title, description, examples, and schema ID when the provider does not accept them.
-Check length, range, format, pattern, uniqueness, conditional, and cross-reference constraints locally even if the wire schema also carries them.
-If a provider rejects a structural keyword required for an unambiguous output shape, mark the binding incompatible.
-Do not drop that keyword silently or replace the stage with free text.
-Do not send self-recursive raw source trees to a model. Generation uses bounded authorized excerpts instead.
-A wire-schema success does not prove complete application conformance or semantic correctness.
-
-## Results and cache
-
-The API assigns receipt IDs, input digests, and operation metadata. Models cannot invent these fields.
-A parsed payload enters the completed cache only after schema, scope, conditional, and domain checks pass.
-A cache entry is private and bound to exact answer, case, audio, prompt, schemas, adapter, profile, and permission epoch.
-Changing any binding invalidates reuse but preserves prior evidence.
-The request-wide retry budget and deadline apply to both adapters. Their SDKs cannot retry independently.
-
-## Speech profiles
-
-Azure synthesis accepts only compiler-produced SSML from the typed render plan.
-The four baseline voices are Jenny and Guy for en-US, and Sonia and Ryan for en-GB.
-An arbitrary national accent label is not a verified capability of those voices.
-The complete first release needs observed qualification for each required target combination.
-A failed capability remains a release blocker. No human-recording substitute is enabled.
-
-Whisper supplies an independent textual hypothesis and proposed word times, without a reference prompt.
-Azure pronunciation assessment receives the reviewed surface text, not the correct canonical replacement.
-Its scores are reference-conditioned advisory measurements. Low accuracy is not a phonetic transcription.
-Only a genuine observation can populate observed IPA.
-
-## Configurable profiles and private service boundary
-
-contracts/llm-profile.schema.json and configuration.llm_profiles permit explicit endpoint/model/adapter/settings/secret-reference profiles. Configuration must resolve one unique selected ID; no silent fallback exists. New protocol adapters need documented support and conformance, rather than automatic claims of compatibility. HTTPS recipient/host allowlists and source-transfer permissions apply; cross-host redirects are rejected before transmitting credentials. Model aliases and returned identity are recorded separately. DeepSeek remains the user-selected testing profile, specification only. Existing Codex access is a secret reference to resolve during separately authorized testing, never a value copied into Git or a prompt.
-
-Each of the six LLM stages uses its explicit stage profile override or declared default inheritance, recorded as an exact frozen binding. Null inheritance is a configuration choice, never a response to a failed provider. Effective binding applies stage limits; unsupported settings or wire schemas fail before a call. Requested input/output capacity is never evidence of provider/model capacity. DeepSeek max_output_tokens includes reasoning and visible output; complete visible JSON is still required within that cap. No automatic output-cap increase or retry follows truncation.
-
-Speech service calls are private API-to-speech operations with X-Tangerine-Service-Key and idempotency keys. Browser Origin headers are not their authentication protocol. Browser mutations accept exactly http://localhost:3000 or http://127.0.0.1:3000 only when the HTTP Host has the same origin. Public exposure and cross-origin calls remain forbidden. No human authentication is introduced.
+Speech remains real Azure synthesis, Whisper independent ASR and Azure pronunciation assessment. Preserve the four registered default voices and typed SSML compiler. Optional measurement credentials affect only those measurements. An LLM key alone supports answer checking on imported playable cases; generating new speech also requires the configured speech provider key/region. Startup does not make a paid call, demand a canary set or require all keys. Unknown pricing is displayed as unknown; optional budget caps are off by default.

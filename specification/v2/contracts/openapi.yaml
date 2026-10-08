@@ -337,7 +337,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -407,8 +407,8 @@ paths:
   /api/v1/candidates:generate:
     post:
       operationId: generate
-      description: Save intent, apply grants and caps, call the real provider,
-        validate and persist the output.
+      description: Save content, call selected real LLM and retain output; optional
+        configured cap only.
       tags:
         - prepare
       parameters:
@@ -441,7 +441,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -667,7 +667,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -983,7 +983,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -1053,7 +1053,7 @@ paths:
   /api/v1/people:
     post:
       operationId: create_person
-      description: Store a real supplied attestation; reject duplicate-person conflict.
+      description: Import supplied native person metadata only; never a review prerequisite.
       tags:
         - review
       parameters:
@@ -1085,7 +1085,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -1151,7 +1151,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: person.schema.json
+              $ref: create-person-request.schema.json
   /api/v1/people/{id}:
     get:
       operationId: get_person
@@ -1244,7 +1244,7 @@ paths:
   /api/v1/qualifications:
     post:
       operationId: qualification
-      description: Store actual competence evidence.
+      description: Import native competence metadata only; never a review prerequisite.
       tags:
         - review
       parameters:
@@ -1276,7 +1276,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -1342,11 +1342,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: qualification.schema.json
+              $ref: qualification-request.schema.json
   /api/v1/reviews:
     post:
       operationId: start_review
-      description: Validate person, conflicts, phase, and exact audio.
+      description: Call configured case_review LLM; save modality, findings and
+        receipt, no human identity.
       tags:
         - review
       parameters:
@@ -1378,7 +1379,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -1444,7 +1445,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: review-context.schema.json
+              $ref: start-review-request.schema.json
   /api/v1/reviews/{id}:
     get:
       operationId: get_review
@@ -1582,7 +1583,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -1648,7 +1649,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: blind-annotation.schema.json
+              $ref: blind-submit-request.schema.json
   /api/v1/reviews/{id}:disclose:
     post:
       operationId: review_disclose
@@ -1761,7 +1762,7 @@ paths:
   /api/v1/reviews/{id}/decisions:
     post:
       operationId: review_decide
-      description: Require exact matching context/key/audio and actual human decision.
+      description: Store actual machine review for matching case/audio, no peer approval.
       tags:
         - review
       parameters:
@@ -1794,7 +1795,8 @@ paths:
             pattern: ^"[0-9]+"$
       responses:
         "201":
-          description: Require exact matching context/key/audio and actual human decision.
+          description: Require exact matching context/key/audio and actual native imported
+            decision.
           content:
             application/json:
               schema:
@@ -1806,7 +1808,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -1872,7 +1874,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: review-decision.schema.json
+              $ref: review-decide-request.schema.json
   /api/v1/rationales:
     post:
       operationId: rationale
@@ -1908,7 +1910,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -1974,11 +1976,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: rationale.schema.json
+              $ref: rationale-request.schema.json
   /api/v1/teacher-gold:
     post:
       operationId: teacher_gold
-      description: Save real pre-model independent labels and exact provenance.
+      description: Store LLM or native imported labels with exact origin; no new human
+        rater.
       tags:
         - review
       parameters:
@@ -2010,7 +2013,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -2076,7 +2079,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: teacher-gold.schema.json
+              $ref: teacher-gold-request.schema.json
   /api/v1/attempts:
     post:
       operationId: start_attempt
@@ -2112,7 +2115,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -2439,7 +2442,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -2554,7 +2557,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -2669,7 +2672,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -2784,7 +2787,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -3086,7 +3089,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -3152,7 +3155,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: playback-event.schema.json
+              $ref: play-event-request.schema.json
   /api/v1/attempts/{id}/audio:
     get:
       operationId: audio
@@ -3406,7 +3409,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -3472,7 +3475,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: dispute.schema.json
+              $ref: create-dispute-request.schema.json
   /api/v1/disputes/{id}:
     get:
       operationId: get_dispute
@@ -3565,7 +3568,8 @@ paths:
   /api/v1/disputes/{id}:resolve:
     post:
       operationId: resolve_dispute
-      description: Require supported adjudication and any new reviewed key mapping.
+      description: Invoke LLM adjudication against exact saved case/answer, append
+        resolution.
       tags:
         - dispute
       parameters:
@@ -3610,7 +3614,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -3676,7 +3680,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: dispute.schema.json
+              $ref: resolve-dispute-request.schema.json
   /api/v1/unit-correspondences:
     post:
       operationId: unit_map
@@ -3712,7 +3716,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -3778,7 +3782,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: unit-correspondence.schema.json
+              $ref: unit-map-request.schema.json
   /api/v1/results:reconsider:
     post:
       operationId: reconsider
@@ -3843,7 +3847,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -4071,7 +4075,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -4137,7 +4141,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: source-release.schema.json
+              $ref: source-release-request.schema.json
   /api/v1/source-formats:
     post:
       operationId: format_binding
@@ -4174,7 +4178,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -4240,7 +4244,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: source-format-binding.schema.json
+              $ref: format-binding-request.schema.json
   /api/v1/permissions:
     post:
       operationId: grant
@@ -4277,7 +4281,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -4343,7 +4347,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: permission-grant.schema.json
+              $ref: grant-request.schema.json
   /api/v1/permissions/{id}:revoke:
     post:
       operationId: revoke
@@ -4392,7 +4396,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -4508,7 +4512,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -4712,7 +4716,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -4778,7 +4782,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: connector-configuration.schema.json
+              $ref: connector-request.schema.json
   /api/v1/configuration:
     get:
       operationId: get_config
@@ -4903,7 +4907,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -4970,7 +4974,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: configuration.schema.json
+              $ref: put-config-request.schema.json
   /api/v1/assets:
     post:
       operationId: reserve_asset
@@ -5006,7 +5010,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -5423,7 +5427,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -5525,7 +5529,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -5627,7 +5631,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -5729,7 +5733,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -5795,7 +5799,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: deletion-request.schema.json
+              $ref: delete-plan-request.schema.json
   /api/v1/deletions/{id}:apply:
     post:
       operationId: delete_apply
@@ -5846,7 +5850,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -5950,7 +5954,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -6016,7 +6020,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: difficulty-study.schema.json
+              $ref: difficulty-request.schema.json
   /api/v1/splits:
     post:
       operationId: split
@@ -6052,7 +6056,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -6118,7 +6122,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: split-manifest.schema.json
+              $ref: split-request.schema.json
   /api/v1/holdout-reports:
     post:
       operationId: qualification_report
@@ -6156,7 +6160,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -6223,7 +6227,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: holdout-report.schema.json
+              $ref: qualification-report-request.schema.json
   /api/v1/candidates/{id}:
     get:
       operationId: get_candidate
@@ -6348,7 +6352,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -6465,7 +6469,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -6536,7 +6540,7 @@ paths:
   /api/v1/adjudications:
     post:
       operationId: adjudicate
-      description: Save a genuine third-person resolution without editing prior reviews.
+      description: Call configured adjudication LLM and append supported resolution.
       tags:
         - review
       parameters:
@@ -6568,7 +6572,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -6634,7 +6638,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: adjudication.schema.json
+              $ref: adjudicate-request.schema.json
   /api/v1/adjudications/{id}:
     get:
       operationId: get_adjudication
@@ -6774,7 +6778,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -6846,8 +6850,6 @@ paths:
     post:
       operationId: speech_render
       description: Render the actual typed plan through real configured providers.
-        Private speech-network call. Require the internal token and an exact
-        parent operation identity. The API owns idempotency and revision guards.
       tags:
         - internal_speech
       parameters:
@@ -6871,7 +6873,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:
@@ -6937,7 +6939,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: render-plan.schema.json
+              $ref: speech-render-request.schema.json
       security:
         - InternalServiceKey: []
       servers:
@@ -6946,9 +6948,7 @@ paths:
   /internal/v1/measure:
     post:
       operationId: speech_measure
-      description: Measure the exact final asset with registered methods. Private
-        speech-network call. Require the internal token and an exact parent
-        operation identity. The API owns idempotency and revision guards.
+      description: Measure the exact final asset with registered methods.
       tags:
         - internal_speech
       parameters:
@@ -7000,7 +7000,7 @@ paths:
               schema:
                 $ref: error-response.schema.json
         "403":
-          description: Origin or source-use rejection
+          description: Invalid private service credential
           content:
             application/json:
               schema:

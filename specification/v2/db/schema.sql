@@ -46,7 +46,7 @@ CREATE TABLE object_node (
  PRIMARY KEY(node_id, scope_id),
  UNIQUE(node_id, scope_id, kind, content_sha256),
  UNIQUE(document_id, json_pointer),
- FOREIGN KEY(case_version_id) REFERENCES entity_head(id) ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED
+ FOREIGN KEY(case_version_id) REFERENCES document(id) ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED
 );
 CREATE TABLE object_reference (
  source_document_id varchar(128) NOT NULL REFERENCES document(id) ON DELETE RESTRICT,
@@ -104,7 +104,7 @@ CREATE TABLE stage_cache_index (
  document_id varchar(128) NOT NULL REFERENCES document(id) ON DELETE RESTRICT,
  attempt_id varchar(128) NOT NULL REFERENCES entity_head(id) ON DELETE RESTRICT,
  binding_sha256 char(64) NOT NULL,
- permission_epoch bigint NOT NULL CHECK(permission_epoch >= 0),
+ permission_epoch bigint CHECK(permission_epoch >= 0), -- legacy metadata, not an admission or cache gate
  complete boolean NOT NULL CHECK(complete)
 );
 CREATE TABLE playback_index (
@@ -130,12 +130,12 @@ CREATE TABLE usage_ledger (
 CREATE TABLE audit_event (
  sequence bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
  workspace_id text NOT NULL REFERENCES workspace(id) CHECK(workspace_id='local'),
- operation_id varchar(128) REFERENCES operation(id) ON DELETE RESTRICT,
+ operation_id varchar(128) REFERENCES operation(id) ON DELETE SET NULL,
  action text NOT NULL,
- subject_document_id varchar(128) REFERENCES document(id) ON DELETE RESTRICT,
+ subject_document_id varchar(128) REFERENCES document(id) ON DELETE SET NULL,
  previous_event_sha256 char(64),
- event_sha256 char(64) NOT NULL UNIQUE CHECK(event_sha256 ~ '^[0-9a-f]{64}$'),
- details_document_id varchar(128) NOT NULL REFERENCES document(id) ON DELETE RESTRICT,
+ event_sha256 char(64) UNIQUE CHECK(event_sha256 ~ '^[0-9a-f]{64}$'),
+ details_document_id varchar(128) REFERENCES document(id) ON DELETE SET NULL,
  created_at timestamptz NOT NULL DEFAULT clock_timestamp()
 );
 CREATE TABLE deletion_tombstone (
@@ -162,8 +162,9 @@ CREATE INDEX audit_event_subject_idx ON audit_event(subject_document_id, sequenc
 
 CREATE FUNCTION reject_document_mutation() RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN
- RAISE EXCEPTION 'immutable record: append a new version or use the explicit rights-aware erasure procedure';
+ IF TG_OP = 'DELETE' AND current_setting('tangerine.maintenance_delete', true) = 'on' THEN RETURN OLD; END IF;
+ RAISE EXCEPTION 'immutable record: append a version; explicit local maintenance can delete';
 END $$;
-CREATE TRIGGER document_immutable BEFORE UPDATE ON document FOR EACH ROW EXECUTE FUNCTION reject_document_mutation();
-CREATE TRIGGER audit_event_immutable BEFORE UPDATE OR DELETE ON audit_event FOR EACH ROW EXECUTE FUNCTION reject_document_mutation();
+CREATE TRIGGER document_immutable BEFORE UPDATE OR DELETE ON document FOR EACH ROW EXECUTE FUNCTION reject_document_mutation();
+-- Local audit is diagnostic; deletion may remove or null records. No tamper-evident chain or unerasable payload is required.
 COMMIT;
