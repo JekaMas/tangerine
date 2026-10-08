@@ -1,6 +1,10 @@
 # Specification completeness review — 2026-10-08
 
-Verdict: the complete archive restores the original source contract. The active plan now explicitly covers all 122 taxonomy leaves, eight listed source profiles, 15 schemas, five recovered prompts, 27 core/15 auxiliary metrics and all original 48 requirements/96 scenarios. The specification is more complete, but eight unresolved decisions and inaccessible/unqualified data/provider evidence still prevent implementation of dependent properties and full release acceptance. This is a spec-only review; no product work was performed.
+Verdict: **the specification is not gap-free**. The full archive restores the original files, but the exhaustive follow-up found55 grouped missing/conflicting definitions beyond the earlier eight-decision summary. Every finding has exact source lines, missing fields/rules, a fillable answer request and positive/negative closure criteria in [GAPS.md](spec-fullness-20261008/GAPS.md). SPEC-001–055 and canonical tasks11.5.1–55 retain these as open obligations. No implementation is authorized or performed in this increment.
+
+The statement that attachments omit the taxonomy, schemas, prompts and scoring policy is obsolete after archive recovery. All122 taxonomy entries,15 schemas, five original prompts,27 core and15 auxiliary formulas, scoring policy and48 original requirements/96 scenarios are present. Presence and structural counts do not establish a complete product specification. Real corpus bytes, permissions, human observations, provider calls and application results are separate obligations in [EVIDENCE.md](spec-fullness-20261008/EVIDENCE.md).
+
+Read the exhaustive [API obligations](spec-fullness-20261008/api-obligations.md), [formula review](spec-fullness-20261008/FORMULAS.md), [schema field review](spec-fullness-20261008/schema-field-review.json), [per-leaf review](spec-fullness-20261008/taxonomy-leaf-review.json), [corpus protocols](spec-fullness-20261008/corpus-protocol-review.json) and [primary-source research](spec-fullness-20261008/RESEARCH.md). The line ledger accounts for every selected source line and its review unit; mechanical indexing is not independent semantic proof.
 
 ## Source reconciliation
 
@@ -52,6 +56,22 @@ Read corpus-release-research.md for primary sources. Key discoveries: L2-ARCTIC 
 
 This increment validates source provenance, registry/formula preservation, structural schema/prompt inventories, active OpenSpec structure and graph/discovery completeness. No inherited linguistic tests, provider calls or application tests were run. Schema inspection checks JSON syntax, closed objects, required-property consistency, taxonomy enums and reference closure; it is not a complete Draft 2020-12 meta-schema validator or live-provider schema qualification.
 
-The active graph has 276 requirements, 291 properties and 956 positive/negative case edges. Newly restored/added nodes are blocked/planned with absent test source hashes and no fabricated PASS. Previous local receipts (79 passed, 3 failed, 126 not_run in the earlier 208-case graph) are retained unchanged with original proof boundaries, not a pass percentage for the expanded graph. Structural validation is not behavior acceptance.
+The active graph has331 requirements,346 properties and1066 positive/negative case edges. SPEC-001–055 adds110 planned closure edges; no executable test is added. Newly restored/added nodes remain blocked/planned with absent test source hashes and no fabricated PASS. Previous local receipts (79 passed,3 failed,126 not_run in the earlier208-case graph) remain unchanged with their original proof boundaries. Structural validation is not behavior acceptance.
 
-Current native spec-only check receipts are under the change's evidence/spec-recheck-20261008/. The source replacement question is resolved. The latest user scope is complete when these specification/research updates are validated; the application and full release remain incomplete. Do not archive the product change or resume implementation under this turn's authority.
+Earlier source-recheck receipts are under the change's evidence/spec-recheck-20261008/. This exhaustive follow-up records new specification receipts under evidence/spec-fullness-20261008/. The source replacement question is resolved. The user's request permits a precise gap list for missing input; it does not authorize inventing the missing policies or evidence. The audit can be completed with those gaps open, while full-specification readiness and application release remain blocked. Do not archive the product change or resume implementation under this turn's authority.
+
+## Exhaustive definition findings
+
+GAP-001–009: complete API/projection, persistent data model, database/object-store commit, role/account and case/attempt/dispute transitions.
+
+GAP-010–017: blind annotations, qualifications/independence, real-answer gold labels, unit boundaries, aliases, severity/difficulty and variety/context consistency.
+
+GAP-018–027: extraction identity/coverage, fragment/retraction normalization, all conditional tuples, rationale identities, exact rubric conversion, mapper/audit equality, score transport, auxiliary/provisional outputs and feedback/fallback.
+
+GAP-028–038: linguistic audit, role/config/receipt schemas, provider projection/parsing/retries/size limits, typed rendering, SSML/DSP, QC/speech/prosody/ASR methods and all-target capability contracts.
+
+GAP-039–050: complete manifests and parsers for every source, EFCAMDAT and paper/vendor release scope, leakage grouping, coverage counting, agreement/evaluation denominators, telemetry and heldout protocols.
+
+GAP-051–055: retention/revocation, quotas/resource limits, complete backup/restore, deployment/configuration and specification/version precedence.
+
+Source-reading corrections: explanation.option_id is explicitly null in the reference validator, and violated_proposition_ids means forbidden propositions in the dictionary. Core zero reasons are recoverable from the reference values table. These are defined rules; they must not be reported as missing simply because a schema alone does not enforce them. Feedback rationale IDs still need a complete registry binding. SpeechOcean metadata includes speaker grouping/age/gender files, and BEA3700/43169/801361 counts describe W&I+LOCNESS combined. Original archive/canonical contract bytes and historical receipts remain unchanged.

@@ -26,6 +26,14 @@ The original prompt manifest names the OpenAI baseline. A profile binding must e
 
 ## Future qualification cases
 
+### Documented DeepSeek transport binding
+
+The [official Responses reference](https://api-docs.deepseek.com/api/create-response/) resolves several transport details. Bind the frozen trusted prompt to `instructions`; place the JSON-encoded untrusted stage input in a user message. DeepSeek treats `developer` as user, so it cannot carry the trusted prompt. Map the profile's low reasoning selection to `reasoning.effort:low`, with `stream:false`, no tools and the explicitly selected output cap. Do not send sampling settings that are ignored in the selected mode. Bind `text.format` to the stage's named JSON Schema; the full keyword projection remains GAP-030 and cannot discard application constraints.
+
+Parse completed visible output separately from reasoning, refusal, failure and incomplete output. Reasoning tokens consume the same output budget; an incomplete response cannot be accepted as a valid closed-schema payload. The documented Responses API is stateless. That fact does not establish zero provider logging or grant source transfer permission. No live conformance or latency test follows from these documentation reads.
+
+Exact missing role inputs, configuration/receipt schemas, supported wire projections, error/retry/size rules and qualification protocols are recorded in `audit/spec-fullness-20261008/GAPS.md` (GAP-028–031). The discovered Codex secret reference remains unchanged and no inference call was made.
+
 Before using a live role, test a supported real closed-schema result and its rejection boundaries: extra/unknown fields, wrong types/enums/IDs, unsupported schema keywords, malformed JSON, truncation, refusal, fabricated answer quotes, UTF-8/UTF-16 versus codepoint offsets, wrong case/unit/audio evidence, invented numeric grades and role disclosure leakage. Server semantic checks remain mandatory after structural parsing. No JSON repair loop, favourable-output retry or stripped schema constraint may turn a failed response into acceptance.
 
 All such positive and negative cases are planned in CFG-01–CFG-04 and the recovered role requirements. No tests or adapters were implemented in this spec-only turn. Real calibration still requires approved inputs, genuine independently labelled teacher answers and untouched grouped holdout data. Existing cloud disclosure acknowledgment and source-specific upload permission precede transfer; source personal identity and consent artifacts stay outside prompts.

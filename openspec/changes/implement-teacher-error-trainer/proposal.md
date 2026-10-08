@@ -57,3 +57,8 @@ None. This repository has no existing main product specifications.
 ## Impact
 
 A new independent repository with Next.js, Go API, PostgreSQL, private MinIO and Python speech service. External model/speech calls require server-only credentials, permissions and qualification. Original source bodies are now recovered; eight decisions, genuine reviews/corpus and empirical evidence remain dependencies. The latest increment is specification-only: no implementation, provider inference or corpus acquisition. Docker runtime evidence is unchanged.
+
+
+## Exhaustive specification audit boundary
+
+The latest user explicitly requires every data/flow/API/formula definition and a list of remaining gaps, with no implementation. The recovered archive fixes missing-source claims; it does not supply a complete product specification. audit/spec-fullness-20261008/GAPS.md records55 grouped missing/conflicting definitions with exact source locations, required input and positive/negative closure. Every finding maps to SPEC-001–055 and task11.5.1–55. API obligations, all42 formulas, all122 leaves, all15 schemas/140 objects/864 field occurrences and all8 corpus profiles have separate audit matrices. Real recordings, permissions, human observations, provider calls and runtime acceptance remain evidence/implementation obligations in EVIDENCE.md. Existing behavior receipts are preserved. Full-specification readiness remains blocked until all definitions and material decisions are closed; no gap-free or full-product acceptance is claimed.

@@ -1,0 +1,871 @@
+{
+  "core": 27,
+  "auxiliary": 15,
+  "formulas": [
+    {
+      "id": "detection.precision",
+      "collection": "metrics",
+      "formula": "TP/(TP+FP)",
+      "description": "This ratio measures supported error assertions among all distinct error assertions.",
+      "source_line": 9,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_assertions",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "detection.recall",
+      "collection": "metrics",
+      "formula": "TP/G",
+      "description": "This ratio measures the true detection units that the teacher found.",
+      "source_line": 17,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_opportunities",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "detection.f1",
+      "collection": "metrics",
+      "formula": "2*TP/(2*TP+FP+FN)",
+      "description": "This ratio combines detection precision and recall. If true opportunities exist and the teacher finds none, its value is zero.",
+      "source_line": 25,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_opportunities",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "detection.miss_rate",
+      "collection": "metrics",
+      "formula": "FN/G",
+      "description": "This ratio measures true units that the teacher missed.",
+      "source_line": 34,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_opportunities",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "detection.false_discovery_rate",
+      "collection": "metrics",
+      "formula": "FP/(TP+FP)",
+      "description": "This ratio measures unsupported error assertions among all distinct error assertions.",
+      "source_line": 42,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_assertions",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "classification.coverage",
+      "collection": "metrics",
+      "formula": "LC/TP",
+      "description": "This ratio measures detected units with a category that the teacher explicitly supplied.",
+      "source_line": 50,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_opportunities",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "classification.family_accuracy",
+      "collection": "metrics",
+      "formula": "LF/LC",
+      "description": "This ratio measures correct primary domains among explicitly categorized detections.",
+      "source_line": 58,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_assertions",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "classification.exact_accuracy",
+      "collection": "metrics",
+      "formula": "LE/LC",
+      "description": "This ratio measures exact permitted taxonomy IDs among explicitly categorized detections.",
+      "source_line": 66,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_assertions",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "classification.hierarchical_accuracy",
+      "collection": "metrics",
+      "formula": "H/LC",
+      "description": "This ratio measures tree-based category credit among explicitly categorized detections.",
+      "source_line": 74,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_assertions",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "classification.hierarchical_recall",
+      "collection": "metrics",
+      "formula": "H/G",
+      "description": "This ratio measures category credit across all true units. Missing detections and missing categories contribute zero.",
+      "source_line": 82,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_opportunities",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "correction.attempt_rate",
+      "collection": "metrics",
+      "formula": "CA/TC",
+      "description": "This ratio measures proposed corrections among detected units that permit correction.",
+      "source_line": 91,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_opportunities",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "correction.strict_accuracy",
+      "collection": "metrics",
+      "formula": "CK/CA",
+      "description": "This ratio measures fully correct corrections among proposed corrections of true detections.",
+      "source_line": 99,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_assertions",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "correction.graded_accuracy",
+      "collection": "metrics",
+      "formula": "CQ/CA",
+      "description": "This ratio measures proposition-based correction credit among proposed corrections. The model cannot choose an arbitrary partial score.",
+      "source_line": 107,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_assertions",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "correction.strict_recall",
+      "collection": "metrics",
+      "formula": "CK/GC",
+      "description": "This ratio measures fully corrected units among all true units that permit correction.",
+      "source_line": 116,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_opportunities",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "correction.graded_recall",
+      "collection": "metrics",
+      "formula": "CQ/GC",
+      "description": "This ratio measures correction credit across all true correction opportunities. Missed units contribute zero.",
+      "source_line": 124,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_opportunities",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "correction.assertion_precision",
+      "collection": "metrics",
+      "formula": "CK/(CA+FC)",
+      "description": "This ratio measures fully correct repairs among repairs of true detections and unnecessary repairs.",
+      "source_line": 133,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_assertions",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "explanation.coverage",
+      "collection": "metrics",
+      "formula": "EA/TE",
+      "description": "This ratio measures proposed explanations among detected units that permit explanation.",
+      "source_line": 142,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_opportunities",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "explanation.strict_accuracy",
+      "collection": "metrics",
+      "formula": "EK/EA",
+      "description": "This ratio measures fully correct explanations among proposed explanations of true detections.",
+      "source_line": 150,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_assertions",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "explanation.graded_accuracy",
+      "collection": "metrics",
+      "formula": "EQ/EA",
+      "description": "This ratio measures proposition-based explanation credit among proposed explanations.",
+      "source_line": 158,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_assertions",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "explanation.graded_recall",
+      "collection": "metrics",
+      "formula": "EQ/GE",
+      "description": "This ratio measures explanation credit across all true explanation opportunities. Missed units contribute zero.",
+      "source_line": 166,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_opportunities",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "decoy.overcorrection_rate",
+      "collection": "metrics",
+      "formula": "DF/D",
+      "description": "This ratio measures designated permitted units that the teacher wrongly marks as errors.",
+      "source_line": 175,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_opportunities",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "decoy.unflagged_rate",
+      "collection": "metrics",
+      "formula": "(D-DF)/D",
+      "description": "This ratio measures designated permitted units that the teacher does not mark as errors. Silence does not prove conscious recognition.",
+      "source_line": 183,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_opportunities",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "decoy.explicit_acceptability_accuracy",
+      "collection": "metrics",
+      "formula": "DA/(DA+DF)",
+      "description": "This ratio measures correct explicit judgments among explicitly judged negative controls.",
+      "source_line": 192,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_assertions",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "acceptability.explicit_accuracy",
+      "collection": "metrics",
+      "formula": "SA/SN",
+      "description": "This ratio measures correct explicit judgments among mapped units. Unsupported off-key assertions remain false positives outside this denominator.",
+      "source_line": 200,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_assertions",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "weighted.precision",
+      "collection": "metrics",
+      "formula": "WTP/(WTP+WFP)",
+      "description": "This ratio applies fixed severity weights to true detections. Each false positive has penalty one.",
+      "source_line": 209,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_assertions",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "weighted.recall",
+      "collection": "metrics",
+      "formula": "WTP/(WTP+WFN)",
+      "description": "This ratio applies the case weights to detected and missed opportunities. The case fixes these weights before answer entry.",
+      "source_line": 218,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_opportunities",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "weighted.f1",
+      "collection": "metrics",
+      "formula": "2*WTP/(2*WTP+WFP+WFN)",
+      "description": "This ratio combines weighted precision and recall. It does not replace the unweighted metrics.",
+      "source_line": 227,
+      "formula_text_status": "present",
+      "input_definition": "docs/scoring-v1.md symbol table and reference/scorer.py",
+      "zero_reason": "no_opportunities",
+      "numeric_scope": "exact fraction0..1; raw sufficient statistics; reduced fractions; percent half-up1decimal",
+      "open_definition_ids": [
+        "GAP-015",
+        "GAP-018",
+        "GAP-019",
+        "GAP-020",
+        "GAP-022",
+        "GAP-024",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "annotation.agreement",
+      "collection": "auxiliary_metrics",
+      "formula": "agreements/N",
+      "description": "Compare the same nominal labels before adjudication. If no labeled units exist, the result is null.",
+      "source_line": 236,
+      "formula_text_status": "present",
+      "input_definition": "Compare the same nominal labels before adjudication. If no labeled units exist, the result is null.",
+      "zero_reason": "protocol-specific undefined/empty input rules required",
+      "numeric_scope": "auxiliary unit/range/output protocol required",
+      "open_definition_ids": [
+        "GAP-012",
+        "GAP-048",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "annotation.cohen_kappa",
+      "collection": "auxiliary_metrics",
+      "formula": "(Po-Pe)/(1-Pe); Pe=sum_label(p_rater1(label)*p_rater2(label))",
+      "description": "Use two independent raters before adjudication. Report the label counts and marginal proportions. If N is zero or Pe equals one, return null.",
+      "source_line": 241,
+      "formula_text_status": "present",
+      "input_definition": "Use two independent raters before adjudication. Report the label counts and marginal proportions. If N is zero or Pe equals one, return null.",
+      "zero_reason": "protocol-specific undefined/empty input rules required",
+      "numeric_scope": "auxiliary unit/range/output protocol required",
+      "open_definition_ids": [
+        "GAP-012",
+        "GAP-048",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "verification.wer",
+      "collection": "auxiliary_metrics",
+      "formula": "(substitutions+deletions+insertions)/reference_word_count",
+      "description": "Compare the approved surface transcript with raw ASR text through unit-cost Levenshtein distance. WER does not establish pronunciation.",
+      "source_line": 246,
+      "formula_text_status": "present",
+      "input_definition": "Compare the approved surface transcript with raw ASR text through unit-cost Levenshtein distance. WER does not establish pronunciation.",
+      "zero_reason": "protocol-specific undefined/empty input rules required",
+      "numeric_scope": "auxiliary unit/range/output protocol required",
+      "open_definition_ids": [
+        "GAP-035",
+        "GAP-037",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "audio.speech_rate_wpm",
+      "collection": "auxiliary_metrics",
+      "formula": "60*spoken_token_count/elapsed_speech_span_seconds",
+      "description": "Measure the interval from the first spoken token to the last spoken token. Include internal pauses.",
+      "source_line": 251,
+      "formula_text_status": "present",
+      "input_definition": "Measure the interval from the first spoken token to the last spoken token. Include internal pauses.",
+      "zero_reason": "protocol-specific undefined/empty input rules required",
+      "numeric_scope": "auxiliary unit/range/output protocol required",
+      "open_definition_ids": [
+        "GAP-035",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "audio.articulation_rate_wpm",
+      "collection": "auxiliary_metrics",
+      "formula": "60*spoken_token_count/active_speech_seconds",
+      "description": "Use reviewed speech intervals only. Record the VAD method separately. This measure is not elapsed speech rate.",
+      "source_line": 256,
+      "formula_text_status": "present",
+      "input_definition": "Use reviewed speech intervals only. Record the VAD method separately. This measure is not elapsed speech rate.",
+      "zero_reason": "protocol-specific undefined/empty input rules required",
+      "numeric_scope": "auxiliary unit/range/output protocol required",
+      "open_definition_ids": [
+        "GAP-035",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "audio.pause_ratio",
+      "collection": "auxiliary_metrics",
+      "formula": "internal_silent_seconds/elapsed_speech_span_seconds",
+      "description": "Use the declared silence detector and its version. Identify intended pauses separately.",
+      "source_line": 261,
+      "formula_text_status": "present",
+      "input_definition": "Use the declared silence detector and its version. Identify intended pauses separately.",
+      "zero_reason": "protocol-specific undefined/empty input rules required",
+      "numeric_scope": "auxiliary unit/range/output protocol required",
+      "open_definition_ids": [
+        "GAP-034",
+        "GAP-035",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "audio.disfluency_density",
+      "collection": "auxiliary_metrics",
+      "formula": "100*reviewed_disfluency_events/spoken_token_count",
+      "description": "Count only reviewed events. An ordinary filler is not automatically an error.",
+      "source_line": 265,
+      "formula_text_status": "present",
+      "input_definition": "Count only reviewed events. An ordinary filler is not automatically an error.",
+      "zero_reason": "protocol-specific undefined/empty input rules required",
+      "numeric_scope": "auxiliary unit/range/output protocol required",
+      "open_definition_ids": [
+        "GAP-035",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "evaluation.coverage",
+      "collection": "auxiliary_metrics",
+      "formula": "resolved_decisions/eligible_decisions",
+      "description": "Report this ratio beside mapping precision. Abstention must not hide low coverage.",
+      "source_line": 269,
+      "formula_text_status": "present",
+      "input_definition": "Report this ratio beside mapping precision. Abstention must not hide low coverage.",
+      "zero_reason": "protocol-specific undefined/empty input rules required",
+      "numeric_scope": "auxiliary unit/range/output protocol required",
+      "open_definition_ids": [
+        "GAP-048",
+        "GAP-050",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "evaluation.exact_mapping_agreement",
+      "collection": "auxiliary_metrics",
+      "formula": "identical_claim_to_unit_decisions/eligible_gold_decisions",
+      "description": "Compare exact claim-to-unit decisions with adjudicated gold. Count wrong mappings and abstentions as disagreement.",
+      "source_line": 273,
+      "formula_text_status": "present",
+      "input_definition": "Compare exact claim-to-unit decisions with adjudicated gold. Count wrong mappings and abstentions as disagreement.",
+      "zero_reason": "protocol-specific undefined/empty input rules required",
+      "numeric_scope": "auxiliary unit/range/output protocol required",
+      "open_definition_ids": [
+        "GAP-048",
+        "GAP-050",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "telemetry.elapsed_seconds",
+      "collection": "auxiliary_metrics",
+      "formula": "submitted_at-started_at",
+      "description": "Measure elapsed wall time only. Idle time does not measure teaching ability.",
+      "source_line": 278,
+      "formula_text_status": "present",
+      "input_definition": "Measure elapsed wall time only. Idle time does not measure teaching ability.",
+      "zero_reason": "protocol-specific undefined/empty input rules required",
+      "numeric_scope": "auxiliary unit/range/output protocol required",
+      "open_definition_ids": [
+        "GAP-049",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "telemetry.replay_count",
+      "collection": "auxiliary_metrics",
+      "formula": "count(validated_play_events)",
+      "description": "Count accepted playback events only. Client events do not prove that the teacher listened.",
+      "source_line": 282,
+      "formula_text_status": "present",
+      "input_definition": "Count accepted playback events only. Client events do not prove that the teacher listened.",
+      "zero_reason": "protocol-specific undefined/empty input rules required",
+      "numeric_scope": "auxiliary unit/range/output protocol required",
+      "open_definition_ids": [
+        "GAP-049",
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "teacher.talk_time",
+      "collection": "auxiliary_metrics",
+      "formula": null,
+      "description": "This mode does not observe teacher speech duration. The value is null.",
+      "source_line": 286,
+      "formula_text_status": "present",
+      "input_definition": "This mode does not observe teacher speech duration. The value is null.",
+      "zero_reason": "not_observable_in_this_mode",
+      "numeric_scope": "null only",
+      "open_definition_ids": [
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "teacher.pronunciation",
+      "collection": "auxiliary_metrics",
+      "formula": null,
+      "description": "This mode does not observe teacher pronunciation. The value is null.",
+      "source_line": 290,
+      "formula_text_status": "present",
+      "input_definition": "This mode does not observe teacher pronunciation. The value is null.",
+      "zero_reason": "not_observable_in_this_mode",
+      "numeric_scope": "null only",
+      "open_definition_ids": [
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "teacher.classroom_management",
+      "collection": "auxiliary_metrics",
+      "formula": null,
+      "description": "This mode does not observe classroom management. The value is null.",
+      "source_line": 294,
+      "formula_text_status": "present",
+      "input_definition": "This mode does not observe classroom management. The value is null.",
+      "zero_reason": "not_observable_in_this_mode",
+      "numeric_scope": "null only",
+      "open_definition_ids": [
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    },
+    {
+      "id": "teacher.engagement",
+      "collection": "auxiliary_metrics",
+      "formula": null,
+      "description": "This mode does not observe engagement of real students. The value is null.",
+      "source_line": 298,
+      "formula_text_status": "present",
+      "input_definition": "This mode does not observe engagement of real students. The value is null.",
+      "zero_reason": "not_observable_in_this_mode",
+      "numeric_scope": "null only",
+      "open_definition_ids": [
+        "GAP-025"
+      ],
+      "acceptance_status": "arithmetic definition present; semantic/observation input contracts and measurements are separate"
+    }
+  ],
+  "additional_rules": [
+    {
+      "id": "hierarchical_credit",
+      "formula": "max_g[2*depth(LCA(p,g))/(depth(p)+depth(g))]",
+      "definition": "dot-segment tree, root depth0; each accepted key category considered; sum into H",
+      "status": "defined",
+      "gaps": [
+        "GAP-014"
+      ]
+    },
+    {
+      "id": "proposition_credit",
+      "formula": "satisfied_required_count / required_count; forbidden ->0; not_supplied ->0; approved alternative ->1",
+      "status": "defined equation; transformation incomplete",
+      "gaps": [
+        "GAP-020",
+        "GAP-022"
+      ]
+    },
+    {
+      "id": "composite",
+      "formula": "100*sum(w_i*m_i)/sum(w_i), active structurally available requested components only",
+      "weights": {
+        "detection": 45,
+        "classification": 15,
+        "correction": 30,
+        "explanation": 10
+      },
+      "status": "defined equation; exact transport/field semantics incomplete",
+      "gaps": [
+        "GAP-024"
+      ]
+    },
+    {
+      "id": "audio_qc",
+      "thresholds": {
+        "peak_full_scale_max": 0.9999,
+        "loudness_target_lufs": -18,
+        "loudness_tolerance_lufs": 2,
+        "true_peak_max_dbtp": -1,
+        "rms_window_ms": 20,
+        "near_silence_threshold_dbfs": -50,
+        "leading_trailing_unplanned_ms": 1500,
+        "interior_unplanned_ms": 2000,
+        "wer_review_above": 0.1
+      },
+      "status": "thresholds present; measurement methods incomplete",
+      "gaps": [
+        "GAP-034",
+        "GAP-035",
+        "GAP-036"
+      ]
+    }
+  ],
+  "zero_rule_authority": "Inspected inert reference/scorer.py values tuple at 125; no reference program executed.",
+  "limitation": "Formula strings are not observation protocols. Core reason table is resolved from actual reference code, not guessed from names."
+}
