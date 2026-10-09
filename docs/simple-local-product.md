@@ -1,3 +1,5 @@
 # Simple Local Product
 
 Current authority is docs/authority.md; active full contracts are specification/v2/README.md. The product is a local GitHub source download with configurable LLM answer checking and LLM case review/adjudication, without human peer reviews. See specification/v2/docs/local-delivery.md, provider-contracts.md and interface-contract.md for exact setup, stages, fields and failures. All features, all full source entries and all42formulas are retained. Earlier root provider/attempt overlays remain historical source, not parallel active contracts.
+
+Current included-only starter: the same GitHub download/run launcher with Settings provider connection using an eligible existing ChatGPT plan, local Kokoro speech and no new application account. See specification/v2/docs/provider-access.md. API-key configuration remains an explicit alternative whose actual billing route must satisfy the selected policy. No startup provider call is required beyond an explicitly selected connection/model-list action.

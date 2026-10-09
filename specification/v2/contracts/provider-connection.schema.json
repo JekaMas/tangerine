@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/provider-connection.schema.json",
+  "title": "provider-connection",
+  "description": "Safe provider connection metadata. All tokens, codes, PKCE and authorization URLs are excluded from durable public DTOs and Lab capture.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable local provider registration; not an application user."
+    },
+    "provider": {
+      "const": "openai_chatgpt"
+    },
+    "client_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "description": "Issued client ID; never dynamic_agent_client after registration."
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "ext_agent_host_id": {
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f-]{36}$"
+    },
+    "account_label": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "description": "Validated provider account label, only shown in Settings."
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "subject": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "description": "Validated OIDC identity."
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "disconnected",
+        "awaiting_consent",
+        "connected_no_usage",
+        "ready",
+        "usage_limited",
+        "unavailable"
+      ]
+    },
+    "scopes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "credential_ref": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "description": "Protected server-side credential file reference. Never tokens."
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "expires_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "credits_after_plan_limit_disabled": {
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "Operator confirmation of external ChatGPT app-usage setting, not programmatic proof."
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "models_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "description": "Last actual account-specific model-list snapshot."
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "last_error_code": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "description": "Actual provider error or local connection failure."
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "id",
+    "provider",
+    "client_id",
+    "ext_agent_host_id",
+    "account_label",
+    "subject",
+    "state",
+    "scopes",
+    "credential_ref",
+    "expires_at",
+    "credits_after_plan_limit_disabled",
+    "models_asset_id",
+    "last_error_code",
+    "updated_at"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,157 @@
+{
+  "version": "2.0.0",
+  "researched_at": "2026-10-09",
+  "scope": "Primary documentation and local configuration metadata only; no account entitlement, inference or billing observations.",
+  "services": [
+    {
+      "id": "chatgpt-plan",
+      "kind": "llm",
+      "billing": "Included eligible ChatGPT plan allowance via official OAuth; app-specific plan/credit settings apply.",
+      "product_use": "Clean text, mutations, semantic matching, explanation feedback, optional review/adjudication and Lab judges.",
+      "limitations": "Account eligibility/models are returned at connection time. No audio inputs, TTS or transcription via this route; no general Platform API-key subsidy.",
+      "primary_sources": [
+        "https://developers.openai.com/siwc/token-sharing-open-source",
+        "https://developers.openai.com/siwc/token-sharing-open-source/sign-in",
+        "https://developers.openai.com/siwc/token-sharing-open-source/models-and-inference",
+        "https://developers.openai.com/siwc/token-sharing-open-source/preview-limitations",
+        "https://developers.openai.com/siwc/token-sharing-open-source/profiles-and-sessions",
+        "https://developers.openai.com/siwc/ui-ux-guidelines"
+      ],
+      "recommendation": "start_with_existing_plan",
+      "adapter_status": "specified_candidate_not_implemented_or_live_qualified"
+    },
+    {
+      "id": "deepseek-api",
+      "kind": "llm",
+      "billing": "Official API bills tokens against granted/topped-up balance.",
+      "product_use": "Existing fast profile deepseek-flash currently maps to DeepSeek-V4.1-Flash; all text roles.",
+      "limitations": "The Codex key/profile is present, but the reported DeepSeek access plan and its included API entitlement are not verified. Disabled under included_only unless a documented eligible non-purchased allowance route is configured; never scrape chat or borrow cookies.",
+      "primary_sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/guides/responses_api/"
+      ],
+      "recommendation": "keep_existing_profile_not_current_default",
+      "adapter_status": "specified_candidate_not_implemented_or_live_qualified"
+    },
+    {
+      "id": "openai-platform-api",
+      "kind": "llm_and_tts",
+      "billing": "Separately usage-billed API key.",
+      "product_use": "Preserved gpt-4.1 text profile and optional gpt-4o-mini-tts speech/accent instructions.",
+      "limitations": "Excluded from current included_only setup. ChatGPT voice access is not downloadable speech API entitlement.",
+      "primary_sources": [
+        "https://developers.openai.com/codex/auth",
+        "https://developers.openai.com/api/docs/guides/text-to-speech"
+      ],
+      "recommendation": "excluded_current_billing_policy",
+      "adapter_status": "specified_candidate_not_implemented_or_live_qualified"
+    },
+    {
+      "id": "ollama-local",
+      "kind": "llm",
+      "billing": "Local inference; no service usage credits.",
+      "product_use": "Optional local Responses-compatible runner, e.g. operator-selected qwen3:8b; same text stages and frozen model digest.",
+      "limitations": "Hardware/latency/semantic quality unobserved. Use local model tags, not cloud models; never silently switch from subscription after quota failure.",
+      "primary_sources": [
+        "https://docs.ollama.com/api/openai-compatibility"
+      ],
+      "recommendation": "offline_alternative",
+      "adapter_status": "specified_candidate_not_implemented_or_live_qualified"
+    },
+    {
+      "id": "claude-included-api",
+      "kind": "llm",
+      "billing": "Current Max5x/20x and Team include monthly Claude Console API allowance; Pro is not eligible.",
+      "product_use": "Optional Anthropic Messages adapter for all text roles.",
+      "limitations": "Requires claiming included allowance in a linked Console organization; no purchased balance, invoice overage or auto-reload. Not needed with existing ChatGPT Pro. Current entitlement $100/$200 Max allowance; account eligibility must be observed.",
+      "primary_sources": [
+        "https://platform.claude.com/docs/en/about-claude/api-credits-for-subscribers"
+      ],
+      "recommendation": "do_not_buy_for_starter",
+      "adapter_status": "specified_candidate_not_implemented_or_live_qualified"
+    },
+    {
+      "id": "gemini-free-api",
+      "kind": "llm",
+      "billing": "Separate Gemini Developer API Free Tier project; no paid billing attachment.",
+      "product_use": "Optional text generation/judging with model-specific free limits.",
+      "limitations": "Google consumer plan access is not the evidence for this API route. Account/region/model free availability and data-use terms must be read at setup. Native generateContent/compatibility adapter must be documented before selecting.",
+      "primary_sources": [
+        "https://ai.google.dev/gemini-api/docs/billing",
+        "https://ai.google.dev/gemini-api/docs/pricing"
+      ],
+      "recommendation": "free_alternative",
+      "adapter_status": "specified_candidate_not_implemented_or_live_qualified"
+    },
+    {
+      "id": "kokoro-local",
+      "kind": "tts",
+      "billing": "Local Apache-2.0 weights/inference; no provider account or metered calls.",
+      "product_use": "Default CPU 82M model, American/British registered voices, per-speaker turn rendering and local pause assembly.",
+      "limitations": "Does not establish arbitrary learner accent, generic IPA or precise pitch control. Preserve malformed grammar verbatim; actual realization remains unmeasured until rendered.",
+      "primary_sources": [
+        "https://huggingface.co/hexgrad/Kokoro-82M",
+        "https://github.com/hexgrad/kokoro"
+      ],
+      "recommendation": "start_with_local_speech",
+      "adapter_status": "specified_candidate_not_implemented_or_live_qualified"
+    },
+    {
+      "id": "qwen3-tts-local",
+      "kind": "tts",
+      "billing": "Local Apache-2.0 model and code.",
+      "product_use": "VoiceDesign 1.7B creates described accent/style; save generated reference then Base synthesis reuses it across that speaker. CustomVoice presets are another explicit choice.",
+      "limitations": "More hardware demand; CPU/container deadline fit unobserved. Instructions are best effort, not phoneme labels. Never require an acquired learner recording or clone a corpus voice as setup.",
+      "primary_sources": [
+        "https://github.com/QwenLM/Qwen3-TTS",
+        "https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign"
+      ],
+      "recommendation": "optional_local_accent_expansion",
+      "adapter_status": "specified_candidate_not_implemented_or_live_qualified"
+    },
+    {
+      "id": "elevenlabs-included",
+      "kind": "tts",
+      "billing": "Free/Starter included monthly pool; no purchased credits or usage-based billing. Current Creative Free10k/Starter30k credits, regular Starter$6/month, before tax.",
+      "product_use": "Accent/voice catalogue and model-specific pronunciation dictionaries; eleven_v4 or eleven_v3/eleven_flash_v2 support documented English IPA/CMU dictionaries.",
+      "limitations": "Creative and API pricing pages describe different calculators. Do not infer character counts from credits or temporary discounts. Pin actual account plan, available model and voice. Provider generated sound remains unmeasured; outside included allowance stop.",
+      "primary_sources": [
+        "https://elevenlabs.io/pricing",
+        "https://elevenlabs.io/pricing/api",
+        "https://help.elevenlabs.io/hc/en-us/articles/28184926326033-How-much-does-it-cost-to-use-the-API",
+        "https://help.elevenlabs.io/hc/en-us/articles/14668178389265-What-happens-when-I-run-out-of-credits",
+        "https://elevenlabs.io/docs/overview/models",
+        "https://elevenlabs.io/docs/eleven-api/guides/how-to/text-to-speech/pronunciation-dictionaries",
+        "https://elevenlabs.io/docs/api-reference/text-to-speech/convert"
+      ],
+      "recommendation": "try_free_then_optional_subscription",
+      "adapter_status": "specified_candidate_not_implemented_or_live_qualified"
+    },
+    {
+      "id": "azure-speech-f0",
+      "kind": "tts",
+      "billing": "Free F0 resource:0.5million neural TTS characters/month. StandardS0 is separately billed and excluded.",
+      "product_use": "Existing standard neural voices and typed SSML IPA/prosody/breaks for controlled acoustic intents.",
+      "limitations": "Verify actual resource is F0 and selected voice supports each SSML feature. No assumption that HD/OpenAI voices accept IPA. Native realized phones are not guaranteed; no automatic resource upgrade.",
+      "primary_sources": [
+        "https://azure.microsoft.com/en-us/pricing/details/speech/",
+        "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-synthesis-markup-pronunciation"
+      ],
+      "recommendation": "optional_free_precise_pronunciation",
+      "adapter_status": "specified_candidate_not_implemented_or_live_qualified"
+    },
+    {
+      "id": "espeak-ng-local",
+      "kind": "tts",
+      "billing": "Local executable; GPL dependency terms separate from Apache Tangerine.",
+      "product_use": "Optional symbolic-phoneme/prosody fallback with distinctly synthetic delivery.",
+      "limitations": "eSpeak notation is not arbitrary IPA input; needs explicit supported conversion and actual audio qualification. Not a natural accent model.",
+      "primary_sources": [
+        "https://github.com/espeak-ng/espeak-ng/blob/master/docs/phonemes.md"
+      ],
+      "recommendation": "research_alternative_not_default",
+      "adapter_status": "specified_candidate_not_implemented_or_live_qualified"
+    }
+  ],
+  "selection_rule": "Research alternatives are not automatically compatible installed adapters. Selected starter and explicit extension contracts are in docs/provider-access.md and docs/speech-service-selection.md."
+}

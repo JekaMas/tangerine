@@ -45,7 +45,7 @@
     },
     "endpoint": {
       "type": "string",
-      "description": "The official HTTPS endpoint.",
+      "description": "Official provider endpoint, or configured local runner URL. Local HTTP is allowed only on loopback or the declared private Compose network; it does not enable a hosted/cloud runner.",
       "maxLength": 500,
       "minLength": 1,
       "format": "uri"
@@ -84,10 +84,18 @@
       "description": "The effective sampling value; null when unused."
     },
     "max_output_tokens": {
-      "type": "integer",
-      "description": "The stage output cap.",
-      "minimum": 1,
-      "maximum": 1000000
+      "anyOf": [
+        {
+          "type": "integer",
+          "description": "The stage output cap.",
+          "minimum": 1,
+          "maximum": 1000000
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null when the provider prohibits this wire field; never substitute a fabricated provider cap."
     },
     "context_budget_tokens": {
       "type": "integer",
@@ -149,8 +157,8 @@
       "description": "Do not request provider response storage."
     },
     "stream": {
-      "const": false,
-      "description": "Use a completed response."
+      "type": "boolean",
+      "description": "ChatGPT plan HTTP Responses requires true; legacy API-key profiles retain false. Only a terminal completed response becomes a stage output."
     },
     "tools": {
       "type": "array",
@@ -197,6 +205,28 @@
         }
       ],
       "description": "Generation phase; null for other stages."
+    },
+    "auth_method": {
+      "type": "string",
+      "enum": [
+        "api_key",
+        "chatgpt_plan_oauth",
+        "local_none"
+      ],
+      "default": "api_key",
+      "description": "Historical absence means API key. Freeze method and registration credential reference."
+    },
+    "billing_mode": {
+      "type": "string",
+      "enum": [
+        "local",
+        "free_tier",
+        "included_subscription",
+        "metered",
+        "unknown"
+      ],
+      "default": "unknown",
+      "description": "Access route, distinct from actual observed charges and quota. Unknown/metered is unavailable under included_only."
     }
   },
   "required": [
@@ -223,5 +253,47 @@
     "timeout_seconds",
     "binding_sha256"
   ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "auth_method": {
+            "const": "chatgpt_plan_oauth"
+          }
+        },
+        "required": [
+          "auth_method"
+        ]
+      },
+      "then": {
+        "properties": {
+          "provider": {
+            "const": "openai_chatgpt"
+          },
+          "endpoint": {
+            "const": "https://api.openai.com/v1/responses"
+          },
+          "stream": {
+            "const": true
+          },
+          "store": {
+            "const": false
+          },
+          "temperature": {
+            "type": "null"
+          },
+          "max_output_tokens": {
+            "type": "null"
+          },
+          "billing_mode": {
+            "const": "included_subscription"
+          }
+        },
+        "required": [
+          "billing_mode"
+        ]
+      }
+    }
+  ]
 }

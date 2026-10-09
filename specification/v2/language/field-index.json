@@ -1,6 +1,6 @@
 {
-  "schema_count": 137,
-  "field_count": 3063,
+  "schema_count": 143,
+  "field_count": 3143,
   "fields": [
     {
       "schema": "accept-candidate-request.schema.json",
@@ -5026,6 +5026,24 @@
     },
     {
       "schema": "configuration-view.schema.json",
+      "name": "provider_access_policy",
+      "pointer": "/properties/provider_access_policy",
+      "required_in_parent": false,
+      "description": "Absence on historical records inherits current registry policy; effective new snapshots contain the full policy.",
+      "schema_reference": "provider-access-policy.schema.json",
+      "rule_sha256": "882e20d8b677d27dcee58fd8153daf1153a057c34b78a5d8c5c96c92c8797ad5"
+    },
+    {
+      "schema": "configuration-view.schema.json",
+      "name": "speech_profiles",
+      "pointer": "/properties/speech_profiles",
+      "required_in_parent": false,
+      "description": "Optional explicit configured extension profiles; unique IDs resolve only compatible installed adapters. Absence uses original registry profiles.",
+      "schema_reference": null,
+      "rule_sha256": "bed50d4a56717866d56dba42f657bb427e06bb4f78aa0cc9fc4d58335f1b1b2d"
+    },
+    {
+      "schema": "configuration-view.schema.json",
       "name": "name",
       "pointer": "/properties/credentials/items/properties/name",
       "required_in_parent": true,
@@ -5347,6 +5365,24 @@
       "description": "Optional saved simple-form defaults; absence inherits configuration-registry.yaml simple_preparation.",
       "schema_reference": null,
       "rule_sha256": "12768bdad2f1e3537e1ed6d3c82697a9a79eef8512d7b89258f8a7843f09397e"
+    },
+    {
+      "schema": "configuration.schema.json",
+      "name": "provider_access_policy",
+      "pointer": "/properties/provider_access_policy",
+      "required_in_parent": false,
+      "description": "Absence on historical records inherits current registry policy; effective new snapshots contain the full policy.",
+      "schema_reference": "provider-access-policy.schema.json",
+      "rule_sha256": "882e20d8b677d27dcee58fd8153daf1153a057c34b78a5d8c5c96c92c8797ad5"
+    },
+    {
+      "schema": "configuration.schema.json",
+      "name": "speech_profiles",
+      "pointer": "/properties/speech_profiles",
+      "required_in_parent": false,
+      "description": "Optional explicit configured extension profiles; unique IDs resolve only compatible installed adapters. Absence uses original registry profiles.",
+      "schema_reference": null,
+      "rule_sha256": "bed50d4a56717866d56dba42f657bb427e06bb4f78aa0cc9fc4d58335f1b1b2d"
     },
     {
       "schema": "configuration.schema.json",
@@ -6892,9 +6928,9 @@
       "name": "endpoint",
       "pointer": "/properties/endpoint",
       "required_in_parent": true,
-      "description": "The official HTTPS endpoint.",
+      "description": "Official provider endpoint, or configured local runner URL. Local HTTP is allowed only on loopback or the declared private Compose network; it does not enable a hosted/cloud runner.",
       "schema_reference": null,
-      "rule_sha256": "0fdc4b934fa92f59f9b57705131526e7448ba3569b85c3e4ee6439b0a2c50d3c"
+      "rule_sha256": "7a91e4e7c311627bb6e4be7f6b46922ff120c1a187180aba7e7c46acdfb06f05"
     },
     {
       "schema": "effective-binding.schema.json",
@@ -6919,9 +6955,9 @@
       "name": "max_output_tokens",
       "pointer": "/properties/max_output_tokens",
       "required_in_parent": true,
-      "description": "The stage output cap.",
+      "description": "Null when the provider prohibits this wire field; never substitute a fabricated provider cap.",
       "schema_reference": null,
-      "rule_sha256": "8371f36b257be7093914712d3c6a0c0494f064d6a1d103f74d3804d698dbb853"
+      "rule_sha256": "90c9b6e19e2e958e45785014847093975504e9b8246d20651451081f6a1c79ae"
     },
     {
       "schema": "effective-binding.schema.json",
@@ -7009,9 +7045,9 @@
       "name": "stream",
       "pointer": "/properties/stream",
       "required_in_parent": true,
-      "description": "Use a completed response.",
+      "description": "ChatGPT plan HTTP Responses requires true; legacy API-key profiles retain false. Only a terminal completed response becomes a stage output.",
       "schema_reference": null,
-      "rule_sha256": "d57e7df59dff51bf5eca5088b31f7b95a4f994b0e7b4546dde88b325c70519c1"
+      "rule_sha256": "40d0ed817220bf5c8a06f4fe9a96e9fef3298e88baf33266b2d81a1daa92ef6d"
     },
     {
       "schema": "effective-binding.schema.json",
@@ -7066,6 +7102,96 @@
       "description": "Generation phase; null for other stages.",
       "schema_reference": null,
       "rule_sha256": "559d59f8d16decd3b06464257cf3db48d57c6c2d61d84ddadd00f90a86149c22"
+    },
+    {
+      "schema": "effective-binding.schema.json",
+      "name": "auth_method",
+      "pointer": "/properties/auth_method",
+      "required_in_parent": false,
+      "description": "Historical absence means API key. Freeze method and registration credential reference.",
+      "schema_reference": null,
+      "rule_sha256": "3d919bbcbd8bbcb45de3f1021919b7ce1cbc0bbaa41ac2c074625d8943bec079"
+    },
+    {
+      "schema": "effective-binding.schema.json",
+      "name": "billing_mode",
+      "pointer": "/properties/billing_mode",
+      "required_in_parent": false,
+      "description": "Access route, distinct from actual observed charges and quota. Unknown/metered is unavailable under included_only.",
+      "schema_reference": null,
+      "rule_sha256": "91657d8e22b6032f7f79b1665a5667e413eaeb85ffd9037614176a2d01dec04e"
+    },
+    {
+      "schema": "effective-binding.schema.json",
+      "name": "auth_method",
+      "pointer": "/allOf/0/if/properties/auth_method",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "57854f341edf1268a6ec05aac05e032badafe13712200affa46ded4c024f9b80"
+    },
+    {
+      "schema": "effective-binding.schema.json",
+      "name": "provider",
+      "pointer": "/allOf/0/then/properties/provider",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "c5571c685cbd875a4627015c869947cab219cec8786f3dcc8edc36a83c6e127c"
+    },
+    {
+      "schema": "effective-binding.schema.json",
+      "name": "endpoint",
+      "pointer": "/allOf/0/then/properties/endpoint",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "169aec4132ff856b73d4209bb310791b417e2965ee385b0f52b53e4ce41eca06"
+    },
+    {
+      "schema": "effective-binding.schema.json",
+      "name": "stream",
+      "pointer": "/allOf/0/then/properties/stream",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "02e70d99380d0cc184f95bd0d4c286c1c4d5e530ba725618c6321376ec9480b9"
+    },
+    {
+      "schema": "effective-binding.schema.json",
+      "name": "store",
+      "pointer": "/allOf/0/then/properties/store",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "41927c8e6cfb1da264d4a76efb477bb6137868a0a994ad5236bc714db40cdf5d"
+    },
+    {
+      "schema": "effective-binding.schema.json",
+      "name": "temperature",
+      "pointer": "/allOf/0/then/properties/temperature",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "bcde375ebd4cbacf651311181173836b169d5a360c6ac158c6a2cdaf49be3f61"
+    },
+    {
+      "schema": "effective-binding.schema.json",
+      "name": "max_output_tokens",
+      "pointer": "/allOf/0/then/properties/max_output_tokens",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "bcde375ebd4cbacf651311181173836b169d5a360c6ac158c6a2cdaf49be3f61"
+    },
+    {
+      "schema": "effective-binding.schema.json",
+      "name": "billing_mode",
+      "pointer": "/allOf/0/then/properties/billing_mode",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "9b61f6d5ea2a505e2903a7e9aa4df20333e0641d307c38312b311b0b0e37443f"
     },
     {
       "schema": "error-opportunity.schema.json",
@@ -11734,9 +11860,9 @@
       "name": "endpoint",
       "pointer": "/properties/endpoint",
       "required_in_parent": true,
-      "description": "Explicit HTTPS endpoint with documented adapter, approved recipient and host allowlist. Redirects cannot transmit keys to another host.",
+      "description": "Official provider endpoint, or configured local runner URL. Local HTTP is allowed only on loopback or the declared private Compose network; it does not enable a hosted/cloud runner.",
       "schema_reference": null,
-      "rule_sha256": "d444c88898093ee28f923440a5f49c56292f94e9b8626d70bd34de3d33070fc2"
+      "rule_sha256": "7a91e4e7c311627bb6e4be7f6b46922ff120c1a187180aba7e7c46acdfb06f05"
     },
     {
       "schema": "llm-profile.schema.json",
@@ -11761,9 +11887,9 @@
       "name": "max_output_tokens",
       "pointer": "/properties/max_output_tokens",
       "required_in_parent": true,
-      "description": "The stage output cap.",
+      "description": "Null when the provider prohibits this wire field; never substitute a fabricated provider cap.",
       "schema_reference": null,
-      "rule_sha256": "8371f36b257be7093914712d3c6a0c0494f064d6a1d103f74d3804d698dbb853"
+      "rule_sha256": "90c9b6e19e2e958e45785014847093975504e9b8246d20651451081f6a1c79ae"
     },
     {
       "schema": "llm-profile.schema.json",
@@ -11806,9 +11932,9 @@
       "name": "stream",
       "pointer": "/properties/stream",
       "required_in_parent": true,
-      "description": "Use a completed response.",
+      "description": "ChatGPT plan HTTP Responses requires true; legacy API-key profiles retain false. Only a terminal completed response becomes a stage output.",
       "schema_reference": null,
-      "rule_sha256": "d57e7df59dff51bf5eca5088b31f7b95a4f994b0e7b4546dde88b325c70519c1"
+      "rule_sha256": "40d0ed817220bf5c8a06f4fe9a96e9fef3298e88baf33266b2d81a1daa92ef6d"
     },
     {
       "schema": "llm-profile.schema.json",
@@ -11827,6 +11953,96 @@
       "description": "Supported documented processing roles; selection cannot assign an unsupported stage.",
       "schema_reference": null,
       "rule_sha256": "1e176b6589c85c40e52736caf125021ce82472b2dead7be91759f90531bd533d"
+    },
+    {
+      "schema": "llm-profile.schema.json",
+      "name": "auth_method",
+      "pointer": "/properties/auth_method",
+      "required_in_parent": false,
+      "description": "Historical absence means API key. Freeze method and registration credential reference.",
+      "schema_reference": null,
+      "rule_sha256": "3d919bbcbd8bbcb45de3f1021919b7ce1cbc0bbaa41ac2c074625d8943bec079"
+    },
+    {
+      "schema": "llm-profile.schema.json",
+      "name": "billing_mode",
+      "pointer": "/properties/billing_mode",
+      "required_in_parent": false,
+      "description": "Access route, distinct from actual observed charges and quota. Unknown/metered is unavailable under included_only.",
+      "schema_reference": null,
+      "rule_sha256": "91657d8e22b6032f7f79b1665a5667e413eaeb85ffd9037614176a2d01dec04e"
+    },
+    {
+      "schema": "llm-profile.schema.json",
+      "name": "auth_method",
+      "pointer": "/allOf/0/if/properties/auth_method",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "57854f341edf1268a6ec05aac05e032badafe13712200affa46ded4c024f9b80"
+    },
+    {
+      "schema": "llm-profile.schema.json",
+      "name": "provider",
+      "pointer": "/allOf/0/then/properties/provider",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "c5571c685cbd875a4627015c869947cab219cec8786f3dcc8edc36a83c6e127c"
+    },
+    {
+      "schema": "llm-profile.schema.json",
+      "name": "endpoint",
+      "pointer": "/allOf/0/then/properties/endpoint",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "169aec4132ff856b73d4209bb310791b417e2965ee385b0f52b53e4ce41eca06"
+    },
+    {
+      "schema": "llm-profile.schema.json",
+      "name": "stream",
+      "pointer": "/allOf/0/then/properties/stream",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "02e70d99380d0cc184f95bd0d4c286c1c4d5e530ba725618c6321376ec9480b9"
+    },
+    {
+      "schema": "llm-profile.schema.json",
+      "name": "store",
+      "pointer": "/allOf/0/then/properties/store",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "41927c8e6cfb1da264d4a76efb477bb6137868a0a994ad5236bc714db40cdf5d"
+    },
+    {
+      "schema": "llm-profile.schema.json",
+      "name": "temperature",
+      "pointer": "/allOf/0/then/properties/temperature",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "bcde375ebd4cbacf651311181173836b169d5a360c6ac158c6a2cdaf49be3f61"
+    },
+    {
+      "schema": "llm-profile.schema.json",
+      "name": "max_output_tokens",
+      "pointer": "/allOf/0/then/properties/max_output_tokens",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "bcde375ebd4cbacf651311181173836b169d5a360c6ac158c6a2cdaf49be3f61"
+    },
+    {
+      "schema": "llm-profile.schema.json",
+      "name": "billing_mode",
+      "pointer": "/allOf/0/then/properties/billing_mode",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "9b61f6d5ea2a505e2903a7e9aa4df20333e0641d307c38312b311b0b0e37443f"
     },
     {
       "schema": "llm-review-input.schema.json",
@@ -27568,6 +27784,510 @@
       "description": null,
       "schema_reference": null,
       "rule_sha256": "c40d71dcd2390904a222d2b31d4de64f6cddfea37cdd90cb828835dba2d7aab6"
+    },
+    {
+      "schema": "provider-access-policy.schema.json",
+      "name": "mode",
+      "pointer": "/properties/mode",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "25468d05c5ca4cba874533865ef5e2c4a80d0b60a013a52ab1b7d50d6783bec8"
+    },
+    {
+      "schema": "provider-access-policy.schema.json",
+      "name": "allow_purchased_credits",
+      "pointer": "/properties/allow_purchased_credits",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "41927c8e6cfb1da264d4a76efb477bb6137868a0a994ad5236bc714db40cdf5d"
+    },
+    {
+      "schema": "provider-access-policy.schema.json",
+      "name": "allow_overage",
+      "pointer": "/properties/allow_overage",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "41927c8e6cfb1da264d4a76efb477bb6137868a0a994ad5236bc714db40cdf5d"
+    },
+    {
+      "schema": "provider-access-policy.schema.json",
+      "name": "allow_silent_billing_fallback",
+      "pointer": "/properties/allow_silent_billing_fallback",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "41927c8e6cfb1da264d4a76efb477bb6137868a0a994ad5236bc714db40cdf5d"
+    },
+    {
+      "schema": "provider-callback-query.schema.json",
+      "name": "code",
+      "pointer": "/properties/code",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "f090cb615c84d7324e2e4975c584267473e030c801e11713a3ec1d99192db7bd"
+    },
+    {
+      "schema": "provider-callback-query.schema.json",
+      "name": "state",
+      "pointer": "/properties/state",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "f090cb615c84d7324e2e4975c584267473e030c801e11713a3ec1d99192db7bd"
+    },
+    {
+      "schema": "provider-callback-query.schema.json",
+      "name": "client_id",
+      "pointer": "/properties/client_id",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "f090cb615c84d7324e2e4975c584267473e030c801e11713a3ec1d99192db7bd"
+    },
+    {
+      "schema": "provider-callback-query.schema.json",
+      "name": "scope",
+      "pointer": "/properties/scope",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "f090cb615c84d7324e2e4975c584267473e030c801e11713a3ec1d99192db7bd"
+    },
+    {
+      "schema": "provider-callback-query.schema.json",
+      "name": "error",
+      "pointer": "/properties/error",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "f090cb615c84d7324e2e4975c584267473e030c801e11713a3ec1d99192db7bd"
+    },
+    {
+      "schema": "provider-callback-query.schema.json",
+      "name": "error_description",
+      "pointer": "/properties/error_description",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "f090cb615c84d7324e2e4975c584267473e030c801e11713a3ec1d99192db7bd"
+    },
+    {
+      "schema": "provider-connect-request.schema.json",
+      "name": "action",
+      "pointer": "/properties/action",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "03f9432be8a22bda1a0e2b8e7daf58a3c33fbb5aefa075aabb09bc478c6c1673"
+    },
+    {
+      "schema": "provider-connect-request.schema.json",
+      "name": "connection_id",
+      "pointer": "/properties/connection_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "19c3b4b612a146856143ff11ced401ff890058d978a8bded454389bd975db364"
+    },
+    {
+      "schema": "provider-connect-request.schema.json",
+      "name": "credits_after_plan_limit_disabled",
+      "pointer": "/properties/credits_after_plan_limit_disabled",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "6a1762611a444fd982fb76fdc17e72e0486c4caf829d4f6b77570191e2d78edf"
+    },
+    {
+      "schema": "provider-connect-result.schema.json",
+      "name": "connection",
+      "pointer": "/properties/connection",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": "provider-connection.schema.json",
+      "rule_sha256": "5a12d7ef2120d0f47269d8da7fa1f520a5d1515a311621113a8ea83cfb155550"
+    },
+    {
+      "schema": "provider-connect-result.schema.json",
+      "name": "authorization_url",
+      "pointer": "/properties/authorization_url",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "2a35547f8171e3fb5b1bd2147996e7b2a35e12c6a2eebdea318f4a4918e20493"
+    },
+    {
+      "schema": "provider-connection.schema.json",
+      "name": "id",
+      "pointer": "/properties/id",
+      "required_in_parent": true,
+      "description": "Stable local provider registration; not an application user.",
+      "schema_reference": null,
+      "rule_sha256": "3a88ac1e9e12e876f5ef42950a2f4d7d5e642b1a7b0074309faf32e10e163935"
+    },
+    {
+      "schema": "provider-connection.schema.json",
+      "name": "provider",
+      "pointer": "/properties/provider",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "c5571c685cbd875a4627015c869947cab219cec8786f3dcc8edc36a83c6e127c"
+    },
+    {
+      "schema": "provider-connection.schema.json",
+      "name": "client_id",
+      "pointer": "/properties/client_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "03590d081bfbe28e6e33de3244761ae346a00afb17125a0cde961f1a93f87638"
+    },
+    {
+      "schema": "provider-connection.schema.json",
+      "name": "ext_agent_host_id",
+      "pointer": "/properties/ext_agent_host_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "affd339c1f64531fc40531b3c302f566acd05abae53d3353857d745fdf93c4ad"
+    },
+    {
+      "schema": "provider-connection.schema.json",
+      "name": "account_label",
+      "pointer": "/properties/account_label",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "8870136d89cc99ec639d530f4a667d0868e5f6c3a372e37ca9337184fc5c89ab"
+    },
+    {
+      "schema": "provider-connection.schema.json",
+      "name": "subject",
+      "pointer": "/properties/subject",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "72d8df29d73ac212a03a984c0920f925eabbb4ce2667c5c8edac75f79d93ffaf"
+    },
+    {
+      "schema": "provider-connection.schema.json",
+      "name": "state",
+      "pointer": "/properties/state",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "56e9f37d72e3356405b208cd8198f4d73cf3dffcb774d53315df86defcddf3e7"
+    },
+    {
+      "schema": "provider-connection.schema.json",
+      "name": "scopes",
+      "pointer": "/properties/scopes",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "2b785e709c16f2d582b4336eadfc50973cb475ca712c0919babe5c7e2516f33b"
+    },
+    {
+      "schema": "provider-connection.schema.json",
+      "name": "credential_ref",
+      "pointer": "/properties/credential_ref",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "6782cb5a0aaafed00cc37a8d8d9c09987d40813bc095689c07ffa2954b7f7bd4"
+    },
+    {
+      "schema": "provider-connection.schema.json",
+      "name": "expires_at",
+      "pointer": "/properties/expires_at",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "5b98d1826db203f5495c278ecf1a6d592a34fccaec2fe7231683397871739947"
+    },
+    {
+      "schema": "provider-connection.schema.json",
+      "name": "credits_after_plan_limit_disabled",
+      "pointer": "/properties/credits_after_plan_limit_disabled",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "c79a90dc89c814f79bcb37cac085223d95562e6fbc8fc33dc4269f470cb5c357"
+    },
+    {
+      "schema": "provider-connection.schema.json",
+      "name": "models_asset_id",
+      "pointer": "/properties/models_asset_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "f3261aad5b0006d51923d48a9795d149a0fa5e144aa2fd1b8485411ffb309bad"
+    },
+    {
+      "schema": "provider-connection.schema.json",
+      "name": "last_error_code",
+      "pointer": "/properties/last_error_code",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "3d240c86eaa38f94315756d6299b65a7059c46ec0234cb40822a12dd88c61c7a"
+    },
+    {
+      "schema": "provider-connection.schema.json",
+      "name": "updated_at",
+      "pointer": "/properties/updated_at",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "b9de79b4170dcd292a90824332578638f4207f348063e56bdfeb9cd7e555288d"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "id",
+      "pointer": "/properties/id",
+      "required_in_parent": true,
+      "description": "Selected profile identity.",
+      "schema_reference": null,
+      "rule_sha256": "cc8cd2b0e040a460c455527516541146a7cb632e4355b3e6fb0ebdbda26b9f89"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "provider",
+      "pointer": "/properties/provider",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "979d92ddf08f47ba18fbe810729bc848b24f04ea6f08727685baec3ac1cb5bea"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "adapter_version",
+      "pointer": "/properties/adapter_version",
+      "required_in_parent": true,
+      "description": "Compatible installed adapter contract.",
+      "schema_reference": null,
+      "rule_sha256": "90ca6913832353c4da23d61a896d0528fb17c06738e165899639429bc60fd099"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "model",
+      "pointer": "/properties/model",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "642494bbcb40ed97dedd4348ad5b9b8f781c632625004e01997a5ed16f553073"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "endpoint",
+      "pointer": "/properties/endpoint",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "51bd40adc6b0340d7c926da4d3d728a9d0a837b6c6f24157238740656659f19a"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "credential_refs",
+      "pointer": "/properties/credential_refs",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "d7a19ad6de43b74d74eee1584d61d8a1cd8e3460563dc8378a32bea8f4cbeb1e"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "billing_mode",
+      "pointer": "/properties/billing_mode",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "cf8b83d4b42aa6f21d16999d77f929ce93379482ee194942fd39d66c22da77ad"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "account_tier",
+      "pointer": "/properties/account_tier",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "836bf9ed45295d1051c7301fb2c4e24db7b58110101244e01fb46f6b5f0b6d66"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "overage_disabled",
+      "pointer": "/properties/overage_disabled",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "6a1762611a444fd982fb76fdc17e72e0486c4caf829d4f6b77570191e2d78edf"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "capabilities",
+      "pointer": "/properties/capabilities",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": "render-plan.schema.json#/properties/required_capabilities",
+      "rule_sha256": "b22f709f7022263e3f5327c503345fde2351e3f7c6828c4143d33733b04ffa5b"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "voices",
+      "pointer": "/properties/voices",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "e2e5e688b2e16ab8cfb02516d230974ecf70820095a300ede04758a453b7761b"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "assets",
+      "pointer": "/properties/assets",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "b721da42b023b9d18cb454bfb19ac8a41e6df3dda501f09cb38132d18868f809"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "voice_settings",
+      "pointer": "/properties/voice_settings",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "05905fc358d4f9a4d43f41bcb5261de7b376e09d7446b05912cad554eac3c596"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "catalogue_asset_id",
+      "pointer": "/properties/catalogue_asset_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "35fdff86535e1caade675f845f4afaf960a63ec08d014f2d5f73a39b053f5239"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "voice_description_asset_id",
+      "pointer": "/properties/voice_description_asset_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "554e265a958dfbb3e93feb4c770ce52b465f83c51b9e2f980147f8aadcc4088c"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "id",
+      "pointer": "/properties/voices/items/properties/id",
+      "required_in_parent": true,
+      "description": "Exact provider or locally designed voice ID.",
+      "schema_reference": null,
+      "rule_sha256": "5a8d5684fb710b8b2c6842581457d3ad9fa5b351e22e42864c855b526d621588"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "locale",
+      "pointer": "/properties/voices/items/properties/locale",
+      "required_in_parent": true,
+      "description": "Configured English locale; not proof of accent.",
+      "schema_reference": null,
+      "rule_sha256": "c117c69f8919d30272f28d86d6a25fb48b3d3a159c558b529eb0c36704eaedf3"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "accent_description",
+      "pointer": "/properties/voices/items/properties/accent_description",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "fef5297f334b14a9175601819bb5a95a611482046d119ae7ec3d5e30125116ee"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "asset_id",
+      "pointer": "/properties/assets/items/properties/asset_id",
+      "required_in_parent": true,
+      "description": "Private stored weight/tokenizer/reference/conditioning asset.",
+      "schema_reference": null,
+      "rule_sha256": "500490757bbbdbbc5cdf95d3e5df27ed117af6297c08eb8bfb78127552770f94"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "sha256",
+      "pointer": "/properties/assets/items/properties/sha256",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "2bc7825d922e6db89d507d832aa4cc3f3c38b01166311bef13d87151c8c67763"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "kind",
+      "pointer": "/properties/assets/items/properties/kind",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "8ffeb7ec85109e2e67283fa9dd465f6edf14cce89af09a135d5caa2ead471d2d"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "voice_id",
+      "pointer": "/properties/assets/items/properties/voice_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "06c3fa4634a20b10e4a42a0f08eebe498607e53cd10c29c6914607256fb79cea"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "stability",
+      "pointer": "/properties/voice_settings/properties/stability",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "4d7fa09585839f90d6dc10b81c24c76cf5508a0e3d390fc25407dfa534c6a720"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "similarity_boost",
+      "pointer": "/properties/voice_settings/properties/similarity_boost",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "4d7fa09585839f90d6dc10b81c24c76cf5508a0e3d390fc25407dfa534c6a720"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "style",
+      "pointer": "/properties/voice_settings/properties/style",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "4d7fa09585839f90d6dc10b81c24c76cf5508a0e3d390fc25407dfa534c6a720"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "use_speaker_boost",
+      "pointer": "/properties/voice_settings/properties/use_speaker_boost",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "6a1762611a444fd982fb76fdc17e72e0486c4caf829d4f6b77570191e2d78edf"
+    },
+    {
+      "schema": "speech-profile.schema.json",
+      "name": "speed",
+      "pointer": "/properties/voice_settings/properties/speed",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "571724f06b4018e13c4d550f287be4cbf369cc03cd683430d10ea8854ccc5088"
     }
   ]
 }

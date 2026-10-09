@@ -2,8 +2,7 @@ openapi: 3.1.0
 info:
   title: Tangerine local internal operations
   version: 2.0.0
-  description: Private same-origin implementation calls. No public API, account,
-    tenant, or user session.
+  description: Private same-origin implementation calls. No public API, account, tenant, or user session.
 servers:
   - url: http://localhost:3000
 paths:
@@ -407,9 +406,8 @@ paths:
   /api/v1/candidates:generate:
     post:
       operationId: generate
-      description: Persist preparation snapshot before dispatch, checkpoint clean text
-        then mutations, and continue the exact saved preparation on explicit
-        resume.
+      description: Persist preparation snapshot before dispatch, checkpoint clean text then mutations, and
+        continue the exact saved preparation on explicit resume.
       tags:
         - prepare
       parameters:
@@ -429,8 +427,8 @@ paths:
               - http://127.0.0.1:3000
       responses:
         "200":
-          description: Save intent, apply grants and caps, call the real provider,
-            validate and persist the output.
+          description: Save intent, apply grants and caps, call the real provider, validate and persist the
+            output.
           content:
             application/json:
               schema:
@@ -501,9 +499,8 @@ paths:
             application/json:
               schema:
                 $ref: error-response.schema.json
-      x-atomic-effect: Persist preparation snapshot before dispatch, checkpoint clean
-        text then mutations, and continue the exact saved preparation on
-        explicit resume.
+      x-atomic-effect: Persist preparation snapshot before dispatch, checkpoint clean text then mutations,
+        and continue the exact saved preparation on explicit resume.
       x-revision-precondition: false
       requestBody:
         required: true
@@ -623,9 +620,8 @@ paths:
   /api/v1/cases/{id}:render:
     post:
       operationId: render
-      description: Render the saved preparation plan or an explicit imported/native
-        plan; checkpoint actual linked audio/key without lifetime manual retry
-        caps.
+      description: Render the saved preparation plan or an explicit imported/native plan; checkpoint
+        actual linked audio/key without lifetime manual retry caps.
       tags:
         - prepare
       parameters:
@@ -658,8 +654,7 @@ paths:
             pattern: ^"[0-9]+"$
       responses:
         "200":
-          description: Synthesize exact turns and link final bytes under the storage
-            protocol.
+          description: Synthesize exact turns and link final bytes under the storage protocol.
           content:
             application/json:
               schema:
@@ -730,9 +725,8 @@ paths:
             application/json:
               schema:
                 $ref: error-response.schema.json
-      x-atomic-effect: Render the saved preparation plan or an explicit
-        imported/native plan; checkpoint actual linked audio/key without
-        lifetime manual retry caps.
+      x-atomic-effect: Render the saved preparation plan or an explicit imported/native plan; checkpoint
+        actual linked audio/key without lifetime manual retry caps.
       x-revision-precondition: true
       requestBody:
         required: true
@@ -743,8 +737,7 @@ paths:
   /api/v1/cases/{id}:measure:
     post:
       operationId: measure
-      description: Measure the linked final WAV and save every missing or failed
-        observation.
+      description: Measure the linked final WAV and save every missing or failed observation.
       tags:
         - prepare
       parameters:
@@ -777,8 +770,7 @@ paths:
             pattern: ^"[0-9]+"$
       responses:
         "200":
-          description: Measure the linked final WAV and save every missing or failed
-            observation.
+          description: Measure the linked final WAV and save every missing or failed observation.
           content:
             application/json:
               schema:
@@ -849,8 +841,7 @@ paths:
             application/json:
               schema:
                 $ref: error-response.schema.json
-      x-atomic-effect: Measure the linked final WAV and save every missing or failed
-        observation.
+      x-atomic-effect: Measure the linked final WAV and save every missing or failed observation.
       x-revision-precondition: true
   /api/v1/prepare/cases/{id}:
     get:
@@ -1352,8 +1343,7 @@ paths:
   /api/v1/reviews:
     post:
       operationId: start_review
-      description: Call configured case_review LLM; save modality, findings and
-        receipt, no human identity.
+      description: Call configured case_review LLM; save modality, findings and receipt, no human identity.
       tags:
         - review
       parameters:
@@ -1801,8 +1791,7 @@ paths:
             pattern: ^"[0-9]+"$
       responses:
         "201":
-          description: Require exact matching context/key/audio and actual native imported
-            decision.
+          description: Require exact matching context/key/audio and actual native imported decision.
           content:
             application/json:
               schema:
@@ -1986,8 +1975,7 @@ paths:
   /api/v1/teacher-gold:
     post:
       operationId: teacher_gold
-      description: Store LLM or native imported labels with exact origin; no new human
-        rater.
+      description: Store LLM or native imported labels with exact origin; no new human rater.
       tags:
         - review
       parameters:
@@ -2876,8 +2864,7 @@ paths:
             pattern: ^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$
       responses:
         "200":
-          description: Read completed or explicitly provisional result without starting
-            calls.
+          description: Read completed or explicitly provisional result without starting calls.
           content:
             application/json:
               schema:
@@ -3574,8 +3561,7 @@ paths:
   /api/v1/disputes/{id}:resolve:
     post:
       operationId: resolve_dispute
-      description: Invoke LLM adjudication against exact saved case/answer, append
-        resolution.
+      description: Invoke LLM adjudication against exact saved case/answer, append resolution.
       tags:
         - dispute
       parameters:
@@ -3812,8 +3798,7 @@ paths:
               - http://127.0.0.1:3000
       responses:
         "200":
-          description: Process explicitly selected attempts; append revisions, never
-            overwrite.
+          description: Process explicitly selected attempts; append revisions, never overwrite.
           content:
             application/json:
               schema:
@@ -3943,8 +3928,7 @@ paths:
             maxLength: 2048
       responses:
         "200":
-          description: Return all required sources including blocked sources and
-            derivatives.
+          description: Return all required sources including blocked sources and derivatives.
           content:
             application/json:
               schema:
@@ -4068,8 +4052,7 @@ paths:
               - http://127.0.0.1:3000
       responses:
         "201":
-          description: Register actual complete manifests, never expected hashes as
-            observed.
+          description: Register actual complete manifests, never expected hashes as observed.
           content:
             application/json:
               schema:
@@ -4171,8 +4154,7 @@ paths:
               - http://127.0.0.1:3000
       responses:
         "201":
-          description: Store exact documented file/field semantics with real review
-            evidence.
+          description: Store exact documented file/field semantics with real review evidence.
           content:
             application/json:
               schema:
@@ -4274,8 +4256,7 @@ paths:
               - http://127.0.0.1:3000
       responses:
         "201":
-          description: Register actual source-owner evidence for explicit uses and
-            recipients.
+          description: Register actual source-owner evidence for explicit uses and recipients.
           content:
             application/json:
               schema:
@@ -4357,9 +4338,9 @@ paths:
   /api/v1/permissions/{id}:revoke:
     post:
       operationId: revoke
-      description: Save actual source revocation notice/status and expose affected
-        selected-source use; retain provenance without permission epochs or
-        grant closure. Independent authored exercises remain available.
+      description: Save actual source revocation notice/status and expose affected selected-source use;
+        retain provenance without permission epochs or grant closure. Independent authored exercises
+        remain available.
       tags:
         - sources
       parameters:
@@ -4392,9 +4373,9 @@ paths:
             pattern: ^"[0-9]+"$
       responses:
         "200":
-          description: Save actual source revocation notice/status and expose affected
-            selected-source use; retain provenance without permission epochs or
-            grant closure. Independent authored exercises remain available.
+          description: Save actual source revocation notice/status and expose affected selected-source use;
+            retain provenance without permission epochs or grant closure. Independent authored
+            exercises remain available.
           content:
             application/json:
               schema:
@@ -4465,9 +4446,9 @@ paths:
             application/json:
               schema:
                 $ref: error-response.schema.json
-      x-atomic-effect: Save actual source revocation notice/status and expose affected
-        selected-source use; retain provenance without permission epochs or
-        grant closure. Independent authored exercises remain available.
+      x-atomic-effect: Save actual source revocation notice/status and expose affected selected-source
+        use; retain provenance without permission epochs or grant closure. Independent authored
+        exercises remain available.
       x-revision-precondition: true
       requestBody:
         required: true
@@ -4511,8 +4492,7 @@ paths:
             pattern: ^"[0-9]+"$
       responses:
         "200":
-          description: Parse full release with bounded safe extraction and reconciled
-            counts.
+          description: Parse full release with bounded safe extraction and reconciled counts.
           content:
             application/json:
               schema:
@@ -4879,8 +4859,7 @@ paths:
       x-revision-precondition: false
     put:
       operationId: put_config
-      description: Persist explicit configuration; invalidate affected caches, not
-        historical evidence.
+      description: Persist explicit configuration; invalidate affected caches, not historical evidence.
       tags:
         - configuration
       parameters:
@@ -4906,8 +4885,7 @@ paths:
             pattern: ^"[0-9]+"$
       responses:
         "200":
-          description: Persist explicit configuration; invalidate affected caches, not
-            historical evidence.
+          description: Persist explicit configuration; invalidate affected caches, not historical evidence.
           content:
             application/json:
               schema:
@@ -4978,8 +4956,7 @@ paths:
             application/json:
               schema:
                 $ref: error-response.schema.json
-      x-atomic-effect: Persist explicit configuration; invalidate affected caches, not
-        historical evidence.
+      x-atomic-effect: Persist explicit configuration; invalidate affected caches, not historical evidence.
       x-revision-precondition: true
       requestBody:
         required: true
@@ -5125,8 +5102,7 @@ paths:
             pattern: ^"[0-9]+"$
       responses:
         "200":
-          description: Stream and bound exact bytes, read back hash, retain reservation
-            state.
+          description: Stream and bound exact bytes, read back hash, retain reservation state.
           content:
             application/json:
               schema:
@@ -5815,8 +5791,7 @@ paths:
   /api/v1/deletions/{id}:apply:
     post:
       operationId: delete_apply
-      description: Require plan digest and explicit confirmation; retain only
-        permitted tombstones.
+      description: Require plan digest and explicit confirmation; retain only permitted tombstones.
       tags:
         - maintenance
       parameters:
@@ -5849,8 +5824,7 @@ paths:
             pattern: ^"[0-9]+"$
       responses:
         "200":
-          description: Require plan digest and explicit confirmation; retain only
-            permitted tombstones.
+          description: Require plan digest and explicit confirmation; retain only permitted tombstones.
           content:
             application/json:
               schema:
@@ -5921,8 +5895,7 @@ paths:
             application/json:
               schema:
                 $ref: error-response.schema.json
-      x-atomic-effect: Require plan digest and explicit confirmation; retain only
-        permitted tombstones.
+      x-atomic-effect: Require plan digest and explicit confirmation; retain only permitted tombstones.
       x-revision-precondition: true
       requestBody:
         required: true
@@ -5953,8 +5926,7 @@ paths:
               - http://127.0.0.1:3000
       responses:
         "201":
-          description: Calculate the frozen protocol from genuine first-exposure
-            observations.
+          description: Calculate the frozen protocol from genuine first-exposure observations.
           content:
             application/json:
               schema:
@@ -6138,8 +6110,7 @@ paths:
   /api/v1/holdout-reports:
     post:
       operationId: qualification_report
-      description: Accept only actual observed run receipts and complete eligible
-        populations.
+      description: Accept only actual observed run receipts and complete eligible populations.
       tags:
         - review
       parameters:
@@ -6159,8 +6130,7 @@ paths:
               - http://127.0.0.1:3000
       responses:
         "201":
-          description: Accept only actual observed run receipts and complete eligible
-            populations.
+          description: Accept only actual observed run receipts and complete eligible populations.
           content:
             application/json:
               schema:
@@ -6231,8 +6201,7 @@ paths:
             application/json:
               schema:
                 $ref: error-response.schema.json
-      x-atomic-effect: Accept only actual observed run receipts and complete eligible
-        populations.
+      x-atomic-effect: Accept only actual observed run receipts and complete eligible populations.
       x-revision-precondition: false
       requestBody:
         required: true
@@ -6434,8 +6403,7 @@ paths:
   /api/v1/cases/{id}/key:
     put:
       operationId: write_key
-      description: Save a prepublication key candidate; verify all existing references
-        and observations.
+      description: Save a prepublication key candidate; verify all existing references and observations.
       tags:
         - review
       parameters:
@@ -6468,8 +6436,7 @@ paths:
             pattern: ^"[0-9]+"$
       responses:
         "200":
-          description: Save a prepublication key candidate; verify all existing references
-            and observations.
+          description: Save a prepublication key candidate; verify all existing references and observations.
           content:
             application/json:
               schema:
@@ -6540,8 +6507,7 @@ paths:
             application/json:
               schema:
                 $ref: error-response.schema.json
-      x-atomic-effect: Save a prepublication key candidate; verify all existing
-        references and observations.
+      x-atomic-effect: Save a prepublication key candidate; verify all existing references and observations.
       x-revision-precondition: true
       requestBody:
         required: true
@@ -6743,8 +6709,7 @@ paths:
   /api/v1/operations/{id}:cancel:
     post:
       operationId: cancel_operation
-      description: Fence future commits, cancel the active request, and preserve prior
-        bytes.
+      description: Fence future commits, cancel the active request, and preserve prior bytes.
       tags:
         - maintenance
       parameters:
@@ -6777,8 +6742,7 @@ paths:
             pattern: ^"[0-9]+"$
       responses:
         "200":
-          description: Fence future commits, cancel the active request, and preserve prior
-            bytes.
+          description: Fence future commits, cancel the active request, and preserve prior bytes.
           content:
             application/json:
               schema:
@@ -6849,8 +6813,7 @@ paths:
             application/json:
               schema:
                 $ref: error-response.schema.json
-      x-atomic-effect: Fence future commits, cancel the active request, and preserve
-        prior bytes.
+      x-atomic-effect: Fence future commits, cancel the active request, and preserve prior bytes.
       x-revision-precondition: true
       requestBody:
         required: true
@@ -7087,8 +7050,8 @@ paths:
   /api/v1/preparations:
     get:
       operationId: list_preparations
-      description: Read persisted preparation checkpoints and explicit resume choices
-        without model/speech dispatch.
+      description: Read persisted preparation checkpoints and explicit resume choices without model/speech
+        dispatch.
       tags:
         - prepare
       parameters:
@@ -7210,6 +7173,126 @@ paths:
       x-atomic-effect: Read saved preparation checkpoints without dispatch.
       x-revision-precondition: false
       x-activity: prepare
+  /api/v1/provider-connections:
+    get:
+      operationId: list_provider_connections
+      description: Read safe provider metadata without tokens or inference.
+      tags:
+        - configuration
+      parameters: []
+      responses:
+        "200":
+          description: Read safe provider metadata without tokens or inference.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: provider-connection.schema.json
+        "400":
+          description: Invalid connection action/callback
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
+        "503":
+          description: Provider authorization temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
+  /api/v1/provider-connections:action:
+    post:
+      operationId: provider_connection_action
+      description: Explicitly connect/select/disconnect provider registration without inference or
+        application login.
+      tags:
+        - configuration
+      parameters: []
+      responses:
+        "200":
+          description: Explicitly connect/select/disconnect provider registration without inference or
+            application login.
+          content:
+            application/json:
+              schema:
+                $ref: provider-connect-result.schema.json
+        "400":
+          description: Invalid connection action/callback
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
+        "503":
+          description: Provider authorization temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: provider-connect-request.schema.json
+  /auth/callback:
+    get:
+      operationId: provider_connection_callback
+      description: Exchange one-use loopback OAuth authorization and persist validated provider
+        metadata/secret references.
+      tags:
+        - configuration
+      parameters:
+        - name: code
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: state
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: client_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: scope
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: error
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: error_description
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Exchange one-use loopback OAuth authorization and persist validated provider
+            metadata/secret references.
+          content:
+            application/json:
+              schema:
+                $ref: provider-connection.schema.json
+        "400":
+          description: Invalid connection action/callback
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
+        "503":
+          description: Provider authorization temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
 components:
   securitySchemes:
     SpeechServiceToken:
@@ -7220,5 +7303,4 @@ components:
       type: apiKey
       in: header
       name: X-Tangerine-Service-Key
-      description: Automatically initialized private API-to-speech credential. Never a
-        human login.
+      description: Automatically initialized private API-to-speech credential. Never a human login.

@@ -25,8 +25,8 @@ operations:
     request: null
     response: list:preparation-state
     success: 200
-    effect: Read persisted preparation checkpoints and explicit resume choices
-      without model/speech dispatch.
+    effect: Read persisted preparation checkpoints and explicit resume choices without model/speech
+      dispatch.
     activity: prepare
     revision: false
   - id: get_blueprint
@@ -53,8 +53,8 @@ operations:
     request: generation-request
     response: candidate-envelope
     success: 200
-    effect: Persist preparation snapshot before dispatch, checkpoint clean text then
-      mutations, and continue the exact saved preparation on explicit resume.
+    effect: Persist preparation snapshot before dispatch, checkpoint clean text then mutations, and
+      continue the exact saved preparation on explicit resume.
     activity: prepare
     revision: false
   - id: linguistic_audit
@@ -72,8 +72,8 @@ operations:
     request: render-request
     response: operation-result
     success: 200
-    effect: Render the saved preparation plan or an explicit imported/native plan;
-      checkpoint actual linked audio/key without lifetime manual retry caps.
+    effect: Render the saved preparation plan or an explicit imported/native plan; checkpoint actual
+      linked audio/key without lifetime manual retry caps.
     activity: prepare
     revision: true
   - id: measure
@@ -136,8 +136,7 @@ operations:
     request: start-review-request
     response: review-context
     success: 201
-    effect: Call configured case_review LLM; save modality, findings and receipt, no
-      human identity.
+    effect: Call configured case_review LLM; save modality, findings and receipt, no human identity.
     activity: review
     revision: false
   - id: get_review
@@ -389,9 +388,9 @@ operations:
     request: maintenance-request
     response: operation-result
     success: 200
-    effect: Save actual source revocation notice/status and expose affected
-      selected-source use; retain provenance without permission epochs or grant
-      closure. Independent authored exercises remain available.
+    effect: Save actual source revocation notice/status and expose affected selected-source use; retain
+      provenance without permission epochs or grant closure. Independent authored exercises remain
+      available.
     activity: sources
     revision: true
   - id: import_source
@@ -436,8 +435,7 @@ operations:
     request: put-config-request
     response: configuration-view
     success: 200
-    effect: Persist explicit configuration; invalidate affected caches, not
-      historical evidence.
+    effect: Persist explicit configuration; invalidate affected caches, not historical evidence.
     activity: configuration
     revision: true
   - id: reserve_asset
@@ -518,8 +516,7 @@ operations:
     request: maintenance-request
     response: operation-result
     success: 200
-    effect: Require plan digest and explicit confirmation; retain only permitted
-      tombstones.
+    effect: Require plan digest and explicit confirmation; retain only permitted tombstones.
     activity: maintenance
     revision: true
   - id: difficulty
@@ -573,8 +570,7 @@ operations:
     request: key-write
     response: prepare-view
     success: 200
-    effect: Save a prepublication key candidate; verify all existing references and
-      observations.
+    effect: Save a prepublication key candidate; verify all existing references and observations.
     activity: review
     revision: true
   - id: adjudicate
@@ -621,4 +617,33 @@ operations:
     success: 200
     effect: Measure the exact final asset with registered methods.
     activity: internal_speech
+    revision: false
+  - id: list_provider_connections
+    method: GET
+    path: /api/v1/provider-connections
+    request: null
+    response: list:provider-connection
+    success: 200
+    effect: Read safe provider metadata without tokens or inference.
+    activity: configuration
+    revision: false
+  - id: provider_connection_action
+    method: POST
+    path: /api/v1/provider-connections:action
+    request: provider-connect-request
+    response: provider-connect-result
+    success: 200
+    effect: Explicitly connect/select/disconnect provider registration without inference or application
+      login.
+    activity: configuration
+    revision: false
+  - id: provider_connection_callback
+    method: GET
+    path: /auth/callback
+    request: query:provider-callback-query
+    response: provider-connection
+    success: 200
+    effect: Exchange one-use loopback OAuth authorization and persist validated provider metadata/secret
+      references.
+    activity: configuration
     revision: false

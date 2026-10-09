@@ -4257,7 +4257,7 @@
     "id": "RUN-08",
     "capability": "local-runtime",
     "title": "RUN-08 Start from keys and the supplied bundle",
-    "statement": "The GitHub source project SHALL supply the simple local launcher, key-only setup and default configurable LLM profile in docs/simple-local-product.md. An extracted source ZIP SHALL build and run with Docker without Git metadata, workflow submodules, prebuilt application image distribution or a formal deployment/release manifest. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their keys and permitted source transfer. Speech keys remain separate when required.",
+    "statement": "The GitHub source project SHALL supply the simple local launcher, operation-dependent provider connection/key setup and default configurable LLM profile in docs/simple-local-product.md. An extracted source ZIP SHALL build and run with Docker without Git metadata, workflow submodules, prebuilt application image distribution or a formal deployment/release manifest. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their documented provider authorization/key and permitted source transfer. Eligible ChatGPT-plan sign-in is provider authorization in Settings, not an application login; current included-only defaults and billing constraints follow specification/v2/docs/provider-access.md. Speech keys remain separate when required.",
     "owner": "docs/simple-local-product.md",
     "scenarios": [
       "RUN-08 simple supported startup",
@@ -4876,5 +4876,77 @@
     ],
     "owner": "services/api",
     "source": "Actual user instruction to resolve four remaining specification gaps, with ordinary LLM judging and no human review."
+  },
+  {
+    "id": "CAP-01",
+    "capability": "service-and-data-readiness",
+    "title": "CAP-01 Included-only provider access and simple startup",
+    "statement": "The product SHALL use the current provider-access.v1.json included_only policy, prefer eligible existing ChatGPT-plan Responses plus local Kokoro, preserve original profiles and reject unknown/metered/purchased-credit/overage routes under this policy without silent fallback. The existing GitHub download/run local product SHALL have no application account or mandatory corpus/review/Lab setup.",
+    "scenarios": [
+      "CAP-01 Eligible startup route",
+      "CAP-01 Metered key is not a subscription"
+    ],
+    "owner": "services/api",
+    "source": "Actual user included-only service research and exact empirical-data question, 2026-10-09."
+  },
+  {
+    "id": "CAP-02",
+    "capability": "service-and-data-readiness",
+    "title": "CAP-02 Durable provider authorization without application login",
+    "statement": "Provider connections SHALL use the documented public-client loopback PKCE/OIDC flow, validated identity/granted scope, stable host and issued client IDs, protected rotating credentials and safe metadata. Explicit connect/select/disconnect SHALL never create application accounts, copy Codex credentials or change a frozen running registration. Exact pending state SHALL be the narrow callback-origin exception.",
+    "scenarios": [
+      "CAP-02 Reconnect preserves registration",
+      "CAP-02 Denied or mismatched callback"
+    ],
+    "owner": "services/api",
+    "source": "Actual user included-only service research and exact empirical-data question, 2026-10-09."
+  },
+  {
+    "id": "CAP-03",
+    "capability": "service-and-data-readiness",
+    "title": "CAP-03 Subscription Responses transport and terminal outcomes",
+    "statement": "The ChatGPT-plan adapter SHALL send the exact supported stateless full context with store=false/stream=true, omit unsupported fields and commit a stage only on response.completed. Actual interrupted/incomplete/failed/usage-limit outcomes SHALL preserve earlier content and native receipts without grading partial text or invoking a new billing route. Account model choices and auth/billing/policy identity SHALL be frozen; credential refresh does not change registration identity.",
+    "scenarios": [
+      "CAP-03 Complete streamed stage",
+      "CAP-03 Late quota failure"
+    ],
+    "owner": "services/api",
+    "source": "Actual user included-only service research and exact empirical-data question, 2026-10-09."
+  },
+  {
+    "id": "CAP-04",
+    "capability": "service-and-data-readiness",
+    "title": "CAP-04 Explicit speech and accent control",
+    "statement": "The existing speech owners SHALL preserve122categories and compile actual selected text/phone/prosody operations only through documented model/voice capabilities, as specified in speech-service-selection.md. Voice/accent design is not phoneme proof. Per-speaker identities, dictionary/conditioning versions, target-specific scope and final WAV/interval provenance SHALL persist. No purchased speech quota or implicit backend substitution is allowed under included_only.",
+    "scenarios": [
+      "CAP-04 Scope-local pronunciation dictionary",
+      "CAP-04 Unsupported acoustic intent"
+    ],
+    "owner": "services/speech",
+    "source": "Actual user included-only service research and exact empirical-data question, 2026-10-09."
+  },
+  {
+    "id": "CAP-05",
+    "capability": "service-and-data-readiness",
+    "title": "CAP-05 Exact empirical inputs and source-scoped reports",
+    "statement": "The product SHALL apply empirical-data-needs.md and the existing product-data-relevance policy: external corpora are unnecessary for ordinary authored exercises, while selected empirical frequency/relationship/difficulty/benchmark/full-source reports require their actual scoped observations and denominators. All11full original identities/scopes and42equations SHALL remain. Constructed/provider judgments/native source labels SHALL retain distinct origin and unknowns; missing originals cannot be replaced by public companions or supplemental releases.",
+    "scenarios": [
+      "CAP-05 Defined population association",
+      "CAP-05 Missing empirical denominator"
+    ],
+    "owner": "services/api",
+    "source": "Actual user included-only service research and exact empirical-data question, 2026-10-09."
+  },
+  {
+    "id": "CAP-06",
+    "capability": "service-and-data-readiness",
+    "title": "CAP-06 Research candidates and actual setup observations",
+    "statement": "The dated primary-source service catalogue SHALL distinguish current recommendation, possible documented alternatives, installed adapter compatibility and actual observed account/model/voice/hardware quality. Selected setup SHALL retain all exact configuration/secret/provenance owners and positive/negative Lab plans, without pretending research executed inference or buying an unnecessary subscription.",
+    "scenarios": [
+      "CAP-06 Existing subscription first",
+      "CAP-06 Catalogue is not an adapter"
+    ],
+    "owner": "services/api",
+    "source": "Actual user included-only service research and exact empirical-data question, 2026-10-09."
   }
 ]

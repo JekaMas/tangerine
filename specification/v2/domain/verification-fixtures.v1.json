@@ -3894,7 +3894,13 @@
             "CLOSE-01.P1",
             "CLOSE-02.P1",
             "CLOSE-03.P1",
-            "CLOSE-04.P1"
+            "CLOSE-04.P1",
+            "CAP-01.P1",
+            "CAP-02.P1",
+            "CAP-03.P1",
+            "CAP-04.P1",
+            "CAP-05.P1",
+            "CAP-06.P1"
           ],
           "expected_cases": [
             "AUT-01.P1.POSITIVE",
@@ -5516,7 +5522,31 @@
             "CLOSE-04.P1.S1.POSITIVE",
             "CLOSE-04.P1.S1.NEGATIVE",
             "CLOSE-04.P1.S2.POSITIVE",
-            "CLOSE-04.P1.S2.NEGATIVE"
+            "CLOSE-04.P1.S2.NEGATIVE",
+            "CAP-01.P1.S1.POSITIVE",
+            "CAP-01.P1.S1.NEGATIVE",
+            "CAP-01.P1.S2.POSITIVE",
+            "CAP-01.P1.S2.NEGATIVE",
+            "CAP-02.P1.S1.POSITIVE",
+            "CAP-02.P1.S1.NEGATIVE",
+            "CAP-02.P1.S2.POSITIVE",
+            "CAP-02.P1.S2.NEGATIVE",
+            "CAP-03.P1.S1.POSITIVE",
+            "CAP-03.P1.S1.NEGATIVE",
+            "CAP-03.P1.S2.POSITIVE",
+            "CAP-03.P1.S2.NEGATIVE",
+            "CAP-04.P1.S1.POSITIVE",
+            "CAP-04.P1.S1.NEGATIVE",
+            "CAP-04.P1.S2.POSITIVE",
+            "CAP-04.P1.S2.NEGATIVE",
+            "CAP-05.P1.S1.POSITIVE",
+            "CAP-05.P1.S1.NEGATIVE",
+            "CAP-05.P1.S2.POSITIVE",
+            "CAP-05.P1.S2.NEGATIVE",
+            "CAP-06.P1.S1.POSITIVE",
+            "CAP-06.P1.S1.NEGATIVE",
+            "CAP-06.P1.S2.POSITIVE",
+            "CAP-06.P1.S2.NEGATIVE"
           ],
           "behavior_observations": 0
         },
@@ -19521,7 +19551,13 @@
             "CLOSE-01.P1",
             "CLOSE-02.P1",
             "CLOSE-03.P1",
-            "CLOSE-04.P1"
+            "CLOSE-04.P1",
+            "CAP-01.P1",
+            "CAP-02.P1",
+            "CAP-03.P1",
+            "CAP-04.P1",
+            "CAP-05.P1",
+            "CAP-06.P1"
           ],
           "expected_cases": [
             "AUT-01.P1.POSITIVE",
@@ -21143,7 +21179,31 @@
             "CLOSE-04.P1.S1.POSITIVE",
             "CLOSE-04.P1.S1.NEGATIVE",
             "CLOSE-04.P1.S2.POSITIVE",
-            "CLOSE-04.P1.S2.NEGATIVE"
+            "CLOSE-04.P1.S2.NEGATIVE",
+            "CAP-01.P1.S1.POSITIVE",
+            "CAP-01.P1.S1.NEGATIVE",
+            "CAP-01.P1.S2.POSITIVE",
+            "CAP-01.P1.S2.NEGATIVE",
+            "CAP-02.P1.S1.POSITIVE",
+            "CAP-02.P1.S1.NEGATIVE",
+            "CAP-02.P1.S2.POSITIVE",
+            "CAP-02.P1.S2.NEGATIVE",
+            "CAP-03.P1.S1.POSITIVE",
+            "CAP-03.P1.S1.NEGATIVE",
+            "CAP-03.P1.S2.POSITIVE",
+            "CAP-03.P1.S2.NEGATIVE",
+            "CAP-04.P1.S1.POSITIVE",
+            "CAP-04.P1.S1.NEGATIVE",
+            "CAP-04.P1.S2.POSITIVE",
+            "CAP-04.P1.S2.NEGATIVE",
+            "CAP-05.P1.S1.POSITIVE",
+            "CAP-05.P1.S1.NEGATIVE",
+            "CAP-05.P1.S2.POSITIVE",
+            "CAP-05.P1.S2.NEGATIVE",
+            "CAP-06.P1.S1.POSITIVE",
+            "CAP-06.P1.S1.NEGATIVE",
+            "CAP-06.P1.S2.POSITIVE",
+            "CAP-06.P1.S2.NEGATIVE"
           ],
           "behavior_observations": 0
         },
@@ -21167,6 +21227,686 @@
         }
       },
       "independent_oracle": "Exact finite identity set difference against current graph plus fixture fields; counts alone cannot replace reading case semantics.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "service-data-CAP-01",
+      "action": "CAP-01 Included-only provider access and simple startup",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "policy": "included_only",
+          "llm_route": "chatgpt_plan_oauth",
+          "credits_after_plan_limit_disabled": true,
+          "speech": "kokoro-local-en-v1",
+          "available_platform_key": true
+        },
+        "expected": {
+          "llm_route": "chatgpt_plan_oauth",
+          "speech_route": "local",
+          "platform_calls": 0,
+          "purchased_credits": 0
+        }
+      },
+      "negative": {
+        "input": {
+          "policy": "included_only",
+          "llm_route": "openai_api_key",
+          "billing": "metered"
+        },
+        "expected": {
+          "llm_calls": 0,
+          "reason": "CONSTRAINT_CONFLICT",
+          "playback_available": true
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "scenario-CAP-01 Eligible startup route",
+      "action": "CAP-01 Eligible startup route",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "policy": "included_only",
+          "llm_route": "chatgpt_plan_oauth",
+          "credits_after_plan_limit_disabled": true,
+          "speech": "kokoro-local-en-v1",
+          "available_platform_key": true
+        },
+        "expected": {
+          "llm_route": "chatgpt_plan_oauth",
+          "speech_route": "local",
+          "platform_calls": 0,
+          "purchased_credits": 0
+        }
+      },
+      "negative": {
+        "input": {
+          "policy": "included_only",
+          "llm_route": "openai_api_key",
+          "billing": "metered"
+        },
+        "expected": {
+          "llm_calls": 0,
+          "reason": "CONSTRAINT_CONFLICT",
+          "playback_available": true
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "scenario-CAP-01 Metered key is not a subscription",
+      "action": "CAP-01 Metered key is not a subscription",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "selected": "deepseek-flash-low-v1",
+          "key_present": true,
+          "included_api_entitlement": "unknown"
+        },
+        "expected": {
+          "llm_calls": 0,
+          "reason": "CONSTRAINT_CONFLICT",
+          "key_is_not_entitlement": true
+        }
+      },
+      "negative": {
+        "input": {
+          "key_present": true,
+          "incorrectly_claimed_free": true
+        },
+        "expected": {
+          "claim_supported": false,
+          "llm_calls": 0
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "service-data-CAP-02",
+      "action": "CAP-02 Durable provider authorization without application login",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "saved_client": "oaiapp_r1",
+          "saved_host": "urn:uuid:11111111-1111-4111-8111-111111111111",
+          "saved_subject": "s1",
+          "returned_subject": "s1",
+          "granted": [
+            "chatgpt.tokens.use.direct"
+          ],
+          "restart": true
+        },
+        "expected": {
+          "client": "oaiapp_r1",
+          "host": "urn:uuid:11111111-1111-4111-8111-111111111111",
+          "registration_created": false,
+          "state": "ready"
+        }
+      },
+      "negative": {
+        "input": {
+          "saved_client": "oaiapp_r1",
+          "expected_subject": "s1",
+          "returned_subject": "s2"
+        },
+        "expected": {
+          "replace_credentials": false,
+          "active_registration": "oaiapp_r1",
+          "inference_calls": 0
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "scenario-CAP-02 Reconnect preserves registration",
+      "action": "CAP-02 Reconnect preserves registration",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "saved_client": "oaiapp_r1",
+          "saved_host": "urn:uuid:11111111-1111-4111-8111-111111111111",
+          "saved_subject": "s1",
+          "returned_subject": "s1",
+          "granted": [
+            "chatgpt.tokens.use.direct"
+          ],
+          "restart": true
+        },
+        "expected": {
+          "client": "oaiapp_r1",
+          "host": "urn:uuid:11111111-1111-4111-8111-111111111111",
+          "registration_created": false,
+          "state": "ready"
+        }
+      },
+      "negative": {
+        "input": {
+          "saved_client": "oaiapp_r1",
+          "expected_subject": "s1",
+          "returned_subject": "s2"
+        },
+        "expected": {
+          "replace_credentials": false,
+          "active_registration": "oaiapp_r1",
+          "inference_calls": 0
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "scenario-CAP-02 Denied or mismatched callback",
+      "action": "CAP-02 Denied or mismatched callback",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "pending_state": "stateA",
+          "returned_state": "stateA",
+          "valid_identity": true,
+          "granted_scopes": [
+            "openid",
+            "profile"
+          ],
+          "old_active": "r1"
+        },
+        "expected": {
+          "new_state": "connected_no_usage",
+          "active": "r1",
+          "inference_calls": 0
+        }
+      },
+      "negative": {
+        "input": {
+          "pending_state": "stateA",
+          "returned_state": "stateB",
+          "code": "constructed_not_real_code",
+          "old_active": "r1"
+        },
+        "expected": {
+          "token_exchange_calls": 0,
+          "active": "r1",
+          "error": "CONSTRAINT_CONFLICT"
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "service-data-CAP-03",
+      "action": "CAP-03 Subscription Responses transport and terminal outcomes",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "profile": {
+            "stream": true,
+            "store": false,
+            "max_output_tokens": null,
+            "temperature": null
+          },
+          "input": [
+            {
+              "role": "user",
+              "content": "Find errors in He go home."
+            }
+          ],
+          "instructions": "Return the frozen stage schema.",
+          "events": [
+            "response.output_text.delta",
+            "response.completed"
+          ]
+        },
+        "expected": {
+          "wire_omits": [
+            "max_output_tokens",
+            "temperature",
+            "previous_response_id"
+          ],
+          "stream": true,
+          "stage": "complete",
+          "model_calls": 1
+        }
+      },
+      "negative": {
+        "input": {
+          "events": [
+            "response.output_text.delta",
+            "response.incomplete"
+          ],
+          "partial_text": "{\"ok\":true}"
+        },
+        "expected": {
+          "stage": "failed",
+          "grade_from_partial": false,
+          "completed_output": null
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "scenario-CAP-03 Complete streamed stage",
+      "action": "CAP-03 Complete streamed stage",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "profile": {
+            "stream": true,
+            "store": false,
+            "max_output_tokens": null,
+            "temperature": null
+          },
+          "input": [
+            {
+              "role": "user",
+              "content": "Find errors in He go home."
+            }
+          ],
+          "instructions": "Return the frozen stage schema.",
+          "events": [
+            "response.output_text.delta",
+            "response.completed"
+          ]
+        },
+        "expected": {
+          "wire_omits": [
+            "max_output_tokens",
+            "temperature",
+            "previous_response_id"
+          ],
+          "stream": true,
+          "stage": "complete",
+          "model_calls": 1
+        }
+      },
+      "negative": {
+        "input": {
+          "events": [
+            "response.output_text.delta",
+            "response.incomplete"
+          ],
+          "partial_text": "{\"ok\":true}"
+        },
+        "expected": {
+          "stage": "failed",
+          "grade_from_partial": false,
+          "completed_output": null
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "scenario-CAP-03 Late quota failure",
+      "action": "CAP-03 Late quota failure",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "saved_canonical": "c1",
+          "saved_answer": "a1",
+          "events": [
+            {
+              "type": "response.output_text.delta",
+              "text": "{\"unit\""
+            },
+            {
+              "type": "response.failed",
+              "code": "subscription_sharing_usage_limit_exceeded"
+            }
+          ]
+        },
+        "expected": {
+          "saved_canonical": "c1",
+          "saved_answer": "a1",
+          "stage": "failed",
+          "additional_calls": 0,
+          "recovery": "Manage usage"
+        }
+      },
+      "negative": {
+        "input": {
+          "events": [
+            {
+              "type": "error",
+              "code": "subscription_sharing_usage_unavailable"
+            }
+          ],
+          "platform_key_present": true
+        },
+        "expected": {
+          "additional_calls": 0,
+          "platform_calls": 0,
+          "grade": null
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "service-data-CAP-04",
+      "action": "CAP-04 Explicit speech and accent control",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "text": "three then three",
+          "target_span": [
+            11,
+            16
+          ],
+          "untargeted_span": [
+            0,
+            5
+          ],
+          "requested_ipa": "sɹiː",
+          "backend_model": "eleven_v4"
+        },
+        "expected": {
+          "dictionary_applies_to": [
+            [
+              11,
+              16
+            ]
+          ],
+          "dictionary_applies_to_first": false,
+          "observed_phone_labels": null,
+          "real_audio_required": true
+        }
+      },
+      "negative": {
+        "input": {
+          "backend_model": "eleven_multilingual_v2",
+          "requested_ipa": "sɹiː"
+        },
+        "expected": {
+          "claim_ipa_compiled": false,
+          "reason": "CONSTRAINT_CONFLICT",
+          "key_target_preserved": true
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "scenario-CAP-04 Scope-local pronunciation dictionary",
+      "action": "CAP-04 Scope-local pronunciation dictionary",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "text": "three then three",
+          "target_span": [
+            11,
+            16
+          ],
+          "untargeted_span": [
+            0,
+            5
+          ],
+          "requested_ipa": "sɹiː",
+          "backend_model": "eleven_v4"
+        },
+        "expected": {
+          "dictionary_applies_to": [
+            [
+              11,
+              16
+            ]
+          ],
+          "dictionary_applies_to_first": false,
+          "observed_phone_labels": null,
+          "real_audio_required": true
+        }
+      },
+      "negative": {
+        "input": {
+          "backend_model": "eleven_multilingual_v2",
+          "requested_ipa": "sɹiː"
+        },
+        "expected": {
+          "claim_ipa_compiled": false,
+          "reason": "CONSTRAINT_CONFLICT",
+          "key_target_preserved": true
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "scenario-CAP-04 Unsupported acoustic intent",
+      "action": "CAP-04 Unsupported acoustic intent",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "backend": "kokoro-local-en-v1",
+          "explicit_ipa": "sɹiː",
+          "family": "pronunciation"
+        },
+        "expected": {
+          "unsupported_request_saved": true,
+          "compatible_backend_offered": true,
+          "grammar_substitution": false,
+          "invented_phone_observation": false
+        }
+      },
+      "negative": {
+        "input": {
+          "backend": "kokoro-local-en-v1",
+          "attempted_claim": "verified arbitrary IPA"
+        },
+        "expected": {
+          "claim_supported": false,
+          "category_deleted": false
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "service-data-CAP-05",
+      "action": "CAP-05 Exact empirical inputs and source-scoped reports",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "N": 100,
+          "nA": 20,
+          "nB": 10,
+          "nAB": 5,
+          "annotated_complete": true,
+          "crosswalk": "map1"
+        },
+        "expected": {
+          "support": "1/20",
+          "conditional": "1/4",
+          "lift": "5/2",
+          "learner_score_changed": false
+        }
+      },
+      "negative": {
+        "input": {
+          "N": 0,
+          "nA": 0,
+          "nB": 0,
+          "nAB": 0,
+          "annotated_complete": true
+        },
+        "expected": {
+          "support": null,
+          "conditional": null,
+          "lift": null,
+          "display": "N/A"
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "scenario-CAP-05 Defined population association",
+      "action": "CAP-05 Defined population association",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "N": 100,
+          "nA": 20,
+          "nB": 10,
+          "nAB": 5,
+          "annotated_complete": true,
+          "crosswalk": "map1"
+        },
+        "expected": {
+          "support": "1/20",
+          "conditional": "1/4",
+          "lift": "5/2",
+          "learner_score_changed": false
+        }
+      },
+      "negative": {
+        "input": {
+          "N": 0,
+          "nA": 0,
+          "nB": 0,
+          "nAB": 0,
+          "annotated_complete": true
+        },
+        "expected": {
+          "support": null,
+          "conditional": null,
+          "lift": null,
+          "display": "N/A"
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "scenario-CAP-05 Missing empirical denominator",
+      "action": "CAP-05 Missing empirical denominator",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "source": "EFCAMDAT-OKSUZ2025",
+          "present": "public_analysis_companion",
+          "full_derivative_present": false,
+          "denominator": null
+        },
+        "expected": {
+          "full_source_complete": false,
+          "frequency": null,
+          "ordinary_generation_dependency": false
+        }
+      },
+      "negative": {
+        "input": {
+          "source_labels": [
+            "native_article"
+          ],
+          "project_leaves": 122,
+          "crosswalk_complete": false,
+          "attempted_claim": "all122empiricalcoverage"
+        },
+        "expected": {
+          "claim_supported": false,
+          "native_labels_retained": true,
+          "unmapped_visible": true
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "service-data-CAP-06",
+      "action": "CAP-06 Research candidates and actual setup observations",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "reported_accounts": [
+            "ChatGPT Pro",
+            "DeepSeek"
+          ],
+          "required_no_purchased_usage": true
+        },
+        "expected": {
+          "recommended_llm": "chatgpt-plan-responses-v1",
+          "recommended_tts": "kokoro-local-en-v1",
+          "new_subscription_required": false,
+          "live_qualified": false
+        }
+      },
+      "negative": {
+        "input": {
+          "only_chat_subscription_reported": "DeepSeek",
+          "api_billing": "unknown"
+        },
+        "expected": {
+          "claim_included_api_supported": false,
+          "purchase_performed": false
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "scenario-CAP-06 Existing subscription first",
+      "action": "CAP-06 Existing subscription first",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "reported_accounts": [
+            "ChatGPT Pro",
+            "DeepSeek"
+          ],
+          "required_no_purchased_usage": true
+        },
+        "expected": {
+          "recommended_llm": "chatgpt-plan-responses-v1",
+          "recommended_tts": "kokoro-local-en-v1",
+          "new_subscription_required": false,
+          "live_qualified": false
+        }
+      },
+      "negative": {
+        "input": {
+          "only_chat_subscription_reported": "DeepSeek",
+          "api_billing": "unknown"
+        },
+        "expected": {
+          "claim_included_api_supported": false,
+          "purchase_performed": false
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "scenario-CAP-06 Catalogue is not an adapter",
+      "action": "CAP-06 Catalogue is not an adapter",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "catalogue_candidate": "gemini-free-api",
+          "installed_adapter": false
+        },
+        "expected": {
+          "dispatch_calls": 0,
+          "setup": "compatible adapter required",
+          "observed_quality": null
+        }
+      },
+      "negative": {
+        "input": {
+          "candidate": "qwen3-tts-local",
+          "hardware_observed": false,
+          "attempted_claim": "all accents verified within270seconds"
+        },
+        "expected": {
+          "claim_supported": false,
+          "generated_audio_observations": 0
+        }
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
       "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
     }
   ],
@@ -24980,7 +25720,7 @@
     {
       "property_id": "RUN-08.P1",
       "fixture_id": "startup",
-      "statement": "The GitHub source project SHALL supply the simple local launcher, key-only setup and default configurable LLM profile in docs/simple-local-product.md. An extracted source ZIP SHALL build and run with Docker without Git metadata, workflow submodules, prebuilt application image distribution or a formal deployment/release manifest. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their keys and permitted source transfer. Speech keys remain separate when required.",
+      "statement": "The GitHub source project SHALL supply the simple local launcher, operation-dependent provider connection/key setup and default configurable LLM profile in docs/simple-local-product.md. An extracted source ZIP SHALL build and run with Docker without Git metadata, workflow submodules, prebuilt application image distribution or a formal deployment/release manifest. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their documented provider authorization/key and permitted source transfer. Eligible ChatGPT-plan sign-in is provider authorization in Settings, not an application login; current included-only defaults and billing constraints follow specification/v2/docs/provider-access.md. Speech keys remain separate when required.",
       "independent_oracle": "Inspect actual startup exit/readiness/bindings and network dispatch ledger; a UI screenshot or intended Compose file is not a live-stack observation.",
       "scenarios": [
         "RUN-08 simple supported startup",
@@ -25623,6 +26363,72 @@
       "scenarios": [
         "CLOSE-04 Exact voice and arithmetic fixtures",
         "CLOSE-04 No generic or fabricated passing plans"
+      ],
+      "observation_state": "not_run"
+    },
+    {
+      "property_id": "CAP-01.P1",
+      "fixture_id": "service-data-CAP-01",
+      "statement": "The product SHALL use the current provider-access.v1.json included_only policy, prefer eligible existing ChatGPT-plan Responses plus local Kokoro, preserve original profiles and reject unknown/metered/purchased-credit/overage routes under this policy without silent fallback. The existing GitHub download/run local product SHALL have no application account or mandatory corpus/review/Lab setup.",
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "scenarios": [
+        "CAP-01 Eligible startup route",
+        "CAP-01 Metered key is not a subscription"
+      ],
+      "observation_state": "not_run"
+    },
+    {
+      "property_id": "CAP-02.P1",
+      "fixture_id": "service-data-CAP-02",
+      "statement": "Provider connections SHALL use the documented public-client loopback PKCE/OIDC flow, validated identity/granted scope, stable host and issued client IDs, protected rotating credentials and safe metadata. Explicit connect/select/disconnect SHALL never create application accounts, copy Codex credentials or change a frozen running registration. Exact pending state SHALL be the narrow callback-origin exception.",
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "scenarios": [
+        "CAP-02 Reconnect preserves registration",
+        "CAP-02 Denied or mismatched callback"
+      ],
+      "observation_state": "not_run"
+    },
+    {
+      "property_id": "CAP-03.P1",
+      "fixture_id": "service-data-CAP-03",
+      "statement": "The ChatGPT-plan adapter SHALL send the exact supported stateless full context with store=false/stream=true, omit unsupported fields and commit a stage only on response.completed. Actual interrupted/incomplete/failed/usage-limit outcomes SHALL preserve earlier content and native receipts without grading partial text or invoking a new billing route. Account model choices and auth/billing/policy identity SHALL be frozen; credential refresh does not change registration identity.",
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "scenarios": [
+        "CAP-03 Complete streamed stage",
+        "CAP-03 Late quota failure"
+      ],
+      "observation_state": "not_run"
+    },
+    {
+      "property_id": "CAP-04.P1",
+      "fixture_id": "service-data-CAP-04",
+      "statement": "The existing speech owners SHALL preserve122categories and compile actual selected text/phone/prosody operations only through documented model/voice capabilities, as specified in speech-service-selection.md. Voice/accent design is not phoneme proof. Per-speaker identities, dictionary/conditioning versions, target-specific scope and final WAV/interval provenance SHALL persist. No purchased speech quota or implicit backend substitution is allowed under included_only.",
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "scenarios": [
+        "CAP-04 Scope-local pronunciation dictionary",
+        "CAP-04 Unsupported acoustic intent"
+      ],
+      "observation_state": "not_run"
+    },
+    {
+      "property_id": "CAP-05.P1",
+      "fixture_id": "service-data-CAP-05",
+      "statement": "The product SHALL apply empirical-data-needs.md and the existing product-data-relevance policy: external corpora are unnecessary for ordinary authored exercises, while selected empirical frequency/relationship/difficulty/benchmark/full-source reports require their actual scoped observations and denominators. All11full original identities/scopes and42equations SHALL remain. Constructed/provider judgments/native source labels SHALL retain distinct origin and unknowns; missing originals cannot be replaced by public companions or supplemental releases.",
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "scenarios": [
+        "CAP-05 Defined population association",
+        "CAP-05 Missing empirical denominator"
+      ],
+      "observation_state": "not_run"
+    },
+    {
+      "property_id": "CAP-06.P1",
+      "fixture_id": "service-data-CAP-06",
+      "statement": "The dated primary-source service catalogue SHALL distinguish current recommendation, possible documented alternatives, installed adapter compatibility and actual observed account/model/voice/hardware quality. Selected setup SHALL retain all exact configuration/secret/provenance owners and positive/negative Lab plans, without pretending research executed inference or buying an unnecessary subscription.",
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "scenarios": [
+        "CAP-06 Existing subscription first",
+        "CAP-06 Catalogue is not an adapter"
       ],
       "observation_state": "not_run"
     }
@@ -86444,7 +87250,13 @@
           "CLOSE-01.P1",
           "CLOSE-02.P1",
           "CLOSE-03.P1",
-          "CLOSE-04.P1"
+          "CLOSE-04.P1",
+          "CAP-01.P1",
+          "CAP-02.P1",
+          "CAP-03.P1",
+          "CAP-04.P1",
+          "CAP-05.P1",
+          "CAP-06.P1"
         ],
         "expected_cases": [
           "AUT-01.P1.POSITIVE",
@@ -88066,7 +88878,31 @@
           "CLOSE-04.P1.S1.POSITIVE",
           "CLOSE-04.P1.S1.NEGATIVE",
           "CLOSE-04.P1.S2.POSITIVE",
-          "CLOSE-04.P1.S2.NEGATIVE"
+          "CLOSE-04.P1.S2.NEGATIVE",
+          "CAP-01.P1.S1.POSITIVE",
+          "CAP-01.P1.S1.NEGATIVE",
+          "CAP-01.P1.S2.POSITIVE",
+          "CAP-01.P1.S2.NEGATIVE",
+          "CAP-02.P1.S1.POSITIVE",
+          "CAP-02.P1.S1.NEGATIVE",
+          "CAP-02.P1.S2.POSITIVE",
+          "CAP-02.P1.S2.NEGATIVE",
+          "CAP-03.P1.S1.POSITIVE",
+          "CAP-03.P1.S1.NEGATIVE",
+          "CAP-03.P1.S2.POSITIVE",
+          "CAP-03.P1.S2.NEGATIVE",
+          "CAP-04.P1.S1.POSITIVE",
+          "CAP-04.P1.S1.NEGATIVE",
+          "CAP-04.P1.S2.POSITIVE",
+          "CAP-04.P1.S2.NEGATIVE",
+          "CAP-05.P1.S1.POSITIVE",
+          "CAP-05.P1.S1.NEGATIVE",
+          "CAP-05.P1.S2.POSITIVE",
+          "CAP-05.P1.S2.NEGATIVE",
+          "CAP-06.P1.S1.POSITIVE",
+          "CAP-06.P1.S1.NEGATIVE",
+          "CAP-06.P1.S2.POSITIVE",
+          "CAP-06.P1.S2.NEGATIVE"
         ],
         "behavior_observations": 0
       },
@@ -88114,6 +88950,797 @@
         "the complete current property/case graph and no current model/audio/application run for the new fixtures",
         "fixture and evidence coverage are reported",
         "every identity resolves a positive/negative literal fixture and oracle while unperformed observations remain unexecuted; adding fixture records cannot fabricate a corpus, provider call, audio or passing test"
+      ]
+    },
+    {
+      "case_id": "CAP-01.P1.S1.POSITIVE",
+      "test_id": "planned::service-data::CAP-01.P1.S1.POSITIVE",
+      "property_id": "CAP-01.P1",
+      "scenario": "CAP-01 Eligible startup route",
+      "polarity": "positive",
+      "fixture_id": "scenario-CAP-01 Eligible startup route",
+      "mode": "exact_named_scenario",
+      "action": "CAP-01 Eligible startup route",
+      "initial_state": {},
+      "input": {
+        "policy": "included_only",
+        "llm_route": "chatgpt_plan_oauth",
+        "credits_after_plan_limit_disabled": true,
+        "speech": "kokoro-local-en-v1",
+        "available_platform_key": true
+      },
+      "expected": {
+        "llm_route": "chatgpt_plan_oauth",
+        "speech_route": "local",
+        "platform_calls": 0,
+        "purchased_credits": 0
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-01.P1.S1.NEGATIVE",
+      "test_id": "planned::service-data::CAP-01.P1.S1.NEGATIVE",
+      "property_id": "CAP-01.P1",
+      "scenario": "CAP-01 Eligible startup route",
+      "polarity": "negative",
+      "fixture_id": "scenario-CAP-01 Eligible startup route",
+      "mode": "exact_named_scenario",
+      "action": "CAP-01 Eligible startup route",
+      "initial_state": {},
+      "input": {
+        "policy": "included_only",
+        "llm_route": "openai_api_key",
+        "billing": "metered"
+      },
+      "expected": {
+        "llm_calls": 0,
+        "reason": "CONSTRAINT_CONFLICT",
+        "playback_available": true
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-01.P1.S2.POSITIVE",
+      "test_id": "planned::service-data::CAP-01.P1.S2.POSITIVE",
+      "property_id": "CAP-01.P1",
+      "scenario": "CAP-01 Metered key is not a subscription",
+      "polarity": "positive",
+      "fixture_id": "scenario-CAP-01 Metered key is not a subscription",
+      "mode": "exact_named_scenario",
+      "action": "CAP-01 Metered key is not a subscription",
+      "initial_state": {},
+      "input": {
+        "selected": "deepseek-flash-low-v1",
+        "key_present": true,
+        "included_api_entitlement": "unknown"
+      },
+      "expected": {
+        "llm_calls": 0,
+        "reason": "CONSTRAINT_CONFLICT",
+        "key_is_not_entitlement": true
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-01.P1.S2.NEGATIVE",
+      "test_id": "planned::service-data::CAP-01.P1.S2.NEGATIVE",
+      "property_id": "CAP-01.P1",
+      "scenario": "CAP-01 Metered key is not a subscription",
+      "polarity": "negative",
+      "fixture_id": "scenario-CAP-01 Metered key is not a subscription",
+      "mode": "exact_named_scenario",
+      "action": "CAP-01 Metered key is not a subscription",
+      "initial_state": {},
+      "input": {
+        "key_present": true,
+        "incorrectly_claimed_free": true
+      },
+      "expected": {
+        "claim_supported": false,
+        "llm_calls": 0
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-02.P1.S1.POSITIVE",
+      "test_id": "planned::service-data::CAP-02.P1.S1.POSITIVE",
+      "property_id": "CAP-02.P1",
+      "scenario": "CAP-02 Reconnect preserves registration",
+      "polarity": "positive",
+      "fixture_id": "scenario-CAP-02 Reconnect preserves registration",
+      "mode": "exact_named_scenario",
+      "action": "CAP-02 Reconnect preserves registration",
+      "initial_state": {},
+      "input": {
+        "saved_client": "oaiapp_r1",
+        "saved_host": "urn:uuid:11111111-1111-4111-8111-111111111111",
+        "saved_subject": "s1",
+        "returned_subject": "s1",
+        "granted": [
+          "chatgpt.tokens.use.direct"
+        ],
+        "restart": true
+      },
+      "expected": {
+        "client": "oaiapp_r1",
+        "host": "urn:uuid:11111111-1111-4111-8111-111111111111",
+        "registration_created": false,
+        "state": "ready"
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-02.P1.S1.NEGATIVE",
+      "test_id": "planned::service-data::CAP-02.P1.S1.NEGATIVE",
+      "property_id": "CAP-02.P1",
+      "scenario": "CAP-02 Reconnect preserves registration",
+      "polarity": "negative",
+      "fixture_id": "scenario-CAP-02 Reconnect preserves registration",
+      "mode": "exact_named_scenario",
+      "action": "CAP-02 Reconnect preserves registration",
+      "initial_state": {},
+      "input": {
+        "saved_client": "oaiapp_r1",
+        "expected_subject": "s1",
+        "returned_subject": "s2"
+      },
+      "expected": {
+        "replace_credentials": false,
+        "active_registration": "oaiapp_r1",
+        "inference_calls": 0
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-02.P1.S2.POSITIVE",
+      "test_id": "planned::service-data::CAP-02.P1.S2.POSITIVE",
+      "property_id": "CAP-02.P1",
+      "scenario": "CAP-02 Denied or mismatched callback",
+      "polarity": "positive",
+      "fixture_id": "scenario-CAP-02 Denied or mismatched callback",
+      "mode": "exact_named_scenario",
+      "action": "CAP-02 Denied or mismatched callback",
+      "initial_state": {},
+      "input": {
+        "pending_state": "stateA",
+        "returned_state": "stateA",
+        "valid_identity": true,
+        "granted_scopes": [
+          "openid",
+          "profile"
+        ],
+        "old_active": "r1"
+      },
+      "expected": {
+        "new_state": "connected_no_usage",
+        "active": "r1",
+        "inference_calls": 0
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-02.P1.S2.NEGATIVE",
+      "test_id": "planned::service-data::CAP-02.P1.S2.NEGATIVE",
+      "property_id": "CAP-02.P1",
+      "scenario": "CAP-02 Denied or mismatched callback",
+      "polarity": "negative",
+      "fixture_id": "scenario-CAP-02 Denied or mismatched callback",
+      "mode": "exact_named_scenario",
+      "action": "CAP-02 Denied or mismatched callback",
+      "initial_state": {},
+      "input": {
+        "pending_state": "stateA",
+        "returned_state": "stateB",
+        "code": "constructed_not_real_code",
+        "old_active": "r1"
+      },
+      "expected": {
+        "token_exchange_calls": 0,
+        "active": "r1",
+        "error": "CONSTRAINT_CONFLICT"
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-03.P1.S1.POSITIVE",
+      "test_id": "planned::service-data::CAP-03.P1.S1.POSITIVE",
+      "property_id": "CAP-03.P1",
+      "scenario": "CAP-03 Complete streamed stage",
+      "polarity": "positive",
+      "fixture_id": "scenario-CAP-03 Complete streamed stage",
+      "mode": "exact_named_scenario",
+      "action": "CAP-03 Complete streamed stage",
+      "initial_state": {},
+      "input": {
+        "profile": {
+          "stream": true,
+          "store": false,
+          "max_output_tokens": null,
+          "temperature": null
+        },
+        "input": [
+          {
+            "role": "user",
+            "content": "Find errors in He go home."
+          }
+        ],
+        "instructions": "Return the frozen stage schema.",
+        "events": [
+          "response.output_text.delta",
+          "response.completed"
+        ]
+      },
+      "expected": {
+        "wire_omits": [
+          "max_output_tokens",
+          "temperature",
+          "previous_response_id"
+        ],
+        "stream": true,
+        "stage": "complete",
+        "model_calls": 1
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-03.P1.S1.NEGATIVE",
+      "test_id": "planned::service-data::CAP-03.P1.S1.NEGATIVE",
+      "property_id": "CAP-03.P1",
+      "scenario": "CAP-03 Complete streamed stage",
+      "polarity": "negative",
+      "fixture_id": "scenario-CAP-03 Complete streamed stage",
+      "mode": "exact_named_scenario",
+      "action": "CAP-03 Complete streamed stage",
+      "initial_state": {},
+      "input": {
+        "events": [
+          "response.output_text.delta",
+          "response.incomplete"
+        ],
+        "partial_text": "{\"ok\":true}"
+      },
+      "expected": {
+        "stage": "failed",
+        "grade_from_partial": false,
+        "completed_output": null
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-03.P1.S2.POSITIVE",
+      "test_id": "planned::service-data::CAP-03.P1.S2.POSITIVE",
+      "property_id": "CAP-03.P1",
+      "scenario": "CAP-03 Late quota failure",
+      "polarity": "positive",
+      "fixture_id": "scenario-CAP-03 Late quota failure",
+      "mode": "exact_named_scenario",
+      "action": "CAP-03 Late quota failure",
+      "initial_state": {},
+      "input": {
+        "saved_canonical": "c1",
+        "saved_answer": "a1",
+        "events": [
+          {
+            "type": "response.output_text.delta",
+            "text": "{\"unit\""
+          },
+          {
+            "type": "response.failed",
+            "code": "subscription_sharing_usage_limit_exceeded"
+          }
+        ]
+      },
+      "expected": {
+        "saved_canonical": "c1",
+        "saved_answer": "a1",
+        "stage": "failed",
+        "additional_calls": 0,
+        "recovery": "Manage usage"
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-03.P1.S2.NEGATIVE",
+      "test_id": "planned::service-data::CAP-03.P1.S2.NEGATIVE",
+      "property_id": "CAP-03.P1",
+      "scenario": "CAP-03 Late quota failure",
+      "polarity": "negative",
+      "fixture_id": "scenario-CAP-03 Late quota failure",
+      "mode": "exact_named_scenario",
+      "action": "CAP-03 Late quota failure",
+      "initial_state": {},
+      "input": {
+        "events": [
+          {
+            "type": "error",
+            "code": "subscription_sharing_usage_unavailable"
+          }
+        ],
+        "platform_key_present": true
+      },
+      "expected": {
+        "additional_calls": 0,
+        "platform_calls": 0,
+        "grade": null
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-04.P1.S1.POSITIVE",
+      "test_id": "planned::service-data::CAP-04.P1.S1.POSITIVE",
+      "property_id": "CAP-04.P1",
+      "scenario": "CAP-04 Scope-local pronunciation dictionary",
+      "polarity": "positive",
+      "fixture_id": "scenario-CAP-04 Scope-local pronunciation dictionary",
+      "mode": "exact_named_scenario",
+      "action": "CAP-04 Scope-local pronunciation dictionary",
+      "initial_state": {},
+      "input": {
+        "text": "three then three",
+        "target_span": [
+          11,
+          16
+        ],
+        "untargeted_span": [
+          0,
+          5
+        ],
+        "requested_ipa": "sɹiː",
+        "backend_model": "eleven_v4"
+      },
+      "expected": {
+        "dictionary_applies_to": [
+          [
+            11,
+            16
+          ]
+        ],
+        "dictionary_applies_to_first": false,
+        "observed_phone_labels": null,
+        "real_audio_required": true
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-04.P1.S1.NEGATIVE",
+      "test_id": "planned::service-data::CAP-04.P1.S1.NEGATIVE",
+      "property_id": "CAP-04.P1",
+      "scenario": "CAP-04 Scope-local pronunciation dictionary",
+      "polarity": "negative",
+      "fixture_id": "scenario-CAP-04 Scope-local pronunciation dictionary",
+      "mode": "exact_named_scenario",
+      "action": "CAP-04 Scope-local pronunciation dictionary",
+      "initial_state": {},
+      "input": {
+        "backend_model": "eleven_multilingual_v2",
+        "requested_ipa": "sɹiː"
+      },
+      "expected": {
+        "claim_ipa_compiled": false,
+        "reason": "CONSTRAINT_CONFLICT",
+        "key_target_preserved": true
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-04.P1.S2.POSITIVE",
+      "test_id": "planned::service-data::CAP-04.P1.S2.POSITIVE",
+      "property_id": "CAP-04.P1",
+      "scenario": "CAP-04 Unsupported acoustic intent",
+      "polarity": "positive",
+      "fixture_id": "scenario-CAP-04 Unsupported acoustic intent",
+      "mode": "exact_named_scenario",
+      "action": "CAP-04 Unsupported acoustic intent",
+      "initial_state": {},
+      "input": {
+        "backend": "kokoro-local-en-v1",
+        "explicit_ipa": "sɹiː",
+        "family": "pronunciation"
+      },
+      "expected": {
+        "unsupported_request_saved": true,
+        "compatible_backend_offered": true,
+        "grammar_substitution": false,
+        "invented_phone_observation": false
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-04.P1.S2.NEGATIVE",
+      "test_id": "planned::service-data::CAP-04.P1.S2.NEGATIVE",
+      "property_id": "CAP-04.P1",
+      "scenario": "CAP-04 Unsupported acoustic intent",
+      "polarity": "negative",
+      "fixture_id": "scenario-CAP-04 Unsupported acoustic intent",
+      "mode": "exact_named_scenario",
+      "action": "CAP-04 Unsupported acoustic intent",
+      "initial_state": {},
+      "input": {
+        "backend": "kokoro-local-en-v1",
+        "attempted_claim": "verified arbitrary IPA"
+      },
+      "expected": {
+        "claim_supported": false,
+        "category_deleted": false
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-05.P1.S1.POSITIVE",
+      "test_id": "planned::service-data::CAP-05.P1.S1.POSITIVE",
+      "property_id": "CAP-05.P1",
+      "scenario": "CAP-05 Defined population association",
+      "polarity": "positive",
+      "fixture_id": "scenario-CAP-05 Defined population association",
+      "mode": "exact_named_scenario",
+      "action": "CAP-05 Defined population association",
+      "initial_state": {},
+      "input": {
+        "N": 100,
+        "nA": 20,
+        "nB": 10,
+        "nAB": 5,
+        "annotated_complete": true,
+        "crosswalk": "map1"
+      },
+      "expected": {
+        "support": "1/20",
+        "conditional": "1/4",
+        "lift": "5/2",
+        "learner_score_changed": false
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-05.P1.S1.NEGATIVE",
+      "test_id": "planned::service-data::CAP-05.P1.S1.NEGATIVE",
+      "property_id": "CAP-05.P1",
+      "scenario": "CAP-05 Defined population association",
+      "polarity": "negative",
+      "fixture_id": "scenario-CAP-05 Defined population association",
+      "mode": "exact_named_scenario",
+      "action": "CAP-05 Defined population association",
+      "initial_state": {},
+      "input": {
+        "N": 0,
+        "nA": 0,
+        "nB": 0,
+        "nAB": 0,
+        "annotated_complete": true
+      },
+      "expected": {
+        "support": null,
+        "conditional": null,
+        "lift": null,
+        "display": "N/A"
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-05.P1.S2.POSITIVE",
+      "test_id": "planned::service-data::CAP-05.P1.S2.POSITIVE",
+      "property_id": "CAP-05.P1",
+      "scenario": "CAP-05 Missing empirical denominator",
+      "polarity": "positive",
+      "fixture_id": "scenario-CAP-05 Missing empirical denominator",
+      "mode": "exact_named_scenario",
+      "action": "CAP-05 Missing empirical denominator",
+      "initial_state": {},
+      "input": {
+        "source": "EFCAMDAT-OKSUZ2025",
+        "present": "public_analysis_companion",
+        "full_derivative_present": false,
+        "denominator": null
+      },
+      "expected": {
+        "full_source_complete": false,
+        "frequency": null,
+        "ordinary_generation_dependency": false
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-05.P1.S2.NEGATIVE",
+      "test_id": "planned::service-data::CAP-05.P1.S2.NEGATIVE",
+      "property_id": "CAP-05.P1",
+      "scenario": "CAP-05 Missing empirical denominator",
+      "polarity": "negative",
+      "fixture_id": "scenario-CAP-05 Missing empirical denominator",
+      "mode": "exact_named_scenario",
+      "action": "CAP-05 Missing empirical denominator",
+      "initial_state": {},
+      "input": {
+        "source_labels": [
+          "native_article"
+        ],
+        "project_leaves": 122,
+        "crosswalk_complete": false,
+        "attempted_claim": "all122empiricalcoverage"
+      },
+      "expected": {
+        "claim_supported": false,
+        "native_labels_retained": true,
+        "unmapped_visible": true
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-06.P1.S1.POSITIVE",
+      "test_id": "planned::service-data::CAP-06.P1.S1.POSITIVE",
+      "property_id": "CAP-06.P1",
+      "scenario": "CAP-06 Existing subscription first",
+      "polarity": "positive",
+      "fixture_id": "scenario-CAP-06 Existing subscription first",
+      "mode": "exact_named_scenario",
+      "action": "CAP-06 Existing subscription first",
+      "initial_state": {},
+      "input": {
+        "reported_accounts": [
+          "ChatGPT Pro",
+          "DeepSeek"
+        ],
+        "required_no_purchased_usage": true
+      },
+      "expected": {
+        "recommended_llm": "chatgpt-plan-responses-v1",
+        "recommended_tts": "kokoro-local-en-v1",
+        "new_subscription_required": false,
+        "live_qualified": false
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-06.P1.S1.NEGATIVE",
+      "test_id": "planned::service-data::CAP-06.P1.S1.NEGATIVE",
+      "property_id": "CAP-06.P1",
+      "scenario": "CAP-06 Existing subscription first",
+      "polarity": "negative",
+      "fixture_id": "scenario-CAP-06 Existing subscription first",
+      "mode": "exact_named_scenario",
+      "action": "CAP-06 Existing subscription first",
+      "initial_state": {},
+      "input": {
+        "only_chat_subscription_reported": "DeepSeek",
+        "api_billing": "unknown"
+      },
+      "expected": {
+        "claim_included_api_supported": false,
+        "purchase_performed": false
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-06.P1.S2.POSITIVE",
+      "test_id": "planned::service-data::CAP-06.P1.S2.POSITIVE",
+      "property_id": "CAP-06.P1",
+      "scenario": "CAP-06 Catalogue is not an adapter",
+      "polarity": "positive",
+      "fixture_id": "scenario-CAP-06 Catalogue is not an adapter",
+      "mode": "exact_named_scenario",
+      "action": "CAP-06 Catalogue is not an adapter",
+      "initial_state": {},
+      "input": {
+        "catalogue_candidate": "gemini-free-api",
+        "installed_adapter": false
+      },
+      "expected": {
+        "dispatch_calls": 0,
+        "setup": "compatible adapter required",
+        "observed_quality": null
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "CAP-06.P1.S2.NEGATIVE",
+      "test_id": "planned::service-data::CAP-06.P1.S2.NEGATIVE",
+      "property_id": "CAP-06.P1",
+      "scenario": "CAP-06 Catalogue is not an adapter",
+      "polarity": "negative",
+      "fixture_id": "scenario-CAP-06 Catalogue is not an adapter",
+      "mode": "exact_named_scenario",
+      "action": "CAP-06 Catalogue is not an adapter",
+      "initial_state": {},
+      "input": {
+        "candidate": "qwen3-tts-local",
+        "hardware_observed": false,
+        "attempted_claim": "all accents verified within270seconds"
+      },
+      "expected": {
+        "claim_supported": false,
+        "generated_audio_observations": 0
+      },
+      "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "The exact constructed input and provider policy state",
+        "The named operation is selected",
+        "Every explicit expected value and failure effect is observed through the actual owner"
       ]
     }
   ]

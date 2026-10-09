@@ -71,7 +71,7 @@ The system SHALL distinguish liveness from dependency readiness and return non-s
 
 ### Requirement: RUN-08 Start from keys and the supplied bundle
 
-The GitHub source project SHALL supply the simple local launcher, key-only setup and default configurable LLM profile in docs/simple-local-product.md. An extracted source ZIP SHALL build and run with Docker without Git metadata, workflow submodules, prebuilt application image distribution or a formal deployment/release manifest. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their keys and permitted source transfer. Speech keys remain separate when required.
+The GitHub source project SHALL supply the simple local launcher, operation-dependent provider connection/key setup and default configurable LLM profile in docs/simple-local-product.md. An extracted source ZIP SHALL build and run with Docker without Git metadata, workflow submodules, prebuilt application image distribution or a formal deployment/release manifest. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their documented provider authorization/key and permitted source transfer. Eligible ChatGPT-plan sign-in is provider authorization in Settings, not an application login; current included-only defaults and billing constraints follow specification/v2/docs/provider-access.md. Speech keys remain separate when required.
 
 #### Scenario: RUN-08 simple supported startup
 

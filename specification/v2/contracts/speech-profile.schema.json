@@ -1,0 +1,285 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/speech-profile.schema.json",
+  "title": "Configured speech profile",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Selected profile identity."
+    },
+    "provider": {
+      "enum": [
+        "local_kokoro",
+        "local_qwen3_tts",
+        "elevenlabs",
+        "azure_speech",
+        "openai_tts",
+        "local_espeak_ng"
+      ]
+    },
+    "adapter_version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Compatible installed adapter contract."
+    },
+    "model": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "description": "Exact provider/local model identifier."
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "endpoint": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "credential_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "billing_mode": {
+      "enum": [
+        "local",
+        "free_tier",
+        "included_subscription",
+        "metered",
+        "unknown"
+      ]
+    },
+    "account_tier": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "description": "Observed/confirmed provider tier, e.g. F0 or Starter; absence is unknown."
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "overage_disabled": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "capabilities": {
+      "$ref": "render-plan.schema.json#/properties/required_capabilities"
+    },
+    "voices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Exact provider or locally designed voice ID."
+          },
+          "locale": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Configured English locale; not proof of accent."
+          },
+          "accent_description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "Declared catalogue or requested accent metadata."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "locale",
+          "accent_description"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Private stored weight/tokenizer/reference/conditioning asset."
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "kind": {
+            "enum": [
+              "model",
+              "tokenizer",
+              "voice_reference_audio",
+              "voice_reference_text",
+              "clone_conditioning"
+            ]
+          },
+          "voice_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "Associated voice or null for model-wide assets."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "asset_id",
+          "sha256",
+          "kind",
+          "voice_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "voice_settings": {
+      "type": "object",
+      "properties": {
+        "stability": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "similarity_boost": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "style": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "use_speaker_boost": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "speed": {
+          "anyOf": [
+            {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "stability",
+        "similarity_boost",
+        "style",
+        "use_speaker_boost",
+        "speed"
+      ],
+      "additionalProperties": false
+    },
+    "catalogue_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "description": "Frozen actual provider model/voice/tier snapshot."
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "voice_description_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "description": "Versioned trusted synthetic voice description; no ad hoc hidden instruction."
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "provider",
+    "adapter_version",
+    "model",
+    "endpoint",
+    "credential_refs",
+    "billing_mode",
+    "account_tier",
+    "overage_disabled",
+    "capabilities",
+    "voices",
+    "assets",
+    "voice_settings",
+    "catalogue_asset_id",
+    "voice_description_asset_id"
+  ],
+  "additionalProperties": false,
+  "description": "Frozen extension profile saved in configuration; defaults resolve original registered profiles. Actual asset/model/voice digests are observations, never catalogue placeholders."
+}

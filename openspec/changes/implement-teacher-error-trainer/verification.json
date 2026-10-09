@@ -1992,7 +1992,7 @@
       "id": "RUN-08",
       "capability": "local-runtime",
       "title": "RUN-08 Start from keys and the supplied bundle",
-      "fingerprint": "41863c6b7d0e53df6e6c638bb0e73659532c7a877a4a685efc630e361481108d"
+      "fingerprint": "e24898886d1abcfddd44b9dfa16644535fedcbf26d2be5a724d305acb183f331"
     },
     {
       "id": "RUN-09",
@@ -2341,6 +2341,42 @@
       "capability": "final-spec-closure",
       "title": "CLOSE-04 Concrete fixtures for every declared property and case",
       "fingerprint": "3b073bd3e7b55dfa4d263776b09ef008845039ef590c2a101d554329dae7f820"
+    },
+    {
+      "id": "CAP-01",
+      "capability": "service-and-data-readiness",
+      "title": "CAP-01 Included-only provider access and simple startup",
+      "fingerprint": "ad507333aa21d4d54640fc375ea71b821afb8ea12936c0dd10858d9a82729093"
+    },
+    {
+      "id": "CAP-02",
+      "capability": "service-and-data-readiness",
+      "title": "CAP-02 Durable provider authorization without application login",
+      "fingerprint": "d11ea76a25de38be9ed64ff8d3cb4049f38056a0fb3572b15eb64d6e6664c15b"
+    },
+    {
+      "id": "CAP-03",
+      "capability": "service-and-data-readiness",
+      "title": "CAP-03 Subscription Responses transport and terminal outcomes",
+      "fingerprint": "3ad86df7957b073645723340a1c71037950999bbe823f2202ba4c959d625fc16"
+    },
+    {
+      "id": "CAP-04",
+      "capability": "service-and-data-readiness",
+      "title": "CAP-04 Explicit speech and accent control",
+      "fingerprint": "4da0f3bcdcf471662cbf0b1d4640150227a2abecf4d9909921ed2c1005de1f62"
+    },
+    {
+      "id": "CAP-05",
+      "capability": "service-and-data-readiness",
+      "title": "CAP-05 Exact empirical inputs and source-scoped reports",
+      "fingerprint": "29e76cbd4aa428ac7df777b91f388dfa90ffaa837af56ab67b569f3785c99ea4"
+    },
+    {
+      "id": "CAP-06",
+      "capability": "service-and-data-readiness",
+      "title": "CAP-06 Research candidates and actual setup observations",
+      "fingerprint": "a10f3440794ad9288044e022e85991b9fd21b05c0c1586b41e5a9da6517f323c"
     }
   ],
   "properties": [
@@ -7965,7 +8001,7 @@
     {
       "id": "RUN-08.P1",
       "requirement_id": "RUN-08",
-      "statement": "The GitHub source project SHALL supply the simple local launcher, key-only setup and default configurable LLM profile in docs/simple-local-product.md. An extracted source ZIP SHALL build and run with Docker without Git metadata, workflow submodules, prebuilt application image distribution or a formal deployment/release manifest. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their keys and permitted source transfer. Speech keys remain separate when required.",
+      "statement": "The GitHub source project SHALL supply the simple local launcher, operation-dependent provider connection/key setup and default configurable LLM profile in docs/simple-local-product.md. An extracted source ZIP SHALL build and run with Docker without Git metadata, workflow submodules, prebuilt application image distribution or a formal deployment/release manifest. It SHALL initialize internal infrastructure automatically without manual database, storage, API or account setup. Opening the library and playing stored audio SHALL work without provider keys; only dependent cloud operations SHALL request their documented provider authorization/key and permitted source transfer. Eligible ChatGPT-plan sign-in is provider authorization in Settings, not an application login; current included-only defaults and billing constraints follow specification/v2/docs/provider-access.md. Speech keys remain separate when required.",
       "scenarios": [
         "RUN-08 simple supported startup",
         "RUN-08 missing operation key"
@@ -9000,6 +9036,120 @@
         "specification/v2/docs/key-repair-projection.md",
         "specification/v2/docs/self-contained-generation.md",
         "specification/v2/domain/verification-fixtures.v1.json"
+      ]
+    },
+    {
+      "id": "CAP-01.P1",
+      "requirement_id": "CAP-01",
+      "statement": "The product SHALL use the current provider-access.v1.json included_only policy, prefer eligible existing ChatGPT-plan Responses plus local Kokoro, preserve original profiles and reject unknown/metered/purchased-credit/overage routes under this policy without silent fallback. The existing GitHub download/run local product SHALL have no application account or mandatory corpus/review/Lab setup.",
+      "scenarios": [
+        "CAP-01 Eligible startup route",
+        "CAP-01 Metered key is not a subscription"
+      ],
+      "owner": "services/api",
+      "oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "source_globs": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json"
+      ]
+    },
+    {
+      "id": "CAP-02.P1",
+      "requirement_id": "CAP-02",
+      "statement": "Provider connections SHALL use the documented public-client loopback PKCE/OIDC flow, validated identity/granted scope, stable host and issued client IDs, protected rotating credentials and safe metadata. Explicit connect/select/disconnect SHALL never create application accounts, copy Codex credentials or change a frozen running registration. Exact pending state SHALL be the narrow callback-origin exception.",
+      "scenarios": [
+        "CAP-02 Reconnect preserves registration",
+        "CAP-02 Denied or mismatched callback"
+      ],
+      "owner": "services/api",
+      "oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "source_globs": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json"
+      ]
+    },
+    {
+      "id": "CAP-03.P1",
+      "requirement_id": "CAP-03",
+      "statement": "The ChatGPT-plan adapter SHALL send the exact supported stateless full context with store=false/stream=true, omit unsupported fields and commit a stage only on response.completed. Actual interrupted/incomplete/failed/usage-limit outcomes SHALL preserve earlier content and native receipts without grading partial text or invoking a new billing route. Account model choices and auth/billing/policy identity SHALL be frozen; credential refresh does not change registration identity.",
+      "scenarios": [
+        "CAP-03 Complete streamed stage",
+        "CAP-03 Late quota failure"
+      ],
+      "owner": "services/api",
+      "oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "source_globs": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json"
+      ]
+    },
+    {
+      "id": "CAP-04.P1",
+      "requirement_id": "CAP-04",
+      "statement": "The existing speech owners SHALL preserve122categories and compile actual selected text/phone/prosody operations only through documented model/voice capabilities, as specified in speech-service-selection.md. Voice/accent design is not phoneme proof. Per-speaker identities, dictionary/conditioning versions, target-specific scope and final WAV/interval provenance SHALL persist. No purchased speech quota or implicit backend substitution is allowed under included_only.",
+      "scenarios": [
+        "CAP-04 Scope-local pronunciation dictionary",
+        "CAP-04 Unsupported acoustic intent"
+      ],
+      "owner": "services/speech",
+      "oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "source_globs": [
+        "services/speech/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json"
+      ]
+    },
+    {
+      "id": "CAP-05.P1",
+      "requirement_id": "CAP-05",
+      "statement": "The product SHALL apply empirical-data-needs.md and the existing product-data-relevance policy: external corpora are unnecessary for ordinary authored exercises, while selected empirical frequency/relationship/difficulty/benchmark/full-source reports require their actual scoped observations and denominators. All11full original identities/scopes and42equations SHALL remain. Constructed/provider judgments/native source labels SHALL retain distinct origin and unknowns; missing originals cannot be replaced by public companions or supplemental releases.",
+      "scenarios": [
+        "CAP-05 Defined population association",
+        "CAP-05 Missing empirical denominator"
+      ],
+      "owner": "services/api",
+      "oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "source_globs": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json"
+      ]
+    },
+    {
+      "id": "CAP-06.P1",
+      "requirement_id": "CAP-06",
+      "statement": "The dated primary-source service catalogue SHALL distinguish current recommendation, possible documented alternatives, installed adapter compatibility and actual observed account/model/voice/hardware quality. Selected setup SHALL retain all exact configuration/secret/provenance owners and positive/negative Lab plans, without pretending research executed inference or buying an unnecessary subscription.",
+      "scenarios": [
+        "CAP-06 Existing subscription first",
+        "CAP-06 Catalogue is not an adapter"
+      ],
+      "owner": "services/api",
+      "oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "source_globs": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json"
       ]
     }
   ],
@@ -56189,6 +56339,774 @@
       "blocker": "Specification-only authority: concrete constructed fixture/oracle is now defined; current application/model/audio/Lab behavior remains unperformed.",
       "designed_fixture_id": "scenario-CLOSE-04 No generic or fabricated passing plans",
       "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-01.P1.S1.POSITIVE",
+      "property_id": "CAP-01.P1",
+      "polarity": "positive",
+      "scenario": "CAP-01 Eligible startup route",
+      "scenario_fingerprint": "12f58aec3c83cf43ca57c0ca8f15df88d9d6733a1956a535a20e1bb3e1e3fc61",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-01.P1.S1.POSITIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-01.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-01 Eligible startup route",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-01.P1.S1.NEGATIVE",
+      "property_id": "CAP-01.P1",
+      "polarity": "negative",
+      "scenario": "CAP-01 Eligible startup route",
+      "scenario_fingerprint": "12f58aec3c83cf43ca57c0ca8f15df88d9d6733a1956a535a20e1bb3e1e3fc61",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-01.P1.S1.NEGATIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-01.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-01 Eligible startup route",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-01.P1.S2.POSITIVE",
+      "property_id": "CAP-01.P1",
+      "polarity": "positive",
+      "scenario": "CAP-01 Metered key is not a subscription",
+      "scenario_fingerprint": "20c4f80b8654eb52b9df849b3e17ddad94b2aaa145e94034df9bb8c637d10824",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-01.P1.S2.POSITIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-01.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-01 Metered key is not a subscription",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-01.P1.S2.NEGATIVE",
+      "property_id": "CAP-01.P1",
+      "polarity": "negative",
+      "scenario": "CAP-01 Metered key is not a subscription",
+      "scenario_fingerprint": "20c4f80b8654eb52b9df849b3e17ddad94b2aaa145e94034df9bb8c637d10824",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-01.P1.S2.NEGATIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-01.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-01 Metered key is not a subscription",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-02.P1.S1.POSITIVE",
+      "property_id": "CAP-02.P1",
+      "polarity": "positive",
+      "scenario": "CAP-02 Reconnect preserves registration",
+      "scenario_fingerprint": "b7fc75baaa2a1301534b039a007aac8cb40f7635c70872a48217483e88f4a31e",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-02.P1.S1.POSITIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-02.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-02 Reconnect preserves registration",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-02.P1.S1.NEGATIVE",
+      "property_id": "CAP-02.P1",
+      "polarity": "negative",
+      "scenario": "CAP-02 Reconnect preserves registration",
+      "scenario_fingerprint": "b7fc75baaa2a1301534b039a007aac8cb40f7635c70872a48217483e88f4a31e",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-02.P1.S1.NEGATIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-02.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-02 Reconnect preserves registration",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-02.P1.S2.POSITIVE",
+      "property_id": "CAP-02.P1",
+      "polarity": "positive",
+      "scenario": "CAP-02 Denied or mismatched callback",
+      "scenario_fingerprint": "7081fb2e45449d795b39a7693be5abd973b879dbc759a5feddf9e90fd6ab7a2d",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-02.P1.S2.POSITIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-02.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-02 Denied or mismatched callback",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-02.P1.S2.NEGATIVE",
+      "property_id": "CAP-02.P1",
+      "polarity": "negative",
+      "scenario": "CAP-02 Denied or mismatched callback",
+      "scenario_fingerprint": "7081fb2e45449d795b39a7693be5abd973b879dbc759a5feddf9e90fd6ab7a2d",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-02.P1.S2.NEGATIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-02.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-02 Denied or mismatched callback",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-03.P1.S1.POSITIVE",
+      "property_id": "CAP-03.P1",
+      "polarity": "positive",
+      "scenario": "CAP-03 Complete streamed stage",
+      "scenario_fingerprint": "3d39d3147928a9005fe81aa3bb8299cc31a4f226b82d16696bafea21a10e3035",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-03.P1.S1.POSITIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-03.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-03 Complete streamed stage",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-03.P1.S1.NEGATIVE",
+      "property_id": "CAP-03.P1",
+      "polarity": "negative",
+      "scenario": "CAP-03 Complete streamed stage",
+      "scenario_fingerprint": "3d39d3147928a9005fe81aa3bb8299cc31a4f226b82d16696bafea21a10e3035",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-03.P1.S1.NEGATIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-03.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-03 Complete streamed stage",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-03.P1.S2.POSITIVE",
+      "property_id": "CAP-03.P1",
+      "polarity": "positive",
+      "scenario": "CAP-03 Late quota failure",
+      "scenario_fingerprint": "ff79d4bb54d5ef18325a43eaf1ae548439d77d162bae52c76788b22fb47ee896",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-03.P1.S2.POSITIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-03.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-03 Late quota failure",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-03.P1.S2.NEGATIVE",
+      "property_id": "CAP-03.P1",
+      "polarity": "negative",
+      "scenario": "CAP-03 Late quota failure",
+      "scenario_fingerprint": "ff79d4bb54d5ef18325a43eaf1ae548439d77d162bae52c76788b22fb47ee896",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-03.P1.S2.NEGATIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-03.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-03 Late quota failure",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-04.P1.S1.POSITIVE",
+      "property_id": "CAP-04.P1",
+      "polarity": "positive",
+      "scenario": "CAP-04 Scope-local pronunciation dictionary",
+      "scenario_fingerprint": "dfeef3cb0cd32f0fe61b85ee0c154f3b9959265e17b82d8ccbb50fc87b743096",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-04.P1.S1.POSITIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-04.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/speech/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-04 Scope-local pronunciation dictionary",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-04.P1.S1.NEGATIVE",
+      "property_id": "CAP-04.P1",
+      "polarity": "negative",
+      "scenario": "CAP-04 Scope-local pronunciation dictionary",
+      "scenario_fingerprint": "dfeef3cb0cd32f0fe61b85ee0c154f3b9959265e17b82d8ccbb50fc87b743096",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-04.P1.S1.NEGATIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-04.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/speech/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-04 Scope-local pronunciation dictionary",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-04.P1.S2.POSITIVE",
+      "property_id": "CAP-04.P1",
+      "polarity": "positive",
+      "scenario": "CAP-04 Unsupported acoustic intent",
+      "scenario_fingerprint": "98475d7b7de32096455de8def0c7c65d0c0094462d701e219a09ed1089095a86",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-04.P1.S2.POSITIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-04.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/speech/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-04 Unsupported acoustic intent",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-04.P1.S2.NEGATIVE",
+      "property_id": "CAP-04.P1",
+      "polarity": "negative",
+      "scenario": "CAP-04 Unsupported acoustic intent",
+      "scenario_fingerprint": "98475d7b7de32096455de8def0c7c65d0c0094462d701e219a09ed1089095a86",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-04.P1.S2.NEGATIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-04.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/speech/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-04 Unsupported acoustic intent",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-05.P1.S1.POSITIVE",
+      "property_id": "CAP-05.P1",
+      "polarity": "positive",
+      "scenario": "CAP-05 Defined population association",
+      "scenario_fingerprint": "03ca2cd208c8f6e03beef3009715835bf0a420dc824e7fbd174297a5c621cfb0",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-05.P1.S1.POSITIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-05.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-05 Defined population association",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-05.P1.S1.NEGATIVE",
+      "property_id": "CAP-05.P1",
+      "polarity": "negative",
+      "scenario": "CAP-05 Defined population association",
+      "scenario_fingerprint": "03ca2cd208c8f6e03beef3009715835bf0a420dc824e7fbd174297a5c621cfb0",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-05.P1.S1.NEGATIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-05.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-05 Defined population association",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-05.P1.S2.POSITIVE",
+      "property_id": "CAP-05.P1",
+      "polarity": "positive",
+      "scenario": "CAP-05 Missing empirical denominator",
+      "scenario_fingerprint": "8ba08d3b8ee7d055a4a62291fbe6c8c5d917cae1aeb6d6ab048efa0eac1cf8b4",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-05.P1.S2.POSITIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-05.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-05 Missing empirical denominator",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-05.P1.S2.NEGATIVE",
+      "property_id": "CAP-05.P1",
+      "polarity": "negative",
+      "scenario": "CAP-05 Missing empirical denominator",
+      "scenario_fingerprint": "8ba08d3b8ee7d055a4a62291fbe6c8c5d917cae1aeb6d6ab048efa0eac1cf8b4",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-05.P1.S2.NEGATIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-05.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-05 Missing empirical denominator",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-06.P1.S1.POSITIVE",
+      "property_id": "CAP-06.P1",
+      "polarity": "positive",
+      "scenario": "CAP-06 Existing subscription first",
+      "scenario_fingerprint": "ce8ffd9017fcf1970e12af2b8442649ad57c48f66ba5064371eb100c6f37e246",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-06.P1.S1.POSITIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-06.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-06 Existing subscription first",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-06.P1.S1.NEGATIVE",
+      "property_id": "CAP-06.P1",
+      "polarity": "negative",
+      "scenario": "CAP-06 Existing subscription first",
+      "scenario_fingerprint": "ce8ffd9017fcf1970e12af2b8442649ad57c48f66ba5064371eb100c6f37e246",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-06.P1.S1.NEGATIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-06.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-06 Existing subscription first",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-06.P1.S2.POSITIVE",
+      "property_id": "CAP-06.P1",
+      "polarity": "positive",
+      "scenario": "CAP-06 Catalogue is not an adapter",
+      "scenario_fingerprint": "ccf68757891311555558b936d566335b747025e4f9d5f43fea81bdd8f08fb95d",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-06.P1.S2.POSITIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-06.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-06 Catalogue is not an adapter",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "CAP-06.P1.S2.NEGATIVE",
+      "property_id": "CAP-06.P1",
+      "polarity": "negative",
+      "scenario": "CAP-06 Catalogue is not an adapter",
+      "scenario_fingerprint": "ccf68757891311555558b936d566335b747025e4f9d5f43fea81bdd8f08fb95d",
+      "setup": "Use exact literal input/initial state in verification-fixtures.v1.json case_bindings[CAP-06.P1.S2.NEGATIVE].",
+      "observable": "Exact independently stated expected wire/state/call counts/source/artifact/fraction packet.",
+      "red_expectation": "Violate any explicitly expected value or claim an unobserved capability/entitlement.",
+      "green_expectation": "Actual scoped native/provider observations match the independent expected packet.",
+      "test_id": "planned::service-data::CAP-06.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_service_data_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/domain/provider-access.v1.json",
+        "specification/v2/domain/service-research.v1.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/service-and-data-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
+      "designed_fixture_id": "scenario-CAP-06 Catalogue is not an adapter",
+      "fixture_observation_state": "not_run"
     }
   ],
   "commands": [
@@ -57755,7 +58673,31 @@
         "planned::final-spec-closure::CLOSE-04.P1.S1.POSITIVE",
         "planned::final-spec-closure::CLOSE-04.P1.S1.NEGATIVE",
         "planned::final-spec-closure::CLOSE-04.P1.S2.POSITIVE",
-        "planned::final-spec-closure::CLOSE-04.P1.S2.NEGATIVE"
+        "planned::final-spec-closure::CLOSE-04.P1.S2.NEGATIVE",
+        "planned::service-data::CAP-01.P1.S1.POSITIVE",
+        "planned::service-data::CAP-01.P1.S1.NEGATIVE",
+        "planned::service-data::CAP-01.P1.S2.POSITIVE",
+        "planned::service-data::CAP-01.P1.S2.NEGATIVE",
+        "planned::service-data::CAP-02.P1.S1.POSITIVE",
+        "planned::service-data::CAP-02.P1.S1.NEGATIVE",
+        "planned::service-data::CAP-02.P1.S2.POSITIVE",
+        "planned::service-data::CAP-02.P1.S2.NEGATIVE",
+        "planned::service-data::CAP-03.P1.S1.POSITIVE",
+        "planned::service-data::CAP-03.P1.S1.NEGATIVE",
+        "planned::service-data::CAP-03.P1.S2.POSITIVE",
+        "planned::service-data::CAP-03.P1.S2.NEGATIVE",
+        "planned::service-data::CAP-04.P1.S1.POSITIVE",
+        "planned::service-data::CAP-04.P1.S1.NEGATIVE",
+        "planned::service-data::CAP-04.P1.S2.POSITIVE",
+        "planned::service-data::CAP-04.P1.S2.NEGATIVE",
+        "planned::service-data::CAP-05.P1.S1.POSITIVE",
+        "planned::service-data::CAP-05.P1.S1.NEGATIVE",
+        "planned::service-data::CAP-05.P1.S2.POSITIVE",
+        "planned::service-data::CAP-05.P1.S2.NEGATIVE",
+        "planned::service-data::CAP-06.P1.S1.POSITIVE",
+        "planned::service-data::CAP-06.P1.S1.NEGATIVE",
+        "planned::service-data::CAP-06.P1.S2.POSITIVE",
+        "planned::service-data::CAP-06.P1.S2.NEGATIVE"
       ]
     },
     {

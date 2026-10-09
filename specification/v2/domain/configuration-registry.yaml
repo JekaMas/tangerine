@@ -35,6 +35,12 @@ owner_supplied:
     type: exact_local_secret_references
     required_for: authorized configured vendor adapters
     default: []
+  ELEVENLABS_API_KEY:
+    type: secret
+    required_for: optional selected ElevenLabs included-allowance speech
+    destination:
+      - speech
+    default: null
 internal:
   workspace_id: local
   web_host_binding: 127.0.0.1:3000
@@ -48,9 +54,9 @@ internal:
   proxy_timeout_seconds: 300
   browser_timeout_seconds: 310
   transport_retries_per_request: 1
-  render_attempts_per_candidate: null # no manual lifetime ceiling
-  llm_profile: deepseek-flash-low-v1
-  speech_profile: kokoro-local-en-v1 # first-use LLM-key-only path; service is an explicit choice
+  render_attempts_per_candidate: null
+  llm_profile: chatgpt-plan-responses-v1
+  speech_profile: kokoro-local-en-v1
   local_speech_profile: kokoro-local-en-v1
   local_speech_device: cpu
   generation_canonical_seconds: 90
@@ -64,8 +70,8 @@ internal:
   archive_member_bytes: 34359738368
   list_page_default: 50
   list_page_max: 100
-  supported_setup: Docker Engine >=24 and Compose >=2.20 with validated required
-    capabilities; linux amd64/arm64; macOS Docker Desktop; Windows WSL2
+  supported_setup: Docker Engine >=24 and Compose >=2.20 with validated required capabilities; linux
+    amd64/arm64; macOS Docker Desktop; Windows WSL2
   mapping_audit_enabled: false
   output_repairs_per_stage: 1
   wire_fallbacks_per_stage: 1
@@ -76,16 +82,21 @@ internal:
   llm_lab_version: 3.17.0
   llm_lab_host_binding: 127.0.0.1:5000
   llm_lab_export_timeout_ms: 1000
+  provider_access_policy:
+    mode: included_only
+    allow_purchased_credits: false
+    allow_overage: false
+    allow_silent_billing_fallback: false
 publisher_supplied:
   - all dependency lockfiles
   - all model/voice/profile bindings
   - all source adapter implementations
   - all schema and prompt hashes
-  - complete application source and Docker build inputs independent of
-    Git/workflow submodules
+  - complete application source and Docker build inputs independent of Git/workflow submodules
+  - ChatGPT plan Responses adapter and loopback provider connection; current provider-access.v1.json
+    defaults
 unknown_key: configuration_error
-secret_rule: Never copy values into images, logs, prompts, public environment
-  variables, or returned DTOs.
+secret_rule: Never copy values into images, logs, prompts, public environment variables, or returned DTOs.
 simple_preparation:
   variety_policy:
     target_locale: en-US
@@ -94,14 +105,13 @@ simple_preparation:
       - en-GB
     register: conversational
     assessment_basis: contextual_appropriacy
-    public_constraints: Judge errors in the stated topic and conversational context;
-      systematic permitted English varieties are acceptable unless an explicit
-      target is declared.
+    public_constraints: Judge errors in the stated topic and conversational context; systematic
+      permitted English varieties are acceptable unless an explicit target is declared.
   task_components:
     detection: true
     classification: false
     correction: true
-    explanation: false # optional invitation only; always assess supplied reasons
+    explanation: false
   pace_wpm: 150
   pace_tolerance_fraction: 0.2
   gap_after_ms: 0
