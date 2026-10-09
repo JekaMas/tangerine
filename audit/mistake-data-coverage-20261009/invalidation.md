@@ -1,0 +1,11 @@
+# Changed inputs and retained evidence
+
+Baseline:461cff3. This increment adds an active mutation/data contract and122authored recipe catalogue, changes the generator's trusted instruction text, links the namespace/design/task record and adds seven OpenSpec requirements with28blocked behavior plans. These new semantic generation/data contracts require future actual owner behavior observations; no previous test is relabelled as that evidence.
+
+All original336requirements,351properties and1404case objects remain unchanged. The new graph/parser membership and current file vector invalidate the preceding current-graph/current-vector structural checks, so those checks are performed for this stable batch. The original native-acquisition SHA receipts, acoustic annotation counts, source-rights observations and application test receipts retain their original proof boundaries and are not rerun.
+
+New native M2 frequencies/co-occurrences inspect a previously unmeasured descriptive population. They are not a rerun of an application importer. The first catalogue build was followed by a concrete supplement for all acceptable controls; the final539static checks observe that stable catalogue. Byte-preservation checks compare current taxonomy/examples/42equations/11sources/allcontracts against461cff3, without refreshing any old behavior test fingerprint.
+
+Final inspection clarified the consonant-insertion recipe: the preserved original /s/ -> /sts/ adds two segments, whereas the supplemental single-insertion example uses /s/ -> /st/. Only that recipe/matrix/row and its owning prose change. The prior539checks retain their identity/missingness/codepoint/evidence-status proof boundaries; they did not assert this phonetic procedure's semantic correctness. Two new focused positive/negative design checks cover the single inserted segment. Only changed current-vector entries are recalculated; native frequency inspections and unchanged graph/strict OpenSpec checks are retained.
+
+The whole active-spec file/line/hash/syntax traversal is mechanical coverage only. It cannot establish semantic correctness of every source phrase, actual all-leaf examples, source permission, implemented local runtime, final acoustic realization or provider answer correctness. Unrelated audit/spec-fullness-20261008/GAPS.md remains untouched and excluded from this increment.
