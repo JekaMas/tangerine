@@ -8,4 +8,4 @@ Positive and negative tests may use clearly labelled constructed examples for de
 
 The local project has no user accounts, access roles or human reviewer qualification. Imported agreements and source annotations are data. Actual third-party terms remain applicable; do not infer a license from an API key. Ordinary settings and user-triggered actions suffice; no per-transfer grant graph or permission epoch is required.
 
-This increment is specification-only. Completing a definition, approving a policy, or planning a test does not authorize implementation, paid execution, source acquisition or publication.
+The current increment covers research, specification updates, explicitly requested source outreach and accessible data acquisition. Completing a definition or download does not establish implemented behavior or authorize paid inference, implementation or publication.

@@ -54,3 +54,11 @@ Preserve all blocks, all annotators, noops, alternatives, native controls, metad
 Reconcile source blocks and edit records independently. A block without edits is not necessarily missing data.
 Pin the evaluator tool version separately from the corpus parser version.
 Never claim that a newer automatically inferred tag is the original human label.
+
+## Observed complete native v2.1 distributions
+
+Both owner-linked archives were downloaded in full on 2026-10-09 with exact byte counts and SHA256 receipts. Every supplied member was inventoried, including README, native metadata, train/dev/test files, aggregate views and test-label absence. This is native-data inspection, not implemented importer or evaluator behavior.
+
+FCE has 28,350 train, 2,191 development and 2,695 test S-blocks. W&I train A/B/C has 10,493/13,032/10,783 blocks (34,308 combined). Development A/B/C/N has 1,037/1,290/1,069/988 blocks (4,384 combined). The owner page’s reported 998 LOCNESS development sentences differs from the actual v2.1 N file’s 988; preserve both observations and the supplied bytes instead of forcing ten extra records. The supplied W&I test has 4,477 original sentences and no public correction labels.
+
+Aggregate M2 views overlap their component files. Count a logical source sentence once; preserve every original representation and annotator. Annotation counts are separate from unique sentences and do not mean all alternative edits are simultaneous. Native span inspection found no out-of-range or invalid sentinel annotations in the inspected original M2 files. Detailed counts and member inventories are in audit/corpus-acquisition-20261009/native-archive-inventory-initial.json.

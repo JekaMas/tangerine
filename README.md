@@ -4,13 +4,13 @@ Teacher Error Trainer, started from nine initial files and the recovered complet
 
 ## Current specification
 
-The active full specification is [specification/v2](specification/v2/README.md). [Current reconciliation](audit/source-contract-research-20261009/REPORT.md) and [remaining decisions/inputs](audit/source-contract-research-20261009/REMAINING-INPUTS.md) supersede earlier audits. All122taxonomy IDs/examples,27core/15aux equations and11full-source entries remain. LLMs check answers, review cases and adjudicate disputes; there are no human peer reviewers or qualification prerequisites. Eight stages are configurable, with DeepSeek fast as the future test default.
+The active full specification is [specification/v2](specification/v2/README.md). [Current acquisition and reconciliation](audit/corpus-acquisition-20261009/REPORT.md) and [remaining inputs](audit/corpus-acquisition-20261009/REMAINING-INPUTS.md) supersede earlier audits. All122taxonomy IDs/examples,27core/15aux equations and11full-source entries remain. LLMs check answers, review cases and adjudicate disputes; there are no human peer reviewers or qualification prerequisites. Eight stages are configurable, with DeepSeek fast as the future test default.
 
 Tangerine original software is licensed under [Apache-2.0](LICENSE), selected by the actual user. Imported corpora, publications, workflow dependencies and third-party components retain their own terms.
 
 The target is a simple local GitHub source ZIP/clone: supply required operation keys, run the helper and open localhost. No accounts, complex public API setup, mandatory repeat audit or whole-corpus certification is required. Complete source imports and all benchmark features remain supported and report actual missing data independently of ordinary use.
 
-Only specifications were updated. The existing foundation below still has historical login/manual setup and does not implement the revised launcher or complete trainer. No provider inference, corpus acquisition or runtime acceptance occurred in this increment.
+The current authorized increment updates specifications, sends source access requests and downloads accessible complete native data. Actual receipts and source limitations are in the current acquisition report; restricted originals and missing linked media remain explicit. The existing foundation below still has historical login/manual setup and does not implement the revised launcher or complete trainer. No provider inference, application implementation or runtime acceptance occurred in this increment.
 
 ## Start the historical local foundation
 

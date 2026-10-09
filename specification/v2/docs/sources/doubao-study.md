@@ -40,3 +40,7 @@ Positive: a complete authorized export preserves native participant/submission j
 Negative: a PDF, aggregate table, constructed 20-person matrix, model-generated journal, guessed Likert scale, invented control/follow-up arm, or 545 valid videos with the three actually supplied invalid videos discarded cannot be reported as the full underlying study release. Raw intake remains available when semantic bindings or source fields are missing. Local startup and unrelated exercises remain available.
 
 Exact unavailable artifacts are listed in [the current input ledger](../../../../audit/source-contract-research-20261009/REMAINING-INPUTS.md); no author was contacted and no study account was accessed.
+
+## Current owner inquiry
+
+On 2026-10-09 a request for Dr. Liao Xiaodan was sent through the institution’s published department forwarding address, wgyxy_bg@zjhu.edu.cn. It requests anonymized complete participant/day records, exact prompts and questionnaire instruments, scale dictionaries and reuse terms. This is an actual sent request, not direct-author delivery, an owner reply or a data release. Participant records and exact unpublished instruments remain unavailable. See audit/corpus-acquisition-20261009/outreach.json.

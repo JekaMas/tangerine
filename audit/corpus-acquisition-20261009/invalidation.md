@@ -1,0 +1,9 @@
+# Changed inputs and retained evidence
+
+This increment changes native acquisition observations and their source-facing specification/registry/research entries, full-source OpenSpec requirements/design/proposal/tasks, current authority/README, supplemental source contract and acquisition evidence. It also corrects the already-resolved benchmark-counting note in each taxonomy item's coverage_requirement; all other taxonomy data stay unchanged.
+
+Those exact semantic/document bytes invalidate prior zero-acquisition metadata assertions and the previous whole-current-spec vector gate. The new static source/outreach checks and current vector therefore inspect these changed inputs. Historical reports/receipts keep their original date and metadata-only proof boundary; they are not rewritten as current acquisition evidence.
+
+Application production owners, schemas, prompt text, arithmetic/scoring reference code, provider definitions, deployment and immutable imports are unchanged. No behavior test is rerun merely because new data/docs or a local commit exist. Actual acquisition/CRC/native-byte observations are not substituted for importer/scorer/LLM test receipts. Full taxonomy comparison permits only the recorded coverage_requirement correction; IDs/examples/definitions/all other fields and all42equations remain preserved.
+
+Six DATAFULL property statements and their requirement blocks now reflect actual acquisitions. Original scenario/case identities and observed behavior receipts remain unchanged. The first graph attempt exposed stale planned requirement fingerprints; a second exposed a documentation footer included in the last scenario. The note was moved to the capability preamble, preserving scenario text. Requirement fingerprints now reflect the actual owning blocks; observed test fingerprints were never refreshed. Native OpenSpec is rechecked because the source-spec preamble changed after its previous successful check.

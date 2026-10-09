@@ -60,3 +60,9 @@ The exact raw value tree preserves source key spelling and order.
 Compare actual counts of audio, transcripts, scored utterances, and all five raters.
 A missing score is an explicit missing source annotation, not zero.
 Do not call ingestion fully normalized while required scale or marker semantics remain unbound.
+
+## Observed complete native acquisition
+
+The OpenSLR archive and owner repository snapshot 613968e3b0b789fc33936fb5eba1973176ba7d11 were downloaded in full on 2026-10-09. The owner snapshot contains 5,000 aggregate-score records, 5,000 five-rater records, 2,500 train and 2,500 test IDs with zero overlap; each selected ID has WAVE, aggregate and detailed scores. All selected WAVE headers are 16 kHz mono 16-bit PCM with non-empty frames. Each detailed accuracy array has five raters. The snapshot also contains 245 unselected WAVE stems: retain them as ancillary/unselected data, without counting them as extra scored utterances.
+
+These are verified native-source observations in audit/corpus-acquisition-20261009/speechocean-native-conformance.json, not application import, calibrated pronunciation assessment or taxonomy-wide mistake gold.

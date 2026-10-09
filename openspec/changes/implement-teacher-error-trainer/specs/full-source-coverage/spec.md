@@ -2,6 +2,8 @@
 
 ## ADDED Requirements
 
+Current native/source-access observations are owned by audit/corpus-acquisition-20261009/REPORT.md and acquisition-manifest.json. The optional supplemental source contract is specification/v2/docs/sources/alternatives.md. Preserve all eleven required identities and scopes; supplementation cannot satisfy a missing original release.
+
 ### Requirement: FULL-01 Require full source releases
 
 The system SHALL retain the original eight-profile provenance and all eleven separately bound entries in specification/v2/domain/corpus-sources.v1.yaml. Every obtainable authorized source SHALL have its full named release, all partitions, files, labels and populations inventoried. A sample, latest unpinned mirror or cleaned derivative SHALL NOT satisfy full-release acceptance. Historical required:false SHALL NOT excuse omission from this planning scope. Unavailable research/vendor data SHALL retain blocked acquisition status and prevent an all-sources-acquired claim.
@@ -36,7 +38,7 @@ The importer SHALL freeze upstream release/version, archive and every raw-file S
 
 ### Requirement: DATAFULL-01 TET-GOLD-1 full release
 
-The source plan SHALL retain TET-GOLD-1: project-owned versioned full-domain release. Required components: JSONL, content-addressed WAV, all eight domains, machine reviews and imported native annotation/consent records when supplied, development/calibration/holdout manifests. Rights/access boundary: not_created; approved counting and LLM/native label provenance. Observed hashes/counts SHALL remain absent until acquired; every unavailable component SHALL be reported rather than invented.
+The source plan SHALL retain TET-GOLD-1: project-owned versioned full-domain release. Required components: JSONL, content-addressed WAV, all eight domains, machine reviews and imported native annotation/consent records when supplied, development/calibration/holdout manifests. Rights/access boundary: not_created; approved counting and LLM/native label provenance. Observed local native hashes/counts SHALL be populated only from actual acquisition receipts; every unavailable component SHALL be reported rather than invented. Native acquisition SHALL NOT establish implemented import or normalized completeness.
 
 #### Scenario: DATAFULL-01 Complete supported behavior
 
@@ -52,7 +54,7 @@ The source plan SHALL retain TET-GOLD-1: project-owned versioned full-domain rel
 
 ### Requirement: DATAFULL-02 SPEECHOCEAN762 full release
 
-The source plan SHALL retain SPEECHOCEAN762: OpenSLR 101 speechocean762.tar.gz; author Git revision is a separate release. Required components: Complete train and test, WAV/text/utt2spk/wav.scp, scores.json and scores-detail.json; all five raters and original score scales. Rights/access boundary: not_downloaded; CC BY 4.0 attribution/change notices; cloud upload consent evaluated separately. Observed hashes/counts SHALL remain absent until acquired; every unavailable component SHALL be reported rather than invented.
+The source plan SHALL retain SPEECHOCEAN762: OpenSLR 101 speechocean762.tar.gz; author Git revision is a separate release. Required components: Complete train and test, WAV/text/utt2spk/wav.scp, scores.json and scores-detail.json; all five raters and original score scales. Rights/access boundary: full native OpenSLR archive and pinned owner snapshot acquired on 2026-10-09; CC BY 4.0 attribution/change notices retained; external API transfer remains governed by actual source terms and selected local settings. Application import/normalization is not observed. Observed local native hashes/counts SHALL be populated only from actual acquisition receipts; every unavailable component SHALL be reported rather than invented. Native acquisition SHALL NOT establish implemented import or normalized completeness.
 
 #### Scenario: DATAFULL-02 Complete supported behavior
 
@@ -68,7 +70,7 @@ The source plan SHALL retain SPEECHOCEAN762: OpenSLR 101 speechocean762.tar.gz; 
 
 ### Requirement: DATAFULL-03 L2-ARCTIC full release
 
-The source plan SHALL retain L2-ARCTIC: official v5.0, March 12 2020, including suitcase extension. Required components: All 24 read-speech speakers across six L1 groups; WAV/transcripts/TextGrid; distinguish automatic and manual tiers; include unscripted suitcase data for 22 speakers and release README/LICENSE/PROMPTS. Rights/access boundary: licence_blocked for product use; CC BY-NC 4.0 or exact separate permission; acquisition form has not been submitted. Observed hashes/counts SHALL remain absent until acquired; every unavailable component SHALL be reported rather than invented.
+The source plan SHALL retain L2-ARCTIC: official v5.0, March 12 2020, including suitcase extension. Required components: All 24 read-speech speakers across six L1 groups; WAV/transcripts/TextGrid; distinguish automatic and manual tiers; include unscripted suitcase data for 22 speakers and release README/LICENSE/PROMPTS. Rights/access boundary: official acquisition form submitted and automatic access email received on 2026-10-09; full ZIP returned download-quota HTML and supplied individual components returned disabled-download/404 responses. A complete31-member raw mirror at cc02fd37197966e5de11ad737f7affd577c61992 is separately acquired and hash/CRC checked, with26,867read recordings/3,599manual files and22suitcase speakers. Phones-tier operation counts differ from the official README; preserve both under the L2 source contract. Official byte equivalence/full-source conformance remains unresolved; raw mirror availability does not block ordinary local use. CC BY-NC 4.0 or an actual separate permission governs its uses. Observed local native hashes/counts SHALL be populated only from actual acquisition receipts; every unavailable component SHALL be reported rather than invented. Native acquisition SHALL NOT establish implemented import or normalized completeness.
 
 #### Scenario: DATAFULL-03 Complete supported behavior
 
@@ -84,7 +86,7 @@ The source plan SHALL retain L2-ARCTIC: official v5.0, March 12 2020, including 
 
 ### Requirement: DATAFULL-04 WILOCNESS-2.1 full release
 
-The source plan SHALL retain WILOCNESS-2.1: official BEA W&I+LOCNESS 2.1. Required components: Full train/dev/test and native controls; every available M2/README/licence component; source A/B/C CEFR, annotator IDs, alternative corrections/noop; held-out scoring/label availability recorded explicitly. Rights/access boundary: licence_blocked for product use; expected counts describe W&I, LOCNESS native component counted separately from acquired release; no invented inaccessible test labels. Observed hashes/counts SHALL remain absent until acquired; every unavailable component SHALL be reported rather than invented.
+The source plan SHALL retain WILOCNESS-2.1: official BEA W&I+LOCNESS 2.1. Required components: Full train/dev/test and native controls; every available M2/README/licence component; source A/B/C CEFR, annotator IDs, alternative corrections/noop; held-out scoring/label availability recorded explicitly. Rights/access boundary: complete official native v2.1 archive acquired on 2026-10-09 with source noncommercial terms retained; actual LOCNESS development has988blocks, differing from the owner-page998 expectation. Preserve both observations. Combined/component views overlap; no invented inaccessible test labels or commercial permission. Application import/normalization is not observed. Observed local native hashes/counts SHALL be populated only from actual acquisition receipts; every unavailable component SHALL be reported rather than invented. Native acquisition SHALL NOT establish implemented import or normalized completeness.
 
 #### Scenario: DATAFULL-04 Complete supported behavior
 
@@ -100,7 +102,7 @@ The source plan SHALL retain WILOCNESS-2.1: official BEA W&I+LOCNESS 2.1. Requir
 
 ### Requirement: DATAFULL-05 FCE-2.1 full release
 
-The source plan SHALL retain FCE-2.1: official BEA FCE 2.1. Required components: Every supplied partition and M2, README/licence; preserve original essay/learner group, all edits/annotators/alternative corrections. Rights/access boundary: licence_blocked for product use; release partition counts must be inspected, underlying 1244 is not assumed equal to M2 record count. Observed hashes/counts SHALL remain absent until acquired; every unavailable component SHALL be reported rather than invented.
+The source plan SHALL retain FCE-2.1: official BEA FCE 2.1. Required components: Every supplied partition and M2, README/licence; preserve original essay/learner group, all edits/annotators/alternative corrections. Rights/access boundary: complete official native v2.1 archive acquired on 2026-10-09 with source noncommercial terms retained; actual train/dev/test have28,350/2,191/2,695S-blocks. The underlying1244 is not assumed equal to M2 record count; acquisition grants no invented commercial permission. Application import/normalization is not observed. Observed local native hashes/counts SHALL be populated only from actual acquisition receipts; every unavailable component SHALL be reported rather than invented. Native acquisition SHALL NOT establish implemented import or normalized completeness.
 
 #### Scenario: DATAFULL-05 Complete supported behavior
 
@@ -178,7 +180,7 @@ The source plan SHALL retain the complete separately versioned EFCAMDAT-SHATZ202
 
 ### Requirement: DATAFULL-10 EFCAMDAT-OKSUZ2025 separate full release
 
-The source plan SHALL retain the complete separately versioned EFCAMDAT-OKSUZ2025 entry and full original/corrected/POS/error-coded Cambridge release. Its published article, deposited appendices and public OSF analysis companion SHALL be separately inventoried. Upstream member metadata, nine code-confirmed input names, complete 19/20-column public companion CSV headers and SOC/CEFR semantics in specification/v2/docs/sources/efcamdat.md SHALL be retained without claiming a complete native method/type dictionary, inspected private workbook headers or acquired corpus records. The public two-CSV companion alone SHALL NOT satisfy the full owner derivative. Observed local hashes/counts SHALL remain absent until acquired; missing actual source members SHALL be reported without blocking local startup or unrelated exercise use.
+The source plan SHALL retain the complete separately versioned EFCAMDAT-OKSUZ2025 entry and full original/corrected/POS/error-coded Cambridge release. Its published article, deposited appendices and public OSF analysis companion SHALL be separately inventoried. Upstream member metadata, nine code-confirmed input names, complete 19/20-column public companion CSV headers and SOC/CEFR semantics in specification/v2/docs/sources/efcamdat.md SHALL be retained. All four public OSF companion files are acquired and hash verified; both CSVs are fully inspected with453,958definite/417,043indefinite rows. This does not establish a complete native method/type dictionary, inspected private workbook headers or acquired full Cambridge release. The public companion alone SHALL NOT satisfy the full owner derivative. Actual companion hashes/counts SHALL remain separate from absent full Cambridge release receipts; missing actual source members SHALL be reported without blocking local startup or unrelated exercise use.
 
 #### Scenario: DATAFULL-10 Complete separately bound release
 - **GIVEN** the exact authorized EFCAMDAT-OKSUZ2025 full release and required native format are available.

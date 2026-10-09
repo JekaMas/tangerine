@@ -52,3 +52,15 @@ Common CMU prompts can connect a large component. Do not break it to manufacture
 Use that component in one eligible split and obtain other independent coverage from the original gold collection.
 Reconcile supplied files, utterances, manual/automatic intervals, and extension membership.
 Expected published totals are metadata. Only observed complete files and records satisfy ingestion.
+
+## Actual 2026-10-09 access attempt
+
+The official form was submitted using the user-selected independent-project identity and returned its success message. The actual automatic email supplied a complete v5 archive and component links. Google Drive returned a quota-exceeded HTML response for the full archive and disabled-download/404 responses for individual components. No response HTML or access email is counted as corpus bytes. An assistance follow-up was sent to the published maintainer address. The official package remains unacquired; the pinned raw mirror below is acquired separately, with every required component preserved. Public status is recorded in audit/corpus-acquisition-20261009/; private issued links/correspondence remain ignored under data/.
+
+## Acquired pinned mirror and native discrepancies
+
+A complete raw mirror is acquired from https://huggingface.co/datasets/chikingsley/l2-arctic-release-v5.0 at commit cc02fd37197966e5de11ad737f7affd577c61992. All31 repository members, including24speaker ZIPs, suitcase ZIP, LICENSE/PROMPTS/original README/PDF and mirror metadata, have exact byte/hash receipts. All84,266archive files passed full read/CRC inspection. Read speech has26,867WAV/transcript/automatic TextGrid pairs and3,599manual annotation files; suitcase has22WAV/transcript/manual annotation pairs, with lowercase native filenames corresponding to all read speakers exceptASI/SKA. Native audio is44,100Hz mono16-bitPCM. Source bytes, all tiers and unnamed ancillary tiers remain preserved.
+
+The actual phones-tier operation-label count, trimming delimiter whitespace, is18,577substitutions/7,843deletions/1,092additions for read speech and2,158/650/90for suitcase. Published/original-README expectations are14,098/3,420/1,092and1,673/456/90. These are real discrepancies; do not relabel observed counts as published counts or silently discard labels to force agreement. Other tiers can duplicate label text: all-tier string counts are not phone-event counts. Exact native labels and the phones-only method are retained in l2-arctic-native-annotation-accounting.json and l2-native-phone-label-counts.json.
+
+The mirror is a usable, fully acquired raw candidate with explicit third-party provenance, not a claim of byte equivalence with the unavailable official ZIP or normalized linguistic gold. The official full-source conformance status remains unresolved pending an authoritative release/hash or documented count-convention/version explanation. This status does not block ordinary local use or other source intake. A precise maintainer count/provenance follow-up has been sent. No new human peer-review workflow is introduced.

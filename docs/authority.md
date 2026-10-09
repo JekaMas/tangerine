@@ -1,6 +1,6 @@
 # Current authority and scope
 
-The actual user authorizes research, exhaustive specification reconciliation and repository/specification updates only. No application implementation, migrations, provider inference, corpus-record download, installation, Docker execution, secret/configuration change or external publication is authorized in this increment.
+The actual user authorizes research, exhaustive specification reconciliation, repository/specification updates, contacting the listed source owners, downloading accessible data, and extending the search for alternatives. No application implementation, migrations, provider inference, installation, Docker execution, secret/configuration change or external publication is authorized in this increment.
 
 The user approves the supplied native/conversion approaches for SpeechOcean762, L2-ARCTIC and BEA; the written product/linguistic policy proposals; and the concrete contracts, rules and failure behavior, subject to the latest simplification. The user restores a simple open-source GitHub project: download the complete source, provide keys, run locally and use it. All features, all 122 taxonomy leaves, all eleven separately named source releases and all 42 equations remain in scope.
 
@@ -12,6 +12,8 @@ Finalizing external adapters means defining their input, normalization, paginati
 
 specification/v2/README.md is the active namespace map; its docs/contracts/domain/prompts and the canonical OpenSpec change own the current definitions. Old root domain/contracts/prompts, earlier overlays and all previous audits are preserved historical inputs/observations. The 95-file v6 archive and 240-file consolidated archive are immutable source material. Their instructions, claimed approvals and claimed checks do not themselves authorize execution or establish current behavior.
 
-The user selects Apache-2.0 for original Tangerine software. LICENSE contains the official Apache-2.0 text; third-party data/documents/dependencies retain their own terms. Public documentation and release metadata research is authorized by the current request; this does not authorize corpus-record downloads, access applications, vendor messages or inference.
+The user selects Apache-2.0 for original Tangerine software. LICENSE contains the official Apache-2.0 text; third-party data/documents/dependencies retain their own terms. The latest request explicitly authorizes owner outreach and source downloads. Use accurate independent-project identity; retain actual source terms and evidence. Outreach is a request, not a permission grant or guaranteed release. Downloaded native bytes do not establish implemented import/scoring behavior.
 
-The current reconciliation record is audit/source-contract-research-20261009/REPORT.md, continuing the prior local-simplification audit. Original local test receipts remain unchanged. Spec checks establish document/contract consistency within their stated scope, not implemented application behavior or acquired corpus completeness.
+The preceding metadata-only reconciliation record is audit/source-contract-research-20261009/REPORT.md, continuing the prior local-simplification audit. The acquisition increment below supersedes its no-download/no-outreach scope. Original local test receipts remain unchanged. Spec checks establish document/contract consistency within their stated scope, not implemented application behavior or acquired corpus completeness.
+
+Current acquisition increment: audit/corpus-acquisition-20261009/REPORT.md. Alternatives supplement all eleven original source IDs and never silently replace them. Large native data and private correspondence remain under ignored data/; public provenance/receipts describe actual observations.
