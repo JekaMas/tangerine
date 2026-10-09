@@ -45,3 +45,5 @@ These corpora also do not solve accent synthesis. EdAcc/ICNALE/L2-ARCTIC recordi
 - [Speak & Improve Corpus2025 owner description and terms](https://researchdatasets.cambridge.org/datasets/speak-and-improve-corpus-2025)
 - [Pinned raw L2-ARCTIC mirror](https://huggingface.co/datasets/chikingsley/l2-arctic-release-v5.0/tree/cc02fd37197966e5de11ad737f7affd577c61992), distinct from unverified official-byte equivalence
 - [AccentBox paper](https://arxiv.org/abs/2409.09098) and [linked GenAID identification project](https://github.com/jzmzhong/GenAID/)
+
+Current product dependency scope is ../product-data-relevance.md. ICNALE linked media and Speak & Improve remain optional selected source inputs; DRAL48kHz/third-party representations are preserved acquisition options rather than product-delivery obligations. No duplicate representation/reference recording is required to generate/store24kHzaudio. Original/supplemental full-scope claims still require their actual complete named components.

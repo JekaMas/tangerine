@@ -25,11 +25,11 @@ gates:
     limit: ">=0.90 overall and each domain"
     source: The same held-out corpus as the mapping gate.
   - id: VAL-REPAIR
-    measure: strict correction verdict agreement with human adjudication
+    measure: strict correction verdict agreement with provenance-labelled reference verdicts
     limit: ">=0.95 on >=100 correction-eligible attempts per applicable domain;
       acceptable_variant reports decoy/overcorrection, not a nonexistent repair
       population"
-    source: The held-out corpus and its real adjudications.
+    source: The held-out corpus with LLM or imported native reference verdicts; label origin and circular-reference limits remain explicit.
   - id: VAL-REPEAT
     measure: repeat mapping agreement
     limit: ">=0.99 on 3 runs of identical holdout input/config; diagnostic
@@ -52,3 +52,5 @@ gates:
 release_rule: All criteria remain optional benchmark reports.
   Missing/insufficient data cannot be reported as a pass; no report blocks local
   startup, generated case use or answer checking.
+
+product_dependency_scope: domain/product-data-relevance.v1.json

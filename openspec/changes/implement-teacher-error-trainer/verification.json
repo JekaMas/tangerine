@@ -2245,6 +2245,24 @@
       "capability": "ai-development",
       "title": "DEV-12 Coverage completeness and precise invalidation",
       "fingerprint": "de39dffd8dae2e4fb7123160328e2a510b662589462b2b2d6ab1dff5e298d270"
+    },
+    {
+      "id": "DREL-01",
+      "capability": "product-data-relevance",
+      "title": "DREL-01 Generated flow requires its own artifacts",
+      "fingerprint": "c5ecee8016f68deb62a83670ac27d736beeba6d96b96063ce010852ac456f77c"
+    },
+    {
+      "id": "DREL-02",
+      "capability": "product-data-relevance",
+      "title": "DREL-02 Scope optional data to the consuming action",
+      "fingerprint": "517fe577c0984fedac4168fa70b811abf07743eb21e04efc2bb1a329e59bb4e1"
+    },
+    {
+      "id": "DREL-03",
+      "capability": "product-data-relevance",
+      "title": "DREL-03 Keep necessary selected behavior evidence",
+      "fingerprint": "2398ee1ea386498105e06a934aa78b352b9233666779b1d1c91580915dce031a"
     }
   ],
   "properties": [
@@ -7622,7 +7640,7 @@
     {
       "id": "SPEC-043.P1",
       "requirement_id": "SPEC-043",
-      "statement": "The required EFCAMDAT scope MUST include R2, Shatz2020 and Oksuz2025 as separate complete releases. The documented public agreement, R2 XML profile, both Shatz sample/intermediate/glossary components and Öksüz original/corrected/POS/error-coded components SHALL be retained. Public OSF analysis-file metadata, code-confirmed fields and exact header-only CSV observations SHALL be distinguished from acquired records and a complete native dictionary. Copied alternate prompts, source absence of corrections, SOC populations and source code/paper CEFR discrepancies SHALL follow specification/v2/docs/sources/efcamdat.md. Public analysis files alone SHALL NOT replace the full Cambridge derivative.\n\nThe specification SHALL reconcile GAP-043 through `specification/v2/docs/sources/efcamdat.md` `specification/v2/domain/corpus-sources.v1.yaml` `specification/v2/contracts/source-format-binding.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/source-contract-research-20261009/REPORT.md, REMAINING-INPUTS.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.",
+      "statement": "The required EFCAMDAT scope MUST include R2, Shatz2020 and Oksuz2025 as separate complete releases. The documented public agreement, R2 XML profile, both Shatz sample/intermediate/glossary components and \u00d6ks\u00fcz original/corrected/POS/error-coded components SHALL be retained. Public OSF analysis-file metadata, code-confirmed fields and exact header-only CSV observations SHALL be distinguished from acquired records and a complete native dictionary. Copied alternate prompts, source absence of corrections, SOC populations and source code/paper CEFR discrepancies SHALL follow specification/v2/docs/sources/efcamdat.md. Public analysis files alone SHALL NOT replace the full Cambridge derivative.\n\nThe specification SHALL reconcile GAP-043 through `specification/v2/docs/sources/efcamdat.md` `specification/v2/domain/corpus-sources.v1.yaml` `specification/v2/contracts/source-format-binding.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/source-contract-research-20261009/REPORT.md, REMAINING-INPUTS.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.",
       "scenarios": [
         "SPEC-043 Complete definition and rejection boundary",
         "SPEC-043 The declared successful path",
@@ -8608,6 +8626,60 @@
         "docs/development/AI_DEVELOPMENT.md",
         "specification/v2/docs/ai-development.md",
         "specification/v2/domain/ai-development.v1.json"
+      ]
+    },
+    {
+      "id": "DREL-01.P1",
+      "requirement_id": "DREL-01",
+      "statement": "The generated exercise flow SHALL use the preserved taxonomy/recipes, configured LLM/speech resources, saved canonical text/mutations/key/audio and submitted answer. Missing external corpora, empirical frequencies, academic identity, participant cohorts and full benchmarks SHALL NOT prevent independent generation, answer checking, native scoring or recommendations. Owning definitions are specification/v2/docs/product-data-relevance.md and domain/product-data-relevance.v1.json.",
+      "scenarios": [
+        "DREL-01 Independent generated exercise",
+        "DREL-01 Unavailable selected enrichment source"
+      ],
+      "owner": "services/api",
+      "oracle": "Compare actual canonical/key/audio/answer/config identity and independent operation trace with no source records; source-context unavailable affects only selected action.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "specification/v2/docs/product-data-relevance.md",
+        "specification/v2/domain/product-data-relevance.v1.json"
+      ]
+    },
+    {
+      "id": "DREL-02.P1",
+      "requirement_id": "DREL-02",
+      "statement": "All eleven original full-source identities and complete member/native-field scopes SHALL remain. Missing private exports, dictionaries, instruments or remote interfaces SHALL affect only the selected source action, normalized semantics or named completeness claim. Supported local intake SHALL NOT require a private API; unbound study/pedagogy scales SHALL remain raw source data without adopting them as Tangerine grades. Official-equivalence explanations and duplicate high-resolution downloads SHALL NOT gate valid pinned-source use. Owning definitions are specification/v2/docs/product-data-relevance.md and domain/product-data-relevance.v1.json.",
+      "scenarios": [
+        "DREL-02 Scoped local source intake",
+        "DREL-02 Unsupported completeness or source substitution"
+      ],
+      "owner": "services/api",
+      "oracle": "Compare complete native-member/field inventory, transformation bindings, actual source origin/counts and original source list independently of normalized/completeness output.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "specification/v2/docs/product-data-relevance.md",
+        "specification/v2/domain/product-data-relevance.v1.json"
+      ]
+    },
+    {
+      "id": "DREL-03.P1",
+      "requirement_id": "DREL-03",
+      "statement": "Actual selected main-flow builds, stored audio, mutation realization and semantic answer-checking acceptance SHALL remain future engineering obligations. Selected AI-affecting development SHALL retain mandatory Lab/native prompt/context/call evidence and meaningful affected positive/negative cases. Full732stimuli, all sources, universal accent/provider/platform qualification and genuine participant populations SHALL be required only for their explicitly claimed full or empirical scope, never every increment. Owning definitions are specification/v2/docs/product-data-relevance.md and domain/product-data-relevance.v1.json.",
+      "scenarios": [
+        "DREL-03 Focused development experiment",
+        "DREL-03 Claim exceeds selected observed evidence"
+      ],
+      "owner": "services/api",
+      "oracle": "Compare selected-case/native dispatch/Lab observations against affected properties and actual reference populations; fixture-only or unselected scopes cannot establish actual/full claims.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "specification/v2/docs/product-data-relevance.md",
+        "specification/v2/domain/product-data-relevance.v1.json"
       ]
     }
   ],
@@ -43271,9 +43343,9 @@
       "scenario": "SPEC-043 The declared successful path",
       "scenario_fingerprint": "be6cba048e755d407c5f91bb91ea5cf653299a3508230ee2c96cbae5397f2d6f",
       "setup": "Future implementation observes SPEC-043 The declared successful path against the exact source-specific full-release and Apache local-source contract. Raw/documentary/normalized/actual observation classes remain separate. Labelled constructed deterministic cases may test conversion/accounting; public metadata is never substituted for acquired source bytes.",
-      "observable": "- **GIVEN** the exact permitted input and required evidence exist.\n- **WHEN** the application applies `SPEC-043`.\n- **THEN** The operator supplies each complete authorized release. Full raw intake preserves every native member; documented semantic bindings preserve both Shatz samples, actual prompt/correction missingness and Öksüz SOC populations without substituting its public analysis companion.",
+      "observable": "- **GIVEN** the exact permitted input and required evidence exist.\n- **WHEN** the application applies `SPEC-043`.\n- **THEN** The operator supplies each complete authorized release. Full raw intake preserves every native member; documented semantic bindings preserve both Shatz samples, actual prompt/correction missingness and \u00d6ks\u00fcz SOC populations without substituting its public analysis companion.",
       "red_expectation": "The observed positive outcome violates its exact full-source/license contract; no missing-data claim is hidden by a green static audit.",
-      "green_expectation": "Independently observe the positive outcome declared in this exact scenario: - **GIVEN** the exact permitted input and required evidence exist.\n- **WHEN** the application applies `SPEC-043`.\n- **THEN** The operator supplies each complete authorized release. Full raw intake preserves every native member; documented semantic bindings preserve both Shatz samples, actual prompt/correction missingness and Öksüz SOC populations without substituting its public analysis companion.",
+      "green_expectation": "Independently observe the positive outcome declared in this exact scenario: - **GIVEN** the exact permitted input and required evidence exist.\n- **WHEN** the application applies `SPEC-043`.\n- **THEN** The operator supplies each complete authorized release. Full raw intake preserves every native member; documented semantic bindings preserve both Shatz samples, actual prompt/correction missingness and \u00d6ks\u00fcz SOC populations without substituting its public analysis companion.",
       "test_id": "planned::local-llm-revision::SPEC-043.P1.S2.POSITIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -43298,9 +43370,9 @@
       "scenario": "SPEC-043 The declared successful path",
       "scenario_fingerprint": "be6cba048e755d407c5f91bb91ea5cf653299a3508230ee2c96cbae5397f2d6f",
       "setup": "Future implementation observes SPEC-043 The declared successful path against the exact source-specific full-release and Apache local-source contract. Raw/documentary/normalized/actual observation classes remain separate. Labelled constructed deterministic cases may test conversion/accounting; public metadata is never substituted for acquired source bytes.",
-      "observable": "- **GIVEN** the exact permitted input and required evidence exist.\n- **WHEN** the application applies `SPEC-043`.\n- **THEN** The operator supplies each complete authorized release. Full raw intake preserves every native member; documented semantic bindings preserve both Shatz samples, actual prompt/correction missingness and Öksüz SOC populations without substituting its public analysis companion.",
+      "observable": "- **GIVEN** the exact permitted input and required evidence exist.\n- **WHEN** the application applies `SPEC-043`.\n- **THEN** The operator supplies each complete authorized release. Full raw intake preserves every native member; documented semantic bindings preserve both Shatz samples, actual prompt/correction missingness and \u00d6ks\u00fcz SOC populations without substituting its public analysis companion.",
       "red_expectation": "The observed negative outcome violates its exact full-source/license contract; no missing-data claim is hidden by a green static audit.",
-      "green_expectation": "Independently observe the negative outcome declared in this exact scenario: - **GIVEN** the exact permitted input and required evidence exist.\n- **WHEN** the application applies `SPEC-043`.\n- **THEN** The operator supplies each complete authorized release. Full raw intake preserves every native member; documented semantic bindings preserve both Shatz samples, actual prompt/correction missingness and Öksüz SOC populations without substituting its public analysis companion.",
+      "green_expectation": "Independently observe the negative outcome declared in this exact scenario: - **GIVEN** the exact permitted input and required evidence exist.\n- **WHEN** the application applies `SPEC-043`.\n- **THEN** The operator supplies each complete authorized release. Full raw intake preserves every native member; documented semantic bindings preserve both Shatz samples, actual prompt/correction missingness and \u00d6ks\u00fcz SOC populations without substituting its public analysis companion.",
       "test_id": "planned::local-llm-revision::SPEC-043.P1.S2.NEGATIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -50449,6 +50521,342 @@
         "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
       },
       "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DREL-01.P1.S1.POSITIVE",
+      "property_id": "DREL-01.P1",
+      "polarity": "positive",
+      "scenario": "DREL-01 Independent generated exercise",
+      "scenario_fingerprint": "75d9aa39c975644daaed16469f1c6e863c4dc82fb5fda71c7dc0b8adad4bdb06",
+      "setup": "No external source is acquired and empirical difficulty is unrated. Use the actual configured native owner and independently observe the declared scoped result.",
+      "observable": "the selected actual LLM/speech owners use the saved artifacts and return native scores and category-targeted advice without external acquisition",
+      "red_expectation": "The actual owner violates: the selected actual LLM/speech owners use the saved artifacts and return native scores and category-targeted advice without external acquisition",
+      "green_expectation": "Observe: the selected actual LLM/speech owners use the saved artifacts and return native scores and category-targeted advice without external acquisition",
+      "test_id": "planned::product-data-relevance::DREL-01.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_product_data_relevance.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/product-data-relevance.md",
+        "specification/v2/domain/product-data-relevance.v1.json",
+        "specification/v2/domain/validation-policy.yaml",
+        "specification/v2/docs/sources/l2-arctic-v5.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/product-data-relevance/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native source/action/generation/scoring/Lab observations. Current artifact fixtures do not prove runtime acceptance or acquired data."
+      },
+      "blocker": "Specification-only update; no implementation, actual inference/audio/import/Lab run."
+    },
+    {
+      "id": "DREL-01.P1.S1.NEGATIVE",
+      "property_id": "DREL-01.P1",
+      "polarity": "negative",
+      "scenario": "DREL-01 Independent generated exercise",
+      "scenario_fingerprint": "75d9aa39c975644daaed16469f1c6e863c4dc82fb5fda71c7dc0b8adad4bdb06",
+      "setup": "No external source is acquired and empirical difficulty is unrated. Introduce one source dependency, missing member, forged claim or selected-case observation discrepancy; preserve the independent expected scope.",
+      "observable": "the selected actual LLM/speech owners use the saved artifacts and return native scores and category-targeted advice without external acquisition",
+      "red_expectation": "The actual owner violates: the selected actual LLM/speech owners use the saved artifacts and return native scores and category-targeted advice without external acquisition",
+      "green_expectation": "Observe: the selected actual LLM/speech owners use the saved artifacts and return native scores and category-targeted advice without external acquisition",
+      "test_id": "planned::product-data-relevance::DREL-01.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_product_data_relevance.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/product-data-relevance.md",
+        "specification/v2/domain/product-data-relevance.v1.json",
+        "specification/v2/domain/validation-policy.yaml",
+        "specification/v2/docs/sources/l2-arctic-v5.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/product-data-relevance/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native source/action/generation/scoring/Lab observations. Current artifact fixtures do not prove runtime acceptance or acquired data."
+      },
+      "blocker": "Specification-only update; no implementation, actual inference/audio/import/Lab run."
+    },
+    {
+      "id": "DREL-01.P1.S2.POSITIVE",
+      "property_id": "DREL-01.P1",
+      "polarity": "positive",
+      "scenario": "DREL-01 Unavailable selected enrichment source",
+      "scenario_fingerprint": "62157597e43349ab201085653098af2dc3c9986550d44b8eac763caf68ecc388",
+      "setup": "An operator explicitly selects an unacquired source as generation context. Use the actual configured native owner and independently observe the declared scoped result.",
+      "observable": "the action reports that source unavailable, offers an explicit independent/available-source choice and does not silently replace it or block unrelated independent generation",
+      "red_expectation": "The actual owner violates: the action reports that source unavailable, offers an explicit independent/available-source choice and does not silently replace it or block unrelated independent generation",
+      "green_expectation": "Observe: the action reports that source unavailable, offers an explicit independent/available-source choice and does not silently replace it or block unrelated independent generation",
+      "test_id": "planned::product-data-relevance::DREL-01.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_product_data_relevance.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/product-data-relevance.md",
+        "specification/v2/domain/product-data-relevance.v1.json",
+        "specification/v2/domain/validation-policy.yaml",
+        "specification/v2/docs/sources/l2-arctic-v5.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/product-data-relevance/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native source/action/generation/scoring/Lab observations. Current artifact fixtures do not prove runtime acceptance or acquired data."
+      },
+      "blocker": "Specification-only update; no implementation, actual inference/audio/import/Lab run."
+    },
+    {
+      "id": "DREL-01.P1.S2.NEGATIVE",
+      "property_id": "DREL-01.P1",
+      "polarity": "negative",
+      "scenario": "DREL-01 Unavailable selected enrichment source",
+      "scenario_fingerprint": "62157597e43349ab201085653098af2dc3c9986550d44b8eac763caf68ecc388",
+      "setup": "An operator explicitly selects an unacquired source as generation context. Introduce one source dependency, missing member, forged claim or selected-case observation discrepancy; preserve the independent expected scope.",
+      "observable": "the action reports that source unavailable, offers an explicit independent/available-source choice and does not silently replace it or block unrelated independent generation",
+      "red_expectation": "The actual owner violates: the action reports that source unavailable, offers an explicit independent/available-source choice and does not silently replace it or block unrelated independent generation",
+      "green_expectation": "Observe: the action reports that source unavailable, offers an explicit independent/available-source choice and does not silently replace it or block unrelated independent generation",
+      "test_id": "planned::product-data-relevance::DREL-01.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_product_data_relevance.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/product-data-relevance.md",
+        "specification/v2/domain/product-data-relevance.v1.json",
+        "specification/v2/domain/validation-policy.yaml",
+        "specification/v2/docs/sources/l2-arctic-v5.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/product-data-relevance/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native source/action/generation/scoring/Lab observations. Current artifact fixtures do not prove runtime acceptance or acquired data."
+      },
+      "blocker": "Specification-only update; no implementation, actual inference/audio/import/Lab run."
+    },
+    {
+      "id": "DREL-02.P1.S1.POSITIVE",
+      "property_id": "DREL-02.P1",
+      "polarity": "positive",
+      "scenario": "DREL-02 Scoped local source intake",
+      "scenario_fingerprint": "558f095c454c6b326dd77647fa20437a7b4e7db19d2143e8a05c352dddda3d3f",
+      "setup": "An actual permitted archive has complete observed raw members and some native instrument fields are unbound. Use the actual configured native owner and independently observe the declared scoped result.",
+      "observable": "raw fields/members survive, unbound semantics remain raw_only, no private API or study UI is required and actual source/representation/count provenance is retained",
+      "red_expectation": "The actual owner violates: raw fields/members survive, unbound semantics remain raw_only, no private API or study UI is required and actual source/representation/count provenance is retained",
+      "green_expectation": "Observe: raw fields/members survive, unbound semantics remain raw_only, no private API or study UI is required and actual source/representation/count provenance is retained",
+      "test_id": "planned::product-data-relevance::DREL-02.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_product_data_relevance.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/product-data-relevance.md",
+        "specification/v2/domain/product-data-relevance.v1.json",
+        "specification/v2/domain/validation-policy.yaml",
+        "specification/v2/docs/sources/l2-arctic-v5.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/product-data-relevance/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native source/action/generation/scoring/Lab observations. Current artifact fixtures do not prove runtime acceptance or acquired data."
+      },
+      "blocker": "Specification-only update; no implementation, actual inference/audio/import/Lab run."
+    },
+    {
+      "id": "DREL-02.P1.S1.NEGATIVE",
+      "property_id": "DREL-02.P1",
+      "polarity": "negative",
+      "scenario": "DREL-02 Scoped local source intake",
+      "scenario_fingerprint": "558f095c454c6b326dd77647fa20437a7b4e7db19d2143e8a05c352dddda3d3f",
+      "setup": "An actual permitted archive has complete observed raw members and some native instrument fields are unbound. Introduce one source dependency, missing member, forged claim or selected-case observation discrepancy; preserve the independent expected scope.",
+      "observable": "raw fields/members survive, unbound semantics remain raw_only, no private API or study UI is required and actual source/representation/count provenance is retained",
+      "red_expectation": "The actual owner violates: raw fields/members survive, unbound semantics remain raw_only, no private API or study UI is required and actual source/representation/count provenance is retained",
+      "green_expectation": "Observe: raw fields/members survive, unbound semantics remain raw_only, no private API or study UI is required and actual source/representation/count provenance is retained",
+      "test_id": "planned::product-data-relevance::DREL-02.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_product_data_relevance.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/product-data-relevance.md",
+        "specification/v2/domain/product-data-relevance.v1.json",
+        "specification/v2/domain/validation-policy.yaml",
+        "specification/v2/docs/sources/l2-arctic-v5.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/product-data-relevance/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native source/action/generation/scoring/Lab observations. Current artifact fixtures do not prove runtime acceptance or acquired data."
+      },
+      "blocker": "Specification-only update; no implementation, actual inference/audio/import/Lab run."
+    },
+    {
+      "id": "DREL-02.P1.S2.POSITIVE",
+      "property_id": "DREL-02.P1",
+      "polarity": "positive",
+      "scenario": "DREL-02 Unsupported completeness or source substitution",
+      "scenario_fingerprint": "241b92299927ffccd5c99b2f4d3369730299e1d6ed71a966b2acbaca042e3ed1",
+      "setup": "A source is partial, a URL replaces media bytes or mirror counts differ from published expectations. Use the actual configured native owner and independently observe the declared scoped result.",
+      "observable": "the report exposes its missing/unknown/discrepant scope without calling it complete, dropping fields or substituting another release; unrelated generated use continues",
+      "red_expectation": "The actual owner violates: the report exposes its missing/unknown/discrepant scope without calling it complete, dropping fields or substituting another release; unrelated generated use continues",
+      "green_expectation": "Observe: the report exposes its missing/unknown/discrepant scope without calling it complete, dropping fields or substituting another release; unrelated generated use continues",
+      "test_id": "planned::product-data-relevance::DREL-02.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_product_data_relevance.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/product-data-relevance.md",
+        "specification/v2/domain/product-data-relevance.v1.json",
+        "specification/v2/domain/validation-policy.yaml",
+        "specification/v2/docs/sources/l2-arctic-v5.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/product-data-relevance/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native source/action/generation/scoring/Lab observations. Current artifact fixtures do not prove runtime acceptance or acquired data."
+      },
+      "blocker": "Specification-only update; no implementation, actual inference/audio/import/Lab run."
+    },
+    {
+      "id": "DREL-02.P1.S2.NEGATIVE",
+      "property_id": "DREL-02.P1",
+      "polarity": "negative",
+      "scenario": "DREL-02 Unsupported completeness or source substitution",
+      "scenario_fingerprint": "241b92299927ffccd5c99b2f4d3369730299e1d6ed71a966b2acbaca042e3ed1",
+      "setup": "A source is partial, a URL replaces media bytes or mirror counts differ from published expectations. Introduce one source dependency, missing member, forged claim or selected-case observation discrepancy; preserve the independent expected scope.",
+      "observable": "the report exposes its missing/unknown/discrepant scope without calling it complete, dropping fields or substituting another release; unrelated generated use continues",
+      "red_expectation": "The actual owner violates: the report exposes its missing/unknown/discrepant scope without calling it complete, dropping fields or substituting another release; unrelated generated use continues",
+      "green_expectation": "Observe: the report exposes its missing/unknown/discrepant scope without calling it complete, dropping fields or substituting another release; unrelated generated use continues",
+      "test_id": "planned::product-data-relevance::DREL-02.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_product_data_relevance.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/product-data-relevance.md",
+        "specification/v2/domain/product-data-relevance.v1.json",
+        "specification/v2/domain/validation-policy.yaml",
+        "specification/v2/docs/sources/l2-arctic-v5.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/product-data-relevance/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native source/action/generation/scoring/Lab observations. Current artifact fixtures do not prove runtime acceptance or acquired data."
+      },
+      "blocker": "Specification-only update; no implementation, actual inference/audio/import/Lab run."
+    },
+    {
+      "id": "DREL-03.P1.S1.POSITIVE",
+      "property_id": "DREL-03.P1",
+      "polarity": "positive",
+      "scenario": "DREL-03 Focused development experiment",
+      "scenario_fingerprint": "a1263ed4cceb59ab48553e81cb925416c3da0a51c3c1ae76be64fbe89e0d881e",
+      "setup": "An authorized AI increment selects meaningful constructed or permitted references for a concrete LLM/speech binding. Use the actual configured native owner and independently observe the declared scoped result.",
+      "observable": "actual Lab/native observations cover the selected positive/negative cases, failures and circular-reference limits; no732population or participant recruitment is required",
+      "red_expectation": "The actual owner violates: actual Lab/native observations cover the selected positive/negative cases, failures and circular-reference limits; no732population or participant recruitment is required",
+      "green_expectation": "Observe: actual Lab/native observations cover the selected positive/negative cases, failures and circular-reference limits; no732population or participant recruitment is required",
+      "test_id": "planned::product-data-relevance::DREL-03.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_product_data_relevance.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/product-data-relevance.md",
+        "specification/v2/domain/product-data-relevance.v1.json",
+        "specification/v2/domain/validation-policy.yaml",
+        "specification/v2/docs/sources/l2-arctic-v5.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/product-data-relevance/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native source/action/generation/scoring/Lab observations. Current artifact fixtures do not prove runtime acceptance or acquired data."
+      },
+      "blocker": "Specification-only update; no implementation, actual inference/audio/import/Lab run."
+    },
+    {
+      "id": "DREL-03.P1.S1.NEGATIVE",
+      "property_id": "DREL-03.P1",
+      "polarity": "negative",
+      "scenario": "DREL-03 Focused development experiment",
+      "scenario_fingerprint": "a1263ed4cceb59ab48553e81cb925416c3da0a51c3c1ae76be64fbe89e0d881e",
+      "setup": "An authorized AI increment selects meaningful constructed or permitted references for a concrete LLM/speech binding. Introduce one source dependency, missing member, forged claim or selected-case observation discrepancy; preserve the independent expected scope.",
+      "observable": "actual Lab/native observations cover the selected positive/negative cases, failures and circular-reference limits; no732population or participant recruitment is required",
+      "red_expectation": "The actual owner violates: actual Lab/native observations cover the selected positive/negative cases, failures and circular-reference limits; no732population or participant recruitment is required",
+      "green_expectation": "Observe: actual Lab/native observations cover the selected positive/negative cases, failures and circular-reference limits; no732population or participant recruitment is required",
+      "test_id": "planned::product-data-relevance::DREL-03.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_product_data_relevance.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/product-data-relevance.md",
+        "specification/v2/domain/product-data-relevance.v1.json",
+        "specification/v2/domain/validation-policy.yaml",
+        "specification/v2/docs/sources/l2-arctic-v5.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/product-data-relevance/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native source/action/generation/scoring/Lab observations. Current artifact fixtures do not prove runtime acceptance or acquired data."
+      },
+      "blocker": "Specification-only update; no implementation, actual inference/audio/import/Lab run."
+    },
+    {
+      "id": "DREL-03.P1.S2.POSITIVE",
+      "property_id": "DREL-03.P1",
+      "polarity": "positive",
+      "scenario": "DREL-03 Claim exceeds selected observed evidence",
+      "scenario_fingerprint": "061023cfce70547929ffdc5e8b5f325a486aa7cb63b02f6acfabeba8aec81a43",
+      "setup": "Only fixture/static or selected-binding evidence exists and other categories/voices/populations are unobserved. Use the actual configured native owner and independently observe the declared scoped result.",
+      "observable": "the claim remains limited or incomplete; no artifact fixture, intended sound or small selected population is represented as actual full-scope behavior",
+      "red_expectation": "The actual owner violates: the claim remains limited or incomplete; no artifact fixture, intended sound or small selected population is represented as actual full-scope behavior",
+      "green_expectation": "Observe: the claim remains limited or incomplete; no artifact fixture, intended sound or small selected population is represented as actual full-scope behavior",
+      "test_id": "planned::product-data-relevance::DREL-03.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_product_data_relevance.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/product-data-relevance.md",
+        "specification/v2/domain/product-data-relevance.v1.json",
+        "specification/v2/domain/validation-policy.yaml",
+        "specification/v2/docs/sources/l2-arctic-v5.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/product-data-relevance/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native source/action/generation/scoring/Lab observations. Current artifact fixtures do not prove runtime acceptance or acquired data."
+      },
+      "blocker": "Specification-only update; no implementation, actual inference/audio/import/Lab run."
+    },
+    {
+      "id": "DREL-03.P1.S2.NEGATIVE",
+      "property_id": "DREL-03.P1",
+      "polarity": "negative",
+      "scenario": "DREL-03 Claim exceeds selected observed evidence",
+      "scenario_fingerprint": "061023cfce70547929ffdc5e8b5f325a486aa7cb63b02f6acfabeba8aec81a43",
+      "setup": "Only fixture/static or selected-binding evidence exists and other categories/voices/populations are unobserved. Introduce one source dependency, missing member, forged claim or selected-case observation discrepancy; preserve the independent expected scope.",
+      "observable": "the claim remains limited or incomplete; no artifact fixture, intended sound or small selected population is represented as actual full-scope behavior",
+      "red_expectation": "The actual owner violates: the claim remains limited or incomplete; no artifact fixture, intended sound or small selected population is represented as actual full-scope behavior",
+      "green_expectation": "Observe: the claim remains limited or incomplete; no artifact fixture, intended sound or small selected population is represented as actual full-scope behavior",
+      "test_id": "planned::product-data-relevance::DREL-03.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_product_data_relevance.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/product-data-relevance.md",
+        "specification/v2/domain/product-data-relevance.v1.json",
+        "specification/v2/domain/validation-policy.yaml",
+        "specification/v2/docs/sources/l2-arctic-v5.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/product-data-relevance/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native source/action/generation/scoring/Lab observations. Current artifact fixtures do not prove runtime acceptance or acquired data."
+      },
+      "blocker": "Specification-only update; no implementation, actual inference/audio/import/Lab run."
     }
   ],
   "commands": [
@@ -51951,7 +52359,19 @@
         "planned::ai-development::DEV-12.P1.S1.POSITIVE",
         "planned::ai-development::DEV-12.P1.S1.NEGATIVE",
         "planned::ai-development::DEV-12.P1.S2.POSITIVE",
-        "planned::ai-development::DEV-12.P1.S2.NEGATIVE"
+        "planned::ai-development::DEV-12.P1.S2.NEGATIVE",
+        "planned::product-data-relevance::DREL-01.P1.S1.POSITIVE",
+        "planned::product-data-relevance::DREL-01.P1.S1.NEGATIVE",
+        "planned::product-data-relevance::DREL-01.P1.S2.POSITIVE",
+        "planned::product-data-relevance::DREL-01.P1.S2.NEGATIVE",
+        "planned::product-data-relevance::DREL-02.P1.S1.POSITIVE",
+        "planned::product-data-relevance::DREL-02.P1.S1.NEGATIVE",
+        "planned::product-data-relevance::DREL-02.P1.S2.POSITIVE",
+        "planned::product-data-relevance::DREL-02.P1.S2.NEGATIVE",
+        "planned::product-data-relevance::DREL-03.P1.S1.POSITIVE",
+        "planned::product-data-relevance::DREL-03.P1.S1.NEGATIVE",
+        "planned::product-data-relevance::DREL-03.P1.S2.POSITIVE",
+        "planned::product-data-relevance::DREL-03.P1.S2.NEGATIVE"
       ]
     },
     {

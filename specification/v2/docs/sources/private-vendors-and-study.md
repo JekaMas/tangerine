@@ -1,6 +1,6 @@
 # Complete private/export and study adapter protocol
 
-DOUBAO-STUDY-RECORDS, MOODRICK-DATA and NIR-DATA are separate full-source identities. No paper, demo, public description or one vendor's export substitutes for another. Their actual data, agreements and private interfaces are external operational inputs, not unresolved product policy.
+DOUBAO-STUDY-RECORDS, MOODRICK-DATA and NIR-DATA are separate full-source identities. No paper, demo, public description or one vendor's export substitutes for another. Their actual exports, field bindings and use terms are inputs only to selected optional source actions; private interfaces are inputs only to a selected documented remote route, not application delivery.
 
 ## Complete local export path
 
@@ -40,8 +40,10 @@ Positive: an authorized complete scoped NIR export retains its exact native comp
 
 ## Exact status
 
-Public product and request-route research is complete for the inspected material. Private exports, native dictionaries, complete scope/counts, use agreements and optional private API contracts remain source-provider inputs. The adapter behavior is fully specified; their bytes/native contracts cannot be created by product approval or web research. See [the exact input ledger](../../../../audit/corpus-acquisition-20261009/REMAINING-INPUTS.md). No vendor data are acquired, no interface is probed and no runtime source is falsely complete.
+Public product and request-route research is complete for the inspected material. Private exports, native dictionaries, complete scope/counts and use agreements remain inputs to the selected source use/completeness claim. Private API documents matter only when selecting a documented remote adapter; no vendor-specific private adapter is required for the supported local export path. The adapter behavior is fully specified; their bytes/native contracts cannot be created by product approval or web research. See [the exact input ledger](../../../../audit/corpus-acquisition-20261009/REMAINING-INPUTS.md). No vendor data are acquired, no interface is probed and no runtime source is falsely complete.
 
 ## Current vendor inquiries
 
 The user-authorized 2026-10-09 inquiries were sent separately to Moodrick at edu.cohub55@gmail.com and NIR at info@niracademy.com. Each asks for its own complete export, native field dictionary, scope/counts, source-use terms and whether local exercises or configured LLM API transfers are allowed. No exports, private contracts or API access have been received. No vendor endpoint was probed. See audit/corpus-acquisition-20261009/outreach.json.
+
+Current product scope is ../product-data-relevance.md. Complete local directory/archive intake is the supported delivery path. A private API contract is required only if the operator selects that documented remote route; obtaining or implementing vendor-specific private APIs is not a product completion item. Native questionnaire/pedagogy scales remain preserved source data and optional analysis, never required application score/UI features.

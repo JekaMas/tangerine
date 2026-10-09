@@ -39,8 +39,10 @@ Positive: a complete authorized export preserves native participant/submission j
 
 Negative: a PDF, aggregate table, constructed 20-person matrix, model-generated journal, guessed Likert scale, invented control/follow-up arm, or 545 valid videos with the three actually supplied invalid videos discarded cannot be reported as the full underlying study release. Raw intake remains available when semantic bindings or source fields are missing. Local startup and unrelated exercises remain available.
 
-Exact unavailable artifacts are listed in [the current input ledger](../../../../audit/source-contract-research-20261009/REMAINING-INPUTS.md); no author was contacted and no study account was accessed.
+Historical unavailable artifacts are listed in [the source-research input ledger](../../../../audit/source-contract-research-20261009/REMAINING-INPUTS.md). The later inquiry below supersedes its no-contact observation; no study account was accessed.
 
 ## Current owner inquiry
 
 On 2026-10-09 a request for Dr. Liao Xiaodan was sent through the institution’s published department forwarding address, wgyxy_bg@zjhu.edu.cn. It requests anonymized complete participant/day records, exact prompts and questionnaire instruments, scale dictionaries and reuse terms. This is an actual sent request, not direct-author delivery, an owner reply or a data release. Participant records and exact unpublished instruments remain unavailable. See audit/corpus-acquisition-20261009/outreach.json.
+
+The current relevance mapping in ../product-data-relevance.md retains the entire source release. Study prompts/instruments/responses are optional context/archival-analysis data; Tangerine does not need a questionnaire/interview UI, adoption study, participant recruitment or source-scale-to-grade conversion. Missing native instrument wording affects only that source interpretation/completeness claim. It does not leave the generation/scoring prompts or42formulas undefined.

@@ -69,3 +69,5 @@ Primary local-TTS references: [Kokoro inference owner](https://github.com/hexgra
 Prompt/context versions, actual inputs/outputs, diagnostic quality comparisons and local traces can be managed through the optional LLM Lab in llm-lab.md. The main flow needs no Lab, prompt approval, benchmark threshold or human review; saved local bundles own normal execution.
 
 Exact expansion, replayable edits and candidate-to-key projection are defined in generation-contract-details.md.
+
+Data dependency scope is specified in product-data-relevance.md: the generated key/actual answer supports scoring and targeted recommendations without source frequency, real participant cohorts or benchmark completion. Missing optional source contexts affect only their explicitly selected actions.

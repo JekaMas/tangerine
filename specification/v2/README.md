@@ -21,3 +21,5 @@ Optional LLM Lab manages prompt/context versions, local traces and controlled qu
 The current completeness reconciliation is ../../audit/flow-fullness-20261009/REPORT.md. Exact additional contracts are docs/generation-contract-details.md and docs/llm-lab-contract-details.md.
 
 AI-affecting development must use the selected Lab and reconcile owned prompts/context/inference through docs/ai-development.md. This project workflow requirement does not make Lab necessary for ordinary downloaded application use.
+
+Current dependency relevance and removed requirements are owned by docs/product-data-relevance.md and domain/product-data-relevance.v1.json. Earlier remaining-input reports retain historical observations; their blanket acquisition/certification requests are not current product completion tasks.
