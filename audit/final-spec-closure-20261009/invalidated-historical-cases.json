@@ -1,0 +1,114 @@
+[
+  {
+    "id": "RUN-03.P2.POSITIVE",
+    "property_id": "RUN-03.P2",
+    "polarity": "positive",
+    "scenario": "RUN-03 supported and rejected inputs",
+    "scenario_fingerprint": "1900fc08b728f6deb15586db08522396427afc7fd95f6cc360db4b79d3516076",
+    "setup": "Run unittest::test_runtime.RuntimeTests.test_library_empty_positive against the real services/api/internal/app/http.go boundary with the controlled infrastructure inputs or actual configured local dependencies described in that test.",
+    "observable": "The authenticated first-start library returns the actual empty PostgreSQL result; unauthenticated reads are denied. Accepted input satisfies its positive assertions.",
+    "red_expectation": "A wrong implementation rejects the actual accepted state or returns an independently incorrect result.",
+    "green_expectation": "The exact test observation discriminates the stated positive contract.",
+    "test_id": "unittest::test_runtime.RuntimeTests.test_library_empty_positive",
+    "command_id": "runtime",
+    "state": "implemented",
+    "source_path": "tests/test_runtime.py",
+    "source_sha256": "b6c4be9a7f9f3270a9de0f580b3a4044c844c7a20d0f390c9fae310b87222562",
+    "invalidation_dependencies": [
+      "tests/test_runtime.py",
+      "services/api/internal/app/http.go",
+      "services/api/internal/app/storage.go",
+      "services/api/internal/app/security.go",
+      "services/api/internal/app/migrations/001_foundation.sql",
+      "services/web/app/api/[...path]/route.js",
+      "deploy/local/compose.yaml"
+    ],
+    "substitution": {
+      "classification": "NO_TEST_DOUBLE",
+      "note": "Real production owner. Controlled protocol metadata is input, not a replacement of storage, transport, crypto or service behavior."
+    }
+  },
+  {
+    "id": "RUN-03.P2.NEGATIVE",
+    "property_id": "RUN-03.P2",
+    "polarity": "negative",
+    "scenario": "RUN-03 supported and rejected inputs",
+    "scenario_fingerprint": "1900fc08b728f6deb15586db08522396427afc7fd95f6cc360db4b79d3516076",
+    "setup": "Run unittest::test_runtime.RuntimeTests.test_library_access_negative against the real services/api/internal/app/http.go boundary with the controlled infrastructure inputs or actual configured local dependencies described in that test.",
+    "observable": "The authenticated first-start library returns the actual empty PostgreSQL result; unauthenticated reads are denied. Forbidden input is rejected as independently asserted.",
+    "red_expectation": "A wrong implementation admits unauthorized, malformed, unavailable or tampered state.",
+    "green_expectation": "The exact test observation discriminates the stated negative contract.",
+    "test_id": "unittest::test_runtime.RuntimeTests.test_library_access_negative",
+    "command_id": "runtime",
+    "state": "implemented",
+    "source_path": "tests/test_runtime.py",
+    "source_sha256": "b6c4be9a7f9f3270a9de0f580b3a4044c844c7a20d0f390c9fae310b87222562",
+    "invalidation_dependencies": [
+      "tests/test_runtime.py",
+      "services/api/internal/app/http.go",
+      "services/api/internal/app/storage.go",
+      "services/api/internal/app/security.go",
+      "services/api/internal/app/migrations/001_foundation.sql",
+      "services/web/app/api/[...path]/route.js",
+      "deploy/local/compose.yaml"
+    ],
+    "substitution": {
+      "classification": "NO_TEST_DOUBLE",
+      "note": "Real production owner. Controlled protocol metadata is input, not a replacement of storage, transport, crypto or service behavior."
+    }
+  },
+  {
+    "id": "RUN-06.P3.POSITIVE",
+    "property_id": "RUN-06.P3",
+    "polarity": "positive",
+    "scenario": "RUN-06 supported and rejected inputs",
+    "scenario_fingerprint": "7e896c50e43d46c365f1da1020556c2de2524d15c8624b76ff203546ae6d94d2",
+    "setup": "Run the named actual boundary test with its explicitly selected local inputs/dependencies.",
+    "observable": "Restart preserves actual account/session/catalog state and isolated restore refuses an existing target without altering it. positive boundary is asserted by unittest::test_storage_runtime.StorageRuntimeTests.test_restart_persists_session_and_state_positive.",
+    "red_expectation": "The assertion fails if the real owner violates its stated accepted/rejected boundary.",
+    "green_expectation": "The named actual assertions pass, within their stated scope.",
+    "test_id": "unittest::test_storage_runtime.StorageRuntimeTests.test_restart_persists_session_and_state_positive",
+    "command_id": "storage-selected",
+    "state": "implemented",
+    "source_path": "tests/test_storage_runtime.py",
+    "source_sha256": "060d733ac8b39d850c7b35bbeb24bc4d294ffc1d5c6dfd938899aa3548046f8d",
+    "invalidation_dependencies": [
+      "tests/test_storage_runtime.py",
+      "scripts/restore_isolated.py",
+      "services/api/internal/app/storage.go",
+      "services/api/internal/app/migrations/001_foundation.sql",
+      "deploy/local/compose.yaml"
+    ],
+    "substitution": {
+      "classification": "NO_TEST_DOUBLE",
+      "note": "Actual production owner or real local runtime. Invalid configuration/architecture inputs are boundary inputs; no teacher/provider/reviewer evidence is fabricated."
+    }
+  },
+  {
+    "id": "RUN-06.P3.NEGATIVE",
+    "property_id": "RUN-06.P3",
+    "polarity": "negative",
+    "scenario": "RUN-06 supported and rejected inputs",
+    "scenario_fingerprint": "7e896c50e43d46c365f1da1020556c2de2524d15c8624b76ff203546ae6d94d2",
+    "setup": "Run the named actual boundary test with its explicitly selected local inputs/dependencies.",
+    "observable": "Restart preserves actual account/session/catalog state and isolated restore refuses an existing target without altering it. negative boundary is asserted by unittest::test_storage_runtime.StorageRuntimeTests.test_existing_restore_project_negative.",
+    "red_expectation": "The assertion fails if the real owner violates its stated accepted/rejected boundary.",
+    "green_expectation": "The named actual assertions pass, within their stated scope.",
+    "test_id": "unittest::test_storage_runtime.StorageRuntimeTests.test_existing_restore_project_negative",
+    "command_id": "storage-original",
+    "state": "implemented",
+    "source_path": "tests/test_storage_runtime.py",
+    "source_sha256": "060d733ac8b39d850c7b35bbeb24bc4d294ffc1d5c6dfd938899aa3548046f8d",
+    "invalidation_dependencies": [
+      "tests/test_storage_runtime.py",
+      "scripts/restore_isolated.py",
+      "services/api/internal/app/storage.go",
+      "services/api/internal/app/migrations/001_foundation.sql",
+      "deploy/local/compose.yaml"
+    ],
+    "substitution": {
+      "classification": "NO_TEST_DOUBLE",
+      "note": "Actual production owner or real local runtime. Invalid configuration/architecture inputs are boundary inputs; no teacher/provider/reviewer evidence is fabricated."
+    }
+  }
+]

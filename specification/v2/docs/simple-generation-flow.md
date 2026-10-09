@@ -73,3 +73,5 @@ Exact expansion, replayable edits and candidate-to-key projection are defined in
 Data dependency scope is specified in product-data-relevance.md: the generated key/actual answer supports scoring and targeted recommendations without source frequency, real participant cohorts or benchmark completion. Missing optional source contexts affect only their explicitly selected actions.
 
 Answer checking follows answer-components-v2 in answer-component-scoring.md: independent correction correctness plus an optional explanation assessment whenever supplied, without omission penalty or rationale-to-correction cancellation. Native code supplies the main score and separate applicable explanation score; feedback discusses both.
+
+Current preparation persistence/resume is defined by preparation-persistence.md and preparation-state/preparation-settings schemas. Generation must be self-contained under self-contained-generation.md; no private contextual fact determines a scored mistake. Key repair uses key-repair-projection.md and the existing LLM operation. These are written contracts, not implemented behavior.

@@ -24,3 +24,5 @@ Before submit the teacher sees audio/public task context only. After submit show
 Disputes retain open, resolving and resolved states as declared by their schema. A real user statement opens a dispute; adjudication is an LLM operation. A changed mapping/key appends a version and explicit old-to-new unit correspondence. Ordinary history is preserved; explicit local deletion uses maintenance cleanup, not an unerasable audit requirement.
 
 answer-components-v2 keeps completed primary results completed when only an optional explanation is unresolved; retain its nonblocking issue and component metric status. Explicit reason-only reconsideration appends only that supported component/feedback revision and preserves primary metrics unless actual primary evidence changes.
+
+Current preparation persistence/resume is defined by preparation-persistence.md and preparation-state/preparation-settings schemas. Generation must be self-contained under self-contained-generation.md; no private contextual fact determines a scored mistake. Key repair uses key-repair-projection.md and the existing LLM operation. These are written contracts, not implemented behavior.

@@ -25,7 +25,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | blueprint-write | schema hash | document.payload | 32 |
 | blueprint | 2.0.0 | document.payload | 34 |
 | cancel-request | schema hash | derived DTO or actual operation input/output receipt | 1 |
-| candidate-envelope | schema hash | document.payload | 4 |
+| candidate-envelope | schema hash | document.payload | 5 |
 | capability-record | schema hash | document.payload | 13 |
 | case-candidate | 1.0.0 | document.payload | 71 |
 | case-head | schema hash | document.payload | 9 |
@@ -57,7 +57,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | feedback | 2.0.0 | document.payload | 13 |
 | format-binding-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 13 |
 | generation-input | 2.0.0 | derived DTO or actual operation input/output receipt | 27 |
-| generation-request | schema hash | derived DTO or actual operation input/output receipt | 4 |
+| generation-request | schema hash | derived DTO or actual operation input/output receipt | 5 |
 | grant-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 15 |
 | ground-truth | 2.0.0 | document.payload | 118 |
 | health | schema hash | derived DTO or actual operation input/output receipt | 6 |
@@ -71,19 +71,19 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | linguistic-audit-input | 2.0.0 | derived DTO or actual operation input/output receipt | 8 |
 | linguistic-audit | 2.0.0 | document.payload | 16 |
 | llm-profile | schema hash | Derived projection/configuration member; not an independent evidence document | 14 |
-| llm-review-input | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 13 |
-| llm-review-output | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 12 |
+| llm-review-input | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 14 |
+| llm-review-output | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 13 |
 | maintenance-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | mapping-input | 2.0.0 | derived DTO or actual operation input/output receipt | 12 |
 | measure-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | normalization | 2.0.0 | document.payload | 13 |
 | operation-result | schema hash | derived DTO or actual operation input/output receipt | 9 |
-| operation-status | schema hash | derived DTO or actual operation input/output receipt | 10 |
+| operation-status | schema hash | derived DTO or actual operation input/output receipt | 11 |
 | permission-grant | 2.0.0 | document.payload | 17 |
 | person | 2.0.0 | document.payload | 9 |
 | play-event-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 8 |
 | playback-event | 2.0.0 | document.payload | 10 |
-| prepare-view | schema hash | derived DTO or actual operation input/output receipt | 6 |
+| prepare-view | schema hash | derived DTO or actual operation input/output receipt | 7 |
 | provider-receipt | 2.0.0 | document.payload | 25 |
 | put-config-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 49 |
 | qualification-report-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 5 |
@@ -95,7 +95,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | reconsider-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | render-constraint | schema hash | document.payload | 11 |
 | render-plan | 2.0.0 | document.payload | 35 |
-| render-request | schema hash | derived DTO or actual operation input/output receipt | 2 |
+| render-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | resolve-dispute-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 8 |
 | restore-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | result-envelope | 2.0.0 | document.payload | 11 |
@@ -149,3 +149,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | ai-development-run | 2.0.0 | document.payload with linked private assets | 96 |
 
 | ai-surface-inventory | 2.0.0 | document.payload with linked private assets | 28 |
+
+| key-repair-proposal | 2.0.0 | LLM canonical payload stored with review/judgment and private raw receipt assets | 6 |
+| preparation-settings | 2.0.0 | immutable private settings asset linked from preparation document | 11 |
+| preparation-state | 2.0.0 | document.payload with entity_head revision and linked private assets | 24 |

@@ -19,6 +19,16 @@ operations:
     effect: List eligible cases with the safe projection.
     activity: teacher
     revision: false
+  - id: list_preparations
+    method: GET
+    path: /api/v1/preparations
+    request: null
+    response: list:preparation-state
+    success: 200
+    effect: Read persisted preparation checkpoints and explicit resume choices
+      without model/speech dispatch.
+    activity: prepare
+    revision: false
   - id: get_blueprint
     method: GET
     path: /api/v1/blueprints/{id}
@@ -43,8 +53,8 @@ operations:
     request: generation-request
     response: candidate-envelope
     success: 200
-    effect: Save content, call selected real LLM and retain output; optional
-      configured cap only.
+    effect: Persist preparation snapshot before dispatch, checkpoint clean text then
+      mutations, and continue the exact saved preparation on explicit resume.
     activity: prepare
     revision: false
   - id: linguistic_audit
@@ -62,7 +72,8 @@ operations:
     request: render-request
     response: operation-result
     success: 200
-    effect: Synthesize exact turns and link final bytes under the storage protocol.
+    effect: Render the saved preparation plan or an explicit imported/native plan;
+      checkpoint actual linked audio/key without lifetime manual retry caps.
     activity: prepare
     revision: true
   - id: measure
@@ -378,7 +389,9 @@ operations:
     request: maintenance-request
     response: operation-result
     success: 200
-    effect: Save actual source revocation notice/status and expose affected selected-source use; retain provenance without permission epochs or grant closure. Independent authored exercises remain available.
+    effect: Save actual source revocation notice/status and expose affected
+      selected-source use; retain provenance without permission epochs or grant
+      closure. Independent authored exercises remain available.
     activity: sources
     revision: true
   - id: import_source

@@ -37,13 +37,27 @@
       "type": "integer",
       "description": "Positive monotonic explicit preparation attempt counter; no lifetime limit. Each action retains its own deadline and retry rules.",
       "minimum": 1
+    },
+    "preparation_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Existing saved preparation identity."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Generate: null creates a new preparation; non-null continues the exact saved preparation. Render: non-null for authored preparations, null for imported/native rendering."
     }
   },
   "required": [
     "blueprint_id",
     "effective_configuration_sha256",
     "source_record_ids",
-    "generation_attempt"
+    "generation_attempt",
+    "preparation_id"
   ],
   "additionalProperties": false
 }

@@ -103,3 +103,5 @@ Use the named content projection in `docs/persistence.md`. Do not remove every f
 A server envelope digest omits only its own digest field. A case content digest excludes review receipts to prevent a digest cycle.
 Hash source files over the original bytes. Hash JSON domain content with RFC 8785 after schema validation.
 A field containing a previously measured asset digest is part of the subject content. Do not omit it.
+
+Current preparation persistence/resume is defined by preparation-persistence.md and preparation-state/preparation-settings schemas. Generation must be self-contained under self-contained-generation.md; no private contextual fact determines a scored mistake. Key repair uses key-repair-projection.md and the existing LLM operation. These are written contracts, not implemented behavior.

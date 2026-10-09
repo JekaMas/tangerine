@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/key-repair-proposal.schema.json",
+  "title": "key-repair-proposal",
+  "type": "object",
+  "description": "Complete semantic key repair returned by the existing adjudication call; no grades, storage envelope or fabricated audio observations.",
+  "properties": {
+    "base_case_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Exact old frozen case key content."
+    },
+    "audio_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "The recording actually heard; unchanged by key repair."
+    },
+    "affected_components": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "detection",
+          "classification",
+          "correction",
+          "explanation",
+          "key"
+        ]
+      },
+      "description": "Actual dependencies changed by the repair; optional explanation-only repair preserves primary findings."
+    },
+    "proposed_units": {
+      "type": "array",
+      "items": {
+        "$ref": "case-candidate.schema.json#/properties/planned_units/items"
+      },
+      "description": "Complete proposed semantic unit set. Existing IDs are retained as references; new unit/options/propositions use proposal-local IDs, remapped once by the server."
+    },
+    "correspondence_relations": {
+      "$ref": "unit-correspondence.schema.json#/properties/relations",
+      "description": "Complete old-to-proposed-unit correspondence; proposal IDs are local until persistence."
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Support for this key repair in the supplied clean/surface text, mutations, answer and available evidence."
+    }
+  },
+  "required": [
+    "base_case_sha256",
+    "audio_sha256",
+    "affected_components",
+    "proposed_units",
+    "correspondence_relations",
+    "reason"
+  ],
+  "additionalProperties": false
+}

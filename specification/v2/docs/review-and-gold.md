@@ -26,4 +26,6 @@ A stimulus is one distinct playable recording/context/key condition; aliases or 
 
 Current dependency scope is product-data-relevance.md. Genuine attempt collection is needed only for a claimed population-calibrated difficulty/validity result. Scoring and targeted recommendations use the saved key/answer without rated difficulty. The full732stimulus target remains an optional full-benchmark definition, not a product-completion or every-increment task.
 
-Apply answer-components-v2 separation to case review, audit and adjudication: a false/unknown teacher rationale is not an invalid correction or automatic whole-key defect. A rationale-only disagreement affects explanation findings/feedback, not supported detection/correction. A genuinely defective rationale rubric may require a versioned key proposal; the remaining missing typed key-repair producer is tracked as EXP-002.
+Apply answer-components-v2 separation to case review, audit and adjudication: a false/unknown teacher rationale is not an invalid correction or automatic whole-key defect. A rationale-only disagreement affects explanation findings/feedback, not supported detection/correction. A genuinely defective rationale rubric may require a versioned key proposal; the complete typed key-repair producer and storage projection are specified in key-repair-projection.md.
+
+key-repair-projection.md completes the exact existing-role response/projection; generated answer reconsideration/dispute supplies the saved mutation_manifest in addition to canonical/surface key text and the exact answer.

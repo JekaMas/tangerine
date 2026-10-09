@@ -25,3 +25,7 @@ AI-affecting development must use the selected Lab and reconcile owned prompts/c
 Current dependency relevance and removed requirements are owned by docs/product-data-relevance.md and domain/product-data-relevance.v1.json. Earlier remaining-input reports retain historical observations; their blanket acquisition/certification requests are not current product completion tasks.
 
 The active answer policy is docs/answer-component-scoring.md: correction and optional supplied explanation are assessed separately, no omission penalty, and primary grades remain independent of rationale-only issues. New installations use local speech by default with an explicit model-setup action; configured service synthesis remains available.
+
+Current key repair, durable preparation and self-contained generation are defined in docs/key-repair-projection.md, docs/preparation-persistence.md and docs/self-contained-generation.md. Concrete property fixtures supplement the canonical verification graph; they are design examples, not actual model/application acceptance.
+
+Concrete pre-implementation test design for every declared property/case: [verification-fixtures.md](docs/verification-fixtures.md) and [verification-fixtures.v1.json](domain/verification-fixtures.v1.json). Constructed inputs/expectations retain their origin and do not count as observed application/model/audio/source behavior. Current closure evidence is audit/final-spec-closure-20261009/REPORT.md.

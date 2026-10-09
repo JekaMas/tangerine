@@ -3359,7 +3359,7 @@
     {
       "kind": "candidate-envelope",
       "schema": "contracts/candidate-envelope.schema.json",
-      "sha256": "112e4e66e3571922b177c86a0192346e9fe48e8401fd684c54b943bbe9f34c37",
+      "sha256": "87bf2bdef5886cc412abefb40916680e4a87877cc2de2c341ce5f8103276e824",
       "schema_version": null,
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -3395,6 +3395,14 @@
           "description": null,
           "schema_reference": "case-candidate.schema.json",
           "rule_sha256": "d3e50807491e0b2ab36438d0620c53fac47f361624672b280d74c8883f9fc184"
+        },
+        {
+          "name": "preparation_id",
+          "pointer": "/properties/preparation_id",
+          "required_in_parent": true,
+          "description": "The durable saved preparation that produced this candidate.",
+          "schema_reference": null,
+          "rule_sha256": "90e9aec2cd4e188d434d8e4c69cc2c11b11a2d02d7604164b58669a0a32b3e2d"
         }
       ]
     },
@@ -9023,7 +9031,7 @@
     {
       "kind": "generation-request",
       "schema": "contracts/generation-request.schema.json",
-      "sha256": "2310fc721b550348faac1d976f94ff7818ffa5bb88e64920dfff38d00442b7a2",
+      "sha256": "615c574061e70656780d981a2ac6d5c13ce3743a8ed6dd56ae2f221c30ddca40",
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -9059,6 +9067,14 @@
           "description": "Positive monotonic explicit preparation attempt counter; no lifetime limit. Each action retains its own deadline and retry rules.",
           "schema_reference": null,
           "rule_sha256": "f6fe536b709a62f88c81ea98f0ebace7b34283301d165b5b22f401cac40c2421"
+        },
+        {
+          "name": "preparation_id",
+          "pointer": "/properties/preparation_id",
+          "required_in_parent": true,
+          "description": "Generate: null creates a new preparation; non-null continues the exact saved preparation. Render: non-null for authored preparations, null for imported/native rendering.",
+          "schema_reference": null,
+          "rule_sha256": "ad934a993be993ecf535052de96a9863c78f9c31d08fa68d010cb614fcd4289d"
         }
       ]
     },
@@ -11173,7 +11189,7 @@
       "storage": "Derived DTO or actual operation/stage input/output receipt",
       "kind": "llm-review-input",
       "schema": "contracts/llm-review-input.schema.json",
-      "sha256": "878bbcfbd5fcc718203da95c75e65e612664fa9414395631f146a6b70b99f05b",
+      "sha256": "c34a4b180d530aaa7092e5496bcdc5670ef33b24fb3ad819d58c1784d942c075",
       "schema_version": "2.0.0",
       "fields": [
         {
@@ -11279,6 +11295,14 @@
           "description": "Actual input modality; transcript-only models never claim direct hearing.",
           "schema_reference": null,
           "rule_sha256": "e568a5f1607b95013f746da3814aa4a5440b0a2696ba1897da9156a445226037"
+        },
+        {
+          "name": "mutation_manifest",
+          "pointer": "/properties/mutation_manifest",
+          "required_in_parent": true,
+          "description": "Exact saved generated mutation manifest for authored answer reconsideration/dispute; null for source cases without one. Canonical and surface text are already in ground_truth.",
+          "schema_reference": null,
+          "rule_sha256": "a92e136b59a6813d196c0b79664bd2a0d724aedc1fcea7d09164340ae97cfd44"
         }
       ]
     },
@@ -11287,7 +11311,7 @@
       "storage": "Derived DTO or actual operation/stage input/output receipt",
       "kind": "llm-review-output",
       "schema": "contracts/llm-review-output.schema.json",
-      "sha256": "4b79ae4ae1b7ef38055cda030b2aa8aae371410d9499f2702456427d6c4d6429",
+      "sha256": "21a4c5503d1931778e0a36ead09549b0f2fcaeb22d08bd9bc52403e5a762e7c5",
       "schema_version": "2.0.0",
       "fields": [
         {
@@ -11337,6 +11361,14 @@
           "description": null,
           "schema_reference": null,
           "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "key_repair",
+          "pointer": "/properties/key_repair",
+          "required_in_parent": true,
+          "description": "Required non-null when resolution=key_defect; otherwise null.",
+          "schema_reference": null,
+          "rule_sha256": "af6468f3604e55736588beaf8696300e753a62101005a63e08b484d6160a88ce"
         },
         {
           "name": "unit_id",
@@ -11761,7 +11793,7 @@
     {
       "kind": "operation-status",
       "schema": "contracts/operation-status.schema.json",
-      "sha256": "830de38e82313c20280ec78d3aba9f8d3b7c15b41069b55111a317853a5ebc1b",
+      "sha256": "040c9bc5b2879c8c9451c2774c5188f927bcc534ba5fe8bc7d14cd04821d4b0b",
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -11821,6 +11853,14 @@
           "description": "The value, or null when the contract states that it is absent.",
           "schema_reference": null,
           "rule_sha256": "e06d43f552161408e5668e70c51fd86c5dca79d412124a5ed72d4d92dbb19750"
+        },
+        {
+          "name": "preparation",
+          "pointer": "/properties/preparation",
+          "required_in_parent": true,
+          "description": "Saved preparation journal for this action/case, null for unrelated imported actions. Reading cannot dispatch model or speech work.",
+          "schema_reference": null,
+          "rule_sha256": "fe6bd1cef8f4bd81df3c461349af7842067637cd6ff1614dbe561ea02aa28449"
         },
         {
           "name": "kind",
@@ -12243,7 +12283,7 @@
     {
       "kind": "prepare-view",
       "schema": "contracts/prepare-view.schema.json",
-      "sha256": "c2884cf8881287e31eb4879d963dc4e0d55ea46d2e8d3ebfe7160f30a7d1936b",
+      "sha256": "9024acd60e697acbb0ed54b97387516757cc1164228feb33c23b51faf0e03e91",
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -12295,6 +12335,14 @@
           "description": "Every unresolved concern.",
           "schema_reference": null,
           "rule_sha256": "4790a990b1d9c510c8a6864ecf5b6bc0409fc0cbb6433104b649f9366852207d"
+        },
+        {
+          "name": "preparation",
+          "pointer": "/properties/preparation",
+          "required_in_parent": true,
+          "description": "Saved preparation journal for this action/case, null for unrelated imported actions. Reading cannot dispatch model or speech work.",
+          "schema_reference": null,
+          "rule_sha256": "fe6bd1cef8f4bd81df3c461349af7842067637cd6ff1614dbe561ea02aa28449"
         }
       ]
     },
@@ -13883,7 +13931,7 @@
     {
       "kind": "render-request",
       "schema": "contracts/render-request.schema.json",
-      "sha256": "e0c0712995ff5021c5102fdf32bd6f4544ddc0cbc2ab7cac7033bc3f60c674b5",
+      "sha256": "ff81f9d9f0b2f230d2128959df4c193bd50da37308bb306ea0181adc44e38463",
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -13900,9 +13948,17 @@
           "name": "render_attempt",
           "pointer": "/properties/render_attempt",
           "required_in_parent": true,
-          "description": "The explicit synthesis attempt number.",
+          "description": "Positive explicit render attempt counter, without a lifetime ceiling; original operation deadline/automatic retry policy remains.",
           "schema_reference": null,
-          "rule_sha256": "3fccb9a459e528fb2c67586406d2dcd14bf566ef7275dfb737ef1590d215c562"
+          "rule_sha256": "ddd019a393c4da479d8cda6b412705bc73837475aff32cb767c74a7cde7107d6"
+        },
+        {
+          "name": "preparation_id",
+          "pointer": "/properties/preparation_id",
+          "required_in_parent": true,
+          "description": "Non-null selects the exact authored preparation; null supports imported/native rendering.",
+          "schema_reference": null,
+          "rule_sha256": "d1b0f7b6cb47c1d444cf8da30280c2541ae32f2e78bd48e3ff56068a1b481906"
         }
       ]
     },
@@ -25459,6 +25515,364 @@
           "description": "Actual internal health/storage/etc purpose.",
           "schema_reference": null,
           "rule_sha256": "321dfc832a36325b176b2250cd9c199a69fb79eb4fcecd92cb234b1c99418a5b"
+        }
+      ]
+    },
+    {
+      "kind": "key-repair-proposal",
+      "schema": "contracts/key-repair-proposal.schema.json",
+      "schema_version": "2.0.0",
+      "persistent_domain_record": false,
+      "storage": "LLM canonical payload stored with review/judgment and private raw receipt assets",
+      "sha256": "6295c2b46bda350d883988b81e951ad6c579ad6982933bb353165ad55125b1f4",
+      "fields": [
+        {
+          "name": "base_case_sha256",
+          "pointer": "/properties/base_case_sha256",
+          "required_in_parent": true,
+          "description": "Exact old frozen case key content.",
+          "schema_reference": null,
+          "rule_sha256": "f45d597630786a2a54650e0c926e0ea689e243334ede4d37ab71ceb80cb62fcf"
+        },
+        {
+          "name": "audio_sha256",
+          "pointer": "/properties/audio_sha256",
+          "required_in_parent": true,
+          "description": "The recording actually heard; unchanged by key repair.",
+          "schema_reference": null,
+          "rule_sha256": "8efbffbdc8e3bb258d7537159c7eac2f4f56183af84e45109c0370f368b9fedc"
+        },
+        {
+          "name": "affected_components",
+          "pointer": "/properties/affected_components",
+          "required_in_parent": true,
+          "description": "Actual dependencies changed by the repair; optional explanation-only repair preserves primary findings.",
+          "schema_reference": null,
+          "rule_sha256": "01951243c6049def0bc214ddc7d50e8c4b69745f53172430db3d5ca6f18a4f63"
+        },
+        {
+          "name": "proposed_units",
+          "pointer": "/properties/proposed_units",
+          "required_in_parent": true,
+          "description": "Complete proposed semantic unit set. Existing IDs are retained as references; new unit/options/propositions use proposal-local IDs, remapped once by the server.",
+          "schema_reference": null,
+          "rule_sha256": "9fbc068657dc814aec691e46185a6402f5bda2a4333caf7495bbcd975448d618"
+        },
+        {
+          "name": "correspondence_relations",
+          "pointer": "/properties/correspondence_relations",
+          "required_in_parent": true,
+          "description": "Complete old-to-proposed-unit correspondence; proposal IDs are local until persistence.",
+          "schema_reference": "unit-correspondence.schema.json#/properties/relations",
+          "rule_sha256": "da5e3ca653dd4d45dd73a8345367dc75330e8ffd3ce790daf370ca9d1682e1a0"
+        },
+        {
+          "name": "reason",
+          "pointer": "/properties/reason",
+          "required_in_parent": true,
+          "description": "Support for this key repair in the supplied clean/surface text, mutations, answer and available evidence.",
+          "schema_reference": null,
+          "rule_sha256": "69d17ade164ea14e804038ce492d98190dde8f08b639910fa6a1415be455b9ee"
+        }
+      ]
+    },
+    {
+      "kind": "preparation-settings",
+      "schema": "contracts/preparation-settings.schema.json",
+      "schema_version": "2.0.0",
+      "persistent_domain_record": true,
+      "storage": "immutable private settings asset linked from preparation document",
+      "sha256": "c24f4d980230d9008b2cf79db30715b78df2b21eaeee8b2879b9252b2416e404",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "85a2d8aa93ae1cc535108ec2ee447f40f68925db0cd97bb3dc7c597388c444c6"
+        },
+        {
+          "name": "exercise_request",
+          "pointer": "/properties/exercise_request",
+          "required_in_parent": true,
+          "description": "Original normalized simple request; null for an exclusively advanced blueprint.",
+          "schema_reference": null,
+          "rule_sha256": "e8ce4eb8fec7a6cc7ee7922c2a4dfb159a226e996eeb31fe657b3148c5a49d8b"
+        },
+        {
+          "name": "blueprint",
+          "pointer": "/properties/blueprint",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": "blueprint.schema.json",
+          "rule_sha256": "d17ebddcc3f7b47488f669fddeaa7b209cefdad13ef66512c84f90a4bef4b195"
+        },
+        {
+          "name": "configuration",
+          "pointer": "/properties/configuration",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": "configuration.schema.json",
+          "rule_sha256": "77b20082ce0f62b80593d5adf43955cd9a5576644d0c3c84999bfebda6103551"
+        },
+        {
+          "name": "prompt_bundle",
+          "pointer": "/properties/prompt_bundle",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": "prompt-bundle.schema.json",
+          "rule_sha256": "9ae0386393ed6ec1658f749e7823e45500b0b929f7d8654ca63108eb5ef898bb"
+        },
+        {
+          "name": "generation_bindings",
+          "pointer": "/properties/generation_bindings",
+          "required_in_parent": true,
+          "description": "Exactly the canonical_text and mutation resolved bindings.",
+          "schema_reference": null,
+          "rule_sha256": "95435c6aac67a248fd2ba12674bb9911309c37fd61f660e312a69db1607a3e62"
+        },
+        {
+          "name": "speech_registry_asset_id",
+          "pointer": "/properties/speech_registry_asset_id",
+          "required_in_parent": true,
+          "description": "Saved complete selected speech registry bytes; secret values excluded.",
+          "schema_reference": null,
+          "rule_sha256": "54a1a596e310e6924b61f1fdeb64c76e3a95456735047e5f96ee4bfb935fe36e"
+        },
+        {
+          "name": "speech_registry_sha256",
+          "pointer": "/properties/speech_registry_sha256",
+          "required_in_parent": true,
+          "description": "Actual saved registry bytes.",
+          "schema_reference": null,
+          "rule_sha256": "5f188794bfa528db80b6b7630297fd470ffe1c305a5643c035f1bd92c86c8794"
+        },
+        {
+          "name": "recipe_registry_asset_id",
+          "pointer": "/properties/recipe_registry_asset_id",
+          "required_in_parent": true,
+          "description": "Saved complete mutation recipe registry bytes.",
+          "schema_reference": null,
+          "rule_sha256": "c5440741078f389187599aaaaab71e81570ad287d75a74218c7ec501b08d1b6f"
+        },
+        {
+          "name": "recipe_registry_sha256",
+          "pointer": "/properties/recipe_registry_sha256",
+          "required_in_parent": true,
+          "description": "Actual saved recipe registry bytes.",
+          "schema_reference": null,
+          "rule_sha256": "0349a59092003555fef1cda4d461fb9e8215ad2f47ad20dc4271a8d65d4df837"
+        },
+        {
+          "name": "source_record_ids",
+          "pointer": "/properties/source_record_ids",
+          "required_in_parent": true,
+          "description": "Exact explicitly selected immutable source record IDs for the original generation request; empty for independent generation.",
+          "schema_reference": null,
+          "rule_sha256": "60a26bf32f66b166cd3a8f0d138d2db2eb4cf1469905168d35c4b2dca79d15bc"
+        }
+      ]
+    },
+    {
+      "kind": "preparation-state",
+      "schema": "contracts/preparation-state.schema.json",
+      "schema_version": "2.0.0",
+      "persistent_domain_record": true,
+      "storage": "document.payload with entity_head revision and linked private assets",
+      "sha256": "a3b62a4a2bb0ba822e375d29aec40ac20d44b0da3880f1963c24de721c97fabd",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "85a2d8aa93ae1cc535108ec2ee447f40f68925db0cd97bb3dc7c597388c444c6"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/id",
+          "required_in_parent": true,
+          "description": "Durable preparation identity assigned before the first provider call.",
+          "schema_reference": null,
+          "rule_sha256": "054e3c10d649c6fceef7281ad62a73387f3c431115efd76aee942843190ab004"
+        },
+        {
+          "name": "revision",
+          "pointer": "/properties/revision",
+          "required_in_parent": true,
+          "description": "Optimistic head revision selecting an immutable preparation snapshot.",
+          "schema_reference": null,
+          "rule_sha256": "bcb8bcb223a7ef8233d782d419bdbb4fa75b94e3994bae950bd67a1771a1d139"
+        },
+        {
+          "name": "original_operation_id",
+          "pointer": "/properties/original_operation_id",
+          "required_in_parent": true,
+          "description": "Initial generate operation, never replaced.",
+          "schema_reference": null,
+          "rule_sha256": "d118fa1b3840b7a5159b15488810159c77fea1392a7489dcf11633407e708d24"
+        },
+        {
+          "name": "operation_ids",
+          "pointer": "/properties/operation_ids",
+          "required_in_parent": true,
+          "description": "Ordered actual generate/render attempts; no synthetic successful call.",
+          "schema_reference": null,
+          "rule_sha256": "e4a02327df8b645a062be7194c9874409f24410de963c5d6041b604aa3ec33b4"
+        },
+        {
+          "name": "active_operation_id",
+          "pointer": "/properties/active_operation_id",
+          "required_in_parent": true,
+          "description": "Null when no operation owns writes; a late prior operation cannot update the checkpoint.",
+          "schema_reference": null,
+          "rule_sha256": "3a1acd00f1fd4f285c6b00ee9b1655ad9fc769f9ae21281117792df6b4e648b6"
+        },
+        {
+          "name": "settings_asset_id",
+          "pointer": "/properties/settings_asset_id",
+          "required_in_parent": true,
+          "description": "Private preparation-settings JSON asset.",
+          "schema_reference": null,
+          "rule_sha256": "d8e62c7a2dc734a7e11bf6fd623bdbca4154ce6de8d8b00076b58a86a32b5ef6"
+        },
+        {
+          "name": "settings_sha256",
+          "pointer": "/properties/settings_sha256",
+          "required_in_parent": true,
+          "description": "JCS of the complete preparation-settings payload.",
+          "schema_reference": null,
+          "rule_sha256": "a6452819365123b2da7cf27e42a4d85e4fb8fc23599f888ea5f9f9074b480a27"
+        },
+        {
+          "name": "phase_states",
+          "pointer": "/properties/phase_states",
+          "required_in_parent": true,
+          "description": "Exact saved stage completion; only verified linked artifacts establish complete.",
+          "schema_reference": null,
+          "rule_sha256": "42b606cb1f6e54e45e21dd1834d5190feca979b7646ab520611e068324a87953"
+        },
+        {
+          "name": "canonical_asset_id",
+          "pointer": "/properties/canonical_asset_id",
+          "required_in_parent": true,
+          "description": "Null before canonical completion.",
+          "schema_reference": null,
+          "rule_sha256": "043702f9458282f544ec3d66a81ee6ae712f5fadadffa77551318b4535374e78"
+        },
+        {
+          "name": "canonical_sha256",
+          "pointer": "/properties/canonical_sha256",
+          "required_in_parent": true,
+          "description": "Null before canonical completion.",
+          "schema_reference": null,
+          "rule_sha256": "a7c0498fb399f2e8000adb3b3c547f8c1d65a3d835e677ff84575a148537b660"
+        },
+        {
+          "name": "candidate_id",
+          "pointer": "/properties/candidate_id",
+          "required_in_parent": true,
+          "description": "Null before mutation completion.",
+          "schema_reference": null,
+          "rule_sha256": "d5bc6ae176c184e47bd0dc8bbefc964b8b82c5d721043a57e55a3a20165baa0f"
+        },
+        {
+          "name": "mutated_asset_id",
+          "pointer": "/properties/mutated_asset_id",
+          "required_in_parent": true,
+          "description": "Null before mutation completion.",
+          "schema_reference": null,
+          "rule_sha256": "0c66fcd9d12a4ec7f6ef390d952ae0c162593334467dd3ab7369e2d9d36f8517"
+        },
+        {
+          "name": "mutation_manifest_asset_id",
+          "pointer": "/properties/mutation_manifest_asset_id",
+          "required_in_parent": true,
+          "description": "Null before mutation completion.",
+          "schema_reference": null,
+          "rule_sha256": "cc5c1e367d9798f3b70eead773ac0e482f661efc0871cb25e8712137cad56ff5"
+        },
+        {
+          "name": "render_plan_asset_id",
+          "pointer": "/properties/render_plan_asset_id",
+          "required_in_parent": true,
+          "description": "Null before plan persistence.",
+          "schema_reference": null,
+          "rule_sha256": "5af53341877fca225e36b01a3083f4a3d394c6b191d621661e0377095494c80a"
+        },
+        {
+          "name": "audio_asset_id",
+          "pointer": "/properties/audio_asset_id",
+          "required_in_parent": true,
+          "description": "Null until actual audio is linked.",
+          "schema_reference": null,
+          "rule_sha256": "f70b86bc92aa8f86959828d831299d990ddf97b51eb1c5ca27b9361c3a16f0a4"
+        },
+        {
+          "name": "audio_sha256",
+          "pointer": "/properties/audio_sha256",
+          "required_in_parent": true,
+          "description": "Null until actual audio is linked.",
+          "schema_reference": null,
+          "rule_sha256": "ae3517c518e10348aaa7f5672193549f68ad19b64e60641496fbcdfbea07be5f"
+        },
+        {
+          "name": "key_id",
+          "pointer": "/properties/key_id",
+          "required_in_parent": true,
+          "description": "Null until key persistence.",
+          "schema_reference": null,
+          "rule_sha256": "1156c5d1008e049209c8bfadc9fc07856c8ff35a5aeb31e2707e5c15d8b71514"
+        },
+        {
+          "name": "last_failure",
+          "pointer": "/properties/last_failure",
+          "required_in_parent": true,
+          "description": "Last actual failure, or null.",
+          "schema_reference": null,
+          "rule_sha256": "1b1ed59453e74b6926a9b359ca135e8df396371541cacb77bfb8ffcb4c373497"
+        },
+        {
+          "name": "created_at",
+          "pointer": "/properties/created_at",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "b9de79b4170dcd292a90824332578638f4207f348063e56bdfeb9cd7e555288d"
+        },
+        {
+          "name": "updated_at",
+          "pointer": "/properties/updated_at",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "b9de79b4170dcd292a90824332578638f4207f348063e56bdfeb9cd7e555288d"
+        },
+        {
+          "name": "canonical_text",
+          "pointer": "/properties/phase_states/properties/canonical_text",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c40d71dcd2390904a222d2b31d4de64f6cddfea37cdd90cb828835dba2d7aab6"
+        },
+        {
+          "name": "mutation",
+          "pointer": "/properties/phase_states/properties/mutation",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c40d71dcd2390904a222d2b31d4de64f6cddfea37cdd90cb828835dba2d7aab6"
+        },
+        {
+          "name": "render",
+          "pointer": "/properties/phase_states/properties/render",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c40d71dcd2390904a222d2b31d4de64f6cddfea37cdd90cb828835dba2d7aab6"
         }
       ]
     }

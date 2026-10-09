@@ -91,6 +91,17 @@
         "native_annotation"
       ],
       "description": "Actual input modality; transcript-only models never claim direct hearing."
+    },
+    "mutation_manifest": {
+      "anyOf": [
+        {
+          "$ref": "mutation-manifest.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Exact saved generated mutation manifest for authored answer reconsideration/dispute; null for source cases without one. Canonical and surface text are already in ground_truth."
     }
   },
   "required": [
@@ -106,7 +117,8 @@
     "measurements",
     "evidence",
     "taxonomy_context",
-    "input_modality"
+    "input_modality",
+    "mutation_manifest"
   ],
   "additionalProperties": false,
   "$schema": "https://json-schema.org/draft/2020-12/schema",

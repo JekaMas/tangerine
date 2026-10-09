@@ -52,6 +52,17 @@
       },
       "minItems": 0,
       "maxItems": 1000
+    },
+    "preparation": {
+      "anyOf": [
+        {
+          "$ref": "preparation-state.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Saved preparation journal for this action/case, null for unrelated imported actions. Reading cannot dispatch model or speech work."
     }
   },
   "required": [
@@ -60,7 +71,8 @@
     "ground_truth",
     "render_plan",
     "verification",
-    "issues"
+    "issues",
+    "preparation"
   ],
   "additionalProperties": false
 }

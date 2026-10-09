@@ -1,6 +1,6 @@
 ## ADDED Requirements
 
-The current draft and exhaustive reconciliation are specification/v2/README.md and audit/full-release-reconciliation-20261008/gap-reconciliation.json. Source byte preservation, written definition, policy decision, genuine evidence and runtime acceptance are separate. GAP-005/006 remain superseded. The canonical task list stays in this change. All remaining subfindings and source contracts block a gap-free readiness claim.
+The current draft and exhaustive reconciliation are specification/v2/README.md and audit/full-release-reconciliation-20261008/gap-reconciliation.json. Source byte preservation, written definition, policy decision, genuine evidence and runtime acceptance are separate. GAP-005/006 remain superseded. The canonical task list stays in this change. Historical source audits retain their original evidence limits. Current product-relevant dependencies follow docs/simple-local-product.md and specification/v2/docs/product-data-relevance.md; unavailable optional sources do not block independently generated exercises.
 
 ### Requirement: SPEC-001 Complete product and internal API operation contracts
 
@@ -124,7 +124,7 @@ The specification SHALL follow docs/simple-local-product.md: one local workspace
 #### Scenario: SPEC-005 Complete definition and rejection boundary
 - **GIVEN** The user-selected simple local product scope.
 - **WHEN** Its supported behavior and violating boundary are checked.
-- **THEN** Every activity is available without role assignment while invalid source/state/review evidence is rejected. A model approval or one person represented as two reviewers cannot publish a case.
+- **THEN** Every activity is available without role assignment while invalid source/state/review evidence is rejected. An ordinary generated case is usable once its real audio and key are stored. No model approval or human peer-review ceremony is a prerequisite, and machine provenance cannot be relabelled as a person.
 
 ### Requirement: SPEC-006 Local startup without accounts or sessions
 The specification SHALL follow docs/simple-local-product.md: no account bootstrap, passwords, login/logout, session cookies, invitations or account recovery. Loopback-only exposure, same-origin checks and server-only provider/internal-service secrets SHALL remain mandatory. The user request supersedes the former GAP-006 account-lifecycle product choice.
@@ -1441,7 +1441,7 @@ The specification SHALL reconcile GAP-051 through `specification/v2/docs/mainten
 
 ### Requirement: SPEC-052 Request quotas, concurrency, costs and import resource bounds
 
-One local resource policy MUST bound expensive concurrency, request capacity, cost reservations, and safe archive expansion without disabling stored playback.
+One local resource policy MUST apply declared expensive-concurrency/request/import limits and any explicitly enabled cost guard without disabling stored playback. Unknown prices MUST remain unknown; a disabled optional cost guard MUST NOT block ordinary generation merely because price is unavailable.
 
 The specification SHALL reconcile GAP-052 through `specification/v2/domain/configuration-registry.yaml` `specification/v2/contracts/configuration.schema.json` `specification/v2/docs/maintenance-and-limits.md`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
@@ -1460,7 +1460,7 @@ The specification SHALL reconcile GAP-052 through `specification/v2/domain/confi
 
 - **GIVEN** the input or evidence violates the declared contract.
 - **WHEN** the application applies `SPEC-052`.
-- **THEN** Unknown charge exposure, excessive decompression, or an exhausted budget violates admission. The operation fails rather than truncating required content.
+- **THEN** Unknown charge exposure violates admission only when an explicitly enabled hard cost guard requires known pricing; excessive decompression or an exhausted enabled budget also violates admission. The operation fails rather than truncating required content.
 
 #### Scenario: SPEC-052 No genuine acceptance evidence exists
 

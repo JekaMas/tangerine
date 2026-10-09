@@ -407,8 +407,9 @@ paths:
   /api/v1/candidates:generate:
     post:
       operationId: generate
-      description: Save content, call selected real LLM and retain output; optional
-        configured cap only.
+      description: Persist preparation snapshot before dispatch, checkpoint clean text
+        then mutations, and continue the exact saved preparation on explicit
+        resume.
       tags:
         - prepare
       parameters:
@@ -500,8 +501,9 @@ paths:
             application/json:
               schema:
                 $ref: error-response.schema.json
-      x-atomic-effect: Save intent, apply grants and caps, call the real provider,
-        validate and persist the output.
+      x-atomic-effect: Persist preparation snapshot before dispatch, checkpoint clean
+        text then mutations, and continue the exact saved preparation on
+        explicit resume.
       x-revision-precondition: false
       requestBody:
         required: true
@@ -621,7 +623,9 @@ paths:
   /api/v1/cases/{id}:render:
     post:
       operationId: render
-      description: Synthesize exact turns and link final bytes under the storage protocol.
+      description: Render the saved preparation plan or an explicit imported/native
+        plan; checkpoint actual linked audio/key without lifetime manual retry
+        caps.
       tags:
         - prepare
       parameters:
@@ -726,7 +730,9 @@ paths:
             application/json:
               schema:
                 $ref: error-response.schema.json
-      x-atomic-effect: Synthesize exact turns and link final bytes under the storage protocol.
+      x-atomic-effect: Render the saved preparation plan or an explicit
+        imported/native plan; checkpoint actual linked audio/key without
+        lifetime manual retry caps.
       x-revision-precondition: true
       requestBody:
         required: true
@@ -4351,7 +4357,9 @@ paths:
   /api/v1/permissions/{id}:revoke:
     post:
       operationId: revoke
-      description: Save actual source revocation notice/status and expose affected selected-source use; retain provenance without permission epochs or grant closure. Independent authored exercises remain available.
+      description: Save actual source revocation notice/status and expose affected
+        selected-source use; retain provenance without permission epochs or
+        grant closure. Independent authored exercises remain available.
       tags:
         - sources
       parameters:
@@ -4384,7 +4392,9 @@ paths:
             pattern: ^"[0-9]+"$
       responses:
         "200":
-          description: Save actual source revocation notice/status and expose affected selected-source use; retain provenance without permission epochs or grant closure. Independent authored exercises remain available.
+          description: Save actual source revocation notice/status and expose affected
+            selected-source use; retain provenance without permission epochs or
+            grant closure. Independent authored exercises remain available.
           content:
             application/json:
               schema:
@@ -4455,7 +4465,9 @@ paths:
             application/json:
               schema:
                 $ref: error-response.schema.json
-      x-atomic-effect: Save actual source revocation notice/status and expose affected selected-source use; retain provenance without permission epochs or grant closure. Independent authored exercises remain available.
+      x-atomic-effect: Save actual source revocation notice/status and expose affected
+        selected-source use; retain provenance without permission epochs or
+        grant closure. Independent authored exercises remain available.
       x-revision-precondition: true
       requestBody:
         required: true
@@ -7072,6 +7084,132 @@ paths:
       servers:
         - url: http://speech:8000
           description: Private Compose network only; no host publication.
+  /api/v1/preparations:
+    get:
+      operationId: list_preparations
+      description: Read persisted preparation checkpoints and explicit resume choices
+        without model/speech dispatch.
+      tags:
+        - prepare
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 50
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+            maxLength: 2048
+      responses:
+        "200":
+          description: Read saved preparation checkpoints without dispatch.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: One stable keyset page.
+                properties:
+                  items:
+                    type: array
+                    description: Page items.
+                    items:
+                      $ref: preparation-state.schema.json
+                    minItems: 0
+                    maxItems: 100
+                  next_cursor:
+                    anyOf:
+                      - type: string
+                        description: Opaque signed continuation.
+                        maxLength: 2048
+                        minLength: 1
+                      - type: "null"
+                    description: Opaque signed continuation.
+                  snapshot_revision:
+                    type: string
+                    description: Stable page snapshot revision.
+                    maxLength: 4096
+                    minLength: 1
+                    pattern: ^(0|[1-9][0-9]*)$
+                required:
+                  - items
+                  - next_cursor
+                  - snapshot_revision
+                additionalProperties: false
+        "400":
+          description: Malformed request
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
+        "403":
+          description: Origin or source-use rejection
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
+        "404":
+          description: No such local object
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
+        "409":
+          description: State, idempotency, lease, or capability conflict
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
+        "412":
+          description: Stale revision
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
+        "413":
+          description: Input or import limit
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
+        "422":
+          description: Invalid semantic fields or missing required evidence
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
+        "429":
+          description: Local cost or concurrency guard
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
+        "502":
+          description: Provider refused, failed, or returned invalid content
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
+        "503":
+          description: Local dependency not ready
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
+        "504":
+          description: Request deadline expired
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
+      x-atomic-effect: Read saved preparation checkpoints without dispatch.
+      x-revision-precondition: false
+      x-activity: prepare
 components:
   securitySchemes:
     SpeechServiceToken:

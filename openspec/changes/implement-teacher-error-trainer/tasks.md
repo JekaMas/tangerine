@@ -287,9 +287,19 @@ Current resume: audit/pre-implementation-explore-20261009/REPORT.md, FINDINGS.md
 - [x] Specify answer-components-v2 primary selection, standalone explanation score, component-scoped unknowns/issues and frozen history/Lab populations without new mandatory calls or human review.
 - [x] Reconcile typed mutation provenance, source notice effects, unlimited explicit manual recovery, one linguistic output repair and LLM-key-only local speech setup.
 - [x] Add concrete literal fixtures, arithmetic/state expectations and rejected counterexamples for nine requirements / eighteen scenarios / thirty-six unexecuted positive/negative edges; reconcile only affected metadata/graph identities.
-- [ ] EXP-002: define complete typed automatic key/rubric repair and version correspondence on the existing LLM operation; optional rationale-only repair preserves supported primary grade.
-- [ ] EXP-003: define durable preparation checkpoint association/readback and exact resume selection using existing storage/foreground operations.
-- [ ] EXP-004: define generated decisive-context projection into audible text or neutral public pre-answer context, with component-scoped support rules.
-- [ ] EXP-010: replace older generic affected property plans with concrete fixtures and independent expected states/artifacts/arithmetic; new plans are not executed evidence.
+- [x] EXP-002: define complete typed automatic key/rubric repair and version correspondence on the existing LLM operation; optional rationale-only repair preserves supported primary grade.
+- [x] EXP-003: define durable preparation checkpoint association/readback and exact resume selection using existing storage/foreground operations.
+- [x] EXP-004: define generated decisive-context projection into audible text or neutral public pre-answer context, with component-scoped support rules.
+- [x] EXP-010: replace older generic affected property plans with concrete fixtures and independent expected states/artifacts/arithmetic; new plans are not executed evidence.
 
 Current resume: audit/component-scoring-20261009/REPORT.md and REMAINING-GAPS.md own this increment. No new product decision is pending. This is a written specification update, not implemented/observed application, model, audio or Lab behavior. Preserve the unrelated audit/spec-fullness-20261008/GAPS.md edit. Existing observed greens retain their proof boundaries; only changed specification/schema/graph inputs invalidate the corresponding static checks.
+
+## 2026-10-09 final specification closure
+
+- [x] Return complete proposed units/options/rationale/correspondence from the existing LLM operation; persist a new key/result on the unchanged recording and preserve supported primary score on explanation-only repair.
+- [x] Specify durable preparation/settings/phase artifacts, readback and explicit frozen resume using existing local storage/foreground operations.
+- [x] Prohibit generated mistakes based on private/external facts; preserve all categories through self-contained audible instances.
+- [x] Replace generic current case setup with exact constructed fixture bindings for all405properties/1,620edges; retain original receipts and explicitly invalidate four stale account/login proof scopes.
+- [ ] Future authorized implementation/observations: materialize and execute the selected fixture packets through real owners, including actual semantic judgments, durable restart/restore, synthesis and required AI-development Lab export. These are not unresolved product/specification decisions.
+
+Current resume: audit/final-spec-closure-20261009/REPORT.md owns this specification-only closure. No product-owner decision remains for the four findings. No application/provider/audio implementation or execution, source acquisition, installation, credential edit or publication occurred. Preserve the unrelated audit/spec-fullness-20261008/GAPS.md edit. New fixture designs are unexecuted; existing bounded receipts remain distinct.

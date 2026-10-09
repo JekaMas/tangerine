@@ -10,14 +10,27 @@
     },
     "render_attempt": {
       "type": "integer",
-      "description": "The explicit synthesis attempt number.",
-      "minimum": 1,
-      "maximum": 3
+      "description": "Positive explicit render attempt counter, without a lifetime ceiling; original operation deadline/automatic retry policy remains.",
+      "minimum": 1
+    },
+    "preparation_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Existing saved preparation identity."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Non-null selects the exact authored preparation; null supports imported/native rendering."
     }
   },
   "required": [
     "plan",
-    "render_attempt"
+    "render_attempt",
+    "preparation_id"
   ],
   "additionalProperties": false
 }

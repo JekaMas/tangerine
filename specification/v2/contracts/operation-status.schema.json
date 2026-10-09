@@ -117,6 +117,17 @@
         }
       ],
       "description": "The value, or null when the contract states that it is absent."
+    },
+    "preparation": {
+      "anyOf": [
+        {
+          "$ref": "preparation-state.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Saved preparation journal for this action/case, null for unrelated imported actions. Reading cannot dispatch model or speech work."
     }
   },
   "required": [
@@ -126,7 +137,8 @@
     "started_at",
     "finished_at",
     "result",
-    "error"
+    "error",
+    "preparation"
   ],
   "additionalProperties": false
 }

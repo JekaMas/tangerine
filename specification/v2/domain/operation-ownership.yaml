@@ -50,6 +50,18 @@ operations:
     request_fields: []
     server_fields: []
     imported_source_fields: []
+  - id: list_preparations
+    request_schema: null
+    response_schema: list:preparation-state
+    server_assigns_envelope: false
+    state_guard_reference: docs/preparation-persistence.md
+    idempotency: false
+    revision_precondition: false
+    effect: Read persisted preparation checkpoints and explicit resume choices
+      without model/speech dispatch.
+    request_fields: []
+    server_fields: []
+    imported_source_fields: []
   - id: get_blueprint
     request_schema: null
     response_schema: blueprint
@@ -91,17 +103,17 @@ operations:
     request_schema: generation-request
     response_schema: candidate-envelope
     server_assigns_envelope: true
-    state_guard_reference: docs/lifecycle.md
+    state_guard_reference: docs/preparation-persistence.md
     idempotency: true
     revision_precondition: false
-    effect: Save clean canonical_text first, then apply mutations to that fixed
-      script and retain the list/key with both phase receipts; optional selected
-      source records only.
+    effect: Persist preparation snapshot before dispatch, checkpoint clean text then
+      mutations, and continue the exact saved preparation on explicit resume.
     request_fields:
       - blueprint_id
       - effective_configuration_sha256
       - source_record_ids
       - generation_attempt
+      - preparation_id
     server_fields: []
     imported_source_fields:
       - All native original fields remain in raw-record/source assets, outside
@@ -122,15 +134,15 @@ operations:
     request_schema: render-request
     response_schema: operation-result
     server_assigns_envelope: true
-    state_guard_reference: docs/lifecycle.md
+    state_guard_reference: docs/preparation-persistence.md
     idempotency: true
     revision_precondition: true
-    effect: Synthesize exact mutated turns with the selected local or service
-      adapter; save final audio and generated mutation-list key under the
-      storage protocol.
+    effect: Render the saved preparation plan or an explicit imported/native plan;
+      checkpoint actual linked audio/key without lifetime manual retry caps.
     request_fields:
       - plan
       - render_attempt
+      - preparation_id
     server_fields: []
     imported_source_fields:
       - All native original fields remain in raw-record/source assets, outside
@@ -799,7 +811,9 @@ operations:
     state_guard_reference: docs/lifecycle.md
     idempotency: true
     revision_precondition: true
-    effect: Save actual source revocation notice/status and expose affected selected-source use; retain provenance without permission epochs or grant closure. Independent authored exercises remain available.
+    effect: Save actual source revocation notice/status and expose affected
+      selected-source use; retain provenance without permission epochs or grant
+      closure. Independent authored exercises remain available.
     request_fields:
       - action
       - subject_ids
