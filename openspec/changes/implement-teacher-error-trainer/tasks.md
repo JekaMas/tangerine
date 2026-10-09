@@ -332,3 +332,10 @@ Current resume: audit/on-demand-flow-20261009/REPORT.md and specification/v2/doc
 - [ ] Future authorized implementation/setup: complete Tangerine's own ChatGPT callback/token flow, inspect its app-specific credit controls and model catalogue, set up selected local speech, and execute designed main-flow/Lab observations. No duplicate LLM account or optional-every-provider registration is required.
 
 Current resume: audit/provider-registration-20261009/REPORT.md and observations.json record exact live account/documentation readback. ElevenLabs remains pending_confirmation; no account creation, API key, token exchange, model request, synthesis, installation, purchase, implementation or publication occurred. No new product decision is identified; the pending browser agreement confirmation is a tool requirement. Existing green graph/fixture receipts are retained within their scope. Preserve the unrelated GAPS.md edit.
+
+## 2026-10-09 service-to-feature setup instructions
+
+- [x] Add one English service setup guide mapping every main-flow step to the LLM, speech backend, browser or native scorer; state required accounts/keys, local infrastructure and optional Lab/data/diagnostic roles.
+- [x] Link the guide from both READMEs and local delivery; reconcile stale DeepSeek-default/key-only launcher wording with the already approved ChatGPT-plan + Kokoro starter. Preserve original profiles and all existing scope/fixtures/evidence.
+
+Current resume: specification/v2/docs/service-setup-guide.md and audit/service-setup-guide-20261009/REPORT.md. Documentation only; no registration, agreement acceptance, credential change, installation, inference, implementation or publication. Prior pending ElevenLabs confirmation remains pending. Preserve the unrelated GAPS.md edit.

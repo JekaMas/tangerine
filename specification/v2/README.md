@@ -31,3 +31,5 @@ Current key repair, durable preparation and self-contained generation are define
 Concrete pre-implementation test design for every declared property/case: [verification-fixtures.md](docs/verification-fixtures.md) and [verification-fixtures.v1.json](domain/verification-fixtures.v1.json). Constructed inputs/expectations retain their origin and do not count as observed application/model/audio/source behavior. Current closure evidence is audit/final-spec-closure-20261009/REPORT.md.
 
 Current service/data research: [included-allowance provider access](docs/provider-access.md) and [speech selection](docs/speech-service-selection.md), with exact per-consumer data needs in [empirical-data-needs.md](docs/empirical-data-needs.md). Paths are relative to the active specification root; these are specification contracts, not observed provider/audio behavior. Auth/billing method and connection reference are frozen with settings and Lab variants, while secret tokens remain outside content snapshots.
+
+Setup instructions: [which services are needed and what each does](docs/service-setup-guide.md), including the minimal ChatGPT Pro + local Kokoro setup and optional extensions.

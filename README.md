@@ -59,3 +59,5 @@ The latest increment is specification-only. DeepSeek 4.1 fast is planned through
 Service/setup research and exact empirical-data needs are in [provider access](specification/v2/docs/provider-access.md), [speech selection](specification/v2/docs/speech-service-selection.md) and [data needs](specification/v2/docs/empirical-data-needs.md). These are specification plans; no provider inference or audio generation has been executed.
 
 Primary exercise flow is on demand: user request -> LLM clean text -> LLM-generated mutations -> generated/stored audio -> user answer -> LLM comparison against the original text and mutation key, comments and scoring. No exercise corpus is pregenerated or required. Stored replay and explicitly selected optional data/evaluation features remain available.
+
+The [service setup guide](specification/v2/docs/service-setup-guide.md) explains which service handles each exercise step, required accounts/keys, local storage components, optional speech/diagnostic services and the recommended starter sequence. It describes the specified product; its revised launcher/provider flow remains unimplemented.
