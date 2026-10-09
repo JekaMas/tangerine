@@ -42,3 +42,24 @@ features:
   - elision
 binding_rule: Exact binary versions, hashes, and implementation conformance are
   release evidence, not invented values.
+
+advisory_methods:
+  faster-whisper-local-en-v1:
+    owner: services/speech
+    contract: docs/full-development-readiness.md
+    model: local frozen multilingual small CTranslate2 model
+    device: cpu
+    compute_type: int8
+    language: en
+    task: transcribe
+    beam_size: 5
+    temperature: 0
+    word_timestamps: true
+    initial_prompt: null
+    condition_on_previous_text: false
+    vad_filter: false
+    completion: consume complete segment generator; retain raw hypothesis and timestamps
+    use: independent lexical-v1 WER; not phone assessment or audio-capable LLM
+    account_required: false
+    setup: explicit diagnostic model setup, never ordinary startup or paid fallback
+    observed: false

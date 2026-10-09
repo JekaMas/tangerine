@@ -1,0 +1,16 @@
+"""Finite written-scope trace; graph labels are not runtime proof."""
+import json,hashlib,collections,sys
+from pathlib import Path
+R=Path(__file__).resolve().parents[2];V=R/'specification/v2';C=R/'openspec/changes/implement-teacher-error-trainer';A=Path(__file__).resolve().parent
+sys.path.insert(0,str(R/'.agents/workflow/scripts'));from requirement_tests import parse_delta_specs
+G=json.load(open(C/'verification.json')); F=json.load(open(V/'domain/verification-fixtures.v1.json')); D=parse_delta_specs(C);B={x['case_id']:x for x in F['case_bindings']};reqs={x['id']:x for x in G['requirements']}
+properties=[]
+for p in G['properties']:
+ r=reqs[p['requirement_id']];definition=D[(r['capability'],r['title'])];cases=[x for x in G['cases'] if x['property_id']==p['id']]
+ properties.append(dict(property_id=p['id'],requirement_id=r['id'],capability=r['capability'],definition_path=definition['path'],statement=p['statement'],owner=p['owner'],source_globs=p['source_globs'],case_ids=[x['id'] for x in cases],declared_states=dict(collections.Counter(x['state'] for x in cases)),case_fixture_bindings=[dict(case_id=x['id'],fixture_id=B[x['id']]['fixture_id'],observation_state=B[x['id']]['observation_state']) for x in cases],readiness='Actual scoped behavior acceptance remains required; no all-feature inference from labels.'))
+recipes=json.load(open(V/'domain/mutation-recipes.v1.json'))['recipes'];ops=collections.Counter(x['operator'] for x in recipes)
+route={'text':'LLM generates edits; literal surface synthesis; text/key semantic grading','contextual_text':'LLM self-contained audible context and edits; literal synthesis; context-aware grading','phoneme':'Controlled Kokoro/compatible dictionary/SSML; actual acoustic target realization required','prosody':'Compatible scoped prosody; actual generated recording and measurements required','recorded_contrast':'Our generated target/reference contrast or selected authentic recording; actual contrast evidence required','pause':'Explicit final-sample silence operation; actual timing','control_variant':'Generate acceptable variety/control; no false-positive penalty for accent alone'}
+tax=[dict(taxonomy_id=x['taxonomy_id'],realization_mode=x['realization_mode'],operator=x['operator'],consumer_route=route[x['operator']],required_evidence=x['required_final_evidence'],actual_audio_observed=x['actual_generated_audio_observed'],recipe_status=x['recipe_status'],external_corpus_prerequisite=False) for x in recipes]
+files=[dict(path=p.relative_to(V).as_posix(),sha256=hashlib.sha256(p.read_bytes()).hexdigest(),bytes=p.stat().st_size) for p in sorted(V.rglob('*')) if p.is_file()]
+result=dict(baseline='8f89757',requirements=len(G['requirements']),properties=len(properties),case_edges=len(G['cases']),case_states=dict(collections.Counter(x['state'] for x in G['cases'])),active_file_count=len(files),recipe_operations=dict(ops),proof_boundary='Structural scope/fixture inventory and exact known-contract/public-source trace; not a new human linguistic judgment of each fixture, executable test, line-by-line proof or independent application acceptance.',property_records=properties,taxonomy_records=tax,files=files)
+(A/'scope-inventory.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({k:v for k,v in result.items() if k not in ['property_records','taxonomy_records','files']}))

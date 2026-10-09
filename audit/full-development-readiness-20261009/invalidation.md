@@ -1,0 +1,5 @@
+# Affected checks and preserved evidence
+
+Baseline 8f89757. New full-scope/provider/control definitions and three changed schemas invalidate their document/schema/field-index/version snapshot checks. New requirements, fixture identities and discovery records invalidate graph/discovery reconciliation. Run those affected static checks. No application owner/dependency/test command is changed, and no existing observed behavior receipt has these schemas in its recorded invalidation dependency set. Do not refresh unrelated corpus hashes, Go/web/foundation tests, installed workflow gates or original runtime receipts. The prior pending-signup report is a dated historical observation, not current account status; preserve it and publish a superseding current receipt.
+
+New literal model/audio/native acceptance plans remain blocked/not_run. Static checks of those packets are not their execution. No schema engine install, provider call, model download, inference, audio generation, purchase or application implementation is authorized or performed here.

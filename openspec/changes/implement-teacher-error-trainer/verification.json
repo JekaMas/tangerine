@@ -2383,6 +2383,30 @@
       "capability": "on-demand-generation",
       "title": "DEMAND-01 Request-driven LLM text and mutation generation",
       "fingerprint": "7819e577ef2348d60233621b2a105cddb40aba7c5d7612a5afe50ae88fae43e9"
+    },
+    {
+      "id": "READY-01",
+      "capability": "full-development-readiness",
+      "title": "READY-01 Full scope has no product deferral",
+      "fingerprint": "f860aa80271da91b56dbf2d706c93d58df409e2c508a942a80f53bf92f6dfea3"
+    },
+    {
+      "id": "READY-02",
+      "capability": "full-development-readiness",
+      "title": "READY-02 Controlled local phonemes preserve actual intent and evidence",
+      "fingerprint": "ec3e6ba2230fffbda7c2a11177868bae5413d1d5bf3dc90324ed63e431a09149"
+    },
+    {
+      "id": "READY-03",
+      "capability": "full-development-readiness",
+      "title": "READY-03 Voice locale and model transport are independent bindings",
+      "fingerprint": "06e6ae7f9a72fcbaa20d3fb3774cb97768417d90375e84246cdee8f50452e96c"
+    },
+    {
+      "id": "READY-04",
+      "capability": "full-development-readiness",
+      "title": "READY-04 Independent ASR and uncertain measurements require no humans",
+      "fingerprint": "365a1055114a8abb889d1a70d49b54933d2e1075ed79fe27913ee7baf56af03a"
     }
   ],
   "properties": [
@@ -9176,6 +9200,86 @@
         "specification/v2/prompts/canonical-v1.txt",
         "specification/v2/prompts/generate-v1.txt",
         "specification/v2/prompts/map-v1.txt"
+      ]
+    },
+    {
+      "id": "READY-01.P1",
+      "requirement_id": "READY-01",
+      "statement": "The complete product SHALL preserve all accepted features, 122 categories/recipes, 42 original equations and eleven original full-source scopes. Development iterations MAY repair code, models, prompts and tests; they SHALL NOT turn optional activation or an unavailable dependency into omitted product implementation or complete acceptance. The feature/service/data map in full-development-readiness.md SHALL govern readiness claims. Account registration, static checks and ordinary exercise success SHALL NOT establish all-feature operation.",
+      "scenarios": [
+        "READY-01 A starter flow does not stand for full acceptance",
+        "READY-01 Development repairs preserve product scope"
+      ],
+      "owner": "services/api",
+      "oracle": "Independent literal expected scope/state, compiled occurrence, transport, timestamp and fraction packets; actual native/model/audio observations required.",
+      "source_globs": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/api/**"
+      ]
+    },
+    {
+      "id": "READY-02.P1",
+      "requirement_id": "READY-02",
+      "statement": "The kokoro-phonemes-v1 configured extension SHALL implement the vocabulary-scoped conversion, target-local substitution, pre-call token-boundary 510-character chunking, saved actual output and prediction/measurement distinction in full-development-readiness.md. The original plain-text profile SHALL remain unchanged. Unsupported symbols/overlong indivisible targets SHALL preserve the request/key and fail that operation without dropped phones or invented observations. Recorded contrasts MAY use our generated recordings and SHALL NOT require an external corpus before ordinary generation.",
+      "scenarios": [
+        "READY-02 A phone target affects one occurrence",
+        "READY-02 Unsupported or oversized targets are not truncated"
+      ],
+      "owner": "services/speech",
+      "oracle": "Independent literal expected scope/state, compiled occurrence, transport, timestamp and fraction packets; actual native/model/audio observations required.",
+      "source_globs": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/speech/**"
+      ]
+    },
+    {
+      "id": "READY-03.P1",
+      "requirement_id": "READY-03",
+      "statement": "English voice locales SHALL resolve against the frozen configured voice catalogue independently of en-US/en-GB assessment defaults. The renderer SHALL use the selected model's documented transport and supported settings. ElevenLabs v4/v3 SHALL use the specified text-to-dialogue route and its target-safe reliable request size; other supported single-voice models SHALL use their explicit text-to-speech route. A model flag or accepted locale string SHALL NOT manufacture a compatible voice, transport or entitlement.",
+      "scenarios": [
+        "READY-03 A configured English accent uses its actual locale",
+        "READY-03 Dialogue models receive dialogue payloads"
+      ],
+      "owner": "services/speech",
+      "oracle": "Independent literal expected scope/state, compiled occurrence, transport, timestamp and fraction packets; actual native/model/audio observations required.",
+      "source_globs": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/speech/**"
+      ]
+    },
+    {
+      "id": "READY-04.P1",
+      "requirement_id": "READY-04",
+      "statement": "The local faster-whisper method SHALL use the frozen local model, CPU/int8 parameters, unconditioned complete hypothesis and raw timestamps defined in full-development-readiness.md. It SHALL NOT receive reference/key/answer context or substitute for native phone assessment. Unknown acoustic observations SHALL use not_measurable/null/reason; no human_required measurement status or human-review gate SHALL be produced. ChatGPT-plan text access SHALL NOT be claimed to provide audio-input assessment.",
+      "scenarios": [
+        "READY-04 ASR preserves an independent mistaken hypothesis",
+        "READY-04 Unknown acoustic evidence stays unknown"
+      ],
+      "owner": "services/speech",
+      "oracle": "Independent literal expected scope/state, compiled occurrence, transport, timestamp and fraction packets; actual native/model/audio observations required.",
+      "source_globs": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/speech/**"
       ]
     }
   ],
@@ -57273,6 +57377,534 @@
       "blocker": "Specification only; no model/audio/native execution.",
       "designed_fixture_id": "scenario-DEMAND-01 Original text and mutations ground findings and misses",
       "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "READY-01.P1.S1.POSITIVE",
+      "property_id": "READY-01.P1",
+      "polarity": "positive",
+      "scenario": "READY-01 A starter flow does not stand for full acceptance",
+      "scenario_fingerprint": "642a2df34d94a9679ab4f831b2ff663093b2bcadfb39fe494756bec6f672c335",
+      "setup": "Use exact literal packet case_bindings[READY-01.P1.S1.POSITIVE] in verification-fixtures.v1.json.",
+      "observable": "Actual dispatch/compiled scope/wire/result matches independently written expectation.",
+      "red_expectation": "A wrong scope, fabricated acoustic observation, reference-conditioned ASR or human/purchased fallback violates the packet.",
+      "green_expectation": "Actual native/model/audio behavior matches the packet; static definitions alone do not pass.",
+      "test_id": "planned::full-readiness::READY-01.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_full_development_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/api/**",
+        "openspec/changes/implement-teacher-error-trainer/specs/full-development-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Written acceptance design, not application/runtime substitute."
+      },
+      "blocker": "Specification and free account setup only; implementation/inference/synthesis observations not performed.",
+      "designed_fixture_id": "scenario-READY-01 A starter flow does not stand for full acceptance",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "READY-01.P1.S1.NEGATIVE",
+      "property_id": "READY-01.P1",
+      "polarity": "negative",
+      "scenario": "READY-01 A starter flow does not stand for full acceptance",
+      "scenario_fingerprint": "642a2df34d94a9679ab4f831b2ff663093b2bcadfb39fe494756bec6f672c335",
+      "setup": "Use exact literal packet case_bindings[READY-01.P1.S1.NEGATIVE] in verification-fixtures.v1.json.",
+      "observable": "Actual dispatch/compiled scope/wire/result matches independently written expectation.",
+      "red_expectation": "A wrong scope, fabricated acoustic observation, reference-conditioned ASR or human/purchased fallback violates the packet.",
+      "green_expectation": "Actual native/model/audio behavior matches the packet; static definitions alone do not pass.",
+      "test_id": "planned::full-readiness::READY-01.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_full_development_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/api/**",
+        "openspec/changes/implement-teacher-error-trainer/specs/full-development-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Written acceptance design, not application/runtime substitute."
+      },
+      "blocker": "Specification and free account setup only; implementation/inference/synthesis observations not performed.",
+      "designed_fixture_id": "scenario-READY-01 A starter flow does not stand for full acceptance",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "READY-01.P1.S2.POSITIVE",
+      "property_id": "READY-01.P1",
+      "polarity": "positive",
+      "scenario": "READY-01 Development repairs preserve product scope",
+      "scenario_fingerprint": "11f4d87a4a2022fd90b9a218c3dabeec0406dc194f8087523082b0eea0b67430",
+      "setup": "Use exact literal packet case_bindings[READY-01.P1.S2.POSITIVE] in verification-fixtures.v1.json.",
+      "observable": "Actual dispatch/compiled scope/wire/result matches independently written expectation.",
+      "red_expectation": "A wrong scope, fabricated acoustic observation, reference-conditioned ASR or human/purchased fallback violates the packet.",
+      "green_expectation": "Actual native/model/audio behavior matches the packet; static definitions alone do not pass.",
+      "test_id": "planned::full-readiness::READY-01.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_full_development_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/api/**",
+        "openspec/changes/implement-teacher-error-trainer/specs/full-development-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Written acceptance design, not application/runtime substitute."
+      },
+      "blocker": "Specification and free account setup only; implementation/inference/synthesis observations not performed.",
+      "designed_fixture_id": "scenario-READY-01 Development repairs preserve product scope",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "READY-01.P1.S2.NEGATIVE",
+      "property_id": "READY-01.P1",
+      "polarity": "negative",
+      "scenario": "READY-01 Development repairs preserve product scope",
+      "scenario_fingerprint": "11f4d87a4a2022fd90b9a218c3dabeec0406dc194f8087523082b0eea0b67430",
+      "setup": "Use exact literal packet case_bindings[READY-01.P1.S2.NEGATIVE] in verification-fixtures.v1.json.",
+      "observable": "Actual dispatch/compiled scope/wire/result matches independently written expectation.",
+      "red_expectation": "A wrong scope, fabricated acoustic observation, reference-conditioned ASR or human/purchased fallback violates the packet.",
+      "green_expectation": "Actual native/model/audio behavior matches the packet; static definitions alone do not pass.",
+      "test_id": "planned::full-readiness::READY-01.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_full_development_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/api/**",
+        "openspec/changes/implement-teacher-error-trainer/specs/full-development-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Written acceptance design, not application/runtime substitute."
+      },
+      "blocker": "Specification and free account setup only; implementation/inference/synthesis observations not performed.",
+      "designed_fixture_id": "scenario-READY-01 Development repairs preserve product scope",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "READY-02.P1.S1.POSITIVE",
+      "property_id": "READY-02.P1",
+      "polarity": "positive",
+      "scenario": "READY-02 A phone target affects one occurrence",
+      "scenario_fingerprint": "9778e3aafbaf320f1e2731e67c7bc387a128d1232daec296a3e9b5707e7ae4b6",
+      "setup": "Use exact literal packet case_bindings[READY-02.P1.S1.POSITIVE] in verification-fixtures.v1.json.",
+      "observable": "Actual dispatch/compiled scope/wire/result matches independently written expectation.",
+      "red_expectation": "A wrong scope, fabricated acoustic observation, reference-conditioned ASR or human/purchased fallback violates the packet.",
+      "green_expectation": "Actual native/model/audio behavior matches the packet; static definitions alone do not pass.",
+      "test_id": "planned::full-readiness::READY-02.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_full_development_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/speech/**",
+        "openspec/changes/implement-teacher-error-trainer/specs/full-development-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Written acceptance design, not application/runtime substitute."
+      },
+      "blocker": "Specification and free account setup only; implementation/inference/synthesis observations not performed.",
+      "designed_fixture_id": "scenario-READY-02 A phone target affects one occurrence",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "READY-02.P1.S1.NEGATIVE",
+      "property_id": "READY-02.P1",
+      "polarity": "negative",
+      "scenario": "READY-02 A phone target affects one occurrence",
+      "scenario_fingerprint": "9778e3aafbaf320f1e2731e67c7bc387a128d1232daec296a3e9b5707e7ae4b6",
+      "setup": "Use exact literal packet case_bindings[READY-02.P1.S1.NEGATIVE] in verification-fixtures.v1.json.",
+      "observable": "Actual dispatch/compiled scope/wire/result matches independently written expectation.",
+      "red_expectation": "A wrong scope, fabricated acoustic observation, reference-conditioned ASR or human/purchased fallback violates the packet.",
+      "green_expectation": "Actual native/model/audio behavior matches the packet; static definitions alone do not pass.",
+      "test_id": "planned::full-readiness::READY-02.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_full_development_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/speech/**",
+        "openspec/changes/implement-teacher-error-trainer/specs/full-development-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Written acceptance design, not application/runtime substitute."
+      },
+      "blocker": "Specification and free account setup only; implementation/inference/synthesis observations not performed.",
+      "designed_fixture_id": "scenario-READY-02 A phone target affects one occurrence",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "READY-02.P1.S2.POSITIVE",
+      "property_id": "READY-02.P1",
+      "polarity": "positive",
+      "scenario": "READY-02 Unsupported or oversized targets are not truncated",
+      "scenario_fingerprint": "2e944f16cf10e17004afedd00f6b3498152c4f235a20d6cbe4fc996bd6b2b455",
+      "setup": "Use exact literal packet case_bindings[READY-02.P1.S2.POSITIVE] in verification-fixtures.v1.json.",
+      "observable": "Actual dispatch/compiled scope/wire/result matches independently written expectation.",
+      "red_expectation": "A wrong scope, fabricated acoustic observation, reference-conditioned ASR or human/purchased fallback violates the packet.",
+      "green_expectation": "Actual native/model/audio behavior matches the packet; static definitions alone do not pass.",
+      "test_id": "planned::full-readiness::READY-02.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_full_development_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/speech/**",
+        "openspec/changes/implement-teacher-error-trainer/specs/full-development-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Written acceptance design, not application/runtime substitute."
+      },
+      "blocker": "Specification and free account setup only; implementation/inference/synthesis observations not performed.",
+      "designed_fixture_id": "scenario-READY-02 Unsupported or oversized targets are not truncated",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "READY-02.P1.S2.NEGATIVE",
+      "property_id": "READY-02.P1",
+      "polarity": "negative",
+      "scenario": "READY-02 Unsupported or oversized targets are not truncated",
+      "scenario_fingerprint": "2e944f16cf10e17004afedd00f6b3498152c4f235a20d6cbe4fc996bd6b2b455",
+      "setup": "Use exact literal packet case_bindings[READY-02.P1.S2.NEGATIVE] in verification-fixtures.v1.json.",
+      "observable": "Actual dispatch/compiled scope/wire/result matches independently written expectation.",
+      "red_expectation": "A wrong scope, fabricated acoustic observation, reference-conditioned ASR or human/purchased fallback violates the packet.",
+      "green_expectation": "Actual native/model/audio behavior matches the packet; static definitions alone do not pass.",
+      "test_id": "planned::full-readiness::READY-02.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_full_development_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/speech/**",
+        "openspec/changes/implement-teacher-error-trainer/specs/full-development-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Written acceptance design, not application/runtime substitute."
+      },
+      "blocker": "Specification and free account setup only; implementation/inference/synthesis observations not performed.",
+      "designed_fixture_id": "scenario-READY-02 Unsupported or oversized targets are not truncated",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "READY-03.P1.S1.POSITIVE",
+      "property_id": "READY-03.P1",
+      "polarity": "positive",
+      "scenario": "READY-03 A configured English accent uses its actual locale",
+      "scenario_fingerprint": "c9a28044eed9f1b7534764dd8fd56d61d732c6ef2479816a08f9f3dd29297b2d",
+      "setup": "Use exact literal packet case_bindings[READY-03.P1.S1.POSITIVE] in verification-fixtures.v1.json.",
+      "observable": "Actual dispatch/compiled scope/wire/result matches independently written expectation.",
+      "red_expectation": "A wrong scope, fabricated acoustic observation, reference-conditioned ASR or human/purchased fallback violates the packet.",
+      "green_expectation": "Actual native/model/audio behavior matches the packet; static definitions alone do not pass.",
+      "test_id": "planned::full-readiness::READY-03.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_full_development_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/speech/**",
+        "openspec/changes/implement-teacher-error-trainer/specs/full-development-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Written acceptance design, not application/runtime substitute."
+      },
+      "blocker": "Specification and free account setup only; implementation/inference/synthesis observations not performed.",
+      "designed_fixture_id": "scenario-READY-03 A configured English accent uses its actual locale",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "READY-03.P1.S1.NEGATIVE",
+      "property_id": "READY-03.P1",
+      "polarity": "negative",
+      "scenario": "READY-03 A configured English accent uses its actual locale",
+      "scenario_fingerprint": "c9a28044eed9f1b7534764dd8fd56d61d732c6ef2479816a08f9f3dd29297b2d",
+      "setup": "Use exact literal packet case_bindings[READY-03.P1.S1.NEGATIVE] in verification-fixtures.v1.json.",
+      "observable": "Actual dispatch/compiled scope/wire/result matches independently written expectation.",
+      "red_expectation": "A wrong scope, fabricated acoustic observation, reference-conditioned ASR or human/purchased fallback violates the packet.",
+      "green_expectation": "Actual native/model/audio behavior matches the packet; static definitions alone do not pass.",
+      "test_id": "planned::full-readiness::READY-03.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_full_development_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/speech/**",
+        "openspec/changes/implement-teacher-error-trainer/specs/full-development-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Written acceptance design, not application/runtime substitute."
+      },
+      "blocker": "Specification and free account setup only; implementation/inference/synthesis observations not performed.",
+      "designed_fixture_id": "scenario-READY-03 A configured English accent uses its actual locale",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "READY-03.P1.S2.POSITIVE",
+      "property_id": "READY-03.P1",
+      "polarity": "positive",
+      "scenario": "READY-03 Dialogue models receive dialogue payloads",
+      "scenario_fingerprint": "178beff57d3cd38a303985364309da0fb3ccdcd72989da32e8019055580c8f8c",
+      "setup": "Use exact literal packet case_bindings[READY-03.P1.S2.POSITIVE] in verification-fixtures.v1.json.",
+      "observable": "Actual dispatch/compiled scope/wire/result matches independently written expectation.",
+      "red_expectation": "A wrong scope, fabricated acoustic observation, reference-conditioned ASR or human/purchased fallback violates the packet.",
+      "green_expectation": "Actual native/model/audio behavior matches the packet; static definitions alone do not pass.",
+      "test_id": "planned::full-readiness::READY-03.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_full_development_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/speech/**",
+        "openspec/changes/implement-teacher-error-trainer/specs/full-development-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Written acceptance design, not application/runtime substitute."
+      },
+      "blocker": "Specification and free account setup only; implementation/inference/synthesis observations not performed.",
+      "designed_fixture_id": "scenario-READY-03 Dialogue models receive dialogue payloads",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "READY-03.P1.S2.NEGATIVE",
+      "property_id": "READY-03.P1",
+      "polarity": "negative",
+      "scenario": "READY-03 Dialogue models receive dialogue payloads",
+      "scenario_fingerprint": "178beff57d3cd38a303985364309da0fb3ccdcd72989da32e8019055580c8f8c",
+      "setup": "Use exact literal packet case_bindings[READY-03.P1.S2.NEGATIVE] in verification-fixtures.v1.json.",
+      "observable": "Actual dispatch/compiled scope/wire/result matches independently written expectation.",
+      "red_expectation": "A wrong scope, fabricated acoustic observation, reference-conditioned ASR or human/purchased fallback violates the packet.",
+      "green_expectation": "Actual native/model/audio behavior matches the packet; static definitions alone do not pass.",
+      "test_id": "planned::full-readiness::READY-03.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_full_development_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/speech/**",
+        "openspec/changes/implement-teacher-error-trainer/specs/full-development-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Written acceptance design, not application/runtime substitute."
+      },
+      "blocker": "Specification and free account setup only; implementation/inference/synthesis observations not performed.",
+      "designed_fixture_id": "scenario-READY-03 Dialogue models receive dialogue payloads",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "READY-04.P1.S1.POSITIVE",
+      "property_id": "READY-04.P1",
+      "polarity": "positive",
+      "scenario": "READY-04 ASR preserves an independent mistaken hypothesis",
+      "scenario_fingerprint": "85267e6c616c4d95720f42acaaa6629ce4653688997a015c8de727b3779a4606",
+      "setup": "Use exact literal packet case_bindings[READY-04.P1.S1.POSITIVE] in verification-fixtures.v1.json.",
+      "observable": "Actual dispatch/compiled scope/wire/result matches independently written expectation.",
+      "red_expectation": "A wrong scope, fabricated acoustic observation, reference-conditioned ASR or human/purchased fallback violates the packet.",
+      "green_expectation": "Actual native/model/audio behavior matches the packet; static definitions alone do not pass.",
+      "test_id": "planned::full-readiness::READY-04.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_full_development_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/speech/**",
+        "openspec/changes/implement-teacher-error-trainer/specs/full-development-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Written acceptance design, not application/runtime substitute."
+      },
+      "blocker": "Specification and free account setup only; implementation/inference/synthesis observations not performed.",
+      "designed_fixture_id": "scenario-READY-04 ASR preserves an independent mistaken hypothesis",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "READY-04.P1.S1.NEGATIVE",
+      "property_id": "READY-04.P1",
+      "polarity": "negative",
+      "scenario": "READY-04 ASR preserves an independent mistaken hypothesis",
+      "scenario_fingerprint": "85267e6c616c4d95720f42acaaa6629ce4653688997a015c8de727b3779a4606",
+      "setup": "Use exact literal packet case_bindings[READY-04.P1.S1.NEGATIVE] in verification-fixtures.v1.json.",
+      "observable": "Actual dispatch/compiled scope/wire/result matches independently written expectation.",
+      "red_expectation": "A wrong scope, fabricated acoustic observation, reference-conditioned ASR or human/purchased fallback violates the packet.",
+      "green_expectation": "Actual native/model/audio behavior matches the packet; static definitions alone do not pass.",
+      "test_id": "planned::full-readiness::READY-04.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_full_development_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/speech/**",
+        "openspec/changes/implement-teacher-error-trainer/specs/full-development-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Written acceptance design, not application/runtime substitute."
+      },
+      "blocker": "Specification and free account setup only; implementation/inference/synthesis observations not performed.",
+      "designed_fixture_id": "scenario-READY-04 ASR preserves an independent mistaken hypothesis",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "READY-04.P1.S2.POSITIVE",
+      "property_id": "READY-04.P1",
+      "polarity": "positive",
+      "scenario": "READY-04 Unknown acoustic evidence stays unknown",
+      "scenario_fingerprint": "1567a49b8d56ed2660f739fb34d4300569d3fdf334611d5f48adc6f498116c08",
+      "setup": "Use exact literal packet case_bindings[READY-04.P1.S2.POSITIVE] in verification-fixtures.v1.json.",
+      "observable": "Actual dispatch/compiled scope/wire/result matches independently written expectation.",
+      "red_expectation": "A wrong scope, fabricated acoustic observation, reference-conditioned ASR or human/purchased fallback violates the packet.",
+      "green_expectation": "Actual native/model/audio behavior matches the packet; static definitions alone do not pass.",
+      "test_id": "planned::full-readiness::READY-04.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_full_development_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/speech/**",
+        "openspec/changes/implement-teacher-error-trainer/specs/full-development-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Written acceptance design, not application/runtime substitute."
+      },
+      "blocker": "Specification and free account setup only; implementation/inference/synthesis observations not performed.",
+      "designed_fixture_id": "scenario-READY-04 Unknown acoustic evidence stays unknown",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "READY-04.P1.S2.NEGATIVE",
+      "property_id": "READY-04.P1",
+      "polarity": "negative",
+      "scenario": "READY-04 Unknown acoustic evidence stays unknown",
+      "scenario_fingerprint": "1567a49b8d56ed2660f739fb34d4300569d3fdf334611d5f48adc6f498116c08",
+      "setup": "Use exact literal packet case_bindings[READY-04.P1.S2.NEGATIVE] in verification-fixtures.v1.json.",
+      "observable": "Actual dispatch/compiled scope/wire/result matches independently written expectation.",
+      "red_expectation": "A wrong scope, fabricated acoustic observation, reference-conditioned ASR or human/purchased fallback violates the packet.",
+      "green_expectation": "Actual native/model/audio behavior matches the packet; static definitions alone do not pass.",
+      "test_id": "planned::full-readiness::READY-04.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_full_development_readiness.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/full-development-readiness.md",
+        "specification/v2/docs/audio-methods.md",
+        "specification/v2/docs/speech-service-selection.md",
+        "specification/v2/contracts/render-plan.schema.json",
+        "specification/v2/contracts/speech-render-request.schema.json",
+        "specification/v2/contracts/audio-measurement.schema.json",
+        "services/speech/**",
+        "openspec/changes/implement-teacher-error-trainer/specs/full-development-readiness/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Written acceptance design, not application/runtime substitute."
+      },
+      "blocker": "Specification and free account setup only; implementation/inference/synthesis observations not performed.",
+      "designed_fixture_id": "scenario-READY-04 Unknown acoustic evidence stays unknown",
+      "fixture_observation_state": "not_run"
     }
   ],
   "commands": [
@@ -58867,7 +59499,23 @@
         "planned::on-demand::DEMAND-01.P1.S1.POSITIVE",
         "planned::on-demand::DEMAND-01.P1.S1.NEGATIVE",
         "planned::on-demand::DEMAND-01.P1.S2.POSITIVE",
-        "planned::on-demand::DEMAND-01.P1.S2.NEGATIVE"
+        "planned::on-demand::DEMAND-01.P1.S2.NEGATIVE",
+        "planned::full-readiness::READY-01.P1.S1.POSITIVE",
+        "planned::full-readiness::READY-01.P1.S1.NEGATIVE",
+        "planned::full-readiness::READY-01.P1.S2.POSITIVE",
+        "planned::full-readiness::READY-01.P1.S2.NEGATIVE",
+        "planned::full-readiness::READY-02.P1.S1.POSITIVE",
+        "planned::full-readiness::READY-02.P1.S1.NEGATIVE",
+        "planned::full-readiness::READY-02.P1.S2.POSITIVE",
+        "planned::full-readiness::READY-02.P1.S2.NEGATIVE",
+        "planned::full-readiness::READY-03.P1.S1.POSITIVE",
+        "planned::full-readiness::READY-03.P1.S1.NEGATIVE",
+        "planned::full-readiness::READY-03.P1.S2.POSITIVE",
+        "planned::full-readiness::READY-03.P1.S2.NEGATIVE",
+        "planned::full-readiness::READY-04.P1.S1.POSITIVE",
+        "planned::full-readiness::READY-04.P1.S1.NEGATIVE",
+        "planned::full-readiness::READY-04.P1.S2.POSITIVE",
+        "planned::full-readiness::READY-04.P1.S2.NEGATIVE"
       ]
     },
     {

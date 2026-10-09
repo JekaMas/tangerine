@@ -328,7 +328,7 @@ Current resume: audit/on-demand-flow-20261009/REPORT.md and specification/v2/doc
 - [x] Read back the selected existing ChatGPT account's Pro status and automatic reload off; distinguish these observations from Tangerine authorization, purchased-credit exclusion, model availability and inference qualification.
 - [x] Prepare the optional ElevenLabs Free signup and request the browser tool's confirmation at its actual legal-terms acceptance step; record pending status without creating credentials or buying anything.
 - [x] Reconcile provider/account instructions, generated Free-media terms and exact remaining core/optional data consumers; preserve on-demand LLM generation,122categories/recipes,42formulas and11full-source scopes.
-- [ ] Continue the prepared ElevenLabs Free signup after the pending agreement confirmation; verify actual account/plan/allowance and retain honest setup-only evidence.
+- [x] Complete the prepared ElevenLabs Free signup after the user's explicit agreement approval; read back Free plan/allowance and Auto Top Up off. Current evidence supersedes the dated pending receipt in audit/full-development-readiness-20261009/.
 - [ ] Future authorized implementation/setup: complete Tangerine's own ChatGPT callback/token flow, inspect its app-specific credit controls and model catalogue, set up selected local speech, and execute designed main-flow/Lab observations. No duplicate LLM account or optional-every-provider registration is required.
 
 Current resume: audit/provider-registration-20261009/REPORT.md and observations.json record exact live account/documentation readback. ElevenLabs remains pending_confirmation; no account creation, API key, token exchange, model request, synthesis, installation, purchase, implementation or publication occurred. No new product decision is identified; the pending browser agreement confirmation is a tool requirement. Existing green graph/fixture receipts are retained within their scope. Preserve the unrelated GAPS.md edit.
@@ -339,3 +339,12 @@ Current resume: audit/provider-registration-20261009/REPORT.md and observations.
 - [x] Link the guide from both READMEs and local delivery; reconcile stale DeepSeek-default/key-only launcher wording with the already approved ChatGPT-plan + Kokoro starter. Preserve original profiles and all existing scope/fixtures/evidence.
 
 Current resume: specification/v2/docs/service-setup-guide.md and audit/service-setup-guide-20261009/REPORT.md. Documentation only; no registration, agreement acceptance, credential change, installation, inference, implementation or publication. Prior pending ElevenLabs confirmation remains pending. Preserve the unrelated GAPS.md edit.
+
+## 2026-10-09 full development readiness and approved registration
+
+- [x] Complete approved ElevenLabs Free onboarding; verify actual plan, unused creative pool, API access and Auto Top Up off without creating a key or buying usage.
+- [x] Map every current property/case and all 122 recipe operations to retained full-scope development acceptance; identify unavailable native sources and unobserved runtime/provider/audio evidence.
+- [x] Specify controlled local Kokoro phoneme input, independent local ASR, wider configured English voice locales, model-specific ElevenLabs dialogue transport and non-human measurement missingness. Preserve task variety defaults and original profiles.
+- [ ] Future full-scope development: implement all accepted feature owners and execute independent actual cases, including controlled acoustic realization/diagnostics, provider limits, Lab, source intake, restart/restore and supported-platform delivery. Selected complete source reports remain dependent on actual native bytes; missing inputs do not count as accepted product scope.
+
+Current resume: specification/v2/docs/full-development-readiness.md and audit/full-development-readiness-20261009/REPORT.md. Registration and read-only host observations are setup evidence only. No application implementation, model setup, inference, synthesis, paid usage or publication. Development may iterate; no MVP/product deferral is approved. Preserve the unrelated GAPS.md edit and historical receipts.
