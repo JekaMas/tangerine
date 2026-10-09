@@ -358,3 +358,13 @@ Current resume: specification/v2/docs/full-development-readiness.md and audit/fu
 - [ ] Future authorized full implementation: implement and qualify the entire accepted feature graph, actual provider/local model behavior, acoustic realization, persisted restart/restore and selected original-source bindings. Written fixture designs and public metadata are not runtime acceptance.
 
 Current resume: audit/build-contract-completeness-20261009/. Preserve unrelated audit/spec-fullness-20261008/GAPS.md. No implementation/inference/install authority in this increment.
+
+
+## 2026-10-10 complete per-property test sets and IDE handoff
+
+- [x] Audit all 422 properties by exact distinct input/expected packet rather than scenario counts; repair false true-error scoring for eight permitted-variant controls and separate false-positive tests from hidden-context rejection.
+- [x] Add 444 distinct functional/arithmetic/failure plans, retaining existing scenario coverage and all 122 categories, 42 formulas and eleven original source identities; bind every new edge to the existing DAG command and discovery ledger.
+- [x] Add the complete per-property set index, independent expected packets and a finite specification consistency/oracle-sensitivity checker; preserve actual historical evidence separately from unexecuted future acceptance.
+- [ ] Execute full acceptance through the future real application/provider/audio owners. Specification checks and IDE indexes do not establish application acceptance.
+
+Resume: audit/property-test-sets-20261010/REPORT.md owns current specification/test-set and requested IDE/Context handoff evidence. No product feature is deferred or removed.

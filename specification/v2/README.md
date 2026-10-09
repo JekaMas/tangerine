@@ -37,3 +37,5 @@ Setup instructions: [which services are needed and what each does](docs/service-
 [Full development and operation readiness](docs/full-development-readiness.md) maps every feature to its services/data and distinguishes complete written scope from observed all-feature acceptance.
 
 Complete production extensions and source/export/auditory/resume contracts: docs/full-build-contract.md; corresponding typed schemas and domain/acoustic-production.v1.json. These are specification artifacts, not implemented behavior.
+
+Complete distinct per-property positive/negative sets and DAG case identities: [property-test-sets.v1.json](domain/property-test-sets.v1.json); exact input/expected/oracle packets remain in verification-fixtures.v1.json. Current test-design audit: audit/property-test-sets-20261010/REPORT.md.
