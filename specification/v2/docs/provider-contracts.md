@@ -21,3 +21,5 @@ Speech offers local Kokoro synthesis or the existing Azure service, as defined i
 Prompt/context changes and comparisons follow llm-lab.md. New LLM bindings populate prompt_bundle_sha256, context_policy_sha256 and phase, and receipts link context snapshots plus trace/span IDs; these additive fields remain optional for historical/imported records. The entire operation freezes its active bundle, and semantic cache identity includes the actual bundle/policy/profile/schema inputs. Optional Lab export never changes native grades or provider routing.
 
 A logical stage cap covers its initial call and all transport/fallback/repair attempts together; it does not reset per attempt. See llm-lab-contract-details.md for reserve-safe diagnostic export.
+
+Every future owned provider/local inference path, including repair/fallback/judge and speech/ASR, follows the inventory/snapshot/receipt rules in ai-development.md. AI development requires actual Lab-linked observations; ordinary use remains independent of diagnostic export.

@@ -252,3 +252,14 @@ Current resume: the requested completeness audit is in audit/flow-fullness-20261
 - [x] Inspect the selected sender's recent corpus-reply search and actual Cambridge response; academic email remains required, with no newly supplied release or institutional identity inferred. Retain existing acquisition and validation receipts.
 
 Current resume: audit/decision-closure-20261009/REPORT.md separates closed definitions, externally controlled source artifacts and future runtime/empirical observations. No new product decision is required. Current user authority remains research/specification and previously authorized source outreach/acquisition, with no implementation, inference, installation, credential change or publication. Preserve the unrelated GAPS.md edit.
+
+## 2026-10-09 mandatory AI development tooling and context control (specification only)
+
+- [x] Explore current Lab/receipt/context/provider/experiment ownership and project instructions; distinguish14declared future surfaces from the health-only/current foundation and expose missing development coverage controls.
+- [x] Add DEV-01..DEV-12 with independent call/snapshot/export and semantic reference oracles, twelve properties and48positive/negative blocked behavior plans; retain all earlier graph records.
+- [x] Define complete versioned trusted fragments, model-visible input snapshots, all attempt/local/speech/judge paths, run-scoped Lab evidence, finite three-way coverage, explicit omissions/unknowns, regressions and affected-proof invalidation.
+- [x] Route both project instruction clients and development review through AI_DEVELOPMENT.md; remove stale human/corpus-approval/tenant review requirements without changing the pinned shared workflow or ordinary runtime optionality.
+- [x] Validate95static contract/independent coverage checks, all213files/134schemas/3,001field occurrences/88references, strict OpenSpec and374requirement/389property/1,556edge graph/discovery. Retain48new behavior edges as unexecuted and original scope/formula/prompt/provider bytes unchanged.
+- [ ] Future authorized implementation: instrument every owned AI path and trusted fragment, implement development eval/verify linkage and native/private/sanitized snapshots, exercise actual MLflow plus controlled transport/local boundaries and real provider observations under their proper proof limits.
+
+Current resume: spec/property exploration is in audit/ai-development-20261009/REPORT.md and specification/v2/docs/ai-development.md. AI-affecting development observation must use the selected Lab; ordinary local use remains independent. Current source has no implemented model-call/synthesis owner and no observed runtime coverage. No inference, runtime, installation, secret change, application implementation or publication occurred. Preserve the unrelated GAPS.md edit. Keep one task list and the unfinished application change open.

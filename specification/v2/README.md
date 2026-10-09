@@ -19,3 +19,5 @@ Mistake/data completeness, category relationships, descriptive frequency populat
 Optional LLM Lab manages prompt/context versions, local traces and controlled quality comparisons. Its owning specification is docs/llm-lab.md; it does not become a requirement for ordinary exercises or replace the 42 original equations.
 
 The current completeness reconciliation is ../../audit/flow-fullness-20261009/REPORT.md. Exact additional contracts are docs/generation-contract-details.md and docs/llm-lab-contract-details.md.
+
+AI-affecting development must use the selected Lab and reconcile owned prompts/context/inference through docs/ai-development.md. This project workflow requirement does not make Lab necessary for ordinary downloaded application use.

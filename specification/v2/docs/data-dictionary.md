@@ -145,3 +145,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | llm-quality-judge-output | 2.0.0 | document.payload with linked private assets | 9 |
 
 | mutation-manifest | 2.0.0 | document.payload with linked private assets | 107 |
+
+| ai-development-run | 2.0.0 | document.payload with linked private assets | 96 |
+
+| ai-surface-inventory | 2.0.0 | document.payload with linked private assets | 28 |

@@ -2173,6 +2173,78 @@
       "capability": "flow-contract-completeness",
       "title": "CMP-06 Logical deadlines and optional quality reports",
       "fingerprint": "204e4086ffc8ba2d5b0384d5ff6ceb60f734dd8e95e8bffbf45a659b4dbd1985"
+    },
+    {
+      "id": "DEV-01",
+      "capability": "ai-development",
+      "title": "DEV-01 Mandatory Lab evidence for AI development",
+      "fingerprint": "86742d030794e38c829587eae74eb3bbb252d1c786506c12af1f1808961e63ed"
+    },
+    {
+      "id": "DEV-02",
+      "capability": "ai-development",
+      "title": "DEV-02 Complete inference surface inventory",
+      "fingerprint": "d3ea14531c58478e705b603036a91fc92c545686575f7b6056b5a36c70587704"
+    },
+    {
+      "id": "DEV-03",
+      "capability": "ai-development",
+      "title": "DEV-03 Versioned trusted instruction sources",
+      "fingerprint": "31c738e6c46373aaae83c664281edfecdb77d705aff96fb60b5d8221aa07077b"
+    },
+    {
+      "id": "DEV-04",
+      "capability": "ai-development",
+      "title": "DEV-04 Exact model-visible snapshots",
+      "fingerprint": "db54685e4f1fbe93fe69194bded0b6d0642d07a90fd6942b308c5a5c22c81a23"
+    },
+    {
+      "id": "DEV-05",
+      "capability": "ai-development",
+      "title": "DEV-05 All attempt outcomes and caches accounted",
+      "fingerprint": "da79da3698ec027614ca435d3862f81ffcbf1bf72d1bb19c273142c3e2ed6e4f"
+    },
+    {
+      "id": "DEV-06",
+      "capability": "ai-development",
+      "title": "DEV-06 Context disclosure and budget fidelity",
+      "fingerprint": "daac4cdbf9513f07548d9a5d62d9cdd67cdfb8ceec7f6eb38dd7936e46da9c89"
+    },
+    {
+      "id": "DEV-07",
+      "capability": "ai-development",
+      "title": "DEV-07 Variant binding and cache isolation",
+      "fingerprint": "33d5fb541b3ba45590fedcc02e5c9bf668748b83a6f49b7853b4653587430533"
+    },
+    {
+      "id": "DEV-08",
+      "capability": "ai-development",
+      "title": "DEV-08 Measured semantic change evidence",
+      "fingerprint": "b0a7de0fea9e0931402ccedeaea91a35d98c8f2f0353cc741073f56d1fcfd583"
+    },
+    {
+      "id": "DEV-09",
+      "capability": "ai-development",
+      "title": "DEV-09 Observable and challenged judges",
+      "fingerprint": "6d8f603206092f4d017f6c69cedbb99c46ad1882fdb711beb306e6a72177d8e0"
+    },
+    {
+      "id": "DEV-10",
+      "capability": "ai-development",
+      "title": "DEV-10 Private but inspectable diagnostic artifacts",
+      "fingerprint": "9dc8f2788728298720ba1f9e725da511b9455c1d084cb6fa3432ba21f43457fa"
+    },
+    {
+      "id": "DEV-11",
+      "capability": "ai-development",
+      "title": "DEV-11 Export outages do not falsify development evidence",
+      "fingerprint": "67612b3d1606718010dc5fe78856d4da5dd0ebe6bbe0b32949b78e26a7589022"
+    },
+    {
+      "id": "DEV-12",
+      "capability": "ai-development",
+      "title": "DEV-12 Coverage completeness and precise invalidation",
+      "fingerprint": "de39dffd8dae2e4fb7123160328e2a510b662589462b2b2d6ab1dff5e298d270"
     }
   ],
   "properties": [
@@ -8308,6 +8380,234 @@
         "services/web/**",
         "specification/v2/docs/generation-contract-details.md",
         "specification/v2/docs/llm-lab-contract-details.md"
+      ]
+    },
+    {
+      "id": "DEV-01.P1",
+      "requirement_id": "DEV-01",
+      "statement": "AI-affecting development SHALL use the selected local Lab and retain ai-development-run evidence before claiming observed AI completion; ordinary runtime SHALL remain usable without Lab. Specification-only and zero-call deterministic work SHALL keep their actual proof limits. The owning definitions are specification/v2/docs/ai-development.md and domain/ai-development.v1.json.",
+      "scenarios": [
+        "DEV-01 Recorded AI increment",
+        "DEV-01 Ordinary use or unavailable development evidence"
+      ],
+      "owner": "services/api",
+      "oracle": "Selected dependency diff and actual experiment/observation receipts, not merely an enabled flag.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "docs/development/AI_DEVELOPMENT.md",
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json"
+      ]
+    },
+    {
+      "id": "DEV-02.P1",
+      "requirement_id": "DEV-02",
+      "statement": "Development SHALL reconcile every owned remote/local inference and wrapper/helper/plugin path against ai-surface-inventory, including all fourteen declared surfaces and future additions. Static inventory SHALL not masquerade as runtime coverage. The owning definitions are specification/v2/docs/ai-development.md and domain/ai-development.v1.json.",
+      "scenarios": [
+        "DEV-02 Registered alternate inference route",
+        "DEV-02 Unregistered helper or dynamic call"
+      ],
+      "owner": "services/api",
+      "oracle": "Independent transport/local inference observer versus registered actual owner inventory.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "docs/development/AI_DEVELOPMENT.md",
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json"
+      ]
+    },
+    {
+      "id": "DEV-03.P1",
+      "requirement_id": "DEV-03",
+      "statement": "Every trusted stage/schema/repair/fallback/judge/reference/adapter instruction fragment SHALL have an exact saved owner/hash. Dynamic answers/source/errors SHALL remain data, without hidden unversioned concatenation or recursive instruction expansion. The owning definitions are specification/v2/docs/ai-development.md and domain/ai-development.v1.json.",
+      "scenarios": [
+        "DEV-03 Inspect all rendered trusted fragments",
+        "DEV-03 Hidden instruction addition"
+      ],
+      "owner": "services/api",
+      "oracle": "Actual serialized request bytes compared to independently listed trusted fragment sources.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "docs/development/AI_DEVELOPMENT.md",
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json"
+      ]
+    },
+    {
+      "id": "DEV-04.P1",
+      "requirement_id": "DEV-04",
+      "statement": "Each actual model call SHALL save the final noncredential request after all serialization/defaults and before dispatch, with actual part/asset hashes, modalities and framing. Non-LLM speech/ASR inputs SHALL be inspectable too. The owning definitions are specification/v2/docs/ai-development.md and domain/ai-development.v1.json.",
+      "scenarios": [
+        "DEV-04 Inspect speech and LLM actual inputs",
+        "DEV-04 Post-snapshot SDK change"
+      ],
+      "owner": "services/api",
+      "oracle": "Independent actual transport/local argument capture versus snapshot-byte hashes.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "docs/development/AI_DEVELOPMENT.md",
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json"
+      ]
+    },
+    {
+      "id": "DEV-05.P1",
+      "requirement_id": "DEV-05",
+      "statement": "Every initial/retry/fallback/repair/local/judge attempt SHALL retain distinct actual snapshots/receipts/spans, including failures/cancellation/late outputs. Cache views SHALL reference the original call without inventing a new dispatch. The owning definitions are specification/v2/docs/ai-development.md and domain/ai-development.v1.json.",
+      "scenarios": [
+        "DEV-05 Repair lineage and cache inspection",
+        "DEV-05 Lost refused or interrupted attempt"
+      ],
+      "owner": "services/api",
+      "oracle": "Observed dispatch identities and lineage, not successful-row counts.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "docs/development/AI_DEVELOPMENT.md",
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json"
+      ]
+    },
+    {
+      "id": "DEV-06.P1",
+      "requirement_id": "DEV-06",
+      "statement": "Development SHALL exercise actual stage disclosure/budget selection: blind extraction omits keys/prior scores; independent audit omits mapper results; mapping/feedback retain required frozen inputs; ASR/reference conditioning remains explicit. The owning definitions are specification/v2/docs/ai-development.md and domain/ai-development.v1.json.",
+      "scenarios": [
+        "DEV-06 Correct stage-specific context",
+        "DEV-06 Leaked or truncated context"
+      ],
+      "owner": "services/api",
+      "oracle": "Final per-stage input asset versus independent allowed/required-input expectations.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "docs/development/AI_DEVELOPMENT.md",
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json"
+      ]
+    },
+    {
+      "id": "DEV-07.P1",
+      "requirement_id": "DEV-07",
+      "statement": "Prompt/context/fragment/schema/recipe/model/voice/input parameter changes SHALL affect the relevant frozen binding/cache identity. Editing/activation SHALL preserve earlier saved attempts and use the actual selected version, without hidden fallback. The owning definitions are specification/v2/docs/ai-development.md and domain/ai-development.v1.json.",
+      "scenarios": [
+        "DEV-07 Changed variant executes its own binding",
+        "DEV-07 Stale cache or alias substitution"
+      ],
+      "owner": "services/api",
+      "oracle": "Frozen full binding/input dependency hashes plus actual dispatched model/parameters.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "docs/development/AI_DEVELOPMENT.md",
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json"
+      ]
+    },
+    {
+      "id": "DEV-08.P1",
+      "requirement_id": "DEV-08",
+      "statement": "AI development SHALL select affected positive/negative cases and actual dependent pipelines with frozen independent expectations, preserving failed/unperformed rows, all122coverage reporting and existing exact arithmetic. Unsupported quality improvement claims SHALL remain unproven. The owning definitions are specification/v2/docs/ai-development.md and domain/ai-development.v1.json.",
+      "scenarios": [
+        "DEV-08 Paired change with real failure counts",
+        "DEV-08 Optimistic or circular evaluation"
+      ],
+      "owner": "services/api",
+      "oracle": "Frozen reference assets and native formula sufficient statistics independent of the candidate.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "docs/development/AI_DEVELOPMENT.md",
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json"
+      ]
+    },
+    {
+      "id": "DEV-09.P1",
+      "requirement_id": "DEV-09",
+      "statement": "Judges/scorers SHALL use frozen rubric/prompt/profile/schema identities and actual trace/receipts, with correct/incorrect/unknown test packets. Judge agreement SHALL not replace native arithmetic or absent acoustic evidence. The owning definitions are specification/v2/docs/ai-development.md and domain/ai-development.v1.json.",
+      "scenarios": [
+        "DEV-09 Judge verdicts have actual provenance",
+        "DEV-09 Self-validating or invented judge evidence"
+      ],
+      "owner": "services/api",
+      "oracle": "Withheld authored packet expectations, exact native arithmetic and actual modality evidence.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "docs/development/AI_DEVELOPMENT.md",
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json"
+      ]
+    },
+    {
+      "id": "DEV-10.P1",
+      "requirement_id": "DEV-10",
+      "statement": "Development SHALL explicitly select permitted body capture and preserve private original/sanitized hashes and redaction reasons. It SHALL never export credentials/private source fields or claim complete body inspection after an undisclosed omission. The owning definitions are specification/v2/docs/ai-development.md and domain/ai-development.v1.json.",
+      "scenarios": [
+        "DEV-10 Sanitized context stays attributable",
+        "DEV-10 Forbidden or missing body copy"
+      ],
+      "owner": "services/api",
+      "oracle": "Actual canary bytes/assets versus allowed export projection and unchanged original input hash.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "docs/development/AI_DEVELOPMENT.md",
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json"
+      ]
+    },
+    {
+      "id": "DEV-11.P1",
+      "requirement_id": "DEV-11",
+      "statement": "Lab export failure SHALL preserve native results and mark AI development evidence incomplete; explicit sync SHALL export the same saved observations without inference. Restore/deletion SHALL preserve honest pending status. The owning definitions are specification/v2/docs/ai-development.md and domain/ai-development.v1.json.",
+      "scenarios": [
+        "DEV-11 Export-only recovery",
+        "DEV-11 Unsynchronized or failed cleanup claim"
+      ],
+      "owner": "services/api",
+      "oracle": "Native dispatch count before/after sync and actual Lab artifact identity/cleanup receipt.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "docs/development/AI_DEVELOPMENT.md",
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json"
+      ]
+    },
+    {
+      "id": "DEV-12.P1",
+      "requirement_id": "DEV-12",
+      "statement": "Development SHALL reconcile independently observed dispatches, native snapshots/receipts and actual MLflow exports using the exact selected property/case/dependency inventory. Unmatched paths and zero populations SHALL remain explicit; unchanged valid greens SHALL be retained. The owning definitions are specification/v2/docs/ai-development.md and domain/ai-development.v1.json.",
+      "scenarios": [
+        "DEV-12 Complete finite selected evidence join",
+        "DEV-12 False coverage or blanket rerun"
+      ],
+      "owner": "services/api",
+      "oracle": "Independent dispatch population, bijective receipt/snapshot/export correspondence and saved semantic dependency hashes.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "docs/development/AI_DEVELOPMENT.md",
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json"
       ]
     }
   ],
@@ -48757,6 +49057,1398 @@
         "note": "Future production/provider evidence; authored audit fixtures are not a substitute."
       },
       "blocker": "Specification-only authority; no application implementation, inference or audio/Lab execution."
+    },
+    {
+      "id": "DEV-01.P1.S1.POSITIVE",
+      "property_id": "DEV-01.P1",
+      "polarity": "positive",
+      "scenario": "DEV-01 Recorded AI increment",
+      "scenario_fingerprint": "41c9066bb0c0441fe4db97e0454be2ac3022c9246bb19391c84ed8605f319ccd",
+      "setup": "A mapping prompt/adapter increment with selected positive/negative cases. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "the increment executes through Lab-linked native owners and saves exact evidence",
+      "red_expectation": "The actual owner violates: the increment executes through Lab-linked native owners and saves exact evidence",
+      "green_expectation": "Observe: the increment executes through Lab-linked native owners and saves exact evidence",
+      "test_id": "planned::ai-development::DEV-01.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-01.P1.S1.NEGATIVE",
+      "property_id": "DEV-01.P1",
+      "polarity": "negative",
+      "scenario": "DEV-01 Recorded AI increment",
+      "scenario_fingerprint": "41c9066bb0c0441fe4db97e0454be2ac3022c9246bb19391c84ed8605f319ccd",
+      "setup": "A mapping prompt/adapter increment with selected positive/negative cases. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "the increment executes through Lab-linked native owners and saves exact evidence",
+      "red_expectation": "The actual owner violates: the increment executes through Lab-linked native owners and saves exact evidence",
+      "green_expectation": "Observe: the increment executes through Lab-linked native owners and saves exact evidence",
+      "test_id": "planned::ai-development::DEV-01.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-01.P1.S2.POSITIVE",
+      "property_id": "DEV-01.P1",
+      "polarity": "positive",
+      "scenario": "DEV-01 Ordinary use or unavailable development evidence",
+      "scenario_fingerprint": "e5db95860b4f51b607eb74bc190df8c3a933b19327ef1a7e6ac471b1cfdb9de9",
+      "setup": "Lab is off or the selected development observations are missing. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "ordinary learner grades remain usable and AI development is explicitly incomplete rather than reported verified",
+      "red_expectation": "The actual owner violates: ordinary learner grades remain usable and AI development is explicitly incomplete rather than reported verified",
+      "green_expectation": "Observe: ordinary learner grades remain usable and AI development is explicitly incomplete rather than reported verified",
+      "test_id": "planned::ai-development::DEV-01.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-01.P1.S2.NEGATIVE",
+      "property_id": "DEV-01.P1",
+      "polarity": "negative",
+      "scenario": "DEV-01 Ordinary use or unavailable development evidence",
+      "scenario_fingerprint": "e5db95860b4f51b607eb74bc190df8c3a933b19327ef1a7e6ac471b1cfdb9de9",
+      "setup": "Lab is off or the selected development observations are missing. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "ordinary learner grades remain usable and AI development is explicitly incomplete rather than reported verified",
+      "red_expectation": "The actual owner violates: ordinary learner grades remain usable and AI development is explicitly incomplete rather than reported verified",
+      "green_expectation": "Observe: ordinary learner grades remain usable and AI development is explicitly incomplete rather than reported verified",
+      "test_id": "planned::ai-development::DEV-01.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-02.P1.S1.POSITIVE",
+      "property_id": "DEV-02.P1",
+      "polarity": "positive",
+      "scenario": "DEV-02 Registered alternate inference route",
+      "scenario_fingerprint": "4c5e55346164a17ec337363b04710798ea02c92e21e9a1e7bec86df26a9e807a",
+      "setup": "An implemented speech/judge/alternate adapter path. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "the inventory identifies its owner/serializer/trusted fragments and separate actual calls",
+      "red_expectation": "The actual owner violates: the inventory identifies its owner/serializer/trusted fragments and separate actual calls",
+      "green_expectation": "Observe: the inventory identifies its owner/serializer/trusted fragments and separate actual calls",
+      "test_id": "planned::ai-development::DEV-02.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-02.P1.S1.NEGATIVE",
+      "property_id": "DEV-02.P1",
+      "polarity": "negative",
+      "scenario": "DEV-02 Registered alternate inference route",
+      "scenario_fingerprint": "4c5e55346164a17ec337363b04710798ea02c92e21e9a1e7bec86df26a9e807a",
+      "setup": "An implemented speech/judge/alternate adapter path. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "the inventory identifies its owner/serializer/trusted fragments and separate actual calls",
+      "red_expectation": "The actual owner violates: the inventory identifies its owner/serializer/trusted fragments and separate actual calls",
+      "green_expectation": "Observe: the inventory identifies its owner/serializer/trusted fragments and separate actual calls",
+      "test_id": "planned::ai-development::DEV-02.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-02.P1.S2.POSITIVE",
+      "property_id": "DEV-02.P1",
+      "polarity": "positive",
+      "scenario": "DEV-02 Unregistered helper or dynamic call",
+      "scenario_fingerprint": "ff1a9301e70639ed53f159a9e4e27b2d10d9d5f255594a89ca4711c3fc41bb68",
+      "setup": "A hidden helper SDK call or local model path absent from inventory. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "dispatch reconciliation exposes it and the selected development coverage remains incomplete",
+      "red_expectation": "The actual owner violates: dispatch reconciliation exposes it and the selected development coverage remains incomplete",
+      "green_expectation": "Observe: dispatch reconciliation exposes it and the selected development coverage remains incomplete",
+      "test_id": "planned::ai-development::DEV-02.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-02.P1.S2.NEGATIVE",
+      "property_id": "DEV-02.P1",
+      "polarity": "negative",
+      "scenario": "DEV-02 Unregistered helper or dynamic call",
+      "scenario_fingerprint": "ff1a9301e70639ed53f159a9e4e27b2d10d9d5f255594a89ca4711c3fc41bb68",
+      "setup": "A hidden helper SDK call or local model path absent from inventory. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "dispatch reconciliation exposes it and the selected development coverage remains incomplete",
+      "red_expectation": "The actual owner violates: dispatch reconciliation exposes it and the selected development coverage remains incomplete",
+      "green_expectation": "Observe: dispatch reconciliation exposes it and the selected development coverage remains incomplete",
+      "test_id": "planned::ai-development::DEV-02.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-03.P1.S1.POSITIVE",
+      "property_id": "DEV-03.P1",
+      "polarity": "positive",
+      "scenario": "DEV-03 Inspect all rendered trusted fragments",
+      "scenario_fingerprint": "9b44f85007894d476e4757b7cf82bdf96b94a0ea2a705db975a1d7655d1a19ad",
+      "setup": "A request includes a schema description and semantic-repair wrapper. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "their actual text/role/order and source hashes are reconstructable",
+      "red_expectation": "The actual owner violates: their actual text/role/order and source hashes are reconstructable",
+      "green_expectation": "Observe: their actual text/role/order and source hashes are reconstructable",
+      "test_id": "planned::ai-development::DEV-03.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-03.P1.S1.NEGATIVE",
+      "property_id": "DEV-03.P1",
+      "polarity": "negative",
+      "scenario": "DEV-03 Inspect all rendered trusted fragments",
+      "scenario_fingerprint": "9b44f85007894d476e4757b7cf82bdf96b94a0ea2a705db975a1d7655d1a19ad",
+      "setup": "A request includes a schema description and semantic-repair wrapper. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "their actual text/role/order and source hashes are reconstructable",
+      "red_expectation": "The actual owner violates: their actual text/role/order and source hashes are reconstructable",
+      "green_expectation": "Observe: their actual text/role/order and source hashes are reconstructable",
+      "test_id": "planned::ai-development::DEV-03.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-03.P1.S2.POSITIVE",
+      "property_id": "DEV-03.P1",
+      "polarity": "positive",
+      "scenario": "DEV-03 Hidden instruction addition",
+      "scenario_fingerprint": "3edcc9f28a977d2456f31c038a5d7e44813b52c55fee5daff981b8564b2c79a0",
+      "setup": "An adapter appends an unregistered instruction or evaluates answer text as a template. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "the mismatch is observed and no complete controlled-context claim is issued",
+      "red_expectation": "The actual owner violates: the mismatch is observed and no complete controlled-context claim is issued",
+      "green_expectation": "Observe: the mismatch is observed and no complete controlled-context claim is issued",
+      "test_id": "planned::ai-development::DEV-03.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-03.P1.S2.NEGATIVE",
+      "property_id": "DEV-03.P1",
+      "polarity": "negative",
+      "scenario": "DEV-03 Hidden instruction addition",
+      "scenario_fingerprint": "3edcc9f28a977d2456f31c038a5d7e44813b52c55fee5daff981b8564b2c79a0",
+      "setup": "An adapter appends an unregistered instruction or evaluates answer text as a template. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "the mismatch is observed and no complete controlled-context claim is issued",
+      "red_expectation": "The actual owner violates: the mismatch is observed and no complete controlled-context claim is issued",
+      "green_expectation": "Observe: the mismatch is observed and no complete controlled-context claim is issued",
+      "test_id": "planned::ai-development::DEV-03.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-04.P1.S1.POSITIVE",
+      "property_id": "DEV-04.P1",
+      "polarity": "positive",
+      "scenario": "DEV-04 Inspect speech and LLM actual inputs",
+      "scenario_fingerprint": "981f690403e1febfa67ba6a32cb6796ff44211dfe1378baa1a614cc7c2db777b",
+      "setup": "A JSON LLM call and SSML/audio reference call. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "actual model-visible bytes/parameters match their saved snapshots",
+      "red_expectation": "The actual owner violates: actual model-visible bytes/parameters match their saved snapshots",
+      "green_expectation": "Observe: actual model-visible bytes/parameters match their saved snapshots",
+      "test_id": "planned::ai-development::DEV-04.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-04.P1.S1.NEGATIVE",
+      "property_id": "DEV-04.P1",
+      "polarity": "negative",
+      "scenario": "DEV-04 Inspect speech and LLM actual inputs",
+      "scenario_fingerprint": "981f690403e1febfa67ba6a32cb6796ff44211dfe1378baa1a614cc7c2db777b",
+      "setup": "A JSON LLM call and SSML/audio reference call. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "actual model-visible bytes/parameters match their saved snapshots",
+      "red_expectation": "The actual owner violates: actual model-visible bytes/parameters match their saved snapshots",
+      "green_expectation": "Observe: actual model-visible bytes/parameters match their saved snapshots",
+      "test_id": "planned::ai-development::DEV-04.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-04.P1.S2.POSITIVE",
+      "property_id": "DEV-04.P1",
+      "polarity": "positive",
+      "scenario": "DEV-04 Post-snapshot SDK change",
+      "scenario_fingerprint": "88d97e3a952c6287dcd9c4b1e6ae97305a33fea179ca150bec75b69366f59f14",
+      "setup": "A serializer or SDK alters a default/role/prompt after snapshot creation. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "transport mismatch is retained as incomplete snapshot coverage instead of relying on template hashes",
+      "red_expectation": "The actual owner violates: transport mismatch is retained as incomplete snapshot coverage instead of relying on template hashes",
+      "green_expectation": "Observe: transport mismatch is retained as incomplete snapshot coverage instead of relying on template hashes",
+      "test_id": "planned::ai-development::DEV-04.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-04.P1.S2.NEGATIVE",
+      "property_id": "DEV-04.P1",
+      "polarity": "negative",
+      "scenario": "DEV-04 Post-snapshot SDK change",
+      "scenario_fingerprint": "88d97e3a952c6287dcd9c4b1e6ae97305a33fea179ca150bec75b69366f59f14",
+      "setup": "A serializer or SDK alters a default/role/prompt after snapshot creation. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "transport mismatch is retained as incomplete snapshot coverage instead of relying on template hashes",
+      "red_expectation": "The actual owner violates: transport mismatch is retained as incomplete snapshot coverage instead of relying on template hashes",
+      "green_expectation": "Observe: transport mismatch is retained as incomplete snapshot coverage instead of relying on template hashes",
+      "test_id": "planned::ai-development::DEV-04.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-05.P1.S1.POSITIVE",
+      "property_id": "DEV-05.P1",
+      "polarity": "positive",
+      "scenario": "DEV-05 Repair lineage and cache inspection",
+      "scenario_fingerprint": "0afe011eff09324653b25c7369f206ab0806acb51887349c2c9de8442e7961ab",
+      "setup": "An initial call is repaired and later inspected from cache. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "two real attempts and one cache reference retain distinct lineage and real usage",
+      "red_expectation": "The actual owner violates: two real attempts and one cache reference retain distinct lineage and real usage",
+      "green_expectation": "Observe: two real attempts and one cache reference retain distinct lineage and real usage",
+      "test_id": "planned::ai-development::DEV-05.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-05.P1.S1.NEGATIVE",
+      "property_id": "DEV-05.P1",
+      "polarity": "negative",
+      "scenario": "DEV-05 Repair lineage and cache inspection",
+      "scenario_fingerprint": "0afe011eff09324653b25c7369f206ab0806acb51887349c2c9de8442e7961ab",
+      "setup": "An initial call is repaired and later inspected from cache. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "two real attempts and one cache reference retain distinct lineage and real usage",
+      "red_expectation": "The actual owner violates: two real attempts and one cache reference retain distinct lineage and real usage",
+      "green_expectation": "Observe: two real attempts and one cache reference retain distinct lineage and real usage",
+      "test_id": "planned::ai-development::DEV-05.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-05.P1.S2.POSITIVE",
+      "property_id": "DEV-05.P1",
+      "polarity": "positive",
+      "scenario": "DEV-05 Lost refused or interrupted attempt",
+      "scenario_fingerprint": "cab95920d2210b976580012fde91de507bede661931228d1c9dc882ba0052b7c",
+      "setup": "An attempt refuses/errors/crashes after dispatch or an exporter drops it. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "the initiated attempt stays in the denominator and unresolved outcome/export stays explicit",
+      "red_expectation": "The actual owner violates: the initiated attempt stays in the denominator and unresolved outcome/export stays explicit",
+      "green_expectation": "Observe: the initiated attempt stays in the denominator and unresolved outcome/export stays explicit",
+      "test_id": "planned::ai-development::DEV-05.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-05.P1.S2.NEGATIVE",
+      "property_id": "DEV-05.P1",
+      "polarity": "negative",
+      "scenario": "DEV-05 Lost refused or interrupted attempt",
+      "scenario_fingerprint": "cab95920d2210b976580012fde91de507bede661931228d1c9dc882ba0052b7c",
+      "setup": "An attempt refuses/errors/crashes after dispatch or an exporter drops it. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "the initiated attempt stays in the denominator and unresolved outcome/export stays explicit",
+      "red_expectation": "The actual owner violates: the initiated attempt stays in the denominator and unresolved outcome/export stays explicit",
+      "green_expectation": "Observe: the initiated attempt stays in the denominator and unresolved outcome/export stays explicit",
+      "test_id": "planned::ai-development::DEV-05.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-06.P1.S1.POSITIVE",
+      "property_id": "DEV-06.P1",
+      "polarity": "positive",
+      "scenario": "DEV-06 Correct stage-specific context",
+      "scenario_fingerprint": "9ac9ba07483a24732a8e04cd7295e960912846d99c206d6d8872d994d7f5390d",
+      "setup": "A fixed answer/key and actual native result enter the selected pipeline. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "each stage sees exactly its allowed required components and explicit optional selections",
+      "red_expectation": "The actual owner violates: each stage sees exactly its allowed required components and explicit optional selections",
+      "green_expectation": "Observe: each stage sees exactly its allowed required components and explicit optional selections",
+      "test_id": "planned::ai-development::DEV-06.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-06.P1.S1.NEGATIVE",
+      "property_id": "DEV-06.P1",
+      "polarity": "negative",
+      "scenario": "DEV-06 Correct stage-specific context",
+      "scenario_fingerprint": "9ac9ba07483a24732a8e04cd7295e960912846d99c206d6d8872d994d7f5390d",
+      "setup": "A fixed answer/key and actual native result enter the selected pipeline. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "each stage sees exactly its allowed required components and explicit optional selections",
+      "red_expectation": "The actual owner violates: each stage sees exactly its allowed required components and explicit optional selections",
+      "green_expectation": "Observe: each stage sees exactly its allowed required components and explicit optional selections",
+      "test_id": "planned::ai-development::DEV-06.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-06.P1.S2.POSITIVE",
+      "property_id": "DEV-06.P1",
+      "polarity": "positive",
+      "scenario": "DEV-06 Leaked or truncated context",
+      "scenario_fingerprint": "c19f06f351e4593ba37ee74c2240bdf47d0a1144096f0821c7714bf871124884",
+      "setup": "A custom policy adds the key to blind extraction, first-map decisions to audit or removes required answer bytes. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "the actual assembled context exposes the defect and no accurate-grade/independence claim is made",
+      "red_expectation": "The actual owner violates: the actual assembled context exposes the defect and no accurate-grade/independence claim is made",
+      "green_expectation": "Observe: the actual assembled context exposes the defect and no accurate-grade/independence claim is made",
+      "test_id": "planned::ai-development::DEV-06.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-06.P1.S2.NEGATIVE",
+      "property_id": "DEV-06.P1",
+      "polarity": "negative",
+      "scenario": "DEV-06 Leaked or truncated context",
+      "scenario_fingerprint": "c19f06f351e4593ba37ee74c2240bdf47d0a1144096f0821c7714bf871124884",
+      "setup": "A custom policy adds the key to blind extraction, first-map decisions to audit or removes required answer bytes. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "the actual assembled context exposes the defect and no accurate-grade/independence claim is made",
+      "red_expectation": "The actual owner violates: the actual assembled context exposes the defect and no accurate-grade/independence claim is made",
+      "green_expectation": "Observe: the actual assembled context exposes the defect and no accurate-grade/independence claim is made",
+      "test_id": "planned::ai-development::DEV-06.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-07.P1.S1.POSITIVE",
+      "property_id": "DEV-07.P1",
+      "polarity": "positive",
+      "scenario": "DEV-07 Changed variant executes its own binding",
+      "scenario_fingerprint": "661da82028513a06b5843370926a0d6fb708f8628de2c16a618fa8ac554ebbc6",
+      "setup": "A selected trusted fragment or model-visible parameter differs from baseline. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "new calls use that exact variant and old answers/results retain their original binding",
+      "red_expectation": "The actual owner violates: new calls use that exact variant and old answers/results retain their original binding",
+      "green_expectation": "Observe: new calls use that exact variant and old answers/results retain their original binding",
+      "test_id": "planned::ai-development::DEV-07.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-07.P1.S1.NEGATIVE",
+      "property_id": "DEV-07.P1",
+      "polarity": "negative",
+      "scenario": "DEV-07 Changed variant executes its own binding",
+      "scenario_fingerprint": "661da82028513a06b5843370926a0d6fb708f8628de2c16a618fa8ac554ebbc6",
+      "setup": "A selected trusted fragment or model-visible parameter differs from baseline. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "new calls use that exact variant and old answers/results retain their original binding",
+      "red_expectation": "The actual owner violates: new calls use that exact variant and old answers/results retain their original binding",
+      "green_expectation": "Observe: new calls use that exact variant and old answers/results retain their original binding",
+      "test_id": "planned::ai-development::DEV-07.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-07.P1.S2.POSITIVE",
+      "property_id": "DEV-07.P1",
+      "polarity": "positive",
+      "scenario": "DEV-07 Stale cache or alias substitution",
+      "scenario_fingerprint": "b6d4516c1944e152039289bd0d0451108986db8a02d1efd16fe0292b381e660f",
+      "setup": "A mutable alias changes or a cache entry has another effective input identity. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "the run does not reuse the mismatched decision or silently substitute a profile",
+      "red_expectation": "The actual owner violates: the run does not reuse the mismatched decision or silently substitute a profile",
+      "green_expectation": "Observe: the run does not reuse the mismatched decision or silently substitute a profile",
+      "test_id": "planned::ai-development::DEV-07.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-07.P1.S2.NEGATIVE",
+      "property_id": "DEV-07.P1",
+      "polarity": "negative",
+      "scenario": "DEV-07 Stale cache or alias substitution",
+      "scenario_fingerprint": "b6d4516c1944e152039289bd0d0451108986db8a02d1efd16fe0292b381e660f",
+      "setup": "A mutable alias changes or a cache entry has another effective input identity. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "the run does not reuse the mismatched decision or silently substitute a profile",
+      "red_expectation": "The actual owner violates: the run does not reuse the mismatched decision or silently substitute a profile",
+      "green_expectation": "Observe: the run does not reuse the mismatched decision or silently substitute a profile",
+      "test_id": "planned::ai-development::DEV-07.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-08.P1.S1.POSITIVE",
+      "property_id": "DEV-08.P1",
+      "polarity": "positive",
+      "scenario": "DEV-08 Paired change with real failure counts",
+      "scenario_fingerprint": "f49ab3be308a19b2b6c6d5f3a23c3ce470d4066e9a90799feb85521204e1efec",
+      "setup": "A baseline/candidate comparison on the same fixed reference population. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "paired metrics retain actual origins/denominators and relevant dependent cases",
+      "red_expectation": "The actual owner violates: paired metrics retain actual origins/denominators and relevant dependent cases",
+      "green_expectation": "Observe: paired metrics retain actual origins/denominators and relevant dependent cases",
+      "test_id": "planned::ai-development::DEV-08.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-08.P1.S1.NEGATIVE",
+      "property_id": "DEV-08.P1",
+      "polarity": "negative",
+      "scenario": "DEV-08 Paired change with real failure counts",
+      "scenario_fingerprint": "f49ab3be308a19b2b6c6d5f3a23c3ce470d4066e9a90799feb85521204e1efec",
+      "setup": "A baseline/candidate comparison on the same fixed reference population. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "paired metrics retain actual origins/denominators and relevant dependent cases",
+      "red_expectation": "The actual owner violates: paired metrics retain actual origins/denominators and relevant dependent cases",
+      "green_expectation": "Observe: paired metrics retain actual origins/denominators and relevant dependent cases",
+      "test_id": "planned::ai-development::DEV-08.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-08.P1.S2.POSITIVE",
+      "property_id": "DEV-08.P1",
+      "polarity": "positive",
+      "scenario": "DEV-08 Optimistic or circular evaluation",
+      "scenario_fingerprint": "c845aec01c5d081ac6faa69105f840ed1216a36b2c5761200bc6a5d64639fd10",
+      "setup": "Candidate-made labels, leaked expected answers, excluded failures or unselected leaves. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "the report labels self-consistency/missing coverage and cannot claim independent improvement/full coverage",
+      "red_expectation": "The actual owner violates: the report labels self-consistency/missing coverage and cannot claim independent improvement/full coverage",
+      "green_expectation": "Observe: the report labels self-consistency/missing coverage and cannot claim independent improvement/full coverage",
+      "test_id": "planned::ai-development::DEV-08.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-08.P1.S2.NEGATIVE",
+      "property_id": "DEV-08.P1",
+      "polarity": "negative",
+      "scenario": "DEV-08 Optimistic or circular evaluation",
+      "scenario_fingerprint": "c845aec01c5d081ac6faa69105f840ed1216a36b2c5761200bc6a5d64639fd10",
+      "setup": "Candidate-made labels, leaked expected answers, excluded failures or unselected leaves. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "the report labels self-consistency/missing coverage and cannot claim independent improvement/full coverage",
+      "red_expectation": "The actual owner violates: the report labels self-consistency/missing coverage and cannot claim independent improvement/full coverage",
+      "green_expectation": "Observe: the report labels self-consistency/missing coverage and cannot claim independent improvement/full coverage",
+      "test_id": "planned::ai-development::DEV-08.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-09.P1.S1.POSITIVE",
+      "property_id": "DEV-09.P1",
+      "polarity": "positive",
+      "scenario": "DEV-09 Judge verdicts have actual provenance",
+      "scenario_fingerprint": "51c88486b380d305684463b9b02b77c5f21a21aa6172dbbdcc90a87e309c7f33",
+      "setup": "Known correct/incorrect/unsupported packets and a selected diagnostic judge. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "saved verdicts/receipts expose false support/rejection/unknown handling with actual basis",
+      "red_expectation": "The actual owner violates: saved verdicts/receipts expose false support/rejection/unknown handling with actual basis",
+      "green_expectation": "Observe: saved verdicts/receipts expose false support/rejection/unknown handling with actual basis",
+      "test_id": "planned::ai-development::DEV-09.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-09.P1.S1.NEGATIVE",
+      "property_id": "DEV-09.P1",
+      "polarity": "negative",
+      "scenario": "DEV-09 Judge verdicts have actual provenance",
+      "scenario_fingerprint": "51c88486b380d305684463b9b02b77c5f21a21aa6172dbbdcc90a87e309c7f33",
+      "setup": "Known correct/incorrect/unsupported packets and a selected diagnostic judge. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "saved verdicts/receipts expose false support/rejection/unknown handling with actual basis",
+      "red_expectation": "The actual owner violates: saved verdicts/receipts expose false support/rejection/unknown handling with actual basis",
+      "green_expectation": "Observe: saved verdicts/receipts expose false support/rejection/unknown handling with actual basis",
+      "test_id": "planned::ai-development::DEV-09.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-09.P1.S2.POSITIVE",
+      "property_id": "DEV-09.P1",
+      "polarity": "positive",
+      "scenario": "DEV-09 Self-validating or invented judge evidence",
+      "scenario_fingerprint": "448b408dcc79bb204cf844b82193419cd229232d3c40a79d46b72c6e20f48589",
+      "setup": "The candidate grades its own labels or text-only judge claims observed phones. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "the circular/unsupported inference is retained and cannot establish independent/measured correctness",
+      "red_expectation": "The actual owner violates: the circular/unsupported inference is retained and cannot establish independent/measured correctness",
+      "green_expectation": "Observe: the circular/unsupported inference is retained and cannot establish independent/measured correctness",
+      "test_id": "planned::ai-development::DEV-09.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-09.P1.S2.NEGATIVE",
+      "property_id": "DEV-09.P1",
+      "polarity": "negative",
+      "scenario": "DEV-09 Self-validating or invented judge evidence",
+      "scenario_fingerprint": "448b408dcc79bb204cf844b82193419cd229232d3c40a79d46b72c6e20f48589",
+      "setup": "The candidate grades its own labels or text-only judge claims observed phones. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "the circular/unsupported inference is retained and cannot establish independent/measured correctness",
+      "red_expectation": "The actual owner violates: the circular/unsupported inference is retained and cannot establish independent/measured correctness",
+      "green_expectation": "Observe: the circular/unsupported inference is retained and cannot establish independent/measured correctness",
+      "test_id": "planned::ai-development::DEV-09.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-10.P1.S1.POSITIVE",
+      "property_id": "DEV-10.P1",
+      "polarity": "positive",
+      "scenario": "DEV-10 Sanitized context stays attributable",
+      "scenario_fingerprint": "7c0544a525397d57e4bea87f0de6b9a33c77e9fca25e955b4a2d44580ca34e09",
+      "setup": "Permitted context plus controlled secret/private-field canaries. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "Lab copies omit those fields while original grading bytes and separate hashes stay correct",
+      "red_expectation": "The actual owner violates: Lab copies omit those fields while original grading bytes and separate hashes stay correct",
+      "green_expectation": "Observe: Lab copies omit those fields while original grading bytes and separate hashes stay correct",
+      "test_id": "planned::ai-development::DEV-10.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-10.P1.S1.NEGATIVE",
+      "property_id": "DEV-10.P1",
+      "polarity": "negative",
+      "scenario": "DEV-10 Sanitized context stays attributable",
+      "scenario_fingerprint": "7c0544a525397d57e4bea87f0de6b9a33c77e9fca25e955b4a2d44580ca34e09",
+      "setup": "Permitted context plus controlled secret/private-field canaries. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "Lab copies omit those fields while original grading bytes and separate hashes stay correct",
+      "red_expectation": "The actual owner violates: Lab copies omit those fields while original grading bytes and separate hashes stay correct",
+      "green_expectation": "Observe: Lab copies omit those fields while original grading bytes and separate hashes stay correct",
+      "test_id": "planned::ai-development::DEV-10.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-10.P1.S2.POSITIVE",
+      "property_id": "DEV-10.P1",
+      "polarity": "positive",
+      "scenario": "DEV-10 Forbidden or missing body copy",
+      "scenario_fingerprint": "6d9a236c91f527d691ae7b4eae5287de7a0dee845dbee5281569dcdd152e7e17",
+      "setup": "Source terms prohibit copying a component or redaction/export loses required content. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "inspection limits remain explicit instead of fake full capture or an exported secret",
+      "red_expectation": "The actual owner violates: inspection limits remain explicit instead of fake full capture or an exported secret",
+      "green_expectation": "Observe: inspection limits remain explicit instead of fake full capture or an exported secret",
+      "test_id": "planned::ai-development::DEV-10.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-10.P1.S2.NEGATIVE",
+      "property_id": "DEV-10.P1",
+      "polarity": "negative",
+      "scenario": "DEV-10 Forbidden or missing body copy",
+      "scenario_fingerprint": "6d9a236c91f527d691ae7b4eae5287de7a0dee845dbee5281569dcdd152e7e17",
+      "setup": "Source terms prohibit copying a component or redaction/export loses required content. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "inspection limits remain explicit instead of fake full capture or an exported secret",
+      "red_expectation": "The actual owner violates: inspection limits remain explicit instead of fake full capture or an exported secret",
+      "green_expectation": "Observe: inspection limits remain explicit instead of fake full capture or an exported secret",
+      "test_id": "planned::ai-development::DEV-10.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-11.P1.S1.POSITIVE",
+      "property_id": "DEV-11.P1",
+      "polarity": "positive",
+      "scenario": "DEV-11 Export-only recovery",
+      "scenario_fingerprint": "51cb92bf002625b5e763578a3c020d147c358d8da6e654404f668daeda694188",
+      "setup": "A completed operation has native evidence and a transient Lab outage. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "sync restores exact diagnostic linkage without a new model call",
+      "red_expectation": "The actual owner violates: sync restores exact diagnostic linkage without a new model call",
+      "green_expectation": "Observe: sync restores exact diagnostic linkage without a new model call",
+      "test_id": "planned::ai-development::DEV-11.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-11.P1.S1.NEGATIVE",
+      "property_id": "DEV-11.P1",
+      "polarity": "negative",
+      "scenario": "DEV-11 Export-only recovery",
+      "scenario_fingerprint": "51cb92bf002625b5e763578a3c020d147c358d8da6e654404f668daeda694188",
+      "setup": "A completed operation has native evidence and a transient Lab outage. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "sync restores exact diagnostic linkage without a new model call",
+      "red_expectation": "The actual owner violates: sync restores exact diagnostic linkage without a new model call",
+      "green_expectation": "Observe: sync restores exact diagnostic linkage without a new model call",
+      "test_id": "planned::ai-development::DEV-11.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-11.P1.S2.POSITIVE",
+      "property_id": "DEV-11.P1",
+      "polarity": "positive",
+      "scenario": "DEV-11 Unsynchronized or failed cleanup claim",
+      "scenario_fingerprint": "425c55803e2d5177824e33316d9bd9c22f56e3d9c855e0852a7f12cb442513c7",
+      "setup": "Lab artifacts remain unavailable or copied-body deletion fails. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "the run retains missing/pending items and cannot claim successful synchronization/deletion",
+      "red_expectation": "The actual owner violates: the run retains missing/pending items and cannot claim successful synchronization/deletion",
+      "green_expectation": "Observe: the run retains missing/pending items and cannot claim successful synchronization/deletion",
+      "test_id": "planned::ai-development::DEV-11.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-11.P1.S2.NEGATIVE",
+      "property_id": "DEV-11.P1",
+      "polarity": "negative",
+      "scenario": "DEV-11 Unsynchronized or failed cleanup claim",
+      "scenario_fingerprint": "425c55803e2d5177824e33316d9bd9c22f56e3d9c855e0852a7f12cb442513c7",
+      "setup": "Lab artifacts remain unavailable or copied-body deletion fails. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "the run retains missing/pending items and cannot claim successful synchronization/deletion",
+      "red_expectation": "The actual owner violates: the run retains missing/pending items and cannot claim successful synchronization/deletion",
+      "green_expectation": "Observe: the run retains missing/pending items and cannot claim successful synchronization/deletion",
+      "test_id": "planned::ai-development::DEV-11.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-12.P1.S1.POSITIVE",
+      "property_id": "DEV-12.P1",
+      "polarity": "positive",
+      "scenario": "DEV-12 Complete finite selected evidence join",
+      "scenario_fingerprint": "c24f84c199ca23e6ce7b5f82cb63e8b32e31a393b2bb877e67890401f03ca550",
+      "setup": "Observed transport/local dispatches and matching native/Lab records. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "the three-way join covers every required selected observation and names unselected paths",
+      "red_expectation": "The actual owner violates: the three-way join covers every required selected observation and names unselected paths",
+      "green_expectation": "Observe: the three-way join covers every required selected observation and names unselected paths",
+      "test_id": "planned::ai-development::DEV-12.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-12.P1.S1.NEGATIVE",
+      "property_id": "DEV-12.P1",
+      "polarity": "negative",
+      "scenario": "DEV-12 Complete finite selected evidence join",
+      "scenario_fingerprint": "c24f84c199ca23e6ce7b5f82cb63e8b32e31a393b2bb877e67890401f03ca550",
+      "setup": "Observed transport/local dispatches and matching native/Lab records. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "the three-way join covers every required selected observation and names unselected paths",
+      "red_expectation": "The actual owner violates: the three-way join covers every required selected observation and names unselected paths",
+      "green_expectation": "Observe: the three-way join covers every required selected observation and names unselected paths",
+      "test_id": "planned::ai-development::DEV-12.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-12.P1.S2.POSITIVE",
+      "property_id": "DEV-12.P1",
+      "polarity": "positive",
+      "scenario": "DEV-12 False coverage or blanket rerun",
+      "scenario_fingerprint": "60e72bde85cea1d6d3df3e161c112a3e2a89a26fe9b920aa6490bcdf6e291c29",
+      "setup": "A dispatch is missing, duplicate export replaces another, zero calls claim integration or an unrelated edit triggers all tests. Retain all declared actual observations and exercise the exact expected behavior.",
+      "observable": "coverage remains incomplete/N/A as applicable and only truly changed dependency proofs rerun",
+      "red_expectation": "The actual owner violates: coverage remains incomplete/N/A as applicable and only truly changed dependency proofs rerun",
+      "green_expectation": "Observe: coverage remains incomplete/N/A as applicable and only truly changed dependency proofs rerun",
+      "test_id": "planned::ai-development::DEV-12.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
+    },
+    {
+      "id": "DEV-12.P1.S2.NEGATIVE",
+      "property_id": "DEV-12.P1",
+      "polarity": "negative",
+      "scenario": "DEV-12 False coverage or blanket rerun",
+      "scenario_fingerprint": "60e72bde85cea1d6d3df3e161c112a3e2a89a26fe9b920aa6490bcdf6e291c29",
+      "setup": "A dispatch is missing, duplicate export replaces another, zero calls claim integration or an unrelated edit triggers all tests. Introduce a missing/mismatched observation or bypass in this specific owner and retain the independent expected result.",
+      "observable": "coverage remains incomplete/N/A as applicable and only truly changed dependency proofs rerun",
+      "red_expectation": "The actual owner violates: coverage remains incomplete/N/A as applicable and only truly changed dependency proofs rerun",
+      "green_expectation": "Observe: coverage remains incomplete/N/A as applicable and only truly changed dependency proofs rerun",
+      "test_id": "planned::ai-development::DEV-12.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_ai_development.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/ai-development.md",
+        "specification/v2/domain/ai-development.v1.json",
+        "specification/v2/contracts/ai-development-run.schema.json",
+        "specification/v2/contracts/ai-surface-inventory.schema.json",
+        "docs/development/AI_DEVELOPMENT.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/ai-development/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future native call-boundary/MLflow evidence. Artifact fixtures cannot substitute for runtime or independent model quality."
+      },
+      "blocker": "Specification exploration/update only; no application implementation, MLflow installation/runtime or inference occurred."
     }
   ],
   "commands": [
@@ -50211,7 +51903,55 @@
         "planned::flow-fullness::CMP-06.P1.S1.POSITIVE",
         "planned::flow-fullness::CMP-06.P1.S1.NEGATIVE",
         "planned::flow-fullness::CMP-06.P1.S2.POSITIVE",
-        "planned::flow-fullness::CMP-06.P1.S2.NEGATIVE"
+        "planned::flow-fullness::CMP-06.P1.S2.NEGATIVE",
+        "planned::ai-development::DEV-01.P1.S1.POSITIVE",
+        "planned::ai-development::DEV-01.P1.S1.NEGATIVE",
+        "planned::ai-development::DEV-01.P1.S2.POSITIVE",
+        "planned::ai-development::DEV-01.P1.S2.NEGATIVE",
+        "planned::ai-development::DEV-02.P1.S1.POSITIVE",
+        "planned::ai-development::DEV-02.P1.S1.NEGATIVE",
+        "planned::ai-development::DEV-02.P1.S2.POSITIVE",
+        "planned::ai-development::DEV-02.P1.S2.NEGATIVE",
+        "planned::ai-development::DEV-03.P1.S1.POSITIVE",
+        "planned::ai-development::DEV-03.P1.S1.NEGATIVE",
+        "planned::ai-development::DEV-03.P1.S2.POSITIVE",
+        "planned::ai-development::DEV-03.P1.S2.NEGATIVE",
+        "planned::ai-development::DEV-04.P1.S1.POSITIVE",
+        "planned::ai-development::DEV-04.P1.S1.NEGATIVE",
+        "planned::ai-development::DEV-04.P1.S2.POSITIVE",
+        "planned::ai-development::DEV-04.P1.S2.NEGATIVE",
+        "planned::ai-development::DEV-05.P1.S1.POSITIVE",
+        "planned::ai-development::DEV-05.P1.S1.NEGATIVE",
+        "planned::ai-development::DEV-05.P1.S2.POSITIVE",
+        "planned::ai-development::DEV-05.P1.S2.NEGATIVE",
+        "planned::ai-development::DEV-06.P1.S1.POSITIVE",
+        "planned::ai-development::DEV-06.P1.S1.NEGATIVE",
+        "planned::ai-development::DEV-06.P1.S2.POSITIVE",
+        "planned::ai-development::DEV-06.P1.S2.NEGATIVE",
+        "planned::ai-development::DEV-07.P1.S1.POSITIVE",
+        "planned::ai-development::DEV-07.P1.S1.NEGATIVE",
+        "planned::ai-development::DEV-07.P1.S2.POSITIVE",
+        "planned::ai-development::DEV-07.P1.S2.NEGATIVE",
+        "planned::ai-development::DEV-08.P1.S1.POSITIVE",
+        "planned::ai-development::DEV-08.P1.S1.NEGATIVE",
+        "planned::ai-development::DEV-08.P1.S2.POSITIVE",
+        "planned::ai-development::DEV-08.P1.S2.NEGATIVE",
+        "planned::ai-development::DEV-09.P1.S1.POSITIVE",
+        "planned::ai-development::DEV-09.P1.S1.NEGATIVE",
+        "planned::ai-development::DEV-09.P1.S2.POSITIVE",
+        "planned::ai-development::DEV-09.P1.S2.NEGATIVE",
+        "planned::ai-development::DEV-10.P1.S1.POSITIVE",
+        "planned::ai-development::DEV-10.P1.S1.NEGATIVE",
+        "planned::ai-development::DEV-10.P1.S2.POSITIVE",
+        "planned::ai-development::DEV-10.P1.S2.NEGATIVE",
+        "planned::ai-development::DEV-11.P1.S1.POSITIVE",
+        "planned::ai-development::DEV-11.P1.S1.NEGATIVE",
+        "planned::ai-development::DEV-11.P1.S2.POSITIVE",
+        "planned::ai-development::DEV-11.P1.S2.NEGATIVE",
+        "planned::ai-development::DEV-12.P1.S1.POSITIVE",
+        "planned::ai-development::DEV-12.P1.S1.NEGATIVE",
+        "planned::ai-development::DEV-12.P1.S2.POSITIVE",
+        "planned::ai-development::DEV-12.P1.S2.NEGATIVE"
       ]
     },
     {
