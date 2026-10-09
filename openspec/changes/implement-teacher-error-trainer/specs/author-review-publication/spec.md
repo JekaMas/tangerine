@@ -8,7 +8,7 @@ Preserve the observable author review publication requirements of Teacher Error 
 
 ### Requirement: AUT-01 Support author preparation
 
-The system SHALL let authors prepare monologues/dialogues with context, voices, rate and planned errors, then obtain source text, key and real synthetic audio.
+The system SHALL accept topic, speaker count and approximate text length, with optional English level/broad mistake categories, and generate clean text, novel mutations/list/key and real local-or-service audio through the ordinary flow in specification/v2/docs/simple-generation-flow.md. Existing advanced monologue/dialogue/context/voice/rate controls SHALL remain available without being mandatory form inputs.
 
 #### Scenario: AUT-01 supported and rejected inputs
 
@@ -17,7 +17,7 @@ The system SHALL let authors prepare monologues/dialogues with context, voices, 
 
 ### Requirement: REV-01 LLM case review
 
-The system SHALL review generated cases through a configurable LLM with actual modality/evidence and no human peer reviewers, identities or qualification prerequisites. It SHALL retain blind observations, key comparison, unit correspondence and machine findings.
+The system SHALL offer optional generated-case review through a configurable LLM with actual modality/evidence and no human peer reviewers, identities or qualification prerequisites. The ordinary exercise SHALL use its saved mutation-list key without requiring this action. When invoked, review SHALL retain blind observations, key comparison, unit correspondence and machine findings.
 
 #### Scenario: REV-01 supported and rejected inputs
 
@@ -35,7 +35,7 @@ The system SHALL use configurable LLM adjudication for supported case/answer dis
 
 ### Requirement: PUB-01 Use immutable playable cases
 
-The system SHALL allow a valid rendered case with a machine-produced key to be used locally with explicit quality warnings, without human approval or full-bank certification. Audio/key changes SHALL create a new immutable version.
+The system SHALL automatically make the ordinary generated exercise available when its actual audio and saved mutation-list key are ready, with explicit quality warnings and no separate case-review action, human approval, native reference audio or full-bank certification. Audio/key changes SHALL create a new immutable version.
 
 #### Scenario: PUB-01 supported and rejected inputs
 

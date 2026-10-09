@@ -3,7 +3,7 @@
   "$id": "https://tangerine.invalid/schemas/feedback-output.schema.json",
   "title": "feedback-output",
   "type": "object",
-  "description": "Grounded feedback with valid references for missed units.",
+  "description": "LLM explanations and practice recommendations grounded in the frozen mutation key and actual scored findings.",
   "properties": {
     "schema_version": {
       "const": "2.0.0",
@@ -22,7 +22,7 @@
       "description": "The feedback items.",
       "items": {
         "type": "object",
-        "description": "A language-specific explanation. Unverified paraphrases cannot appear as factual feedback.",
+        "description": "Grounded LLM paraphrase or practice advice needs no human approval. New examples are practice material, not claims about heard audio.",
         "properties": {
           "kind": {
             "type": "string",
@@ -32,7 +32,8 @@
               "missed",
               "false_positive",
               "acceptable",
-              "pending"
+              "pending",
+              "recommendation"
             ]
           },
           "decision_ids": {
@@ -79,7 +80,7 @@
           },
           "rationale_ids": {
             "type": "array",
-            "description": "Approved text in the exact case and requested language.",
+            "description": "Existing relevant rationale records when available; grounded new advice does not require copied wording.",
             "items": {
               "type": "string",
               "description": "An existing identifier.",
@@ -93,17 +94,19 @@
           },
           "text": {
             "type": "string",
-            "description": "A bounded explanation with no new fact or score.",
+            "description": "Context-supported explanation, paraphrase or actionable practice advice. New practice examples are labelled as such; authoritative numeric scores remain backend values.",
             "maxLength": 12000,
             "minLength": 1
           },
           "grounding_status": {
             "type": "string",
-            "description": "The validation outcome.",
+            "description": "Actual origin/basis; human_approved_paraphrase is preserved only for imported legacy metadata, never required for new feedback.",
             "enum": [
               "approved_text",
               "human_approved_paraphrase",
-              "unverified_paraphrase"
+              "unverified_paraphrase",
+              "llm_grounded",
+              "practice_recommendation"
             ]
           },
           "status": {

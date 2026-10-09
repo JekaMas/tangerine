@@ -2793,7 +2793,7 @@
     {
       "kind": "blueprint-write",
       "schema": "contracts/blueprint-write.schema.json",
-      "sha256": "87150268a4914c01aa67a8d8eeeaa207208a0218cc0237d59b7b0c3c6e9a2aac",
+      "sha256": "5af70552183b418d23b1d478fd2882cdeed19a30a4d91abd9aed2a57b9fc984c",
       "schema_version": null,
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -2801,7 +2801,7 @@
         {
           "name": "format",
           "pointer": "/properties/format",
-          "required_in_parent": true,
+          "required_in_parent": false,
           "description": "This field names the exercise or file format specified by its parent contract.",
           "schema_reference": null,
           "rule_sha256": "2168c16953604fd889964d435dab68199320ac48fd66fd656bd0b82858750a8e"
@@ -2809,7 +2809,7 @@
         {
           "name": "public_context",
           "pointer": "/properties/public_context",
-          "required_in_parent": true,
+          "required_in_parent": false,
           "description": "This field contains task context that the teacher can read before submission.",
           "schema_reference": null,
           "rule_sha256": "63dc9169128e1e556f4916e287db5664e853c2154c8ee566fb201902bb91e33f"
@@ -2817,7 +2817,7 @@
         {
           "name": "variety_policy",
           "pointer": "/properties/variety_policy",
-          "required_in_parent": true,
+          "required_in_parent": false,
           "description": "This object fixes locale, permitted varieties, register, and judgment basis.",
           "schema_reference": null,
           "rule_sha256": "6354618aa11efc631ed11b36865a5420bc208b5cd164474a59af2c573855729d"
@@ -2825,39 +2825,39 @@
         {
           "name": "duration_ms_min",
           "pointer": "/properties/duration_ms_min",
-          "required_in_parent": true,
-          "description": "This field gives the minimum permitted duration in milliseconds.",
+          "required_in_parent": false,
+          "description": "Optional explicit duration bound in milliseconds. Null means a word-length request has no hard duration bound.",
           "schema_reference": null,
-          "rule_sha256": "62d4bc312248f6d20c19e8feff7f04d6bb36355cf637e7ed32e1fa6e575af35f"
+          "rule_sha256": "6fb7f155101678bebcf721fa513319e32546cad96c7d261429f6936734c0302a"
         },
         {
           "name": "duration_ms_max",
           "pointer": "/properties/duration_ms_max",
-          "required_in_parent": true,
-          "description": "This field gives the maximum permitted duration in milliseconds.",
+          "required_in_parent": false,
+          "description": "Optional explicit duration bound in milliseconds. Null means a word-length request has no hard duration bound.",
           "schema_reference": null,
-          "rule_sha256": "dd9230f85d60cb71f2244a792cc7b3fdb3790ee30fd1b8e0bc333043816185e8"
+          "rule_sha256": "6fb7f155101678bebcf721fa513319e32546cad96c7d261429f6936734c0302a"
         },
         {
           "name": "speakers",
           "pointer": "/properties/speakers",
-          "required_in_parent": true,
+          "required_in_parent": false,
           "description": "These profiles specify the distinct speakers in the exercise.",
           "schema_reference": null,
-          "rule_sha256": "f3bf4899151cda81631e8911f45517cbc430ee35528d3d292e06b66f760d4375"
+          "rule_sha256": "d8e45e9c0806d44d0a406eaf430d0f7f002e93a347016b7c4ba5bec32b6aa191"
         },
         {
           "name": "targets",
           "pointer": "/properties/targets",
-          "required_in_parent": true,
-          "description": "These entries specify registered target categories and their count limits.",
+          "required_in_parent": false,
+          "description": "Advanced exact leaf constraints. Empty delegates leaf selection to the mutation phase under exercise_request broad families.",
           "schema_reference": null,
-          "rule_sha256": "4f551c2de059ddcd77907b0b478ae1cde6c26417abb97b94f0b3ca4651acdaee"
+          "rule_sha256": "cedb7b31b6137788d7a5c3f2e579b4c4a3d09bc67e588464fbe33589d9239363"
         },
         {
           "name": "task_components",
           "pointer": "/properties/task_components",
-          "required_in_parent": true,
+          "required_in_parent": false,
           "description": "These flags freeze the requested answer components before the attempt.",
           "schema_reference": null,
           "rule_sha256": "4a29e21fdc8bf45e365048c2505798e497bd6763e146ed01025a407a39db762e"
@@ -2865,18 +2865,26 @@
         {
           "name": "audio_origin_policy",
           "pointer": "/properties/audio_origin_policy",
-          "required_in_parent": true,
-          "description": "The current runtime permits synthetic-only exercises. Other origins require separate owner approval.",
+          "required_in_parent": false,
+          "description": "This generation blueprint uses newly synthesized audio, locally or through a configured service. Separate native recording import remains supported without another owner approval.",
           "schema_reference": null,
-          "rule_sha256": "b8df9bc38424073152829e581a2874ca11182743b0dfd0bca26807fdd0d0d310"
+          "rule_sha256": "7a89019ab6c428fbf03bcdda7df2a235276002ef202e8ce4a01f239f41718a3a"
         },
         {
           "name": "provider_profile_id",
           "pointer": "/properties/provider_profile_id",
-          "required_in_parent": true,
+          "required_in_parent": false,
           "description": "This identifier selects one versioned provider configuration.",
           "schema_reference": null,
           "rule_sha256": "4e1dde0970ec71b1abab8c6e42b10afc6aaca35400d66628e0853f5f4893c935"
+        },
+        {
+          "name": "exercise_request",
+          "pointer": "/properties/exercise_request",
+          "required_in_parent": false,
+          "description": "Original simple user input, retained alongside the expanded blueprint.",
+          "schema_reference": "exercise-request.schema.json",
+          "rule_sha256": "e675563817fc5e3896a99ec3fb0468ca4c32d61138b7efbe9324917a08bb4fdd"
         },
         {
           "name": "target_locale",
@@ -2938,9 +2946,9 @@
           "name": "learner_cefr",
           "pointer": "/properties/speakers/items/properties/learner_cefr",
           "required_in_parent": true,
-          "description": "This field states the requested learner proficiency level.",
+          "description": "Optional generated-text level. Null means unconstrained, not an inferred participant level.",
           "schema_reference": null,
-          "rule_sha256": "ed91063fee3a196b5e6588841bc26931e05688ce044e0c56aa6c618f9c95c10d"
+          "rule_sha256": "8cead30975b45329e8e5e0a4a3e3e37a48d9a448c971319b56b7fc3fbec2a152"
         },
         {
           "name": "l1",
@@ -3051,7 +3059,7 @@
     {
       "kind": "blueprint",
       "schema": "contracts/blueprint.schema.json",
-      "sha256": "803ec38dcc6f8d009c252e2599329c223dc9b41ce0a0b6e89e97457f279b804e",
+      "sha256": "3279d4e6d681386c764cf8b5e059c1054f05191e1d5150536651dcae3fa663c7",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -3100,17 +3108,17 @@
           "name": "duration_ms_min",
           "pointer": "/properties/duration_ms_min",
           "required_in_parent": true,
-          "description": "This field gives the minimum permitted duration in milliseconds.",
+          "description": "Optional explicit duration bound in milliseconds. Null means a word-length request has no hard duration bound.",
           "schema_reference": null,
-          "rule_sha256": "62d4bc312248f6d20c19e8feff7f04d6bb36355cf637e7ed32e1fa6e575af35f"
+          "rule_sha256": "6fb7f155101678bebcf721fa513319e32546cad96c7d261429f6936734c0302a"
         },
         {
           "name": "duration_ms_max",
           "pointer": "/properties/duration_ms_max",
           "required_in_parent": true,
-          "description": "This field gives the maximum permitted duration in milliseconds.",
+          "description": "Optional explicit duration bound in milliseconds. Null means a word-length request has no hard duration bound.",
           "schema_reference": null,
-          "rule_sha256": "dd9230f85d60cb71f2244a792cc7b3fdb3790ee30fd1b8e0bc333043816185e8"
+          "rule_sha256": "6fb7f155101678bebcf721fa513319e32546cad96c7d261429f6936734c0302a"
         },
         {
           "name": "speakers",
@@ -3118,15 +3126,15 @@
           "required_in_parent": true,
           "description": "These profiles specify the distinct speakers in the exercise.",
           "schema_reference": null,
-          "rule_sha256": "f3bf4899151cda81631e8911f45517cbc430ee35528d3d292e06b66f760d4375"
+          "rule_sha256": "d8e45e9c0806d44d0a406eaf430d0f7f002e93a347016b7c4ba5bec32b6aa191"
         },
         {
           "name": "targets",
           "pointer": "/properties/targets",
           "required_in_parent": true,
-          "description": "These entries specify registered target categories and their count limits.",
+          "description": "Advanced exact leaf constraints. Empty delegates leaf selection to the mutation phase under exercise_request broad families.",
           "schema_reference": null,
-          "rule_sha256": "4f551c2de059ddcd77907b0b478ae1cde6c26417abb97b94f0b3ca4651acdaee"
+          "rule_sha256": "cedb7b31b6137788d7a5c3f2e579b4c4a3d09bc67e588464fbe33589d9239363"
         },
         {
           "name": "task_components",
@@ -3140,9 +3148,9 @@
           "name": "audio_origin_policy",
           "pointer": "/properties/audio_origin_policy",
           "required_in_parent": true,
-          "description": "The current runtime permits synthetic-only exercises. Other origins require separate owner approval.",
+          "description": "This generation blueprint uses newly synthesized audio, locally or through a configured service. Separate native recording import remains supported without another owner approval.",
           "schema_reference": null,
-          "rule_sha256": "b8df9bc38424073152829e581a2874ca11182743b0dfd0bca26807fdd0d0d310"
+          "rule_sha256": "7a89019ab6c428fbf03bcdda7df2a235276002ef202e8ce4a01f239f41718a3a"
         },
         {
           "name": "provider_profile_id",
@@ -3151,6 +3159,14 @@
           "description": "This identifier selects one versioned provider configuration.",
           "schema_reference": null,
           "rule_sha256": "4e1dde0970ec71b1abab8c6e42b10afc6aaca35400d66628e0853f5f4893c935"
+        },
+        {
+          "name": "exercise_request",
+          "pointer": "/properties/exercise_request",
+          "required_in_parent": false,
+          "description": "Original simple user input, retained alongside the expanded blueprint.",
+          "schema_reference": "exercise-request.schema.json",
+          "rule_sha256": "e675563817fc5e3896a99ec3fb0468ca4c32d61138b7efbe9324917a08bb4fdd"
         },
         {
           "name": "target_locale",
@@ -3212,9 +3228,9 @@
           "name": "learner_cefr",
           "pointer": "/properties/speakers/items/properties/learner_cefr",
           "required_in_parent": true,
-          "description": "This field states the requested learner proficiency level.",
+          "description": "Optional generated-text level. Null means unconstrained, not an inferred participant level.",
           "schema_reference": null,
-          "rule_sha256": "ed91063fee3a196b5e6588841bc26931e05688ce044e0c56aa6c618f9c95c10d"
+          "rule_sha256": "8cead30975b45329e8e5e0a4a3e3e37a48d9a448c971319b56b7fc3fbec2a152"
         },
         {
           "name": "l1",
@@ -4709,7 +4725,7 @@
     {
       "kind": "configuration",
       "schema": "contracts/configuration.schema.json",
-      "sha256": "3a948d069be4d9f65d2e7073088c747074666cc98d6611d0f1ab20b816e6caf3",
+      "sha256": "5b72bf2cca7001cf9799505a6137cbb7ddfad3815b7b711a5156461f62128f40",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -4817,6 +4833,22 @@
           "description": "Optional diagnostic only; default answer checking uses one mapper.",
           "schema_reference": null,
           "rule_sha256": "f7ccada427ed07da7a9e8595f901519cd2a59e103a7d6fc55ac684ae3ca38a22"
+        },
+        {
+          "name": "speech_profile",
+          "pointer": "/properties/speech_profile",
+          "required_in_parent": false,
+          "description": "Workspace default synthesis profile with role tts. The simple request can override its local/service backend; original Azure and local Kokoro profiles are preserved.",
+          "schema_reference": null,
+          "rule_sha256": "2d903ed9f23611fb339b4b2fbc5c5ed252e91c895dd43f41aaa6859cca617e4e"
+        },
+        {
+          "name": "case_review_enabled",
+          "pointer": "/properties/case_review_enabled",
+          "required_in_parent": false,
+          "description": "Optional extra case-review diagnostic; false never blocks ordinary authored exercises or LLM answer checking.",
+          "schema_reference": null,
+          "rule_sha256": "afe6eb4dab021f979d20d85cf30d7456025667b0b673b2fffa5eaa8c98f35f54"
         },
         {
           "name": "deepseek",
@@ -8023,7 +8055,7 @@
     {
       "kind": "feedback-output",
       "schema": "contracts/feedback-output.schema.json",
-      "sha256": "29db08d1612707d64f6f1b36769656da38b686b1e4b5dd310618c5677423aeae",
+      "sha256": "f5d9b6f57c7170b09dcbbe0dd20d6f116f06ccc79c06d5091c82a304511e2021",
       "schema_version": "2.0.0",
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -8050,7 +8082,7 @@
           "required_in_parent": true,
           "description": "The feedback items.",
           "schema_reference": null,
-          "rule_sha256": "0ad488da22f41785a6c84bbbede3b81f2b60e75354c6d77f2be8405b474a5a2a"
+          "rule_sha256": "5952a55ba4be297cedb3e9cf7d55abd196113189b74f62e1eed78f1777c920cd"
         },
         {
           "name": "kind",
@@ -8058,7 +8090,7 @@
           "required_in_parent": true,
           "description": "The feedback subject kind.",
           "schema_reference": null,
-          "rule_sha256": "0fc4271a09f1cd8b05b770bf17018c8df218a88f8c9d83e9bf2c11819506e326"
+          "rule_sha256": "fc61e96d3b23abaedc2449ff30cb17ee07fa978fbc3687e405a24254abefcc6a"
         },
         {
           "name": "decision_ids",
@@ -8088,25 +8120,25 @@
           "name": "rationale_ids",
           "pointer": "/properties/items/items/properties/rationale_ids",
           "required_in_parent": true,
-          "description": "Approved text in the exact case and requested language.",
+          "description": "Existing relevant rationale records when available; grounded new advice does not require copied wording.",
           "schema_reference": null,
-          "rule_sha256": "af0bcd094ae7232c79222417928a6641631403cace2ef02b5cc0c94dbefcf55b"
+          "rule_sha256": "9b05f4465ebe326841d4aec480671fd60d1a260c40262b565eaa252b8afe8712"
         },
         {
           "name": "text",
           "pointer": "/properties/items/items/properties/text",
           "required_in_parent": true,
-          "description": "A bounded explanation with no new fact or score.",
+          "description": "Context-supported explanation, paraphrase or actionable practice advice. New practice examples are labelled as such; authoritative numeric scores remain backend values.",
           "schema_reference": null,
-          "rule_sha256": "bc781764b20a4a12b2b389f5bb4caf005d546d42eb8dacd6d45301227fe29e5d"
+          "rule_sha256": "91a62a32afc596ac04c3326f3b08d3e48ba90070c9fbe909a952581256580277"
         },
         {
           "name": "grounding_status",
           "pointer": "/properties/items/items/properties/grounding_status",
           "required_in_parent": true,
-          "description": "The validation outcome.",
+          "description": "Actual origin/basis; human_approved_paraphrase is preserved only for imported legacy metadata, never required for new feedback.",
           "schema_reference": null,
-          "rule_sha256": "e9da48c9ea97e2e893eeabee95eec4845c8b87898738d8e008f524912587d9f1"
+          "rule_sha256": "e7f59e192ae32b61ec9701ba3186169082b64b5e48e18f678a9c8aa254ed1ece"
         },
         {
           "name": "status",
@@ -8121,7 +8153,7 @@
     {
       "kind": "feedback",
       "schema": "contracts/feedback.schema.json",
-      "sha256": "d065edab8b6ba98259ca67a827a7165b0590e6b56f9981e053963ae8b5f3020f",
+      "sha256": "1b83570e1143cbef85aeb28eae10e738c182577e37ac6c1b70deea64718b68d1",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -8148,7 +8180,7 @@
           "required_in_parent": true,
           "description": "The feedback items.",
           "schema_reference": null,
-          "rule_sha256": "0ad488da22f41785a6c84bbbede3b81f2b60e75354c6d77f2be8405b474a5a2a"
+          "rule_sha256": "5952a55ba4be297cedb3e9cf7d55abd196113189b74f62e1eed78f1777c920cd"
         },
         {
           "name": "origin",
@@ -8172,7 +8204,7 @@
           "required_in_parent": true,
           "description": "The feedback subject kind.",
           "schema_reference": null,
-          "rule_sha256": "0fc4271a09f1cd8b05b770bf17018c8df218a88f8c9d83e9bf2c11819506e326"
+          "rule_sha256": "fc61e96d3b23abaedc2449ff30cb17ee07fa978fbc3687e405a24254abefcc6a"
         },
         {
           "name": "decision_ids",
@@ -8202,25 +8234,25 @@
           "name": "rationale_ids",
           "pointer": "/properties/items/items/properties/rationale_ids",
           "required_in_parent": true,
-          "description": "Approved text in the exact case and requested language.",
+          "description": "Existing relevant rationale records when available; grounded new advice does not require copied wording.",
           "schema_reference": null,
-          "rule_sha256": "af0bcd094ae7232c79222417928a6641631403cace2ef02b5cc0c94dbefcf55b"
+          "rule_sha256": "9b05f4465ebe326841d4aec480671fd60d1a260c40262b565eaa252b8afe8712"
         },
         {
           "name": "text",
           "pointer": "/properties/items/items/properties/text",
           "required_in_parent": true,
-          "description": "A bounded explanation with no new fact or score.",
+          "description": "Context-supported explanation, paraphrase or actionable practice advice. New practice examples are labelled as such; authoritative numeric scores remain backend values.",
           "schema_reference": null,
-          "rule_sha256": "bc781764b20a4a12b2b389f5bb4caf005d546d42eb8dacd6d45301227fe29e5d"
+          "rule_sha256": "91a62a32afc596ac04c3326f3b08d3e48ba90070c9fbe909a952581256580277"
         },
         {
           "name": "grounding_status",
           "pointer": "/properties/items/items/properties/grounding_status",
           "required_in_parent": true,
-          "description": "The validation outcome.",
+          "description": "Actual origin/basis; human_approved_paraphrase is preserved only for imported legacy metadata, never required for new feedback.",
           "schema_reference": null,
-          "rule_sha256": "e9da48c9ea97e2e893eeabee95eec4845c8b87898738d8e008f524912587d9f1"
+          "rule_sha256": "e7f59e192ae32b61ec9701ba3186169082b64b5e48e18f678a9c8aa254ed1ece"
         },
         {
           "name": "status",
@@ -8349,7 +8381,7 @@
     {
       "kind": "generation-input",
       "schema": "contracts/generation-input.schema.json",
-      "sha256": "33bb1bbbbb22d9a30464c5bf4e6e8ab6b8f94abb3b76f4b85eeace30d161022c",
+      "sha256": "2f26afe7d953b8e365f5bba958d28546e2d0aa580ebb8f8d5e28c14ddae3f709",
       "schema_version": "2.0.0",
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -8419,6 +8451,30 @@
           "rule_sha256": "9b52b5e580ceb6f949800dea3c828709d978b583242db972a3ede82959c67666"
         },
         {
+          "name": "phase",
+          "pointer": "/properties/phase",
+          "required_in_parent": true,
+          "description": "Canonical text is saved before mutation; both phases use the existing configurable case_generation role.",
+          "schema_reference": null,
+          "rule_sha256": "0af02e63d365e805674d951f6588700714c5b9ec953b1f0cffdc116e5c625719"
+        },
+        {
+          "name": "canonical_script",
+          "pointer": "/properties/canonical_script",
+          "required_in_parent": true,
+          "description": "Null in canonical_text phase. Mutation phase receives the saved clean candidate with unchanged canonical/surface text and no planned units.",
+          "schema_reference": null,
+          "rule_sha256": "a4453ecb6f65c6d586a34140964faad9dfe3512631345fc0dd88d514008dd383"
+        },
+        {
+          "name": "canonical_script_sha256",
+          "pointer": "/properties/canonical_script_sha256",
+          "required_in_parent": true,
+          "description": "Exact saved canonical asset hash, null before it exists. Mutation phase cannot rewrite that baseline.",
+          "schema_reference": null,
+          "rule_sha256": "78056950ce8c3be29bfe7d016268bb391d082f198ed48f41d59f9d9c77f09761"
+        },
+        {
           "name": "record_id",
           "pointer": "/properties/source_excerpts/items/properties/record_id",
           "required_in_parent": true,
@@ -8481,6 +8537,54 @@
           "description": "Exclusive Unicode codepoint offset.",
           "schema_reference": null,
           "rule_sha256": "3518c3dd8548208710db72675516e325fd629247a962d70bf4bf9b39c5480d03"
+        },
+        {
+          "name": "phase",
+          "pointer": "/allOf/0/if/properties/phase",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "ae2b10b3c7919bd6df08f1d2999a9fc394bcc735f554331eca31a48f423399c3"
+        },
+        {
+          "name": "canonical_script",
+          "pointer": "/allOf/0/then/properties/canonical_script",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "bcde375ebd4cbacf651311181173836b169d5a360c6ac158c6a2cdaf49be3f61"
+        },
+        {
+          "name": "canonical_script_sha256",
+          "pointer": "/allOf/0/then/properties/canonical_script_sha256",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "bcde375ebd4cbacf651311181173836b169d5a360c6ac158c6a2cdaf49be3f61"
+        },
+        {
+          "name": "phase",
+          "pointer": "/allOf/1/if/properties/phase",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "40eff96f3b59229fb6c23b30649bf6c528b4aa1f0c2fc0772758b2ef25fc0d77"
+        },
+        {
+          "name": "canonical_script",
+          "pointer": "/allOf/1/then/properties/canonical_script",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": "case-candidate.schema.json",
+          "rule_sha256": "d3e50807491e0b2ab36438d0620c53fac47f361624672b280d74c8883f9fc184"
+        },
+        {
+          "name": "canonical_script_sha256",
+          "pointer": "/allOf/1/then/properties/canonical_script_sha256",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "2bc7825d922e6db89d507d832aa4cc3f3c38b01166311bef13d87151c8c67763"
         }
       ]
     },
@@ -11945,7 +12049,7 @@
       "storage": "Derived DTO or actual operation/stage input/output receipt",
       "kind": "put-config-request",
       "schema": "contracts/put-config-request.schema.json",
-      "sha256": "a7d4bac86078ca1774e75820bdaf3aa5feb47f76e86b8ee1b36c5616d9a917cb",
+      "sha256": "4857aaff64262de1e9afc716bcef729a75da0e14482744a6b75ec9a8620f0ce0",
       "schema_version": "2.0.0",
       "fields": [
         {
@@ -12035,6 +12139,22 @@
           "description": "Optional diagnostic only; default answer checking uses one mapper.",
           "schema_reference": null,
           "rule_sha256": "f7ccada427ed07da7a9e8595f901519cd2a59e103a7d6fc55ac684ae3ca38a22"
+        },
+        {
+          "name": "speech_profile",
+          "pointer": "/properties/speech_profile",
+          "required_in_parent": false,
+          "description": "Workspace default synthesis profile with role tts. The simple request can override its local/service backend; original Azure and local Kokoro profiles are preserved.",
+          "schema_reference": null,
+          "rule_sha256": "2d903ed9f23611fb339b4b2fbc5c5ed252e91c895dd43f41aaa6859cca617e4e"
+        },
+        {
+          "name": "case_review_enabled",
+          "pointer": "/properties/case_review_enabled",
+          "required_in_parent": false,
+          "description": "Optional extra case-review diagnostic; false never blocks ordinary authored exercises or LLM answer checking.",
+          "schema_reference": null,
+          "rule_sha256": "afe6eb4dab021f979d20d85cf30d7456025667b0b673b2fffa5eaa8c98f35f54"
         },
         {
           "name": "deepseek",
@@ -20965,6 +21085,80 @@
           "description": "This field records the actual creation time with its timezone.",
           "schema_reference": null,
           "rule_sha256": "3e50b7deab49160e6a436f65642ac1b505c9d203ad0b477d560b77c892506042"
+        }
+      ]
+    },
+    {
+      "kind": "exercise-request",
+      "schema": "contracts/exercise-request.schema.json",
+      "schema_version": null,
+      "persistent_domain_record": false,
+      "storage": "derived DTO or actual operation input/output receipt",
+      "sha256": "9c07617efdccd97331dcbbd7bb4bef7e428de7097311009d44082da9aef8d49c",
+      "fields": [
+        {
+          "name": "topic",
+          "pointer": "/properties/topic",
+          "required_in_parent": true,
+          "description": "The user topic retained verbatim in preparation; public topic may be shown to the listener.",
+          "schema_reference": null,
+          "rule_sha256": "c73d91b215beac142b3a9991384533e18d735b8c78c78f5fa28e8fb172555f40"
+        },
+        {
+          "name": "speaker_count",
+          "pointer": "/properties/speaker_count",
+          "required_in_parent": true,
+          "description": "Distinct speaker roles; each appears in the generated text. One means monologue; more means dialogue.",
+          "schema_reference": null,
+          "rule_sha256": "5ae7a0a987fd516fd6935a594fd3ee4b4d65c1a63ccdb1d2eced988700b5ee19"
+        },
+        {
+          "name": "text_length_words",
+          "pointer": "/properties/text_length_words",
+          "required_in_parent": true,
+          "description": "Approximate word target excluding speaker labels. Actual canonical/mutated counts are shown, not an exact-length rejection gate.",
+          "schema_reference": null,
+          "rule_sha256": "e48b5524234cd0a965ecdf1b07681c2b8d7aff1220079da49f582edc0343f7c5"
+        },
+        {
+          "name": "english_level",
+          "pointer": "/properties/english_level",
+          "required_in_parent": false,
+          "description": "Optional generated-text level. Null means unconstrained, not an inferred participant level.",
+          "schema_reference": null,
+          "rule_sha256": "8cead30975b45329e8e5e0a4a3e3e37a48d9a448c971319b56b7fc3fbec2a152"
+        },
+        {
+          "name": "category_families",
+          "pointer": "/properties/category_families",
+          "required_in_parent": false,
+          "description": "Optional broad families. Empty means automatic choice; pronunciation expands to both original pronunciation domains. Concrete leaf IDs are chosen by the mutation phase.",
+          "schema_reference": null,
+          "rule_sha256": "9e30092ece48a4271e2c6e677694b49036a2f8d63fc8ac9475e347a921b6ad47"
+        },
+        {
+          "name": "mutation_count",
+          "pointer": "/properties/mutation_count",
+          "required_in_parent": false,
+          "description": "Optional exact number of independent true-error events. Null delegates choice; zero preserves control-only exercises.",
+          "schema_reference": null,
+          "rule_sha256": "38f567262d18c3f40b95acd2470042ab436e7169ba9a6b989d94bf68d0b6b704"
+        },
+        {
+          "name": "mutation_seed",
+          "pointer": "/properties/mutation_seed",
+          "required_in_parent": false,
+          "description": "Optional seed for recipe selection/placement. Saved actual model output, not provider determinism, owns replay.",
+          "schema_reference": null,
+          "rule_sha256": "5cfdb4169ef46aad1453fc56d39258d2fcb66c2190f47dcc5770abd00edad677"
+        },
+        {
+          "name": "audio_backend",
+          "pointer": "/properties/audio_backend",
+          "required_in_parent": false,
+          "description": "Optional synthesis choice; null inherits workspace speech selection.",
+          "schema_reference": null,
+          "rule_sha256": "4b6c6bac6dd370055bb06c26873644fce62c5f00b14350b703328183c762b0f2"
         }
       ]
     }

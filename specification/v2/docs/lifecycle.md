@@ -8,14 +8,14 @@ Case states remain draft, rendered, verification_failed, needs_review, verified,
 | draft/rendered | synthesis or WAV decoding fails | verification_failed; retain reason, retry available |
 | rendered/needs_review | LLM case review supports key | verified; save machine judgments |
 | rendered | relevant evidence uncertain | needs_review; save warning and offer LLM reconsideration |
-| rendered/needs_review/verified | user uses or lists a playable case | published; retain quality status/warnings, no human signature or full-bank gate |
+| rendered/needs_review/verified | saved mutation list/key and playable audio are ready for the ordinary generated exercise | published; Generate exercise may complete this automatically, retain warnings, no separate case-review/signature/full-bank gate |
 | published | key/audio changed | new draft version; old immutable version retained |
 | any playable version | supported key defect or user quarantine | quarantined; hide from new default selection, retain history |
 | quarantined | LLM resolves issue or user revises | new version or restored supported version, with reasons |
 | published/quarantined | user retires | retired; preserve referenced history |
 | published | successor explicitly replaces it | superseded; preserve predecessor |
 
-A valid WAV and a machine-produced key are necessary to score a generated listening exercise. Unknown acoustic confirmation is a visible quality warning, not human-review dependency. Imported actual annotated audio can also supply a key. The first generated case is usable without the 732-case benchmark or all corpus downloads. Fresh startup never fabricates an existing bank.
+A valid WAV and the saved mutation-list key are necessary to score an ordinary generated listening exercise. A separate machine case review is optional. Unknown acoustic confirmation is a visible quality warning, not human-review dependency. Imported actual annotated audio can also supply a key. The first generated case is usable without the 732-case benchmark or all corpus downloads. Fresh startup never fabricates an existing bank.
 
 Attempts retain started, saved, evaluating, completed, evaluation_failed and review_required. Draft saving is allowed while started; submit freezes the exact answer as saved before a call. The evaluation lease then selects evaluating. Supported semantic decisions and exact arithmetic give completed. Transport/output failure gives evaluation_failed with saved answer and retry. Genuine unresolved scorable interpretation gives review_required, meaning LLM reconsideration/provisional result, never a human queue. Audit-only disagreement does not erase a valid score.
 

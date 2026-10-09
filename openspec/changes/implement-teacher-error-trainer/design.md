@@ -1,5 +1,7 @@
 # Implementation design
 
+The latest primary flow is topic/speaker count/approximate word length and optional level/broad categories -> saved clean LLM text -> separate novel/OOD mutation phase with list/key -> local or service synthesis -> stored listening exercise -> free-text answer -> LLM comparison with the list -> exact score/recommendations. specification/v2/docs/simple-generation-flow.md owns it. The simple request expands to existing blueprint fields; both generation phases use case_generation and retain separate inputs/outputs. Optional case review, native example audio, full empirical corpus and benchmarks are not required for ordinary use. All original data/features remain additional resources. This update changes specifications only.
+
 The current objective is the full Tangerine local open-source product specified in specification/v2/README.md. This increment revises specifications only. User decisions in docs/authority.md supersede inherited package instructions and human peer review procedures.
 
 The GitHub source ZIP/clone includes every application build input and a simple Compose helper. One local workspace offers preparation, the library, listening/answering, results, configurable LLM case review and adjudication, source import, benchmarks and recovery. No account, complex public API, human peer reviewer, qualification signature or full-corpus certification is required for ordinary use.

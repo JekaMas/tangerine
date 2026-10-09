@@ -68,7 +68,8 @@ operations:
     state_guard_reference: docs/lifecycle.md
     idempotency: true
     revision_precondition: false
-    effect: Assign identity and persist a new immutable blueprint.
+    effect: Expand the minimal exercise_request or retain advanced blueprint
+      controls; assign identity and persist the immutable blueprint.
     request_fields:
       - format
       - public_context
@@ -80,6 +81,7 @@ operations:
       - task_components
       - audio_origin_policy
       - provider_profile_id
+      - exercise_request
     server_fields: []
     imported_source_fields:
       - All native original fields remain in raw-record/source assets, outside
@@ -92,8 +94,9 @@ operations:
     state_guard_reference: docs/lifecycle.md
     idempotency: true
     revision_precondition: false
-    effect: Save content, call selected real LLM and retain output; optional
-      configured cap only.
+    effect: Save clean canonical_text first, then apply mutations to that fixed
+      script and retain the list/key with both phase receipts; optional selected
+      source records only.
     request_fields:
       - blueprint_id
       - effective_configuration_sha256
@@ -122,7 +125,9 @@ operations:
     state_guard_reference: docs/lifecycle.md
     idempotency: true
     revision_precondition: true
-    effect: Synthesize exact turns and link final bytes under the storage protocol.
+    effect: Synthesize exact mutated turns with the selected local or service
+      adapter; save final audio and generated mutation-list key under the
+      storage protocol.
     request_fields:
       - plan
       - render_attempt
@@ -891,6 +896,8 @@ operations:
       - llm_profiles
       - stage_profiles
       - mapping_audit_enabled
+      - speech_profile
+      - case_review_enabled
     server_fields:
       - workspace_id
       - configuration_sha256

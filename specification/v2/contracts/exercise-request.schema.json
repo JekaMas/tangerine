@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/exercise-request.schema.json",
+  "title": "exercise-request",
+  "description": "Ordinary form input: topic, speakers and approximate word length; all other controls optional. No corpus selection is required.",
+  "type": "object",
+  "properties": {
+    "topic": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The user topic retained verbatim in preparation; public topic may be shown to the listener."
+    },
+    "speaker_count": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Distinct speaker roles; each appears in the generated text. One means monologue; more means dialogue."
+    },
+    "text_length_words": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Approximate word target excluding speaker labels. Actual canonical/mutated counts are shown, not an exact-length rejection gate."
+    },
+    "english_level": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "A1",
+            "A2",
+            "B1",
+            "B2",
+            "C1",
+            "C2"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Optional generated-text level. Null means unconstrained, not an inferred participant level."
+    },
+    "category_families": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "grammar",
+          "lexis",
+          "pronunciation",
+          "pronunciation.segmental",
+          "pronunciation.suprasegmental",
+          "fluency",
+          "discourse",
+          "pragmatics_register"
+        ]
+      },
+      "default": [],
+      "description": "Optional broad families. Empty means automatic choice; pronunciation expands to both original pronunciation domains. Concrete leaf IDs are chosen by the mutation phase."
+    },
+    "mutation_count": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Optional exact number of independent true-error events. Null delegates choice; zero preserves control-only exercises."
+    },
+    "mutation_seed": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Optional seed for recipe selection/placement. Saved actual model output, not provider determinism, owns replay."
+    },
+    "audio_backend": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "local",
+            "service"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Optional synthesis choice; null inherits workspace speech selection."
+    }
+  },
+  "required": [
+    "topic",
+    "speaker_count",
+    "text_length_words"
+  ],
+  "additionalProperties": false
+}

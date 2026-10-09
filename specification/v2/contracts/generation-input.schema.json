@@ -129,6 +129,37 @@
     },
     "taxonomy_context": {
       "$ref": "taxonomy-context.schema.json"
+    },
+    "phase": {
+      "type": "string",
+      "enum": [
+        "canonical_text",
+        "mutation"
+      ],
+      "description": "Canonical text is saved before mutation; both phases use the existing configurable case_generation role."
+    },
+    "canonical_script": {
+      "anyOf": [
+        {
+          "$ref": "case-candidate.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null in canonical_text phase. Mutation phase receives the saved clean candidate with unchanged canonical/surface text and no planned units."
+    },
+    "canonical_script_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Exact saved canonical asset hash, null before it exists. Mutation phase cannot rewrite that baseline."
     }
   },
   "required": [
@@ -139,7 +170,57 @@
     "allowed_source_record_ids",
     "request_language",
     "source_excerpts",
-    "taxonomy_context"
+    "taxonomy_context",
+    "phase",
+    "canonical_script",
+    "canonical_script_sha256"
   ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "phase": {
+            "const": "canonical_text"
+          }
+        },
+        "required": [
+          "phase"
+        ]
+      },
+      "then": {
+        "properties": {
+          "canonical_script": {
+            "type": "null"
+          },
+          "canonical_script_sha256": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "phase": {
+            "const": "mutation"
+          }
+        },
+        "required": [
+          "phase"
+        ]
+      },
+      "then": {
+        "properties": {
+          "canonical_script": {
+            "$ref": "case-candidate.schema.json"
+          },
+          "canonical_script_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    }
+  ]
 }

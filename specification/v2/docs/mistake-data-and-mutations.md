@@ -1,6 +1,6 @@
 # Mistake data, relationships, frequencies and mutation use
 
-This contract owns the connection between taxonomy, native data, generation and answer checking. The exact 122-entry catalogue is domain/mutation-recipes.v1.json. Its examples are authored design examples, not external corpus observations or verified final audio. The current acquisition observations and per-leaf data audit are in audit/mistake-data-coverage-20261009/. This document specifies future behavior; no importer, generation or scoring implementation was performed for this audit.
+This contract owns the connection between taxonomy, native data, generation and answer checking. The exact 122-entry catalogue is domain/mutation-recipes.v1.json. Its examples are authored design examples, not external corpus observations or verified final audio. The current acquisition observations and per-leaf data audit are in audit/mistake-data-coverage-20261009/. This document specifies future behavior; no importer, generation or scoring implementation was performed for this audit. simple-generation-flow.md owns the latest primary flow: the app creates text/mutations/audio and compares listener answers with the saved mutation key. Existing source/benchmark data are optional enrichment/evaluation inputs, not prerequisites.
 
 ## Scope and completeness
 
@@ -49,7 +49,7 @@ The server selects recipe entries by the exact blueprint target IDs and appends 
 
 The single-replacement design example algorithm is precise: find the longest common codepoint prefix of canonical and surface strings; then the longest common suffix of the remaining strings. The unmatched canonical interval is the replace/delete/insert opportunity, and the unmatched surface interval is the mutation. Empty old/new intervals mean insertion/deletion. No Unicode normalization changes source offsets. This algorithm locates an authored example's difference; it is not a linguistic category classifier or a guarantee of a minimal semantic repair.
 
-For a new candidate with several edits, compose explicit edits against the same canonical version from right to left. Disjoint edits preserve every outside substring. Overlapping edits require one explicit composite transformation; equal-offset insertions require an explicit order. Never apply stale offsets to an already changed string. The LLM may rewrite a larger clause when the meaning needs it, but the larger replacement and all new obligations must remain explicit. Machine case review checks accidental additional defects and contextual validity. It may update the key to include a real additional event rather than pretending the intended target list proves the final key.
+For a new candidate with several edits, compose explicit edits against the same canonical version from right to left. Disjoint edits preserve every outside substring. Overlapping edits require one explicit composite transformation; equal-offset insertions require an explicit order. Never apply stale offsets to an already changed string. The LLM may rewrite a larger clause when the meaning needs it, but the larger replacement and all new obligations must remain explicit. Mutation generation supplies the contextual list/key for ordinary use. Optional case review or a later answer dispute can identify accidental additional defects and update the key rather than silently changing the original mutation version.
 
 For native corrections, first reconstruct one compatible annotator's corrected text under docs/sources/bea-v21.md. The source error-to-correction direction is reversed only after the corrected text and target context are established: corrected canonical -> original erroneous span. Preserve token/codepoint alignment and source annotator. Several acceptable references are alternatives, not simultaneous mutations. An ambiguous native reconstruction remains raw data and does not silently become an injectible pair.
 
@@ -73,7 +73,7 @@ Accent choice uses the configured provider/voice/locale/accent binding. Availabl
 
 ## Diagnose and match answers
 
-Freeze the actual case/audio/context/key version before the attempt. The key contains localized events, accepted/secondary categories, acceptable controls, severity, permitted repairs and required/forbidden propositions. The intended mutation explains why the candidate was requested; final reviewed evidence determines its actual key. Retain actual final audio even if the provider did something different.
+Freeze the actual case/audio/context/key version before the attempt. The key contains localized events, accepted/secondary categories, acceptable controls, severity, permitted repairs and required/forbidden propositions. The saved mutation list owns the ordinary authored key; optional later review can revise it when an actual audio/text deviation or omitted defect is found. Retain actual final audio even if the provider did something different.
 
 Use the existing single configurable LLM mapper to interpret original free-text answers. Extract assertions with their original Unicode spans, locate the event using quotation/turn/time/description and context, and judge stance, category, repair and explanation against the frozen key. Semantic synonyms and valid novel repairs can earn credit under the existing proposition rubric. Surface string equality or a category keyword does not decide semantic correctness. Wrong category can still detect the right event; absence of localization cannot fan one claim out across repeated words. Duplicate fragments about one event count once; explicit retractions and contradictions follow docs/math-and-judgments.md. Genuine key defects invoke LLM adjudication/versioning, with no human peer review prerequisite.
 
@@ -81,7 +81,7 @@ Example: canonical “She works here.” -> surface “She work here.” gives o
 
 Native code derives event counts, exact proposition-credit fractions, all existing metrics and the composite. Models do not invent numeric grades. Generated examples, raw corrections, annotation statistics, machine-answer runs and genuine teacher-answer populations stay separate. Difficulty derived from genuine teacher attempts is not supplied by corpus error frequency or synthetic model answers.
 
-## Data still needed
+## Data for complete source research and benchmarks, not generation prerequisites
 
 1. Localized source record/annotation/interval -> leaf mappings with exact context and mapping provenance for all 122 leaves. Complete written corpora offer candidate material, not already normalized per-leaf coverage.
 2. Actual per-leaf final error/control stimuli and retained independent split families for the complete 732-stimulus target. None was created by this audit. Acquired native audio is not itself this benchmark.
@@ -91,7 +91,7 @@ Native code derives event counts, exact proposition-credit fractions, all existi
 6. Missing complete Cambridge originals/derivatives/dictionaries, Doubao participant records/instruments, separate Moodrick/NIR exports/terms, pending ICNALE linked audio/video, Speak & Improve access/data, and official L2 provenance/count reconciliation, as itemized in the acquisition audit. Optional DRAL 48 kHz representations and its unavailable third-party component remain separate scopes.
 7. Actual generation/provider, answer-checking and genuine teacher-attempt observations for empirical performance and difficulty. None is implied by this written contract or the raw-byte inspection.
 
-These are production/acquisition/evaluation work and external inputs, not unresolved requests for product-owner approval of ordinary LLM checking. No new user decision is needed to perform the spec audit.
+These are full-source acquisition/empirical evaluation work and external inputs; they do not block the main text-to-mutation-to-audio flow, not unresolved requests for product-owner approval of ordinary LLM checking. No new user decision is needed to perform the spec audit.
 
 ## Primary method references
 

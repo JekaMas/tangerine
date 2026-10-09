@@ -95,6 +95,37 @@ profiles:
       - SRC-AZURE-IPA
       - SRC-AZURE-VOICES
     live_verified: false
+  - id: kokoro-local-en-v1
+    provider: local_kokoro
+    model: hexgrad/Kokoro-82M
+    roles:
+      - tts
+    credentials: []
+    device: cpu
+    language_mapping:
+      en-US: a
+      en-GB: b
+    voices:
+      en-US:
+        - af_heart
+        - am_adam
+      en-GB:
+        - bf_emma
+        - bm_george
+    output_format: riff-24khz-16bit-mono-pcm
+    capabilities:
+      - plain_text
+      - timed_pause
+      - multi_turn
+    adapter_contract: docs/simple-generation-flow.md
+    model_assets: persistent local cache; visible setup action; record actual locked model/voice digests
+    not_guaranteed:
+      - arbitrary IPA conversion from the generic render-plan alphabet
+      - fine pitch contours or exact acoustic target realization
+      - learner accent strength
+    source_url: https://github.com/hexgrad/kokoro
+    license: Apache-2.0 model/inference; dependency notices remain separate
+    live_verified: false
   - id: openai-whisper1-v1
     provider: openai
     model: whisper-1

@@ -3,7 +3,7 @@
 ## ADDED Requirements
 
 ### Requirement: GEN-01 Candidate output
-The compiler MUST use the blueprint, canonical script, error opportunities, and typed mutations. Its output MUST obey `specification/v2/contracts/case-candidate.schema.json`. The LLM MUST NOT create observed evidence, human approvals, or publication status.
+The compiler MUST use the simple topic/speaker/word-length request or advanced blueprint, save a clean canonical_text phase, then apply a separate mutation phase to that fixed script using broad/exact category choices and typed mutations. Both outputs MUST obey `specification/v2/contracts/case-candidate.schema.json`; the first has identical canonical/surface text and no planned units, and the second supplies the mutation list/key. Corpus excerpts and example audio are optional. The LLM MUST NOT create observed evidence, human approvals, or publication status. The owning flow is specification/v2/docs/simple-generation-flow.md.
 
 #### Scenario: GEN-01 Permitted behavior
 - **GIVEN** A candidate obeys all typed counts and span rules.
@@ -17,7 +17,7 @@ The compiler MUST use the blueprint, canonical script, error opportunities, and 
 
 ### Requirement: GEN-02 Origin and LLM linguistic review
 
-The compiler SHALL retain original/surface text, source notices, mutation IDs and actual prompt/provider versions. Linguistic audit SHALL be a machine action with no subsequent human review prerequisite.
+The compiler SHALL retain original/surface text, source notices, mutation IDs and actual prompt/provider versions. Linguistic audit SHALL remain an optional machine diagnostic with no subsequent human review prerequisite; generation and use SHALL not require a separate audit.
 
 #### Scenario: GEN-02 Permitted behavior
 

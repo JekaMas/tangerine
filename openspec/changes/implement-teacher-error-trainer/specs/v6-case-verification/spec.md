@@ -32,12 +32,12 @@ The application SHALL distinguish requested, measured, native-annotated and mode
 
 ### Requirement: VER-03 LLM review without peers
 
-The application SHALL perform machine case review/adjudication through the configurable stages and retain original findings, with no distinct-person, competence or two-approval requirement.
+The application SHALL offer optional machine case review and dispute adjudication through configurable stages and retain original findings, with no distinct-person, competence or two-approval requirement. Ordinary authored use SHALL require its actual audio and generated mutation-list key, not a separate case-review pass.
 
 #### Scenario: VER-03 Permitted behavior
 
 - **WHEN** the supported local action completes
-- **THEN** it SHALL obtain one actual LLM review
+- **THEN** an explicitly requested case review SHALL retain its actual LLM findings; ordinary use SHALL proceed without requesting it
 
 #### Scenario: VER-03 Boundary behavior
 

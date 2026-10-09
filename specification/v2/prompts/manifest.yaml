@@ -1,15 +1,27 @@
 version: 2.0.0
 bindings:
   - stage: case_generation
-    prompt_id: generate-v1
-    path: prompts/generate-v1.txt
-    prompt_sha256: 262a479e3614a9de1e287439d144cd030c15332a360282a65ea941239868c68f
+    prompt_id: canonical-v1
+    path: prompts/canonical-v1.txt
+    prompt_sha256: 816ec373d4701101d3a1f25444cfa0456e704cbaca90408cc5862f73f0958626
     input_schema: generation-input.schema.json
     output_schema: case-candidate.schema.json
-    timeout_seconds: 220
+    timeout_seconds: 90
     status: specification_binding_not_live_qualified
-    input_schema_sha256: 33bb1bbbbb22d9a30464c5bf4e6e8ab6b8f94abb3b76f4b85eeace30d161022c
+    input_schema_sha256: 2f26afe7d953b8e365f5bba958d28546e2d0aa580ebb8f8d5e28c14ddae3f709
     output_schema_sha256: fc05097d42ecb73ba4ce7b25fff5a26075d847d17c990cde80132434e02343c5
+    phase: canonical_text
+  - stage: case_generation
+    prompt_id: generate-v1
+    path: prompts/generate-v1.txt
+    prompt_sha256: 5b684edcef5293ce3d3b3c4146a994ba5aa34005c2fe4aea44b83f21fa3d24f7
+    input_schema: generation-input.schema.json
+    output_schema: case-candidate.schema.json
+    timeout_seconds: 150
+    status: specification_binding_not_live_qualified
+    input_schema_sha256: 2f26afe7d953b8e365f5bba958d28546e2d0aa580ebb8f8d5e28c14ddae3f709
+    output_schema_sha256: fc05097d42ecb73ba4ce7b25fff5a26075d847d17c990cde80132434e02343c5
+    phase: mutation
   - stage: linguistic_audit
     prompt_id: linguistic-audit-v1
     path: prompts/linguistic-audit-v1.txt
@@ -20,6 +32,7 @@ bindings:
     status: specification_binding_not_live_qualified
     input_schema_sha256: 2e1734cc1a48be38643095f1c4cb8c42be3db64130e83c01da9831c95019406b
     output_schema_sha256: 7b1786f2dd1f27cc031405d0e111a05e27dc5ba6435f0c5d01322d52248301e3
+    optional: true
   - stage: blind_claim_extraction
     prompt_id: extract-v1
     path: prompts/extract-v1.txt
@@ -33,7 +46,7 @@ bindings:
   - stage: claim_mapping
     prompt_id: map-v1
     path: prompts/map-v1.txt
-    prompt_sha256: fa3c7042a562d52bf5d676da97c46d753c0502851fac1ad76594cbc3b55bd524
+    prompt_sha256: da52e8d0fb52f8f680018172e9d64999634730f984d0c0007a048199000c6683
     input_schema: mapping-input.schema.json
     output_schema: evaluator-output.schema.json
     timeout_seconds: 70
@@ -50,16 +63,17 @@ bindings:
     status: specification_binding_not_live_qualified
     input_schema_sha256: f372dc2379239964e176fd20cdbfd09d0a043f12cc4a3cbe2da6919484a5686a
     output_schema_sha256: 0e26f5eb0ad18346b8a7307dedad590c57c1ff8e5ea73570eade68c1f4bb212e
+    optional: true
   - stage: feedback
     prompt_id: feedback-v1
     path: prompts/feedback-v1.txt
-    prompt_sha256: 82122f62d29b77327b3c7719d6f9df41b48e9eb5a3d5eeace2626979f3ca8abe
+    prompt_sha256: bcf40310f90c71232ef4f273e1c775b48c595011f8efaa2e3ba3ee7fd357027a
     input_schema: feedback-input.schema.json
     output_schema: feedback-output.schema.json
     timeout_seconds: 40
     status: specification_binding_not_live_qualified
     input_schema_sha256: ef7cdec20987f86beddac89e21ffe6877ec261d22b1f464894a1502d962aea1f
-    output_schema_sha256: 29db08d1612707d64f6f1b36769656da38b686b1e4b5dd310618c5677423aeae
+    output_schema_sha256: f5d9b6f57c7170b09dcbbe0dd20d6f116f06ccc79c06d5091c82a304511e2021
   - stage: case_review
     prompt_id: case-review-v1
     path: prompts/case-review-v1.txt
@@ -70,6 +84,7 @@ bindings:
     prompt_sha256: 6533705dfaf97f0abdbb0f834f67613371e3a6e43b877ed7667971a877cf40ac
     input_schema_sha256: 878bbcfbd5fcc718203da95c75e65e612664fa9414395631f146a6b70b99f05b
     output_schema_sha256: 4b79ae4ae1b7ef38055cda030b2aa8aae371410d9499f2702456427d6c4d6429
+    optional: true
   - stage: adjudication
     prompt_id: adjudication-v1
     path: prompts/adjudication-v1.txt

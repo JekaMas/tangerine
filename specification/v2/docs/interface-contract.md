@@ -2,6 +2,8 @@
 
 The full operation inventory remains domain/operations.yaml with exact method/path/request/response references in contracts/openapi.yaml. These are internal UI/service interfaces, not a user-managed public API. One local workspace has no accounts, roles or complex authentication.
 
+The main preparation action accepts contracts/exercise-request.schema.json through blueprint-write.exercise_request. The server expands speaker/word-length/optional-level/category defaults into the existing blueprint; the UI orchestrates existing generate/render/listen/submit/result operations. No new public API or separate review action is required.
+
 ## Exact field ownership
 
 For every mutation, its named request schema is the canonical content schema unless an explicit request projection is listed. domain/operation-ownership.yaml contains request_fields, server_fields and imported_source_fields per operation. Full stored-record schemas are never posted with fabricated server IDs/times. A create/submit request consists of exactly request_fields; the server assigns every server_field. No preliminary generic reservation exists or is needed. If a record is imported, its original identity/time/author fields are stored in the raw asset/source metadata; its new local envelope uses actual local identity/time. Referenced case/audio/configuration hashes in request_fields are legitimate equality preconditions.

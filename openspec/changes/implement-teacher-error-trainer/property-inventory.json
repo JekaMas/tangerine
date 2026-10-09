@@ -3,7 +3,7 @@
     "id": "AUT-01",
     "capability": "author-review-publication",
     "title": "AUT-01 Support author preparation",
-    "statement": "let authors prepare monologues/dialogues with context, voices, rate and planned errors, then obtain source text, key and real synthetic audio",
+    "statement": "The system SHALL accept topic, speaker count and approximate text length, with optional English level/broad mistake categories, and generate clean text, novel mutations/list/key and real local-or-service audio through the ordinary flow in specification/v2/docs/simple-generation-flow.md. Existing advanced monologue/dialogue/context/voice/rate controls SHALL remain available without being mandatory form inputs.",
     "scenario": "AUT-01 supported and rejected inputs",
     "positive": "prepare an authorized case and retain its real provider output",
     "negative": "refuse unsupported hard constraints or failed synthesis without a fabricated asset",
@@ -17,7 +17,7 @@
     "id": "REV-01",
     "capability": "author-review-publication",
     "title": "REV-01 LLM case review",
-    "statement": "The system SHALL review generated cases through a configurable LLM with actual modality/evidence and no human peer reviewers, identities or qualification prerequisites. It SHALL retain blind observations, key comparison, unit correspondence and machine findings.",
+    "statement": "The system SHALL offer optional generated-case review through a configurable LLM with actual modality/evidence and no human peer reviewers, identities or qualification prerequisites. The ordinary exercise SHALL use its saved mutation-list key without requiring this action. When invoked, review SHALL retain blind observations, key comparison, unit correspondence and machine findings.",
     "scenario": "REV-01 supported and rejected inputs",
     "positive": "retain two independent blind annotations and qualifying competence",
     "negative": "reject one person using two accounts, early key disclosure or missing acoustic qualification",
@@ -45,7 +45,7 @@
     "id": "PUB-01",
     "capability": "author-review-publication",
     "title": "PUB-01 Use immutable playable cases",
-    "statement": "The system SHALL allow a valid rendered case with a machine-produced key to be used locally with explicit quality warnings, without human approval or full-bank certification. Audio/key changes SHALL create a new immutable version.",
+    "statement": "The system SHALL automatically make the ordinary generated exercise available when its actual audio and saved mutation-list key are ready, with explicit quality warnings and no separate case-review action, human approval, native reference audio or full-bank certification. Audio/key changes SHALL create a new immutable version.",
     "scenario": "PUB-01 supported and rejected inputs",
     "positive": "publish a qualifying reviewed revision with immutable key/audio hashes",
     "negative": "reject approval reuse after key/audio mutation and edits to published revisions",
@@ -1297,7 +1297,7 @@
     "id": "V6-GEN-01",
     "capability": "v6-case-generation",
     "title": "GEN-01 Candidate output",
-    "statement": "The compiler MUST use the blueprint, canonical script, error opportunities, and typed mutations. Its output MUST obey `specification/v2/contracts/case-candidate.schema.json`. The LLM MUST NOT create observed evidence, human approvals, or publication status.",
+    "statement": "The compiler MUST use the simple topic/speaker/word-length request or advanced blueprint, save a clean canonical_text phase, then apply a separate mutation phase to that fixed script using broad/exact category choices and typed mutations. Both outputs MUST obey `specification/v2/contracts/case-candidate.schema.json`; the first has identical canonical/surface text and no planned units, and the second supplies the mutation list/key. Corpus excerpts and example audio are optional. The LLM MUST NOT create observed evidence, human approvals, or publication status. The owning flow is specification/v2/docs/simple-generation-flow.md.",
     "owner": "specification/v2/README.md",
     "scenarios": [
       "GEN-01 Permitted behavior",
@@ -1309,7 +1309,7 @@
     "id": "V6-GEN-02",
     "capability": "v6-case-generation",
     "title": "GEN-02 Origin and LLM linguistic review",
-    "statement": "The compiler SHALL retain original/surface text, source notices, mutation IDs and actual prompt/provider versions. Linguistic audit SHALL be a machine action with no subsequent human review prerequisite.",
+    "statement": "The compiler SHALL retain original/surface text, source notices, mutation IDs and actual prompt/provider versions. Linguistic audit SHALL remain an optional machine diagnostic with no subsequent human review prerequisite; generation and use SHALL not require a separate audit.",
     "owner": "specification/v2/README.md",
     "scenarios": [
       "GEN-02 Permitted behavior",
@@ -1357,7 +1357,7 @@
     "id": "V6-VER-03",
     "capability": "v6-case-verification",
     "title": "VER-03 LLM review without peers",
-    "statement": "The application SHALL perform machine case review/adjudication through the configurable stages and retain original findings, with no distinct-person, competence or two-approval requirement.",
+    "statement": "The application SHALL offer optional machine case review and dispute adjudication through configurable stages and retain original findings, with no distinct-person, competence or two-approval requirement. Ordinary authored use SHALL require its actual audio and generated mutation-list key, not a separate case-review pass.",
     "owner": "specification/v2/README.md",
     "scenarios": [
       "VER-03 Permitted behavior",
@@ -4312,5 +4312,77 @@
     ],
     "owner": "specification/v2/README.md",
     "source": "Actual user Apache selection and current scope; primary source evidence in audit/source-contract-research-20261009/RESEARCH.md and active source contracts."
+  },
+  {
+    "id": "FLOW-01",
+    "capability": "simple-generation-flow",
+    "title": "FLOW-01 Minimal request with optional level and broad categories",
+    "statement": "The system SHALL accept topic, speaker count and approximate word length through exercise-request.schema.json, with English level and broad mistake categories optional. It SHALL expand the request into the existing blueprint and retain advanced controls. No leaf-ID, corpus, reviewer or API configuration selection SHALL be required in the ordinary preparation form.",
+    "scenarios": [
+      "FLOW-01 Three inputs suffice",
+      "FLOW-01 Explicit user choices are preserved"
+    ],
+    "owner": "services/web",
+    "source": "Actual user primary-flow instruction; specification/v2/docs/simple-generation-flow.md."
+  },
+  {
+    "id": "FLOW-02",
+    "capability": "simple-generation-flow",
+    "title": "FLOW-02 Clean text precedes novel mutations and their key",
+    "statement": "The system SHALL save the canonical_text phase before the mutation phase, using generation-input.schema.json and the existing case_generation role. Mutation output SHALL retain that exact canonical script and produce surface text, typed edits and planned_units as the complete mutation list/key. Novel/OOD instances SHALL use the declared novelty basis without claiming access to the LLM's hidden training distribution.",
+    "scenarios": [
+      "FLOW-02 Fixed canonical text receives localized novel edits",
+      "FLOW-02 A mutation failure preserves the baseline"
+    ],
+    "owner": "services/api",
+    "source": "Actual user primary-flow instruction; specification/v2/docs/simple-generation-flow.md."
+  },
+  {
+    "id": "FLOW-03",
+    "capability": "simple-generation-flow",
+    "title": "FLOW-03 Local or service audio is generated and stored",
+    "statement": "The system SHALL synthesize the mutated render input through the selected local or external service adapter and store actual final audio with its text/key/version. Local Kokoro and the original Azure service/voices SHALL remain configured options. Replay SHALL use stored bytes. The app SHALL preserve deliberate text/acoustic operations and actual provider provenance without requiring native example audio or empirical calibration data before ordinary synthesis.",
+    "scenarios": [
+      "FLOW-03 Local synthesis requires model assets rather than a speech key",
+      "FLOW-03 Audio failure retains text and key"
+    ],
+    "owner": "services/speech",
+    "source": "Actual user primary-flow instruction; specification/v2/docs/simple-generation-flow.md."
+  },
+  {
+    "id": "FLOW-04",
+    "capability": "simple-generation-flow",
+    "title": "FLOW-04 Ordinary use does not wait for reference corpora or review",
+    "statement": "The system SHALL make an authored exercise usable once its actual audio and generated mutation-list key are saved. Reference audio, all 11 full corpora, acoustic diagnostics, a separate LLM case review and the 732-stimulus benchmark SHALL be optional enrichment/evaluation features rather than prerequisites. All original scope SHALL remain preserved. GENERATED-EXERCISE provenance SHALL not imply benchmark or external-corpus acquisition.",
+    "scenarios": [
+      "FLOW-04 Empty corpus collection can generate the first exercise",
+      "FLOW-04 Optional data stays optional and honestly accounted"
+    ],
+    "owner": "services/api",
+    "source": "Actual user primary-flow instruction; specification/v2/docs/simple-generation-flow.md."
+  },
+  {
+    "id": "FLOW-05",
+    "capability": "simple-generation-flow",
+    "title": "FLOW-05 Free text is compared with the saved mutation list",
+    "statement": "The LLM SHALL compare the saved listener answer with the exact exercise mutation-list key/context, accepting localized semantic descriptions, category synonyms and valid alternative repairs. It SHALL preserve duplicate/retraction/ambiguity/key-defect behavior and all existing exact arithmetic. The checking LLM SHALL not need to hear audio again for this text/key comparison; known acoustic disputes can use optional actual evidence.",
+    "scenarios": [
+      "FLOW-05 A paraphrase finds a recorded mutation",
+      "FLOW-05 Hidden keys and duplicate claims do not inflate results"
+    ],
+    "owner": "services/api",
+    "source": "Actual user primary-flow instruction; specification/v2/docs/simple-generation-flow.md."
+  },
+  {
+    "id": "FLOW-06",
+    "capability": "simple-generation-flow",
+    "title": "FLOW-06 Scores and actionable LLM recommendations complete the flow",
+    "statement": "Native code SHALL retain all 42 existing formulas and calculate applicable exercise metrics/composite from the LLM's supported semantic decisions. Metrics requiring other observed populations SHALL remain N/A with a reason until those inputs exist. The feedback LLM SHALL explain found/missed/false-positive/control findings and recommend targeted practice, including labelled new practice examples and supported paraphrases without human approval or exact-copy restrictions. Recommendation failure SHALL preserve the score and answer.",
+    "scenarios": [
+      "FLOW-06 Grounded new practice advice is allowed",
+      "FLOW-06 Recommendations cannot fabricate heard defects or grades"
+    ],
+    "owner": "services/api",
+    "source": "Actual user primary-flow instruction; specification/v2/docs/simple-generation-flow.md."
   }
 ]

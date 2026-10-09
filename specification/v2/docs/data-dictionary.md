@@ -22,8 +22,8 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | blind-annotation | 2.0.0 | document.payload | 27 |
 | blind-review-view | schema hash | Derived view; durable source record remains private | 6 |
 | blind-submit-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 3 |
-| blueprint-write | schema hash | document.payload | 31 |
-| blueprint | 2.0.0 | document.payload | 33 |
+| blueprint-write | schema hash | document.payload | 32 |
+| blueprint | 2.0.0 | document.payload | 34 |
 | cancel-request | schema hash | derived DTO or actual operation input/output receipt | 1 |
 | candidate-envelope | schema hash | document.payload | 4 |
 | capability-record | schema hash | document.payload | 13 |
@@ -32,7 +32,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | claim-extraction | 2.0.0 | document.payload | 46 |
 | common | schema hash | derived DTO or actual operation input/output receipt | 10 |
 | configuration-view | schema hash | derived DTO or actual operation input/output receipt | 9 |
-| configuration | 2.0.0 | document.payload | 31 |
+| configuration | 2.0.0 | document.payload | 33 |
 | connector-configuration | 2.0.0 | document.payload | 12 |
 | connector-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 10 |
 | corpus-record | 1.0.0 | document.payload | 26 |
@@ -56,7 +56,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | feedback-output | 2.0.0 | derived DTO or actual operation input/output receipt | 11 |
 | feedback | 2.0.0 | document.payload | 13 |
 | format-binding-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 13 |
-| generation-input | 2.0.0 | derived DTO or actual operation input/output receipt | 16 |
+| generation-input | 2.0.0 | derived DTO or actual operation input/output receipt | 25 |
 | generation-request | schema hash | derived DTO or actual operation input/output receipt | 4 |
 | grant-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 15 |
 | ground-truth | 2.0.0 | document.payload | 118 |
@@ -85,7 +85,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | playback-event | 2.0.0 | document.payload | 10 |
 | prepare-view | schema hash | derived DTO or actual operation input/output receipt | 6 |
 | provider-receipt | 2.0.0 | document.payload | 22 |
-| put-config-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 29 |
+| put-config-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 31 |
 | qualification-report-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 5 |
 | qualification-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 11 |
 | qualification | 2.0.0 | document.payload | 12 |
@@ -127,3 +127,5 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | unit-correspondence | 2.0.0 | document.payload | 11 |
 | unit-map-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 10 |
 | verification-report | 1.0.0 | document.payload | 26 |
+
+| exercise-request | schema hash | derived DTO or actual operation input/output receipt | 8 |

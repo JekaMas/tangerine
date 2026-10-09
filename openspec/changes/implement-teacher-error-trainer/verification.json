@@ -6,13 +6,13 @@
       "id": "AUT-01",
       "capability": "author-review-publication",
       "title": "AUT-01 Support author preparation",
-      "fingerprint": "3643662ff28d3e50262ea3d89ca3f7c9c85fccdd26b59ad5b89a1492fa406dea"
+      "fingerprint": "f7efc90c2d797db36976157e2c94151069c16bf4f123506761e6234a0337f963"
     },
     {
       "id": "REV-01",
       "capability": "author-review-publication",
       "title": "REV-01 LLM case review",
-      "fingerprint": "9f36dd7994cf0b037e134f80db93aa978fa06c7d120a2b6c6367cbd4b3e378b1"
+      "fingerprint": "c5cebf979a0974fa8e4aa4c81488b55fff208ad37c24312d3b38f05cb1a1b32d"
     },
     {
       "id": "REV-02",
@@ -24,7 +24,7 @@
       "id": "PUB-01",
       "capability": "author-review-publication",
       "title": "PUB-01 Use immutable playable cases",
-      "fingerprint": "1f2bc59493908be28dea6e2f3b7dd8d15cd7558784b22f928043bc55c337e1bf"
+      "fingerprint": "dca4415dbeb83858994a01349fedf1cf59642ca5110bda71f370abbb70a8fd4b"
     },
     {
       "id": "DSP-01",
@@ -564,13 +564,13 @@
       "id": "V6-GEN-01",
       "capability": "v6-case-generation",
       "title": "GEN-01 Candidate output",
-      "fingerprint": "8422cad4281b5afa309cc9cb3b4c1f8c4d3d9392128409c8e48455fdb15abb2f"
+      "fingerprint": "c66885393967c6c755bb40cac42ea7de91ac7fafb334a0ba714b61156f9cd932"
     },
     {
       "id": "V6-GEN-02",
       "capability": "v6-case-generation",
       "title": "GEN-02 Origin and LLM linguistic review",
-      "fingerprint": "4e2a6a07b7b6c1e6b23083009ce8f2cfd65d610ff0e976881fd9773ad7f5621c"
+      "fingerprint": "b56573d8c9f14649fa4ff1795fe7e8d24047ef5d45686b816018366e5a5c6fa0"
     },
     {
       "id": "V6-GEN-03",
@@ -594,7 +594,7 @@
       "id": "V6-VER-03",
       "capability": "v6-case-verification",
       "title": "VER-03 LLM review without peers",
-      "fingerprint": "3d7928ca74ebd06639cb9e33c425e5c2357c15fd34134d7f4244a391f57364b8"
+      "fingerprint": "128ffbad98bfd3676aba1d664f3119b5b829c6f498f3a59f00aeedee3d633c60"
     },
     {
       "id": "V6-APR-01",
@@ -2059,13 +2059,49 @@
       "capability": "mistake-data-and-mutations",
       "title": "MDC-07 Every data source has a preserved use and limit",
       "fingerprint": "21c93acbc4c76d824d8a5c5d9b05c7538c5e5ccebb3882d245d49efc125e9693"
+    },
+    {
+      "id": "FLOW-01",
+      "capability": "simple-generation-flow",
+      "title": "FLOW-01 Minimal request with optional level and broad categories",
+      "fingerprint": "3cfee7df59f1177986165ddf7bdece4ee6a05c3cb2a4d5e48d6281713809289a"
+    },
+    {
+      "id": "FLOW-02",
+      "capability": "simple-generation-flow",
+      "title": "FLOW-02 Clean text precedes novel mutations and their key",
+      "fingerprint": "343094d4f619c93f96020c65f4633defea35b32ddece9139254a9cdf77ec764e"
+    },
+    {
+      "id": "FLOW-03",
+      "capability": "simple-generation-flow",
+      "title": "FLOW-03 Local or service audio is generated and stored",
+      "fingerprint": "c153f09939ef81bb258dc7f922d99f4ca29935cff3c7ed981863bfcbe0ae5f8d"
+    },
+    {
+      "id": "FLOW-04",
+      "capability": "simple-generation-flow",
+      "title": "FLOW-04 Ordinary use does not wait for reference corpora or review",
+      "fingerprint": "609d5daf1388b702fdb13922a2d4a2b6a32ee8da0df2cb3ab1a31c896b1bcd52"
+    },
+    {
+      "id": "FLOW-05",
+      "capability": "simple-generation-flow",
+      "title": "FLOW-05 Free text is compared with the saved mutation list",
+      "fingerprint": "47d76bd9382a58a5d84403d930a98b05e31eca102c6f6ae7cab1de8f7932c28d"
+    },
+    {
+      "id": "FLOW-06",
+      "capability": "simple-generation-flow",
+      "title": "FLOW-06 Scores and actionable LLM recommendations complete the flow",
+      "fingerprint": "590382377c417cbfc53fa82095706f1b13805b1a42d2f821c40b4144ddb4cc84"
     }
   ],
   "properties": [
     {
       "id": "AUT-01.P1",
       "requirement_id": "AUT-01",
-      "statement": "let authors prepare monologues/dialogues with context, voices, rate and planned errors, then obtain source text, key and real synthetic audio",
+      "statement": "The system SHALL accept topic, speaker count and approximate text length, with optional English level/broad mistake categories, and generate clean text, novel mutations/list/key and real local-or-service audio through the ordinary flow in specification/v2/docs/simple-generation-flow.md. Existing advanced monologue/dialogue/context/voice/rate controls SHALL remain available without being mandatory form inputs.",
       "scenarios": [
         "AUT-01 supported and rejected inputs"
       ],
@@ -2078,7 +2114,7 @@
     {
       "id": "REV-01.P1",
       "requirement_id": "REV-01",
-      "statement": "The system SHALL review generated cases through a configurable LLM with actual modality/evidence and no human peer reviewers, identities or qualification prerequisites. It SHALL retain blind observations, key comparison, unit correspondence and machine findings.",
+      "statement": "The system SHALL offer optional generated-case review through a configurable LLM with actual modality/evidence and no human peer reviewers, identities or qualification prerequisites. The ordinary exercise SHALL use its saved mutation-list key without requiring this action. When invoked, review SHALL retain blind observations, key comparison, unit correspondence and machine findings.",
       "scenarios": [
         "REV-01 supported and rejected inputs"
       ],
@@ -2110,7 +2146,7 @@
     {
       "id": "PUB-01.P1",
       "requirement_id": "PUB-01",
-      "statement": "The system SHALL allow a valid rendered case with a machine-produced key to be used locally with explicit quality warnings, without human approval or full-bank certification. Audio/key changes SHALL create a new immutable version.",
+      "statement": "The system SHALL automatically make the ordinary generated exercise available when its actual audio and saved mutation-list key are ready, with explicit quality warnings and no separate case-review action, human approval, native reference audio or full-bank certification. Audio/key changes SHALL create a new immutable version.",
       "scenarios": [
         "PUB-01 supported and rejected inputs"
       ],
@@ -3586,7 +3622,7 @@
     {
       "id": "V6-GEN-01.P1",
       "requirement_id": "V6-GEN-01",
-      "statement": "The compiler MUST use the blueprint, canonical script, error opportunities, and typed mutations. Its output MUST obey `specification/v2/contracts/case-candidate.schema.json`. The LLM MUST NOT create observed evidence, human approvals, or publication status.",
+      "statement": "The compiler MUST use the simple topic/speaker/word-length request or advanced blueprint, save a clean canonical_text phase, then apply a separate mutation phase to that fixed script using broad/exact category choices and typed mutations. Both outputs MUST obey `specification/v2/contracts/case-candidate.schema.json`; the first has identical canonical/surface text and no planned units, and the second supplies the mutation list/key. Corpus excerpts and example audio are optional. The LLM MUST NOT create observed evidence, human approvals, or publication status. The owning flow is specification/v2/docs/simple-generation-flow.md.",
       "scenarios": [
         "GEN-01 Permitted behavior",
         "GEN-01 Boundary behavior"
@@ -3603,7 +3639,7 @@
     {
       "id": "V6-GEN-02.P1",
       "requirement_id": "V6-GEN-02",
-      "statement": "The compiler SHALL retain original/surface text, source notices, mutation IDs and actual prompt/provider versions. Linguistic audit SHALL be a machine action with no subsequent human review prerequisite.",
+      "statement": "The compiler SHALL retain original/surface text, source notices, mutation IDs and actual prompt/provider versions. Linguistic audit SHALL remain an optional machine diagnostic with no subsequent human review prerequisite; generation and use SHALL not require a separate audit.",
       "scenarios": [
         "GEN-02 Permitted behavior",
         "GEN-02 Boundary behavior"
@@ -3669,7 +3705,7 @@
     {
       "id": "V6-VER-03.P1",
       "requirement_id": "V6-VER-03",
-      "statement": "The application SHALL perform machine case review/adjudication through the configurable stages and retain original findings, with no distinct-person, competence or two-approval requirement.",
+      "statement": "The application SHALL offer optional machine case review and dispute adjudication through configurable stages and retain original findings, with no distinct-person, competence or two-approval requirement. Ordinary authored use SHALL require its actual audio and generated mutation-list key, not a separate case-review pass.",
       "scenarios": [
         "VER-03 Permitted behavior",
         "VER-03 Boundary behavior"
@@ -7872,6 +7908,102 @@
         "specification/v2/docs/mistake-data-and-mutations.md",
         "specification/v2/domain/mutation-recipes.v1.json"
       ]
+    },
+    {
+      "id": "FLOW-01.P1",
+      "requirement_id": "FLOW-01",
+      "statement": "The system SHALL accept topic, speaker count and approximate word length through exercise-request.schema.json, with English level and broad mistake categories optional. It SHALL expand the request into the existing blueprint and retain advanced controls. No leaf-ID, corpus, reviewer or API configuration selection SHALL be required in the ordinary preparation form.",
+      "scenarios": [
+        "FLOW-01 Three inputs suffice",
+        "FLOW-01 Explicit user choices are preserved"
+      ],
+      "owner": "services/web",
+      "oracle": "Frozen canonical/mutated script and mutation list, actual stored audio, independently asserted semantic matches and unchanged equations. Static spec checks do not prove provider/application behavior.",
+      "source_globs": [
+        "services/web/**",
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json"
+      ]
+    },
+    {
+      "id": "FLOW-02.P1",
+      "requirement_id": "FLOW-02",
+      "statement": "The system SHALL save the canonical_text phase before the mutation phase, using generation-input.schema.json and the existing case_generation role. Mutation output SHALL retain that exact canonical script and produce surface text, typed edits and planned_units as the complete mutation list/key. Novel/OOD instances SHALL use the declared novelty basis without claiming access to the LLM's hidden training distribution.",
+      "scenarios": [
+        "FLOW-02 Fixed canonical text receives localized novel edits",
+        "FLOW-02 A mutation failure preserves the baseline"
+      ],
+      "owner": "services/api",
+      "oracle": "Frozen canonical/mutated script and mutation list, actual stored audio, independently asserted semantic matches and unchanged equations. Static spec checks do not prove provider/application behavior.",
+      "source_globs": [
+        "services/api/**",
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json"
+      ]
+    },
+    {
+      "id": "FLOW-03.P1",
+      "requirement_id": "FLOW-03",
+      "statement": "The system SHALL synthesize the mutated render input through the selected local or external service adapter and store actual final audio with its text/key/version. Local Kokoro and the original Azure service/voices SHALL remain configured options. Replay SHALL use stored bytes. The app SHALL preserve deliberate text/acoustic operations and actual provider provenance without requiring native example audio or empirical calibration data before ordinary synthesis.",
+      "scenarios": [
+        "FLOW-03 Local synthesis requires model assets rather than a speech key",
+        "FLOW-03 Audio failure retains text and key"
+      ],
+      "owner": "services/speech",
+      "oracle": "Frozen canonical/mutated script and mutation list, actual stored audio, independently asserted semantic matches and unchanged equations. Static spec checks do not prove provider/application behavior.",
+      "source_globs": [
+        "services/speech/**",
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json"
+      ]
+    },
+    {
+      "id": "FLOW-04.P1",
+      "requirement_id": "FLOW-04",
+      "statement": "The system SHALL make an authored exercise usable once its actual audio and generated mutation-list key are saved. Reference audio, all 11 full corpora, acoustic diagnostics, a separate LLM case review and the 732-stimulus benchmark SHALL be optional enrichment/evaluation features rather than prerequisites. All original scope SHALL remain preserved. GENERATED-EXERCISE provenance SHALL not imply benchmark or external-corpus acquisition.",
+      "scenarios": [
+        "FLOW-04 Empty corpus collection can generate the first exercise",
+        "FLOW-04 Optional data stays optional and honestly accounted"
+      ],
+      "owner": "services/api",
+      "oracle": "Frozen canonical/mutated script and mutation list, actual stored audio, independently asserted semantic matches and unchanged equations. Static spec checks do not prove provider/application behavior.",
+      "source_globs": [
+        "services/api/**",
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json"
+      ]
+    },
+    {
+      "id": "FLOW-05.P1",
+      "requirement_id": "FLOW-05",
+      "statement": "The LLM SHALL compare the saved listener answer with the exact exercise mutation-list key/context, accepting localized semantic descriptions, category synonyms and valid alternative repairs. It SHALL preserve duplicate/retraction/ambiguity/key-defect behavior and all existing exact arithmetic. The checking LLM SHALL not need to hear audio again for this text/key comparison; known acoustic disputes can use optional actual evidence.",
+      "scenarios": [
+        "FLOW-05 A paraphrase finds a recorded mutation",
+        "FLOW-05 Hidden keys and duplicate claims do not inflate results"
+      ],
+      "owner": "services/api",
+      "oracle": "Frozen canonical/mutated script and mutation list, actual stored audio, independently asserted semantic matches and unchanged equations. Static spec checks do not prove provider/application behavior.",
+      "source_globs": [
+        "services/api/**",
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json"
+      ]
+    },
+    {
+      "id": "FLOW-06.P1",
+      "requirement_id": "FLOW-06",
+      "statement": "Native code SHALL retain all 42 existing formulas and calculate applicable exercise metrics/composite from the LLM's supported semantic decisions. Metrics requiring other observed populations SHALL remain N/A with a reason until those inputs exist. The feedback LLM SHALL explain found/missed/false-positive/control findings and recommend targeted practice, including labelled new practice examples and supported paraphrases without human approval or exact-copy restrictions. Recommendation failure SHALL preserve the score and answer.",
+      "scenarios": [
+        "FLOW-06 Grounded new practice advice is allowed",
+        "FLOW-06 Recommendations cannot fabricate heard defects or grades"
+      ],
+      "owner": "services/api",
+      "oracle": "Frozen canonical/mutated script and mutation list, actual stored audio, independently asserted semantic matches and unchanged equations. Static spec checks do not prove provider/application behavior.",
+      "source_globs": [
+        "services/api/**",
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json"
+      ]
     }
   ],
   "cases": [
@@ -7881,10 +8013,10 @@
       "polarity": "positive",
       "scenario": "AUT-01 supported and rejected inputs",
       "scenario_fingerprint": "3e0f922ff8806699206d5f84e5e28800c62dcbaa3297a18e2b8e8a9b533cdedc",
-      "setup": "Use the actual owner at services/web with the case described here: prepare an authorized case and retain its real provider output",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "prepare an authorized case and retain its real provider output",
       "red_expectation": "A violating implementation admits the forbidden outcome or fails to preserve the required source fact.",
-      "green_expectation": "The actual owner satisfies the separately specified positive observation.",
+      "green_expectation": "Observe AUT-01 supported and rejected inputs under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::AUT-01::positive",
       "command_id": "pending",
       "state": "blocked",
@@ -7892,7 +8024,9 @@
       "source_sha256": null,
       "invalidation_dependencies": [
         "services/web",
-        "docs/authority.md"
+        "docs/authority.md",
+        "specification/v2/docs/simple-generation-flow.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/author-review-publication/spec.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -7906,10 +8040,10 @@
       "polarity": "negative",
       "scenario": "AUT-01 supported and rejected inputs",
       "scenario_fingerprint": "3e0f922ff8806699206d5f84e5e28800c62dcbaa3297a18e2b8e8a9b533cdedc",
-      "setup": "Use the actual owner at services/web with the case described here: refuse unsupported hard constraints or failed synthesis without a fabricated asset",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "refuse unsupported hard constraints or failed synthesis without a fabricated asset",
       "red_expectation": "A violating implementation admits the forbidden outcome or fails to preserve the required source fact.",
-      "green_expectation": "The actual owner satisfies the separately specified negative observation.",
+      "green_expectation": "Observe AUT-01 supported and rejected inputs under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::AUT-01::negative",
       "command_id": "pending",
       "state": "blocked",
@@ -7917,7 +8051,9 @@
       "source_sha256": null,
       "invalidation_dependencies": [
         "services/web",
-        "docs/authority.md"
+        "docs/authority.md",
+        "specification/v2/docs/simple-generation-flow.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/author-review-publication/spec.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -7931,10 +8067,10 @@
       "polarity": "positive",
       "scenario": "REV-01 supported and rejected inputs",
       "scenario_fingerprint": "53e1bd019b20cc7b7b20004bd57a0c6189a13bf6648ec48e0089f45a696fd433",
-      "setup": "Use the exact supported contract of REV-01 LLM case review. Follow the scenario context and actual/constructed evidence class below. No human reviewer or empirical benchmark gate is added.",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "- **WHEN** the local action receives the supported or failing input\n- **THEN** it SHALL run a machine review and retain its actual receipt/evidence modality",
       "red_expectation": "The observed positive behavior contradicts the current LLM-only/local/source/formula contract.",
-      "green_expectation": "Observe the supported outcome below exactly: - **WHEN** the local action receives the supported or failing input\n- **THEN** it SHALL run a machine review and retain its actual receipt/evidence modality",
+      "green_expectation": "Observe REV-01 supported and rejected inputs under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::local-llm-revision::REV-01.P1.POSITIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -7944,7 +8080,8 @@
         "specification/v2/**",
         "docs/authority.md",
         "docs/change-control.md",
-        "openspec/changes/implement-teacher-error-trainer/specs/author-review-publication/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/author-review-publication/spec.md",
+        "specification/v2/docs/simple-generation-flow.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -7958,10 +8095,10 @@
       "polarity": "negative",
       "scenario": "REV-01 supported and rejected inputs",
       "scenario_fingerprint": "53e1bd019b20cc7b7b20004bd57a0c6189a13bf6648ec48e0089f45a696fd433",
-      "setup": "Exercise the declared failure/counterexample of REV-01 LLM case review. Use the explicit failing/absent/conflicting condition below; an implementation admitting the forbidden effect is a failure.",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "- **THEN** it SHALL never demand a human reviewer or label transcript inference as direct hearing",
       "red_expectation": "The observed negative behavior contradicts the current LLM-only/local/source/formula contract.",
-      "green_expectation": "Observe the stated rejection/preserved-failure or absence of forbidden effect below: - **THEN** it SHALL never demand a human reviewer or label transcript inference as direct hearing",
+      "green_expectation": "Observe REV-01 supported and rejected inputs under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::local-llm-revision::REV-01.P1.NEGATIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -7971,7 +8108,8 @@
         "specification/v2/**",
         "docs/authority.md",
         "docs/change-control.md",
-        "openspec/changes/implement-teacher-error-trainer/specs/author-review-publication/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/author-review-publication/spec.md",
+        "specification/v2/docs/simple-generation-flow.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -8039,10 +8177,10 @@
       "polarity": "positive",
       "scenario": "PUB-01 supported and rejected inputs",
       "scenario_fingerprint": "a103f026907aec9b906e360039f13faa1e6d7cd40642f978ee9605292dc30214",
-      "setup": "Use the exact supported contract of PUB-01 Use immutable playable cases. Follow the scenario context and actual/constructed evidence class below. No human reviewer or empirical benchmark gate is added.",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "- **WHEN** the local action receives the supported or failing input\n- **THEN** it SHALL use the first real playable case and retain its key/audio identity",
       "red_expectation": "The observed positive behavior contradicts the current LLM-only/local/source/formula contract.",
-      "green_expectation": "Observe the supported outcome below exactly: - **WHEN** the local action receives the supported or failing input\n- **THEN** it SHALL use the first real playable case and retain its key/audio identity",
+      "green_expectation": "Observe PUB-01 supported and rejected inputs under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::local-llm-revision::PUB-01.P1.POSITIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -8052,7 +8190,8 @@
         "specification/v2/**",
         "docs/authority.md",
         "docs/change-control.md",
-        "openspec/changes/implement-teacher-error-trainer/specs/author-review-publication/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/author-review-publication/spec.md",
+        "specification/v2/docs/simple-generation-flow.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -8066,10 +8205,10 @@
       "polarity": "negative",
       "scenario": "PUB-01 supported and rejected inputs",
       "scenario_fingerprint": "a103f026907aec9b906e360039f13faa1e6d7cd40642f978ee9605292dc30214",
-      "setup": "Exercise the declared failure/counterexample of PUB-01 Use immutable playable cases. Use the explicit failing/absent/conflicting condition below; an implementation admitting the forbidden effect is a failure.",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "- **THEN** it SHALL never invent audio, silently mutate historical keys or gate use on benchmark completion",
       "red_expectation": "The observed negative behavior contradicts the current LLM-only/local/source/formula contract.",
-      "green_expectation": "Observe the stated rejection/preserved-failure or absence of forbidden effect below: - **THEN** it SHALL never invent audio, silently mutate historical keys or gate use on benchmark completion",
+      "green_expectation": "Observe PUB-01 supported and rejected inputs under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::local-llm-revision::PUB-01.P1.NEGATIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -8079,7 +8218,8 @@
         "specification/v2/**",
         "docs/authority.md",
         "docs/change-control.md",
-        "openspec/changes/implement-teacher-error-trainer/specs/author-review-publication/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/author-review-publication/spec.md",
+        "specification/v2/docs/simple-generation-flow.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -13583,10 +13723,10 @@
       "polarity": "positive",
       "scenario": "GEN-01 Permitted behavior",
       "scenario_fingerprint": "df12b7394631d7873ddc8e7d87f50a32b4642777d291ed13b4b03154b86297d4",
-      "setup": "Use the exact supported contract of GEN-01 Candidate output. Follow the scenario context and actual/constructed evidence class below. No human reviewer or empirical benchmark gate is added.",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "- **GIVEN** A candidate obeys all typed counts and span rules.\n- **WHEN** The compiler accepts its structure.\n- **THEN** The candidate can enter audio generation, but cannot enter publication.",
       "red_expectation": "The observed positive behavior contradicts the current LLM-only/local/source/formula contract.",
-      "green_expectation": "Observe the supported outcome below exactly: - **GIVEN** A candidate obeys all typed counts and span rules.\n- **WHEN** The compiler accepts its structure.\n- **THEN** The candidate can enter audio generation, but cannot enter publication.",
+      "green_expectation": "Observe GEN-01 Permitted behavior under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::local-llm-revision::V6-GEN-01.P1.S1.POSITIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -13596,7 +13736,8 @@
         "specification/v2/**",
         "docs/authority.md",
         "docs/change-control.md",
-        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-generation/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-generation/spec.md",
+        "specification/v2/docs/simple-generation-flow.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -13610,10 +13751,10 @@
       "polarity": "negative",
       "scenario": "GEN-01 Permitted behavior",
       "scenario_fingerprint": "df12b7394631d7873ddc8e7d87f50a32b4642777d291ed13b4b03154b86297d4",
-      "setup": "Exercise the declared failure/counterexample of GEN-01 Candidate output. Use the explicit failing/absent/conflicting condition below; an implementation admitting the forbidden effect is a failure.",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "- **GIVEN** The generator has no recorded human approval.\n- **WHEN** Its output asserts a reviewer decision or observed IPA.\n- **THEN** The API rejects the unsupported output.",
       "red_expectation": "The observed negative behavior contradicts the current LLM-only/local/source/formula contract.",
-      "green_expectation": "Observe the stated rejection/preserved-failure or absence of forbidden effect below: - **GIVEN** The generator has no recorded human approval.\n- **WHEN** Its output asserts a reviewer decision or observed IPA.\n- **THEN** The API rejects the unsupported output.",
+      "green_expectation": "Observe GEN-01 Permitted behavior under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::local-llm-revision::V6-GEN-01.P1.S1.NEGATIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -13623,7 +13764,8 @@
         "specification/v2/**",
         "docs/authority.md",
         "docs/change-control.md",
-        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-generation/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-generation/spec.md",
+        "specification/v2/docs/simple-generation-flow.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -13637,10 +13779,10 @@
       "polarity": "positive",
       "scenario": "GEN-01 Boundary behavior",
       "scenario_fingerprint": "72bae4b8a4fc2af68a09cc9002c36cd92852218863e7699476c64e95132775e5",
-      "setup": "Use the exact supported contract of GEN-01 Candidate output. Follow the scenario context and actual/constructed evidence class below. No human reviewer or empirical benchmark gate is added.",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "- **GIVEN** A candidate obeys all typed counts and span rules.\n- **WHEN** The compiler accepts its structure.\n- **THEN** The candidate can enter audio generation, but cannot enter publication.",
       "red_expectation": "The observed positive behavior contradicts the current LLM-only/local/source/formula contract.",
-      "green_expectation": "Observe the supported outcome below exactly: - **GIVEN** A candidate obeys all typed counts and span rules.\n- **WHEN** The compiler accepts its structure.\n- **THEN** The candidate can enter audio generation, but cannot enter publication.",
+      "green_expectation": "Observe GEN-01 Boundary behavior under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::local-llm-revision::V6-GEN-01.P1.S2.POSITIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -13650,7 +13792,8 @@
         "specification/v2/**",
         "docs/authority.md",
         "docs/change-control.md",
-        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-generation/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-generation/spec.md",
+        "specification/v2/docs/simple-generation-flow.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -13664,10 +13807,10 @@
       "polarity": "negative",
       "scenario": "GEN-01 Boundary behavior",
       "scenario_fingerprint": "72bae4b8a4fc2af68a09cc9002c36cd92852218863e7699476c64e95132775e5",
-      "setup": "Exercise the declared failure/counterexample of GEN-01 Candidate output. Use the explicit failing/absent/conflicting condition below; an implementation admitting the forbidden effect is a failure.",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "- **GIVEN** The generator has no recorded human approval.\n- **WHEN** Its output asserts a reviewer decision or observed IPA.\n- **THEN** The API rejects the unsupported output.",
       "red_expectation": "The observed negative behavior contradicts the current LLM-only/local/source/formula contract.",
-      "green_expectation": "Observe the stated rejection/preserved-failure or absence of forbidden effect below: - **GIVEN** The generator has no recorded human approval.\n- **WHEN** Its output asserts a reviewer decision or observed IPA.\n- **THEN** The API rejects the unsupported output.",
+      "green_expectation": "Observe GEN-01 Boundary behavior under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::local-llm-revision::V6-GEN-01.P1.S2.NEGATIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -13677,7 +13820,8 @@
         "specification/v2/**",
         "docs/authority.md",
         "docs/change-control.md",
-        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-generation/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-generation/spec.md",
+        "specification/v2/docs/simple-generation-flow.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -13691,10 +13835,10 @@
       "polarity": "positive",
       "scenario": "GEN-02 Permitted behavior",
       "scenario_fingerprint": "1c6d588113d5bb397eaab03556abb7a1287c29707dc8152cdff6dedcba5f67e9",
-      "setup": "Use the exact supported contract of GEN-02 Origin and LLM linguistic review. Follow the scenario context and actual/constructed evidence class below. No human reviewer or empirical benchmark gate is added.",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "- **WHEN** the supported local action completes\n- **THEN** it SHALL retain machine findings with generation provenance",
       "red_expectation": "The observed positive behavior contradicts the current LLM-only/local/source/formula contract.",
-      "green_expectation": "Observe the supported outcome below exactly: - **WHEN** the supported local action completes\n- **THEN** it SHALL retain machine findings with generation provenance",
+      "green_expectation": "Observe GEN-02 Permitted behavior under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::local-llm-revision::V6-GEN-02.P1.S1.POSITIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -13704,7 +13848,8 @@
         "specification/v2/**",
         "docs/authority.md",
         "docs/change-control.md",
-        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-generation/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-generation/spec.md",
+        "specification/v2/docs/simple-generation-flow.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -13718,10 +13863,10 @@
       "polarity": "negative",
       "scenario": "GEN-02 Permitted behavior",
       "scenario_fingerprint": "1c6d588113d5bb397eaab03556abb7a1287c29707dc8152cdff6dedcba5f67e9",
-      "setup": "Exercise the declared failure/counterexample of GEN-02 Origin and LLM linguistic review. Use the explicit failing/absent/conflicting condition below; an implementation admitting the forbidden effect is a failure.",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "- **WHEN** its stated failure or missing-evidence condition occurs\n- **THEN** it SHALL never invent source data, reviewer identity or actual observed sound",
       "red_expectation": "The observed negative behavior contradicts the current LLM-only/local/source/formula contract.",
-      "green_expectation": "Observe the stated rejection/preserved-failure or absence of forbidden effect below: - **WHEN** its stated failure or missing-evidence condition occurs\n- **THEN** it SHALL never invent source data, reviewer identity or actual observed sound",
+      "green_expectation": "Observe GEN-02 Permitted behavior under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::local-llm-revision::V6-GEN-02.P1.S1.NEGATIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -13731,7 +13876,8 @@
         "specification/v2/**",
         "docs/authority.md",
         "docs/change-control.md",
-        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-generation/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-generation/spec.md",
+        "specification/v2/docs/simple-generation-flow.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -13745,10 +13891,10 @@
       "polarity": "positive",
       "scenario": "GEN-02 Boundary behavior",
       "scenario_fingerprint": "9ca6efeb2257b22dda9c7ed72f97420927ca549e9f692cd7d38aaf3d633c9551",
-      "setup": "Use the exact supported contract of GEN-02 Origin and LLM linguistic review. Follow the scenario context and actual/constructed evidence class below. No human reviewer or empirical benchmark gate is added.",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "- **WHEN** the supported local action completes\n- **THEN** it SHALL retain machine findings with generation provenance",
       "red_expectation": "The observed positive behavior contradicts the current LLM-only/local/source/formula contract.",
-      "green_expectation": "Observe the supported outcome below exactly: - **WHEN** the supported local action completes\n- **THEN** it SHALL retain machine findings with generation provenance",
+      "green_expectation": "Observe GEN-02 Boundary behavior under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::local-llm-revision::V6-GEN-02.P1.S2.POSITIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -13758,7 +13904,8 @@
         "specification/v2/**",
         "docs/authority.md",
         "docs/change-control.md",
-        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-generation/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-generation/spec.md",
+        "specification/v2/docs/simple-generation-flow.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -13772,10 +13919,10 @@
       "polarity": "negative",
       "scenario": "GEN-02 Boundary behavior",
       "scenario_fingerprint": "9ca6efeb2257b22dda9c7ed72f97420927ca549e9f692cd7d38aaf3d633c9551",
-      "setup": "Exercise the declared failure/counterexample of GEN-02 Origin and LLM linguistic review. Use the explicit failing/absent/conflicting condition below; an implementation admitting the forbidden effect is a failure.",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "- **WHEN** its stated failure or missing-evidence condition occurs\n- **THEN** it SHALL never invent source data, reviewer identity or actual observed sound",
       "red_expectation": "The observed negative behavior contradicts the current LLM-only/local/source/formula contract.",
-      "green_expectation": "Observe the stated rejection/preserved-failure or absence of forbidden effect below: - **WHEN** its stated failure or missing-evidence condition occurs\n- **THEN** it SHALL never invent source data, reviewer identity or actual observed sound",
+      "green_expectation": "Observe GEN-02 Boundary behavior under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::local-llm-revision::V6-GEN-02.P1.S2.NEGATIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -13785,7 +13932,8 @@
         "specification/v2/**",
         "docs/authority.md",
         "docs/change-control.md",
-        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-generation/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-generation/spec.md",
+        "specification/v2/docs/simple-generation-flow.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -14114,11 +14262,11 @@
       "property_id": "V6-VER-03.P1",
       "polarity": "positive",
       "scenario": "VER-03 Permitted behavior",
-      "scenario_fingerprint": "9648ff8b5631caa2896bdc8f14ed56797c71f80b508325002ee813922ef5dd65",
-      "setup": "Use the exact supported contract of VER-03 LLM review without peers. Follow the scenario context and actual/constructed evidence class below. No human reviewer or empirical benchmark gate is added.",
+      "scenario_fingerprint": "2295dcf59acdb464ac6324193436c51dad4c563230c2dcf808e1ee960189cb5a",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "- **WHEN** the supported local action completes\n- **THEN** it SHALL obtain one actual LLM review",
       "red_expectation": "The observed positive behavior contradicts the current LLM-only/local/source/formula contract.",
-      "green_expectation": "Observe the supported outcome below exactly: - **WHEN** the supported local action completes\n- **THEN** it SHALL obtain one actual LLM review",
+      "green_expectation": "Observe VER-03 Permitted behavior under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::local-llm-revision::V6-VER-03.P1.S1.POSITIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -14128,7 +14276,8 @@
         "specification/v2/**",
         "docs/authority.md",
         "docs/change-control.md",
-        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-verification/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-verification/spec.md",
+        "specification/v2/docs/simple-generation-flow.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -14141,11 +14290,11 @@
       "property_id": "V6-VER-03.P1",
       "polarity": "negative",
       "scenario": "VER-03 Permitted behavior",
-      "scenario_fingerprint": "9648ff8b5631caa2896bdc8f14ed56797c71f80b508325002ee813922ef5dd65",
-      "setup": "Exercise the declared failure/counterexample of VER-03 LLM review without peers. Use the explicit failing/absent/conflicting condition below; an implementation admitting the forbidden effect is a failure.",
+      "scenario_fingerprint": "2295dcf59acdb464ac6324193436c51dad4c563230c2dcf808e1ee960189cb5a",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "- **WHEN** its stated failure or missing-evidence condition occurs\n- **THEN** it SHALL never block ordinary use on human approvals",
       "red_expectation": "The observed negative behavior contradicts the current LLM-only/local/source/formula contract.",
-      "green_expectation": "Observe the stated rejection/preserved-failure or absence of forbidden effect below: - **WHEN** its stated failure or missing-evidence condition occurs\n- **THEN** it SHALL never block ordinary use on human approvals",
+      "green_expectation": "Observe VER-03 Permitted behavior under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::local-llm-revision::V6-VER-03.P1.S1.NEGATIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -14155,7 +14304,8 @@
         "specification/v2/**",
         "docs/authority.md",
         "docs/change-control.md",
-        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-verification/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-verification/spec.md",
+        "specification/v2/docs/simple-generation-flow.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -14169,10 +14319,10 @@
       "polarity": "positive",
       "scenario": "VER-03 Boundary behavior",
       "scenario_fingerprint": "2f4a6a4b3029fa1424614a3f50428e5ec1f8ebfdc1ae96b2643b8a871d7aae0e",
-      "setup": "Use the exact supported contract of VER-03 LLM review without peers. Follow the scenario context and actual/constructed evidence class below. No human reviewer or empirical benchmark gate is added.",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "- **WHEN** the supported local action completes\n- **THEN** it SHALL obtain one actual LLM review",
       "red_expectation": "The observed positive behavior contradicts the current LLM-only/local/source/formula contract.",
-      "green_expectation": "Observe the supported outcome below exactly: - **WHEN** the supported local action completes\n- **THEN** it SHALL obtain one actual LLM review",
+      "green_expectation": "Observe VER-03 Boundary behavior under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::local-llm-revision::V6-VER-03.P1.S2.POSITIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -14182,7 +14332,8 @@
         "specification/v2/**",
         "docs/authority.md",
         "docs/change-control.md",
-        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-verification/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-verification/spec.md",
+        "specification/v2/docs/simple-generation-flow.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -14196,10 +14347,10 @@
       "polarity": "negative",
       "scenario": "VER-03 Boundary behavior",
       "scenario_fingerprint": "2f4a6a4b3029fa1424614a3f50428e5ec1f8ebfdc1ae96b2643b8a871d7aae0e",
-      "setup": "Exercise the declared failure/counterexample of VER-03 LLM review without peers. Use the explicit failing/absent/conflicting condition below; an implementation admitting the forbidden effect is a failure.",
+      "setup": "Invoke this specific supported action or inject its stated failure under the latest simple-generation contract; optional review is invoked only when explicitly selected.",
       "observable": "- **WHEN** its stated failure or missing-evidence condition occurs\n- **THEN** it SHALL never block ordinary use on human approvals",
       "red_expectation": "The observed negative behavior contradicts the current LLM-only/local/source/formula contract.",
-      "green_expectation": "Observe the stated rejection/preserved-failure or absence of forbidden effect below: - **WHEN** its stated failure or missing-evidence condition occurs\n- **THEN** it SHALL never block ordinary use on human approvals",
+      "green_expectation": "Observe VER-03 Boundary behavior under the latest requirement body, without a mandatory extra review/corpus prerequisite.",
       "test_id": "planned::local-llm-revision::V6-VER-03.P1.S2.NEGATIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -14209,7 +14360,8 @@
         "specification/v2/**",
         "docs/authority.md",
         "docs/change-control.md",
-        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-verification/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-case-verification/spec.md",
+        "specification/v2/docs/simple-generation-flow.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -46016,6 +46168,702 @@
         "note": "Future production behavior plan; static native-data/spec audit is separate evidence and cannot substitute."
       },
       "blocker": "Spec/research-only authority. No application generation/import, final acoustic observation or semantic provider behavior performed in this increment."
+    },
+    {
+      "id": "FLOW-01.P1.S1.POSITIVE",
+      "property_id": "FLOW-01.P1",
+      "polarity": "positive",
+      "scenario": "FLOW-01 Three inputs suffice",
+      "scenario_fingerprint": "0dff5f9ffd43d3f9e41db6fff69c096e51b3708973527da572db73a53988f54d",
+      "setup": "Use the stated simple-flow fixture and a positive observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-01 Three inputs suffice",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-01 Three inputs suffice with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-01.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-01.P1.S1.NEGATIVE",
+      "property_id": "FLOW-01.P1",
+      "polarity": "negative",
+      "scenario": "FLOW-01 Three inputs suffice",
+      "scenario_fingerprint": "0dff5f9ffd43d3f9e41db6fff69c096e51b3708973527da572db73a53988f54d",
+      "setup": "Use the stated simple-flow fixture and a negative observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-01 Three inputs suffice",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-01 Three inputs suffice with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-01.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-01.P1.S2.POSITIVE",
+      "property_id": "FLOW-01.P1",
+      "polarity": "positive",
+      "scenario": "FLOW-01 Explicit user choices are preserved",
+      "scenario_fingerprint": "5d2fcfe908ad35c7e074e110ff418893db9535a02de32d27c4b9fa97c88c0985",
+      "setup": "Use the stated simple-flow fixture and a positive observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-01 Explicit user choices are preserved",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-01 Explicit user choices are preserved with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-01.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-01.P1.S2.NEGATIVE",
+      "property_id": "FLOW-01.P1",
+      "polarity": "negative",
+      "scenario": "FLOW-01 Explicit user choices are preserved",
+      "scenario_fingerprint": "5d2fcfe908ad35c7e074e110ff418893db9535a02de32d27c4b9fa97c88c0985",
+      "setup": "Use the stated simple-flow fixture and a negative observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-01 Explicit user choices are preserved",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-01 Explicit user choices are preserved with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-01.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-02.P1.S1.POSITIVE",
+      "property_id": "FLOW-02.P1",
+      "polarity": "positive",
+      "scenario": "FLOW-02 Fixed canonical text receives localized novel edits",
+      "scenario_fingerprint": "9515cdd1ede4553c2a066a1113a2be120554eeaf26b8a99acca77dc392cd4d7d",
+      "setup": "Use the stated simple-flow fixture and a positive observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-02 Fixed canonical text receives localized novel edits",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-02 Fixed canonical text receives localized novel edits with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-02.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-02.P1.S1.NEGATIVE",
+      "property_id": "FLOW-02.P1",
+      "polarity": "negative",
+      "scenario": "FLOW-02 Fixed canonical text receives localized novel edits",
+      "scenario_fingerprint": "9515cdd1ede4553c2a066a1113a2be120554eeaf26b8a99acca77dc392cd4d7d",
+      "setup": "Use the stated simple-flow fixture and a negative observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-02 Fixed canonical text receives localized novel edits",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-02 Fixed canonical text receives localized novel edits with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-02.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-02.P1.S2.POSITIVE",
+      "property_id": "FLOW-02.P1",
+      "polarity": "positive",
+      "scenario": "FLOW-02 A mutation failure preserves the baseline",
+      "scenario_fingerprint": "f6bc51e6e40c7d8e6e90c5103f2b3172e49936137b9e4066fa8f600a26e8b2d5",
+      "setup": "Use the stated simple-flow fixture and a positive observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-02 A mutation failure preserves the baseline",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-02 A mutation failure preserves the baseline with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-02.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-02.P1.S2.NEGATIVE",
+      "property_id": "FLOW-02.P1",
+      "polarity": "negative",
+      "scenario": "FLOW-02 A mutation failure preserves the baseline",
+      "scenario_fingerprint": "f6bc51e6e40c7d8e6e90c5103f2b3172e49936137b9e4066fa8f600a26e8b2d5",
+      "setup": "Use the stated simple-flow fixture and a negative observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-02 A mutation failure preserves the baseline",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-02 A mutation failure preserves the baseline with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-02.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-03.P1.S1.POSITIVE",
+      "property_id": "FLOW-03.P1",
+      "polarity": "positive",
+      "scenario": "FLOW-03 Local synthesis requires model assets rather than a speech key",
+      "scenario_fingerprint": "26b2dabd854f38767f34981821b7c6045f0e57ef4b937eae355da3c667f4943e",
+      "setup": "Use the stated simple-flow fixture and a positive observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-03 Local synthesis requires model assets rather than a speech key",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-03 Local synthesis requires model assets rather than a speech key with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-03.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-03.P1.S1.NEGATIVE",
+      "property_id": "FLOW-03.P1",
+      "polarity": "negative",
+      "scenario": "FLOW-03 Local synthesis requires model assets rather than a speech key",
+      "scenario_fingerprint": "26b2dabd854f38767f34981821b7c6045f0e57ef4b937eae355da3c667f4943e",
+      "setup": "Use the stated simple-flow fixture and a negative observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-03 Local synthesis requires model assets rather than a speech key",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-03 Local synthesis requires model assets rather than a speech key with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-03.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-03.P1.S2.POSITIVE",
+      "property_id": "FLOW-03.P1",
+      "polarity": "positive",
+      "scenario": "FLOW-03 Audio failure retains text and key",
+      "scenario_fingerprint": "4ddd9aef99e6a2c9b591680ac8683d15e1d49579f2b0293e23990472f9ab09f4",
+      "setup": "Use the stated simple-flow fixture and a positive observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-03 Audio failure retains text and key",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-03 Audio failure retains text and key with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-03.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-03.P1.S2.NEGATIVE",
+      "property_id": "FLOW-03.P1",
+      "polarity": "negative",
+      "scenario": "FLOW-03 Audio failure retains text and key",
+      "scenario_fingerprint": "4ddd9aef99e6a2c9b591680ac8683d15e1d49579f2b0293e23990472f9ab09f4",
+      "setup": "Use the stated simple-flow fixture and a negative observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-03 Audio failure retains text and key",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-03 Audio failure retains text and key with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-03.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-04.P1.S1.POSITIVE",
+      "property_id": "FLOW-04.P1",
+      "polarity": "positive",
+      "scenario": "FLOW-04 Empty corpus collection can generate the first exercise",
+      "scenario_fingerprint": "0d618e491924e1d4e8e67563c168a11347d7fb1ebeab4a18a9bf334021ef7dc5",
+      "setup": "Use the stated simple-flow fixture and a positive observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-04 Empty corpus collection can generate the first exercise",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-04 Empty corpus collection can generate the first exercise with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-04.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-04.P1.S1.NEGATIVE",
+      "property_id": "FLOW-04.P1",
+      "polarity": "negative",
+      "scenario": "FLOW-04 Empty corpus collection can generate the first exercise",
+      "scenario_fingerprint": "0d618e491924e1d4e8e67563c168a11347d7fb1ebeab4a18a9bf334021ef7dc5",
+      "setup": "Use the stated simple-flow fixture and a negative observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-04 Empty corpus collection can generate the first exercise",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-04 Empty corpus collection can generate the first exercise with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-04.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-04.P1.S2.POSITIVE",
+      "property_id": "FLOW-04.P1",
+      "polarity": "positive",
+      "scenario": "FLOW-04 Optional data stays optional and honestly accounted",
+      "scenario_fingerprint": "6984179e929a7cdd873d310cc10cb096bdc5c6ef2eff1b807e15478eec577380",
+      "setup": "Use the stated simple-flow fixture and a positive observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-04 Optional data stays optional and honestly accounted",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-04 Optional data stays optional and honestly accounted with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-04.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-04.P1.S2.NEGATIVE",
+      "property_id": "FLOW-04.P1",
+      "polarity": "negative",
+      "scenario": "FLOW-04 Optional data stays optional and honestly accounted",
+      "scenario_fingerprint": "6984179e929a7cdd873d310cc10cb096bdc5c6ef2eff1b807e15478eec577380",
+      "setup": "Use the stated simple-flow fixture and a negative observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-04 Optional data stays optional and honestly accounted",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-04 Optional data stays optional and honestly accounted with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-04.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-05.P1.S1.POSITIVE",
+      "property_id": "FLOW-05.P1",
+      "polarity": "positive",
+      "scenario": "FLOW-05 A paraphrase finds a recorded mutation",
+      "scenario_fingerprint": "492970cbfa78bb95ee51bd947a2f83dc85c27cfbe1c6a2efe90b533881d7f6f2",
+      "setup": "Use the stated simple-flow fixture and a positive observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-05 A paraphrase finds a recorded mutation",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-05 A paraphrase finds a recorded mutation with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-05.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-05.P1.S1.NEGATIVE",
+      "property_id": "FLOW-05.P1",
+      "polarity": "negative",
+      "scenario": "FLOW-05 A paraphrase finds a recorded mutation",
+      "scenario_fingerprint": "492970cbfa78bb95ee51bd947a2f83dc85c27cfbe1c6a2efe90b533881d7f6f2",
+      "setup": "Use the stated simple-flow fixture and a negative observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-05 A paraphrase finds a recorded mutation",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-05 A paraphrase finds a recorded mutation with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-05.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-05.P1.S2.POSITIVE",
+      "property_id": "FLOW-05.P1",
+      "polarity": "positive",
+      "scenario": "FLOW-05 Hidden keys and duplicate claims do not inflate results",
+      "scenario_fingerprint": "6e9567b070840685eaeabec217eac50c99d88ce2b62f402e9bc2a63d16d6efa3",
+      "setup": "Use the stated simple-flow fixture and a positive observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-05 Hidden keys and duplicate claims do not inflate results",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-05 Hidden keys and duplicate claims do not inflate results with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-05.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-05.P1.S2.NEGATIVE",
+      "property_id": "FLOW-05.P1",
+      "polarity": "negative",
+      "scenario": "FLOW-05 Hidden keys and duplicate claims do not inflate results",
+      "scenario_fingerprint": "6e9567b070840685eaeabec217eac50c99d88ce2b62f402e9bc2a63d16d6efa3",
+      "setup": "Use the stated simple-flow fixture and a negative observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-05 Hidden keys and duplicate claims do not inflate results",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-05 Hidden keys and duplicate claims do not inflate results with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-05.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-06.P1.S1.POSITIVE",
+      "property_id": "FLOW-06.P1",
+      "polarity": "positive",
+      "scenario": "FLOW-06 Grounded new practice advice is allowed",
+      "scenario_fingerprint": "be4a01c37d05a432d5d6e6e254357dec3770f0cdb024a943941bddb64954f493",
+      "setup": "Use the stated simple-flow fixture and a positive observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-06 Grounded new practice advice is allowed",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-06 Grounded new practice advice is allowed with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-06.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-06.P1.S1.NEGATIVE",
+      "property_id": "FLOW-06.P1",
+      "polarity": "negative",
+      "scenario": "FLOW-06 Grounded new practice advice is allowed",
+      "scenario_fingerprint": "be4a01c37d05a432d5d6e6e254357dec3770f0cdb024a943941bddb64954f493",
+      "setup": "Use the stated simple-flow fixture and a negative observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-06 Grounded new practice advice is allowed",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-06 Grounded new practice advice is allowed with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-06.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-06.P1.S2.POSITIVE",
+      "property_id": "FLOW-06.P1",
+      "polarity": "positive",
+      "scenario": "FLOW-06 Recommendations cannot fabricate heard defects or grades",
+      "scenario_fingerprint": "03bc9bbdb11868d045aa61ad55a827230f9bd9de6908092e08444b21e4806270",
+      "setup": "Use the stated simple-flow fixture and a positive observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-06 Recommendations cannot fabricate heard defects or grades",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-06 Recommendations cannot fabricate heard defects or grades with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-06.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "FLOW-06.P1.S2.NEGATIVE",
+      "property_id": "FLOW-06.P1",
+      "polarity": "negative",
+      "scenario": "FLOW-06 Recommendations cannot fabricate heard defects or grades",
+      "scenario_fingerprint": "03bc9bbdb11868d045aa61ad55a827230f9bd9de6908092e08444b21e4806270",
+      "setup": "Use the stated simple-flow fixture and a negative observation, retaining actual phase/audio/key/answer identity.",
+      "observable": "FLOW-06 Recommendations cannot fabricate heard defects or grades",
+      "red_expectation": "The production owner violates the explicit simple-flow action or mishandles its stated failure.",
+      "green_expectation": "Observe FLOW-06 Recommendations cannot fabricate heard defects or grades with exact saved artifacts and unchanged grading formulas.",
+      "test_id": "planned::simple-flow::FLOW-06.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_simple_generation_flow.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/contracts/generation-input.schema.json",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Future application/provider plan; specification static checks cannot substitute."
+      },
+      "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
     }
   ],
   "commands": [
@@ -47394,7 +48242,31 @@
         "planned::mistake-data::MDC-07.P1.S1.POSITIVE",
         "planned::mistake-data::MDC-07.P1.S1.NEGATIVE",
         "planned::mistake-data::MDC-07.P1.S2.POSITIVE",
-        "planned::mistake-data::MDC-07.P1.S2.NEGATIVE"
+        "planned::mistake-data::MDC-07.P1.S2.NEGATIVE",
+        "planned::simple-flow::FLOW-01.P1.S1.POSITIVE",
+        "planned::simple-flow::FLOW-01.P1.S1.NEGATIVE",
+        "planned::simple-flow::FLOW-01.P1.S2.POSITIVE",
+        "planned::simple-flow::FLOW-01.P1.S2.NEGATIVE",
+        "planned::simple-flow::FLOW-02.P1.S1.POSITIVE",
+        "planned::simple-flow::FLOW-02.P1.S1.NEGATIVE",
+        "planned::simple-flow::FLOW-02.P1.S2.POSITIVE",
+        "planned::simple-flow::FLOW-02.P1.S2.NEGATIVE",
+        "planned::simple-flow::FLOW-03.P1.S1.POSITIVE",
+        "planned::simple-flow::FLOW-03.P1.S1.NEGATIVE",
+        "planned::simple-flow::FLOW-03.P1.S2.POSITIVE",
+        "planned::simple-flow::FLOW-03.P1.S2.NEGATIVE",
+        "planned::simple-flow::FLOW-04.P1.S1.POSITIVE",
+        "planned::simple-flow::FLOW-04.P1.S1.NEGATIVE",
+        "planned::simple-flow::FLOW-04.P1.S2.POSITIVE",
+        "planned::simple-flow::FLOW-04.P1.S2.NEGATIVE",
+        "planned::simple-flow::FLOW-05.P1.S1.POSITIVE",
+        "planned::simple-flow::FLOW-05.P1.S1.NEGATIVE",
+        "planned::simple-flow::FLOW-05.P1.S2.POSITIVE",
+        "planned::simple-flow::FLOW-05.P1.S2.NEGATIVE",
+        "planned::simple-flow::FLOW-06.P1.S1.POSITIVE",
+        "planned::simple-flow::FLOW-06.P1.S1.NEGATIVE",
+        "planned::simple-flow::FLOW-06.P1.S2.POSITIVE",
+        "planned::simple-flow::FLOW-06.P1.S2.NEGATIVE"
       ]
     },
     {

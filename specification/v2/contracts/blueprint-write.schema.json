@@ -3,7 +3,7 @@
   "$id": "https://tangerine.invalid/schemas/blueprint-write.schema.json",
   "title": "blueprint-write",
   "type": "object",
-  "description": "Only author-controlled blueprint content. The API assigns identity and version.",
+  "description": "Accept either the simple exercise_request or the existing complete advanced blueprint content. The server expands defaults and assigns identity.",
   "properties": {
     "format": {
       "type": "string",
@@ -69,14 +69,28 @@
       "description": "This object fixes locale, permitted varieties, register, and judgment basis."
     },
     "duration_ms_min": {
-      "type": "integer",
-      "minimum": 0,
-      "description": "This field gives the minimum permitted duration in milliseconds."
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Optional explicit duration bound in milliseconds. Null means a word-length request has no hard duration bound."
     },
     "duration_ms_max": {
-      "type": "integer",
-      "minimum": 0,
-      "description": "This field gives the maximum permitted duration in milliseconds."
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Optional explicit duration bound in milliseconds. Null means a word-length request has no hard duration bound."
     },
     "speakers": {
       "type": "array",
@@ -94,16 +108,24 @@
             "description": "This identifier selects the registered voice profile for the speaker."
           },
           "learner_cefr": {
-            "type": "string",
-            "enum": [
-              "A1",
-              "A2",
-              "B1",
-              "B2",
-              "C1",
-              "C2"
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "A1",
+                  "A2",
+                  "B1",
+                  "B2",
+                  "C1",
+                  "C2"
+                ]
+              },
+              {
+                "type": "null"
+              }
             ],
-            "description": "This field states the requested learner proficiency level."
+            "default": null,
+            "description": "Optional generated-text level. Null means unconstrained, not an inferred participant level."
           },
           "l1": {
             "anyOf": [
@@ -201,8 +223,8 @@
         ],
         "additionalProperties": false
       },
-      "minItems": 1,
-      "description": "These entries specify registered target categories and their count limits."
+      "minItems": 0,
+      "description": "Advanced exact leaf constraints. Empty delegates leaf selection to the mutation phase under exercise_request broad families."
     },
     "task_components": {
       "type": "object",
@@ -238,25 +260,38 @@
       "enum": [
         "synthetic_only"
       ],
-      "description": "The current runtime permits synthetic-only exercises. Other origins require separate owner approval."
+      "description": "This generation blueprint uses newly synthesized audio, locally or through a configured service. Separate native recording import remains supported without another owner approval."
     },
     "provider_profile_id": {
       "type": "string",
       "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
       "description": "This identifier selects one versioned provider configuration."
+    },
+    "exercise_request": {
+      "$ref": "exercise-request.schema.json",
+      "description": "Original simple user input, retained alongside the expanded blueprint."
     }
   },
-  "required": [
-    "format",
-    "public_context",
-    "variety_policy",
-    "duration_ms_min",
-    "duration_ms_max",
-    "speakers",
-    "targets",
-    "task_components",
-    "audio_origin_policy",
-    "provider_profile_id"
-  ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "anyOf": [
+    {
+      "required": [
+        "format",
+        "public_context",
+        "variety_policy",
+        "duration_ms_min",
+        "duration_ms_max",
+        "speakers",
+        "targets",
+        "task_components",
+        "audio_origin_policy",
+        "provider_profile_id"
+      ]
+    },
+    {
+      "required": [
+        "exercise_request"
+      ]
+    }
+  ]
 }
