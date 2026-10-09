@@ -12,7 +12,7 @@ For origin=llm, person IDs are null, qualification arrays are empty and provider
 
 TET-GOLD-1 remains the project benchmark collection. Preserve six stimuli per leaf, the 732-stimulus full-coverage target, positive/control pairs per split, and all answer/correction/explanation labels. LLM construction and checking may populate machine-labelled gold. Native human labels may also be imported. Record label origin and model/configuration overlap; machine agreement is not independent human validity. No benchmark population or participant minimum is needed to begin local use.
 
-Difficulty remains an optional empirical report: at least 100 eligible genuine teacher answers per rated population; Wilson z=1.959963984540054, p=s/n, center=(p+z²/(2n))/(1+z²/n), margin=z*sqrt(p*(1-p)/n+z²/(4n²))/(1+z²/n). Clamp bounds to [0,1]. easy lower>=0.8; moderate lower>=0.5 and upper<0.8; hard lower>=0.2 and upper<0.5; very_hard upper<0.2; otherwise unrated. Unit success is correct detection; whole-case success is composite>=80. Missing/inadequate populations stay unrated; LLM answers are a separately named machine population, never participants.
+Difficulty remains an optional empirical report: at least 100 eligible genuine teacher answers per rated population; Wilson z=1.959963984540054, p=s/n, center=(p+z²/(2n))/(1+z²/n), margin=z*sqrt(p*(1-p)/n+z²/(4n²))/(1+z²/n). Clamp bounds to [0,1]. easy lower>=0.8; medium lower>=0.5 and upper<0.8; hard lower>=0.2 and upper<0.5; expert upper<0.2; otherwise unrated. Unit success is correct detection; whole-case success is composite>=80. Missing/inadequate populations stay unrated; LLM answers are a separately named machine population, never participants.
 
 ## Stage input/output matrix
 

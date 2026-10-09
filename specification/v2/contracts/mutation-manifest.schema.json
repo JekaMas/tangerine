@@ -1,0 +1,979 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/mutation-manifest.schema.json",
+  "title": "mutation-manifest",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "Current specification contract."
+    },
+    "id": {
+      "type": "string",
+      "description": "Server assigned manifest identity."
+    },
+    "canonical_asset_id": {
+      "type": "string",
+      "description": "Actual saved baseline."
+    },
+    "canonical_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "JCS saved baseline hash."
+    },
+    "mutated_asset_id": {
+      "type": "string",
+      "description": "Actual saved mutation candidate."
+    },
+    "mutated_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "JCS mutation candidate hash."
+    },
+    "recipe_registry_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Exact original registry byte hash."
+    },
+    "recipe_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Actual selected recipe."
+      },
+      "description": "Selected recipes."
+    },
+    "seed": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Actual seed if used, not LLM determinism."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Actual seed if used, not LLM determinism."
+    },
+    "method_version": {
+      "type": "string",
+      "description": "Actual diff/replay method."
+    },
+    "canonical_word_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Whitespace word count."
+    },
+    "surface_word_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Whitespace word count."
+    },
+    "edits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "utterance_id": {
+            "type": "string",
+            "description": "Fixed utterance identity."
+          },
+          "start_cp": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Included original canonical codepoint."
+          },
+          "end_cp": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Excluded original canonical codepoint."
+          },
+          "original_text": {
+            "type": "string",
+            "description": "Exact canonical slice."
+          },
+          "replacement_text": {
+            "type": "string",
+            "description": "Literal replacement."
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Stable order of boundary insertions."
+          },
+          "unit_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Affected independent unit."
+            },
+            "description": "One or more units sharing this edit.",
+            "minItems": 1
+          }
+        },
+        "required": [
+          "utterance_id",
+          "start_cp",
+          "end_cp",
+          "original_text",
+          "replacement_text",
+          "order",
+          "unit_ids"
+        ],
+        "additionalProperties": false,
+        "description": "One replayable text edit in canonical coordinates."
+      },
+      "description": "Complete textual change list."
+    },
+    "acoustic_intents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "unit_id": {
+            "type": "string",
+            "description": "Planned unit identity."
+          },
+          "utterance_id": {
+            "type": "string",
+            "description": "Surface scope."
+          },
+          "surface_start_cp": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Included surface codepoint."
+          },
+          "surface_end_cp": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Excluded surface codepoint."
+          },
+          "realization": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "textual",
+                  "acoustic_segmental",
+                  "acoustic_suprasegmental",
+                  "temporal_fluency",
+                  "discourse_context",
+                  "pragmatic_context",
+                  "decoy"
+                ],
+                "description": "This field selects the representation or review mode allowed by its parent contract."
+              },
+              "canonical_text": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the intended correct text before mutations."
+              },
+              "surface_text": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the text after intentional textual mutations."
+              },
+              "canonical_ipa": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the reviewed reference pronunciation, not the observed sound."
+              },
+              "intended_ipa": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the requested pronunciation, not an acoustic observation."
+              },
+              "observed_ipa": {
+                "type": "null",
+                "description": "This field records the pronunciation that a native annotation, measured evidence or modality-labelled LLM inference supports."
+              },
+              "prosody": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "feature": {
+                      "type": "string",
+                      "enum": [
+                        "lexical_stress",
+                        "nuclear_stress",
+                        "f0_range_semitones",
+                        "f0_slope_semitones_per_second",
+                        "syllable_duration_ratio",
+                        "rhythm",
+                        "boundary",
+                        "weak_form",
+                        "linking",
+                        "assimilation",
+                        "elision"
+                      ],
+                      "description": "This name identifies the measured or requested feature inside the typed parent object."
+                    },
+                    "target_label": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "This field names the declared phonetic or prosodic target without claiming observation."
+                    },
+                    "lower": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "This field contains the declared lower bound in the stated unit."
+                    },
+                    "upper": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "This field contains the declared upper bound in the stated unit."
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "label",
+                        "semitones",
+                        "semitones_per_second",
+                        "ratio",
+                        "milliseconds"
+                      ],
+                      "description": "This field identifies the measurement unit declared by the parent object."
+                    },
+                    "observation": {
+                      "type": "null",
+                      "description": "This field contains the reviewer observation, not a requested target."
+                    },
+                    "evidence_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                      },
+                      "maxItems": 0,
+                      "description": "These IDs identify actual supporting records within the permitted subject and version scope."
+                    }
+                  },
+                  "required": [
+                    "feature",
+                    "target_label",
+                    "lower",
+                    "upper",
+                    "unit",
+                    "observation",
+                    "evidence_ids"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 0,
+                "description": "This object states the bounded prosodic target or reviewed correction."
+              },
+              "pace_target_wpm": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field gives the requested pace in words per minute."
+              },
+              "observed_pace_wpm": {
+                "type": "null",
+                "description": "This field gives measured pace in words per minute."
+              },
+              "planned_pause_ms": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field gives the planned pause duration, not its observed duration."
+              },
+              "observed_pause_ms": {
+                "type": "null",
+                "description": "This field gives measured pause duration in milliseconds."
+              }
+            },
+            "required": [
+              "mode",
+              "canonical_text",
+              "surface_text",
+              "canonical_ipa",
+              "intended_ipa",
+              "observed_ipa",
+              "prosody",
+              "pace_target_wpm",
+              "observed_pace_wpm",
+              "planned_pause_ms",
+              "observed_pause_ms"
+            ],
+            "additionalProperties": false,
+            "description": "This object separates the intended target, actual audio, and observed evidence."
+          }
+        },
+        "required": [
+          "unit_id",
+          "utterance_id",
+          "surface_start_cp",
+          "surface_end_cp",
+          "realization"
+        ],
+        "additionalProperties": false,
+        "description": "Unobserved intent linked to exact target."
+      },
+      "description": "Acoustic/temporal intents, not observed sound."
+    },
+    "planned_units": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This value uniquely identifies the record within its declared entity and version scope."
+          },
+          "primary_taxonomy_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This field selects the narrowest supported primary category for the unit."
+          },
+          "accepted_taxonomy_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 1,
+            "description": "These registered taxonomy IDs can receive exact-category credit for this unit."
+          },
+          "secondary_taxonomy_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "description": "These categories describe the same event without adding detection opportunities."
+          },
+          "domain": {
+            "type": "string",
+            "enum": [
+              "grammar",
+              "lexis",
+              "pronunciation.segmental",
+              "pronunciation.suprasegmental",
+              "fluency",
+              "discourse",
+              "pragmatics_register",
+              "acceptable_variant"
+            ],
+            "description": "This field names the primary reporting domain for the observation."
+          },
+          "expected_judgment": {
+            "type": "string",
+            "enum": [
+              "true_error",
+              "acceptable",
+              "excluded"
+            ],
+            "description": "This field states whether the reviewed unit is a true error, permitted control, or excluded item."
+          },
+          "status_label": {
+            "type": "string",
+            "enum": [
+              "unequivocal_error",
+              "nonstandard_attested",
+              "contextually_inappropriate",
+              "target_form_mismatch",
+              "marked_naturalness_issue",
+              "acceptable_variant",
+              "decoy_non_error"
+            ],
+            "description": "This field distinguishes error status from category and preferred style."
+          },
+          "utterance_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 1,
+            "description": "These identifiers locate all utterances needed to interpret the unit."
+          },
+          "text_spans": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "utterance_id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                  "description": "This identifier locates one utterance in the fixed case version."
+                },
+                "span": {
+                  "type": "object",
+                  "properties": {
+                    "start_cp": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "This offset is the included start of a Unicode codepoint span."
+                    },
+                    "end_cp": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "This offset is the excluded end of a Unicode codepoint span."
+                    },
+                    "exact_text": {
+                      "type": "string",
+                      "description": "This text must equal the original substring at the specified codepoint offsets."
+                    }
+                  },
+                  "required": [
+                    "start_cp",
+                    "end_cp",
+                    "exact_text"
+                  ],
+                  "additionalProperties": false,
+                  "description": "This object gives exact codepoint offsets and the corresponding original text."
+                }
+              },
+              "required": [
+                "utterance_id",
+                "span"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0,
+            "description": "These entries locate target text in named utterances."
+          },
+          "realization": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "textual",
+                  "acoustic_segmental",
+                  "acoustic_suprasegmental",
+                  "temporal_fluency",
+                  "discourse_context",
+                  "pragmatic_context",
+                  "decoy"
+                ],
+                "description": "This field selects the representation or review mode allowed by its parent contract."
+              },
+              "canonical_text": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the intended correct text before mutations."
+              },
+              "surface_text": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the text after intentional textual mutations."
+              },
+              "canonical_ipa": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the reviewed reference pronunciation, not the observed sound."
+              },
+              "intended_ipa": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the requested pronunciation, not an acoustic observation."
+              },
+              "observed_ipa": {
+                "type": "null",
+                "description": "This field records the pronunciation that a native annotation, measured evidence or modality-labelled LLM inference supports."
+              },
+              "prosody": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "feature": {
+                      "type": "string",
+                      "enum": [
+                        "lexical_stress",
+                        "nuclear_stress",
+                        "f0_range_semitones",
+                        "f0_slope_semitones_per_second",
+                        "syllable_duration_ratio",
+                        "rhythm",
+                        "boundary",
+                        "weak_form",
+                        "linking",
+                        "assimilation",
+                        "elision"
+                      ],
+                      "description": "This name identifies the measured or requested feature inside the typed parent object."
+                    },
+                    "target_label": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "This field names the declared phonetic or prosodic target without claiming observation."
+                    },
+                    "lower": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "This field contains the declared lower bound in the stated unit."
+                    },
+                    "upper": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "This field contains the declared upper bound in the stated unit."
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "label",
+                        "semitones",
+                        "semitones_per_second",
+                        "ratio",
+                        "milliseconds"
+                      ],
+                      "description": "This field identifies the measurement unit declared by the parent object."
+                    },
+                    "observation": {
+                      "type": "null",
+                      "description": "This field contains the reviewer observation, not a requested target."
+                    },
+                    "evidence_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                      },
+                      "maxItems": 0,
+                      "description": "These IDs identify actual supporting records within the permitted subject and version scope."
+                    }
+                  },
+                  "required": [
+                    "feature",
+                    "target_label",
+                    "lower",
+                    "upper",
+                    "unit",
+                    "observation",
+                    "evidence_ids"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 0,
+                "description": "This object states the bounded prosodic target or reviewed correction."
+              },
+              "pace_target_wpm": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field gives the requested pace in words per minute."
+              },
+              "observed_pace_wpm": {
+                "type": "null",
+                "description": "This field gives measured pace in words per minute."
+              },
+              "planned_pause_ms": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field gives the planned pause duration, not its observed duration."
+              },
+              "observed_pause_ms": {
+                "type": "null",
+                "description": "This field gives measured pause duration in milliseconds."
+              }
+            },
+            "required": [
+              "mode",
+              "canonical_text",
+              "surface_text",
+              "canonical_ipa",
+              "intended_ipa",
+              "observed_ipa",
+              "prosody",
+              "pace_target_wpm",
+              "observed_pace_wpm",
+              "planned_pause_ms",
+              "observed_pause_ms"
+            ],
+            "additionalProperties": false,
+            "description": "This object separates the intended target, actual audio, and observed evidence."
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "minor",
+              "moderate",
+              "major",
+              "communication_breakdown"
+            ],
+            "description": "This field contains the reviewed severity class fixed before the attempt."
+          },
+          "weight": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "This integer gives the fixed severity weight from the scoring policy."
+          },
+          "difficulty": {
+            "const": "unrated",
+            "description": "This field contains the declared difficulty value only with its stated evidence status."
+          },
+          "correction_eligible": {
+            "type": "boolean",
+            "description": "This flag states whether the true unit has a correction opportunity."
+          },
+          "corrections": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                  "description": "This value uniquely identifies the record within its declared entity and version scope."
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "replace",
+                    "insert",
+                    "delete",
+                    "rephrase",
+                    "phoneme",
+                    "prosody",
+                    "fluency",
+                    "pragmatic_repair"
+                  ],
+                  "description": "This field selects the exact operation or judgment type from the parent enumeration."
+                },
+                "text": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "This field contains literal text for the specific typed operation or feedback item."
+                },
+                "ipa": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "This field contains IPA for the operation or correction specified by its parent object."
+                },
+                "approved_text_alternatives": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 0,
+                  "description": "These reviewed text alternatives can receive correction credit."
+                },
+                "case_insensitive": {
+                  "type": "boolean",
+                  "description": "This field permits case-insensitive comparison only for this reviewed option."
+                },
+                "terminal_period_insensitive": {
+                  "type": "boolean",
+                  "description": "This flag permits terminal-period normalization for this reviewed option only."
+                },
+                "variety_constraints": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 0,
+                  "description": "These statements restrict the correction to its approved English varieties."
+                },
+                "required_propositions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                        "description": "This value uniquely identifies the record within its declared entity and version scope."
+                      },
+                      "description": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "This text states one explicit proposition or field meaning in its parent contract."
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "description"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1,
+                  "description": "These assertions are necessary for full credit for this reviewed option."
+                },
+                "forbidden_propositions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                        "description": "This value uniquely identifies the record within its declared entity and version scope."
+                      },
+                      "description": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "This text states one explicit proposition or field meaning in its parent contract."
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "description"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0,
+                  "description": "These propositions describe changes that invalidate the correction or explanation."
+                },
+                "canonical": {
+                  "type": "boolean",
+                  "description": "This field identifies the designated canonical correction option."
+                }
+              },
+              "required": [
+                "id",
+                "kind",
+                "text",
+                "ipa",
+                "approved_text_alternatives",
+                "case_insensitive",
+                "terminal_period_insensitive",
+                "variety_constraints",
+                "required_propositions",
+                "forbidden_propositions",
+                "canonical"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0,
+            "description": "These options define reviewed repairs and their proposition constraints."
+          },
+          "explanation_eligible": {
+            "type": "boolean",
+            "description": "This flag states whether the unit has an explanation opportunity."
+          },
+          "rationale_required_propositions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                  "description": "This value uniquely identifies the record within its declared entity and version scope."
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "This text states one explicit proposition or field meaning in its parent contract."
+                }
+              },
+              "required": [
+                "id",
+                "description"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0,
+            "description": "These assertions are necessary for full explanation credit."
+          },
+          "rationale_forbidden_propositions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                  "description": "This value uniquely identifies the record within its declared entity and version scope."
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "This text states one explicit proposition or field meaning in its parent contract."
+                }
+              },
+              "required": [
+                "id",
+                "description"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0,
+            "description": "These assertions make the explanation incorrect under its reviewed criteria."
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1,
+            "description": "This field contains the reviewed reason for the correction or judgment."
+          }
+        },
+        "required": [
+          "id",
+          "primary_taxonomy_id",
+          "accepted_taxonomy_ids",
+          "secondary_taxonomy_ids",
+          "domain",
+          "expected_judgment",
+          "status_label",
+          "utterance_ids",
+          "text_spans",
+          "realization",
+          "severity",
+          "weight",
+          "difficulty",
+          "correction_eligible",
+          "corrections",
+          "explanation_eligible",
+          "rationale_required_propositions",
+          "rationale_forbidden_propositions",
+          "rationale"
+        ],
+        "additionalProperties": false
+      },
+      "description": "These records describe proposed targets before acoustic realization and review."
+    },
+    "manifest_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "JCS manifest excluding this field."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "canonical_asset_id",
+    "canonical_sha256",
+    "mutated_asset_id",
+    "mutated_sha256",
+    "recipe_registry_sha256",
+    "recipe_ids",
+    "seed",
+    "method_version",
+    "canonical_word_count",
+    "surface_word_count",
+    "edits",
+    "acoustic_intents",
+    "planned_units",
+    "manifest_sha256"
+  ],
+  "additionalProperties": false,
+  "description": "Private mutation evidence asset, not a required raw LLM reply format."
+}

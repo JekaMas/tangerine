@@ -64,6 +64,7 @@ context_policies:
       - canonical_script
       - mutation_key
       - evidence
+      - candidate
       - wire_schema
     template_variables: []
     selection_notes: Respect the current stage input schema; omitted optional
@@ -94,6 +95,7 @@ context_policies:
       - mutation_key
       - answer
       - evidence
+      - extraction
       - wire_schema
     template_variables: []
     selection_notes: Respect the current stage input schema; omitted optional
@@ -110,7 +112,7 @@ context_policies:
       - mutation_key
       - answer
       - evidence
-      - prior_decisions
+      - extraction
       - wire_schema
     template_variables: []
     selection_notes: Respect the current stage input schema; omitted optional
@@ -127,6 +129,7 @@ context_policies:
       - mutation_key
       - answer
       - prior_decisions
+      - scoring_result
       - wire_schema
     template_variables: []
     selection_notes: Respect the current stage input schema; omitted optional
@@ -143,6 +146,7 @@ context_policies:
       - canonical_script
       - mutation_key
       - evidence
+      - candidate
       - wire_schema
     template_variables: []
     selection_notes: Respect the current stage input schema; omitted optional
@@ -160,8 +164,16 @@ context_policies:
       - answer
       - evidence
       - prior_decisions
+      - extraction
       - wire_schema
     template_variables: []
     selection_notes: Respect the current stage input schema; omitted optional
       components retain an explicit reason. Never include the mutation key/prior
       grades in blind extraction.
+judge_binding:
+  prompt: prompts/lab-judge-v1.txt
+  input_schema: contracts/llm-quality-judge-input.schema.json
+  output_schema: contracts/llm-quality-judge-output.schema.json
+  profile_role: linguistic_audit
+  owning_contract: docs/llm-lab-contract-details.md
+  prompt_sha256: cf9ebc9820ee3c5f506d20e2927e19a243758ddc12d6c2764e2b8f833c5d160f

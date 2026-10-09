@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/llm-quality-judge-input.schema.json",
+  "title": "llm-quality-judge-input",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "Current specification contract."
+    },
+    "case_id": {
+      "type": "string",
+      "description": "Dataset row identity."
+    },
+    "scope": {
+      "type": "string",
+      "enum": [
+        "stage",
+        "answer_pipeline",
+        "generation_pipeline",
+        "full_flow"
+      ],
+      "description": "Comparable input scope."
+    },
+    "expectation_basis": {
+      "type": "string",
+      "enum": [
+        "authored_assertion",
+        "native_annotation",
+        "independent_llm",
+        "self_consistency"
+      ],
+      "description": "Reference basis; independent_llm requires its actual independent receipt."
+    },
+    "context_asset_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Actual supplied context/reference."
+      },
+      "description": "Frozen supplied references."
+    },
+    "context": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "description": "Asset identity."
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "Original asset bytes."
+          },
+          "body": {
+            "description": "Exact supplied JSON/text data."
+          }
+        },
+        "required": [
+          "asset_id",
+          "sha256",
+          "body"
+        ],
+        "additionalProperties": false,
+        "description": "Supplied reference/context body."
+      },
+      "description": "No undeclared external context."
+    },
+    "candidate_asset_id": {
+      "type": "string",
+      "description": "Actual candidate output asset."
+    },
+    "candidate_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Candidate bytes."
+    },
+    "candidate_output": {
+      "description": "Actual projected candidate JSON or visible text."
+    },
+    "propositions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique requested proposition."
+          },
+          "proposition": {
+            "type": "string",
+            "description": "Frozen semantic assertion."
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "canonical_text",
+              "mutation",
+              "answer_mapping",
+              "feedback",
+              "acoustic"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "proposition",
+          "scope"
+        ],
+        "additionalProperties": false,
+        "description": "One requested diagnostic proposition."
+      },
+      "description": "Requested propositions, not numeric grades."
+    },
+    "reference_receipt_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Actual independent reference receipt."
+      },
+      "description": "Reference origins; empty for authored assertions."
+    }
+  },
+  "required": [
+    "schema_version",
+    "case_id",
+    "scope",
+    "expectation_basis",
+    "context_asset_ids",
+    "context",
+    "candidate_asset_id",
+    "candidate_sha256",
+    "candidate_output",
+    "propositions",
+    "reference_receipt_ids"
+  ],
+  "additionalProperties": false,
+  "description": "Dedicated optional Lab semantic judge input."
+}

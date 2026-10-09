@@ -129,6 +129,116 @@
       "type": "boolean",
       "default": false,
       "description": "Opt-in private local content copies."
+    },
+    "preparation_defaults": {
+      "type": "object",
+      "properties": {
+        "variety_policy": {
+          "type": "object",
+          "properties": {
+            "target_locale": {
+              "type": "string",
+              "enum": [
+                "en-US",
+                "en-GB"
+              ],
+              "description": "This field identifies the target English locale for the published variety policy."
+            },
+            "accepted_varieties": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1,
+              "description": "These English varieties are permitted by the fixed case context."
+            },
+            "register": {
+              "type": "string",
+              "minLength": 1,
+              "description": "This field states the social or institutional register required by the task."
+            },
+            "assessment_basis": {
+              "type": "string",
+              "enum": [
+                "intelligibility",
+                "explicit_target_form",
+                "contextual_appropriacy"
+              ],
+              "description": "This field states the declared basis for judging the language target."
+            },
+            "public_constraints": {
+              "type": "string",
+              "minLength": 1,
+              "description": "These conditions give the teacher the context necessary to judge the case fairly."
+            }
+          },
+          "required": [
+            "target_locale",
+            "accepted_varieties",
+            "register",
+            "assessment_basis",
+            "public_constraints"
+          ],
+          "additionalProperties": false,
+          "description": "This object fixes locale, permitted varieties, register, and judgment basis."
+        },
+        "task_components": {
+          "type": "object",
+          "properties": {
+            "detection": {
+              "const": true,
+              "description": "This flag states whether the task requests error detection."
+            },
+            "classification": {
+              "type": "boolean",
+              "description": "This flag states whether the task requests a category for each detected error."
+            },
+            "correction": {
+              "type": "boolean",
+              "description": "This flag or object describes correction requirements or decisions in its parent contract."
+            },
+            "explanation": {
+              "type": "boolean",
+              "description": "This flag or object describes explanation requirements or judgments in its parent contract."
+            }
+          },
+          "required": [
+            "detection",
+            "classification",
+            "correction",
+            "explanation"
+          ],
+          "additionalProperties": false,
+          "description": "These flags freeze the requested answer components before the attempt."
+        },
+        "pace_wpm": {
+          "type": "integer",
+          "minimum": 60,
+          "description": "Synthesis preference, not an observed hard bound.",
+          "maximum": 250
+        },
+        "pace_tolerance_fraction": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.3,
+          "description": "Reported relative pace tolerance."
+        },
+        "gap_after_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Exact gap assembled after each turn."
+        }
+      },
+      "required": [
+        "variety_policy",
+        "task_components",
+        "pace_wpm",
+        "pace_tolerance_fraction",
+        "gap_after_ms"
+      ],
+      "additionalProperties": false,
+      "description": "Optional saved simple-form defaults; absence inherits configuration-registry.yaml simple_preparation."
     }
   },
   "required": [

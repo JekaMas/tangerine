@@ -5,14 +5,15 @@ delivery:
   sample_rate_hz: 24000
   channels: 1
 qc:
-  sample_peak_reject_gte: 0.9999
   integrated_lufs_min: -20
   integrated_lufs_max: -16
   true_peak_dbtp_max: -1
   rms_window_samples: 480
   rms_hop_samples: 240
   silence_dbfs_lte: -45
-  unplanned_silence_fail_ms_gte: 2000
+  quality_threshold_effect: warning; malformed/empty/all-silent bytes remain failures
+  sample_peak_warning_gte: 0.9999
+  unplanned_silence_warning_ms_gte: 2000
 f0:
   engine: Praat autocorrelation via pinned praat-parselmouth
   time_step_seconds: 0.01
@@ -28,16 +29,16 @@ f0:
   minimum_voiced_frames: 20
   semitone_reference_hz: 100
 features:
-- lexical_stress
-- nuclear_stress
-- f0_range_semitones
-- f0_slope_semitones_per_second
-- syllable_duration_ratio
-- rhythm
-- boundary
-- weak_form
-- linking
-- assimilation
-- elision
-binding_rule: Exact binary versions, hashes, and implementation conformance are release
-  evidence, not invented values.
+  - lexical_stress
+  - nuclear_stress
+  - f0_range_semitones
+  - f0_slope_semitones_per_second
+  - syllable_duration_ratio
+  - rhythm
+  - boundary
+  - weak_form
+  - linking
+  - assimilation
+  - elision
+binding_rule: Exact binary versions, hashes, and implementation conformance are
+  release evidence, not invented values.

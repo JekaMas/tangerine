@@ -117,14 +117,16 @@
         "origin": {
           "type": "string",
           "enum": [
-            "synthetic"
+            "synthetic",
+            "native_recording",
+            "local_recording"
           ],
           "description": "This field records actual source origin. It must not promote a substitute to genuine evidence."
         },
         "source_profile_id": {
           "type": "string",
           "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
-          "description": "This identifier refers to a corpus source profile in the corpus registry."
+          "description": "Actual provenance source identity: GENERATED-EXERCISE for authored audio, real corpus/source identity for imports. Actual synthesis profile is in render provenance."
         }
       },
       "required": [
@@ -1012,6 +1014,7 @@
                   "type": "string",
                   "enum": [
                     "local_analysis",
+                    "internal_training",
                     "commercial_evaluation",
                     "derivative_exercises",
                     "distribution",
@@ -1091,7 +1094,7 @@
     },
     "review_decisions": {
       "type": "array",
-      "description": "Actual final human decisions, not account authentication.",
+      "description": "Actual optional machine findings or original source-import decisions; never required human approval.",
       "items": {
         "$ref": "review-decision.schema.json"
       },

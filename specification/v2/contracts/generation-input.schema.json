@@ -160,6 +160,19 @@
         }
       ],
       "description": "Exact saved canonical asset hash, null before it exists. Mutation phase cannot rewrite that baseline."
+    },
+    "mutation_recipes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Complete actual recipe record, retained verbatim from the registry."
+      },
+      "description": "Selected owned recipe records; empty before mutation."
+    },
+    "recipe_registry_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Original registry bytes."
     }
   },
   "required": [
@@ -173,7 +186,9 @@
     "taxonomy_context",
     "phase",
     "canonical_script",
-    "canonical_script_sha256"
+    "canonical_script_sha256",
+    "mutation_recipes",
+    "recipe_registry_sha256"
   ],
   "additionalProperties": false,
   "allOf": [

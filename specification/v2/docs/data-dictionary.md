@@ -31,8 +31,8 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | case-head | schema hash | document.payload | 9 |
 | claim-extraction | 2.0.0 | document.payload | 46 |
 | common | schema hash | derived DTO or actual operation input/output receipt | 10 |
-| configuration-view | schema hash | derived DTO or actual operation input/output receipt | 13 |
-| configuration | 2.0.0 | document.payload | 36 |
+| configuration-view | schema hash | derived DTO or actual operation input/output receipt | 28 |
+| configuration | 2.0.0 | document.payload | 51 |
 | connector-configuration | 2.0.0 | document.payload | 12 |
 | connector-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 10 |
 | corpus-record | 1.0.0 | document.payload | 26 |
@@ -56,7 +56,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | feedback-output | 2.0.0 | derived DTO or actual operation input/output receipt | 11 |
 | feedback | 2.0.0 | document.payload | 13 |
 | format-binding-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 13 |
-| generation-input | 2.0.0 | derived DTO or actual operation input/output receipt | 25 |
+| generation-input | 2.0.0 | derived DTO or actual operation input/output receipt | 27 |
 | generation-request | schema hash | derived DTO or actual operation input/output receipt | 4 |
 | grant-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 15 |
 | ground-truth | 2.0.0 | document.payload | 118 |
@@ -85,7 +85,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | playback-event | 2.0.0 | document.payload | 10 |
 | prepare-view | schema hash | derived DTO or actual operation input/output receipt | 6 |
 | provider-receipt | 2.0.0 | document.payload | 25 |
-| put-config-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 34 |
+| put-config-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 49 |
 | qualification-report-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 5 |
 | qualification-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 11 |
 | qualification | 2.0.0 | document.payload | 12 |
@@ -132,8 +132,16 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | llm-context-snapshot | 2.0.0 | document.payload with linked private assets | 27 |
 
-| llm-experiment | 2.0.0 | document.payload with linked private assets | 53 |
+| llm-experiment | 2.0.0 | document.payload with linked private assets | 87 |
 
 | llm-quality-case | 2.0.0 | document.payload with linked private assets | 28 |
 
 | prompt-bundle | 2.0.0 | document.payload with linked private assets | 35 |
+
+| llm-quality-dataset | 2.0.0 | document.payload with linked private assets | 14 |
+
+| llm-quality-judge-input | 2.0.0 | document.payload with linked private assets | 17 |
+
+| llm-quality-judge-output | 2.0.0 | document.payload with linked private assets | 9 |
+
+| mutation-manifest | 2.0.0 | document.payload with linked private assets | 107 |

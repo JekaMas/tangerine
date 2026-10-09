@@ -233,3 +233,13 @@ Current resume: specification updates only; audit/simple-generation-flow-2026100
 - [ ] Future authorized implementation: optional Lab build/helper, native bundle/context/trace plumbing, shared-owner replay/evaluation and all positive/negative acceptance properties with actual configured providers.
 
 Current resume: specification-only Lab selection/definitions are in specification/v2/docs/llm-lab.md and audit/llm-lab-20261009/REPORT.md. No tool installation, inference, Docker execution, workflow change, credential modification or publication. Existing green application receipts remain within their original contracts; normal generated exercises need no Lab or new review/quality gate. Preserve the unrelated GAPS.md edit.
+
+## 2026-10-09 current-flow completeness and contradiction audit (specification only)
+
+- [x] Trace the ordinary flow and optional Lab/source/advanced features through inputs, prompts, context, mutation/key/audio projection, native formulas, internal operations and recovery; close13definition/contradiction groups in audit/flow-fullness-20261009/REPORT.md.
+- [x] Specify concrete simple defaults/bindings, exact replayable mutation assets, complete generated/imported key provenance, frozen preparation and typed Lab datasets/configurations/judge contracts; preserve all122leaves/recipes,42formulas and11full-source identities/scopes.
+- [x] Reconcile all209active files/132schemas/2,877indexed field occurrences and88schema references; validate366static artifact/independent arithmetic checks, strict OpenSpec,362requirement/377property/1,508edge graph and discovery.
+- [x] Add24positive/negative behavior plans for six completeness requirements, keeping them blocked/unexecuted; retain unchanged app/native/provider evidence and every earlier graph entry.
+- [ ] Future implementation and empirical observation: exercise these contracts in actual generation/render/evaluation/import/Lab owners, real provider/local audio runs and complete intended benchmark/source populations under subsequent authorization.
+
+Current resume: the requested completeness audit is in audit/flow-fullness-20261009/REPORT.md. No additional product-owner decision is identified for the defined main flow. External restricted/private sources, official L2equivalence/linked media and future provider/benchmark observations remain explicitly listed, without becoming normal-use gates. No implementation, inference, model setup, Docker/MLflow execution, migration, install, secret/config change or publication occurred. Preserve the unrelated user edit in audit/spec-fullness-20261008/GAPS.md. Local specification work only; keep the application change open.

@@ -2,7 +2,7 @@
 
 The delivery file is an uncompressed WAV with mono signed 16-bit PCM at 24,000 Hz.
 It is the same byte payload that the machine review records. There is no separately approved lossy derivative.
-A later codec conversion creates a new asset and records new measurements and machine review.
+A later codec conversion creates a new asset/version and records actual measurements; separate machine review remains optional.
 
 ## SSML compiler
 
@@ -51,7 +51,7 @@ Map a silent window to its covered sample interval. Merge intersecting or touchi
 A planned pause covers only its exact inserted-sample interval, not every nearby provider silence.
 Subtract the union of planned-pause intervals before measuring unwanted silence.
 Keep wanted and unwanted silence separate. A targeted pause is still part of elapsed speech duration.
-An unwanted interval of at least 2,000 ms reports a QC warning. Boundary equality is a failure.
+An unwanted interval of at least 2,000 ms reports a QC warning. Boundary equality triggers the same warning, not publication failure.
 All-silent audio fails regardless of planned pauses or duration targets.
 
 ## Speech tokens and intervals

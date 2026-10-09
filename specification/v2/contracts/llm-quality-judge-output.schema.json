@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/llm-quality-judge-output.schema.json",
+  "title": "llm-quality-judge-output",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "Current specification contract."
+    },
+    "verdicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "proposition_id": {
+            "type": "string",
+            "description": "One input proposition."
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "supported",
+              "unsupported",
+              "unknown"
+            ],
+            "description": "Semantic finding, never numeric score."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Reason grounded in supplied context."
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "asset_id": {
+                  "type": "string",
+                  "description": "Supplied candidate/context asset."
+                },
+                "pointer": {
+                  "type": "string",
+                  "description": "RFC6901 pointer or text codepoint locator as declared by its asset."
+                }
+              },
+              "required": [
+                "asset_id",
+                "pointer"
+              ],
+              "additionalProperties": false,
+              "description": "Actual evidence locator."
+            },
+            "description": "Actual support, empty when unavailable."
+          },
+          "missing_reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Required for unknown, null otherwise."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Required for unknown, null otherwise."
+          }
+        },
+        "required": [
+          "proposition_id",
+          "verdict",
+          "reason",
+          "evidence",
+          "missing_reason"
+        ],
+        "additionalProperties": false,
+        "description": "One requested semantic verdict."
+      },
+      "description": "One verdict for every requested proposition, without duplicates."
+    }
+  },
+  "required": [
+    "schema_version",
+    "verdicts"
+  ],
+  "additionalProperties": false,
+  "description": "Semantic diagnostics; native code computes arithmetic."
+}

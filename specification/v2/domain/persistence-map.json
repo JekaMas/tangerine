@@ -3515,7 +3515,7 @@
     {
       "kind": "case-candidate",
       "schema": "contracts/case-candidate.schema.json",
-      "sha256": "fc05097d42ecb73ba4ce7b25fff5a26075d847d17c990cde80132434e02343c5",
+      "sha256": "d9ec99df54bf2b2faf7cc144346b361e1497213571589bb37eb7f2517ab306b8",
       "schema_version": "1.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -3566,7 +3566,7 @@
           "required_in_parent": true,
           "description": "These records describe proposed targets before acoustic realization and review.",
           "schema_reference": null,
-          "rule_sha256": "982f7a20d42c1283dc2389066313852598f5c5b6aca0e93b3cedf1eede9cb112"
+          "rule_sha256": "4a2dc03e015bf65f41d482c97e35a54516a7833f2ea52d5a0a2e34293eb2a044"
         },
         {
           "name": "id",
@@ -3668,9 +3668,9 @@
           "name": "text_spans",
           "pointer": "/properties/planned_units/items/properties/text_spans",
           "required_in_parent": true,
-          "description": "These entries locate target text in named utterances.",
+          "description": "Final surface-text codepoint scopes. Deletions may use an empty resulting boundary; canonical edits live in mutation-manifest.",
           "schema_reference": null,
-          "rule_sha256": "906077fda82af515f3f155504e4f2812c95b0293581ddc120d10a908f4d19f2d"
+          "rule_sha256": "edffe76c4a257ea7621bd2e587c8a168750a14c4747f96cc2fde146f4bae13c7"
         },
         {
           "name": "realization",
@@ -4643,7 +4643,7 @@
     {
       "kind": "configuration-view",
       "schema": "contracts/configuration-view.schema.json",
-      "sha256": "11076c79a749d533018e9c32f0465be6dd899dd025faf587e5276863ee542fe9",
+      "sha256": "4ebd7922a5b43ce17254d5ab6adeac55df4a11566e8138d2ec17b2ff2d71e75d",
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -4729,6 +4729,14 @@
           "rule_sha256": "53890862dae5301de0096144e066fa65f217b923cbc629da2161d10169a0c3ca"
         },
         {
+          "name": "preparation_defaults",
+          "pointer": "/properties/preparation_defaults",
+          "required_in_parent": false,
+          "description": "Optional saved simple-form defaults; absence inherits configuration-registry.yaml simple_preparation.",
+          "schema_reference": null,
+          "rule_sha256": "745f131cef912f67d31e113123859f0c25a7588e803effde8f55b75583261e7a"
+        },
+        {
           "name": "name",
           "pointer": "/properties/credentials/items/properties/name",
           "required_in_parent": true,
@@ -4751,13 +4759,125 @@
           "description": "Actual local configuration check.",
           "schema_reference": null,
           "rule_sha256": "f473d429c4f42d8b5a4542867a264fb98e300be547a704f5ba13fce7c62dd774"
+        },
+        {
+          "name": "variety_policy",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy",
+          "required_in_parent": true,
+          "description": "This object fixes locale, permitted varieties, register, and judgment basis.",
+          "schema_reference": null,
+          "rule_sha256": "6354618aa11efc631ed11b36865a5420bc208b5cd164474a59af2c573855729d"
+        },
+        {
+          "name": "task_components",
+          "pointer": "/properties/preparation_defaults/properties/task_components",
+          "required_in_parent": true,
+          "description": "These flags freeze the requested answer components before the attempt.",
+          "schema_reference": null,
+          "rule_sha256": "4a29e21fdc8bf45e365048c2505798e497bd6763e146ed01025a407a39db762e"
+        },
+        {
+          "name": "pace_wpm",
+          "pointer": "/properties/preparation_defaults/properties/pace_wpm",
+          "required_in_parent": true,
+          "description": "Synthesis preference, not an observed hard bound.",
+          "schema_reference": null,
+          "rule_sha256": "edb7ba903c68a250f8650ecb78bc50cfc745ae5c92b8585deee3ed41375d2ce3"
+        },
+        {
+          "name": "pace_tolerance_fraction",
+          "pointer": "/properties/preparation_defaults/properties/pace_tolerance_fraction",
+          "required_in_parent": true,
+          "description": "Reported relative pace tolerance.",
+          "schema_reference": null,
+          "rule_sha256": "4827153123664d8b2d7d14efef8482e314cad03f7d4b511ed4bc0587b6e177c7"
+        },
+        {
+          "name": "gap_after_ms",
+          "pointer": "/properties/preparation_defaults/properties/gap_after_ms",
+          "required_in_parent": true,
+          "description": "Exact gap assembled after each turn.",
+          "schema_reference": null,
+          "rule_sha256": "630872c61353ed1f20ccea1810eb4fa256e57da227d71d9ad0019887cf2f3624"
+        },
+        {
+          "name": "target_locale",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy/properties/target_locale",
+          "required_in_parent": true,
+          "description": "This field identifies the target English locale for the published variety policy.",
+          "schema_reference": null,
+          "rule_sha256": "b4cebaf85afcfd8ada86bee63a3c1c3330a6ca7c4da32d4cbb2fa77689fd4f25"
+        },
+        {
+          "name": "accepted_varieties",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy/properties/accepted_varieties",
+          "required_in_parent": true,
+          "description": "These English varieties are permitted by the fixed case context.",
+          "schema_reference": null,
+          "rule_sha256": "2091f4a6d40e7be8112758d403d6e4d6d8c2351e91e4b809d86c59645396d677"
+        },
+        {
+          "name": "register",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy/properties/register",
+          "required_in_parent": true,
+          "description": "This field states the social or institutional register required by the task.",
+          "schema_reference": null,
+          "rule_sha256": "8baf67d509cda01a167cb00036843c71610a9ddb65ca7592d248f75af9224429"
+        },
+        {
+          "name": "assessment_basis",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy/properties/assessment_basis",
+          "required_in_parent": true,
+          "description": "This field states the declared basis for judging the language target.",
+          "schema_reference": null,
+          "rule_sha256": "034f16fe540323da6b77643b8cc3a5e9d71c9e90f962287231f649805c6a052d"
+        },
+        {
+          "name": "public_constraints",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy/properties/public_constraints",
+          "required_in_parent": true,
+          "description": "These conditions give the teacher the context necessary to judge the case fairly.",
+          "schema_reference": null,
+          "rule_sha256": "0590fa148eb62fa7ce70f37a4c59b711f841dc7e947e9ab1821adb4ed6800798"
+        },
+        {
+          "name": "detection",
+          "pointer": "/properties/preparation_defaults/properties/task_components/properties/detection",
+          "required_in_parent": true,
+          "description": "This flag states whether the task requests error detection.",
+          "schema_reference": null,
+          "rule_sha256": "bd9d5628aa0271d22f1c782a87734cf7a875ba22e3aa7861bc0fd3f3f13c061a"
+        },
+        {
+          "name": "classification",
+          "pointer": "/properties/preparation_defaults/properties/task_components/properties/classification",
+          "required_in_parent": true,
+          "description": "This flag states whether the task requests a category for each detected error.",
+          "schema_reference": null,
+          "rule_sha256": "dd69e9da804d52c18f128da949393993a27bd5e62691c6d52a9fa9017ed9855c"
+        },
+        {
+          "name": "correction",
+          "pointer": "/properties/preparation_defaults/properties/task_components/properties/correction",
+          "required_in_parent": true,
+          "description": "This flag or object describes correction requirements or decisions in its parent contract.",
+          "schema_reference": null,
+          "rule_sha256": "34c496f350802fd9caf368506f804d445382039a44cc653611d85063f9d5bb2f"
+        },
+        {
+          "name": "explanation",
+          "pointer": "/properties/preparation_defaults/properties/task_components/properties/explanation",
+          "required_in_parent": true,
+          "description": "This flag or object describes explanation requirements or judgments in its parent contract.",
+          "schema_reference": null,
+          "rule_sha256": "99711cd882ee7f7adc2a673eec5017cc505704dbad7daba815147efafc04f5ee"
         }
       ]
     },
     {
       "kind": "configuration",
       "schema": "contracts/configuration.schema.json",
-      "sha256": "ad5fbfd4f582282ec92ac08f4aeacfe848d57d9c172b9808fc720a3c230a608d",
+      "sha256": "db5aa8954891a3506c8953849d618a66b50aa77eabc0ef64e80fb0cc4ba65f6d",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -4907,6 +5027,14 @@
           "rule_sha256": "cc1bd725e3788ac10d227982cc55564f9c525d485310ee162795cfbb7b762e31"
         },
         {
+          "name": "preparation_defaults",
+          "pointer": "/properties/preparation_defaults",
+          "required_in_parent": false,
+          "description": "Optional saved simple-form defaults; absence inherits configuration-registry.yaml simple_preparation.",
+          "schema_reference": null,
+          "rule_sha256": "745f131cef912f67d31e113123859f0c25a7588e803effde8f55b75583261e7a"
+        },
+        {
           "name": "deepseek",
           "pointer": "/properties/credential_refs/properties/deepseek",
           "required_in_parent": true,
@@ -5049,6 +5177,118 @@
           "description": "Explicit profile or null inherits the selected default for adjudication",
           "schema_reference": null,
           "rule_sha256": "02dc5ad07451a7742570d284be415755e55c46a2209dd557fdec89d3c9655c98"
+        },
+        {
+          "name": "variety_policy",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy",
+          "required_in_parent": true,
+          "description": "This object fixes locale, permitted varieties, register, and judgment basis.",
+          "schema_reference": null,
+          "rule_sha256": "6354618aa11efc631ed11b36865a5420bc208b5cd164474a59af2c573855729d"
+        },
+        {
+          "name": "task_components",
+          "pointer": "/properties/preparation_defaults/properties/task_components",
+          "required_in_parent": true,
+          "description": "These flags freeze the requested answer components before the attempt.",
+          "schema_reference": null,
+          "rule_sha256": "4a29e21fdc8bf45e365048c2505798e497bd6763e146ed01025a407a39db762e"
+        },
+        {
+          "name": "pace_wpm",
+          "pointer": "/properties/preparation_defaults/properties/pace_wpm",
+          "required_in_parent": true,
+          "description": "Synthesis preference, not an observed hard bound.",
+          "schema_reference": null,
+          "rule_sha256": "edb7ba903c68a250f8650ecb78bc50cfc745ae5c92b8585deee3ed41375d2ce3"
+        },
+        {
+          "name": "pace_tolerance_fraction",
+          "pointer": "/properties/preparation_defaults/properties/pace_tolerance_fraction",
+          "required_in_parent": true,
+          "description": "Reported relative pace tolerance.",
+          "schema_reference": null,
+          "rule_sha256": "4827153123664d8b2d7d14efef8482e314cad03f7d4b511ed4bc0587b6e177c7"
+        },
+        {
+          "name": "gap_after_ms",
+          "pointer": "/properties/preparation_defaults/properties/gap_after_ms",
+          "required_in_parent": true,
+          "description": "Exact gap assembled after each turn.",
+          "schema_reference": null,
+          "rule_sha256": "630872c61353ed1f20ccea1810eb4fa256e57da227d71d9ad0019887cf2f3624"
+        },
+        {
+          "name": "target_locale",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy/properties/target_locale",
+          "required_in_parent": true,
+          "description": "This field identifies the target English locale for the published variety policy.",
+          "schema_reference": null,
+          "rule_sha256": "b4cebaf85afcfd8ada86bee63a3c1c3330a6ca7c4da32d4cbb2fa77689fd4f25"
+        },
+        {
+          "name": "accepted_varieties",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy/properties/accepted_varieties",
+          "required_in_parent": true,
+          "description": "These English varieties are permitted by the fixed case context.",
+          "schema_reference": null,
+          "rule_sha256": "2091f4a6d40e7be8112758d403d6e4d6d8c2351e91e4b809d86c59645396d677"
+        },
+        {
+          "name": "register",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy/properties/register",
+          "required_in_parent": true,
+          "description": "This field states the social or institutional register required by the task.",
+          "schema_reference": null,
+          "rule_sha256": "8baf67d509cda01a167cb00036843c71610a9ddb65ca7592d248f75af9224429"
+        },
+        {
+          "name": "assessment_basis",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy/properties/assessment_basis",
+          "required_in_parent": true,
+          "description": "This field states the declared basis for judging the language target.",
+          "schema_reference": null,
+          "rule_sha256": "034f16fe540323da6b77643b8cc3a5e9d71c9e90f962287231f649805c6a052d"
+        },
+        {
+          "name": "public_constraints",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy/properties/public_constraints",
+          "required_in_parent": true,
+          "description": "These conditions give the teacher the context necessary to judge the case fairly.",
+          "schema_reference": null,
+          "rule_sha256": "0590fa148eb62fa7ce70f37a4c59b711f841dc7e947e9ab1821adb4ed6800798"
+        },
+        {
+          "name": "detection",
+          "pointer": "/properties/preparation_defaults/properties/task_components/properties/detection",
+          "required_in_parent": true,
+          "description": "This flag states whether the task requests error detection.",
+          "schema_reference": null,
+          "rule_sha256": "bd9d5628aa0271d22f1c782a87734cf7a875ba22e3aa7861bc0fd3f3f13c061a"
+        },
+        {
+          "name": "classification",
+          "pointer": "/properties/preparation_defaults/properties/task_components/properties/classification",
+          "required_in_parent": true,
+          "description": "This flag states whether the task requests a category for each detected error.",
+          "schema_reference": null,
+          "rule_sha256": "dd69e9da804d52c18f128da949393993a27bd5e62691c6d52a9fa9017ed9855c"
+        },
+        {
+          "name": "correction",
+          "pointer": "/properties/preparation_defaults/properties/task_components/properties/correction",
+          "required_in_parent": true,
+          "description": "This flag or object describes correction requirements or decisions in its parent contract.",
+          "schema_reference": null,
+          "rule_sha256": "34c496f350802fd9caf368506f804d445382039a44cc653611d85063f9d5bb2f"
+        },
+        {
+          "name": "explanation",
+          "pointer": "/properties/preparation_defaults/properties/task_components/properties/explanation",
+          "required_in_parent": true,
+          "description": "This flag or object describes explanation requirements or judgments in its parent contract.",
+          "schema_reference": null,
+          "rule_sha256": "99711cd882ee7f7adc2a673eec5017cc505704dbad7daba815147efafc04f5ee"
         }
       ]
     },
@@ -8461,7 +8701,7 @@
     {
       "kind": "generation-input",
       "schema": "contracts/generation-input.schema.json",
-      "sha256": "2f26afe7d953b8e365f5bba958d28546e2d0aa580ebb8f8d5e28c14ddae3f709",
+      "sha256": "8851bceccf6a2f52b746c6609ca34b5837fb8c7c942129106dd5bac62c0e9bde",
       "schema_version": "2.0.0",
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -8553,6 +8793,22 @@
           "description": "Exact saved canonical asset hash, null before it exists. Mutation phase cannot rewrite that baseline.",
           "schema_reference": null,
           "rule_sha256": "78056950ce8c3be29bfe7d016268bb391d082f198ed48f41d59f9d9c77f09761"
+        },
+        {
+          "name": "mutation_recipes",
+          "pointer": "/properties/mutation_recipes",
+          "required_in_parent": true,
+          "description": "Selected owned recipe records; empty before mutation.",
+          "schema_reference": null,
+          "rule_sha256": "04742f4baf40847dd28bce218b9a360e487ee85e3195365a8f4dd008f141baaa"
+        },
+        {
+          "name": "recipe_registry_sha256",
+          "pointer": "/properties/recipe_registry_sha256",
+          "required_in_parent": true,
+          "description": "Original registry bytes.",
+          "schema_reference": null,
+          "rule_sha256": "134d44c5027fd32cdb642bbadcf7304eb4c2dde31715d64982438534f205d1c9"
         },
         {
           "name": "record_id",
@@ -8843,7 +9099,7 @@
     {
       "kind": "ground-truth",
       "schema": "contracts/ground-truth.schema.json",
-      "sha256": "7745d07ab1510357a7d205fe5bc916d05dad526a362f020f03d77f7182b93d35",
+      "sha256": "f76b58c64e6cf516a841d7933262a5d3f0d9e73d1b0838d6fe6f904f4d8d0ec1",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -8902,7 +9158,7 @@
           "required_in_parent": true,
           "description": "This object describes the exact delivered audio asset.",
           "schema_reference": null,
-          "rule_sha256": "ee3ef6c13a6c76364302aaf3bf9bf7f383535fd9f8fe1512bf1c82b2a3c98a4d"
+          "rule_sha256": "718dad1ed5d210fda4a090b92f50a64645d63c313b0501fc71fac8da34669fbe"
         },
         {
           "name": "speakers",
@@ -8926,15 +9182,15 @@
           "required_in_parent": true,
           "description": "These entries contain the reviewed detection opportunities and negative controls.",
           "schema_reference": null,
-          "rule_sha256": "e6c2ae65f25b19732cfbe6c7009a1c210ade919530651d5302fe65816a62df8a"
+          "rule_sha256": "bcb015a0c67e28b27d1070abd06d442654c67aa788d0bacfb325729f9f3c9d70"
         },
         {
           "name": "review_decisions",
           "pointer": "/properties/review_decisions",
           "required_in_parent": true,
-          "description": "Actual final human decisions, not account authentication.",
+          "description": "Actual optional machine findings or original source-import decisions; never required human approval.",
           "schema_reference": null,
-          "rule_sha256": "d2a593d22ad7f63d47d600ef5e381da8ae6ef01d1ae836f9aff4e2e87bceb80a"
+          "rule_sha256": "ac6565fb721e3f0cd832c282e3ceee73edff2f1a8f13f88850931cee3743ee56"
         },
         {
           "name": "content_provenance_ids",
@@ -9046,15 +9302,15 @@
           "required_in_parent": true,
           "description": "This field records actual source origin. It must not promote a substitute to genuine evidence.",
           "schema_reference": null,
-          "rule_sha256": "deca2428ae4d35918148f6028c13158075eb33f4d25bbe59558fe7ce7307ace2"
+          "rule_sha256": "9d1dbf0ba30ee3d90562d6ea61996a4cb9c5e71d0a247d7771b064b168d2d2ee"
         },
         {
           "name": "source_profile_id",
           "pointer": "/properties/audio/properties/source_profile_id",
           "required_in_parent": true,
-          "description": "This identifier refers to a corpus source profile in the corpus registry.",
+          "description": "Actual provenance source identity: GENERATED-EXERCISE for authored audio, real corpus/source identity for imports. Actual synthesis profile is in render provenance.",
           "schema_reference": null,
-          "rule_sha256": "39fa53ce62d40c249471c7c437c2315f3603fd654d315b1c053d6ed4b7902e21"
+          "rule_sha256": "4bee72150549da064b8079f49468d96d0f786b473de671ffdccfbd2c2fc7fc34"
         },
         {
           "name": "id",
@@ -9366,7 +9622,7 @@
           "required_in_parent": true,
           "description": "This object links the record to its real source and permitted transformation.",
           "schema_reference": null,
-          "rule_sha256": "c955d4eba4d6e17362c1e634ce1815690b366b57b7f51d611abc68ea0d795e37"
+          "rule_sha256": "a7baa5fa39ef3f140cf0506d1c929b15b2f78b2bce93f7c0b82843f51cd1c23d"
         },
         {
           "name": "utterance_id",
@@ -9774,7 +10030,7 @@
           "required_in_parent": true,
           "description": "These operations are the exact uses permitted by the retained license approval.",
           "schema_reference": null,
-          "rule_sha256": "e3bb51fb76345510ac1358c98c7cdf5a464708749ed87cd6aee50b99124ddb12"
+          "rule_sha256": "c62200690b136bbe74848aea083a63f8d54d8bc440a8aa234f8fb132022858e9"
         },
         {
           "name": "status",
@@ -12153,7 +12409,7 @@
       "storage": "Derived DTO or actual operation/stage input/output receipt",
       "kind": "put-config-request",
       "schema": "contracts/put-config-request.schema.json",
-      "sha256": "d5c2f96e7f4596c338c4ca5bd6009bb25c841a476ff5bbe19b91d53b5a84421f",
+      "sha256": "680c17257484202b84a2c9115131e40834cca72ecdd1ec7ba5e2c0e68663e054",
       "schema_version": "2.0.0",
       "fields": [
         {
@@ -12283,6 +12539,14 @@
           "description": "Explicit private local content capture; secret/private-source fields always omitted.",
           "schema_reference": null,
           "rule_sha256": "cc1bd725e3788ac10d227982cc55564f9c525d485310ee162795cfbb7b762e31"
+        },
+        {
+          "name": "preparation_defaults",
+          "pointer": "/properties/preparation_defaults",
+          "required_in_parent": false,
+          "description": "Optional saved simple-form defaults; absence inherits configuration-registry.yaml simple_preparation.",
+          "schema_reference": null,
+          "rule_sha256": "745f131cef912f67d31e113123859f0c25a7588e803effde8f55b75583261e7a"
         },
         {
           "name": "deepseek",
@@ -12427,6 +12691,118 @@
           "description": "Explicit profile or null inherits the selected default for adjudication",
           "schema_reference": null,
           "rule_sha256": "02dc5ad07451a7742570d284be415755e55c46a2209dd557fdec89d3c9655c98"
+        },
+        {
+          "name": "variety_policy",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy",
+          "required_in_parent": true,
+          "description": "This object fixes locale, permitted varieties, register, and judgment basis.",
+          "schema_reference": null,
+          "rule_sha256": "6354618aa11efc631ed11b36865a5420bc208b5cd164474a59af2c573855729d"
+        },
+        {
+          "name": "task_components",
+          "pointer": "/properties/preparation_defaults/properties/task_components",
+          "required_in_parent": true,
+          "description": "These flags freeze the requested answer components before the attempt.",
+          "schema_reference": null,
+          "rule_sha256": "4a29e21fdc8bf45e365048c2505798e497bd6763e146ed01025a407a39db762e"
+        },
+        {
+          "name": "pace_wpm",
+          "pointer": "/properties/preparation_defaults/properties/pace_wpm",
+          "required_in_parent": true,
+          "description": "Synthesis preference, not an observed hard bound.",
+          "schema_reference": null,
+          "rule_sha256": "edb7ba903c68a250f8650ecb78bc50cfc745ae5c92b8585deee3ed41375d2ce3"
+        },
+        {
+          "name": "pace_tolerance_fraction",
+          "pointer": "/properties/preparation_defaults/properties/pace_tolerance_fraction",
+          "required_in_parent": true,
+          "description": "Reported relative pace tolerance.",
+          "schema_reference": null,
+          "rule_sha256": "4827153123664d8b2d7d14efef8482e314cad03f7d4b511ed4bc0587b6e177c7"
+        },
+        {
+          "name": "gap_after_ms",
+          "pointer": "/properties/preparation_defaults/properties/gap_after_ms",
+          "required_in_parent": true,
+          "description": "Exact gap assembled after each turn.",
+          "schema_reference": null,
+          "rule_sha256": "630872c61353ed1f20ccea1810eb4fa256e57da227d71d9ad0019887cf2f3624"
+        },
+        {
+          "name": "target_locale",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy/properties/target_locale",
+          "required_in_parent": true,
+          "description": "This field identifies the target English locale for the published variety policy.",
+          "schema_reference": null,
+          "rule_sha256": "b4cebaf85afcfd8ada86bee63a3c1c3330a6ca7c4da32d4cbb2fa77689fd4f25"
+        },
+        {
+          "name": "accepted_varieties",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy/properties/accepted_varieties",
+          "required_in_parent": true,
+          "description": "These English varieties are permitted by the fixed case context.",
+          "schema_reference": null,
+          "rule_sha256": "2091f4a6d40e7be8112758d403d6e4d6d8c2351e91e4b809d86c59645396d677"
+        },
+        {
+          "name": "register",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy/properties/register",
+          "required_in_parent": true,
+          "description": "This field states the social or institutional register required by the task.",
+          "schema_reference": null,
+          "rule_sha256": "8baf67d509cda01a167cb00036843c71610a9ddb65ca7592d248f75af9224429"
+        },
+        {
+          "name": "assessment_basis",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy/properties/assessment_basis",
+          "required_in_parent": true,
+          "description": "This field states the declared basis for judging the language target.",
+          "schema_reference": null,
+          "rule_sha256": "034f16fe540323da6b77643b8cc3a5e9d71c9e90f962287231f649805c6a052d"
+        },
+        {
+          "name": "public_constraints",
+          "pointer": "/properties/preparation_defaults/properties/variety_policy/properties/public_constraints",
+          "required_in_parent": true,
+          "description": "These conditions give the teacher the context necessary to judge the case fairly.",
+          "schema_reference": null,
+          "rule_sha256": "0590fa148eb62fa7ce70f37a4c59b711f841dc7e947e9ab1821adb4ed6800798"
+        },
+        {
+          "name": "detection",
+          "pointer": "/properties/preparation_defaults/properties/task_components/properties/detection",
+          "required_in_parent": true,
+          "description": "This flag states whether the task requests error detection.",
+          "schema_reference": null,
+          "rule_sha256": "bd9d5628aa0271d22f1c782a87734cf7a875ba22e3aa7861bc0fd3f3f13c061a"
+        },
+        {
+          "name": "classification",
+          "pointer": "/properties/preparation_defaults/properties/task_components/properties/classification",
+          "required_in_parent": true,
+          "description": "This flag states whether the task requests a category for each detected error.",
+          "schema_reference": null,
+          "rule_sha256": "dd69e9da804d52c18f128da949393993a27bd5e62691c6d52a9fa9017ed9855c"
+        },
+        {
+          "name": "correction",
+          "pointer": "/properties/preparation_defaults/properties/task_components/properties/correction",
+          "required_in_parent": true,
+          "description": "This flag or object describes correction requirements or decisions in its parent contract.",
+          "schema_reference": null,
+          "rule_sha256": "34c496f350802fd9caf368506f804d445382039a44cc653611d85063f9d5bb2f"
+        },
+        {
+          "name": "explanation",
+          "pointer": "/properties/preparation_defaults/properties/task_components/properties/explanation",
+          "required_in_parent": true,
+          "description": "This flag or object describes explanation requirements or judgments in its parent contract.",
+          "schema_reference": null,
+          "rule_sha256": "99711cd882ee7f7adc2a673eec5017cc505704dbad7daba815147efafc04f5ee"
         }
       ]
     },
@@ -21296,7 +21672,7 @@
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload with linked private assets",
-      "sha256": "2191123f3e65665e09012a455eb24c20b3a25cb8c27027ea82e6321d44997442",
+      "sha256": "a6ada2dd7dc97596d418df847e083d3e54865f677ef608cf4590a69a3dbbd08b",
       "fields": [
         {
           "name": "schema_version",
@@ -21368,7 +21744,7 @@
           "required_in_parent": true,
           "description": "Ordered included/excluded components.",
           "schema_reference": null,
-          "rule_sha256": "39edf80463fc53d8b02dcc6acb91801419e06593d2254f7ad36cd93db670ee28"
+          "rule_sha256": "4a9a85f2b26908439dd9c4bab3482968e0f942448c43f20e0a605569253e9378"
         },
         {
           "name": "tokenizer",
@@ -21456,7 +21832,7 @@
           "required_in_parent": true,
           "description": "Actual component kind.",
           "schema_reference": null,
-          "rule_sha256": "efc8b2d17ac03c4eac3eeadceb7e0cd4c83271b763dae11362ac80c5cd0a61be"
+          "rule_sha256": "95c108b4966f929c7622cd57f58dd111392bf2f6ee5af1b32b9d7d84bd540a01"
         },
         {
           "name": "trust",
@@ -21522,7 +21898,7 @@
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload with linked private assets",
-      "sha256": "6c71431afa046691515332ce1cc50cb6c88ff351eb8896e4cae85c0ed96e910b",
+      "sha256": "d6cfdf88c6bb5cfb0766664fde4b2691bf59bc31827d3efa9d6b6ac11b8352c8",
       "fields": [
         {
           "name": "schema_version",
@@ -21586,7 +21962,7 @@
           "required_in_parent": true,
           "description": "Explicit variants; paired comparison needs at least two.",
           "schema_reference": null,
-          "rule_sha256": "ba38536500383ebddc32db3e14f6c68c5e0ce47689ade4c565802be4d58562b5"
+          "rule_sha256": "50299fd73e1e4c8d25236e33f00662acb4da614b2b585d9884ab8d139d6a768a"
         },
         {
           "name": "repetitions",
@@ -21610,7 +21986,7 @@
           "required_in_parent": true,
           "description": "Actual completed/error and explicit unperformed rows.",
           "schema_reference": null,
-          "rule_sha256": "507d694d5c6a1f2f51142a3392d1354c0d4678893f26051c9760688a47c81069"
+          "rule_sha256": "b16f5bb58aecc8f94d54d3e63ae2d6e6411c30ed08f6ee7952f9ec247164bb5a"
         },
         {
           "name": "comparison_asset_id",
@@ -21642,7 +22018,23 @@
           "required_in_parent": true,
           "description": "Full-denominator aggregates, paired deltas in separate result artifact.",
           "schema_reference": null,
-          "rule_sha256": "4864e3b80f75e48073ba60072b258c91ee8f1fe6639721e195e53b6420334205"
+          "rule_sha256": "420bdf9eec042b2179cab564c1f52622350fa2bf920397206ff285c0842d5c54"
+        },
+        {
+          "name": "judge_policy_asset_id",
+          "pointer": "/properties/judge_policy_asset_id",
+          "required_in_parent": true,
+          "description": "Frozen judge policy asset, null for deterministic-only.",
+          "schema_reference": null,
+          "rule_sha256": "3fa2d911fea7eea25d33a9be90d3cead0398063d4e024f3229a7dde9c6417025"
+        },
+        {
+          "name": "judge_policy_sha256",
+          "pointer": "/properties/judge_policy_sha256",
+          "required_in_parent": true,
+          "description": "Exact policy asset byte hash.",
+          "schema_reference": null,
+          "rule_sha256": "346d5679ec59a5c8bfdaf0d61c0ede2fa93c0c27ead12d5f2d76f6759e3a6541"
         },
         {
           "name": "id",
@@ -21691,6 +22083,14 @@
           "description": "Explicit semantic judge profile with linguistic_audit role, null if deterministic only.",
           "schema_reference": null,
           "rule_sha256": "e6716dba7d6444eb222e4619932cffdc24d2ddbaff674462bbdead0b810a0ab7"
+        },
+        {
+          "name": "configuration_asset_id",
+          "pointer": "/properties/variants/items/properties/configuration_asset_id",
+          "required_in_parent": true,
+          "description": "Actual complete saved configuration, never mutable settings.",
+          "schema_reference": null,
+          "rule_sha256": "f9ac180daaad239a57d49eaedaf426624171144f0ffd76669c47807a531c0bd2"
         },
         {
           "name": "case_id",
@@ -21754,7 +22154,7 @@
           "required_in_parent": true,
           "description": "Supported row diagnostic observations.",
           "schema_reference": null,
-          "rule_sha256": "c1d81da7fd570335d54fbe0371b50dad411c5d3637528b229f5f8f74cb7961e9"
+          "rule_sha256": "fc6c865062643c30d994f4292afd27c36d876a06bd8518a36c12f99b70b3ed23"
         },
         {
           "name": "error_code",
@@ -21853,6 +22253,22 @@
           "rule_sha256": "c79c33f438b314bf2989c11ace2713c2c4f440e9bdb6a371311634bfcf7b6bf1"
         },
         {
+          "name": "sufficient_statistics",
+          "pointer": "/properties/rows/items/properties/metrics/items/properties/sufficient_statistics",
+          "required_in_parent": true,
+          "description": "Unreduced counts/amounts with registry variable names.",
+          "schema_reference": null,
+          "rule_sha256": "ab0a794080c1cfa47e117c246c2884a5c27bfbdf594cbd450654503c821464fc"
+        },
+        {
+          "name": "known_subtotal",
+          "pointer": "/properties/rows/items/properties/metrics/items/properties/known_subtotal",
+          "required_in_parent": true,
+          "description": "Exact known token or USD subtotal when total is unavailable.",
+          "schema_reference": null,
+          "rule_sha256": "186539db263f396535fcca796ba449ac7e4ce0e9974cfafd9d176007a2049fe1"
+        },
+        {
           "name": "variant_id",
           "pointer": "/properties/aggregates/items/properties/variant_id",
           "required_in_parent": true,
@@ -21866,7 +22282,7 @@
           "required_in_parent": true,
           "description": "Metric observation under domain/llm-quality-metrics.v1.json.",
           "schema_reference": null,
-          "rule_sha256": "cd6ca1ec8a479b75e30fc8d1fb0782c5ff424683c39c059acf916336b11a479b"
+          "rule_sha256": "6b528e43e176ed2c4ccd010049c813052070dedf30c595eac01199eeefd7ad3d"
         },
         {
           "name": "metric_id",
@@ -21947,6 +22363,238 @@
           "description": "Unavailable/inapplicable rows explicitly reported.",
           "schema_reference": null,
           "rule_sha256": "c79c33f438b314bf2989c11ace2713c2c4f440e9bdb6a371311634bfcf7b6bf1"
+        },
+        {
+          "name": "sufficient_statistics",
+          "pointer": "/properties/aggregates/items/properties/metric/properties/sufficient_statistics",
+          "required_in_parent": true,
+          "description": "Unreduced counts/amounts with registry variable names.",
+          "schema_reference": null,
+          "rule_sha256": "ab0a794080c1cfa47e117c246c2884a5c27bfbdf594cbd450654503c821464fc"
+        },
+        {
+          "name": "known_subtotal",
+          "pointer": "/properties/aggregates/items/properties/metric/properties/known_subtotal",
+          "required_in_parent": true,
+          "description": "Exact known token or USD subtotal when total is unavailable.",
+          "schema_reference": null,
+          "rule_sha256": "186539db263f396535fcca796ba449ac7e4ce0e9974cfafd9d176007a2049fe1"
+        },
+        {
+          "name": "prompt_text",
+          "pointer": "/$defs/judge_policy/properties/prompt_text",
+          "required_in_parent": true,
+          "description": "Exact trusted diagnostic judge text.",
+          "schema_reference": null,
+          "rule_sha256": "b6fc905c99b2822b142e6959790c9bb4a062f72b8f7598ffbadc48c78281fd90"
+        },
+        {
+          "name": "prompt_sha256",
+          "pointer": "/$defs/judge_policy/properties/prompt_sha256",
+          "required_in_parent": true,
+          "description": "Prompt UTF-8 bytes.",
+          "schema_reference": null,
+          "rule_sha256": "6f77145792d754b6cd73d64bb9f7cc2d084e9080905b9bc646deb48d86deb0d2"
+        },
+        {
+          "name": "rubric_version",
+          "pointer": "/$defs/judge_policy/properties/rubric_version",
+          "required_in_parent": true,
+          "description": "Frozen rubric version.",
+          "schema_reference": null,
+          "rule_sha256": "561df355b1f42ec0fd638a85a972db8fa98148c9030645acc5854bcfeeb9cf7a"
+        },
+        {
+          "name": "rubric_text",
+          "pointer": "/$defs/judge_policy/properties/rubric_text",
+          "required_in_parent": true,
+          "description": "Exact selected rubric.",
+          "schema_reference": null,
+          "rule_sha256": "e0f7d8579eed26afb5e9f1c1d1af4b66d44385c323470af42904d09f95184aa9"
+        },
+        {
+          "name": "input_schema_sha256",
+          "pointer": "/$defs/judge_policy/properties/input_schema_sha256",
+          "required_in_parent": true,
+          "description": "Actual judge-input schema bytes.",
+          "schema_reference": null,
+          "rule_sha256": "9c364e89d698576a9fcaff5018145c959634ba6cf9163ee6862b75ca0f5da6b7"
+        },
+        {
+          "name": "output_schema_sha256",
+          "pointer": "/$defs/judge_policy/properties/output_schema_sha256",
+          "required_in_parent": true,
+          "description": "Actual judge-output schema bytes.",
+          "schema_reference": null,
+          "rule_sha256": "76978245d4e5fff9c65a320a8f81df6d1d3a32d0a216de1f4b9136385f35074d"
+        },
+        {
+          "name": "baseline_variant_id",
+          "pointer": "/$defs/comparison/items/properties/baseline_variant_id",
+          "required_in_parent": true,
+          "description": "Selected baseline.",
+          "schema_reference": null,
+          "rule_sha256": "7b6aa744bcf26e024a225d01bfc293320ee1cfe656cb6b0cc8a167701dfba1f1"
+        },
+        {
+          "name": "candidate_variant_id",
+          "pointer": "/$defs/comparison/items/properties/candidate_variant_id",
+          "required_in_parent": true,
+          "description": "Selected candidate.",
+          "schema_reference": null,
+          "rule_sha256": "8da020481ecacc65347a5570df396c2c6ba0091794699ea3bfe4bd95a1d9b4f2"
+        },
+        {
+          "name": "metric_id",
+          "pointer": "/$defs/comparison/items/properties/metric_id",
+          "required_in_parent": true,
+          "description": "Diagnostic identity.",
+          "schema_reference": null,
+          "rule_sha256": "ae2f772e9a4ed9047d1208b2610111ecd2925bbaa4b52269079024cb08d0fb7e"
+        },
+        {
+          "name": "paired_row_keys",
+          "pointer": "/$defs/comparison/items/properties/paired_row_keys",
+          "required_in_parent": true,
+          "description": "Actually paired applicable tuples.",
+          "schema_reference": null,
+          "rule_sha256": "762b55c24f499f263c537d2fb0f7826a01cfddaaba53afce5e3114fb167757e7"
+        },
+        {
+          "name": "excluded_row_keys",
+          "pointer": "/$defs/comparison/items/properties/excluded_row_keys",
+          "required_in_parent": true,
+          "description": "Reported exclusions.",
+          "schema_reference": null,
+          "rule_sha256": "e7044c6f271e2a8989dc9e5ed58b67d0dba8519836d91ca2f44746b92a9201e3"
+        },
+        {
+          "name": "baseline_value",
+          "pointer": "/$defs/comparison/items/properties/baseline_value",
+          "required_in_parent": true,
+          "description": "Exact reduced rational.",
+          "schema_reference": null,
+          "rule_sha256": "176256fa6249dc226ce85cc8b8912bf9ce3dbfc84c932669ae763c9ca3e3af31"
+        },
+        {
+          "name": "candidate_value",
+          "pointer": "/$defs/comparison/items/properties/candidate_value",
+          "required_in_parent": true,
+          "description": "Exact reduced rational.",
+          "schema_reference": null,
+          "rule_sha256": "176256fa6249dc226ce85cc8b8912bf9ce3dbfc84c932669ae763c9ca3e3af31"
+        },
+        {
+          "name": "candidate_minus_baseline",
+          "pointer": "/$defs/comparison/items/properties/candidate_minus_baseline",
+          "required_in_parent": true,
+          "description": "Exact reduced rational.",
+          "schema_reference": null,
+          "rule_sha256": "176256fa6249dc226ce85cc8b8912bf9ce3dbfc84c932669ae763c9ca3e3af31"
+        },
+        {
+          "name": "missing_reason",
+          "pointer": "/$defs/comparison/items/properties/missing_reason",
+          "required_in_parent": true,
+          "description": "Required when comparison unavailable.",
+          "schema_reference": null,
+          "rule_sha256": "339dc927e7e51181df62ab2c49a483140a5673d5e789f7795115b5e42e5f6ecb"
+        },
+        {
+          "name": "case_id",
+          "pointer": "/$defs/comparison/items/properties/paired_row_keys/items/properties/case_id",
+          "required_in_parent": true,
+          "description": "Dataset case.",
+          "schema_reference": null,
+          "rule_sha256": "de20cc49b27a05f320e7484dfa12df42dee0b59a24204a121f983ada6d759398"
+        },
+        {
+          "name": "repetition",
+          "pointer": "/$defs/comparison/items/properties/paired_row_keys/items/properties/repetition",
+          "required_in_parent": true,
+          "description": "One-based repetition.",
+          "schema_reference": null,
+          "rule_sha256": "dabc375bf0e30930801725ede733a7a70741a9b8e161b4eddb8cc5743b99410d"
+        },
+        {
+          "name": "key",
+          "pointer": "/$defs/comparison/items/properties/excluded_row_keys/items/properties/key",
+          "required_in_parent": true,
+          "description": "Paired tuple within named variants.",
+          "schema_reference": null,
+          "rule_sha256": "a4a0f7b211212e71bd38e7ab25b7a600f229fc7e144555256858b2cf591fde2c"
+        },
+        {
+          "name": "reason",
+          "pointer": "/$defs/comparison/items/properties/excluded_row_keys/items/properties/reason",
+          "required_in_parent": true,
+          "description": "Actual exclusion reason.",
+          "schema_reference": null,
+          "rule_sha256": "fd2570ec37ecf328182bfb8ce9b7a0ba8f38e29b9e6cae6ccb6cf0243002e6cb"
+        },
+        {
+          "name": "case_id",
+          "pointer": "/$defs/comparison/items/properties/excluded_row_keys/items/properties/key/properties/case_id",
+          "required_in_parent": true,
+          "description": "Dataset case.",
+          "schema_reference": null,
+          "rule_sha256": "de20cc49b27a05f320e7484dfa12df42dee0b59a24204a121f983ada6d759398"
+        },
+        {
+          "name": "repetition",
+          "pointer": "/$defs/comparison/items/properties/excluded_row_keys/items/properties/key/properties/repetition",
+          "required_in_parent": true,
+          "description": "One-based repetition.",
+          "schema_reference": null,
+          "rule_sha256": "dabc375bf0e30930801725ede733a7a70741a9b8e161b4eddb8cc5743b99410d"
+        },
+        {
+          "name": "numerator",
+          "pointer": "/$defs/comparison/items/properties/baseline_value/anyOf/0/properties/numerator",
+          "required_in_parent": true,
+          "description": "Signed integer numerator.",
+          "schema_reference": null,
+          "rule_sha256": "e1b28c298a7a7b430ad00f0fbede40124d38ae6d751604d9b4beb97c4803b8a8"
+        },
+        {
+          "name": "denominator",
+          "pointer": "/$defs/comparison/items/properties/baseline_value/anyOf/0/properties/denominator",
+          "required_in_parent": true,
+          "description": "Positive integer denominator.",
+          "schema_reference": null,
+          "rule_sha256": "b145e0cb5efd33df058a606c8dd50ab8534f4808baa062180fac0ccc10b2d456"
+        },
+        {
+          "name": "numerator",
+          "pointer": "/$defs/comparison/items/properties/candidate_value/anyOf/0/properties/numerator",
+          "required_in_parent": true,
+          "description": "Signed integer numerator.",
+          "schema_reference": null,
+          "rule_sha256": "e1b28c298a7a7b430ad00f0fbede40124d38ae6d751604d9b4beb97c4803b8a8"
+        },
+        {
+          "name": "denominator",
+          "pointer": "/$defs/comparison/items/properties/candidate_value/anyOf/0/properties/denominator",
+          "required_in_parent": true,
+          "description": "Positive integer denominator.",
+          "schema_reference": null,
+          "rule_sha256": "b145e0cb5efd33df058a606c8dd50ab8534f4808baa062180fac0ccc10b2d456"
+        },
+        {
+          "name": "numerator",
+          "pointer": "/$defs/comparison/items/properties/candidate_minus_baseline/anyOf/0/properties/numerator",
+          "required_in_parent": true,
+          "description": "Signed integer numerator.",
+          "schema_reference": null,
+          "rule_sha256": "e1b28c298a7a7b430ad00f0fbede40124d38ae6d751604d9b4beb97c4803b8a8"
+        },
+        {
+          "name": "denominator",
+          "pointer": "/$defs/comparison/items/properties/candidate_minus_baseline/anyOf/0/properties/denominator",
+          "required_in_parent": true,
+          "description": "Positive integer denominator.",
+          "schema_reference": null,
+          "rule_sha256": "b145e0cb5efd33df058a606c8dd50ab8534f4808baa062180fac0ccc10b2d456"
         }
       ]
     },
@@ -22190,7 +22838,7 @@
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload with linked private assets",
-      "sha256": "5686f5e92a3c5b3308db3167ac68c8af43b74320e5768a2751469caab2bcc314",
+      "sha256": "a094d3ba8e14e3a6dd6edf115cc827bf812c83a2b18fd28f3c8f41c2fdd44641",
       "fields": [
         {
           "name": "schema_version",
@@ -22230,7 +22878,7 @@
           "required_in_parent": true,
           "description": "Exactly nine current manifest stage/phase bindings; no missing or duplicate pair.",
           "schema_reference": null,
-          "rule_sha256": "84759fdf81d5912547a1cd0eebd5cba86a9f6ffdc223064bf63e60f1b0121410"
+          "rule_sha256": "c3bf304d44e12353f54f1df0b9752bc31888a71a1f6f24b1b02bb9a8e1cb80ad"
         },
         {
           "name": "bundle_sha256",
@@ -22326,7 +22974,7 @@
           "required_in_parent": true,
           "description": "Stage context policy; obey docs/llm-lab.md and existing input schemas.",
           "schema_reference": null,
-          "rule_sha256": "f1621666b2db1017fa85e409a86a00575be26e64e50fc9927b6f25acfb7fdb25"
+          "rule_sha256": "99e39b469f2ee6c2ea3cced48cdf7565d82c65eb1816e73a17b96783c2da361d"
         },
         {
           "name": "context_policy_sha256",
@@ -22398,7 +23046,7 @@
           "required_in_parent": true,
           "description": "Stable assembly order for this stage.",
           "schema_reference": null,
-          "rule_sha256": "1a38028e543560cb0cecd3d8be2ad5b51ee3cd2f2cc4a53c3c5354f5b82ee24e"
+          "rule_sha256": "dfb9151290a06c2a9658c817c23c805d0a36e8b090e9bb776a319b167f49d0fe"
         },
         {
           "name": "template_variables",
@@ -22471,6 +23119,1222 @@
           "description": null,
           "schema_reference": null,
           "rule_sha256": "be5ac72348ac0f643845bd6d067291b863394c92680a17cba91f49f5e165e46c"
+        }
+      ]
+    },
+    {
+      "kind": "llm-quality-dataset",
+      "schema": "contracts/llm-quality-dataset.schema.json",
+      "schema_version": "2.0.0",
+      "persistent_domain_record": true,
+      "storage": "document.payload with linked private assets",
+      "sha256": "392bf249723882ead824b3cad9ed9be276c966d4c4a2fb387e4aefbb5d59ab01",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "Current specification contract.",
+          "schema_reference": null,
+          "rule_sha256": "21465f3639d0fe38d770c0f9fa077e799cde2b8583dd00af8959ccf23284d3be"
+        },
+        {
+          "name": "scope",
+          "pointer": "/properties/scope",
+          "required_in_parent": true,
+          "description": "Comparable input scope.",
+          "schema_reference": null,
+          "rule_sha256": "0908ccb8b7d89442e850cc5870257bd1add20ecf7b460bda2b4ea0765b3ef5ee"
+        },
+        {
+          "name": "stage",
+          "pointer": "/properties/stage",
+          "required_in_parent": true,
+          "description": "Stage under test.",
+          "schema_reference": null,
+          "rule_sha256": "3152ca3fdc42afc62b1a55a1cccc393b26692f3981b10c3e2fd8a13ef466b748"
+        },
+        {
+          "name": "phase",
+          "pointer": "/properties/phase",
+          "required_in_parent": true,
+          "description": "Generation phase; null for other stages.",
+          "schema_reference": null,
+          "rule_sha256": "559d59f8d16decd3b06464257cf3db48d57c6c2d61d84ddadd00f90a86149c22"
+        },
+        {
+          "name": "cases",
+          "pointer": "/properties/cases",
+          "required_in_parent": true,
+          "description": "Ordered unique frozen case records.",
+          "schema_reference": null,
+          "rule_sha256": "9b1ea381a1f93edb1a509c720b18e5327cc5b279815c460a817fb4cf4e221758"
+        },
+        {
+          "name": "dataset_sha256",
+          "pointer": "/properties/dataset_sha256",
+          "required_in_parent": true,
+          "description": "JCS dataset excluding this field.",
+          "schema_reference": null,
+          "rule_sha256": "c0c92a5ed088ff2bc3609f710c84336b67e54b1c8e583449c746c60e3bd93192"
+        },
+        {
+          "name": "ground_truth",
+          "pointer": "/$defs/answer_pipeline_input/properties/ground_truth",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": "ground-truth.schema.json",
+          "rule_sha256": "74004293b07814024865f30d9cfb8a3b90b9c5fd5f6fc1a47a519ed4450ca48d"
+        },
+        {
+          "name": "answer_asset_id",
+          "pointer": "/$defs/answer_pipeline_input/properties/answer_asset_id",
+          "required_in_parent": true,
+          "description": "Actual unchanged UTF-8 answer asset.",
+          "schema_reference": null,
+          "rule_sha256": "d64b87dbb9fe8e1ad1e3551b1d3d01ad8a2ee35ce9399d4bed503e7b8977394b"
+        },
+        {
+          "name": "answer_sha256",
+          "pointer": "/$defs/answer_pipeline_input/properties/answer_sha256",
+          "required_in_parent": true,
+          "description": "Original answer bytes.",
+          "schema_reference": null,
+          "rule_sha256": "020c4b640c7292d3132daa6a00d6f77734094cbd36eb6b5b9975b6b1f0162338"
+        },
+        {
+          "name": "task_components",
+          "pointer": "/$defs/answer_pipeline_input/properties/task_components",
+          "required_in_parent": true,
+          "description": "These flags freeze the requested answer components before the attempt.",
+          "schema_reference": null,
+          "rule_sha256": "4a29e21fdc8bf45e365048c2505798e497bd6763e146ed01025a407a39db762e"
+        },
+        {
+          "name": "detection",
+          "pointer": "/$defs/answer_pipeline_input/properties/task_components/properties/detection",
+          "required_in_parent": true,
+          "description": "This flag states whether the task requests error detection.",
+          "schema_reference": null,
+          "rule_sha256": "bd9d5628aa0271d22f1c782a87734cf7a875ba22e3aa7861bc0fd3f3f13c061a"
+        },
+        {
+          "name": "classification",
+          "pointer": "/$defs/answer_pipeline_input/properties/task_components/properties/classification",
+          "required_in_parent": true,
+          "description": "This flag states whether the task requests a category for each detected error.",
+          "schema_reference": null,
+          "rule_sha256": "dd69e9da804d52c18f128da949393993a27bd5e62691c6d52a9fa9017ed9855c"
+        },
+        {
+          "name": "correction",
+          "pointer": "/$defs/answer_pipeline_input/properties/task_components/properties/correction",
+          "required_in_parent": true,
+          "description": "This flag or object describes correction requirements or decisions in its parent contract.",
+          "schema_reference": null,
+          "rule_sha256": "34c496f350802fd9caf368506f804d445382039a44cc653611d85063f9d5bb2f"
+        },
+        {
+          "name": "explanation",
+          "pointer": "/$defs/answer_pipeline_input/properties/task_components/properties/explanation",
+          "required_in_parent": true,
+          "description": "This flag or object describes explanation requirements or judgments in its parent contract.",
+          "schema_reference": null,
+          "rule_sha256": "99711cd882ee7f7adc2a673eec5017cc505704dbad7daba815147efafc04f5ee"
+        }
+      ]
+    },
+    {
+      "kind": "llm-quality-judge-input",
+      "schema": "contracts/llm-quality-judge-input.schema.json",
+      "schema_version": "2.0.0",
+      "persistent_domain_record": true,
+      "storage": "document.payload with linked private assets",
+      "sha256": "47687323af3cc16dc46453a84a1c29970296886eb397e8bdbf6bb2beacb2e542",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "Current specification contract.",
+          "schema_reference": null,
+          "rule_sha256": "21465f3639d0fe38d770c0f9fa077e799cde2b8583dd00af8959ccf23284d3be"
+        },
+        {
+          "name": "case_id",
+          "pointer": "/properties/case_id",
+          "required_in_parent": true,
+          "description": "Dataset row identity.",
+          "schema_reference": null,
+          "rule_sha256": "21641cc5a0a46f4b91ef8317f65331d4f73335202f3156ed8b6554aa3df229c8"
+        },
+        {
+          "name": "scope",
+          "pointer": "/properties/scope",
+          "required_in_parent": true,
+          "description": "Comparable input scope.",
+          "schema_reference": null,
+          "rule_sha256": "0908ccb8b7d89442e850cc5870257bd1add20ecf7b460bda2b4ea0765b3ef5ee"
+        },
+        {
+          "name": "expectation_basis",
+          "pointer": "/properties/expectation_basis",
+          "required_in_parent": true,
+          "description": "Reference basis; independent_llm requires its actual independent receipt.",
+          "schema_reference": null,
+          "rule_sha256": "9176dbbd571e56c8b8e941a165e67b421eaf73e158329568748dbb6b85573cc4"
+        },
+        {
+          "name": "context_asset_ids",
+          "pointer": "/properties/context_asset_ids",
+          "required_in_parent": true,
+          "description": "Frozen supplied references.",
+          "schema_reference": null,
+          "rule_sha256": "135cdbed46f70aa7131e0a93938d230611402b2ffabcc0833ddc80606e9ef49b"
+        },
+        {
+          "name": "context",
+          "pointer": "/properties/context",
+          "required_in_parent": true,
+          "description": "No undeclared external context.",
+          "schema_reference": null,
+          "rule_sha256": "252cd124ec868580d25c15dc487099997d06ee7835733262773d4a4156c98434"
+        },
+        {
+          "name": "candidate_asset_id",
+          "pointer": "/properties/candidate_asset_id",
+          "required_in_parent": true,
+          "description": "Actual candidate output asset.",
+          "schema_reference": null,
+          "rule_sha256": "3ec436688a94caf33684eeebd5f1da3ba0f0762cea4f390e03097fefa5de4aa5"
+        },
+        {
+          "name": "candidate_sha256",
+          "pointer": "/properties/candidate_sha256",
+          "required_in_parent": true,
+          "description": "Candidate bytes.",
+          "schema_reference": null,
+          "rule_sha256": "6ebad2e51b0fcfb864386e916bf852d7234fffecc00494b2425b609c5605f587"
+        },
+        {
+          "name": "candidate_output",
+          "pointer": "/properties/candidate_output",
+          "required_in_parent": true,
+          "description": "Actual projected candidate JSON or visible text.",
+          "schema_reference": null,
+          "rule_sha256": "00c3bdf25903d4b0c2d7b275ccde0669d57001ba46c32457d80d4ca49d51fc7a"
+        },
+        {
+          "name": "propositions",
+          "pointer": "/properties/propositions",
+          "required_in_parent": true,
+          "description": "Requested propositions, not numeric grades.",
+          "schema_reference": null,
+          "rule_sha256": "fcbe8c129a4176780ebf23d629d6b9b3bc9af384b88858f3ec6ad70b4437d838"
+        },
+        {
+          "name": "reference_receipt_ids",
+          "pointer": "/properties/reference_receipt_ids",
+          "required_in_parent": true,
+          "description": "Reference origins; empty for authored assertions.",
+          "schema_reference": null,
+          "rule_sha256": "122fb2bbf23689aa4ecd1aaf94ce605d43114166feb44948a21cef1cbe3837f3"
+        },
+        {
+          "name": "asset_id",
+          "pointer": "/properties/context/items/properties/asset_id",
+          "required_in_parent": true,
+          "description": "Asset identity.",
+          "schema_reference": null,
+          "rule_sha256": "d5fc5e9be70f989cb64e63226540f5654f4fc20cca1dfeaa4ec82a713d6d0f2d"
+        },
+        {
+          "name": "sha256",
+          "pointer": "/properties/context/items/properties/sha256",
+          "required_in_parent": true,
+          "description": "Original asset bytes.",
+          "schema_reference": null,
+          "rule_sha256": "ec3de879123a6d917b2a26ba3e858ee570288a70fc5ac84023cb28165ffd1735"
+        },
+        {
+          "name": "body",
+          "pointer": "/properties/context/items/properties/body",
+          "required_in_parent": true,
+          "description": "Exact supplied JSON/text data.",
+          "schema_reference": null,
+          "rule_sha256": "32cc753a1c856aebdc42a0ec2e86f75bd294fbc0c490d434838fb4c8c5c20d7b"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/propositions/items/properties/id",
+          "required_in_parent": true,
+          "description": "Unique requested proposition.",
+          "schema_reference": null,
+          "rule_sha256": "97ec7daf3b8a267236567b7d537ba0df9b8a8639260c97f2d6cf40cfd3f95c4e"
+        },
+        {
+          "name": "proposition",
+          "pointer": "/properties/propositions/items/properties/proposition",
+          "required_in_parent": true,
+          "description": "Frozen semantic assertion.",
+          "schema_reference": null,
+          "rule_sha256": "ee86b282e67060643483f037e0dbd57caebd89855d43bd8e4465ec4b902fe3d6"
+        },
+        {
+          "name": "scope",
+          "pointer": "/properties/propositions/items/properties/scope",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "fcb32531e51e557241a5140cde32fe8c4017c0c73711f73bb8dd469b0c44a57f"
+        }
+      ]
+    },
+    {
+      "kind": "llm-quality-judge-output",
+      "schema": "contracts/llm-quality-judge-output.schema.json",
+      "schema_version": "2.0.0",
+      "persistent_domain_record": true,
+      "storage": "document.payload with linked private assets",
+      "sha256": "5b93475a8a3064f8ad37f072f96c91f8c51003512dd8401463fb2c34714b25fa",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "Current specification contract.",
+          "schema_reference": null,
+          "rule_sha256": "21465f3639d0fe38d770c0f9fa077e799cde2b8583dd00af8959ccf23284d3be"
+        },
+        {
+          "name": "verdicts",
+          "pointer": "/properties/verdicts",
+          "required_in_parent": true,
+          "description": "One verdict for every requested proposition, without duplicates.",
+          "schema_reference": null,
+          "rule_sha256": "938e50c6d027868e026a02c7d8a0c03133c91d57105af9716337cefa9f617a35"
+        },
+        {
+          "name": "proposition_id",
+          "pointer": "/properties/verdicts/items/properties/proposition_id",
+          "required_in_parent": true,
+          "description": "One input proposition.",
+          "schema_reference": null,
+          "rule_sha256": "d4fccefe5b04a5ff143321c1b13d223e42694b572cc478e0d08c7d9a20d0882a"
+        },
+        {
+          "name": "verdict",
+          "pointer": "/properties/verdicts/items/properties/verdict",
+          "required_in_parent": true,
+          "description": "Semantic finding, never numeric score.",
+          "schema_reference": null,
+          "rule_sha256": "7d20ad4f3d5aad9e72b8aaeb743ee5b7292537748b5ca4f1728434be667e9e9b"
+        },
+        {
+          "name": "reason",
+          "pointer": "/properties/verdicts/items/properties/reason",
+          "required_in_parent": true,
+          "description": "Reason grounded in supplied context.",
+          "schema_reference": null,
+          "rule_sha256": "41ba832be2de791621fee0f7e52a9d081f7aea76103a7d502120186503a9060d"
+        },
+        {
+          "name": "evidence",
+          "pointer": "/properties/verdicts/items/properties/evidence",
+          "required_in_parent": true,
+          "description": "Actual support, empty when unavailable.",
+          "schema_reference": null,
+          "rule_sha256": "0f01aa6282056ba3ec9ba2ce1c60b1c231f804b9fa5623f08c5a82b7e0ad872b"
+        },
+        {
+          "name": "missing_reason",
+          "pointer": "/properties/verdicts/items/properties/missing_reason",
+          "required_in_parent": true,
+          "description": "Required for unknown, null otherwise.",
+          "schema_reference": null,
+          "rule_sha256": "4f3b9f4be39cff59ed49b712b7f7d3b88bd8bcf9134b6102ea5e63eefd491403"
+        },
+        {
+          "name": "asset_id",
+          "pointer": "/properties/verdicts/items/properties/evidence/items/properties/asset_id",
+          "required_in_parent": true,
+          "description": "Supplied candidate/context asset.",
+          "schema_reference": null,
+          "rule_sha256": "ba2fe05c73013fba02e66f625af34f4a25f30e1baed076f5da7f24bedd000d2f"
+        },
+        {
+          "name": "pointer",
+          "pointer": "/properties/verdicts/items/properties/evidence/items/properties/pointer",
+          "required_in_parent": true,
+          "description": "RFC6901 pointer or text codepoint locator as declared by its asset.",
+          "schema_reference": null,
+          "rule_sha256": "7db1ae9cfeb350f78b84fc65c0fff0b91159594e30dee3c05044ce8b7a62d5bd"
+        }
+      ]
+    },
+    {
+      "kind": "mutation-manifest",
+      "schema": "contracts/mutation-manifest.schema.json",
+      "schema_version": "2.0.0",
+      "persistent_domain_record": true,
+      "storage": "document.payload with linked private assets",
+      "sha256": "6c6f3a4870c5c0188c84756351a5f37217ccf00165151aedf8bea2f95d6681f6",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "Current specification contract.",
+          "schema_reference": null,
+          "rule_sha256": "21465f3639d0fe38d770c0f9fa077e799cde2b8583dd00af8959ccf23284d3be"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/id",
+          "required_in_parent": true,
+          "description": "Server assigned manifest identity.",
+          "schema_reference": null,
+          "rule_sha256": "8e5db7b12ff130eeb2bcdb65e3b4735b2832859ac0261bb3288f988e4bb47707"
+        },
+        {
+          "name": "canonical_asset_id",
+          "pointer": "/properties/canonical_asset_id",
+          "required_in_parent": true,
+          "description": "Actual saved baseline.",
+          "schema_reference": null,
+          "rule_sha256": "1d0e0ad5d868de3e984e78c661a57d5d052601a5b67c558089f06d202d80bdee"
+        },
+        {
+          "name": "canonical_sha256",
+          "pointer": "/properties/canonical_sha256",
+          "required_in_parent": true,
+          "description": "JCS saved baseline hash.",
+          "schema_reference": null,
+          "rule_sha256": "ca270057dbffc6084fb9121367a1c2e7f5d3eed7288c7f8c18803398f284fa2c"
+        },
+        {
+          "name": "mutated_asset_id",
+          "pointer": "/properties/mutated_asset_id",
+          "required_in_parent": true,
+          "description": "Actual saved mutation candidate.",
+          "schema_reference": null,
+          "rule_sha256": "4078e16d33caba64c307ae7f03b47932548c87e92878a5961fa1c3cf1e1bdae9"
+        },
+        {
+          "name": "mutated_sha256",
+          "pointer": "/properties/mutated_sha256",
+          "required_in_parent": true,
+          "description": "JCS mutation candidate hash.",
+          "schema_reference": null,
+          "rule_sha256": "9774c5c337f97939814a84fdf518f467ee51c17378084b51ddaca1c71c3d0ccb"
+        },
+        {
+          "name": "recipe_registry_sha256",
+          "pointer": "/properties/recipe_registry_sha256",
+          "required_in_parent": true,
+          "description": "Exact original registry byte hash.",
+          "schema_reference": null,
+          "rule_sha256": "4ef3f2d572ca22748c540750963b18945b3b6c5c747d0386cf96f5e2be1e2ebf"
+        },
+        {
+          "name": "recipe_ids",
+          "pointer": "/properties/recipe_ids",
+          "required_in_parent": true,
+          "description": "Selected recipes.",
+          "schema_reference": null,
+          "rule_sha256": "652b492b18f6f5b7559944a389659c57dbfddc99fffa5368b672b251273d7458"
+        },
+        {
+          "name": "seed",
+          "pointer": "/properties/seed",
+          "required_in_parent": true,
+          "description": "Actual seed if used, not LLM determinism.",
+          "schema_reference": null,
+          "rule_sha256": "625604a816209a449704fc921fffddbdcddd7d40e91e7216e67484ea3b844490"
+        },
+        {
+          "name": "method_version",
+          "pointer": "/properties/method_version",
+          "required_in_parent": true,
+          "description": "Actual diff/replay method.",
+          "schema_reference": null,
+          "rule_sha256": "6a2fcfe20bf9d3824d763aa744aab8d8175a72aca8f43fcb9b1e63f3ca94374b"
+        },
+        {
+          "name": "canonical_word_count",
+          "pointer": "/properties/canonical_word_count",
+          "required_in_parent": true,
+          "description": "Whitespace word count.",
+          "schema_reference": null,
+          "rule_sha256": "2749dbd436c999908382b00a6d176d8ce48e6f571982af505e797a36efe465d3"
+        },
+        {
+          "name": "surface_word_count",
+          "pointer": "/properties/surface_word_count",
+          "required_in_parent": true,
+          "description": "Whitespace word count.",
+          "schema_reference": null,
+          "rule_sha256": "2749dbd436c999908382b00a6d176d8ce48e6f571982af505e797a36efe465d3"
+        },
+        {
+          "name": "edits",
+          "pointer": "/properties/edits",
+          "required_in_parent": true,
+          "description": "Complete textual change list.",
+          "schema_reference": null,
+          "rule_sha256": "b17afe7794371c9c47ad25d5dd7b6d5a87c0b76825f3e88bece0924c6b44d80d"
+        },
+        {
+          "name": "acoustic_intents",
+          "pointer": "/properties/acoustic_intents",
+          "required_in_parent": true,
+          "description": "Acoustic/temporal intents, not observed sound.",
+          "schema_reference": null,
+          "rule_sha256": "0bfce9fa9fdcb69915cb95af6c56c604c793a3eb768456a9f7b19becd61f9221"
+        },
+        {
+          "name": "planned_units",
+          "pointer": "/properties/planned_units",
+          "required_in_parent": true,
+          "description": "These records describe proposed targets before acoustic realization and review.",
+          "schema_reference": null,
+          "rule_sha256": "982f7a20d42c1283dc2389066313852598f5c5b6aca0e93b3cedf1eede9cb112"
+        },
+        {
+          "name": "manifest_sha256",
+          "pointer": "/properties/manifest_sha256",
+          "required_in_parent": true,
+          "description": "JCS manifest excluding this field.",
+          "schema_reference": null,
+          "rule_sha256": "15854c54148d6782db8ac8831259d927226d35c9bb1b63d6781ffacedb5f6c60"
+        },
+        {
+          "name": "utterance_id",
+          "pointer": "/properties/edits/items/properties/utterance_id",
+          "required_in_parent": true,
+          "description": "Fixed utterance identity.",
+          "schema_reference": null,
+          "rule_sha256": "7dc23f5bccf21f6450eeb8d52c2a7983e6099df46f8257b916978a26ec754600"
+        },
+        {
+          "name": "start_cp",
+          "pointer": "/properties/edits/items/properties/start_cp",
+          "required_in_parent": true,
+          "description": "Included original canonical codepoint.",
+          "schema_reference": null,
+          "rule_sha256": "cadcbca871ecced1d7c20759fee916dcb9b2b4ef2ddabd54abe4fcd50ff0df9c"
+        },
+        {
+          "name": "end_cp",
+          "pointer": "/properties/edits/items/properties/end_cp",
+          "required_in_parent": true,
+          "description": "Excluded original canonical codepoint.",
+          "schema_reference": null,
+          "rule_sha256": "bc2a4dc0173410516c7593d2367814f37db2f5b2e3dc42d3b092e91a4d00038a"
+        },
+        {
+          "name": "original_text",
+          "pointer": "/properties/edits/items/properties/original_text",
+          "required_in_parent": true,
+          "description": "Exact canonical slice.",
+          "schema_reference": null,
+          "rule_sha256": "d0174436018d6c4d5de3c54c04423d3995fb2f385ac633b6eb02521b6b7ec199"
+        },
+        {
+          "name": "replacement_text",
+          "pointer": "/properties/edits/items/properties/replacement_text",
+          "required_in_parent": true,
+          "description": "Literal replacement.",
+          "schema_reference": null,
+          "rule_sha256": "dd8f682d62ff8dbf172bfa293051f3129ab993408515b896cc29c0969173b8fe"
+        },
+        {
+          "name": "order",
+          "pointer": "/properties/edits/items/properties/order",
+          "required_in_parent": true,
+          "description": "Stable order of boundary insertions.",
+          "schema_reference": null,
+          "rule_sha256": "79f795d7243acc6296099af2ebaea7bd3b5d3a1db93fa712d278b969df43e4b1"
+        },
+        {
+          "name": "unit_ids",
+          "pointer": "/properties/edits/items/properties/unit_ids",
+          "required_in_parent": true,
+          "description": "One or more units sharing this edit.",
+          "schema_reference": null,
+          "rule_sha256": "6a067a34e602e667504f7c11565ec5e49ff2d584b631ff0eb76f4fb94d6ee7cb"
+        },
+        {
+          "name": "unit_id",
+          "pointer": "/properties/acoustic_intents/items/properties/unit_id",
+          "required_in_parent": true,
+          "description": "Planned unit identity.",
+          "schema_reference": null,
+          "rule_sha256": "17760b4217ddea56bf3e49b1c28db9fb4b91e986bdaa8f3e0de9195a6482be68"
+        },
+        {
+          "name": "utterance_id",
+          "pointer": "/properties/acoustic_intents/items/properties/utterance_id",
+          "required_in_parent": true,
+          "description": "Surface scope.",
+          "schema_reference": null,
+          "rule_sha256": "ef28031ba19cbd26740f7d9b60f8ea07d710303089d4952ce15b47dc00e0c1ca"
+        },
+        {
+          "name": "surface_start_cp",
+          "pointer": "/properties/acoustic_intents/items/properties/surface_start_cp",
+          "required_in_parent": true,
+          "description": "Included surface codepoint.",
+          "schema_reference": null,
+          "rule_sha256": "7396bd2f58d17b486c778305729bcb45e4d6f7dbd0ef1b6deeeff963feac8c7a"
+        },
+        {
+          "name": "surface_end_cp",
+          "pointer": "/properties/acoustic_intents/items/properties/surface_end_cp",
+          "required_in_parent": true,
+          "description": "Excluded surface codepoint.",
+          "schema_reference": null,
+          "rule_sha256": "c7522002390f5b2a3f7b3311c359ddd8587b5b2fed6c2978edf12007f31bf1d2"
+        },
+        {
+          "name": "realization",
+          "pointer": "/properties/acoustic_intents/items/properties/realization",
+          "required_in_parent": true,
+          "description": "This object separates the intended target, actual audio, and observed evidence.",
+          "schema_reference": null,
+          "rule_sha256": "a7dc95de3a3efd46adc6c1999820368ab18d557487af555ca9396c38b674d771"
+        },
+        {
+          "name": "mode",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/mode",
+          "required_in_parent": true,
+          "description": "This field selects the representation or review mode allowed by its parent contract.",
+          "schema_reference": null,
+          "rule_sha256": "90999913a3792d67cfd5c9ca6022cbbae03b704d1301ff08bf4f50cdae3a1e48"
+        },
+        {
+          "name": "canonical_text",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/canonical_text",
+          "required_in_parent": true,
+          "description": "This field contains the intended correct text before mutations.",
+          "schema_reference": null,
+          "rule_sha256": "fa7a0df1fc47ce196a543cc78597de7cc8ae4b6f7773f8f2016daf5b72245f7d"
+        },
+        {
+          "name": "surface_text",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/surface_text",
+          "required_in_parent": true,
+          "description": "This field contains the text after intentional textual mutations.",
+          "schema_reference": null,
+          "rule_sha256": "71809bcb946c9603cea23d535565dd3741c9061fe42c4e064e3fade6cee16ad8"
+        },
+        {
+          "name": "canonical_ipa",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/canonical_ipa",
+          "required_in_parent": true,
+          "description": "This field contains the reviewed reference pronunciation, not the observed sound.",
+          "schema_reference": null,
+          "rule_sha256": "5cca51aeb43996c937f4c6b845984816efc0da1287fa676b2847f7cc53d2d517"
+        },
+        {
+          "name": "intended_ipa",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/intended_ipa",
+          "required_in_parent": true,
+          "description": "This field contains the requested pronunciation, not an acoustic observation.",
+          "schema_reference": null,
+          "rule_sha256": "db6c3ceea4dcaa7138de601b4ce165f40d060d05cc54248492593f4d7de6eb64"
+        },
+        {
+          "name": "observed_ipa",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/observed_ipa",
+          "required_in_parent": true,
+          "description": "This field records the pronunciation that a native annotation, measured evidence or modality-labelled LLM inference supports.",
+          "schema_reference": null,
+          "rule_sha256": "36d1c14575642a8047e22b8ab5130972a99045447227f2cf4c184c42ce7a8f23"
+        },
+        {
+          "name": "prosody",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/prosody",
+          "required_in_parent": true,
+          "description": "This object states the bounded prosodic target or reviewed correction.",
+          "schema_reference": null,
+          "rule_sha256": "76a64a9848376168ad2c632063d085f29646a53639ebefaa2cd89412564fc5a2"
+        },
+        {
+          "name": "pace_target_wpm",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/pace_target_wpm",
+          "required_in_parent": true,
+          "description": "This field gives the requested pace in words per minute.",
+          "schema_reference": null,
+          "rule_sha256": "7f642b1d09b41a73335184a982d408c70adacf99404c3b09bbdb68cb217c49c2"
+        },
+        {
+          "name": "observed_pace_wpm",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/observed_pace_wpm",
+          "required_in_parent": true,
+          "description": "This field gives measured pace in words per minute.",
+          "schema_reference": null,
+          "rule_sha256": "419b1b31b797a80ac38df551e0dd31191321d0f8261a102a10d6d3826c5080f5"
+        },
+        {
+          "name": "planned_pause_ms",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/planned_pause_ms",
+          "required_in_parent": true,
+          "description": "This field gives the planned pause duration, not its observed duration.",
+          "schema_reference": null,
+          "rule_sha256": "b574614f2d18d3ff66e60e25ba1213989988ce6b155c930c2d920a2400fbb33d"
+        },
+        {
+          "name": "observed_pause_ms",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/observed_pause_ms",
+          "required_in_parent": true,
+          "description": "This field gives measured pause duration in milliseconds.",
+          "schema_reference": null,
+          "rule_sha256": "543ce9419382616b645d3b67d96d75c727560d87dbbc2292ce4a4c5875621047"
+        },
+        {
+          "name": "feature",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/prosody/items/properties/feature",
+          "required_in_parent": true,
+          "description": "This name identifies the measured or requested feature inside the typed parent object.",
+          "schema_reference": null,
+          "rule_sha256": "c0929e7a4a71392df5f561f0e3eb6337ace5fcc0d6262791000fcd798e0c67aa"
+        },
+        {
+          "name": "target_label",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/prosody/items/properties/target_label",
+          "required_in_parent": true,
+          "description": "This field names the declared phonetic or prosodic target without claiming observation.",
+          "schema_reference": null,
+          "rule_sha256": "d9e735dbb856d8b72c7d4729b10ae6663d78ab161a380535d8763f35541e6478"
+        },
+        {
+          "name": "lower",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/prosody/items/properties/lower",
+          "required_in_parent": true,
+          "description": "This field contains the declared lower bound in the stated unit.",
+          "schema_reference": null,
+          "rule_sha256": "61a408b771f3e8b28e95ff191ccee6d3f5d4bee738f5466bd6f42ef4e8525669"
+        },
+        {
+          "name": "upper",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/prosody/items/properties/upper",
+          "required_in_parent": true,
+          "description": "This field contains the declared upper bound in the stated unit.",
+          "schema_reference": null,
+          "rule_sha256": "e828c4ddb3679cc067cfb22eb4d65d218506d6293cc23227ab0ae13618f44dad"
+        },
+        {
+          "name": "unit",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/prosody/items/properties/unit",
+          "required_in_parent": true,
+          "description": "This field identifies the measurement unit declared by the parent object.",
+          "schema_reference": null,
+          "rule_sha256": "214caea8d34ce09766838c5fc08c5a5d75b8abc21b1a28e80b985221e92faa1e"
+        },
+        {
+          "name": "observation",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/prosody/items/properties/observation",
+          "required_in_parent": true,
+          "description": "This field contains the reviewer observation, not a requested target.",
+          "schema_reference": null,
+          "rule_sha256": "6aeff77cac88b8082ec29516d085f1a5da9b27962f5014dff24ed12d50baa50b"
+        },
+        {
+          "name": "evidence_ids",
+          "pointer": "/properties/acoustic_intents/items/properties/realization/properties/prosody/items/properties/evidence_ids",
+          "required_in_parent": true,
+          "description": "These IDs identify actual supporting records within the permitted subject and version scope.",
+          "schema_reference": null,
+          "rule_sha256": "eb9273b3b2089a5e4cdd3255bc7d1aa0f5648dca8b3c1b46ad32fa1676da97e6"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/planned_units/items/properties/id",
+          "required_in_parent": true,
+          "description": "This value uniquely identifies the record within its declared entity and version scope.",
+          "schema_reference": null,
+          "rule_sha256": "a69f59160d4a894eec2f4ce273db2bdb26c5f450f29621b5900e8796275c39b2"
+        },
+        {
+          "name": "primary_taxonomy_id",
+          "pointer": "/properties/planned_units/items/properties/primary_taxonomy_id",
+          "required_in_parent": true,
+          "description": "This field selects the narrowest supported primary category for the unit.",
+          "schema_reference": null,
+          "rule_sha256": "186f1c34eae4717eb5f0ee513008434c6cc25670cc467e7dadfeb621629cb4d6"
+        },
+        {
+          "name": "accepted_taxonomy_ids",
+          "pointer": "/properties/planned_units/items/properties/accepted_taxonomy_ids",
+          "required_in_parent": true,
+          "description": "These registered taxonomy IDs can receive exact-category credit for this unit.",
+          "schema_reference": null,
+          "rule_sha256": "fb54c26c3b5a2e7169808331cfc40d78c25f8f05c09cbfd7e5a7bed483a29bf0"
+        },
+        {
+          "name": "secondary_taxonomy_ids",
+          "pointer": "/properties/planned_units/items/properties/secondary_taxonomy_ids",
+          "required_in_parent": true,
+          "description": "These categories describe the same event without adding detection opportunities.",
+          "schema_reference": null,
+          "rule_sha256": "7406665640d9b8eb1e27d4732327ec68f6f93dccc44f359348e348a8e497295c"
+        },
+        {
+          "name": "domain",
+          "pointer": "/properties/planned_units/items/properties/domain",
+          "required_in_parent": true,
+          "description": "This field names the primary reporting domain for the observation.",
+          "schema_reference": null,
+          "rule_sha256": "159d71dd0bd7c568bd70f02c0ab7b0e01a5c1b35bf2874360641dac8c3e65ce8"
+        },
+        {
+          "name": "expected_judgment",
+          "pointer": "/properties/planned_units/items/properties/expected_judgment",
+          "required_in_parent": true,
+          "description": "This field states whether the reviewed unit is a true error, permitted control, or excluded item.",
+          "schema_reference": null,
+          "rule_sha256": "ba23932f110c1a81d15403667f8f6702e4155f4fd8e3005e21681b97f1f26531"
+        },
+        {
+          "name": "status_label",
+          "pointer": "/properties/planned_units/items/properties/status_label",
+          "required_in_parent": true,
+          "description": "This field distinguishes error status from category and preferred style.",
+          "schema_reference": null,
+          "rule_sha256": "b98ffdb863b9b37bac2d4d51c01bcdf1a8529e015b4bfdde47742116d303c7bc"
+        },
+        {
+          "name": "utterance_ids",
+          "pointer": "/properties/planned_units/items/properties/utterance_ids",
+          "required_in_parent": true,
+          "description": "These identifiers locate all utterances needed to interpret the unit.",
+          "schema_reference": null,
+          "rule_sha256": "93bb29feb9f9ca80a99177a720a580f128ac328104aa1832a51bdfe4ca249c03"
+        },
+        {
+          "name": "text_spans",
+          "pointer": "/properties/planned_units/items/properties/text_spans",
+          "required_in_parent": true,
+          "description": "These entries locate target text in named utterances.",
+          "schema_reference": null,
+          "rule_sha256": "906077fda82af515f3f155504e4f2812c95b0293581ddc120d10a908f4d19f2d"
+        },
+        {
+          "name": "realization",
+          "pointer": "/properties/planned_units/items/properties/realization",
+          "required_in_parent": true,
+          "description": "This object separates the intended target, actual audio, and observed evidence.",
+          "schema_reference": null,
+          "rule_sha256": "a7dc95de3a3efd46adc6c1999820368ab18d557487af555ca9396c38b674d771"
+        },
+        {
+          "name": "severity",
+          "pointer": "/properties/planned_units/items/properties/severity",
+          "required_in_parent": true,
+          "description": "This field contains the reviewed severity class fixed before the attempt.",
+          "schema_reference": null,
+          "rule_sha256": "1efc548aa9c9c7904c44730b5c0b57011f1ab78e818406c557f2199e7f9696d7"
+        },
+        {
+          "name": "weight",
+          "pointer": "/properties/planned_units/items/properties/weight",
+          "required_in_parent": true,
+          "description": "This integer gives the fixed severity weight from the scoring policy.",
+          "schema_reference": null,
+          "rule_sha256": "73569b06649899825845230f2e1cfb00fbac9fab343d57bac42525200fc58852"
+        },
+        {
+          "name": "difficulty",
+          "pointer": "/properties/planned_units/items/properties/difficulty",
+          "required_in_parent": true,
+          "description": "This field contains the declared difficulty value only with its stated evidence status.",
+          "schema_reference": null,
+          "rule_sha256": "f2b0c2a4efa1ab1a1463fb402727bf6c93694f818f09ad03e28f364e9f49b158"
+        },
+        {
+          "name": "correction_eligible",
+          "pointer": "/properties/planned_units/items/properties/correction_eligible",
+          "required_in_parent": true,
+          "description": "This flag states whether the true unit has a correction opportunity.",
+          "schema_reference": null,
+          "rule_sha256": "29f72171efe322ce1fcdf0bd88e921219e3bda24d11fe4d8992bc5685c833d80"
+        },
+        {
+          "name": "corrections",
+          "pointer": "/properties/planned_units/items/properties/corrections",
+          "required_in_parent": true,
+          "description": "These options define reviewed repairs and their proposition constraints.",
+          "schema_reference": null,
+          "rule_sha256": "9e3fbfa0d38cc06bc4c29f2fef36b8ab6e8bbd8a35ed4160be7170596a7aca47"
+        },
+        {
+          "name": "explanation_eligible",
+          "pointer": "/properties/planned_units/items/properties/explanation_eligible",
+          "required_in_parent": true,
+          "description": "This flag states whether the unit has an explanation opportunity.",
+          "schema_reference": null,
+          "rule_sha256": "27bcb548f104cdfb45f3ab206a2f5c3d9580ec956eaae11842bf798eef9f555e"
+        },
+        {
+          "name": "rationale_required_propositions",
+          "pointer": "/properties/planned_units/items/properties/rationale_required_propositions",
+          "required_in_parent": true,
+          "description": "These assertions are necessary for full explanation credit.",
+          "schema_reference": null,
+          "rule_sha256": "25d6057cb132d98ce186969fa3c377364df4052eb0ddb337089300d219a30c23"
+        },
+        {
+          "name": "rationale_forbidden_propositions",
+          "pointer": "/properties/planned_units/items/properties/rationale_forbidden_propositions",
+          "required_in_parent": true,
+          "description": "These assertions make the explanation incorrect under its reviewed criteria.",
+          "schema_reference": null,
+          "rule_sha256": "d368576b546765c7b2e58b57f2078da20e4b76092eb4ad9ee5e8b0367776907e"
+        },
+        {
+          "name": "rationale",
+          "pointer": "/properties/planned_units/items/properties/rationale",
+          "required_in_parent": true,
+          "description": "This field contains the reviewed reason for the correction or judgment.",
+          "schema_reference": null,
+          "rule_sha256": "ab62c6ce60d18242aa7d7bb0c110583b00343cc2faf6691bddbf505cbe92f26d"
+        },
+        {
+          "name": "utterance_id",
+          "pointer": "/properties/planned_units/items/properties/text_spans/items/properties/utterance_id",
+          "required_in_parent": true,
+          "description": "This identifier locates one utterance in the fixed case version.",
+          "schema_reference": null,
+          "rule_sha256": "b4a6f8391258fb467856ea10da864413ea7d27a78cce9a6b85bf6eee3348813c"
+        },
+        {
+          "name": "span",
+          "pointer": "/properties/planned_units/items/properties/text_spans/items/properties/span",
+          "required_in_parent": true,
+          "description": "This object gives exact codepoint offsets and the corresponding original text.",
+          "schema_reference": null,
+          "rule_sha256": "190c4d90a6eb4b24228a892c7c9b808c4dd78670bbe7cf689a3b61a0b028bc42"
+        },
+        {
+          "name": "start_cp",
+          "pointer": "/properties/planned_units/items/properties/text_spans/items/properties/span/properties/start_cp",
+          "required_in_parent": true,
+          "description": "This offset is the included start of a Unicode codepoint span.",
+          "schema_reference": null,
+          "rule_sha256": "78857e6e03d9420ada91fb4a408c164c0cf75c1ad1abe77d23a711a852a7c1e4"
+        },
+        {
+          "name": "end_cp",
+          "pointer": "/properties/planned_units/items/properties/text_spans/items/properties/span/properties/end_cp",
+          "required_in_parent": true,
+          "description": "This offset is the excluded end of a Unicode codepoint span.",
+          "schema_reference": null,
+          "rule_sha256": "547bec7c470c25f3e8121615c5d3a42d3624d8654ec9317c1b0b21f92203993e"
+        },
+        {
+          "name": "exact_text",
+          "pointer": "/properties/planned_units/items/properties/text_spans/items/properties/span/properties/exact_text",
+          "required_in_parent": true,
+          "description": "This text must equal the original substring at the specified codepoint offsets.",
+          "schema_reference": null,
+          "rule_sha256": "043b421e6ec4e14e18bb0e2cc2e389d5b5886f18492fdb65b358e3283784b136"
+        },
+        {
+          "name": "mode",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/mode",
+          "required_in_parent": true,
+          "description": "This field selects the representation or review mode allowed by its parent contract.",
+          "schema_reference": null,
+          "rule_sha256": "90999913a3792d67cfd5c9ca6022cbbae03b704d1301ff08bf4f50cdae3a1e48"
+        },
+        {
+          "name": "canonical_text",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/canonical_text",
+          "required_in_parent": true,
+          "description": "This field contains the intended correct text before mutations.",
+          "schema_reference": null,
+          "rule_sha256": "fa7a0df1fc47ce196a543cc78597de7cc8ae4b6f7773f8f2016daf5b72245f7d"
+        },
+        {
+          "name": "surface_text",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/surface_text",
+          "required_in_parent": true,
+          "description": "This field contains the text after intentional textual mutations.",
+          "schema_reference": null,
+          "rule_sha256": "71809bcb946c9603cea23d535565dd3741c9061fe42c4e064e3fade6cee16ad8"
+        },
+        {
+          "name": "canonical_ipa",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/canonical_ipa",
+          "required_in_parent": true,
+          "description": "This field contains the reviewed reference pronunciation, not the observed sound.",
+          "schema_reference": null,
+          "rule_sha256": "5cca51aeb43996c937f4c6b845984816efc0da1287fa676b2847f7cc53d2d517"
+        },
+        {
+          "name": "intended_ipa",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/intended_ipa",
+          "required_in_parent": true,
+          "description": "This field contains the requested pronunciation, not an acoustic observation.",
+          "schema_reference": null,
+          "rule_sha256": "db6c3ceea4dcaa7138de601b4ce165f40d060d05cc54248492593f4d7de6eb64"
+        },
+        {
+          "name": "observed_ipa",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/observed_ipa",
+          "required_in_parent": true,
+          "description": "This field records the pronunciation that a native annotation, measured evidence or modality-labelled LLM inference supports.",
+          "schema_reference": null,
+          "rule_sha256": "36d1c14575642a8047e22b8ab5130972a99045447227f2cf4c184c42ce7a8f23"
+        },
+        {
+          "name": "prosody",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/prosody",
+          "required_in_parent": true,
+          "description": "This object states the bounded prosodic target or reviewed correction.",
+          "schema_reference": null,
+          "rule_sha256": "76a64a9848376168ad2c632063d085f29646a53639ebefaa2cd89412564fc5a2"
+        },
+        {
+          "name": "pace_target_wpm",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/pace_target_wpm",
+          "required_in_parent": true,
+          "description": "This field gives the requested pace in words per minute.",
+          "schema_reference": null,
+          "rule_sha256": "7f642b1d09b41a73335184a982d408c70adacf99404c3b09bbdb68cb217c49c2"
+        },
+        {
+          "name": "observed_pace_wpm",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/observed_pace_wpm",
+          "required_in_parent": true,
+          "description": "This field gives measured pace in words per minute.",
+          "schema_reference": null,
+          "rule_sha256": "419b1b31b797a80ac38df551e0dd31191321d0f8261a102a10d6d3826c5080f5"
+        },
+        {
+          "name": "planned_pause_ms",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/planned_pause_ms",
+          "required_in_parent": true,
+          "description": "This field gives the planned pause duration, not its observed duration.",
+          "schema_reference": null,
+          "rule_sha256": "b574614f2d18d3ff66e60e25ba1213989988ce6b155c930c2d920a2400fbb33d"
+        },
+        {
+          "name": "observed_pause_ms",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/observed_pause_ms",
+          "required_in_parent": true,
+          "description": "This field gives measured pause duration in milliseconds.",
+          "schema_reference": null,
+          "rule_sha256": "543ce9419382616b645d3b67d96d75c727560d87dbbc2292ce4a4c5875621047"
+        },
+        {
+          "name": "feature",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/prosody/items/properties/feature",
+          "required_in_parent": true,
+          "description": "This name identifies the measured or requested feature inside the typed parent object.",
+          "schema_reference": null,
+          "rule_sha256": "c0929e7a4a71392df5f561f0e3eb6337ace5fcc0d6262791000fcd798e0c67aa"
+        },
+        {
+          "name": "target_label",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/prosody/items/properties/target_label",
+          "required_in_parent": true,
+          "description": "This field names the declared phonetic or prosodic target without claiming observation.",
+          "schema_reference": null,
+          "rule_sha256": "d9e735dbb856d8b72c7d4729b10ae6663d78ab161a380535d8763f35541e6478"
+        },
+        {
+          "name": "lower",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/prosody/items/properties/lower",
+          "required_in_parent": true,
+          "description": "This field contains the declared lower bound in the stated unit.",
+          "schema_reference": null,
+          "rule_sha256": "61a408b771f3e8b28e95ff191ccee6d3f5d4bee738f5466bd6f42ef4e8525669"
+        },
+        {
+          "name": "upper",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/prosody/items/properties/upper",
+          "required_in_parent": true,
+          "description": "This field contains the declared upper bound in the stated unit.",
+          "schema_reference": null,
+          "rule_sha256": "e828c4ddb3679cc067cfb22eb4d65d218506d6293cc23227ab0ae13618f44dad"
+        },
+        {
+          "name": "unit",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/prosody/items/properties/unit",
+          "required_in_parent": true,
+          "description": "This field identifies the measurement unit declared by the parent object.",
+          "schema_reference": null,
+          "rule_sha256": "214caea8d34ce09766838c5fc08c5a5d75b8abc21b1a28e80b985221e92faa1e"
+        },
+        {
+          "name": "observation",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/prosody/items/properties/observation",
+          "required_in_parent": true,
+          "description": "This field contains the reviewer observation, not a requested target.",
+          "schema_reference": null,
+          "rule_sha256": "6aeff77cac88b8082ec29516d085f1a5da9b27962f5014dff24ed12d50baa50b"
+        },
+        {
+          "name": "evidence_ids",
+          "pointer": "/properties/planned_units/items/properties/realization/properties/prosody/items/properties/evidence_ids",
+          "required_in_parent": true,
+          "description": "These IDs identify actual supporting records within the permitted subject and version scope.",
+          "schema_reference": null,
+          "rule_sha256": "eb9273b3b2089a5e4cdd3255bc7d1aa0f5648dca8b3c1b46ad32fa1676da97e6"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/planned_units/items/properties/corrections/items/properties/id",
+          "required_in_parent": true,
+          "description": "This value uniquely identifies the record within its declared entity and version scope.",
+          "schema_reference": null,
+          "rule_sha256": "a69f59160d4a894eec2f4ce273db2bdb26c5f450f29621b5900e8796275c39b2"
+        },
+        {
+          "name": "kind",
+          "pointer": "/properties/planned_units/items/properties/corrections/items/properties/kind",
+          "required_in_parent": true,
+          "description": "This field selects the exact operation or judgment type from the parent enumeration.",
+          "schema_reference": null,
+          "rule_sha256": "a50fa2ad7bdf622c3289228e93b6f87f1b9cade3985628e3b5428c0c45145ddc"
+        },
+        {
+          "name": "text",
+          "pointer": "/properties/planned_units/items/properties/corrections/items/properties/text",
+          "required_in_parent": true,
+          "description": "This field contains literal text for the specific typed operation or feedback item.",
+          "schema_reference": null,
+          "rule_sha256": "a51e70d4132a608d26454953ba6338f346ae48a5cddcb0ef6c4bb5b10aab5480"
+        },
+        {
+          "name": "ipa",
+          "pointer": "/properties/planned_units/items/properties/corrections/items/properties/ipa",
+          "required_in_parent": true,
+          "description": "This field contains IPA for the operation or correction specified by its parent object.",
+          "schema_reference": null,
+          "rule_sha256": "9c045e40d6983260420645e569ad9acc11e7217364debda93ad3cc45d9008ead"
+        },
+        {
+          "name": "approved_text_alternatives",
+          "pointer": "/properties/planned_units/items/properties/corrections/items/properties/approved_text_alternatives",
+          "required_in_parent": true,
+          "description": "These reviewed text alternatives can receive correction credit.",
+          "schema_reference": null,
+          "rule_sha256": "763fecce86319f9c14b4e1eded18c053938373a37297620b4a3701ba3d5b7dc7"
+        },
+        {
+          "name": "case_insensitive",
+          "pointer": "/properties/planned_units/items/properties/corrections/items/properties/case_insensitive",
+          "required_in_parent": true,
+          "description": "This field permits case-insensitive comparison only for this reviewed option.",
+          "schema_reference": null,
+          "rule_sha256": "4ab9aa45753c13b4873558006351a96c16849b7c36c05d3cc99816140f08e75a"
+        },
+        {
+          "name": "terminal_period_insensitive",
+          "pointer": "/properties/planned_units/items/properties/corrections/items/properties/terminal_period_insensitive",
+          "required_in_parent": true,
+          "description": "This flag permits terminal-period normalization for this reviewed option only.",
+          "schema_reference": null,
+          "rule_sha256": "ae23f68121b602f2c03538bc20ae5f6ecc5642752973e07c8a81f9fd62a6046f"
+        },
+        {
+          "name": "variety_constraints",
+          "pointer": "/properties/planned_units/items/properties/corrections/items/properties/variety_constraints",
+          "required_in_parent": true,
+          "description": "These statements restrict the correction to its approved English varieties.",
+          "schema_reference": null,
+          "rule_sha256": "2fc5ce914f245cee2077c313e907a3378764bda38c35f750aa631d0f7cb362bc"
+        },
+        {
+          "name": "required_propositions",
+          "pointer": "/properties/planned_units/items/properties/corrections/items/properties/required_propositions",
+          "required_in_parent": true,
+          "description": "These assertions are necessary for full credit for this reviewed option.",
+          "schema_reference": null,
+          "rule_sha256": "b5e6bf3d3211dd02af6a046552750059ec8abec5df976b8c341b4e0991757176"
+        },
+        {
+          "name": "forbidden_propositions",
+          "pointer": "/properties/planned_units/items/properties/corrections/items/properties/forbidden_propositions",
+          "required_in_parent": true,
+          "description": "These propositions describe changes that invalidate the correction or explanation.",
+          "schema_reference": null,
+          "rule_sha256": "48cf2803ae899093f5ae0693fed66392b97fa5424d61a8ab80361c32bbb9c4a4"
+        },
+        {
+          "name": "canonical",
+          "pointer": "/properties/planned_units/items/properties/corrections/items/properties/canonical",
+          "required_in_parent": true,
+          "description": "This field identifies the designated canonical correction option.",
+          "schema_reference": null,
+          "rule_sha256": "868a84ef4d6b5a0215e3006acc7687e312764cdb4f8ca5f011885b817116c8d9"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/planned_units/items/properties/corrections/items/properties/required_propositions/items/properties/id",
+          "required_in_parent": true,
+          "description": "This value uniquely identifies the record within its declared entity and version scope.",
+          "schema_reference": null,
+          "rule_sha256": "a69f59160d4a894eec2f4ce273db2bdb26c5f450f29621b5900e8796275c39b2"
+        },
+        {
+          "name": "description",
+          "pointer": "/properties/planned_units/items/properties/corrections/items/properties/required_propositions/items/properties/description",
+          "required_in_parent": true,
+          "description": "This text states one explicit proposition or field meaning in its parent contract.",
+          "schema_reference": null,
+          "rule_sha256": "8bd2fac9bee4146602727ed92092c5f8ed7a066f53f14b059d9a666c32bcd652"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/planned_units/items/properties/corrections/items/properties/forbidden_propositions/items/properties/id",
+          "required_in_parent": true,
+          "description": "This value uniquely identifies the record within its declared entity and version scope.",
+          "schema_reference": null,
+          "rule_sha256": "a69f59160d4a894eec2f4ce273db2bdb26c5f450f29621b5900e8796275c39b2"
+        },
+        {
+          "name": "description",
+          "pointer": "/properties/planned_units/items/properties/corrections/items/properties/forbidden_propositions/items/properties/description",
+          "required_in_parent": true,
+          "description": "This text states one explicit proposition or field meaning in its parent contract.",
+          "schema_reference": null,
+          "rule_sha256": "8bd2fac9bee4146602727ed92092c5f8ed7a066f53f14b059d9a666c32bcd652"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/planned_units/items/properties/rationale_required_propositions/items/properties/id",
+          "required_in_parent": true,
+          "description": "This value uniquely identifies the record within its declared entity and version scope.",
+          "schema_reference": null,
+          "rule_sha256": "a69f59160d4a894eec2f4ce273db2bdb26c5f450f29621b5900e8796275c39b2"
+        },
+        {
+          "name": "description",
+          "pointer": "/properties/planned_units/items/properties/rationale_required_propositions/items/properties/description",
+          "required_in_parent": true,
+          "description": "This text states one explicit proposition or field meaning in its parent contract.",
+          "schema_reference": null,
+          "rule_sha256": "8bd2fac9bee4146602727ed92092c5f8ed7a066f53f14b059d9a666c32bcd652"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/planned_units/items/properties/rationale_forbidden_propositions/items/properties/id",
+          "required_in_parent": true,
+          "description": "This value uniquely identifies the record within its declared entity and version scope.",
+          "schema_reference": null,
+          "rule_sha256": "a69f59160d4a894eec2f4ce273db2bdb26c5f450f29621b5900e8796275c39b2"
+        },
+        {
+          "name": "description",
+          "pointer": "/properties/planned_units/items/properties/rationale_forbidden_propositions/items/properties/description",
+          "required_in_parent": true,
+          "description": "This text states one explicit proposition or field meaning in its parent contract.",
+          "schema_reference": null,
+          "rule_sha256": "8bd2fac9bee4146602727ed92092c5f8ed7a066f53f14b059d9a666c32bcd652"
         }
       ]
     }
