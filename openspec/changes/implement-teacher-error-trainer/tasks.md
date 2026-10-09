@@ -313,3 +313,12 @@ Current resume: audit/final-spec-closure-20261009/REPORT.md owns this specificat
 - [ ] Future authorized implementation/observations: implement the selected starter provider connection/transport through the existing owners, materialize selected fixture/Lab experiments and test actual account limits, local speech output and selected optional controls. Acquire missing originals only for their selected full-source features; no new product approval or every-corpus download is an ordinary-use dependency.
 
 Current resume: audit/service-and-data-readiness-20261009/REPORT.md and specification/v2/docs/provider-access.md, speech-service-selection.md, empirical-data-needs.md own this specification research. Current user reports ChatGPT Pro and DeepSeek access, without separately billed calls/purchased usage. No purchase, account connection, inference, audio generation, install, secret/config change, implementation or publication occurred. Preserve the unrelated GAPS.md edit. The application change remains open; new scenario plans are not runtime acceptance.
+
+## 2026-10-09 on-demand LLM exercise flow
+
+- [x] Make both clean-text and mutation generation explicitly LLM-owned per user request; remove recipe-only/prebuilt-bank substitution and any setup/ordinary-use pregenerated corpus or batch requirement.
+- [x] Trace original/surface text and mutation units through existing evaluation-key into mapping/feedback; retain findings/misses/comments, optional explanation scoring, exact native formulas, stored replay/resume and all optional source/import/benchmark scopes.
+- [x] Add four concrete positive/negative behavior plans with dispatch/state and independent fraction expectations; validate39affected static checks, strict OpenSpec and graph/discovery, preserving prior observed receipts and all original taxonomy/recipe/formula/source/provider bytes.
+- [ ] Future authorized implementation: execute on-demand clean/mutation/audio/answer/checking through real owners and observe the affected cases with actual model/audio/native Lab evidence. No pregenerated exercise corpus is an implementation or ordinary-use prerequisite.
+
+Current resume: audit/on-demand-flow-20261009/REPORT.md and specification/v2/docs/simple-generation-flow.md own the latest five-step user flow. No generation, synthesis, account/provider call, corpus creation, implementation, installation or publication occurred. Three trusted prompt texts/manifest hashes are updated; current behavior plans remain unexecuted. Preserve the unrelated GAPS.md edit.

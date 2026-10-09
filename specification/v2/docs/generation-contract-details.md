@@ -43,3 +43,5 @@ For new installations the registry speech default is local Kokoro, supporting bo
 Current preparation persistence/resume is defined by preparation-persistence.md and preparation-state/preparation-settings schemas. Generation must be self-contained under self-contained-generation.md; no private contextual fact determines a scored mistake. Key repair uses key-repair-projection.md and the existing LLM operation. These are written contracts, not implemented behavior.
 
 Current default LLM/access policy is provider-access.v1.json; subscription Responses wire omissions and terminal streaming are defined in provider-access.md. A speech profile remains independent of this LLM selection.
+
+Ordinary content origin is on-demand LLM generation in both canonical_text and mutation phases. Local diff/replay/phoneme compilers implement the LLM-returned plan; they do not replace mutation inference with a deterministic recipe bank. Phase failure retains its checkpoint and offers retry; it does not silently select a pregenerated exercise. Saved library items are completed user-requested exercises or explicit imports, not required seed content.

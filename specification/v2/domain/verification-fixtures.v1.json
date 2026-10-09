@@ -3900,7 +3900,8 @@
             "CAP-03.P1",
             "CAP-04.P1",
             "CAP-05.P1",
-            "CAP-06.P1"
+            "CAP-06.P1",
+            "DEMAND-01.P1"
           ],
           "expected_cases": [
             "AUT-01.P1.POSITIVE",
@@ -5546,7 +5547,11 @@
             "CAP-06.P1.S1.POSITIVE",
             "CAP-06.P1.S1.NEGATIVE",
             "CAP-06.P1.S2.POSITIVE",
-            "CAP-06.P1.S2.NEGATIVE"
+            "CAP-06.P1.S2.NEGATIVE",
+            "DEMAND-01.P1.S1.POSITIVE",
+            "DEMAND-01.P1.S1.NEGATIVE",
+            "DEMAND-01.P1.S2.POSITIVE",
+            "DEMAND-01.P1.S2.NEGATIVE"
           ],
           "behavior_observations": 0
         },
@@ -19557,7 +19562,8 @@
             "CAP-03.P1",
             "CAP-04.P1",
             "CAP-05.P1",
-            "CAP-06.P1"
+            "CAP-06.P1",
+            "DEMAND-01.P1"
           ],
           "expected_cases": [
             "AUT-01.P1.POSITIVE",
@@ -21203,7 +21209,11 @@
             "CAP-06.P1.S1.POSITIVE",
             "CAP-06.P1.S1.NEGATIVE",
             "CAP-06.P1.S2.POSITIVE",
-            "CAP-06.P1.S2.NEGATIVE"
+            "CAP-06.P1.S2.NEGATIVE",
+            "DEMAND-01.P1.S1.POSITIVE",
+            "DEMAND-01.P1.S1.NEGATIVE",
+            "DEMAND-01.P1.S2.POSITIVE",
+            "DEMAND-01.P1.S2.NEGATIVE"
           ],
           "behavior_observations": 0
         },
@@ -21907,6 +21917,109 @@
         }
       },
       "independent_oracle": "Literal independently stated wire/state/identity/call-count/source-scope/fraction packets; future actual provider/audio/native/Lab observations remain separate.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "scenario-DEMAND-01 First request works with an empty corpus and library",
+      "action": "DEMAND-01 First request works with an empty corpus and library",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "library": [],
+          "corpora": [],
+          "user_request": {
+            "topic": "coffee and cars",
+            "speaker_count": 2,
+            "text_length_words": 30
+          }
+        },
+        "expected": {
+          "startup_generation_calls": 0,
+          "new_request_phase_order": [
+            "llm_canonical",
+            "llm_mutation",
+            "speech"
+          ],
+          "corpus_dependency": false
+        }
+      },
+      "negative": {
+        "input": {
+          "canonical_saved": "c1",
+          "mutation_llm_failed": true,
+          "recipe_examples_available": true
+        },
+        "expected": {
+          "canonical_saved": "c1",
+          "recipe_fallback_calls": 0,
+          "bank_fallback_calls": 0,
+          "speech_calls": 0,
+          "successful_key": false
+        }
+      },
+      "independent_oracle": "Exact two-phase dispatch order/count and saved original/surface/key identity; independently stated TP/FN/FP and fractions, actual native/model evidence required later.",
+      "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
+    },
+    {
+      "id": "scenario-DEMAND-01 Original text and mutations ground findings and misses",
+      "action": "DEMAND-01 Original text and mutations ground findings and misses",
+      "initial_state": {},
+      "positive": {
+        "input": {
+          "canonical": [
+            "She likes coffee.",
+            "I have a red car."
+          ],
+          "surface": [
+            "She like coffee.",
+            "I have red car."
+          ],
+          "units": [
+            {
+              "id": "u1",
+              "repair": "likes"
+            },
+            {
+              "id": "u2",
+              "repair": "a red car"
+            }
+          ],
+          "answer": "She like coffee should be She likes coffee.",
+          "supplied_explanation": null
+        },
+        "expected": {
+          "found": [
+            "u1"
+          ],
+          "missed": [
+            "u2"
+          ],
+          "TP": 1,
+          "FN": 1,
+          "FP": 0,
+          "precision": "1",
+          "recall": "1/2",
+          "F1": "2/3",
+          "comments_for_units": [
+            "u1",
+            "u2"
+          ],
+          "explanation_omission_penalty": false
+        }
+      },
+      "negative": {
+        "input": {
+          "saved_case": "v1",
+          "comparison_case": "v2",
+          "mutations_from_other_version": true
+        },
+        "expected": {
+          "replace_saved_key": false,
+          "accepted_comparison": false,
+          "saved_answer_preserved": true
+        }
+      },
+      "independent_oracle": "Exact two-phase dispatch order/count and saved original/surface/key identity; independently stated TP/FN/FP and fractions, actual native/model evidence required later.",
       "origin": "constructed_specification_fixture_not_empirical_or_provider_observation"
     }
   ],
@@ -25863,7 +25976,7 @@
     {
       "property_id": "FLOW-02.P1",
       "fixture_id": "two-phases",
-      "statement": "The system SHALL save the canonical_text phase before the mutation phase, using generation-input.schema.json and the existing case_generation role. Mutation output SHALL retain that exact canonical script and produce surface text, typed edits and planned_units as the complete mutation list/key. Novel/OOD instances SHALL use the declared novelty basis without claiming access to the LLM's hidden training distribution.",
+      "statement": "For each explicit new exercise request, the configured LLM SHALL generate the clean canonical_text and then generate its mutations using generation-input.schema.json and the existing case_generation role. The system SHALL save the canonical_text phase before the mutation phase. Local code SHALL validate/materialize/replay the LLM edits, not replace either generation phase with a pregenerated bank or recipe-only generator. Mutation output SHALL retain that exact canonical script and produce surface text, typed edits and planned_units as the complete mutation list/key. Novel/OOD instances SHALL use the declared novelty basis without claiming access to the LLM's hidden training distribution.",
       "independent_oracle": "Literal before/after script, source-order identities and phase receipt times; generator output cannot define its own equality oracle.",
       "scenarios": [
         "FLOW-02 Fixed canonical text receives localized novel edits",
@@ -25896,7 +26009,7 @@
     {
       "property_id": "FLOW-05.P1",
       "fixture_id": "free-text-matching",
-      "statement": "The LLM SHALL compare the saved listener answer with the exact exercise mutation-list key/context, accepting localized semantic descriptions, category synonyms and valid alternative repairs. It SHALL preserve duplicate/retraction/ambiguity/key-defect behavior and all existing exact arithmetic. The checking LLM SHALL not need to hear audio again for this text/key comparison; known acoustic disputes can use optional actual evidence.",
+      "statement": "The LLM SHALL compare the saved listener answer with the exact exercise original clean text, actual mutated text, mutation-list key and context through the existing evaluation-key projection, accepting localized semantic descriptions, category synonyms and valid alternative repairs. It SHALL preserve duplicate/retraction/ambiguity/key-defect behavior and all existing exact arithmetic. The checking LLM SHALL not need to hear audio again for this text/key comparison; known acoustic disputes can use optional actual evidence.",
       "independent_oracle": "Literal target occurrence/stance and stipulated repair; keyword/string equality is not semantic scoring.",
       "scenarios": [
         "FLOW-05 A paraphrase finds a recorded mutation",
@@ -26429,6 +26542,17 @@
       "scenarios": [
         "CAP-06 Existing subscription first",
         "CAP-06 Catalogue is not an adapter"
+      ],
+      "observation_state": "not_run"
+    },
+    {
+      "property_id": "DEMAND-01.P1",
+      "fixture_id": "scenario-DEMAND-01 First request works with an empty corpus and library",
+      "statement": "Ordinary use SHALL follow user request -> configured LLM clean text -> configured LLM mutations -> generated/stored audio -> listener answer -> LLM comparison/comments and exact formula-based scores. No pregenerated corpus, seed library, all-category batch or full benchmark SHALL be required or automatically created at startup. The existing evaluation projection SHALL supply the same saved original/surface text and mutation units; found/missed/false-positive/correction/optional-explanation feedback SHALL be grounded in them. Local validation/replay/arithmetic SHALL NOT substitute a recipe-only content generator. Stored replay and exact saved checkpoint resume remain supported, and all optional source/import/benchmark scopes remain preserved.",
+      "independent_oracle": "Exact two-phase dispatch order/count and saved original/surface/key identity; independently stated TP/FN/FP and fractions, actual native/model evidence required later.",
+      "scenarios": [
+        "DEMAND-01 First request works with an empty corpus and library",
+        "DEMAND-01 Original text and mutations ground findings and misses"
       ],
       "observation_state": "not_run"
     }
@@ -87256,7 +87380,8 @@
           "CAP-03.P1",
           "CAP-04.P1",
           "CAP-05.P1",
-          "CAP-06.P1"
+          "CAP-06.P1",
+          "DEMAND-01.P1"
         ],
         "expected_cases": [
           "AUT-01.P1.POSITIVE",
@@ -88902,7 +89027,11 @@
           "CAP-06.P1.S1.POSITIVE",
           "CAP-06.P1.S1.NEGATIVE",
           "CAP-06.P1.S2.POSITIVE",
-          "CAP-06.P1.S2.NEGATIVE"
+          "CAP-06.P1.S2.NEGATIVE",
+          "DEMAND-01.P1.S1.POSITIVE",
+          "DEMAND-01.P1.S1.NEGATIVE",
+          "DEMAND-01.P1.S2.POSITIVE",
+          "DEMAND-01.P1.S2.NEGATIVE"
         ],
         "behavior_observations": 0
       },
@@ -89741,6 +89870,167 @@
         "The exact constructed input and provider policy state",
         "The named operation is selected",
         "Every explicit expected value and failure effect is observed through the actual owner"
+      ]
+    },
+    {
+      "case_id": "DEMAND-01.P1.S1.POSITIVE",
+      "test_id": "planned::on-demand::DEMAND-01.P1.S1.POSITIVE",
+      "property_id": "DEMAND-01.P1",
+      "scenario": "DEMAND-01 First request works with an empty corpus and library",
+      "polarity": "positive",
+      "fixture_id": "scenario-DEMAND-01 First request works with an empty corpus and library",
+      "mode": "exact_named_scenario",
+      "action": "DEMAND-01 First request works with an empty corpus and library",
+      "initial_state": {},
+      "input": {
+        "library": [],
+        "corpora": [],
+        "user_request": {
+          "topic": "coffee and cars",
+          "speaker_count": 2,
+          "text_length_words": 30
+        }
+      },
+      "expected": {
+        "startup_generation_calls": 0,
+        "new_request_phase_order": [
+          "llm_canonical",
+          "llm_mutation",
+          "speech"
+        ],
+        "corpus_dependency": false
+      },
+      "independent_oracle": "Exact two-phase dispatch order/count and saved original/surface/key identity; independently stated TP/FN/FP and fractions, actual native/model evidence required later.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "Exact empty-bank or saved original/surface/mutation/answer state",
+        "User explicitly generates/checks the exercise",
+        "The named order/state/calls/findings/misses/fractions are observed without pregeneration or substitute evidence"
+      ]
+    },
+    {
+      "case_id": "DEMAND-01.P1.S1.NEGATIVE",
+      "test_id": "planned::on-demand::DEMAND-01.P1.S1.NEGATIVE",
+      "property_id": "DEMAND-01.P1",
+      "scenario": "DEMAND-01 First request works with an empty corpus and library",
+      "polarity": "negative",
+      "fixture_id": "scenario-DEMAND-01 First request works with an empty corpus and library",
+      "mode": "exact_named_scenario",
+      "action": "DEMAND-01 First request works with an empty corpus and library",
+      "initial_state": {},
+      "input": {
+        "canonical_saved": "c1",
+        "mutation_llm_failed": true,
+        "recipe_examples_available": true
+      },
+      "expected": {
+        "canonical_saved": "c1",
+        "recipe_fallback_calls": 0,
+        "bank_fallback_calls": 0,
+        "speech_calls": 0,
+        "successful_key": false
+      },
+      "independent_oracle": "Exact two-phase dispatch order/count and saved original/surface/key identity; independently stated TP/FN/FP and fractions, actual native/model evidence required later.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "Exact empty-bank or saved original/surface/mutation/answer state",
+        "User explicitly generates/checks the exercise",
+        "The named order/state/calls/findings/misses/fractions are observed without pregeneration or substitute evidence"
+      ]
+    },
+    {
+      "case_id": "DEMAND-01.P1.S2.POSITIVE",
+      "test_id": "planned::on-demand::DEMAND-01.P1.S2.POSITIVE",
+      "property_id": "DEMAND-01.P1",
+      "scenario": "DEMAND-01 Original text and mutations ground findings and misses",
+      "polarity": "positive",
+      "fixture_id": "scenario-DEMAND-01 Original text and mutations ground findings and misses",
+      "mode": "exact_named_scenario",
+      "action": "DEMAND-01 Original text and mutations ground findings and misses",
+      "initial_state": {},
+      "input": {
+        "canonical": [
+          "She likes coffee.",
+          "I have a red car."
+        ],
+        "surface": [
+          "She like coffee.",
+          "I have red car."
+        ],
+        "units": [
+          {
+            "id": "u1",
+            "repair": "likes"
+          },
+          {
+            "id": "u2",
+            "repair": "a red car"
+          }
+        ],
+        "answer": "She like coffee should be She likes coffee.",
+        "supplied_explanation": null
+      },
+      "expected": {
+        "found": [
+          "u1"
+        ],
+        "missed": [
+          "u2"
+        ],
+        "TP": 1,
+        "FN": 1,
+        "FP": 0,
+        "precision": "1",
+        "recall": "1/2",
+        "F1": "2/3",
+        "comments_for_units": [
+          "u1",
+          "u2"
+        ],
+        "explanation_omission_penalty": false
+      },
+      "independent_oracle": "Exact two-phase dispatch order/count and saved original/surface/key identity; independently stated TP/FN/FP and fractions, actual native/model evidence required later.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "Exact empty-bank or saved original/surface/mutation/answer state",
+        "User explicitly generates/checks the exercise",
+        "The named order/state/calls/findings/misses/fractions are observed without pregeneration or substitute evidence"
+      ]
+    },
+    {
+      "case_id": "DEMAND-01.P1.S2.NEGATIVE",
+      "test_id": "planned::on-demand::DEMAND-01.P1.S2.NEGATIVE",
+      "property_id": "DEMAND-01.P1",
+      "scenario": "DEMAND-01 Original text and mutations ground findings and misses",
+      "polarity": "negative",
+      "fixture_id": "scenario-DEMAND-01 Original text and mutations ground findings and misses",
+      "mode": "exact_named_scenario",
+      "action": "DEMAND-01 Original text and mutations ground findings and misses",
+      "initial_state": {},
+      "input": {
+        "saved_case": "v1",
+        "comparison_case": "v2",
+        "mutations_from_other_version": true
+      },
+      "expected": {
+        "replace_saved_key": false,
+        "accepted_comparison": false,
+        "saved_answer_preserved": true
+      },
+      "independent_oracle": "Exact two-phase dispatch order/count and saved original/surface/key identity; independently stated TP/FN/FP and fractions, actual native/model evidence required later.",
+      "observation_state": "not_run",
+      "existing_case_state": "blocked",
+      "historical_receipt_not_reused_as_new_fixture_observation": true,
+      "declared_scenario_contract": [
+        "Exact empty-bank or saved original/surface/mutation/answer state",
+        "User explicitly generates/checks the exercise",
+        "The named order/state/calls/findings/misses/fractions are observed without pregeneration or substitute evidence"
       ]
     }
   ]

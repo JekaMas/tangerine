@@ -20,7 +20,7 @@ The system SHALL accept topic, speaker count and approximate word length through
 
 ### Requirement: FLOW-02 Clean text precedes novel mutations and their key
 
-The system SHALL save the canonical_text phase before the mutation phase, using generation-input.schema.json and the existing case_generation role. Mutation output SHALL retain that exact canonical script and produce surface text, typed edits and planned_units as the complete mutation list/key. Novel/OOD instances SHALL use the declared novelty basis without claiming access to the LLM's hidden training distribution.
+For each explicit new exercise request, the configured LLM SHALL generate the clean canonical_text and then generate its mutations using generation-input.schema.json and the existing case_generation role. The system SHALL save the canonical_text phase before the mutation phase. Local code SHALL validate/materialize/replay the LLM edits, not replace either generation phase with a pregenerated bank or recipe-only generator. Mutation output SHALL retain that exact canonical script and produce surface text, typed edits and planned_units as the complete mutation list/key. Novel/OOD instances SHALL use the declared novelty basis without claiming access to the LLM's hidden training distribution.
 
 #### Scenario: FLOW-02 Fixed canonical text receives localized novel edits
 
@@ -68,7 +68,7 @@ The system SHALL make an authored exercise usable once its actual audio and gene
 
 ### Requirement: FLOW-05 Free text is compared with the saved mutation list
 
-The LLM SHALL compare the saved listener answer with the exact exercise mutation-list key/context, accepting localized semantic descriptions, category synonyms and valid alternative repairs. It SHALL preserve duplicate/retraction/ambiguity/key-defect behavior and all existing exact arithmetic. The checking LLM SHALL not need to hear audio again for this text/key comparison; known acoustic disputes can use optional actual evidence.
+The LLM SHALL compare the saved listener answer with the exact exercise original clean text, actual mutated text, mutation-list key and context through the existing evaluation-key projection, accepting localized semantic descriptions, category synonyms and valid alternative repairs. It SHALL preserve duplicate/retraction/ambiguity/key-defect behavior and all existing exact arithmetic. The checking LLM SHALL not need to hear audio again for this text/key comparison; known acoustic disputes can use optional actual evidence.
 
 #### Scenario: FLOW-05 A paraphrase finds a recorded mutation
 

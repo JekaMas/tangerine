@@ -26,3 +26,5 @@ Disputes retain open, resolving and resolved states as declared by their schema.
 answer-components-v2 keeps completed primary results completed when only an optional explanation is unresolved; retain its nonblocking issue and component metric status. Explicit reason-only reconsideration appends only that supported component/feedback revision and preserves primary metrics unless actual primary evidence changes.
 
 Current preparation persistence/resume is defined by preparation-persistence.md and preparation-state/preparation-settings schemas. Generation must be self-contained under self-contained-generation.md; no private contextual fact determines a scored mistake. Key repair uses key-repair-projection.md and the existing LLM operation. These are written contracts, not implemented behavior.
+
+No startup or first-use transition pregenerates a corpus, seed bank or all-category suite. A user-requested Generate exercise action produces clean text and mutations through the LLM, then the stored audio. Optional benchmark/import transitions occur only when explicitly selected.

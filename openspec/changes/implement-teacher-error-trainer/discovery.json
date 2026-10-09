@@ -413,7 +413,8 @@
       "CAP-03.P1",
       "CAP-04.P1",
       "CAP-05.P1",
-      "CAP-06.P1"
+      "CAP-06.P1",
+      "DEMAND-01.P1"
     ],
     "test_ids": [
       "planned::AUT-01::negative",
@@ -2057,7 +2058,11 @@
       "planned::service-data::CAP-06.P1.S1.POSITIVE",
       "planned::service-data::CAP-06.P1.S1.NEGATIVE",
       "planned::service-data::CAP-06.P1.S2.POSITIVE",
-      "planned::service-data::CAP-06.P1.S2.NEGATIVE"
+      "planned::service-data::CAP-06.P1.S2.NEGATIVE",
+      "planned::on-demand::DEMAND-01.P1.S1.POSITIVE",
+      "planned::on-demand::DEMAND-01.P1.S1.NEGATIVE",
+      "planned::on-demand::DEMAND-01.P1.S2.POSITIVE",
+      "planned::on-demand::DEMAND-01.P1.S2.NEGATIVE"
     ]
   },
   "reviews": [
@@ -12065,6 +12070,69 @@
       ],
       "disposition": "current_change",
       "rationale": "Actual user service/data research and existing subscription clarification; no inference, purchases or implementation."
+    },
+    {
+      "id": "on-demand-flow-20261009",
+      "question": "Make both generation phases explicitly LLM-owned and remove pregenerated corpus/seed-bank prerequisites; check original/surface/mutation grading inputs.",
+      "property_ids": [
+        "DEMAND-01.P1",
+        "FLOW-02.P1",
+        "FLOW-05.P1"
+      ],
+      "test_ids": [
+        "planned::on-demand::DEMAND-01.P1.S1.POSITIVE",
+        "planned::on-demand::DEMAND-01.P1.S1.NEGATIVE",
+        "planned::on-demand::DEMAND-01.P1.S2.POSITIVE",
+        "planned::on-demand::DEMAND-01.P1.S2.NEGATIVE"
+      ],
+      "searches": [
+        {
+          "kind": "exact",
+          "status": "completed",
+          "query": "Read known flow/generation/evaluation-key/mapping/feedback/prompt/data-dependency contracts.",
+          "outcome": "Local recipe operator wording was ambiguous; original and surface text already reach grading through evaluation-key. Optional benchmark remains explicitly selected.",
+          "results": [
+            {
+              "path": "specification/v2/docs/simple-generation-flow.md",
+              "classification": "change_candidate",
+              "reason": "Owns request generation origin or saved comparison context."
+            },
+            {
+              "path": "specification/v2/prompts/canonical-v1.txt",
+              "classification": "change_candidate",
+              "reason": "Owns request generation origin or saved comparison context."
+            },
+            {
+              "path": "specification/v2/prompts/generate-v1.txt",
+              "classification": "change_candidate",
+              "reason": "Owns request generation origin or saved comparison context."
+            },
+            {
+              "path": "specification/v2/prompts/map-v1.txt",
+              "classification": "change_candidate",
+              "reason": "Owns request generation origin or saved comparison context."
+            }
+          ]
+        },
+        {
+          "kind": "semantic",
+          "status": "not_applicable",
+          "query": "Resolve unfamiliar code ownership.",
+          "outcome": "No semantic implementation evidence.",
+          "reason": "Known specification-only contracts.",
+          "results": []
+        },
+        {
+          "kind": "jetbrains-index",
+          "status": "not_applicable",
+          "query": "Inspect implementation symbols.",
+          "outcome": "No code evidence claimed.",
+          "reason": "Specification clarification only.",
+          "results": []
+        }
+      ],
+      "disposition": "current_change",
+      "rationale": "Current user request; no inference or implementation."
     }
   ]
 }

@@ -4329,7 +4329,7 @@
     "id": "FLOW-02",
     "capability": "simple-generation-flow",
     "title": "FLOW-02 Clean text precedes novel mutations and their key",
-    "statement": "The system SHALL save the canonical_text phase before the mutation phase, using generation-input.schema.json and the existing case_generation role. Mutation output SHALL retain that exact canonical script and produce surface text, typed edits and planned_units as the complete mutation list/key. Novel/OOD instances SHALL use the declared novelty basis without claiming access to the LLM's hidden training distribution.",
+    "statement": "For each explicit new exercise request, the configured LLM SHALL generate the clean canonical_text and then generate its mutations using generation-input.schema.json and the existing case_generation role. The system SHALL save the canonical_text phase before the mutation phase. Local code SHALL validate/materialize/replay the LLM edits, not replace either generation phase with a pregenerated bank or recipe-only generator. Mutation output SHALL retain that exact canonical script and produce surface text, typed edits and planned_units as the complete mutation list/key. Novel/OOD instances SHALL use the declared novelty basis without claiming access to the LLM's hidden training distribution.",
     "scenarios": [
       "FLOW-02 Fixed canonical text receives localized novel edits",
       "FLOW-02 A mutation failure preserves the baseline"
@@ -4365,7 +4365,7 @@
     "id": "FLOW-05",
     "capability": "simple-generation-flow",
     "title": "FLOW-05 Free text is compared with the saved mutation list",
-    "statement": "The LLM SHALL compare the saved listener answer with the exact exercise mutation-list key/context, accepting localized semantic descriptions, category synonyms and valid alternative repairs. It SHALL preserve duplicate/retraction/ambiguity/key-defect behavior and all existing exact arithmetic. The checking LLM SHALL not need to hear audio again for this text/key comparison; known acoustic disputes can use optional actual evidence.",
+    "statement": "The LLM SHALL compare the saved listener answer with the exact exercise original clean text, actual mutated text, mutation-list key and context through the existing evaluation-key projection, accepting localized semantic descriptions, category synonyms and valid alternative repairs. It SHALL preserve duplicate/retraction/ambiguity/key-defect behavior and all existing exact arithmetic. The checking LLM SHALL not need to hear audio again for this text/key comparison; known acoustic disputes can use optional actual evidence.",
     "scenarios": [
       "FLOW-05 A paraphrase finds a recorded mutation",
       "FLOW-05 Hidden keys and duplicate claims do not inflate results"
@@ -4948,5 +4948,17 @@
     ],
     "owner": "services/api",
     "source": "Actual user included-only service research and exact empirical-data question, 2026-10-09."
+  },
+  {
+    "id": "DEMAND-01",
+    "capability": "on-demand-generation",
+    "title": "DEMAND-01 Request-driven LLM text and mutation generation",
+    "statement": "Ordinary use SHALL follow user request -> configured LLM clean text -> configured LLM mutations -> generated/stored audio -> listener answer -> LLM comparison/comments and exact formula-based scores. No pregenerated corpus, seed library, all-category batch or full benchmark SHALL be required or automatically created at startup. The existing evaluation projection SHALL supply the same saved original/surface text and mutation units; found/missed/false-positive/correction/optional-explanation feedback SHALL be grounded in them. Local validation/replay/arithmetic SHALL NOT substitute a recipe-only content generator. Stored replay and exact saved checkpoint resume remain supported, and all optional source/import/benchmark scopes remain preserved.",
+    "scenarios": [
+      "DEMAND-01 First request works with an empty corpus and library",
+      "DEMAND-01 Original text and mutations ground findings and misses"
+    ],
+    "owner": "services/api",
+    "source": "Actual user five-step LLM generation/mutation/checking clarification, 2026-10-09."
   }
 ]

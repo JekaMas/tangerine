@@ -2070,7 +2070,7 @@
       "id": "FLOW-02",
       "capability": "simple-generation-flow",
       "title": "FLOW-02 Clean text precedes novel mutations and their key",
-      "fingerprint": "343094d4f619c93f96020c65f4633defea35b32ddece9139254a9cdf77ec764e"
+      "fingerprint": "80235948b831722eb24605aba2a018d67613ef92b25d361e791d6ddc061cabc5"
     },
     {
       "id": "FLOW-03",
@@ -2088,7 +2088,7 @@
       "id": "FLOW-05",
       "capability": "simple-generation-flow",
       "title": "FLOW-05 Free text is compared with the saved mutation list",
-      "fingerprint": "47d76bd9382a58a5d84403d930a98b05e31eca102c6f6ae7cab1de8f7932c28d"
+      "fingerprint": "529743d70401601faa549e8c6915f52f94d3efb9712b3d942f5b209ee1d037e7"
     },
     {
       "id": "FLOW-06",
@@ -2377,6 +2377,12 @@
       "capability": "service-and-data-readiness",
       "title": "CAP-06 Research candidates and actual setup observations",
       "fingerprint": "a10f3440794ad9288044e022e85991b9fd21b05c0c1586b41e5a9da6517f323c"
+    },
+    {
+      "id": "DEMAND-01",
+      "capability": "on-demand-generation",
+      "title": "DEMAND-01 Request-driven LLM text and mutation generation",
+      "fingerprint": "7819e577ef2348d60233621b2a105cddb40aba7c5d7612a5afe50ae88fae43e9"
     }
   ],
   "properties": [
@@ -8210,7 +8216,7 @@
     {
       "id": "FLOW-02.P1",
       "requirement_id": "FLOW-02",
-      "statement": "The system SHALL save the canonical_text phase before the mutation phase, using generation-input.schema.json and the existing case_generation role. Mutation output SHALL retain that exact canonical script and produce surface text, typed edits and planned_units as the complete mutation list/key. Novel/OOD instances SHALL use the declared novelty basis without claiming access to the LLM's hidden training distribution.",
+      "statement": "For each explicit new exercise request, the configured LLM SHALL generate the clean canonical_text and then generate its mutations using generation-input.schema.json and the existing case_generation role. The system SHALL save the canonical_text phase before the mutation phase. Local code SHALL validate/materialize/replay the LLM edits, not replace either generation phase with a pregenerated bank or recipe-only generator. Mutation output SHALL retain that exact canonical script and produce surface text, typed edits and planned_units as the complete mutation list/key. Novel/OOD instances SHALL use the declared novelty basis without claiming access to the LLM's hidden training distribution.",
       "scenarios": [
         "FLOW-02 Fixed canonical text receives localized novel edits",
         "FLOW-02 A mutation failure preserves the baseline"
@@ -8258,7 +8264,7 @@
     {
       "id": "FLOW-05.P1",
       "requirement_id": "FLOW-05",
-      "statement": "The LLM SHALL compare the saved listener answer with the exact exercise mutation-list key/context, accepting localized semantic descriptions, category synonyms and valid alternative repairs. It SHALL preserve duplicate/retraction/ambiguity/key-defect behavior and all existing exact arithmetic. The checking LLM SHALL not need to hear audio again for this text/key comparison; known acoustic disputes can use optional actual evidence.",
+      "statement": "The LLM SHALL compare the saved listener answer with the exact exercise original clean text, actual mutated text, mutation-list key and context through the existing evaluation-key projection, accepting localized semantic descriptions, category synonyms and valid alternative repairs. It SHALL preserve duplicate/retraction/ambiguity/key-defect behavior and all existing exact arithmetic. The checking LLM SHALL not need to hear audio again for this text/key comparison; known acoustic disputes can use optional actual evidence.",
       "scenarios": [
         "FLOW-05 A paraphrase finds a recorded mutation",
         "FLOW-05 Hidden keys and duplicate claims do not inflate results"
@@ -9150,6 +9156,26 @@
         "specification/v2/docs/empirical-data-needs.md",
         "specification/v2/domain/provider-access.v1.json",
         "specification/v2/domain/service-research.v1.json"
+      ]
+    },
+    {
+      "id": "DEMAND-01.P1",
+      "requirement_id": "DEMAND-01",
+      "statement": "Ordinary use SHALL follow user request -> configured LLM clean text -> configured LLM mutations -> generated/stored audio -> listener answer -> LLM comparison/comments and exact formula-based scores. No pregenerated corpus, seed library, all-category batch or full benchmark SHALL be required or automatically created at startup. The existing evaluation projection SHALL supply the same saved original/surface text and mutation units; found/missed/false-positive/correction/optional-explanation feedback SHALL be grounded in them. Local validation/replay/arithmetic SHALL NOT substitute a recipe-only content generator. Stored replay and exact saved checkpoint resume remain supported, and all optional source/import/benchmark scopes remain preserved.",
+      "scenarios": [
+        "DEMAND-01 First request works with an empty corpus and library",
+        "DEMAND-01 Original text and mutations ground findings and misses"
+      ],
+      "owner": "services/api",
+      "oracle": "Exact two-phase dispatch order/count and saved original/surface/key identity; independently stated TP/FN/FP and fractions, actual native/model evidence required later.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "specification/v2/prompts/map-v1.txt"
       ]
     }
   ],
@@ -50377,7 +50403,8 @@
         "specification/v2/contracts/generation-input.schema.json",
         "specification/v2/prompts/canonical-v1.txt",
         "specification/v2/prompts/generate-v1.txt",
-        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md",
+        "specification/v2/prompts/map-v1.txt"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -50408,7 +50435,8 @@
         "specification/v2/contracts/generation-input.schema.json",
         "specification/v2/prompts/canonical-v1.txt",
         "specification/v2/prompts/generate-v1.txt",
-        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md",
+        "specification/v2/prompts/map-v1.txt"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -50439,7 +50467,8 @@
         "specification/v2/contracts/generation-input.schema.json",
         "specification/v2/prompts/canonical-v1.txt",
         "specification/v2/prompts/generate-v1.txt",
-        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md",
+        "specification/v2/prompts/map-v1.txt"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -50470,7 +50499,8 @@
         "specification/v2/contracts/generation-input.schema.json",
         "specification/v2/prompts/canonical-v1.txt",
         "specification/v2/prompts/generate-v1.txt",
-        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md",
+        "specification/v2/prompts/map-v1.txt"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -50749,7 +50779,8 @@
         "specification/v2/contracts/generation-input.schema.json",
         "specification/v2/prompts/canonical-v1.txt",
         "specification/v2/prompts/generate-v1.txt",
-        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md",
+        "specification/v2/prompts/map-v1.txt"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -50780,7 +50811,8 @@
         "specification/v2/contracts/generation-input.schema.json",
         "specification/v2/prompts/canonical-v1.txt",
         "specification/v2/prompts/generate-v1.txt",
-        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md",
+        "specification/v2/prompts/map-v1.txt"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -50811,7 +50843,8 @@
         "specification/v2/contracts/generation-input.schema.json",
         "specification/v2/prompts/canonical-v1.txt",
         "specification/v2/prompts/generate-v1.txt",
-        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md",
+        "specification/v2/prompts/map-v1.txt"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -50842,7 +50875,8 @@
         "specification/v2/contracts/generation-input.schema.json",
         "specification/v2/prompts/canonical-v1.txt",
         "specification/v2/prompts/generate-v1.txt",
-        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md"
+        "openspec/changes/implement-teacher-error-trainer/specs/simple-generation-flow/spec.md",
+        "specification/v2/prompts/map-v1.txt"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -57107,6 +57141,138 @@
       "blocker": "Research/specification only; future actual acceptance observations are unperformed.",
       "designed_fixture_id": "scenario-CAP-06 Catalogue is not an adapter",
       "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "DEMAND-01.P1.S1.POSITIVE",
+      "property_id": "DEMAND-01.P1",
+      "polarity": "positive",
+      "scenario": "DEMAND-01 First request works with an empty corpus and library",
+      "scenario_fingerprint": "c226f8afb213871554ac2a0ec42db785acab4629ec98cdfe6b4bbb5cf7f832f5",
+      "setup": "Use exact verification-fixtures.v1.json case_bindings[DEMAND-01.P1.S1.POSITIVE] input/state.",
+      "observable": "Exact dispatch order/count, retained artifact identities, findings/misses/comments and independently expected fractions.",
+      "red_expectation": "Produce prebuilt/recipe fallback, wrong-version comparison or incorrect independent expected result.",
+      "green_expectation": "Observe every named expected value through actual selected owners.",
+      "test_id": "planned::on-demand::DEMAND-01.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_on_demand_generation.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "specification/v2/prompts/map-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/on-demand-generation/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Specification only; no model/audio/native execution.",
+      "designed_fixture_id": "scenario-DEMAND-01 First request works with an empty corpus and library",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "DEMAND-01.P1.S1.NEGATIVE",
+      "property_id": "DEMAND-01.P1",
+      "polarity": "negative",
+      "scenario": "DEMAND-01 First request works with an empty corpus and library",
+      "scenario_fingerprint": "c226f8afb213871554ac2a0ec42db785acab4629ec98cdfe6b4bbb5cf7f832f5",
+      "setup": "Use exact verification-fixtures.v1.json case_bindings[DEMAND-01.P1.S1.NEGATIVE] input/state.",
+      "observable": "Exact dispatch order/count, retained artifact identities, findings/misses/comments and independently expected fractions.",
+      "red_expectation": "Produce prebuilt/recipe fallback, wrong-version comparison or incorrect independent expected result.",
+      "green_expectation": "Observe every named expected value through actual selected owners.",
+      "test_id": "planned::on-demand::DEMAND-01.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_on_demand_generation.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "specification/v2/prompts/map-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/on-demand-generation/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Specification only; no model/audio/native execution.",
+      "designed_fixture_id": "scenario-DEMAND-01 First request works with an empty corpus and library",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "DEMAND-01.P1.S2.POSITIVE",
+      "property_id": "DEMAND-01.P1",
+      "polarity": "positive",
+      "scenario": "DEMAND-01 Original text and mutations ground findings and misses",
+      "scenario_fingerprint": "1fe9ce5b6f563d652c76edea045cdfafb7a2f19b07a7451ce1d8fd6c6522aa4a",
+      "setup": "Use exact verification-fixtures.v1.json case_bindings[DEMAND-01.P1.S2.POSITIVE] input/state.",
+      "observable": "Exact dispatch order/count, retained artifact identities, findings/misses/comments and independently expected fractions.",
+      "red_expectation": "Produce prebuilt/recipe fallback, wrong-version comparison or incorrect independent expected result.",
+      "green_expectation": "Observe every named expected value through actual selected owners.",
+      "test_id": "planned::on-demand::DEMAND-01.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_on_demand_generation.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "specification/v2/prompts/map-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/on-demand-generation/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Specification only; no model/audio/native execution.",
+      "designed_fixture_id": "scenario-DEMAND-01 Original text and mutations ground findings and misses",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "DEMAND-01.P1.S2.NEGATIVE",
+      "property_id": "DEMAND-01.P1",
+      "polarity": "negative",
+      "scenario": "DEMAND-01 Original text and mutations ground findings and misses",
+      "scenario_fingerprint": "1fe9ce5b6f563d652c76edea045cdfafb7a2f19b07a7451ce1d8fd6c6522aa4a",
+      "setup": "Use exact verification-fixtures.v1.json case_bindings[DEMAND-01.P1.S2.NEGATIVE] input/state.",
+      "observable": "Exact dispatch order/count, retained artifact identities, findings/misses/comments and independently expected fractions.",
+      "red_expectation": "Produce prebuilt/recipe fallback, wrong-version comparison or incorrect independent expected result.",
+      "green_expectation": "Observe every named expected value through actual selected owners.",
+      "test_id": "planned::on-demand::DEMAND-01.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_on_demand_generation.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "specification/v2/docs/simple-generation-flow.md",
+        "specification/v2/prompts/canonical-v1.txt",
+        "specification/v2/prompts/generate-v1.txt",
+        "specification/v2/prompts/map-v1.txt",
+        "openspec/changes/implement-teacher-error-trainer/specs/on-demand-generation/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Constructed specification design; no live account, LLM, speech, native dispatch or Lab observation."
+      },
+      "blocker": "Specification only; no model/audio/native execution.",
+      "designed_fixture_id": "scenario-DEMAND-01 Original text and mutations ground findings and misses",
+      "fixture_observation_state": "not_run"
     }
   ],
   "commands": [
@@ -58697,7 +58863,11 @@
         "planned::service-data::CAP-06.P1.S1.POSITIVE",
         "planned::service-data::CAP-06.P1.S1.NEGATIVE",
         "planned::service-data::CAP-06.P1.S2.POSITIVE",
-        "planned::service-data::CAP-06.P1.S2.NEGATIVE"
+        "planned::service-data::CAP-06.P1.S2.NEGATIVE",
+        "planned::on-demand::DEMAND-01.P1.S1.POSITIVE",
+        "planned::on-demand::DEMAND-01.P1.S1.NEGATIVE",
+        "planned::on-demand::DEMAND-01.P1.S2.POSITIVE",
+        "planned::on-demand::DEMAND-01.P1.S2.NEGATIVE"
       ]
     },
     {
