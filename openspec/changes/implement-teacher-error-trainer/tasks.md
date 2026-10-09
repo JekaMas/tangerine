@@ -378,7 +378,9 @@ Authorized implementation of the first engineering iteration. The full product a
 - [x] Implement the launcher, durable automatic internal credentials, checksum-preserving singleton workspace migration, private storage initialization, no-login Library/proxy and actual dependency health. Preserve legacy rows and original migration bytes; do not call providers or download models on startup.
 - [x] Observe and repair the full 16-positive/16-negative iteration selection, retaining failures and invalidated-input explanations.
 - [x] Complete affected Go behavior/race/vet, actual web/image builds, strict OpenSpec, graph/discovery and original-scope/fixture-set checks; retain equivalent custom workflow-pin provenance separately from application evidence.
-- [ ] Commit the implementation candidate, run the full iteration selection against that committed clean revision with --require-clean, and reconcile every required receipt.
-- [ ] Commit the final canonical task/evidence record and read back Git state. No full trainer, AI inference/Lab, synthesis, backup/restore or architecture qualification claim follows from iteration1.
+- [x] Commit the implementation candidate, run the full iteration selection against that committed clean revision with --require-clean, and reconcile every required receipt.
+- [x] Commit the final canonical task/evidence record and read back Git state. No full trainer, AI inference/Lab, synthesis, backup/restore or architecture qualification claim follows from iteration1.
 
 Resume: audit/iteration-1-local-foundation-20261010/PLAN.md, CASES.json and REPORT.md own this iteration's scope, literal expectations, producer/consumer lineage, actual observations and invalidations. INVALIDATED.json retains superseded historical case rows rather than reusing old acceptance for changed owners.
+
+Iteration1 acceptance: 9a896ee is the clean implementation candidate; evidence/iteration1/iteration1-clean-acceptance.json records32/32 actual passes, clean=true. The following acceptance-record commit changes no production/test/fixture/graph input. The completed foundation leaves the remaining fifteen full-scope engineering iterations visible.

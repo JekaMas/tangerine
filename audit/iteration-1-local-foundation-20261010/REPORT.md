@@ -1,6 +1,6 @@
 # Iteration 1 local foundation
 
-Status: implementation candidate; committed clean-revision acceptance is pending.
+Status: iteration1 accepted. The complete32-case selection passed with --require-clean at implementation commit 9a896ee535594ce5d7d02dc03d20adaf0d5315b3 (clean=true), with no skips, failures or substitutions. The final acceptance commit adds records only.
 
 The launcher now builds the supplied real Next.js/Go/Python/MinIO sources with Docker, initializes PostgreSQL and private storage, creates one local workspace, and opens the Library without accounts. Provider keys and models are not startup prerequisites. Internal credentials are generated durably and retained on normal stop/restart. Old account/session rows are preserved as inert legacy data; the original migration remains checksum-identical.
 
@@ -19,3 +19,8 @@ Workflow state: bootstrap initially rejected two previously modified generated i
 All122taxonomy/recipe identities,42formula and11full-source registry bytes remain unchanged, as does migration001. No inference, speech synthesis, model setup, purchase, publication or peer review occurred. This is local foundation acceptance only. The canonical checkout's unrelated GAPS.md change is untouched.
 
 Evidence is retained under openspec/changes/implement-teacher-error-trainer/evidence/iteration1. Constructed fixture/set records are design inputs; actual execution outcomes and their exact committed/source identities are owned by workflow receipts, not those design tags.
+
+
+Final acceptance: all32 exact workflow cases passed at the committed clean candidate in222.096s. Native archive inventory retained848source entries with their hashes, Git/workflow exclusions and launcher PATH containing only Docker/OS utilities. Exact native SQL/S3/health/browser/launcher logs and browser-driver disposition are retained in evidence/iteration1/clean-native. The selected implementation graph is eight properties/two distinct packets per polarity; the full graph remains415requirements,430properties,2164case edges. All other full-product obligations keep their independent status.
+
+Required checks passed: thirteen native Go unit cases with the race detector; focused updated secret-redaction case; current Go vet and formatting; actual locked image/web production builds; strict OpenSpec; graph/discovery;2850finite fixture/set/preservation assertions; native bootstrap state, skill/routes/publication checks and shared workflow mechanics. Earlier valid greens are retained where their semantic owners/assertions did not change. Metadata/evidence export does not change the accepted production or test behavior.
