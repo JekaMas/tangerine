@@ -1,0 +1,92 @@
+{
+  "origin": "constructed written expectations derived from unchanged equations; no scorer/model run",
+  "components": {
+    "detection": true,
+    "classification": false,
+    "correction": true,
+    "explanation": false
+  },
+  "packets": [
+    {
+      "id": "MATH-01",
+      "input": "G=GC=1,TP=1,FP=FN=0,CQ=1; default detection/correction only",
+      "expected": {
+        "detection.f1": "1/1",
+        "correction.graded_recall": "1/1",
+        "composite": "100/1"
+      },
+      "counterexample": "A duplicate of the same assertion cannot yield TP=2."
+    },
+    {
+      "id": "MATH-02",
+      "input": "G=GC=1,TP=1,FP=1,FN=0,CQ=1; default components",
+      "expected": {
+        "detection.f1": "2/3",
+        "correction.graded_recall": "1/1",
+        "composite": "80/1"
+      },
+      "counterexample": "The control false assertion must not disappear because the genuine repair is correct."
+    },
+    {
+      "id": "MATH-03",
+      "input": "G=GC=2,TP=1,FP=0,FN=1,CQ=1; default components",
+      "expected": {
+        "detection.f1": "2/3",
+        "correction.graded_recall": "1/2",
+        "composite": "60/1"
+      },
+      "counterexample": "One ambiguous quote cannot be replicated to both errors for100."
+    },
+    {
+      "id": "MATH-04",
+      "input": "G=GC=1,TP=0,FP=0,FN=1,CQ=0; default components",
+      "expected": {
+        "detection.precision": null,
+        "detection.f1": "0/1",
+        "correction.graded_recall": "0/1",
+        "composite": "0/1"
+      },
+      "counterexample": "No assertions gives no_assertions precision, not perfect precision."
+    },
+    {
+      "id": "MATH-05",
+      "input": "G=GC=1,TP=1,FP=FN=0,CQ=0; repair omitted; default components",
+      "expected": {
+        "detection.f1": "1/1",
+        "correction.graded_recall": "0/1",
+        "composite": "60/1"
+      },
+      "counterexample": "Omitting a requested repair cannot remove its30weight."
+    },
+    {
+      "id": "MATH-06",
+      "input": "G=0; D=1,DF=1,DA=0; control-only exercise",
+      "expected": {
+        "decoy.overcorrection_rate": "1/1",
+        "detection.f1": null,
+        "composite": null
+      },
+      "counterexample": "No true-error opportunities cannot be converted into100."
+    },
+    {
+      "id": "MATH-07",
+      "input": "Two required repair propositions, one satisfied, none forbidden; G=GC=TP=1,FP=FN=0; default components",
+      "expected": {
+        "repair_credit": "1/2",
+        "correction.graded_recall": "1/2",
+        "composite": "80/1"
+      },
+      "counterexample": "partial status alone cannot determine a numeric grade; exact proposition count does."
+    },
+    {
+      "id": "MATH-08",
+      "input": "One supported detection; a verified forbidden repair assertion; G=GC=TP=1,FP=FN=0; default components",
+      "expected": {
+        "repair_credit": "0/1",
+        "correction.graded_recall": "0/1",
+        "composite": "60/1"
+      },
+      "counterexample": "EXP-001 explains the missing projection for a false additional assertion absent from the finite forbidden list."
+    }
+  ]
+}

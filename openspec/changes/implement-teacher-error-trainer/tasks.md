@@ -272,3 +272,11 @@ Current resume: spec/property exploration is in audit/ai-development-20261009/RE
 - [ ] Future authorized implementation: verify dependency-scoped dispatch, unavailable selected-source actions, source intake/raw-only meaning, exact source completeness and selected Lab experiments through their real owners with the added positive/negative plans.
 
 Current resume: specification/v2/docs/product-data-relevance.md and domain/product-data-relevance.v1.json supersede broad dependency/completion requests in prior audits. New report: audit/product-dependency-scope-20261009/REPORT.md. Historical acquisition failures and unknown source bytes stay factual; no product decision is pending. This is specification-only, with no inference, application implementation, download, email, installation or publication. Preserve the unrelated GAPS.md edit.
+
+## 2026-10-09 pre-implementation OpenSpec exploration
+
+- [x] Trace written user scenarios, data purposes, LLM controls/development and native scoring across the active specification; record ten proposed repair groups without applying them to active behavior contracts.
+- [x] Record 38concrete scenario pairs and eight written arithmetic oracle packets, with all 392 properties/1,568 existing case identities reconciled in discovery; no new passing behavior evidence.
+- [ ] Resolve EXP-001 through EXP-010 in the active specification before implementation, using the exact proposed repairs and positive/negative examples; preserve all 122 categories/recipes,42 formulas,11 full-source scopes and optional features. These are engineering specification repairs, not pending product approvals.
+
+Current resume: audit/pre-implementation-explore-20261009/REPORT.md, FINDINGS.md, SCENARIOS.md, DATA-WIRING.md and LLM-AND-SCORING.md own this exploration. Runtime implementation availability is excluded from its acceptance criteria. No application code, active specification contract, dependency/tool setup, inference, audio generation, source acquisition, publication or secret was changed. Preserve the unrelated audit/spec-fullness-20261008/GAPS.md edit. The existing change remains unfinished.
