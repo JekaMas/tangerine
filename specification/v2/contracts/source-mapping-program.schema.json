@@ -1,0 +1,390 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/source-mapping-program.schema.json",
+  "title": "source-mapping-program",
+  "type": "object",
+  "description": "Deterministic interpreter input for source-specific local exports. Real native dictionaries supply the bindings; absent headers are never guessed.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "Current written contract version."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Existing version-scoped identifier."
+    },
+    "source_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Existing version-scoped identifier."
+    },
+    "release_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Existing version-scoped identifier."
+    },
+    "raw_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+    },
+    "dictionary_asset_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+        "description": "Existing version-scoped identifier."
+      },
+      "description": "Ordered complete values."
+    },
+    "tables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "One native input table.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Exact saved value."
+          },
+          "member_glob": {
+            "type": "string",
+            "minLength": 1,
+            "description": "POSIX glob relative to the acquired release root."
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "xml",
+              "xlsx",
+              "m2",
+              "textgrid",
+              "json",
+              "jsonl",
+              "csv",
+              "tsv",
+              "kaldi"
+            ],
+            "description": "Exactly one declared value."
+          },
+          "selector": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Documented worksheet, XML expanded-name path, or normalized records; no arbitrary code."
+          },
+          "encoding": {
+            "enum": [
+              "utf-8",
+              "utf-8-sig",
+              "utf-16le",
+              "utf-16be"
+            ],
+            "description": "Actual documented text encoding; ignored by binary XLSX parser."
+          },
+          "delimiter": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "CSV/TSV only; null for other formats."
+          },
+          "has_header": {
+            "type": "boolean",
+            "description": "Whether the first CSV/TSV row is a source header."
+          }
+        },
+        "required": [
+          "name",
+          "member_glob",
+          "format",
+          "selector",
+          "encoding",
+          "delimiter",
+          "has_header"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Ordered complete values."
+    },
+    "record_table": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Exact saved value."
+    },
+    "identity": {
+      "type": "object",
+      "description": "Source row field locator.",
+      "properties": {
+        "table": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Exact saved value."
+        },
+        "pointer": {
+          "type": "string",
+          "minLength": 0,
+          "description": "RFC6901 pointer relative to one normalized raw row. Empty string denotes the row."
+        }
+      },
+      "required": [
+        "table",
+        "pointer"
+      ],
+      "additionalProperties": false
+    },
+    "joins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Exact string/numeric key join with no fuzzy matching; retained native identities.",
+        "properties": {
+          "left_table": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Exact saved value."
+          },
+          "left_pointer": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Exact saved value."
+          },
+          "right_table": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Exact saved value."
+          },
+          "right_pointer": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Exact saved value."
+          },
+          "cardinality": {
+            "type": "string",
+            "enum": [
+              "one",
+              "many"
+            ],
+            "description": "Exactly one declared value."
+          },
+          "required": {
+            "type": "boolean",
+            "description": "Whether an absent join prevents normalization."
+          }
+        },
+        "required": [
+          "left_table",
+          "left_pointer",
+          "right_table",
+          "right_pointer",
+          "cardinality",
+          "required"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Ordered complete values."
+    },
+    "projections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "One deterministic field projection.",
+        "properties": {
+          "from": {
+            "type": "object",
+            "description": "Source row field locator.",
+            "properties": {
+              "table": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Exact saved value."
+              },
+              "pointer": {
+                "type": "string",
+                "minLength": 0,
+                "description": "RFC6901 pointer relative to one normalized raw row. Empty string denotes the row."
+              }
+            },
+            "required": [
+              "table",
+              "pointer"
+            ],
+            "additionalProperties": false
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1,
+            "description": "RFC6901 pointer inside the selected output envelope."
+          },
+          "conversion": {
+            "type": "string",
+            "enum": [
+              "identity",
+              "decimal",
+              "integer",
+              "token_span",
+              "codepoint_span",
+              "seconds_to_samples",
+              "raw_only"
+            ],
+            "description": "Exactly one declared value."
+          },
+          "null_values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Ordered complete values."
+          },
+          "required": {
+            "type": "boolean",
+            "description": "Missing required source value makes this record unmapped."
+          }
+        },
+        "required": [
+          "from",
+          "to",
+          "conversion",
+          "null_values",
+          "required"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Ordered complete values."
+    },
+    "span_origin": {
+      "type": "string",
+      "enum": [
+        "zero_based_half_open",
+        "one_based_inclusive"
+      ],
+      "description": "Exactly one declared value."
+    },
+    "sample_rate_hz": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Nonnegative exact integer."
+    },
+    "unmapped_fields": {
+      "const": "retain_raw",
+      "description": "No raw data or source dictionary fields may be discarded."
+    },
+    "repeated_projections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "table": {
+            "type": "string",
+            "description": "A many-joined normalized table; each actual joined row produces one array element."
+          },
+          "to": {
+            "type": "string",
+            "description": "RFC6901 output pointer selecting an array."
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "One deterministic field projection.",
+              "properties": {
+                "from": {
+                  "type": "object",
+                  "description": "Source row field locator.",
+                  "properties": {
+                    "table": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Exact saved value."
+                    },
+                    "pointer": {
+                      "type": "string",
+                      "minLength": 0,
+                      "description": "RFC6901 pointer relative to one normalized raw row. Empty string denotes the row."
+                    }
+                  },
+                  "required": [
+                    "table",
+                    "pointer"
+                  ],
+                  "additionalProperties": false
+                },
+                "to": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "RFC6901 pointer inside the selected output envelope."
+                },
+                "conversion": {
+                  "type": "string",
+                  "enum": [
+                    "identity",
+                    "decimal",
+                    "integer",
+                    "token_span",
+                    "codepoint_span",
+                    "seconds_to_samples",
+                    "raw_only"
+                  ],
+                  "description": "Exactly one declared value."
+                },
+                "null_values": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Ordered complete values."
+                },
+                "required": {
+                  "type": "boolean",
+                  "description": "Missing required source value makes this record unmapped."
+                }
+              },
+              "required": [
+                "from",
+                "to",
+                "conversion",
+                "null_values",
+                "required"
+              ],
+              "additionalProperties": false
+            },
+            "description": "Complete ordered values."
+          }
+        },
+        "required": [
+          "table",
+          "to",
+          "fields"
+        ],
+        "additionalProperties": false,
+        "description": "Typed deterministic mapping input."
+      },
+      "description": "Complete ordered values."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "source_id",
+    "release_id",
+    "raw_manifest_sha256",
+    "dictionary_asset_ids",
+    "tables",
+    "record_table",
+    "identity",
+    "joins",
+    "projections",
+    "span_origin",
+    "sample_rate_hz",
+    "unmapped_fields",
+    "repeated_projections"
+  ],
+  "additionalProperties": false
+}

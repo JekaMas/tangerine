@@ -348,3 +348,13 @@ Current resume: specification/v2/docs/service-setup-guide.md and audit/service-s
 - [ ] Future full-scope development: implement all accepted feature owners and execute independent actual cases, including controlled acoustic realization/diagnostics, provider limits, Lab, source intake, restart/restore and supported-platform delivery. Selected complete source reports remain dependent on actual native bytes; missing inputs do not count as accepted product scope.
 
 Current resume: specification/v2/docs/full-development-readiness.md and audit/full-development-readiness-20261009/REPORT.md. Registration and read-only host observations are setup evidence only. No application implementation, model setup, inference, synthesis, paid usage or publication. Development may iterate; no MVP/product deferral is approved. Preserve the unrelated GAPS.md edit and historical receipts.
+
+## 2026-10-09 complete written build contract
+
+- [x] Trace actual remaining specification gaps behind full-operation dependencies; preserve all122categories/recipes,42original formulas,11full-source scopes and on-demand flow.
+- [x] Specify typed on-demand acoustic edits, finite production routes, generated paired contrasts, sample transforms/maps and component-scoped realization failure.
+- [x] Specify durable per-piece render progress/270s explicit continuation, full source-export mapping interpreter and local/free auditory LLM diagnostics with controlled context/Lab evidence.
+- [x] Reconcile24literal positive/negative plans,151schema/field/prompt/version metadata;3,791static +607schema/metadata assertions, strict OpenSpec/graph/discovery checks passed. Behavior remains unexecuted.
+- [ ] Future authorized full implementation: implement and qualify the entire accepted feature graph, actual provider/local model behavior, acoustic realization, persisted restart/restore and selected original-source bindings. Written fixture designs and public metadata are not runtime acceptance.
+
+Current resume: audit/build-contract-completeness-20261009/. Preserve unrelated audit/spec-fullness-20261008/GAPS.md. No implementation/inference/install authority in this increment.

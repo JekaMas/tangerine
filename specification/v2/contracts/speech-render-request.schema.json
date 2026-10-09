@@ -348,6 +348,65 @@
       "maxLength": 64,
       "minLength": 64,
       "pattern": "^[a-f0-9]{64}$"
+    },
+    "production_plan_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Existing private typed asset; historic absent field means null, never an invented asset."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Existing private typed asset; historic absent field means null, never an invented asset."
+    },
+    "render_scope": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "full_plan",
+            "piece",
+            "assemble"
+          ],
+          "description": "Only the explicit saved render scope may execute."
+        },
+        "piece_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "description": "Existing private saved identity."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Null only where the declared scope does not select an identity."
+        },
+        "render_progress_asset_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "description": "Existing private saved identity."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Null only where the declared scope does not select an identity."
+        }
+      },
+      "required": [
+        "kind",
+        "piece_id",
+        "render_progress_asset_id"
+      ],
+      "additionalProperties": false,
+      "description": "Exact scoped native transport/projection."
     }
   },
   "required": [

@@ -105,3 +105,5 @@ Hash source files over the original bytes. Hash JSON domain content with RFC 878
 A field containing a previously measured asset digest is part of the subject content. Do not omit it.
 
 Current preparation persistence/resume is defined by preparation-persistence.md and preparation-state/preparation-settings schemas. Generation must be self-contained under self-contained-generation.md; no private contextual fact determines a scored mistake. Key repair uses key-repair-projection.md and the existing LLM operation. These are written contracts, not implemented behavior.
+
+New private documents acoustic-production-plan,render-progress,source-mapping-program and audio-judge profile/input/output reuse existing typed documents/operation receipts and private MinIO. Render progress is linked by the PostgreSQL preparation head; full-build-contract.md specifies producer/readback/lifecycle and sample-map storage. No new background runtime or application identity is introduced.

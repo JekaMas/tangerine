@@ -232,6 +232,59 @@
     "updated_at": {
       "type": "string",
       "format": "date-time"
+    },
+    "render_progress_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Existing private typed asset; historic absent field means null, never an invented asset."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Existing private typed asset; historic absent field means null, never an invented asset."
+    },
+    "render_progress_summary": {
+      "type": "object",
+      "properties": {
+        "complete_pieces": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of actually complete read-back piece artifacts."
+        },
+        "total_pieces": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of all frozen required pieces."
+        },
+        "first_unfinished_piece_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "description": "Existing private saved identity."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Null only where the declared scope does not select an identity."
+        },
+        "ready_to_assemble": {
+          "type": "boolean",
+          "description": "True only when all required pieces have complete actual bytes."
+        }
+      },
+      "required": [
+        "complete_pieces",
+        "total_pieces",
+        "first_unfinished_piece_id",
+        "ready_to_assemble"
+      ],
+      "additionalProperties": false,
+      "description": "Exact scoped native transport/projection."
     }
   },
   "required": [

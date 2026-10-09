@@ -20,7 +20,7 @@ AI-affecting development SHALL use the selected local Lab and retain ai-developm
 
 ### Requirement: DEV-02 Complete inference surface inventory
 
-Development SHALL reconcile every owned remote/local inference and wrapper/helper/plugin path against ai-surface-inventory, including all fourteen declared surfaces and future additions. Static inventory SHALL not masquerade as runtime coverage. The owning definitions are specification/v2/docs/ai-development.md and domain/ai-development.v1.json.
+Development SHALL reconcile every owned remote/local inference and wrapper/helper/plugin path against ai-surface-inventory, including all21declared surfaces and future additions. Static inventory SHALL not masquerade as runtime coverage. The owning definitions are specification/v2/docs/ai-development.md and domain/ai-development.v1.json.
 
 #### Scenario: DEV-02 Registered alternate inference route
 

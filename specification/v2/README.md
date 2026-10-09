@@ -35,3 +35,5 @@ Current service/data research: [included-allowance provider access](docs/provide
 Setup instructions: [which services are needed and what each does](docs/service-setup-guide.md), including the minimal ChatGPT Pro + local Kokoro setup and optional extensions.
 
 [Full development and operation readiness](docs/full-development-readiness.md) maps every feature to its services/data and distinguishes complete written scope from observed all-feature acceptance.
+
+Complete production extensions and source/export/auditory/resume contracts: docs/full-build-contract.md; corresponding typed schemas and domain/acoustic-production.v1.json. These are specification artifacts, not implemented behavior.

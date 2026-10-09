@@ -42,7 +42,6 @@ features:
   - elision
 binding_rule: Exact binary versions, hashes, and implementation conformance are
   release evidence, not invented values.
-
 advisory_methods:
   faster-whisper-local-en-v1:
     owner: services/speech
@@ -62,4 +61,22 @@ advisory_methods:
     use: independent lexical-v1 WER; not phone assessment or audio-capable LLM
     account_required: false
     setup: explicit diagnostic model setup, never ordinary startup or paid fallback
+    observed: false
+  qwen25-omni-audio-v1:
+    owner: services/speech
+    contract: docs/full-build-contract.md
+    provider: local_qwen25_omni
+    input: audio-judge-input
+    output: audio-judge-output
+    projection: audio-measurement with model-inferred categorical values and actual receipt
+    ordinary_use_required: false
+    observed: false
+  gemini-audio-v1:
+    owner: services/speech
+    contract: docs/full-build-contract.md
+    provider: gemini_interactions
+    input: audio-judge-input
+    output: audio-judge-output
+    projection: audio-measurement with model-inferred categorical values and actual receipt
+    ordinary_use_required: false
     observed: false

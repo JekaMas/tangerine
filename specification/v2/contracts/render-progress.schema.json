@@ -1,0 +1,230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/render-progress.schema.json",
+  "title": "render-progress",
+  "type": "object",
+  "description": "Durable immutable private render journal; PostgreSQL head and existing private MinIO assets.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "Current written contract version."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Existing version-scoped identifier."
+    },
+    "preparation_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Existing version-scoped identifier."
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Nonnegative exact integer."
+    },
+    "render_plan_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+    },
+    "production_plan_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Existing version-scoped identifier."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Existing version-scoped identifier."
+    },
+    "pieces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "One complete reusable render piece; incomplete stream is not an audio asset.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "Existing version-scoped identifier."
+          },
+          "utterance_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "Existing version-scoped identifier."
+          },
+          "operation_indexes": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Nonnegative exact integer."
+            },
+            "description": "Ordered complete values."
+          },
+          "request_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+          },
+          "source_asset_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                "description": "Existing version-scoped identifier."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Existing version-scoped identifier."
+          },
+          "asset_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                "description": "Existing version-scoped identifier."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Existing version-scoped identifier."
+          },
+          "audio_sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$",
+                "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+          },
+          "sample_count": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Nonnegative exact integer."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Nonnegative exact integer."
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "running",
+              "complete",
+              "failed",
+              "interrupted"
+            ],
+            "description": "Exactly one declared value."
+          },
+          "receipt_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "description": "Existing version-scoped identifier."
+            },
+            "description": "Ordered complete values."
+          },
+          "last_error_asset_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                "description": "Existing version-scoped identifier."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Existing version-scoped identifier."
+          }
+        },
+        "required": [
+          "id",
+          "utterance_id",
+          "operation_indexes",
+          "request_sha256",
+          "source_asset_id",
+          "asset_id",
+          "audio_sha256",
+          "sample_count",
+          "state",
+          "receipt_ids",
+          "last_error_asset_id"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Ordered complete values."
+    },
+    "assembled_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Existing version-scoped identifier."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Existing version-scoped identifier."
+    },
+    "assembled_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+    },
+    "sample_map_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Private exact sample map, null until actual complete bytes exist."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "preparation_id",
+    "revision",
+    "render_plan_sha256",
+    "production_plan_asset_id",
+    "pieces",
+    "assembled_asset_id",
+    "assembled_sha256",
+    "sample_map_asset_id"
+  ],
+  "additionalProperties": false
+}

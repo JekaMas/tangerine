@@ -66,3 +66,5 @@ case_version_id references an immutable document, never a mutable entity head. I
 Mutation manifests, frozen Lab datasets and judge inputs/outputs use the same typed document/private-asset storage. Their owning hash projections are generation-contract-details.md and llm-lab-contract-details.md; referenced asset hashes cover actual bytes unless explicitly JCS content hashes.
 
 Current preparation persistence/resume is defined by preparation-persistence.md and preparation-state/preparation-settings schemas. Generation must be self-contained under self-contained-generation.md; no private contextual fact determines a scored mistake. Key repair uses key-repair-projection.md and the existing LLM operation. These are written contracts, not implemented behavior.
+
+Full-scope extensions: [full build contract](full-build-contract.md) specifies controlled local speech selection, generated acoustic pairs, exact decoder/sample-map clocks, per-piece resume/readback, native export mapping, actual auditory-model diagnostics and their user scenarios. New private fields use existing owners/operations; original main-flow and component-score contracts remain.

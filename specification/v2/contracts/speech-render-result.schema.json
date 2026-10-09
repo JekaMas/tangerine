@@ -14,14 +14,14 @@
     },
     "delivery_asset_id": {
       "type": "string",
-      "description": "The actual linked delivery.",
+      "description": "Actual complete linked WAV in the declared delivery_scope.",
       "maxLength": 128,
       "minLength": 1,
       "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
     },
     "audio_sha256": {
       "type": "string",
-      "description": "The complete final WAV.",
+      "description": "Digest of actual complete returned WAV, scoped to a piece or the assembled full plan.",
       "maxLength": 64,
       "minLength": 64,
       "pattern": "^[a-f0-9]{64}$"
@@ -60,11 +60,26 @@
             "maximum": 2147483647
           },
           "receipt_id": {
-            "type": "string",
-            "description": "The actual provider response.",
-            "maxLength": 128,
-            "minLength": 1,
-            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                "description": "Existing private saved identity."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "First actual provider/model receipt, or null for pure native assembly/import without inference; never fabricated."
+          },
+          "receipt_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "description": "Existing private saved identity."
+            },
+            "description": "All actual native/model/provider call receipts contributing to this scoped turn."
           }
         },
         "required": [
@@ -92,6 +107,52 @@
       "minItems": 0,
       "maxItems": 100000,
       "uniqueItems": true
+    },
+    "delivery_scope": {
+      "enum": [
+        "full_plan",
+        "piece"
+      ],
+      "description": "Actual complete scoped WAV; a piece is not completion of the whole render phase."
+    },
+    "piece_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Existing private saved identity."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null only where the declared scope does not select an identity."
+    },
+    "render_progress_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Existing private saved identity."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null only where the declared scope does not select an identity."
+    },
+    "sample_map_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Existing private saved identity."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null only where the declared scope does not select an identity."
     }
   },
   "required": [

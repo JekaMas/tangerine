@@ -41,6 +41,12 @@ owner_supplied:
     destination:
       - speech
     default: null
+  GEMINI_API_KEY:
+    type: secret
+    required_for: explicitly selected free/included auditory Gemini diagnostics
+    destination:
+      - speech
+    default: null
 internal:
   workspace_id: local
   web_host_binding: 127.0.0.1:3000
@@ -70,8 +76,8 @@ internal:
   archive_member_bytes: 34359738368
   list_page_default: 50
   list_page_max: 100
-  supported_setup: Docker Engine >=24 and Compose >=2.20 with validated required capabilities; linux
-    amd64/arm64; macOS Docker Desktop; Windows WSL2
+  supported_setup: Docker Engine >=24 and Compose >=2.20 with validated required
+    capabilities; linux amd64/arm64; macOS Docker Desktop; Windows WSL2
   mapping_audit_enabled: false
   output_repairs_per_stage: 1
   wire_fallbacks_per_stage: 1
@@ -87,16 +93,21 @@ internal:
     allow_purchased_credits: false
     allow_overage: false
     allow_silent_billing_fallback: false
+  audio_diagnostic_profile: null
+  controlled_local_speech_profile: kokoro-controlled-v1 when requested categories
+    need local acoustic/temporal production
 publisher_supplied:
   - all dependency lockfiles
   - all model/voice/profile bindings
   - all source adapter implementations
   - all schema and prompt hashes
-  - complete application source and Docker build inputs independent of Git/workflow submodules
-  - ChatGPT plan Responses adapter and loopback provider connection; current provider-access.v1.json
-    defaults
+  - complete application source and Docker build inputs independent of
+    Git/workflow submodules
+  - ChatGPT plan Responses adapter and loopback provider connection; current
+    provider-access.v1.json defaults
 unknown_key: configuration_error
-secret_rule: Never copy values into images, logs, prompts, public environment variables, or returned DTOs.
+secret_rule: Never copy values into images, logs, prompts, public environment
+  variables, or returned DTOs.
 simple_preparation:
   variety_policy:
     target_locale: en-US
@@ -105,8 +116,9 @@ simple_preparation:
       - en-GB
     register: conversational
     assessment_basis: contextual_appropriacy
-    public_constraints: Judge errors in the stated topic and conversational context; systematic
-      permitted English varieties are acceptable unless an explicit target is declared.
+    public_constraints: Judge errors in the stated topic and conversational context;
+      systematic permitted English varieties are acceptable unless an explicit
+      target is declared.
   task_components:
     detection: true
     classification: false

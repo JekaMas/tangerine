@@ -1,12 +1,13 @@
 version: 2.0.0
 rules:
-  - Create/submit requests consist exactly of request_fields below; local server assigns
-    server_fields without generic reservation.
-  - Native imported record IDs/times/annotations are preserved in raw source metadata under a new
-    local envelope.
-  - Referenced immutable hashes are client preconditions compared to actual saved versions.
-  - LLM semantic findings are stored with actual receipt; no human person or qualification is
-    required.
+  - Create/submit requests consist exactly of request_fields below; local server
+    assigns server_fields without generic reservation.
+  - Native imported record IDs/times/annotations are preserved in raw source
+    metadata under a new local envelope.
+  - Referenced immutable hashes are client preconditions compared to actual
+    saved versions.
+  - LLM semantic findings are stored with actual receipt; no human person or
+    qualification is required.
 server_authority_field_names:
   - workspace_id
   - id
@@ -56,8 +57,8 @@ operations:
     state_guard_reference: docs/preparation-persistence.md
     idempotency: false
     revision_precondition: false
-    effect: Read persisted preparation checkpoints and explicit resume choices without model/speech
-      dispatch.
+    effect: Read persisted preparation checkpoints and explicit resume choices
+      without model/speech dispatch.
     request_fields: []
     server_fields: []
     imported_source_fields: []
@@ -79,8 +80,8 @@ operations:
     state_guard_reference: docs/lifecycle.md
     idempotency: true
     revision_precondition: false
-    effect: Expand the minimal exercise_request or retain advanced blueprint controls; assign identity
-      and persist the immutable blueprint.
+    effect: Expand the minimal exercise_request or retain advanced blueprint
+      controls; assign identity and persist the immutable blueprint.
     request_fields:
       - format
       - public_context
@@ -95,7 +96,8 @@ operations:
       - exercise_request
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: generate
     request_schema: generation-request
@@ -104,8 +106,8 @@ operations:
     state_guard_reference: docs/preparation-persistence.md
     idempotency: true
     revision_precondition: false
-    effect: Persist preparation snapshot before dispatch, checkpoint clean text then mutations, and
-      continue the exact saved preparation on explicit resume.
+    effect: Persist preparation snapshot before dispatch, checkpoint clean text then
+      mutations, and continue the exact saved preparation on explicit resume.
     request_fields:
       - blueprint_id
       - effective_configuration_sha256
@@ -114,7 +116,8 @@ operations:
       - preparation_id
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: linguistic_audit
     request_schema: null
@@ -134,15 +137,16 @@ operations:
     state_guard_reference: docs/preparation-persistence.md
     idempotency: true
     revision_precondition: true
-    effect: Render the saved preparation plan or an explicit imported/native plan; checkpoint actual
-      linked audio/key without lifetime manual retry caps.
+    effect: Render the saved preparation plan or an explicit imported/native plan;
+      checkpoint actual linked audio/key without lifetime manual retry caps.
     request_fields:
       - plan
       - render_attempt
       - preparation_id
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: measure
     request_schema: null
@@ -180,7 +184,8 @@ operations:
       - evidence_ids
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: create_person
     request_schema: create-person-request
@@ -202,7 +207,8 @@ operations:
     server_fields:
       - id
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: get_person
     request_schema: null
@@ -238,7 +244,8 @@ operations:
     server_fields:
       - id
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: start_review
     request_schema: start-review-request
@@ -247,7 +254,8 @@ operations:
     state_guard_reference: docs/lifecycle.md
     idempotency: true
     revision_precondition: false
-    effect: Call configured case_review LLM; save modality, findings and receipt, no human identity.
+    effect: Call configured case_review LLM; save modality, findings and receipt, no
+      human identity.
     request_fields:
       - schema_version
       - case_version_id
@@ -266,7 +274,8 @@ operations:
       - provider_receipt_ids
       - input_modality
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: get_review
     request_schema: null
@@ -302,7 +311,8 @@ operations:
       - provider_receipt_ids
       - input_modality
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: review_disclose
     request_schema: null
@@ -345,7 +355,8 @@ operations:
       - rationale_record_ids
       - reason
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: rationale
     request_schema: rationale-request
@@ -369,7 +380,8 @@ operations:
       - id
       - text_sha256
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: teacher_gold
     request_schema: teacher-gold-request
@@ -402,7 +414,8 @@ operations:
       - id
       - submitted_at
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: start_attempt
     request_schema: attempt-start-request
@@ -418,7 +431,8 @@ operations:
       - requested_language
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: get_attempt
     request_schema: null
@@ -444,7 +458,8 @@ operations:
       - requested_language
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: submit_answer
     request_schema: answer-write
@@ -459,7 +474,8 @@ operations:
       - requested_language
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: retry_evaluation
     request_schema: retry-request
@@ -474,7 +490,8 @@ operations:
       - configuration_sha256
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: retry_feedback
     request_schema: retry-request
@@ -489,7 +506,8 @@ operations:
       - configuration_sha256
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: attempt_results
     request_schema: null
@@ -534,7 +552,8 @@ operations:
       - id
       - received_at
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: audio
     request_schema: null
@@ -601,7 +620,8 @@ operations:
       - provider_receipt_ids
       - input_modality
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: get_dispute
     request_schema: null
@@ -646,7 +666,8 @@ operations:
       - provider_receipt_ids
       - input_modality
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: unit_map
     request_schema: unit-map-request
@@ -666,7 +687,8 @@ operations:
     server_fields:
       - id
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: reconsider
     request_schema: reconsider-request
@@ -682,7 +704,8 @@ operations:
       - unit_correspondence_id
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: list_sources
     request_schema: null
@@ -719,7 +742,8 @@ operations:
       - observed_counts
       - manifest_sha256
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: format_binding
     request_schema: format-binding-request
@@ -746,7 +770,8 @@ operations:
       - provider_receipt_ids
       - input_modality
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: grant
     request_schema: grant-request
@@ -776,7 +801,8 @@ operations:
       - id
       - created_at
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: revoke
     request_schema: maintenance-request
@@ -785,16 +811,17 @@ operations:
     state_guard_reference: docs/lifecycle.md
     idempotency: true
     revision_precondition: true
-    effect: Save actual source revocation notice/status and expose affected selected-source use; retain
-      provenance without permission epochs or grant closure. Independent authored exercises remain
-      available.
+    effect: Save actual source revocation notice/status and expose affected
+      selected-source use; retain provenance without permission epochs or grant
+      closure. Independent authored exercises remain available.
     request_fields:
       - action
       - subject_ids
       - confirmed_plan_sha256
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: import_source
     request_schema: import-request
@@ -811,7 +838,8 @@ operations:
       - continue_after_record
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: read_import
     request_schema: null
@@ -847,7 +875,8 @@ operations:
       - id
       - status
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: get_config
     request_schema: null
@@ -867,7 +896,8 @@ operations:
     state_guard_reference: docs/lifecycle.md
     idempotency: true
     revision_precondition: true
-    effect: Persist explicit configuration; invalidate affected caches, not historical evidence.
+    effect: Persist explicit configuration; invalidate affected caches, not
+      historical evidence.
     request_fields:
       - schema_version
       - llm_profile
@@ -886,11 +916,14 @@ operations:
       - llm_lab_trace_enabled
       - llm_lab_capture_content
       - preparation_defaults
+      - speech_profiles
+      - audio_diagnostic_profile
     server_fields:
       - workspace_id
       - configuration_sha256
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: reserve_asset
     request_schema: asset-reservation-request
@@ -908,7 +941,8 @@ operations:
       - mime_type
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: upload_asset
     request_schema: binary:application/octet-stream
@@ -922,7 +956,8 @@ operations:
       - actual binary bytes
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
   - id: get_asset
     request_schema: null
     response_schema: binary:application/octet-stream
@@ -959,7 +994,8 @@ operations:
       - confirmed_plan_sha256
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: backup
     request_schema: backup-request
@@ -974,7 +1010,8 @@ operations:
       - confirmation_plan_sha256
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: restore
     request_schema: restore-request
@@ -990,7 +1027,8 @@ operations:
       - confirmation_plan_sha256
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: delete_plan
     request_schema: delete-plan-request
@@ -1014,7 +1052,8 @@ operations:
       - revocation_epoch
       - completed_at
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: delete_apply
     request_schema: maintenance-request
@@ -1023,14 +1062,16 @@ operations:
     state_guard_reference: docs/lifecycle.md
     idempotency: true
     revision_precondition: true
-    effect: Require plan digest and explicit confirmation; retain only permitted tombstones.
+    effect: Require plan digest and explicit confirmation; retain only permitted
+      tombstones.
     request_fields:
       - action
       - subject_ids
       - confirmed_plan_sha256
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: difficulty
     request_schema: difficulty-request
@@ -1057,7 +1098,8 @@ operations:
       - rating
       - missing_reason
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: split
     request_schema: split-request
@@ -1077,7 +1119,8 @@ operations:
       - id
       - manifest_sha256
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: qualification_report
     request_schema: qualification-report-request
@@ -1101,7 +1144,8 @@ operations:
       - gate_results
       - holdout_exposed
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: get_candidate
     request_schema: null
@@ -1128,7 +1172,8 @@ operations:
       - parent_case_version_id
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: write_key
     request_schema: key-write
@@ -1137,14 +1182,16 @@ operations:
     state_guard_reference: docs/lifecycle.md
     idempotency: true
     revision_precondition: true
-    effect: Save a prepublication key candidate; verify all existing references and observations.
+    effect: Save a prepublication key candidate; verify all existing references and
+      observations.
     request_fields:
       - ground_truth
       - rationale_records
       - candidate_sha256
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: adjudicate
     request_schema: adjudicate-request
@@ -1171,7 +1218,8 @@ operations:
       - provider_receipt_ids
       - input_modality
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: get_adjudication
     request_schema: null
@@ -1196,7 +1244,8 @@ operations:
       - reason
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: speech_render
     request_schema: speech-render-request
@@ -1216,10 +1265,13 @@ operations:
       - turns
       - audio_format
       - plan_sha256
+      - production_plan_asset_id
+      - render_scope
     server_fields:
       - id
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: speech_measure
     request_schema: measure-request
@@ -1235,7 +1287,8 @@ operations:
       - method_ids
     server_fields: []
     imported_source_fields:
-      - All native original fields remain in raw-record/source assets, outside the creation envelope.
+      - All native original fields remain in raw-record/source assets, outside
+        the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: list_provider_connections
     request_schema: null
@@ -1266,8 +1319,8 @@ operations:
     state_guard_reference: docs/provider-access.md
     idempotency: false
     revision_precondition: false
-    effect: Explicitly connect/select/disconnect provider registration without inference or application
-      login.
+    effect: Explicitly connect/select/disconnect provider registration without
+      inference or application login.
     request_fields:
       - action
       - connection_id
@@ -1292,8 +1345,8 @@ operations:
     state_guard_reference: docs/provider-access.md
     idempotency: false
     revision_precondition: false
-    effect: Exchange one-use loopback OAuth authorization and persist validated provider metadata/secret
-      references.
+    effect: Exchange one-use loopback OAuth authorization and persist validated
+      provider metadata/secret references.
     request_fields:
       - code
       - state

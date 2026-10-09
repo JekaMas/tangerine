@@ -479,6 +479,24 @@
       ],
       "additionalProperties": false,
       "description": "Optional saved simple-form defaults; absence inherits configuration-registry.yaml simple_preparation."
+    },
+    "speech_profiles": {
+      "type": "array",
+      "items": {
+        "$ref": "speech-profile.schema.json"
+      },
+      "description": "Optional explicit configured extension profiles; unique IDs resolve only compatible installed adapters. Absence uses original registry profiles."
+    },
+    "audio_diagnostic_profile": {
+      "anyOf": [
+        {
+          "$ref": "audio-judge-profile.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null only for declared absence."
     }
   },
   "required": [

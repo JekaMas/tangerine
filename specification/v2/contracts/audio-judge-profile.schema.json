@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/audio-judge-profile.schema.json",
+  "title": "audio-judge-profile",
+  "type": "object",
+  "description": "Selected audio-capable diagnostic binding; text-only ChatGPT stages do not receive audio. No ordinary-use diagnostic requirement.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "Current written contract version."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Existing version-scoped identifier."
+    },
+    "provider": {
+      "type": "string",
+      "enum": [
+        "local_qwen25_omni",
+        "gemini_interactions"
+      ],
+      "description": "Exactly one declared value."
+    },
+    "model": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Exact saved value."
+    },
+    "revision": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "description": "Immutable local repository revision; null for a hosted model alias with actual returned version retained."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Immutable local repository revision; null for a hosted model alias with actual returned version retained."
+    },
+    "credential_ref": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "description": "Server-side secret reference only."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Server-side secret reference only."
+    },
+    "billing_mode": {
+      "type": "string",
+      "enum": [
+        "local",
+        "free_tier",
+        "included_subscription"
+      ],
+      "description": "Exactly one declared value."
+    },
+    "device": {
+      "type": "string",
+      "enum": [
+        "cpu",
+        "cuda",
+        "mps",
+        "provider"
+      ],
+      "description": "Exactly one declared value."
+    },
+    "max_clip_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Nonnegative exact integer."
+    },
+    "max_output_tokens": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Nonnegative exact integer."
+    },
+    "prompt_asset_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Existing version-scoped identifier."
+    },
+    "prompt_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "provider",
+    "model",
+    "revision",
+    "credential_ref",
+    "billing_mode",
+    "device",
+    "max_clip_seconds",
+    "max_output_tokens",
+    "prompt_asset_id",
+    "prompt_sha256"
+  ],
+  "additionalProperties": false
+}
