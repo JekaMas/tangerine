@@ -157,7 +157,9 @@
 - [ ] 13.6 Complete remaining written definitions FRC-006/008/009/010/012/015/016/017/018, resolve FRC-019/020/021 product/rightsholder decisions and the 17 original policy choices, and obtain actual GAP-043/044/045 native source contracts. See findings.json and gap-reconciliation.json for precise ownership and closure boundaries; do not fabricate approvals, gold or source data.
 - [ ] 13.7 Future implementation only after separate authorization: integrate v2 DTOs/configuration/lifecycle/scoring/audio/import/maintenance/no-account migration and source launcher; then exercise all affected production positive/negative/property boundaries with actual permitted data and separately qualified providers/reviewers. Preserve full-source/full-taxonomy scope and existing valid observations.
 
-## Resume notes
+## Historical resume notes
+
+These notes record the earlier release-package audit. The current simplification and source-research sections below supersede its unresolved policy/license statements.
 
 Current authority remains exploration, research and specification update only. The current draft is specification/v2, linked by the single implement-teacher-error-trainer change and audit/full-release-reconciliation-20261008/REPORT.md. Immutable new input: spec-inputs/full-release-20261008 (240 files; archive SHA-256 5a11b1606990d762bfb40307fe8580d5b29090190e98c801c09b110b4acfc808). Current actual user scope: GitHub source ZIP/clone, provided LLM keys and a basic localhost helper; no mandatory accounts/auth/public API setup or prebuilt release manifests. Keep configurable LLM profiles and the future deepseek-flash/low development selection; no inference or credential copying in this increment.
 
@@ -172,3 +174,11 @@ Existing application bytes still implement the historical account/login/catalog 
 - [x] Reconcile exact schema/operation/property graph and whole-spec positive/negative static checks; retain real external missing inputs and owner choices in audit/local-simplification-20261008.
 
 Earlier completed implementation tasks are historical receipts, not current conformance to revised semantics. No application implementation is authorized by these checked specification tasks.
+
+## Current source research and Apache selection
+
+- [x] Record Apache-2.0 in LICENSE and active delivery/authority contracts.
+- [x] Research every missing-source group through public owner/research documentation and release metadata; update exact component/native conversion meanings and preserve all eleven sources.
+- [x] Reconcile affected OpenSpec properties/cases, static positive/negative research checks and the complete current specification vector; publish exact remaining external artifacts in audit/source-contract-research-20261009. Strict OpenSpec, graph/discovery,34static research checks and7final artifact checks pass; affected app cases remain plans.
+
+Current resume: user authorizes research/specification only; no application implementation, corpus records or provider calls. Current source discovery fills public agreement/documentation, both Shatz sample semantics and the Öksüz OSF companion including exact19/20-column CSV headers, while actual Cambridge workbooks/variable glossaries, Doubao records/instrument wording and separate vendor exports remain unavailable to this session. Previous simplification policies and Apache choice are settled. Preserve the unrelated dirty GAPS.md.

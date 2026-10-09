@@ -1,5 +1,7 @@
 # Full specification reconciliation after owner approvals
 
+Historical audit: [the 2026-10-09 source-research report](../source-contract-research-20261009/REPORT.md) and [input ledger](../source-contract-research-20261009/REMAINING-INPUTS.md) supersede this report’s pending software-license choice and source-documentation unknowns. Apache-2.0 is now selected. Original observations below retain their dated scope.
+
 The specification now defines a simple local GitHub source project with configurable LLM answer checking, case review and adjudication, and no human peer reviews. Supplied policy/conversion proposals are approved. The owning docs, contracts, request projections, prompts, operation inventory and canonical OpenSpec requirements were revised; earlier immutable imports/audit receipts remain historical.
 
 All336requirement IDs,351properties and1404positive/negative case edges remain. All122taxonomy records/examples,27core/15aux equations,11full-source entries and67internal operation IDs remain. Original native schema fields remain supported; human metadata is imported source data, not a prerequisite for machine processing. Two explicit machine stages extend the original six configurable functions. No application code/reference implementation, provider call or source acquisition was performed.

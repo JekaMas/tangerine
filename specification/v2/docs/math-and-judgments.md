@@ -33,7 +33,7 @@ Schema or arithmetic checks alone cannot prove extraction completeness.
 A group contains only claims about the same identified event and compatible stance.
 All members remain stored. The representative is the earliest endorsed claim, not the highest-scoring claim.
 Normalize exact duplicate content only with NFC, apostrophe equivalence, and whitespace rules.
-Do not erase arbitrary punctuation or change case without an approved comparison rule for that correction.
+Exact duplicate consolidation does not erase arbitrary punctuation or change case. Semantic correction credit may accept harmless case/terminal-period variation under the contextual proposition rubric; it needs no per-case human approval.
 A retraction must explicitly refer to an earlier assertion. Its evidence span must occur later in the original answer.
 Reject cycles and forward references. A later contradiction without an explicit retraction remains unresolved.
 Compatible correction and explanation fragments can combine. An additional false clause remains part of the group's meaning.

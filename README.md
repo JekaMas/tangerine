@@ -1,10 +1,12 @@
 # Tangerine
 
-Teacher Error Trainer, started from nine initial files and the recovered complete 95-file v6-ste specification archive. Work and code are in English. The real local runtime foundation is implemented; full language scoring, author/reviewer/publication workflows, provider integration and validated content are still incomplete. Read audit/completeness.md before treating this as a complete trainer.
+Teacher Error Trainer, started from nine initial files and the recovered complete 95-file v6-ste specification archive. Work and code are in English. The real local runtime foundation is implemented; full language scoring, preparation/LLM review workflows, provider integration and validated content are still incomplete. Read audit/completeness.md before treating this as a complete trainer.
 
 ## Current specification
 
-The active full specification is [specification/v2](specification/v2/README.md). [Current reconciliation](audit/local-simplification-20261008/REPORT.md) and [remaining decisions/inputs](audit/local-simplification-20261008/DECISIONS-AND-INPUTS.md) supersede earlier audits. All122taxonomy IDs/examples,27core/15aux equations and11full-source entries remain. LLMs check answers, review cases and adjudicate disputes; there are no human peer reviewers or qualification prerequisites. Eight stages are configurable, with DeepSeek fast as the future test default.
+The active full specification is [specification/v2](specification/v2/README.md). [Current reconciliation](audit/source-contract-research-20261009/REPORT.md) and [remaining decisions/inputs](audit/source-contract-research-20261009/REMAINING-INPUTS.md) supersede earlier audits. All122taxonomy IDs/examples,27core/15aux equations and11full-source entries remain. LLMs check answers, review cases and adjudicate disputes; there are no human peer reviewers or qualification prerequisites. Eight stages are configurable, with DeepSeek fast as the future test default.
+
+Tangerine original software is licensed under [Apache-2.0](LICENSE), selected by the actual user. Imported corpora, publications, workflow dependencies and third-party components retain their own terms.
 
 The target is a simple local GitHub source ZIP/clone: supply required operation keys, run the helper and open localhost. No accounts, complex public API setup, mandatory repeat audit or whole-corpus certification is required. Complete source imports and all benchmark features remain supported and report actual missing data independently of ordinary use.
 

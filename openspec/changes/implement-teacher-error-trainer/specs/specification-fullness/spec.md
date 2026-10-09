@@ -1180,9 +1180,9 @@ The specification SHALL reconcile GAP-042 through `specification/v2/docs/sources
 
 ### Requirement: SPEC-043 EFCAMDAT full release and derivative ingest scope
 
-The required EFCAMDAT scope MUST include R2, Shatz2020, and Oksuz2025 as separate releases. Each needs actual source-format and permitted-use bindings.
+The required EFCAMDAT scope MUST include R2, Shatz2020 and Oksuz2025 as separate complete releases. The documented public agreement, R2 XML profile, both Shatz sample/intermediate/glossary components and Öksüz original/corrected/POS/error-coded components SHALL be retained. Public OSF analysis-file metadata, code-confirmed fields and exact header-only CSV observations SHALL be distinguished from acquired records and a complete native dictionary. Copied alternate prompts, source absence of corrections, SOC populations and source code/paper CEFR discrepancies SHALL follow specification/v2/docs/sources/efcamdat.md. Public analysis files alone SHALL NOT replace the full Cambridge derivative.
 
-The specification SHALL reconcile GAP-043 through `specification/v2/docs/sources/efcamdat.md` `specification/v2/domain/corpus-sources.v1.yaml` `specification/v2/contracts/source-format-binding.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
+The specification SHALL reconcile GAP-043 through `specification/v2/docs/sources/efcamdat.md` `specification/v2/domain/corpus-sources.v1.yaml` `specification/v2/contracts/source-format-binding.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/source-contract-research-20261009/REPORT.md, REMAINING-INPUTS.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-043 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-043 contract and its source references are under review.
@@ -1193,7 +1193,7 @@ The specification SHALL reconcile GAP-043 through `specification/v2/docs/sources
 
 - **GIVEN** the exact permitted input and required evidence exist.
 - **WHEN** the application applies `SPEC-043`.
-- **THEN** The operator supplies authorized source files, real documentation, and matching mappings for each release. Full ingestion reconciles them separately.
+- **THEN** The operator supplies each complete authorized release. Full raw intake preserves every native member; documented semantic bindings preserve both Shatz samples, actual prompt/correction missingness and Öksüz SOC populations without substituting its public analysis companion.
 
 #### Scenario: SPEC-043 An invalid or unsupported input
 
@@ -1209,9 +1209,9 @@ The specification SHALL reconcile GAP-043 through `specification/v2/docs/sources
 
 ### Requirement: SPEC-044 Doubao underlying study-record release contract
 
-Study-record ingestion MUST require an actual author-authorized Doubao release and participant-use scope. Paper metadata cannot create recordings.
+Study-record ingestion MUST retain an actual author-authorized complete Doubao release under the study-specific contract in specification/v2/docs/sources/doubao-study.md. Published expectations SHALL distinguish collected/valid/invalid/missing submissions and instruments. The documented single cohort/four cycles/post-program timing SHALL NOT be replaced with invented control arms or pre/post/follow-up datasets. Native records, exact instrument wording/scales, weekly prompts, media and applicable participant-use scope SHALL come from actual source inputs; paper metadata cannot create them.
 
-The specification SHALL reconcile GAP-044 through `specification/v2/docs/sources/private-vendors-and-study.md` `specification/v2/contracts/source-release.schema.json` `specification/v2/domain/corpus-sources.v1.yaml`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
+The specification SHALL reconcile GAP-044 through `specification/v2/docs/sources/private-vendors-and-study.md` `specification/v2/contracts/source-release.schema.json` `specification/v2/domain/corpus-sources.v1.yaml`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/source-contract-research-20261009/REPORT.md, REMAINING-INPUTS.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-044 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-044 contract and its source references are under review.
@@ -1222,7 +1222,7 @@ The specification SHALL reconcile GAP-044 through `specification/v2/docs/sources
 
 - **GIVEN** the exact permitted input and required evidence exist.
 - **WHEN** the application applies `SPEC-044`.
-- **THEN** An authorized complete release identifies its files, participant groups, annotation format, and permitted uses. It can enter the normal import protocol.
+- **THEN** An authorized complete release binds native participant/submission joins, all supplied video/journal dispositions, four prompt versions, all instrument responses/media and source terms. Published cohort and timing remain distinct from genuine additional source components.
 
 #### Scenario: SPEC-044 An invalid or unsupported input
 
@@ -1238,9 +1238,9 @@ The specification SHALL reconcile GAP-044 through `specification/v2/docs/sources
 
 ### Requirement: SPEC-045 Moodrick and NIR vendor-data scope and contracts
 
-Moodrick and NIR MUST have separate licensed or authorized private-source bindings. Account references cannot substitute for data rights or a documented interface.
+Moodrick and NIR MUST have separate complete authorized private-source bindings using specification/v2/docs/sources/private-vendors-and-study.md. Public product observations and a documented personal portability/contact route SHALL be distinguished from a full release, native dictionary, bulk-export rights or private API. Local complete export ingestion SHALL work without a remote API. No demonstration scores, other product provider disclosures, guessed endpoints or similarly named unrelated Nira APIs SHALL substitute for source data.
 
-The specification SHALL reconcile GAP-045 through `specification/v2/docs/sources/private-vendors-and-study.md` `specification/v2/contracts/connector-configuration.schema.json` `specification/v2/contracts/source-format-binding.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
+The specification SHALL reconcile GAP-045 through `specification/v2/docs/sources/private-vendors-and-study.md` `specification/v2/contracts/connector-configuration.schema.json` `specification/v2/contracts/source-format-binding.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/source-contract-research-20261009/REPORT.md, REMAINING-INPUTS.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-045 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-045 contract and its source references are under review.
@@ -1251,7 +1251,7 @@ The specification SHALL reconcile GAP-045 through `specification/v2/docs/sources
 
 - **GIVEN** the exact permitted input and required evidence exist.
 - **WHEN** the application applies `SPEC-045`.
-- **THEN** A real authorized export or documented API contract is supplied with the appropriate credential reference. The source uses only its permitted operations.
+- **THEN** Each vendor supplies its own complete authorized export and native dictionary. Every turn/report/media/scale is retained through a binding. A remote adapter uses only a genuinely documented private contract and credential reference; a complete local export needs no API.
 
 #### Scenario: SPEC-045 An invalid or unsupported input
 
@@ -1499,9 +1499,9 @@ The specification SHALL reconcile GAP-053 through `specification/v2/contracts/ba
 
 ### Requirement: SPEC-054 Basic GitHub download-and-run setup
 
-The project MUST implement the exact simple GitHub source-download setup defined in specification/v2/docs/local-delivery.md. No prebuilt application images or formal software release manifest is required.
+The project MUST implement the exact simple GitHub source-download setup defined in specification/v2/docs/local-delivery.md and include the Apache-2.0 LICENSE for original Tangerine software. Third-party materials retain their own terms. No prebuilt application images or formal software release manifest is required.
 
-The specification SHALL reconcile GAP-054 through `specification/v2/docs/local-delivery.md` `specification/v2/domain/configuration-registry.yaml` `specification/v2/contracts/configuration.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/local-simplification-20261008/REPORT.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
+The specification SHALL reconcile GAP-054 through `specification/v2/docs/local-delivery.md` `specification/v2/domain/configuration-registry.yaml` `specification/v2/contracts/configuration.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/source-contract-research-20261009/REPORT.md, REMAINING-INPUTS.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.
 
 #### Scenario: SPEC-054 Complete definition and rejection boundary
 - **GIVEN** The exact GAP-054 contract and its source references are under review.
@@ -1512,13 +1512,13 @@ The specification SHALL reconcile GAP-054 through `specification/v2/docs/local-d
 
 - **GIVEN** the exact permitted input and required evidence exist.
 - **WHEN** the application applies `SPEC-054`.
-- **THEN** A qualified release starts the real stack on loopback with persistent data and no account setup.
+- **THEN** An extracted complete source project includes Apache-2.0 LICENSE and starts the real stack on loopback with persistent data and no account setup.
 
 #### Scenario: SPEC-054 An invalid or unsupported input
 
 - **GIVEN** the input or evidence violates the declared contract.
 - **WHEN** the application applies `SPEC-054`.
-- **THEN** Images are missing, a secret is exposed, or an architecture lacks qualification. The launcher cannot claim a completed first release.
+- **THEN** Build inputs are missing, a build fails or a secret is exposed. The launcher reports the actual problem without claiming successful startup; an untested architecture remains explicitly untested.
 
 #### Scenario: SPEC-054 No genuine acceptance evidence exists
 

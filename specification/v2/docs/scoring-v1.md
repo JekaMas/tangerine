@@ -69,15 +69,14 @@ H = sum(H_i)
 
 The implicit root has depth zero. Each dot-separated ID component increases depth by one.
 `LCA` means the longest common ancestor path. A missing category gives zero credit.
-A category alias requires the frozen approved alias map. Do not invent an alias to improve a match.
-An unavailable alias map blocks synonym-dependent category credit. It does not remove correctly localized detection credit.
+A configured alias map is retained as lookup data. The LLM may map a contextual synonym to an existing taxonomy category with saved rationale; a missing alias-table entry does not by itself block that credit. Do not create a new taxonomy ID to improve a match. Classification uncertainty remains distinct from correctly localized detection credit.
 
 ## Correction and explanation credit
 
-Preserve the original teacher answer before normalization. For correction comparison, use only the normalization rules in this section.
+Preserve the original teacher answer before normalization. The following rules normalize exact text comparisons; semantic correction credit follows the proposition contract and LLM judgment in math-and-judgments.md.
 Use Unicode NFC. Trim outer whitespace and collapse internal whitespace.
 Treat straight and curly apostrophes as equivalent. Do not repair grammar, simplify IPA, or erase arbitrary punctuation.
-Case-insensitive variants require case-specific approval. Ignoring a terminal period also requires case-specific approval.
+The LLM may accept case or terminal-period differences when they do not change the required meaning in context. No case-specific human approval is required; capitalization or punctuation that changes a scored obligation remains part of the judgment.
 
 A correction option defines required propositions and forbidden propositions. A proposition is one stated condition for the repair.
 Calculate correction credit from those existing propositions:
@@ -89,7 +88,7 @@ q = 0 if at least one forbidden proposition is present
 
 A fully matched approved alternative gives credit one. A missing correction gives zero credit.
 A correction-eligible unit requires at least one required proposition in each scored option.
-A new plausible alternative remains unresolved until authorized review. The LLM cannot add that alternative to the key.
+The LLM accepts a valid novel alternative that satisfies the existing required propositions and violates none of the forbidden propositions. A genuine rubric defect invokes LLM adjudication and a new key version, without human peer review.
 A worded pronunciation repair can satisfy the propositions. The teacher does not need to type IPA.
 
 Use the same rule for explanation credit. A category name alone is not an explanation.
@@ -142,7 +141,7 @@ If a score-relevant decision remains unresolved, the composite is null.
 The existing default requests detection and correction. A task can request all four components before it starts.
 Unrequested classification and explanation remain descriptive observations. They do not change that task's composite.
 These weights are product policy. They are not validated teacher norms or certification boundaries.
-A changed weight requires explicit approval for that exact policy change.
+Retain these approved weights in policy version 1. A deliberate weight change defines a new saved policy version and cannot alter an already frozen attempt.
 
 ## Domains and pooled results
 

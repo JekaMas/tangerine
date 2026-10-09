@@ -32,7 +32,7 @@ The importer SHALL freeze upstream release/version, archive and every raw-file S
 
 - **GIVEN** an omitted, altered or unauthorized dependency in that same contract
 - **WHEN** the caller requests acceptance
-- **THEN** Missing raw hashes, undeclared count drift, unauthorized cloud transfer or auto-alignment relabeled as manual evidence blocks ingest or release.
+- **THEN** Missing raw hashes or undeclared count drift prevents a complete acquired-release claim; unauthorized cloud transfer is not performed and auto-alignment is never relabeled as manual. Valid raw intake and unrelated local use remain available.
 
 ### Requirement: DATAFULL-01 TET-GOLD-1 full release
 
@@ -116,7 +116,7 @@ The source plan SHALL retain FCE-2.1: official BEA FCE 2.1. Required components:
 
 ### Requirement: DATAFULL-06 EFCAMDAT-R2 full release
 
-The source plan SHALL retain EFCAMDAT-R2 (legacy EFCAMDAT identity): full second release (XML); cleaned/error-coded XLSX subcorpora are separately versioned derivatives. Required components: Full XML, task prompts, all available learner/task/proficiency groups; keep second release distinct from Shatz 2020 and Oksuz et al. 2025 derivatives; inspect accepted agreement, schema, offsets and annotation coverage before approved ingest contract. Rights/access boundary: access_and_licence_blocked; academic affiliation, university Google account and administrator approval required; baseline discovery-only profile not automatically ingest-enabled. Observed hashes/counts SHALL remain absent until acquired; every unavailable component SHALL be reported rather than invented.
+The source plan SHALL retain EFCAMDAT-R2 (legacy EFCAMDAT identity): the complete second-release XML, task prompts, annotations and source documentation. The public 2023 agreement and documented XML profile SHALL be retained with actual acquired-release bindings when available. Expected 1,180,310 writings/174,743 learners are upstream expectations, not local counts. Academic approved-account access and applicable supplied permissions remain operational inputs; native data/rights are not manufactured by Apache-2.0 or product approval. Full raw intake and normalized completeness SHALL be reported separately. Observed local hashes/counts SHALL remain absent until acquired; missing actual source members SHALL be reported without blocking local startup or unrelated exercise use.
 
 #### Scenario: DATAFULL-06 Complete supported behavior
 
@@ -132,7 +132,7 @@ The source plan SHALL retain EFCAMDAT-R2 (legacy EFCAMDAT identity): full second
 
 ### Requirement: DATAFULL-07 DOUBAO-STUDY-RECORDS full release
 
-The source plan SHALL retain DOUBAO-STUDY-RECORDS: no publicly verified downloadable corpus release. Required components: Research paper inventory only; full participant recordings/annotations require author/participant permissions and exact release contract; do not fabricate the reported 545 videos as acquired data. Rights/access boundary: unavailable; archive reports no accessible recordings or permission; publisher PDF fetch timed out during independent research. Observed hashes/counts SHALL remain absent until acquired; every unavailable component SHALL be reported rather than invented.
+The source plan SHALL retain DOUBAO-STUDY-RECORDS under specification/v2/docs/sources/doubao-study.md: all actual participant/submission records, instruments, weekly prompts, original/invalid media, journals, feedback and supplied consent/use metadata. The now-readable publisher paper supplies documentary expectations, not a participant-data release. Its single-cohort four-cycle design and post-program instruments SHALL remain explicit; invalid/missing submissions SHALL be preserved/reconciled. Actual native data/wording/scales/files remain unavailable until supplied; no aggregate reconstruction counts as acquisition. Observed local hashes/counts SHALL remain absent until acquired; missing actual source members SHALL be reported without blocking local startup or unrelated exercise use.
 
 #### Scenario: DATAFULL-07 Complete supported behavior
 
@@ -148,7 +148,7 @@ The source plan SHALL retain DOUBAO-STUDY-RECORDS: no publicly verified download
 
 ### Requirement: DATAFULL-08 MOODRICK-DATA full release
 
-The source plan SHALL retain MOODRICK-DATA, the Moodrick member of historical MOODRICK-NIR-DATA: no supplied actual annotated data release. Required components: Retain Moodrick as a separate vendor comparison source; NIR is bound under DATAFULL-11. public simulator descriptions do not supply private answer banks, prompts, rubrics, teacher interaction data or consent. Rights/access boundary: unavailable; NIR public page inspected as comparison only; Moodrick page fetch timed out, so data availability is unverified beyond supplied review. Observed hashes/counts SHALL remain absent until acquired; every unavailable component SHALL be reported rather than invented.
+The source plan SHALL retain MOODRICK-DATA separately from NIR-DATA: all authorized full-export sessions/turns/profiles/prompts/rubrics/feedback/media and native documentation/use terms. The official public HTML was read on 2026-10-09; it supplies a product description and contact route, not a complete native export or documented private API. Local-export adapter target meanings are defined in specification/v2/docs/sources/private-vendors-and-study.md. Demonstration values and personal/subset exports SHALL NOT satisfy the full vendor-release claim. Observed local hashes/counts SHALL remain absent until acquired; missing actual source members SHALL be reported without blocking local startup or unrelated exercise use.
 
 #### Scenario: DATAFULL-08 Complete supported behavior
 
@@ -164,7 +164,7 @@ The source plan SHALL retain MOODRICK-DATA, the Moodrick member of historical MO
 
 ### Requirement: DATAFULL-09 EFCAMDAT-SHATZ2020 separate full release
 
-The source plan SHALL retain the complete separately versioned EFCAMDAT-SHATZ2020 entry and every required component in specification/v2/domain/corpus-sources.v1.yaml and specification/v2/docs/sources/efcamdat.md. It SHALL retain exact actual native-format/rights/count bindings or an explicit unavailable status. It SHALL NOT substitute another derivative/vendor, an account credential, partial data or a public description for the actual full release. The attached transcribed decisions are not evidence of actual rights or owner approvals.
+The source plan SHALL retain the complete separately versioned EFCAMDAT-SHATZ2020 entry, both 406,062/317,220 sample expectations and every supplied intermediate version, glossary, script, workbook/sheet/member. The alternate sample copied prompt text SHALL NOT be represented as observed elicitation; absent source corrections SHALL be recorded without invention. Actual workbook/glossary bindings remain source inputs. All native data remain preserved, and no single sample or another derivative SHALL substitute for the full release. Observed local hashes/counts SHALL remain absent until acquired; missing actual source members SHALL be reported without blocking local startup or unrelated exercise use.
 
 #### Scenario: DATAFULL-09 Complete separately bound release
 - **GIVEN** the exact authorized EFCAMDAT-SHATZ2020 full release and required native format are available.
@@ -178,7 +178,7 @@ The source plan SHALL retain the complete separately versioned EFCAMDAT-SHATZ202
 
 ### Requirement: DATAFULL-10 EFCAMDAT-OKSUZ2025 separate full release
 
-The source plan SHALL retain the complete separately versioned EFCAMDAT-OKSUZ2025 entry and every required component in specification/v2/domain/corpus-sources.v1.yaml and specification/v2/docs/sources/efcamdat.md. It SHALL retain exact actual native-format/rights/count bindings or an explicit unavailable status. It SHALL NOT substitute another derivative/vendor, an account credential, partial data or a public description for the actual full release. The attached transcribed decisions are not evidence of actual rights or owner approvals.
+The source plan SHALL retain the complete separately versioned EFCAMDAT-OKSUZ2025 entry and full original/corrected/POS/error-coded Cambridge release. Its published article, deposited appendices and public OSF analysis companion SHALL be separately inventoried. Upstream member metadata, nine code-confirmed input names, complete 19/20-column public companion CSV headers and SOC/CEFR semantics in specification/v2/docs/sources/efcamdat.md SHALL be retained without claiming a complete native method/type dictionary, inspected private workbook headers or acquired corpus records. The public two-CSV companion alone SHALL NOT satisfy the full owner derivative. Observed local hashes/counts SHALL remain absent until acquired; missing actual source members SHALL be reported without blocking local startup or unrelated exercise use.
 
 #### Scenario: DATAFULL-10 Complete separately bound release
 - **GIVEN** the exact authorized EFCAMDAT-OKSUZ2025 full release and required native format are available.
@@ -192,7 +192,7 @@ The source plan SHALL retain the complete separately versioned EFCAMDAT-OKSUZ202
 
 ### Requirement: DATAFULL-11 NIR-DATA separate full release
 
-The source plan SHALL retain the complete separately versioned NIR-DATA entry and every required component in specification/v2/domain/corpus-sources.v1.yaml and specification/v2/docs/sources/private-vendors-and-study.md. It SHALL retain exact actual native-format/rights/count bindings or an explicit unavailable status. It SHALL NOT substitute another derivative/vendor, an account credential, partial data or a public description for the actual full release. The attached transcribed decisions are not evidence of actual rights or owner approvals.
+The source plan SHALL retain NIR-DATA separately from Moodrick: every authorized full-export component, native session/profile/stage/turn/transcript/report/media/rubric and actual native documentation/use terms. The inspected SIM/research/privacy descriptions and personal portability route SHALL NOT be treated as a bulk API, dataset release or general vendor-corpus permission. Separate NIR product origins remain distinct; no provider is inferred for SIM from another product. Complete local export intake is available without a remote API. Observed local hashes/counts SHALL remain absent until acquired; missing actual source members SHALL be reported without blocking local startup or unrelated exercise use.
 
 #### Scenario: DATAFULL-11 Complete separately bound release
 - **GIVEN** the exact authorized NIR-DATA full release and required native format are available.

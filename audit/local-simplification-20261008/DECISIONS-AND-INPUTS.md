@@ -1,5 +1,7 @@
 # Remaining owner decision and actual operational inputs
 
+Historical snapshot. Apache-2.0 was subsequently selected by the actual user; the current researched source/input ledger is [REMAINING-INPUTS.md](../source-contract-research-20261009/REMAINING-INPUTS.md). The dated findings below remain preserved.
+
 ## Owner decision
 
 DEC-LOCAL-001 — Open-source software license. The GitHub/download requirement is settled; the repository still needs a specific software license before publication. Recommended: MIT for straightforward reuse. Alternative: Apache-2.0 if an explicit patent grant is desired. This concerns original Tangerine software, not third-party corpus licenses. No license was silently applied. This is the only new owner decision identified in this audit.

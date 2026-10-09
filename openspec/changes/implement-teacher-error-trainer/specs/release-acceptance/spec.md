@@ -8,7 +8,7 @@ Preserve the observable release acceptance requirements of Teacher Error Trainer
 
 ### Requirement: REL-01 Deliver a runnable GitHub source project
 
-The project SHALL supply an open-source GitHub source ZIP or clone with complete application source, Dockerfiles, working Compose, dependency lock files, migrations, provider-key example and concise README start/stop/restart instructions. The supplied helper SHALL build application images locally and initialize internal services without manual setup. Starting from extracted source SHALL require no Git metadata or workflow submodules. A formal deployment/release manifest, signed bundle, prebuilt application image publication or production deployment platform is not required. Verification SHALL use the documented download-and-run path.
+The project SHALL supply an Apache-2.0 open-source GitHub source ZIP or clone, with the official LICENSE and third-party notices preserved, containing complete application source, Dockerfiles, working Compose, dependency lock files, migrations, provider-key example and concise README start/stop/restart instructions. The supplied helper SHALL build application images locally and initialize internal services without manual setup. Starting from extracted source SHALL require no Git metadata or workflow submodules. A formal deployment/release manifest, signed bundle, prebuilt application image publication or production deployment platform is not required. Verification SHALL use the documented download-and-run path.
 
 #### Scenario: REL-01 supported and rejected inputs
 
