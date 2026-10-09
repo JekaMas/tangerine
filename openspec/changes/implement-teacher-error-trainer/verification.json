@@ -2095,6 +2095,48 @@
       "capability": "simple-generation-flow",
       "title": "FLOW-06 Scores and actionable LLM recommendations complete the flow",
       "fingerprint": "590382377c417cbfc53fa82095706f1b13805b1a42d2f821c40b4144ddb4cc84"
+    },
+    {
+      "id": "LAB-01",
+      "capability": "llm-lab",
+      "title": "LAB-01 Optional local MLflow workspace",
+      "fingerprint": "bfcd72b540160d304e60eb0220cf576842927fc2774d43c87615e4f1daadc148"
+    },
+    {
+      "id": "LAB-02",
+      "capability": "llm-lab",
+      "title": "LAB-02 Immutable prompt and context activation",
+      "fingerprint": "c38ad10fd6053dfeb4f05c34b37f9c741c1e5eecf94502454e1c8715ae502d54"
+    },
+    {
+      "id": "LAB-03",
+      "capability": "llm-lab",
+      "title": "LAB-03 Inspectable stage context",
+      "fingerprint": "d1fa0977c0bf90b5b811e12aa687a77c095f6ac4568dc71d5e13318b290c56d6"
+    },
+    {
+      "id": "LAB-04",
+      "capability": "llm-lab",
+      "title": "LAB-04 Actual traces and nonblocking debugging",
+      "fingerprint": "8a4e3ab7465cf72a1d4432ca2634a75e3ed04182b0e7e0fbd1c5208c7efbd37a"
+    },
+    {
+      "id": "LAB-05",
+      "capability": "llm-lab",
+      "title": "LAB-05 Controlled quality experiments",
+      "fingerprint": "94499cc72f67032a4f0faececdf6814dd52c8cab37ac77f73557a05c25a177f4"
+    },
+    {
+      "id": "LAB-06",
+      "capability": "llm-lab",
+      "title": "LAB-06 Separate exact diagnostic metrics",
+      "fingerprint": "720d9247448f05e82548a3a86f4bc606efbaadfda4616b8f34bf2b3da3092067"
+    },
+    {
+      "id": "LAB-07",
+      "capability": "llm-lab",
+      "title": "LAB-07 Local privacy and recovery",
+      "fingerprint": "3b06f09f5ab5f38d1f8f36357ba3a7b5cff36b2ec3cd1e6a3ec1e0b53194c546"
     }
   ],
   "properties": [
@@ -8003,6 +8045,125 @@
         "services/api/**",
         "specification/v2/docs/simple-generation-flow.md",
         "specification/v2/contracts/exercise-request.schema.json"
+      ]
+    },
+    {
+      "id": "LAB-01.P1",
+      "requirement_id": "LAB-01",
+      "statement": "The system SHALL provide the optional MLflow 3.17.0 LLM Lab specified in specification/v2/docs/llm-lab.md, using one local container, SQLite and local artifacts. Normal startup and learner workflows SHALL work without Lab. Local tooling SHALL need no account, cloud service, new host runtime or provider call at startup.",
+      "scenarios": [
+        "LAB-01 Open the local workspace",
+        "LAB-01 Lab outage is isolated"
+      ],
+      "owner": "services/api",
+      "oracle": "Exact saved bundle/context/receipt/case/reference identity and independent diagnostic arithmetic; actual local MLflow/provider evidence when claimed, never static metadata as runtime proof.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/contracts/llm-*.schema.json"
+      ]
+    },
+    {
+      "id": "LAB-02.P1",
+      "requirement_id": "LAB-02",
+      "statement": "The system SHALL support editing, comparing, exporting, activating and reverting complete prompt/context bundles with every original stage/phase binding. Activation SHALL freeze numeric registry/content/schema/profile identities for new operations, preserve old attempts, and invalidate semantic-cache reuse when their effective binding changes. Prompt editing SHALL not require a human approval or a quality gate.",
+      "scenarios": [
+        "LAB-02 Activate a selected version",
+        "LAB-02 Alias drift and stale cache cannot change an operation"
+      ],
+      "owner": "services/api",
+      "oracle": "Exact saved bundle/context/receipt/case/reference identity and independent diagnostic arithmetic; actual local MLflow/provider evidence when claimed, never static metadata as runtime proof.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/contracts/llm-*.schema.json"
+      ]
+    },
+    {
+      "id": "LAB-03.P1",
+      "requirement_id": "LAB-03",
+      "statement": "The system SHALL save exact per-attempt context snapshots with ordered component/version/hash/budget metadata and private rendered input assets. It SHALL preserve existing stage disclosure and provider-role rules, selected source provenance and input fidelity. Context editing SHALL never silently truncate required answer/key/evidence or leak the key into blind extraction.",
+      "scenarios": [
+        "LAB-03 Inspect a mapping context",
+        "LAB-03 Required context exceeds its budget"
+      ],
+      "owner": "services/api",
+      "oracle": "Exact saved bundle/context/receipt/case/reference identity and independent diagnostic arithmetic; actual local MLflow/provider evidence when claimed, never static metadata as runtime proof.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/contracts/llm-*.schema.json"
+      ]
+    },
+    {
+      "id": "LAB-04.P1",
+      "requirement_id": "LAB-04",
+      "statement": "The system SHALL retain one operation trace and linked per-stage/attempt spans, including two generation phases, retries, repairs and cache hits. Go/Python SHALL export selected diagnostic copies through local OTLP/HTTP without a collector. Export failure SHALL preserve native receipts/results and permit explicit export-only sync.",
+      "scenarios": [
+        "LAB-04 Debug a repaired reply",
+        "LAB-04 Failed export and cache inspection are honest"
+      ],
+      "owner": "services/api",
+      "oracle": "Exact saved bundle/context/receipt/case/reference identity and independent diagnostic arithmetic; actual local MLflow/provider evidence when claimed, never static metadata as runtime proof.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/contracts/llm-*.schema.json"
+      ]
+    },
+    {
+      "id": "LAB-05.P1",
+      "requirement_id": "LAB-05",
+      "statement": "The system SHALL support explicit serial experiments comparing frozen prompt/context/model variants through the same native generation/evaluation/scoring owners. It SHALL preserve case/reference/split/scorer/repetition identity and actual expectation origin, report positive/negative coverage across all 122 leaves, and retain every failed/cancelled/not-run row. Semantic judges SHALL use explicit configurable profiles without human reviewers or default-provider fallback.",
+      "scenarios": [
+        "LAB-05 Compare variants on saved cases",
+        "LAB-05 Partial or self-referential evaluation stays qualified"
+      ],
+      "owner": "services/api",
+      "oracle": "Exact saved bundle/context/receipt/case/reference identity and independent diagnostic arithmetic; actual local MLflow/provider evidence when claimed, never static metadata as runtime proof.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/contracts/llm-*.schema.json"
+      ]
+    },
+    {
+      "id": "LAB-06.P1",
+      "requirement_id": "LAB-06",
+      "statement": "The system SHALL calculate the 22 diagnostic metrics/populations in specification/v2/domain/llm-quality-metrics.v1.json separately from all 42 original grading equations. It SHALL report applicability, denominators, coverage and paired exclusions, preserve unknowns as N/A, and compare quality/latency/usage/cost without an invented blended score or mandatory activation threshold.",
+      "scenarios": [
+        "LAB-06 Quality and latency differences are explainable",
+        "LAB-06 Unknown usage and absent acoustic observations remain unavailable"
+      ],
+      "owner": "services/api",
+      "oracle": "Exact saved bundle/context/receipt/case/reference identity and independent diagnostic arithmetic; actual local MLflow/provider evidence when claimed, never static metadata as runtime proof.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/contracts/llm-*.schema.json"
+      ]
+    },
+    {
+      "id": "LAB-07.P1",
+      "requirement_id": "LAB-07",
+      "statement": "The system SHALL keep diagnostic export local with telemetry disabled, content capture opt-in and credential/source-private fields omitted. It SHALL include consistent optional Lab data and saved native bundles/experiments in backup and remove copied sensitive bodies on explicit deletion. Lab failure SHALL never justify claiming cleanup, export or restore completed when it did not.",
+      "scenarios": [
+        "LAB-07 Restore a private local Lab backup",
+        "LAB-07 Export and deletion preserve privacy accounting"
+      ],
+      "owner": "services/api",
+      "oracle": "Exact saved bundle/context/receipt/case/reference identity and independent diagnostic arithmetic; actual local MLflow/provider evidence when claimed, never static metadata as runtime proof.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/contracts/llm-*.schema.json"
       ]
     }
   ],
@@ -46864,6 +47025,874 @@
         "note": "Future application/provider plan; specification static checks cannot substitute."
       },
       "blocker": "Specification-only authority; no implementation, inference or audio synthesis in this increment."
+    },
+    {
+      "id": "LAB-01.P1.S1.POSITIVE",
+      "property_id": "LAB-01.P1",
+      "polarity": "positive",
+      "scenario": "LAB-01 Open the local workspace",
+      "scenario_fingerprint": "1c3b87444921ab0135f45e94aa2e19f57bd0360467286e1cb4ee088c4325da7a",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified positive condition.",
+      "observable": "LAB-01 Open the local workspace",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-01 Open the local workspace with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-01.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-01.P1.S1.NEGATIVE",
+      "property_id": "LAB-01.P1",
+      "polarity": "negative",
+      "scenario": "LAB-01 Open the local workspace",
+      "scenario_fingerprint": "1c3b87444921ab0135f45e94aa2e19f57bd0360467286e1cb4ee088c4325da7a",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified negative condition.",
+      "observable": "LAB-01 Open the local workspace",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-01 Open the local workspace with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-01.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-01.P1.S2.POSITIVE",
+      "property_id": "LAB-01.P1",
+      "polarity": "positive",
+      "scenario": "LAB-01 Lab outage is isolated",
+      "scenario_fingerprint": "aadc00077e4dcabb145e053f4181a423788c16097d0ceeeeb5909ecd4af103e4",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified positive condition.",
+      "observable": "LAB-01 Lab outage is isolated",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-01 Lab outage is isolated with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-01.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-01.P1.S2.NEGATIVE",
+      "property_id": "LAB-01.P1",
+      "polarity": "negative",
+      "scenario": "LAB-01 Lab outage is isolated",
+      "scenario_fingerprint": "aadc00077e4dcabb145e053f4181a423788c16097d0ceeeeb5909ecd4af103e4",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified negative condition.",
+      "observable": "LAB-01 Lab outage is isolated",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-01 Lab outage is isolated with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-01.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-02.P1.S1.POSITIVE",
+      "property_id": "LAB-02.P1",
+      "polarity": "positive",
+      "scenario": "LAB-02 Activate a selected version",
+      "scenario_fingerprint": "07ff80aaf4e5bb2102f85f581e5383d079d06c1dd3235bf00b464a4dc007a6b3",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified positive condition.",
+      "observable": "LAB-02 Activate a selected version",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-02 Activate a selected version with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-02.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-02.P1.S1.NEGATIVE",
+      "property_id": "LAB-02.P1",
+      "polarity": "negative",
+      "scenario": "LAB-02 Activate a selected version",
+      "scenario_fingerprint": "07ff80aaf4e5bb2102f85f581e5383d079d06c1dd3235bf00b464a4dc007a6b3",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified negative condition.",
+      "observable": "LAB-02 Activate a selected version",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-02 Activate a selected version with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-02.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-02.P1.S2.POSITIVE",
+      "property_id": "LAB-02.P1",
+      "polarity": "positive",
+      "scenario": "LAB-02 Alias drift and stale cache cannot change an operation",
+      "scenario_fingerprint": "f93f53d799836df0315ae33439fd16f179cfd3d39414d1d6455873c9747db7bb",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified positive condition.",
+      "observable": "LAB-02 Alias drift and stale cache cannot change an operation",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-02 Alias drift and stale cache cannot change an operation with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-02.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-02.P1.S2.NEGATIVE",
+      "property_id": "LAB-02.P1",
+      "polarity": "negative",
+      "scenario": "LAB-02 Alias drift and stale cache cannot change an operation",
+      "scenario_fingerprint": "f93f53d799836df0315ae33439fd16f179cfd3d39414d1d6455873c9747db7bb",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified negative condition.",
+      "observable": "LAB-02 Alias drift and stale cache cannot change an operation",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-02 Alias drift and stale cache cannot change an operation with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-02.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-03.P1.S1.POSITIVE",
+      "property_id": "LAB-03.P1",
+      "polarity": "positive",
+      "scenario": "LAB-03 Inspect a mapping context",
+      "scenario_fingerprint": "44a10d4ea81bb5f092b8a154af9de81e02271ee2fbd7f945dc703ab874de69db",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified positive condition.",
+      "observable": "LAB-03 Inspect a mapping context",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-03 Inspect a mapping context with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-03.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-03.P1.S1.NEGATIVE",
+      "property_id": "LAB-03.P1",
+      "polarity": "negative",
+      "scenario": "LAB-03 Inspect a mapping context",
+      "scenario_fingerprint": "44a10d4ea81bb5f092b8a154af9de81e02271ee2fbd7f945dc703ab874de69db",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified negative condition.",
+      "observable": "LAB-03 Inspect a mapping context",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-03 Inspect a mapping context with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-03.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-03.P1.S2.POSITIVE",
+      "property_id": "LAB-03.P1",
+      "polarity": "positive",
+      "scenario": "LAB-03 Required context exceeds its budget",
+      "scenario_fingerprint": "aa1ce89518089708eb65c4b61ddc952fe7dfeb94b80a47149638533a416a924c",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified positive condition.",
+      "observable": "LAB-03 Required context exceeds its budget",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-03 Required context exceeds its budget with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-03.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-03.P1.S2.NEGATIVE",
+      "property_id": "LAB-03.P1",
+      "polarity": "negative",
+      "scenario": "LAB-03 Required context exceeds its budget",
+      "scenario_fingerprint": "aa1ce89518089708eb65c4b61ddc952fe7dfeb94b80a47149638533a416a924c",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified negative condition.",
+      "observable": "LAB-03 Required context exceeds its budget",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-03 Required context exceeds its budget with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-03.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-04.P1.S1.POSITIVE",
+      "property_id": "LAB-04.P1",
+      "polarity": "positive",
+      "scenario": "LAB-04 Debug a repaired reply",
+      "scenario_fingerprint": "846c67047f8d8cd450e5148f5382a4b55e7fa2ea7e3159f5ff9878b1c31b39bd",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified positive condition.",
+      "observable": "LAB-04 Debug a repaired reply",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-04 Debug a repaired reply with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-04.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-04.P1.S1.NEGATIVE",
+      "property_id": "LAB-04.P1",
+      "polarity": "negative",
+      "scenario": "LAB-04 Debug a repaired reply",
+      "scenario_fingerprint": "846c67047f8d8cd450e5148f5382a4b55e7fa2ea7e3159f5ff9878b1c31b39bd",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified negative condition.",
+      "observable": "LAB-04 Debug a repaired reply",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-04 Debug a repaired reply with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-04.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-04.P1.S2.POSITIVE",
+      "property_id": "LAB-04.P1",
+      "polarity": "positive",
+      "scenario": "LAB-04 Failed export and cache inspection are honest",
+      "scenario_fingerprint": "3a9778246c9db7edb0c962401039cb40617137312aa3a2baea331a531e91ad8e",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified positive condition.",
+      "observable": "LAB-04 Failed export and cache inspection are honest",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-04 Failed export and cache inspection are honest with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-04.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-04.P1.S2.NEGATIVE",
+      "property_id": "LAB-04.P1",
+      "polarity": "negative",
+      "scenario": "LAB-04 Failed export and cache inspection are honest",
+      "scenario_fingerprint": "3a9778246c9db7edb0c962401039cb40617137312aa3a2baea331a531e91ad8e",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified negative condition.",
+      "observable": "LAB-04 Failed export and cache inspection are honest",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-04 Failed export and cache inspection are honest with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-04.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-05.P1.S1.POSITIVE",
+      "property_id": "LAB-05.P1",
+      "polarity": "positive",
+      "scenario": "LAB-05 Compare variants on saved cases",
+      "scenario_fingerprint": "48d041f5745d165429b1d204ebd1c456ef2813a4c40bd78d13743debf0fd683e",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified positive condition.",
+      "observable": "LAB-05 Compare variants on saved cases",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-05 Compare variants on saved cases with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-05.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-05.P1.S1.NEGATIVE",
+      "property_id": "LAB-05.P1",
+      "polarity": "negative",
+      "scenario": "LAB-05 Compare variants on saved cases",
+      "scenario_fingerprint": "48d041f5745d165429b1d204ebd1c456ef2813a4c40bd78d13743debf0fd683e",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified negative condition.",
+      "observable": "LAB-05 Compare variants on saved cases",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-05 Compare variants on saved cases with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-05.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-05.P1.S2.POSITIVE",
+      "property_id": "LAB-05.P1",
+      "polarity": "positive",
+      "scenario": "LAB-05 Partial or self-referential evaluation stays qualified",
+      "scenario_fingerprint": "324852550174cc0d69bd123eba6b398f7b3aa45162086bb36f689b45f554b0ce",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified positive condition.",
+      "observable": "LAB-05 Partial or self-referential evaluation stays qualified",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-05 Partial or self-referential evaluation stays qualified with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-05.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-05.P1.S2.NEGATIVE",
+      "property_id": "LAB-05.P1",
+      "polarity": "negative",
+      "scenario": "LAB-05 Partial or self-referential evaluation stays qualified",
+      "scenario_fingerprint": "324852550174cc0d69bd123eba6b398f7b3aa45162086bb36f689b45f554b0ce",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified negative condition.",
+      "observable": "LAB-05 Partial or self-referential evaluation stays qualified",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-05 Partial or self-referential evaluation stays qualified with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-05.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-06.P1.S1.POSITIVE",
+      "property_id": "LAB-06.P1",
+      "polarity": "positive",
+      "scenario": "LAB-06 Quality and latency differences are explainable",
+      "scenario_fingerprint": "5ef21447a4110bc64b8271fd6f7b63279886fbc924c014629b653d740f8cb79a",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified positive condition.",
+      "observable": "LAB-06 Quality and latency differences are explainable",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-06 Quality and latency differences are explainable with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-06.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-06.P1.S1.NEGATIVE",
+      "property_id": "LAB-06.P1",
+      "polarity": "negative",
+      "scenario": "LAB-06 Quality and latency differences are explainable",
+      "scenario_fingerprint": "5ef21447a4110bc64b8271fd6f7b63279886fbc924c014629b653d740f8cb79a",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified negative condition.",
+      "observable": "LAB-06 Quality and latency differences are explainable",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-06 Quality and latency differences are explainable with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-06.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-06.P1.S2.POSITIVE",
+      "property_id": "LAB-06.P1",
+      "polarity": "positive",
+      "scenario": "LAB-06 Unknown usage and absent acoustic observations remain unavailable",
+      "scenario_fingerprint": "b60190e65ec2d56ab645a7cc5b1f82a993fa1bb0400f82fcae919c9b791157b7",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified positive condition.",
+      "observable": "LAB-06 Unknown usage and absent acoustic observations remain unavailable",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-06 Unknown usage and absent acoustic observations remain unavailable with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-06.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-06.P1.S2.NEGATIVE",
+      "property_id": "LAB-06.P1",
+      "polarity": "negative",
+      "scenario": "LAB-06 Unknown usage and absent acoustic observations remain unavailable",
+      "scenario_fingerprint": "b60190e65ec2d56ab645a7cc5b1f82a993fa1bb0400f82fcae919c9b791157b7",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified negative condition.",
+      "observable": "LAB-06 Unknown usage and absent acoustic observations remain unavailable",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-06 Unknown usage and absent acoustic observations remain unavailable with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-06.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-07.P1.S1.POSITIVE",
+      "property_id": "LAB-07.P1",
+      "polarity": "positive",
+      "scenario": "LAB-07 Restore a private local Lab backup",
+      "scenario_fingerprint": "ef8c880ed34cd80c80f87e0c945e9178ab9cf05aab937e88c6f911443636098d",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified positive condition.",
+      "observable": "LAB-07 Restore a private local Lab backup",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-07 Restore a private local Lab backup with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-07.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-07.P1.S1.NEGATIVE",
+      "property_id": "LAB-07.P1",
+      "polarity": "negative",
+      "scenario": "LAB-07 Restore a private local Lab backup",
+      "scenario_fingerprint": "ef8c880ed34cd80c80f87e0c945e9178ab9cf05aab937e88c6f911443636098d",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified negative condition.",
+      "observable": "LAB-07 Restore a private local Lab backup",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-07 Restore a private local Lab backup with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-07.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-07.P1.S2.POSITIVE",
+      "property_id": "LAB-07.P1",
+      "polarity": "positive",
+      "scenario": "LAB-07 Export and deletion preserve privacy accounting",
+      "scenario_fingerprint": "df4a14395f34d9ee81abfb6c769c154b6095ae6df4d189001b93d6749fb1634e",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified positive condition.",
+      "observable": "LAB-07 Export and deletion preserve privacy accounting",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-07 Export and deletion preserve privacy accounting with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-07.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
+    },
+    {
+      "id": "LAB-07.P1.S2.NEGATIVE",
+      "property_id": "LAB-07.P1",
+      "polarity": "negative",
+      "scenario": "LAB-07 Export and deletion preserve privacy accounting",
+      "scenario_fingerprint": "df4a14395f34d9ee81abfb6c769c154b6095ae6df4d189001b93d6749fb1634e",
+      "setup": "Use the stated Lab scenario with a frozen bundle/experiment and actual local operation/provider observations; introduce the specified negative condition.",
+      "observable": "LAB-07 Export and deletion preserve privacy accounting",
+      "red_expectation": "The actual owner violates this exact version/context/trace/population/privacy obligation or fabricates a completed observation.",
+      "green_expectation": "Observe LAB-07 Export and deletion preserve privacy accounting with saved artifacts, exact population accounting and isolated optional Lab behavior.",
+      "test_id": "planned::llm-lab::LAB-07.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_llm_lab.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/llm-lab.md",
+        "specification/v2/domain/llm-lab.v1.yaml",
+        "specification/v2/domain/llm-quality-metrics.v1.json",
+        "specification/v2/contracts/prompt-bundle.schema.json",
+        "specification/v2/contracts/llm-context-snapshot.schema.json",
+        "specification/v2/contracts/llm-quality-case.schema.json",
+        "specification/v2/contracts/llm-experiment.schema.json",
+        "openspec/changes/implement-teacher-error-trainer/specs/llm-lab/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Planned production-owner/provider/MLflow acceptance; specification checks cannot substitute."
+      },
+      "blocker": "Specification-only scope. No Lab installation/runtime, provider inference, experiment execution or application implementation occurred."
     }
   ],
   "commands": [
@@ -48266,7 +49295,35 @@
         "planned::simple-flow::FLOW-06.P1.S1.POSITIVE",
         "planned::simple-flow::FLOW-06.P1.S1.NEGATIVE",
         "planned::simple-flow::FLOW-06.P1.S2.POSITIVE",
-        "planned::simple-flow::FLOW-06.P1.S2.NEGATIVE"
+        "planned::simple-flow::FLOW-06.P1.S2.NEGATIVE",
+        "planned::llm-lab::LAB-01.P1.S1.POSITIVE",
+        "planned::llm-lab::LAB-01.P1.S1.NEGATIVE",
+        "planned::llm-lab::LAB-01.P1.S2.POSITIVE",
+        "planned::llm-lab::LAB-01.P1.S2.NEGATIVE",
+        "planned::llm-lab::LAB-02.P1.S1.POSITIVE",
+        "planned::llm-lab::LAB-02.P1.S1.NEGATIVE",
+        "planned::llm-lab::LAB-02.P1.S2.POSITIVE",
+        "planned::llm-lab::LAB-02.P1.S2.NEGATIVE",
+        "planned::llm-lab::LAB-03.P1.S1.POSITIVE",
+        "planned::llm-lab::LAB-03.P1.S1.NEGATIVE",
+        "planned::llm-lab::LAB-03.P1.S2.POSITIVE",
+        "planned::llm-lab::LAB-03.P1.S2.NEGATIVE",
+        "planned::llm-lab::LAB-04.P1.S1.POSITIVE",
+        "planned::llm-lab::LAB-04.P1.S1.NEGATIVE",
+        "planned::llm-lab::LAB-04.P1.S2.POSITIVE",
+        "planned::llm-lab::LAB-04.P1.S2.NEGATIVE",
+        "planned::llm-lab::LAB-05.P1.S1.POSITIVE",
+        "planned::llm-lab::LAB-05.P1.S1.NEGATIVE",
+        "planned::llm-lab::LAB-05.P1.S2.POSITIVE",
+        "planned::llm-lab::LAB-05.P1.S2.NEGATIVE",
+        "planned::llm-lab::LAB-06.P1.S1.POSITIVE",
+        "planned::llm-lab::LAB-06.P1.S1.NEGATIVE",
+        "planned::llm-lab::LAB-06.P1.S2.POSITIVE",
+        "planned::llm-lab::LAB-06.P1.S2.NEGATIVE",
+        "planned::llm-lab::LAB-07.P1.S1.POSITIVE",
+        "planned::llm-lab::LAB-07.P1.S1.NEGATIVE",
+        "planned::llm-lab::LAB-07.P1.S2.POSITIVE",
+        "planned::llm-lab::LAB-07.P1.S2.NEGATIVE"
       ]
     },
     {

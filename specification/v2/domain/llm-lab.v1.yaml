@@ -1,0 +1,167 @@
+version: 1.0.0
+owner_contract: docs/llm-lab.md
+selected_solution: mlflow
+selected_version: 3.17.0
+software_license: Apache-2.0
+compose_profile: llm-lab
+normal_start_required: false
+host_binding: 127.0.0.1:5000
+internal_uri: http://llm-lab:5000
+backend_store_uri: sqlite:////lab/mlflow.db
+artifacts_destination: /lab/artifacts
+additional_persistent_services: 1
+required_external_accounts: []
+provider_calls_at_start: false
+environment:
+  MLFLOW_DISABLE_TELEMETRY: "true"
+  DO_NOT_TRACK: "true"
+telemetry_transport: OTLP/HTTP protobuf
+telemetry_path: /v1/traces
+telemetry_experiment_header: x-mlflow-experiment-id
+export_timeout_ms: 1000
+export_automatic_retries: 0
+export_outage_blocks_grading: false
+quality_metrics: domain/llm-quality-metrics.v1.json
+context_policies:
+  - stage: case_generation
+    phase: canonical_text
+    instruction_template: ""
+    component_order:
+      - prompt
+      - context_policy
+      - taxonomy
+      - public_context
+      - source_excerpt
+      - wire_schema
+    template_variables: []
+    selection_notes: Respect the current stage input schema; omitted optional
+      components retain an explicit reason. Never include the mutation key/prior
+      grades in blind extraction.
+  - stage: case_generation
+    phase: mutation
+    instruction_template: ""
+    component_order:
+      - prompt
+      - context_policy
+      - taxonomy
+      - public_context
+      - recipes
+      - canonical_script
+      - source_excerpt
+      - wire_schema
+    template_variables: []
+    selection_notes: Respect the current stage input schema; omitted optional
+      components retain an explicit reason. Never include the mutation key/prior
+      grades in blind extraction.
+  - stage: linguistic_audit
+    phase: null
+    instruction_template: ""
+    component_order:
+      - prompt
+      - context_policy
+      - taxonomy
+      - public_context
+      - canonical_script
+      - mutation_key
+      - evidence
+      - wire_schema
+    template_variables: []
+    selection_notes: Respect the current stage input schema; omitted optional
+      components retain an explicit reason. Never include the mutation key/prior
+      grades in blind extraction.
+  - stage: blind_claim_extraction
+    phase: null
+    instruction_template: ""
+    component_order:
+      - prompt
+      - context_policy
+      - taxonomy
+      - public_context
+      - answer
+      - wire_schema
+    template_variables: []
+    selection_notes: Respect the current stage input schema; omitted optional
+      components retain an explicit reason. Never include the mutation key/prior
+      grades in blind extraction.
+  - stage: claim_mapping
+    phase: null
+    instruction_template: ""
+    component_order:
+      - prompt
+      - context_policy
+      - taxonomy
+      - public_context
+      - mutation_key
+      - answer
+      - evidence
+      - wire_schema
+    template_variables: []
+    selection_notes: Respect the current stage input schema; omitted optional
+      components retain an explicit reason. Never include the mutation key/prior
+      grades in blind extraction.
+  - stage: mapping_audit
+    phase: null
+    instruction_template: ""
+    component_order:
+      - prompt
+      - context_policy
+      - taxonomy
+      - public_context
+      - mutation_key
+      - answer
+      - evidence
+      - prior_decisions
+      - wire_schema
+    template_variables: []
+    selection_notes: Respect the current stage input schema; omitted optional
+      components retain an explicit reason. Never include the mutation key/prior
+      grades in blind extraction.
+  - stage: feedback
+    phase: null
+    instruction_template: ""
+    component_order:
+      - prompt
+      - context_policy
+      - taxonomy
+      - public_context
+      - mutation_key
+      - answer
+      - prior_decisions
+      - wire_schema
+    template_variables: []
+    selection_notes: Respect the current stage input schema; omitted optional
+      components retain an explicit reason. Never include the mutation key/prior
+      grades in blind extraction.
+  - stage: case_review
+    phase: null
+    instruction_template: ""
+    component_order:
+      - prompt
+      - context_policy
+      - taxonomy
+      - public_context
+      - canonical_script
+      - mutation_key
+      - evidence
+      - wire_schema
+    template_variables: []
+    selection_notes: Respect the current stage input schema; omitted optional
+      components retain an explicit reason. Never include the mutation key/prior
+      grades in blind extraction.
+  - stage: adjudication
+    phase: null
+    instruction_template: ""
+    component_order:
+      - prompt
+      - context_policy
+      - taxonomy
+      - public_context
+      - mutation_key
+      - answer
+      - evidence
+      - prior_decisions
+      - wire_schema
+    template_variables: []
+    selection_notes: Respect the current stage input schema; omitted optional
+      components retain an explicit reason. Never include the mutation key/prior
+      grades in blind extraction.

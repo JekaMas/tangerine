@@ -21,3 +21,5 @@ start_review triggers case_review through the configured LLM. get_review returns
 Before answer submission, teacher DTOs exclude the key, transcript and planned-event count. After submission teacher-key/teacher-rationale expose the full approved pedagogical content, excluding raw provider records, secret values, private native persons and source personal metadata. Settings show key presence only. Preparation views are separate from teacher projections.
 
 Audio resolves private linked bytes, supports a valid single HTTP range206,416 otherwise, and uses final hash ETag. No MinIO hostname/key or signed credential URL reaches the browser. UI/service binds local interfaces; internal service key is helper-generated, with no human authentication setup. Metadata used by the teacher view does not reveal target words before submission.
+
+LLM Lab uses the existing configuration owner for active_prompt_bundle_id and local capture flags. Saved bundle/snapshot/experiment records use existing document/asset storage; Lab helper actions are local tooling, with no additional public HTTP API. Its upstream local MLflow UI/SDK/OTLP interfaces are defined in llm-lab.md.

@@ -6,10 +6,10 @@ authority:
   behavior: ../../openspec/changes/implement-teacher-error-trainer/specs/ plus docs/
   scope_and_versions: README.md
   sources: domain/corpus-sources.v1.yaml
-accepted_combination: Current unreleased specification snapshot for the
-  user-approved simple generated-text/mutations/audio/answer flow. Apache-2.0
-  software selection is settled. This vector is not runtime migration,
-  backward-compatibility or provider qualification evidence.
+accepted_combination: Current unreleased local specification snapshot with
+  optional MLflow LLM Lab. Native original grades/data and simple authored flow
+  remain preserved. This is not runtime/backward-compatibility or provider
+  qualification evidence.
 files:
   - path: contracts/accept-candidate-request.schema.json
     sha256: 1fdc6f82b02c53ff040d18e01989590c4c7c6ec082d4394cf635f104cb2e476c
@@ -66,9 +66,9 @@ files:
   - path: contracts/common.schema.json
     sha256: c618d70a2d2036611506e52962a3aab22f6224c3cb167668e3ee24057d113e15
   - path: contracts/configuration-view.schema.json
-    sha256: 600e6daaf366ddec4a9f9330cb1aa9214cdb56a98112d18106d0a71263fae56c
+    sha256: 11076c79a749d533018e9c32f0465be6dd899dd025faf587e5276863ee542fe9
   - path: contracts/configuration.schema.json
-    sha256: 5b72bf2cca7001cf9799505a6137cbb7ddfad3815b7b711a5156461f62128f40
+    sha256: ad5fbfd4f582282ec92ac08f4aeacfe848d57d9c172b9808fc720a3c230a608d
   - path: contracts/connector-configuration.schema.json
     sha256: aed8cf694f71290affcb202fa91fb83f7b25ad410914cc4ce10b43788ae3234c
   - path: contracts/connector-request.schema.json
@@ -92,7 +92,7 @@ files:
   - path: contracts/dispute.schema.json
     sha256: 062913baf597898c0dda8b97378c7ed09c830b7f280c1ca72ca60e17707ca931
   - path: contracts/effective-binding.schema.json
-    sha256: 78c75afb4e5ffe7e32f4ad1419000f1eb0e58efe2d93228501e0dd7a7eda1f00
+    sha256: 40eb2715d1b61e3a183d7f1b0a72b5bd26f5bf5f00a3df4461ac8f506597f7e6
   - path: contracts/error-opportunity.schema.json
     sha256: 9765654a0347f7e14f32cc4be83a1e116d8a20ed6043963526deb5a4159fb209
   - path: contracts/error-response.schema.json
@@ -145,8 +145,14 @@ files:
     sha256: 2e1734cc1a48be38643095f1c4cb8c42be3db64130e83c01da9831c95019406b
   - path: contracts/linguistic-audit.schema.json
     sha256: 7b1786f2dd1f27cc031405d0e111a05e27dc5ba6435f0c5d01322d52248301e3
+  - path: contracts/llm-context-snapshot.schema.json
+    sha256: 2191123f3e65665e09012a455eb24c20b3a25cb8c27027ea82e6321d44997442
+  - path: contracts/llm-experiment.schema.json
+    sha256: 6c71431afa046691515332ce1cc50cb6c88ff351eb8896e4cae85c0ed96e910b
   - path: contracts/llm-profile.schema.json
     sha256: 60b6dc86cfbf0a90e514b79edc413f8982214e6fd2d9d465992a390e2f4a7b8e
+  - path: contracts/llm-quality-case.schema.json
+    sha256: 4836920a3784d3321c776e7ffd059807c27c8e3448842a730f9b71e91e976c8b
   - path: contracts/llm-review-input.schema.json
     sha256: 878bbcfbd5fcc718203da95c75e65e612664fa9414395631f146a6b70b99f05b
   - path: contracts/llm-review-output.schema.json
@@ -175,10 +181,12 @@ files:
     sha256: 7f66eda13ed5acb82341abeaa5cc234a62c6140f4bdfc8da08502d21454a92b4
   - path: contracts/prepare-view.schema.json
     sha256: c2884cf8881287e31eb4879d963dc4e0d55ea46d2e8d3ebfe7160f30a7d1936b
+  - path: contracts/prompt-bundle.schema.json
+    sha256: 5686f5e92a3c5b3308db3167ac68c8af43b74320e5768a2751469caab2bcc314
   - path: contracts/provider-receipt.schema.json
-    sha256: ec0f970fafb613289617a81d2d857b5b975ed5e7fcceb4956b6fe19ea8763492
+    sha256: 5f39f7c930e88a928254598ea8f70cecc0f3d92c2c905c96628137583f2faa1b
   - path: contracts/put-config-request.schema.json
-    sha256: 4857aaff64262de1e9afc716bcef729a75da0e14482744a6b75ec9a8620f0ce0
+    sha256: d5c2f96e7f4596c338c4ca5bd6009bb25c841a476ff5bbe19b91d53b5a84421f
   - path: contracts/qualification-report-request.schema.json
     sha256: d4fedf3694d2ba992b5d7f5b700fe16b6b472c6aaa276e5204e0da3e4f267ea7
   - path: contracts/qualification-request.schema.json
@@ -264,7 +272,7 @@ files:
   - path: db/schema.sql
     sha256: 381d32345147ac57b8f78d1eae44e6713590149878255b429cf89bec50112e9e
   - path: docs/architecture.md
-    sha256: 079d01955b6542ec9cd16eaa29f3d395061b9255ed95f3c7129757d1599d7605
+    sha256: 242fec3100815d8944d66391d792a6f3a8bea3c74af91f2bc2835b71dc7c0f25
   - path: docs/audio-methods.md
     sha256: 1ac05aab7f227a62b27588c091a117015dc08e493d6e675d1bb9a3719968bbe3
   - path: docs/authority.md
@@ -274,15 +282,17 @@ files:
   - path: docs/cross-field-invariants.md
     sha256: 643f4e87ae06137a4749b344d623a422b364518a0395c449b18c4414998fa9bf
   - path: docs/data-dictionary.md
-    sha256: 13b68b2f30b88967f9e37e48bd53b1e21a91cbdc4188fdec3edbe20c28450d02
+    sha256: 767290d060bab9baf001f82a1d05304ab91fff35249ed2ea21d1c6eabfb7b3c0
   - path: docs/interface-contract.md
-    sha256: e34b67997f14f73ca1951898e3553131ae748a1a846d45613cc3ce979edfb746
+    sha256: 64feedcd56bc4eff7e6c36ef541836c2b268921a85da48b33334bc9fb943c2d7
   - path: docs/lifecycle.md
     sha256: bf1107c9ff478a46d89d1e26a959296691e904bab4190c3487530d17c742e342
+  - path: docs/llm-lab.md
+    sha256: 4b0a709aa93049813b26d61f6fb5eb79d041dca4c6e65c7018f5c453372f269f
   - path: docs/local-delivery.md
-    sha256: b24313dc9d8b71f738151c6e9398d09f701d027f3db0902518c1fe539895d57e
+    sha256: 3afe56269109a51ea80c42f19a5d99dd34691e55d716afd58211e22729547162
   - path: docs/maintenance-and-limits.md
-    sha256: 41382865761c071e06dd93aa171edf24dc1b1f9d12fa0d6e1fe047a10732b220
+    sha256: bd4abd50738d731757afd93d81b5f318f35a0303ac71c3342eeccd899cf318dd
   - path: docs/math-and-judgments.md
     sha256: d276035e4efb66c470be7014079cdff5a2067d2204ee3a2922421ec16c4b189c
   - path: docs/migration-compatibility.md
@@ -292,7 +302,7 @@ files:
   - path: docs/persistence.md
     sha256: ff3f6995c385870d3838911970c38cc04d6d11411110a8853f122819fdb91500
   - path: docs/provider-contracts.md
-    sha256: 81bf2c12523009728a8f197062761eb01290ecabe48ae8661c2a6c2b104bc6d7
+    sha256: 6dbc303645d4e5db07a74687b8b0ca63ce612fef094a25f4b08849754bdab9ea
   - path: docs/review-and-gold.md
     sha256: 4f392c0861910c2f5cb7e4c025c67695cf905db110935bfac581c7711d61f738
   - path: docs/runtime-and-storage.md
@@ -300,7 +310,7 @@ files:
   - path: docs/scoring-v1.md
     sha256: f3ab0552b9eb6ce0c093c1545b019daff8293c2713e666efa697b9ce760de4ac
   - path: docs/simple-generation-flow.md
-    sha256: 66ef096ead6988fc2d61230b5f4274d9ae8e32e68c5ffe7cc1fdcba2494e489e
+    sha256: 2a51291f0351dc8a5894dd8644c47443fc231d5f8b650cbb1ef13a2ad9bb50fd
   - path: docs/sources/acquisition-and-rights.md
     sha256: d0886b7b2c655e3402d1ec96291fa941cee7d4eba1cac2e35022d9fe25a8d397
   - path: docs/sources/alternatives.md
@@ -320,13 +330,13 @@ files:
   - path: docs/splits-and-validation.md
     sha256: 90ae313d4749516f884762f7458dd94b5d4b01f20323e6549e5d4b254439c6f0
   - path: docs/ui-flows.md
-    sha256: 1555460c92e9e470f00ce1b9c22af8aafc203eab70fad4077df3fbf2d04cd591
+    sha256: 39aa682ecb18b51bfe71626a1c19050364ea1dfe02d8e5c51088d895310d70bb
   - path: domain/audio-methods.yaml
     sha256: d267a0b270b06e0d842e45f0a61f6119c182ad3b7f86fb211c0857c532e788b0
   - path: domain/category-aliases.v1.yaml
     sha256: f1c2141cb656d76c2beb1319974f5daee0a408e925f07136dd8a4c5a0a588639
   - path: domain/configuration-registry.yaml
-    sha256: f561c0931bd0affb13f33b537c271c884de422c663e3d039422e39d7a312cb5a
+    sha256: bf9887d2a8422689effc01c20ae3ee5a478b8788540860a40b3969561383d192
   - path: domain/corpus-sources.v1.yaml
     sha256: f271c20d9a4905d9f3c9898698e609fc979cea210ed0d5a42993e4119b99f06c
   - path: domain/error-codes.yaml
@@ -335,16 +345,20 @@ files:
     sha256: 12a8923cb5edaf9346ed3241927e871b52a734e61edeb54d8b3d1987090a7c0a
   - path: domain/judgment-policy.yaml
     sha256: 2f05fc866d95df208de8d8757d0808927d7f4e9ae94f65bda984a367225960dc
+  - path: domain/llm-lab.v1.yaml
+    sha256: 1d8ba85b36bc548a884f39875de5cddc7a04ebfed0be9a4ccf44d11dd27e6f5e
+  - path: domain/llm-quality-metrics.v1.json
+    sha256: e16b47cd06ac57906c32d9da627112e80c96c2b16e244015a6456ae244c0445e
   - path: domain/metrics.v1.yaml
     sha256: a42acaf740295277cfd602a9a9b706028a2b67912ecbe582e48543c77241c730
   - path: domain/mutation-recipes.v1.json
     sha256: f8a366db4091eb8476c3c7269f01463ae531b4ae115f39cf98dfd1fa7ff90aad
   - path: domain/operation-ownership.yaml
-    sha256: c0df4ba5cc8082e820cfaa4cace5a926b722f26491c7325206327c713ff87208
+    sha256: 74fd853b6b98d5f6b41e65e7518fdf2aed5e5f1d780f1900095deb4e224177a4
   - path: domain/operations.yaml
     sha256: 0c7cd64d5ad4e4ca7196a8c8721c6263829924ec0cfeceb70b48ae9d331e60ae
   - path: domain/persistence-map.json
-    sha256: 7b803e90acd0978114378a11a38433418d5fd4ead6ed1f069b9f25d102d401ad
+    sha256: 981b368cf32f511349e4daa0a2fa48c190455f20c69ae00d41f6a875d12444ed
   - path: domain/phone-symbols.yaml
     sha256: d49152c577caf77524df9521ecfc6b4527de72c5056066ee1df4b13faa75fecf
   - path: domain/providers.v1.yaml
@@ -352,7 +366,7 @@ files:
   - path: domain/schema-projection.yaml
     sha256: d773d4888a5868d26d67dbd22911067aef01525279a01e26ff2f6cdaf4e29a72
   - path: domain/semantic-invariants.yaml
-    sha256: 7fdc9c1357659672f1a5ec61bc44b7baf44e5d1169e4f6c2f85aec45db284b11
+    sha256: ae56e8e40743d6e00ecdaf5044ab9b2ddb68efc0d1734f625d9050c5215c08b4
   - path: domain/source-label-map.yaml
     sha256: e548b538eecc2b8c4530fb7ff1bef470c1e42d7876212a578e8329640369c349
   - path: domain/source-research.v1.json
@@ -362,7 +376,7 @@ files:
   - path: domain/validation-policy.yaml
     sha256: c76500d5946b55a2d3a7496c7452d87dd0ceb9f815f3a968bec036639b78b745
   - path: language/field-index.json
-    sha256: 627107e8debc61a2a6a253de9b040496c003fea0248b80522d88a8b29bd4a6a7
+    sha256: ce49e9996b1d09d47e3003ed5ad01216b109c1da5521a3db7ac57618e3a8273d
   - path: language/source-lock.json
     sha256: dc3c137ee6ad0b7f7e9dccfb089d46cf2c81dcce882a5ca75a53834f2c76d58f
   - path: language/technical-terms.yaml
@@ -388,7 +402,7 @@ files:
   - path: prompts/map-v1.txt
     sha256: da52e8d0fb52f8f680018172e9d64999634730f984d0c0007a048199000c6683
   - path: README.md
-    sha256: e2e4bd479fc8cedef7250c748200e5f96dc692011aaf2adf92142e860c17aefb
+    sha256: f09d82846a6393ad63b9f257afaf8b9c2b71cf0be29039d4113610f7d5caade9
   - path: reference/__init__.py
     sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
   - path: reference/formulas.py

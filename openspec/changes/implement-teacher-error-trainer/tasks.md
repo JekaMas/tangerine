@@ -223,3 +223,13 @@ Current resume: requested specification/data audit is documented in audit/mistak
 - [ ] Future implementation: wire the main form and the existing generation/render/listen/check/result operations; exercise real providers/local speech, stored playback, mutation fidelity and semantic grading with positive/negative cases.
 
 Current resume: specification updates only; audit/simple-generation-flow-20261009/REPORT.md records the latest contract and validation. Audio examples are optional calibration/reference material. The generated mutation list is the ordinary answer key; no separate case review is required. OOD means novel instances/contexts/combinations relative to explicit examples/history, not a claim about an undisclosed LLM training distribution. Acquired corpus bytes/statuses are unchanged and remain optional enrichment/evaluation for this flow. No application implementation, inference, audio synthesis, model setup, installation or publication is authorized/performed here. Preserve the unrelated user edit in audit/spec-fullness-20261008/GAPS.md.
+
+## 2026-10-09 LLM prompt/context/quality Lab (specification only)
+
+- [x] Research primary-source MLflow, Langfuse and Promptfoo capabilities/local dependencies; choose MLflow3.17.0 as an optional local Lab without changing ordinary startup.
+- [x] Specify immutable prompt/context bundles, explicit activation/revert, frozen per-attempt context and traces, production-owner experiment reuse and configurable semantic judges.
+- [x] Define all diagnostic formulas/populations, per-case origin/coverage/failure reporting and privacy/backup/deletion semantics while preserving every original category/source/grade formula.
+- [x] Reconcile current indexes/graph and validate positive/negative specification contracts:232static checks, strict OpenSpec and graph/discovery passed; retain all28new application/provider/MLflow proofs as blocked.
+- [ ] Future authorized implementation: optional Lab build/helper, native bundle/context/trace plumbing, shared-owner replay/evaluation and all positive/negative acceptance properties with actual configured providers.
+
+Current resume: specification-only Lab selection/definitions are in specification/v2/docs/llm-lab.md and audit/llm-lab-20261009/REPORT.md. No tool installation, inference, Docker execution, workflow change, credential modification or publication. Existing green application receipts remain within their original contracts; normal generated exercises need no Lab or new review/quality gate. Preserve the unrelated GAPS.md edit.

@@ -96,6 +96,39 @@
     "limits": {
       "$ref": "configuration.schema.json#/properties/limits",
       "description": "The explicit nonsecret limits."
+    },
+    "active_prompt_bundle_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Current saved bundle identity; null means builtin."
+    },
+    "active_prompt_bundle_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Resolved actual bundle hash when available."
+    },
+    "llm_lab_trace_enabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Local diagnostic export setting."
+    },
+    "llm_lab_capture_content": {
+      "type": "boolean",
+      "default": false,
+      "description": "Opt-in private local content copies."
     }
   },
   "required": [

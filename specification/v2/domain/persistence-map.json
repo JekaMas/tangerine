@@ -4643,7 +4643,7 @@
     {
       "kind": "configuration-view",
       "schema": "contracts/configuration-view.schema.json",
-      "sha256": "600e6daaf366ddec4a9f9330cb1aa9214cdb56a98112d18106d0a71263fae56c",
+      "sha256": "11076c79a749d533018e9c32f0465be6dd899dd025faf587e5276863ee542fe9",
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -4697,6 +4697,38 @@
           "rule_sha256": "ca47770215fef2f52ceeff540ff1fa30f6ec875d55e0af37a5d5ae9efc2509e2"
         },
         {
+          "name": "active_prompt_bundle_id",
+          "pointer": "/properties/active_prompt_bundle_id",
+          "required_in_parent": false,
+          "description": "Current saved bundle identity; null means builtin.",
+          "schema_reference": null,
+          "rule_sha256": "01c832d15405d98bc801829774c5de530c68b58cf8858deaec1c574108f4bf5a"
+        },
+        {
+          "name": "active_prompt_bundle_sha256",
+          "pointer": "/properties/active_prompt_bundle_sha256",
+          "required_in_parent": false,
+          "description": "Resolved actual bundle hash when available.",
+          "schema_reference": null,
+          "rule_sha256": "1e65db90ad4c35748619e9fec82d57dfd4bada356d9f016b0ec7f05cba12fd7c"
+        },
+        {
+          "name": "llm_lab_trace_enabled",
+          "pointer": "/properties/llm_lab_trace_enabled",
+          "required_in_parent": false,
+          "description": "Local diagnostic export setting.",
+          "schema_reference": null,
+          "rule_sha256": "8ece94586d31438c4601f5be9fc0ade9042ba94e7b02f0e2ebe6c9870899515a"
+        },
+        {
+          "name": "llm_lab_capture_content",
+          "pointer": "/properties/llm_lab_capture_content",
+          "required_in_parent": false,
+          "description": "Opt-in private local content copies.",
+          "schema_reference": null,
+          "rule_sha256": "53890862dae5301de0096144e066fa65f217b923cbc629da2161d10169a0c3ca"
+        },
+        {
           "name": "name",
           "pointer": "/properties/credentials/items/properties/name",
           "required_in_parent": true,
@@ -4725,7 +4757,7 @@
     {
       "kind": "configuration",
       "schema": "contracts/configuration.schema.json",
-      "sha256": "5b72bf2cca7001cf9799505a6137cbb7ddfad3815b7b711a5156461f62128f40",
+      "sha256": "ad5fbfd4f582282ec92ac08f4aeacfe848d57d9c172b9808fc720a3c230a608d",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -4849,6 +4881,30 @@
           "description": "Optional extra case-review diagnostic; false never blocks ordinary authored exercises or LLM answer checking.",
           "schema_reference": null,
           "rule_sha256": "afe6eb4dab021f979d20d85cf30d7456025667b0b673b2fffa5eaa8c98f35f54"
+        },
+        {
+          "name": "active_prompt_bundle_id",
+          "pointer": "/properties/active_prompt_bundle_id",
+          "required_in_parent": false,
+          "description": "Saved local active bundle; null selects the shipped builtin bundle.",
+          "schema_reference": null,
+          "rule_sha256": "c8b2cfc648ec49ed73729be3852b0e73999ea0935ea8c622811615452cf6aa6c"
+        },
+        {
+          "name": "llm_lab_trace_enabled",
+          "pointer": "/properties/llm_lab_trace_enabled",
+          "required_in_parent": false,
+          "description": "Optional export to local Lab; native receipts remain saved when false.",
+          "schema_reference": null,
+          "rule_sha256": "24712bff022eca8b640016ecc0f2ba5bfe9d3560aa3b6d85af18690ccec5b23e"
+        },
+        {
+          "name": "llm_lab_capture_content",
+          "pointer": "/properties/llm_lab_capture_content",
+          "required_in_parent": false,
+          "description": "Explicit private local content capture; secret/private-source fields always omitted.",
+          "schema_reference": null,
+          "rule_sha256": "cc1bd725e3788ac10d227982cc55564f9c525d485310ee162795cfbb7b762e31"
         },
         {
           "name": "deepseek",
@@ -6181,7 +6237,7 @@
     {
       "kind": "effective-binding",
       "schema": "contracts/effective-binding.schema.json",
-      "sha256": "78c75afb4e5ffe7e32f4ad1419000f1eb0e58efe2d93228501e0dd7a7eda1f00",
+      "sha256": "40eb2715d1b61e3a183d7f1b0a72b5bd26f5bf5f00a3df4461ac8f506597f7e6",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -6361,6 +6417,30 @@
           "description": "The canonical binding digest.",
           "schema_reference": null,
           "rule_sha256": "74667ce94c78e8b2a5aa4267adce52cc419bef50642de25e98d9cf28fae8038e"
+        },
+        {
+          "name": "prompt_bundle_sha256",
+          "pointer": "/properties/prompt_bundle_sha256",
+          "required_in_parent": false,
+          "description": "Frozen complete local bundle; included in effective binding/cache identity.",
+          "schema_reference": null,
+          "rule_sha256": "1b094ee561286048ba0626b45903c13d3f9c8134623e633d245ad534bb379e89"
+        },
+        {
+          "name": "context_policy_sha256",
+          "pointer": "/properties/context_policy_sha256",
+          "required_in_parent": false,
+          "description": "Frozen stage context policy.",
+          "schema_reference": null,
+          "rule_sha256": "d46402a58bfe6ad11fceae98cd95962013f098733258dc00d50e434bbc91d42a"
+        },
+        {
+          "name": "phase",
+          "pointer": "/properties/phase",
+          "required_in_parent": false,
+          "description": "Generation phase; null for other stages.",
+          "schema_reference": null,
+          "rule_sha256": "559d59f8d16decd3b06464257cf3db48d57c6c2d61d84ddadd00f90a86149c22"
         }
       ]
     },
@@ -11861,7 +11941,7 @@
     {
       "kind": "provider-receipt",
       "schema": "contracts/provider-receipt.schema.json",
-      "sha256": "ec0f970fafb613289617a81d2d857b5b975ed5e7fcceb4956b6fe19ea8763492",
+      "sha256": "5f39f7c930e88a928254598ea8f70cecc0f3d92c2c905c96628137583f2faa1b",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -12041,6 +12121,30 @@
           "description": "The actual returned model ID.",
           "schema_reference": null,
           "rule_sha256": "c289eb61005b67495fb44de8541e99fd0bfa4b8117174240ce2d507ee2c04f5b"
+        },
+        {
+          "name": "context_snapshot_id",
+          "pointer": "/properties/context_snapshot_id",
+          "required_in_parent": false,
+          "description": "Actual private llm-context-snapshot, including failed attempt inputs.",
+          "schema_reference": null,
+          "rule_sha256": "c1673df0d1b0ca87692aed588e13b29e698c129d707e942c9d06ab4e14e3f711"
+        },
+        {
+          "name": "trace_id",
+          "pointer": "/properties/trace_id",
+          "required_in_parent": false,
+          "description": "Local allocated operation trace identity, not export success.",
+          "schema_reference": null,
+          "rule_sha256": "d5506aff1c0c1bde3623fa79b8b5483607d7d1be05289758d0aa35df5ea00553"
+        },
+        {
+          "name": "span_id",
+          "pointer": "/properties/span_id",
+          "required_in_parent": false,
+          "description": "Actual call-attempt span identity.",
+          "schema_reference": null,
+          "rule_sha256": "b599eb401e0270ee748b58ae44051e1fd29d15697f718a9be865f4263c95e517"
         }
       ]
     },
@@ -12049,7 +12153,7 @@
       "storage": "Derived DTO or actual operation/stage input/output receipt",
       "kind": "put-config-request",
       "schema": "contracts/put-config-request.schema.json",
-      "sha256": "4857aaff64262de1e9afc716bcef729a75da0e14482744a6b75ec9a8620f0ce0",
+      "sha256": "d5c2f96e7f4596c338c4ca5bd6009bb25c841a476ff5bbe19b91d53b5a84421f",
       "schema_version": "2.0.0",
       "fields": [
         {
@@ -12155,6 +12259,30 @@
           "description": "Optional extra case-review diagnostic; false never blocks ordinary authored exercises or LLM answer checking.",
           "schema_reference": null,
           "rule_sha256": "afe6eb4dab021f979d20d85cf30d7456025667b0b673b2fffa5eaa8c98f35f54"
+        },
+        {
+          "name": "active_prompt_bundle_id",
+          "pointer": "/properties/active_prompt_bundle_id",
+          "required_in_parent": false,
+          "description": "Saved local active bundle; null selects the shipped builtin bundle.",
+          "schema_reference": null,
+          "rule_sha256": "c8b2cfc648ec49ed73729be3852b0e73999ea0935ea8c622811615452cf6aa6c"
+        },
+        {
+          "name": "llm_lab_trace_enabled",
+          "pointer": "/properties/llm_lab_trace_enabled",
+          "required_in_parent": false,
+          "description": "Optional export to local Lab; native receipts remain saved when false.",
+          "schema_reference": null,
+          "rule_sha256": "24712bff022eca8b640016ecc0f2ba5bfe9d3560aa3b6d85af18690ccec5b23e"
+        },
+        {
+          "name": "llm_lab_capture_content",
+          "pointer": "/properties/llm_lab_capture_content",
+          "required_in_parent": false,
+          "description": "Explicit private local content capture; secret/private-source fields always omitted.",
+          "schema_reference": null,
+          "rule_sha256": "cc1bd725e3788ac10d227982cc55564f9c525d485310ee162795cfbb7b762e31"
         },
         {
           "name": "deepseek",
@@ -21159,6 +21287,1190 @@
           "description": "Optional synthesis choice; null inherits workspace speech selection.",
           "schema_reference": null,
           "rule_sha256": "4b6c6bac6dd370055bb06c26873644fce62c5f00b14350b703328183c762b0f2"
+        }
+      ]
+    },
+    {
+      "kind": "llm-context-snapshot",
+      "schema": "contracts/llm-context-snapshot.schema.json",
+      "schema_version": "2.0.0",
+      "persistent_domain_record": true,
+      "storage": "document.payload with linked private assets",
+      "sha256": "2191123f3e65665e09012a455eb24c20b3a25cb8c27027ea82e6321d44997442",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "85a2d8aa93ae1cc535108ec2ee447f40f68925db0cd97bb3dc7c597388c444c6"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/id",
+          "required_in_parent": true,
+          "description": "Local snapshot identity.",
+          "schema_reference": null,
+          "rule_sha256": "0befe4a0254b52129745854d4c26e487412caea235f4b26779470a163cc2790e"
+        },
+        {
+          "name": "operation_id",
+          "pointer": "/properties/operation_id",
+          "required_in_parent": true,
+          "description": "Actual operation.",
+          "schema_reference": null,
+          "rule_sha256": "41c23587bcb09f89504e187341e2dfc6b80476328d5015516e9304796ab120f3"
+        },
+        {
+          "name": "stage",
+          "pointer": "/properties/stage",
+          "required_in_parent": true,
+          "description": "Actual stage.",
+          "schema_reference": null,
+          "rule_sha256": "0f1f8ea888907efa5868c064557bfaf97e37882c21e6bc00019fe5284c602137"
+        },
+        {
+          "name": "phase",
+          "pointer": "/properties/phase",
+          "required_in_parent": true,
+          "description": "Generation phase; null for other stages.",
+          "schema_reference": null,
+          "rule_sha256": "559d59f8d16decd3b06464257cf3db48d57c6c2d61d84ddadd00f90a86149c22"
+        },
+        {
+          "name": "bundle_sha256",
+          "pointer": "/properties/bundle_sha256",
+          "required_in_parent": true,
+          "description": "Frozen prompt bundle.",
+          "schema_reference": null,
+          "rule_sha256": "b02055c7bd81f00fe7332c113144e918d30e86e8d92614e34a97fb3eef3501ba"
+        },
+        {
+          "name": "binding_sha256",
+          "pointer": "/properties/binding_sha256",
+          "required_in_parent": true,
+          "description": "Effective provider/prompt/context binding.",
+          "schema_reference": null,
+          "rule_sha256": "810acc7a86e9e03b66b9fb4ecc160c4d8ca3127a061629a13c59d9ae030a10f5"
+        },
+        {
+          "name": "input_sha256",
+          "pointer": "/properties/input_sha256",
+          "required_in_parent": true,
+          "description": "Actual stage input projection.",
+          "schema_reference": null,
+          "rule_sha256": "8ccf984f3282e4fc16f028766cf1793c814c77d48a771112b3673893d10d48c4"
+        },
+        {
+          "name": "components",
+          "pointer": "/properties/components",
+          "required_in_parent": true,
+          "description": "Ordered included/excluded components.",
+          "schema_reference": null,
+          "rule_sha256": "39edf80463fc53d8b02dcc6acb91801419e06593d2254f7ad36cd93db670ee28"
+        },
+        {
+          "name": "tokenizer",
+          "pointer": "/properties/tokenizer",
+          "required_in_parent": true,
+          "description": "Actual tokenizer identity; null for conservative byte bound.",
+          "schema_reference": null,
+          "rule_sha256": "fd580f33e753fb5106f76ee0ca4d2c6b81c05d1872ba69da7ba84dd24f9d7620"
+        },
+        {
+          "name": "budget_method",
+          "pointer": "/properties/budget_method",
+          "required_in_parent": true,
+          "description": "Existing documented budgeting method.",
+          "schema_reference": null,
+          "rule_sha256": "3adca69ca7b13ec529b7aadfc0edf84e80a849d907ce9f9cabbb46aaf5c7d774"
+        },
+        {
+          "name": "context_budget_tokens",
+          "pointer": "/properties/context_budget_tokens",
+          "required_in_parent": true,
+          "description": "Frozen profile capacity.",
+          "schema_reference": null,
+          "rule_sha256": "fe03ae8e0cf035cb22510713fc2af8d73f4cf8f28c1cda60b5fe8a59002f24ec"
+        },
+        {
+          "name": "reserved_output_tokens",
+          "pointer": "/properties/reserved_output_tokens",
+          "required_in_parent": true,
+          "description": "Frozen output reservation.",
+          "schema_reference": null,
+          "rule_sha256": "9ceaa31772f14a6285f1f40be1bde2fb6ceb3562c37257972e1fbb14a343c8b6"
+        },
+        {
+          "name": "input_budget_used",
+          "pointer": "/properties/input_budget_used",
+          "required_in_parent": true,
+          "description": "Actual calculated bound in the declared method.",
+          "schema_reference": null,
+          "rule_sha256": "a7b47468dea332c6031c0ca26e80e107e2ac0a6ee4853f950bd8f8c9b217c779"
+        },
+        {
+          "name": "rendered_request_asset_id",
+          "pointer": "/properties/rendered_request_asset_id",
+          "required_in_parent": true,
+          "description": "Exact private credential-free wire request bytes.",
+          "schema_reference": null,
+          "rule_sha256": "c653a6327073bebb79d5d8c33e4f62dc2a799680a9b4909da5a13573529d93a2"
+        },
+        {
+          "name": "receipt_id",
+          "pointer": "/properties/receipt_id",
+          "required_in_parent": true,
+          "description": "Actual attempt provider-receipt identity.",
+          "schema_reference": null,
+          "rule_sha256": "e24f39dcef099729d935fcdaf74abd049716964d3b5843c18c0d73c4d56eaea3"
+        },
+        {
+          "name": "trace_id",
+          "pointer": "/properties/trace_id",
+          "required_in_parent": true,
+          "description": "Allocated OTEL trace ID; not proof of successful export.",
+          "schema_reference": null,
+          "rule_sha256": "6b0261c172fcc7f547c3682df68e84aba4b5bc1f3e76d3cf5d2f4ce85ff31525"
+        },
+        {
+          "name": "span_id",
+          "pointer": "/properties/span_id",
+          "required_in_parent": true,
+          "description": "Allocated attempt span ID.",
+          "schema_reference": null,
+          "rule_sha256": "e4555b02a9e45354588a20017639c2f5030ca1b77f45e6cadbb7ce202ed61c11"
+        },
+        {
+          "name": "created_at",
+          "pointer": "/properties/created_at",
+          "required_in_parent": true,
+          "description": "Actual snapshot timestamp.",
+          "schema_reference": null,
+          "rule_sha256": "b262735e218a9ac9852fdc0d71fcbdd461a8f8daa16c66dd83f3281640c277e6"
+        },
+        {
+          "name": "kind",
+          "pointer": "/properties/components/items/properties/kind",
+          "required_in_parent": true,
+          "description": "Actual component kind.",
+          "schema_reference": null,
+          "rule_sha256": "efc8b2d17ac03c4eac3eeadceb7e0cd4c83271b763dae11362ac80c5cd0a61be"
+        },
+        {
+          "name": "trust",
+          "pointer": "/properties/components/items/properties/trust",
+          "required_in_parent": true,
+          "description": "Instruction ownership vs data; not a user access role.",
+          "schema_reference": null,
+          "rule_sha256": "c9895fdc8fd1d5b7e6436fd81610a0210e82ce03bba8113b7cc33ba1b8a9ec36"
+        },
+        {
+          "name": "asset_id",
+          "pointer": "/properties/components/items/properties/asset_id",
+          "required_in_parent": true,
+          "description": "Actual private asset, null only for explicitly excluded/absent component.",
+          "schema_reference": null,
+          "rule_sha256": "a1e083f66c20a46799bc484b781c4893f2441b7c4db1b472b8a4ebcfb213d951"
+        },
+        {
+          "name": "asset_sha256",
+          "pointer": "/properties/components/items/properties/asset_sha256",
+          "required_in_parent": true,
+          "description": "Actual bytes or declared structured projection hash.",
+          "schema_reference": null,
+          "rule_sha256": "5894d3f07923b1428c7e8edf3c73bc93d22d1d83d3b3dbf5d36c4eea9a21e088"
+        },
+        {
+          "name": "included",
+          "pointer": "/properties/components/items/properties/included",
+          "required_in_parent": true,
+          "description": "Whether the exact component was included in this call.",
+          "schema_reference": null,
+          "rule_sha256": "5b9c4125c0ee267f88aaf1105780de3680968628c882ecfa0afbf7bb05fb2c99"
+        },
+        {
+          "name": "reason",
+          "pointer": "/properties/components/items/properties/reason",
+          "required_in_parent": true,
+          "description": "Absence/selection reason; required when excluded.",
+          "schema_reference": null,
+          "rule_sha256": "c7793bf28bf592fa44dee93153cd894d3eca95eaa08eddd28cad2638385cdb87"
+        },
+        {
+          "name": "byte_count",
+          "pointer": "/properties/components/items/properties/byte_count",
+          "required_in_parent": true,
+          "description": "Actual included byte count; absent is not zero.",
+          "schema_reference": null,
+          "rule_sha256": "fd03156b8b2652060a47db1697bec32c3a8545eae31bac4907cb23907a306723"
+        },
+        {
+          "name": "token_count",
+          "pointer": "/properties/components/items/properties/token_count",
+          "required_in_parent": true,
+          "description": "Tokenizer observation, null when unavailable.",
+          "schema_reference": null,
+          "rule_sha256": "eba4b816bbfe42cf6ba468eeb7a17dc639482931ef378d3a2e405536a218bb8a"
+        }
+      ]
+    },
+    {
+      "kind": "llm-experiment",
+      "schema": "contracts/llm-experiment.schema.json",
+      "schema_version": "2.0.0",
+      "persistent_domain_record": true,
+      "storage": "document.payload with linked private assets",
+      "sha256": "6c71431afa046691515332ce1cc50cb6c88ff351eb8896e4cae85c0ed96e910b",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "85a2d8aa93ae1cc535108ec2ee447f40f68925db0cd97bb3dc7c597388c444c6"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/id",
+          "required_in_parent": true,
+          "description": "Experiment identity.",
+          "schema_reference": null,
+          "rule_sha256": "a43119db537d041425932d6705e6ef03ee8666dd2d93fc8b97482e181ef69eee"
+        },
+        {
+          "name": "scope",
+          "pointer": "/properties/scope",
+          "required_in_parent": true,
+          "description": "Comparable input scope.",
+          "schema_reference": null,
+          "rule_sha256": "0908ccb8b7d89442e850cc5870257bd1add20ecf7b460bda2b4ea0765b3ef5ee"
+        },
+        {
+          "name": "dataset_asset_id",
+          "pointer": "/properties/dataset_asset_id",
+          "required_in_parent": true,
+          "description": "Ordered frozen array/manifest of llm-quality-case records.",
+          "schema_reference": null,
+          "rule_sha256": "b0b6f9ac67ce1b3e178815be90e3d2eacce6fccc44c6dd6086e2323ba4eef406"
+        },
+        {
+          "name": "dataset_sha256",
+          "pointer": "/properties/dataset_sha256",
+          "required_in_parent": true,
+          "description": "Actual frozen complete dataset manifest hash.",
+          "schema_reference": null,
+          "rule_sha256": "57f7f5f98b83a85202741c6493beca48a185e938ba3059e3c97b008b7e5f09bd"
+        },
+        {
+          "name": "scorer_version",
+          "pointer": "/properties/scorer_version",
+          "required_in_parent": true,
+          "description": "Exact diagnostic scorer/semantic rubric version.",
+          "schema_reference": null,
+          "rule_sha256": "e031fef6497c6948839036a8a597338df77ac1abd5d6f07e91bbb389870b03d4"
+        },
+        {
+          "name": "metric_registry_sha256",
+          "pointer": "/properties/metric_registry_sha256",
+          "required_in_parent": true,
+          "description": "Frozen diagnostic metric registry.",
+          "schema_reference": null,
+          "rule_sha256": "da7180c0bb49373f5fe25b3ddede4463dd6332050ce6681a5e1b17e4335eba82"
+        },
+        {
+          "name": "variants",
+          "pointer": "/properties/variants",
+          "required_in_parent": true,
+          "description": "Explicit variants; paired comparison needs at least two.",
+          "schema_reference": null,
+          "rule_sha256": "ba38536500383ebddc32db3e14f6c68c5e0ce47689ade4c565802be4d58562b5"
+        },
+        {
+          "name": "repetitions",
+          "pointer": "/properties/repetitions",
+          "required_in_parent": true,
+          "description": "Requested observations per case/variant, default1.",
+          "schema_reference": null,
+          "rule_sha256": "317f8caab47c5313cc3d1912e795d98219b85da0c4ebbc8a990f2541115660e7"
+        },
+        {
+          "name": "status",
+          "pointer": "/properties/status",
+          "required_in_parent": true,
+          "description": "Actual execution state; planned is not evidence.",
+          "schema_reference": null,
+          "rule_sha256": "8485c781601847d7a1978474c381818c3c484e016e1e601dff4e38616ecb4035"
+        },
+        {
+          "name": "rows",
+          "pointer": "/properties/rows",
+          "required_in_parent": true,
+          "description": "Actual completed/error and explicit unperformed rows.",
+          "schema_reference": null,
+          "rule_sha256": "507d694d5c6a1f2f51142a3392d1354c0d4678893f26051c9760688a47c81069"
+        },
+        {
+          "name": "comparison_asset_id",
+          "pointer": "/properties/comparison_asset_id",
+          "required_in_parent": true,
+          "description": "Exact paired-row deltas/exclusions/coverage artifact, null before comparison.",
+          "schema_reference": null,
+          "rule_sha256": "8a578e42fc6249a8caa02f0e08d783f110730db9a3224ff1f98b7cfa721a7c79"
+        },
+        {
+          "name": "created_at",
+          "pointer": "/properties/created_at",
+          "required_in_parent": true,
+          "description": "Actual plan timestamp.",
+          "schema_reference": null,
+          "rule_sha256": "6b288d1b8c2f203f2b28fe4994c92f5d346a03a0e768f53bb0d07d837c21f7a8"
+        },
+        {
+          "name": "finished_at",
+          "pointer": "/properties/finished_at",
+          "required_in_parent": true,
+          "description": "Actual finish timestamp, null while unperformed/running.",
+          "schema_reference": null,
+          "rule_sha256": "b0f1b7a419bff669b2916fd85afb42c11ad25ae0d8ba2f8d285641e483503f25"
+        },
+        {
+          "name": "aggregates",
+          "pointer": "/properties/aggregates",
+          "required_in_parent": true,
+          "description": "Full-denominator aggregates, paired deltas in separate result artifact.",
+          "schema_reference": null,
+          "rule_sha256": "4864e3b80f75e48073ba60072b258c91ee8f1fe6639721e195e53b6420334205"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/variants/items/properties/id",
+          "required_in_parent": true,
+          "description": "Variant identity.",
+          "schema_reference": null,
+          "rule_sha256": "5b2a621c48f399fcfd4b0ea6603a2d433fc7fc9142e752eb766e55dcba19c4b0"
+        },
+        {
+          "name": "bundle_id",
+          "pointer": "/properties/variants/items/properties/bundle_id",
+          "required_in_parent": true,
+          "description": "Already saved exact bundle.",
+          "schema_reference": null,
+          "rule_sha256": "b918bb0cb35dcd37a1c62486e72e8fbf9e858fe80c956f5369d52260dcbb2c2c"
+        },
+        {
+          "name": "bundle_sha256",
+          "pointer": "/properties/variants/items/properties/bundle_sha256",
+          "required_in_parent": true,
+          "description": "Exact frozen bundle.",
+          "schema_reference": null,
+          "rule_sha256": "391bf2e5746a3d92793fced3c0b37fc8419225721ed5c9e8793b67fcb5599886"
+        },
+        {
+          "name": "profile_id",
+          "pointer": "/properties/variants/items/properties/profile_id",
+          "required_in_parent": true,
+          "description": "Existing configured provider profile.",
+          "schema_reference": null,
+          "rule_sha256": "ef2db47dfaf6358c46d8aa637ba2042f1e90d7a7ef95b10a004d0f853f51a546"
+        },
+        {
+          "name": "configuration_sha256",
+          "pointer": "/properties/variants/items/properties/configuration_sha256",
+          "required_in_parent": true,
+          "description": "Frozen provider parameters and stage overrides; never changes active workspace config.",
+          "schema_reference": null,
+          "rule_sha256": "fe8a307de3821916a4dc1c06ee0cc52e60ffb014fdb25b9baa6d358fa43dce91"
+        },
+        {
+          "name": "judge_profile_id",
+          "pointer": "/properties/variants/items/properties/judge_profile_id",
+          "required_in_parent": true,
+          "description": "Explicit semantic judge profile with linguistic_audit role, null if deterministic only.",
+          "schema_reference": null,
+          "rule_sha256": "e6716dba7d6444eb222e4619932cffdc24d2ddbaff674462bbdead0b810a0ab7"
+        },
+        {
+          "name": "case_id",
+          "pointer": "/properties/rows/items/properties/case_id",
+          "required_in_parent": true,
+          "description": "Frozen dataset row.",
+          "schema_reference": null,
+          "rule_sha256": "f25ccd970a7e411efd5cf4fb65e65893b1cabf05e087382363d2b867bd0dc56d"
+        },
+        {
+          "name": "variant_id",
+          "pointer": "/properties/rows/items/properties/variant_id",
+          "required_in_parent": true,
+          "description": "Declared variant.",
+          "schema_reference": null,
+          "rule_sha256": "561b21ba124ae42130ae3e13396e795efd6c3b9fa5d74d6380df8fe0e60fac15"
+        },
+        {
+          "name": "repetition",
+          "pointer": "/properties/rows/items/properties/repetition",
+          "required_in_parent": true,
+          "description": "One-based explicit repetition.",
+          "schema_reference": null,
+          "rule_sha256": "19e21fc43976ef6d8c89f069b8c6f1380f460dbae9b542cd4285780de33d6bad"
+        },
+        {
+          "name": "status",
+          "pointer": "/properties/rows/items/properties/status",
+          "required_in_parent": true,
+          "description": "Actual observed outcome.",
+          "schema_reference": null,
+          "rule_sha256": "b5e2cd48bfe05c87a2602dd8e83c5accadd4aa68c64194e393415034262a2f17"
+        },
+        {
+          "name": "receipt_ids",
+          "pointer": "/properties/rows/items/properties/receipt_ids",
+          "required_in_parent": true,
+          "description": "Ordered actual calls.",
+          "schema_reference": null,
+          "rule_sha256": "24352e6f843b1d85ae208c0e065608c21c92421facb7974aaa12d414fa0ef44d"
+        },
+        {
+          "name": "trace_ids",
+          "pointer": "/properties/rows/items/properties/trace_ids",
+          "required_in_parent": true,
+          "description": "All involved foreground traces.",
+          "schema_reference": null,
+          "rule_sha256": "5fd892135be28ea62d4dc545aabd38efa7900000554d349e91f140af6b445ec0"
+        },
+        {
+          "name": "output_asset_id",
+          "pointer": "/properties/rows/items/properties/output_asset_id",
+          "required_in_parent": true,
+          "description": "Actual saved outputs, null if none.",
+          "schema_reference": null,
+          "rule_sha256": "9b22d35f4ee769b4d50cf3528a39484682f1658606e4eee05067adece41b6c76"
+        },
+        {
+          "name": "metrics",
+          "pointer": "/properties/rows/items/properties/metrics",
+          "required_in_parent": true,
+          "description": "Supported row diagnostic observations.",
+          "schema_reference": null,
+          "rule_sha256": "c1d81da7fd570335d54fbe0371b50dad411c5d3637528b229f5f8f74cb7961e9"
+        },
+        {
+          "name": "error_code",
+          "pointer": "/properties/rows/items/properties/error_code",
+          "required_in_parent": true,
+          "description": "Safe actual error or cancellation reason.",
+          "schema_reference": null,
+          "rule_sha256": "59f5092acbe9236a5f8c41a44c7d27d57b561636957c750c14cf8e3096fb9763"
+        },
+        {
+          "name": "export_status",
+          "pointer": "/properties/rows/items/properties/export_status",
+          "required_in_parent": true,
+          "description": "MLflow copy status; unrelated to provider success.",
+          "schema_reference": null,
+          "rule_sha256": "1961f4121f2a5f4ff58efb01a3be1b23b3f2accdd213b2fe05b9e89c1b39bf15"
+        },
+        {
+          "name": "metric_id",
+          "pointer": "/properties/rows/items/properties/metrics/items/properties/metric_id",
+          "required_in_parent": true,
+          "description": "Registered llm_lab diagnostic ID.",
+          "schema_reference": null,
+          "rule_sha256": "65692129a35b4530083d7ec6761f516ca8d01f97ab9a05f1aa19482a6c9fd00e"
+        },
+        {
+          "name": "status",
+          "pointer": "/properties/rows/items/properties/metrics/items/properties/status",
+          "required_in_parent": true,
+          "description": "Applicability, distinct from numeric zero.",
+          "schema_reference": null,
+          "rule_sha256": "76c9ab83c2b0436fb514597c394eb5932674cd4cbad36deb505c2d4eda6e003d"
+        },
+        {
+          "name": "numerator",
+          "pointer": "/properties/rows/items/properties/metrics/items/properties/numerator",
+          "required_in_parent": true,
+          "description": "Exact decimal arithmetic numerator, or null for sample statistics.",
+          "schema_reference": null,
+          "rule_sha256": "de1d6b612956b6cda43f1e2109ba1ffddeda66304a5639df811afe6906d44e4c"
+        },
+        {
+          "name": "denominator",
+          "pointer": "/properties/rows/items/properties/metrics/items/properties/denominator",
+          "required_in_parent": true,
+          "description": "Exact count/decimal denominator, or null for nonratio statistic.",
+          "schema_reference": null,
+          "rule_sha256": "339d11d6eb04fed82cfaf2d6e7bb3bfdf6189c11d22d674188af62b65dcebffa"
+        },
+        {
+          "name": "samples",
+          "pointer": "/properties/rows/items/properties/metrics/items/properties/samples",
+          "required_in_parent": true,
+          "description": "Ordered observed samples when required by the metric.",
+          "schema_reference": null,
+          "rule_sha256": "5f88c00edc82fcbeaa331e32eecc431d9ad0322168948b4d5d7ff35d9ce740b7"
+        },
+        {
+          "name": "value",
+          "pointer": "/properties/rows/items/properties/metrics/items/properties/value",
+          "required_in_parent": true,
+          "description": "Exact scalar decimal when representable; ratios retain numerator/denominator and may leave value null. Applicability is controlled by status; exported floats are display copies.",
+          "schema_reference": null,
+          "rule_sha256": "36f3d66e9686cb59d6da2e1c1a5cc1ee68f077416a9afdab368bca56beac7baf"
+        },
+        {
+          "name": "missing_reason",
+          "pointer": "/properties/rows/items/properties/metrics/items/properties/missing_reason",
+          "required_in_parent": true,
+          "description": "Required when not observed.",
+          "schema_reference": null,
+          "rule_sha256": "c43eb4a9854efb9c67cfc9a78f74e8de3029b68bba7ae96c357fbe696e993528"
+        },
+        {
+          "name": "basis",
+          "pointer": "/properties/rows/items/properties/metrics/items/properties/basis",
+          "required_in_parent": true,
+          "description": "Actual observation basis.",
+          "schema_reference": null,
+          "rule_sha256": "a8c3ca3a6fa4e496e9c47abf73cd0f620e22c9ae8132b6d14d682f583933726b"
+        },
+        {
+          "name": "reference_count",
+          "pointer": "/properties/rows/items/properties/metrics/items/properties/reference_count",
+          "required_in_parent": true,
+          "description": "Applicable reference/sample count.",
+          "schema_reference": null,
+          "rule_sha256": "85901d318c0812f84a4b5aa089148de7c5c9ae58ce3ece2a747ec3f093dfab89"
+        },
+        {
+          "name": "excluded_count",
+          "pointer": "/properties/rows/items/properties/metrics/items/properties/excluded_count",
+          "required_in_parent": true,
+          "description": "Unavailable/inapplicable rows explicitly reported.",
+          "schema_reference": null,
+          "rule_sha256": "c79c33f438b314bf2989c11ace2713c2c4f440e9bdb6a371311634bfcf7b6bf1"
+        },
+        {
+          "name": "variant_id",
+          "pointer": "/properties/aggregates/items/properties/variant_id",
+          "required_in_parent": true,
+          "description": "Variant identity.",
+          "schema_reference": null,
+          "rule_sha256": "5b2a621c48f399fcfd4b0ea6603a2d433fc7fc9142e752eb766e55dcba19c4b0"
+        },
+        {
+          "name": "metric",
+          "pointer": "/properties/aggregates/items/properties/metric",
+          "required_in_parent": true,
+          "description": "Metric observation under domain/llm-quality-metrics.v1.json.",
+          "schema_reference": null,
+          "rule_sha256": "cd6ca1ec8a479b75e30fc8d1fb0782c5ff424683c39c059acf916336b11a479b"
+        },
+        {
+          "name": "metric_id",
+          "pointer": "/properties/aggregates/items/properties/metric/properties/metric_id",
+          "required_in_parent": true,
+          "description": "Registered llm_lab diagnostic ID.",
+          "schema_reference": null,
+          "rule_sha256": "65692129a35b4530083d7ec6761f516ca8d01f97ab9a05f1aa19482a6c9fd00e"
+        },
+        {
+          "name": "status",
+          "pointer": "/properties/aggregates/items/properties/metric/properties/status",
+          "required_in_parent": true,
+          "description": "Applicability, distinct from numeric zero.",
+          "schema_reference": null,
+          "rule_sha256": "76c9ab83c2b0436fb514597c394eb5932674cd4cbad36deb505c2d4eda6e003d"
+        },
+        {
+          "name": "numerator",
+          "pointer": "/properties/aggregates/items/properties/metric/properties/numerator",
+          "required_in_parent": true,
+          "description": "Exact decimal arithmetic numerator, or null for sample statistics.",
+          "schema_reference": null,
+          "rule_sha256": "de1d6b612956b6cda43f1e2109ba1ffddeda66304a5639df811afe6906d44e4c"
+        },
+        {
+          "name": "denominator",
+          "pointer": "/properties/aggregates/items/properties/metric/properties/denominator",
+          "required_in_parent": true,
+          "description": "Exact count/decimal denominator, or null for nonratio statistic.",
+          "schema_reference": null,
+          "rule_sha256": "339d11d6eb04fed82cfaf2d6e7bb3bfdf6189c11d22d674188af62b65dcebffa"
+        },
+        {
+          "name": "samples",
+          "pointer": "/properties/aggregates/items/properties/metric/properties/samples",
+          "required_in_parent": true,
+          "description": "Ordered observed samples when required by the metric.",
+          "schema_reference": null,
+          "rule_sha256": "5f88c00edc82fcbeaa331e32eecc431d9ad0322168948b4d5d7ff35d9ce740b7"
+        },
+        {
+          "name": "value",
+          "pointer": "/properties/aggregates/items/properties/metric/properties/value",
+          "required_in_parent": true,
+          "description": "Exact scalar decimal when representable; ratios retain numerator/denominator and may leave value null. Applicability is controlled by status; exported floats are display copies.",
+          "schema_reference": null,
+          "rule_sha256": "36f3d66e9686cb59d6da2e1c1a5cc1ee68f077416a9afdab368bca56beac7baf"
+        },
+        {
+          "name": "missing_reason",
+          "pointer": "/properties/aggregates/items/properties/metric/properties/missing_reason",
+          "required_in_parent": true,
+          "description": "Required when not observed.",
+          "schema_reference": null,
+          "rule_sha256": "c43eb4a9854efb9c67cfc9a78f74e8de3029b68bba7ae96c357fbe696e993528"
+        },
+        {
+          "name": "basis",
+          "pointer": "/properties/aggregates/items/properties/metric/properties/basis",
+          "required_in_parent": true,
+          "description": "Actual observation basis.",
+          "schema_reference": null,
+          "rule_sha256": "a8c3ca3a6fa4e496e9c47abf73cd0f620e22c9ae8132b6d14d682f583933726b"
+        },
+        {
+          "name": "reference_count",
+          "pointer": "/properties/aggregates/items/properties/metric/properties/reference_count",
+          "required_in_parent": true,
+          "description": "Applicable reference/sample count.",
+          "schema_reference": null,
+          "rule_sha256": "85901d318c0812f84a4b5aa089148de7c5c9ae58ce3ece2a747ec3f093dfab89"
+        },
+        {
+          "name": "excluded_count",
+          "pointer": "/properties/aggregates/items/properties/metric/properties/excluded_count",
+          "required_in_parent": true,
+          "description": "Unavailable/inapplicable rows explicitly reported.",
+          "schema_reference": null,
+          "rule_sha256": "c79c33f438b314bf2989c11ace2713c2c4f440e9bdb6a371311634bfcf7b6bf1"
+        }
+      ]
+    },
+    {
+      "kind": "llm-quality-case",
+      "schema": "contracts/llm-quality-case.schema.json",
+      "schema_version": "2.0.0",
+      "persistent_domain_record": true,
+      "storage": "document.payload with linked private assets",
+      "sha256": "4836920a3784d3321c776e7ffd059807c27c8e3448842a730f9b71e91e976c8b",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "85a2d8aa93ae1cc535108ec2ee447f40f68925db0cd97bb3dc7c597388c444c6"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/id",
+          "required_in_parent": true,
+          "description": "Dataset case identity.",
+          "schema_reference": null,
+          "rule_sha256": "b45797a011b524e277cf680761eb6dd25dc5efc248699dd72864d8b0e58ddf48"
+        },
+        {
+          "name": "stage",
+          "pointer": "/properties/stage",
+          "required_in_parent": true,
+          "description": "Stage under test.",
+          "schema_reference": null,
+          "rule_sha256": "1a6a220efff1260aca8b81d515dd33917fedf5b307ee818551d429d25c2ebed0"
+        },
+        {
+          "name": "phase",
+          "pointer": "/properties/phase",
+          "required_in_parent": true,
+          "description": "Generation phase; null for other stages.",
+          "schema_reference": null,
+          "rule_sha256": "559d59f8d16decd3b06464257cf3db48d57c6c2d61d84ddadd00f90a86149c22"
+        },
+        {
+          "name": "polarity",
+          "pointer": "/properties/polarity",
+          "required_in_parent": true,
+          "description": "Constructed/reference scenario polarity.",
+          "schema_reference": null,
+          "rule_sha256": "a62b6df581271e433dc6940d229d568285812a8086a1a4ae7b16ef7c65e46bcf"
+        },
+        {
+          "name": "origin",
+          "pointer": "/properties/origin",
+          "required_in_parent": true,
+          "description": "Actual data origin, not empirical gold by default.",
+          "schema_reference": null,
+          "rule_sha256": "2c17fca4200f08e37990ae84b9293f8c3cbb1ebcc9df75567a500aed33f24123"
+        },
+        {
+          "name": "expectation_basis",
+          "pointer": "/properties/expectation_basis",
+          "required_in_parent": true,
+          "description": "Reference basis; independent_llm requires its actual independent receipt.",
+          "schema_reference": null,
+          "rule_sha256": "9176dbbd571e56c8b8e941a165e67b421eaf73e158329568748dbb6b85573cc4"
+        },
+        {
+          "name": "group_id",
+          "pointer": "/properties/group_id",
+          "required_in_parent": true,
+          "description": "Shared source/speaker/edit-family grouping; do not leak into held-out comparisons.",
+          "schema_reference": null,
+          "rule_sha256": "ea007609f0234769763043454764422b6216c9cfd2ee463dfd1bbb6f1878413d"
+        },
+        {
+          "name": "split",
+          "pointer": "/properties/split",
+          "required_in_parent": true,
+          "description": "Declared split with explicit group separation.",
+          "schema_reference": null,
+          "rule_sha256": "2c0a3fca592d11533e3ab430a30e2942676c6b5d52b782bbc4c3f3e1d78f3420"
+        },
+        {
+          "name": "taxonomy_ids",
+          "pointer": "/properties/taxonomy_ids",
+          "required_in_parent": true,
+          "description": "Selected leaves, including controls.",
+          "schema_reference": null,
+          "rule_sha256": "5fa8cef52e43d9e2c9681c2ff37c19fad97b29e5ed032990b7caeef4c0a95e91"
+        },
+        {
+          "name": "input_asset_id",
+          "pointer": "/properties/input_asset_id",
+          "required_in_parent": true,
+          "description": "Exact stage inputs and relevant frozen case/audio/key/answer identities.",
+          "schema_reference": null,
+          "rule_sha256": "a324833a9959f1e88c19ca507d1ef174dae2dcd694eca33011934b489ceac29d"
+        },
+        {
+          "name": "input_sha256",
+          "pointer": "/properties/input_sha256",
+          "required_in_parent": true,
+          "description": "Actual input asset/projection hash.",
+          "schema_reference": null,
+          "rule_sha256": "7e7aa203a9bbfeb3c74ca553c0e5c49656ce098ac7d1cf6625eb5c7824d8a168"
+        },
+        {
+          "name": "expectations_asset_id",
+          "pointer": "/properties/expectations_asset_id",
+          "required_in_parent": true,
+          "description": "Typed expected evaluator-output/native credit assertions or semantic rubric with supported/unsupported/unknown propositions; see docs/llm-lab.md.",
+          "schema_reference": null,
+          "rule_sha256": "60106755427c5f2bf345b5b93cc6c67ae2fc024c24acc2785ae1b63104e09ee8"
+        },
+        {
+          "name": "expectations_sha256",
+          "pointer": "/properties/expectations_sha256",
+          "required_in_parent": true,
+          "description": "Frozen expected assertions/rubric hash.",
+          "schema_reference": null,
+          "rule_sha256": "7fd1d70aeb62ad90af90a2baae3b9c8783fabd9839a106cacf08441c2b4ed374"
+        },
+        {
+          "name": "reference_receipt_ids",
+          "pointer": "/properties/reference_receipt_ids",
+          "required_in_parent": true,
+          "description": "Empty for authored assertions, actual IDs otherwise.",
+          "schema_reference": null,
+          "rule_sha256": "1a71075e7e3908ffd847292c217823dcd6cc93b25829eceab0fb0fd8d417c044"
+        },
+        {
+          "name": "schema_version",
+          "pointer": "/$defs/expectations/properties/schema_version",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "e6b54406650b57c8f0370e5206623129299f75086d54e387a78efc6574483199"
+        },
+        {
+          "name": "expected_mapping",
+          "pointer": "/$defs/expectations/properties/expected_mapping",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "4fd591440da0f5f39eb88e80361e359d15a741f480f8b832d764f5df1cf2932a"
+        },
+        {
+          "name": "expected_metric_values",
+          "pointer": "/$defs/expectations/properties/expected_metric_values",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "76a59f5464a0f1257e3f21410c18e749ead2578ee6e0fd01fbafa04010f2d9e8"
+        },
+        {
+          "name": "expected_canonical_sha256",
+          "pointer": "/$defs/expectations/properties/expected_canonical_sha256",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "13a6f47cbadf78958b255e6a96aaafb37b5e6c614ae87134ee5f455ff45a469a"
+        },
+        {
+          "name": "semantic_propositions",
+          "pointer": "/$defs/expectations/properties/semantic_propositions",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "7e02b556a294d8aa784b02df3edfbf07b54bd3ab4b6f28e3d12826f32a81e17c"
+        },
+        {
+          "name": "metric_id",
+          "pointer": "/$defs/expectations/properties/expected_metric_values/items/properties/metric_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "numerator",
+          "pointer": "/$defs/expectations/properties/expected_metric_values/items/properties/numerator",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "f090cb615c84d7324e2e4975c584267473e030c801e11713a3ec1d99192db7bd"
+        },
+        {
+          "name": "denominator",
+          "pointer": "/$defs/expectations/properties/expected_metric_values/items/properties/denominator",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "f090cb615c84d7324e2e4975c584267473e030c801e11713a3ec1d99192db7bd"
+        },
+        {
+          "name": "value",
+          "pointer": "/$defs/expectations/properties/expected_metric_values/items/properties/value",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "f090cb615c84d7324e2e4975c584267473e030c801e11713a3ec1d99192db7bd"
+        },
+        {
+          "name": "id",
+          "pointer": "/$defs/expectations/properties/semantic_propositions/items/properties/id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "proposition",
+          "pointer": "/$defs/expectations/properties/semantic_propositions/items/properties/proposition",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "expected",
+          "pointer": "/$defs/expectations/properties/semantic_propositions/items/properties/expected",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "2e18b911e1e76d8f37efdb2720b97c4a5963d551c7db3b72a998d9c55463e7ac"
+        },
+        {
+          "name": "scope",
+          "pointer": "/$defs/expectations/properties/semantic_propositions/items/properties/scope",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "fcb32531e51e557241a5140cde32fe8c4017c0c73711f73bb8dd469b0c44a57f"
+        }
+      ]
+    },
+    {
+      "kind": "prompt-bundle",
+      "schema": "contracts/prompt-bundle.schema.json",
+      "schema_version": "2.0.0",
+      "persistent_domain_record": true,
+      "storage": "document.payload with linked private assets",
+      "sha256": "5686f5e92a3c5b3308db3167ac68c8af43b74320e5768a2751469caab2bcc314",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": "Current unreleased contract version.",
+          "schema_reference": null,
+          "rule_sha256": "59f15977200565994fe73dfa7658618de756a3a9477802d36034539cb5f90b15"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/id",
+          "required_in_parent": true,
+          "description": "Local immutable bundle identity.",
+          "schema_reference": null,
+          "rule_sha256": "0bb563e87fb32e4045f2a1689d13eb9bb2a43c0bc5465f17bc800fa511c8d434"
+        },
+        {
+          "name": "origin",
+          "pointer": "/properties/origin",
+          "required_in_parent": true,
+          "description": "Actual bundle origin; no provider result implied.",
+          "schema_reference": null,
+          "rule_sha256": "a4507e66f2e9223b31d6be501a917053b79a00b6fe934d8706c27b3ada585963"
+        },
+        {
+          "name": "created_at",
+          "pointer": "/properties/created_at",
+          "required_in_parent": true,
+          "description": "Actual local creation timestamp with timezone.",
+          "schema_reference": null,
+          "rule_sha256": "61691741aef82408e0d273e0cb3076b6dc27b4852ea46f50f30648222206d4f5"
+        },
+        {
+          "name": "bindings",
+          "pointer": "/properties/bindings",
+          "required_in_parent": true,
+          "description": "Exactly nine current manifest stage/phase bindings; no missing or duplicate pair.",
+          "schema_reference": null,
+          "rule_sha256": "84759fdf81d5912547a1cd0eebd5cba86a9f6ffdc223064bf63e60f1b0121410"
+        },
+        {
+          "name": "bundle_sha256",
+          "pointer": "/properties/bundle_sha256",
+          "required_in_parent": true,
+          "description": "SHA-256 of JCS bundle excluding only bundle_sha256.",
+          "schema_reference": null,
+          "rule_sha256": "c3a872edc573dc0072f6b62ecb8cdc3bdfd9c6d44733f298a18ec6b038aae97c"
+        },
+        {
+          "name": "stage",
+          "pointer": "/properties/bindings/items/properties/stage",
+          "required_in_parent": true,
+          "description": "Existing LLM stage.",
+          "schema_reference": null,
+          "rule_sha256": "bc8cbbf637f4efdf192893426fe788c863059b43dc20a4b26a66abe68aaf708e"
+        },
+        {
+          "name": "phase",
+          "pointer": "/properties/bindings/items/properties/phase",
+          "required_in_parent": true,
+          "description": "Generation phase; null for other stages.",
+          "schema_reference": null,
+          "rule_sha256": "559d59f8d16decd3b06464257cf3db48d57c6c2d61d84ddadd00f90a86149c22"
+        },
+        {
+          "name": "prompt_id",
+          "pointer": "/properties/bindings/items/properties/prompt_id",
+          "required_in_parent": true,
+          "description": "Original manifest prompt binding ID.",
+          "schema_reference": null,
+          "rule_sha256": "1ce3a6ed06dbe335dbe7b6704bcf80daaab974dbc4bd255759e7850d579492bf"
+        },
+        {
+          "name": "template",
+          "pointer": "/properties/bindings/items/properties/template",
+          "required_in_parent": true,
+          "description": "Exact owned prompt text.",
+          "schema_reference": null,
+          "rule_sha256": "2724418a5225b7952a40323e3095f5d858d23217deedcc2767e9e6ad540ec34e"
+        },
+        {
+          "name": "template_variables",
+          "pointer": "/properties/bindings/items/properties/template_variables",
+          "required_in_parent": true,
+          "description": "Explicit template variables.",
+          "schema_reference": null,
+          "rule_sha256": "0cfac3d07bba77050340321a83645a466d1b35cf6a3ee5be8eb2ed115c6b3275"
+        },
+        {
+          "name": "prompt_sha256",
+          "pointer": "/properties/bindings/items/properties/prompt_sha256",
+          "required_in_parent": true,
+          "description": "Actual UTF-8 template byte hash.",
+          "schema_reference": null,
+          "rule_sha256": "91ccc47b3d0229231eee2a9655a9d704cdad1003b39836bcf277814c8df62ad2"
+        },
+        {
+          "name": "registry_name",
+          "pointer": "/properties/bindings/items/properties/registry_name",
+          "required_in_parent": true,
+          "description": "MLflow registry name; null for builtin.",
+          "schema_reference": null,
+          "rule_sha256": "38159f1472f4065a359409b99f7475acacebebe6c5b26c39146a2624c2c55dc8"
+        },
+        {
+          "name": "registry_version",
+          "pointer": "/properties/bindings/items/properties/registry_version",
+          "required_in_parent": true,
+          "description": "Resolved numeric prompt version; null for builtin.",
+          "schema_reference": null,
+          "rule_sha256": "9fd5a9d61ef13e24357abe73e98cd0a74048a6fe874124cf8d5dc7efd3903411"
+        },
+        {
+          "name": "context_registry_name",
+          "pointer": "/properties/bindings/items/properties/context_registry_name",
+          "required_in_parent": true,
+          "description": "Context policy registry name; null for builtin.",
+          "schema_reference": null,
+          "rule_sha256": "a047007f316b092640e3521a63fba873f885278778ef76ece1ca5189d73038ae"
+        },
+        {
+          "name": "context_registry_version",
+          "pointer": "/properties/bindings/items/properties/context_registry_version",
+          "required_in_parent": true,
+          "description": "Resolved numeric context version; null for builtin.",
+          "schema_reference": null,
+          "rule_sha256": "920e3de5dd1ea9309624ac0ed59b7bb988e7dc4572dd1a9127bf4217d577896d"
+        },
+        {
+          "name": "context_policy",
+          "pointer": "/properties/bindings/items/properties/context_policy",
+          "required_in_parent": true,
+          "description": "Stage context policy; obey docs/llm-lab.md and existing input schemas.",
+          "schema_reference": null,
+          "rule_sha256": "f1621666b2db1017fa85e409a86a00575be26e64e50fc9927b6f25acfb7fdb25"
+        },
+        {
+          "name": "context_policy_sha256",
+          "pointer": "/properties/bindings/items/properties/context_policy_sha256",
+          "required_in_parent": true,
+          "description": "JCS policy hash.",
+          "schema_reference": null,
+          "rule_sha256": "c4fcfbe5088fb09d7ec7a7dda602579e61c2259726ff95b9d59c13bbebb4af03"
+        },
+        {
+          "name": "input_schema",
+          "pointer": "/properties/bindings/items/properties/input_schema",
+          "required_in_parent": true,
+          "description": "Current input schema filename.",
+          "schema_reference": null,
+          "rule_sha256": "17aca809075fc2069f6c09e0973eb273980fa91b27b4488d29ed02904d55791d"
+        },
+        {
+          "name": "input_schema_sha256",
+          "pointer": "/properties/bindings/items/properties/input_schema_sha256",
+          "required_in_parent": true,
+          "description": "Actual schema byte hash.",
+          "schema_reference": null,
+          "rule_sha256": "3233153e3509b4fe7512f4e96478d0eeb86b7f8985c1767684385c110acb8b15"
+        },
+        {
+          "name": "output_schema",
+          "pointer": "/properties/bindings/items/properties/output_schema",
+          "required_in_parent": true,
+          "description": "Current output schema filename.",
+          "schema_reference": null,
+          "rule_sha256": "9219e2938819e03d970a377042dba7409727f6f738083f8ccceaa179fbfe3ee7"
+        },
+        {
+          "name": "output_schema_sha256",
+          "pointer": "/properties/bindings/items/properties/output_schema_sha256",
+          "required_in_parent": true,
+          "description": "Actual schema byte hash.",
+          "schema_reference": null,
+          "rule_sha256": "3233153e3509b4fe7512f4e96478d0eeb86b7f8985c1767684385c110acb8b15"
+        },
+        {
+          "name": "stage",
+          "pointer": "/properties/bindings/items/properties/context_policy/properties/stage",
+          "required_in_parent": true,
+          "description": "Existing stage.",
+          "schema_reference": null,
+          "rule_sha256": "f668b081a57bbfc980a546fe4d89b5c51dec25c891b2fd1edce43083ec4b2422"
+        },
+        {
+          "name": "phase",
+          "pointer": "/properties/bindings/items/properties/context_policy/properties/phase",
+          "required_in_parent": true,
+          "description": "Generation phase; null for other stages.",
+          "schema_reference": null,
+          "rule_sha256": "559d59f8d16decd3b06464257cf3db48d57c6c2d61d84ddadd00f90a86149c22"
+        },
+        {
+          "name": "instruction_template",
+          "pointer": "/properties/bindings/items/properties/context_policy/properties/instruction_template",
+          "required_in_parent": true,
+          "description": "Owned context instructions; user/source values remain data.",
+          "schema_reference": null,
+          "rule_sha256": "278c36a2a9bb14294931756d98b9578ec80e15ff6a6509bafeae463e6cd39dfa"
+        },
+        {
+          "name": "component_order",
+          "pointer": "/properties/bindings/items/properties/context_policy/properties/component_order",
+          "required_in_parent": true,
+          "description": "Stable assembly order for this stage.",
+          "schema_reference": null,
+          "rule_sha256": "1a38028e543560cb0cecd3d8be2ad5b51ee3cd2f2cc4a53c3c5354f5b82ee24e"
+        },
+        {
+          "name": "template_variables",
+          "pointer": "/properties/bindings/items/properties/context_policy/properties/template_variables",
+          "required_in_parent": true,
+          "description": "Explicit variables; empty for literal templates.",
+          "schema_reference": null,
+          "rule_sha256": "2a708b9c1f4adf9f4a35c0019252f22740e50ce7535c4da7f19d2db44a98f823"
+        },
+        {
+          "name": "selection_notes",
+          "pointer": "/properties/bindings/items/properties/context_policy/properties/selection_notes",
+          "required_in_parent": true,
+          "description": "Explicit optional-source selection and exclusions; no silent truncation of required data.",
+          "schema_reference": null,
+          "rule_sha256": "1e2d6826e1ff0efc194f2ebcf99c7f40de5f2f19ac29b33b533b85c9d6d28fe1"
+        },
+        {
+          "name": "bindings",
+          "pointer": "/$defs/selection/properties/bindings",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "dce2a5104c73964aad99137a7da894f717f07a072a66dc8e0612c52de3c43229"
+        },
+        {
+          "name": "stage",
+          "pointer": "/$defs/selection/properties/bindings/items/properties/stage",
+          "required_in_parent": true,
+          "description": "Existing LLM stage.",
+          "schema_reference": null,
+          "rule_sha256": "bc8cbbf637f4efdf192893426fe788c863059b43dc20a4b26a66abe68aaf708e"
+        },
+        {
+          "name": "phase",
+          "pointer": "/$defs/selection/properties/bindings/items/properties/phase",
+          "required_in_parent": true,
+          "description": "Generation phase; null for other stages.",
+          "schema_reference": null,
+          "rule_sha256": "559d59f8d16decd3b06464257cf3db48d57c6c2d61d84ddadd00f90a86149c22"
+        },
+        {
+          "name": "prompt_name",
+          "pointer": "/$defs/selection/properties/bindings/items/properties/prompt_name",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "prompt_version",
+          "pointer": "/$defs/selection/properties/bindings/items/properties/prompt_version",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "be5ac72348ac0f643845bd6d067291b863394c92680a17cba91f49f5e165e46c"
+        },
+        {
+          "name": "context_name",
+          "pointer": "/$defs/selection/properties/bindings/items/properties/context_name",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "context_version",
+          "pointer": "/$defs/selection/properties/bindings/items/properties/context_version",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "be5ac72348ac0f643845bd6d067291b863394c92680a17cba91f49f5e165e46c"
         }
       ]
     }

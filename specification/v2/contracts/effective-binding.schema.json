@@ -171,6 +171,32 @@
       "maxLength": 64,
       "minLength": 64,
       "pattern": "^[a-f0-9]{64}$"
+    },
+    "prompt_bundle_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Frozen complete local bundle; included in effective binding/cache identity."
+    },
+    "context_policy_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Frozen stage context policy."
+    },
+    "phase": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "canonical_text",
+            "mutation"
+          ],
+          "description": "Generation phase; null for other stages."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Generation phase; null for other stages."
     }
   },
   "required": [
