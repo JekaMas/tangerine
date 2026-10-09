@@ -322,3 +322,13 @@ Current resume: audit/service-and-data-readiness-20261009/REPORT.md and specific
 - [ ] Future authorized implementation: execute on-demand clean/mutation/audio/answer/checking through real owners and observe the affected cases with actual model/audio/native Lab evidence. No pregenerated exercise corpus is an implementation or ordinary-use prerequisite.
 
 Current resume: audit/on-demand-flow-20261009/REPORT.md and specification/v2/docs/simple-generation-flow.md own the latest five-step user flow. No generation, synthesis, account/provider call, corpus creation, implementation, installation or publication occurred. Three trusted prompt texts/manifest hashes are updated; current behavior plans remain unexecuted. Preserve the unrelated GAPS.md edit.
+
+## 2026-10-09 necessary registration and remaining-dependency check
+
+- [x] Read back the selected existing ChatGPT account's Pro status and automatic reload off; distinguish these observations from Tangerine authorization, purchased-credit exclusion, model availability and inference qualification.
+- [x] Prepare the optional ElevenLabs Free signup and request the browser tool's confirmation at its actual legal-terms acceptance step; record pending status without creating credentials or buying anything.
+- [x] Reconcile provider/account instructions, generated Free-media terms and exact remaining core/optional data consumers; preserve on-demand LLM generation,122categories/recipes,42formulas and11full-source scopes.
+- [ ] Continue the prepared ElevenLabs Free signup after the pending agreement confirmation; verify actual account/plan/allowance and retain honest setup-only evidence.
+- [ ] Future authorized implementation/setup: complete Tangerine's own ChatGPT callback/token flow, inspect its app-specific credit controls and model catalogue, set up selected local speech, and execute designed main-flow/Lab observations. No duplicate LLM account or optional-every-provider registration is required.
+
+Current resume: audit/provider-registration-20261009/REPORT.md and observations.json record exact live account/documentation readback. ElevenLabs remains pending_confirmation; no account creation, API key, token exchange, model request, synthesis, installation, purchase, implementation or publication occurred. No new product decision is identified; the pending browser agreement confirmation is a tool requirement. Existing green graph/fixture receipts are retained within their scope. Preserve the unrelated GAPS.md edit.
