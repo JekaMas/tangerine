@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -17,9 +18,20 @@ func run() error {
 	if len(os.Args) > 1 {
 		mode = os.Args[1]
 	}
+	if mode == "configure" {
+		return app.ConfigureLocal(os.Getenv("TANGERINE_OPERATOR_FILE"), os.Getenv("TANGERINE_RUNTIME_DIR"))
+	}
+	if mode == "redact" {
+		return app.Redact(os.Stdin, os.Stdout)
+	}
 	if mode == "healthcheck" {
 		client := http.Client{Timeout: 6 * time.Second}
-		res, err := client.Get("http://127.0.0.1:8080/health/ready")
+		req, err := http.NewRequest(http.MethodGet, "http://127.0.0.1:8080/health/ready", nil)
+		if err != nil {
+			return err
+		}
+		req.Header.Set("Authorization", "Bearer "+os.Getenv("API_INTERNAL_TOKEN"))
+		res, err := client.Do(req)
 		if err != nil {
 			return fmt.Errorf("API is unavailable")
 		}
@@ -42,7 +54,13 @@ func run() error {
 	case "media-init":
 		return store.InitMedia(ctx)
 	case "initialize":
-		return store.InitializeAccount(ctx, os.Getenv("INITIAL_EMAIL"), os.Getenv("INITIAL_PASSWORD"))
+		if err := store.Migrate(ctx); err != nil {
+			return fmt.Errorf("MIGRATION_FAILED: verify migration checksums and database readiness")
+		}
+		if err := store.InitMedia(ctx); err != nil {
+			return fmt.Errorf("MEDIA_INIT_FAILED: verify private bucket and storage readiness")
+		}
+		return nil
 	case "serve":
 	default:
 		return fmt.Errorf("unknown command")
@@ -71,7 +89,11 @@ func run() error {
 
 func main() {
 	if err := run(); err != nil {
-		fmt.Fprintln(os.Stderr, "Tangerine operation failed; check local prerequisites and configuration.")
+		message := err.Error()
+		if !strings.Contains(message, "CONFIG_") && !strings.Contains(message, "MIGRATION_FAILED") && !strings.Contains(message, "MEDIA_INIT_FAILED") {
+			message = "OPERATION_FAILED: check local prerequisites and configuration"
+		}
+		fmt.Fprintln(os.Stderr, message)
 		os.Exit(1)
 	}
 }

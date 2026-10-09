@@ -1,0 +1,52 @@
+#!/bin/sh
+set -eu
+umask 077
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$ROOT"
+fail() { printf '%s\n' "$1" >&2; exit 1; }
+command -v docker >/dev/null 2>&1 || fail 'DOCKER_REQUIRED: install Docker Desktop or Docker Engine with Compose, then run again.'
+docker compose version >/dev/null 2>&1 || fail 'COMPOSE_REQUIRED: enable Docker Compose v2.20 or newer.'
+version=$(docker compose version --short | sed 's/^v//')
+major=${version%%.*}; tail=${version#*.}; minor=${tail%%.*}
+case "$major:$minor" in *[!0-9:]*|'') fail 'COMPOSE_REQUIRED: cannot determine Compose version.';; esac
+[ "$major" -gt 2 ] || { [ "$major" -eq 2 ] && [ "$minor" -ge 20 ]; } || fail 'COMPOSE_REQUIRED: upgrade Docker Compose to v2.20 or newer.'
+docker info >/dev/null 2>&1 || fail 'DOCKER_UNAVAILABLE: start Docker and retry. Existing data is retained.'
+PROJECT=${COMPOSE_PROJECT_NAME:-tangerine}
+case "$PROJECT" in ''|*[!a-z0-9_-]*) fail 'CONFIG_INVALID: COMPOSE_PROJECT_NAME must contain lowercase letters, digits, underscore or dash.';; esac
+export COMPOSE_PROJECT_NAME="$PROJECT"
+# Provider/infrastructure values come only from this installation, never the caller shell.
+unset DATABASE_URL POSTGRES_PASSWORD MINIO_ROOT_USER MINIO_ROOT_PASSWORD API_INTERNAL_TOKEN SPEECH_INTERNAL_TOKEN DEEPSEEK_API_KEY OPENAI_API_KEY AZURE_SPEECH_KEY AZURE_SPEECH_REGION ELEVENLABS_API_KEY
+compose() { docker compose --env-file "$ROOT/.env" --env-file "$ROOT/data/config/runtime.env" -f "$ROOT/deploy/local/compose.yaml" "$@"; }
+case "${1:-start}" in
+ start)
+  for required in .env.example LICENSE services/api/Dockerfile services/api/go.mod services/api/go.sum services/web/Dockerfile services/web/package-lock.json services/speech/Dockerfile deploy/local/minio.Dockerfile deploy/local/compose.yaml; do
+   [ -f "$required" ] || fail "SOURCE_INCOMPLETE: missing $required. Extract the complete release; existing data is retained."
+  done
+  [ -f .env ] || cp .env.example .env
+  chmod 600 .env
+  if [ ! -f data/config/runtime.env ] && [ -n "$(docker volume ls -q --filter "label=com.docker.compose.project=$PROJECT")" ]; then
+   fail 'CONFIG_MISSING: restore data/config/runtime.env for the existing volumes; credentials will not be regenerated.'
+  fi
+  docker build -f services/api/Dockerfile -t "$PROJECT-api:local" . || fail 'BUILD_FAILED: API build failed. Check Docker network/disk and the build error above; existing data is retained.'
+  mkdir -p data/config
+  docker run --rm --user "$(id -u):$(id -g)" -v "$ROOT/.env:/operator.env:ro" -v "$ROOT/data/config:/runtime" -e TANGERINE_OPERATOR_FILE=/operator.env -e TANGERINE_RUNTIME_DIR=/runtime "$PROJECT-api:local" configure || fail 'CONFIG_INVALID: correct .env or restore durable credentials; existing data is retained.'
+  compose build || fail 'BUILD_FAILED: service build failed. Check the build error above; existing data is retained.'
+  compose up -d --wait --wait-timeout 180 || fail 'START_FAILED: check port 3000 availability and run scripts/tangerine logs. Existing data is retained.'
+  printf '%s\n' 'Tangerine is ready at http://localhost:3000 (no sign-in).'
+  ;;
+ stop|status|logs)
+  [ -f data/config/runtime.env ] && [ -f .env ] || fail 'NOT_INITIALIZED: run scripts/tangerine start, or restore the runtime configuration.'
+  case "$1" in
+   stop) compose down; printf '%s\n' 'Stopped. Database, media and durable configuration are retained.';;
+   status) compose ps --all;;
+   logs)
+    capture="$ROOT/data/.logs-$$"
+    trap 'rm -f "$capture"' 0
+    log_status=0
+    compose logs --no-color > "$capture" 2>&1 || log_status=$?
+    docker run --rm -i --env-file "$ROOT/.env" --env-file "$ROOT/data/config/runtime.env" "$PROJECT-api:local" redact < "$capture"
+    exit "$log_status";;
+  esac
+  ;;
+ *) fail 'UNKNOWN_COMMAND: use start, stop, status or logs. Model setup, Lab and backup/restore belong to subsequent implementation iterations.';;
+esac

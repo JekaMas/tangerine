@@ -9,7 +9,22 @@ From the repository root:
 - Go static analysis: `cd services/api && GOWORK=off go vet ./...`; check gofmt after the stable batch.
 - Python: `python3 -B -m unittest discover -s tests -v`.
 - Web: `cd services/web && npm ci && npm run build`.
-- Compose: validate with `docker compose --env-file deploy/local/.env -f deploy/local/compose.yaml config --quiet`, then actual build/readiness only with a running daemon.
+- Compose: validate with `docker compose --env-file .env --env-file data/config/runtime.env -f deploy/local/compose.yaml config --quiet`, then actual build/readiness only with a running daemon.
 - Workflow setup: bootstrap status, skill_packages validate, workflow_publication, check_opsx_routes, then shared make check, exactly as .agents/workflow/docs/project-flow.md states.
 
 Retain exit codes and bounded receipts under the selected change/evidence. Do not use imported-validation-results.json as a receipt for current code. The repository is not release ready until all required tasks and cases pass with real dependencies and observed content.
+
+
+For iteration1, the native acceptance selection is I1-01.P1 through I1-08.P1.
+Run its `python-unittest` graph command alone; concurrent instances compete for
+loopback port3000 and are invalid evidence. The suite owns fresh test volumes;
+only its cleanup removes those volumes. The application launcher never does.
+Legacy account/session suites are historical and are not current no-login
+acceptance. Broader original feature plans remain pending their full owners.
+
+The application builds from a ZIP using Docker only. When the host Go differs
+from the pinned version, use the Dockerfile's `build` target for `go test -race
+-json ./...` and `go vet ./...`, retaining the actual Go image/command receipts.
+The production web Docker build already executes locked `npm ci` and
+`npm run build`; it is the same language/build check without host Node setup.
+No host prerequisite installation follows from this adapter.

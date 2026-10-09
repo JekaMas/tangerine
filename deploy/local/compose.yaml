@@ -1,16 +1,20 @@
-name: tangerine
+name: ${COMPOSE_PROJECT_NAME:-tangerine}
 
 x-api-environment: &api-environment
-  DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in the local env file}
+  DATABASE_URL: postgres://tangerine:${POSTGRES_PASSWORD:?Run scripts/tangerine start}@postgres:5432/tangerine?sslmode=disable
   MINIO_ENDPOINT: minio:9000
-  MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:?Set MINIO_ROOT_USER}
-  MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD}
+  MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:?Run scripts/tangerine start}
+  MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:?Run scripts/tangerine start}
   MINIO_BUCKET: tangerine-audio
   APP_ORIGIN: http://localhost:3000
   SPEECH_URL: http://speech:8090
+  API_INTERNAL_TOKEN: ${API_INTERNAL_TOKEN:?Run scripts/tangerine start}
+  SPEECH_INTERNAL_TOKEN: ${SPEECH_INTERNAL_TOKEN:?Run scripts/tangerine start}
+  DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+  OPENAI_API_KEY: ${OPENAI_API_KEY:-}
 
 x-api-image: &api-image
-  image: tangerine-api:0.1.0
+  image: ${COMPOSE_PROJECT_NAME:-tangerine}-api:local
   build:
     context: ../..
     dockerfile: services/api/Dockerfile
@@ -21,82 +25,51 @@ services:
     environment:
       POSTGRES_DB: tangerine
       POSTGRES_USER: tangerine
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run scripts/tangerine start}
+    volumes: [postgres-data:/var/lib/postgresql/data]
     healthcheck:
       test: [CMD-SHELL, 'pg_isready -U tangerine -d tangerine']
       interval: 5s
       timeout: 5s
       retries: 12
     networks: [private]
-
   minio:
-    image: tangerine-minio:7aac2a2c5b7c
-    build:
-      context: ../..
-      dockerfile: deploy/local/minio.Dockerfile
+    image: ${COMPOSE_PROJECT_NAME:-tangerine}-minio:local
+    build: {context: ../.., dockerfile: deploy/local/minio.Dockerfile}
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:?Set MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD}
-    volumes:
-      - minio-data:/data
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:?Run scripts/tangerine start}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?Run scripts/tangerine start}
+    volumes: [minio-data:/data]
     healthcheck:
       test: [CMD, /usr/local/bin/probe, 'http://127.0.0.1:9000/minio/health/ready']
       interval: 5s
       timeout: 6s
       retries: 12
     networks: [private]
-
-  migrate:
-    <<: *api-image
-    command: [migrate]
-    environment: *api-environment
-    depends_on:
-      postgres: {condition: service_healthy}
-    networks: [private]
-
-  media-init:
-    <<: *api-image
-    command: [media-init]
-    environment: *api-environment
-    depends_on:
-      minio: {condition: service_healthy}
-    networks: [private]
-
   initialize:
     <<: *api-image
     command: [initialize]
-    environment:
-      <<: *api-environment
-      INITIAL_EMAIL: ${INITIAL_EMAIL:?Set INITIAL_EMAIL}
-      INITIAL_PASSWORD: ${INITIAL_PASSWORD:?Set INITIAL_PASSWORD}
+    environment: *api-environment
     depends_on:
-      migrate: {condition: service_completed_successfully}
+      postgres: {condition: service_healthy}
+      minio: {condition: service_healthy}
     networks: [private]
-
   speech:
-    image: tangerine-speech:0.1.0
-    build:
-      context: ../..
-      dockerfile: services/speech/Dockerfile
+    image: ${COMPOSE_PROJECT_NAME:-tangerine}-speech:local
+    build: {context: ../.., dockerfile: services/speech/Dockerfile}
     environment:
-      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
-      AZURE_SPEECH_KEY: ${AZURE_SPEECH_KEY:-}
-      AZURE_SPEECH_REGION: ${AZURE_SPEECH_REGION:-}
+      SPEECH_INTERNAL_TOKEN: ${SPEECH_INTERNAL_TOKEN:?Run scripts/tangerine start}
     healthcheck:
-      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8090/health/ready',timeout=6)"]
+      test: [CMD, python, -c, "import os,urllib.request; r=urllib.request.Request('http://127.0.0.1:8090/health/ready',headers={'Authorization':'Bearer '+os.environ['SPEECH_INTERNAL_TOKEN']}); urllib.request.urlopen(r,timeout=6)"]
       interval: 5s
       timeout: 7s
       retries: 12
-    networks: [private, egress]
-
+    networks: [private]
   api:
     <<: *api-image
     environment: *api-environment
     depends_on:
       initialize: {condition: service_completed_successfully}
-      media-init: {condition: service_completed_successfully}
       speech: {condition: service_healthy}
     healthcheck:
       test: [CMD, /usr/local/bin/tangerine, healthcheck]
@@ -104,14 +77,12 @@ services:
       timeout: 7s
       retries: 12
     networks: [private, egress]
-
   web:
-    image: tangerine-web:0.1.0
-    build:
-      context: ../..
-      dockerfile: services/web/Dockerfile
+    image: ${COMPOSE_PROJECT_NAME:-tangerine}-web:local
+    build: {context: ../.., dockerfile: services/web/Dockerfile}
     environment:
       API_INTERNAL_URL: http://api:8080
+      API_INTERNAL_TOKEN: ${API_INTERNAL_TOKEN:?Run scripts/tangerine start}
       APP_ORIGIN: http://localhost:3000
     depends_on:
       api: {condition: service_healthy}
@@ -122,7 +93,6 @@ services:
       timeout: 8s
       retries: 12
     networks: [private, egress]
-
 networks:
   private: {internal: true}
   egress: {}

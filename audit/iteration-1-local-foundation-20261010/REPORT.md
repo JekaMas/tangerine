@@ -1,0 +1,21 @@
+# Iteration 1 local foundation
+
+Status: implementation candidate; committed clean-revision acceptance is pending.
+
+The launcher now builds the supplied real Next.js/Go/Python/MinIO sources with Docker, initializes PostgreSQL and private storage, creates one local workspace, and opens the Library without accounts. Provider keys and models are not startup prerequisites. Internal credentials are generated durably and retained on normal stop/restart. Old account/session rows are preserved as inert legacy data; the original migration remains checksum-identical.
+
+Selected closure: I1-01.P1 through I1-08.P1, 32 literal packets (16 positive,16 negative). These engineering decompositions trace RUN-01/02/03/04/05/06/07/08 and V6-LOCAL-01/02/03. Original broader fixtures still require their full feature owners; local foundation results do not establish generation, synthesis, grading, stored domain attempts, full backup/restore, Lab, imported corpus acceptance or cross-platform qualification.
+
+The stable dirty-checkout run passed all32 exact cases. It exercised an actual extracted source ZIP, real services, native SQL and S3 requests, host-loopback publication, safe public metadata, damaged/missing configuration, repeated initialization, checksum corruption, anonymous bucket policy, stopped dependencies, real failed Docker build, occupied port and actual browser DOM. The final test driver additionally retains an archive member/hash inventory and explicitly restricts launcher PATH to Docker and OS utilities. Host Python/Chrome are acceptance tools, not application prerequisites.
+
+The macOS Chrome dump emits its complete rendered DOM but can retain its display/event loop. The driver records the native DOM and explicit isolated-process termination; it does not claim a successful Chrome CLI exit. Missing/incomplete DOM fails the test. Browser rendering and credential non-exposure are independently asserted.
+
+Material repairs: private-only web networking was unreachable from the host despite internal health; web now has ordinary bridge connectivity while publishing only loopback3000. Ambient caller keys could override an empty installation .env; the launcher now unsets caller provider/infrastructure values before Compose interpolation. Readiness probes run independently so a failed storage probe cannot label a healthy speech service unavailable. Operational logs redact every generated credential, and failure exits are preserved.
+
+Failure evidence is retained. The first two acceptance runs overlapped at port3000 and were interrupted and invalidated; only their own test resources were removed. Run3 retained two failing expectations (ambient key inheritance and mistaking exposed-only container ports for host publication), plus a timed-out Chrome driver. Run4 passed after the owner/driver repairs. Earlier valid Go behavior/race results are retained; the changed redaction assertion was re-executed, and current vet/build passed.
+
+Workflow state: bootstrap initially rejected two previously modified generated inputs. Native desired-output preview proved all approved current outputs byte-identical. Exact installed versions of the two files were recovered from Git, then the approved desired profile was applied through the pinned native managed preview/apply path. No ownership hashes were hand-edited and no approved profile/rules were lost. Native status, package/routes/publication and shared mechanics are separately recorded.
+
+All122taxonomy/recipe identities,42formula and11full-source registry bytes remain unchanged, as does migration001. No inference, speech synthesis, model setup, purchase, publication or peer review occurred. This is local foundation acceptance only. The canonical checkout's unrelated GAPS.md change is untouched.
+
+Evidence is retained under openspec/changes/implement-teacher-error-trainer/evidence/iteration1. Constructed fixture/set records are design inputs; actual execution outcomes and their exact committed/source identities are owned by workflow receipts, not those design tags.

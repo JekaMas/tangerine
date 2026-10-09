@@ -6,8 +6,6 @@ import (
 	"embed"
 	"encoding/hex"
 	"errors"
-	"fmt"
-	"net/mail"
 	"strings"
 	"time"
 
@@ -103,6 +101,13 @@ func (s *Storage) InitMedia(ctx context.Context) error {
 }
 
 func (s *Storage) CheckPrivateMedia(ctx context.Context) error {
+	exists, err := s.Media.BucketExists(ctx, s.Bucket)
+	if err != nil {
+		return err
+	}
+	if !exists {
+		return errors.New("private media initialization incomplete")
+	}
 	policy, err := s.Media.GetBucketPolicy(ctx, s.Bucket)
 	if err != nil {
 		if minio.ToErrorResponse(err).Code == "NoSuchBucketPolicy" {
@@ -116,45 +121,22 @@ func (s *Storage) CheckPrivateMedia(ctx context.Context) error {
 	return nil
 }
 
-func (s *Storage) InitializeAccount(ctx context.Context, email, password string) error {
-	parsed, err := mail.ParseAddress(email)
-	if err != nil || parsed.Address != email || len(email) > 254 {
-		return errors.New("invalid INITIAL_EMAIL")
-	}
-	if len(password) < 16 || len(password) > 1024 {
-		return errors.New("INITIAL_PASSWORD must contain 16 to 1024 bytes")
-	}
-	// Existing credentials are never rotated by a restart or configuration change.
-	var exists bool
-	if err = s.DB.QueryRow(ctx, "SELECT EXISTS(SELECT 1 FROM accounts WHERE email=$1)", email).Scan(&exists); err != nil {
-		return err
-	}
-	if exists {
-		return nil
-	}
-	hash, err := HashPassword(password)
-	if err != nil {
-		return err
-	}
-	_, err = s.DB.Exec(ctx, "INSERT INTO accounts(email,password_hash) VALUES($1,$2) ON CONFLICT(email) DO NOTHING", email, hash)
-	return err
-}
+var ErrMigrationRequired = errors.New("database migration required")
 
 func (s *Storage) CheckDatabase(ctx context.Context) error {
-	var accounts, catalog, sessions bool
-	err := s.DB.QueryRow(ctx, "SELECT to_regclass('accounts') IS NOT NULL, to_regclass('exercise_catalog') IS NOT NULL, to_regclass('sessions') IS NOT NULL").Scan(&accounts, &catalog, &sessions)
-	if err != nil {
+	var workspace, catalog bool
+	if err := s.DB.QueryRow(ctx, "SELECT to_regclass('workspaces') IS NOT NULL, to_regclass('exercise_catalog') IS NOT NULL").Scan(&workspace, &catalog); err != nil {
 		return err
 	}
-	if !accounts || !catalog || !sessions {
-		return fmt.Errorf("database migration incomplete")
+	if !workspace || !catalog {
+		return ErrMigrationRequired
 	}
-	var n int
-	if err = s.DB.QueryRow(ctx, "SELECT count(*) FROM accounts").Scan(&n); err != nil {
+	var count int
+	if err := s.DB.QueryRow(ctx, "SELECT count(*) FROM workspaces WHERE singleton").Scan(&count); err != nil {
 		return err
 	}
-	if n == 0 {
-		return errors.New("local account initialization incomplete")
+	if count != 1 {
+		return ErrMigrationRequired
 	}
 	return nil
 }

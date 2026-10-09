@@ -368,3 +368,17 @@ Current resume: audit/build-contract-completeness-20261009/. Preserve unrelated 
 - [ ] Execute full acceptance through the future real application/provider/audio owners. Specification checks and IDE indexes do not establish application acceptance.
 
 Resume: audit/property-test-sets-20261010/REPORT.md owns current specification/test-set and requested IDE/Context handoff evidence. No product feature is deferred or removed.
+
+## 2026-10-10 iteration 1: local delivery and infrastructure
+
+Authorized implementation of the first engineering iteration. The full product and the remaining fifteen iterations stay required. Isolated checkout: _worktrees/tangerine_iteration1_20261010, branch tangerine/iteration-1-local-delivery; start 0cabfda. The canonical checkout's unrelated GAPS.md edit is preserved.
+
+- [x] Trace real startup/configuration/initialization/proxy/Library/readiness/restart owners; select bounded I1-01 through I1-08 decompositions and their 32 exact positive/negative packets. Original broader properties retain their complete obligations and do not inherit these bounded receipts.
+- [x] Materialize the packets as executable independent-oracle native tests: extracted complete source ZIP without Git/workflow/host language tools on launcher PATH; real Compose/Next/Go/Python/PostgreSQL/MinIO and Chrome; exact SQL/S3/HTTP/exit observations.
+- [x] Implement the launcher, durable automatic internal credentials, checksum-preserving singleton workspace migration, private storage initialization, no-login Library/proxy and actual dependency health. Preserve legacy rows and original migration bytes; do not call providers or download models on startup.
+- [x] Observe and repair the full 16-positive/16-negative iteration selection, retaining failures and invalidated-input explanations.
+- [x] Complete affected Go behavior/race/vet, actual web/image builds, strict OpenSpec, graph/discovery and original-scope/fixture-set checks; retain equivalent custom workflow-pin provenance separately from application evidence.
+- [ ] Commit the implementation candidate, run the full iteration selection against that committed clean revision with --require-clean, and reconcile every required receipt.
+- [ ] Commit the final canonical task/evidence record and read back Git state. No full trainer, AI inference/Lab, synthesis, backup/restore or architecture qualification claim follows from iteration1.
+
+Resume: audit/iteration-1-local-foundation-20261010/PLAN.md, CASES.json and REPORT.md own this iteration's scope, literal expectations, producer/consumer lineage, actual observations and invalidations. INVALIDATED.json retains superseded historical case rows rather than reusing old acceptance for changed owners.

@@ -1,0 +1,46 @@
+[
+  {
+    "id": "backup",
+    "runner": "python-unittest",
+    "argv": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_backup.py",
+      "-v"
+    ],
+    "cwd": ".",
+    "env": {
+      "TANGERINE_BACKUP_UNDER_TEST": "data/backups/foundation-20261008"
+    },
+    "timeout_seconds": 60,
+    "authority": "local"
+  },
+  {
+    "id": "readiness-failure",
+    "runner": "python-unittest",
+    "argv": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_readiness_failure.py",
+      "-v"
+    ],
+    "cwd": ".",
+    "env": {
+      "TANGERINE_ALLOW_DEPENDENCY_STOP": "1"
+    },
+    "timeout_seconds": 180,
+    "authority": "local"
+  }
+]

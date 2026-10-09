@@ -1,6 +1,8 @@
 """Internal speech runtime foundation. No fabricated synthesis endpoint."""
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
+import os
+import hmac
 import shutil
 import subprocess
 
@@ -19,6 +21,9 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == "/health/live":
             status, body = 200, {"status": "alive"}
         elif self.path == "/health/ready":
+            if not os.environ.get("SPEECH_INTERNAL_TOKEN") or not hmac.compare_digest(self.headers.get("Authorization", ""), "Bearer " + os.environ["SPEECH_INTERNAL_TOKEN"]):
+                self.send_error(403)
+                return
             ready = binary_available("ffmpeg") and binary_available("ffprobe")
             status, body = (200 if ready else 503), {"status": "ready" if ready else "unavailable"}
         else:

@@ -41,3 +41,36 @@ Current service/data research (2026-10-09): specification/v2/docs/provider-acces
 Current on-demand clarification: the LLM generates both clean text and mutations for each explicit new user request. Audio follows, then the answer and LLM comparison with same-version originals/mutations, findings/misses/comments and native exact scores. No seed bank or pregenerated exercise corpus is needed or created automatically; all optional source/import/benchmark scopes remain. See specs/on-demand-generation/spec.md and specification/v2/docs/simple-generation-flow.md.
 
 Current full build-contract reconciliation: specification/v2/docs/full-build-contract.md defines native acoustic production, typed LLM edit/context delivery, resumable complete render pieces, lossless source-binding interpreter and explicit auditory model transport through existing owners. No additional service/public API, mandatory review or reduced product scope. Original nine stage prompts remain; the auditory diagnostic is a separate versioned method binding. Prior remaining-gap audit lists are historical; this active contract and current audit own status.
+
+## Iteration 1 implementation alignment (2026-10-10)
+
+The local foundation uses one singleton workspace, no application account/session,
+and the existing complete Next.js/Go/PostgreSQL/private MinIO/Python owners. The
+POSIX launcher builds source images with Docker, validates root operator `.env`,
+and uses the Go CLI's cryptographic random source to create durable internal
+credentials exclusively and atomically. A later start reads the same file; damaged
+or missing credentials for existing volumes require restoration, not rotation.
+Ambient caller provider/database variables do not override installation settings.
+
+The original foundation migration remains checksum-identical. An additive migration
+preserves historical account/session rows under inert legacy table names and adds
+a singleton workspace and nullable public catalogue metadata. Incomplete historical
+catalogue rows remain stored and are not invented into playable public entries.
+The Library's exact public projection excludes transcript, key and source-revision
+fields. Database failures return unavailable rather than an invented empty success.
+
+Only web is published on loopback port3000. The web container has private and
+ordinary bridge connectivity for actual host publication; backend ports remain
+unpublished. Browser requests carry no application login/cookie. A server-only
+internal credential connects Next's proxy to the private API, and independent
+parallel readiness checks distinguish database/private media/speech failures from
+API liveness. Missing provider keys do not block Library/startup readiness. The
+speech foundation checks actual FFmpeg/ffprobe; no model/synthesis readiness is
+claimed until its implementation iteration.
+
+I1-01 through I1-08 are executable engineering decompositions of the original
+local delivery properties, not replacements for their complete-product fixtures.
+Their32packets own extracted-source build/start/restart and positive/negative
+native observations. Original full backup/restore, stored attempts, model setup,
+LLM flow, synthesis and Lab obligations remain unchanged. Historical receipts for
+changed owners are explicitly invalidated and retained in the iteration audit.

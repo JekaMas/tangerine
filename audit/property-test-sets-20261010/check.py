@@ -62,14 +62,15 @@ for rel in ['domain/error-taxonomy.v1.yaml','domain/mutation-recipes.v1.json','d
 old=json.loads(subprocess.check_output(['git','show','b0cbe97:openspec/changes/implement-teacher-error-trainer/verification.json'],cwd=R));new={x['id']:x for x in g['cases']}
 for c in old['cases']:
  if c['state']=='implemented':
-  ck('retained.historical.scope.'+c['id'],new[c['id']]==c)
+  invalidations={x['case_id']:x for x in load(R/'audit/iteration-1-local-foundation-20261010/INVALIDATED.json')}
+  ck('retained.or.explicitly.invalidated.historical.scope.'+c['id'],new[c['id']]==c or (c['id'] in invalidations and invalidations[c['id']]['previous']==c and new[c['id']]['state']=='blocked'))
 # Every leaf's textual recipe still replays the exact independently saved surface string.
 recipes=load(V/'domain/mutation-recipes.v1.json')['recipes']
 for r in recipes:
  edit=r['codepoint_edit']
  if edit:
   text=r['canonical_example'];start=edit['start_cp'];end=edit['end_cp'];ck(r['taxonomy_id']+'.exact.slice',text[start:end]==edit['exact_text']);ck(r['taxonomy_id']+'.exact.replay',text[:start]+edit['replacement']+text[end:]==r['surface_example'])
-ck('all122.recipe.identities',len(recipes)==122);ck('all422.property.sets',len(s['properties'])==422)
+ck('all122.recipe.identities',len(recipes)==122);ck('all430.property.sets',len(s['properties'])==430)
 for pol in ['POSITIVE','NEGATIVE']:
  b=next(x for x in f['case_bindings'] if x['case_id']=='V6-SES-01.P1.S2.'+pol);ck('named.empty.answer.'+pol,b['input']['answer']=='' and b['expected']['TP']==0 and b['expected']['primary']=='0/1')
 ck('no.unregistered.old.secondary.leaf','grammar.verbs.verb_form' not in json.dumps(f))

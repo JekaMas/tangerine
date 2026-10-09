@@ -23,11 +23,4 @@ func TestStorageConfigurationNegative(t *testing.T) {
 			t.Fatal("missing or malformed storage configuration accepted")
 		}
 	}
-	// Invalid input must fail before storage access. Nil never simulates success.
-	var store *Storage
-	for _, input := range [][2]string{{"invalid-address", "long-local-password"}, {"owner@localhost", "short"}} {
-		if err := store.InitializeAccount(context.Background(), input[0], input[1]); err == nil {
-			t.Fatal("invalid initial account accepted")
-		}
-	}
 }

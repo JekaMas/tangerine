@@ -1,63 +1,40 @@
 # Tangerine
 
-Teacher Error Trainer, started from nine initial files and the recovered complete 95-file v6-ste specification archive. Work and code are in English. The real local runtime foundation is implemented; full language scoring, preparation/LLM review workflows, provider integration and validated content are still incomplete. Read audit/completeness.md before treating this as a complete trainer.
+A local, open-source Teacher Error Trainer. Original software is licensed under [Apache-2.0](LICENSE); imported data and third-party components retain their own terms. All project artifacts are in English.
 
-## Current specification
+## Run locally
 
-The active full specification is [specification/v2](specification/v2/README.md). [Current acquisition and reconciliation](audit/corpus-acquisition-20261009/REPORT.md) and [remaining inputs](audit/corpus-acquisition-20261009/REMAINING-INPUTS.md) supersede earlier audits. All122taxonomy IDs/examples,27core/15aux equations and11full-source entries remain. LLMs check answers, review cases and adjudicate disputes; there are no human peer reviewers or qualification prerequisites. Eight stages remain configurable. Current subscription-only starter selection is eligible existing ChatGPT Pro sign-in plus local Kokoro; DeepSeek fast remains the recorded earlier testing preference, without assuming its API is covered by a subscription.
-
-Tangerine original software is licensed under [Apache-2.0](LICENSE), selected by the actual user. Imported corpora, publications, workflow dependencies and third-party components retain their own terms.
-
-The target is a simple local GitHub source ZIP/clone: supply required operation keys, run the helper and open localhost. No accounts, complex public API setup, mandatory repeat audit or whole-corpus certification is required. Complete source imports and all benchmark features remain supported and report actual missing data independently of ordinary use.
-
-The current authorized increment updates specifications, sends source access requests and downloads accessible complete native data. Actual receipts and source limitations are in the current acquisition report; restricted originals and missing linked media remain explicit. The existing foundation below still has historical login/manual setup and does not implement the revised launcher or complete trainer. No provider inference, application implementation or runtime acceptance occurred in this increment.
-
-## Start the historical local foundation
-
-Docker Desktop must be running. Local development secrets were generated in deploy/local/.env for this checkout; the file is ignored and secret values are never printed in evidence. The owner email is owner@localhost. Read INITIAL_PASSWORD locally from that file to sign in.
-
-For a fresh checkout:
+Download and extract the complete GitHub source ZIP, or clone this repository. Install and start Docker Desktop, or Docker Engine with Docker Compose v2.20 or newer. No host Go, Node, Python, Git or workflow submodule is required to run the downloaded application.
 
 ```sh
-git submodule update --init --recursive
-cp deploy/local/.env.example deploy/local/.env
-# Fill database/media/account secrets and the matching URL-encoded DATABASE_URL.
-# Add provider keys only when implementing/using the dependent live operations.
-docker compose --env-file deploy/local/.env -f deploy/local/compose.yaml up --build --wait
+sh scripts/tangerine start
 ```
 
-Open http://localhost:3000. No other container port is published. After authentication the library reads PostgreSQL and shows no published exercises until authentic reviewed content is available. No demo content or fake scoring is seeded.
+Open **http://localhost:3000**. There is no application login. First startup builds the supplied Next.js, Go, Python/FFmpeg and MinIO sources, starts PostgreSQL and private media storage, applies checksum-verified migrations and creates one workspace automatically. An empty Library means no exercises have been saved; startup does not seed demonstration content or download models.
 
-The web container receives only internal API routing and origin configuration. Provider keys stay server-side. The Python speech container has actual FFmpeg/ffprobe; provider operations are not yet implemented. MinIO is built from pinned official source because the community distribution is source-only. Base image digests and actual build records are documented in deploy/local/images.lock.json.
-
-## Checks and evidence
-
-Read docs/development/AGENT_CHECKS.md and openspec/changes/implement-teacher-error-trainer/evidence/RESULTS.md. The single canonical task list is that change's tasks.md. OpenSpec/graph structure is not full product acceptance. Arithmetic tests validate all 27 preserved core formulas, not language judgments or complete scoring counter construction.
-
-## Backup and isolated restore
-
-Backups contain private account/session data; keep them in ignored data/backups. Runtime secrets are excluded and must be preserved separately. Backup creation stops application writers and resumes them after the dump/media archive. Never use down --volumes as routine cleanup.
+First startup needs network access to the pinned build dependencies and enough disk space for the images. Runtime has only port 3000 published, bound to loopback. Internal database, media and API credentials are generated automatically in `data/config/runtime.env`, with private file permissions; they are retained across restarts. Keep this file with the installation's data. Do not delete it while retaining its Docker volumes, and do not use `docker compose down --volumes` for ordinary shutdown.
 
 ```sh
-python3 -B scripts/backup.py data/backups/<unique-name>
-python3 -B scripts/verify_backup.py data/backups/<unique-name>
-python3 -B scripts/restore_isolated.py data/backups/<unique-name> --project tangerine-restore-<unique-name>
+sh scripts/tangerine status
+sh scripts/tangerine logs
+sh scripts/tangerine stop
+sh scripts/tangerine start
 ```
 
-Restore refuses any project that already owns resources and creates separate PostgreSQL/MinIO volumes. It never overwrites the running project. Full promotion/replacement of an existing installation requires an explicit operational plan; the script is an isolated recovery check.
+`stop` retains the database, private media and configuration. `logs` redacts known secret values. Startup errors identify missing Docker/Compose, unavailable Docker, incomplete source, damaged configuration, failed builds or failed service startup. For `START_FAILED`, check whether port 3000 is occupied and inspect `logs`. Fix the reported cause and retry; the launcher does not delete your data.
 
-## Current verification limits
+`.env` is created from [.env.example](.env.example). Provider keys are optional during startup and stay out of browser assets and build layers. Use plain `KEY=value` entries from the template. Provider sign-in, included-only usage controls and supported operation choices are specified in [service setup](specification/v2/docs/service-setup-guide.md) and [provider access](specification/v2/docs/provider-access.md); those operations are implemented in later iterations.
 
-The application was observed healthy at localhost:3000, while Docker management operations later timed out or returned HTTP 500. Fresh restart/architecture checks remain failed, and the source/image reconciliation after the speech arithmetic fix is pending. Full AMD64 runtime acceptance has not run. Exact results and preserved failures are in the canonical acceptance record.
+## Current implementation
 
-## Historical v6 recovery and dependency snapshot
+Iteration 1 implements the download/build/start/stop/status/logs foundation, automatic durable configuration, real dependency health and no-login empty Library. Database-backed public Library projections are implemented without exposing transcripts or answer keys. Speech readiness checks the actual FFmpeg/ffprobe binaries; it does not claim synthesis capability.
 
-The original taxonomy, 15 schemas, five prompts, policy/reference documents and 48 original requirements are recovered. Read [the completeness review](audit/completeness.md), [complete source research](audit/corpus-release-research.md), [all-source inventory](audit/full-source-inventory.json) and [configurable LLM contract](docs/llm-configuration.md). The plan covers all 122 categories/control leaves and full versions/components of all eight listed sources. No corpus was acquired or review fabricated.
+The full product remains the on-demand flow: requested LLM clean text → LLM mutations and saved answer key → generated stored audio → listener's free-text response → LLM answer checking, exact scores and recommendations. Generation, synthesis, grading, persistence of those domain records, LLM Lab, imports and full backup/restore are subsequent engineering iterations, not working controls in this foundation. No provider inference or generated-audio acceptance is claimed here.
 
-The latest increment is specification-only. DeepSeek 4.1 fast is planned through model deepseek-flash, low reasoning and the existing server secret reference; no Codex setting or service code was changed and no inference call was made. Supplied policy proposals are approved subject to current LLM-only simplification. Actual private data/documentation, real provider observations and future implementation remain outstanding; current owner choices are in the linked audit. The current application is still the incomplete local foundation.
+## Specification and evidence
 
-Service/setup research and exact empirical-data needs are in [provider access](specification/v2/docs/provider-access.md), [speech selection](specification/v2/docs/speech-service-selection.md) and [data needs](specification/v2/docs/empirical-data-needs.md). These are specification plans; no provider inference or audio generation has been executed.
+The active [full specification](specification/v2/README.md) preserves all 122 taxonomy/recipe identities, 42 scoring formulas and 11 original full-source scopes. External corpora remain optional for ordinary generated exercises. There are no human peer-review prerequisites.
 
-Primary exercise flow is on demand: user request -> LLM clean text -> LLM-generated mutations -> generated/stored audio -> user answer -> LLM comparison against the original text and mutation key, comments and scoring. No exercise corpus is pregenerated or required. Stored replay and explicitly selected optional data/evaluation features remain available.
+The canonical implementation task list is [OpenSpec tasks](openspec/changes/implement-teacher-error-trainer/tasks.md). [Iteration 1 evidence](audit/iteration-1-local-foundation-20261010/REPORT.md) separates actual native observations from later full-product obligations. Structural OpenSpec/DAG checks are not runtime acceptance. Development follows the pinned [workflow](docs/development/OPENSPEC_WORKFLOW.md).
 
-The [service setup guide](specification/v2/docs/service-setup-guide.md) explains which service handles each exercise step, required accounts/keys, local storage components, optional speech/diagnostic services and the recommended starter sequence. It describes the specified product; its revised launcher/provider flow remains unimplemented.
+Historical login/manual-setup instructions and backup scripts predate the current local-workspace contracts. They are retained in Git history and audit records; current deployment uses the helper above. Backup/restore implementation and complete architecture qualification remain visible in the full task list.

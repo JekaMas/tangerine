@@ -2,27 +2,29 @@ package app
 
 import (
 	"context"
+	"crypto/subtle"
 	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
+	"os"
 	"time"
-
-	"github.com/jackc/pgx/v5"
 )
 
 const OverallDeadline = 270 * time.Second
-const SessionCookie = "tangerine_session"
+const ReleaseID = "0.1.0-foundation"
 
 type Server struct {
-	Store     *Storage
-	Origin    string
-	SpeechURL string
-	client    *http.Client
+	Store       *Storage
+	Origin      string
+	SpeechURL   string
+	client      *http.Client
+	token       string
+	speechToken string
 }
 
 func NewServer(store *Storage, origin, speechURL string) *Server {
-	return &Server{Store: store, Origin: origin, SpeechURL: speechURL, client: &http.Client{Timeout: 5 * time.Second}}
+	return &Server{Store: store, Origin: origin, SpeechURL: speechURL, client: &http.Client{Timeout: 5 * time.Second}, token: os.Getenv("API_INTERNAL_TOKEN"), speechToken: os.Getenv("SPEECH_INTERNAL_TOKEN")}
 }
 
 func writeJSON(w http.ResponseWriter, status int, value any) {
@@ -32,17 +34,17 @@ func writeJSON(w http.ResponseWriter, status int, value any) {
 	_ = json.NewEncoder(w).Encode(value)
 }
 
+// Decode a single bounded transport object; harmless additive fields are ignored.
 func DecodeJSON(w http.ResponseWriter, r *http.Request, dst any) error {
 	if r.Header.Get("Content-Type") != "application/json" {
 		return errors.New("JSON content type required")
 	}
 	r.Body = http.MaxBytesReader(w, r.Body, 16*1024)
-	decoder := json.NewDecoder(r.Body)
-	decoder.DisallowUnknownFields()
-	if err := decoder.Decode(dst); err != nil {
+	d := json.NewDecoder(r.Body)
+	if err := d.Decode(dst); err != nil {
 		return errors.New("invalid request")
 	}
-	if err := decoder.Decode(new(any)); err != io.EOF {
+	if err := d.Decode(new(any)); err != io.EOF {
 		return errors.New("single JSON object required")
 	}
 	return nil
@@ -52,17 +54,17 @@ func (s *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /health/live", func(w http.ResponseWriter, r *http.Request) { writeJSON(w, 200, map[string]string{"status": "alive"}) })
 	mux.HandleFunc("GET /health/ready", s.ready)
-	mux.HandleFunc("POST /api/auth/login", s.login)
-	mux.HandleFunc("POST /api/auth/logout", s.logout)
-	mux.HandleFunc("GET /api/auth/session", s.session)
-	mux.HandleFunc("GET /api/exercises", s.exercises)
+	mux.HandleFunc("GET /api/v1/health", s.ready)
+	mux.HandleFunc("GET /api/v1/library", s.library)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
-		if r.Method != "GET" && r.Method != "HEAD" {
-			if r.Header.Get("Origin") != s.Origin || r.Header.Get("Sec-Fetch-Site") == "cross-site" {
-				writeJSON(w, 403, map[string]string{"error": "origin_denied"})
-				return
-			}
+		if r.Method != "GET" && r.Method != "HEAD" && (r.Header.Get("Origin") != s.Origin || r.Header.Get("Sec-Fetch-Site") == "cross-site") {
+			writeJSON(w, 403, map[string]string{"error": "origin_denied"})
+			return
+		}
+		if r.URL.Path != "/health/live" && (s.token == "" || subtle.ConstantTimeCompare([]byte(r.Header.Get("Authorization")), []byte("Bearer "+s.token)) != 1) {
+			writeJSON(w, 403, map[string]string{"error": "internal_access_required"})
+			return
 		}
 		ctx, cancel := context.WithTimeout(r.Context(), OverallDeadline)
 		defer cancel()
@@ -73,138 +75,87 @@ func (s *Server) Handler() http.Handler {
 func (s *Server) ready(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
-	if s.Store.CheckDatabase(ctx) != nil || s.Store.CheckPrivateMedia(ctx) != nil {
-		writeJSON(w, 503, map[string]string{"status": "unavailable"})
-		return
+	h := map[string]string{"status": "ok", "database": "ready", "storage": "ready", "speech": "ready", "provider_configuration": "missing_credentials", "release_id": ReleaseID}
+	if os.Getenv("DEEPSEEK_API_KEY") != "" || os.Getenv("OPENAI_API_KEY") != "" {
+		h["provider_configuration"] = "ready"
 	}
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, s.SpeechURL+"/health/ready", nil)
-	if err != nil {
-		writeJSON(w, 503, map[string]string{"status": "unavailable"})
-		return
+	type dependencyResult struct {
+		name   string
+		status string
 	}
-	res, err := s.client.Do(req)
-	if err != nil {
-		writeJSON(w, 503, map[string]string{"status": "unavailable"})
-		return
+	results := make(chan dependencyResult, 3)
+	go func() {
+		status := "ready"
+		if err := s.Store.CheckDatabase(ctx); err != nil {
+			status = "unavailable"
+			if errors.Is(err, ErrMigrationRequired) {
+				status = "migration_required"
+			}
+		}
+		results <- dependencyResult{"database", status}
+	}()
+	go func() {
+		status := "ready"
+		if s.Store.CheckPrivateMedia(ctx) != nil {
+			status = "unavailable"
+		}
+		results <- dependencyResult{"storage", status}
+	}()
+	go func() {
+		status := "unavailable"
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, s.SpeechURL+"/health/ready", nil)
+		if err == nil {
+			req.Header.Set("Authorization", "Bearer "+s.speechToken)
+			if res, e := s.client.Do(req); e == nil {
+				res.Body.Close()
+				if res.StatusCode == 200 {
+					status = "ready"
+				}
+			}
+		}
+		results <- dependencyResult{"speech", status}
+	}()
+	for range 3 {
+		result := <-results
+		h[result.name] = result.status
 	}
-	defer res.Body.Close()
-	if res.StatusCode != 200 {
-		writeJSON(w, 503, map[string]string{"status": "unavailable"})
-		return
+	code := 200
+	if h["database"] != "ready" || h["storage"] != "ready" || h["speech"] != "ready" {
+		code = 503
+		h["status"] = "not_ready"
 	}
-	writeJSON(w, 200, map[string]string{"status": "ready"})
+	writeJSON(w, code, h)
 }
 
-func (s *Server) login(w http.ResponseWriter, r *http.Request) {
-	var input struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
-	if DecodeJSON(w, r, &input) != nil || len(input.Email) > 254 || len(input.Password) > 1024 {
-		writeJSON(w, 400, map[string]string{"error": "invalid_request"})
-		return
-	}
-	var id, hash string
-	err := s.Store.DB.QueryRow(r.Context(), "SELECT id::text,password_hash FROM accounts WHERE email=$1", input.Email).Scan(&id, &hash)
-	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
-		writeJSON(w, 503, map[string]string{"error": "storage_unavailable"})
-		return
-	}
-	if errors.Is(err, pgx.ErrNoRows) {
-		// Equal-cost derivation on account miss, without a fake account row.
-		_, _ = HashPassword("unavailable-account-password")
-		writeJSON(w, 401, map[string]string{"error": "invalid_credentials"})
-		return
-	}
-	if !VerifyPassword(hash, input.Password) {
-		writeJSON(w, 401, map[string]string{"error": "invalid_credentials"})
-		return
-	}
-	token, tokenHash, err := NewSessionToken()
-	if err != nil {
-		writeJSON(w, 503, map[string]string{"error": "session_unavailable"})
-		return
-	}
-	_, err = s.Store.DB.Exec(r.Context(), "INSERT INTO sessions(token_hash,account_id,expires_at) VALUES($1,$2,now()+interval '12 hours')", tokenHash, id)
-	if err != nil {
-		writeJSON(w, 503, map[string]string{"error": "storage_unavailable"})
-		return
-	}
-	http.SetCookie(w, &http.Cookie{Name: SessionCookie, Value: token, Path: "/", HttpOnly: true, SameSite: http.SameSiteStrictMode, MaxAge: 12 * 3600})
-	writeJSON(w, 200, map[string]string{"status": "authenticated"})
+type LibraryItem struct {
+	ID            string `json:"id"`
+	Title         string `json:"title"`
+	PublicContext string `json:"public_context"`
+	DurationMS    int    `json:"duration_ms"`
+	Format        string `json:"format"`
+	Difficulty    string `json:"difficulty"`
+	Availability  string `json:"availability"`
 }
 
-func (s *Server) account(r *http.Request) (string, error) {
-	c, err := r.Cookie(SessionCookie)
-	if err != nil || !ValidSessionToken(c.Value) {
-		return "", pgx.ErrNoRows
-	}
-	var email string
-	err = s.Store.DB.QueryRow(r.Context(), "SELECT a.email FROM accounts a JOIN sessions s ON a.id=s.account_id WHERE s.token_hash=$1 AND s.expires_at>now()", TokenHash(c.Value)).Scan(&email)
-	return email, err
-}
-
-func (s *Server) requireAccount(w http.ResponseWriter, r *http.Request) (string, bool) {
-	email, err := s.account(r)
-	if errors.Is(err, pgx.ErrNoRows) {
-		writeJSON(w, 401, map[string]string{"error": "authentication_required"})
-		return "", false
-	}
-	if err != nil {
-		writeJSON(w, 503, map[string]string{"error": "storage_unavailable"})
-		return "", false
-	}
-	return email, true
-}
-
-func (s *Server) session(w http.ResponseWriter, r *http.Request) {
-	email, ok := s.requireAccount(w, r)
-	if !ok {
-		return
-	}
-	writeJSON(w, 200, map[string]string{"email": email})
-}
-
-func (s *Server) logout(w http.ResponseWriter, r *http.Request) {
-	if _, ok := s.requireAccount(w, r); !ok {
-		return
-	}
-	c, _ := r.Cookie(SessionCookie)
-	if _, err := s.Store.DB.Exec(r.Context(), "DELETE FROM sessions WHERE token_hash=$1", TokenHash(c.Value)); err != nil {
-		writeJSON(w, 503, map[string]string{"error": "storage_unavailable"})
-		return
-	}
-	http.SetCookie(w, &http.Cookie{Name: SessionCookie, Value: "", Path: "/", HttpOnly: true, SameSite: http.SameSiteStrictMode, MaxAge: -1})
-	writeJSON(w, 200, map[string]string{"status": "signed_out"})
-}
-
-func (s *Server) exercises(w http.ResponseWriter, r *http.Request) {
-	if _, ok := s.requireAccount(w, r); !ok {
-		return
-	}
-	rows, err := s.Store.DB.Query(r.Context(), "SELECT id::text,title,published_at FROM exercise_catalog ORDER BY published_at DESC,id LIMIT 100")
+func (s *Server) library(w http.ResponseWriter, r *http.Request) {
+	rows, err := s.Store.DB.Query(r.Context(), `SELECT id::text,title,public_context,duration_ms,format,difficulty,availability FROM exercise_catalog WHERE public_context IS NOT NULL AND duration_ms IS NOT NULL AND format IS NOT NULL AND difficulty IS NOT NULL AND availability IN ('published','retired','quarantined','rights_restricted') ORDER BY published_at DESC,id`)
 	if err != nil {
 		writeJSON(w, 503, map[string]string{"error": "storage_unavailable"})
 		return
 	}
 	defer rows.Close()
-	type summary struct {
-		ID          string    `json:"id"`
-		Title       string    `json:"title"`
-		PublishedAt time.Time `json:"published_at"`
-	}
-	items := make([]summary, 0)
+	items := make([]LibraryItem, 0)
 	for rows.Next() {
-		var item summary
-		if rows.Scan(&item.ID, &item.Title, &item.PublishedAt) != nil {
+		var x LibraryItem
+		if rows.Scan(&x.ID, &x.Title, &x.PublicContext, &x.DurationMS, &x.Format, &x.Difficulty, &x.Availability) != nil {
 			writeJSON(w, 503, map[string]string{"error": "storage_unavailable"})
 			return
 		}
-		items = append(items, item)
+		items = append(items, x)
 	}
 	if rows.Err() != nil {
 		writeJSON(w, 503, map[string]string{"error": "storage_unavailable"})
 		return
 	}
-	writeJSON(w, 200, map[string]any{"exercises": items})
+	writeJSON(w, 200, items)
 }
