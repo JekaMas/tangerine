@@ -277,6 +277,19 @@ Current resume: specification/v2/docs/product-data-relevance.md and domain/produ
 
 - [x] Trace written user scenarios, data purposes, LLM controls/development and native scoring across the active specification; record ten proposed repair groups without applying them to active behavior contracts.
 - [x] Record 38concrete scenario pairs and eight written arithmetic oracle packets, with all 392 properties/1,568 existing case identities reconciled in discovery; no new passing behavior evidence.
-- [ ] Resolve EXP-001 through EXP-010 in the active specification before implementation, using the exact proposed repairs and positive/negative examples; preserve all 122 categories/recipes,42 formulas,11 full-source scopes and optional features. These are engineering specification repairs, not pending product approvals.
+- [x] Apply EXP-001 and EXP-005 through EXP-009 in the active specification with the user-approved independent correction/optional-explanation policy; preserve all 122 categories/recipes,42 formulas,11 full-source scopes and optional features. Remaining engineering specification repairs are listed below.
 
 Current resume: audit/pre-implementation-explore-20261009/REPORT.md, FINDINGS.md, SCENARIOS.md, DATA-WIRING.md and LLM-AND-SCORING.md own this exploration. Runtime implementation availability is excluded from its acceptance criteria. No application code, active specification contract, dependency/tool setup, inference, audio generation, source acquisition, publication or secret was changed. Preserve the unrelated audit/spec-fullness-20261008/GAPS.md edit. The existing change remains unfinished.
+
+## 2026-10-09 independent correction and optional explanation (specification only)
+
+- [x] Separate correction and optional explanation extraction/semantic assertions/credit/feedback; assess every supplied reason even when the legacy invitation flag is false.
+- [x] Specify answer-components-v2 primary selection, standalone explanation score, component-scoped unknowns/issues and frozen history/Lab populations without new mandatory calls or human review.
+- [x] Reconcile typed mutation provenance, source notice effects, unlimited explicit manual recovery, one linguistic output repair and LLM-key-only local speech setup.
+- [x] Add concrete literal fixtures, arithmetic/state expectations and rejected counterexamples for nine requirements / eighteen scenarios / thirty-six unexecuted positive/negative edges; reconcile only affected metadata/graph identities.
+- [ ] EXP-002: define complete typed automatic key/rubric repair and version correspondence on the existing LLM operation; optional rationale-only repair preserves supported primary grade.
+- [ ] EXP-003: define durable preparation checkpoint association/readback and exact resume selection using existing storage/foreground operations.
+- [ ] EXP-004: define generated decisive-context projection into audible text or neutral public pre-answer context, with component-scoped support rules.
+- [ ] EXP-010: replace older generic affected property plans with concrete fixtures and independent expected states/artifacts/arithmetic; new plans are not executed evidence.
+
+Current resume: audit/component-scoring-20261009/REPORT.md and REMAINING-GAPS.md own this increment. No new product decision is pending. This is a written specification update, not implemented/observed application, model, audio or Lab behavior. Preserve the unrelated audit/spec-fullness-20261008/GAPS.md edit. Existing observed greens retain their proof boundaries; only changed specification/schema/graph inputs invalidate the corresponding static checks.

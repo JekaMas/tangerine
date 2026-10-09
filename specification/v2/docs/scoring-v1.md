@@ -91,7 +91,7 @@ A correction-eligible unit requires at least one required proposition in each sc
 The LLM accepts a valid novel alternative that satisfies the existing required propositions and violates none of the forbidden propositions. A genuine rubric defect invokes LLM adjudication and a new key version, without human peer review.
 A worded pronunciation repair can satisfy the propositions. The teacher does not need to type IPA.
 
-Use the same rule for explanation credit. A category name alone is not an explanation.
+Use the same per-component rule for optional explanation credit; a false explanation cannot change correction credit. A category name alone is not an explanation.
 Every substantive explanation assertion requires a decision. A true clause does not cancel an additional false explanation.
 The scorer must not count model-written corrections as teacher-written corrections.
 
@@ -99,12 +99,12 @@ The scorer must not count model-written corrections as teacher-written correctio
 
 Group exact duplicate stance, target, repair, and rationale before scoring.
 A duplicate earns no extra TP and receives no extra FP. Keep its source span for inspection.
-Compatible fragments can form one response to a unit. Do not select the best of contradictory repairs.
+Compatible fragments can form one response to a unit. Do not select the best of contradictory correction alternatives; reason-only disagreement stays in optional explanation.
 An explicit retraction permits the final endorsed statement to determine the result.
-Without a retraction, conflicting statements require review.
+Without a retraction, conflicting statements require reconsideration of their actual component. Explanation-only conflict is nonblocking for supported primary metrics.
 
 An unlocated general assertion receives `insufficient_localization`.
-Do not map it to all errors. If unresolved interpretation can change a score, withhold the final aggregate score.
+Do not map it to all errors. If unresolved interpretation can change the primary grade, withhold that primary composite. Unresolved optional explanation affects only its own dependent metrics.
 The result can show confirmed item evidence and the pending issue. Do not label pending items as confirmed misses or false assertions.
 
 ## Ratios and unavailable values
@@ -118,30 +118,11 @@ Detection F1 uses `2*TP/(2*TP+FP+FN)`.
 An empty answer with real errors has F1 zero. Its precision is unavailable because no error assertion exists.
 A clean exercise with no false assertions has unavailable detection F1. Describe its control judgments separately.
 
-## Composite score
+## Composite score and optional explanation
 
-The existing component weights are:
+New attempts use scoring_policy_version=answer-components-v2 as defined in answer-component-scoring.md. Primary components are selected detection45, classification15 and correction30, using original F1/hierarchical_recall/graded_recall and100*sum(weight_i*metric_i)/sum(weight_i). Freeze policy and selection before answering. Missing selected primary work is zero; lack of structural opportunities is N/A. Only unresolved primary meaning makes the primary composite unavailable.
 
-| Component | Input | Weight |
-|---|---|---|
-| Detection | `detection.f1` | 45 |
-| Classification | `classification.hierarchical_recall` | 15 |
-| Correction | `correction.graded_recall` | 30 |
-| Explanation | `explanation.graded_recall` | 10 |
-
-```text
-score = 100*sum(weight_i*metric_i)/sum(weight_i)
-```
-
-Use enabled components with structurally available opportunities. Freeze enabled components before answer entry.
-Omitted requested work gives zero. It must not become N/A and remove its weight.
-If no enabled component has an opportunity, the composite is null.
-If a score-relevant decision remains unresolved, the composite is null.
-
-The existing default requests detection and correction. A task can request all four components before it starts.
-Unrequested classification and explanation remain descriptive observations. They do not change that task's composite.
-These weights are product policy. They are not validated teacher norms or certification boundaries.
-Retain these approved weights in policy version 1. A deliberate weight change defines a new saved policy version and cannot alter an already frozen attempt.
+Explanation is always optional. Every supplied explanation is assessed and receives component findings/feedback even when task_components.explanation=false. Standalone eligible explanation score uses100*explanation.graded_accuracy (EQ/EA); no supplied eligible explanation is N/A. Its coverage/recall remain descriptive population metrics, not primary penalties. Never let a wrong/unknown rationale cancel a correct correction. The original45/15/30/10 composite remains available only for historical frozen results/explicit legacy benchmarks; selecting the legacy explanation flag does not activate that policy for a new ordinary attempt. All42equations and populations remain defined.
 
 ## Domains and pooled results
 

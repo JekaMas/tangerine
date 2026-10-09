@@ -90,7 +90,7 @@
       "id": "DOM-04",
       "capability": "domain-scoring",
       "title": "DOM-04 Separate distinct claim outcomes",
-      "fingerprint": "0c62768ea892a4c494c77c565690432773f6a9e12f21e37db5cafeaaba759538"
+      "fingerprint": "7844b012c3c5a7a70e2875031cc414254f509a6ea25c583d084f333205d770d3"
     },
     {
       "id": "DOM-05",
@@ -102,7 +102,7 @@
       "id": "DOM-06",
       "capability": "domain-scoring",
       "title": "DOM-06 Aggregate from raw decisions",
-      "fingerprint": "2ce5e12197e442d11d615b718dbc7c669fef72b5e797ff3299d44f507213e079"
+      "fingerprint": "ce57459f7d80edabecb01284f2a65971f4e7936e1714300d9949a09a223b6a3d"
     },
     {
       "id": "DOM-07",
@@ -696,7 +696,7 @@
       "id": "V6-LLM-02",
       "capability": "v6-llm-evaluation",
       "title": "LLM-02 Restricted semantic decisions",
-      "fingerprint": "1891ea433943f13976f9f9f51120d02b19543d4bf19c0637ac6e444b99a08306"
+      "fingerprint": "1dbae2d6c644050cddf56cba500d853eacd122b024215c2ae457bd7ab082d8e5"
     },
     {
       "id": "V6-LLM-03",
@@ -708,7 +708,7 @@
       "id": "V6-LLM-04",
       "capability": "v6-llm-evaluation",
       "title": "LLM-04 Supported feedback",
-      "fingerprint": "62f316997f789bb0061ab556e2dca8007e06483cf895adb0a8191c0be5fff0f4"
+      "fingerprint": "ecbdd9249f6c9c2631f2af26d9a4f1fccbd72e8ab0cfb6ec60456ee15070b165"
     },
     {
       "id": "V6-LOCAL-01",
@@ -2263,6 +2263,60 @@
       "capability": "product-data-relevance",
       "title": "DREL-03 Keep necessary selected behavior evidence",
       "fingerprint": "2398ee1ea386498105e06a934aa78b352b9233666779b1d1c91580915dce031a"
+    },
+    {
+      "id": "ANS-01",
+      "capability": "answer-component-scoring",
+      "title": "ANS-01 Assess correction and explanation independently",
+      "fingerprint": "9e54512d231742866eb34f8211832a9a861dc96c5d00ac7b16944d1448ca7f24"
+    },
+    {
+      "id": "ANS-02",
+      "capability": "answer-component-scoring",
+      "title": "ANS-02 Project additional assertions into their actual component",
+      "fingerprint": "797b12f7267e5719f0ee43b802b3fa26f925c2c5ef8d0061c2e2198ec9113c90"
+    },
+    {
+      "id": "ANS-03",
+      "capability": "answer-component-scoring",
+      "title": "ANS-03 Keep optional uncertainty nonblocking",
+      "fingerprint": "fff78878c871c03f14a5e57873ef19605b70331917658e2f90b46b5fa3b5720e"
+    },
+    {
+      "id": "ANS-04",
+      "capability": "answer-component-scoring",
+      "title": "ANS-04 Separate primary and optional explanation populations",
+      "fingerprint": "e9709395fb458c80b36cfeeec79011252cbe9611a19b11ca89052ff2938ac5bb"
+    },
+    {
+      "id": "ANS-05",
+      "capability": "answer-component-scoring",
+      "title": "ANS-05 Preserve component scope in feedback and reconsideration",
+      "fingerprint": "93f9568c33d8548c9b6d842b314f72ae497e7ff9124326885c20817d12d735e6"
+    },
+    {
+      "id": "ANS-06",
+      "capability": "answer-component-scoring",
+      "title": "ANS-06 Freeze policy and Lab expectations",
+      "fingerprint": "91c49375ce90418710405ac804ae78946931db63fcaf7fb13744db580e2baee5"
+    },
+    {
+      "id": "ANS-07",
+      "capability": "answer-component-scoring",
+      "title": "ANS-07 Use one mutation and source-effect contract",
+      "fingerprint": "9563b3a8c960d2f7ac79226cec4ea012062fae3f3f417d02fceb76547b1554c1"
+    },
+    {
+      "id": "ANS-08",
+      "capability": "answer-component-scoring",
+      "title": "ANS-08 Allow explicit recovery with bounded automatic requests",
+      "fingerprint": "65ddc4e3d96ba24bf8ef4ee793e0df39c0ff624e3400fb6a22210492437ded51"
+    },
+    {
+      "id": "ANS-09",
+      "capability": "answer-component-scoring",
+      "title": "ANS-09 Support LLM-key-only local first use",
+      "fingerprint": "638a4e3350464ffc2bac5460d7647c29a6648e6762b55214d610f92e683dc7b6"
     }
   ],
   "properties": [
@@ -2472,7 +2526,7 @@
     {
       "id": "DOM-04.P1",
       "requirement_id": "DOM-04",
-      "statement": "deduplicate repeated assertions, preserve explicit retractions, require review for contradictions and keep unresolved classification separate from detection",
+      "statement": "The system SHALL deduplicate repeated assertions, preserve explicit retractions, scope contradictions to their actual component and keep unresolved classification/explanation separate from detection and correction under answer-components-v2.",
       "scenarios": [
         "DOM-04 supported and rejected inputs"
       ],
@@ -2498,7 +2552,7 @@
     {
       "id": "DOM-06.P1",
       "requirement_id": "DOM-06",
-      "statement": "pool raw counters for aggregate metrics, provide domain breakdowns and never average percentages or publish a composite for unresolved claims",
+      "statement": "The system SHALL pool raw counters for aggregate metrics, provide domain breakdowns and never average percentages or publish a primary composite for unresolved primary claims. Optional explanation is separately scored over supplied eligible reasons, with no omission penalty.",
       "scenarios": [
         "DOM-06 supported and rejected inputs"
       ],
@@ -4141,7 +4195,7 @@
     {
       "id": "V6-LLM-02.P1",
       "requirement_id": "V6-LLM-02",
-      "statement": "Mapping MUST use only permitted unit, correction, proposition, and evidence IDs. The server MUST enforce their subject and version scope. Unresolved claims or contradictions MUST require review.",
+      "statement": "Mapping MUST use only permitted unit, correction, proposition, and evidence IDs. The server MUST enforce their subject and version scope. Unresolved primary claims or contradictions MUST require LLM reconsideration. Correction and optional supplied explanation MUST be assessed independently; typed additional_assertions retain their actual component and do not require invented rubric IDs. Explanation-only uncertainty MUST retain supported primary metrics.",
       "scenarios": [
         "LLM-02 Permitted behavior",
         "LLM-02 Boundary behavior"
@@ -4173,7 +4227,7 @@
     {
       "id": "V6-LLM-04.P1",
       "requirement_id": "V6-LLM-04",
-      "statement": "Feedback MUST refer to validated decisions and case evidence. It MUST NOT add errors, corrections, or grades. A feedback failure MUST remain distinct from successful metric computation.",
+      "statement": "Feedback MUST refer to validated decisions and case evidence. It MUST NOT invent scored errors or grades. It MUST separately explain correction and every supplied optional explanation, retaining supported/unsupported/unknown assertions and their actual reasons; optional labelled practice examples remain permitted by the current feedback contract. A feedback failure MUST remain distinct from successful metric computation.",
       "scenarios": [
         "LLM-04 Permitted behavior",
         "LLM-04 Boundary behavior"
@@ -7640,7 +7694,7 @@
     {
       "id": "SPEC-043.P1",
       "requirement_id": "SPEC-043",
-      "statement": "The required EFCAMDAT scope MUST include R2, Shatz2020 and Oksuz2025 as separate complete releases. The documented public agreement, R2 XML profile, both Shatz sample/intermediate/glossary components and \u00d6ks\u00fcz original/corrected/POS/error-coded components SHALL be retained. Public OSF analysis-file metadata, code-confirmed fields and exact header-only CSV observations SHALL be distinguished from acquired records and a complete native dictionary. Copied alternate prompts, source absence of corrections, SOC populations and source code/paper CEFR discrepancies SHALL follow specification/v2/docs/sources/efcamdat.md. Public analysis files alone SHALL NOT replace the full Cambridge derivative.\n\nThe specification SHALL reconcile GAP-043 through `specification/v2/docs/sources/efcamdat.md` `specification/v2/domain/corpus-sources.v1.yaml` `specification/v2/contracts/source-format-binding.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/source-contract-research-20261009/REPORT.md, REMAINING-INPUTS.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.",
+      "statement": "The required EFCAMDAT scope MUST include R2, Shatz2020 and Oksuz2025 as separate complete releases. The documented public agreement, R2 XML profile, both Shatz sample/intermediate/glossary components and Öksüz original/corrected/POS/error-coded components SHALL be retained. Public OSF analysis-file metadata, code-confirmed fields and exact header-only CSV observations SHALL be distinguished from acquired records and a complete native dictionary. Copied alternate prompts, source absence of corrections, SOC populations and source code/paper CEFR discrepancies SHALL follow specification/v2/docs/sources/efcamdat.md. Public analysis files alone SHALL NOT replace the full Cambridge derivative.\n\nThe specification SHALL reconcile GAP-043 through `specification/v2/docs/sources/efcamdat.md` `specification/v2/domain/corpus-sources.v1.yaml` `specification/v2/contracts/source-format-binding.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/source-contract-research-20261009/REPORT.md, REMAINING-INPUTS.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.",
       "scenarios": [
         "SPEC-043 Complete definition and rejection boundary",
         "SPEC-043 The declared successful path",
@@ -8681,6 +8735,168 @@
         "specification/v2/docs/product-data-relevance.md",
         "specification/v2/domain/product-data-relevance.v1.json"
       ]
+    },
+    {
+      "id": "ANS-01.P1",
+      "requirement_id": "ANS-01",
+      "statement": "The system SHALL assess each supplied correction and explanation independently in the existing mapper call. Explanation SHALL always be optional and SHALL be assessed when supplied regardless of task_components.explanation. A false or omitted rationale SHALL NOT erase supported correction or detection credit. Actual incompatible endorsed repairs SHALL NOT be resolved by selecting the highest-credit alternative. Owning contract: specification/v2/docs/answer-component-scoring.md.",
+      "scenarios": [
+        "ANS-01 Correct repair with false reason",
+        "ANS-01 Explanation omitted or flag false"
+      ],
+      "owner": "services/api",
+      "oracle": "Literal given/when/then fixture and independent exact rational/population/state assertions; actual model semantics and storage/speech require later native-owner observations. No current application/model proof.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json"
+      ]
+    },
+    {
+      "id": "ANS-02.P1",
+      "requirement_id": "ANS-02",
+      "statement": "Each additional substantive assertion SHALL retain exact original codepoint span/text, supported/unsupported/unknown judgment and contextual reason in its component's typed additional_assertions. Existing proposition references plus these assertions SHALL cover substantive component content without fabricated proposition IDs. An unsupported assertion SHALL activate the existing forbidden-condition zero-credit rule for that component alone; an unknown SHALL leave only its dependent credit unavailable. A distinct additional heard-error assertion SHALL remain its own detection claim.",
+      "scenarios": [
+        "ANS-02 True extra explanation detail",
+        "ANS-02 False repair versus false rationale"
+      ],
+      "owner": "services/api",
+      "oracle": "Literal given/when/then fixture and independent exact rational/population/state assertions; actual model semantics and storage/speech require later native-owner observations. No current application/model proof.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json"
+      ]
+    },
+    {
+      "id": "ANS-03.P1",
+      "requirement_id": "ANS-03",
+      "statement": "Issues SHALL declare affected_components and the server SHALL derive blocks_final_score from actual primary dependencies. Unknown supplied eligible explanation SHALL retain actual GE/TE/EA, use null EK/EQ and unavailable dependent explanation metrics. The primary result SHALL remain complete when its only unresolved issue affects explanation; unknown explanation SHALL NOT be dropped from EA or converted into a primary unresolved claim.",
+      "scenarios": [
+        "ANS-03 Unknown optional reason",
+        "ANS-03 Incompatible endorsed corrections"
+      ],
+      "owner": "services/api",
+      "oracle": "Literal given/when/then fixture and independent exact rational/population/state assertions; actual model semantics and storage/speech require later native-owner observations. No current application/model proof.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json"
+      ]
+    },
+    {
+      "id": "ANS-04.P1",
+      "requirement_id": "ANS-04",
+      "statement": "New ordinary attempts SHALL freeze answer-components-v2 before answering. The primary composite SHALL use enabled detection/classification/correction with weights 45/15/30 and original metric inputs. Optional explanation score SHALL be 100*EQ/EA over supplied eligible explanations and N/A when EA=0. Original explanation coverage/recall SHALL remain descriptive metrics. Pooling SHALL use actual raw statistics within the same frozen policy and population, preserving unknowns and all 42 formula definitions.",
+      "scenarios": [
+        "ANS-04 Missing optional explanation in pooled results",
+        "ANS-04 Partial repair with true reason"
+      ],
+      "owner": "services/api",
+      "oracle": "Literal given/when/then fixture and independent exact rational/population/state assertions; actual model semantics and storage/speech require later native-owner observations. No current application/model proof.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json"
+      ]
+    },
+    {
+      "id": "ANS-05.P1",
+      "requirement_id": "ANS-05",
+      "statement": "Feedback, optional mapping audit, consolidation, case review, adjudication and explicit result revisions SHALL preserve correction/explanation separation. Every supplied explanation SHALL receive supported/unsupported/unknown findings and contextual feedback even if ineligible for a formal rubric score. Omission SHALL receive no reprimand. Feedback failure SHALL preserve stored scores. A reason-only revision SHALL preserve supported primary statistics and heard audio unless actual primary evidence changes. No human review or new mandatory LLM stage SHALL be added.",
+      "scenarios": [
+        "ANS-05 Explanation revision",
+        "ANS-05 Feedback unavailable"
+      ],
+      "owner": "services/api",
+      "oracle": "Literal given/when/then fixture and independent exact rational/population/state assertions; actual model semantics and storage/speech require later native-owner observations. No current application/model proof.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json"
+      ]
+    },
+    {
+      "id": "ANS-06.P1",
+      "requirement_id": "ANS-06",
+      "statement": "Attempt, scoring-input, score-result, cache and Lab identities SHALL retain the exact scoring policy. Existing historical results SHALL NOT be automatically regraded. Current Lab reference packets SHALL independently assert correction and explanation presence/credit/uncertainty, exact primary arithmetic and optional populations. Semantic assertion judgments SHALL remain model outputs; native arithmetic SHALL remain server-owned. Unexecuted plans SHALL NOT count as provider or application evidence.",
+      "scenarios": [
+        "ANS-06 Frozen old result",
+        "ANS-06 Explanation unknown in Lab"
+      ],
+      "owner": "services/api",
+      "oracle": "Literal given/when/then fixture and independent exact rational/population/state assertions; actual model semantics and storage/speech require later native-owner observations. No current application/model proof.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json"
+      ]
+    },
+    {
+      "id": "ANS-07.P1",
+      "requirement_id": "ANS-07",
+      "statement": "Active mutation documentation SHALL use generation-input.mutation_recipes and the typed mutation-manifest hash/replay projection. Source revoke effects SHALL save actual notice/status and selected-source provenance without a permission-epoch service. Independent authored exercises SHALL remain usable. Every original source scope and mutation recipe SHALL be retained.",
+      "scenarios": [
+        "ANS-07 Typed manifest projection",
+        "ANS-07 Source notice and independent exercise"
+      ],
+      "owner": "services/api",
+      "oracle": "Literal given/when/then fixture and independent exact rational/population/state assertions; actual model semantics and storage/speech require later native-owner observations. No current application/model proof.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json"
+      ]
+    },
+    {
+      "id": "ANS-08.P1",
+      "requirement_id": "ANS-08",
+      "statement": "Generation/rendering SHALL impose no candidate-lifetime three-attempt ceiling on manual retry. Each explicit retry SHALL preserve original saved content/bindings and previous receipts, retaining existing per-operation deadline, idempotency and bounded automatic requests. Linguistic audit SHALL permit the shared single same-profile output repair within its logical stage budget, with original malformed output retained and no fabricated observations.",
+      "scenarios": [
+        "ANS-08 Fourth explicit render attempt",
+        "ANS-08 One linguistic output repair"
+      ],
+      "owner": "services/api",
+      "oracle": "Literal given/when/then fixture and independent exact rational/population/state assertions; actual model semantics and storage/speech require later native-owner observations. No current application/model proof.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json"
+      ]
+    },
+    {
+      "id": "ANS-09.P1",
+      "requirement_id": "ANS-09",
+      "statement": "Local speech SHALL be the default first-use route, with explicit model setup/progress/retry if weights are absent. External speech SHALL remain a supported explicit choice using its supplied key. Generate SHALL freeze the choice. Startup SHALL NOT silently download weights or switch paid/local bindings. Native synthesis failure SHALL NOT be represented as stored successful audio.",
+      "scenarios": [
+        "ANS-09 Local first use",
+        "ANS-09 Missing local assets or service key"
+      ],
+      "owner": "services/api",
+      "oracle": "Literal given/when/then fixture and independent exact rational/population/state assertions; actual model semantics and storage/speech require later native-owner observations. No current application/model proof.",
+      "source_globs": [
+        "services/api/**",
+        "services/speech/**",
+        "services/web/**",
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json"
+      ]
     }
   ],
   "cases": [
@@ -9425,11 +9641,11 @@
       "property_id": "DOM-04.P1",
       "polarity": "positive",
       "scenario": "DOM-04 supported and rejected inputs",
-      "scenario_fingerprint": "fda4a8594211066efd05a58e4247491345c724db2c8f9e0b713bb40a27efe269",
+      "scenario_fingerprint": "41360dfab5725455cf9a9a9fc9f1c266c2e00bdd723b0bed8198e7662e2feadd",
       "setup": "Use the actual owner at docs/scoring-v1.md with the case described here: score resolved distinct assertions with retracted claims excluded as specified",
       "observable": "score resolved distinct assertions with retracted claims excluded as specified",
       "red_expectation": "A violating implementation admits the forbidden outcome or fails to preserve the required source fact.",
-      "green_expectation": "The actual owner satisfies the separately specified positive observation.",
+      "green_expectation": "The actual owner satisfies the separately specified positive observation. Apply current answer-components-v2 component scope: optional explanation cannot penalize or null supported primary credit.",
       "test_id": "planned::DOM-04::positive",
       "command_id": "pending",
       "state": "blocked",
@@ -9437,7 +9653,9 @@
       "source_sha256": null,
       "invalidation_dependencies": [
         "docs/scoring-v1.md",
-        "docs/authority.md"
+        "docs/authority.md",
+        "specification/v2/docs/answer-component-scoring.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/domain-scoring/spec.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -9450,11 +9668,11 @@
       "property_id": "DOM-04.P1",
       "polarity": "negative",
       "scenario": "DOM-04 supported and rejected inputs",
-      "scenario_fingerprint": "fda4a8594211066efd05a58e4247491345c724db2c8f9e0b713bb40a27efe269",
+      "scenario_fingerprint": "41360dfab5725455cf9a9a9fc9f1c266c2e00bdd723b0bed8198e7662e2feadd",
       "setup": "Use the actual owner at docs/scoring-v1.md with the case described here: route contradictory/unresolved groups to review without final ratios",
       "observable": "route contradictory/unresolved groups to review without final ratios",
       "red_expectation": "A violating implementation admits the forbidden outcome or fails to preserve the required source fact.",
-      "green_expectation": "The actual owner satisfies the separately specified negative observation.",
+      "green_expectation": "The actual owner satisfies the separately specified negative observation. Apply current answer-components-v2 component scope: optional explanation cannot penalize or null supported primary credit.",
       "test_id": "planned::DOM-04::negative",
       "command_id": "pending",
       "state": "blocked",
@@ -9462,7 +9680,9 @@
       "source_sha256": null,
       "invalidation_dependencies": [
         "docs/scoring-v1.md",
-        "docs/authority.md"
+        "docs/authority.md",
+        "specification/v2/docs/answer-component-scoring.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/domain-scoring/spec.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -9523,11 +9743,11 @@
       "property_id": "DOM-06.P1",
       "polarity": "positive",
       "scenario": "DOM-06 supported and rejected inputs",
-      "scenario_fingerprint": "61b1e70eac83e03878d2b82d394c9c97520dba04d4694830e8e9ceacb762722f",
+      "scenario_fingerprint": "c447ba66cbe1f0e6df26bba7673d832c752b0c62505e64137cafd7ebe90c925f",
       "setup": "Use the actual owner at services/speech/metrics.py with the case described here: recalculate pooled counters across differently sized exercises",
       "observable": "recalculate pooled counters across differently sized exercises",
       "red_expectation": "A violating implementation admits the forbidden outcome or fails to preserve the required source fact.",
-      "green_expectation": "The actual owner satisfies the separately specified positive observation.",
+      "green_expectation": "The actual owner satisfies the separately specified positive observation. Apply current answer-components-v2 component scope: optional explanation cannot penalize or null supported primary credit.",
       "test_id": "planned::DOM-06::positive",
       "command_id": "pending",
       "state": "planned",
@@ -9535,7 +9755,9 @@
       "source_sha256": null,
       "invalidation_dependencies": [
         "services/speech/metrics.py",
-        "docs/authority.md"
+        "docs/authority.md",
+        "specification/v2/docs/answer-component-scoring.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/domain-scoring/spec.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -9547,11 +9769,11 @@
       "property_id": "DOM-06.P1",
       "polarity": "negative",
       "scenario": "DOM-06 supported and rejected inputs",
-      "scenario_fingerprint": "61b1e70eac83e03878d2b82d394c9c97520dba04d4694830e8e9ceacb762722f",
+      "scenario_fingerprint": "c447ba66cbe1f0e6df26bba7673d832c752b0c62505e64137cafd7ebe90c925f",
       "setup": "Use the actual owner at services/speech/metrics.py with the case described here: reject percentage averaging and final metrics for unresolved evidence",
       "observable": "reject percentage averaging and final metrics for unresolved evidence",
       "red_expectation": "A violating implementation admits the forbidden outcome or fails to preserve the required source fact.",
-      "green_expectation": "The actual owner satisfies the separately specified negative observation.",
+      "green_expectation": "The actual owner satisfies the separately specified negative observation. Apply current answer-components-v2 component scope: optional explanation cannot penalize or null supported primary credit.",
       "test_id": "planned::DOM-06::negative",
       "command_id": "pending",
       "state": "planned",
@@ -9559,7 +9781,9 @@
       "source_sha256": null,
       "invalidation_dependencies": [
         "services/speech/metrics.py",
-        "docs/authority.md"
+        "docs/authority.md",
+        "specification/v2/docs/answer-component-scoring.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/domain-scoring/spec.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -16699,7 +16923,7 @@
       "setup": "A claim has sufficient supporting evidence. Preserve the exact recovered scenario; use only source-permitted real evidence or separately approved restricted boundary inputs.",
       "observable": "The server accepts the mapping only after all reference checks.",
       "red_expectation": "The owner accepts the violating state/output, loses provenance or contradicts the exact recovered scenario.",
-      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior.",
+      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior. Apply current answer-components-v2 component scope: optional explanation cannot penalize or null supported primary credit.",
       "test_id": "planned::V6-LLM-02::S1::positive",
       "command_id": "pending",
       "state": "blocked",
@@ -16707,7 +16931,9 @@
       "source_sha256": null,
       "invalidation_dependencies": [
         "services/api/internal/llm_evaluation",
-        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/llm-evaluation/spec.md"
+        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/llm-evaluation/spec.md",
+        "specification/v2/docs/answer-component-scoring.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-llm-evaluation/spec.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -16724,7 +16950,7 @@
       "setup": "A claim has sufficient supporting evidence. Preserve the exact recovered scenario; use only source-permitted real evidence or separately approved restricted boundary inputs.",
       "observable": "Prove rejection of a violating transition/output at this exact boundary: The server accepts the mapping only after all reference checks.",
       "red_expectation": "The owner accepts the violating state/output, loses provenance or contradicts the exact recovered scenario.",
-      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior.",
+      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior. Apply current answer-components-v2 component scope: optional explanation cannot penalize or null supported primary credit.",
       "test_id": "planned::V6-LLM-02::S1::negative",
       "command_id": "pending",
       "state": "blocked",
@@ -16732,7 +16958,9 @@
       "source_sha256": null,
       "invalidation_dependencies": [
         "services/api/internal/llm_evaluation",
-        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/llm-evaluation/spec.md"
+        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/llm-evaluation/spec.md",
+        "specification/v2/docs/answer-component-scoring.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-llm-evaluation/spec.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -16749,7 +16977,7 @@
       "setup": "An evidence ID exists but belongs to a different unit. Preserve the exact recovered scenario; use only source-permitted real evidence or separately approved restricted boundary inputs.",
       "observable": "The server rejects the out-of-scope evidence.",
       "red_expectation": "The owner accepts the violating state/output, loses provenance or contradicts the exact recovered scenario.",
-      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior.",
+      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior. Apply current answer-components-v2 component scope: optional explanation cannot penalize or null supported primary credit.",
       "test_id": "planned::V6-LLM-02::S2::positive",
       "command_id": "pending",
       "state": "blocked",
@@ -16757,7 +16985,9 @@
       "source_sha256": null,
       "invalidation_dependencies": [
         "services/api/internal/llm_evaluation",
-        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/llm-evaluation/spec.md"
+        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/llm-evaluation/spec.md",
+        "specification/v2/docs/answer-component-scoring.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-llm-evaluation/spec.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -16774,7 +17004,7 @@
       "setup": "An evidence ID exists but belongs to a different unit. Preserve the exact recovered scenario; use only source-permitted real evidence or separately approved restricted boundary inputs.",
       "observable": "Prove rejection of a violating transition/output at this exact boundary: The server rejects the out-of-scope evidence.",
       "red_expectation": "The owner accepts the violating state/output, loses provenance or contradicts the exact recovered scenario.",
-      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior.",
+      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior. Apply current answer-components-v2 component scope: optional explanation cannot penalize or null supported primary credit.",
       "test_id": "planned::V6-LLM-02::S2::negative",
       "command_id": "pending",
       "state": "blocked",
@@ -16782,7 +17012,9 @@
       "source_sha256": null,
       "invalidation_dependencies": [
         "services/api/internal/llm_evaluation",
-        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/llm-evaluation/spec.md"
+        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/llm-evaluation/spec.md",
+        "specification/v2/docs/answer-component-scoring.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-llm-evaluation/spec.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -16907,7 +17139,7 @@
       "setup": "The backend calculates a resolved score. Preserve the exact recovered scenario; use only source-permitted real evidence or separately approved restricted boundary inputs.",
       "observable": "The explanation retains the supporting identifiers.",
       "red_expectation": "The owner accepts the violating state/output, loses provenance or contradicts the exact recovered scenario.",
-      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior.",
+      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior. Apply current answer-components-v2 component scope: optional explanation cannot penalize or null supported primary credit.",
       "test_id": "planned::V6-LLM-04::S1::positive",
       "command_id": "pending",
       "state": "blocked",
@@ -16915,7 +17147,9 @@
       "source_sha256": null,
       "invalidation_dependencies": [
         "services/api/internal/llm_evaluation",
-        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/llm-evaluation/spec.md"
+        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/llm-evaluation/spec.md",
+        "specification/v2/docs/answer-component-scoring.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-llm-evaluation/spec.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -16932,7 +17166,7 @@
       "setup": "The backend calculates a resolved score. Preserve the exact recovered scenario; use only source-permitted real evidence or separately approved restricted boundary inputs.",
       "observable": "Prove rejection of a violating transition/output at this exact boundary: The explanation retains the supporting identifiers.",
       "red_expectation": "The owner accepts the violating state/output, loses provenance or contradicts the exact recovered scenario.",
-      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior.",
+      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior. Apply current answer-components-v2 component scope: optional explanation cannot penalize or null supported primary credit.",
       "test_id": "planned::V6-LLM-04::S1::negative",
       "command_id": "pending",
       "state": "blocked",
@@ -16940,7 +17174,9 @@
       "source_sha256": null,
       "invalidation_dependencies": [
         "services/api/internal/llm_evaluation",
-        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/llm-evaluation/spec.md"
+        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/llm-evaluation/spec.md",
+        "specification/v2/docs/answer-component-scoring.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-llm-evaluation/spec.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -16957,7 +17193,7 @@
       "setup": "The feedback request fails. Preserve the exact recovered scenario; use only source-permitted real evidence or separately approved restricted boundary inputs.",
       "observable": "The interface can show that rationale with its real origin, not an LLM label.",
       "red_expectation": "The owner accepts the violating state/output, loses provenance or contradicts the exact recovered scenario.",
-      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior.",
+      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior. Apply current answer-components-v2 component scope: optional explanation cannot penalize or null supported primary credit.",
       "test_id": "planned::V6-LLM-04::S2::positive",
       "command_id": "pending",
       "state": "blocked",
@@ -16965,7 +17201,9 @@
       "source_sha256": null,
       "invalidation_dependencies": [
         "services/api/internal/llm_evaluation",
-        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/llm-evaluation/spec.md"
+        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/llm-evaluation/spec.md",
+        "specification/v2/docs/answer-component-scoring.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-llm-evaluation/spec.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -16982,7 +17220,7 @@
       "setup": "The feedback request fails. Preserve the exact recovered scenario; use only source-permitted real evidence or separately approved restricted boundary inputs.",
       "observable": "Prove rejection of a violating transition/output at this exact boundary: The interface can show that rationale with its real origin, not an LLM label.",
       "red_expectation": "The owner accepts the violating state/output, loses provenance or contradicts the exact recovered scenario.",
-      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior.",
+      "green_expectation": "The named supported observation holds and its forbidden counterpart is denied with the specified failure/review behavior. Apply current answer-components-v2 component scope: optional explanation cannot penalize or null supported primary credit.",
       "test_id": "planned::V6-LLM-04::S2::negative",
       "command_id": "pending",
       "state": "blocked",
@@ -16990,7 +17228,9 @@
       "source_sha256": null,
       "invalidation_dependencies": [
         "services/api/internal/llm_evaluation",
-        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/llm-evaluation/spec.md"
+        "spec-inputs/v6-ste/openspec/changes/bootstrap-teacher-error-trainer/specs/llm-evaluation/spec.md",
+        "specification/v2/docs/answer-component-scoring.md",
+        "openspec/changes/implement-teacher-error-trainer/specs/v6-llm-evaluation/spec.md"
       ],
       "substitution": {
         "classification": "UNDECIDED",
@@ -43343,9 +43583,9 @@
       "scenario": "SPEC-043 The declared successful path",
       "scenario_fingerprint": "be6cba048e755d407c5f91bb91ea5cf653299a3508230ee2c96cbae5397f2d6f",
       "setup": "Future implementation observes SPEC-043 The declared successful path against the exact source-specific full-release and Apache local-source contract. Raw/documentary/normalized/actual observation classes remain separate. Labelled constructed deterministic cases may test conversion/accounting; public metadata is never substituted for acquired source bytes.",
-      "observable": "- **GIVEN** the exact permitted input and required evidence exist.\n- **WHEN** the application applies `SPEC-043`.\n- **THEN** The operator supplies each complete authorized release. Full raw intake preserves every native member; documented semantic bindings preserve both Shatz samples, actual prompt/correction missingness and \u00d6ks\u00fcz SOC populations without substituting its public analysis companion.",
+      "observable": "- **GIVEN** the exact permitted input and required evidence exist.\n- **WHEN** the application applies `SPEC-043`.\n- **THEN** The operator supplies each complete authorized release. Full raw intake preserves every native member; documented semantic bindings preserve both Shatz samples, actual prompt/correction missingness and Öksüz SOC populations without substituting its public analysis companion.",
       "red_expectation": "The observed positive outcome violates its exact full-source/license contract; no missing-data claim is hidden by a green static audit.",
-      "green_expectation": "Independently observe the positive outcome declared in this exact scenario: - **GIVEN** the exact permitted input and required evidence exist.\n- **WHEN** the application applies `SPEC-043`.\n- **THEN** The operator supplies each complete authorized release. Full raw intake preserves every native member; documented semantic bindings preserve both Shatz samples, actual prompt/correction missingness and \u00d6ks\u00fcz SOC populations without substituting its public analysis companion.",
+      "green_expectation": "Independently observe the positive outcome declared in this exact scenario: - **GIVEN** the exact permitted input and required evidence exist.\n- **WHEN** the application applies `SPEC-043`.\n- **THEN** The operator supplies each complete authorized release. Full raw intake preserves every native member; documented semantic bindings preserve both Shatz samples, actual prompt/correction missingness and Öksüz SOC populations without substituting its public analysis companion.",
       "test_id": "planned::local-llm-revision::SPEC-043.P1.S2.POSITIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -43370,9 +43610,9 @@
       "scenario": "SPEC-043 The declared successful path",
       "scenario_fingerprint": "be6cba048e755d407c5f91bb91ea5cf653299a3508230ee2c96cbae5397f2d6f",
       "setup": "Future implementation observes SPEC-043 The declared successful path against the exact source-specific full-release and Apache local-source contract. Raw/documentary/normalized/actual observation classes remain separate. Labelled constructed deterministic cases may test conversion/accounting; public metadata is never substituted for acquired source bytes.",
-      "observable": "- **GIVEN** the exact permitted input and required evidence exist.\n- **WHEN** the application applies `SPEC-043`.\n- **THEN** The operator supplies each complete authorized release. Full raw intake preserves every native member; documented semantic bindings preserve both Shatz samples, actual prompt/correction missingness and \u00d6ks\u00fcz SOC populations without substituting its public analysis companion.",
+      "observable": "- **GIVEN** the exact permitted input and required evidence exist.\n- **WHEN** the application applies `SPEC-043`.\n- **THEN** The operator supplies each complete authorized release. Full raw intake preserves every native member; documented semantic bindings preserve both Shatz samples, actual prompt/correction missingness and Öksüz SOC populations without substituting its public analysis companion.",
       "red_expectation": "The observed negative outcome violates its exact full-source/license contract; no missing-data claim is hidden by a green static audit.",
-      "green_expectation": "Independently observe the negative outcome declared in this exact scenario: - **GIVEN** the exact permitted input and required evidence exist.\n- **WHEN** the application applies `SPEC-043`.\n- **THEN** The operator supplies each complete authorized release. Full raw intake preserves every native member; documented semantic bindings preserve both Shatz samples, actual prompt/correction missingness and \u00d6ks\u00fcz SOC populations without substituting its public analysis companion.",
+      "green_expectation": "Independently observe the negative outcome declared in this exact scenario: - **GIVEN** the exact permitted input and required evidence exist.\n- **WHEN** the application applies `SPEC-043`.\n- **THEN** The operator supplies each complete authorized release. Full raw intake preserves every native member; documented semantic bindings preserve both Shatz samples, actual prompt/correction missingness and Öksüz SOC populations without substituting its public analysis companion.",
       "test_id": "planned::local-llm-revision::SPEC-043.P1.S2.NEGATIVE",
       "command_id": "pending",
       "state": "blocked",
@@ -50857,6 +51097,1230 @@
         "note": "Future native source/action/generation/scoring/Lab observations. Current artifact fixtures do not prove runtime acceptance or acquired data."
       },
       "blocker": "Specification-only update; no implementation, actual inference/audio/import/Lab run."
+    },
+    {
+      "id": "ANS-01.P1.S1.POSITIVE",
+      "property_id": "ANS-01.P1",
+      "polarity": "positive",
+      "scenario": "ANS-01 Correct repair with false reason",
+      "scenario_fingerprint": "528a70ec496fdad7bacd087cae2ad801600e1d93a5dbdaf28e761b7acbb978a1",
+      "setup": "the only error is present-context She work here and the answer says Use works because third-person agreement applies and every English verb ends in s. Action: the mapper assesses the two components. Use actual supported native-owner observations.",
+      "observable": "correction credit is 1, detection TP is 1 and the default primary grade is 100; the explanation records the supported agreement fact and unsupported universal rule, earns explanation credit 0 and receives feedback on both",
+      "red_expectation": "Violate the independent literal expectation: correction credit is 1, detection TP is 1 and the default primary grade is 100; the explanation records the supported agreement fact and unsupported universal rule, earns explanation credit 0 and receives feedback on both",
+      "green_expectation": "Observe correction credit is 1, detection TP is 1 and the default primary grade is 100; the explanation records the supported agreement fact and unsupported universal rule, earns explanation credit 0 and receives feedback on both",
+      "test_id": "planned::answer-components::ANS-01.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-01.P1.S1.NEGATIVE",
+      "property_id": "ANS-01.P1",
+      "polarity": "negative",
+      "scenario": "ANS-01 Correct repair with false reason",
+      "scenario_fingerprint": "528a70ec496fdad7bacd087cae2ad801600e1d93a5dbdaf28e761b7acbb978a1",
+      "setup": "the only error is present-context She work here and the answer says Use works because third-person agreement applies and every English verb ends in s. Action: the mapper assesses the two components. Counterexample: Return correction credit 0 solely because the separately extracted universal-rule explanation is false.",
+      "observable": "correction credit is 1, detection TP is 1 and the default primary grade is 100; the explanation records the supported agreement fact and unsupported universal rule, earns explanation credit 0 and receives feedback on both",
+      "red_expectation": "Violate the independent literal expectation: correction credit is 1, detection TP is 1 and the default primary grade is 100; the explanation records the supported agreement fact and unsupported universal rule, earns explanation credit 0 and receives feedback on both",
+      "green_expectation": "Observe correction credit is 1, detection TP is 1 and the default primary grade is 100; the explanation records the supported agreement fact and unsupported universal rule, earns explanation credit 0 and receives feedback on both",
+      "test_id": "planned::answer-components::ANS-01.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-01.P1.S2.POSITIVE",
+      "property_id": "ANS-01.P1",
+      "polarity": "positive",
+      "scenario": "ANS-01 Explanation omitted or flag false",
+      "scenario_fingerprint": "29ab660c06eab02b83c5f3bd8d30d7d8746737265e12037e5e73fdb42f9bb3d7",
+      "setup": "a correct Use works answer without explanation, or with a correct agreement explanation while task_components.explanation=false. Action: grading runs. Use actual supported native-owner observations.",
+      "observable": "the omitted explanation has supplied=false and optional score N/A without a penalty; the supplied eligible correct explanation is assessed and scores 100; both primary grades remain 100",
+      "red_expectation": "Violate the independent literal expectation: the omitted explanation has supplied=false and optional score N/A without a penalty; the supplied eligible correct explanation is assessed and scores 100; both primary grades remain 100",
+      "green_expectation": "Observe the omitted explanation has supplied=false and optional score N/A without a penalty; the supplied eligible correct explanation is assessed and scores 100; both primary grades remain 100",
+      "test_id": "planned::answer-components::ANS-01.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-01.P1.S2.NEGATIVE",
+      "property_id": "ANS-01.P1",
+      "polarity": "negative",
+      "scenario": "ANS-01 Explanation omitted or flag false",
+      "scenario_fingerprint": "29ab660c06eab02b83c5f3bd8d30d7d8746737265e12037e5e73fdb42f9bb3d7",
+      "setup": "a correct Use works answer without explanation, or with a correct agreement explanation while task_components.explanation=false. Action: grading runs. Counterexample: Skip the supplied explanation because its legacy invitation flag is false, or grade omitted explanation as a primary zero.",
+      "observable": "the omitted explanation has supplied=false and optional score N/A without a penalty; the supplied eligible correct explanation is assessed and scores 100; both primary grades remain 100",
+      "red_expectation": "Violate the independent literal expectation: the omitted explanation has supplied=false and optional score N/A without a penalty; the supplied eligible correct explanation is assessed and scores 100; both primary grades remain 100",
+      "green_expectation": "Observe the omitted explanation has supplied=false and optional score N/A without a penalty; the supplied eligible correct explanation is assessed and scores 100; both primary grades remain 100",
+      "test_id": "planned::answer-components::ANS-01.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-02.P1.S1.POSITIVE",
+      "property_id": "ANS-02.P1",
+      "polarity": "positive",
+      "scenario": "ANS-02 True extra explanation detail",
+      "scenario_fingerprint": "7874d2b4fecada901ed2b8faa2a4d535679474e8307f72ac7934f0cd6b1f807e",
+      "setup": "Use works because she is singular and the intended tense is present with an eligible agreement rubric. Action: the mapper supports the actual additional present-tense assertion. Use actual supported native-owner observations.",
+      "observable": "its span equals the frozen substring, its contextual reason is retained, correction and explanation each retain credit 1 and no new rubric ID or detection FP is invented",
+      "red_expectation": "Violate the independent literal expectation: its span equals the frozen substring, its contextual reason is retained, correction and explanation each retain credit 1 and no new rubric ID or detection FP is invented",
+      "green_expectation": "Observe its span equals the frozen substring, its contextual reason is retained, correction and explanation each retain credit 1 and no new rubric ID or detection FP is invented",
+      "test_id": "planned::answer-components::ANS-02.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-02.P1.S1.NEGATIVE",
+      "property_id": "ANS-02.P1",
+      "polarity": "negative",
+      "scenario": "ANS-02 True extra explanation detail",
+      "scenario_fingerprint": "7874d2b4fecada901ed2b8faa2a4d535679474e8307f72ac7934f0cd6b1f807e",
+      "setup": "Use works because she is singular and the intended tense is present with an eligible agreement rubric. Action: the mapper supports the actual additional present-tense assertion. Counterexample: Invent a forbidden proposition ID for the extra present-tense detail, or cite a span not equal to the actual answer slice.",
+      "observable": "its span equals the frozen substring, its contextual reason is retained, correction and explanation each retain credit 1 and no new rubric ID or detection FP is invented",
+      "red_expectation": "Violate the independent literal expectation: its span equals the frozen substring, its contextual reason is retained, correction and explanation each retain credit 1 and no new rubric ID or detection FP is invented",
+      "green_expectation": "Observe its span equals the frozen substring, its contextual reason is retained, correction and explanation each retain credit 1 and no new rubric ID or detection FP is invented",
+      "test_id": "planned::answer-components::ANS-02.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-02.P1.S2.POSITIVE",
+      "property_id": "ANS-02.P1",
+      "polarity": "positive",
+      "scenario": "ANS-02 False repair versus false rationale",
+      "scenario_fingerprint": "b2b7520d04b1c86c2aaaf91be8f40318a4a06fa2bb919c2e083052c711699e93",
+      "setup": "the fixed present-context error and either Use worked or Use works because every English verb ends in s. Action: the unsupported assertion is projected. Use actual supported native-owner observations.",
+      "observable": "the first answer has correction credit 0 and primary grade 60; the second keeps correction credit 1 and primary grade 100 with explanation credit 0; unsupported component labels or fabricated spans are repaired as output defects",
+      "red_expectation": "Violate the independent literal expectation: the first answer has correction credit 0 and primary grade 60; the second keeps correction credit 1 and primary grade 100 with explanation credit 0; unsupported component labels or fabricated spans are repaired as output defects",
+      "green_expectation": "Observe the first answer has correction credit 0 and primary grade 60; the second keeps correction credit 1 and primary grade 100 with explanation credit 0; unsupported component labels or fabricated spans are repaired as output defects",
+      "test_id": "planned::answer-components::ANS-02.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-02.P1.S2.NEGATIVE",
+      "property_id": "ANS-02.P1",
+      "polarity": "negative",
+      "scenario": "ANS-02 False repair versus false rationale",
+      "scenario_fingerprint": "b2b7520d04b1c86c2aaaf91be8f40318a4a06fa2bb919c2e083052c711699e93",
+      "setup": "the fixed present-context error and either Use worked or Use works because every English verb ends in s. Action: the unsupported assertion is projected. Counterexample: Assign the false universal-rule reason to correction, or let a true reason rescue an incorrect past-tense repair.",
+      "observable": "the first answer has correction credit 0 and primary grade 60; the second keeps correction credit 1 and primary grade 100 with explanation credit 0; unsupported component labels or fabricated spans are repaired as output defects",
+      "red_expectation": "Violate the independent literal expectation: the first answer has correction credit 0 and primary grade 60; the second keeps correction credit 1 and primary grade 100 with explanation credit 0; unsupported component labels or fabricated spans are repaired as output defects",
+      "green_expectation": "Observe the first answer has correction credit 0 and primary grade 60; the second keeps correction credit 1 and primary grade 100 with explanation credit 0; unsupported component labels or fabricated spans are repaired as output defects",
+      "test_id": "planned::answer-components::ANS-02.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-03.P1.S1.POSITIVE",
+      "property_id": "ANS-03.P1",
+      "polarity": "positive",
+      "scenario": "ANS-03 Unknown optional reason",
+      "scenario_fingerprint": "c9d746d8f90bcec886c6a8d8483dc0c5fd728e570fa3708b0ed8e506092b681c",
+      "setup": "G=GC=TP=1 and correction credit 1 with a supplied eligible explanation whose extra rule remains unknown. Action: scoring persists the result. Use actual supported native-owner observations.",
+      "observable": "primary grade is 100, result is complete, GE=TE=EA=1, EK/EQ are null and the explanation issue has affected_components=[explanation] and blocks_final_score=false",
+      "red_expectation": "Violate the independent literal expectation: primary grade is 100, result is complete, GE=TE=EA=1, EK/EQ are null and the explanation issue has affected_components=[explanation] and blocks_final_score=false",
+      "green_expectation": "Observe primary grade is 100, result is complete, GE=TE=EA=1, EK/EQ are null and the explanation issue has affected_components=[explanation] and blocks_final_score=false",
+      "test_id": "planned::answer-components::ANS-03.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-03.P1.S1.NEGATIVE",
+      "property_id": "ANS-03.P1",
+      "polarity": "negative",
+      "scenario": "ANS-03 Unknown optional reason",
+      "scenario_fingerprint": "c9d746d8f90bcec886c6a8d8483dc0c5fd728e570fa3708b0ed8e506092b681c",
+      "setup": "G=GC=TP=1 and correction credit 1 with a supplied eligible explanation whose extra rule remains unknown. Action: scoring persists the result. Counterexample: Return blocks_final_score=true for explanation-only uncertainty, or remove the unknown reason from EA.",
+      "observable": "primary grade is 100, result is complete, GE=TE=EA=1, EK/EQ are null and the explanation issue has affected_components=[explanation] and blocks_final_score=false",
+      "red_expectation": "Violate the independent literal expectation: primary grade is 100, result is complete, GE=TE=EA=1, EK/EQ are null and the explanation issue has affected_components=[explanation] and blocks_final_score=false",
+      "green_expectation": "Observe primary grade is 100, result is complete, GE=TE=EA=1, EK/EQ are null and the explanation issue has affected_components=[explanation] and blocks_final_score=false",
+      "test_id": "planned::answer-components::ANS-03.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-03.P1.S2.POSITIVE",
+      "property_id": "ANS-03.P1",
+      "polarity": "positive",
+      "scenario": "ANS-03 Incompatible endorsed corrections",
+      "scenario_fingerprint": "b2f65e16740e7cfbad764dc07b67e435f7ff0b20f5a5c08b56c95618301412da",
+      "setup": "Use works and use worked are both endorsed without retraction for the same fixed present context. Action: genuine correction interpretation remains unresolved after LLM reconsideration. Use actual supported native-owner observations.",
+      "observable": "selected correction/primary composite remain provisional; an explanation-only issue is not used to conceal that primary uncertainty or select the favorable repair",
+      "red_expectation": "Violate the independent literal expectation: selected correction/primary composite remain provisional; an explanation-only issue is not used to conceal that primary uncertainty or select the favorable repair",
+      "green_expectation": "Observe selected correction/primary composite remain provisional; an explanation-only issue is not used to conceal that primary uncertainty or select the favorable repair",
+      "test_id": "planned::answer-components::ANS-03.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-03.P1.S2.NEGATIVE",
+      "property_id": "ANS-03.P1",
+      "polarity": "negative",
+      "scenario": "ANS-03 Incompatible endorsed corrections",
+      "scenario_fingerprint": "b2f65e16740e7cfbad764dc07b67e435f7ff0b20f5a5c08b56c95618301412da",
+      "setup": "Use works and use worked are both endorsed without retraction for the same fixed present context. Action: genuine correction interpretation remains unresolved after LLM reconsideration. Counterexample: Select only works from two incompatible endorsed repairs and publish primary 100 while meaning remains unresolved.",
+      "observable": "selected correction/primary composite remain provisional; an explanation-only issue is not used to conceal that primary uncertainty or select the favorable repair",
+      "red_expectation": "Violate the independent literal expectation: selected correction/primary composite remain provisional; an explanation-only issue is not used to conceal that primary uncertainty or select the favorable repair",
+      "green_expectation": "Observe selected correction/primary composite remain provisional; an explanation-only issue is not used to conceal that primary uncertainty or select the favorable repair",
+      "test_id": "planned::answer-components::ANS-03.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-04.P1.S1.POSITIVE",
+      "property_id": "ANS-04.P1",
+      "polarity": "positive",
+      "scenario": "ANS-04 Missing optional explanation in pooled results",
+      "scenario_fingerprint": "f78b91e92c86272b14616ccc8dabe214d536c6710bda51c947d0d0cf392701c3",
+      "setup": "two one-error attempts each with correct detection/correction, one with correct eligible explanation and one without. Action: same-policy raw statistics are pooled. Use actual supported native-owner observations.",
+      "observable": "G=GC=TP=2, CQ=2, GE=TE=2, EA=EQ=1; primary grade is 100, optional explanation score is 100, coverage and graded recall are 1/2 and do not penalize primary grade",
+      "red_expectation": "Violate the independent literal expectation: G=GC=TP=2, CQ=2, GE=TE=2, EA=EQ=1; primary grade is 100, optional explanation score is 100, coverage and graded recall are 1/2 and do not penalize primary grade",
+      "green_expectation": "Observe G=GC=TP=2, CQ=2, GE=TE=2, EA=EQ=1; primary grade is 100, optional explanation score is 100, coverage and graded recall are 1/2 and do not penalize primary grade",
+      "test_id": "planned::answer-components::ANS-04.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-04.P1.S1.NEGATIVE",
+      "property_id": "ANS-04.P1",
+      "polarity": "negative",
+      "scenario": "ANS-04 Missing optional explanation in pooled results",
+      "scenario_fingerprint": "f78b91e92c86272b14616ccc8dabe214d536c6710bda51c947d0d0cf392701c3",
+      "setup": "two one-error attempts each with correct detection/correction, one with correct eligible explanation and one without. Action: same-policy raw statistics are pooled. Counterexample: Pool EA=2 for one supplied/one absent reason and use graded recall 1/2 to reduce primary grade.",
+      "observable": "G=GC=TP=2, CQ=2, GE=TE=2, EA=EQ=1; primary grade is 100, optional explanation score is 100, coverage and graded recall are 1/2 and do not penalize primary grade",
+      "red_expectation": "Violate the independent literal expectation: G=GC=TP=2, CQ=2, GE=TE=2, EA=EQ=1; primary grade is 100, optional explanation score is 100, coverage and graded recall are 1/2 and do not penalize primary grade",
+      "green_expectation": "Observe G=GC=TP=2, CQ=2, GE=TE=2, EA=EQ=1; primary grade is 100, optional explanation score is 100, coverage and graded recall are 1/2 and do not penalize primary grade",
+      "test_id": "planned::answer-components::ANS-04.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-04.P1.S2.POSITIVE",
+      "property_id": "ANS-04.P1",
+      "polarity": "positive",
+      "scenario": "ANS-04 Partial repair with true reason",
+      "scenario_fingerprint": "a85029ab1bc39dbbc64b957a0092815a0fc41489dcf7fb2eda4e9b9822ac72c7",
+      "setup": "G=GC=TP=1, a repair satisfies one of two required propositions without forbidden assertions, and a supplied explanation is fully correct. Action: the exact server scorer projects credit. Use actual supported native-owner observations.",
+      "observable": "CQ=1/2 and default primary grade is 80; explanation score is 100 and cannot increase correction credit; no LLM numeric grade or legacy explanation weight is adopted",
+      "red_expectation": "Violate the independent literal expectation: CQ=1/2 and default primary grade is 80; explanation score is 100 and cannot increase correction credit; no LLM numeric grade or legacy explanation weight is adopted",
+      "green_expectation": "Observe CQ=1/2 and default primary grade is 80; explanation score is 100 and cannot increase correction credit; no LLM numeric grade or legacy explanation weight is adopted",
+      "test_id": "planned::answer-components::ANS-04.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-04.P1.S2.NEGATIVE",
+      "property_id": "ANS-04.P1",
+      "polarity": "negative",
+      "scenario": "ANS-04 Partial repair with true reason",
+      "scenario_fingerprint": "a85029ab1bc39dbbc64b957a0092815a0fc41489dcf7fb2eda4e9b9822ac72c7",
+      "setup": "G=GC=TP=1, a repair satisfies one of two required propositions without forbidden assertions, and a supplied explanation is fully correct. Action: the exact server scorer projects credit. Counterexample: Use explanation weight10 or LLM-provided partial credit to change the independently expected primary80.",
+      "observable": "CQ=1/2 and default primary grade is 80; explanation score is 100 and cannot increase correction credit; no LLM numeric grade or legacy explanation weight is adopted",
+      "red_expectation": "Violate the independent literal expectation: CQ=1/2 and default primary grade is 80; explanation score is 100 and cannot increase correction credit; no LLM numeric grade or legacy explanation weight is adopted",
+      "green_expectation": "Observe CQ=1/2 and default primary grade is 80; explanation score is 100 and cannot increase correction credit; no LLM numeric grade or legacy explanation weight is adopted",
+      "test_id": "planned::answer-components::ANS-04.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-05.P1.S1.POSITIVE",
+      "property_id": "ANS-05.P1",
+      "polarity": "positive",
+      "scenario": "ANS-05 Explanation revision",
+      "scenario_fingerprint": "c834fa7ed4f58f7b5fcdd88ffad8535266c279e74ff7c08f2afa6094089a09f0",
+      "setup": "a saved primary grade 100 and wrong explanation with the original audio/key/answer identities. Action: explicit LLM reconsideration resolves only the explanation differently using supported evidence. Use actual supported native-owner observations.",
+      "observable": "a versioned explanation/feedback revision records the changed assessment and provenance while primary statistics and heard audio remain identical; a required actual rubric repair still uses key versioning",
+      "red_expectation": "Violate the independent literal expectation: a versioned explanation/feedback revision records the changed assessment and provenance while primary statistics and heard audio remain identical; a required actual rubric repair still uses key versioning",
+      "green_expectation": "Observe a versioned explanation/feedback revision records the changed assessment and provenance while primary statistics and heard audio remain identical; a required actual rubric repair still uses key versioning",
+      "test_id": "planned::answer-components::ANS-05.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-05.P1.S1.NEGATIVE",
+      "property_id": "ANS-05.P1",
+      "polarity": "negative",
+      "scenario": "ANS-05 Explanation revision",
+      "scenario_fingerprint": "c834fa7ed4f58f7b5fcdd88ffad8535266c279e74ff7c08f2afa6094089a09f0",
+      "setup": "a saved primary grade 100 and wrong explanation with the original audio/key/answer identities. Action: explicit LLM reconsideration resolves only the explanation differently using supported evidence. Counterexample: Rewrite primary statistics or heard audio for an explanation-only revision with no changed primary evidence.",
+      "observable": "a versioned explanation/feedback revision records the changed assessment and provenance while primary statistics and heard audio remain identical; a required actual rubric repair still uses key versioning",
+      "red_expectation": "Violate the independent literal expectation: a versioned explanation/feedback revision records the changed assessment and provenance while primary statistics and heard audio remain identical; a required actual rubric repair still uses key versioning",
+      "green_expectation": "Observe a versioned explanation/feedback revision records the changed assessment and provenance while primary statistics and heard audio remain identical; a required actual rubric repair still uses key versioning",
+      "test_id": "planned::answer-components::ANS-05.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-05.P1.S2.POSITIVE",
+      "property_id": "ANS-05.P1",
+      "polarity": "positive",
+      "scenario": "ANS-05 Feedback unavailable",
+      "scenario_fingerprint": "2be5dbf8fb9854214ab435afb3e82b72ad433e0639c57712f5ec71f022978d41",
+      "setup": "a saved primary grade 100, explanation score 0 and retained false-rule finding. Action: the feedback provider times out. Use actual supported native-owner observations.",
+      "observable": "both scores and semantic findings remain saved with commentary unavailable and explicit feedback retry; omission or provider failure does not become a scoring penalty or human queue",
+      "red_expectation": "Violate the independent literal expectation: both scores and semantic findings remain saved with commentary unavailable and explicit feedback retry; omission or provider failure does not become a scoring penalty or human queue",
+      "green_expectation": "Observe both scores and semantic findings remain saved with commentary unavailable and explicit feedback retry; omission or provider failure does not become a scoring penalty or human queue",
+      "test_id": "planned::answer-components::ANS-05.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-05.P1.S2.NEGATIVE",
+      "property_id": "ANS-05.P1",
+      "polarity": "negative",
+      "scenario": "ANS-05 Feedback unavailable",
+      "scenario_fingerprint": "2be5dbf8fb9854214ab435afb3e82b72ad433e0639c57712f5ec71f022978d41",
+      "setup": "a saved primary grade 100, explanation score 0 and retained false-rule finding. Action: the feedback provider times out. Counterexample: Replace saved explanation0 or primary100 with failed/zero score after commentary timeout.",
+      "observable": "both scores and semantic findings remain saved with commentary unavailable and explicit feedback retry; omission or provider failure does not become a scoring penalty or human queue",
+      "red_expectation": "Violate the independent literal expectation: both scores and semantic findings remain saved with commentary unavailable and explicit feedback retry; omission or provider failure does not become a scoring penalty or human queue",
+      "green_expectation": "Observe both scores and semantic findings remain saved with commentary unavailable and explicit feedback retry; omission or provider failure does not become a scoring penalty or human queue",
+      "test_id": "planned::answer-components::ANS-05.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-06.P1.S1.POSITIVE",
+      "property_id": "ANS-06.P1",
+      "polarity": "positive",
+      "scenario": "ANS-06 Frozen old result",
+      "scenario_fingerprint": "945e9dd11df1687b2465814f2c8097c5a3eec36b43c2d0a1c9d41008b067e327",
+      "setup": "an existing result bound to an explicitly frozen legacy four-component policy. Action: answer-components-v2 is activated for new attempts. Use actual supported native-owner observations.",
+      "observable": "the historical result retains its original grade/policy and a new ordinary attempt uses the new independent-component policy; comparisons label the distinct populations",
+      "red_expectation": "Violate the independent literal expectation: the historical result retains its original grade/policy and a new ordinary attempt uses the new independent-component policy; comparisons label the distinct populations",
+      "green_expectation": "Observe the historical result retains its original grade/policy and a new ordinary attempt uses the new independent-component policy; comparisons label the distinct populations",
+      "test_id": "planned::answer-components::ANS-06.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-06.P1.S1.NEGATIVE",
+      "property_id": "ANS-06.P1",
+      "polarity": "negative",
+      "scenario": "ANS-06 Frozen old result",
+      "scenario_fingerprint": "945e9dd11df1687b2465814f2c8097c5a3eec36b43c2d0a1c9d41008b067e327",
+      "setup": "an existing result bound to an explicitly frozen legacy four-component policy. Action: answer-components-v2 is activated for new attempts. Counterexample: Automatically regrade the historical frozen legacy result after new policy activation.",
+      "observable": "the historical result retains its original grade/policy and a new ordinary attempt uses the new independent-component policy; comparisons label the distinct populations",
+      "red_expectation": "Violate the independent literal expectation: the historical result retains its original grade/policy and a new ordinary attempt uses the new independent-component policy; comparisons label the distinct populations",
+      "green_expectation": "Observe the historical result retains its original grade/policy and a new ordinary attempt uses the new independent-component policy; comparisons label the distinct populations",
+      "test_id": "planned::answer-components::ANS-06.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-06.P1.S2.POSITIVE",
+      "property_id": "ANS-06.P1",
+      "polarity": "positive",
+      "scenario": "ANS-06 Explanation unknown in Lab",
+      "scenario_fingerprint": "4e82be8bb69df14ea463c1acf7768576b6db5b34cab51ca8a86ce361a1ca75ae",
+      "setup": "a current reference packet expects correct repair, primary 100 and unknown supplied explanation with EA=1. Action: a candidate drops the unknown explanation from EA or returns zero primary credit. Use actual supported native-owner observations.",
+      "observable": "the independent Lab oracle records the component/population mismatch; static schema receipts cannot report the candidate as a successful model observation",
+      "red_expectation": "Violate the independent literal expectation: the independent Lab oracle records the component/population mismatch; static schema receipts cannot report the candidate as a successful model observation",
+      "green_expectation": "Observe the independent Lab oracle records the component/population mismatch; static schema receipts cannot report the candidate as a successful model observation",
+      "test_id": "planned::answer-components::ANS-06.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-06.P1.S2.NEGATIVE",
+      "property_id": "ANS-06.P1",
+      "polarity": "negative",
+      "scenario": "ANS-06 Explanation unknown in Lab",
+      "scenario_fingerprint": "4e82be8bb69df14ea463c1acf7768576b6db5b34cab51ca8a86ce361a1ca75ae",
+      "setup": "a current reference packet expects correct repair, primary 100 and unknown supplied explanation with EA=1. Action: a candidate drops the unknown explanation from EA or returns zero primary credit. Counterexample: Exclude unknown supplied explanation from a Lab packet population and call static schema validation an actual model success.",
+      "observable": "the independent Lab oracle records the component/population mismatch; static schema receipts cannot report the candidate as a successful model observation",
+      "red_expectation": "Violate the independent literal expectation: the independent Lab oracle records the component/population mismatch; static schema receipts cannot report the candidate as a successful model observation",
+      "green_expectation": "Observe the independent Lab oracle records the component/population mismatch; static schema receipts cannot report the candidate as a successful model observation",
+      "test_id": "planned::answer-components::ANS-06.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-07.P1.S1.POSITIVE",
+      "property_id": "ANS-07.P1",
+      "polarity": "positive",
+      "scenario": "ANS-07 Typed manifest projection",
+      "scenario_fingerprint": "ffcb8b447b105ad45758e620c8e6f6b40220cdffc48830058d550e0360ffeb07",
+      "setup": "saved clean She works here, mutated She work here and the selected agreement recipe. Action: mutation provenance is stored. Use actual supported native-owner observations.",
+      "observable": "the manifest references the actual candidate assets/JCS hashes, original and changed text and selected recipe; the old custom provenance DTO is not substituted",
+      "red_expectation": "Violate the independent literal expectation: the manifest references the actual candidate assets/JCS hashes, original and changed text and selected recipe; the old custom provenance DTO is not substituted",
+      "green_expectation": "Observe the manifest references the actual candidate assets/JCS hashes, original and changed text and selected recipe; the old custom provenance DTO is not substituted",
+      "test_id": "planned::answer-components::ANS-07.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-07.P1.S1.NEGATIVE",
+      "property_id": "ANS-07.P1",
+      "polarity": "negative",
+      "scenario": "ANS-07 Typed manifest projection",
+      "scenario_fingerprint": "ffcb8b447b105ad45758e620c8e6f6b40220cdffc48830058d550e0360ffeb07",
+      "setup": "saved clean She works here, mutated She work here and the selected agreement recipe. Action: mutation provenance is stored. Counterexample: Use the old custom edit/provenance DTO without typed manifest asset/hash association.",
+      "observable": "the manifest references the actual candidate assets/JCS hashes, original and changed text and selected recipe; the old custom provenance DTO is not substituted",
+      "red_expectation": "Violate the independent literal expectation: the manifest references the actual candidate assets/JCS hashes, original and changed text and selected recipe; the old custom provenance DTO is not substituted",
+      "green_expectation": "Observe the manifest references the actual candidate assets/JCS hashes, original and changed text and selected recipe; the old custom provenance DTO is not substituted",
+      "test_id": "planned::answer-components::ANS-07.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-07.P1.S2.POSITIVE",
+      "property_id": "ANS-07.P1",
+      "polarity": "positive",
+      "scenario": "ANS-07 Source notice and independent exercise",
+      "scenario_fingerprint": "25b5cb7a9163df1a9e0a4ec06cd7742476e9cff2a466c693221f7a7f639b4cc0",
+      "setup": "a source revoke notice and a generated exercise without that source dependency. Action: revoke saves the notice. Use actual supported native-owner observations.",
+      "observable": "selected-source status/provenance reflect the notice, no permission epoch is required and the independent generated exercise remains usable without interpreting the source as unrestricted",
+      "red_expectation": "Violate the independent literal expectation: selected-source status/provenance reflect the notice, no permission epoch is required and the independent generated exercise remains usable without interpreting the source as unrestricted",
+      "green_expectation": "Observe selected-source status/provenance reflect the notice, no permission epoch is required and the independent generated exercise remains usable without interpreting the source as unrestricted",
+      "test_id": "planned::answer-components::ANS-07.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-07.P1.S2.NEGATIVE",
+      "property_id": "ANS-07.P1",
+      "polarity": "negative",
+      "scenario": "ANS-07 Source notice and independent exercise",
+      "scenario_fingerprint": "25b5cb7a9163df1a9e0a4ec06cd7742476e9cff2a466c693221f7a7f639b4cc0",
+      "setup": "a source revoke notice and a generated exercise without that source dependency. Action: revoke saves the notice. Counterexample: Require a source permission epoch or block an independent authored exercise for the unrelated source notice.",
+      "observable": "selected-source status/provenance reflect the notice, no permission epoch is required and the independent generated exercise remains usable without interpreting the source as unrestricted",
+      "red_expectation": "Violate the independent literal expectation: selected-source status/provenance reflect the notice, no permission epoch is required and the independent generated exercise remains usable without interpreting the source as unrestricted",
+      "green_expectation": "Observe selected-source status/provenance reflect the notice, no permission epoch is required and the independent generated exercise remains usable without interpreting the source as unrestricted",
+      "test_id": "planned::answer-components::ANS-07.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-08.P1.S1.POSITIVE",
+      "property_id": "ANS-08.P1",
+      "polarity": "positive",
+      "scenario": "ANS-08 Fourth explicit render attempt",
+      "scenario_fingerprint": "ef133fc8a1103d96a56443b547d7606fd3f56b5ad8936e892785d66db4e72031",
+      "setup": "three manually requested failed renders during an outage and an unchanged saved candidate after service recovery. Action: the user explicitly retries a fourth time. Use actual supported native-owner observations.",
+      "observable": "a fourth recorded foreground render is allowed with frozen content/bindings and original per-operation bounds; no automatic indefinite loop occurs",
+      "red_expectation": "Violate the independent literal expectation: a fourth recorded foreground render is allowed with frozen content/bindings and original per-operation bounds; no automatic indefinite loop occurs",
+      "green_expectation": "Observe a fourth recorded foreground render is allowed with frozen content/bindings and original per-operation bounds; no automatic indefinite loop occurs",
+      "test_id": "planned::answer-components::ANS-08.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-08.P1.S1.NEGATIVE",
+      "property_id": "ANS-08.P1",
+      "polarity": "negative",
+      "scenario": "ANS-08 Fourth explicit render attempt",
+      "scenario_fingerprint": "ef133fc8a1103d96a56443b547d7606fd3f56b5ad8936e892785d66db4e72031",
+      "setup": "three manually requested failed renders during an outage and an unchanged saved candidate after service recovery. Action: the user explicitly retries a fourth time. Counterexample: Reject the fourth explicit manual render solely due to a candidate-lifetime three-attempt ceiling.",
+      "observable": "a fourth recorded foreground render is allowed with frozen content/bindings and original per-operation bounds; no automatic indefinite loop occurs",
+      "red_expectation": "Violate the independent literal expectation: a fourth recorded foreground render is allowed with frozen content/bindings and original per-operation bounds; no automatic indefinite loop occurs",
+      "green_expectation": "Observe a fourth recorded foreground render is allowed with frozen content/bindings and original per-operation bounds; no automatic indefinite loop occurs",
+      "test_id": "planned::answer-components::ANS-08.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-08.P1.S2.POSITIVE",
+      "property_id": "ANS-08.P1",
+      "polarity": "positive",
+      "scenario": "ANS-08 One linguistic output repair",
+      "scenario_fingerprint": "94e907f0782793c6b6286bda3176b3267b0d229945c45b397c28fdead1e72cab",
+      "setup": "truncated linguistic-audit JSON within the stage budget. Action: the adapter invokes one same-profile repair. Use actual supported native-owner observations.",
+      "observable": "one complete supported object can be accepted with the original failed output retained; a second repair loop or fabricated missing observation is not accepted",
+      "red_expectation": "Violate the independent literal expectation: one complete supported object can be accepted with the original failed output retained; a second repair loop or fabricated missing observation is not accepted",
+      "green_expectation": "Observe one complete supported object can be accepted with the original failed output retained; a second repair loop or fabricated missing observation is not accepted",
+      "test_id": "planned::answer-components::ANS-08.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-08.P1.S2.NEGATIVE",
+      "property_id": "ANS-08.P1",
+      "polarity": "negative",
+      "scenario": "ANS-08 One linguistic output repair",
+      "scenario_fingerprint": "94e907f0782793c6b6286bda3176b3267b0d229945c45b397c28fdead1e72cab",
+      "setup": "truncated linguistic-audit JSON within the stage budget. Action: the adapter invokes one same-profile repair. Counterexample: Request a second linguistic-output repair or invent missing measured content.",
+      "observable": "one complete supported object can be accepted with the original failed output retained; a second repair loop or fabricated missing observation is not accepted",
+      "red_expectation": "Violate the independent literal expectation: one complete supported object can be accepted with the original failed output retained; a second repair loop or fabricated missing observation is not accepted",
+      "green_expectation": "Observe one complete supported object can be accepted with the original failed output retained; a second repair loop or fabricated missing observation is not accepted",
+      "test_id": "planned::answer-components::ANS-08.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-09.P1.S1.POSITIVE",
+      "property_id": "ANS-09.P1",
+      "polarity": "positive",
+      "scenario": "ANS-09 Local first use",
+      "scenario_fingerprint": "1c67c8b29f877370f60230fb873a5af35a5d39dc5a23dbc1b541534a90365ec9",
+      "setup": "only a configured LLM key and missing Kokoro local assets. Action: the user selects the visible model-setup action and then Generate after successful setup. Use actual supported native-owner observations.",
+      "observable": "the local profile is frozen, speech requires no Azure key and ordinary exercise generation proceeds with actual stored audio",
+      "red_expectation": "Violate the independent literal expectation: the local profile is frozen, speech requires no Azure key and ordinary exercise generation proceeds with actual stored audio",
+      "green_expectation": "Observe the local profile is frozen, speech requires no Azure key and ordinary exercise generation proceeds with actual stored audio",
+      "test_id": "planned::answer-components::ANS-09.P1.S1.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-09.P1.S1.NEGATIVE",
+      "property_id": "ANS-09.P1",
+      "polarity": "negative",
+      "scenario": "ANS-09 Local first use",
+      "scenario_fingerprint": "1c67c8b29f877370f60230fb873a5af35a5d39dc5a23dbc1b541534a90365ec9",
+      "setup": "only a configured LLM key and missing Kokoro local assets. Action: the user selects the visible model-setup action and then Generate after successful setup. Counterexample: Require an Azure speech key even though local assets were explicitly set up and local rendering was selected.",
+      "observable": "the local profile is frozen, speech requires no Azure key and ordinary exercise generation proceeds with actual stored audio",
+      "red_expectation": "Violate the independent literal expectation: the local profile is frozen, speech requires no Azure key and ordinary exercise generation proceeds with actual stored audio",
+      "green_expectation": "Observe the local profile is frozen, speech requires no Azure key and ordinary exercise generation proceeds with actual stored audio",
+      "test_id": "planned::answer-components::ANS-09.P1.S1.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-09.P1.S2.POSITIVE",
+      "property_id": "ANS-09.P1",
+      "polarity": "positive",
+      "scenario": "ANS-09 Missing local assets or service key",
+      "scenario_fingerprint": "3875bf878578026e4af3669bd4762280eeddc501073e688fed13bbf3eebf35cd",
+      "setup": "local assets remain absent or external speech was explicitly selected without its key. Action: rendering is requested. Use actual supported native-owner observations.",
+      "observable": "the selected route exposes its actual setup/configuration failure and explicit continuation; it cannot silently change providers or report a successful audio asset",
+      "red_expectation": "Violate the independent literal expectation: the selected route exposes its actual setup/configuration failure and explicit continuation; it cannot silently change providers or report a successful audio asset",
+      "green_expectation": "Observe the selected route exposes its actual setup/configuration failure and explicit continuation; it cannot silently change providers or report a successful audio asset",
+      "test_id": "planned::answer-components::ANS-09.P1.S2.POSITIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
+    },
+    {
+      "id": "ANS-09.P1.S2.NEGATIVE",
+      "property_id": "ANS-09.P1",
+      "polarity": "negative",
+      "scenario": "ANS-09 Missing local assets or service key",
+      "scenario_fingerprint": "3875bf878578026e4af3669bd4762280eeddc501073e688fed13bbf3eebf35cd",
+      "setup": "local assets remain absent or external speech was explicitly selected without its key. Action: rendering is requested. Counterexample: Silently switch the selected local/service profile, or publish successful audio with absent weights/key.",
+      "observable": "the selected route exposes its actual setup/configuration failure and explicit continuation; it cannot silently change providers or report a successful audio asset",
+      "red_expectation": "Violate the independent literal expectation: the selected route exposes its actual setup/configuration failure and explicit continuation; it cannot silently change providers or report a successful audio asset",
+      "green_expectation": "Observe the selected route exposes its actual setup/configuration failure and explicit continuation; it cannot silently change providers or report a successful audio asset",
+      "test_id": "planned::answer-components::ANS-09.P1.S2.NEGATIVE",
+      "command_id": "pending",
+      "state": "blocked",
+      "source_path": "tests/acceptance/test_answer_components.py",
+      "source_sha256": null,
+      "invalidation_dependencies": [
+        "specification/v2/docs/answer-component-scoring.md",
+        "specification/v2/contracts/evaluator-output.schema.json",
+        "specification/v2/contracts/scoring-input.schema.json",
+        "specification/v2/contracts/score-result.schema.json",
+        "specification/v2/contracts/judgment-issue.schema.json",
+        "specification/v2/prompts/map-v1.txt",
+        "specification/v2/prompts/feedback-v1.txt",
+        "specification/v2/domain/configuration-registry.yaml",
+        "specification/v2/domain/operations.yaml",
+        "specification/v2/domain/operation-ownership.yaml",
+        "openspec/changes/implement-teacher-error-trainer/specs/answer-component-scoring/spec.md"
+      ],
+      "substitution": {
+        "classification": "UNDECIDED",
+        "note": "Static contract/oracle checks are not actual model, application, speech or Lab evidence."
+      },
+      "blocker": "Specification-only authority; application implementation and model/audio/Lab observations remain unperformed."
     }
   ],
   "commands": [
@@ -52371,7 +53835,43 @@
         "planned::product-data-relevance::DREL-03.P1.S1.POSITIVE",
         "planned::product-data-relevance::DREL-03.P1.S1.NEGATIVE",
         "planned::product-data-relevance::DREL-03.P1.S2.POSITIVE",
-        "planned::product-data-relevance::DREL-03.P1.S2.NEGATIVE"
+        "planned::product-data-relevance::DREL-03.P1.S2.NEGATIVE",
+        "planned::answer-components::ANS-01.P1.S1.POSITIVE",
+        "planned::answer-components::ANS-01.P1.S1.NEGATIVE",
+        "planned::answer-components::ANS-01.P1.S2.POSITIVE",
+        "planned::answer-components::ANS-01.P1.S2.NEGATIVE",
+        "planned::answer-components::ANS-02.P1.S1.POSITIVE",
+        "planned::answer-components::ANS-02.P1.S1.NEGATIVE",
+        "planned::answer-components::ANS-02.P1.S2.POSITIVE",
+        "planned::answer-components::ANS-02.P1.S2.NEGATIVE",
+        "planned::answer-components::ANS-03.P1.S1.POSITIVE",
+        "planned::answer-components::ANS-03.P1.S1.NEGATIVE",
+        "planned::answer-components::ANS-03.P1.S2.POSITIVE",
+        "planned::answer-components::ANS-03.P1.S2.NEGATIVE",
+        "planned::answer-components::ANS-04.P1.S1.POSITIVE",
+        "planned::answer-components::ANS-04.P1.S1.NEGATIVE",
+        "planned::answer-components::ANS-04.P1.S2.POSITIVE",
+        "planned::answer-components::ANS-04.P1.S2.NEGATIVE",
+        "planned::answer-components::ANS-05.P1.S1.POSITIVE",
+        "planned::answer-components::ANS-05.P1.S1.NEGATIVE",
+        "planned::answer-components::ANS-05.P1.S2.POSITIVE",
+        "planned::answer-components::ANS-05.P1.S2.NEGATIVE",
+        "planned::answer-components::ANS-06.P1.S1.POSITIVE",
+        "planned::answer-components::ANS-06.P1.S1.NEGATIVE",
+        "planned::answer-components::ANS-06.P1.S2.POSITIVE",
+        "planned::answer-components::ANS-06.P1.S2.NEGATIVE",
+        "planned::answer-components::ANS-07.P1.S1.POSITIVE",
+        "planned::answer-components::ANS-07.P1.S1.NEGATIVE",
+        "planned::answer-components::ANS-07.P1.S2.POSITIVE",
+        "planned::answer-components::ANS-07.P1.S2.NEGATIVE",
+        "planned::answer-components::ANS-08.P1.S1.POSITIVE",
+        "planned::answer-components::ANS-08.P1.S1.NEGATIVE",
+        "planned::answer-components::ANS-08.P1.S2.POSITIVE",
+        "planned::answer-components::ANS-08.P1.S2.NEGATIVE",
+        "planned::answer-components::ANS-09.P1.S1.POSITIVE",
+        "planned::answer-components::ANS-09.P1.S1.NEGATIVE",
+        "planned::answer-components::ANS-09.P1.S2.POSITIVE",
+        "planned::answer-components::ANS-09.P1.S2.NEGATIVE"
       ]
     },
     {

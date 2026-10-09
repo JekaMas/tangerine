@@ -23,3 +23,5 @@ The current completeness reconciliation is ../../audit/flow-fullness-20261009/RE
 AI-affecting development must use the selected Lab and reconcile owned prompts/context/inference through docs/ai-development.md. This project workflow requirement does not make Lab necessary for ordinary downloaded application use.
 
 Current dependency relevance and removed requirements are owned by docs/product-data-relevance.md and domain/product-data-relevance.v1.json. Earlier remaining-input reports retain historical observations; their blanket acquisition/certification requests are not current product completion tasks.
+
+The active answer policy is docs/answer-component-scoring.md: correction and optional supplied explanation are assessed separately, no omission penalty, and primary grades remain independent of rationale-only issues. New installations use local speech by default with an explicit model-setup action; configured service synthesis remains available.

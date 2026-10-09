@@ -139,6 +139,53 @@
                   }
                 ],
                 "description": "This code states why the correction or explanation cannot receive a resolved judgment."
+              },
+              "additional_assertions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "description": "An additional substantive assertion in this component, judged independently from other components.",
+                  "properties": {
+                    "start_cp": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "Original answer Unicode codepoint start."
+                    },
+                    "end_cp": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "Original answer Unicode codepoint end, exclusive."
+                    },
+                    "exact_text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Literal original answer slice; no rewritten teacher assertion."
+                    },
+                    "judgment": {
+                      "type": "string",
+                      "enum": [
+                        "supported",
+                        "unsupported",
+                        "unknown"
+                      ],
+                      "description": "Contextual semantic truth/support judgment, not a numeric grade."
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Case/rule-grounded explanation, or explicit unknown reason."
+                    }
+                  },
+                  "required": [
+                    "start_cp",
+                    "end_cp",
+                    "exact_text",
+                    "judgment",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "Actual substantive assertions not already represented by required/forbidden propositions, only within this component."
               }
             },
             "required": [
@@ -148,10 +195,11 @@
               "violated_proposition_ids",
               "status",
               "support_evidence_ids",
-              "unresolved_reason"
+              "unresolved_reason",
+              "additional_assertions"
             ],
             "additionalProperties": false,
-            "description": "This flag or object describes correction requirements or decisions in its parent contract."
+            "description": "Independent correction assessment; rationale assertions cannot cancel a valid repair."
           },
           "explanation": {
             "type": "object",
@@ -226,6 +274,53 @@
                   }
                 ],
                 "description": "This code states why the correction or explanation cannot receive a resolved judgment."
+              },
+              "additional_assertions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "description": "An additional substantive assertion in this component, judged independently from other components.",
+                  "properties": {
+                    "start_cp": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "Original answer Unicode codepoint start."
+                    },
+                    "end_cp": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "Original answer Unicode codepoint end, exclusive."
+                    },
+                    "exact_text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Literal original answer slice; no rewritten teacher assertion."
+                    },
+                    "judgment": {
+                      "type": "string",
+                      "enum": [
+                        "supported",
+                        "unsupported",
+                        "unknown"
+                      ],
+                      "description": "Contextual semantic truth/support judgment, not a numeric grade."
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Case/rule-grounded explanation, or explicit unknown reason."
+                    }
+                  },
+                  "required": [
+                    "start_cp",
+                    "end_cp",
+                    "exact_text",
+                    "judgment",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "Actual substantive assertions not already represented by required/forbidden propositions, only within this component."
               }
             },
             "required": [
@@ -235,10 +330,11 @@
               "violated_proposition_ids",
               "status",
               "support_evidence_ids",
-              "unresolved_reason"
+              "unresolved_reason",
+              "additional_assertions"
             ],
             "additionalProperties": false,
-            "description": "This flag or object describes explanation requirements or judgments in its parent contract."
+            "description": "Optional explanation assessment even when task flag is false; absence is not a primary-grade penalty."
           },
           "evidence_ids": {
             "type": "array",

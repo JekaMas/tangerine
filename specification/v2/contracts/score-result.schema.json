@@ -5090,7 +5090,7 @@
         "exact_value_0_100"
       ],
       "additionalProperties": false,
-      "description": "This object contains the policy-derived aggregate score and its applicability."
+      "description": "Policy-derived primary grade; answer-components-v2 excludes optional explanation while historical frozen policies retain their original definition."
     },
     "item_decision_ids": {
       "type": "array",
@@ -5177,10 +5177,18 @@
               "maximum": 9007199254740991
             },
             "CK": {
-              "type": "integer",
-              "minimum": 0,
-              "description": "Number of supplied eligible corrections with credit exactly one.",
-              "maximum": 9007199254740991
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Number of supplied eligible corrections with credit exactly one.",
+                  "maximum": 9007199254740991
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Known correction statistic, or null when an included correction is genuinely unresolved; cannot be null solely due to optional explanation uncertainty."
             },
             "GE": {
               "type": "integer",
@@ -5201,10 +5209,18 @@
               "maximum": 9007199254740991
             },
             "EK": {
-              "type": "integer",
-              "minimum": 0,
-              "description": "Number of supplied eligible explanations with credit exactly one.",
-              "maximum": 9007199254740991
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Number of supplied eligible explanations with credit exactly one.",
+                  "maximum": 9007199254740991
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Known original population statistic, null while any eligible optional explanation credit is unresolved; never hide that row."
             },
             "FC": {
               "type": "integer",
@@ -5274,54 +5290,70 @@
               "description": "Sum of hierarchical credit for the TP units."
             },
             "CQ": {
-              "type": "object",
-              "properties": {
-                "numerator": {
-                  "type": "string",
-                  "description": "The exact nonnegative numerator.",
-                  "maxLength": 4096,
-                  "minLength": 1,
-                  "pattern": "^(0|[1-9][0-9]*)$"
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string",
+                      "description": "The exact nonnegative numerator.",
+                      "maxLength": 4096,
+                      "minLength": 1,
+                      "pattern": "^(0|[1-9][0-9]*)$"
+                    },
+                    "denominator": {
+                      "type": "string",
+                      "description": "The exact positive denominator.",
+                      "maxLength": 4096,
+                      "minLength": 1,
+                      "pattern": "^[1-9][0-9]*$"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Sum of correction credit for eligible TP units."
                 },
-                "denominator": {
-                  "type": "string",
-                  "description": "The exact positive denominator.",
-                  "maxLength": 4096,
-                  "minLength": 1,
-                  "pattern": "^[1-9][0-9]*$"
+                {
+                  "type": "null"
                 }
-              },
-              "required": [
-                "numerator",
-                "denominator"
               ],
-              "additionalProperties": false,
-              "description": "Sum of correction credit for eligible TP units."
+              "description": "Known correction statistic, or null when an included correction is genuinely unresolved; cannot be null solely due to optional explanation uncertainty."
             },
             "EQ": {
-              "type": "object",
-              "properties": {
-                "numerator": {
-                  "type": "string",
-                  "description": "The exact nonnegative numerator.",
-                  "maxLength": 4096,
-                  "minLength": 1,
-                  "pattern": "^(0|[1-9][0-9]*)$"
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string",
+                      "description": "The exact nonnegative numerator.",
+                      "maxLength": 4096,
+                      "minLength": 1,
+                      "pattern": "^(0|[1-9][0-9]*)$"
+                    },
+                    "denominator": {
+                      "type": "string",
+                      "description": "The exact positive denominator.",
+                      "maxLength": 4096,
+                      "minLength": 1,
+                      "pattern": "^[1-9][0-9]*$"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Sum of explanation credit for eligible TP units."
                 },
-                "denominator": {
-                  "type": "string",
-                  "description": "The exact positive denominator.",
-                  "maxLength": 4096,
-                  "minLength": 1,
-                  "pattern": "^[1-9][0-9]*$"
+                {
+                  "type": "null"
                 }
-              },
-              "required": [
-                "numerator",
-                "denominator"
               ],
-              "additionalProperties": false,
-              "description": "Sum of explanation credit for eligible TP units."
+              "description": "Known original population statistic, null while any eligible optional explanation credit is unresolved; never hide that row."
             },
             "WFP": {
               "type": "integer",

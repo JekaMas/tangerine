@@ -48,9 +48,9 @@ internal:
   proxy_timeout_seconds: 300
   browser_timeout_seconds: 310
   transport_retries_per_request: 1
-  render_attempts_per_candidate: 3
+  render_attempts_per_candidate: null # no manual lifetime ceiling
   llm_profile: deepseek-flash-low-v1
-  speech_profile: azure-standard-en-v1
+  speech_profile: kokoro-local-en-v1 # first-use LLM-key-only path; service is an explicit choice
   local_speech_profile: kokoro-local-en-v1
   local_speech_device: cpu
   generation_canonical_seconds: 90
@@ -101,7 +101,7 @@ simple_preparation:
     detection: true
     classification: false
     correction: true
-    explanation: false
+    explanation: false # optional invitation only; always assess supplied reasons
   pace_wpm: 150
   pace_tolerance_fraction: 0.2
   gap_after_ms: 0

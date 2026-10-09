@@ -1,0 +1,164 @@
+[
+  {
+    "property_id": "ANS-01.P1",
+    "scenario": "ANS-01 Correct repair with false reason",
+    "given": "the only error is present-context She work here and the answer says Use works because third-person agreement applies and every English verb ends in s",
+    "when": "the mapper assesses the two components",
+    "expected": "correction credit is 1, detection TP is 1 and the default primary grade is 100; the explanation records the supported agreement fact and unsupported universal rule, earns explanation credit 0 and receives feedback on both",
+    "negative_counterexample": "Return correction credit 0 solely because the separately extracted universal-rule explanation is false.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  },
+  {
+    "property_id": "ANS-01.P1",
+    "scenario": "ANS-01 Explanation omitted or flag false",
+    "given": "a correct Use works answer without explanation, or with a correct agreement explanation while task_components.explanation=false",
+    "when": "grading runs",
+    "expected": "the omitted explanation has supplied=false and optional score N/A without a penalty; the supplied eligible correct explanation is assessed and scores 100; both primary grades remain 100",
+    "negative_counterexample": "Skip the supplied explanation because its legacy invitation flag is false, or grade omitted explanation as a primary zero.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  },
+  {
+    "property_id": "ANS-02.P1",
+    "scenario": "ANS-02 True extra explanation detail",
+    "given": "Use works because she is singular and the intended tense is present with an eligible agreement rubric",
+    "when": "the mapper supports the actual additional present-tense assertion",
+    "expected": "its span equals the frozen substring, its contextual reason is retained, correction and explanation each retain credit 1 and no new rubric ID or detection FP is invented",
+    "negative_counterexample": "Invent a forbidden proposition ID for the extra present-tense detail, or cite a span not equal to the actual answer slice.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  },
+  {
+    "property_id": "ANS-02.P1",
+    "scenario": "ANS-02 False repair versus false rationale",
+    "given": "the fixed present-context error and either Use worked or Use works because every English verb ends in s",
+    "when": "the unsupported assertion is projected",
+    "expected": "the first answer has correction credit 0 and primary grade 60; the second keeps correction credit 1 and primary grade 100 with explanation credit 0; unsupported component labels or fabricated spans are repaired as output defects",
+    "negative_counterexample": "Assign the false universal-rule reason to correction, or let a true reason rescue an incorrect past-tense repair.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  },
+  {
+    "property_id": "ANS-03.P1",
+    "scenario": "ANS-03 Unknown optional reason",
+    "given": "G=GC=TP=1 and correction credit 1 with a supplied eligible explanation whose extra rule remains unknown",
+    "when": "scoring persists the result",
+    "expected": "primary grade is 100, result is complete, GE=TE=EA=1, EK/EQ are null and the explanation issue has affected_components=[explanation] and blocks_final_score=false",
+    "negative_counterexample": "Return blocks_final_score=true for explanation-only uncertainty, or remove the unknown reason from EA.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  },
+  {
+    "property_id": "ANS-03.P1",
+    "scenario": "ANS-03 Incompatible endorsed corrections",
+    "given": "Use works and use worked are both endorsed without retraction for the same fixed present context",
+    "when": "genuine correction interpretation remains unresolved after LLM reconsideration",
+    "expected": "selected correction/primary composite remain provisional; an explanation-only issue is not used to conceal that primary uncertainty or select the favorable repair",
+    "negative_counterexample": "Select only works from two incompatible endorsed repairs and publish primary 100 while meaning remains unresolved.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  },
+  {
+    "property_id": "ANS-04.P1",
+    "scenario": "ANS-04 Missing optional explanation in pooled results",
+    "given": "two one-error attempts each with correct detection/correction, one with correct eligible explanation and one without",
+    "when": "same-policy raw statistics are pooled",
+    "expected": "G=GC=TP=2, CQ=2, GE=TE=2, EA=EQ=1; primary grade is 100, optional explanation score is 100, coverage and graded recall are 1/2 and do not penalize primary grade",
+    "negative_counterexample": "Pool EA=2 for one supplied/one absent reason and use graded recall 1/2 to reduce primary grade.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  },
+  {
+    "property_id": "ANS-04.P1",
+    "scenario": "ANS-04 Partial repair with true reason",
+    "given": "G=GC=TP=1, a repair satisfies one of two required propositions without forbidden assertions, and a supplied explanation is fully correct",
+    "when": "the exact server scorer projects credit",
+    "expected": "CQ=1/2 and default primary grade is 80; explanation score is 100 and cannot increase correction credit; no LLM numeric grade or legacy explanation weight is adopted",
+    "negative_counterexample": "Use explanation weight10 or LLM-provided partial credit to change the independently expected primary80.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  },
+  {
+    "property_id": "ANS-05.P1",
+    "scenario": "ANS-05 Explanation revision",
+    "given": "a saved primary grade 100 and wrong explanation with the original audio/key/answer identities",
+    "when": "explicit LLM reconsideration resolves only the explanation differently using supported evidence",
+    "expected": "a versioned explanation/feedback revision records the changed assessment and provenance while primary statistics and heard audio remain identical; a required actual rubric repair still uses key versioning",
+    "negative_counterexample": "Rewrite primary statistics or heard audio for an explanation-only revision with no changed primary evidence.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  },
+  {
+    "property_id": "ANS-05.P1",
+    "scenario": "ANS-05 Feedback unavailable",
+    "given": "a saved primary grade 100, explanation score 0 and retained false-rule finding",
+    "when": "the feedback provider times out",
+    "expected": "both scores and semantic findings remain saved with commentary unavailable and explicit feedback retry; omission or provider failure does not become a scoring penalty or human queue",
+    "negative_counterexample": "Replace saved explanation0 or primary100 with failed/zero score after commentary timeout.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  },
+  {
+    "property_id": "ANS-06.P1",
+    "scenario": "ANS-06 Frozen old result",
+    "given": "an existing result bound to an explicitly frozen legacy four-component policy",
+    "when": "answer-components-v2 is activated for new attempts",
+    "expected": "the historical result retains its original grade/policy and a new ordinary attempt uses the new independent-component policy; comparisons label the distinct populations",
+    "negative_counterexample": "Automatically regrade the historical frozen legacy result after new policy activation.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  },
+  {
+    "property_id": "ANS-06.P1",
+    "scenario": "ANS-06 Explanation unknown in Lab",
+    "given": "a current reference packet expects correct repair, primary 100 and unknown supplied explanation with EA=1",
+    "when": "a candidate drops the unknown explanation from EA or returns zero primary credit",
+    "expected": "the independent Lab oracle records the component/population mismatch; static schema receipts cannot report the candidate as a successful model observation",
+    "negative_counterexample": "Exclude unknown supplied explanation from a Lab packet population and call static schema validation an actual model success.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  },
+  {
+    "property_id": "ANS-07.P1",
+    "scenario": "ANS-07 Typed manifest projection",
+    "given": "saved clean She works here, mutated She work here and the selected agreement recipe",
+    "when": "mutation provenance is stored",
+    "expected": "the manifest references the actual candidate assets/JCS hashes, original and changed text and selected recipe; the old custom provenance DTO is not substituted",
+    "negative_counterexample": "Use the old custom edit/provenance DTO without typed manifest asset/hash association.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  },
+  {
+    "property_id": "ANS-07.P1",
+    "scenario": "ANS-07 Source notice and independent exercise",
+    "given": "a source revoke notice and a generated exercise without that source dependency",
+    "when": "revoke saves the notice",
+    "expected": "selected-source status/provenance reflect the notice, no permission epoch is required and the independent generated exercise remains usable without interpreting the source as unrestricted",
+    "negative_counterexample": "Require a source permission epoch or block an independent authored exercise for the unrelated source notice.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  },
+  {
+    "property_id": "ANS-08.P1",
+    "scenario": "ANS-08 Fourth explicit render attempt",
+    "given": "three manually requested failed renders during an outage and an unchanged saved candidate after service recovery",
+    "when": "the user explicitly retries a fourth time",
+    "expected": "a fourth recorded foreground render is allowed with frozen content/bindings and original per-operation bounds; no automatic indefinite loop occurs",
+    "negative_counterexample": "Reject the fourth explicit manual render solely due to a candidate-lifetime three-attempt ceiling.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  },
+  {
+    "property_id": "ANS-08.P1",
+    "scenario": "ANS-08 One linguistic output repair",
+    "given": "truncated linguistic-audit JSON within the stage budget",
+    "when": "the adapter invokes one same-profile repair",
+    "expected": "one complete supported object can be accepted with the original failed output retained; a second repair loop or fabricated missing observation is not accepted",
+    "negative_counterexample": "Request a second linguistic-output repair or invent missing measured content.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  },
+  {
+    "property_id": "ANS-09.P1",
+    "scenario": "ANS-09 Local first use",
+    "given": "only a configured LLM key and missing Kokoro local assets",
+    "when": "the user selects the visible model-setup action and then Generate after successful setup",
+    "expected": "the local profile is frozen, speech requires no Azure key and ordinary exercise generation proceeds with actual stored audio",
+    "negative_counterexample": "Require an Azure speech key even though local assets were explicitly set up and local rendering was selected.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  },
+  {
+    "property_id": "ANS-09.P1",
+    "scenario": "ANS-09 Missing local assets or service key",
+    "given": "local assets remain absent or external speech was explicitly selected without its key",
+    "when": "rendering is requested",
+    "expected": "the selected route exposes its actual setup/configuration failure and explicit continuation; it cannot silently change providers or report a successful audio asset",
+    "negative_counterexample": "Silently switch the selected local/service profile, or publish successful audio with absent weights/key.",
+    "proof": "Concrete unexecuted application/provider plan; independent constructed arithmetic in check.py has narrower scope."
+  }
+]

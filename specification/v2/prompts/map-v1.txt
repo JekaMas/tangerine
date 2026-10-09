@@ -10,7 +10,7 @@ Do not apply a generic claim to every error.
 If repeated targets have ambiguous locations, mark the claim unresolved.
 Evaluate an unlisted correction against existing required/forbidden semantic propositions; accept supported equivalent wording.
 If an unlisted observation can expose a key defect, mark the claim unresolved.
-If unretracted answers contradict each other, mark the claims unresolved.
+If unretracted correction alternatives contradict each other, mark correction unresolved. A wrong or unknown explanation does not unsettle a supported correction or detection.
 If the context is insufficient, mark the claim unresolved.
 Treat a repeated identical claim as a duplicate, not another true or false positive.
 Use correction and explanation content only from the extracted answer spans.
@@ -28,3 +28,8 @@ Reference only the exact supplied version and evidence scope.
 For a plausible off-key key defect, retain uncertainty for LLM adjudication. A correct novel correction may satisfy an existing option.
 Do not invent a fraction or a numeric grade.
 Do not select a favorable fragment from contradictory endorsed statements.
+
+Assess correction wording and optional explanation separately. Always assess a supplied explanation, even when the task explanation flag is false; never invent a missing reason. Keep rule statements in rationale spans, not in correction wording.
+For each component retain additional_assertions with exact original answer start_cp/end_cp/text, supported/unsupported/unknown and contextual reason. Cover substantive assertions through existing rubric propositions or these findings. A wrong additional rationale affects explanation only. A supported repair keeps its credit despite a false reason. Unknown optional explanation does not turn a supported detection decision into unresolved. Never supply numbers; native code calculates both applicable component scores.
+
+Retain unknown assertions even if another verified forbidden assertion already determines that component to be rejected with zero credit; do not discard unknown findings or unsettle other components.

@@ -35,12 +35,12 @@ The system SHALL extract quoted claims with half-open Unicode codepoint offsets 
 
 ### Requirement: DOM-04 Separate distinct claim outcomes
 
-The system SHALL deduplicate repeated assertions, preserve explicit retractions, require review for contradictions and keep unresolved classification separate from detection.
+The system SHALL deduplicate repeated assertions, preserve explicit retractions, scope contradictions to their actual component and keep unresolved classification/explanation separate from detection and correction under answer-components-v2.
 
 #### Scenario: DOM-04 supported and rejected inputs
 
 - **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL score resolved distinct assertions with retracted claims excluded as specified, and SHALL route contradictory/unresolved groups to review without final ratios
+- **THEN** it SHALL score resolved distinct assertions with retracted claims excluded as specified, and SHALL route unresolved primary groups to LLM reconsideration while retaining independent primary ratios for explanation-only issues
 
 ### Requirement: DOM-05 Represent exact ratios and N/A
 
@@ -53,12 +53,12 @@ The system SHALL store exact numerator and denominator, use null with no_opportu
 
 ### Requirement: DOM-06 Aggregate from raw decisions
 
-The system SHALL pool raw counters for aggregate metrics, provide domain breakdowns and never average percentages or publish a composite for unresolved claims.
+The system SHALL pool raw counters for aggregate metrics, provide domain breakdowns and never average percentages or publish a primary composite for unresolved primary claims. Optional explanation is separately scored over supplied eligible reasons, with no omission penalty.
 
 #### Scenario: DOM-06 supported and rejected inputs
 
 - **WHEN** the authorized operation receives supported inputs or a violating input
-- **THEN** it SHALL recalculate pooled counters across differently sized exercises, and SHALL reject percentage averaging and final metrics for unresolved evidence
+- **THEN** it SHALL recalculate pooled counters across differently sized exercises, and SHALL reject percentage averaging and final primary metrics for unresolved primary evidence; optional rationale uncertainty affects only dependent explanation metrics
 
 ### Requirement: DOM-07 Preserve auxiliary and unobserved metrics
 

@@ -118,7 +118,7 @@ Do not map absent fields to zero. Do not infer observed IPA from a reference-con
 Every one of the 122 taxonomy leaves has a target contract, including its permitted controls.
 A qualification key contains provider, model/engine observation, voice, locale, render operations, method versions, and target combination.
 A supported capability report uses actual target/control audio, exact final hashes, relevant measurements and one LLM review with explicit evidence modality. No capability report is a normal-use prerequisite.
-Allow at most three explicit render attempts for a candidate. A failure never deletes the target requirement.
+Explicit user render retries have no candidate-lifetime ceiling. Retain monotonic attempt history and every failure; each foreground action retains its deadline/idempotency/bounded automatic retries. A failure never deletes the target requirement.
 Changed profiles may serve new content immediately; optional canary diagnostics retain the exact actual profile and observations.
 Keep old published bytes and their review evidence. Do not retroactively assert that an alias stayed unchanged.
 

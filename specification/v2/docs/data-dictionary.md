@@ -48,7 +48,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | error-opportunity | schema hash | document.payload | 11 |
 | error-response | schema hash | derived DTO or actual operation input/output receipt | 8 |
 | evaluation-key | 2.0.0 | document.payload | 115 |
-| evaluator-output | 1.0.0 | derived DTO or actual operation input/output receipt | 26 |
+| evaluator-output | 1.0.0 | derived DTO or actual operation input/output receipt | 38 |
 | evidence | 2.0.0 | document.payload | 20 |
 | exact-rational | schema hash | derived DTO or actual operation input/output receipt | 2 |
 | extraction-input | 2.0.0 | derived DTO or actual operation input/output receipt | 9 |
@@ -64,7 +64,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | holdout-report | 2.0.0 | document.payload | 18 |
 | import-report | 2.0.0 | document.payload | 26 |
 | import-request | schema hash | derived DTO or actual operation input/output receipt | 4 |
-| judgment-issue | 2.0.0 | document.payload | 8 |
+| judgment-issue | 2.0.0 | document.payload | 9 |
 | key-disclosure | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | key-write | schema hash | document.payload | 3 |
 | library-item | schema hash | derived DTO or actual operation input/output receipt | 7 |
@@ -105,7 +105,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | review-decide-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 5 |
 | review-decision | 2.0.0 | document.payload | 26 |
 | score-result | 2.0.0 | document.payload | 406 |
-| scoring-input | schema hash | derived DTO or actual operation input/output receipt | 28 |
+| scoring-input | schema hash | derived DTO or actual operation input/output receipt | 29 |
 | source-format-binding | 2.0.0 | document.payload | 19 |
 | source-release-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 20 |
 | source-release | 2.0.0 | document.payload | 26 |

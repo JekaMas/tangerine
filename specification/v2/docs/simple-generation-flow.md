@@ -71,3 +71,5 @@ Prompt/context versions, actual inputs/outputs, diagnostic quality comparisons a
 Exact expansion, replayable edits and candidate-to-key projection are defined in generation-contract-details.md.
 
 Data dependency scope is specified in product-data-relevance.md: the generated key/actual answer supports scoring and targeted recommendations without source frequency, real participant cohorts or benchmark completion. Missing optional source contexts affect only their explicitly selected actions.
+
+Answer checking follows answer-components-v2 in answer-component-scoring.md: independent correction correctness plus an optional explanation assessment whenever supplied, without omission penalty or rationale-to-correction cancellation. Native code supplies the main score and separate applicable explanation score; feedback discusses both.

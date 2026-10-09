@@ -35,8 +35,8 @@ All members remain stored. The representative is the earliest endorsed claim, no
 Normalize exact duplicate content only with NFC, apostrophe equivalence, and whitespace rules.
 Exact duplicate consolidation does not erase arbitrary punctuation or change case. Semantic correction credit may accept harmless case/terminal-period variation under the contextual proposition rubric; it needs no per-case human approval.
 A retraction must explicitly refer to an earlier assertion. Its evidence span must occur later in the original answer.
-Reject cycles and forward references. A later contradiction without an explicit retraction remains unresolved.
-Compatible correction and explanation fragments can combine. An additional false clause remains part of the group's meaning.
+Reject cycles and forward references. A later contradiction without an explicit retraction remains unresolved only for its affected component; contradictory rationale does not unsettle an independently clear correction.
+Compatible fragments combine within their correction or explanation component. Keep each additional false clause in its actual component; do not mix rationale into correction credit.
 Do not choose only the most favorable alternative from contradictory endorsed repairs.
 
 ## Total stance table
@@ -63,16 +63,16 @@ For an eligible detected unit, an absent correction has supplied=false, option_i
 A supplied correction refers to exactly one reviewed option or a reviewed equivalent option set.
 The required proposition set must be nonempty. Every satisfied or violated ID must belong to that exact unit and option.
 `violated_proposition_ids` identifies forbidden assertions, not required propositions that were merely omitted.
-If a forbidden assertion exists, code sets credit to zero.
+If that component has a forbidden assertion or a verified unsupported additional_assertion, code sets that component credit to zero. Unknown additional assertions make only that component unavailable when no verified forbidden condition already determines zero.
 Otherwise code sets credit to the count of satisfied required propositions divided by the count of all required propositions.
-A complete normalized approved alternative sets all required propositions satisfied only if no additional contradictory clause remains.
+A complete supported correction satisfies its required propositions independently of explanation; an additional contradictory correction clause remains part of that correction.
 The LLM accepts a valid novel alternative that satisfies existing semantic propositions; a genuine rubric defect invokes LLM adjudication and creates a new key version.
 A correction for an ineligible control cannot earn correction credit. An unnecessary correction attached to FP increments FC once.
 
 An explanation always has option_id=null.
 Its propositions belong to the unit rationale, not a correction option.
-A category label alone is not an explanation. Unsupplied explanations contribute zero when the task requires them.
-An additional explanation claim is judged by the LLM under the same proposition rubric. A verified false assertion triggers the fixed forbidden-proposition rule.
+A category label alone is not an explanation. Explanation is optional; omission has internal supplied=false/credit0 but displays N/A and never penalizes the primary grade. Supplied explanations are assessed regardless of the legacy task flag.
+An additional explanation claim is judged by the LLM under the same proposition rubric. A verified false assertion triggers the fixed forbidden-condition rule only in its component; its exact span/judgment/reason is recorded without inventing a proposition ID.
 An unsupported evaluator tuple invokes the one permitted output repair, then explicit failure if still invalid.
 
 ## Mapper and auditor comparison
@@ -103,10 +103,10 @@ C = 100 * sum(w_i * n_i/d_i for i in E) / sum(w_i for i in E)
 E = enabled components with structural opportunities
 ```
 
-The fixed weights remain 45, 15, 30, and 10 for detection, classification, correction, and explanation.
+New answer-components-v2 primary weights remain45/15/30 for detection/classification/correction. Optional explanation is separately scored by EQ/EA; inherited weight10 applies only to frozen historical/explicit legacy benchmark policy.
 The classification component uses `classification.hierarchical_recall`, not conditional accuracy.
-An omitted requested component remains zero. Only a lack of structural opportunities removes its weight.
-A score-relevant unresolved issue makes the entire final composite unavailable.
+An omitted selected detection/classification/correction component remains zero. Explanation omission never changes the primary grade. Only a lack of structural primary opportunities removes its weight.
+An unresolved issue affecting the selected primary grade makes its composite unavailable. An optional explanation-only issue leaves primary scores available and is reported separately.
 
 ## Auxiliary populations
 
@@ -129,7 +129,7 @@ Repeated abstention can be repeatable. It cannot pass the separate semantic cove
 Four teacher traits are not observable in this mode and remain null.
 Elapsed time and playback counts are descriptive, not ability scores.
 
-Detection and classification have composite opportunities only when G is positive. Correction requires GC positive. Explanation requires GE positive.
+Detection and classification have primary composite opportunities only when G is positive. Correction requires GC positive. Explanation is separate under answer-components-v2; its accuracy uses EA and its descriptive opportunity metrics use GE/TE.
 On a control-only exercise, keep control and false-assertion metrics. Do not manufacture a composite score from absent true-error opportunities.
 
 ## Current LLM-only normalization and scorer projection
@@ -138,12 +138,14 @@ These preprocessing rules preserve all numerical equations and define the defaul
 
 The server derives the coverage partition from validated clause/attachment spans and original answer. It fills whitespace/non-assertive intervals itself; uncovered substantive text is passed to the LLM repair/reconsideration step. Recover a span only from a unique exact quoted substring; convert documented UTF-16 offsets to original Unicode codepoint offsets when the quoted bytes match. An ambiguous repeated quote stays unresolved. No rewritten answer is substituted.
 
-Claims are source-order sorted by start_cp,end_cp,local_ref. Explicit backwards retraction deactivates its target for arithmetic while preserving it. Exact duplicates attach to the earliest active representative. Compatible noncontradictory fragments for the same localized assertion combine their actual correction/reason spans; the union is source ordered and retains member claim IDs. Contradiction is sent to LLM adjudication; it cannot select a favorable fragment merely for a higher grade.
+Claims are source-order sorted by start_cp,end_cp,local_ref. Explicit backwards retraction deactivates its target for arithmetic while preserving it. Exact duplicates attach to the earliest active representative. Compatible noncontradictory fragments for the same localized assertion combine their actual correction/reason spans; the union is source ordered and retains member claim IDs. Contradiction is assigned to the affected component for LLM reconsideration; only unresolved primary meaning blocks the primary grade. It cannot select a favorable correction fragment merely for a higher grade.
 
-A resolved group maps to one decision. true_error+assert_error -> matched_error; true_error+assert_acceptable -> wrong_acceptance; acceptable+assert_error -> false_positive with its control unit; acceptable+assert_acceptable -> confirmed_acceptable. An unsupported off-key assertion -> false_positive with unit_id=null. A supported off-key defect -> provisional key-defect adjudication. Meta/question/retracted -> ignore. Unresolved substantive assertion -> unresolved. Duplicates point to the representative's decision and are excluded once. No decision is replicated across all matching units.
+A resolved group maps to one decision. true_error+assert_error -> matched_error; true_error+assert_acceptable -> wrong_acceptance; acceptable+assert_error -> false_positive with its control unit; acceptable+assert_acceptable -> confirmed_acceptable. An unsupported off-key assertion -> false_positive with unit_id=null. A supported off-key defect -> provisional key-defect adjudication. Meta/question/retracted -> ignore. Unresolved primary assertion -> unresolved; an unknown rationale assertion stays in explanation status/additional_assertions and does not convert a matched_error into an unresolved detection. Duplicates point to the representative's decision and are excluded once. No decision is replicated across all matching units.
 
 Category recognition accepts semantic synonyms justified by context and maps them to an existing122-leaf ID, preferring the most specific supported leaf. Unknown category -> null classification credit; supported detection remains. Existing ancestor compatibility remains as defined by the original classification metric. Correct alternatives and paraphrases are judged by the LLM against existing required/forbidden propositions, not rejected because their wording was absent. A new correction may select the existing option whose semantic constraints it satisfies; if none fits despite correctness, adjudicate a rubric defect and append a version.
 
-For the scorer, supplied flags come only from real spans. A selected option with any violated forbidden proposition has numerator0. Otherwise numerator is the number of its satisfied required propositions, denominator is the number of required propositions. No supplied content -> supplied=false, credit0/1. A zero-required rubric is defective rather than automatically perfect. Explanation follows its unit rationale and option_id=null. IDs outside the unit are invalid and repaired.
+For the scorer, supplied flags come only from real spans. A selected option with any violated forbidden proposition or verified unsupported additional_assertion has numerator0 for that component alone. If no verified forbidden condition already determines zero, unknown propositions/assertions have null credit only for their dependent component. Otherwise numerator is the number of its satisfied required propositions, denominator is the number of required propositions. No supplied content -> supplied=false, credit0/1. A zero-required rubric is defective rather than automatically perfect. Explanation follows its unit rationale and option_id=null. IDs outside the unit are invalid and repaired.
 
 Default checking uses one mapper. Optional audit compares and reports differences; it does not null a supported grade. LLM adjudication settles genuine score-relevant ambiguity; unresolved after that remains provisional. Historical reference scorer/validators encode stricter old preprocessing: their arithmetic remains an inert oracle, and their former human/alias/repeat-audit restrictions are not runtime contracts.
+
+Current complete component projection and optional explanation policy are in answer-component-scoring.md; it supersedes inherited whole-answer contradiction/required-explanation instructions. No numeric LLM grade replaces the42formulas.

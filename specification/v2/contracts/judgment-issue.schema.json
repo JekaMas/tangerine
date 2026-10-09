@@ -82,8 +82,24 @@
       "minLength": 1
     },
     "blocks_final_score": {
-      "const": true,
-      "description": "Every unresolved score-relevant issue blocks final aggregates."
+      "type": "boolean",
+      "description": "Server-derived from selected primary component dependencies; false for optional explanation-only issues."
+    },
+    "affected_components": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "detection",
+          "classification",
+          "correction",
+          "explanation",
+          "key"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Exactly the semantic components this issue affects; rationale-only issues do not affect the primary grade."
     }
   },
   "required": [
@@ -94,7 +110,8 @@
     "unit_ids",
     "evidence_ids",
     "explanation",
-    "blocks_final_score"
+    "blocks_final_score",
+    "affected_components"
   ],
   "additionalProperties": false
 }

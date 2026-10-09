@@ -199,7 +199,7 @@
     "id": "DOM-04",
     "capability": "domain-scoring",
     "title": "DOM-04 Separate distinct claim outcomes",
-    "statement": "deduplicate repeated assertions, preserve explicit retractions, require review for contradictions and keep unresolved classification separate from detection",
+    "statement": "The system SHALL deduplicate repeated assertions, preserve explicit retractions, scope contradictions to their actual component and keep unresolved classification/explanation separate from detection and correction under answer-components-v2.",
     "scenario": "DOM-04 supported and rejected inputs",
     "positive": "score resolved distinct assertions with retracted claims excluded as specified",
     "negative": "route contradictory/unresolved groups to review without final ratios",
@@ -227,7 +227,7 @@
     "id": "DOM-06",
     "capability": "domain-scoring",
     "title": "DOM-06 Aggregate from raw decisions",
-    "statement": "pool raw counters for aggregate metrics, provide domain breakdowns and never average percentages or publish a composite for unresolved claims",
+    "statement": "The system SHALL pool raw counters for aggregate metrics, provide domain breakdowns and never average percentages or publish a primary composite for unresolved primary claims. Optional explanation is separately scored over supplied eligible reasons, with no omission penalty.",
     "scenario": "DOM-06 supported and rejected inputs",
     "positive": "recalculate pooled counters across differently sized exercises",
     "negative": "reject percentage averaging and final metrics for unresolved evidence",
@@ -1561,7 +1561,7 @@
     "id": "V6-LLM-02",
     "capability": "v6-llm-evaluation",
     "title": "LLM-02 Restricted semantic decisions",
-    "statement": "Mapping MUST use only permitted unit, correction, proposition, and evidence IDs. The server MUST enforce their subject and version scope. Unresolved claims or contradictions MUST require review.",
+    "statement": "Mapping MUST use only permitted unit, correction, proposition, and evidence IDs. The server MUST enforce their subject and version scope. Unresolved primary claims or contradictions MUST require LLM reconsideration. Correction and optional supplied explanation MUST be assessed independently; typed additional_assertions retain their actual component and do not require invented rubric IDs. Explanation-only uncertainty MUST retain supported primary metrics.",
     "owner": "services/api/internal/llm_evaluation",
     "scenarios": [
       "LLM-02 Permitted behavior",
@@ -1585,7 +1585,7 @@
     "id": "V6-LLM-04",
     "capability": "v6-llm-evaluation",
     "title": "LLM-04 Supported feedback",
-    "statement": "Feedback MUST refer to validated decisions and case evidence. It MUST NOT add errors, corrections, or grades. A feedback failure MUST remain distinct from successful metric computation.",
+    "statement": "Feedback MUST refer to validated decisions and case evidence. It MUST NOT invent scored errors or grades. It MUST separately explain correction and every supplied optional explanation, retaining supported/unsupported/unknown assertions and their actual reasons; optional labelled practice examples remain permitted by the current feedback contract. A feedback failure MUST remain distinct from successful metric computation.",
     "owner": "services/api/internal/llm_evaluation",
     "scenarios": [
       "LLM-04 Permitted behavior",
@@ -4075,7 +4075,7 @@
     "id": "SPEC-043",
     "capability": "specification-fullness",
     "title": "SPEC-043 EFCAMDAT full release and derivative ingest scope",
-    "statement": "The required EFCAMDAT scope MUST include R2, Shatz2020 and Oksuz2025 as separate complete releases. The documented public agreement, R2 XML profile, both Shatz sample/intermediate/glossary components and \u00d6ks\u00fcz original/corrected/POS/error-coded components SHALL be retained. Public OSF analysis-file metadata, code-confirmed fields and exact header-only CSV observations SHALL be distinguished from acquired records and a complete native dictionary. Copied alternate prompts, source absence of corrections, SOC populations and source code/paper CEFR discrepancies SHALL follow specification/v2/docs/sources/efcamdat.md. Public analysis files alone SHALL NOT replace the full Cambridge derivative.\n\nThe specification SHALL reconcile GAP-043 through `specification/v2/docs/sources/efcamdat.md` `specification/v2/domain/corpus-sources.v1.yaml` `specification/v2/contracts/source-format-binding.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/source-contract-research-20261009/REPORT.md, REMAINING-INPUTS.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.",
+    "statement": "The required EFCAMDAT scope MUST include R2, Shatz2020 and Oksuz2025 as separate complete releases. The documented public agreement, R2 XML profile, both Shatz sample/intermediate/glossary components and Öksüz original/corrected/POS/error-coded components SHALL be retained. Public OSF analysis-file metadata, code-confirmed fields and exact header-only CSV observations SHALL be distinguished from acquired records and a complete native dictionary. Copied alternate prompts, source absence of corrections, SOC populations and source code/paper CEFR discrepancies SHALL follow specification/v2/docs/sources/efcamdat.md. Public analysis files alone SHALL NOT replace the full Cambridge derivative.\n\nThe specification SHALL reconcile GAP-043 through `specification/v2/docs/sources/efcamdat.md` `specification/v2/domain/corpus-sources.v1.yaml` `specification/v2/contracts/source-format-binding.schema.json`. Current user approves the supplied policy subject to LLM-only review and local-use simplification. Exact revised definitions, remaining operational inputs and owner choices are in audit/source-contract-research-20261009/REPORT.md, REMAINING-INPUTS.md and gap-reconciliation.json. This is a specification contract, not implemented or empirically tested application behavior.",
     "owner": "specification/v2/README.md",
     "scenarios": [
       "SPEC-043 Complete definition and rejection boundary",
@@ -4720,5 +4720,113 @@
     ],
     "owner": "services/api",
     "source": "Actual user maps dependencies to product and removes unnecessary requirements; product-data-relevance contract."
+  },
+  {
+    "id": "ANS-01",
+    "capability": "answer-component-scoring",
+    "title": "ANS-01 Assess correction and explanation independently",
+    "statement": "The system SHALL assess each supplied correction and explanation independently in the existing mapper call. Explanation SHALL always be optional and SHALL be assessed when supplied regardless of task_components.explanation. A false or omitted rationale SHALL NOT erase supported correction or detection credit. Actual incompatible endorsed repairs SHALL NOT be resolved by selecting the highest-credit alternative. Owning contract: specification/v2/docs/answer-component-scoring.md.",
+    "scenarios": [
+      "ANS-01 Correct repair with false reason",
+      "ANS-01 Explanation omitted or flag false"
+    ],
+    "owner": "services/api",
+    "source": "Actual user correction/optional-explanation decision; current component-scoring contract and routine pre-implementation findings."
+  },
+  {
+    "id": "ANS-02",
+    "capability": "answer-component-scoring",
+    "title": "ANS-02 Project additional assertions into their actual component",
+    "statement": "Each additional substantive assertion SHALL retain exact original codepoint span/text, supported/unsupported/unknown judgment and contextual reason in its component's typed additional_assertions. Existing proposition references plus these assertions SHALL cover substantive component content without fabricated proposition IDs. An unsupported assertion SHALL activate the existing forbidden-condition zero-credit rule for that component alone; an unknown SHALL leave only its dependent credit unavailable. A distinct additional heard-error assertion SHALL remain its own detection claim.",
+    "scenarios": [
+      "ANS-02 True extra explanation detail",
+      "ANS-02 False repair versus false rationale"
+    ],
+    "owner": "services/api",
+    "source": "Actual user correction/optional-explanation decision; current component-scoring contract and routine pre-implementation findings."
+  },
+  {
+    "id": "ANS-03",
+    "capability": "answer-component-scoring",
+    "title": "ANS-03 Keep optional uncertainty nonblocking",
+    "statement": "Issues SHALL declare affected_components and the server SHALL derive blocks_final_score from actual primary dependencies. Unknown supplied eligible explanation SHALL retain actual GE/TE/EA, use null EK/EQ and unavailable dependent explanation metrics. The primary result SHALL remain complete when its only unresolved issue affects explanation; unknown explanation SHALL NOT be dropped from EA or converted into a primary unresolved claim.",
+    "scenarios": [
+      "ANS-03 Unknown optional reason",
+      "ANS-03 Incompatible endorsed corrections"
+    ],
+    "owner": "services/api",
+    "source": "Actual user correction/optional-explanation decision; current component-scoring contract and routine pre-implementation findings."
+  },
+  {
+    "id": "ANS-04",
+    "capability": "answer-component-scoring",
+    "title": "ANS-04 Separate primary and optional explanation populations",
+    "statement": "New ordinary attempts SHALL freeze answer-components-v2 before answering. The primary composite SHALL use enabled detection/classification/correction with weights 45/15/30 and original metric inputs. Optional explanation score SHALL be 100*EQ/EA over supplied eligible explanations and N/A when EA=0. Original explanation coverage/recall SHALL remain descriptive metrics. Pooling SHALL use actual raw statistics within the same frozen policy and population, preserving unknowns and all 42 formula definitions.",
+    "scenarios": [
+      "ANS-04 Missing optional explanation in pooled results",
+      "ANS-04 Partial repair with true reason"
+    ],
+    "owner": "services/api",
+    "source": "Actual user correction/optional-explanation decision; current component-scoring contract and routine pre-implementation findings."
+  },
+  {
+    "id": "ANS-05",
+    "capability": "answer-component-scoring",
+    "title": "ANS-05 Preserve component scope in feedback and reconsideration",
+    "statement": "Feedback, optional mapping audit, consolidation, case review, adjudication and explicit result revisions SHALL preserve correction/explanation separation. Every supplied explanation SHALL receive supported/unsupported/unknown findings and contextual feedback even if ineligible for a formal rubric score. Omission SHALL receive no reprimand. Feedback failure SHALL preserve stored scores. A reason-only revision SHALL preserve supported primary statistics and heard audio unless actual primary evidence changes. No human review or new mandatory LLM stage SHALL be added.",
+    "scenarios": [
+      "ANS-05 Explanation revision",
+      "ANS-05 Feedback unavailable"
+    ],
+    "owner": "services/api",
+    "source": "Actual user correction/optional-explanation decision; current component-scoring contract and routine pre-implementation findings."
+  },
+  {
+    "id": "ANS-06",
+    "capability": "answer-component-scoring",
+    "title": "ANS-06 Freeze policy and Lab expectations",
+    "statement": "Attempt, scoring-input, score-result, cache and Lab identities SHALL retain the exact scoring policy. Existing historical results SHALL NOT be automatically regraded. Current Lab reference packets SHALL independently assert correction and explanation presence/credit/uncertainty, exact primary arithmetic and optional populations. Semantic assertion judgments SHALL remain model outputs; native arithmetic SHALL remain server-owned. Unexecuted plans SHALL NOT count as provider or application evidence.",
+    "scenarios": [
+      "ANS-06 Frozen old result",
+      "ANS-06 Explanation unknown in Lab"
+    ],
+    "owner": "services/api",
+    "source": "Actual user correction/optional-explanation decision; current component-scoring contract and routine pre-implementation findings."
+  },
+  {
+    "id": "ANS-07",
+    "capability": "answer-component-scoring",
+    "title": "ANS-07 Use one mutation and source-effect contract",
+    "statement": "Active mutation documentation SHALL use generation-input.mutation_recipes and the typed mutation-manifest hash/replay projection. Source revoke effects SHALL save actual notice/status and selected-source provenance without a permission-epoch service. Independent authored exercises SHALL remain usable. Every original source scope and mutation recipe SHALL be retained.",
+    "scenarios": [
+      "ANS-07 Typed manifest projection",
+      "ANS-07 Source notice and independent exercise"
+    ],
+    "owner": "services/api",
+    "source": "Actual user correction/optional-explanation decision; current component-scoring contract and routine pre-implementation findings."
+  },
+  {
+    "id": "ANS-08",
+    "capability": "answer-component-scoring",
+    "title": "ANS-08 Allow explicit recovery with bounded automatic requests",
+    "statement": "Generation/rendering SHALL impose no candidate-lifetime three-attempt ceiling on manual retry. Each explicit retry SHALL preserve original saved content/bindings and previous receipts, retaining existing per-operation deadline, idempotency and bounded automatic requests. Linguistic audit SHALL permit the shared single same-profile output repair within its logical stage budget, with original malformed output retained and no fabricated observations.",
+    "scenarios": [
+      "ANS-08 Fourth explicit render attempt",
+      "ANS-08 One linguistic output repair"
+    ],
+    "owner": "services/api",
+    "source": "Actual user correction/optional-explanation decision; current component-scoring contract and routine pre-implementation findings."
+  },
+  {
+    "id": "ANS-09",
+    "capability": "answer-component-scoring",
+    "title": "ANS-09 Support LLM-key-only local first use",
+    "statement": "Local speech SHALL be the default first-use route, with explicit model setup/progress/retry if weights are absent. External speech SHALL remain a supported explicit choice using its supplied key. Generate SHALL freeze the choice. Startup SHALL NOT silently download weights or switch paid/local bindings. Native synthesis failure SHALL NOT be represented as stored successful audio.",
+    "scenarios": [
+      "ANS-09 Local first use",
+      "ANS-09 Missing local assets or service key"
+    ],
+    "owner": "services/api",
+    "source": "Actual user correction/optional-explanation decision; current component-scoring contract and routine pre-implementation findings."
   }
 ]

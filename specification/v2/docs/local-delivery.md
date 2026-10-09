@@ -21,3 +21,5 @@ The source distribution includes the full application, lockfiles and build conte
 Optional Lab/helper subcommands and persistent SQLite/artifact setup are defined in llm-lab.md. They are included in future source build inputs but add no required host installation, cloud account or inference at startup.
 
 Application delivery follows product-data-relevance.md: no academic email, vendor account/API, complete external corpus, institutional study, benchmark completion or universal vendor/voice/platform qualification. Future acceptance tests prove the implemented flow on the selected supported backend/voice/platform with actual stored audio and answer checking.
+
+First use defaults to local Kokoro for the LLM-key-only path. Before Generate, Settings shows local/service choice. Missing local model assets show one explicit model-setup action with progress, actual hashes, failure and retry; startup itself downloads no weights. Selecting service requires its configured speech credential and skips local setup. Save the choice before preparation, with no silent backend fallback. Existing saved explicit service configuration is preserved on upgrade.

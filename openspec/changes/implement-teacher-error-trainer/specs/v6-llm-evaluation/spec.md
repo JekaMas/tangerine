@@ -16,7 +16,7 @@ The first extraction request MUST exclude the answer key. The output MUST cite e
 - **THEN** The API rejects that unsupported claim.
 
 ### Requirement: LLM-02 Restricted semantic decisions
-Mapping MUST use only permitted unit, correction, proposition, and evidence IDs. The server MUST enforce their subject and version scope. Unresolved claims or contradictions MUST require review.
+Mapping MUST use only permitted unit, correction, proposition, and evidence IDs. The server MUST enforce their subject and version scope. Unresolved primary claims or contradictions MUST require LLM reconsideration. Correction and optional supplied explanation MUST be assessed independently; typed additional_assertions retain their actual component and do not require invented rubric IDs. Explanation-only uncertainty MUST retain supported primary metrics.
 
 #### Scenario: LLM-02 Permitted behavior
 - **GIVEN** A claim has sufficient supporting evidence.
@@ -42,7 +42,7 @@ The LLM MUST NOT assign aggregate scores or arbitrary partial credit. The backen
 - **THEN** The parser rejects the output.
 
 ### Requirement: LLM-04 Supported feedback
-Feedback MUST refer to validated decisions and case evidence. It MUST NOT add errors, corrections, or grades. A feedback failure MUST remain distinct from successful metric computation.
+Feedback MUST refer to validated decisions and case evidence. It MUST NOT invent scored errors or grades. It MUST separately explain correction and every supplied optional explanation, retaining supported/unsupported/unknown assertions and their actual reasons; optional labelled practice examples remain permitted by the current feedback contract. A feedback failure MUST remain distinct from successful metric computation.
 
 #### Scenario: LLM-04 Permitted behavior
 - **GIVEN** The backend calculates a resolved score.

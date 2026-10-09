@@ -144,54 +144,70 @@
             "description": "This flag records whether the teacher actually supplied a correction."
           },
           "correction_credit": {
-            "type": "object",
-            "properties": {
-              "numerator": {
-                "type": "integer",
-                "minimum": 0,
-                "description": "This field contains the exact numerator of the stored ratio.",
-                "maximum": 9007199254740991
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "This field contains the exact numerator of the stored ratio.",
+                    "maximum": 9007199254740991
+                  },
+                  "denominator": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "This field contains the exact denominator of the stored ratio.",
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false,
+                "description": "This fraction gives proposition-derived correction credit."
               },
-              "denominator": {
-                "type": "integer",
-                "minimum": 1,
-                "description": "This field contains the exact denominator of the stored ratio.",
-                "maximum": 9007199254740991
+              {
+                "type": "null"
               }
-            },
-            "required": [
-              "numerator",
-              "denominator"
             ],
-            "additionalProperties": false,
-            "description": "This fraction gives proposition-derived correction credit."
+            "description": "Exact correction credit or null for genuinely unresolved correction meaning. Explanation uncertainty cannot null this field."
           },
           "explanation_supplied": {
             "type": "boolean",
             "description": "This flag records whether the teacher actually supplied an explanation."
           },
           "explanation_credit": {
-            "type": "object",
-            "properties": {
-              "numerator": {
-                "type": "integer",
-                "minimum": 0,
-                "description": "This field contains the exact numerator of the stored ratio.",
-                "maximum": 9007199254740991
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "This field contains the exact numerator of the stored ratio.",
+                    "maximum": 9007199254740991
+                  },
+                  "denominator": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "This field contains the exact denominator of the stored ratio.",
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false,
+                "description": "This fraction gives credit from the reviewed explanation propositions."
               },
-              "denominator": {
-                "type": "integer",
-                "minimum": 1,
-                "description": "This field contains the exact denominator of the stored ratio.",
-                "maximum": 9007199254740991
+              {
+                "type": "null"
               }
-            },
-            "required": [
-              "numerator",
-              "denominator"
             ],
-            "additionalProperties": false,
-            "description": "This fraction gives credit from the reviewed explanation propositions."
+            "description": "Independent exact optional explanation credit; null for unresolved/noneligible rubric, never converted into zero to complete a grade."
           }
         },
         "required": [
@@ -228,7 +244,7 @@
         },
         "explanation": {
           "type": "boolean",
-          "description": "This flag or object describes explanation requirements or judgments in its parent contract."
+          "description": "Legacy explanation invitation preference. Under answer-components-v2 explanation is optional and every supplied explanation is assessed independently, regardless of this flag; it does not enter the primary composite."
         }
       },
       "required": [
@@ -239,12 +255,18 @@
       ],
       "additionalProperties": false,
       "description": "These flags select the task components before answer entry."
+    },
+    "scoring_policy_version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Exact policy frozen on the attempt. New ordinary attempts use answer-components-v2; an explicitly frozen historical/legacy reference uses its original policy, never guessed from explanation presence."
     }
   },
   "required": [
     "units",
     "decisions",
-    "components"
+    "components",
+    "scoring_policy_version"
   ],
   "additionalProperties": false
 }
