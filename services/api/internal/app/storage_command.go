@@ -50,6 +50,8 @@ func (s *Storage) StorageCommand(ctx context.Context, input io.Reader, output io
 		if err == nil {
 			result, err = s.UploadReader(ctx, r.ID, bytes.NewReader(data))
 		}
+	case "retry-asset":
+		result, err = s.RetryAsset(ctx, r.ID, r.Asset)
 	case "recover":
 		result, err = s.RecoverAsset(ctx, r.ID)
 	case "begin-upload":

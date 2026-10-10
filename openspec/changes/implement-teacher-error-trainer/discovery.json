@@ -446,7 +446,11 @@
       "I2-11.P1",
       "I2-12.P1",
       "I2-13.P1",
-      "I2-14.P1"
+      "I2-14.P1",
+      "I2-15.P1",
+      "I2-16.P1",
+      "I2-17.P1",
+      "I2-18.P1"
     ],
     "test_ids": [
       "planned::AUT-01::negative",
@@ -2666,7 +2670,23 @@
       "tangerine.local/api/internal/contracts::TestOwnedBindingIdentityPositive",
       "tangerine.local/api/internal/contracts::TestOwnedRenderIdentityPositive",
       "tangerine.local/api/internal/contracts::TestOwnedBindingContentNegative",
-      "tangerine.local/api/internal/contracts::TestOwnedRenderContentNegative"
+      "tangerine.local/api/internal/contracts::TestOwnedRenderContentNegative",
+      "tangerine.local/api/internal/app::TestNativePoolSameAssetPositive",
+      "tangerine.local/api/internal/app::TestNativePoolDistinctAssetsPositive",
+      "tangerine.local/api/internal/app::TestNativePoolCancelledWaiterNegative",
+      "tangerine.local/api/internal/app::TestNativePoolWrongBytesNegative",
+      "tangerine.local/api/internal/app::TestNativeGraphEvidenceAcyclicPositive",
+      "tangerine.local/api/internal/app::TestNativeGraphLinkAcyclicPositive",
+      "tangerine.local/api/internal/app::TestNativeGraphParentRoleNegative",
+      "tangerine.local/api/internal/app::TestNativeGraphLinkCycleNegative",
+      "tangerine.local/api/internal/app::TestNativeRecoveryCompletedPositive",
+      "tangerine.local/api/internal/app::TestNativeRecoveryRetryPositive",
+      "tangerine.local/api/internal/app::TestNativeRecoveryOldKeyNegative",
+      "tangerine.local/api/internal/app::TestNativeRecoveryChangedIntentNegative",
+      "tangerine.local/api/internal/app::TestNativeGuardEnabledPositive",
+      "tangerine.local/api/internal/app::TestNativeGuardRestoredPositive",
+      "tangerine.local/api/internal/app::TestNativeGuardDisabledNegative",
+      "tangerine.local/api/internal/app::TestNativeGuardMisboundNegative"
     ]
   },
   "reviews": [
@@ -14073,6 +14093,87 @@
       ],
       "disposition": "current_change",
       "rationale": "Full13-property storage closure plus invalidated32-case foundation; all later required functionality remains unchanged."
+    },
+    {
+      "id": "iterations1-2-native-repair-20261010",
+      "question": "Trace all guarded storage reads/writes, document-producing finalizers, interrupted upload lineage and actual guard readiness against both-iteration native counterexamples.",
+      "property_ids": [
+        "I2-15.P1",
+        "I2-16.P1",
+        "I2-17.P1",
+        "I2-18.P1"
+      ],
+      "test_ids": [
+        "tangerine.local/api/internal/app::TestNativePoolSameAssetPositive",
+        "tangerine.local/api/internal/app::TestNativePoolDistinctAssetsPositive",
+        "tangerine.local/api/internal/app::TestNativePoolCancelledWaiterNegative",
+        "tangerine.local/api/internal/app::TestNativePoolWrongBytesNegative",
+        "tangerine.local/api/internal/app::TestNativeGraphEvidenceAcyclicPositive",
+        "tangerine.local/api/internal/app::TestNativeGraphLinkAcyclicPositive",
+        "tangerine.local/api/internal/app::TestNativeGraphParentRoleNegative",
+        "tangerine.local/api/internal/app::TestNativeGraphLinkCycleNegative",
+        "tangerine.local/api/internal/app::TestNativeRecoveryCompletedPositive",
+        "tangerine.local/api/internal/app::TestNativeRecoveryRetryPositive",
+        "tangerine.local/api/internal/app::TestNativeRecoveryOldKeyNegative",
+        "tangerine.local/api/internal/app::TestNativeRecoveryChangedIntentNegative",
+        "tangerine.local/api/internal/app::TestNativeGuardEnabledPositive",
+        "tangerine.local/api/internal/app::TestNativeGuardRestoredPositive",
+        "tangerine.local/api/internal/app::TestNativeGuardDisabledNegative",
+        "tangerine.local/api/internal/app::TestNativeGuardMisboundNegative"
+      ],
+      "searches": [
+        {
+          "kind": "exact",
+          "status": "completed",
+          "query": "Shared production domain/assets/multipart/storage owners and recorded native counterexamples; actual transaction, frozen request, advisory lock and guard consumers.",
+          "outcome": "Four aligned repair groups, complete native positive/negative cases; previous I1 readiness and Library browser findings revalidated.",
+          "results": [
+            {
+              "path": "services/api/internal/app/domain.go",
+              "classification": "change_candidate",
+              "reason": "Exact known production owner and native regression."
+            },
+            {
+              "path": "services/api/internal/app/assets.go",
+              "classification": "change_candidate",
+              "reason": "Exact known production owner and native regression."
+            },
+            {
+              "path": "services/api/internal/app/multipart.go",
+              "classification": "change_candidate",
+              "reason": "Exact known production owner and native regression."
+            },
+            {
+              "path": "services/api/internal/app/storage.go",
+              "classification": "change_candidate",
+              "reason": "Exact known production owner and native regression."
+            },
+            {
+              "path": "tests/native_storage_regression_test.go",
+              "classification": "change_candidate",
+              "reason": "Exact known production owner and native regression."
+            }
+          ]
+        },
+        {
+          "kind": "semantic",
+          "status": "not_applicable",
+          "query": "Known exact owners from native reproduction",
+          "reason": "No unknown owner discovery or semantic index claim; source and runtime tracing use exact verified files.",
+          "outcome": "Exact owner tracing suffices for this repair.",
+          "results": []
+        },
+        {
+          "kind": "jetbrains-index",
+          "status": "not_applicable",
+          "query": "No structural PSI operation",
+          "reason": "No IDE refactor/index task required for known owners.",
+          "outcome": "No current-index claim.",
+          "results": []
+        }
+      ],
+      "disposition": "current_change",
+      "rationale": "Fix all verified iteration1/2 findings without weakening original contracts."
     }
   ]
 }

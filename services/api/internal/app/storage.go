@@ -128,9 +128,25 @@ func (s *Storage) CheckDatabase(ctx context.Context) error {
 	if err = s.DB.QueryRow(ctx, "SELECT count(*) FROM workspace w JOIN workspaces f ON f.id=w.foundation_workspace_id WHERE w.id='local' AND f.singleton").Scan(&count); err != nil || count != 1 {
 		return ErrMigrationRequired
 	}
-	var triggers int
-	if err = s.DB.QueryRow(ctx, "SELECT count(*) FROM pg_trigger WHERE NOT tgisinternal AND tgname IN('document_immutable','audit_immutable','schema_immutable','migration_backup_immutable')").Scan(&triggers); err != nil || triggers != 4 {
+	// Check each actual guard, not merely a reusable trigger name.
+	guardSQL, err := migrations.ReadFile("migrations/003_domain_storage.sql")
+	if err != nil {
+		return err
+	}
+	body := strings.SplitN(string(guardSQL), "CREATE FUNCTION reject_document_mutation() RETURNS trigger LANGUAGE plpgsql AS $$", 2)
+	if len(body) != 2 {
 		return ErrMigrationRequired
+	}
+	expectedBody := strings.TrimSpace(strings.SplitN(body[1], "$$;", 2)[0])
+	for name, table := range map[string]string{"document_immutable": "document", "audit_immutable": "audit_event", "schema_immutable": "schema_registry", "migration_backup_immutable": "migration_backup"} {
+		var valid bool
+		var actualBody string
+		err = s.DB.QueryRow(ctx, `SELECT t.tgenabled IN ('O','A') AND t.tgtype=27 AND t.tgqual IS NULL AND t.tgnargs=0 AND p.proname='reject_document_mutation' AND pn.nspname='public' AND p.pronargs=0 AND p.prorettype='trigger'::regtype AND l.lanname='plpgsql',p.prosrc
+   FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid JOIN pg_namespace n ON n.oid=c.relnamespace JOIN pg_proc p ON p.oid=t.tgfoid JOIN pg_namespace pn ON pn.oid=p.pronamespace JOIN pg_language l ON l.oid=p.prolang
+   WHERE NOT t.tgisinternal AND t.tgname=$1 AND n.nspname='public' AND c.relname=$2`, name, table).Scan(&valid, &actualBody)
+		if err != nil || !valid || strings.TrimSpace(actualBody) != expectedBody {
+			return ErrMigrationRequired
+		}
 	}
 	registry, err := contracts.Registry()
 	if err != nil {

@@ -1,0 +1,483 @@
+{
+  "cases": {
+    "I2-15.P1.S1.NEGATIVE": {
+      "evidence_fingerprint": "7479354bb7a964c33c3d84c53f9672aa8fea65aaa7ca9378fb64712d79ae6dd0",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "observable": "{\"next_upload\": \"success without leaked lock\", \"waiter\": \"rejected\", \"winner\": \"success\"}",
+      "polarity": "negative",
+      "property_id": "I2-15.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-15 repair packet 1",
+      "scenario_fingerprint": "087fc7766e5368996fb1fc4a90ffd6b878723d149332c60a6cca234e6ba68282",
+      "setup": "Execute TestNativePoolCancelledWaiterNegative through native production owner. {\"blocked_winner\": true, \"bytes\": \"review\", \"waiter_timeout_ms\": 100}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "55cbe5a219e14c6be90a65e52cb6d0e822be99d46ee4f8233f32f292a7c2b11a",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativePoolCancelledWaiterNegative"
+    },
+    "I2-15.P1.S1.POSITIVE": {
+      "evidence_fingerprint": "09f4c4d1fdb09dfba20540a760040654339993d8f0eb1ff2c503d2ee62f79721",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "observable": "{\"all_waiters\": \"success\", \"linked_bytes\": \"review\", \"winner\": \"success\"}",
+      "polarity": "positive",
+      "property_id": "I2-15.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-15 repair packet 1",
+      "scenario_fingerprint": "087fc7766e5368996fb1fc4a90ffd6b878723d149332c60a6cca234e6ba68282",
+      "setup": "Execute TestNativePoolSameAssetPositive through native production owner. {\"bytes\": \"review\", \"duplicate_waiters\": 9, \"pool_capacity\": 10, \"winner\": \"blocked native reader\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "55cbe5a219e14c6be90a65e52cb6d0e822be99d46ee4f8233f32f292a7c2b11a",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativePoolSameAssetPositive"
+    },
+    "I2-15.P1.S2.NEGATIVE": {
+      "evidence_fingerprint": "772f1659c78df17ab5ab16d518a06ceeaae7c692dbe4a5759196daf28eaca84e",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "observable": "{\"all_rejected\": true, \"object_after_rejection\": \"NoSuchKey\", \"valid_upload_after\": \"success\"}",
+      "polarity": "negative",
+      "property_id": "I2-15.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-15 repair packet 2",
+      "scenario_fingerprint": "7e70803b58650b0d4ce74bf32a7a1d5c42fbd2097bc741f23f07865c8969cdcb",
+      "setup": "Execute TestNativePoolWrongBytesNegative through native production owner. {\"concurrent_rejections\": 20, \"intended\": \"review\", \"wrong\": \"wrong!\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "55cbe5a219e14c6be90a65e52cb6d0e822be99d46ee4f8233f32f292a7c2b11a",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativePoolWrongBytesNegative"
+    },
+    "I2-15.P1.S2.POSITIVE": {
+      "evidence_fingerprint": "3912244783ae0c3575b5b117593734e51d4f77679da188a179ea8e52c2c4b635",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "observable": "{\"all_linked_readbacks\": \"review\", \"all_verified\": 20}",
+      "polarity": "positive",
+      "property_id": "I2-15.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-15 repair packet 2",
+      "scenario_fingerprint": "7e70803b58650b0d4ce74bf32a7a1d5c42fbd2097bc741f23f07865c8969cdcb",
+      "setup": "Execute TestNativePoolDistinctAssetsPositive through native production owner. {\"bytes\": \"review\", \"concurrent_assets\": 20, \"pool_capacity\": 10}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "55cbe5a219e14c6be90a65e52cb6d0e822be99d46ee4f8233f32f292a7c2b11a",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativePoolDistinctAssetsPositive"
+    },
+    "I2-16.P1.S1.NEGATIVE": {
+      "evidence_fingerprint": "eafcc2c1ff713cb1ba28338d3ded274a7365592bbb6c310f46459d37b84d2599",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "observable": "{\"cycle_documents\": 0, \"each_rejected\": \"reference_error\"}",
+      "polarity": "negative",
+      "property_id": "I2-16.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-16 repair packet 1",
+      "scenario_fingerprint": "a1b6c5f50f1757b7a299d58bb87b2bd50ccfb4d63b662eb99994a280e2ba2550",
+      "setup": "Execute TestNativeGraphParentRoleNegative through native production owner. {\"self_parent_relations\": [\"parent\", \"parent-evidence\"], \"two_node_cycle\": true}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "55cbe5a219e14c6be90a65e52cb6d0e822be99d46ee4f8233f32f292a7c2b11a",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGraphParentRoleNegative"
+    },
+    "I2-16.P1.S1.POSITIVE": {
+      "evidence_fingerprint": "5d12c36a203fd35c685448d864de3a649cecc747fe110de7150911295b04de6d",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "observable": "{\"both_readback\": \"success\"}",
+      "polarity": "positive",
+      "property_id": "I2-16.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-16 repair packet 1",
+      "scenario_fingerprint": "a1b6c5f50f1757b7a299d58bb87b2bd50ccfb4d63b662eb99994a280e2ba2550",
+      "setup": "Execute TestNativeGraphEvidenceAcyclicPositive through native production owner. {\"child_before_parent\": true, \"typed_evidence_parent_relation\": \"parent-evidence\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "55cbe5a219e14c6be90a65e52cb6d0e822be99d46ee4f8233f32f292a7c2b11a",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGraphEvidenceAcyclicPositive"
+    },
+    "I2-16.P1.S2.NEGATIVE": {
+      "evidence_fingerprint": "49420027604f573d1a3e6413c992adb8f99b5188fa436f8f8c6d27c6eaa0a023",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "observable": "{\"asset_state\": \"bytes_verified\", \"bad_envelope\": \"rejected\", \"link_rejected\": \"reference_error\", \"new_document_count\": 0, \"owner_revision\": 0}",
+      "polarity": "negative",
+      "property_id": "I2-16.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-16 repair packet 2",
+      "scenario_fingerprint": "91ad19028c2fe643371108b093c4a1d693406c860529a6e2df5557703d71a3b6",
+      "setup": "Execute TestNativeGraphLinkCycleNegative through native production owner. {\"self_cycle_owner\": true, \"then_bad_envelope\": \"bad-envelope\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "55cbe5a219e14c6be90a65e52cb6d0e822be99d46ee4f8233f32f292a7c2b11a",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGraphLinkCycleNegative"
+    },
+    "I2-16.P1.S2.POSITIVE": {
+      "evidence_fingerprint": "f88a3ae934632226d1234d2d79d0dd1a28be182c9413252e934ea24d2db393ee",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "observable": "{\"link\": \"success\", \"owner_revision\": 1}",
+      "polarity": "positive",
+      "property_id": "I2-16.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-16 repair packet 2",
+      "scenario_fingerprint": "91ad19028c2fe643371108b093c4a1d693406c860529a6e2df5557703d71a3b6",
+      "setup": "Execute TestNativeGraphLinkAcyclicPositive through native production owner. {\"new_asset_reference\": \"asset-bytes\", \"owner_revision\": 0, \"parent\": \"old immutable case\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "55cbe5a219e14c6be90a65e52cb6d0e822be99d46ee4f8233f32f292a7c2b11a",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGraphLinkAcyclicPositive"
+    },
+    "I2-17.P1.S1.NEGATIVE": {
+      "evidence_fingerprint": "5111d9d42e7c19d4a45c483738c2b339546f98455b8afc41fab9d1ff4b9c973b",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "observable": "{\"old_upload_link\": \"asset_unavailable\", \"original\": \"failed with saved error and result\", \"reservation\": \"same orphaned asset\", \"same_key_retry\": \"conflict\"}",
+      "polarity": "negative",
+      "property_id": "I2-17.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-17 repair packet 1",
+      "scenario_fingerprint": "7b8f12f809f508cbc4f92e78e1d8773c0411d854af0d8b9981e0ed02183e99ea",
+      "setup": "Execute TestNativeRecoveryOldKeyNegative through native production owner. {\"old_asset_upload_and_link\": true, \"old_key_repeat\": true, \"partial_native_part\": \"rev\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "55cbe5a219e14c6be90a65e52cb6d0e822be99d46ee4f8233f32f292a7c2b11a",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeRecoveryOldKeyNegative"
+    },
+    "I2-17.P1.S1.POSITIVE": {
+      "evidence_fingerprint": "0b0b7b54a2783dbb66d21f312e2ec0ed9535569e6d876f19fd654fd1acc0cfb2",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "observable": "{\"linked_readback\": \"review\", \"recovered\": \"bytes_verified\"}",
+      "polarity": "positive",
+      "property_id": "I2-17.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-17 repair packet 1",
+      "scenario_fingerprint": "7b8f12f809f508cbc4f92e78e1d8773c0411d854af0d8b9981e0ed02183e99ea",
+      "setup": "Execute TestNativeRecoveryCompletedPositive through native production owner. {\"completed_native_object\": \"review\", \"reservation_state\": \"reserved\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "55cbe5a219e14c6be90a65e52cb6d0e822be99d46ee4f8233f32f292a7c2b11a",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeRecoveryCompletedPositive"
+    },
+    "I2-17.P1.S2.NEGATIVE": {
+      "evidence_fingerprint": "1a39b88a8b8a6890f2cf82e898bd7e7d38f45b0a4ccbd6a44a58f161ba657e3a",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "observable": "{\"each_rejected\": \"conflict\", \"new_operation_rows\": 0}",
+      "polarity": "negative",
+      "property_id": "I2-17.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-17 repair packet 2",
+      "scenario_fingerprint": "bf30d3fa48bdab3ce6a76edcf8305f45c24868fd0c5b8abca4fdbdf2689ac262",
+      "setup": "Execute TestNativeRecoveryChangedIntentNegative through native production owner. {\"changed_retry_fields\": [\"path\", \"body\", \"query\", \"sha\", \"size\", \"mime\", \"purpose\", \"revision\"]}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "55cbe5a219e14c6be90a65e52cb6d0e822be99d46ee4f8233f32f292a7c2b11a",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeRecoveryChangedIntentNegative"
+    },
+    "I2-17.P1.S2.POSITIVE": {
+      "evidence_fingerprint": "765a24a64c8c54f8634181a5149b7c78be61cc947ff87ce87f935fbf784c0d65",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "observable": "{\"asset_state\": \"orphaned\", \"old_upload_id\": \"NoSuchUpload\", \"original_receipt\": \"unchanged\", \"original_state\": \"failed\", \"retry\": \"different asset/operation, idempotent, linked\", \"typed_error_and_asset_result\": \"same after reopen and repeat recovery\"}",
+      "polarity": "positive",
+      "property_id": "I2-17.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-17 repair packet 2",
+      "scenario_fingerprint": "bf30d3fa48bdab3ce6a76edcf8305f45c24868fd0c5b8abca4fdbdf2689ac262",
+      "setup": "Execute TestNativeRecoveryRetryPositive through native production owner. {\"explicit_new_key\": true, \"intended\": \"review\", \"partial_native_part\": \"rev\", \"reopen_storage\": true}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "55cbe5a219e14c6be90a65e52cb6d0e822be99d46ee4f8233f32f292a7c2b11a",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeRecoveryRetryPositive"
+    },
+    "I2-18.P1.S1.NEGATIVE": {
+      "evidence_fingerprint": "5254e4cd68a4c1056bb06a0b025ad962f5ba8fe6b66398fb32bed2cb1c514dc1",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "observable": "{\"each\": \"not ready\", \"restored\": \"ready\"}",
+      "polarity": "negative",
+      "property_id": "I2-18.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-18 repair packet 1",
+      "scenario_fingerprint": "dc51686a6e877c4bcf26e5056081779fb93112c4d918c8bff7a2b6a398896f84",
+      "setup": "Execute TestNativeGuardDisabledNegative through native production owner. {\"disabled_guards\": [\"document_immutable\", \"audit_immutable\", \"schema_immutable\", \"migration_backup_immutable\"]}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "55cbe5a219e14c6be90a65e52cb6d0e822be99d46ee4f8233f32f292a7c2b11a",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGuardDisabledNegative"
+    },
+    "I2-18.P1.S1.POSITIVE": {
+      "evidence_fingerprint": "6f47e69771c31879cb461cef7927261db26c9286e7e1c9926721e8ea1923bd01",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "observable": "{\"immutable_update\": \"rejected\", \"readiness\": \"ready\", \"readiness_after\": \"ready\"}",
+      "polarity": "positive",
+      "property_id": "I2-18.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-18 repair packet 1",
+      "scenario_fingerprint": "dc51686a6e877c4bcf26e5056081779fb93112c4d918c8bff7a2b6a398896f84",
+      "setup": "Execute TestNativeGuardEnabledPositive through native production owner. {\"document_update\": \"{}\", \"guards\": \"original enabled bindings\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "55cbe5a219e14c6be90a65e52cb6d0e822be99d46ee4f8233f32f292a7c2b11a",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGuardEnabledPositive"
+    },
+    "I2-18.P1.S2.NEGATIVE": {
+      "evidence_fingerprint": "f780b966aac9e3ff4d92aa0d97248a64d2ac49b7b9c7b914d4d4fefd4f842ce8",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "observable": "{\"each\": \"not ready\", \"restored\": \"ready\"}",
+      "polarity": "negative",
+      "property_id": "I2-18.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-18 repair packet 2",
+      "scenario_fingerprint": "53e8375580324860be6b360b066808556729da6451fb684adc6d3374daf94d77",
+      "setup": "Execute TestNativeGuardMisboundNegative through native production owner. {\"function_body\": \"no-op RETURN NEW\", \"then_function_binding\": \"regression_guard\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "55cbe5a219e14c6be90a65e52cb6d0e822be99d46ee4f8233f32f292a7c2b11a",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGuardMisboundNegative"
+    },
+    "I2-18.P1.S2.POSITIVE": {
+      "evidence_fingerprint": "beb8a6d66bb723ae696236f8ac4dd51bae26ddb972fe9aa2dfaaf1a3a00bc3b7",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "observable": "{\"disabled\": \"not ready\", \"restored\": \"ready\"}",
+      "polarity": "positive",
+      "property_id": "I2-18.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-18 repair packet 2",
+      "scenario_fingerprint": "53e8375580324860be6b360b066808556729da6451fb684adc6d3374daf94d77",
+      "setup": "Execute TestNativeGuardRestoredPositive through native production owner. {\"document_guard\": \"disable then ENABLE ALWAYS\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "55cbe5a219e14c6be90a65e52cb6d0e822be99d46ee4f8233f32f292a7c2b11a",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGuardRestoredPositive"
+    }
+  },
+  "change": "implement-teacher-error-trainer",
+  "commands": [
+    {
+      "argv": [
+        "./tests/native-storage-regressions",
+        "test",
+        "-json",
+        "-race",
+        "-count=1",
+        "./internal/app"
+      ],
+      "cwd": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010",
+      "duration_seconds": 60.66750075016171,
+      "exit_code": 0,
+      "id": "iteration2-repair-native",
+      "observed_tests": {
+        "tangerine.local/api/internal/app::TestNativeGraphEvidenceAcyclicPositive": "pass",
+        "tangerine.local/api/internal/app::TestNativeGraphLinkAcyclicPositive": "pass",
+        "tangerine.local/api/internal/app::TestNativeGraphLinkCycleNegative": "pass",
+        "tangerine.local/api/internal/app::TestNativeGraphParentRoleNegative": "pass",
+        "tangerine.local/api/internal/app::TestNativeGuardDisabledNegative": "pass",
+        "tangerine.local/api/internal/app::TestNativeGuardEnabledPositive": "pass",
+        "tangerine.local/api/internal/app::TestNativeGuardMisboundNegative": "pass",
+        "tangerine.local/api/internal/app::TestNativeGuardRestoredPositive": "pass",
+        "tangerine.local/api/internal/app::TestNativePoolCancelledWaiterNegative": "pass",
+        "tangerine.local/api/internal/app::TestNativePoolDistinctAssetsPositive": "pass",
+        "tangerine.local/api/internal/app::TestNativePoolSameAssetPositive": "pass",
+        "tangerine.local/api/internal/app::TestNativePoolWrongBytesNegative": "pass",
+        "tangerine.local/api/internal/app::TestNativeRecoveryChangedIntentNegative": "pass",
+        "tangerine.local/api/internal/app::TestNativeRecoveryCompletedPositive": "pass",
+        "tangerine.local/api/internal/app::TestNativeRecoveryOldKeyNegative": "pass",
+        "tangerine.local/api/internal/app::TestNativeRecoveryRetryPositive": "pass"
+      },
+      "status": "exited",
+      "stderr": "#0 building with \"desktop-linux\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 747B done\n#1 DONE 0.0s\n\n#2 [internal] load metadata for docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd\n#2 DONE 0.0s\n\n#3 [internal] load .dockerignore\n#3 transferring context: 163B done\n#3 DONE 0.0s\n\n#4 [build 1/6] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd\n#4 DONE 0.0s\n\n#5 [internal] load build context\n#5 transferring context: 1.23MB 0.0s done\n#5 DONE 0.0s\n\n#6 [build 2/6] WORKDIR /src\n#6 CACHED\n\n#7 [build 3/6] COPY services/api/go.mod services/api/go.sum ./\n#7 CACHED\n\n#8 [build 4/6] RUN go mod download\n#8 CACHED\n\n#9 [build 5/6] COPY services/api/ ./\n#9 DONE 0.1s\n\n#10 [build 6/6] RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /tangerine ./cmd/tangerine\n#10 DONE 12.0s\n\n#11 exporting to image\n#11 exporting layers\n#11 exporting layers 0.4s done\n#11 writing image sha256:4671cbe4b197100271c94f08efdb14eb9f25193aed026465c3317be5cbb4910a\n#11 writing image sha256:4671cbe4b197100271c94f08efdb14eb9f25193aed026465c3317be5cbb4910a done\n#11 naming to docker.io/library/tangerine-regression-36603be09489-go 0.0s done\n#11 DONE 0.5s\n\nView build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/rgo8fdly1br936sghdmfky1lb\n#0 building with \"desktop-linux\" instance using docker driver\n\n#1 [internal] load build definition from minio.Dockerfile\n#1 transferring dockerfile: 36B 0.1s\n#1 transferring dockerfile: 1.01kB 0.2s done\n#1 DONE 0.2s\n\n#2 [internal] load metadata for docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587\n#2 DONE 0.0s\n\n#3 [internal] load metadata for docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd\n#3 DONE 0.0s\n\n#4 [internal] load .dockerignore\n#4 transferring context: 163B 0.0s done\n#4 DONE 0.0s\n\n#5 [build 2/7] ADD --checksum=sha256:71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6 https://codeload.github.com/minio/minio/tar.gz/7aac2a2c5b7c882e68c1ce017d8256be2feea27f /src.tar.gz\n#5 DONE 0.0s\n\n#6 [stage-1 1/4] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587\n#6 DONE 0.0s\n\n#7 [build 1/7] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd\n#7 DONE 0.0s\n\n#8 [internal] load build context\n#8 transferring context: 417B 0.0s done\n#8 DONE 0.0s\n\n#9 [build 5/7] RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /minio .\n#9 CACHED\n\n#10 [stage-1 3/4] COPY --from=build /minio /usr/local/bin/minio\n#10 CACHED\n\n#11 [build 4/7] WORKDIR /src\n#11 CACHED\n\n#12 [build 7/7] RUN CGO_ENABLED=0 go build -trimpath -o /probe /probe.go\n#12 CACHED\n\n#13 [build 3/7] RUN mkdir /src && tar -xzf /src.tar.gz --strip-components=1 -C /src\n#13 CACHED\n\n#14 [build 6/7] COPY deploy/local/probe.go /probe.go\n#14 CACHED\n\n#15 [stage-1 2/4] COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt\n#15 CACHED\n\n#16 [build 2/7] ADD --checksum=sha256:71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6 https://codeload.github.com/minio/minio/tar.gz/7aac2a2c5b7c882e68c1ce017d8256be2feea27f /src.tar.gz\n#16 CACHED\n\n#17 [stage-1 4/4] COPY --from=build /probe /usr/local/bin/probe\n#17 CACHED\n\n#18 exporting to image\n#18 exporting layers done\n#18 writing image sha256:775f5bde398036fb9a64a87247346f01e25c2618cfd0560193849a9a84e9d8e1 0.0s done\n#18 naming to docker.io/library/tangerine-regression-36603be09489-minio 0.0s done\n#18 DONE 0.1s\n\nView build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/70xn99ty89b65712i0nfjjw26\n42bd2227af3ddb14f4a864995fd33f9533d85f49116314e47a4b30d15428b3fd\nddce74cfe78ce82809284a030f40d3cd6030197661811ddddf7876784b5bb5da\nc8f4443ec2c0b86ee2b51bf03b1ad914199d5f54bd4c2cb47ba673c6f1716e9a\ntangerine-regression-36603be09489-postgres\ntangerine-regression-36603be09489-media\ntangerine-regression-36603be09489\nUntagged: tangerine-regression-36603be09489-go:latest\nDeleted: sha256:4671cbe4b197100271c94f08efdb14eb9f25193aed026465c3317be5cbb4910a\nUntagged: tangerine-regression-36603be09489-minio:latest\nDeleted: sha256:775f5bde398036fb9a64a87247346f01e25c2618cfd0560193849a9a84e9d8e1\n",
+      "stderr_artifact": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/openspec/changes/implement-teacher-error-trainer/evidence/iterations12-repair/direct-native.json.iteration2-repair-native.stderr.log",
+      "stderr_truncated": false,
+      "stdout": "{\"Time\":\"2026-10-10T00:39:17.915253095Z\",\"Action\":\"start\",\"Package\":\"tangerine.local/api/internal/app\"}\n{\"Time\":\"2026-10-10T00:39:17.946945762Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolSameAssetPositive\"}\n{\"Time\":\"2026-10-10T00:39:17.947021054Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolSameAssetPositive\",\"Output\":\"=== RUN   TestNativePoolSameAssetPositive\\n\"}\n{\"Time\":\"2026-10-10T00:39:19.917890055Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolSameAssetPositive\",\"Output\":\"--- PASS: TestNativePoolSameAssetPositive (1.95s)\\n\"}\n{\"Time\":\"2026-10-10T00:39:19.917932388Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolSameAssetPositive\",\"Elapsed\":1.95}\n{\"Time\":\"2026-10-10T00:39:19.917947888Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolDistinctAssetsPositive\"}\n{\"Time\":\"2026-10-10T00:39:19.917949555Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolDistinctAssetsPositive\",\"Output\":\"=== RUN   TestNativePoolDistinctAssetsPositive\\n\"}\n{\"Time\":\"2026-10-10T00:39:20.906813389Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolDistinctAssetsPositive\",\"Output\":\"--- PASS: TestNativePoolDistinctAssetsPositive (1.01s)\\n\"}\n{\"Time\":\"2026-10-10T00:39:20.906838222Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolDistinctAssetsPositive\",\"Elapsed\":1.01}\n{\"Time\":\"2026-10-10T00:39:20.906847305Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolCancelledWaiterNegative\"}\n{\"Time\":\"2026-10-10T00:39:20.90684893Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolCancelledWaiterNegative\",\"Output\":\"=== RUN   TestNativePoolCancelledWaiterNegative\\n\"}\n{\"Time\":\"2026-10-10T00:39:21.28114468Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolCancelledWaiterNegative\",\"Output\":\"--- PASS: TestNativePoolCancelledWaiterNegative (0.37s)\\n\"}\n{\"Time\":\"2026-10-10T00:39:21.281231847Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolCancelledWaiterNegative\",\"Elapsed\":0.37}\n{\"Time\":\"2026-10-10T00:39:21.281241472Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolWrongBytesNegative\"}\n{\"Time\":\"2026-10-10T00:39:21.28124493Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolWrongBytesNegative\",\"Output\":\"=== RUN   TestNativePoolWrongBytesNegative\\n\"}\n{\"Time\":\"2026-10-10T00:39:21.508532Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolWrongBytesNegative\",\"Output\":\"--- PASS: TestNativePoolWrongBytesNegative (0.19s)\\n\"}\n{\"Time\":\"2026-10-10T00:39:21.508601125Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolWrongBytesNegative\",\"Elapsed\":0.19}\n{\"Time\":\"2026-10-10T00:39:21.508608125Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphEvidenceAcyclicPositive\"}\n{\"Time\":\"2026-10-10T00:39:21.508609541Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphEvidenceAcyclicPositive\",\"Output\":\"=== RUN   TestNativeGraphEvidenceAcyclicPositive\\n\"}\n{\"Time\":\"2026-10-10T00:39:21.54122625Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphEvidenceAcyclicPositive\",\"Output\":\"--- PASS: TestNativeGraphEvidenceAcyclicPositive (0.03s)\\n\"}\n{\"Time\":\"2026-10-10T00:39:21.541252833Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphEvidenceAcyclicPositive\",\"Elapsed\":0.03}\n{\"Time\":\"2026-10-10T00:39:21.541258833Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphLinkAcyclicPositive\"}\n{\"Time\":\"2026-10-10T00:39:21.541260583Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphLinkAcyclicPositive\",\"Output\":\"=== RUN   TestNativeGraphLinkAcyclicPositive\\n\"}\n{\"Time\":\"2026-10-10T00:39:21.616327041Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphLinkAcyclicPositive\",\"Output\":\"--- PASS: TestNativeGraphLinkAcyclicPositive (0.07s)\\n\"}\n{\"Time\":\"2026-10-10T00:39:21.61635175Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphLinkAcyclicPositive\",\"Elapsed\":0.07}\n{\"Time\":\"2026-10-10T00:39:21.616356958Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphParentRoleNegative\"}\n{\"Time\":\"2026-10-10T00:39:21.616365458Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphParentRoleNegative\",\"Output\":\"=== RUN   TestNativeGraphParentRoleNegative\\n\"}\n{\"Time\":\"2026-10-10T00:39:21.714370125Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphParentRoleNegative\",\"Output\":\"--- PASS: TestNativeGraphParentRoleNegative (0.10s)\\n\"}\n{\"Time\":\"2026-10-10T00:39:21.714483625Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphParentRoleNegative\",\"Elapsed\":0.1}\n{\"Time\":\"2026-10-10T00:39:21.714506Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphLinkCycleNegative\"}\n{\"Time\":\"2026-10-10T00:39:21.714518791Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphLinkCycleNegative\",\"Output\":\"=== RUN   TestNativeGraphLinkCycleNegative\\n\"}\n{\"Time\":\"2026-10-10T00:39:21.845466083Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphLinkCycleNegative\",\"Output\":\"--- PASS: TestNativeGraphLinkCycleNegative (0.13s)\\n\"}\n{\"Time\":\"2026-10-10T00:39:21.845494041Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphLinkCycleNegative\",\"Elapsed\":0.13}\n{\"Time\":\"2026-10-10T00:39:21.845500333Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryCompletedPositive\"}\n{\"Time\":\"2026-10-10T00:39:21.845501958Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryCompletedPositive\",\"Output\":\"=== RUN   TestNativeRecoveryCompletedPositive\\n\"}\n{\"Time\":\"2026-10-10T00:39:21.9049775Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryCompletedPositive\",\"Output\":\"--- PASS: TestNativeRecoveryCompletedPositive (0.06s)\\n\"}\n{\"Time\":\"2026-10-10T00:39:21.905003708Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryCompletedPositive\",\"Elapsed\":0.06}\n{\"Time\":\"2026-10-10T00:39:21.905008416Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryRetryPositive\"}\n{\"Time\":\"2026-10-10T00:39:21.905010125Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryRetryPositive\",\"Output\":\"=== RUN   TestNativeRecoveryRetryPositive\\n\"}\n{\"Time\":\"2026-10-10T00:39:22.17747775Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryRetryPositive\",\"Output\":\"--- PASS: TestNativeRecoveryRetryPositive (0.27s)\\n\"}\n{\"Time\":\"2026-10-10T00:39:22.177513791Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryRetryPositive\",\"Elapsed\":0.27}\n{\"Time\":\"2026-10-10T00:39:22.177522Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryOldKeyNegative\"}\n{\"Time\":\"2026-10-10T00:39:22.177525416Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryOldKeyNegative\",\"Output\":\"=== RUN   TestNativeRecoveryOldKeyNegative\\n\"}\n{\"Time\":\"2026-10-10T00:39:22.603236292Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryOldKeyNegative\",\"Output\":\"--- PASS: TestNativeRecoveryOldKeyNegative (0.42s)\\n\"}\n{\"Time\":\"2026-10-10T00:39:22.60343025Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryOldKeyNegative\",\"Elapsed\":0.42}\n{\"Time\":\"2026-10-10T00:39:22.603560375Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryChangedIntentNegative\"}\n{\"Time\":\"2026-10-10T00:39:22.603571042Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryChangedIntentNegative\",\"Output\":\"=== RUN   TestNativeRecoveryChangedIntentNegative\\n\"}\n{\"Time\":\"2026-10-10T00:39:22.813522125Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryChangedIntentNegative\",\"Output\":\"--- PASS: TestNativeRecoveryChangedIntentNegative (0.22s)\\n\"}\n{\"Time\":\"2026-10-10T00:39:22.814833125Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryChangedIntentNegative\",\"Elapsed\":0.22}\n{\"Time\":\"2026-10-10T00:39:22.814853167Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGuardEnabledPositive\"}\n{\"Time\":\"2026-10-10T00:39:22.814864458Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGuardEnabledPositive\",\"Output\":\"=== RUN   TestNativeGuardEnabledPositive\\n\"}\n{\"Time\":\"2026-10-10T00:39:25.452180085Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGuardEnabledPositive\",\"Output\":\"--- PASS: TestNativeGuardEnabledPositive (2.64s)\\n\"}\n{\"Time\":\"2026-10-10T00:39:25.452217085Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGuardEnabledPositive\",\"Elapsed\":2.64}\n{\"Time\":\"2026-10-10T00:39:25.452226376Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGuardRestoredPositive\"}\n{\"Time\":\"2026-10-10T00:39:25.452229793Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGuardRestoredPositive\",\"Output\":\"=== RUN   TestNativeGuardRestoredPositive\\n\"}\n{\"Time\":\"2026-10-10T00:39:26.327584835Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGuardRestoredPositive\",\"Output\":\"--- PASS: TestNativeGuardRestoredPositive (0.88s)\\n\"}\n{\"Time\":\"2026-10-10T00:39:26.327783168Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGuardRestoredPositive\",\"Elapsed\":0.88}\n{\"Time\":\"2026-10-10T00:39:26.327834668Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGuardDisabledNegative\"}\n{\"Time\":\"2026-10-10T00:39:26.327845752Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGuardDisabledNegative\",\"Output\":\"=== RUN   TestNativeGuardDisabledNegative\\n\"}\n{\"Time\":\"2026-10-10T00:39:26.373645627Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGuardDisabledNegative\",\"Output\":\"--- PASS: TestNativeGuardDisabledNegative (0.05s)\\n\"}\n{\"Time\":\"2026-10-10T00:39:26.373677543Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGuardDisabledNegative\",\"Elapsed\":0.05}\n{\"Time\":\"2026-10-10T00:39:26.373795585Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGuardMisboundNegative\"}\n{\"Time\":\"2026-10-10T00:39:26.373803585Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGuardMisboundNegative\",\"Output\":\"=== RUN   TestNativeGuardMisboundNegative\\n\"}\n{\"Time\":\"2026-10-10T00:39:27.503397294Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGuardMisboundNegative\",\"Output\":\"--- PASS: TestNativeGuardMisboundNegative (1.13s)\\n\"}\n{\"Time\":\"2026-10-10T00:39:27.503423002Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGuardMisboundNegative\",\"Elapsed\":1.13}\n{\"Time\":\"2026-10-10T00:39:27.503427711Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-10-10T00:39:28.519327628Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Output\":\"ok  \\ttangerine.local/api/internal/app\\t10.562s\\n\"}\n{\"Time\":\"2026-10-10T00:39:28.519364961Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Elapsed\":10.563}\n",
+      "stdout_artifact": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/openspec/changes/implement-teacher-error-trainer/evidence/iterations12-repair/direct-native.json.iteration2-repair-native.stdout.log",
+      "stdout_truncated": false
+    }
+  ],
+  "finished_at": "2026-10-10T00:39:31.239515+00:00",
+  "git": {
+    "dirty": true,
+    "head": "75c4950615c8a6c72427eaf85da19de4013cb391",
+    "status": "known"
+  },
+  "manifest": "openspec/changes/implement-teacher-error-trainer/verification.json",
+  "manifest_sha256": "febc5c13930d5d7a0d11bdef3a3559a66912e79e5cc51a6818d7035aa6aa946a",
+  "requested_selectors": {
+    "all": false,
+    "cases": [],
+    "changed_paths": [],
+    "commands": [],
+    "owners": [],
+    "properties": [
+      "I2-15.P1",
+      "I2-16.P1",
+      "I2-17.P1",
+      "I2-18.P1"
+    ],
+    "requirements": [],
+    "scenarios": [],
+    "tests": []
+  },
+  "schema_version": 2,
+  "selection": {
+    "cases": [
+      "I2-15.P1.S1.NEGATIVE",
+      "I2-15.P1.S1.POSITIVE",
+      "I2-15.P1.S2.NEGATIVE",
+      "I2-15.P1.S2.POSITIVE",
+      "I2-16.P1.S1.NEGATIVE",
+      "I2-16.P1.S1.POSITIVE",
+      "I2-16.P1.S2.NEGATIVE",
+      "I2-16.P1.S2.POSITIVE",
+      "I2-17.P1.S1.NEGATIVE",
+      "I2-17.P1.S1.POSITIVE",
+      "I2-17.P1.S2.NEGATIVE",
+      "I2-17.P1.S2.POSITIVE",
+      "I2-18.P1.S1.NEGATIVE",
+      "I2-18.P1.S1.POSITIVE",
+      "I2-18.P1.S2.NEGATIVE",
+      "I2-18.P1.S2.POSITIVE"
+    ],
+    "commands": [
+      "iteration2-repair-native"
+    ],
+    "properties": [
+      "I2-15.P1",
+      "I2-16.P1",
+      "I2-17.P1",
+      "I2-18.P1"
+    ],
+    "requirements": [
+      "I2-15",
+      "I2-16",
+      "I2-17",
+      "I2-18"
+    ]
+  },
+  "specifications": {
+    "I2-15": "2a30e43394e33306611e0b67c98dcd5ce2898f54ba82cce07065e352c050ecdb",
+    "I2-16": "1aab1a4c71b29173addd50192c74d4528a197f35252b48aabe823d55f7d32fe2",
+    "I2-17": "986c3a3d838da854a47e4daf45362f803bc41ef68388e113bb02bc1834537e9b",
+    "I2-18": "83de89f159d27911e2e61a063c568bcdf701d9e59f8fb4cfc3084e6f5e3dddf6"
+  },
+  "started_at": "2026-10-10T00:38:29.165544+00:00",
+  "status": "passed",
+  "substitution_gaps": []
+}

@@ -70,7 +70,7 @@ for r in recipes:
  edit=r['codepoint_edit']
  if edit:
   text=r['canonical_example'];start=edit['start_cp'];end=edit['end_cp'];ck(r['taxonomy_id']+'.exact.slice',text[start:end]==edit['exact_text']);ck(r['taxonomy_id']+'.exact.replay',text[:start]+edit['replacement']+text[end:]==r['surface_example'])
-ck('all122.recipe.identities',len(recipes)==122);ck('all444.property.sets',len(s['properties'])==444)
+ck('all122.recipe.identities',len(recipes)==122);ck('all448.property.sets',len(s['properties'])==448)
 for pol in ['POSITIVE','NEGATIVE']:
  b=next(x for x in f['case_bindings'] if x['case_id']=='V6-SES-01.P1.S2.'+pol);ck('named.empty.answer.'+pol,b['input']['answer']=='' and b['expected']['TP']==0 and b['expected']['primary']=='0/1')
 ck('no.unregistered.old.secondary.leaf','grammar.verbs.verb_form' not in json.dumps(f))

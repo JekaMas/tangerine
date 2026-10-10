@@ -58,7 +58,15 @@ type SavedDocument struct {
 }
 
 func beginWrite(ctx context.Context, s *Storage) (pgx.Tx, error) {
-	tx, err := s.DB.Begin(ctx)
+	return beginWriteOn(ctx, s.DB)
+}
+
+type transactionStarter interface {
+	Begin(context.Context) (pgx.Tx, error)
+}
+
+func beginWriteOn(ctx context.Context, db transactionStarter) (pgx.Tx, error) {
+	tx, err := db.Begin(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -82,20 +90,11 @@ func (s *Storage) WriteDocuments(ctx context.Context, writes []DocumentWrite) ([
 	}
 	saved := make([]SavedDocument, len(writes))
 	for i, w := range writes {
-		c, b, err := contracts.Validate(w.Kind, w.Version, w.Payload)
+		d, err := validateDocument(w)
 		if err != nil {
 			return nil, err
 		}
-		if parsed, parseErr := uuid.Parse(w.ID); parseErr != nil || parsed.Version() != 4 {
-			return nil, errors.New("document envelope ID must be UUID")
-		}
-		if w.Scope == "" {
-			return nil, ErrReference
-		}
-		saved[i] = SavedDocument{w.ID, w.Kind, w.Version, c.SHA, contracts.Digest(b), b}
-		if err = validateProjection(w, b); err != nil {
-			return nil, err
-		}
+		saved[i] = d
 	}
 	tx, err := beginWrite(ctx, s)
 	if err != nil {
@@ -107,21 +106,45 @@ func (s *Storage) WriteDocuments(ctx context.Context, writes []DocumentWrite) ([
 			return nil, err
 		}
 	}
-	var cycle bool
-	if err = tx.QueryRow(ctx, `WITH RECURSIVE parents AS (
- SELECT source_document_id AS origin,target_id AS next,target_scope_id AS scope,ARRAY[source_document_id]::text[] AS seen,false AS cycle FROM object_reference WHERE relation='parent-evidence'
- UNION ALL SELECT p.origin,r.target_id,r.target_scope_id,p.seen||r.source_document_id::text,r.source_document_id::text=ANY(p.seen) FROM parents p JOIN object_node n ON n.node_id=p.next AND n.scope_id=p.scope JOIN object_reference r ON r.source_document_id=n.document_id AND r.relation='parent-evidence' WHERE NOT p.cycle
- ) SELECT coalesce(bool_or(cycle),false) FROM parents`).Scan(&cycle); err != nil {
+	if err = validateGraph(ctx, tx); err != nil {
 		return nil, err
-	}
-	if cycle {
-		return nil, ErrReference
 	}
 	// Deferred foreign keys permit a forward reference in this same atomic batch.
 	if err = tx.Commit(ctx); err != nil {
 		return nil, err
 	}
 	return saved, nil
+}
+
+func validateDocument(w DocumentWrite) (SavedDocument, error) {
+	c, b, err := contracts.Validate(w.Kind, w.Version, w.Payload)
+	if err != nil {
+		return SavedDocument{}, err
+	}
+	if parsed, parseErr := uuid.Parse(w.ID); parseErr != nil || parsed.Version() != 4 {
+		return SavedDocument{}, errors.New("document envelope ID must be UUID")
+	}
+	if w.Scope == "" {
+		return SavedDocument{}, ErrReference
+	}
+	if err = validateProjection(w, b); err != nil {
+		return SavedDocument{}, err
+	}
+	return SavedDocument{w.ID, w.Kind, w.Version, c.SHA, contracts.Digest(b), b}, nil
+}
+
+func validateGraph(ctx context.Context, tx pgx.Tx) error {
+	var cycle bool
+	if err := tx.QueryRow(ctx, `WITH RECURSIVE parents AS (
+ SELECT source_document_id AS origin,target_id AS next,target_scope_id AS scope,ARRAY[source_document_id]::text[] AS seen,false AS cycle FROM object_reference WHERE relation='parent-evidence'
+ UNION ALL SELECT p.origin,r.target_id,r.target_scope_id,p.seen||r.source_document_id::text,r.source_document_id::text=ANY(p.seen) FROM parents p JOIN object_node n ON n.node_id=p.next AND n.scope_id=p.scope JOIN object_reference r ON r.source_document_id=n.document_id AND r.relation='parent-evidence' WHERE NOT p.cycle
+ ) SELECT coalesce(bool_or(cycle),false) FROM parents`).Scan(&cycle); err != nil {
+		return err
+	}
+	if cycle {
+		return ErrReference
+	}
+	return nil
 }
 func insertDocument(ctx context.Context, tx pgx.Tx, w DocumentWrite, d SavedDocument) error {
 	if _, err := tx.Exec(ctx, "INSERT INTO document(id,workspace_id,kind,schema_version,schema_sha256,payload,payload_sha256) VALUES($1,'local',$2,$3,$4,$5,$6)", d.ID, d.Kind, d.Version, d.SchemaSHA, []byte(d.Payload), d.SHA); err != nil {
@@ -182,6 +205,9 @@ func validateProjection(w DocumentWrite, b []byte) error {
 			return ErrReference
 		}
 		refs[r.Pointer] = r
+		if strings.Contains(r.Pointer, "/parent_evidence_ids/") && (r.Relation != "parent-evidence" || r.Kind != "evidence") {
+			return ErrReference
+		}
 	}
 	nodes := map[string]bool{w.ID: true}
 	for _, n := range w.Nodes {
@@ -242,7 +268,7 @@ func validateProjection(w DocumentWrite, b []byte) error {
 	return nil
 }
 func externalID(kind, key string) bool {
-	if key == "workspace_id" || key == "provider_request_id" || key == "trace_id" || key == "span_id" || key == "source_request_id" || key == "selection_event_id" {
+	if key == "workspace_id" || key == "provider_request_id" || key == "trace_id" || key == "span_id" || key == "source_request_id" || key == "selection_event_id" || (kind == "error-response" && key == "request_id") {
 		return true
 	}
 	return kind == "asset" && key == "version_id" // owner/version lineage is guarded by asset reservation.
@@ -319,22 +345,22 @@ func (s *Storage) ReserveOperation(ctx context.Context, r OperationRequest) (Ope
 		return Operation{}, err
 	}
 	defer func() { _ = tx.Rollback(context.Background()) }()
-	o, err := reserveOperation(ctx, tx, r, digest)
+	o, _, err := reserveOperation(ctx, tx, r, digest)
 	if err != nil {
 		return o, err
 	}
 	return o, tx.Commit(ctx)
 }
-func reserveOperation(ctx context.Context, tx pgx.Tx, r OperationRequest, digest string) (Operation, error) {
+func reserveOperation(ctx context.Context, tx pgx.Tx, r OperationRequest, digest string) (Operation, bool, error) {
 	id := uuid.NewString()
 	_, err := tx.Exec(ctx, "INSERT INTO operation(id,workspace_id,operation_name,idempotency_key,request_sha256,state) VALUES($1,'local',$2,$3,$4,'reserved') ON CONFLICT(workspace_id,operation_name,idempotency_key) DO NOTHING", id, r.Name, r.Key, digest)
 	if err != nil {
-		return Operation{}, err
+		return Operation{}, false, err
 	}
 	var o Operation
 	err = tx.QueryRow(ctx, "SELECT id,request_sha256,state,result_document_id FROM operation WHERE workspace_id='local' AND operation_name=$1 AND idempotency_key=$2 FOR UPDATE", r.Name, r.Key).Scan(&o.ID, &o.SHA, &o.State, &o.Result)
 	if err == nil && o.SHA != digest {
 		err = ErrConflict
 	}
-	return o, err
+	return o, o.ID == id, err
 }

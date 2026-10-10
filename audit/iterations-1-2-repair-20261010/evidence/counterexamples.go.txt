@@ -1,0 +1,117 @@
+package app
+
+import (
+ "bytes"
+ "context"
+ "crypto/sha256"
+ "encoding/hex"
+ "encoding/json"
+ "fmt"
+ "io"
+ "os"
+ "sync"
+ "testing"
+ "time"
+ "github.com/google/uuid"
+ "github.com/minio/minio-go/v7"
+)
+
+func reviewStore(t *testing.T) *Storage {
+ t.Helper()
+ s, err := OpenStorage(context.Background(), os.Getenv("DATABASE_URL"), "minio:9000",os.Getenv("MINIO_ROOT_USER"),os.Getenv("MINIO_ROOT_PASSWORD"),os.Getenv("REVIEW_BUCKET"))
+ if err!=nil {t.Fatal(err)}
+ t.Cleanup(s.DB.Close)
+ return s
+}
+func reviewSHA(b []byte) string {h:=sha256.Sum256(b);return hex.EncodeToString(h[:])}
+func reviewReserve(t *testing.T,s *Storage,owner *HeadWrite) Asset {
+ t.Helper(); data:=[]byte("review")
+ a,err:=s.ReserveAsset(context.Background(),AssetRequest{Operation:OperationRequest{Name:"review-upload",Key:uuid.NewString(),Path:"/review/"+uuid.NewString(),Body:json.RawMessage(`{"intent":"literal-independent-review"}`)},SHA:reviewSHA(data),Size:int64(len(data)),Purpose:"provider_input",MIME:"text/plain",Owner:owner})
+ if err!=nil {t.Fatal(err)};return a
+}
+func reviewCase(id,candidate,parent string) []byte {
+ p:="null";if parent!="" {p=fmt.Sprintf("%q",parent)}
+ // Independently literal RFC8785 bytes: lexicographic ASCII fields, strings,
+ // booleans/null and small integer only. No production hash/projection oracle.
+ return []byte(fmt.Sprintf(`{"candidate_id":%q,"created_at":"2026-10-10T10:00:00Z","delivery_asset_id":null,"ground_truth_id":null,"id":%q,"parent_case_version_id":%s,"quarantine_open":false,"revision":0,"status":"draft"}`,candidate,id,p))
+}
+func TestReviewLinkRejectsParentCycle(t *testing.T) {
+ s:=reviewStore(t);ctx:=context.Background();zero:=int64(0)
+ target:=uuid.NewString();payload:=json.RawMessage(`{"answer_text":"Literal review target","requested_language":"en"}`)
+ if _,err:=s.WriteDocuments(ctx,[]DocumentWrite{{ID:target,Kind:"answer-write",Version:"2.0.0",Scope:target,Payload:payload}});err!=nil {t.Fatal(err)}
+ candidateRef:=Reference{Pointer:"/candidate_id",ID:target,Scope:target,Kind:"answer-write",SHA:reviewSHA(payload),Relation:"candidate"}
+ head,old:=uuid.NewString(),uuid.NewString()
+ base:=DocumentWrite{ID:old,Kind:"case-head",Version:"2.0.0",Scope:old,Payload:reviewCase(old,target,""),References:[]Reference{candidateRef},Head:&HeadWrite{ID:head,State:"draft"}}
+ if _,err:=s.WriteDocuments(ctx,[]DocumentWrite{base});err!=nil {t.Fatal(err)}
+ controlID:=uuid.NewString();controlBytes:=reviewCase(controlID,target,controlID)
+ control:=DocumentWrite{ID:controlID,Kind:"case-head",Version:"2.0.0",Scope:controlID,Payload:controlBytes,References:[]Reference{candidateRef,{Pointer:"/parent_case_version_id",ID:controlID,Scope:controlID,Kind:"case-head",SHA:reviewSHA(controlBytes),Relation:"parent-evidence"}}}
+ if _,err:=s.WriteDocuments(ctx,[]DocumentWrite{control});err!=ErrReference {t.Fatalf("ordinary writer cycle control: %v",err)}
+ a:=reviewReserve(t,s,&HeadWrite{ID:head,Expected:&zero,State:"draft"})
+ if _,err:=s.UploadAsset(ctx,a.ID,[]byte("review"));err!=nil {t.Fatal(err)}
+ id:=uuid.NewString();b:=reviewCase(id,a.ID,id)
+ owner:=DocumentWrite{ID:id,Kind:"case-head",Version:"2.0.0",Scope:id,Payload:b,Head:&HeadWrite{ID:head,Expected:&zero,State:"draft"},References:[]Reference{{Pointer:"/candidate_id",ID:a.ID,Scope:a.ID,Kind:"asset-bytes",SHA:a.SHA,Relation:"candidate"},{Pointer:"/parent_case_version_id",ID:id,Scope:id,Kind:"case-head",SHA:reviewSHA(b),Relation:"parent-evidence"}}}
+ linked,err:=s.LinkAsset(ctx,a.ID,&owner)
+ var edges int;_ = s.DB.QueryRow(ctx,"SELECT count(*) FROM object_reference WHERE source_document_id=$1 AND target_id=$1 AND relation='parent-evidence'",id).Scan(&edges)
+ t.Logf("ordinary writer rejected self-cycle; asset link error=%v state=%s committed self-cycle edges=%d",err,linked.State,edges)
+ if err==nil || edges!=0 {t.Errorf("asset owner publication must reject the same parent-evidence cycle atomically")}
+}
+func TestReviewPartialRecoveryRetainsFailure(t *testing.T) {
+ s:=reviewStore(t);ctx:=context.Background();a:=reviewReserve(t,s,nil)
+ upload,err:=s.BeginAssetUpload(ctx,a.ID);if err!=nil {t.Fatal(err)}
+ core:=minio.Core{Client:s.Media}
+ if _,err=core.PutObjectPart(ctx,s.Bucket,a.Key,upload,1,bytes.NewReader([]byte("rev")),3,minio.PutObjectPartOptions{});err!=nil {t.Fatal(err)}
+ recovered,err:=s.RecoverAsset(ctx,a.ID);if err!=nil {t.Fatal(err)}
+ var state string;var failedReceipt *string
+ if err=s.DB.QueryRow(ctx,"SELECT state,error_document_id FROM operation WHERE id=$1",a.OperationID).Scan(&state,&failedReceipt);err!=nil {t.Fatal(err)}
+ t.Logf("actual native partial upload aborted: asset=%s operation=%s error_document=%v",recovered.State,state,failedReceipt)
+ if state!="failed" || failedReceipt==nil {t.Errorf("partial-upload recovery must retain a failed operation receipt")}
+ if _,err=s.UploadAsset(ctx,a.ID,[]byte("review"));err!=nil {t.Fatal(err)}
+ linked,err:=s.LinkAsset(ctx,a.ID,nil);if err!=nil {t.Fatal(err)}
+ _=s.DB.QueryRow(ctx,"SELECT state FROM operation WHERE id=$1",a.OperationID).Scan(&state)
+ t.Logf("same interrupted operation can subsequently become %s with asset=%s",state,linked.State)
+}
+type reviewReader struct {once sync.Once; entered chan struct{};release chan struct{};r io.Reader}
+func(r *reviewReader) Read(b []byte)(int,error) {r.once.Do(func(){close(r.entered);<-r.release});return r.r.Read(b)}
+func TestReviewUploadPoolMakesProgress(t *testing.T) {
+ s:=reviewStore(t);a:=reviewReserve(t,s,nil)
+ ctx,cancel:=context.WithTimeout(context.Background(),6*time.Second);defer cancel()
+ reader:=&reviewReader{entered:make(chan struct{}),release:make(chan struct{}),r:bytes.NewReader([]byte("review"))}
+ winner:=make(chan error,1);go func(){_,err:=s.UploadReader(ctx,a.ID,reader);winner<-err}()
+ select {case <-reader.entered:case <-ctx.Done():t.Fatal("winner never began transfer")}
+ var wg sync.WaitGroup
+ for i:=0;i<9;i++ {wg.Add(1);go func(){defer wg.Done();_,_=s.UploadAsset(ctx,a.ID,[]byte("review"))}()}
+ deadline:=time.Now().Add(3*time.Second)
+ for s.DB.Stat().AcquiredConns()!=10 && time.Now().Before(deadline) {time.Sleep(10*time.Millisecond)}
+ occupied:=s.DB.Stat().AcquiredConns();close(reader.release)
+ if occupied!=10 {cancel();wg.Wait();<-winner;t.Fatalf("counterexample setup did not occupy ten connections: %d",occupied)}
+ err:=<-winner;cancel();wg.Wait()
+ t.Logf("ten concurrent same-asset owners held all pool connections; transfer winner error=%v",err)
+ if err!=nil {t.Errorf("winning upload must progress while duplicate uploads wait; it cannot require an eleventh connection")}
+}
+func TestReviewDisabledImmutableGuardNotReady(t *testing.T) {
+ s:=reviewStore(t);ctx:=context.Background()
+ if err:=s.CheckDatabase(ctx);err!=nil {t.Fatal("positive readiness setup: ",err)}
+ if _,err:=s.DB.Exec(ctx,"ALTER TABLE document DISABLE TRIGGER document_immutable");err!=nil {t.Fatal(err)}
+ defer s.DB.Exec(ctx,"ALTER TABLE document ENABLE TRIGGER document_immutable")
+ err:=s.CheckDatabase(ctx)
+ var enabled string
+ _=s.DB.QueryRow(ctx,"SELECT tgenabled::text FROM pg_trigger WHERE tgname='document_immutable'").Scan(&enabled)
+ t.Logf("disabled document immutability trigger=%s; production readiness error=%v",enabled,err)
+ if err==nil {t.Errorf("required immutable guard disabled must not report database ready")}
+}
+func TestReviewEvidenceCycleCannotUseDifferentRelation(t *testing.T) {
+ s:=reviewStore(t);ctx:=context.Background()
+ target:=uuid.NewString();answer:=json.RawMessage(`{"answer_text":"Literal source subject","requested_language":"en"}`)
+ if _,err:=s.WriteDocuments(ctx,[]DocumentWrite{{ID:target,Kind:"answer-write",Version:"2.0.0",Scope:target,Payload:answer}});err!=nil {t.Fatal(err)}
+ caseID:=uuid.NewString();caseBytes:=reviewCase(caseID,target,"")
+ if _,err:=s.WriteDocuments(ctx,[]DocumentWrite{{ID:caseID,Kind:"case-head",Version:"2.0.0",Scope:caseID,Payload:caseBytes,References:[]Reference{{Pointer:"/candidate_id",ID:target,Scope:target,Kind:"answer-write",SHA:reviewSHA(answer),Relation:"candidate"}}}});err!=nil {t.Fatal(err)}
+ id:=uuid.NewString()
+ // Source/requested evidence is a constructed storage fixture, not an observed
+ // recording, corpus source or linguistic claim. All payload fields are literal.
+ b:=[]byte(fmt.Sprintf(`{"asset_sha256":null,"case_version_id":%q,"created_at":"2026-10-10T10:00:00Z","epistemic_status":"requested","id":%q,"method_version":"review-fixture-v1","numeric_measure":null,"observed":null,"parent_evidence_ids":[%q],"provider_profile_id":null,"raw_private_asset_id":null,"schema_version":"2.0.0","source_refs":[],"subject_audio_sha256":null,"subject_ids":[%q],"type":"source","unit":null}`,caseID,id,id,caseID))
+ refs:=[]Reference{{Pointer:"/case_version_id",ID:caseID,Scope:caseID,Kind:"case-head",SHA:reviewSHA(caseBytes),Relation:"case-version"},{Pointer:"/subject_ids/0",ID:caseID,Scope:caseID,Kind:"case-head",SHA:reviewSHA(caseBytes),Relation:"subject"},{Pointer:"/parent_evidence_ids/0",ID:id,Scope:caseID,Kind:"evidence",SHA:reviewSHA(b),Relation:"parent"}}
+ _,err:=s.WriteDocuments(ctx,[]DocumentWrite{{ID:id,Kind:"evidence",Version:"2.0.0",Scope:caseID,Payload:b,References:refs}})
+ var cycles int;_=s.DB.QueryRow(ctx,"SELECT count(*) FROM object_reference WHERE source_document_id=$1 AND target_id=$1",id).Scan(&cycles)
+ t.Logf("typed evidence parent_evidence_ids includes own id; alternate relation error=%v committed self-reference=%d",err,cycles)
+ if err==nil || cycles!=0 {t.Errorf("mandatory evidence-parent DAG must not depend on caller-selected relation label")}
+}

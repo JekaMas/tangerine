@@ -14,6 +14,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/minio/minio-go/v7"
 	"tangerine.local/api/internal/contracts"
 )
@@ -38,19 +39,14 @@ type Asset struct {
 }
 
 func (s *Storage) ReserveAsset(ctx context.Context, r AssetRequest) (Asset, error) {
+	return s.reserveAsset(ctx, r, "")
+}
+
+func (s *Storage) reserveAsset(ctx context.Context, r AssetRequest, retryID string) (Asset, error) {
 	if !validDigest(r.SHA) || r.Size < 0 || (r.Owner != nil && r.Owner.Expected == nil) {
 		return Asset{}, errors.New("invalid asset reservation")
 	}
-	// The exact intended bytes and ownership are part of idempotency identity.
-	r.Operation.Body, _ = json.Marshal(struct {
-		SHA     string          `json:"sha256"`
-		Size    int64           `json:"byte_count"`
-		Purpose string          `json:"purpose"`
-		MIME    string          `json:"mime_type"`
-		Owner   *HeadWrite      `json:"owner"`
-		Context json.RawMessage `json:"context"`
-	}{r.SHA, r.Size, r.Purpose, r.MIME, r.Owner, r.Operation.Body})
-	digest, err := operationDigest(r.Operation)
+	digest, err := assetRequestDigest(r)
 	if err != nil {
 		return Asset{}, err
 	}
@@ -59,9 +55,40 @@ func (s *Storage) ReserveAsset(ctx context.Context, r AssetRequest) (Asset, erro
 		return Asset{}, err
 	}
 	defer func() { _ = tx.Rollback(context.Background()) }()
-	o, err := reserveOperation(ctx, tx, r.Operation, digest)
+	var retryResult *string
+	if retryID != "" {
+		old, err := readAsset(ctx, tx, "asset_id", retryID, false)
+		if err != nil {
+			return Asset{}, err
+		}
+		var state, key, originalDigest string
+		var receipt *string
+		if err = tx.QueryRow(ctx, "SELECT state,idempotency_key,request_sha256,error_document_id,result_document_id FROM operation WHERE id=$1 FOR SHARE", old.OperationID).Scan(&state, &key, &originalDigest, &receipt, &retryResult); err != nil {
+			return Asset{}, err
+		}
+		parsed, _ := uuid.Parse(r.Operation.Key)
+		if state != "failed" || receipt == nil || retryResult == nil || parsed.String() == key || digest != originalDigest {
+			return Asset{}, ErrConflict
+		}
+	}
+	o, created, err := reserveOperation(ctx, tx, r.Operation, digest)
 	if err != nil {
 		return Asset{}, err
+	}
+	if retryResult != nil {
+		if created {
+			if _, err = tx.Exec(ctx, "UPDATE operation SET input_document_id=$2 WHERE id=$1", o.ID, *retryResult); err != nil {
+				return Asset{}, err
+			}
+		} else {
+			var originalInput *string
+			if err = tx.QueryRow(ctx, "SELECT input_document_id FROM operation WHERE id=$1", o.ID).Scan(&originalInput); err != nil {
+				return Asset{}, err
+			}
+			if originalInput == nil || *originalInput != *retryResult {
+				return Asset{}, ErrConflict
+			}
+		}
 	}
 	// Lock the durable operation before any object reservation; repeated calls reuse it.
 	var state string
@@ -198,24 +225,23 @@ func (s *Storage) UploadAsset(ctx context.Context, id string, data []byte) (Asse
 	if int64(len(data)) != a.Size || contracts.Digest(data) != a.SHA {
 		return a, errors.New("asset input digest mismatch")
 	}
-	// A per-asset PostgreSQL session lock serializes uploads without holding a DB transaction.
-	conn, err := s.DB.Acquire(ctx)
+	conn, release, err := s.lockAsset(ctx, id)
 	if err != nil {
 		return a, err
 	}
-	defer conn.Release()
-	if _, err = conn.Exec(ctx, "SELECT pg_advisory_lock(hashtextextended($1,0))", a.ID); err != nil {
-		return a, err
-	}
-	defer func() {
-		_, _ = conn.Exec(context.Background(), "SELECT pg_advisory_unlock(hashtextextended($1,0))", a.ID)
-	}()
+	defer release()
 	a, err = readAsset(ctx, conn, "asset_id", id, false)
 	if err != nil {
 		return a, err
 	}
 	if a.State == "linked" {
 		return a, nil
+	}
+	if a.State == "uploading" {
+		a, err = s.recoverAssetUnlocked(ctx, conn, id)
+		if err != nil {
+			return a, err
+		}
 	}
 	if a.State == "orphaned" {
 		return a, ErrUnavailable
@@ -225,15 +251,23 @@ func (s *Storage) UploadAsset(ctx context.Context, id string, data []byte) (Asse
 		if code := minio.ToErrorResponse(err).Code; code != "NoSuchKey" && code != "NoSuchObject" {
 			return a, err
 		}
-		if err = s.writeAssetObject(ctx, a, bytes.NewReader(data)); err != nil {
+		if err = s.writeAssetObject(ctx, conn, a, bytes.NewReader(data)); err != nil {
 			return a, err
 		}
 	}
 
-	return s.VerifyAsset(ctx, id)
+	return s.verifyAssetUnlocked(ctx, conn, id)
 }
 func (s *Storage) VerifyAsset(ctx context.Context, id string) (Asset, error) {
-	a, err := readAsset(ctx, s.DB, "asset_id", id, false)
+	conn, release, err := s.lockAsset(ctx, id)
+	if err != nil {
+		return Asset{}, err
+	}
+	defer release()
+	return s.verifyAssetUnlocked(ctx, conn, id)
+}
+func (s *Storage) verifyAssetUnlocked(ctx context.Context, conn *pgxpool.Conn, id string) (Asset, error) {
+	a, err := readAsset(ctx, conn, "asset_id", id, false)
 	if err != nil {
 		return a, err
 	}
@@ -257,7 +291,7 @@ func (s *Storage) VerifyAsset(ctx context.Context, id string) (Asset, error) {
 		return a, closeErr
 	}
 	valid := count == a.Size && hex.EncodeToString(hash.Sum(nil)) == a.SHA
-	tx, err := beginWrite(ctx, s)
+	tx, err := beginWriteOn(ctx, conn)
 	if err != nil {
 		return a, err
 	}
@@ -280,7 +314,7 @@ func (s *Storage) VerifyAsset(ctx context.Context, id string) (Asset, error) {
 		return a, err
 	}
 	if !valid {
-		if _, err = tx.Exec(ctx, "UPDATE operation SET state='failed',finished_at=clock_timestamp() WHERE id=$1", a.OperationID); err != nil {
+		if err = failAssetOperation(ctx, tx, a, "DIGEST_MISMATCH", "asset readback digest mismatch"); err != nil {
 			return a, err
 		}
 	}
@@ -325,6 +359,9 @@ func (s *Storage) LinkAsset(ctx context.Context, id string, owner *DocumentWrite
 	if a.State != "bytes_verified" || opState != "reserved" {
 		return a, ErrUnavailable
 	}
+	if a.Owner == nil && owner != nil {
+		return a, ErrReference
+	}
 	if a.Owner != nil {
 		if owner == nil || owner.Head == nil || owner.Head.ID != *a.Owner || owner.Head.Expected == nil || *owner.Head.Expected != *a.Revision {
 			return a, ErrReference
@@ -361,11 +398,8 @@ func (s *Storage) LinkAsset(ctx context.Context, id string, owner *DocumentWrite
 		return a, err
 	}
 	if owner != nil {
-		c, b, err := contracts.Validate(owner.Kind, owner.Version, owner.Payload)
+		saved, err := validateDocument(*owner)
 		if err != nil {
-			return a, err
-		}
-		if err = validateProjection(*owner, b); err != nil {
 			return a, err
 		}
 		hasRef := false
@@ -377,7 +411,7 @@ func (s *Storage) LinkAsset(ctx context.Context, id string, owner *DocumentWrite
 		if !hasRef {
 			return a, ErrReference
 		}
-		if err = insertDocument(ctx, tx, *owner, SavedDocument{owner.ID, owner.Kind, owner.Version, c.SHA, contracts.Digest(b), b}); err != nil {
+		if err = insertDocument(ctx, tx, *owner, saved); err != nil {
 			return a, err
 		}
 		result = owner.ID
@@ -385,6 +419,9 @@ func (s *Storage) LinkAsset(ctx context.Context, id string, owner *DocumentWrite
 		return a, ErrReference
 	}
 	if _, err = tx.Exec(ctx, "UPDATE operation SET state='complete',result_document_id=$2,finished_at=clock_timestamp() WHERE id=$1", a.OperationID, result); err != nil {
+		return a, err
+	}
+	if err = validateGraph(ctx, tx); err != nil {
 		return a, err
 	}
 	return a, tx.Commit(ctx)
@@ -448,4 +485,73 @@ func validDigest(value string) bool {
 	}
 	decoded, err := hex.DecodeString(value)
 	return err == nil && hex.EncodeToString(decoded) == value
+}
+
+func assetRequestDigest(r AssetRequest) (string, error) {
+	// The exact intended bytes and ownership are part of idempotency identity.
+	var err error
+	r.Operation.Body, err = json.Marshal(struct {
+		SHA     string          `json:"sha256"`
+		Size    int64           `json:"byte_count"`
+		Purpose string          `json:"purpose"`
+		MIME    string          `json:"mime_type"`
+		Owner   *HeadWrite      `json:"owner"`
+		Context json.RawMessage `json:"context"`
+	}{r.SHA, r.Size, r.Purpose, r.MIME, r.Owner, r.Operation.Body})
+	if err != nil {
+		return "", err
+	}
+	digest, err := operationDigest(r.Operation)
+	if err != nil {
+		return "", err
+	}
+	return digest, nil
+}
+
+// Keep the same acquired connection for every guarded read and short write.
+// Duplicate waiters therefore cannot consume the winner's next connection.
+func (s *Storage) lockAsset(ctx context.Context, id string) (*pgxpool.Conn, func(), error) {
+	conn, err := s.DB.Acquire(ctx)
+	if err != nil {
+		return nil, nil, err
+	}
+	release := func() {
+		cleanup, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		if _, err := conn.Exec(cleanup, "SELECT pg_advisory_unlock(hashtextextended($1,0))", id); err != nil {
+			// A connection with uncertain session-lock ownership must not return to the pool.
+			_ = conn.Hijack().Close(cleanup)
+			return
+		}
+		conn.Release()
+	}
+	if _, err = conn.Exec(ctx, "SELECT pg_advisory_lock(hashtextextended($1,0))", id); err != nil {
+		release()
+		return nil, nil, err
+	}
+	return conn, release, nil
+}
+
+// Failure, frozen asset result and typed error are durable in the same transaction.
+func failAssetOperation(ctx context.Context, tx pgx.Tx, a Asset, code, message string) error {
+	id := uuid.NewString()
+	payload, err := json.Marshal(map[string]any{"code": code, "message": message, "request_id": a.OperationID, "retryable": true, "object_id": nil, "details": []any{}})
+	if err != nil {
+		return err
+	}
+	w := DocumentWrite{ID: id, Kind: "error-response", Version: "2.0.0", Scope: id, Payload: payload}
+	saved, err := validateDocument(w)
+	if err != nil {
+		return err
+	}
+	if err = insertDocument(ctx, tx, w, saved); err != nil {
+		return err
+	}
+	_, err = tx.Exec(ctx, "UPDATE operation SET state='failed',subject_id=$2::text,result_document_id=(SELECT document_id FROM entity_head WHERE id=$2::text),error_document_id=$3,finished_at=clock_timestamp() WHERE id=$1", a.OperationID, a.ID, id)
+	return err
+}
+
+// Retry is a new reservation bound to precisely the original frozen intent.
+func (s *Storage) RetryAsset(ctx context.Context, id string, r AssetRequest) (Asset, error) {
+	return s.reserveAsset(ctx, r, id)
 }

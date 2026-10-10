@@ -202,3 +202,63 @@ Saved effective-binding hashes SHALL exclude id and binding_sha256 only. Render-
 - **WHEN** render identity fields or frozen case lineage change under the independently saved literal digest
 - **THEN** the actual digest owner SHALL accept the specified identity-field changes and reject changed case lineage
 
+
+### Requirement: I2-15 Guarded upload progress does not need an additional pool connection
+
+The storage owner SHALL preserve this invariant through services/api/internal/app/assets.go. Parent obligation: I2-08; the approved persistence and runtime/storage contracts remain unchanged.
+
+#### Scenario: I2-15 repair packet 1
+
+- **WHEN** the exact native positive or negative fixture in audit/iterations-1-2-repair-20261010/CASES.json packet 1 executes
+- **THEN** the production transaction, native object and independent expected state SHALL agree; rejection SHALL retain prior durable state
+
+#### Scenario: I2-15 repair packet 2
+
+- **WHEN** the exact native positive or negative fixture in audit/iterations-1-2-repair-20261010/CASES.json packet 2 executes
+- **THEN** the production transaction, native object and independent expected state SHALL agree; rejection SHALL retain prior durable state
+
+
+### Requirement: I2-16 Evidence-parent DAG roles and graph invariants apply to every document publication
+
+The storage owner SHALL preserve this invariant through services/api/internal/app/domain.go. Parent obligation: I2-04; the approved persistence and runtime/storage contracts remain unchanged.
+
+#### Scenario: I2-16 repair packet 1
+
+- **WHEN** the exact native positive or negative fixture in audit/iterations-1-2-repair-20261010/CASES.json packet 1 executes
+- **THEN** the production transaction, native object and independent expected state SHALL agree; rejection SHALL retain prior durable state
+
+#### Scenario: I2-16 repair packet 2
+
+- **WHEN** the exact native positive or negative fixture in audit/iterations-1-2-repair-20261010/CASES.json packet 2 executes
+- **THEN** the production transaction, native object and independent expected state SHALL agree; rejection SHALL retain prior durable state
+
+
+### Requirement: I2-17 Interrupted multipart failure retains immutable lineage and explicit new-key retry
+
+The storage owner SHALL preserve this invariant through services/api/internal/app/multipart.go. Parent obligation: I2-09; the approved persistence and runtime/storage contracts remain unchanged. Each retry key SHALL belong to exactly one frozen original failure result. An existing independent operation SHALL never be relabelled as a retry.
+
+#### Scenario: I2-17 repair packet 1
+
+- **WHEN** the exact native positive or negative fixture in audit/iterations-1-2-repair-20261010/CASES.json packet 1 executes
+- **THEN** the production transaction, native object and independent expected state SHALL agree; rejection SHALL retain prior durable state
+
+#### Scenario: I2-17 repair packet 2
+
+- **WHEN** the exact native positive or negative fixture in audit/iterations-1-2-repair-20261010/CASES.json packet 2 executes
+- **THEN** the production transaction, native object and independent expected state SHALL agree; rejection SHALL retain prior durable state
+
+
+### Requirement: I2-18 Readiness verifies enabled exact immutability guards and recovers after repair
+
+The storage owner SHALL preserve this invariant through services/api/internal/app/storage.go. Parent obligation: I2-12; the approved persistence and runtime/storage contracts remain unchanged.
+
+#### Scenario: I2-18 repair packet 1
+
+- **WHEN** the exact native positive or negative fixture in audit/iterations-1-2-repair-20261010/CASES.json packet 1 executes
+- **THEN** the production transaction, native object and independent expected state SHALL agree; rejection SHALL retain prior durable state
+
+#### Scenario: I2-18 repair packet 2
+
+- **WHEN** the exact native positive or negative fixture in audit/iterations-1-2-repair-20261010/CASES.json packet 2 executes
+- **THEN** the production transaction, native object and independent expected state SHALL agree; rejection SHALL retain prior durable state
+

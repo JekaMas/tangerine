@@ -3,18 +3,19 @@ package app
 import (
 	"context"
 	"errors"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/minio/minio-go/v7"
 	"io"
 )
 
 // startMultipart saves the exact native upload ID before sending any parts.
-func (s *Storage) startMultipart(ctx context.Context, a Asset) (string, error) {
+func (s *Storage) startMultipart(ctx context.Context, conn *pgxpool.Conn, a Asset) (string, error) {
 	core := minio.Core{Client: s.Media}
 	id, err := core.NewMultipartUpload(ctx, s.Bucket, a.Key, minio.PutObjectOptions{ContentType: "application/octet-stream"})
 	if err != nil {
 		return "", err
 	}
-	tx, err := beginWrite(ctx, s)
+	tx, err := beginWriteOn(ctx, conn)
 	if err != nil {
 		_ = core.AbortMultipartUpload(ctx, s.Bucket, a.Key, id)
 		return "", err
@@ -39,15 +40,12 @@ func (s *Storage) startMultipart(ctx context.Context, a Asset) (string, error) {
 	}
 	return id, nil
 }
-func (s *Storage) writeAssetObject(ctx context.Context, a Asset, reader io.Reader) error {
+func (s *Storage) writeAssetObject(ctx context.Context, conn *pgxpool.Conn, a Asset, reader io.Reader) error {
 	if a.Size <= 5*1024*1024 {
 		_, err := s.Media.PutObject(ctx, s.Bucket, a.Key, reader, a.Size, minio.PutObjectOptions{DisableMultipart: true, ContentType: "application/octet-stream"})
 		return err
 	}
-	if _, err := s.recoverAssetUnlocked(ctx, a.ID); err != nil {
-		return err
-	}
-	upload, err := s.startMultipart(ctx, a)
+	upload, err := s.startMultipart(ctx, conn, a)
 	if err != nil {
 		return err
 	}
@@ -82,21 +80,15 @@ func (s *Storage) writeAssetObject(ctx context.Context, a Asset, reader io.Reade
 // RecoverAsset never invents bytes or marks an incomplete upload verified. It
 // aborts only this reservation's exact multipart ID and reuses a completed object.
 func (s *Storage) RecoverAsset(ctx context.Context, id string) (Asset, error) {
-	conn, err := s.DB.Acquire(ctx)
+	conn, release, err := s.lockAsset(ctx, id)
 	if err != nil {
 		return Asset{}, err
 	}
-	defer conn.Release()
-	if _, err = conn.Exec(ctx, "SELECT pg_advisory_lock(hashtextextended($1,0))", id); err != nil {
-		return Asset{}, err
-	}
-	defer func() {
-		_, _ = conn.Exec(context.Background(), "SELECT pg_advisory_unlock(hashtextextended($1,0))", id)
-	}()
-	return s.recoverAssetUnlocked(ctx, id)
+	defer release()
+	return s.recoverAssetUnlocked(ctx, conn, id)
 }
-func (s *Storage) recoverAssetUnlocked(ctx context.Context, id string) (Asset, error) {
-	a, err := readAsset(ctx, s.DB, "asset_id", id, false)
+func (s *Storage) recoverAssetUnlocked(ctx context.Context, conn *pgxpool.Conn, id string) (Asset, error) {
+	a, err := readAsset(ctx, conn, "asset_id", id, false)
 	if err != nil {
 		return a, err
 	}
@@ -105,14 +97,14 @@ func (s *Storage) recoverAssetUnlocked(ctx context.Context, id string) (Asset, e
 	}
 	_, err = s.Media.StatObject(ctx, s.Bucket, a.Key, minio.StatObjectOptions{})
 	if err == nil {
-		return s.VerifyAsset(ctx, id)
+		return s.verifyAssetUnlocked(ctx, conn, id)
 	}
 	code := minio.ToErrorResponse(err).Code
 	if code != "NoSuchKey" && code != "NoSuchObject" {
 		return a, err
 	}
 	var upload *string
-	if err = s.DB.QueryRow(ctx, "SELECT multipart_upload_id FROM asset_location WHERE asset_id=$1", id).Scan(&upload); err != nil {
+	if err = conn.QueryRow(ctx, "SELECT multipart_upload_id FROM asset_location WHERE asset_id=$1", id).Scan(&upload); err != nil {
 		return a, err
 	}
 	if upload == nil {
@@ -122,7 +114,7 @@ func (s *Storage) recoverAssetUnlocked(ctx context.Context, id string) (Asset, e
 	if err = core.AbortMultipartUpload(ctx, s.Bucket, a.Key, *upload); err != nil && minio.ToErrorResponse(err).Code != "NoSuchUpload" {
 		return a, err
 	}
-	tx, err := beginWrite(ctx, s)
+	tx, err := beginWriteOn(ctx, conn)
 	if err != nil {
 		return a, err
 	}
@@ -134,13 +126,16 @@ func (s *Storage) recoverAssetUnlocked(ctx context.Context, id string) (Asset, e
 	if a.State != "uploading" {
 		return a, ErrUnavailable
 	}
-	if err = setAssetState(ctx, tx, a, "reserved"); err != nil {
+	if err = setAssetState(ctx, tx, a, "orphaned"); err != nil {
 		return a, err
 	}
 	if _, err = tx.Exec(ctx, "UPDATE asset_location SET multipart_upload_id=NULL WHERE asset_id=$1 AND multipart_upload_id=$2", id, *upload); err != nil {
 		return a, err
 	}
-	a.State = "reserved"
+	if err = failAssetOperation(ctx, tx, a, "INFRASTRUCTURE_UNAVAILABLE", "interrupted multipart upload aborted"); err != nil {
+		return a, err
+	}
+	a.State = "orphaned"
 	return a, tx.Commit(ctx)
 }
 
@@ -153,18 +148,12 @@ func (s *Storage) UploadReader(ctx context.Context, id string, r io.Reader) (Ass
 	if a.State != "reserved" {
 		return a, ErrUnavailable
 	}
-	conn, err := s.DB.Acquire(ctx)
+	conn, release, err := s.lockAsset(ctx, id)
 	if err != nil {
 		return a, err
 	}
-	defer conn.Release()
-	if _, err = conn.Exec(ctx, "SELECT pg_advisory_lock(hashtextextended($1,0))", id); err != nil {
-		return a, err
-	}
-	defer func() {
-		_, _ = conn.Exec(context.Background(), "SELECT pg_advisory_unlock(hashtextextended($1,0))", id)
-	}()
-	a, err = s.recoverAssetUnlocked(ctx, id)
+	defer release()
+	a, err = s.recoverAssetUnlocked(ctx, conn, id)
 	if err != nil {
 		return a, err
 	}
@@ -174,17 +163,22 @@ func (s *Storage) UploadReader(ctx context.Context, id string, r io.Reader) (Ass
 	if a.State != "reserved" {
 		return a, ErrUnavailable
 	}
-	if err = s.writeAssetObject(ctx, a, r); err != nil {
+	if err = s.writeAssetObject(ctx, conn, a, r); err != nil {
 		return a, err
 	}
-	return s.VerifyAsset(ctx, id)
+	return s.verifyAssetUnlocked(ctx, conn, id)
 }
 
 // Native maintenance primitive used to inspect an interrupted multipart upload.
 func (s *Storage) BeginAssetUpload(ctx context.Context, id string) (string, error) {
-	a, err := readAsset(ctx, s.DB, "asset_id", id, false)
+	conn, release, err := s.lockAsset(ctx, id)
 	if err != nil {
 		return "", err
 	}
-	return s.startMultipart(ctx, a)
+	defer release()
+	a, err := readAsset(ctx, conn, "asset_id", id, false)
+	if err != nil {
+		return "", err
+	}
+	return s.startMultipart(ctx, conn, a)
 }

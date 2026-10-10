@@ -34,3 +34,5 @@ foundation closure. Run native commands sequentially: both own loopback3000.
 The56 new cases are real storage/browser fixtures; they do not establish later
 LLM/generation/scoring/import semantic acceptance. Compile/vet/race use pinned
 Go1.26.5 Docker; host Go remains an acceptance-tool mismatch, not a prerequisite.
+
+The iterations1/2 repair closure selects all I1-01.P1 through I1-08.P1 and I2-01.P1 through I2-18.P1:104 exact cases. The native regression adapter owns disposable PostgreSQL/MinIO containers without published ports and observes16 actual Go race cases. The historical88-case receipts do not prove the expanded repair closure. Original taxonomy/recipes/formulas/source scopes remain required.

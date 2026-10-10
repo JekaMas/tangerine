@@ -411,3 +411,16 @@ strict OpenSpec, graph/discovery and2,920 static assertions passed. Final accept
 record commit changes no behavior inputs. Canonical fast-forward preserves the
 unrelated GAPS.md edit. No inference/synthesis/provider or whole-product acceptance
 is claimed; later required semantic owners remain independently pending.
+
+## 2026-10-10 iterations 1 and 2 verification repair
+
+Previous iteration acceptance completeness is superseded by the native counterexamples; original passing receipts remain historical evidence. Audit/iterations-1-2-repair-20261010/PLAN.md records exact anchors, transitions and invalidations.
+
+- [ ] Repair connection-pool progress with one guarded connection and native concurrency/cancellation cases.
+- [ ] Enforce mandatory evidence-parent roles and shared graph validation through asset publication; verify atomic rollback.
+- [ ] Retain typed failed multipart receipts and implement explicit new-key retry with frozen context; verify restart and old-key rejection.
+- [ ] Reject disabled/misbound/changed immutability guards, retaining separate liveness and recovery.
+- [ ] Revalidate I1 damaged initialization and all Library browser states together with I2 closure.
+- [ ] Complete required structural/preservation/language checks and complete committed-clean combined selection; commit acceptance and preserve canonical user edits/preview.
+
+- [ ] Repair the native retry-key cross-lineage counterexample; reject reuse for another failed result or an independent reservation and independently observe owner-reservation rejection.

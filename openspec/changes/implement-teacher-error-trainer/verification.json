@@ -2575,6 +2575,30 @@
       "capability": "iteration-two-storage",
       "title": "I2-14 Owned binding and render digest projections ignore only specified identity fields",
       "fingerprint": "bb1a79addc6d0c42d01a5f4f97fe4359403fff1e5c378539475a4c9deca8cb64"
+    },
+    {
+      "id": "I2-15",
+      "capability": "iteration-two-storage",
+      "title": "I2-15 Guarded upload progress does not need an additional pool connection",
+      "fingerprint": "2a30e43394e33306611e0b67c98dcd5ce2898f54ba82cce07065e352c050ecdb"
+    },
+    {
+      "id": "I2-16",
+      "capability": "iteration-two-storage",
+      "title": "I2-16 Evidence-parent DAG roles and graph invariants apply to every document publication",
+      "fingerprint": "1aab1a4c71b29173addd50192c74d4528a197f35252b48aabe823d55f7d32fe2"
+    },
+    {
+      "id": "I2-17",
+      "capability": "iteration-two-storage",
+      "title": "I2-17 Interrupted multipart failure retains immutable lineage and explicit new-key retry",
+      "fingerprint": "2728e9aaa4b0f7b54f6c1f4abc987b7a809b04be89191478e6a6ebe8289ec222"
+    },
+    {
+      "id": "I2-18",
+      "capability": "iteration-two-storage",
+      "title": "I2-18 Readiness verifies enabled exact immutability guards and recovers after repair",
+      "fingerprint": "83de89f159d27911e2e61a063c568bcdf701d9e59f8fb4cfc3084e6f5e3dddf6"
     }
   ],
   "properties": [
@@ -10017,6 +10041,74 @@
         "services/api/internal/contracts/contracts_test.go",
         "services/api/internal/contracts/**",
         "tests/go-docker"
+      ]
+    },
+    {
+      "id": "I2-15.P1",
+      "requirement_id": "I2-15",
+      "statement": "Guarded upload progress does not need an additional pool connection",
+      "scenarios": [
+        "I2-15 repair packet 1",
+        "I2-15 repair packet 2"
+      ],
+      "owner": "services/api/internal/app/assets.go",
+      "oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "source_globs": [
+        "services/api/internal/app/assets.go",
+        "services/api/**",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions"
+      ]
+    },
+    {
+      "id": "I2-16.P1",
+      "requirement_id": "I2-16",
+      "statement": "Evidence-parent DAG roles and graph invariants apply to every document publication",
+      "scenarios": [
+        "I2-16 repair packet 1",
+        "I2-16 repair packet 2"
+      ],
+      "owner": "services/api/internal/app/domain.go",
+      "oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "source_globs": [
+        "services/api/internal/app/domain.go",
+        "services/api/**",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions"
+      ]
+    },
+    {
+      "id": "I2-17.P1",
+      "requirement_id": "I2-17",
+      "statement": "Interrupted multipart failure retains immutable lineage and explicit new-key retry",
+      "scenarios": [
+        "I2-17 repair packet 1",
+        "I2-17 repair packet 2"
+      ],
+      "owner": "services/api/internal/app/multipart.go",
+      "oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "source_globs": [
+        "services/api/internal/app/multipart.go",
+        "services/api/**",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions"
+      ]
+    },
+    {
+      "id": "I2-18.P1",
+      "requirement_id": "I2-18",
+      "statement": "Readiness verifies enabled exact immutability guards and recovers after repair",
+      "scenarios": [
+        "I2-18 repair packet 1",
+        "I2-18 repair packet 2"
+      ],
+      "owner": "services/api/internal/app/storage.go",
+      "oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "source_globs": [
+        "services/api/internal/app/storage.go",
+        "services/api/**",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions"
       ]
     }
   ],
@@ -75112,7 +75204,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75145,7 +75237,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75178,7 +75270,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75211,7 +75303,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75244,7 +75336,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75277,7 +75369,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75310,7 +75402,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75343,7 +75435,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75376,7 +75468,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75409,7 +75501,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75442,7 +75534,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75475,7 +75567,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75508,7 +75600,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75541,7 +75633,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75574,7 +75666,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75607,7 +75699,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75640,7 +75732,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75673,7 +75765,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75706,7 +75798,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75739,7 +75831,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75772,7 +75864,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75805,7 +75897,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75838,7 +75930,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75871,7 +75963,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75904,7 +75996,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75937,7 +76029,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -75970,7 +76062,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76003,7 +76095,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76036,7 +76128,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76069,7 +76161,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76102,7 +76194,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76135,7 +76227,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76168,7 +76260,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76201,7 +76293,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76234,7 +76326,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76260,14 +76352,14 @@
       "scenario": "I2-09 packet 2",
       "scenario_fingerprint": "4de7730e722628617797656ae5ca6d999042b5d9c75cbe26b9c813a1e609b754",
       "setup": "Execute test_recovery_terminal_negative through real native production storage/browser owner. Fixture: {\"corrupt_second_object\": \"bad\", \"incomplete_multipart\": true}",
-      "observable": "Compare actual observations with {\"failed_link_and_upload_error\": \"asset_unavailable\", \"multipart_id\": null, \"partial_recovery_state\": \"reserved\"}",
+      "observable": "Compare actual observations with {\"error_and_result_receipts\": true, \"explicit_new_key_retry\": \"linked with old failure retained\", \"failed_link_and_upload_error\": \"asset_unavailable\", \"multipart_id\": null, \"operation_state\": \"failed\", \"partial_recovery_state\": \"orphaned\"}",
       "red_expectation": "Different literal output, loss/corruption/partial commit, stale-reference acceptance or false readiness fails.",
       "green_expectation": "Every independent expected byte/row/hash/state/DOM assertion agrees; negatives observe rejection rather than skipping.",
       "test_id": "unittest::test_iteration2.Iteration2Tests.test_recovery_terminal_negative",
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76300,7 +76392,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76333,7 +76425,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76366,7 +76458,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76399,7 +76491,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76432,7 +76524,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76465,7 +76557,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76498,7 +76590,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76531,7 +76623,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76564,7 +76656,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76597,7 +76689,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76630,7 +76722,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76656,14 +76748,14 @@
       "scenario": "I2-12 packet 2",
       "scenario_fingerprint": "a0bd6c3a3d3c486d5903044fa1c91ce8a065e8cb1daa45510fbf30b733565671",
       "setup": "Execute test_migration_readiness_negative through real native production storage/browser owner. Fixture: {\"damaged_digest\": \"001_foundation.sql\", \"missing_column\": \"public_context\"}",
-      "observable": "Compare actual observations with {\"each_health\": 503, \"health_after_repair\": 200}",
+      "observable": "Compare actual observations with {\"corrupt_initialize\": \"nonzero\", \"each_health\": 503, \"health_after_repair\": 200, \"library_during_checksum_damage\": 200, \"library_during_missing_column\": 503, \"liveness\": 200}",
       "red_expectation": "Different literal output, loss/corruption/partial commit, stale-reference acceptance or false readiness fails.",
       "green_expectation": "Every independent expected byte/row/hash/state/DOM assertion agrees; negatives observe rejection rather than skipping.",
       "test_id": "unittest::test_iteration2.Iteration2Tests.test_migration_readiness_negative",
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76696,7 +76788,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76729,7 +76821,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76762,7 +76854,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76795,7 +76887,7 @@
       "command_id": "iteration2-native",
       "state": "implemented",
       "source_path": "tests/test_iteration2.py",
-      "source_sha256": "2bc54ba82ad317944d0b04415eb777904f0bf69c3da66f3262f61275ef81e466",
+      "source_sha256": "3912fa3948a55bd4bab619fc3d13b53b24aaf0a7070e740b0f047ee5bf843d08",
       "invalidation_dependencies": [
         "services/api",
         "services/web",
@@ -76928,6 +77020,486 @@
         "note": "Actual Go contract/digest owner, literal finite constructed inputs; no model or synthesis substitutes."
       },
       "designed_fixture_id": "iteration2-owned-digests-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I2-15.P1.S1.POSITIVE",
+      "property_id": "I2-15.P1",
+      "polarity": "positive",
+      "scenario": "I2-15 repair packet 1",
+      "scenario_fingerprint": "087fc7766e5368996fb1fc4a90ffd6b878723d149332c60a6cca234e6ba68282",
+      "setup": "Execute TestNativePoolSameAssetPositive through native production owner. {\"bytes\": \"review\", \"duplicate_waiters\": 9, \"pool_capacity\": 10, \"winner\": \"blocked native reader\"}",
+      "observable": "{\"all_waiters\": \"success\", \"linked_bytes\": \"review\", \"winner\": \"success\"}",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "test_id": "tangerine.local/api/internal/app::TestNativePoolSameAssetPositive",
+      "command_id": "iteration2-repair-native",
+      "state": "implemented",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "653caa33cde05b3a7d924ce9f4e9334c8db7a0ad33aee88d5bc4ac349843a88e",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "note": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation."
+      },
+      "designed_fixture_id": "iteration2-repair-I2-15-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I2-15.P1.S2.POSITIVE",
+      "property_id": "I2-15.P1",
+      "polarity": "positive",
+      "scenario": "I2-15 repair packet 2",
+      "scenario_fingerprint": "7e70803b58650b0d4ce74bf32a7a1d5c42fbd2097bc741f23f07865c8969cdcb",
+      "setup": "Execute TestNativePoolDistinctAssetsPositive through native production owner. {\"bytes\": \"review\", \"concurrent_assets\": 20, \"pool_capacity\": 10}",
+      "observable": "{\"all_linked_readbacks\": \"review\", \"all_verified\": 20}",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "test_id": "tangerine.local/api/internal/app::TestNativePoolDistinctAssetsPositive",
+      "command_id": "iteration2-repair-native",
+      "state": "implemented",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "653caa33cde05b3a7d924ce9f4e9334c8db7a0ad33aee88d5bc4ac349843a88e",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "note": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation."
+      },
+      "designed_fixture_id": "iteration2-repair-I2-15-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I2-15.P1.S1.NEGATIVE",
+      "property_id": "I2-15.P1",
+      "polarity": "negative",
+      "scenario": "I2-15 repair packet 1",
+      "scenario_fingerprint": "087fc7766e5368996fb1fc4a90ffd6b878723d149332c60a6cca234e6ba68282",
+      "setup": "Execute TestNativePoolCancelledWaiterNegative through native production owner. {\"blocked_winner\": true, \"bytes\": \"review\", \"waiter_timeout_ms\": 100}",
+      "observable": "{\"next_upload\": \"success without leaked lock\", \"waiter\": \"rejected\", \"winner\": \"success\"}",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "test_id": "tangerine.local/api/internal/app::TestNativePoolCancelledWaiterNegative",
+      "command_id": "iteration2-repair-native",
+      "state": "implemented",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "653caa33cde05b3a7d924ce9f4e9334c8db7a0ad33aee88d5bc4ac349843a88e",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "note": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation."
+      },
+      "designed_fixture_id": "iteration2-repair-I2-15-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I2-15.P1.S2.NEGATIVE",
+      "property_id": "I2-15.P1",
+      "polarity": "negative",
+      "scenario": "I2-15 repair packet 2",
+      "scenario_fingerprint": "7e70803b58650b0d4ce74bf32a7a1d5c42fbd2097bc741f23f07865c8969cdcb",
+      "setup": "Execute TestNativePoolWrongBytesNegative through native production owner. {\"concurrent_rejections\": 20, \"intended\": \"review\", \"wrong\": \"wrong!\"}",
+      "observable": "{\"all_rejected\": true, \"object_after_rejection\": \"NoSuchKey\", \"valid_upload_after\": \"success\"}",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "test_id": "tangerine.local/api/internal/app::TestNativePoolWrongBytesNegative",
+      "command_id": "iteration2-repair-native",
+      "state": "implemented",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "653caa33cde05b3a7d924ce9f4e9334c8db7a0ad33aee88d5bc4ac349843a88e",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "note": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation."
+      },
+      "designed_fixture_id": "iteration2-repair-I2-15-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I2-16.P1.S1.POSITIVE",
+      "property_id": "I2-16.P1",
+      "polarity": "positive",
+      "scenario": "I2-16 repair packet 1",
+      "scenario_fingerprint": "a1b6c5f50f1757b7a299d58bb87b2bd50ccfb4d63b662eb99994a280e2ba2550",
+      "setup": "Execute TestNativeGraphEvidenceAcyclicPositive through native production owner. {\"child_before_parent\": true, \"typed_evidence_parent_relation\": \"parent-evidence\"}",
+      "observable": "{\"both_readback\": \"success\"}",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGraphEvidenceAcyclicPositive",
+      "command_id": "iteration2-repair-native",
+      "state": "implemented",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "653caa33cde05b3a7d924ce9f4e9334c8db7a0ad33aee88d5bc4ac349843a88e",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "note": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation."
+      },
+      "designed_fixture_id": "iteration2-repair-I2-16-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I2-16.P1.S2.POSITIVE",
+      "property_id": "I2-16.P1",
+      "polarity": "positive",
+      "scenario": "I2-16 repair packet 2",
+      "scenario_fingerprint": "91ad19028c2fe643371108b093c4a1d693406c860529a6e2df5557703d71a3b6",
+      "setup": "Execute TestNativeGraphLinkAcyclicPositive through native production owner. {\"new_asset_reference\": \"asset-bytes\", \"owner_revision\": 0, \"parent\": \"old immutable case\"}",
+      "observable": "{\"link\": \"success\", \"owner_revision\": 1}",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGraphLinkAcyclicPositive",
+      "command_id": "iteration2-repair-native",
+      "state": "implemented",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "653caa33cde05b3a7d924ce9f4e9334c8db7a0ad33aee88d5bc4ac349843a88e",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "note": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation."
+      },
+      "designed_fixture_id": "iteration2-repair-I2-16-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I2-16.P1.S1.NEGATIVE",
+      "property_id": "I2-16.P1",
+      "polarity": "negative",
+      "scenario": "I2-16 repair packet 1",
+      "scenario_fingerprint": "a1b6c5f50f1757b7a299d58bb87b2bd50ccfb4d63b662eb99994a280e2ba2550",
+      "setup": "Execute TestNativeGraphParentRoleNegative through native production owner. {\"self_parent_relations\": [\"parent\", \"parent-evidence\"], \"two_node_cycle\": true}",
+      "observable": "{\"cycle_documents\": 0, \"each_rejected\": \"reference_error\"}",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGraphParentRoleNegative",
+      "command_id": "iteration2-repair-native",
+      "state": "implemented",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "653caa33cde05b3a7d924ce9f4e9334c8db7a0ad33aee88d5bc4ac349843a88e",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "note": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation."
+      },
+      "designed_fixture_id": "iteration2-repair-I2-16-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I2-16.P1.S2.NEGATIVE",
+      "property_id": "I2-16.P1",
+      "polarity": "negative",
+      "scenario": "I2-16 repair packet 2",
+      "scenario_fingerprint": "91ad19028c2fe643371108b093c4a1d693406c860529a6e2df5557703d71a3b6",
+      "setup": "Execute TestNativeGraphLinkCycleNegative through native production owner. {\"self_cycle_owner\": true, \"then_bad_envelope\": \"bad-envelope\", \"valid_owner_after_ownerless_reserve\": true}",
+      "observable": "{\"asset_state\": \"bytes_verified\", \"bad_envelope\": \"rejected\", \"link_rejected\": \"reference_error\", \"new_document_count\": 0, \"owner_revision\": 0, \"ownerless_attachment\": \"reference_error with bytes_verified/reserved retained\"}",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGraphLinkCycleNegative",
+      "command_id": "iteration2-repair-native",
+      "state": "implemented",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "653caa33cde05b3a7d924ce9f4e9334c8db7a0ad33aee88d5bc4ac349843a88e",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "note": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation."
+      },
+      "designed_fixture_id": "iteration2-repair-I2-16-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I2-17.P1.S1.POSITIVE",
+      "property_id": "I2-17.P1",
+      "polarity": "positive",
+      "scenario": "I2-17 repair packet 1",
+      "scenario_fingerprint": "7b8f12f809f508cbc4f92e78e1d8773c0411d854af0d8b9981e0ed02183e99ea",
+      "setup": "Execute TestNativeRecoveryCompletedPositive through native production owner. {\"completed_native_object\": \"review\", \"reservation_state\": \"reserved\"}",
+      "observable": "{\"linked_readback\": \"review\", \"recovered\": \"bytes_verified\"}",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "test_id": "tangerine.local/api/internal/app::TestNativeRecoveryCompletedPositive",
+      "command_id": "iteration2-repair-native",
+      "state": "implemented",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "653caa33cde05b3a7d924ce9f4e9334c8db7a0ad33aee88d5bc4ac349843a88e",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "note": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation."
+      },
+      "designed_fixture_id": "iteration2-repair-I2-17-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I2-17.P1.S2.POSITIVE",
+      "property_id": "I2-17.P1",
+      "polarity": "positive",
+      "scenario": "I2-17 repair packet 2",
+      "scenario_fingerprint": "bf30d3fa48bdab3ce6a76edcf8305f45c24868fd0c5b8abca4fdbdf2689ac262",
+      "setup": "Execute TestNativeRecoveryRetryPositive through native production owner. {\"explicit_new_key\": true, \"intended\": \"review\", \"partial_native_part\": \"rev\", \"reopen_storage\": true}",
+      "observable": "{\"asset_state\": \"orphaned\", \"old_upload_id\": \"NoSuchUpload\", \"original_receipt\": \"unchanged\", \"original_state\": \"failed\", \"retry\": \"different asset/operation, idempotent, linked\", \"typed_error_and_asset_result\": \"same after reopen and repeat recovery\"}",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "test_id": "tangerine.local/api/internal/app::TestNativeRecoveryRetryPositive",
+      "command_id": "iteration2-repair-native",
+      "state": "implemented",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "653caa33cde05b3a7d924ce9f4e9334c8db7a0ad33aee88d5bc4ac349843a88e",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "note": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation."
+      },
+      "designed_fixture_id": "iteration2-repair-I2-17-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I2-17.P1.S1.NEGATIVE",
+      "property_id": "I2-17.P1",
+      "polarity": "negative",
+      "scenario": "I2-17 repair packet 1",
+      "scenario_fingerprint": "7b8f12f809f508cbc4f92e78e1d8773c0411d854af0d8b9981e0ed02183e99ea",
+      "setup": "Execute TestNativeRecoveryOldKeyNegative through native production owner. {\"old_asset_upload_and_link\": true, \"old_key_repeat\": true, \"partial_native_part\": \"rev\"}",
+      "observable": "{\"old_upload_link\": \"asset_unavailable\", \"original\": \"failed with saved error and result\", \"reservation\": \"same orphaned asset\", \"same_key_retry\": \"conflict\"}",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "test_id": "tangerine.local/api/internal/app::TestNativeRecoveryOldKeyNegative",
+      "command_id": "iteration2-repair-native",
+      "state": "implemented",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "653caa33cde05b3a7d924ce9f4e9334c8db7a0ad33aee88d5bc4ac349843a88e",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "note": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation."
+      },
+      "designed_fixture_id": "iteration2-repair-I2-17-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I2-17.P1.S2.NEGATIVE",
+      "property_id": "I2-17.P1",
+      "polarity": "negative",
+      "scenario": "I2-17 repair packet 2",
+      "scenario_fingerprint": "bf30d3fa48bdab3ce6a76edcf8305f45c24868fd0c5b8abca4fdbdf2689ac262",
+      "setup": "Execute TestNativeRecoveryChangedIntentNegative through native production owner. {\"changed_retry_fields\": [\"path\", \"body\", \"query\", \"sha\", \"size\", \"mime\", \"purpose\", \"revision\"], \"existing_independent_reservation_key\": true, \"same_retry_key_for_different_failure\": true}",
+      "observable": "{\"each_key_collision\": \"conflict with original input lineage unchanged\", \"each_rejected\": \"conflict\", \"new_operation_rows\": 0}",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "test_id": "tangerine.local/api/internal/app::TestNativeRecoveryChangedIntentNegative",
+      "command_id": "iteration2-repair-native",
+      "state": "implemented",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "653caa33cde05b3a7d924ce9f4e9334c8db7a0ad33aee88d5bc4ac349843a88e",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "note": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation."
+      },
+      "designed_fixture_id": "iteration2-repair-I2-17-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I2-18.P1.S1.POSITIVE",
+      "property_id": "I2-18.P1",
+      "polarity": "positive",
+      "scenario": "I2-18 repair packet 1",
+      "scenario_fingerprint": "dc51686a6e877c4bcf26e5056081779fb93112c4d918c8bff7a2b6a398896f84",
+      "setup": "Execute TestNativeGuardEnabledPositive through native production owner. {\"document_update\": \"{}\", \"guards\": \"original enabled bindings\"}",
+      "observable": "{\"immutable_update\": \"rejected\", \"readiness\": \"ready\", \"readiness_after\": \"ready\"}",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGuardEnabledPositive",
+      "command_id": "iteration2-repair-native",
+      "state": "implemented",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "653caa33cde05b3a7d924ce9f4e9334c8db7a0ad33aee88d5bc4ac349843a88e",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "note": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation."
+      },
+      "designed_fixture_id": "iteration2-repair-I2-18-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I2-18.P1.S2.POSITIVE",
+      "property_id": "I2-18.P1",
+      "polarity": "positive",
+      "scenario": "I2-18 repair packet 2",
+      "scenario_fingerprint": "53e8375580324860be6b360b066808556729da6451fb684adc6d3374daf94d77",
+      "setup": "Execute TestNativeGuardRestoredPositive through native production owner. {\"document_guard\": \"disable then ENABLE ALWAYS\"}",
+      "observable": "{\"disabled\": \"not ready\", \"restored\": \"ready\"}",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGuardRestoredPositive",
+      "command_id": "iteration2-repair-native",
+      "state": "implemented",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "653caa33cde05b3a7d924ce9f4e9334c8db7a0ad33aee88d5bc4ac349843a88e",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "note": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation."
+      },
+      "designed_fixture_id": "iteration2-repair-I2-18-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I2-18.P1.S1.NEGATIVE",
+      "property_id": "I2-18.P1",
+      "polarity": "negative",
+      "scenario": "I2-18 repair packet 1",
+      "scenario_fingerprint": "dc51686a6e877c4bcf26e5056081779fb93112c4d918c8bff7a2b6a398896f84",
+      "setup": "Execute TestNativeGuardDisabledNegative through native production owner. {\"disabled_guards\": [\"document_immutable\", \"audit_immutable\", \"schema_immutable\", \"migration_backup_immutable\"]}",
+      "observable": "{\"each\": \"not ready\", \"restored\": \"ready\"}",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGuardDisabledNegative",
+      "command_id": "iteration2-repair-native",
+      "state": "implemented",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "653caa33cde05b3a7d924ce9f4e9334c8db7a0ad33aee88d5bc4ac349843a88e",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "note": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation."
+      },
+      "designed_fixture_id": "iteration2-repair-I2-18-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I2-18.P1.S2.NEGATIVE",
+      "property_id": "I2-18.P1",
+      "polarity": "negative",
+      "scenario": "I2-18 repair packet 2",
+      "scenario_fingerprint": "53e8375580324860be6b360b066808556729da6451fb684adc6d3374daf94d77",
+      "setup": "Execute TestNativeGuardMisboundNegative through native production owner. {\"function_body\": \"no-op RETURN NEW\", \"then_function_binding\": \"regression_guard\"}",
+      "observable": "{\"each\": \"not ready\", \"restored\": \"ready\"}",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGuardMisboundNegative",
+      "command_id": "iteration2-repair-native",
+      "state": "implemented",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "653caa33cde05b3a7d924ce9f4e9334c8db7a0ad33aee88d5bc4ac349843a88e",
+      "invalidation_dependencies": [
+        "services/api",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "note": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation."
+      },
+      "designed_fixture_id": "iteration2-repair-I2-18-packet2",
       "fixture_observation_state": "not_run"
     }
   ],
@@ -79214,6 +79786,22 @@
         "-race",
         "-count=1",
         "./..."
+      ],
+      "cwd": ".",
+      "env": {},
+      "timeout_seconds": 600,
+      "authority": "local"
+    },
+    {
+      "id": "iteration2-repair-native",
+      "runner": "go-test-json",
+      "argv": [
+        "./tests/native-storage-regressions",
+        "test",
+        "-json",
+        "-race",
+        "-count=1",
+        "./internal/app"
       ],
       "cwd": ".",
       "env": {},

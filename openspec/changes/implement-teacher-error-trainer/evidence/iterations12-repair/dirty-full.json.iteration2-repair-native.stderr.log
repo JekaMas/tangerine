@@ -1,0 +1,116 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 747B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context:
+#3 transferring context: 163B 0.1s done
+#3 DONE 0.2s
+
+#4 [build 1/6] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 15.06kB 0.0s done
+#5 DONE 0.0s
+
+#6 [build 5/6] COPY services/api/ ./
+#6 CACHED
+
+#7 [build 2/6] WORKDIR /src
+#7 CACHED
+
+#8 [build 3/6] COPY services/api/go.mod services/api/go.sum ./
+#8 CACHED
+
+#9 [build 4/6] RUN go mod download
+#9 CACHED
+
+#10 [build 6/6] RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /tangerine ./cmd/tangerine
+#10 CACHED
+
+#11 exporting to image
+#11 exporting layers done
+#11 writing image sha256:4671cbe4b197100271c94f08efdb14eb9f25193aed026465c3317be5cbb4910a done
+#11 naming to docker.io/library/tangerine-regression-160ff55ac303-go done
+#11 DONE 0.0s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/ur824508em1uancqikwoevzx3
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from minio.Dockerfile
+#1 transferring dockerfile: 1.01kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
+#3 DONE 2.8s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 163B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/4] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
+#5 DONE 0.0s
+
+#6 [build 1/7] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#6 DONE 0.0s
+
+#7 [build 2/7] ADD --checksum=sha256:71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6 https://codeload.github.com/minio/minio/tar.gz/7aac2a2c5b7c882e68c1ce017d8256be2feea27f /src.tar.gz
+#7 DONE 0.0s
+
+#8 [internal] load build context
+#8 transferring context: 417B done
+#8 DONE 0.0s
+
+#9 [build 6/7] COPY deploy/local/probe.go /probe.go
+#9 CACHED
+
+#10 [build 5/7] RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /minio .
+#10 CACHED
+
+#11 [build 7/7] RUN CGO_ENABLED=0 go build -trimpath -o /probe /probe.go
+#11 CACHED
+
+#12 [stage-1 2/4] COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+#12 CACHED
+
+#13 [stage-1 3/4] COPY --from=build /minio /usr/local/bin/minio
+#13 CACHED
+
+#14 [build 2/7] ADD --checksum=sha256:71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6 https://codeload.github.com/minio/minio/tar.gz/7aac2a2c5b7c882e68c1ce017d8256be2feea27f /src.tar.gz
+#14 CACHED
+
+#15 [build 3/7] RUN mkdir /src && tar -xzf /src.tar.gz --strip-components=1 -C /src
+#15 CACHED
+
+#16 [build 4/7] WORKDIR /src
+#16 CACHED
+
+#17 [stage-1 4/4] COPY --from=build /probe /usr/local/bin/probe
+#17 CACHED
+
+#18 exporting to image
+#18 exporting layers done
+#18 writing image sha256:775f5bde398036fb9a64a87247346f01e25c2618cfd0560193849a9a84e9d8e1 done
+#18 naming to docker.io/library/tangerine-regression-160ff55ac303-minio done
+#18 DONE 0.0s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/weszxm8rjgo30xp3e4zxs7uss
+edcf4fa2824d502df31ad09099373aa7d3fb294aaeeb4334b904ff8e5589e965
+7e61183da5d2a2df22b22388b258869edf19763a585e67a13eb8cf85723a1451
+a86877a5bcc59318e0ded8039492801d35ec0e873b628e8dbe86d56daed46805
+tangerine-regression-160ff55ac303-postgres
+tangerine-regression-160ff55ac303-media
+tangerine-regression-160ff55ac303
+Untagged: tangerine-regression-160ff55ac303-go:latest
+Deleted: sha256:4671cbe4b197100271c94f08efdb14eb9f25193aed026465c3317be5cbb4910a
+Untagged: tangerine-regression-160ff55ac303-minio:latest
+Deleted: sha256:775f5bde398036fb9a64a87247346f01e25c2618cfd0560193849a9a84e9d8e1

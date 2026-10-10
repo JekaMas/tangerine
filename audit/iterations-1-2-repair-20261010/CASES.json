@@ -1,0 +1,466 @@
+{
+  "properties": [
+    "I2-15.P1",
+    "I2-16.P1",
+    "I2-17.P1",
+    "I2-18.P1"
+  ],
+  "plans": [
+    {
+      "case_id": "I2-15.P1.S1.POSITIVE",
+      "property_id": "I2-15.P1",
+      "polarity": "positive",
+      "scenario": "I2-15 repair packet 1",
+      "fixture_id": "iteration2-repair-I2-15-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativePoolSameAssetPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativePoolSameAssetPositive through native production owner.",
+      "initial_state": {
+        "fresh_disposable_postgres_minio": true,
+        "provider_calls": 0
+      },
+      "input": {
+        "bytes": "review",
+        "winner": "blocked native reader",
+        "duplicate_waiters": 9,
+        "pool_capacity": 10
+      },
+      "expected": {
+        "winner": "success",
+        "all_waiters": "success",
+        "linked_bytes": "review"
+      },
+      "independent_oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I2-15.P1.S2.POSITIVE",
+      "property_id": "I2-15.P1",
+      "polarity": "positive",
+      "scenario": "I2-15 repair packet 2",
+      "fixture_id": "iteration2-repair-I2-15-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativePoolDistinctAssetsPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativePoolDistinctAssetsPositive through native production owner.",
+      "initial_state": {
+        "fresh_disposable_postgres_minio": true,
+        "provider_calls": 0
+      },
+      "input": {
+        "bytes": "review",
+        "concurrent_assets": 20,
+        "pool_capacity": 10
+      },
+      "expected": {
+        "all_verified": 20,
+        "all_linked_readbacks": "review"
+      },
+      "independent_oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I2-15.P1.S1.NEGATIVE",
+      "property_id": "I2-15.P1",
+      "polarity": "negative",
+      "scenario": "I2-15 repair packet 1",
+      "fixture_id": "iteration2-repair-I2-15-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativePoolCancelledWaiterNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativePoolCancelledWaiterNegative through native production owner.",
+      "initial_state": {
+        "fresh_disposable_postgres_minio": true,
+        "provider_calls": 0
+      },
+      "input": {
+        "bytes": "review",
+        "blocked_winner": true,
+        "waiter_timeout_ms": 100
+      },
+      "expected": {
+        "waiter": "rejected",
+        "winner": "success",
+        "next_upload": "success without leaked lock"
+      },
+      "independent_oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I2-15.P1.S2.NEGATIVE",
+      "property_id": "I2-15.P1",
+      "polarity": "negative",
+      "scenario": "I2-15 repair packet 2",
+      "fixture_id": "iteration2-repair-I2-15-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativePoolWrongBytesNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativePoolWrongBytesNegative through native production owner.",
+      "initial_state": {
+        "fresh_disposable_postgres_minio": true,
+        "provider_calls": 0
+      },
+      "input": {
+        "intended": "review",
+        "wrong": "wrong!",
+        "concurrent_rejections": 20
+      },
+      "expected": {
+        "all_rejected": true,
+        "object_after_rejection": "NoSuchKey",
+        "valid_upload_after": "success"
+      },
+      "independent_oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I2-16.P1.S1.POSITIVE",
+      "property_id": "I2-16.P1",
+      "polarity": "positive",
+      "scenario": "I2-16 repair packet 1",
+      "fixture_id": "iteration2-repair-I2-16-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGraphEvidenceAcyclicPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeGraphEvidenceAcyclicPositive through native production owner.",
+      "initial_state": {
+        "fresh_disposable_postgres_minio": true,
+        "provider_calls": 0
+      },
+      "input": {
+        "child_before_parent": true,
+        "typed_evidence_parent_relation": "parent-evidence"
+      },
+      "expected": {
+        "both_readback": "success"
+      },
+      "independent_oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I2-16.P1.S2.POSITIVE",
+      "property_id": "I2-16.P1",
+      "polarity": "positive",
+      "scenario": "I2-16 repair packet 2",
+      "fixture_id": "iteration2-repair-I2-16-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGraphLinkAcyclicPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeGraphLinkAcyclicPositive through native production owner.",
+      "initial_state": {
+        "fresh_disposable_postgres_minio": true,
+        "provider_calls": 0
+      },
+      "input": {
+        "owner_revision": 0,
+        "new_asset_reference": "asset-bytes",
+        "parent": "old immutable case"
+      },
+      "expected": {
+        "link": "success",
+        "owner_revision": 1
+      },
+      "independent_oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I2-16.P1.S1.NEGATIVE",
+      "property_id": "I2-16.P1",
+      "polarity": "negative",
+      "scenario": "I2-16 repair packet 1",
+      "fixture_id": "iteration2-repair-I2-16-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGraphParentRoleNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeGraphParentRoleNegative through native production owner.",
+      "initial_state": {
+        "fresh_disposable_postgres_minio": true,
+        "provider_calls": 0
+      },
+      "input": {
+        "self_parent_relations": [
+          "parent",
+          "parent-evidence"
+        ],
+        "two_node_cycle": true
+      },
+      "expected": {
+        "each_rejected": "reference_error",
+        "cycle_documents": 0
+      },
+      "independent_oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I2-16.P1.S2.NEGATIVE",
+      "property_id": "I2-16.P1",
+      "polarity": "negative",
+      "scenario": "I2-16 repair packet 2",
+      "fixture_id": "iteration2-repair-I2-16-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGraphLinkCycleNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeGraphLinkCycleNegative through native production owner.",
+      "initial_state": {
+        "fresh_disposable_postgres_minio": true,
+        "provider_calls": 0
+      },
+      "input": {
+        "self_cycle_owner": true,
+        "then_bad_envelope": "bad-envelope",
+        "valid_owner_after_ownerless_reserve": true
+      },
+      "expected": {
+        "link_rejected": "reference_error",
+        "asset_state": "bytes_verified",
+        "owner_revision": 0,
+        "new_document_count": 0,
+        "bad_envelope": "rejected",
+        "ownerless_attachment": "reference_error with bytes_verified/reserved retained"
+      },
+      "independent_oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I2-17.P1.S1.POSITIVE",
+      "property_id": "I2-17.P1",
+      "polarity": "positive",
+      "scenario": "I2-17 repair packet 1",
+      "fixture_id": "iteration2-repair-I2-17-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeRecoveryCompletedPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeRecoveryCompletedPositive through native production owner.",
+      "initial_state": {
+        "fresh_disposable_postgres_minio": true,
+        "provider_calls": 0
+      },
+      "input": {
+        "completed_native_object": "review",
+        "reservation_state": "reserved"
+      },
+      "expected": {
+        "recovered": "bytes_verified",
+        "linked_readback": "review"
+      },
+      "independent_oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I2-17.P1.S2.POSITIVE",
+      "property_id": "I2-17.P1",
+      "polarity": "positive",
+      "scenario": "I2-17 repair packet 2",
+      "fixture_id": "iteration2-repair-I2-17-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeRecoveryRetryPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeRecoveryRetryPositive through native production owner.",
+      "initial_state": {
+        "fresh_disposable_postgres_minio": true,
+        "provider_calls": 0
+      },
+      "input": {
+        "partial_native_part": "rev",
+        "intended": "review",
+        "reopen_storage": true,
+        "explicit_new_key": true
+      },
+      "expected": {
+        "original_state": "failed",
+        "asset_state": "orphaned",
+        "typed_error_and_asset_result": "same after reopen and repeat recovery",
+        "old_upload_id": "NoSuchUpload",
+        "retry": "different asset/operation, idempotent, linked",
+        "original_receipt": "unchanged"
+      },
+      "independent_oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I2-17.P1.S1.NEGATIVE",
+      "property_id": "I2-17.P1",
+      "polarity": "negative",
+      "scenario": "I2-17 repair packet 1",
+      "fixture_id": "iteration2-repair-I2-17-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeRecoveryOldKeyNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeRecoveryOldKeyNegative through native production owner.",
+      "initial_state": {
+        "fresh_disposable_postgres_minio": true,
+        "provider_calls": 0
+      },
+      "input": {
+        "partial_native_part": "rev",
+        "old_key_repeat": true,
+        "old_asset_upload_and_link": true
+      },
+      "expected": {
+        "reservation": "same orphaned asset",
+        "old_upload_link": "asset_unavailable",
+        "same_key_retry": "conflict",
+        "original": "failed with saved error and result"
+      },
+      "independent_oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I2-17.P1.S2.NEGATIVE",
+      "property_id": "I2-17.P1",
+      "polarity": "negative",
+      "scenario": "I2-17 repair packet 2",
+      "fixture_id": "iteration2-repair-I2-17-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeRecoveryChangedIntentNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeRecoveryChangedIntentNegative through native production owner.",
+      "initial_state": {
+        "fresh_disposable_postgres_minio": true,
+        "provider_calls": 0
+      },
+      "input": {
+        "changed_retry_fields": [
+          "path",
+          "body",
+          "query",
+          "sha",
+          "size",
+          "mime",
+          "purpose",
+          "revision"
+        ],
+        "same_retry_key_for_different_failure": true,
+        "existing_independent_reservation_key": true
+      },
+      "expected": {
+        "each_rejected": "conflict",
+        "new_operation_rows": 0,
+        "each_key_collision": "conflict with original input lineage unchanged"
+      },
+      "independent_oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I2-18.P1.S1.POSITIVE",
+      "property_id": "I2-18.P1",
+      "polarity": "positive",
+      "scenario": "I2-18 repair packet 1",
+      "fixture_id": "iteration2-repair-I2-18-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGuardEnabledPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeGuardEnabledPositive through native production owner.",
+      "initial_state": {
+        "fresh_disposable_postgres_minio": true,
+        "provider_calls": 0
+      },
+      "input": {
+        "guards": "original enabled bindings",
+        "document_update": "{}"
+      },
+      "expected": {
+        "readiness": "ready",
+        "immutable_update": "rejected",
+        "readiness_after": "ready"
+      },
+      "independent_oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I2-18.P1.S2.POSITIVE",
+      "property_id": "I2-18.P1",
+      "polarity": "positive",
+      "scenario": "I2-18 repair packet 2",
+      "fixture_id": "iteration2-repair-I2-18-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGuardRestoredPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeGuardRestoredPositive through native production owner.",
+      "initial_state": {
+        "fresh_disposable_postgres_minio": true,
+        "provider_calls": 0
+      },
+      "input": {
+        "document_guard": "disable then ENABLE ALWAYS"
+      },
+      "expected": {
+        "disabled": "not ready",
+        "restored": "ready"
+      },
+      "independent_oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I2-18.P1.S1.NEGATIVE",
+      "property_id": "I2-18.P1",
+      "polarity": "negative",
+      "scenario": "I2-18 repair packet 1",
+      "fixture_id": "iteration2-repair-I2-18-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGuardDisabledNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeGuardDisabledNegative through native production owner.",
+      "initial_state": {
+        "fresh_disposable_postgres_minio": true,
+        "provider_calls": 0
+      },
+      "input": {
+        "disabled_guards": [
+          "document_immutable",
+          "audit_immutable",
+          "schema_immutable",
+          "migration_backup_immutable"
+        ]
+      },
+      "expected": {
+        "each": "not ready",
+        "restored": "ready"
+      },
+      "independent_oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I2-18.P1.S2.NEGATIVE",
+      "property_id": "I2-18.P1",
+      "polarity": "negative",
+      "scenario": "I2-18 repair packet 2",
+      "fixture_id": "iteration2-repair-I2-18-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGuardMisboundNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeGuardMisboundNegative through native production owner.",
+      "initial_state": {
+        "fresh_disposable_postgres_minio": true,
+        "provider_calls": 0
+      },
+      "input": {
+        "function_body": "no-op RETURN NEW",
+        "then_function_binding": "regression_guard"
+      },
+      "expected": {
+        "each": "not ready",
+        "restored": "ready"
+      },
+      "independent_oracle": "Literal UTF8 native bytes and independent SHA256; actual shared production pool, native multipart identity, exact SQL committed rows/revisions/receipts and frozen guard identity. No test double or LLM observation.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    }
+  ]
+}

@@ -137,7 +137,7 @@ class Iteration2Tests(unittest.TestCase):
  def test_recovery_corrupt_negative(self):
   a,r,b=self.reserve();self.native_put(a['storage_key'],b'corrupt');self.bad(self.cli({'action':'verify','id':a['id']}));self.assertEqual(self.sql("SELECT state FROM asset_location WHERE asset_id='"+a['id']+"'"),'orphaned')
  def test_recovery_terminal_negative(self):
-  partial,request,payload=self.reserve();self.good(self.cli({'action':'begin-upload','id':partial['id']}));self.assertEqual(self.good(self.cli({'action':'recover','id':partial['id']}))['state'],'reserved');self.assertEqual(self.sql("SELECT multipart_upload_id IS NULL FROM asset_location WHERE asset_id='"+partial['id']+"'"),'t');a,r,b=self.reserve();self.native_put(a['storage_key'],b'bad');self.bad(self.cli({'action':'verify','id':a['id']}));self.bad(self.cli({'action':'link','id':a['id']}),'asset_unavailable');self.bad(self.upload(a,b),'asset_unavailable')
+  partial,request,payload=self.reserve();self.good(self.cli({'action':'begin-upload','id':partial['id']}));self.assertEqual(self.good(self.cli({'action':'recover','id':partial['id']}))['state'],'orphaned');self.assertEqual(self.sql("SELECT state,error_document_id IS NOT NULL,result_document_id IS NOT NULL FROM operation WHERE id='"+partial['operation_id']+"'"),'failed|t|t');self.bad(self.upload(partial,payload),'asset_unavailable');request['operation']['idempotency_key']=uid();retry=self.good(self.cli({'action':'retry-asset','id':partial['id'],'asset':request}));self.good(self.upload(retry,payload));self.good(self.cli({'action':'link','id':retry['id']}));self.assertEqual(self.sql("SELECT state FROM operation WHERE id='"+partial['operation_id']+"'"),'failed');self.assertEqual(self.sql("SELECT multipart_upload_id IS NULL FROM asset_location WHERE asset_id='"+partial['id']+"'"),'t');a,r,b=self.reserve();self.native_put(a['storage_key'],b'bad');self.bad(self.cli({'action':'verify','id':a['id']}));self.bad(self.cli({'action':'link','id':a['id']}),'asset_unavailable');self.bad(self.upload(a,b),'asset_unavailable')
 
  def owner_doc(self,a,h):
   d=self.refdoc({'id':a['id'],'scope':a['id'],'kind':'asset-bytes','sha256':a['sha256']});d['head']={'id':h,'expected_revision':0,'state':'draft'};return d
@@ -192,10 +192,10 @@ class Iteration2Tests(unittest.TestCase):
   finally:self.sql("DELETE FROM schema_migrations WHERE version='999_unknown.sql'")
  def test_migration_readiness_negative(self):
   original=self.sql("SELECT sha256 FROM schema_migrations WHERE version='001_foundation.sql'");self.sql("UPDATE schema_migrations SET sha256='"+'0'*64+"' WHERE version='001_foundation.sql'")
-  try:self.assertEqual(self.http('/health/ready')[0],503)
+  try:self.assertNotEqual(self.compose('run','--rm','--no-deps','initialize',check=False).returncode,0);self.assertEqual(self.http('/health/ready')[0],503);self.assertEqual(foundation.Iteration1Tests.internal.__func__(type(self),'/health/live')['status'],200);self.assertEqual(self.http('/api/v1/library')[0],200)
   finally:self.sql("UPDATE schema_migrations SET sha256='"+original+"' WHERE version='001_foundation.sql'")
   self.sql('ALTER TABLE exercise_catalog RENAME COLUMN public_context TO missing_context')
-  try:self.assertEqual(self.http('/health/ready')[0],503)
+  try:self.assertEqual(self.http('/health/ready')[0],503);self.assertEqual(foundation.Iteration1Tests.internal.__func__(type(self),'/health/live')['status'],200);self.assertEqual(self.http('/api/v1/library')[0],503)
   finally:self.sql('ALTER TABLE exercise_catalog RENAME COLUMN missing_context TO public_context')
   self.assertEqual(self.http('/health/ready')[0],200)
 
