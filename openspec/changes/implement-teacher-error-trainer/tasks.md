@@ -481,7 +481,7 @@ Iteration4 verification repairs (same canonical task list):
 - [x] Reproduce and repair stream-tail quota/duplicate-terminal promotion; add exact two-positive/two-negative I4-33 DAG cases.
 - [x] Repair successful native receipt span status and require actual MLflow status assertions for success/failure.
 - [x] Correct active provider specification implementation-state drift.
-- [ ] Complete fresh own I4 committed-clean140-case selection and all192 invalidated predecessor cases; reconcile actual native artifacts and preservation.
+- [x] Reconcile all140 own I4 and192 affected predecessor cases from exact valid clean observations; rerun all100 final invalidated native cases and reconcile actual artifacts/preservation.
 
 Resume: audit/iteration-4-verification-20261010/PLAN.md and INVALIDATION.md own review coverage, counterexamples and exact rerun causes. Live hosted boundary and each-case paid-credit prohibition remain unchanged; no full acceptance until live requirements are observed.
 
@@ -501,3 +501,5 @@ Current verification selection supersedes earlier counts: 140 own I4 cases and a
 - [x] Replace failed hand-written/Chrome dump transports with installed Playwright driving real Chrome; preserve all DOM/error/recovery/model assertions and guarantee metadata fixture cleanup.
 
 Final native verification is pending100 changed cases after the public-browser source repair. The232 unaffected clean passed cases retain their original receipts and exact fingerprints; source-file dependencies invalidate32 foundation,52 storage/browser and16 provider/browser cases. The complete192 predecessor attempt failed only its public Chrome dump and remains failed. Full hosted requirements remain unchecked.
+
+Native verification closure: all332 required cases passed through current exact fingerprints (166 positive/166 negative).232 unchanged clean passed cases are retained;100 final invalidated cases passed the clean19c8b4b repair selection. Original full140/192 failed receipts remain failed; no obsolete native case contributes. Native protocol/storage/browser/Lab findings are closed, with two actual SDK span statuses independently verified. Evidence/iteration4-verification/NATIVE-VERIFICATION.json and audit/iteration-4-verification-20261010/reconcile.py own the current conclusion. Full hosted acceptance remains unchecked and blocked by the original actualAPI HTTPS/ownGrant/per-app credit-exclusion/catalogue/included-only inference boundary.
