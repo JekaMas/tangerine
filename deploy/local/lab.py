@@ -107,20 +107,24 @@ def check_inventory(inv):
  actual={}
  expected=json.loads(Path('/tangerine/spec/domain/ai-development.v1.json').read_text())['planned_surfaces']
  if Path('/tangerine/source/app/provider_inference.go').is_file():
-  expected=expected+[dict(id='provider_adapter_'+suffix,stage='provider_adapter',phase=suffix,kind='llm') for suffix in ('invoke','transport_retry','semantic_repair','structured_fallback')]
+  expected=expected+[dict(id='provider_adapter_'+suffix,stage='provider_adapter',phase=suffix,kind='llm',implementation_state='implemented') for suffix in ('invoke','transport_retry','semantic_repair','structured_fallback')]
   required={'services/api/internal/app/'+name for name in ('provider_inference.go','provider_command.go','provider_configuration.go','provider_connections.go','provider-default.json')}
   required.update('services/api/internal/provider/'+name for name in ('execute.go','connection.go','oidc.go','transport.go','projection.go'))
   if not required.issubset(paths):raise ValueError('implemented provider dependency is missing')
  entries={e['id']:e for e in inv['entries']}
  for surface in expected:
   row=entries.get(surface['id'])
-  if row is None or any(row[k]!=surface[k] for k in ('stage','phase','kind')):raise ValueError('declared inference surface is missing or mismatched')
+  if row is None or any(row[k]!=surface[k] for k in ('stage','phase','kind','implementation_state')):raise ValueError('declared inference surface is missing or mismatched')
+  if surface['implementation_state']=='implemented' and 'owner_paths' in surface:
+   if row['owner_paths']!=surface['owner_paths'] or not set(surface['owner_paths']).issubset(paths):raise ValueError('implemented pipeline owner is missing')
+   for source in ('app/preparation_content.go','provider/definition.go','app/generationdata/providers.v1.yaml','app/generationdata/configuration-registry.yaml','app/generationdata/mutation-recipes.v1.json','app/generationdata/acoustic-production.v1.json'):
+    if 'services/api/internal/'+source not in paths:raise ValueError('preparation source definition is missing')
  for path in paths:
   if path=='services/api/internal/lab/builtin.json':physical=Path('/tangerine/builtin.json')
   elif path.startswith('specification/v2/'):
    root=Path('/tangerine/spec').resolve();physical=(root/path[len('specification/v2/'):]).resolve()
    if not physical.is_relative_to(root):raise ValueError('unresolved source dependency')
-  elif path.startswith(('services/api/internal/provider/','services/api/internal/app/provider_','services/api/internal/app/provider-')):
+  elif path.startswith(('services/api/internal/provider/','services/api/internal/app/')):
    relative=path[len('services/api/internal/'):];root=Path('/tangerine/source').resolve();physical=(root/relative).resolve()
    if not physical.is_relative_to(root):raise ValueError('unresolved source dependency')
   else:raise ValueError('source dependency is not available in the tooling snapshot')
@@ -153,7 +157,13 @@ def inventory(revision):
     for kind,path in [('stage_prompt','prompts/'+b['prompt_id']+'.txt'),('wire_schema_projection','contracts/'+b['output_schema'])]:
      full='specification/v2/'+path;sha=dependency(full,'/tangerine/spec/'+path,'trusted '+kind)
      fragments.append({'kind':kind,'path_or_asset':full,'sha256':sha,'state':'observed'})
-  entries.append(dict(id=surface['id'],stage=surface['stage'],phase=surface['phase'],kind=surface['kind'],implementation_state='planned',owner_paths=[surface['owner_root']],owner_symbols=[],adapter_paths=[],trusted_fragments=fragments,discovery_evidence_refs=['iteration3 source inspection: provider execution belongs to iteration4 onward'],coverage_reason='no implemented model-call owner in this tooling iteration'))
+  state=surface['implementation_state'];owners=surface.get('owner_paths',[surface['owner_root']])
+  if state=='implemented':
+   for owner in owners:
+    dependency(owner,'/tangerine/source/'+owner[len('services/api/internal/'):],'implemented pipeline owner')
+   for source in ('app/preparation_content.go','provider/definition.go','app/generationdata/providers.v1.yaml','app/generationdata/configuration-registry.yaml','app/generationdata/mutation-recipes.v1.json','app/generationdata/acoustic-production.v1.json'):
+    dependency('services/api/internal/'+source,'/tangerine/source/'+source,'frozen preparation definition')
+  entries.append(dict(id=surface['id'],stage=surface['stage'],phase=surface['phase'],kind=surface['kind'],implementation_state=state,owner_paths=owners,owner_symbols=['Server.PrepareCanonical'] if state=='implemented' else [],adapter_paths=['services/api/internal/app/provider_inference.go'] if state=='implemented' else [],trusted_fragments=fragments,discovery_evidence_refs=['finite source registry and exact packaged source bytes'],coverage_reason=surface['proof']))
  for suffix,symbol,fragment in [('invoke','Server.InvokeLLM','adapter_role_frame'),('transport_retry','Execute','fallback_wrapper'),('semantic_repair','Execute','repair_wrapper'),('structured_fallback','Execute','wire_schema_projection')]:
   owner='services/api/internal/app/provider_inference.go';adapter='services/api/internal/provider/execute.go'
   dependency(owner,'/tangerine/source/app/provider_inference.go','shared implemented provider owner')

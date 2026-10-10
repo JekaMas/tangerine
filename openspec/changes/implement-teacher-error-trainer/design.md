@@ -106,3 +106,11 @@ is added. Fresh installs have no upgrade backup. Unknown/changed/non-prefix
 migration history is rejected before any write. Readiness checks the migration
 vector, required columns, singleton association, immutable triggers and exact
 schema registry, repairing the verified false-ready issue from iteration1.
+
+### Iteration5 canonical preparation owner
+
+`Server.PrepareCanonical` expands the agreed fifth stage through the existing `InvokeLLM` owner. Immutable blueprint write/read is available on the private HTTP server; the packaged `prepare` maintenance entrypoint exposes the stage before the later combined Generate action. Canonical preparation is not published as a playable candidate-envelope or Library entry. Existing PostgreSQL documents/heads/operations, private MinIO assets and migration schema own persistence; no queue, extra database or second provider SDK is introduced.
+
+Before dispatch, retain exact request/blueprint, configuration, both generation bindings, prompt bundle, complete schema/adapter definition archive and speech/recipe/acoustic registry bytes. The original operation, active phase owner, head revision and actual270-second deadline govern atomic checkpoint/finalizer writes. Resume uses saved settings. A committed child belonging to this preparation can be recovered without another inference after a lost parent response. Actual word count is retained, while requested length remains approximate.
+
+The finite Lab inventory consumes the source registry's implementation state and exact canonical preparation dependencies; it must reject missing owners or changed source definitions. Constructed HTTP responses establish native protocol/storage behavior only. Full iteration5 acceptance remains dependent on a real Tangerine-owned included-only grant/model and actual generation-quality/context/MLflow observations; those cannot be replaced with fixture responses or a declaration of approval.

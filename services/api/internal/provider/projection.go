@@ -53,7 +53,7 @@ func ProjectVisible(text, kind string) ([]byte, error) {
 			}
 			value = projectValue(value, schema, registry)
 			b, _ := json.Marshal(value)
-			_, b, e = contracts.Validate(kind, "2.0.0", b)
+			_, b, e = contracts.Validate(kind, contract.Version, b)
 			if e == nil {
 				candidates = append(candidates, b)
 			}

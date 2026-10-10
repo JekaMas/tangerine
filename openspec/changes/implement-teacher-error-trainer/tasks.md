@@ -507,3 +507,16 @@ Native verification closure: all332 required cases passed through current exact 
 - [x] Commit native verification/evidence, restore repaired preview and fast-forward canonical main while preserving unrelated user data.
 
 Landing readback: cfd52fa reached canonical main with only the pre-existing GAPS.md edit, unchanged SHA78f8cfa15fdc0215d92f6045d2f0f6e53b391030e543050ee1b09ed65776db65. This native closure does not check off the hosted/full-acceptance tasks above.
+
+## 2026-10-10 iteration 5: request expansion and durable canonical preparation
+
+Scope/anchors: audit/iteration-5-preparation-20261010/PLAN.md. This stage is the canonical prerequisite of the combined on-demand Generate action, not a completed mutation/audio exercise. Native application owner: app.PrepareCanonical and the same packaged `prepare` maintenance entrypoint; blueprint/list use the existing private HTTP server. No second provider SDK or pregenerated bank exists.
+
+- [ ] Implement minimal/advanced blueprint expansion and immutable write/read/idempotency.
+- [ ] Freeze both generation bindings, exact settings/bundle/registry/schema/adapter definition bytes before dispatch, without credentials.
+- [ ] Implement clean-text inference through InvokeLLM, original candidate contract, actual word-count provenance and durable phase completion/failure.
+- [ ] Implement restart/read/keyset pages, frozen resume, deadline/CAS ownership and completed-child recovery without another call.
+- [ ] Materialize all40 literal positive/negative native cases, wire the DAG/discovery and repair all native findings.
+- [ ] Complete stable language/specification/preservation checks and the complete native selection on a clean committed candidate.
+- [ ] Observe actual Tangerine-owned included-only generation and frozen positive/negative model quality/context/native/MLflow evidence. BLOCKED by iteration4 LIVE-BLOCKER.json; controlled HTTP replies do not satisfy this task.
+- [ ] Reconcile full iteration5 acceptance and land the result with no pending required evidence. Do not check this from native/structural results alone.

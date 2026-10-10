@@ -62,6 +62,8 @@ func run() error {
 	}
 	defer store.DB.Close()
 	switch mode {
+	case "prepare":
+		return app.NewServer(store, os.Getenv("APP_ORIGIN"), os.Getenv("SPEECH_URL")).PreparationCommand(ctx, os.Stdin, os.Stdout)
 	case "provider":
 		return app.NewServer(store, os.Getenv("APP_ORIGIN"), os.Getenv("SPEECH_URL")).ProviderCommand(ctx, os.Stdin, os.Stdout)
 	case "lab":

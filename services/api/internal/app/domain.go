@@ -284,6 +284,9 @@ func validateProjection(w DocumentWrite, b []byte) error {
 	return nil
 }
 func externalID(kind, key string) bool {
+	if kind == "preparation-state" && (key == "original_operation_id" || key == "operation_ids" || key == "active_operation_id" || key == "request_id") {
+		return true // Preparation owner validates these relational operations in its checkpoint transaction.
+	}
 	if (kind == "provider-receipt" || kind == "llm-context-snapshot") && key == "operation_id" {
 		return true
 	} // validated against the relational operation owner inside the same transaction.
