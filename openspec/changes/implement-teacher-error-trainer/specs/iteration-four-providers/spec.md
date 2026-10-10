@@ -477,3 +477,17 @@ The application SHALL preserve the distinction between observed token counts and
 
 - **WHEN** positive counts or explicit null detail counters are received
 - **THEN** positive counts SHALL remain exact and null detail counts SHALL remain unknown
+
+### Requirement: I4-35 Late usage reports preserve completed user transitions
+
+The application SHALL preserve a completed disconnect and its revocation warning, and withdrawn usage confirmation, when a prior inference later reports quota or availability failure. Valid ready connections SHALL retain quota/unavailable state and diagnostic codes. The actual serialized Manager owner SHALL make this decision from current saved connection state.
+
+#### Scenario: I4-35 packet 1
+
+- **WHEN** a quota result reaches a ready or already disconnected connection
+- **THEN** a ready connection SHALL become usage_limited, and a completed disconnect SHALL remain byte-identical
+
+#### Scenario: I4-35 packet 2
+
+- **WHEN** an unavailable result reaches a ready connection or one with withdrawn usage confirmation
+- **THEN** a ready connection SHALL become unavailable, and connected_no_usage SHALL remain byte-identical

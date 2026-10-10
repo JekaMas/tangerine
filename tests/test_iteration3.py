@@ -73,7 +73,7 @@ class Iteration3Tests(unittest.TestCase):
   with urllib.request.build_opener(urllib.request.ProxyHandler({})).open('http://127.0.0.1:5001/health',timeout=10) as r:self.assertEqual(r.status,200)
   services=self.compose('config','--services').stdout.splitlines();self.assertIn('llm-lab',services)
   from browser_probe import Browser
-  browser=Browser(self.root/'lab-browser')
+  browser=Browser(self.root/'lab-browser',initial_url=None)
   try:
    browser.call('Page.navigate',{'url':'http://127.0.0.1:5001/'})
    browser.wait('Experiments')

@@ -606,6 +606,11 @@ func (m *Manager) Mark(ctx context.Context, id, state, code string) error {
 	if e != nil {
 		return e
 	}
+	// A failed in-flight request owns its receipt, not a later user transition.
+	// Preserve disconnect/revocation warnings and withdrawn usage confirmation.
+	if c.State != "ready" && c.State != "usage_limited" && c.State != "unavailable" {
+		return nil
+	}
 	c.State = state
 	c.LastError = &code
 	c.Updated = m.Now().UTC().Format(time.RFC3339Nano)

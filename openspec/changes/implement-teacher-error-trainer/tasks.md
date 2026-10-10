@@ -481,7 +481,7 @@ Iteration4 verification repairs (same canonical task list):
 - [x] Reproduce and repair stream-tail quota/duplicate-terminal promotion; add exact two-positive/two-negative I4-33 DAG cases.
 - [x] Repair successful native receipt span status and require actual MLflow status assertions for success/failure.
 - [x] Correct active provider specification implementation-state drift.
-- [ ] Complete fresh own I4 committed-clean136-case selection and all192 invalidated predecessor cases; reconcile actual native artifacts and preservation.
+- [ ] Complete fresh own I4 committed-clean140-case selection and all192 invalidated predecessor cases; reconcile actual native artifacts and preservation.
 
 Resume: audit/iteration-4-verification-20261010/PLAN.md and INVALIDATION.md own review coverage, counterexamples and exact rerun causes. Live hosted boundary and each-case paid-credit prohibition remain unchanged; no full acceptance until live requirements are observed.
 
@@ -492,3 +492,8 @@ Stable verification resume:6516 cleanI4 132 and predecessor192 selections passed
 - [x] Repair uncovered directory dependency bindings across I1/I2/I3/I4 without changing the pinned runner; add positive/negative glob and nonempty snapshot checks.
 
 Retention correction: bare directory glob entries matched no descendants, so earlier apparent matching fingerprints could miss production edits. No earlier case counts as current after this graph repair. Final selections are ownI4 136 plus all192 predecessors,328 cases total. All original receipts remain immutable.
+
+- [x] Repair late quota/availability results overwriting completed disconnect or withdrawn usage confirmation; add two-positive/two-negative I4-35 cases.
+- [x] Repair literal bracket-path dependencies, truthful metadata-double labels and direct Settings/Lab browser navigation without dropping UI assertions.
+
+Current verification selection supersedes earlier counts: 140 own I4 cases and all 192 invalidated I1/I2/I3 cases, 332 total. Earlier passed and failed receipts are historical and remain byte-identical. Final native qualification and required own hosted provider evidence are separate; the latter remains externally blocked.

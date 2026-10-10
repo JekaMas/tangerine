@@ -55,7 +55,7 @@ class Iteration4Tests(unittest.TestCase):
   (cls.receipts/('sdk-'+uuid.uuid4().hex+'.log')).write_text(p.stdout+p.stderr)
   return p
  def browser(self):
-  b=Browser(self.receipts/('browser-'+uuid.uuid4().hex));self.addCleanup(b.close);b.call('Page.navigate',{'url':'http://localhost:3000/settings'});b.wait('Your LLM connection');b.wait('chatgpt-plan-responses-v1');return b
+  b=Browser(self.receipts/('browser-'+uuid.uuid4().hex),initial_url=None);self.addCleanup(b.close);b.call('Page.navigate',{'url':'http://localhost:3000/settings'});b.wait('Your LLM connection');b.wait('chatgpt-plan-responses-v1');return b
  def capture(self,b,name):
   (self.receipts/(name+'.txt')).write_text(b.evaluate('document.body.innerText'))
   (self.receipts/(name+'.png')).write_bytes(base64.b64decode(b.call('Page.captureScreenshot',{'format':'png'})['data']))

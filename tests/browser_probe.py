@@ -2,7 +2,7 @@
 import base64, json, os, signal, socket, struct, subprocess, time, urllib.request
 from urllib.parse import urlparse
 class Browser:
- def __init__(self,profile):
+ def __init__(self,profile,initial_url='http://localhost:3000/'):
   self.process=subprocess.Popen(['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome','--headless=new','--disable-gpu','--no-first-run','--no-default-browser-check','--remote-debugging-port=0','--user-data-dir='+str(profile),'about:blank'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,start_new_session=True)
   try:
    deadline=time.monotonic()+30;port=None;page=None
@@ -24,7 +24,8 @@ class Browser:
    self.sock=socket.create_connection((url.hostname,url.port),timeout=30);key=base64.b64encode(os.urandom(16)).decode();self.sock.sendall(f'GET {url.path} HTTP/1.1\r\nHost: {url.netloc}\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Key: {key}\r\nSec-WebSocket-Version: 13\r\n\r\n'.encode());response=b''
    while not response.endswith(b'\r\n\r\n'):response+=self.sock.recv(1)
    if not response.startswith(b'HTTP/1.1 101 '):raise RuntimeError('Chrome socket handshake failed')
-   self.seq=0;self.call('Page.enable');self.call('Page.navigate',{'url':'http://localhost:3000/'})
+   self.seq=0;self.call('Page.enable')
+   if initial_url is not None:self.call('Page.navigate',{'url':initial_url})
   except BaseException:self.close();raise
  def read(self,n):
   b=b''
