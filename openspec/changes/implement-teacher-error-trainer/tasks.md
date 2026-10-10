@@ -430,3 +430,16 @@ Previous iteration acceptance completeness is superseded by the native counterex
 - [x] Close the native same-name column-type readiness counterexample with migration-defined types and positive/negative/recovery observations.
 
 Acceptance resume: both complete iteration1/2 selections passed104/104 registered cases (52 positive/52 negative) from clean candidate c8338f2883ba7fbef3c00a8ef708fe2195897a56. All32 foundation,52 storage/browser,23 Go named race observations (including subtests) and16 native regression observations passed. evidence/iterations12-repair/ACCEPTANCE.json and audit/iterations-1-2-repair-20261010/reconcile.py bind current cases, sources, scenarios, oracles, commands and dependencies to the clean receipt. Strict OpenSpec, graph/discovery,2,940 structural/preservation assertions and stable Go vet/gofmt passed. Earlier failed/unavailable receipts remain historical; no later trainer/AI/provider/synthesis/full-product acceptance is claimed. Canonical landing preserves the unrelated GAPS.md edit and existing preview volumes.
+
+## 2026-10-10 iteration 3: LLM development tooling
+
+Scope: the agreed iteration3, before provider implementation. Audit/iteration-3-llm-lab-20261010/PLAN.md records native owners and proof limits. Provider connections remain iteration4; full pipeline experiments and diagnostic arithmetic remain iteration14.
+
+- [ ] Implement optional pinned MLflow startup with loopback publication, persistence and ordinary-flow isolation.
+- [ ] Implement complete immutable prompt/context bundles, exact registry export, native configuration activation/revert and frozen context preparation.
+- [ ] Implement datasets/planned populations, inference inventory, sanitized traces, native retention, export-only sync and published development-run verification.
+- [ ] Observe registered literal positive/negative tooling cases through actual MLflow/PostgreSQL/MinIO and deterministic native owners; repair failures.
+- [ ] Reconcile changed dependencies and retained prior greens, strict OpenSpec/DAG/discovery, preservation and language checks.
+- [ ] Commit the candidate, execute the same complete iteration selection with --require-clean, inspect receipts and commit the canonical acceptance record.
+
+Resume: all tooling owners and88 executable cases are implemented. Final dirty and committed-clean observations are pending completion; every task stays unchecked until the clean receipt passes. Initial SDK/projection/host-publication failures remain under data/iteration3. Explicit loopback5001 avoids macOS AirPlay; no system service is changed. Strengthened witness/failed-preparation and browser/span assertions retain their exact fixture inputs. No provider/model quality is claimed from constructed tooling diagnostics.

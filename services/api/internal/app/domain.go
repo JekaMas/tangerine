@@ -271,6 +271,9 @@ func externalID(kind, key string) bool {
 	if key == "workspace_id" || key == "provider_request_id" || key == "trace_id" || key == "span_id" || key == "source_request_id" || key == "selection_event_id" || (kind == "error-response" && key == "request_id") {
 		return true
 	}
+	if kind == "prompt-bundle" && key == "prompt_id" {
+		return true
+	}
 	return kind == "asset" && key == "version_id" // owner/version lineage is guarded by asset reservation.
 }
 func (s *Storage) ReadDocument(ctx context.Context, id string) (SavedDocument, error) {

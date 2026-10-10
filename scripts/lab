@@ -1,0 +1,80 @@
+#!/bin/sh
+set -eu
+umask 077
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$ROOT"
+fail() { printf '%s\n' "$1" >&2; exit 1; }
+[ -f .env ] && [ -f data/config/runtime.env ] || fail 'LAB_NOT_INITIALIZED: run scripts/tangerine start first.'
+port_file="$ROOT/data/config/lab-port"
+if [ -z "${TANGERINE_LAB_PORT:-}" ] && [ -f "$port_file" ]; then TANGERINE_LAB_PORT=$(cat "$port_file");fi
+TANGERINE_LAB_PORT=${TANGERINE_LAB_PORT:-5000}
+if [ "${1:-}" = --port ]; then [ "$#" -ge 2 ] || fail 'LAB_PORT_REQUIRED: lab --port <port>';TANGERINE_LAB_PORT=$2;shift 2;fi
+case "$TANGERINE_LAB_PORT" in ''|*[!0-9]*) fail 'LAB_PORT_INVALID: select a numeric local port.';; esac
+[ "$TANGERINE_LAB_PORT" -ge 1024 ] && [ "$TANGERINE_LAB_PORT" -le 65535 ] || fail 'LAB_PORT_INVALID: select a port from 1024 through 65535.'
+export TANGERINE_LAB_PORT
+compose() { docker compose --env-file "$ROOT/.env" --env-file "$ROOT/data/config/runtime.env" -f "$ROOT/deploy/local/compose.yaml" --profile llm-lab "$@"; }
+sdk() { compose exec -T llm-lab python /tangerine/lab.py "$@"; }
+native() { compose run --rm --no-deps -T api lab; }
+case "${1:-start}" in
+ start)
+  cid=$(docker create "${COMPOSE_PROJECT_NAME:-tangerine}-api:local") || fail 'LAB_BUILD_REQUIRED: run scripts/tangerine start first.'
+  trap 'docker rm "$cid" >/dev/null 2>&1 || :' 0
+  docker cp "$cid:/usr/local/bin/tangerine" "$ROOT/data/config/lab-native"
+  chmod 755 "$ROOT/data/config/lab-native"
+  docker rm "$cid" >/dev/null
+  probe="$ROOT/data/config/.lab-public-probe-$$"
+  probe_container=$(docker create "${COMPOSE_PROJECT_NAME:-tangerine}-api:local")
+  docker cp "$probe_container:/usr/local/bin/public-probe" "$probe"
+  docker rm "$probe_container" >/dev/null;chmod 700 "$probe"
+  trap 'rm -f "$probe"' 0
+  published=$(compose port llm-lab 5000 2>/dev/null || :)
+  if [ "$published" != "127.0.0.1:$TANGERINE_LAB_PORT" ]; then "$probe" lab-portcheck "$TANGERINE_LAB_PORT" || fail 'LAB_PORT_OCCUPIED: select an unused loopback port explicitly with lab --port <port>. Existing data is retained.';fi
+  compose up -d --no-deps --wait --wait-timeout 180 llm-lab || fail 'LAB_START_FAILED: check port 5000, Docker access and Lab logs; native data and Lab volume are retained.'
+  sdk seed > "$ROOT/data/config/lab-registry.json" || fail 'LAB_SEED_FAILED: Lab data is retained; retry lab after inspecting logs.'
+  "$probe" lab-healthcheck "$TANGERINE_LAB_PORT" || fail 'LAB_START_FAILED: the advertised loopback port does not serve MLflow3.17.0. Existing data is retained.'
+  printf '%s\n' "$TANGERINE_LAB_PORT" > "$port_file"
+  printf '%s\n' "LLM Lab is ready at http://localhost:$TANGERINE_LAB_PORT. No provider call was made.";;
+ stop) compose stop llm-lab; printf '%s\n' 'Lab stopped; registry, artifacts and active bundles are retained.';;
+ export)
+  shift
+  output=; selection=; builtins=false
+  while [ "$#" -gt 0 ]; do
+   case "$1" in
+    --builtins) builtins=true;shift;;
+    --selection) [ "$#" -ge 2 ] || fail 'LAB_INPUT_REQUIRED: selection file';selection=$2;shift 2;;
+    --out) [ "$#" -ge 2 ] || fail 'LAB_INPUT_REQUIRED: output file';output=$2;shift 2;;
+    *) fail 'LAB_INPUT_REQUIRED: lab export --builtins|--selection <file> --out <file>';;
+   esac
+  done
+  [ -n "$output" ] || fail 'LAB_INPUT_REQUIRED: --out is required.'
+  tmp="$output.tmp-$$";trap 'rm -f "$tmp"' 0
+  if [ "$builtins" = true ] && [ -z "$selection" ]; then sdk export-command --builtins --out "$output" > "$tmp"
+  elif [ "$builtins" = false ] && [ -n "$selection" ]; then sdk export-command --selection selected --out "$output" < "$selection" > "$tmp"
+  else fail 'LAB_INPUT_REQUIRED: choose exactly one of --builtins or --selection.';fi
+  chmod 600 "$tmp";mv "$tmp" "$output";printf '%s\n' "Saved complete immutable bundle: $output";;
+ activate)
+  [ "$#" -eq 2 ] || fail 'LAB_INPUT_REQUIRED: lab activate <bundle-file>'
+  sdk activation-packet < "$2" | native;;
+ active) printf '%s\n' '{"action":"active"}' | native;;
+ verify)
+  [ "$#" -eq 2 ] || fail 'LAB_INPUT_REQUIRED: lab verify <development-run-file>'
+  sdk development-packet < "$2" | native | sdk development-verify;;
+ sync)
+  action=$1;shift
+  [ "$#" -eq 1 ] || fail 'LAB_INPUT_REQUIRED: lab sync|verify <saved-diagnostic-packet-file>'
+  if [ -f "$1" ]; then
+   tmp="$ROOT/data/config/.lab-packet-$$";trap 'rm -f "$tmp"' 0
+   sdk diagnostic-packet < "$1" | native > "$tmp"
+   # Retain native bytes before the first export; failures can be retried by asset ID.
+   sdk diagnostic-read-packet < "$tmp" | native | sdk "$action"
+  else
+   printf '{"action":"diagnostic-read","id":"%s"}\n' "$1" | native | sdk "$action"
+  fi;;
+ record)
+  [ "$#" -eq 2 ] || fail 'LAB_INPUT_REQUIRED: lab record <native-document-command-file>'
+  native < "$2";;
+ snapshot)
+  [ "$#" -eq 2 ] || fail 'LAB_INPUT_REQUIRED: lab snapshot <path-inside-lab-volume>'
+  sdk snapshot "$2";;
+ *) fail 'LAB_UNKNOWN_COMMAND: use lab, stop, export, activate, active, record, sync, verify or snapshot.';;
+esac

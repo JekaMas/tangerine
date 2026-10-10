@@ -70,10 +70,10 @@ for r in recipes:
  edit=r['codepoint_edit']
  if edit:
   text=r['canonical_example'];start=edit['start_cp'];end=edit['end_cp'];ck(r['taxonomy_id']+'.exact.slice',text[start:end]==edit['exact_text']);ck(r['taxonomy_id']+'.exact.replay',text[:start]+edit['replacement']+text[end:]==r['surface_example'])
-ck('all122.recipe.identities',len(recipes)==122);ck('all448.property.sets',len(s['properties'])==448)
+ck('all122.recipe.identities',len(recipes)==122);ck('all448.original.and22.iteration3.property.sets',len(s['properties'])==470 and sum(x['property_id'].startswith('I3-') for x in s['properties'])==22)
 for pol in ['POSITIVE','NEGATIVE']:
  b=next(x for x in f['case_bindings'] if x['case_id']=='V6-SES-01.P1.S2.'+pol);ck('named.empty.answer.'+pol,b['input']['answer']=='' and b['expected']['TP']==0 and b['expected']['primary']=='0/1')
 ck('no.unregistered.old.secondary.leaf','grammar.verbs.verb_form' not in json.dumps(f))
 
 out={'status':'passed','assertions':len(checks),'requirements':len(g['requirements']),'properties':len(g['properties']),'case_edges':len(g['cases']),'new_case_edges':sum('.SET2.' in x['id'] for x in g['cases']),'minimum_distinct_packets_per_polarity':min(min(x['positive_distinct_packets'],x['negative_distinct_packets']) for x in s['properties']),'fixtures':len(f['fixtures']),'case_states':dict(collections.Counter(x['state'] for x in g['cases'])),'behavior_runs':0,'proof_boundary':'Finite specification DAG/fixture/set identity, literal recipe replay, oracle-sensitivity perturbations and original/historical preservation. No application, inference, speech, corpus or independent linguistic validity observation.','checks':checks}
-(A/'validation.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({k:v for k,v in out.items() if k!='checks'}))
+(Path(sys.argv[1]) if sys.argv[1:] else A/'validation.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({k:v for k,v in out.items() if k!='checks'}))

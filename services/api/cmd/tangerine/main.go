@@ -11,12 +11,22 @@ import (
 	"time"
 
 	"tangerine.local/api/internal/app"
+	"tangerine.local/api/internal/lab"
 )
 
 func run() error {
 	mode := "serve"
 	if len(os.Args) > 1 {
 		mode = os.Args[1]
+	}
+	if mode == "lab-portcheck" || mode == "lab-healthcheck" {
+		if len(os.Args) != 3 {
+			return fmt.Errorf("LAB_PORT_INVALID")
+		}
+		return app.CheckLabPublic(context.Background(), os.Args[2], mode == "lab-portcheck")
+	}
+	if mode == "lab-json" {
+		return lab.Command(os.Stdin, os.Stdout)
 	}
 	if mode == "configure" {
 		return app.ConfigureLocal(os.Getenv("TANGERINE_OPERATOR_FILE"), os.Getenv("TANGERINE_RUNTIME_DIR"))
@@ -52,6 +62,8 @@ func run() error {
 	}
 	defer store.DB.Close()
 	switch mode {
+	case "lab":
+		return store.LabCommand(ctx, os.Stdin, os.Stdout)
 	case "storage":
 		return store.StorageCommand(ctx, os.Stdin, os.Stdout)
 	case "migrate":

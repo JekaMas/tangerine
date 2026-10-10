@@ -1,0 +1,11 @@
+# Iteration 3 anchors and proof scope
+
+User authority: apply iteration 3 of the agreed 16 development iterations. Baseline d15a189. Isolated checkout _worktrees/tangerine_iteration1_20261010, branch tangerine/iteration-3-llm-lab. Preserve the canonical GAPS.md edit and tangerine-i1 preview volumes.
+
+This increment implements optional MLflow3.17.0 startup, exact prompt/context registry export and activation, native context construction and sanitization, dataset/variant identity, export-only recovery and three-way evidence reconciliation. Real provider adapters belong to iteration4; semantic pipeline evaluation and22 diagnostic arithmetic belong to iteration14. No substitute inference is claimed as provider quality. Controlled diagnostic fixtures test tooling; a zero-call development artifact is actual MLflow evidence with an explicit reason.
+
+Native lineage: manifest/schema bytes -> immutable complete bundle -> native document/config head -> frozen context/wire bytes -> independently observed dispatch -> native receipt -> local sanitized MLflow export -> explicit readback/reconciliation. Existing PostgreSQL/MinIO owners retain authoritative records. Registry edits never activate themselves. No second public API, background queue, new account or host runtime is added.
+
+Observed source discovery identifies domain.go, assets.go, contracts registry and CLI as existing owners; jbcontext returned a current exact service path. IDE PSI operations are not needed for these known owners. MLflow official release and digest are verified. Docker registry proxy timeout is an execution-environment failure, not unavailable version; host-native registry retrieval may load the same content-verified bytes without changing host networking.
+
+Positive/negative native fixtures cover startup/isolation/persistence, exact versions, failed activation, data-only templates and complete context, secret canaries, planned experiment tuples, honest cancelled/unstarted rows, nonblocking export, sync without inference, independent dispatch joins and zero populations. Tests do not fabricate model calls, corpus or learner observations. Case registration precedes acceptance; all later feature obligations remain open in the canonical tasks.md.

@@ -18,6 +18,7 @@ export COMPOSE_PROJECT_NAME="$PROJECT"
 unset DATABASE_URL POSTGRES_PASSWORD MINIO_ROOT_USER MINIO_ROOT_PASSWORD API_INTERNAL_TOKEN SPEECH_INTERNAL_TOKEN DEEPSEEK_API_KEY OPENAI_API_KEY AZURE_SPEECH_KEY AZURE_SPEECH_REGION ELEVENLABS_API_KEY
 compose() { docker compose --env-file "$ROOT/.env" --env-file "$ROOT/data/config/runtime.env" -f "$ROOT/deploy/local/compose.yaml" "$@"; }
 case "${1:-start}" in
+ lab) shift; exec sh "$ROOT/scripts/lab" "$@";;
  start)
   for required in .env.example LICENSE services/api/Dockerfile services/api/go.mod services/api/go.sum services/web/Dockerfile services/web/package-lock.json services/speech/Dockerfile deploy/local/minio.Dockerfile deploy/local/compose.yaml; do
    [ -f "$required" ] || fail "SOURCE_INCOMPLETE: missing $required. Extract the complete release; existing data is retained."

@@ -8,7 +8,7 @@ import (
 // verifyOwnedDigest implements only the hash definition owned by this kind;
 // foreign audio/input/binding hashes are never confused with a self digest.
 func verifyOwnedDigest(kind string, b []byte) error {
-	fields := map[string]string{"configuration": "configuration_sha256", "effective-binding": "binding_sha256", "mutation-manifest": "manifest_sha256", "prompt-bundle": "bundle_sha256", "llm-quality-dataset": "dataset_sha256", "render-plan": "plan_sha256"}
+	fields := map[string]string{"ai-surface-inventory": "inventory_sha256", "configuration": "configuration_sha256", "effective-binding": "binding_sha256", "mutation-manifest": "manifest_sha256", "prompt-bundle": "bundle_sha256", "llm-quality-dataset": "dataset_sha256", "render-plan": "plan_sha256"}
 	field, ok := fields[kind]
 	if !ok {
 		return nil
