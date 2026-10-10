@@ -24,8 +24,8 @@ class Browser:
    self.sock=socket.create_connection((url.hostname,url.port),timeout=30);key=base64.b64encode(os.urandom(16)).decode();self.sock.sendall(f'GET {url.path} HTTP/1.1\r\nHost: {url.netloc}\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Key: {key}\r\nSec-WebSocket-Version: 13\r\n\r\n'.encode());response=b''
    while not response.endswith(b'\r\n\r\n'):response+=self.sock.recv(1)
    if not response.startswith(b'HTTP/1.1 101 '):raise RuntimeError('Chrome socket handshake failed')
-   self.seq=0;self.call('Page.enable')
-   if initial_url is not None:self.call('Page.navigate',{'url':initial_url})
+   self.seq=0;self.call('Page.enable');self.call('Runtime.enable');self.call('Runtime.runIfWaitingForDebugger')
+   if initial_url is not None:self.evaluate('location.assign('+json.dumps(initial_url)+')')
   except BaseException:self.close();raise
  def read(self,n):
   b=b''

@@ -55,7 +55,7 @@ class Iteration4Tests(unittest.TestCase):
   (cls.receipts/('sdk-'+uuid.uuid4().hex+'.log')).write_text(p.stdout+p.stderr)
   return p
  def browser(self):
-  b=Browser(self.receipts/('browser-'+uuid.uuid4().hex),initial_url=None);self.addCleanup(b.close);b.call('Page.navigate',{'url':'http://localhost:3000/settings'});b.wait('Your LLM connection');b.wait('chatgpt-plan-responses-v1');return b
+  b=Browser(self.receipts/('browser-'+uuid.uuid4().hex),initial_url='http://localhost:3000/settings');self.addCleanup(b.close);b.wait('Your LLM connection');b.wait('chatgpt-plan-responses-v1');return b
  def capture(self,b,name):
   (self.receipts/(name+'.txt')).write_text(b.evaluate('document.body.innerText'))
   (self.receipts/(name+'.png')).write_bytes(base64.b64decode(b.call('Page.captureScreenshot',{'format':'png'})['data']))
@@ -91,9 +91,7 @@ class Iteration4Tests(unittest.TestCase):
   b=self.browser();before=self.cfg()[0]['configuration_sha256'];b.evaluate("document.querySelector('summary').click()");b.evaluate("const a=document.querySelector('textarea');Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set.call(a,'{}');a.dispatchEvent(new Event('input',{bubbles:true}));");b.evaluate("Array.from(document.querySelectorAll('button')).find(x=>x.innerText==='Save configuration').click()");b.wait('Settings were not saved.');self.assertEqual(self.cfg()[0]['configuration_sha256'],before);self.capture(b,'settings-rejected')
  def test_connection_metadata_positive(self):
   ident=str(uuid.uuid4());d={'id':str(uuid.uuid4()),'kind':'provider-connection','version':'2.0.0','scope':'local','nodes':[],'references':[],'head':{'id':'provider:'+ident,'expected_revision':None,'state':'saved'},'payload':dict(id=ident,provider='openai_chatgpt',client_id='oaiapp_test_owned',ext_agent_host_id='urn:uuid:'+str(uuid.uuid4()),subject='fixture-subject',account_label='Stored fixture registration',state='disconnected',scopes=[],credential_ref=None,expires_at=None,credits_after_plan_limit_disabled=None,models_asset_id=None,last_error_code=None,updated_at='2026-10-10T10:00:00Z')}
-  self.good(self.write(d));b=self.browser();b.wait('Stored fixture registration');self.capture(b,'settings-metadata');
-  # Keep immutable saved history, but remove the fixture head from live selection.
-  self.sql("DELETE FROM entity_head WHERE id='provider:"+ident+"'")
+  self.good(self.write(d));self.addCleanup(lambda:self.sql("DELETE FROM entity_head WHERE id='provider:"+ident+"'"));b=self.browser();b.wait('Stored fixture registration');self.capture(b,'settings-metadata');
  def test_configuration_local_positive(self):
   c,tag=self.cfg();p=c['llm_profiles'][0];p.update(provider='local_responses',endpoint='http://ollama:11434/v1/responses',model='test-owned-local',credential_ref='local-none',auth_method='local_none',billing_mode='local',stream=False);self.assertEqual(self.put(c,tag)[0],200);self.assertEqual(json.loads(self.http('/api/v1/health')[1])['provider_configuration'],'ready');self.assertEqual(self.cfg()[0]['llm_profiles'][0]['model'],'test-owned-local')
  def test_configuration_stale_negative(self):
