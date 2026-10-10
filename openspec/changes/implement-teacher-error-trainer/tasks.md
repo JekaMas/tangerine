@@ -497,3 +497,7 @@ Retention correction: bare directory glob entries matched no descendants, so ear
 - [x] Repair literal bracket-path dependencies, truthful metadata-double labels and direct Settings/Lab browser navigation without dropping UI assertions.
 
 Current verification selection supersedes earlier counts: 140 own I4 cases and all 192 invalidated I1/I2/I3 cases, 332 total. Earlier passed and failed receipts are historical and remain byte-identical. Final native qualification and required own hosted provider evidence are separate; the latter remains externally blocked.
+
+- [x] Replace failed hand-written/Chrome dump transports with installed Playwright driving real Chrome; preserve all DOM/error/recovery/model assertions and guarantee metadata fixture cleanup.
+
+Final native verification is pending100 changed cases after the public-browser source repair. The232 unaffected clean passed cases retain their original receipts and exact fingerprints; source-file dependencies invalidate32 foundation,52 storage/browser and16 provider/browser cases. The complete192 predecessor attempt failed only its public Chrome dump and remains failed. Full hosted requirements remain unchecked.

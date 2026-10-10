@@ -181,22 +181,13 @@ class Iteration1Tests(unittest.TestCase):
         self.assertEqual(code,200);self.assertNotIn('Set-Cookie',headers)
     def test_transport_public_browser_positive(self):
         self.assertTrue(CHROME.is_file(),'Actual Chrome browser test prerequisite missing')
-        import signal
-        args=[str(CHROME),'--headless=new','--disable-gpu','--disable-background-networking','--no-first-run','--no-default-browser-check','--user-data-dir='+str(self.sandbox/'chrome'),'--virtual-time-budget=5000','--dump-dom','http://localhost:3000/']
-        terminated_after_dump=False
-        # A file cannot hold cleanup open through a surviving child's stdout pipe.
-        path=self.receipts/'browser-dom.log'
-        with path.open('w') as captured:
-            process=subprocess.Popen(args,env=self.env,text=True,stdout=captured,stderr=subprocess.STDOUT,start_new_session=True)
-            try:process.wait(timeout=30)
-            except subprocess.TimeoutExpired:
-                os.killpg(process.pid,signal.SIGKILL)
-                process.wait(timeout=5);terminated_after_dump=True
-            finally:
-                if process.poll() is None:
-                    os.killpg(process.pid,signal.SIGKILL);process.wait(timeout=5)
-        output=path.read_text()
-        (self.receipts/'browser-driver.json').write_text(json.dumps({'exit':process.returncode,'terminated_after_dump':terminated_after_dump,'complete_dom':'</html>' in output}))
+        from browser_probe import Browser
+        browser=Browser(self.sandbox/'chrome')
+        self.addCleanup(browser.close)
+        browser.wait('No exercises yet')
+        output=browser.evaluate('document.documentElement.outerHTML')
+        (self.receipts/'browser-dom.log').write_text(output)
+        (self.receipts/'browser-driver.json').write_text(json.dumps({'driver':'native Playwright/Chrome','version':browser.driver_version,'complete_dom':'</html>' in output}))
         self.assertIn('</html>',output,'Browser never produced a complete native DOM')
         self.assertIn('No exercises yet',output);self.assertNotIn('type="password"',output);self.assertNotIn('Sign in to your workspace',output)
         for secret in self.config().values():self.assertNotIn(secret,output)
