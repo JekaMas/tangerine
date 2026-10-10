@@ -92,7 +92,7 @@ func (s *Storage) recoverAssetUnlocked(ctx context.Context, conn *pgxpool.Conn, 
 	if err != nil {
 		return a, err
 	}
-	if a.State == "linked" || a.State == "orphaned" {
+	if a.State == "linked" || a.State == "orphaned" || a.State == "bytes_verified" {
 		return a, nil
 	}
 	_, err = s.Media.StatObject(ctx, s.Bucket, a.Key, minio.StatObjectOptions{})

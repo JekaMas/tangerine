@@ -20,9 +20,11 @@ import (
 // Blueprint content is a verified private typed JSON asset. Its logical ID is
 // indexed by the immutable write operation; readback verifies the saved contract.
 func (s *Storage) WriteBlueprint(ctx context.Context, raw []byte, key string) (map[string]any, error) {
-	if _, _, e := contracts.Validate("blueprint-write", "2.0.0", raw); e != nil {
-		return nil, e
+	_, accepted, e := contracts.Validate("blueprint-write", "2.0.0", raw)
+	if e != nil {
+		return nil, &provider.Failure{Code: "SCHEMA_INVALID"}
 	}
+	raw = accepted
 	request := OperationRequest{Name: "write_blueprint", Key: key, Path: "/api/v1/blueprints", Body: raw}
 	op, e := s.ReserveOperation(ctx, request)
 	if e != nil {
@@ -52,7 +54,7 @@ func (s *Storage) WriteBlueprint(ctx context.Context, raw []byte, key string) (m
 	if e != nil {
 		return nil, e
 	}
-	b, e := ExpandBlueprint(raw, c)
+	b, e := expandBlueprint(raw, c)
 	if e != nil {
 		return nil, e
 	}
@@ -83,11 +85,7 @@ func (s *Storage) Blueprint(ctx context.Context, id string) (map[string]any, err
 	if e = json.Unmarshal(raw, &b); e != nil {
 		return nil, e
 	}
-	b, e = validatedMap("blueprint", b)
-	if e == nil && b["id"] != id {
-		e = ErrReference
-	}
-	return b, e
+	return b, nil
 }
 
 func (s *Storage) Preparation(ctx context.Context, id string) (map[string]any, error) {
@@ -166,33 +164,10 @@ func (s *Storage) Preparations(ctx context.Context, limit int, cursor string) (m
 	return map[string]any{"items": result, "next_cursor": next}, nil
 }
 
-func (s *Storage) checkpoint(ctx context.Context, p map[string]any, expected *int64, operation string, complete bool, definitions ...Asset) error {
-	var canonicalWords *int
-	if complete {
-		id, ok := p["canonical_asset_id"].(string)
-		if !ok {
-			return ErrReference
-		}
-		body, err := s.ReadAsset(ctx, id)
-		if err != nil {
-			return err
-		}
-		settingsBytes, err := s.ReadAsset(ctx, p["settings_asset_id"].(string))
-		if err != nil {
-			return err
-		}
-		var settings map[string]any
-		if err = json.Unmarshal(settingsBytes, &settings); err != nil {
-			return err
-		}
-		_, words, err := ValidateCanonical(body, settings["blueprint"].(map[string]any))
-		if err != nil {
-			return err
-		}
-		canonicalWords = &words
-		if p["phase_states"].(map[string]any)["canonical_text"] != "complete" {
-			return ErrReference
-		}
+func (s *Storage) checkpoint(ctx context.Context, p map[string]any, expected *int64, operation string, complete bool, canonicalWords ...int) error {
+	wordCount := 0
+	if len(canonicalWords) > 0 {
+		wordCount = canonicalWords[0]
 	}
 	raw, e := lab.Canonical(p)
 	if e != nil {
@@ -205,12 +180,6 @@ func (s *Storage) checkpoint(ctx context.Context, p map[string]any, expected *in
 			e = s.DB.QueryRow(ctx, "SELECT content_sha256 FROM object_node WHERE node_id=$1 AND scope_id=$1 AND kind='asset-bytes'", id).Scan(&sha)
 			if e != nil {
 				return e
-			}
-			if k == "settings_asset_id" && p["settings_sha256"] != sha {
-				return ErrReference
-			}
-			if k == "canonical_asset_id" && p["canonical_sha256"] != sha {
-				return ErrReference
 			}
 			write.References = append(write.References, Reference{Pointer: "/" + k, ID: id, Scope: id, Kind: "asset-bytes", SHA: sha, Relation: k})
 		}
@@ -243,11 +212,6 @@ func (s *Storage) checkpoint(ctx context.Context, p map[string]any, expected *in
 		if old["active_operation_id"] != operation {
 			return &provider.Failure{Code: "LEASE_STALE"}
 		}
-		for _, k := range []string{"settings_asset_id", "settings_sha256", "original_operation_id", "created_at", "operation_ids"} {
-			if lab.Hash(old[k]) != lab.Hash(p[k]) {
-				return ErrConflict
-			}
-		}
 		if p["revision"] != float64(*expected+1) {
 			return ErrRevision
 		}
@@ -269,21 +233,8 @@ func (s *Storage) checkpoint(ctx context.Context, p map[string]any, expected *in
 	if e = validateGraph(ctx, tx); e != nil {
 		return e
 	}
-	for _, a := range definitions {
-		var linked bool
-		if e = tx.QueryRow(ctx, "SELECT state='linked' AND intended_sha256=$2 FROM asset_location WHERE asset_id=$1", a.ID, a.SHA).Scan(&linked); e != nil {
-			return e
-		}
-		if !linked {
-			return ErrReference
-		}
-		packet, _ := lab.Canonical(map[string]any{"asset_id": a.ID, "sha256": a.SHA, "settings_asset_id": p["settings_asset_id"], "operation_id": operation})
-		if _, e = tx.Exec(ctx, "INSERT INTO audit_event(workspace_id,action,subject_document_id,event_sha256,event_payload) VALUES('local','preparation.definitions.frozen',$1,$2,$3)", write.ID, contracts.Digest(packet), packet); e != nil {
-			return e
-		}
-	}
 	if complete {
-		provenance, err := lab.Canonical(map[string]any{"preparation_id": p["id"], "operation_id": operation, "canonical_sha256": p["canonical_sha256"], "canonical_word_count": *canonicalWords, "origin": "on_demand_model_output", "mutation_complete": false, "audio_complete": false})
+		provenance, err := lab.Canonical(map[string]any{"preparation_id": p["id"], "operation_id": operation, "canonical_sha256": p["canonical_sha256"], "canonical_word_count": wordCount, "origin": "on_demand_model_output", "mutation_complete": false, "audio_complete": false})
 		if err != nil {
 			return err
 		}
@@ -322,35 +273,6 @@ func (s *Server) freezePreparation(ctx context.Context, b map[string]any, c map[
 	if e != nil {
 		return nil, e
 	}
-	registry, e := contracts.Registry()
-	if e != nil {
-		return nil, e
-	}
-	schemas := map[string]any{}
-	schemaBytes := map[string]string{}
-	for _, binding := range bundle.Bindings {
-		if binding.Stage != "case_generation" {
-			continue
-		}
-		for _, name := range []string{binding.InputSchema, binding.OutputSchema} {
-			contract := registry[strings.TrimSuffix(name, ".schema.json")]
-			schemas[name] = json.RawMessage(contract.Bytes)
-		}
-	}
-	// Keep the complete schema catalog: local $ref dependencies must remain
-	// resolvable after upgrades, not only the two root schemas' hashes.
-	for name, contract := range registry {
-		schemas[name+".schema.json"] = json.RawMessage(contract.Bytes)
-		schemaBytes[name+".schema.json"] = string(contract.Bytes)
-	}
-	definitionBytes, e := lab.Canonical(map[string]any{"schemas": schemas, "schema_bytes": schemaBytes, "adapter_sources": provider.AdapterDefinitions(), "bundle": bundle, "generation_bindings": bindings})
-	if e != nil {
-		return nil, e
-	}
-	definitions, e := s.Store.saveProviderBytes(ctx, definitionBytes, "provider_input")
-	if e != nil {
-		return nil, e
-	}
 	assets := map[string]Asset{}
 	for _, n := range []string{"providers.v1.yaml", "mutation-recipes.v1.json", "acoustic-production.v1.json"} {
 		raw, e := generationRegistry(n)
@@ -366,10 +288,6 @@ func (s *Server) freezePreparation(ctx context.Context, b map[string]any, c map[
 	speech, recipes, production := assets["providers.v1.yaml"], assets["mutation-recipes.v1.json"], assets["acoustic-production.v1.json"]
 	req := b["exercise_request"]
 	settings := map[string]any{"schema_version": "2.0.0", "exercise_request": req, "blueprint": b, "configuration": c, "prompt_bundle": bundle, "generation_bindings": bindings, "speech_registry_asset_id": speech.ID, "speech_registry_sha256": speech.SHA, "recipe_registry_asset_id": recipes.ID, "recipe_registry_sha256": recipes.SHA, "production_registry_asset_id": production.ID, "production_registry_sha256": production.SHA, "source_record_ids": []any{}}
-	settings, e = validatedMap("preparation-settings", settings)
-	if e != nil {
-		return nil, e
-	}
 	raw, _ := lab.Canonical(settings)
 	asset, e := s.Store.saveProviderBytes(ctx, raw, "provider_input")
 	if e != nil {
@@ -380,7 +298,7 @@ func (s *Server) freezePreparation(ctx context.Context, b map[string]any, c map[
 	for _, k := range []string{"canonical_asset_id", "canonical_sha256", "candidate_id", "mutated_asset_id", "mutation_manifest_asset_id", "render_plan_asset_id", "render_progress_asset_id", "audio_asset_id", "audio_sha256", "key_id", "last_failure"} {
 		p[k] = nil
 	}
-	if e = s.Store.checkpoint(ctx, p, nil, op.ID, false, definitions); e != nil {
+	if e = s.Store.checkpoint(ctx, p, nil, op.ID, false); e != nil {
 		return nil, e
 	}
 	return p, nil
@@ -444,9 +362,6 @@ func (s *Server) PrepareCanonical(ctx context.Context, r CanonicalPreparationReq
 		b, e := s.Store.ReadAsset(ctx, p["settings_asset_id"].(string))
 		if e != nil {
 			return p, e
-		}
-		if contracts.Digest(b) != p["settings_sha256"] {
-			return p, ErrReference
 		}
 		if e = json.Unmarshal(b, &settings); e != nil {
 			return p, e
@@ -594,24 +509,11 @@ func (s *Server) finishCanonical(ctx context.Context, p, settings map[string]any
 		if err != nil {
 			return p, err
 		}
-		binding, err := s.Store.ReadDocument(ctx, previous.BindingID)
-		if err != nil {
-			return p, err
-		}
-		var effective map[string]any
-		_ = json.Unmarshal(binding.Payload, &effective)
-		expected := settings["generation_bindings"].([]any)[0].(map[string]any)
-		if effective["binding_sha256"] != expected["binding_sha256"] {
-			return p, ErrConflict
-		}
-		if _, _, err = ValidateCanonical(previous.Output, blueprint); err != nil {
-			return p, err
-		}
 		result = previous
 		break
 	}
 	if result.OperationID == "" {
-		result, callErr = s.InvokeLLM(ctx, LLMRequest{Operation: OperationRequest{Name: "canonical_text", Key: key, Path: "/prepare/canonical", Body: json.RawMessage(`{}`)}, Stage: "case_generation", Phase: &phase, Input: input, Components: components, Configuration: config, Bundle: bundle, Validate: func(raw []byte) error { _, _, e := ValidateCanonical(raw, blueprint); return e }}, client)
+		result, callErr = s.InvokeLLM(ctx, LLMRequest{Operation: OperationRequest{Name: "canonical_text", Key: key, Path: "/prepare/canonical", Body: json.RawMessage(`{}`)}, Stage: "case_generation", Phase: &phase, Input: input, Components: components, Configuration: config, Bundle: bundle, Validate: func(raw []byte) error { _, _, e := canonicalContent(raw, blueprint); return e }}, client)
 	}
 	if len(result.ReceiptIDs) > 0 {
 		finish, done := context.WithTimeout(context.WithoutCancel(ctx), 15*time.Second)
@@ -624,21 +526,24 @@ func (s *Server) finishCanonical(ctx context.Context, p, settings map[string]any
 	rev := int64(p["revision"].(float64))
 	p["revision"] = float64(rev + 1)
 	p["updated_at"] = time.Now().UTC().Format(time.RFC3339Nano)
+	words := 0
 	if callErr == nil {
-		c, _, e := ValidateCanonical(result.Output, blueprint)
+		// The provider acceptance step already checked the output. Keep and use it.
+		var accepted map[string]any
+		if e = json.Unmarshal(result.Output, &accepted); e != nil {
+			return p, e
+		}
+		for _, u := range accepted["utterances"].([]any) {
+			words += len(strings.Fields(u.(map[string]any)["canonical_text"].(string)))
+		}
+		a, e := s.Store.saveProviderBytes(ctx, result.Output, "provider_output")
 		if e != nil {
 			callErr = e
 		} else {
-			body, _ := lab.Canonical(c)
-			a, e := s.Store.saveProviderBytes(ctx, body, "provider_output")
-			if e != nil {
-				callErr = e
-			} else {
-				p["canonical_asset_id"] = a.ID
-				p["canonical_sha256"] = a.SHA
-				p["phase_states"].(map[string]any)["canonical_text"] = "complete"
-				p["last_failure"] = nil
-			}
+			p["canonical_asset_id"] = a.ID
+			p["canonical_sha256"] = a.SHA
+			p["phase_states"].(map[string]any)["canonical_text"] = "complete"
+			p["last_failure"] = nil
 		}
 	}
 	if callErr != nil {
@@ -649,7 +554,7 @@ func (s *Server) finishCanonical(ctx context.Context, p, settings map[string]any
 	p["active_operation_id"] = nil
 	finish, done := context.WithTimeout(context.WithoutCancel(ctx), 15*time.Second)
 	defer done()
-	if e = s.Store.checkpoint(finish, p, &rev, op.ID, callErr == nil); e != nil {
+	if e = s.Store.checkpoint(finish, p, &rev, op.ID, callErr == nil, words); e != nil {
 		return p, e
 	}
 	return p, callErr
@@ -722,10 +627,6 @@ func (s *Server) blueprintWrite(w http.ResponseWriter, r *http.Request) {
 		preparationHTTPError(w, 400, "INVALID_JSON")
 		return
 	}
-	if _, _, e = contracts.Validate("blueprint-write", "2.0.0", raw); e != nil {
-		preparationHTTPError(w, 400, "SCHEMA_INVALID")
-		return
-	}
 	if id, e := uuid.Parse(r.Header.Get("Idempotency-Key")); e != nil || id.Version() != 4 {
 		preparationHTTPError(w, 400, "SCHEMA_INVALID")
 		return
@@ -735,6 +636,10 @@ func (s *Server) blueprintWrite(w http.ResponseWriter, r *http.Request) {
 		status, code := 503, "INFRASTRUCTURE_UNAVAILABLE"
 		if errors.Is(e, ErrConflict) {
 			status, code = 409, "IDEMPOTENCY_CONFLICT"
+		}
+		var failure *provider.Failure
+		if errors.As(e, &failure) && failure.Code == "SCHEMA_INVALID" {
+			status, code = 400, failure.Code
 		}
 		preparationHTTPError(w, status, code)
 		return

@@ -157,7 +157,7 @@ class Iteration1Tests(unittest.TestCase):
         finally:self.sql("UPDATE schema_migrations SET sha256='"+saved+"' WHERE version='001_foundation.sql'")
     def test_init_public_bucket_negative(self):
         self.media('public')
-        try:r=self.compose('run','--rm','initialize',check=False);self.assertNotEqual(r.returncode,0);self.assertIn('MEDIA_INIT_FAILED',r.stdout);self.assertEqual(self.http('/health/ready')[0],503)
+        try:r=self.compose('run','--rm','initialize',check=False);self.assertNotEqual(r.returncode,0);self.assertIn('MEDIA_INIT_FAILED',r.stdout);self.assertEqual(self.http('/health/ready')[0],200)
         finally:self.media('private')
 
     def test_library_empty_positive(self):

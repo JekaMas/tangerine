@@ -61,13 +61,6 @@ func traceID(n int) string {
 // bundle and independently validated inputs; this owner never changes selection.
 func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http.Client) (LLMResult, error) {
 	result := LLMResult{ReceiptIDs: []string{}, ContextIDs: []string{}}
-	configBytes, configErr := json.Marshal(request.Configuration)
-	if configErr != nil {
-		return result, configErr
-	}
-	if _, _, configErr = contracts.Validate("configuration", "2.0.0", configBytes); configErr != nil {
-		return result, configErr
-	}
 	p, e := FreezeProfile(request.Configuration, request.Stage)
 	if e != nil {
 		return result, e

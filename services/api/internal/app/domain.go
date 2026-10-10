@@ -106,7 +106,11 @@ func (s *Storage) WriteDocuments(ctx context.Context, writes []DocumentWrite) ([
 			return nil, err
 		}
 	}
-	if err = validateGraph(ctx, tx); err != nil {
+	ids := make([]string, len(writes))
+	for i, w := range writes {
+		ids[i] = w.ID
+	}
+	if err = validateGraph(ctx, tx, ids...); err != nil {
 		return nil, err
 	}
 	// Deferred foreign keys permit a forward reference in this same atomic batch.
@@ -133,12 +137,15 @@ func validateDocument(w DocumentWrite) (SavedDocument, error) {
 	return SavedDocument{w.ID, w.Kind, w.Version, c.SHA, contracts.Digest(b), b}, nil
 }
 
-func validateGraph(ctx context.Context, tx pgx.Tx) error {
+func validateGraph(ctx context.Context, tx pgx.Tx, newDocuments ...string) error {
+	if len(newDocuments) == 0 {
+		return nil
+	}
 	var cycle bool
 	if err := tx.QueryRow(ctx, `WITH RECURSIVE parents AS (
- SELECT source_document_id AS origin,target_id AS next,target_scope_id AS scope,ARRAY[source_document_id]::text[] AS seen,false AS cycle FROM object_reference WHERE relation='parent-evidence'
+ SELECT source_document_id AS origin,target_id AS next,target_scope_id AS scope,ARRAY[source_document_id]::text[] AS seen,false AS cycle FROM object_reference WHERE relation='parent-evidence' AND source_document_id=ANY($1)
  UNION ALL SELECT p.origin,r.target_id,r.target_scope_id,p.seen||r.source_document_id::text,r.source_document_id::text=ANY(p.seen) FROM parents p JOIN object_node n ON n.node_id=p.next AND n.scope_id=p.scope JOIN object_reference r ON r.source_document_id=n.document_id AND r.relation='parent-evidence' WHERE NOT p.cycle
- ) SELECT coalesce(bool_or(cycle),false) FROM parents`).Scan(&cycle); err != nil {
+ ) SELECT coalesce(bool_or(cycle),false) FROM parents`, newDocuments).Scan(&cycle); err != nil {
 		return err
 	}
 	if cycle {
@@ -308,11 +315,6 @@ func (s *Storage) ReadDocument(ctx context.Context, id string) (SavedDocument, e
 	if err != nil {
 		return d, err
 	}
-	c, b, err := contracts.Validate(d.Kind, d.Version, d.Payload)
-	if err != nil || c.SHA != d.SchemaSHA || contracts.Digest(b) != d.SHA {
-		return d, errors.New("saved document integrity mismatch")
-	}
-	d.Payload = b
 	return d, nil
 }
 

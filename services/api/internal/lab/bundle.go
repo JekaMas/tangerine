@@ -222,9 +222,6 @@ type Prepared struct {
 // freezes its final role/default projection separately at dispatch.
 func Prepare(b Bundle, stage string, phase *string, input map[string]any, components map[string]any, budget, reserved int) (Prepared, error) {
 	p := Prepared{Omitted: map[string]string{}, BudgetMethod: "conservative_bytes"}
-	if e := ValidateBundle(b); e != nil {
-		return p, e
-	}
 	var binding *Binding
 	for i := range b.Bindings {
 		if Pair(b.Bindings[i].Stage, b.Bindings[i].Phase) == Pair(stage, phase) {

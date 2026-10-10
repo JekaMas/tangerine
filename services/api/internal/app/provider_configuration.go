@@ -37,9 +37,6 @@ func (s *Storage) Configuration(ctx context.Context) (map[string]any, int64, err
 	if e != nil {
 		return nil, 0, e
 	}
-	if _, _, e = contracts.Validate("configuration", "2.0.0", raw); e != nil {
-		return nil, 0, e
-	}
 	var c map[string]any
 	e = json.Unmarshal(raw, &c)
 	return c, rev, e

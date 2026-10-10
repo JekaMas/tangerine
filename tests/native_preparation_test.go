@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/google/uuid"
+	"github.com/minio/minio-go/v7"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -139,20 +140,6 @@ func saveNativePreparationEvidence(t *testing.T, s *Server, p map[string]any) {
 		}
 	}
 	collect(p)
-	rowsDefs, e := s.Store.DB.Query(context.Background(), "SELECT event_payload FROM audit_event WHERE action='preparation.definitions.frozen' AND event_payload->>'settings_asset_id'=$1", p["settings_asset_id"])
-	if e != nil {
-		t.Fatal(e)
-	}
-	for rowsDefs.Next() {
-		var raw []byte
-		if e = rowsDefs.Scan(&raw); e != nil {
-			t.Fatal(e)
-		}
-		var v any
-		_ = json.Unmarshal(raw, &v)
-		collect(v)
-	}
-	rowsDefs.Close()
 	documents := []SavedDocument{}
 	for _, parent := range p["operation_ids"].([]any) {
 		var child string
@@ -232,36 +219,6 @@ func TestNativePreparationCheckpointPositive(t *testing.T) {
 		t.Fatal("missing exact generated count", e, countWords)
 	}
 
-	var definitionID string
-	if e = s.Store.DB.QueryRow(context.Background(), "SELECT event_payload->>'asset_id' FROM audit_event WHERE action='preparation.definitions.frozen' AND event_payload->>'settings_asset_id'=$1", p["settings_asset_id"]).Scan(&definitionID); e != nil {
-		t.Fatal(e)
-	}
-	definitionBytes, e := s.Store.ReadAsset(context.Background(), definitionID)
-	if e != nil {
-		t.Fatal(e)
-	}
-	var archive struct {
-		Schemas  map[string]json.RawMessage `json:"schemas"`
-		Bytes    map[string]string          `json:"schema_bytes"`
-		Adapters map[string]string          `json:"adapter_sources"`
-	}
-	if e = json.Unmarshal(definitionBytes, &archive); e != nil {
-		t.Fatal(e)
-	}
-	registry, e := contracts.Registry()
-	if e != nil || len(archive.Bytes) != len(registry) || len(archive.Schemas) != len(registry) {
-		t.Fatal("incomplete frozen schemas", e)
-	}
-	for name, contract := range registry {
-		if archive.Bytes[name+".schema.json"] != string(contract.Bytes) || contracts.Digest([]byte(archive.Bytes[name+".schema.json"])) != contract.SHA {
-			t.Fatal("schema raw bytes or digest changed", name)
-		}
-	}
-	for _, name := range []string{"transport.go", "execute.go", "projection.go"} {
-		if archive.Adapters[name] == "" {
-			t.Fatal("adapter source absent", name)
-		}
-	}
 	saveNativePreparationEvidence(t, s, p)
 }
 func TestNativePreparationRestartPositive(t *testing.T) {
@@ -431,14 +388,6 @@ func TestNativePreparationReadOnlyPositive(t *testing.T) {
 	if e != nil || !strings.Contains(string(b), "constructed-clean-text") || strings.Contains(string(b), "CONSTRUCTED_NATIVE_CREDENTIAL") {
 		t.Fatal(e, "frozen settings missing or credential retained")
 	}
-	var definitionsID string
-	if e = s.Store.DB.QueryRow(context.Background(), "SELECT event_payload->>'asset_id' FROM audit_event WHERE action='preparation.definitions.frozen' AND event_payload->>'settings_asset_id'=$1", p["settings_asset_id"]).Scan(&definitionsID); e != nil {
-		t.Fatal(e)
-	}
-	definitions, e := s.Store.ReadAsset(context.Background(), definitionsID)
-	if e != nil || !strings.Contains(string(definitions), `"adapter_sources"`) || !strings.Contains(string(definitions), `"case-candidate.schema.json"`) {
-		t.Fatal("definition bytes not retained", e)
-	}
 	saveNativePreparationEvidence(t, s, got)
 
 	time.Sleep(time.Millisecond)
@@ -463,6 +412,9 @@ func TestNativePreparationActiveLeaseNegative(t *testing.T) {
 	s, p, _ := runningNativePreparation(t)
 	fresh, e := s.Store.ReserveOperation(context.Background(), OperationRequest{Name: "canonical_prepare", Key: uuid.NewString(), Path: "/prepare", Body: json.RawMessage(`{}`)})
 	if e != nil {
+		t.Fatal(e)
+	}
+	if _, e = s.Store.DB.Exec(context.Background(), "UPDATE operation SET state='running' WHERE id=$1", fresh.ID); e != nil {
 		t.Fatal(e)
 	}
 	if e = s.Store.takePreparation(context.Background(), p, fresh.ID); e == nil {
@@ -516,25 +468,29 @@ func TestNativePreparationLostCheckpointPositive(t *testing.T) {
 	}
 	saveNativePreparationEvidence(t, s, got)
 }
-func TestNativePreparationDigestNegative(t *testing.T) {
-	s, p, op := runningNativePreparation(t)
-	expected := int64(0)
-	p["revision"] = float64(1)
-	p["settings_sha256"] = strings.Repeat("a", 64)
-	if e := s.Store.checkpoint(context.Background(), p, &expected, op.ID, false); !errors.Is(e, ErrReference) {
+func TestNativePreparationAttemptCounterNegative(t *testing.T) {
+	s, p, _ := runningNativePreparation(t)
+	raw, e := s.Store.ReadAsset(context.Background(), p["settings_asset_id"].(string))
+	if e != nil {
 		t.Fatal(e)
 	}
-	got, e := s.Store.Preparation(context.Background(), p["id"].(string))
+	var settings map[string]any
+	_ = json.Unmarshal(raw, &settings)
+	id := p["id"].(string)
+	r := CanonicalPreparationRequest{BlueprintID: settings["blueprint"].(map[string]any)["id"].(string), ConfigurationSHA: settings["configuration"].(map[string]any)["configuration_sha256"].(string), Sources: []string{}, Attempt: 99, PreparationID: &id}
+	if _, e = s.PrepareCanonical(context.Background(), r, uuid.NewString(), nil); !errors.Is(e, ErrConflict) {
+		t.Fatal(e)
+	}
+	got, e := s.Store.Preparation(context.Background(), id)
 	if e != nil || got["revision"] != float64(0) {
 		t.Fatal(e, got)
 	}
 }
-func TestNativePreparationOriginalIdentityNegative(t *testing.T) {
+func TestNativePreparationRevisionConflictNegative(t *testing.T) {
 	s, p, op := runningNativePreparation(t)
-	expected := int64(0)
-	p["revision"] = float64(1)
-	p["original_operation_id"] = uuid.NewString()
-	if e := s.Store.checkpoint(context.Background(), p, &expected, op.ID, false); !errors.Is(e, ErrConflict) {
+	wrong := int64(9)
+	p["revision"] = float64(10)
+	if e := s.Store.checkpoint(context.Background(), p, &wrong, op.ID, false); !errors.Is(e, ErrRevision) {
 		t.Fatal(e)
 	}
 }
@@ -618,5 +574,68 @@ func TestNativePreparationDuplicateJSONNegative(t *testing.T) {
 	}
 	if _, _, e := contracts.Validate("error-response", "2.0.0", w.Body.Bytes()); e != nil {
 		t.Fatal(e)
+	}
+}
+
+// Once admitted, persisted values are trusted. Constructed test-owned records
+// make any unwanted second schema/hash/data audit observable.
+func TestNativePreparationTrustedDocumentPositive(t *testing.T) {
+	s := preparationNative(t)
+	id := uuid.NewString()
+	ctx := context.Background()
+	_, e := s.DB.Exec(ctx, "INSERT INTO document(id,workspace_id,kind,schema_version,schema_sha256,payload_sha256,payload) SELECT $1,'local','error-response',version,sha256,$2,'{}'::jsonb FROM schema_registry WHERE kind='error-response'", id, strings.Repeat("a", 64))
+	if e != nil {
+		t.Fatal(e)
+	}
+	d, e := s.ReadDocument(ctx, id)
+	if e != nil || string(d.Payload) != "{}" {
+		t.Fatal("stored record was revalidated", e, string(d.Payload))
+	}
+}
+func TestNativePreparationTrustedAssetPositive(t *testing.T) {
+	s := preparationNative(t)
+	ctx := context.Background()
+	a, e := s.saveProviderBytes(ctx, []byte("accepted"), "provider_input")
+	if e != nil {
+		t.Fatal(e)
+	}
+	_, e = s.Media.PutObject(ctx, s.Bucket, a.Key, strings.NewReader("stored value"), int64(len("stored value")), minio.PutObjectOptions{})
+	if e != nil {
+		t.Fatal(e)
+	}
+	body, e := s.ReadAsset(ctx, a.ID)
+	if e != nil || string(body) != "stored value" {
+		t.Fatal("stored blob was revalidated", e, string(body))
+	}
+}
+func TestNativePreparationNoReadbackNegative(t *testing.T) {
+	s := preparationNative(t)
+	ctx := context.Background()
+	body := []byte("admitted")
+	a, e := s.ReserveAsset(ctx, AssetRequest{Operation: OperationRequest{Name: "trust_once", Key: uuid.NewString(), Path: "/test/trust", Body: json.RawMessage(`{}`)}, SHA: contracts.Digest(body), Size: int64(len(body)), Purpose: "provider_input", MIME: "application/json"})
+	if e != nil {
+		t.Fatal(e)
+	}
+	a, e = s.UploadAsset(ctx, a.ID, body)
+	if e != nil {
+		t.Fatal(e)
+	}
+	if e = s.Media.RemoveObject(ctx, s.Bucket, a.Key, minio.RemoveObjectOptions{}); e != nil {
+		t.Fatal(e)
+	}
+	if _, e = s.VerifyAsset(ctx, a.ID); e != nil {
+		t.Fatal("accepted bytes were reread", e)
+	}
+	if _, e = s.LinkAsset(ctx, a.ID, nil); e != nil {
+		t.Fatal("link repeated content admission", e)
+	}
+}
+func TestNativePreparationMissingRecordNegative(t *testing.T) {
+	s := preparationNative(t)
+	if _, e := s.ReadDocument(context.Background(), uuid.NewString()); e == nil {
+		t.Fatal("missing record invented")
+	}
+	if _, e := s.ReadAsset(context.Background(), uuid.NewString()); e == nil {
+		t.Fatal("missing blob invented")
 	}
 }

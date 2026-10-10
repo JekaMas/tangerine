@@ -68,3 +68,5 @@ Mutation manifests, frozen Lab datasets and judge inputs/outputs use the same ty
 Current preparation persistence/resume is defined by preparation-persistence.md and preparation-state/preparation-settings schemas. Generation must be self-contained under self-contained-generation.md; no private contextual fact determines a scored mistake. Key repair uses key-repair-projection.md and the existing LLM operation. These are written contracts, not implemented behavior.
 
 Full-scope extensions: [full build contract](full-build-contract.md) specifies controlled local speech selection, generated acoustic pairs, exact decoder/sample-map clocks, per-piece resume/readback, native export mapping, actual auditory-model diagnostics and their user scenarios. New private fields use existing owners/operations; original main-flow and component-score contracts remain.
+
+Accepted payloads are trusted on read and reuse under [single validation](single-validation-policy.md). Full schema/domain admission occurs once for new external input. Existing hash fields remain provenance; they do not require revalidation after persistence.

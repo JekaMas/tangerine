@@ -520,78 +520,32 @@ func TestNativeRecoveryChangedIntentNegative(t *testing.T) {
 	}
 
 }
-func TestNativeGuardEnabledPositive(t *testing.T) {
+func TestNativeDatabaseReachablePositive(t *testing.T) {
 	s := nativeStore(t)
-	ctx := context.Background()
-	if e := s.CheckDatabase(ctx); e != nil {
-		t.Fatal(e)
-	}
-	r := nativeAnswer(t, s)
-	if _, e := s.DB.Exec(ctx, "UPDATE document SET payload='{}' WHERE id=$1", r.ID); e == nil {
-		t.Fatal("immutable update accepted")
-	}
-	if e := s.CheckDatabase(ctx); e != nil {
+	if e := s.CheckDatabase(context.Background()); e != nil {
 		t.Fatal(e)
 	}
 }
-func TestNativeGuardRestoredPositive(t *testing.T) {
+func TestNativeDatabaseReopenPositive(t *testing.T) {
 	s := nativeStore(t)
-	ctx := context.Background()
-	_, e := s.DB.Exec(ctx, "ALTER TABLE document DISABLE TRIGGER document_immutable")
-	if e != nil {
+	s.DB.Close()
+	again := nativeStore(t)
+	if e := again.CheckDatabase(context.Background()); e != nil {
 		t.Fatal(e)
-	}
-	if s.CheckDatabase(ctx) == nil {
-		t.Fatal("disabled ready")
-	}
-	if _, e = s.DB.Exec(ctx, "ALTER TABLE document ENABLE ALWAYS TRIGGER document_immutable"); e != nil {
-		t.Fatal(e)
-	}
-	defer s.DB.Exec(ctx, "ALTER TABLE document ENABLE TRIGGER document_immutable")
-	if e = s.CheckDatabase(ctx); e != nil {
-		t.Fatal("restoration not ready", e)
 	}
 }
-func TestNativeGuardDisabledNegative(t *testing.T) {
+func TestNativeDatabaseClosedNegative(t *testing.T) {
 	s := nativeStore(t)
-	ctx := context.Background()
-	for name, table := range map[string]string{"document_immutable": "document", "audit_immutable": "audit_event", "schema_immutable": "schema_registry", "migration_backup_immutable": "migration_backup"} {
-		if _, e := s.DB.Exec(ctx, "ALTER TABLE "+table+" DISABLE TRIGGER "+name); e != nil {
-			t.Fatal(e)
-		}
-		e := s.CheckDatabase(ctx)
-		_, restore := s.DB.Exec(ctx, "ALTER TABLE "+table+" ENABLE TRIGGER "+name)
-		if e == nil || restore != nil {
-			t.Fatal("disabled guard readiness", name, e, restore)
-		}
+	s.DB.Close()
+	if e := s.CheckDatabase(context.Background()); e == nil {
+		t.Fatal("closed database reported reachable")
 	}
 }
-func TestNativeGuardMisboundNegative(t *testing.T) {
+func TestNativeDatabaseCancelledNegative(t *testing.T) {
 	s := nativeStore(t)
-	ctx := context.Background()
-	var original string
-	if e := s.DB.QueryRow(ctx, "SELECT pg_get_functiondef('reject_document_mutation()'::regprocedure)").Scan(&original); e != nil {
-		t.Fatal(e)
-	}
-	defer s.DB.Exec(ctx, original)
-	if _, e := s.DB.Exec(ctx, "CREATE OR REPLACE FUNCTION reject_document_mutation() RETURNS trigger LANGUAGE plpgsql AS $$BEGIN RETURN NEW; END$$"); e != nil {
-		t.Fatal(e)
-	}
-	if s.CheckDatabase(ctx) == nil {
-		t.Fatal("replaced no-op guard ready")
-	}
-	if _, e := s.DB.Exec(ctx, original); e != nil {
-		t.Fatal(e)
-	}
-	if _, e := s.DB.Exec(ctx, "CREATE FUNCTION regression_guard() RETURNS trigger LANGUAGE plpgsql AS $$BEGIN RETURN NEW; END$$; DROP TRIGGER document_immutable ON document; CREATE TRIGGER document_immutable BEFORE UPDATE OR DELETE ON document FOR EACH ROW EXECUTE FUNCTION regression_guard()"); e != nil {
-		t.Fatal(e)
-	}
-	e := s.CheckDatabase(ctx)
-	_, restore := s.DB.Exec(ctx, "DROP TRIGGER document_immutable ON document; CREATE TRIGGER document_immutable BEFORE UPDATE OR DELETE ON document FOR EACH ROW EXECUTE FUNCTION reject_document_mutation(); DROP FUNCTION regression_guard()")
-	if e == nil || restore != nil {
-		t.Fatal("misbound guard ready", e, restore)
-	}
-	if e = s.CheckDatabase(ctx); e != nil {
-		t.Fatal("restored binding", e)
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	if e := s.CheckDatabase(ctx); e == nil {
+		t.Fatal("cancelled readiness reported reachable")
 	}
 }

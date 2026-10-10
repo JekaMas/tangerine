@@ -21,24 +21,6 @@ func generationRegistry(name string) ([]byte, error) {
 	return generationData.ReadFile("generationdata/" + name)
 }
 
-func validatedMap(kind string, value any) (map[string]any, error) {
-	raw, e := lab.Canonical(value)
-	if e != nil {
-		return nil, e
-	}
-	registry, e := contracts.Registry()
-	if e != nil {
-		return nil, e
-	}
-	_, raw, e = contracts.Validate(kind, registry[kind].Version, raw)
-	if e != nil {
-		return nil, e
-	}
-	var v map[string]any
-	e = json.Unmarshal(raw, &v)
-	return v, e
-}
-
 // ExpandBlueprint retains advanced controls and the verbatim simple request.
 // Approximate length and requested CEFR are preferences, never hidden gates.
 func ExpandBlueprint(raw []byte, configuration map[string]any) (map[string]any, error) {
@@ -46,6 +28,11 @@ func ExpandBlueprint(raw []byte, configuration map[string]any) (map[string]any, 
 	if e != nil {
 		return nil, e
 	}
+	return expandBlueprint(raw, configuration)
+}
+
+func expandBlueprint(raw []byte, configuration map[string]any) (map[string]any, error) {
+	var e error
 	var input map[string]any
 	_ = json.Unmarshal(raw, &input)
 	var defaults map[string]any
@@ -151,10 +138,7 @@ func ExpandBlueprint(raw []byte, configuration map[string]any) (map[string]any, 
 	}
 	input["schema_version"] = "2.0.0"
 	input["id"] = uuid.NewString()
-	b, e := validatedMap("blueprint", input)
-	if e != nil {
-		return nil, e
-	}
+	b := input
 	speakers := b["speakers"].([]any)
 	seen := map[string]bool{}
 	for _, v := range speakers {
@@ -178,8 +162,16 @@ func ValidateCanonical(raw []byte, blueprint map[string]any) (map[string]any, in
 	if e != nil {
 		return nil, 0, e
 	}
+	return canonicalContent(raw, blueprint)
+}
+
+// canonicalContent is the semantic part of the single provider acceptance step.
+// Its input was already projected and schema-checked by the shared adapter.
+func canonicalContent(raw []byte, blueprint map[string]any) (map[string]any, int, error) {
 	var c map[string]any
-	_ = json.Unmarshal(raw, &c)
+	if e := json.Unmarshal(raw, &c); e != nil {
+		return nil, 0, e
+	}
 	if c["blueprint_id"] != blueprint["id"] || c["status"] != "candidate" || c["failure_reason"] != nil || len(c["planned_units"].([]any)) != 0 {
 		return nil, 0, ErrConflict
 	}
@@ -246,11 +238,7 @@ func preparationBindings(c map[string]any, b lab.Bundle) ([]any, error) {
 			effective["context_policy_sha256"] = v.PolicySHA
 			effective["binding_sha256"] = lab.Hash(effective)
 			effective["id"] = uuid.NewString()
-			saved, e := validatedMap("effective-binding", effective)
-			if e != nil {
-				return nil, e
-			}
-			bindings = append(bindings, saved)
+			bindings = append(bindings, effective)
 		}
 		if !found {
 			return nil, ErrReference

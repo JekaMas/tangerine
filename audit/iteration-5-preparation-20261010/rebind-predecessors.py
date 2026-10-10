@@ -19,7 +19,7 @@ for case in g['cases']:
  fixture[case['polarity']]['input']=plan['input'];fixture[case['polarity']]['expected']=plan['expected']
  case['observable']=json.dumps(plan['expected'],sort_keys=True)
  # The new canonical owner is an actual input of this inventory consumer.
- for path in ('services/api/internal/app/preparation.go','services/api/internal/app/preparation_content.go','services/api/internal/app/generationdata/**','services/api/internal/provider/definition.go','services/api/internal/app/provider_inference.go','specification/v2/domain/ai-development.v1.json'):
+ for path in ('services/api/internal/app/preparation.go','services/api/internal/app/preparation_content.go','services/api/internal/app/generationdata/**','services/api/internal/app/provider_inference.go','specification/v2/domain/ai-development.v1.json'):
   if path not in case['invalidation_dependencies']:case['invalidation_dependencies'].append(path)
 save(C/'verification.json',g);save(V/'verification-fixtures.v1.json',f)
 print('Rebound36 changed native Lab source cases; old receipts untouched.')

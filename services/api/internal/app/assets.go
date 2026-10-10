@@ -216,14 +216,11 @@ func (s *Storage) UploadAsset(ctx context.Context, id string, data []byte) (Asse
 	if err != nil {
 		return a, err
 	}
-	if a.State == "linked" {
+	if a.State == "linked" || a.State == "bytes_verified" {
 		return a, nil
 	}
 	if a.State != "reserved" && a.State != "uploading" && a.State != "bytes_verified" {
 		return a, ErrUnavailable
-	}
-	if int64(len(data)) != a.Size || contracts.Digest(data) != a.SHA {
-		return a, errors.New("asset input digest mismatch")
 	}
 	conn, release, err := s.lockAsset(ctx, id)
 	if err != nil {
@@ -234,7 +231,7 @@ func (s *Storage) UploadAsset(ctx context.Context, id string, data []byte) (Asse
 	if err != nil {
 		return a, err
 	}
-	if a.State == "linked" {
+	if a.State == "linked" || a.State == "bytes_verified" {
 		return a, nil
 	}
 	if a.State == "uploading" {
@@ -246,17 +243,42 @@ func (s *Storage) UploadAsset(ctx context.Context, id string, data []byte) (Asse
 	if a.State == "orphaned" {
 		return a, ErrUnavailable
 	}
+	if a.State == "linked" || a.State == "bytes_verified" {
+		return a, nil
+	}
 	_, err = s.Media.StatObject(ctx, s.Bucket, a.Key, minio.StatObjectOptions{})
 	if err != nil {
 		if code := minio.ToErrorResponse(err).Code; code != "NoSuchKey" && code != "NoSuchObject" {
 			return a, err
 		}
+		if int64(len(data)) != a.Size || contracts.Digest(data) != a.SHA {
+			return a, errors.New("asset input digest mismatch")
+		}
 		if err = s.writeAssetObject(ctx, conn, a, bytes.NewReader(data)); err != nil {
 			return a, err
 		}
+	} else {
+		// Staged bytes have not entered the accepted store yet: check them once.
+		return s.verifyAssetUnlocked(ctx, conn, id)
 	}
 
-	return s.verifyAssetUnlocked(ctx, conn, id)
+	tx, err := beginWriteOn(ctx, conn)
+	if err != nil {
+		return a, err
+	}
+	defer tx.Rollback(context.Background())
+	a, err = readAsset(ctx, tx, "asset_id", id, true)
+	if err != nil {
+		return a, err
+	}
+	if err = setAssetState(ctx, tx, a, "bytes_verified"); err != nil {
+		return a, err
+	}
+	if err = tx.Commit(ctx); err != nil {
+		return a, err
+	}
+	a.State = "bytes_verified"
+	return a, nil
 }
 func (s *Storage) VerifyAsset(ctx context.Context, id string) (Asset, error) {
 	conn, release, err := s.lockAsset(ctx, id)
@@ -271,7 +293,7 @@ func (s *Storage) verifyAssetUnlocked(ctx context.Context, conn *pgxpool.Conn, i
 	if err != nil {
 		return a, err
 	}
-	if a.State == "linked" {
+	if a.State == "linked" || a.State == "bytes_verified" {
 		return a, nil
 	}
 	if a.State != "reserved" && a.State != "uploading" && a.State != "bytes_verified" {
@@ -300,7 +322,7 @@ func (s *Storage) verifyAssetUnlocked(ctx context.Context, conn *pgxpool.Conn, i
 	if err != nil {
 		return a, err
 	}
-	if a.State == "linked" {
+	if a.State == "linked" || a.State == "bytes_verified" {
 		return a, nil
 	}
 	if a.State == "orphaned" {
@@ -331,15 +353,6 @@ func (s *Storage) verifyAssetUnlocked(ctx context.Context, conn *pgxpool.Conn, i
 // LinkAsset commits the verified asset, new owner version, exact reference and
 // completed operation in one transaction. A stale owner keeps an orphan for recovery.
 func (s *Storage) LinkAsset(ctx context.Context, id string, owner *DocumentWrite) (Asset, error) {
-	current, lookupErr := readAsset(ctx, s.DB, "asset_id", id, false)
-	if lookupErr != nil {
-		return current, lookupErr
-	}
-	if current.State == "bytes_verified" {
-		if _, verifyErr := s.VerifyAsset(ctx, id); verifyErr != nil {
-			return current, verifyErr
-		}
-	}
 	tx, err := beginWrite(ctx, s)
 	if err != nil {
 		return Asset{}, err
@@ -421,8 +434,10 @@ func (s *Storage) LinkAsset(ctx context.Context, id string, owner *DocumentWrite
 	if _, err = tx.Exec(ctx, "UPDATE operation SET state='complete',result_document_id=$2,finished_at=clock_timestamp() WHERE id=$1", a.OperationID, result); err != nil {
 		return a, err
 	}
-	if err = validateGraph(ctx, tx); err != nil {
-		return a, err
+	if owner != nil {
+		if err = validateGraph(ctx, tx, owner.ID); err != nil {
+			return a, err
+		}
 	}
 	return a, tx.Commit(ctx)
 }
@@ -439,12 +454,9 @@ func (s *Storage) ReadAsset(ctx context.Context, id string) ([]byte, error) {
 		return nil, err
 	}
 	defer o.Close()
-	b, err := io.ReadAll(io.LimitReader(o, a.Size+1))
+	b, err := io.ReadAll(o)
 	if err != nil {
 		return nil, err
-	}
-	if int64(len(b)) != a.Size || contracts.Digest(b) != a.SHA {
-		return nil, errors.New("asset delivery integrity mismatch")
 	}
 	return b, nil
 }

@@ -104,7 +104,7 @@ The local storage foundation SHALL implement this behavior through services/api/
 - **WHEN** the literal native positive or negative fixture in audit/iteration-2-domain-storage-20261010/CASES.json packet 2 executes
 - **THEN** its real SQL/object/browser result SHALL equal the independent stated expectations, with failed operations remaining non-success and no substitution
 
-### Requirement: I2-08 Only complete independently readback-verified private bytes become deliverable
+### Requirement: I2-08 New private bytes are admitted once and accepted bytes are reused
 
 The local storage foundation SHALL implement this behavior through services/api/internal/app/assets.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: RUN-06.
 
@@ -160,9 +160,9 @@ The local storage foundation SHALL implement this behavior through services/api/
 - **WHEN** the literal native positive or negative fixture in audit/iteration-2-domain-storage-20261010/CASES.json packet 2 executes
 - **THEN** its real SQL/object/browser result SHALL equal the independent stated expectations, with failed operations remaining non-success and no substitution
 
-### Requirement: I2-12 Upgrade backup precedes additive migration and readiness rejects damaged history or shape
+### Requirement: I2-12 Upgrade admission precedes migration and readiness observes availability
 
-Readiness SHALL verify every required column has the PostgreSQL type and size/precision specified by the frozen migration, including Library timestamps. A column retaining its name with an incompatible type SHALL be unavailable while liveness remains successful; restoration SHALL recover readiness. The original migrations SHALL remain unchanged.
+Initialization SHALL admit migration history once. Routine readiness SHALL observe database availability and trust accepted schema/data, without column/type/catalogue audits. Operations using a missing resource SHALL report their actual error. The original migrations SHALL remain unchanged.
 
 The local storage foundation SHALL implement this behavior through services/api/internal/app/migration.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: RUN-02, I1-03, I1-06.
 
@@ -250,9 +250,9 @@ The storage owner SHALL preserve this invariant through services/api/internal/ap
 - **THEN** the production transaction, native object and independent expected state SHALL agree; rejection SHALL retain prior durable state
 
 
-### Requirement: I2-18 Readiness verifies enabled exact immutability guards and recovers after repair
+### Requirement: I2-18 Database readiness observes reachability without catalogue audits
 
-The storage owner SHALL preserve this invariant through services/api/internal/app/storage.go. Parent obligation: I2-12; the approved persistence and runtime/storage contracts remain unchanged.
+The storage owner SHALL report live database reachability and actual closed/cancelled failures through services/api/internal/app/storage.go. It SHALL NOT audit accepted migration/schema/trigger data during readiness. Parent obligation: I2-12; single-validation-policy.md supersedes earlier repeated guard qualification.
 
 #### Scenario: I2-18 repair packet 1
 

@@ -116,9 +116,6 @@ func (s *Storage) ActiveLabBundle(ctx context.Context) (lab.Bundle, error) {
 	}
 	var b lab.Bundle
 	err = json.Unmarshal(doc.Payload, &b)
-	if err == nil {
-		err = lab.ValidateBundle(b)
-	}
 	return b, err
 }
 func (s *Storage) ActivateLabBundle(ctx context.Context, b lab.Bundle, initial json.RawMessage) (any, error) {

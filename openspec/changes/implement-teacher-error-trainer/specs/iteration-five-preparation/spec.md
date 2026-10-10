@@ -114,7 +114,7 @@ The provider projection SHALL validate against the registered output contract ve
 
 ### Requirement: I5-09 Recovery of completed model bytes and frozen identity
 
-The application SHALL explicitly retry an incomplete phase using frozen settings and recover an already committed matching model result without another call. Settings byte-digest mismatch or original-operation replacement SHALL fail atomically. Exact constructed fixtures and independent expected states are retained in audit/iteration-5-preparation-20261010/CASES.json. These tests SHALL NOT establish hosted account admission, actual LLM linguistic quality or future mutation/audio/scoring completion.
+The application SHALL explicitly retry an incomplete phase using frozen settings and recover an already committed matching model result without another call. Wrong continuation counters or stale revisions SHALL fail atomically. Exact constructed fixtures and independent expected states are retained in audit/iteration-5-preparation-20261010/CASES.json. These tests SHALL NOT establish hosted account admission, actual LLM linguistic quality or future mutation/audio/scoring completion.
 
 #### Scenario: I5-09 packet 1
 
@@ -136,6 +136,20 @@ The application SHALL persist/read immutable blueprints and expose stable creati
 - **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
 
 #### Scenario: I5-10 packet 2
+
+- **WHEN** the second distinct literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+### Requirement: I5-11 Single admission and trusted accepted records
+
+The application SHALL admit new input once, then trust accepted documents/blobs/settings and reuse without repeated schema/hash/content checks. It SHALL report actual missing data and SHALL NOT archive schema/adapter definitions or re-audit accepted bytes at link/read. Exact constructed fixtures and independent expected states are retained in audit/iteration-5-preparation-20261010/CASES.json. These tests SHALL NOT establish hosted account admission, actual LLM linguistic quality or future mutation/audio/scoring completion.
+
+#### Scenario: I5-11 packet 1
+
+- **WHEN** the first literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+#### Scenario: I5-11 packet 2
 
 - **WHEN** the second distinct literal positive or negative packet is executed
 - **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
