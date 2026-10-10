@@ -33,6 +33,6 @@ f['property_bindings'].append({'property_id':pid,'fixture_id':base,'statement':t
 # Preserve the actual caller context in asset idempotency, and literal valid raw input purpose.
 for c in g['cases']:
  if c['property_id'].startswith('I2-') and c['source_path']=='tests/test_iteration2.py':c['source_sha256']=hashlib.sha256((R/c['source_path']).read_bytes()).hexdigest()
-ledger['properties'].append(pid);ledger['parent_obligations'][pid]=['PER-01'];d['scope']['property_ids'].append(pid);d['scope']['test_ids'] += ['tangerine.local/api/internal/contracts::'+row[0] for row in rows];d['reviews'][-1]['property_ids'].append(pid);d['reviews'][-1]['test_ids']+=['tangerine.local/api/internal/contracts::'+row[0] for row in rows]
+ledger['properties'].append(pid);ledger['parent_obligations'][pid]=['SPEC-003'];d['scope']['property_ids'].append(pid);d['scope']['test_ids'] += ['tangerine.local/api/internal/contracts::'+row[0] for row in rows];d['reviews'][-1]['property_ids'].append(pid);d['reviews'][-1]['test_ids']+=['tangerine.local/api/internal/contracts::'+row[0] for row in rows]
 for p,v in [(C/'verification.json',g),(C/'property-inventory.json',inventory),(C/'discovery.json',d),(V/'domain/verification-fixtures.v1.json',f),(V/'domain/property-test-sets.v1.json',sets),(A/'CASES.json',ledger)]:save(p,v)
 print('Registered owned-digest property and4 exact native Go cases; full iteration now88 cases.')

@@ -8,7 +8,7 @@ Native storage and asset-lifecycle decomposition of the approved persistence/run
 
 ### Requirement: I2-01 Typed schema registration and complete document readback
 
-The local storage foundation SHALL implement this behavior through services/api/internal/contracts/contracts.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: RUN-02, PER-01.
+The local storage foundation SHALL implement this behavior through services/api/internal/contracts/contracts.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: RUN-02, SPEC-003.
 
 #### Scenario: I2-01 packet 1
 
@@ -22,7 +22,7 @@ The local storage foundation SHALL implement this behavior through services/api/
 
 ### Requirement: I2-02 RFC8785 canonical bytes preserve Unicode and reject ambiguous input
 
-The local storage foundation SHALL implement this behavior through services/api/internal/contracts/contracts.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: PER-01.
+The local storage foundation SHALL implement this behavior through services/api/internal/contracts/contracts.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: SPEC-003.
 
 #### Scenario: I2-02 packet 1
 
@@ -36,7 +36,7 @@ The local storage foundation SHALL implement this behavior through services/api/
 
 ### Requirement: I2-03 Immutable documents retain historical versions after head advances
 
-The local storage foundation SHALL implement this behavior through services/api/internal/app/domain.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: PER-01, V6-SES-01.
+The local storage foundation SHALL implement this behavior through services/api/internal/app/domain.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: SPEC-003, V6-SES-01.
 
 #### Scenario: I2-03 packet 1
 
@@ -50,7 +50,7 @@ The local storage foundation SHALL implement this behavior through services/api/
 
 ### Requirement: I2-04 Document nodes references heads and audit commit atomically
 
-The local storage foundation SHALL implement this behavior through services/api/internal/app/domain.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: PER-01.
+The local storage foundation SHALL implement this behavior through services/api/internal/app/domain.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: SPEC-003.
 
 #### Scenario: I2-04 packet 1
 
@@ -64,7 +64,7 @@ The local storage foundation SHALL implement this behavior through services/api/
 
 ### Requirement: I2-05 Reference projection resolves the declared exact type scope and digest
 
-The local storage foundation SHALL implement this behavior through services/api/internal/app/domain.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: PER-01.
+The local storage foundation SHALL implement this behavior through services/api/internal/app/domain.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: SPEC-003.
 
 #### Scenario: I2-05 packet 1
 
@@ -78,7 +78,7 @@ The local storage foundation SHALL implement this behavior through services/api/
 
 ### Requirement: I2-06 Entity creation and compare-and-swap permit exactly one revision advance
 
-The local storage foundation SHALL implement this behavior through services/api/internal/app/domain.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: PER-01.
+The local storage foundation SHALL implement this behavior through services/api/internal/app/domain.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: SPEC-003.
 
 #### Scenario: I2-06 packet 1
 
@@ -134,7 +134,7 @@ The local storage foundation SHALL implement this behavior through services/api/
 
 ### Requirement: I2-10 Frozen owner revision guards atomic asset and owner publication
 
-The local storage foundation SHALL implement this behavior through services/api/internal/app/assets.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: PER-01.
+The local storage foundation SHALL implement this behavior through services/api/internal/app/assets.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: SPEC-003.
 
 #### Scenario: I2-10 packet 1
 

@@ -82,3 +82,13 @@ repaired56/56 storage/digest selection passed afterward. The unaffected32-case
 foundation observations remain valid. Stream changes were then observed by their
 three exact native fixtures. Final stable vet/gofmt passed. The current candidate
 will be accepted only by the following full88-case committed-clean gate.
+
+
+Clean-candidate pass/failure disposition: foundation32/32 and typed-digest4/4
+passed at clean e55e283. Storage startup observed0 cases when Docker's API lost
+VM connectivity (HTTP500/no route to host); that command is unavailable evidence,
+not green. The current parent-trace correction changes only nonsemantic reference
+metadata, retaining identical native case/scenario/property/test/source/oracle
+records and all production/test inputs. Static correspondence is revalidated;
+valid committed-clean36-case observations are retained and only the unobserved
+52-case storage closure is rerun. TRACE-CORRECTION.json records the exact boundary.
