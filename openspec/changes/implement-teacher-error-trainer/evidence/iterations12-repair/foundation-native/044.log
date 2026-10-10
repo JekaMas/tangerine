@@ -1,0 +1,324 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 961B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 163B done
+#4 DONE 0.0s
+
+#5 [build 1/7] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#5 DONE 0.0s
+
+#6 [stage-1 1/4] FROM docker.io/library/postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 1.24MB 0.0s done
+#7 DONE 0.0s
+
+#8 [build 4/7] RUN go mod download
+#8 CACHED
+
+#9 [build 3/7] COPY services/api/go.mod services/api/go.sum ./
+#9 CACHED
+
+#10 [build 7/7] RUN CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -mod=readonly -trimpath -o /public-probe ./cmd/tangerine
+#10 CACHED
+
+#11 [stage-1 2/4] COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+#11 CACHED
+
+#12 [build 6/7] RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /tangerine ./cmd/tangerine
+#12 CACHED
+
+#13 [build 2/7] WORKDIR /src
+#13 CACHED
+
+#14 [build 5/7] COPY services/api/ ./
+#14 CACHED
+
+#15 [stage-1 3/4] COPY --from=build /tangerine /usr/local/bin/tangerine
+#15 CACHED
+
+#16 [stage-1 4/4] COPY --from=build /public-probe /usr/local/bin/public-probe
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 writing image sha256:33ee756778f7c8a9dee0dc83a99b18b931c73cea9af1cd49b6c3e83b9c2f1fa0 done
+#17 naming to docker.io/library/tangerine-i1-test-24408-api:local done
+#17 DONE 0.0s
+
+View build details: docker-desktop://dashboard/build/default/default/jvrzfz8l0qsec1cc4xaaceadj
+ Image tangerine-i1-test-24408-minio:local Building 
+ Image tangerine-i1-test-24408-api:local Building 
+ Image tangerine-i1-test-24408-speech:local Building 
+ Image tangerine-i1-test-24408-api:local Building 
+ Image tangerine-i1-test-24408-web:local Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 3.01kB done
+#1 DONE 0.0s
+
+#2 [speech internal] load build definition from Dockerfile
+#2 transferring dockerfile: 366B done
+#2 DONE 0.0s
+
+#3 [initialize internal] load build definition from Dockerfile
+#3 transferring dockerfile: 961B done
+#3 DONE 0.0s
+
+#4 [minio internal] load build definition from minio.Dockerfile
+#4 transferring dockerfile: 1.01kB done
+#4 DONE 0.0s
+
+#5 [speech internal] load metadata for docker.io/library/python:3.14.7-slim-bookworm@sha256:82bc3c539b8813ada9d68c63b40158fa002f7f33de9bf3312a3dfdc0620dff56
+#5 ...
+
+#6 [api internal] load metadata for docker.io/library/postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826
+#6 DONE 0.0s
+
+#7 [web internal] load build definition from Dockerfile
+#7 transferring dockerfile: 722B done
+#7 DONE 0.0s
+
+#8 [minio internal] load metadata for docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#8 DONE 0.0s
+
+#9 [initialize internal] load .dockerignore
+#9 transferring context: 163B done
+#9 DONE 0.0s
+
+#10 [api build 1/7] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#10 DONE 0.0s
+
+#11 [api stage-1 1/4] FROM docker.io/library/postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826
+#11 DONE 0.0s
+
+#12 [initialize internal] load build context
+#12 transferring context: 15.26kB done
+#12 DONE 0.0s
+
+#13 [initialize stage-1 2/4] COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+#13 CACHED
+
+#14 [initialize build 5/7] COPY services/api/ ./
+#14 CACHED
+
+#15 [initialize build 2/7] WORKDIR /src
+#15 CACHED
+
+#16 [initialize build 4/7] RUN go mod download
+#16 CACHED
+
+#17 [initialize build 7/7] RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -mod=readonly -trimpath -o /public-probe ./cmd/tangerine
+#17 CACHED
+
+#18 [initialize stage-1 3/4] COPY --from=build /tangerine /usr/local/bin/tangerine
+#18 CACHED
+
+#19 [initialize build 3/7] COPY services/api/go.mod services/api/go.sum ./
+#19 CACHED
+
+#20 [initialize build 6/7] RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /tangerine ./cmd/tangerine
+#20 CACHED
+
+#21 [initialize stage-1 4/4] COPY --from=build /public-probe /usr/local/bin/public-probe
+#21 CACHED
+
+#22 [initialize] exporting to image
+#22 exporting layers done
+#22 writing image sha256:a30d5dea9a8ae458447b816826109f18de572a1634316b72c23686a00722fc71 done
+#22 naming to docker.io/library/tangerine-i1-test-24408-api:local done
+#22 DONE 0.0s
+
+#23 [api] exporting to image
+#23 exporting layers done
+#23 writing image sha256:028159ef527082b57c25bc9d0ce05505bce2df40218ae4d18fb563a56ed4bcf1 done
+#23 naming to docker.io/library/tangerine-i1-test-24408-api:local done
+#23 DONE 0.0s
+
+#24 [api] resolving provenance for metadata file
+#24 DONE 0.0s
+
+#25 [initialize] resolving provenance for metadata file
+#25 DONE 0.0s
+
+#26 [web internal] load metadata for docker.io/library/node:22.22.0-bookworm-slim@sha256:dd9d21971ec4395903fa6143c2b9267d048ae01ca6d3ea96f16cb30df6187d94
+#26 ...
+
+#27 [minio internal] load metadata for docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
+#27 ...
+
+#5 [speech internal] load metadata for docker.io/library/python:3.14.7-slim-bookworm@sha256:82bc3c539b8813ada9d68c63b40158fa002f7f33de9bf3312a3dfdc0620dff56
+#5 DONE 12.2s
+
+#9 [minio internal] load .dockerignore
+#9 CACHED
+
+#26 [web internal] load metadata for docker.io/library/node:22.22.0-bookworm-slim@sha256:dd9d21971ec4395903fa6143c2b9267d048ae01ca6d3ea96f16cb30df6187d94
+#26 DONE 12.2s
+
+#27 [minio internal] load metadata for docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
+#27 DONE 12.2s
+
+#28 [speech 1/4] FROM docker.io/library/python:3.14.7-slim-bookworm@sha256:82bc3c539b8813ada9d68c63b40158fa002f7f33de9bf3312a3dfdc0620dff56
+#28 DONE 0.0s
+
+#29 [minio build 2/7] ADD --checksum=sha256:71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6 https://codeload.github.com/minio/minio/tar.gz/7aac2a2c5b7c882e68c1ce017d8256be2feea27f /src.tar.gz
+#29 DONE 0.0s
+
+#30 [minio stage-1 1/4] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
+#30 DONE 0.0s
+
+#31 [web build 1/6] FROM docker.io/library/node:22.22.0-bookworm-slim@sha256:dd9d21971ec4395903fa6143c2b9267d048ae01ca6d3ea96f16cb30df6187d94
+#31 DONE 0.0s
+
+#10 [minio build 1/7] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#10 DONE 0.0s
+
+#32 [speech internal] load build context
+#32 transferring context: 5.82kB done
+#32 DONE 0.0s
+
+#33 [web internal] load build context
+#33 transferring context: 40.38kB done
+#33 DONE 0.0s
+
+#34 [minio internal] load build context
+#34 transferring context: 417B done
+#34 DONE 0.0s
+
+#35 [speech 3/4] WORKDIR /app
+#35 CACHED
+
+#36 [speech 2/4] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg=7:5.1.9-0+deb12u1 && rm -rf /var/lib/apt/lists/*
+#36 CACHED
+
+#37 [speech 4/4] COPY services/speech/ ./
+#37 CACHED
+
+#38 [web build 6/6] RUN npm run build
+#38 CACHED
+
+#39 [web build 2/6] WORKDIR /app
+#39 CACHED
+
+#40 [web stage-1 3/4] COPY --from=build --chown=node:node /app/.next/standalone ./
+#40 CACHED
+
+#41 [web build 3/6] COPY services/web/package.json services/web/package-lock.json ./
+#41 CACHED
+
+#42 [web build 4/6] RUN npm ci --ignore-scripts --no-audit --no-fund
+#42 CACHED
+
+#43 [web build 5/6] COPY services/web/ ./
+#43 CACHED
+
+#44 [web stage-1 4/4] COPY --from=build --chown=node:node /app/.next/static ./.next/static
+#44 CACHED
+
+#45 [minio build 7/7] RUN CGO_ENABLED=0 go build -trimpath -o /probe /probe.go
+#45 CACHED
+
+#46 [minio stage-1 2/4] COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+#46 CACHED
+
+#47 [minio build 4/7] WORKDIR /src
+#47 CACHED
+
+#48 [minio build 5/7] RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /minio .
+#48 CACHED
+
+#49 [minio stage-1 3/4] COPY --from=build /minio /usr/local/bin/minio
+#49 CACHED
+
+#50 [minio build 6/7] COPY deploy/local/probe.go /probe.go
+#50 CACHED
+
+#51 [minio build 3/7] RUN mkdir /src && tar -xzf /src.tar.gz --strip-components=1 -C /src
+#51 CACHED
+
+#52 [minio build 2/7] ADD --checksum=sha256:71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6 https://codeload.github.com/minio/minio/tar.gz/7aac2a2c5b7c882e68c1ce017d8256be2feea27f /src.tar.gz
+#52 CACHED
+
+#53 [minio stage-1 4/4] COPY --from=build /probe /usr/local/bin/probe
+#53 CACHED
+
+#54 [speech] exporting to image
+#54 exporting layers done
+#54 writing image sha256:e65ff716cb075cf55ab9f98441f0c47ea887f52c31a36b110cc44f08fa450fc3 done
+#54 naming to docker.io/library/tangerine-i1-test-24408-speech:local done
+#54 DONE 0.0s
+
+#55 [web] exporting to image
+#55 exporting layers done
+#55 writing image sha256:dcfe50307e52dbe5c9a602170a9e817203c7c7e032c0b75d71c6ee03d2d5d3e0 done
+#55 naming to docker.io/library/tangerine-i1-test-24408-web:local done
+#55 DONE 0.0s
+
+#56 [minio] exporting to image
+#56 exporting layers done
+#56 writing image sha256:989f0f129401e0b09ea87862a2e3211886e238c0a76cf90c0ca7370260bdb6e5 done
+#56 naming to docker.io/library/tangerine-i1-test-24408-minio:local done
+#56 DONE 0.0s
+
+#57 [minio] resolving provenance for metadata file
+#57 DONE 0.0s
+
+#58 [web] resolving provenance for metadata file
+#58 DONE 0.0s
+
+#59 [speech] resolving provenance for metadata file
+#59 DONE 0.0s
+ Image tangerine-i1-test-24408-web:local Built 
+ Image tangerine-i1-test-24408-api:local Built 
+ Image tangerine-i1-test-24408-api:local Built 
+ Image tangerine-i1-test-24408-minio:local Built 
+ Image tangerine-i1-test-24408-speech:local Built 
+ Container tangerine-i1-test-24408-postgres-1 Running 
+ Container tangerine-i1-test-24408-minio-1 Running 
+ Container tangerine-i1-test-24408-speech-1 Running 
+ Container tangerine-i1-test-24408-initialize-1 Recreate 
+ Container tangerine-i1-test-24408-initialize-1 Recreated 
+ Container tangerine-i1-test-24408-api-1 Recreate 
+ Container tangerine-i1-test-24408-api-1 Recreated 
+ Container tangerine-i1-test-24408-web-1 Creating 
+ Container tangerine-i1-test-24408-web-1 Created 
+ Container tangerine-i1-test-24408-minio-1 Waiting 
+ Container tangerine-i1-test-24408-postgres-1 Waiting 
+ Container tangerine-i1-test-24408-minio-1 Healthy 
+ Container tangerine-i1-test-24408-postgres-1 Healthy 
+ Container tangerine-i1-test-24408-initialize-1 Starting 
+ Container tangerine-i1-test-24408-initialize-1 Started 
+ Container tangerine-i1-test-24408-initialize-1 Waiting 
+ Container tangerine-i1-test-24408-speech-1 Waiting 
+ Container tangerine-i1-test-24408-speech-1 Healthy 
+ Container tangerine-i1-test-24408-initialize-1 Exited 
+ Container tangerine-i1-test-24408-api-1 Starting 
+ Container tangerine-i1-test-24408-api-1 Started 
+ Container tangerine-i1-test-24408-api-1 Waiting 
+ Container tangerine-i1-test-24408-api-1 Healthy 
+ Container tangerine-i1-test-24408-web-1 Starting 
+ Container tangerine-i1-test-24408-web-1 Started 
+ Container tangerine-i1-test-24408-api-1 Waiting 
+ Container tangerine-i1-test-24408-web-1 Waiting 
+ Container tangerine-i1-test-24408-postgres-1 Waiting 
+ Container tangerine-i1-test-24408-minio-1 Waiting 
+ Container tangerine-i1-test-24408-initialize-1 Waiting 
+ Container tangerine-i1-test-24408-speech-1 Waiting 
+ Container tangerine-i1-test-24408-api-1 Healthy 
+ Container tangerine-i1-test-24408-postgres-1 Healthy 
+ Container tangerine-i1-test-24408-initialize-1 Exited 
+ Container tangerine-i1-test-24408-minio-1 Healthy 
+ Container tangerine-i1-test-24408-speech-1 Healthy 
+ Container tangerine-i1-test-24408-web-1 Healthy 
+Tangerine is ready at http://localhost:3000 (no sign-in).

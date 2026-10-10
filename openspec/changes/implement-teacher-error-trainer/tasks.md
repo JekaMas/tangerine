@@ -416,15 +416,17 @@ is claimed; later required semantic owners remain independently pending.
 
 Previous iteration acceptance completeness is superseded by the native counterexamples; original passing receipts remain historical evidence. Audit/iterations-1-2-repair-20261010/PLAN.md records exact anchors, transitions and invalidations.
 
-- [ ] Repair connection-pool progress with one guarded connection and native concurrency/cancellation cases.
-- [ ] Enforce mandatory evidence-parent roles and shared graph validation through asset publication; verify atomic rollback.
-- [ ] Retain typed failed multipart receipts and implement explicit new-key retry with frozen context; verify restart and old-key rejection.
-- [ ] Reject disabled/misbound/changed immutability guards, retaining separate liveness and recovery.
-- [ ] Revalidate I1 damaged initialization and all Library browser states together with I2 closure.
-- [ ] Complete required structural/preservation/language checks and complete committed-clean combined selection; commit acceptance and preserve canonical user edits/preview.
+- [x] Repair connection-pool progress with one guarded connection and native concurrency/cancellation cases.
+- [x] Enforce mandatory evidence-parent roles and shared graph validation through asset publication; verify atomic rollback.
+- [x] Retain typed failed multipart receipts and implement explicit new-key retry with frozen context; verify restart and old-key rejection.
+- [x] Reject disabled/misbound/changed immutability guards, retaining separate liveness and recovery.
+- [x] Revalidate I1 damaged initialization and all Library browser states together with I2 closure.
+- [x] Complete required structural/preservation/language checks and complete committed-clean combined selection; commit acceptance and preserve canonical user edits/preview.
 
-- [ ] Repair the native retry-key cross-lineage counterexample; reject reuse for another failed result or an independent reservation and independently observe owner-reservation rejection.
+- [x] Repair the native retry-key cross-lineage counterexample; reject reuse for another failed result or an independent reservation and independently observe owner-reservation rejection.
 
-- [ ] Repair the native launcher public-port counterexample; correlate actual public readiness with the current installation before declaring startup success and observe positive/negative native cases.
+- [x] Repair the native launcher public-port counterexample; correlate actual public readiness with the current installation before declaring startup success and observe positive/negative native cases.
 
-- [ ] Close the native same-name column-type readiness counterexample with migration-defined types and positive/negative/recovery observations.
+- [x] Close the native same-name column-type readiness counterexample with migration-defined types and positive/negative/recovery observations.
+
+Acceptance resume: both complete iteration1/2 selections passed104/104 registered cases (52 positive/52 negative) from clean candidate c8338f2883ba7fbef3c00a8ef708fe2195897a56. All32 foundation,52 storage/browser,23 Go named race observations (including subtests) and16 native regression observations passed. evidence/iterations12-repair/ACCEPTANCE.json and audit/iterations-1-2-repair-20261010/reconcile.py bind current cases, sources, scenarios, oracles, commands and dependencies to the clean receipt. Strict OpenSpec, graph/discovery,2,940 structural/preservation assertions and stable Go vet/gofmt passed. Earlier failed/unavailable receipts remain historical; no later trainer/AI/provider/synthesis/full-product acceptance is claimed. Canonical landing preserves the unrelated GAPS.md edit and existing preview volumes.
