@@ -24,8 +24,15 @@ class Browser:
    self.sock=socket.create_connection((url.hostname,url.port),timeout=30);key=base64.b64encode(os.urandom(16)).decode();self.sock.sendall(f'GET {url.path} HTTP/1.1\r\nHost: {url.netloc}\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Key: {key}\r\nSec-WebSocket-Version: 13\r\n\r\n'.encode());response=b''
    while not response.endswith(b'\r\n\r\n'):response+=self.sock.recv(1)
    if not response.startswith(b'HTTP/1.1 101 '):raise RuntimeError('Chrome socket handshake failed')
-   self.seq=0;self.call('Page.enable');self.call('Runtime.enable');self.call('Runtime.runIfWaitingForDebugger')
-   if initial_url is not None:self.evaluate('location.assign('+json.dumps(initial_url)+')')
+   self.seq=0;self.events=[];self.call('Page.enable');self.call('Runtime.enable');self.call('Runtime.runIfWaitingForDebugger')
+   if initial_url is not None:
+    offset=len(self.events);self.evaluate('location.assign('+json.dumps(initial_url)+')');deadline=time.monotonic()+30
+    try:
+     while not any(x.get('method')=='Page.loadEventFired' for x in self.events[offset:]):
+      remaining=deadline-time.monotonic()
+      if remaining<=0:raise TimeoutError('Chrome target page did not finish loading within 30 seconds')
+      self.sock.settimeout(remaining);self.events.append(self.message())
+    finally:self.sock.settimeout(30)
   except BaseException:self.close();raise
  def read(self,n):
   b=b''
@@ -37,16 +44,19 @@ class Browser:
  def call(self,method,params=None):
   self.seq+=1;message=json.dumps({'id':self.seq,'method':method,'params':params or {}}).encode();mask=os.urandom(4);n=len(message);header=b'\x81'+(bytes([n|128]) if n<126 else b'\xfe'+struct.pack('!H',n) if n<65536 else b'\xff'+struct.pack('!Q',n));self.sock.sendall(header+mask+bytes(v^mask[i%4] for i,v in enumerate(message)))
   while True:
+   response=self.message()
+   if response.get('id')==self.seq:
+    if 'error' in response:raise RuntimeError(response['error'])
+    return response['result']
+   self.events.append(response)
+ def message(self):
+  while True:
    h=self.read(2);length=h[1]&127
    if length==126:length=struct.unpack('!H',self.read(2))[0]
    elif length==127:length=struct.unpack('!Q',self.read(8))[0]
    mask2=self.read(4) if h[1]&128 else None;payload=self.read(length)
    if mask2:payload=bytes(v^mask2[i%4] for i,v in enumerate(payload))
-   if h[0]&15!=1:continue
-   response=json.loads(payload)
-   if response.get('id')==self.seq:
-    if 'error' in response:raise RuntimeError(response['error'])
-    return response['result']
+   if h[0]&15==1:return json.loads(payload)
  def evaluate(self,js):return self.call('Runtime.evaluate',{'expression':js,'returnByValue':True})['result'].get('value')
  def wait(self,text):
   for _ in range(100):
