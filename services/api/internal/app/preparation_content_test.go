@@ -41,6 +41,14 @@ func TestPreparationSharedVoicesPositive(t *testing.T) {
 	if b["format"] != "dialogue" || ss[1].(map[string]any)["voice_profile_id"] != "am_adam" || ss[2].(map[string]any)["voice_profile_id"] != "af_heart" || ss[2].(map[string]any)["id"] != "s3" {
 		t.Fatal(b)
 	}
+	// The request contract has no synthetic speaker cap. Model-visible context
+	// budgeting occurs where the actual serialized context is assembled.
+	large := preparationBlueprint(t, 4001)
+	roles := large["speakers"].([]any)
+	if len(roles) != 4001 || roles[4000].(map[string]any)["id"] != "s4001" || roles[4000].(map[string]any)["voice_profile_id"] != "af_heart" {
+		t.Fatal("positive request clipped by estimated capacity")
+	}
+
 }
 func TestPreparationSpeakerCountNegative(t *testing.T) {
 	_, e := ExpandBlueprint([]byte(`{"exercise_request":{"topic":"Coffee","speaker_count":0,"text_length_words":10}}`), DefaultConfiguration())

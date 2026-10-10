@@ -524,3 +524,11 @@ Scope/anchors: audit/iteration-5-preparation-20261010/PLAN.md. This stage is the
 Iteration5 steering: user replaces schema/adapter archiving and repeated stored-data checks with one admission and trusted reuse. The b77cecb/9bc53fc observations are superseded for affected cases. Runtime reads and Resume trust accepted records; readiness observes availability. Revised native cases and DAG are required before closure.
 
 Native verification: all376 required cases (188 positive/188 negative) reconcile against current exact clean observations. All44 I5 cases passed clean on2fc6c1b; four legacy assertions were revised to the user policy and all140 affected cases passed clean ondc84016.236 unaffected results are retained, including four original contract cases. The first372-case receipt remains failed; no failed command contributes accepted cases. Full hosted I5 acceptance remains blocked and unchecked. Single-validation-policy.md supersedes the earlier schema archive/readiness consistency findings. No paid provider calls or credential borrowing occurred.
+
+## 2026-10-10 iteration5 verification repair
+
+- [x] Reproduce failed-action replay after successful continuation; repair immutable saved result selection for both terminal outcomes.
+- [x] Remove the unsupported speaker capacity estimate and stale definition-archive instruction; preserve actual context admission and trusted-record reuse.
+- [x] Add four independent positive/negative replay cases and extend shared-voice coverage, wired as I5-12 and revised I5-01.
+- [ ] Obtain a successful own committed-clean48-case iteration5 receipt and rerun its136 invalidated predecessor cases; reconcile196 still-valid predecessor observations.
+- [ ] Finish preservation/readback and verification report; full hosted completion remains subject to actual own included-only connection and quality/MLflow evidence.

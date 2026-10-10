@@ -9,7 +9,6 @@ import (
 	"strings"
 	"tangerine.local/api/internal/contracts"
 	"tangerine.local/api/internal/lab"
-	"tangerine.local/api/internal/provider"
 )
 
 // Frozen registries are packaged byte-for-byte from the active specification.
@@ -55,30 +54,7 @@ func expandBlueprint(raw []byte, configuration map[string]any) (map[string]any, 
 		if _, ok := req["category_families"]; !ok {
 			req["category_families"] = []any{}
 		}
-		// Each speaker consumes at least32 wire bytes before any utterance. Use
-		// the selected profile's actual finite context capacity, not a product cap.
 		count := req["speaker_count"].(float64)
-		capacity := 128000
-		profilesRaw, _ := json.Marshal(configuration["llm_profiles"])
-		var profiles []struct {
-			ID     string `json:"id"`
-			Budget int    `json:"context_budget_tokens"`
-		}
-		_ = json.Unmarshal(profilesRaw, &profiles)
-		selected, _ := configuration["llm_profile"].(string)
-		if stages, ok := configuration["stage_profiles"].(map[string]any); ok {
-			if id, ok := stages["case_generation"].(string); ok {
-				selected = id
-			}
-		}
-		for _, p := range profiles {
-			if p.ID == selected && p.Budget > 0 {
-				capacity = p.Budget
-			}
-		}
-		if count > float64(capacity/32) {
-			return nil, &provider.Failure{Code: "INPUT_CAPACITY_EXCEEDED"}
-		}
 		n := int(count)
 		speech := "kokoro-local-en-v1"
 		if v, ok := configuration["speech_profile"].(string); ok {

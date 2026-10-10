@@ -639,3 +639,82 @@ func TestNativePreparationMissingRecordNegative(t *testing.T) {
 		t.Fatal("missing blob invented")
 	}
 }
+
+func TestNativePreparationFailedActionReplayPositive(t *testing.T) {
+	s, r, c, n := prepareNativeFixture(t, "fail-once", 200)
+	ctx := context.Background()
+	key := uuid.NewString()
+	failed, err := s.PrepareCanonical(ctx, r, key, c)
+	if err == nil || *n != 1 {
+		t.Fatal("missing first failure", err, *n)
+	}
+	original := r
+	id := failed["id"].(string)
+	r.PreparationID = &id
+	r.Attempt = 2
+	completed, err := s.PrepareCanonical(ctx, r, uuid.NewString(), c)
+	if err != nil || completed["last_failure"] != nil || *n != 2 {
+		t.Fatal("resume failed", err, completed, *n)
+	}
+	replay, err := s.PrepareCanonical(ctx, original, key, c)
+	if err == nil || replay["phase_states"].(map[string]any)["canonical_text"] != "failed" || replay["revision"] != failed["revision"] || replay["last_failure"].(map[string]any)["code"] != failed["last_failure"].(map[string]any)["code"] || *n != 2 {
+		t.Fatal("failed action changed after resume", err, replay, *n)
+	}
+	current, err := s.Store.Preparation(ctx, id)
+	if err != nil || current["phase_states"].(map[string]any)["canonical_text"] != "complete" {
+		t.Fatal("replay replaced current head", err, current)
+	}
+}
+
+func TestNativePreparationCompletedActionReplayPositive(t *testing.T) {
+	s, r, c, n := prepareNativeFixture(t, "", 200)
+	ctx := context.Background()
+	key := uuid.NewString()
+	saved, err := s.PrepareCanonical(ctx, r, key, c)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// A newer selected head is a separate version; the original action owns its
+	// already committed immutable response. This models later phase advancement.
+	newer := make(map[string]any)
+	for k, v := range saved {
+		newer[k] = v
+	}
+	newer["revision"] = float64(2)
+	raw, _ := json.Marshal(newer)
+	expected := int64(1)
+	if _, err = s.Store.WriteDocuments(ctx, []DocumentWrite{{ID: uuid.NewString(), Kind: "preparation-state", Version: "2.0.0", Scope: "local", Payload: raw, Head: &HeadWrite{ID: saved["id"].(string), Expected: &expected, State: "complete"}, References: []Reference{{Pointer: "/settings_asset_id", ID: saved["settings_asset_id"].(string), Scope: saved["settings_asset_id"].(string), Kind: "asset-bytes", SHA: saved["settings_sha256"].(string), Relation: "settings_asset_id"}, {Pointer: "/canonical_asset_id", ID: saved["canonical_asset_id"].(string), Scope: saved["canonical_asset_id"].(string), Kind: "asset-bytes", SHA: saved["canonical_sha256"].(string), Relation: "canonical_asset_id"}}}}); err != nil {
+		t.Fatal(err)
+	}
+	replay, err := s.PrepareCanonical(ctx, r, key, c)
+	if err != nil || replay["revision"] != saved["revision"] || *n != 1 {
+		t.Fatal("completed action read a newer head", err, replay, *n)
+	}
+}
+
+func TestNativePreparationFailedReplayConflictNegative(t *testing.T) {
+	s, r, c, n := prepareNativeFixture(t, "fail-once", 200)
+	key := uuid.NewString()
+	if _, err := s.PrepareCanonical(context.Background(), r, key, c); err == nil {
+		t.Fatal("missing first failure")
+	}
+	r.Attempt = 2
+	if _, err := s.PrepareCanonical(context.Background(), r, key, c); !errors.Is(err, ErrConflict) || *n != 1 {
+		t.Fatal("changed failed action accepted", err, *n)
+	}
+}
+
+func TestNativePreparationMissingActionResultNegative(t *testing.T) {
+	s, r, c, n := prepareNativeFixture(t, "", 200)
+	ctx := context.Background()
+	key := uuid.NewString()
+	if _, err := s.PrepareCanonical(ctx, r, key, c); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := s.Store.DB.Exec(ctx, "UPDATE operation SET result_document_id=NULL WHERE operation_name='canonical_prepare' AND idempotency_key=$1", key); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := s.PrepareCanonical(ctx, r, key, c); err == nil || *n != 1 {
+		t.Fatal("missing result replaced by latest head or redispatch", err, *n)
+	}
+}

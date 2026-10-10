@@ -17,8 +17,8 @@ import (
 	"time"
 )
 
-// Blueprint content is a verified private typed JSON asset. Its logical ID is
-// indexed by the immutable write operation; readback verifies the saved contract.
+// Blueprint content is an accepted private typed JSON asset. Its logical ID is
+// indexed by the immutable write operation; readback trusts the saved content.
 func (s *Storage) WriteBlueprint(ctx context.Context, raw []byte, key string) (map[string]any, error) {
 	_, accepted, e := contracts.Validate("blueprint-write", "2.0.0", raw)
 	if e != nil {
@@ -330,25 +330,27 @@ func (s *Server) PrepareCanonical(ctx context.Context, r CanonicalPreparationReq
 	if e != nil {
 		return nil, e
 	}
-	if op.State == "complete" {
-		var id string
-		e = s.Store.DB.QueryRow(ctx, "SELECT subject_id FROM operation WHERE id=$1", op.ID).Scan(&id)
-		if e != nil {
+	if op.State == "complete" || op.State == "failed" {
+		// Replay belongs to this action's immutable result, while ordinary
+		// preparation readback follows its current head. A later successful
+		// continuation must not erase a failed action's response.
+		var documentID string
+		if e = s.Store.DB.QueryRow(ctx, "SELECT result_document_id FROM operation WHERE id=$1", op.ID).Scan(&documentID); e != nil {
 			return nil, e
 		}
-		return s.Store.Preparation(ctx, id)
-	}
-	if op.State == "failed" {
-		var id string
-		if e = s.Store.DB.QueryRow(ctx, "SELECT subject_id FROM operation WHERE id=$1", op.ID).Scan(&id); e != nil {
-			return nil, e
-		}
-		p, err := s.Store.Preparation(ctx, id)
+		document, err := s.Store.ReadDocument(ctx, documentID)
 		if err != nil {
 			return nil, err
 		}
-		failure := p["last_failure"].(map[string]any)
-		return p, &provider.Failure{Code: failure["code"].(string)}
+		var saved map[string]any
+		if err = json.Unmarshal(document.Payload, &saved); err != nil {
+			return nil, err
+		}
+		if op.State == "failed" {
+			failure := saved["last_failure"].(map[string]any)
+			return saved, &provider.Failure{Code: failure["code"].(string)}
+		}
+		return saved, nil
 	}
 	var p map[string]any
 	if r.PreparationID != nil {

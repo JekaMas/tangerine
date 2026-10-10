@@ -3007,6 +3007,12 @@
       "capability": "iteration-five-preparation",
       "title": "I5-11 Single admission and trusted accepted records",
       "fingerprint": "bee5f4cf4b85e550c831a7457e179cd4420bc545d7d3065e8789a404921f8d98"
+    },
+    {
+      "id": "I5-12",
+      "capability": "iteration-five-preparation",
+      "title": "I5-12 Immutable operation result replay",
+      "fingerprint": "955567f5fb29a010695be0ecb1c2a490cf55f5613a56bc1e544ef0c5dcea1064"
     }
   ],
   "properties": [
@@ -12155,6 +12161,20 @@
       ],
       "owner": "services/api/internal/app/preparation.go",
       "oracle": "The application SHALL admit new input once, then trust accepted documents/blobs/settings and reuse without repeated schema/hash/content checks. It SHALL report actual missing data and SHALL NOT archive schema/adapter definitions or re-audit accepted bytes at link/read. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "source_globs": [
+        "services/api/internal/app/preparation.go"
+      ]
+    },
+    {
+      "id": "I5-12.P1",
+      "requirement_id": "I5-12",
+      "statement": "The application SHALL replay the original action result and failure from its immutable saved document, even after preparation head advancement or successful continuation. Changed requests SHALL conflict and missing action results SHALL report their actual error without head substitution or redispatch.",
+      "scenarios": [
+        "I5-12 packet 1",
+        "I5-12 packet 2"
+      ],
+      "owner": "services/api/internal/app/preparation.go",
+      "oracle": "The application SHALL replay the original action result and failure from its immutable saved document, even after preparation head advancement or successful continuation. Changed requests SHALL conflict and missing action results SHALL report their actual error without head substitution or redispatch. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
       "source_globs": [
         "services/api/internal/app/preparation.go"
       ]
@@ -89748,7 +89768,7 @@
       "command_id": "iteration5-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/preparation_content_test.go",
-      "source_sha256": "54ed9c524e7cc3ff00d9ab80e64949a088c02af3aa64ba7b032c719aa42e790a",
+      "source_sha256": "7b743ac70a74e42a591753c0c359c8297b5cad89eafbbdd6692b1a6af8e63781",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -89781,15 +89801,15 @@
       "polarity": "positive",
       "scenario": "I5-01 packet 2",
       "scenario_fingerprint": "ad6571c4a27b36586f64254b13ba4fc1b77e33e208697bfe266d9dfe840c2c4d",
-      "setup": "Execute TestPreparationSharedVoicesPositive through services/api/internal/app/preparation_content.go {\"exact_native_test\": \"TestPreparationSharedVoicesPositive\", \"literal_executable_fixture\": \"func TestPreparationSharedVoicesPositive(t *testing.T) {\\n\\tb := preparationBlueprint(t, 3)\\n\\tss := b[\\\"speakers\\\"].([]any)\\n\\tif b[\\\"format\\\"] != \\\"dialogue\\\" || ss[1].(map[string]any)[\\\"voice_profile_id\\\"] != \\\"am_adam\\\" || ss[2].(map[string]any)[\\\"voice_profile_id\\\"] != \\\"af_heart\\\" || ss[2].(map[string]any)[\\\"id\\\"] != \\\"s3\\\" {\\n\\t\\tt.Fatal(b)\\n\\t}\\n}\"}",
-      "observable": "{\"assertion_source\": \"func TestPreparationSharedVoicesPositive(t *testing.T) {\\n\\tb := preparationBlueprint(t, 3)\\n\\tss := b[\\\"speakers\\\"].([]any)\\n\\tif b[\\\"format\\\"] != \\\"dialogue\\\" || ss[1].(map[string]any)[\\\"voice_profile_id\\\"] != \\\"am_adam\\\" || ss[2].(map[string]any)[\\\"voice_profile_id\\\"] != \\\"af_heart\\\" || ss[2].(map[string]any)[\\\"id\\\"] != \\\"s3\\\" {\\n\\t\\tt.Fatal(b)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL preserve the verbatim topic, optional unconstrained level, positive speaker/word requests, stable roles and registered voice cycling; invalid nonpositive requests SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "setup": "Execute TestPreparationSharedVoicesPositive through services/api/internal/app/preparation_content.go {\"exact_native_test\": \"TestPreparationSharedVoicesPositive\", \"literal_executable_fixture\": \"func TestPreparationSharedVoicesPositive(t *testing.T) {\\n\\tb := preparationBlueprint(t, 3)\\n\\tss := b[\\\"speakers\\\"].([]any)\\n\\tif b[\\\"format\\\"] != \\\"dialogue\\\" || ss[1].(map[string]any)[\\\"voice_profile_id\\\"] != \\\"am_adam\\\" || ss[2].(map[string]any)[\\\"voice_profile_id\\\"] != \\\"af_heart\\\" || ss[2].(map[string]any)[\\\"id\\\"] != \\\"s3\\\" {\\n\\t\\tt.Fatal(b)\\n\\t}\\n\\t// The request contract has no synthetic speaker cap. Model-visible context\\n\\t// budgeting occurs where the actual serialized context is assembled.\\n\\tlarge := preparationBlueprint(t, 4001)\\n\\troles := large[\\\"speakers\\\"].([]any)\\n\\tif len(roles) != 4001 || roles[4000].(map[string]any)[\\\"id\\\"] != \\\"s4001\\\" || roles[4000].(map[string]any)[\\\"voice_profile_id\\\"] != \\\"af_heart\\\" {\\n\\t\\tt.Fatal(\\\"positive request clipped by estimated capacity\\\")\\n\\t}\\n\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestPreparationSharedVoicesPositive(t *testing.T) {\\n\\tb := preparationBlueprint(t, 3)\\n\\tss := b[\\\"speakers\\\"].([]any)\\n\\tif b[\\\"format\\\"] != \\\"dialogue\\\" || ss[1].(map[string]any)[\\\"voice_profile_id\\\"] != \\\"am_adam\\\" || ss[2].(map[string]any)[\\\"voice_profile_id\\\"] != \\\"af_heart\\\" || ss[2].(map[string]any)[\\\"id\\\"] != \\\"s3\\\" {\\n\\t\\tt.Fatal(b)\\n\\t}\\n\\t// The request contract has no synthetic speaker cap. Model-visible context\\n\\t// budgeting occurs where the actual serialized context is assembled.\\n\\tlarge := preparationBlueprint(t, 4001)\\n\\troles := large[\\\"speakers\\\"].([]any)\\n\\tif len(roles) != 4001 || roles[4000].(map[string]any)[\\\"id\\\"] != \\\"s4001\\\" || roles[4000].(map[string]any)[\\\"voice_profile_id\\\"] != \\\"af_heart\\\" {\\n\\t\\tt.Fatal(\\\"positive request clipped by estimated capacity\\\")\\n\\t}\\n\\n}\", \"independent_literal_expectations\": \"The application SHALL preserve the verbatim topic, optional unconstrained level, positive speaker/word requests, stable roles and registered voice cycling; invalid nonpositive requests SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
       "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
       "green_expectation": "All independently declared literal outcomes pass.",
       "test_id": "tangerine.local/api/internal/app::TestPreparationSharedVoicesPositive",
       "command_id": "iteration5-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/preparation_content_test.go",
-      "source_sha256": "54ed9c524e7cc3ff00d9ab80e64949a088c02af3aa64ba7b032c719aa42e790a",
+      "source_sha256": "7b743ac70a74e42a591753c0c359c8297b5cad89eafbbdd6692b1a6af8e63781",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -89830,7 +89850,7 @@
       "command_id": "iteration5-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/preparation_content_test.go",
-      "source_sha256": "54ed9c524e7cc3ff00d9ab80e64949a088c02af3aa64ba7b032c719aa42e790a",
+      "source_sha256": "7b743ac70a74e42a591753c0c359c8297b5cad89eafbbdd6692b1a6af8e63781",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -89871,7 +89891,7 @@
       "command_id": "iteration5-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/preparation_content_test.go",
-      "source_sha256": "54ed9c524e7cc3ff00d9ab80e64949a088c02af3aa64ba7b032c719aa42e790a",
+      "source_sha256": "7b743ac70a74e42a591753c0c359c8297b5cad89eafbbdd6692b1a6af8e63781",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -89912,7 +89932,7 @@
       "command_id": "iteration5-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/preparation_content_test.go",
-      "source_sha256": "54ed9c524e7cc3ff00d9ab80e64949a088c02af3aa64ba7b032c719aa42e790a",
+      "source_sha256": "7b743ac70a74e42a591753c0c359c8297b5cad89eafbbdd6692b1a6af8e63781",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -89953,7 +89973,7 @@
       "command_id": "iteration5-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/preparation_content_test.go",
-      "source_sha256": "54ed9c524e7cc3ff00d9ab80e64949a088c02af3aa64ba7b032c719aa42e790a",
+      "source_sha256": "7b743ac70a74e42a591753c0c359c8297b5cad89eafbbdd6692b1a6af8e63781",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -89994,7 +90014,7 @@
       "command_id": "iteration5-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/preparation_content_test.go",
-      "source_sha256": "54ed9c524e7cc3ff00d9ab80e64949a088c02af3aa64ba7b032c719aa42e790a",
+      "source_sha256": "7b743ac70a74e42a591753c0c359c8297b5cad89eafbbdd6692b1a6af8e63781",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90035,7 +90055,7 @@
       "command_id": "iteration5-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/preparation_content_test.go",
-      "source_sha256": "54ed9c524e7cc3ff00d9ab80e64949a088c02af3aa64ba7b032c719aa42e790a",
+      "source_sha256": "7b743ac70a74e42a591753c0c359c8297b5cad89eafbbdd6692b1a6af8e63781",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90076,7 +90096,7 @@
       "command_id": "iteration5-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/preparation_content_test.go",
-      "source_sha256": "54ed9c524e7cc3ff00d9ab80e64949a088c02af3aa64ba7b032c719aa42e790a",
+      "source_sha256": "7b743ac70a74e42a591753c0c359c8297b5cad89eafbbdd6692b1a6af8e63781",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90117,7 +90137,7 @@
       "command_id": "iteration5-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/preparation_content_test.go",
-      "source_sha256": "54ed9c524e7cc3ff00d9ab80e64949a088c02af3aa64ba7b032c719aa42e790a",
+      "source_sha256": "7b743ac70a74e42a591753c0c359c8297b5cad89eafbbdd6692b1a6af8e63781",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90158,7 +90178,7 @@
       "command_id": "iteration5-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/preparation_content_test.go",
-      "source_sha256": "54ed9c524e7cc3ff00d9ab80e64949a088c02af3aa64ba7b032c719aa42e790a",
+      "source_sha256": "7b743ac70a74e42a591753c0c359c8297b5cad89eafbbdd6692b1a6af8e63781",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90199,7 +90219,7 @@
       "command_id": "iteration5-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/preparation_content_test.go",
-      "source_sha256": "54ed9c524e7cc3ff00d9ab80e64949a088c02af3aa64ba7b032c719aa42e790a",
+      "source_sha256": "7b743ac70a74e42a591753c0c359c8297b5cad89eafbbdd6692b1a6af8e63781",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90240,7 +90260,7 @@
       "command_id": "iteration5-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/preparation_content_test.go",
-      "source_sha256": "54ed9c524e7cc3ff00d9ab80e64949a088c02af3aa64ba7b032c719aa42e790a",
+      "source_sha256": "7b743ac70a74e42a591753c0c359c8297b5cad89eafbbdd6692b1a6af8e63781",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90281,7 +90301,7 @@
       "command_id": "iteration5-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/preparation_content_test.go",
-      "source_sha256": "54ed9c524e7cc3ff00d9ab80e64949a088c02af3aa64ba7b032c719aa42e790a",
+      "source_sha256": "7b743ac70a74e42a591753c0c359c8297b5cad89eafbbdd6692b1a6af8e63781",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90322,7 +90342,7 @@
       "command_id": "iteration5-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/preparation_content_test.go",
-      "source_sha256": "54ed9c524e7cc3ff00d9ab80e64949a088c02af3aa64ba7b032c719aa42e790a",
+      "source_sha256": "7b743ac70a74e42a591753c0c359c8297b5cad89eafbbdd6692b1a6af8e63781",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90363,7 +90383,7 @@
       "command_id": "iteration5-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/preparation_content_test.go",
-      "source_sha256": "54ed9c524e7cc3ff00d9ab80e64949a088c02af3aa64ba7b032c719aa42e790a",
+      "source_sha256": "7b743ac70a74e42a591753c0c359c8297b5cad89eafbbdd6692b1a6af8e63781",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90404,7 +90424,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90446,7 +90466,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90488,7 +90508,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90530,7 +90550,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90572,7 +90592,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90614,7 +90634,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90656,7 +90676,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90698,7 +90718,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90740,7 +90760,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90782,7 +90802,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90824,7 +90844,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -90866,7 +90886,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -91072,7 +91092,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -91114,7 +91134,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -91156,7 +91176,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -91198,7 +91218,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -91240,7 +91260,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -91282,7 +91302,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -91324,7 +91344,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -91366,7 +91386,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -91408,7 +91428,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -91450,7 +91470,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -91492,7 +91512,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -91534,7 +91554,7 @@
       "command_id": "iteration5-native",
       "state": "implemented",
       "source_path": "tests/native_preparation_test.go",
-      "source_sha256": "6ac1cf82a65e465ed2630f3cfdca368501bb69cbf679b9be366f3c2789fd38dd",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -91560,6 +91580,174 @@
         "owner_replaced": "Remote hosted model endpoint only; actual PostgreSQL/MinIO/HTTP and provider/preparation owners retained"
       },
       "designed_fixture_id": "iteration5-I5-11-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I5-12.P1.S1.POSITIVE",
+      "property_id": "I5-12.P1",
+      "polarity": "positive",
+      "scenario": "I5-12 packet 1",
+      "scenario_fingerprint": "a55b59fe9c5ddb29d3246b1e13a98d961f5eb440789136d180820041d9b051aa",
+      "setup": "Execute TestNativePreparationFailedActionReplayPositive through services/api/internal/app/preparation.go {\"exact_native_test\": \"TestNativePreparationFailedActionReplayPositive\", \"literal_executable_fixture\": \"func TestNativePreparationFailedActionReplayPositive(t *testing.T) {\\n\\ts, r, c, n := prepareNativeFixture(t, \\\"fail-once\\\", 200)\\n\\tctx := context.Background()\\n\\tkey := uuid.NewString()\\n\\tfailed, err := s.PrepareCanonical(ctx, r, key, c)\\n\\tif err == nil || *n != 1 {\\n\\t\\tt.Fatal(\\\"missing first failure\\\", err, *n)\\n\\t}\\n\\toriginal := r\\n\\tid := failed[\\\"id\\\"].(string)\\n\\tr.PreparationID = &id\\n\\tr.Attempt = 2\\n\\tcompleted, err := s.PrepareCanonical(ctx, r, uuid.NewString(), c)\\n\\tif err != nil || completed[\\\"last_failure\\\"] != nil || *n != 2 {\\n\\t\\tt.Fatal(\\\"resume failed\\\", err, completed, *n)\\n\\t}\\n\\treplay, err := s.PrepareCanonical(ctx, original, key, c)\\n\\tif err == nil || replay[\\\"phase_states\\\"].(map[string]any)[\\\"canonical_text\\\"] != \\\"failed\\\" || replay[\\\"revision\\\"] != failed[\\\"revision\\\"] || replay[\\\"last_failure\\\"].(map[string]any)[\\\"code\\\"] != failed[\\\"last_failure\\\"].(map[string]any)[\\\"code\\\"] || *n != 2 {\\n\\t\\tt.Fatal(\\\"failed action changed after resume\\\", err, replay, *n)\\n\\t}\\n\\tcurrent, err := s.Store.Preparation(ctx, id)\\n\\tif err != nil || current[\\\"phase_states\\\"].(map[string]any)[\\\"canonical_text\\\"] != \\\"complete\\\" {\\n\\t\\tt.Fatal(\\\"replay replaced current head\\\", err, current)\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestNativePreparationFailedActionReplayPositive(t *testing.T) {\\n\\ts, r, c, n := prepareNativeFixture(t, \\\"fail-once\\\", 200)\\n\\tctx := context.Background()\\n\\tkey := uuid.NewString()\\n\\tfailed, err := s.PrepareCanonical(ctx, r, key, c)\\n\\tif err == nil || *n != 1 {\\n\\t\\tt.Fatal(\\\"missing first failure\\\", err, *n)\\n\\t}\\n\\toriginal := r\\n\\tid := failed[\\\"id\\\"].(string)\\n\\tr.PreparationID = &id\\n\\tr.Attempt = 2\\n\\tcompleted, err := s.PrepareCanonical(ctx, r, uuid.NewString(), c)\\n\\tif err != nil || completed[\\\"last_failure\\\"] != nil || *n != 2 {\\n\\t\\tt.Fatal(\\\"resume failed\\\", err, completed, *n)\\n\\t}\\n\\treplay, err := s.PrepareCanonical(ctx, original, key, c)\\n\\tif err == nil || replay[\\\"phase_states\\\"].(map[string]any)[\\\"canonical_text\\\"] != \\\"failed\\\" || replay[\\\"revision\\\"] != failed[\\\"revision\\\"] || replay[\\\"last_failure\\\"].(map[string]any)[\\\"code\\\"] != failed[\\\"last_failure\\\"].(map[string]any)[\\\"code\\\"] || *n != 2 {\\n\\t\\tt.Fatal(\\\"failed action changed after resume\\\", err, replay, *n)\\n\\t}\\n\\tcurrent, err := s.Store.Preparation(ctx, id)\\n\\tif err != nil || current[\\\"phase_states\\\"].(map[string]any)[\\\"canonical_text\\\"] != \\\"complete\\\" {\\n\\t\\tt.Fatal(\\\"replay replaced current head\\\", err, current)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL replay the original action result and failure from its immutable saved document, even after preparation head advancement or successful continuation. Changed requests SHALL conflict and missing action results SHALL report their actual error without head substitution or redispatch. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestNativePreparationFailedActionReplayPositive",
+      "command_id": "iteration5-native",
+      "state": "implemented",
+      "source_path": "tests/native_preparation_test.go",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "tests/native_preparation_test.go",
+        "tests/native-preparation"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Mutation/audio/answer/scoring acceptance"
+        ],
+        "note": "The application SHALL replay the original action result and failure from its immutable saved document, even after preparation head advancement or successful continuation. Changed requests SHALL conflict and missing action results SHALL report their actual error without head substitution or redispatch. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "owner_replaced": "Remote hosted model endpoint only; actual PostgreSQL/MinIO/HTTP and provider/preparation owners retained"
+      },
+      "designed_fixture_id": "iteration5-I5-12-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I5-12.P1.S2.POSITIVE",
+      "property_id": "I5-12.P1",
+      "polarity": "positive",
+      "scenario": "I5-12 packet 2",
+      "scenario_fingerprint": "6c29a4a633b7c084583c70029133319de21d71beb9d5d17cc68bd0ff57b4e3fe",
+      "setup": "Execute TestNativePreparationCompletedActionReplayPositive through services/api/internal/app/preparation.go {\"exact_native_test\": \"TestNativePreparationCompletedActionReplayPositive\", \"literal_executable_fixture\": \"func TestNativePreparationCompletedActionReplayPositive(t *testing.T) {\\n\\ts, r, c, n := prepareNativeFixture(t, \\\"\\\", 200)\\n\\tctx := context.Background()\\n\\tkey := uuid.NewString()\\n\\tsaved, err := s.PrepareCanonical(ctx, r, key, c)\\n\\tif err != nil {\\n\\t\\tt.Fatal(err)\\n\\t}\\n\\t// A newer selected head is a separate version; the original action owns its\\n\\t// already committed immutable response. This models later phase advancement.\\n\\tnewer := make(map[string]any)\\n\\tfor k, v := range saved {\\n\\t\\tnewer[k] = v\\n\\t}\\n\\tnewer[\\\"revision\\\"] = float64(2)\\n\\traw, _ := json.Marshal(newer)\\n\\texpected := int64(1)\\n\\tif _, err = s.Store.WriteDocuments(ctx, []DocumentWrite{{ID: uuid.NewString(), Kind: \\\"preparation-state\\\", Version: \\\"2.0.0\\\", Scope: \\\"local\\\", Payload: raw, Head: &HeadWrite{ID: saved[\\\"id\\\"].(string), Expected: &expected, State: \\\"complete\\\"}, References: []Reference{{Pointer: \\\"/settings_asset_id\\\", ID: saved[\\\"settings_asset_id\\\"].(string), Scope: saved[\\\"settings_asset_id\\\"].(string), Kind: \\\"asset-bytes\\\", SHA: saved[\\\"settings_sha256\\\"].(string), Relation: \\\"settings_asset_id\\\"}, {Pointer: \\\"/canonical_asset_id\\\", ID: saved[\\\"canonical_asset_id\\\"].(string), Scope: saved[\\\"canonical_asset_id\\\"].(string), Kind: \\\"asset-bytes\\\", SHA: saved[\\\"canonical_sha256\\\"].(string), Relation: \\\"canonical_asset_id\\\"}}}}); err != nil {\\n\\t\\tt.Fatal(err)\\n\\t}\\n\\treplay, err := s.PrepareCanonical(ctx, r, key, c)\\n\\tif err != nil || replay[\\\"revision\\\"] != saved[\\\"revision\\\"] || *n != 1 {\\n\\t\\tt.Fatal(\\\"completed action read a newer head\\\", err, replay, *n)\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestNativePreparationCompletedActionReplayPositive(t *testing.T) {\\n\\ts, r, c, n := prepareNativeFixture(t, \\\"\\\", 200)\\n\\tctx := context.Background()\\n\\tkey := uuid.NewString()\\n\\tsaved, err := s.PrepareCanonical(ctx, r, key, c)\\n\\tif err != nil {\\n\\t\\tt.Fatal(err)\\n\\t}\\n\\t// A newer selected head is a separate version; the original action owns its\\n\\t// already committed immutable response. This models later phase advancement.\\n\\tnewer := make(map[string]any)\\n\\tfor k, v := range saved {\\n\\t\\tnewer[k] = v\\n\\t}\\n\\tnewer[\\\"revision\\\"] = float64(2)\\n\\traw, _ := json.Marshal(newer)\\n\\texpected := int64(1)\\n\\tif _, err = s.Store.WriteDocuments(ctx, []DocumentWrite{{ID: uuid.NewString(), Kind: \\\"preparation-state\\\", Version: \\\"2.0.0\\\", Scope: \\\"local\\\", Payload: raw, Head: &HeadWrite{ID: saved[\\\"id\\\"].(string), Expected: &expected, State: \\\"complete\\\"}, References: []Reference{{Pointer: \\\"/settings_asset_id\\\", ID: saved[\\\"settings_asset_id\\\"].(string), Scope: saved[\\\"settings_asset_id\\\"].(string), Kind: \\\"asset-bytes\\\", SHA: saved[\\\"settings_sha256\\\"].(string), Relation: \\\"settings_asset_id\\\"}, {Pointer: \\\"/canonical_asset_id\\\", ID: saved[\\\"canonical_asset_id\\\"].(string), Scope: saved[\\\"canonical_asset_id\\\"].(string), Kind: \\\"asset-bytes\\\", SHA: saved[\\\"canonical_sha256\\\"].(string), Relation: \\\"canonical_asset_id\\\"}}}}); err != nil {\\n\\t\\tt.Fatal(err)\\n\\t}\\n\\treplay, err := s.PrepareCanonical(ctx, r, key, c)\\n\\tif err != nil || replay[\\\"revision\\\"] != saved[\\\"revision\\\"] || *n != 1 {\\n\\t\\tt.Fatal(\\\"completed action read a newer head\\\", err, replay, *n)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL replay the original action result and failure from its immutable saved document, even after preparation head advancement or successful continuation. Changed requests SHALL conflict and missing action results SHALL report their actual error without head substitution or redispatch. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestNativePreparationCompletedActionReplayPositive",
+      "command_id": "iteration5-native",
+      "state": "implemented",
+      "source_path": "tests/native_preparation_test.go",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "tests/native_preparation_test.go",
+        "tests/native-preparation"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Mutation/audio/answer/scoring acceptance"
+        ],
+        "note": "The application SHALL replay the original action result and failure from its immutable saved document, even after preparation head advancement or successful continuation. Changed requests SHALL conflict and missing action results SHALL report their actual error without head substitution or redispatch. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "owner_replaced": "Remote hosted model endpoint only; actual PostgreSQL/MinIO/HTTP and provider/preparation owners retained"
+      },
+      "designed_fixture_id": "iteration5-I5-12-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I5-12.P1.S1.NEGATIVE",
+      "property_id": "I5-12.P1",
+      "polarity": "negative",
+      "scenario": "I5-12 packet 1",
+      "scenario_fingerprint": "a55b59fe9c5ddb29d3246b1e13a98d961f5eb440789136d180820041d9b051aa",
+      "setup": "Execute TestNativePreparationFailedReplayConflictNegative through services/api/internal/app/preparation.go {\"exact_native_test\": \"TestNativePreparationFailedReplayConflictNegative\", \"literal_executable_fixture\": \"func TestNativePreparationFailedReplayConflictNegative(t *testing.T) {\\n\\ts, r, c, n := prepareNativeFixture(t, \\\"fail-once\\\", 200)\\n\\tkey := uuid.NewString()\\n\\tif _, err := s.PrepareCanonical(context.Background(), r, key, c); err == nil {\\n\\t\\tt.Fatal(\\\"missing first failure\\\")\\n\\t}\\n\\tr.Attempt = 2\\n\\tif _, err := s.PrepareCanonical(context.Background(), r, key, c); !errors.Is(err, ErrConflict) || *n != 1 {\\n\\t\\tt.Fatal(\\\"changed failed action accepted\\\", err, *n)\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestNativePreparationFailedReplayConflictNegative(t *testing.T) {\\n\\ts, r, c, n := prepareNativeFixture(t, \\\"fail-once\\\", 200)\\n\\tkey := uuid.NewString()\\n\\tif _, err := s.PrepareCanonical(context.Background(), r, key, c); err == nil {\\n\\t\\tt.Fatal(\\\"missing first failure\\\")\\n\\t}\\n\\tr.Attempt = 2\\n\\tif _, err := s.PrepareCanonical(context.Background(), r, key, c); !errors.Is(err, ErrConflict) || *n != 1 {\\n\\t\\tt.Fatal(\\\"changed failed action accepted\\\", err, *n)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL replay the original action result and failure from its immutable saved document, even after preparation head advancement or successful continuation. Changed requests SHALL conflict and missing action results SHALL report their actual error without head substitution or redispatch. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestNativePreparationFailedReplayConflictNegative",
+      "command_id": "iteration5-native",
+      "state": "implemented",
+      "source_path": "tests/native_preparation_test.go",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "tests/native_preparation_test.go",
+        "tests/native-preparation"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Mutation/audio/answer/scoring acceptance"
+        ],
+        "note": "The application SHALL replay the original action result and failure from its immutable saved document, even after preparation head advancement or successful continuation. Changed requests SHALL conflict and missing action results SHALL report their actual error without head substitution or redispatch. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "owner_replaced": "Remote hosted model endpoint only; actual PostgreSQL/MinIO/HTTP and provider/preparation owners retained"
+      },
+      "designed_fixture_id": "iteration5-I5-12-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I5-12.P1.S2.NEGATIVE",
+      "property_id": "I5-12.P1",
+      "polarity": "negative",
+      "scenario": "I5-12 packet 2",
+      "scenario_fingerprint": "6c29a4a633b7c084583c70029133319de21d71beb9d5d17cc68bd0ff57b4e3fe",
+      "setup": "Execute TestNativePreparationMissingActionResultNegative through services/api/internal/app/preparation.go {\"exact_native_test\": \"TestNativePreparationMissingActionResultNegative\", \"literal_executable_fixture\": \"func TestNativePreparationMissingActionResultNegative(t *testing.T) {\\n\\ts, r, c, n := prepareNativeFixture(t, \\\"\\\", 200)\\n\\tctx := context.Background()\\n\\tkey := uuid.NewString()\\n\\tif _, err := s.PrepareCanonical(ctx, r, key, c); err != nil {\\n\\t\\tt.Fatal(err)\\n\\t}\\n\\tif _, err := s.Store.DB.Exec(ctx, \\\"UPDATE operation SET result_document_id=NULL WHERE operation_name='canonical_prepare' AND idempotency_key=$1\\\", key); err != nil {\\n\\t\\tt.Fatal(err)\\n\\t}\\n\\tif _, err := s.PrepareCanonical(ctx, r, key, c); err == nil || *n != 1 {\\n\\t\\tt.Fatal(\\\"missing result replaced by latest head or redispatch\\\", err, *n)\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestNativePreparationMissingActionResultNegative(t *testing.T) {\\n\\ts, r, c, n := prepareNativeFixture(t, \\\"\\\", 200)\\n\\tctx := context.Background()\\n\\tkey := uuid.NewString()\\n\\tif _, err := s.PrepareCanonical(ctx, r, key, c); err != nil {\\n\\t\\tt.Fatal(err)\\n\\t}\\n\\tif _, err := s.Store.DB.Exec(ctx, \\\"UPDATE operation SET result_document_id=NULL WHERE operation_name='canonical_prepare' AND idempotency_key=$1\\\", key); err != nil {\\n\\t\\tt.Fatal(err)\\n\\t}\\n\\tif _, err := s.PrepareCanonical(ctx, r, key, c); err == nil || *n != 1 {\\n\\t\\tt.Fatal(\\\"missing result replaced by latest head or redispatch\\\", err, *n)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL replay the original action result and failure from its immutable saved document, even after preparation head advancement or successful continuation. Changed requests SHALL conflict and missing action results SHALL report their actual error without head substitution or redispatch. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestNativePreparationMissingActionResultNegative",
+      "command_id": "iteration5-native",
+      "state": "implemented",
+      "source_path": "tests/native_preparation_test.go",
+      "source_sha256": "08674b4f6e1f575dd8fced023a90ae54f7d7b9d6fce7f9d19cb0b274f5822b6c",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "tests/native_preparation_test.go",
+        "tests/native-preparation"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Mutation/audio/answer/scoring acceptance"
+        ],
+        "note": "The application SHALL replay the original action result and failure from its immutable saved document, even after preparation head advancement or successful continuation. Changed requests SHALL conflict and missing action results SHALL report their actual error without head substitution or redispatch. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "owner_replaced": "Remote hosted model endpoint only; actual PostgreSQL/MinIO/HTTP and provider/preparation owners retained"
+      },
+      "designed_fixture_id": "iteration5-I5-12-packet2",
       "fixture_observation_state": "not_run"
     }
   ],

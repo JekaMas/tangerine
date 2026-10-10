@@ -153,3 +153,17 @@ The application SHALL admit new input once, then trust accepted documents/blobs/
 
 - **WHEN** the second distinct literal positive or negative packet is executed
 - **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+### Requirement: I5-12 Immutable operation result replay
+
+The application SHALL replay the original action result and failure from its immutable saved document, even after preparation head advancement or successful continuation. Changed requests SHALL conflict and missing action results SHALL report their actual error without head substitution or redispatch. Exact constructed fixtures and independent expected states are retained in audit/iteration-5-preparation-20261010/CASES.json. These tests SHALL NOT establish hosted account admission, actual LLM linguistic quality or future mutation/audio/scoring completion.
+
+#### Scenario: I5-12 packet 1
+
+- **WHEN** the first literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+#### Scenario: I5-12 packet 2
+
+- **WHEN** the second distinct literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
