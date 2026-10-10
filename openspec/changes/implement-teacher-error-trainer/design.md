@@ -90,22 +90,24 @@ are external. Source/registry nodes remain exact frozen references when selected
 The local `storage` CLI calls the same production functions for native tests and
 maintenance. It is not a public HTTP API or a test double. No arbitrary SQL or
 secret values are accepted by this CLI. Asset operations reserve immutable typed
-metadata and the operation together, write a unique opaque private key, verify
-all remote bytes, and link with frozen owner revision in one transaction. Native
+metadata and the operation together, admit newly submitted bytes once, write a
+unique opaque private key, and link the accepted asset with frozen owner revision
+in one transaction. Accepted link/read/reuse paths trust the stored record. Native
 multipart IDs are saved before parts; recovery aborts only that incomplete upload,
-or reuses and verifies a completed object. The preview of old unreferenced orphans
+or reuses an already accepted completed object. A staged object with no admission
+record receives its first admission during recovery. The preview of old unreferenced orphans
 is explicit and never deletes. Full user backup/restore/deletion belongs to the
 already required later lifecycle iteration.
 
 Migration003 is additive;001/002 remain byte-identical. An existing foundation
 upgrade uses native pg_dump plus all original private object bytes, per-entry
-hashes/table inventory, tar verification and remote full readback before schema
-mutation. Application writers honor the migration advisory lock. The API image
+hashes/table inventory and the actual archive write before schema mutation.
+It does not repeat archive verification or remote full readback. Application writers honor the migration advisory lock. The API image
 uses the pinned PostgreSQL runtime image for native backup tools; no host runtime
-is added. Fresh installs have no upgrade backup. Unknown/changed/non-prefix
-migration history is rejected before any write. Readiness checks the migration
-vector, required columns, singleton association, immutable triggers and exact
-schema registry, repairing the verified false-ready issue from iteration1.
+is added. Fresh installs have no upgrade backup. The saved applied-version list is trusted; initialization applies absent migration
+versions. Readiness observes dependency availability. Earlier migration/checksum,
+column/trigger/catalogue audits and the associated false-ready repair proposals
+are historical and superseded by the approved single-validation policy.
 
 ### Iteration5 canonical preparation owner
 
@@ -116,3 +118,5 @@ Before dispatch, retain exact request/blueprint, configuration, both generation 
 The finite Lab inventory consumes the source registry's implementation state and exact canonical preparation dependencies; it must reject missing owners or changed source definitions. Constructed HTTP responses establish native protocol/storage behavior only. Full iteration5 acceptance remains dependent on a real Tangerine-owned included-only grant/model and actual generation-quality/context/MLflow observations; those cannot be replaced with fixture responses or a declaration of approval.
 
 The user replaces repeated consistency checks with specification/v2/docs/single-validation-policy.md. Admission checks new input once; stored reads/Resume trust accepted values. Schema/adapter archiving and repeated payload/blob/config/bundle/canonical validation are removed. Readiness observes dependency availability; initialization owns migration admission. New parent paths are checked only for newly submitted documents, not through a complete historical scan.
+
+Iteration5 action replay selects the immutable result document saved for that action. Preparation readback selects the current head. A later continuation cannot erase a failed action’s response or substitute a newer head for a completed action. Missing action results report their actual dependency error without another dispatch. Blueprint expansion preserves the requested roles without a fabricated speaker/context estimate; the existing assembled-context owner handles actual provider capacity.
