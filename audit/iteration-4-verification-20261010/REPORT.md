@@ -31,3 +31,5 @@ Native MLflow readback retained2 actual spans with SQLite integrity OK: complete
 The final account readback reports ordinary included use allowed and an unchanged credit balance61251.2006400000, with weekly included usage34percent. This does not provide per-chat billing attribution or establish that purchased-credit use is disabled. No reset credit was used and no paid provider call or purchase was made.
 
 Preview restored with the repaired API and Lab: Library/Settings/health and Lab health return200; Library bytes, runtime configuration and unrelated canonical GAPS.md match their initial hashes. Existing volumes and saved content are retained.
+
+Canonical main fast-forwarded to cfd52fa after the native repair/evidence commits. The user GAPS.md edit remains the only canonical dirty path and retains its protected initial SHA. No remote publication occurred.
