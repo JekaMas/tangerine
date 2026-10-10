@@ -231,6 +231,37 @@ func TestNativePreparationCheckpointPositive(t *testing.T) {
 	if e = s.Store.DB.QueryRow(context.Background(), "SELECT (event_payload->>'canonical_word_count')::int FROM audit_event WHERE action='preparation.canonical.completed' AND event_payload->>'preparation_id'=$1", p["id"]).Scan(&countWords); e != nil || countWords != 4 {
 		t.Fatal("missing exact generated count", e, countWords)
 	}
+
+	var definitionID string
+	if e = s.Store.DB.QueryRow(context.Background(), "SELECT event_payload->>'asset_id' FROM audit_event WHERE action='preparation.definitions.frozen' AND event_payload->>'settings_asset_id'=$1", p["settings_asset_id"]).Scan(&definitionID); e != nil {
+		t.Fatal(e)
+	}
+	definitionBytes, e := s.Store.ReadAsset(context.Background(), definitionID)
+	if e != nil {
+		t.Fatal(e)
+	}
+	var archive struct {
+		Schemas  map[string]json.RawMessage `json:"schemas"`
+		Bytes    map[string]string          `json:"schema_bytes"`
+		Adapters map[string]string          `json:"adapter_sources"`
+	}
+	if e = json.Unmarshal(definitionBytes, &archive); e != nil {
+		t.Fatal(e)
+	}
+	registry, e := contracts.Registry()
+	if e != nil || len(archive.Bytes) != len(registry) || len(archive.Schemas) != len(registry) {
+		t.Fatal("incomplete frozen schemas", e)
+	}
+	for name, contract := range registry {
+		if archive.Bytes[name+".schema.json"] != string(contract.Bytes) || contracts.Digest([]byte(archive.Bytes[name+".schema.json"])) != contract.SHA {
+			t.Fatal("schema raw bytes or digest changed", name)
+		}
+	}
+	for _, name := range []string{"transport.go", "execute.go", "projection.go"} {
+		if archive.Adapters[name] == "" {
+			t.Fatal("adapter source absent", name)
+		}
+	}
 	saveNativePreparationEvidence(t, s, p)
 }
 func TestNativePreparationRestartPositive(t *testing.T) {

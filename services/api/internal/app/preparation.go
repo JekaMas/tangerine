@@ -327,6 +327,7 @@ func (s *Server) freezePreparation(ctx context.Context, b map[string]any, c map[
 		return nil, e
 	}
 	schemas := map[string]any{}
+	schemaBytes := map[string]string{}
 	for _, binding := range bundle.Bindings {
 		if binding.Stage != "case_generation" {
 			continue
@@ -340,8 +341,9 @@ func (s *Server) freezePreparation(ctx context.Context, b map[string]any, c map[
 	// resolvable after upgrades, not only the two root schemas' hashes.
 	for name, contract := range registry {
 		schemas[name+".schema.json"] = json.RawMessage(contract.Bytes)
+		schemaBytes[name+".schema.json"] = string(contract.Bytes)
 	}
-	definitionBytes, e := lab.Canonical(map[string]any{"schemas": schemas, "adapter_sources": provider.AdapterDefinitions(), "bundle": bundle, "generation_bindings": bindings})
+	definitionBytes, e := lab.Canonical(map[string]any{"schemas": schemas, "schema_bytes": schemaBytes, "adapter_sources": provider.AdapterDefinitions(), "bundle": bundle, "generation_bindings": bindings})
 	if e != nil {
 		return nil, e
 	}
