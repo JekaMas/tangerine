@@ -15,3 +15,5 @@ Keep operation idempotency, revision compare-and-swap, deadlines and active-owne
 The first acceptance of staged bytes after interrupted upload can check the staged object because it has no committed admission record yet. Once marked accepted, upload retry, Verify, link, playback and Resume use that accepted record without another byte audit or synthetic provider call. Database foreign keys and ordinary atomic writes associate records; routine writes do not rescan the complete historical graph. A new parent-reference submission may validate its newly introduced path once.
 
 Tests use independently expected input/output/state/arithmetic to establish these behaviors, including that accepted reads and reuse work without the removed checks. Historical observations of the superseded policy remain historical. Workflow DAG/source receipts describe development evidence; they do not install runtime validation ceremonies.
+
+Existing compatibility field/state names such as bytes_verified and verified_at denote accepted input or an acknowledged completed write. They do not introduce another validation phase.

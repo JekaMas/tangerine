@@ -1,5 +1,7 @@
 # Iteration four provider connections and transport
 
+Current behavior and literal expected outcomes follow single-validation-policy.md, verification.json and specification/v2/domain/verification-fixtures.v1.json. Audit/CASES references below identify historical packet origins; they do not reinstate superseded consistency checks or expectations.
+
 ## ADDED Requirements
 
 ### Requirement: I4-01 Protected installation identity and credential persistence

@@ -4,6 +4,8 @@
 
 Executable engineering decompositions of existing local-delivery requirements. Broader original requirements, including backup/restore, stored attempts, synthesis and LLM actions, remain unchanged and require their later iterations. These points do not replace or reduce full-product acceptance.
 
+Current behavior and literal expected outcomes follow single-validation-policy.md, verification.json and specification/v2/domain/verification-fixtures.v1.json. Audit/CASES references below identify historical packet origins; they do not reinstate superseded consistency checks or expectations.
+
 ## ADDED Requirements
 
 ### Requirement: I1-01 Complete source starts through Docker without Git or host language runtimes

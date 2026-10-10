@@ -4,6 +4,8 @@
 
 Native storage and asset-lifecycle decomposition of the approved persistence/runtime contracts. All later product owners remain required; these cases do not establish generated keys, scoring, Lab, imports or full user backup/restore.
 
+Current behavior and literal expected outcomes follow single-validation-policy.md, verification.json and specification/v2/domain/verification-fixtures.v1.json. Audit/CASES references below identify historical packet origins; they do not reinstate superseded consistency checks or expectations.
+
 ## ADDED Requirements
 
 ### Requirement: I2-01 Typed schema registration and complete document readback
