@@ -450,13 +450,13 @@ Host-probe packaging, linked diagnostic return state, invalid capture coercion a
 
 The implementation acceptance remains historical evidence for its registered cases; verification found additional counterexamples. audit/iteration-3-verification-20261010/PLAN.md records scope, observed failures and exact invalidation.
 
-- [ ] Bind explicit diagnostic sync runs to their original operation; retain repeat-sync identity and canonical UUID linkage.
-- [ ] Reconcile every selected case/property with actual retained case results, keeping missing/unperformed cases incomplete.
-- [ ] Reconcile native/run inventory revisions and dependency snapshots against actual mounted source bytes.
-- [ ] Remove known credentials from both field-name diagnostics and sanitized payload copies while preserving native originals.
-- [ ] Require the declared LLM context and exact stage/phase/binding correspondence; retain non-LLM distinction.
-- [ ] Count only uniquely matched independent dispatches; duplicates remain incomplete with truthful arithmetic.
-- [ ] Reject duplicate command fields through the shared canonical decoder before deterministic or storage dispatch.
-- [ ] Complete direct regressions, stable language/structural/preservation checks, full clean iteration and affected foundation acceptance; commit and preserve canonical user data.
+- [x] Bind explicit diagnostic sync runs to their original operation; retain repeat-sync identity and canonical UUID linkage.
+- [x] Reconcile every selected case/property with actual retained case results, keeping missing/unperformed cases incomplete.
+- [x] Reconcile native/run inventory revisions and dependency snapshots against actual mounted source bytes.
+- [x] Remove known credentials from both field-name diagnostics and sanitized payload copies while preserving native originals.
+- [x] Require the declared LLM context and exact stage/phase/binding correspondence; retain non-LLM distinction.
+- [x] Count only uniquely matched independent dispatches; duplicates remain incomplete with truthful arithmetic.
+- [x] Reject duplicate command fields through the shared canonical decoder before deterministic or storage dispatch.
+- [x] Complete direct regressions, stable language/structural/preservation checks, full clean iteration and affected foundation acceptance; commit and preserve canonical user data.
 
-Resume: four native failures confirmed on e363e96; repair in progress. No product decision, account connection, inference, speech generation or purchase is needed.
+Verification resume: all seven findings are repaired and closed on committed-clean candidate 944e0a39a39eb4ae37d19c875a4314bb4ecd5b98. Exact reconciliation passed all88 I3 cases (44 positive/44 negative across22 properties) plus32 affected foundation cases. Actual observations:53 Go race tests,36 native MLflow/PostgreSQL/MinIO tests and32 foundation tests. The original full clean selection hit a test-owned orphan on port5001 after passing the Go command; that failed receipt remains unchanged. Only its unobserved native command was rerun on the identical clean candidate, then every required case fingerprint and native log was reconciled. No skipped/missing/failed case counts as acceptance. Strict OpenSpec, DAG/discovery,3050 structural/preservation assertions and stable pinned Go vet/gofmt remain valid. audit/iteration-3-verification-20261010/REPORT.md supersedes the earlier verification conclusion; evidence/iteration3/ACCEPTANCE.json binds exact retained receipts. Provider execution remains iteration4 and full AI experiments iteration14; all21 inference surfaces remain planned. No product decision, account connection, inference, speech generation or purchase occurred.

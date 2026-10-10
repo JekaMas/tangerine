@@ -12,18 +12,50 @@ def snapshot(root,patterns):return original(root,list(patterns))
 rt.dependency_snapshot=lambda root,patterns:snapshot(root,tuple(patterns))
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 def verify_receipt(graph,path,prefix,count):
- receipt=json.loads(path.read_text());selected={k:v for k,v in graph.cases.items() if v['property_id'].startswith(prefix)}
- assert len(selected)==count and set(receipt['cases'])==set(selected)
- assert receipt['status']=='passed' and receipt['git']['status']=='known' and not receipt['git']['dirty'] and not receipt['substitution_gaps']
- head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip();subprocess.run(['git','merge-base','--is-ancestor',receipt['git']['head'],head],cwd=R,check=True)
- commands={c['id']:c for c in receipt['commands']};counts={}
- for cid,c in commands.items():
-  assert c['exit_code']==0 and c['status']=='exited' and c['argv']==graph.commands[cid]['argv']
-  stdout=(E/Path(c['stdout_artifact']).name).read_text();stderr=(E/Path(c['stderr_artifact']).name).read_text();native=rt.parse_go_events(stdout) if graph.commands[cid]['runner']=='go-test-json' else rt.parse_unittest_events(stdout+'\n'+stderr)
-  assert native==c['observed_tests'] and native and set(native.values())=={'pass'};counts[cid]=len(native)
- for cid,c in selected.items():
-  observed=receipt['cases'][cid];assert observed['status']=='passed' and observed['test_id']==c['test_id'];assert commands[c['command_id']]['observed_tests'][c['test_id']]=='pass';assert sha(R/c['source_path'])==c['source_sha256'];assert rt.case_evidence_fingerprint(graph,cid)==observed['evidence_fingerprint'],cid
- return {'candidate':receipt['git']['head'],'receipt':str(path.relative_to(R)),'receipt_sha256':sha(path),'required_cases':count,'polarities':dict(Counter(c['polarity'] for c in selected.values())),'native_counts':counts}
+ selected={k:v for k,v in graph.cases.items() if v['property_id'].startswith(prefix)}
+ assert len(selected)==count
+ sources=[path]
+ if prefix=='I3-' and (E/'clean-native-retry.json').exists():sources.append(E/'clean-native-retry.json')
+ reports=[json.loads(p.read_text()) for p in sources]
+ assert set(reports[0]['cases'])==set(selected)
+ head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip()
+ candidate=reports[0]['git']['head'];results={};counts={};accepted=[]
+ for source,receipt in zip(sources,reports):
+  assert receipt['git']=={'status':'known','dirty':False,'head':candidate} and not receipt['substitution_gaps']
+  subprocess.run(['git','merge-base','--is-ancestor',candidate,head],cwd=R,check=True)
+  commands={c['id']:c for c in receipt['commands']}
+  for cid,c in commands.items():
+   assert c['argv']==graph.commands[cid]['argv']
+   stdout=(E/Path(c['stdout_artifact']).name).read_text();stderr=(E/Path(c['stderr_artifact']).name).read_text()
+   native=rt.parse_go_events(stdout) if graph.commands[cid]['runner']=='go-test-json' else rt.parse_unittest_events(stdout+'\n'+stderr)
+   assert native==c['observed_tests']
+   if c['exit_code']==0 and c['status']=='exited':
+    assert native and set(native.values())=={'pass'} and cid not in counts
+    counts[cid]=len(native)
+  observed_count=0
+  for cid,observation in receipt['cases'].items():
+   assert cid in selected
+   if observation['status']!='passed':continue
+   assert cid not in results
+   case=selected[cid];command=commands[case['command_id']]
+   assert command['exit_code']==0 and command['status']=='exited' and command['observed_tests'][case['test_id']]=='pass'
+   for key in ('test_id','property_id','polarity','scenario','scenario_fingerprint','setup','observable','red_expectation','green_expectation','invalidation_dependencies','source_path','source_sha256'):
+    assert observation[key]==case[key],(cid,key)
+   assert sha(R/case['source_path'])==case['source_sha256']
+   assert rt.case_evidence_fingerprint(graph,cid)==observation['evidence_fingerprint'],cid
+   results[cid]=str(source.relative_to(R));observed_count+=1
+  accepted.append({'receipt':str(source.relative_to(R)),'sha256':sha(source),'original_status':receipt['status'],'accepted_cases':observed_count})
+ assert set(results)==set(selected)
+ if len(sources)==1:assert reports[0]['status']=='passed'
+ else:
+  assert reports[0]['status']=='failed' and reports[1]['status']=='passed'
+  assert set(reports[1]['cases'])=={cid for cid,c in selected.items() if c['command_id']=='iteration3-native'}
+  assert accepted[0]['accepted_cases']==52 and accepted[1]['accepted_cases']==36
+ out={'candidate':candidate,'receipt':str(path.relative_to(R)),'receipt_sha256':sha(path),'required_cases':count,'polarities':dict(Counter(c['polarity'] for c in selected.values())),'native_counts':counts}
+ if len(sources)>1:
+  out['reconciled_status']='passed';out['original_receipts']=accepted
+  out['reuse_reason']='Original clean Go observations are unchanged. A test-owned orphan held port5001; only the unobserved native command was retried on the identical clean candidate. Failed receipt is retained unchanged.'
+ return out
 def retain_native():
  source=R/'data/iteration3/native';dest=E/'actual';dest.mkdir(exist_ok=True)
  for p in source.iterdir():
