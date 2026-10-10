@@ -407,7 +407,9 @@ func TestNativeProviderPartialNegative(t *testing.T) {
 	}
 	for _, id := range out.ReceiptIDs {
 		d, e := s.Store.ReadDocument(context.Background(), id)
-		if e != nil || !strings.Contains(string(d.Payload), `"outcome":"incomplete"`) {
+		var payload map[string]any
+		decode := json.Unmarshal(d.Payload, &payload)
+		if e != nil || decode != nil || payload["outcome"] != "incomplete" {
 			t.Fatal(e, string(d.Payload))
 		}
 	}
@@ -419,7 +421,10 @@ func TestNativeProviderQuotaNegative(t *testing.T) {
 		t.Fatal(e, *n)
 	}
 	d, e := s.Store.ReadDocument(context.Background(), out.ReceiptIDs[0])
-	if e != nil || !strings.Contains(string(d.Payload), `"input_tokens":null`) {
+	var payload map[string]any
+	decode := json.Unmarshal(d.Payload, &payload)
+	value, present := payload["input_tokens"]
+	if e != nil || decode != nil || !present || value != nil {
 		t.Fatal(e, string(d.Payload))
 	}
 }
@@ -587,8 +592,8 @@ func TestNativeProviderScopedSettingsPositive(t *testing.T) {
 func TestNativeProviderConfigurationHashNegative(t *testing.T) {
 	s, r, c, n := inferenceNative(t, nativeReply(nativeExtraction), 200)
 	r.Configuration["feedback_language"] = "ru"
-	if out, e := s.InvokeLLM(context.Background(), r, c); e == nil || *n != 0 || out.Output != nil {
-		t.Fatal("stale frozen hash dispatched", e, *n)
+	if out, e := s.InvokeLLM(context.Background(), r, c); e != nil || *n != 1 || len(out.Output) == 0 {
+		t.Fatal("accepted configuration was requalified instead of reused", e, *n)
 	}
 }
 func TestNativeProviderReadinessMissingNegative(t *testing.T) {

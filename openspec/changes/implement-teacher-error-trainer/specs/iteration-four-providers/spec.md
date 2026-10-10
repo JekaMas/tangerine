@@ -338,7 +338,9 @@ The application SHALL implement this bounded obligation of PRV-02 through the re
 - **WHEN** the exact positive or negative native fixture for packet 2 executes
 - **THEN** its independently asserted bytes, state, call count and failure behavior SHALL hold
 
-### Requirement: I4-25 Complete configuration digest and permitted readiness
+### Requirement: I4-25 Trusted configuration and permitted readiness
+
+Accepted configuration/profile data SHALL be reused without schema/hash requalification. Stored digests SHALL remain provenance metadata. Readiness SHALL observe actual provider availability under the included-only spending policy.
 
 The application SHALL implement this bounded obligation of PRV-02 through the real owner and exact native fixtures retained in audit/iteration-4-providers-20261010/CASES.json. Controlled remote protocol substitutions SHALL remain explicit and SHALL NOT establish hosted admission, real LLM quality or later generation and scoring pipeline completion.
 

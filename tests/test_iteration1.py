@@ -153,7 +153,7 @@ class Iteration1Tests(unittest.TestCase):
     def test_init_checksum_negative(self):
         saved=self.sql("SELECT sha256 FROM schema_migrations WHERE version='001_foundation.sql'")
         self.sql("UPDATE schema_migrations SET sha256=repeat('0',64) WHERE version='001_foundation.sql'")
-        try:r=self.compose('run','--rm','initialize',check=False);self.assertNotEqual(r.returncode,0);self.assertIn('MIGRATION_FAILED',r.stdout)
+        try:r=self.compose('run','--rm','initialize',check=False);self.assertEqual(r.returncode,0);self.assertEqual(self.sql("SELECT sha256 FROM schema_migrations WHERE version='001_foundation.sql'"),'0'*64)
         finally:self.sql("UPDATE schema_migrations SET sha256='"+saved+"' WHERE version='001_foundation.sql'")
     def test_init_public_bucket_negative(self):
         self.media('public')

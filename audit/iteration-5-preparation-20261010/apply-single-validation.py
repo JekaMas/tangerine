@@ -8,7 +8,7 @@ sys.path.insert(0,str(R/'.agents/workflow/scripts'));from requirement_tests impo
 load=lambda p:json.loads(p.read_text());save=lambda p,v:p.write_text(json.dumps(v,indent=2)+'\n')
 g=load(C/'verification.json');f=load(V/'verification-fixtures.v1.json');inventory=load(C/'property-inventory.json');d=load(C/'discovery.json');sets=load(V/'property-test-sets.v1.json')
 parsed=parse_delta_specs(C)
-changed=['I2-08','I2-12','I2-18']
+changed=['I2-08','I2-12','I2-18','I4-25']
 for rid in changed:
  row=next(x for x in g['requirements'] if x['id']==rid)
  (cap,title),spec=next((key,val) for key,val in parsed.items() if key[0]==row['capability'] and key[1].startswith(rid+' '))
@@ -25,7 +25,7 @@ for rid in changed:
  for x in sets['properties']:
   if x['property_id']==prop['id']:x['proof_boundary']=prop['oracle']
 names={'TestNativeGuardEnabledPositive':'TestNativeDatabaseReachablePositive','TestNativeGuardRestoredPositive':'TestNativeDatabaseReopenPositive','TestNativeGuardDisabledNegative':'TestNativeDatabaseClosedNegative','TestNativeGuardMisboundNegative':'TestNativeDatabaseCancelledNegative'}
-sources=['tests/test_iteration1.py','tests/test_iteration2.py','tests/native_storage_regression_test.go']
+sources=['tests/test_iteration1.py','tests/test_iteration2.py','tests/native_storage_regression_test.go','tests/native_provider_test.go']
 for source in sources:
  text=(R/source).read_text();sha=hashlib.sha256(text.encode()).hexdigest()
  if source.endswith('.py'):bodies={x.name:ast.get_source_segment(text,x) for x in ast.walk(ast.parse(text)) if isinstance(x,ast.FunctionDef)}
