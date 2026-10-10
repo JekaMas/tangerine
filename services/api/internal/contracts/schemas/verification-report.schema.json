@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/verification-report.schema.json",
+  "title": "verification-report",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0",
+      "description": "This field identifies the data contract version, not a claim of implementation readiness."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This value uniquely identifies the record within its declared entity and version scope."
+    },
+    "case_version_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This identifier refers to one immutable case version."
+    },
+    "delivery_audio_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "This hash identifies the final audio file that reviewers assessed."
+    },
+    "policy_version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This field identifies the fixed policy that governs the parent operation."
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This value uniquely identifies the record within its declared entity and version scope."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "structural",
+              "audio_qc",
+              "asr_alignment",
+              "segmental",
+              "prosody",
+              "fluency",
+              "linguistic",
+              "human_review",
+              "rights"
+            ],
+            "description": "This field selects the typed evidence or source-reference class."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail",
+              "needs_review",
+              "not_applicable"
+            ],
+            "description": "This field states the parent operation result from its declared enumeration."
+          },
+          "observed_value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This field contains the measured feature value in its declared unit."
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This field identifies the measurement unit declared by the parent object."
+          },
+          "threshold_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This identifier refers to an approved threshold, not a model-selected limit."
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "description": "These IDs identify actual supporting records within the permitted subject and version scope."
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "status",
+          "observed_value",
+          "unit",
+          "threshold_id",
+          "evidence_ids",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "description": "These records contain the applicable publication checks and their evidence."
+    },
+    "reviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This value uniquely identifies the record within its declared entity and version scope."
+          },
+          "reviewer_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This identifier refers to the native imported reviewer; null for LLM review."
+          },
+          "qualification_evidence_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This identifier links the reviewer to actual qualification evidence."
+          },
+          "phase": {
+            "type": "string",
+            "enum": [
+              "blind_listen",
+              "key_review",
+              "adjudication"
+            ],
+            "description": "This field identifies the reviewer phase relative to key disclosure."
+          },
+          "audio_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "description": "This hash identifies the exact audio bytes for the observation."
+          },
+          "approved_unit_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "description": "These unit IDs identify the targets that the reviewer approved."
+          },
+          "rejected_unit_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "description": "These IDs identify units that the reviewer rejected."
+          },
+          "observations": {
+            "type": "string",
+            "minLength": 1,
+            "description": "These entries retain the actual reviewer observations for the case."
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "approve",
+              "reject",
+              "needs_review"
+            ],
+            "description": "This field states the supported mapping outcome for one claim."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "This field records the actual creation time with its timezone."
+          }
+        },
+        "required": [
+          "id",
+          "reviewer_id",
+          "qualification_evidence_id",
+          "phase",
+          "audio_sha256",
+          "approved_unit_ids",
+          "rejected_unit_ids",
+          "observations",
+          "decision",
+          "created_at"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "description": "These records preserve machine or native imported decisions and their evidence."
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "verified",
+        "rejected",
+        "needs_review"
+      ],
+      "description": "This field records the overall publication-check result."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "case_version_id",
+    "delivery_audio_sha256",
+    "policy_version",
+    "gates",
+    "reviews",
+    "outcome"
+  ],
+  "additionalProperties": false
+}

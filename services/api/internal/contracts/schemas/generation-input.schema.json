@@ -1,0 +1,262 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/generation-input.schema.json",
+  "title": "generation-input",
+  "type": "object",
+  "description": "The generation input. Source assets are expanded only through the exact permitted DTO.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "blueprint": {
+      "$ref": "blueprint.schema.json"
+    },
+    "taxonomy_records_asset_id": {
+      "type": "string",
+      "description": "The actual selected taxonomy definitions.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "taxonomy_records_sha256": {
+      "type": "string",
+      "description": "Their digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "allowed_source_record_ids": {
+      "type": "array",
+      "description": "Only acquired, permission-checked records selected for this request.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "request_language": {
+      "type": "string",
+      "description": "The response language.",
+      "enum": [
+        "en",
+        "ru"
+      ]
+    },
+    "source_excerpts": {
+      "type": "array",
+      "description": "Selected content from complete acquired releases. No whole-source claim for excerpts.",
+      "items": {
+        "type": "object",
+        "description": "An explicitly permitted excerpt.",
+        "properties": {
+          "record_id": {
+            "type": "string",
+            "description": "The real imported record.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "raw_sha256": {
+            "type": "string",
+            "description": "The unchanged source record digest.",
+            "maxLength": 64,
+            "minLength": 64,
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "permission_id": {
+            "type": "string",
+            "description": "The transfer grant.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "text": {
+            "type": "string",
+            "description": "The exact authorized excerpt, not a fabricated original.",
+            "maxLength": 20000,
+            "minLength": 0
+          },
+          "source_span": {
+            "type": "object",
+            "description": "A half-open text interval. End must be greater than start except an insertion location.",
+            "properties": {
+              "start": {
+                "type": "integer",
+                "description": "Inclusive Unicode codepoint offset.",
+                "minimum": 0,
+                "maximum": 2000000
+              },
+              "end": {
+                "type": "integer",
+                "description": "Exclusive Unicode codepoint offset.",
+                "minimum": 0,
+                "maximum": 2000000
+              }
+            },
+            "required": [
+              "start",
+              "end"
+            ],
+            "additionalProperties": false
+          },
+          "purpose": {
+            "type": "string",
+            "description": "The allowed use.",
+            "enum": [
+              "generation_context",
+              "error_pattern_reference"
+            ]
+          }
+        },
+        "required": [
+          "record_id",
+          "raw_sha256",
+          "permission_id",
+          "text",
+          "source_span",
+          "purpose"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 200
+    },
+    "taxonomy_context": {
+      "$ref": "taxonomy-context.schema.json"
+    },
+    "phase": {
+      "type": "string",
+      "enum": [
+        "canonical_text",
+        "mutation"
+      ],
+      "description": "Canonical text is saved before mutation; both phases use the existing configurable case_generation role."
+    },
+    "canonical_script": {
+      "anyOf": [
+        {
+          "$ref": "case-candidate.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null in canonical_text phase. Mutation phase receives the saved clean candidate with unchanged canonical/surface text and no planned units."
+    },
+    "canonical_script_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Exact saved canonical asset hash, null before it exists. Mutation phase cannot rewrite that baseline."
+    },
+    "mutation_recipes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Complete actual recipe record, retained verbatim from the registry."
+      },
+      "description": "Selected owned recipe records; empty before mutation."
+    },
+    "recipe_registry_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Original registry bytes."
+    },
+    "production_recipes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Actual selected rows of acoustic-production.v1.json, wrapped as versioned trusted recipe context."
+      },
+      "description": "Ordered complete values."
+    },
+    "production_registry_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+    }
+  },
+  "required": [
+    "schema_version",
+    "blueprint",
+    "taxonomy_records_asset_id",
+    "taxonomy_records_sha256",
+    "allowed_source_record_ids",
+    "request_language",
+    "source_excerpts",
+    "taxonomy_context",
+    "phase",
+    "canonical_script",
+    "canonical_script_sha256",
+    "mutation_recipes",
+    "recipe_registry_sha256"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "phase": {
+            "const": "canonical_text"
+          }
+        },
+        "required": [
+          "phase"
+        ]
+      },
+      "then": {
+        "properties": {
+          "canonical_script": {
+            "type": "null"
+          },
+          "canonical_script_sha256": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "phase": {
+            "const": "mutation"
+          }
+        },
+        "required": [
+          "phase"
+        ]
+      },
+      "then": {
+        "properties": {
+          "canonical_script": {
+            "$ref": "case-candidate.schema.json"
+          },
+          "canonical_script_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    }
+  ]
+}

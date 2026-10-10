@@ -1,0 +1,298 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/blueprint.schema.json",
+  "title": "blueprint",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The explicit changed local contract version."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This value uniquely identifies the record within its declared entity and version scope."
+    },
+    "format": {
+      "type": "string",
+      "enum": [
+        "monologue",
+        "dialogue"
+      ],
+      "description": "This field names the exercise or file format specified by its parent contract."
+    },
+    "public_context": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This field contains task context that the teacher can read before submission."
+    },
+    "variety_policy": {
+      "type": "object",
+      "properties": {
+        "target_locale": {
+          "type": "string",
+          "enum": [
+            "en-US",
+            "en-GB"
+          ],
+          "description": "This field identifies the target English locale for the published variety policy."
+        },
+        "accepted_varieties": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "description": "These English varieties are permitted by the fixed case context."
+        },
+        "register": {
+          "type": "string",
+          "minLength": 1,
+          "description": "This field states the social or institutional register required by the task."
+        },
+        "assessment_basis": {
+          "type": "string",
+          "enum": [
+            "intelligibility",
+            "explicit_target_form",
+            "contextual_appropriacy"
+          ],
+          "description": "This field states the declared basis for judging the language target."
+        },
+        "public_constraints": {
+          "type": "string",
+          "minLength": 1,
+          "description": "These conditions give the teacher the context necessary to judge the case fairly."
+        }
+      },
+      "required": [
+        "target_locale",
+        "accepted_varieties",
+        "register",
+        "assessment_basis",
+        "public_constraints"
+      ],
+      "additionalProperties": false,
+      "description": "This object fixes locale, permitted varieties, register, and judgment basis."
+    },
+    "duration_ms_min": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Optional explicit duration bound in milliseconds. Null means a word-length request has no hard duration bound."
+    },
+    "duration_ms_max": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Optional explicit duration bound in milliseconds. Null means a word-length request has no hard duration bound."
+    },
+    "speakers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This value uniquely identifies the record within its declared entity and version scope."
+          },
+          "voice_profile_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This identifier selects the registered voice profile for the speaker."
+          },
+          "learner_cefr": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "A1",
+                  "A2",
+                  "B1",
+                  "B2",
+                  "C1",
+                  "C2"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Optional generated-text level. Null means unconstrained, not an inferred participant level."
+          },
+          "l1": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This field records the declared first language. It does not imply a particular error."
+          },
+          "requested_accent": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This field states an accent request. It does not prove the resulting accent."
+          },
+          "pace_wpm": {
+            "type": "integer",
+            "minimum": 60,
+            "maximum": 250,
+            "description": "This field gives the speaker pace target in words per minute."
+          },
+          "pace_tolerance_fraction": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 0.3,
+            "description": "This field gives the allowed relative deviation from the requested pace."
+          }
+        },
+        "required": [
+          "id",
+          "voice_profile_id",
+          "learner_cefr",
+          "l1",
+          "requested_accent",
+          "pace_wpm",
+          "pace_tolerance_fraction"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "description": "These profiles specify the distinct speakers in the exercise."
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "taxonomy_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This field references a registered category at the declared taxonomy version."
+          },
+          "min_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "This field gives the minimum required number of target units."
+          },
+          "max_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "This field gives the maximum permitted number of target units."
+          },
+          "expected_judgment": {
+            "type": "string",
+            "enum": [
+              "true_error",
+              "acceptable"
+            ],
+            "description": "This field states whether the reviewed unit is a true error, permitted control, or excluded item."
+          },
+          "hard_render_constraints": {
+            "type": "array",
+            "description": "Every explicit render constraint.",
+            "items": {
+              "$ref": "render-constraint.schema.json"
+            },
+            "minItems": 0,
+            "maxItems": 1000
+          }
+        },
+        "required": [
+          "taxonomy_id",
+          "min_count",
+          "max_count",
+          "expected_judgment",
+          "hard_render_constraints"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "description": "Advanced exact leaf constraints. Empty delegates leaf selection to the mutation phase under exercise_request broad families."
+    },
+    "task_components": {
+      "type": "object",
+      "properties": {
+        "detection": {
+          "const": true,
+          "description": "This flag states whether the task requests error detection."
+        },
+        "classification": {
+          "type": "boolean",
+          "description": "This flag states whether the task requests a category for each detected error."
+        },
+        "correction": {
+          "type": "boolean",
+          "description": "This flag or object describes correction requirements or decisions in its parent contract."
+        },
+        "explanation": {
+          "type": "boolean",
+          "description": "Legacy explanation invitation preference. Under answer-components-v2 explanation is optional and every supplied explanation is assessed independently, regardless of this flag; it does not enter the primary composite."
+        }
+      },
+      "required": [
+        "detection",
+        "classification",
+        "correction",
+        "explanation"
+      ],
+      "additionalProperties": false,
+      "description": "These flags freeze the requested answer components before the attempt."
+    },
+    "audio_origin_policy": {
+      "type": "string",
+      "enum": [
+        "synthetic_only"
+      ],
+      "description": "This generation blueprint uses newly synthesized audio, locally or through a configured service. Separate native recording import remains supported without another owner approval."
+    },
+    "provider_profile_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This identifier selects one versioned provider configuration."
+    },
+    "exercise_request": {
+      "$ref": "exercise-request.schema.json",
+      "description": "Original simple user input, retained alongside the expanded blueprint."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "format",
+    "public_context",
+    "variety_policy",
+    "duration_ms_min",
+    "duration_ms_max",
+    "speakers",
+    "targets",
+    "task_components",
+    "audio_origin_policy",
+    "provider_profile_id"
+  ],
+  "additionalProperties": false
+}

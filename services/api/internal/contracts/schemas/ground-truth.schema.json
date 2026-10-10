@@ -1,0 +1,1141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/ground-truth.schema.json",
+  "title": "ground-truth",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The explicit changed local contract version."
+    },
+    "case_version_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This identifier refers to one immutable case version."
+    },
+    "taxonomy_version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This field identifies the immutable category registry used by the case."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "rendered",
+        "verification_failed",
+        "needs_review",
+        "verified",
+        "published",
+        "quarantined",
+        "retired",
+        "superseded"
+      ],
+      "description": "This field states the parent operation result from its declared enumeration."
+    },
+    "public_context": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This field contains task context that the teacher can read before submission."
+    },
+    "variety_policy": {
+      "type": "object",
+      "properties": {
+        "target_locale": {
+          "type": "string",
+          "enum": [
+            "en-US",
+            "en-GB"
+          ],
+          "description": "This field identifies the target English locale for the published variety policy."
+        },
+        "accepted_varieties": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "description": "These English varieties are permitted by the fixed case context."
+        },
+        "register": {
+          "type": "string",
+          "minLength": 1,
+          "description": "This field states the social or institutional register required by the task."
+        },
+        "assessment_basis": {
+          "type": "string",
+          "enum": [
+            "intelligibility",
+            "explicit_target_form",
+            "contextual_appropriacy"
+          ],
+          "description": "This field states the declared basis for judging the language target."
+        },
+        "public_constraints": {
+          "type": "string",
+          "minLength": 1,
+          "description": "These conditions give the teacher the context necessary to judge the case fairly."
+        }
+      },
+      "required": [
+        "target_locale",
+        "accepted_varieties",
+        "register",
+        "assessment_basis",
+        "public_constraints"
+      ],
+      "additionalProperties": false,
+      "description": "This object fixes locale, permitted varieties, register, and judgment basis."
+    },
+    "audio": {
+      "type": "object",
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "This identifier refers to the exact stored asset."
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "This field contains a SHA-256 digest of the exact referenced bytes."
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "This field gives duration in milliseconds."
+        },
+        "sample_rate_hz": {
+          "const": 24000,
+          "description": "The final delivery sample clock."
+        },
+        "channels": {
+          "const": 1,
+          "description": "This field gives the required channel count for the audio asset."
+        },
+        "origin": {
+          "type": "string",
+          "enum": [
+            "synthetic",
+            "native_recording",
+            "local_recording"
+          ],
+          "description": "This field records actual source origin. It must not promote a substitute to genuine evidence."
+        },
+        "source_profile_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Actual provenance source identity: GENERATED-EXERCISE for authored audio, real corpus/source identity for imports. Actual synthesis profile is in render provenance."
+        }
+      },
+      "required": [
+        "asset_id",
+        "sha256",
+        "duration_ms",
+        "sample_rate_hz",
+        "channels",
+        "origin",
+        "source_profile_id"
+      ],
+      "additionalProperties": false,
+      "description": "This object describes the exact delivered audio asset."
+    },
+    "speakers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This value uniquely identifies the record within its declared entity and version scope."
+          },
+          "voice_profile_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This identifier selects the registered voice profile for the speaker."
+          },
+          "l1": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This field records the declared first language. It does not imply a particular error."
+          },
+          "learner_cefr": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "A1",
+                  "A2",
+                  "B1",
+                  "B2",
+                  "C1",
+                  "C2"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This field states the requested learner proficiency level."
+          },
+          "requested_accent": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This field states an accent request. It does not prove the resulting accent."
+          },
+          "observed_accent_notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This field contains reviewer observations without an invented accent-strength score."
+          },
+          "accent_evidence": {
+            "type": "string",
+            "enum": [
+              "not_verified",
+              "human_reviewed",
+              "feature_verified"
+            ],
+            "description": "This field states the available evidence for the requested accent."
+          }
+        },
+        "required": [
+          "id",
+          "voice_profile_id",
+          "l1",
+          "learner_cefr",
+          "requested_accent",
+          "observed_accent_notes",
+          "accent_evidence"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "description": "These profiles specify the distinct speakers in the exercise."
+    },
+    "utterances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This value uniquely identifies the record within its declared entity and version scope."
+          },
+          "speaker_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This identifier links an utterance or record to its stated speaker."
+          },
+          "canonical_text": {
+            "type": "string",
+            "minLength": 1,
+            "description": "This field contains the intended correct text before mutations."
+          },
+          "surface_text": {
+            "type": "string",
+            "minLength": 1,
+            "description": "This field contains the text after intentional textual mutations."
+          },
+          "audio_interval": {
+            "type": "object",
+            "properties": {
+              "start_ms": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "This field gives the interval start in milliseconds from the asset start."
+              },
+              "end_ms": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "This field gives the interval end in milliseconds from the asset start."
+              }
+            },
+            "required": [
+              "start_ms",
+              "end_ms"
+            ],
+            "additionalProperties": false,
+            "description": "This object locates an event in the delivered audio."
+          }
+        },
+        "required": [
+          "id",
+          "speaker_id",
+          "canonical_text",
+          "surface_text",
+          "audio_interval"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "description": "These records preserve speaker identity and canonical and surface text."
+    },
+    "units": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This value uniquely identifies the record within its declared entity and version scope."
+          },
+          "primary_taxonomy_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This field selects the narrowest supported primary category for the unit."
+          },
+          "accepted_taxonomy_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 1,
+            "description": "These registered taxonomy IDs can receive exact-category credit for this unit."
+          },
+          "secondary_taxonomy_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "description": "These categories describe the same event without adding detection opportunities."
+          },
+          "domain": {
+            "type": "string",
+            "enum": [
+              "grammar",
+              "lexis",
+              "pronunciation.segmental",
+              "pronunciation.suprasegmental",
+              "fluency",
+              "discourse",
+              "pragmatics_register",
+              "acceptable_variant"
+            ],
+            "description": "This field names the primary reporting domain for the observation."
+          },
+          "expected_judgment": {
+            "type": "string",
+            "enum": [
+              "true_error",
+              "acceptable",
+              "excluded"
+            ],
+            "description": "This field states whether the reviewed unit is a true error, permitted control, or excluded item."
+          },
+          "status_label": {
+            "type": "string",
+            "enum": [
+              "unequivocal_error",
+              "nonstandard_attested",
+              "contextually_inappropriate",
+              "target_form_mismatch",
+              "marked_naturalness_issue",
+              "acceptable_variant",
+              "decoy_non_error"
+            ],
+            "description": "This field distinguishes error status from category and preferred style."
+          },
+          "utterance_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 1,
+            "description": "These identifiers locate all utterances needed to interpret the unit."
+          },
+          "text_spans": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "utterance_id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                  "description": "This identifier locates one utterance in the fixed case version."
+                },
+                "span": {
+                  "type": "object",
+                  "properties": {
+                    "start_cp": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "This offset is the included start of a Unicode codepoint span."
+                    },
+                    "end_cp": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "This offset is the excluded end of a Unicode codepoint span."
+                    },
+                    "exact_text": {
+                      "type": "string",
+                      "description": "This text must equal the original substring at the specified codepoint offsets."
+                    }
+                  },
+                  "required": [
+                    "start_cp",
+                    "end_cp",
+                    "exact_text"
+                  ],
+                  "additionalProperties": false,
+                  "description": "This object gives exact codepoint offsets and the corresponding original text."
+                }
+              },
+              "required": [
+                "utterance_id",
+                "span"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0,
+            "description": "These entries locate target text in named utterances."
+          },
+          "audio_intervals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "start_ms": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "This field gives the interval start in milliseconds from the asset start."
+                },
+                "end_ms": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "This field gives the interval end in milliseconds from the asset start."
+                }
+              },
+              "required": [
+                "start_ms",
+                "end_ms"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1,
+            "description": "These intervals locate the unit in the delivered audio."
+          },
+          "context_evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "source_id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                  "description": "This identifier refers to a source in the source registry."
+                },
+                "locator": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "This field locates the cited evidence within the named source."
+                },
+                "evidence_hash": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "This hash identifies the exact evidence payload."
+                }
+              },
+              "required": [
+                "source_id",
+                "locator",
+                "evidence_hash"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0,
+            "description": "These records support the contextual judgment for the unit."
+          },
+          "realization": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "textual",
+                  "acoustic_segmental",
+                  "acoustic_suprasegmental",
+                  "temporal_fluency",
+                  "discourse_context",
+                  "pragmatic_context",
+                  "decoy"
+                ],
+                "description": "This field selects the representation or review mode allowed by its parent contract."
+              },
+              "canonical_text": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the intended correct text before mutations."
+              },
+              "surface_text": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the text after intentional textual mutations."
+              },
+              "canonical_ipa": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the reviewed reference pronunciation, not the observed sound."
+              },
+              "intended_ipa": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field contains the requested pronunciation, not an acoustic observation."
+              },
+              "observed_ipa": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field records the pronunciation that a native annotation, measured evidence or modality-labelled LLM inference supports."
+              },
+              "prosody": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "feature": {
+                      "type": "string",
+                      "enum": [
+                        "lexical_stress",
+                        "nuclear_stress",
+                        "f0_range_semitones",
+                        "f0_slope_semitones_per_second",
+                        "syllable_duration_ratio",
+                        "rhythm",
+                        "boundary",
+                        "weak_form",
+                        "linking",
+                        "assimilation",
+                        "elision"
+                      ],
+                      "description": "This name identifies the measured or requested feature inside the typed parent object."
+                    },
+                    "target_label": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "This field names the declared phonetic or prosodic target without claiming observation."
+                    },
+                    "lower": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "This field contains the declared lower bound in the stated unit."
+                    },
+                    "upper": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "This field contains the declared upper bound in the stated unit."
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "label",
+                        "semitones",
+                        "semitones_per_second",
+                        "ratio",
+                        "milliseconds"
+                      ],
+                      "description": "This field identifies the measurement unit declared by the parent object."
+                    },
+                    "observation": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "This field contains the reviewer observation, not a requested target."
+                    },
+                    "evidence_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                      },
+                      "minItems": 0,
+                      "description": "These IDs identify actual supporting records within the permitted subject and version scope."
+                    }
+                  },
+                  "required": [
+                    "feature",
+                    "target_label",
+                    "lower",
+                    "upper",
+                    "unit",
+                    "observation",
+                    "evidence_ids"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 0,
+                "description": "This object states the bounded prosodic target or reviewed correction."
+              },
+              "pace_target_wpm": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field gives the requested pace in words per minute."
+              },
+              "observed_pace_wpm": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field gives measured pace in words per minute."
+              },
+              "planned_pause_ms": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field gives the planned pause duration, not its observed duration."
+              },
+              "observed_pause_ms": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This field gives measured pause duration in milliseconds."
+              }
+            },
+            "required": [
+              "mode",
+              "canonical_text",
+              "surface_text",
+              "canonical_ipa",
+              "intended_ipa",
+              "observed_ipa",
+              "prosody",
+              "pace_target_wpm",
+              "observed_pace_wpm",
+              "planned_pause_ms",
+              "observed_pause_ms"
+            ],
+            "additionalProperties": false,
+            "description": "This object separates the intended target, actual audio, and observed evidence."
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "minor",
+              "moderate",
+              "major",
+              "communication_breakdown"
+            ],
+            "description": "This field contains the reviewed severity class fixed before the attempt."
+          },
+          "weight": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "This integer gives the fixed severity weight from the scoring policy."
+          },
+          "difficulty": {
+            "type": "string",
+            "enum": [
+              "unrated",
+              "easy",
+              "medium",
+              "hard",
+              "expert"
+            ],
+            "description": "This field contains the declared difficulty value only with its stated evidence status."
+          },
+          "difficulty_evidence_ref": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This reference supports the difficulty claim. Missing evidence must not become a measured difficulty."
+          },
+          "correction_eligible": {
+            "type": "boolean",
+            "description": "This flag states whether the true unit has a correction opportunity."
+          },
+          "corrections": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                  "description": "This value uniquely identifies the record within its declared entity and version scope."
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "replace",
+                    "insert",
+                    "delete",
+                    "rephrase",
+                    "phoneme",
+                    "prosody",
+                    "fluency",
+                    "pragmatic_repair"
+                  ],
+                  "description": "This field selects the exact operation or judgment type from the parent enumeration."
+                },
+                "text": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "This field contains literal text for the specific typed operation or feedback item."
+                },
+                "ipa": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "This field contains IPA for the operation or correction specified by its parent object."
+                },
+                "approved_text_alternatives": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 0,
+                  "description": "These reviewed text alternatives can receive correction credit."
+                },
+                "case_insensitive": {
+                  "type": "boolean",
+                  "description": "This field permits case-insensitive comparison only for this reviewed option."
+                },
+                "terminal_period_insensitive": {
+                  "type": "boolean",
+                  "description": "This flag permits terminal-period normalization for this reviewed option only."
+                },
+                "variety_constraints": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 0,
+                  "description": "These statements restrict the correction to its approved English varieties."
+                },
+                "required_propositions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                        "description": "This value uniquely identifies the record within its declared entity and version scope."
+                      },
+                      "description": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "This text states one explicit proposition or field meaning in its parent contract."
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "description"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1,
+                  "description": "These assertions are necessary for full credit for this reviewed option."
+                },
+                "forbidden_propositions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                        "description": "This value uniquely identifies the record within its declared entity and version scope."
+                      },
+                      "description": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "This text states one explicit proposition or field meaning in its parent contract."
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "description"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0,
+                  "description": "These propositions describe changes that invalidate the correction or explanation."
+                },
+                "canonical": {
+                  "type": "boolean",
+                  "description": "This field identifies the designated canonical correction option."
+                }
+              },
+              "required": [
+                "id",
+                "kind",
+                "text",
+                "ipa",
+                "approved_text_alternatives",
+                "case_insensitive",
+                "terminal_period_insensitive",
+                "variety_constraints",
+                "required_propositions",
+                "forbidden_propositions",
+                "canonical"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0,
+            "description": "These options define reviewed repairs and their proposition constraints."
+          },
+          "explanation_eligible": {
+            "type": "boolean",
+            "description": "This flag states whether the unit has an explanation opportunity."
+          },
+          "rationale_required_propositions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                  "description": "This value uniquely identifies the record within its declared entity and version scope."
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "This text states one explicit proposition or field meaning in its parent contract."
+                }
+              },
+              "required": [
+                "id",
+                "description"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0,
+            "description": "These assertions are necessary for full explanation credit."
+          },
+          "rationale_forbidden_propositions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                  "description": "This value uniquely identifies the record within its declared entity and version scope."
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "This text states one explicit proposition or field meaning in its parent contract."
+                }
+              },
+              "required": [
+                "id",
+                "description"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0,
+            "description": "These assertions make the explanation incorrect under its reviewed criteria."
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1,
+            "description": "This field contains the reviewed reason for the correction or judgment."
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "description": "These IDs identify actual supporting records within the permitted subject and version scope."
+          },
+          "verification": {
+            "type": "string",
+            "enum": [
+              "candidate",
+              "verified",
+              "rejected"
+            ],
+            "description": "This field states review status, not the fact that a model requested a target."
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                "description": "This identifier refers to a source in the source registry."
+              },
+              "source_record_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This identifier locates the actual original record inside the named source release."
+              },
+              "rights_approval_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This reference identifies the actual approval for this source use."
+              },
+              "uses": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "local_analysis",
+                    "internal_training",
+                    "commercial_evaluation",
+                    "derivative_exercises",
+                    "distribution",
+                    "model_training",
+                    "external_api_transfer",
+                    "voice_use"
+                  ]
+                },
+                "minItems": 0,
+                "description": "These operations are the exact uses permitted by the retained license approval."
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "approved",
+                  "pending",
+                  "blocked"
+                ],
+                "description": "This field states the parent operation result from its declared enumeration."
+              },
+              "licence_evidence_hash": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "This hash identifies the retained evidence for source permissions."
+              }
+            },
+            "required": [
+              "source_id",
+              "source_record_id",
+              "rights_approval_id",
+              "uses",
+              "status",
+              "licence_evidence_hash"
+            ],
+            "additionalProperties": false,
+            "description": "This object links the record to its real source and permitted transformation."
+          }
+        },
+        "required": [
+          "id",
+          "primary_taxonomy_id",
+          "accepted_taxonomy_ids",
+          "secondary_taxonomy_ids",
+          "domain",
+          "expected_judgment",
+          "status_label",
+          "utterance_ids",
+          "text_spans",
+          "audio_intervals",
+          "context_evidence",
+          "realization",
+          "severity",
+          "weight",
+          "difficulty",
+          "difficulty_evidence_ref",
+          "correction_eligible",
+          "corrections",
+          "explanation_eligible",
+          "rationale_required_propositions",
+          "rationale_forbidden_propositions",
+          "rationale",
+          "evidence_ids",
+          "verification",
+          "source"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "description": "These entries contain the reviewed detection opportunities and negative controls."
+    },
+    "review_decisions": {
+      "type": "array",
+      "description": "Actual optional machine findings or original source-import decisions; never required human approval.",
+      "items": {
+        "$ref": "review-decision.schema.json"
+      },
+      "minItems": 0,
+      "maxItems": 100
+    },
+    "content_provenance_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "description": "These IDs link the content to its actual source and transformation records."
+    },
+    "verification_policy_version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This field identifies the publication-check policy used for the case."
+    },
+    "case_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "This hash identifies the immutable case payload used by the attempt."
+    }
+  },
+  "required": [
+    "schema_version",
+    "case_version_id",
+    "taxonomy_version",
+    "status",
+    "public_context",
+    "variety_policy",
+    "audio",
+    "speakers",
+    "utterances",
+    "units",
+    "review_decisions",
+    "content_provenance_ids",
+    "verification_policy_version",
+    "case_sha256"
+  ],
+  "additionalProperties": false
+}

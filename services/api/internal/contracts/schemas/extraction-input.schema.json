@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/extraction-input.schema.json",
+  "title": "extraction-input",
+  "type": "object",
+  "description": "The blind input. No transcript, target count, key, or correct answer is permitted.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "answer_text": {
+      "type": "string",
+      "description": "The exact saved teacher answer.",
+      "maxLength": 20000,
+      "minLength": 0
+    },
+    "answer_sha256": {
+      "type": "string",
+      "description": "The original UTF-8 digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "task_components": {
+      "type": "object",
+      "properties": {
+        "detection": {
+          "const": true,
+          "description": "This flag states whether the task requests error detection."
+        },
+        "classification": {
+          "type": "boolean",
+          "description": "This flag states whether the task requests a category for each detected error."
+        },
+        "correction": {
+          "type": "boolean",
+          "description": "This flag or object describes correction requirements or decisions in its parent contract."
+        },
+        "explanation": {
+          "type": "boolean",
+          "description": "Legacy explanation invitation preference. Under answer-components-v2 explanation is optional and every supplied explanation is assessed independently, regardless of this flag; it does not enter the primary composite."
+        }
+      },
+      "required": [
+        "detection",
+        "classification",
+        "correction",
+        "explanation"
+      ],
+      "additionalProperties": false,
+      "description": "These flags freeze the requested answer components before the attempt."
+    },
+    "requested_language": {
+      "type": "string",
+      "description": "The response language.",
+      "enum": [
+        "en",
+        "ru"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "answer_text",
+    "answer_sha256",
+    "task_components",
+    "requested_language"
+  ],
+  "additionalProperties": false
+}

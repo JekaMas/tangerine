@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/reconsider-request.schema.json",
+  "title": "reconsider-request",
+  "type": "object",
+  "description": "Explicit historical reconsideration.",
+  "properties": {
+    "dispute_id": {
+      "type": "string",
+      "description": "The resolved dispute.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "attempt_ids": {
+      "type": "array",
+      "description": "The explicitly selected affected attempts.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "unit_correspondence_id": {
+      "type": "string",
+      "description": "The reviewed same-audio unit mapping.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    }
+  },
+  "required": [
+    "dispute_id",
+    "attempt_ids",
+    "unit_correspondence_id"
+  ],
+  "additionalProperties": false
+}

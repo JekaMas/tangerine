@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/measure-request.schema.json",
+  "title": "measure-request",
+  "type": "object",
+  "description": "Internal audio measurement input.",
+  "properties": {
+    "case_version_id": {
+      "type": "string",
+      "description": "The exact case.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "audio_sha256": {
+      "type": "string",
+      "description": "The exact linked final WAV.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "method_ids": {
+      "type": "array",
+      "description": "Only registered methods from the release.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "case_version_id",
+    "audio_sha256",
+    "method_ids"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/render-request.schema.json",
+  "title": "render-request",
+  "type": "object",
+  "description": "One actual synthesis operation.",
+  "properties": {
+    "plan": {
+      "$ref": "render-plan.schema.json"
+    },
+    "render_attempt": {
+      "type": "integer",
+      "description": "Positive explicit render attempt counter, without a lifetime ceiling; original operation deadline/automatic retry policy remains.",
+      "minimum": 1
+    },
+    "preparation_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Existing saved preparation identity."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Non-null selects the exact authored preparation; null supports imported/native rendering."
+    }
+  },
+  "required": [
+    "plan",
+    "render_attempt",
+    "preparation_id"
+  ],
+  "additionalProperties": false
+}

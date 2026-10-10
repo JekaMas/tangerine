@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/attempt.schema.json",
+  "title": "attempt",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The explicit changed local contract version."
+    },
+    "attempt_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This identifier refers to the frozen teacher attempt."
+    },
+    "case_version_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This identifier refers to one immutable case version."
+    },
+    "case_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "This hash identifies the immutable case payload used by the attempt."
+    },
+    "answer_text": {
+      "type": "string",
+      "maxLength": 20000,
+      "description": "This field contains the exact original teacher answer."
+    },
+    "answer_utf8_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "This hash identifies the original answer bytes in UTF-8."
+    },
+    "task_components": {
+      "type": "object",
+      "properties": {
+        "detection": {
+          "type": "boolean",
+          "description": "This flag states whether the task requests error detection."
+        },
+        "classification": {
+          "type": "boolean",
+          "description": "This flag states whether the task requests a category for each detected error."
+        },
+        "correction": {
+          "type": "boolean",
+          "description": "This flag or object describes correction requirements or decisions in its parent contract."
+        },
+        "explanation": {
+          "type": "boolean",
+          "description": "Legacy explanation invitation preference. Under answer-components-v2 explanation is optional and every supplied explanation is assessed independently, regardless of this flag; it does not enter the primary composite."
+        }
+      },
+      "required": [
+        "detection",
+        "classification",
+        "correction",
+        "explanation"
+      ],
+      "additionalProperties": false,
+      "description": "These flags freeze the requested answer components before the attempt."
+    },
+    "evaluation_policy_version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This field identifies the fixed semantic evaluation policy."
+    },
+    "scoring_policy_version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This field identifies the exact formula and counting policy."
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "started",
+        "saved",
+        "evaluating",
+        "completed",
+        "evaluation_failed",
+        "review_required"
+      ],
+      "description": "This field records the current attempt lifecycle state."
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "This number identifies the current revision for concurrency checks."
+    },
+    "submitted_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "This field records the actual submission time after the answer-freeze transaction."
+    },
+    "idempotency_key": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This key identifies one logical request with one request-body hash."
+    },
+    "lease_token": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The internal fencing token. It is absent outside an active lease.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The internal fencing token. It is absent outside an active lease."
+    },
+    "lease_expires_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "This time limits the authority of the current evaluation lease."
+    },
+    "workspace_id": {
+      "const": "local",
+      "description": "The one local workspace."
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The database UTC time when the operator starts this attempt."
+    },
+    "lease_epoch": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2147483647,
+      "description": "The increasing lease fencing number."
+    },
+    "audio_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "The exact delivery bytes that this attempt presents."
+    },
+    "configuration_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "The frozen effective configuration."
+    },
+    "feedback_status": {
+      "enum": [
+        "not_started",
+        "complete",
+        "stored_rationale",
+        "unavailable"
+      ],
+      "description": "The independent feedback result."
+    }
+  },
+  "required": [
+    "schema_version",
+    "attempt_id",
+    "case_version_id",
+    "case_sha256",
+    "answer_text",
+    "answer_utf8_sha256",
+    "task_components",
+    "evaluation_policy_version",
+    "scoring_policy_version",
+    "state",
+    "revision",
+    "submitted_at",
+    "idempotency_key",
+    "lease_token",
+    "lease_expires_at",
+    "workspace_id",
+    "started_at",
+    "lease_epoch",
+    "audio_sha256",
+    "configuration_sha256",
+    "feedback_status"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/case-head.schema.json",
+  "title": "case-head",
+  "type": "object",
+  "description": "A case lifecycle head. Absent audio or gold is never fabricated.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The case version identity.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "revision": {
+      "type": "integer",
+      "description": "The mutable lifecycle revision.",
+      "minimum": 0,
+      "maximum": 2147483647
+    },
+    "status": {
+      "type": "string",
+      "description": "The case state.",
+      "enum": [
+        "draft",
+        "rendered",
+        "verification_failed",
+        "needs_review",
+        "verified",
+        "published",
+        "quarantined",
+        "retired",
+        "superseded"
+      ]
+    },
+    "candidate_id": {
+      "type": "string",
+      "description": "The immutable candidate.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "parent_case_version_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The original version, if this is a revision.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The original version, if this is a revision."
+    },
+    "ground_truth_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The complete reviewed key, absent before it exists.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The complete reviewed key, absent before it exists."
+    },
+    "delivery_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The actual linked final WAV, absent before rendering.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The actual linked final WAV, absent before rendering."
+    },
+    "created_at": {
+      "type": "string",
+      "description": "The database creation time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "quarantine_open": {
+      "type": "boolean",
+      "description": "An unresolved content concern. Retirement or supersession cannot clear this flag."
+    }
+  },
+  "required": [
+    "id",
+    "revision",
+    "status",
+    "candidate_id",
+    "parent_case_version_id",
+    "ground_truth_id",
+    "delivery_asset_id",
+    "created_at",
+    "quarantine_open"
+  ],
+  "additionalProperties": false
+}

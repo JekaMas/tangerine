@@ -1,0 +1,824 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/ai-development-run.schema.json",
+  "title": "ai-development-run",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "Current contract identity."
+    },
+    "id": {
+      "type": "string",
+      "description": "Local developer run identity."
+    },
+    "change_id": {
+      "type": "string",
+      "description": "Canonical OpenSpec change."
+    },
+    "source_revision": {
+      "type": "string",
+      "description": "Actual code revision; dependencies qualify dirty runs."
+    },
+    "inventory_asset": {
+      "type": "object",
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "description": "Actual retained asset."
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Actual asset byte hash."
+        }
+      },
+      "required": [
+        "asset_id",
+        "sha256"
+      ],
+      "additionalProperties": false,
+      "description": "Actual private or sanitized asset reference."
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Exact repository/configuration dependency."
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "Observed dependency byte hash."
+          },
+          "purpose": {
+            "type": "string",
+            "description": "Which execution property this dependency can invalidate."
+          }
+        },
+        "required": [
+          "path",
+          "sha256",
+          "purpose"
+        ],
+        "additionalProperties": false,
+        "description": "Frozen semantic input."
+      },
+      "description": "Frozen selected dependency identities."
+    },
+    "affected_property_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Existing/new property IDs."
+      },
+      "description": "Selected nonempty property scope."
+    },
+    "selected_case_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Exact positive/negative case IDs."
+      },
+      "description": "Actual selected cases, never inferred from an exit code."
+    },
+    "required_surface_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Declared affected/dependent surface."
+      },
+      "description": "Selected required runtime paths."
+    },
+    "experiment_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Actual frozen llm-experiment documents."
+      },
+      "description": "Baseline/candidate experiments."
+    },
+    "lab_tracking_uri": {
+      "type": "string",
+      "description": "Actual local MLflow URI."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "observed",
+        "incomplete"
+      ],
+      "description": "Evidence state, not a numerical quality verdict."
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Actual attempt/cache observation identity."
+          },
+          "surface_id": {
+            "type": "string",
+            "description": "Declared inference surface."
+          },
+          "operation_id": {
+            "type": "string",
+            "description": "Actual native operation."
+          },
+          "attempt_kind": {
+            "type": "string",
+            "enum": [
+              "initial",
+              "transport_retry",
+              "wire_fallback",
+              "semantic_repair",
+              "local_inference",
+              "cache_reference"
+            ],
+            "description": "Actual attempt kind."
+          },
+          "parent_observation_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Real retry/repair/cache predecessor."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Real retry/repair/cache predecessor."
+          },
+          "snapshot_asset": {
+            "type": "object",
+            "properties": {
+              "asset_id": {
+                "type": "string",
+                "description": "Actual retained asset."
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$",
+                "description": "Actual asset byte hash."
+              }
+            },
+            "required": [
+              "asset_id",
+              "sha256"
+            ],
+            "additionalProperties": false,
+            "description": "Actual private or sanitized asset reference."
+          },
+          "receipt_id": {
+            "type": "string",
+            "description": "Actual execution receipt, or referenced original receipt for a cache view."
+          },
+          "trace_id": {
+            "type": "string",
+            "description": "Actual allocated trace identity."
+          },
+          "span_id": {
+            "type": "string",
+            "description": "Actual attempt span identity."
+          },
+          "dispatch_observation_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Independently observed dispatch; null for no-dispatch/cache."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Independently observed dispatch; null for no-dispatch/cache."
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "complete",
+              "refusal",
+              "incomplete",
+              "transport_error",
+              "schema_error",
+              "semantic_error",
+              "cancelled",
+              "deadline",
+              "preparation_failed",
+              "cache_reference"
+            ],
+            "description": "Actual observed outcome."
+          },
+          "mlflow_run_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Actual Lab run containing this observation."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Actual Lab run containing this observation."
+          },
+          "mlflow_artifact_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Actual exported snapshot/receipt/trace artifact locators."
+            },
+            "description": "Retained exports; empty is not success."
+          },
+          "export_status": {
+            "type": "string",
+            "enum": [
+              "exported",
+              "unexported",
+              "disabled"
+            ],
+            "description": "Actual synchronization status."
+          },
+          "redaction_asset": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "asset_id": {
+                    "type": "string",
+                    "description": "Actual retained asset."
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$",
+                    "description": "Actual asset byte hash."
+                  }
+                },
+                "required": [
+                  "asset_id",
+                  "sha256"
+                ],
+                "additionalProperties": false,
+                "description": "Actual private or sanitized asset reference."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Actual private or sanitized asset reference."
+          }
+        },
+        "required": [
+          "id",
+          "surface_id",
+          "operation_id",
+          "attempt_kind",
+          "parent_observation_id",
+          "snapshot_asset",
+          "receipt_id",
+          "trace_id",
+          "span_id",
+          "dispatch_observation_id",
+          "outcome",
+          "mlflow_run_id",
+          "mlflow_artifact_refs",
+          "export_status",
+          "redaction_asset"
+        ],
+        "additionalProperties": false,
+        "description": "One actual attempt; retries are not merged."
+      },
+      "description": "Every actual native call/cache observation."
+    },
+    "dispatch_observer_asset": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "asset_id": {
+              "type": "string",
+              "description": "Actual retained asset."
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$",
+              "description": "Actual asset byte hash."
+            }
+          },
+          "required": [
+            "asset_id",
+            "sha256"
+          ],
+          "additionalProperties": false,
+          "description": "Actual private or sanitized asset reference."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Actual private or sanitized asset reference."
+    },
+    "coverage": {
+      "type": "object",
+      "properties": {
+        "dispatch": {
+          "type": "object",
+          "properties": {
+            "matched": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Actual matching observations."
+            },
+            "observed": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Actual denominator, never copied from the same exporter."
+            },
+            "missing_reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "Required for no population/unavailable observer."
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Required for no population/unavailable observer."
+            }
+          },
+          "required": [
+            "matched",
+            "observed",
+            "missing_reason"
+          ],
+          "additionalProperties": false,
+          "description": "Completeness sufficient statistics, not arbitrary quality thresholds."
+        },
+        "snapshot": {
+          "type": "object",
+          "properties": {
+            "matched": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Actual matching observations."
+            },
+            "observed": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Actual denominator, never copied from the same exporter."
+            },
+            "missing_reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "Required for no population/unavailable observer."
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Required for no population/unavailable observer."
+            }
+          },
+          "required": [
+            "matched",
+            "observed",
+            "missing_reason"
+          ],
+          "additionalProperties": false,
+          "description": "Completeness sufficient statistics, not arbitrary quality thresholds."
+        },
+        "export": {
+          "type": "object",
+          "properties": {
+            "matched": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Actual matching observations."
+            },
+            "observed": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Actual denominator, never copied from the same exporter."
+            },
+            "missing_reason": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "Required for no population/unavailable observer."
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Required for no population/unavailable observer."
+            }
+          },
+          "required": [
+            "matched",
+            "observed",
+            "missing_reason"
+          ],
+          "additionalProperties": false,
+          "description": "Completeness sufficient statistics, not arbitrary quality thresholds."
+        }
+      },
+      "required": [
+        "dispatch",
+        "snapshot",
+        "export"
+      ],
+      "additionalProperties": false,
+      "description": "Three-way completeness populations."
+    },
+    "discrepancies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "orphan_dispatch",
+              "missing_snapshot",
+              "missing_receipt",
+              "duplicate_link",
+              "unresolved_binding",
+              "unexercised_path",
+              "missing_export",
+              "inspection_limit"
+            ],
+            "description": "Exact blind spot."
+          },
+          "subject_id": {
+            "type": "string",
+            "description": "Actual dispatch/surface/receipt/artifact."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Actual reason and next resolution."
+          }
+        },
+        "required": [
+          "kind",
+          "subject_id",
+          "reason"
+        ],
+        "additionalProperties": false,
+        "description": "Unresolved coverage item."
+      },
+      "description": "All unresolved required gaps."
+    },
+    "comparison_asset": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "asset_id": {
+              "type": "string",
+              "description": "Actual retained asset."
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$",
+              "description": "Actual asset byte hash."
+            }
+          },
+          "required": [
+            "asset_id",
+            "sha256"
+          ],
+          "additionalProperties": false,
+          "description": "Actual private or sanitized asset reference."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Actual private or sanitized asset reference."
+    },
+    "actual_case_result_asset": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "asset_id": {
+              "type": "string",
+              "description": "Actual retained asset."
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$",
+              "description": "Actual asset byte hash."
+            }
+          },
+          "required": [
+            "asset_id",
+            "sha256"
+          ],
+          "additionalProperties": false,
+          "description": "Actual private or sanitized asset reference."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Actual private or sanitized asset reference."
+    },
+    "zero_call_reason": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Why zero actual calls are sufficient for the selected deterministic property, not integration proof."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Why zero actual calls are sufficient for the selected deterministic property, not integration proof."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Actual creation time."
+    },
+    "mlflow_run_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Actual Lab runs containing all development artifacts, including deterministic zero-call experiments."
+    },
+    "mlflow_artifact_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Actual exported inventory/dependency/case-result/comparison artifacts; required observed records resolve them against native assets."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "change_id",
+    "source_revision",
+    "inventory_asset",
+    "dependencies",
+    "affected_property_ids",
+    "selected_case_ids",
+    "required_surface_ids",
+    "experiment_ids",
+    "lab_tracking_uri",
+    "status",
+    "observations",
+    "dispatch_observer_asset",
+    "coverage",
+    "discrepancies",
+    "comparison_asset",
+    "actual_case_result_asset",
+    "zero_call_reason",
+    "created_at",
+    "mlflow_run_ids",
+    "mlflow_artifact_refs"
+  ],
+  "additionalProperties": false,
+  "description": "Development evidence and MLflow linkage; requires actual observations for runtime claims.",
+  "$defs": {
+    "execution_snapshot": {
+      "type": "object",
+      "properties": {
+        "surface_id": {
+          "type": "string",
+          "description": "Declared inventory surface."
+        },
+        "binding_asset": {
+          "type": "object",
+          "properties": {
+            "asset_id": {
+              "type": "string",
+              "description": "Actual retained asset."
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$",
+              "description": "Actual asset byte hash."
+            }
+          },
+          "required": [
+            "asset_id",
+            "sha256"
+          ],
+          "additionalProperties": false,
+          "description": "Actual private or sanitized asset reference."
+        },
+        "input_parts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Actual named model-visible part."
+              },
+              "trust": {
+                "type": "string",
+                "enum": [
+                  "owned_instruction",
+                  "input_data",
+                  "protocol_frame"
+                ],
+                "description": "Actual authority class."
+              },
+              "modality": {
+                "type": "string",
+                "enum": [
+                  "text",
+                  "json",
+                  "ssml",
+                  "audio",
+                  "binary",
+                  "parameter"
+                ],
+                "description": "Actual transmitted modality."
+              },
+              "asset": {
+                "type": "object",
+                "properties": {
+                  "asset_id": {
+                    "type": "string",
+                    "description": "Actual retained asset."
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$",
+                    "description": "Actual asset byte hash."
+                  }
+                },
+                "required": [
+                  "asset_id",
+                  "sha256"
+                ],
+                "additionalProperties": false,
+                "description": "Actual private or sanitized asset reference."
+              },
+              "locator": {
+                "type": "string",
+                "description": "Actual byte/codepoint range or RFC6901 pointer."
+              },
+              "source_fragment_ref": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "Trusted owner reference or original input source."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Trusted owner reference or original input source."
+              }
+            },
+            "required": [
+              "name",
+              "trust",
+              "modality",
+              "asset",
+              "locator",
+              "source_fragment_ref"
+            ],
+            "additionalProperties": false,
+            "description": "Model-visible component."
+          },
+          "description": "Ordered complete actual input parts."
+        },
+        "wire_request": {
+          "type": "object",
+          "properties": {
+            "asset_id": {
+              "type": "string",
+              "description": "Actual retained asset."
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$",
+              "description": "Actual asset byte hash."
+            }
+          },
+          "required": [
+            "asset_id",
+            "sha256"
+          ],
+          "additionalProperties": false,
+          "description": "Actual private or sanitized asset reference."
+        },
+        "wire_format": {
+          "type": "string",
+          "description": "Actual JSON/multipart/local-call format and nonsecret framing asset definition."
+        },
+        "context_snapshot_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "Existing LLM context snapshot; null for non-LLM inputs."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Existing LLM context snapshot; null for non-LLM inputs."
+        },
+        "omissions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Absent/excluded part."
+              },
+              "reason": {
+                "type": "string",
+                "description": "Actual selection/default/redaction reason."
+              }
+            },
+            "required": [
+              "name",
+              "reason"
+            ],
+            "additionalProperties": false,
+            "description": "Visible omission."
+          },
+          "description": "No implicit missing context."
+        },
+        "reconstruction_status": {
+          "type": "string",
+          "enum": [
+            "complete",
+            "limited"
+          ],
+          "description": "Exact local/private reconstruction status."
+        },
+        "inspection_limits": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Actual body redaction/missing/opaque-provider limitation."
+          },
+          "description": "Never hide a context blind spot."
+        }
+      },
+      "required": [
+        "surface_id",
+        "binding_asset",
+        "input_parts",
+        "wire_request",
+        "wire_format",
+        "context_snapshot_id",
+        "omissions",
+        "reconstruction_status",
+        "inspection_limits"
+      ],
+      "additionalProperties": false,
+      "description": "Complete per-attempt snapshot asset, also for non-LLM inference."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "observed"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "affected_property_ids": {
+            "minItems": 1
+          },
+          "selected_case_ids": {
+            "minItems": 1
+          },
+          "mlflow_run_ids": {
+            "minItems": 1
+          },
+          "mlflow_artifact_refs": {
+            "minItems": 1
+          },
+          "discrepancies": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ]
+}

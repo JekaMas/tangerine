@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/error-opportunity.schema.json",
+  "title": "error-opportunity",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This value uniquely identifies the record within its declared entity and version scope."
+    },
+    "blueprint_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This identifier refers to the source blueprint version."
+    },
+    "taxonomy_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This field references a registered category at the declared taxonomy version."
+    },
+    "canonical_utterance_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This identifier locates the canonical utterance for the opportunity."
+    },
+    "eligible_span": {
+      "type": "object",
+      "properties": {
+        "start_cp": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "This offset is the included start of a Unicode codepoint span."
+        },
+        "end_cp": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "This offset is the excluded end of a Unicode codepoint span."
+        },
+        "exact_text": {
+          "type": "string",
+          "description": "This text must equal the original substring at the specified codepoint offsets."
+        }
+      },
+      "required": [
+        "start_cp",
+        "end_cp",
+        "exact_text"
+      ],
+      "additionalProperties": false,
+      "description": "This span locates the canonical material available for the planned mutation."
+    },
+    "realization_state": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "rendered_unverified",
+        "realized_verified",
+        "failed",
+        "acceptable_control"
+      ],
+      "description": "This field records whether the planned opportunity actually produced its required target."
+    },
+    "realized_unit_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "This identifier links the opportunity to the actual resulting detection unit."
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "description": "These IDs identify actual supporting records within the permitted subject and version scope."
+    }
+  },
+  "required": [
+    "id",
+    "blueprint_id",
+    "taxonomy_id",
+    "canonical_utterance_id",
+    "eligible_span",
+    "realization_state",
+    "realized_unit_id",
+    "evidence_ids"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/transformation.schema.json",
+  "title": "transformation",
+  "type": "object",
+  "description": "A performed transformation. Writing its specification does not create a receipt.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The transform identity.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "operation": {
+      "type": "string",
+      "description": "The actual deterministic operation.",
+      "enum": [
+        "parse",
+        "resample",
+        "encode",
+        "ssml_compile",
+        "audio_assemble",
+        "category_map",
+        "phone_map",
+        "tokenize",
+        "split_assign",
+        "redact"
+      ]
+    },
+    "method_id": {
+      "type": "string",
+      "description": "The complete method definition.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "method_sha256": {
+      "type": "string",
+      "description": "The exact method configuration.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "input_asset_ids": {
+      "type": "array",
+      "description": "The actual input assets.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "input_sha256s": {
+      "type": "array",
+      "description": "Input digests in input order.",
+      "items": {
+        "type": "string",
+        "description": "An input digest.",
+        "maxLength": 64,
+        "minLength": 64,
+        "pattern": "^[a-f0-9]{64}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000
+    },
+    "output_asset_ids": {
+      "type": "array",
+      "description": "The actual output assets.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "output_sha256s": {
+      "type": "array",
+      "description": "Output digests in output order.",
+      "items": {
+        "type": "string",
+        "description": "An output digest.",
+        "maxLength": 64,
+        "minLength": 64,
+        "pattern": "^[a-f0-9]{64}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000
+    },
+    "permission_grant_ids": {
+      "type": "array",
+      "description": "Rights permitting this transform.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "receipt_id": {
+      "type": "string",
+      "description": "The execution receipt.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "created_at": {
+      "type": "string",
+      "description": "The completion time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "operation",
+    "method_id",
+    "method_sha256",
+    "input_asset_ids",
+    "input_sha256s",
+    "output_asset_ids",
+    "output_sha256s",
+    "permission_grant_ids",
+    "receipt_id",
+    "created_at"
+  ],
+  "additionalProperties": false
+}

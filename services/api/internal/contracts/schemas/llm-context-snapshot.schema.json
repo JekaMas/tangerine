@@ -1,0 +1,262 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/llm-context-snapshot.schema.json",
+  "title": "llm-context-snapshot",
+  "type": "object",
+  "description": "Private per-attempt input snapshot, including incomplete/failed calls; never fabricated evidence.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "id": {
+      "type": "string",
+      "description": "Local snapshot identity."
+    },
+    "operation_id": {
+      "type": "string",
+      "description": "Actual operation."
+    },
+    "stage": {
+      "type": "string",
+      "enum": [
+        "case_generation",
+        "linguistic_audit",
+        "blind_claim_extraction",
+        "claim_mapping",
+        "mapping_audit",
+        "feedback",
+        "case_review",
+        "adjudication"
+      ],
+      "description": "Actual stage."
+    },
+    "phase": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "canonical_text",
+            "mutation"
+          ],
+          "description": "Generation phase; null for other stages."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Generation phase; null for other stages."
+    },
+    "bundle_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Frozen prompt bundle."
+    },
+    "binding_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Effective provider/prompt/context binding."
+    },
+    "input_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Actual stage input projection."
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Ordered private input component metadata.",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "prompt",
+              "context_policy",
+              "taxonomy",
+              "recipes",
+              "public_context",
+              "canonical_script",
+              "mutation_key",
+              "answer",
+              "source_excerpt",
+              "evidence",
+              "prior_decisions",
+              "wire_schema",
+              "candidate",
+              "extraction",
+              "scoring_result",
+              "rubric"
+            ],
+            "description": "Actual component kind."
+          },
+          "trust": {
+            "type": "string",
+            "enum": [
+              "owned_instruction",
+              "input_data"
+            ],
+            "description": "Instruction ownership vs data; not a user access role."
+          },
+          "asset_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Actual private asset, null only for explicitly excluded/absent component."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Actual private asset, null only for explicitly excluded/absent component."
+          },
+          "asset_sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$",
+                "description": "Actual bytes or declared structured projection hash."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Actual bytes or declared structured projection hash."
+          },
+          "included": {
+            "type": "boolean",
+            "description": "Whether the exact component was included in this call."
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Absence/selection reason; required when excluded."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Absence/selection reason; required when excluded."
+          },
+          "byte_count": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Actual included byte count; absent is not zero."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Actual included byte count; absent is not zero."
+          },
+          "token_count": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Tokenizer observation, null when unavailable."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Tokenizer observation, null when unavailable."
+          }
+        },
+        "required": [
+          "kind",
+          "trust",
+          "asset_id",
+          "asset_sha256",
+          "included",
+          "reason",
+          "byte_count",
+          "token_count"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Ordered included/excluded components."
+    },
+    "tokenizer": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Actual tokenizer identity; null for conservative byte bound."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Actual tokenizer identity; null for conservative byte bound."
+    },
+    "budget_method": {
+      "type": "string",
+      "enum": [
+        "tokenizer",
+        "conservative_utf8_bytes"
+      ],
+      "description": "Existing documented budgeting method."
+    },
+    "context_budget_tokens": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Frozen profile capacity."
+    },
+    "reserved_output_tokens": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Frozen output reservation."
+    },
+    "input_budget_used": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Actual calculated bound in the declared method."
+    },
+    "rendered_request_asset_id": {
+      "type": "string",
+      "description": "Exact private credential-free wire request bytes."
+    },
+    "receipt_id": {
+      "type": "string",
+      "description": "Actual attempt provider-receipt identity."
+    },
+    "trace_id": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{32}$",
+      "description": "Allocated OTEL trace ID; not proof of successful export."
+    },
+    "span_id": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{16}$",
+      "description": "Allocated attempt span ID."
+    },
+    "created_at": {
+      "type": "string",
+      "description": "Actual snapshot timestamp."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "operation_id",
+    "stage",
+    "phase",
+    "bundle_sha256",
+    "binding_sha256",
+    "input_sha256",
+    "components",
+    "tokenizer",
+    "budget_method",
+    "context_budget_tokens",
+    "reserved_output_tokens",
+    "input_budget_used",
+    "rendered_request_asset_id",
+    "receipt_id",
+    "trace_id",
+    "span_id",
+    "created_at"
+  ],
+  "additionalProperties": false
+}

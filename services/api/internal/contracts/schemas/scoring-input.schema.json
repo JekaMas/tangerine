@@ -1,0 +1,272 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/scoring-input.schema.json",
+  "title": "scoring-input",
+  "type": "object",
+  "properties": {
+    "units": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This value uniquely identifies the record within its declared entity and version scope."
+          },
+          "domain": {
+            "type": "string",
+            "enum": [
+              "grammar",
+              "lexis",
+              "pronunciation.segmental",
+              "pronunciation.suprasegmental",
+              "fluency",
+              "discourse",
+              "pragmatics_register",
+              "acceptable_variant"
+            ],
+            "description": "This field names the primary reporting domain for the observation."
+          },
+          "taxonomy_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This field references a registered category at the declared taxonomy version."
+          },
+          "accepted_taxonomy_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 1,
+            "description": "These registered taxonomy IDs can receive exact-category credit for this unit."
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "true_error",
+              "acceptable"
+            ],
+            "description": "This field selects the exact operation or judgment type from the parent enumeration."
+          },
+          "weight": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "This integer gives the fixed severity weight from the scoring policy."
+          },
+          "correction_eligible": {
+            "type": "boolean",
+            "description": "This flag states whether the true unit has a correction opportunity."
+          },
+          "explanation_eligible": {
+            "type": "boolean",
+            "description": "This flag states whether the unit has an explanation opportunity."
+          }
+        },
+        "required": [
+          "id",
+          "domain",
+          "taxonomy_id",
+          "accepted_taxonomy_ids",
+          "kind",
+          "weight",
+          "correction_eligible",
+          "explanation_eligible"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "description": "These entries contain the reviewed detection opportunities and negative controls.",
+      "maxItems": 1000
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "This value uniquely identifies the record within its declared entity and version scope."
+          },
+          "unit_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This identifier refers to the exact reviewed detection unit."
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "matched_error",
+              "false_positive",
+              "confirmed_acceptable",
+              "wrong_acceptance",
+              "unresolved",
+              "ignore"
+            ],
+            "description": "This field records the resolved semantic outcome for the teacher claim."
+          },
+          "duplicate_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This reference identifies the earlier claim with the same supported meaning."
+          },
+          "category_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This field contains the mapped category that the teacher explicitly supplied."
+          },
+          "correction_supplied": {
+            "type": "boolean",
+            "description": "This flag records whether the teacher actually supplied a correction."
+          },
+          "correction_credit": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "This field contains the exact numerator of the stored ratio.",
+                    "maximum": 9007199254740991
+                  },
+                  "denominator": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "This field contains the exact denominator of the stored ratio.",
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false,
+                "description": "This fraction gives proposition-derived correction credit."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Exact correction credit or null for genuinely unresolved correction meaning. Explanation uncertainty cannot null this field."
+          },
+          "explanation_supplied": {
+            "type": "boolean",
+            "description": "This flag records whether the teacher actually supplied an explanation."
+          },
+          "explanation_credit": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "This field contains the exact numerator of the stored ratio.",
+                    "maximum": 9007199254740991
+                  },
+                  "denominator": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "This field contains the exact denominator of the stored ratio.",
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false,
+                "description": "This fraction gives credit from the reviewed explanation propositions."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Independent exact optional explanation credit; null for unresolved/noneligible rubric, never converted into zero to complete a grade."
+          }
+        },
+        "required": [
+          "id",
+          "unit_id",
+          "verdict",
+          "duplicate_of",
+          "category_id",
+          "correction_supplied",
+          "correction_credit",
+          "explanation_supplied",
+          "explanation_credit"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "description": "These records contain one supported outcome for every extracted claim.",
+      "maxItems": 2000
+    },
+    "components": {
+      "type": "object",
+      "properties": {
+        "detection": {
+          "type": "boolean",
+          "description": "This flag states whether the task requests error detection."
+        },
+        "classification": {
+          "type": "boolean",
+          "description": "This flag states whether the task requests a category for each detected error."
+        },
+        "correction": {
+          "type": "boolean",
+          "description": "This flag or object describes correction requirements or decisions in its parent contract."
+        },
+        "explanation": {
+          "type": "boolean",
+          "description": "Legacy explanation invitation preference. Under answer-components-v2 explanation is optional and every supplied explanation is assessed independently, regardless of this flag; it does not enter the primary composite."
+        }
+      },
+      "required": [
+        "detection",
+        "classification",
+        "correction",
+        "explanation"
+      ],
+      "additionalProperties": false,
+      "description": "These flags select the task components before answer entry."
+    },
+    "scoring_policy_version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Exact policy frozen on the attempt. New ordinary attempts use answer-components-v2; an explicitly frozen historical/legacy reference uses its original policy, never guessed from explanation presence."
+    }
+  },
+  "required": [
+    "units",
+    "decisions",
+    "components",
+    "scoring_policy_version"
+  ],
+  "additionalProperties": false
+}

@@ -2,14 +2,13 @@ package app
 
 import (
 	"context"
-	"crypto/sha256"
 	"embed"
-	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"strings"
+	"tangerine.local/api/internal/contracts"
 	"time"
 
-	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
@@ -44,47 +43,6 @@ func OpenStorage(ctx context.Context, databaseURL, endpoint, accessKey, secretKe
 		return nil, errors.New("invalid media configuration")
 	}
 	return &Storage{DB: pool, Media: media, Bucket: bucket}, nil
-}
-
-func (s *Storage) Migrate(ctx context.Context) error {
-	tx, err := s.DB.Begin(ctx)
-	if err != nil {
-		return err
-	}
-	defer func() { _ = tx.Rollback(context.Background()) }()
-	if _, err = tx.Exec(ctx, "SET LOCAL lock_timeout='5s'; SELECT pg_advisory_xact_lock(79004731); CREATE TABLE IF NOT EXISTS schema_migrations (version text PRIMARY KEY, sha256 char(64) NOT NULL, applied_at timestamptz NOT NULL DEFAULT now())"); err != nil {
-		return err
-	}
-	entries, err := migrations.ReadDir("migrations")
-	if err != nil {
-		return err
-	}
-	for _, entry := range entries {
-		body, err := migrations.ReadFile("migrations/" + entry.Name())
-		if err != nil {
-			return err
-		}
-		h := sha256.Sum256(body)
-		digest := hex.EncodeToString(h[:])
-		var stored string
-		err = tx.QueryRow(ctx, "SELECT sha256 FROM schema_migrations WHERE version=$1", entry.Name()).Scan(&stored)
-		if err == nil {
-			if stored != digest {
-				return errors.New("applied migration checksum mismatch")
-			}
-			continue
-		}
-		if !errors.Is(err, pgx.ErrNoRows) {
-			return err
-		}
-		if _, err = tx.Exec(ctx, string(body)); err != nil {
-			return err
-		}
-		if _, err = tx.Exec(ctx, "INSERT INTO schema_migrations(version,sha256) VALUES ($1,$2)", entry.Name(), digest); err != nil {
-			return err
-		}
-	}
-	return tx.Commit(ctx)
 }
 
 func (s *Storage) InitMedia(ctx context.Context) error {
@@ -123,20 +81,72 @@ func (s *Storage) CheckPrivateMedia(ctx context.Context) error {
 
 var ErrMigrationRequired = errors.New("database migration required")
 
+//go:embed required_columns.json
+var requiredColumns []byte
+
 func (s *Storage) CheckDatabase(ctx context.Context) error {
-	var workspace, catalog bool
-	if err := s.DB.QueryRow(ctx, "SELECT to_regclass('workspaces') IS NOT NULL, to_regclass('exercise_catalog') IS NOT NULL").Scan(&workspace, &catalog); err != nil {
+	history, err := validateHistory(ctx, s.DB)
+	if err != nil {
+		return ErrMigrationRequired
+	}
+	entries, _ := migrations.ReadDir("migrations")
+	if len(history) != len(entries) {
+		return ErrMigrationRequired
+	}
+	var expected map[string][]string
+	if err = json.Unmarshal(requiredColumns, &expected); err != nil {
 		return err
 	}
-	if !workspace || !catalog {
-		return ErrMigrationRequired
+	rows, err := s.DB.Query(ctx, "SELECT table_name,column_name FROM information_schema.columns WHERE table_schema='public'")
+	if err != nil {
+		return err
+	}
+	actual := map[string]map[string]bool{}
+	for rows.Next() {
+		var table, column string
+		if err = rows.Scan(&table, &column); err != nil {
+			rows.Close()
+			return err
+		}
+		if actual[table] == nil {
+			actual[table] = map[string]bool{}
+		}
+		actual[table][column] = true
+	}
+	rows.Close()
+	if err = rows.Err(); err != nil {
+		return err
+	}
+	for table, columns := range expected {
+		for _, column := range columns {
+			if !actual[table][column] {
+				return ErrMigrationRequired
+			}
+		}
 	}
 	var count int
-	if err := s.DB.QueryRow(ctx, "SELECT count(*) FROM workspaces WHERE singleton").Scan(&count); err != nil {
+	if err = s.DB.QueryRow(ctx, "SELECT count(*) FROM workspace w JOIN workspaces f ON f.id=w.foundation_workspace_id WHERE w.id='local' AND f.singleton").Scan(&count); err != nil || count != 1 {
+		return ErrMigrationRequired
+	}
+	var triggers int
+	if err = s.DB.QueryRow(ctx, "SELECT count(*) FROM pg_trigger WHERE NOT tgisinternal AND tgname IN('document_immutable','audit_immutable','schema_immutable','migration_backup_immutable')").Scan(&triggers); err != nil || triggers != 4 {
+		return ErrMigrationRequired
+	}
+	registry, err := contracts.Registry()
+	if err != nil {
 		return err
 	}
-	if count != 1 {
-		return ErrMigrationRequired
+	for _, c := range registry {
+		var sha string
+		var raw []byte
+		if err = s.DB.QueryRow(ctx, "SELECT sha256,schema_json FROM schema_registry WHERE kind=$1 AND version=$2 AND sha256=$3", c.Kind, c.Version, c.SHA).Scan(&sha, &raw); err != nil {
+			return ErrMigrationRequired
+		}
+		a, _ := contracts.Canonical(c.Bytes)
+		b, _ := contracts.Canonical(raw)
+		if string(a) != string(b) {
+			return ErrMigrationRequired
+		}
 	}
 	return nil
 }

@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/teacher-gold-request.schema.json",
+  "title": "teacher-gold-request",
+  "type": "object",
+  "description": "Exact creation/submit content projection for teacher_gold. Response preserves the full stored record; server assigns envelope.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "answer_asset_id": {
+      "type": "string",
+      "description": "The immutable real answer bytes.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "answer_sha256": {
+      "type": "string",
+      "description": "The exact answer digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "case_version_id": {
+      "type": "string",
+      "description": "The presented case.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "case_sha256": {
+      "type": "string",
+      "description": "The frozen key digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "audio_sha256": {
+      "type": "string",
+      "description": "The exact recording.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "person_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The imported native rater, null for LLM labels.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Legacy imported value; null for LLM processing."
+    },
+    "qualification_ids": {
+      "type": "array",
+      "description": "The rater competence evidence.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "model_output_seen": {
+      "const": false,
+      "description": "No model output before the independent label submission."
+    },
+    "extraction": {
+      "$ref": "claim-extraction.schema.json"
+    },
+    "normalizations": {
+      "type": "array",
+      "description": "The independently annotated grouping.",
+      "items": {
+        "$ref": "normalization.schema.json"
+      },
+      "minItems": 0,
+      "maxItems": 1000
+    },
+    "decisions": {
+      "$ref": "evaluator-output.schema.json"
+    },
+    "split": {
+      "type": "string",
+      "description": "The frozen project partition.",
+      "enum": [
+        "dev",
+        "calibration",
+        "holdout"
+      ]
+    },
+    "group_id": {
+      "type": "string",
+      "description": "The leakage-connected group.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "adjudication_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "A later separate adjudication.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "A later separate adjudication."
+    },
+    "origin": {
+      "type": "string",
+      "enum": [
+        "llm",
+        "source_import"
+      ],
+      "description": "Actual label origin; never a claim of new human peer review."
+    },
+    "provider_receipt_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "uniqueItems": true
+    },
+    "input_modality": {
+      "type": "string",
+      "enum": [
+        "text",
+        "text_with_speech_evidence",
+        "audio",
+        "native_annotation"
+      ],
+      "description": "Actual input modality; transcript-only models never claim direct hearing."
+    }
+  },
+  "required": [
+    "schema_version",
+    "answer_asset_id",
+    "answer_sha256",
+    "case_version_id",
+    "case_sha256",
+    "audio_sha256",
+    "person_id",
+    "qualification_ids",
+    "model_output_seen",
+    "extraction",
+    "normalizations",
+    "decisions",
+    "split",
+    "group_id",
+    "adjudication_id",
+    "origin",
+    "provider_receipt_ids",
+    "input_modality"
+  ],
+  "additionalProperties": false
+}

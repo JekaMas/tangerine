@@ -1,0 +1,13 @@
+#!/bin/sh
+# Acceptance adapter: build this exact checkout; use the already specified Go image.
+set -eu
+project_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+image="tangerine-go-check-$$:local"
+trap 'docker image rm "$image" >/dev/null 2>&1 || :' EXIT
+# Build logs are diagnostics; stdout remains native Go test JSON.
+docker build --target build -t "$image" -f "$project_root/services/api/Dockerfile" "$project_root" >&2
+if [ "${1:-}" = check ]; then
+ docker run --rm --entrypoint sh "$image" -c 'go vet ./... && test -z "$(gofmt -l .)"'
+else
+ docker run --rm --entrypoint go "$image" "$@"
+fi

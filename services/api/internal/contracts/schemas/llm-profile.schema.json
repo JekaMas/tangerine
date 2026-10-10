@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/llm-profile.schema.json",
+  "title": "Configured LLM profile",
+  "type": "object",
+  "description": "Server-side profile. Keys remain referenced, never embedded.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "maxLength": 128,
+      "description": "Registry profile ID."
+    },
+    "provider": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Explicit configured provider identity; adapter compatibility must be documented."
+    },
+    "model": {
+      "type": "string",
+      "description": "The exact requested model identifier.",
+      "maxLength": 200,
+      "minLength": 1
+    },
+    "endpoint": {
+      "type": "string",
+      "description": "Official provider endpoint, or configured local runner URL. Local HTTP is allowed only on loopback or the declared private Compose network; it does not enable a hosted/cloud runner.",
+      "maxLength": 500,
+      "minLength": 1,
+      "format": "uri"
+    },
+    "reasoning_effort": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The provider-supported effort.",
+          "enum": [
+            "none",
+            "low",
+            "medium",
+            "high",
+            "max"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The provider-supported effort."
+    },
+    "temperature": {
+      "anyOf": [
+        {
+          "type": "number",
+          "description": "The effective sampling value; null when unused.",
+          "minimum": 0,
+          "maximum": 2
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The effective sampling value; null when unused."
+    },
+    "max_output_tokens": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "description": "The stage output cap.",
+          "minimum": 1,
+          "maximum": 1000000
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null when the provider prohibits this wire field; never substitute a fabricated provider cap."
+    },
+    "context_budget_tokens": {
+      "type": "integer",
+      "description": "The application capacity budget, not a claim of provider maximum.",
+      "minimum": 1,
+      "maximum": 2000000
+    },
+    "adapter_version": {
+      "type": "string",
+      "description": "The adapter implementation contract.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "credential_ref": {
+      "type": "string",
+      "description": "The local secret reference, never the secret.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "store": {
+      "const": false,
+      "description": "Do not request provider response storage."
+    },
+    "stream": {
+      "type": "boolean",
+      "description": "ChatGPT plan HTTP Responses requires true; legacy API-key profiles retain false. Only a terminal completed response becomes a stage output."
+    },
+    "tools": {
+      "type": "array",
+      "description": "No tools are permitted.",
+      "items": false,
+      "minItems": 0,
+      "maxItems": 0
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "case_generation",
+          "linguistic_audit",
+          "blind_claim_extraction",
+          "claim_mapping",
+          "mapping_audit",
+          "feedback",
+          "case_review",
+          "adjudication"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 8,
+      "uniqueItems": true,
+      "description": "Supported documented processing roles; selection cannot assign an unsupported stage."
+    },
+    "auth_method": {
+      "type": "string",
+      "enum": [
+        "api_key",
+        "chatgpt_plan_oauth",
+        "local_none"
+      ],
+      "default": "api_key",
+      "description": "Historical absence means API key. Freeze method and registration credential reference."
+    },
+    "billing_mode": {
+      "type": "string",
+      "enum": [
+        "local",
+        "free_tier",
+        "included_subscription",
+        "metered",
+        "unknown"
+      ],
+      "default": "unknown",
+      "description": "Access route, distinct from actual observed charges and quota. Unknown/metered is unavailable under included_only."
+    }
+  },
+  "required": [
+    "id",
+    "provider",
+    "model",
+    "endpoint",
+    "reasoning_effort",
+    "temperature",
+    "max_output_tokens",
+    "context_budget_tokens",
+    "adapter_version",
+    "credential_ref",
+    "store",
+    "stream",
+    "tools",
+    "roles"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "auth_method": {
+            "const": "chatgpt_plan_oauth"
+          }
+        },
+        "required": [
+          "auth_method"
+        ]
+      },
+      "then": {
+        "properties": {
+          "provider": {
+            "const": "openai_chatgpt"
+          },
+          "endpoint": {
+            "const": "https://api.openai.com/v1/responses"
+          },
+          "stream": {
+            "const": true
+          },
+          "store": {
+            "const": false
+          },
+          "temperature": {
+            "type": "null"
+          },
+          "max_output_tokens": {
+            "type": "null"
+          },
+          "billing_mode": {
+            "const": "included_subscription"
+          }
+        },
+        "required": [
+          "billing_mode"
+        ]
+      }
+    }
+  ]
+}

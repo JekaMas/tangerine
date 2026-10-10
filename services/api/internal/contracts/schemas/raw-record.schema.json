@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/raw-record.schema.json",
+  "title": "raw-record",
+  "$defs": {
+    "scalar_number": {
+      "type": "object",
+      "description": "An exact source number.",
+      "properties": {
+        "number_lexeme": {
+          "type": "string",
+          "description": "The exact original numeric token.",
+          "maxLength": 10000,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "number_lexeme"
+      ],
+      "additionalProperties": false
+    },
+    "value": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/scalar_number"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/value"
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "entries": {
+              "type": "array",
+              "description": "All raw fields.",
+              "items": {
+                "type": "object",
+                "description": "One ordered raw field.",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "description": "The exact raw field name.",
+                    "maxLength": 2000,
+                    "minLength": 0
+                  },
+                  "value": {
+                    "$ref": "#/$defs/value",
+                    "description": "The losslessly preserved raw value."
+                  }
+                },
+                "required": [
+                  "key",
+                  "value"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 0,
+              "maxItems": 100000
+            }
+          },
+          "required": [
+            "entries"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "type": "object",
+  "description": "A raw-preserving source record. Unmapped records cannot serve as gold.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The stable raw record identity.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "release_id": {
+      "type": "string",
+      "description": "The actual release.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "file_sha256": {
+      "type": "string",
+      "description": "The original component.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "locator": {
+      "type": "string",
+      "description": "A record index, XML path, JSON pointer, or worksheet cell range.",
+      "maxLength": 3000,
+      "minLength": 1
+    },
+    "value": {
+      "$ref": "#/$defs/value",
+      "description": "The full raw record with no guessed semantics."
+    },
+    "raw_byte_asset_id": {
+      "type": "string",
+      "description": "The complete original bytes.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "interpretation_status": {
+      "type": "string",
+      "description": "Whether the exact source mapping is known.",
+      "enum": [
+        "mapped",
+        "unmapped",
+        "quarantined"
+      ]
+    },
+    "mapping_profile_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The documented mapping used.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The documented mapping used."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "release_id",
+    "file_sha256",
+    "locator",
+    "value",
+    "raw_byte_asset_id",
+    "interpretation_status",
+    "mapping_profile_id"
+  ],
+  "additionalProperties": false
+}

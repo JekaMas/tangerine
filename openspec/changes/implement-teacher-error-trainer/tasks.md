@@ -384,3 +384,28 @@ Authorized implementation of the first engineering iteration. The full product a
 Resume: audit/iteration-1-local-foundation-20261010/PLAN.md, CASES.json and REPORT.md own this iteration's scope, literal expectations, producer/consumer lineage, actual observations and invalidations. INVALIDATED.json retains superseded historical case rows rather than reusing old acceptance for changed owners.
 
 Iteration1 acceptance: 9a896ee is the clean implementation candidate; evidence/iteration1/iteration1-clean-acceptance.json records32/32 actual passes, clean=true. The following acceptance-record commit changes no production/test/fixture/graph input. The completed foundation leaves the remaining fifteen full-scope engineering iterations visible.
+
+## 2026-10-10 iteration 2: domain storage and asset lifecycle
+
+Scope: approved engineering iteration 2, with iteration 1 readiness/UI evidence findings repaired in the same run. Audit/iteration-2-domain-storage-20261010/PLAN.md owns anchors and boundaries. Worktree remains _worktrees/tangerine_iteration1_20261010 on branch tangerine/iteration-2-domain-storage; baseline b41066e. No later feature or AI observation is claimed.
+
+- [x] Register exact positive/negative cases for immutable typed storage, JCS/raw bytes, references, operations, asset lifecycle, interruption/orphans and version readback.
+- [x] Implement complete active schema registry and additive v2 entities/migration with original-format upgrade backup and legacy preservation.
+- [x] Implement schema-validated immutable batches, exact scoped reference closure, revision CAS and append-only audit/result lineage.
+- [x] Implement idempotent operation reservation/readback and atomic private asset reserve/upload/verify/link; retain failed/interrupted/orphan states.
+- [x] Implement explicit asset recovery/readback and orphan eligibility without silent synthesis or destructive maintenance.
+- [x] Repair migration/schema readiness and add positive/negative recovery regression cases.
+- [x] Observe populated/error/retry Library browser states alongside retained empty/no-login/projection evidence.
+- [x] Run directly invalidated cases, inspect/repair, reconcile full iteration DAG and required language/structural/preservation results.
+- [ ] Commit stable implementation, execute full selected iteration with --require-clean, then record actual acceptance and commit.
+
+
+Resume:14 bounded storage properties/56 exact cases are registered. The32-case
+foundation closure passed; the56-case repaired storage/digest closure passed.
+Three directly changed stream/multipart recovery cases then passed through fresh
+native services. Pinned Go race/typed-digest observations and stable vet/gofmt,
+strict OpenSpec, graph/discovery and2,920 static assertions passed. No inference
+or synthesis occurred. Remaining step: commit candidate, execute all88 required
+iteration cases --require-clean, record actual acceptance, commit records, then
+fast-forward canonical while preserving GAPS.md. Existing valid unrelated greens
+are retained; complete product/later semantic owners remain independently pending.

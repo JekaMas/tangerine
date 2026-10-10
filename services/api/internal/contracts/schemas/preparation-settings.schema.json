@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/preparation-settings.schema.json",
+  "title": "preparation-settings",
+  "type": "object",
+  "description": "Private immutable preparation snapshot. Credentials are references only. Expanded voices/settings, exact profiles/prompts/context/schema/adapter bindings are retained.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "exercise_request": {
+      "anyOf": [
+        {
+          "$ref": "exercise-request.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Original normalized simple request; null for an exclusively advanced blueprint."
+    },
+    "blueprint": {
+      "$ref": "blueprint.schema.json"
+    },
+    "configuration": {
+      "$ref": "configuration.schema.json"
+    },
+    "prompt_bundle": {
+      "$ref": "prompt-bundle.schema.json"
+    },
+    "generation_bindings": {
+      "type": "array",
+      "items": {
+        "$ref": "effective-binding.schema.json"
+      },
+      "description": "Exactly the canonical_text and mutation resolved bindings."
+    },
+    "speech_registry_asset_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Saved complete selected speech registry bytes; secret values excluded."
+    },
+    "speech_registry_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Actual saved registry bytes."
+    },
+    "recipe_registry_asset_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Saved complete mutation recipe registry bytes."
+    },
+    "recipe_registry_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Actual saved recipe registry bytes."
+    },
+    "source_record_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "description": "Exact explicitly selected immutable source record IDs for the original generation request; empty for independent generation."
+    },
+    "production_registry_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Existing version-scoped identifier."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Existing version-scoped identifier."
+    },
+    "production_registry_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+    }
+  },
+  "required": [
+    "schema_version",
+    "exercise_request",
+    "blueprint",
+    "configuration",
+    "prompt_bundle",
+    "generation_bindings",
+    "speech_registry_asset_id",
+    "speech_registry_sha256",
+    "recipe_registry_asset_id",
+    "recipe_registry_sha256",
+    "source_record_ids"
+  ],
+  "additionalProperties": false
+}

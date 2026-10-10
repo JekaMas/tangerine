@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/result-envelope.schema.json",
+  "title": "result-envelope",
+  "type": "object",
+  "description": "Result view: unresolved primary meaning is provisional; optional explanation issues preserve supported primary grade.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "attempt_id": {
+      "type": "string",
+      "description": "The attempt.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "status": {
+      "type": "string",
+      "description": "The current observable result.",
+      "enum": [
+        "complete",
+        "review_required",
+        "evaluation_failed",
+        "evaluating",
+        "saved"
+      ]
+    },
+    "score": {
+      "anyOf": [
+        {
+          "$ref": "score-result.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The value, or null when the contract states that it is absent."
+    },
+    "auxiliary": {
+      "$ref": "auxiliary-results.schema.json"
+    },
+    "feedback": {
+      "anyOf": [
+        {
+          "$ref": "feedback.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The value, or null when the contract states that it is absent."
+    },
+    "feedback_status": {
+      "type": "string",
+      "description": "The independent commentary state.",
+      "enum": [
+        "not_started",
+        "complete",
+        "stored_rationale",
+        "unavailable"
+      ]
+    },
+    "issues": {
+      "type": "array",
+      "description": "Retained primary or optional-component issues; blocks_final_score controls primary availability.",
+      "items": {
+        "$ref": "judgment-issue.schema.json"
+      },
+      "minItems": 0,
+      "maxItems": 3000
+    },
+    "retry_operation": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The one permitted explicit continuation.",
+          "enum": [
+            "evaluate",
+            "retry_feedback",
+            "request_review"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The one permitted explicit continuation."
+    },
+    "result_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The immutable completed result.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The immutable completed result."
+    },
+    "result_revision_ids": {
+      "type": "array",
+      "description": "Historical and reviewed result versions.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "attempt_id",
+    "status",
+    "score",
+    "auxiliary",
+    "feedback",
+    "feedback_status",
+    "issues",
+    "retry_operation",
+    "result_id",
+    "result_revision_ids"
+  ],
+  "additionalProperties": false
+}

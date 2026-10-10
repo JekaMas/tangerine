@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/provider-connect-request.schema.json",
+  "title": "provider-connect-request",
+  "description": "Explicit Settings action. Never enables purchased credits or invokes inference.",
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": [
+        "connect",
+        "select",
+        "disconnect"
+      ]
+    },
+    "connection_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "description": "Null for new registration; existing ID otherwise."
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "credits_after_plan_limit_disabled": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "action",
+    "connection_id",
+    "credits_after_plan_limit_disabled"
+  ],
+  "additionalProperties": false
+}

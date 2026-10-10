@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/library-item.schema.json",
+  "title": "library-item",
+  "type": "object",
+  "description": "The Library allowlist. No transcript, target count, or category is permitted.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The public case version.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "title": {
+      "type": "string",
+      "description": "A reviewed neutral title without target counts.",
+      "maxLength": 200,
+      "minLength": 1
+    },
+    "public_context": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This field contains task context that the teacher can read before submission."
+    },
+    "duration_ms": {
+      "type": "integer",
+      "description": "The actual full audio duration.",
+      "minimum": 1,
+      "maximum": 3600000
+    },
+    "format": {
+      "type": "string",
+      "description": "The exercise format.",
+      "enum": [
+        "monologue",
+        "dialogue"
+      ]
+    },
+    "difficulty": {
+      "type": "string",
+      "description": "The measured display label.",
+      "enum": [
+        "unrated",
+        "easy",
+        "medium",
+        "hard",
+        "expert"
+      ]
+    },
+    "availability": {
+      "type": "string",
+      "description": "The public availability.",
+      "enum": [
+        "published",
+        "retired",
+        "quarantined",
+        "rights_restricted"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "public_context",
+    "duration_ms",
+    "format",
+    "difficulty",
+    "availability"
+  ],
+  "additionalProperties": false
+}

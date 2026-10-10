@@ -1,0 +1,302 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/source-release.schema.json",
+  "title": "source-release",
+  "type": "object",
+  "description": "A full acquired release manifest. A webpage description is not this record.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The immutable release identity.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "source_id": {
+      "type": "string",
+      "description": "The exact source profile.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "source_version": {
+      "type": "string",
+      "description": "The source-owner release label.",
+      "maxLength": 500,
+      "minLength": 1
+    },
+    "origin_uri": {
+      "type": "string",
+      "description": "The actual acquisition location.",
+      "maxLength": 3000,
+      "minLength": 1
+    },
+    "documentation_asset_ids": {
+      "type": "array",
+      "description": "The acquired source format and license documents.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "permission_grant_ids": {
+      "type": "array",
+      "description": "Applicable per-use evidence.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "format_profile_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The exact parser profile.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null while lossless raw intake precedes semantic binding; no invented native mapping."
+    },
+    "format_profile_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The frozen source-format mapping.",
+          "maxLength": 64,
+          "minLength": 64,
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null while lossless raw intake precedes semantic binding; no invented native mapping."
+    },
+    "files": {
+      "type": "array",
+      "description": "Every supplied file, including metadata and annotations.",
+      "items": {
+        "type": "object",
+        "description": "One file in a real acquired release.",
+        "properties": {
+          "relative_path": {
+            "type": "string",
+            "description": "A canonical relative POSIX path without traversal.",
+            "maxLength": 2000,
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "description": "The actual complete file digest.",
+            "maxLength": 64,
+            "minLength": 64,
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "bytes": {
+            "type": "string",
+            "description": "The actual byte count.",
+            "maxLength": 4096,
+            "minLength": 1,
+            "pattern": "^(0|[1-9][0-9]*)$"
+          },
+          "component": {
+            "type": "string",
+            "description": "The prescribed component kind.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "partition": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The original partition label.",
+                "maxLength": 200,
+                "minLength": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The original partition label."
+          },
+          "required": {
+            "type": "boolean",
+            "description": "Whether the release contract requires this file."
+          }
+        },
+        "required": [
+          "relative_path",
+          "sha256",
+          "bytes",
+          "component",
+          "partition",
+          "required"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 1000000
+    },
+    "expected_counts": {
+      "type": "array",
+      "description": "All source-declared component populations.",
+      "items": {
+        "type": "object",
+        "description": "An expected count, not an observed count.",
+        "properties": {
+          "unit": {
+            "type": "string",
+            "description": "The source count unit.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "partition": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The exact source partition.",
+                "maxLength": 200,
+                "minLength": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The exact source partition."
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The source-declared count, null if not declared.",
+                "maxLength": 4096,
+                "minLength": 1,
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The source-declared count, null if not declared."
+          },
+          "basis_asset_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The actual statement supporting the count.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The actual statement supporting the count."
+          }
+        },
+        "required": [
+          "unit",
+          "partition",
+          "value",
+          "basis_asset_id"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 500
+    },
+    "observed_counts": {
+      "type": "array",
+      "description": "Counts from actual import.",
+      "items": {
+        "type": "object",
+        "description": "A measured count.",
+        "properties": {
+          "unit": {
+            "type": "string",
+            "description": "The observed count unit.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "partition": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The exact partition.",
+                "maxLength": 200,
+                "minLength": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The exact partition."
+          },
+          "value": {
+            "type": "string",
+            "description": "The observed count.",
+            "maxLength": 4096,
+            "minLength": 1,
+            "pattern": "^(0|[1-9][0-9]*)$"
+          }
+        },
+        "required": [
+          "unit",
+          "partition",
+          "value"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 500
+    },
+    "manifest_sha256": {
+      "type": "string",
+      "description": "The canonical release manifest digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "source_id",
+    "source_version",
+    "origin_uri",
+    "documentation_asset_ids",
+    "permission_grant_ids",
+    "format_profile_id",
+    "format_profile_sha256",
+    "files",
+    "expected_counts",
+    "observed_counts",
+    "manifest_sha256"
+  ],
+  "additionalProperties": false
+}

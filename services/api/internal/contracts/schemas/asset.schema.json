@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/asset.schema.json",
+  "title": "asset",
+  "type": "object",
+  "description": "A private immutable asset. Lifecycle metadata does not change verified bytes.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The asset identifier.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "purpose": {
+      "type": "string",
+      "description": "The exact asset purpose.",
+      "enum": [
+        "audio_master",
+        "audio_delivery",
+        "provider_input",
+        "provider_output",
+        "source_component",
+        "review_evidence",
+        "permission_document",
+        "source_annotations",
+        "configuration",
+        "backup",
+        "export",
+        "canonical_json"
+      ]
+    },
+    "owner": {
+      "type": "object",
+      "description": "An explicitly typed reference.",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "description": "The kind of the referenced object.",
+          "enum": [
+            "case",
+            "unit",
+            "utterance",
+            "attempt",
+            "asset",
+            "claim",
+            "review",
+            "record",
+            "release",
+            "configuration"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "description": "The identifier in the declared kind.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        "version_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The exact version when the object is versioned.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The exact version when the object is versioned."
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "version_id"
+      ],
+      "additionalProperties": false
+    },
+    "state": {
+      "type": "string",
+      "description": "The storage protocol state.",
+      "enum": [
+        "reserved",
+        "uploading",
+        "bytes_verified",
+        "linked",
+        "orphaned",
+        "erasing",
+        "erased"
+      ]
+    },
+    "sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The digest of the complete bytes. Null before byte verification.",
+          "maxLength": 64,
+          "minLength": 64,
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The digest of the complete bytes. Null before byte verification."
+    },
+    "byte_count": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The measured byte count.",
+          "maxLength": 4096,
+          "minLength": 1,
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The measured byte count."
+    },
+    "mime_type": {
+      "type": "string",
+      "description": "The detected MIME type.",
+      "maxLength": 120,
+      "minLength": 0
+    },
+    "storage_key": {
+      "type": "string",
+      "description": "An opaque private key. It contains no answers or names.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "created_at": {
+      "type": "string",
+      "description": "The reservation time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "verified_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The read-back digest time.",
+          "maxLength": 35,
+          "minLength": 20,
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The read-back digest time."
+    },
+    "linked_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The database commit time.",
+          "maxLength": 35,
+          "minLength": 20,
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The database commit time."
+    },
+    "source_request_id": {
+      "type": "string",
+      "description": "The request that reserved this asset.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "purpose",
+    "owner",
+    "state",
+    "sha256",
+    "byte_count",
+    "mime_type",
+    "storage_key",
+    "created_at",
+    "verified_at",
+    "linked_at",
+    "source_request_id"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/audio-judge-input.schema.json",
+  "title": "audio-judge-input",
+  "type": "object",
+  "description": "Actual private PCM clip plus text/reference/context to the chosen auditory model; full context is retained.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "Current written contract version."
+    },
+    "case_version_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Existing version-scoped identifier."
+    },
+    "audio_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+    },
+    "clip_asset_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Existing version-scoped identifier."
+    },
+    "clip_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+    },
+    "source_interval": {
+      "type": "object",
+      "description": "Half-open sample interval on the saved 24kHz piece; end exceeds start.",
+      "properties": {
+        "start": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Nonnegative exact integer."
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Nonnegative exact integer."
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "additionalProperties": false
+    },
+    "profile": {
+      "$ref": "audio-judge-profile.schema.json"
+    },
+    "canonical_text": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Exact saved value."
+    },
+    "surface_text": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Exact saved value."
+    },
+    "units": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+        "description": "Existing version-scoped identifier."
+      },
+      "description": "Ordered complete values."
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Exact saved value."
+      },
+      "description": "Ordered complete values."
+    },
+    "reference_clip_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Existing version-scoped identifier."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Existing version-scoped identifier."
+    },
+    "task_target": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Audible self-contained target/context; intent is evidence to compare, not a heard result."
+    },
+    "planned_units": {
+      "type": "array",
+      "items": {
+        "$ref": "case-candidate.schema.json#/properties/planned_units/items"
+      },
+      "description": "Complete selected intent/rubric projection from the same-version key; all observation fields null. No prior diagnostic or answer mapping output."
+    },
+    "acoustic_edits": {
+      "type": "array",
+      "items": {
+        "$ref": "acoustic-edit.schema.json"
+      },
+      "description": "Exact selected saved mutation controls, including paired IPA and duration/pitch/pause parameters; empty for native units without authored controls."
+    }
+  },
+  "required": [
+    "schema_version",
+    "case_version_id",
+    "audio_sha256",
+    "clip_asset_id",
+    "clip_sha256",
+    "source_interval",
+    "profile",
+    "canonical_text",
+    "surface_text",
+    "units",
+    "features",
+    "reference_clip_asset_id",
+    "task_target",
+    "planned_units",
+    "acoustic_edits"
+  ],
+  "additionalProperties": false
+}

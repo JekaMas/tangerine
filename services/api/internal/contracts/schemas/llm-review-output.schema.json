@@ -1,0 +1,120 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "resolution": {
+      "type": "string",
+      "enum": [
+        "supported",
+        "mapping_defect",
+        "key_defect",
+        "insufficient_evidence"
+      ]
+    },
+    "unit_judgments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "unit_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "taxonomy_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "judgment": {
+            "type": "string",
+            "enum": [
+              "true_error",
+              "acceptable",
+              "unknown"
+            ]
+          },
+          "confirmation": {
+            "type": "string",
+            "enum": [
+              "supported",
+              "inferred",
+              "unknown",
+              "contradicted"
+            ]
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "uniqueItems": true
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "unit_id",
+          "taxonomy_id",
+          "judgment",
+          "confirmation",
+          "evidence_ids",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "decisions": {
+      "anyOf": [
+        {
+          "$ref": "evaluator-output.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reason": {
+      "type": "string"
+    },
+    "key_repair": {
+      "anyOf": [
+        {
+          "$ref": "key-repair-proposal.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Required non-null when resolution=key_defect; otherwise null."
+    }
+  },
+  "required": [
+    "schema_version",
+    "resolution",
+    "unit_judgments",
+    "decisions",
+    "issues",
+    "reason",
+    "key_repair"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/llm-review-output.schema.json",
+  "title": "llm-review-output",
+  "description": "Machine semantic findings; local adapter assigns identity/time/receipts and computes grades."
+}

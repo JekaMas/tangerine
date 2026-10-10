@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/approval-record.schema.json",
+  "title": "Owner approval record",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0",
+      "description": "This field identifies the approval record contract."
+    },
+    "change_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This identifier selects one exact proposed change."
+    },
+    "decision": {
+      "enum": [
+        "approved",
+        "rejected",
+        "revoked"
+      ],
+      "description": "This field records the actual owner decision."
+    },
+    "owner_identity_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This reference identifies the owner linked to an actual approval record, not a model role."
+    },
+    "source_statement_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This reference locates the actual explicit owner statement."
+    },
+    "source_statement_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "This digest identifies the retained owner statement bytes."
+    },
+    "artifact_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "This digest identifies the exact proposed artifact or change manifest."
+    },
+    "allowed_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "description": "These exact paths bound the approved change."
+    },
+    "allowed_use": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This text states the exact approved use, not a general testing exemption."
+    },
+    "environment": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This field names the environment in the owner approval."
+    },
+    "decided_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "This field records the actual owner decision time."
+    },
+    "expires_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "This field records the stated expiry. Null requires explicit approval without expiry."
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "change_id",
+    "decision",
+    "owner_identity_ref",
+    "source_statement_ref",
+    "source_statement_sha256",
+    "artifact_sha256",
+    "allowed_paths",
+    "allowed_use",
+    "environment",
+    "decided_at",
+    "expires_at"
+  ],
+  "description": "Historical/native imported metadata retained losslessly. Not required by current LLM-only product workflow."
+}

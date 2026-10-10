@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/adjudicate-request.schema.json",
+  "title": "adjudicate-request",
+  "type": "object",
+  "description": "Exact creation/submit content projection for adjudicate. Response preserves the full stored record; server assigns envelope.",
+  "properties": {
+    "case_version_id": {
+      "type": "string",
+      "description": "The exact version.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "audio_sha256": {
+      "type": "string",
+      "description": "The exact heard file.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "prior_review_decision_ids": {
+      "type": "array",
+      "description": "The conflicting preserved reviews.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "unit_ids": {
+      "type": "array",
+      "description": "The exact disputed units.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "evidence_ids": {
+      "type": "array",
+      "description": "Actual supporting evidence.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "case_version_id",
+    "audio_sha256",
+    "prior_review_decision_ids",
+    "unit_ids",
+    "evidence_ids"
+  ],
+  "additionalProperties": false
+}

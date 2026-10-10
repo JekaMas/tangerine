@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/difficulty-request.schema.json",
+  "title": "difficulty-request",
+  "type": "object",
+  "description": "Exact creation/submit content projection for difficulty. Response preserves the full stored record; server assigns envelope.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "case_version_id": {
+      "type": "string",
+      "description": "The frozen item.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "unit_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "A unit-level rating or null for item-level.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "A unit-level rating or null for item-level."
+    },
+    "population_definition": {
+      "type": "string",
+      "description": "The actual declared target teacher population.",
+      "maxLength": 5000,
+      "minLength": 1
+    },
+    "eligible_teacher_answer_ids": {
+      "type": "array",
+      "description": "Actual independent first exposures in that population.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "method_id": {
+      "const": "wilson-difficulty-v1",
+      "description": "The fixed interval and band method."
+    }
+  },
+  "required": [
+    "schema_version",
+    "case_version_id",
+    "unit_id",
+    "population_definition",
+    "eligible_teacher_answer_ids",
+    "method_id"
+  ],
+  "additionalProperties": false
+}

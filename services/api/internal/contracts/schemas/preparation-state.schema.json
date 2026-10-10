@@ -1,0 +1,314 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/preparation-state.schema.json",
+  "title": "preparation-state",
+  "type": "object",
+  "description": "Durable local preparation journal/head; linked artifacts and original settings survive browser/process restart. No background queue.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Durable preparation identity assigned before the first provider call."
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Optimistic head revision selecting an immutable preparation snapshot."
+    },
+    "original_operation_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Initial generate operation, never replaced."
+    },
+    "operation_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+        "description": "An actual foreground operation."
+      },
+      "description": "Ordered actual generate/render attempts; no synthetic successful call."
+    },
+    "active_operation_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Current foreground owner."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null when no operation owns writes; a late prior operation cannot update the checkpoint."
+    },
+    "settings_asset_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Private preparation-settings JSON asset."
+    },
+    "settings_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "JCS of the complete preparation-settings payload."
+    },
+    "phase_states": {
+      "type": "object",
+      "description": "Exact saved stage completion; only verified linked artifacts establish complete.",
+      "properties": {
+        "canonical_text": {
+          "type": "string",
+          "enum": [
+            "not_started",
+            "running",
+            "complete",
+            "failed",
+            "interrupted"
+          ]
+        },
+        "mutation": {
+          "type": "string",
+          "enum": [
+            "not_started",
+            "running",
+            "complete",
+            "failed",
+            "interrupted"
+          ]
+        },
+        "render": {
+          "type": "string",
+          "enum": [
+            "not_started",
+            "running",
+            "complete",
+            "failed",
+            "interrupted"
+          ]
+        }
+      },
+      "required": [
+        "canonical_text",
+        "mutation",
+        "render"
+      ],
+      "additionalProperties": false
+    },
+    "canonical_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Saved clean case-candidate asset."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null before canonical completion."
+    },
+    "canonical_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "JCS of saved clean candidate."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null before canonical completion."
+    },
+    "candidate_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Saved mutated candidate envelope ID."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null before mutation completion."
+    },
+    "mutated_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Saved mutated candidate asset."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null before mutation completion."
+    },
+    "mutation_manifest_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Exact private mutation ledger."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null before mutation completion."
+    },
+    "render_plan_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Saved render plan with exact voices/operators/bindings."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null before plan persistence."
+    },
+    "audio_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Actual linked final WAV asset."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null until actual audio is linked."
+    },
+    "audio_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Hash of final stored WAV bytes."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null until actual audio is linked."
+    },
+    "key_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Saved generated ground-truth key."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null until key persistence."
+    },
+    "last_failure": {
+      "anyOf": [
+        {
+          "$ref": "error-response.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Last actual failure, or null."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "render_progress_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Existing private typed asset; historic absent field means null, never an invented asset."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Existing private typed asset; historic absent field means null, never an invented asset."
+    },
+    "render_progress_summary": {
+      "type": "object",
+      "properties": {
+        "complete_pieces": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of actually complete read-back piece artifacts."
+        },
+        "total_pieces": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of all frozen required pieces."
+        },
+        "first_unfinished_piece_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "description": "Existing private saved identity."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Null only where the declared scope does not select an identity."
+        },
+        "ready_to_assemble": {
+          "type": "boolean",
+          "description": "True only when all required pieces have complete actual bytes."
+        }
+      },
+      "required": [
+        "complete_pieces",
+        "total_pieces",
+        "first_unfinished_piece_id",
+        "ready_to_assemble"
+      ],
+      "additionalProperties": false,
+      "description": "Exact scoped native transport/projection."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "revision",
+    "original_operation_id",
+    "operation_ids",
+    "active_operation_id",
+    "settings_asset_id",
+    "settings_sha256",
+    "phase_states",
+    "canonical_asset_id",
+    "canonical_sha256",
+    "candidate_id",
+    "mutated_asset_id",
+    "mutation_manifest_asset_id",
+    "render_plan_asset_id",
+    "audio_asset_id",
+    "audio_sha256",
+    "key_id",
+    "last_failure",
+    "created_at",
+    "updated_at"
+  ],
+  "additionalProperties": false
+}

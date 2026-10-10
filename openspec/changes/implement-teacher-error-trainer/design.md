@@ -74,3 +74,35 @@ Their32packets own extracted-source build/start/restart and positive/negative
 native observations. Original full backup/restore, stored attempts, model setup,
 LLM flow, synthesis and Lab obligations remain unchanged. Historical receipts for
 changed owners are explicitly invalidated and retained in the iteration audit.
+
+## Iteration 2 native storage
+
+`internal/contracts` embeds the byte-identical active schema catalog and compiles
+it once with offline references. The shared Go storage owner writes complete typed
+immutable documents, version-scoped nodes, exact references, heads and diagnostic
+audit in a single PostgreSQL transaction. It does not implement later generation,
+answer matching, scoring, provider or import semantics. Those owners must supply
+their exact declared foreign-node kinds/scopes/digests; the core never guesses a
+new domain relationship from a matching ID. `_id`/`_ids` foreign projection is
+complete for each supplied snapshot; only named provider/trace/request identifiers
+are external. Source/registry nodes remain exact frozen references when selected.
+
+The local `storage` CLI calls the same production functions for native tests and
+maintenance. It is not a public HTTP API or a test double. No arbitrary SQL or
+secret values are accepted by this CLI. Asset operations reserve immutable typed
+metadata and the operation together, write a unique opaque private key, verify
+all remote bytes, and link with frozen owner revision in one transaction. Native
+multipart IDs are saved before parts; recovery aborts only that incomplete upload,
+or reuses and verifies a completed object. The preview of old unreferenced orphans
+is explicit and never deletes. Full user backup/restore/deletion belongs to the
+already required later lifecycle iteration.
+
+Migration003 is additive;001/002 remain byte-identical. An existing foundation
+upgrade uses native pg_dump plus all original private object bytes, per-entry
+hashes/table inventory, tar verification and remote full readback before schema
+mutation. Application writers honor the migration advisory lock. The API image
+uses the pinned PostgreSQL runtime image for native backup tools; no host runtime
+is added. Fresh installs have no upgrade backup. Unknown/changed/non-prefix
+migration history is rejected before any write. Readiness checks the migration
+vector, required columns, singleton association, immutable triggers and exact
+schema registry, repairing the verified false-ready issue from iteration1.

@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/feedback-output.schema.json",
+  "title": "feedback-output",
+  "type": "object",
+  "description": "LLM explanations and practice recommendations grounded in the frozen mutation key and actual scored findings.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "language": {
+      "type": "string",
+      "description": "The response language.",
+      "enum": [
+        "en",
+        "ru"
+      ]
+    },
+    "items": {
+      "type": "array",
+      "description": "The feedback items.",
+      "items": {
+        "type": "object",
+        "description": "Grounded LLM paraphrase or practice advice needs no human approval. New examples are practice material, not claims about heard audio.",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "description": "The feedback subject kind.",
+            "enum": [
+              "detected",
+              "missed",
+              "false_positive",
+              "acceptable",
+              "pending",
+              "recommendation",
+              "correction",
+              "explanation"
+            ]
+          },
+          "decision_ids": {
+            "type": "array",
+            "description": "Existing decisions. Empty for a missed unit.",
+            "items": {
+              "type": "string",
+              "description": "An existing identifier.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 100000,
+            "uniqueItems": true
+          },
+          "unit_ids": {
+            "type": "array",
+            "description": "Existing units. Empty only for an off-key assertion.",
+            "items": {
+              "type": "string",
+              "description": "An existing identifier.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 100000,
+            "uniqueItems": true
+          },
+          "issue_ids": {
+            "type": "array",
+            "description": "Actual unresolved issues.",
+            "items": {
+              "type": "string",
+              "description": "An existing identifier.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 100000,
+            "uniqueItems": true
+          },
+          "rationale_ids": {
+            "type": "array",
+            "description": "Existing relevant rationale records when available; grounded new advice does not require copied wording.",
+            "items": {
+              "type": "string",
+              "description": "An existing identifier.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 100000,
+            "uniqueItems": true
+          },
+          "text": {
+            "type": "string",
+            "description": "Context-supported explanation, paraphrase or actionable practice advice. New practice examples are labelled as such; authoritative numeric scores remain backend values.",
+            "maxLength": 12000,
+            "minLength": 1
+          },
+          "grounding_status": {
+            "type": "string",
+            "description": "Actual origin/basis; human_approved_paraphrase is preserved only for imported legacy metadata, never required for new feedback.",
+            "enum": [
+              "approved_text",
+              "human_approved_paraphrase",
+              "unverified_paraphrase",
+              "llm_grounded",
+              "practice_recommendation"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "description": "The finding finality.",
+            "enum": [
+              "final",
+              "needs_review"
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "decision_ids",
+          "unit_ids",
+          "issue_ids",
+          "rationale_ids",
+          "text",
+          "grounding_status",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 3000
+    }
+  },
+  "required": [
+    "schema_version",
+    "language",
+    "items"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,264 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/ai-surface-inventory.schema.json",
+  "title": "ai-surface-inventory",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "Current contract identity."
+    },
+    "id": {
+      "type": "string",
+      "description": "Local inventory identity."
+    },
+    "source_revision": {
+      "type": "string",
+      "description": "Actual revision, with dirty dependency hashes when applicable."
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Exact repository/configuration dependency."
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "Observed dependency byte hash."
+          },
+          "purpose": {
+            "type": "string",
+            "description": "Which execution property this dependency can invalidate."
+          }
+        },
+        "required": [
+          "path",
+          "sha256",
+          "purpose"
+        ],
+        "additionalProperties": false,
+        "description": "Frozen semantic input."
+      },
+      "description": "Exact inspected semantic dependencies."
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Stable inference surface."
+          },
+          "stage": {
+            "type": "string",
+            "description": "Actual stage/purpose, including speech/judge."
+          },
+          "phase": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Actual generation phase, otherwise null."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Actual generation phase, otherwise null."
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "llm",
+              "judge",
+              "tts",
+              "asr",
+              "assessment",
+              "learned_alignment",
+              "audio_model"
+            ],
+            "description": "Inference kind."
+          },
+          "implementation_state": {
+            "type": "string",
+            "enum": [
+              "planned",
+              "implemented",
+              "disabled"
+            ],
+            "description": "Observed implementation state."
+          },
+          "owner_paths": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Exact implemented owner path or planned service root."
+            },
+            "description": "Owner paths."
+          },
+          "owner_symbols": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Actual symbol when implemented, empty when planned."
+            },
+            "description": "Actual entrypoints."
+          },
+          "adapter_paths": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Real shared transport/inference owner or planned location."
+            },
+            "description": "Execution boundary."
+          },
+          "trusted_fragments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "stage_prompt",
+                    "context_instruction",
+                    "schema_description",
+                    "wire_schema_projection",
+                    "repair_wrapper",
+                    "fallback_wrapper",
+                    "judge_rubric",
+                    "speech_reference_policy",
+                    "adapter_role_frame"
+                  ],
+                  "description": "Controlled instruction class."
+                },
+                "path_or_asset": {
+                  "type": "string",
+                  "description": "Actual source/path or saved policy asset."
+                },
+                "sha256": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$",
+                      "description": "Actual source bytes, null only when unimplemented."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Actual source bytes, null only when unimplemented."
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "planned",
+                    "observed"
+                  ],
+                  "description": "Fragment implementation state."
+                }
+              },
+              "required": [
+                "kind",
+                "path_or_asset",
+                "sha256",
+                "state"
+              ],
+              "additionalProperties": false,
+              "description": "Owned trusted fragment."
+            },
+            "description": "All trusted additions, not just stage prompts."
+          },
+          "discovery_evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Actual exact/semantic/symbol/path-inspection evidence."
+            },
+            "description": "Inventory discovery evidence."
+          },
+          "coverage_reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Why disabled/planned or otherwise unexercised."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Why disabled/planned or otherwise unexercised."
+          }
+        },
+        "required": [
+          "id",
+          "stage",
+          "phase",
+          "kind",
+          "implementation_state",
+          "owner_paths",
+          "owner_symbols",
+          "adapter_paths",
+          "trusted_fragments",
+          "discovery_evidence_refs",
+          "coverage_reason"
+        ],
+        "additionalProperties": false,
+        "description": "Revision-bound complete surface entry."
+      },
+      "description": "All known application/development inference surfaces."
+    },
+    "non_ai_calls": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Inspected non-AI call site."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Actual internal health/storage/etc purpose."
+          }
+        },
+        "required": [
+          "path",
+          "reason"
+        ],
+        "additionalProperties": false,
+        "description": "Explicit non-AI disposition."
+      },
+      "description": "Avoid classifying every HTTP health check as a provider call."
+    },
+    "unresolved_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Unclassified dynamic/wrapper execution path."
+      },
+      "description": "Missing discovery stays explicit."
+    },
+    "inventory_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "JCS inventory excluding its own digest."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "source_revision",
+    "dependencies",
+    "entries",
+    "non_ai_calls",
+    "unresolved_paths",
+    "inventory_sha256"
+  ],
+  "additionalProperties": false,
+  "description": "Owned inference inventory, never proof of runtime coverage by itself."
+}

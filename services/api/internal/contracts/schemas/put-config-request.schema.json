@@ -1,0 +1,516 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/put-config-request.schema.json",
+  "title": "put-config-request",
+  "type": "object",
+  "description": "Exact creation/submit content projection for put_config. Response preserves the full stored record; server assigns envelope.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "llm_profile": {
+      "type": "string",
+      "description": "An ID in the supplied llm_profiles registry; no fallback selection.",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "feedback_language": {
+      "type": "string",
+      "description": "The response language.",
+      "enum": [
+        "en",
+        "ru"
+      ]
+    },
+    "intended_uses": {
+      "type": "array",
+      "description": "Deny unselected uses.",
+      "items": {
+        "type": "string",
+        "description": "An explicitly selected operational use.",
+        "enum": [
+          "local_analysis",
+          "internal_training",
+          "commercial_evaluation",
+          "derivative_exercises",
+          "distribution",
+          "model_training",
+          "external_api_transfer",
+          "voice_use"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 8,
+      "uniqueItems": true
+    },
+    "credential_refs": {
+      "type": "object",
+      "description": "Secrets are mounted separately.",
+      "properties": {
+        "deepseek": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The configured DeepSeek secret reference.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The configured DeepSeek secret reference."
+        },
+        "openai": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The configured OpenAI secret reference.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The configured OpenAI secret reference."
+        },
+        "azure": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The configured Azure secret reference.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The configured Azure secret reference."
+        }
+      },
+      "required": [
+        "deepseek",
+        "openai",
+        "azure"
+      ],
+      "additionalProperties": false
+    },
+    "azure_region": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The actual configured Azure region.",
+          "maxLength": 60,
+          "minLength": 1,
+          "pattern": "^[a-z0-9]+$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Required only for selected Azure operations; missing speech settings do not prevent local reading or LLM-only use."
+    },
+    "connectors": {
+      "type": "array",
+      "description": "Separate corpus and vendor configurations.",
+      "items": {
+        "$ref": "connector-configuration.schema.json"
+      },
+      "minItems": 0,
+      "maxItems": 30
+    },
+    "limits": {
+      "type": "object",
+      "description": "Explicit resource limits. They do not reduce source scope.",
+      "properties": {
+        "daily_micro_usd": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The local daily cost ceiling.",
+              "maxLength": 4096,
+              "minLength": 1,
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Legacy imported value; null for LLM processing."
+        },
+        "monthly_micro_usd": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The local monthly cost ceiling.",
+              "maxLength": 4096,
+              "minLength": 1,
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Legacy imported value; null for LLM processing."
+        },
+        "concurrent_paid_operations": {
+          "const": 1,
+          "description": "One foreground costly operation."
+        },
+        "archive_bytes": {
+          "type": "string",
+          "description": "The maximum compressed source size.",
+          "maxLength": 4096,
+          "minLength": 1,
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "expanded_bytes": {
+          "type": "string",
+          "description": "The maximum expanded size.",
+          "maxLength": 4096,
+          "minLength": 1,
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "archive_members": {
+          "type": "integer",
+          "description": "The maximum member count.",
+          "minimum": 1,
+          "maximum": 10000000
+        },
+        "member_bytes": {
+          "type": "string",
+          "description": "The maximum single member size.",
+          "maxLength": 4096,
+          "minLength": 1,
+          "pattern": "^(0|[1-9][0-9]*)$"
+        }
+      },
+      "required": [
+        "daily_micro_usd",
+        "monthly_micro_usd",
+        "concurrent_paid_operations",
+        "archive_bytes",
+        "expanded_bytes",
+        "archive_members",
+        "member_bytes"
+      ],
+      "additionalProperties": false
+    },
+    "llm_profiles": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "llm-profile.schema.json"
+      },
+      "description": "Explicit server-side profiles. ID uniqueness is a semantic invariant. All six stages use the selected profile."
+    },
+    "stage_profiles": {
+      "type": "object",
+      "description": "Advanced explicit role overrides; null inherits the explicitly selected default profile, never an error fallback.",
+      "properties": {
+        "case_generation": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit selected profile ID for case_generation or declared default inheritance."
+        },
+        "linguistic_audit": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit selected profile ID for linguistic_audit or declared default inheritance."
+        },
+        "blind_claim_extraction": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit selected profile ID for blind_claim_extraction or declared default inheritance."
+        },
+        "claim_mapping": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit selected profile ID for claim_mapping or declared default inheritance."
+        },
+        "mapping_audit": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit selected profile ID for mapping_audit or declared default inheritance."
+        },
+        "feedback": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit selected profile ID for feedback or declared default inheritance."
+        },
+        "case_review": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit profile or null inherits the selected default for case_review"
+        },
+        "adjudication": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Explicit profile or null inherits the selected default for adjudication"
+        }
+      },
+      "required": [
+        "case_generation",
+        "linguistic_audit",
+        "blind_claim_extraction",
+        "claim_mapping",
+        "mapping_audit",
+        "feedback",
+        "case_review",
+        "adjudication"
+      ],
+      "additionalProperties": false
+    },
+    "mapping_audit_enabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Optional diagnostic only; default answer checking uses one mapper."
+    },
+    "speech_profile": {
+      "type": "string",
+      "minLength": 1,
+      "default": "azure-standard-en-v1",
+      "description": "Workspace default synthesis profile with role tts. The simple request can override its local/service backend; original Azure and local Kokoro profiles are preserved."
+    },
+    "case_review_enabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Optional extra case-review diagnostic; false never blocks ordinary authored exercises or LLM answer checking."
+    },
+    "active_prompt_bundle_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Saved local active bundle; null selects the shipped builtin bundle."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Saved local active bundle; null selects the shipped builtin bundle."
+    },
+    "llm_lab_trace_enabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Optional export to local Lab; native receipts remain saved when false."
+    },
+    "llm_lab_capture_content": {
+      "type": "boolean",
+      "default": false,
+      "description": "Explicit private local content capture; secret/private-source fields always omitted."
+    },
+    "preparation_defaults": {
+      "type": "object",
+      "properties": {
+        "variety_policy": {
+          "type": "object",
+          "properties": {
+            "target_locale": {
+              "type": "string",
+              "enum": [
+                "en-US",
+                "en-GB"
+              ],
+              "description": "This field identifies the target English locale for the published variety policy."
+            },
+            "accepted_varieties": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1,
+              "description": "These English varieties are permitted by the fixed case context."
+            },
+            "register": {
+              "type": "string",
+              "minLength": 1,
+              "description": "This field states the social or institutional register required by the task."
+            },
+            "assessment_basis": {
+              "type": "string",
+              "enum": [
+                "intelligibility",
+                "explicit_target_form",
+                "contextual_appropriacy"
+              ],
+              "description": "This field states the declared basis for judging the language target."
+            },
+            "public_constraints": {
+              "type": "string",
+              "minLength": 1,
+              "description": "These conditions give the teacher the context necessary to judge the case fairly."
+            }
+          },
+          "required": [
+            "target_locale",
+            "accepted_varieties",
+            "register",
+            "assessment_basis",
+            "public_constraints"
+          ],
+          "additionalProperties": false,
+          "description": "This object fixes locale, permitted varieties, register, and judgment basis."
+        },
+        "task_components": {
+          "type": "object",
+          "properties": {
+            "detection": {
+              "const": true,
+              "description": "This flag states whether the task requests error detection."
+            },
+            "classification": {
+              "type": "boolean",
+              "description": "This flag states whether the task requests a category for each detected error."
+            },
+            "correction": {
+              "type": "boolean",
+              "description": "This flag or object describes correction requirements or decisions in its parent contract."
+            },
+            "explanation": {
+              "type": "boolean",
+              "description": "Legacy explanation invitation preference. Under answer-components-v2 explanation is optional and every supplied explanation is assessed independently, regardless of this flag; it does not enter the primary composite."
+            }
+          },
+          "required": [
+            "detection",
+            "classification",
+            "correction",
+            "explanation"
+          ],
+          "additionalProperties": false,
+          "description": "These flags freeze the requested answer components before the attempt."
+        },
+        "pace_wpm": {
+          "type": "integer",
+          "minimum": 60,
+          "description": "Synthesis preference, not an observed hard bound.",
+          "maximum": 250
+        },
+        "pace_tolerance_fraction": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.3,
+          "description": "Reported relative pace tolerance."
+        },
+        "gap_after_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Exact gap assembled after each turn."
+        }
+      },
+      "required": [
+        "variety_policy",
+        "task_components",
+        "pace_wpm",
+        "pace_tolerance_fraction",
+        "gap_after_ms"
+      ],
+      "additionalProperties": false,
+      "description": "Optional saved simple-form defaults; absence inherits configuration-registry.yaml simple_preparation."
+    },
+    "speech_profiles": {
+      "type": "array",
+      "items": {
+        "$ref": "speech-profile.schema.json"
+      },
+      "description": "Optional explicit configured extension profiles; unique IDs resolve only compatible installed adapters. Absence uses original registry profiles."
+    },
+    "audio_diagnostic_profile": {
+      "anyOf": [
+        {
+          "$ref": "audio-judge-profile.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Null only for declared absence."
+    }
+  },
+  "required": [
+    "schema_version",
+    "llm_profile",
+    "feedback_language",
+    "intended_uses",
+    "credential_refs",
+    "azure_region",
+    "connectors",
+    "limits",
+    "llm_profiles",
+    "stage_profiles",
+    "mapping_audit_enabled"
+  ],
+  "additionalProperties": false
+}

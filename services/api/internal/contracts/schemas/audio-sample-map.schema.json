@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/audio-sample-map.schema.json",
+  "title": "audio-sample-map",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "Current local stored contract."
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Private actual sample-map identity."
+    },
+    "render_plan_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Frozen core plan digest."
+    },
+    "output_audio_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Actual complete scoped output WAV digest."
+    },
+    "sample_rate_hz": {
+      "const": 24000,
+      "description": "Final delivery/master clock."
+    },
+    "sample_count": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Actual scoped output PCM length."
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "piece_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Existing frozen piece/turn identity; gaps attach to their preceding piece."
+          },
+          "source_audio_sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$",
+                "description": "Actual source WAV/PCM digest; null for inserted silence."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Null for no actual source/transform only."
+          },
+          "source_sample_rate_hz": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Actual native source clock; null for inserted silence."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Null for no actual source/transform only."
+          },
+          "source_start": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Inclusive source index; zero-length for inserted audio."
+          },
+          "source_end": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Exclusive source index."
+          },
+          "final_start": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Inclusive24kHz output index."
+          },
+          "final_end": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Exclusive24kHz output index."
+          },
+          "kind": {
+            "enum": [
+              "copy",
+              "resample",
+              "duration",
+              "splice",
+              "pause",
+              "gap"
+            ],
+            "description": "Exact actual transform, not intent."
+          },
+          "transform_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "Existing actual transformation/provenance identity."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Null for no actual source/transform only."
+          },
+          "crossfade_group_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "Same ID for both contributing overlap rows; null otherwise."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Null for no actual source/transform only."
+          }
+        },
+        "required": [
+          "piece_id",
+          "source_audio_sha256",
+          "source_sample_rate_hz",
+          "source_start",
+          "source_end",
+          "final_start",
+          "final_end",
+          "kind",
+          "transform_id",
+          "crossfade_group_id"
+        ],
+        "additionalProperties": false,
+        "description": "One actual source-to-final clock correspondence. Retain explicit overlap provenance."
+      },
+      "description": "Ordered complete actual clock coverage; crossfade overlap counted once."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "render_plan_sha256",
+    "output_audio_sha256",
+    "sample_rate_hz",
+    "sample_count",
+    "rows"
+  ],
+  "additionalProperties": false,
+  "description": "Private typed actual piece/final map; existing canonical_json case/version ownership, with native original clocks retained."
+}

@@ -41,7 +41,7 @@ func run() error {
 		}
 		return nil
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 270*time.Second)
 	defer cancel()
 	store, err := app.OpenStorage(ctx, os.Getenv("DATABASE_URL"), os.Getenv("MINIO_ENDPOINT"), os.Getenv("MINIO_ACCESS_KEY"), os.Getenv("MINIO_SECRET_KEY"), os.Getenv("MINIO_BUCKET"))
 	if err != nil {
@@ -49,6 +49,8 @@ func run() error {
 	}
 	defer store.DB.Close()
 	switch mode {
+	case "storage":
+		return store.StorageCommand(ctx, os.Stdin, os.Stdout)
 	case "migrate":
 		return store.Migrate(ctx)
 	case "media-init":

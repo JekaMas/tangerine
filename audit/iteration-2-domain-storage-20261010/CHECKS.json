@@ -1,0 +1,23 @@
+{
+  "go_behavior": {
+    "command": [
+      "docker",
+      "run",
+      "--rm",
+      "--entrypoint",
+      "sh",
+      "tangerine-i2-go:local",
+      "-c",
+      "go test -race -json -count=1 ./..."
+    ],
+    "image_id": "sha256:9f9514d3529d6306133ff0a59f57fafcdd6810c8b760e38e05e36cfcde5572a3",
+    "toolchain": "Go1.26.5",
+    "exit": 0,
+    "exact_passed_tests": 13
+  },
+  "go_static": {
+    "command": "docker run --rm --entrypoint sh tangerine-i2-go:local -c go vet ./... && test -z $(gofmt -l .)",
+    "exit": 0
+  },
+  "invalidation": "New contracts/domain/migration/asset owners and module dependencies invalidate Go package behavior and analysis. Shared workflow mechanics/pin unchanged; retained valid workflow greens remain scoped."
+}

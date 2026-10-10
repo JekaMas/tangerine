@@ -144,7 +144,7 @@ class Iteration1Tests(unittest.TestCase):
     def test_init_workspace_positive(self):
         self.assertEqual(self.sql('SELECT count(*) FROM workspaces'), '1')
         self.assertEqual(self.sql('SELECT count(*) FROM legacy_accounts'), '0');self.assertEqual(self.sql('SELECT count(*) FROM legacy_sessions'),'0')
-        self.assertEqual(self.sql('SELECT count(*) FROM schema_migrations'),'2')
+        self.assertEqual(self.sql('SELECT count(*) FROM schema_migrations'),'3')
     def test_init_idempotent_positive(self):
         before=self.sql('SELECT version,sha256,applied_at FROM schema_migrations ORDER BY version');self.compose('run','--rm','initialize')
         self.assertEqual(self.sql('SELECT version,sha256,applied_at FROM schema_migrations ORDER BY version'),before)

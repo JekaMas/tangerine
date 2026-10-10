@@ -1,0 +1,357 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/prompt-bundle.schema.json",
+  "title": "prompt-bundle",
+  "type": "object",
+  "description": "Saved immutable prompt/context bundle. Registry numeric identities and completeness have the semantic rules in docs/llm-lab.md.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "Current unreleased contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "Local immutable bundle identity."
+    },
+    "origin": {
+      "type": "string",
+      "enum": [
+        "builtin",
+        "registry_export",
+        "local_import"
+      ],
+      "description": "Actual bundle origin; no provider result implied."
+    },
+    "created_at": {
+      "type": "string",
+      "description": "Actual local creation timestamp with timezone."
+    },
+    "bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "One exact stage/phase prompt and context binding.",
+        "properties": {
+          "stage": {
+            "type": "string",
+            "enum": [
+              "case_generation",
+              "linguistic_audit",
+              "blind_claim_extraction",
+              "claim_mapping",
+              "mapping_audit",
+              "feedback",
+              "case_review",
+              "adjudication"
+            ],
+            "description": "Existing LLM stage."
+          },
+          "phase": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "canonical_text",
+                  "mutation"
+                ],
+                "description": "Generation phase; null for other stages."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Generation phase; null for other stages."
+          },
+          "prompt_id": {
+            "type": "string",
+            "description": "Original manifest prompt binding ID."
+          },
+          "template": {
+            "type": "string",
+            "description": "Exact owned prompt text."
+          },
+          "template_variables": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Existing named stage-input field."
+            },
+            "description": "Explicit template variables."
+          },
+          "prompt_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "Actual UTF-8 template byte hash."
+          },
+          "registry_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "MLflow registry name; null for builtin."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "MLflow registry name; null for builtin."
+          },
+          "registry_version": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Resolved numeric prompt version; null for builtin."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Resolved numeric prompt version; null for builtin."
+          },
+          "context_registry_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Context policy registry name; null for builtin."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Context policy registry name; null for builtin."
+          },
+          "context_registry_version": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Resolved numeric context version; null for builtin."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Resolved numeric context version; null for builtin."
+          },
+          "context_policy": {
+            "type": "object",
+            "description": "Stage context policy; obey docs/llm-lab.md and existing input schemas.",
+            "properties": {
+              "stage": {
+                "type": "string",
+                "enum": [
+                  "case_generation",
+                  "linguistic_audit",
+                  "blind_claim_extraction",
+                  "claim_mapping",
+                  "mapping_audit",
+                  "feedback",
+                  "case_review",
+                  "adjudication"
+                ],
+                "description": "Existing stage."
+              },
+              "phase": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "canonical_text",
+                      "mutation"
+                    ],
+                    "description": "Generation phase; null for other stages."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Generation phase; null for other stages."
+              },
+              "instruction_template": {
+                "type": "string",
+                "description": "Owned context instructions; user/source values remain data."
+              },
+              "component_order": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "prompt",
+                    "context_policy",
+                    "taxonomy",
+                    "recipes",
+                    "public_context",
+                    "canonical_script",
+                    "mutation_key",
+                    "answer",
+                    "source_excerpt",
+                    "evidence",
+                    "prior_decisions",
+                    "wire_schema",
+                    "candidate",
+                    "extraction",
+                    "scoring_result",
+                    "rubric"
+                  ],
+                  "description": "Input component kind."
+                },
+                "description": "Stable assembly order for this stage."
+              },
+              "template_variables": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Named existing stage-input field; no environment/secret expansion."
+                },
+                "description": "Explicit variables; empty for literal templates."
+              },
+              "selection_notes": {
+                "type": "string",
+                "description": "Explicit optional-source selection and exclusions; no silent truncation of required data."
+              }
+            },
+            "required": [
+              "stage",
+              "phase",
+              "instruction_template",
+              "component_order",
+              "template_variables",
+              "selection_notes"
+            ],
+            "additionalProperties": false
+          },
+          "context_policy_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "JCS policy hash."
+          },
+          "input_schema": {
+            "type": "string",
+            "description": "Current input schema filename."
+          },
+          "input_schema_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "Actual schema byte hash."
+          },
+          "output_schema": {
+            "type": "string",
+            "description": "Current output schema filename."
+          },
+          "output_schema_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "Actual schema byte hash."
+          }
+        },
+        "required": [
+          "stage",
+          "phase",
+          "prompt_id",
+          "template",
+          "template_variables",
+          "prompt_sha256",
+          "registry_name",
+          "registry_version",
+          "context_registry_name",
+          "context_registry_version",
+          "context_policy",
+          "context_policy_sha256",
+          "input_schema",
+          "input_schema_sha256",
+          "output_schema",
+          "output_schema_sha256"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Exactly nine current manifest stage/phase bindings; no missing or duplicate pair."
+    },
+    "bundle_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 of JCS bundle excluding only bundle_sha256."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "origin",
+    "created_at",
+    "bindings",
+    "bundle_sha256"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "selection": {
+      "type": "object",
+      "description": "Input to lab export --selection, or use --builtins with no selection file.",
+      "properties": {
+        "bindings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "stage": {
+                "type": "string",
+                "enum": [
+                  "case_generation",
+                  "linguistic_audit",
+                  "blind_claim_extraction",
+                  "claim_mapping",
+                  "mapping_audit",
+                  "feedback",
+                  "case_review",
+                  "adjudication"
+                ],
+                "description": "Existing LLM stage."
+              },
+              "phase": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "canonical_text",
+                      "mutation"
+                    ],
+                    "description": "Generation phase; null for other stages."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Generation phase; null for other stages."
+              },
+              "prompt_name": {
+                "type": "string"
+              },
+              "prompt_version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "context_name": {
+                "type": "string"
+              },
+              "context_version": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "required": [
+              "stage",
+              "phase",
+              "prompt_name",
+              "prompt_version",
+              "context_name",
+              "context_version"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "bindings"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

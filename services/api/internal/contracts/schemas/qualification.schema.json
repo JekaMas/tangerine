@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/qualification.schema.json",
+  "title": "qualification",
+  "type": "object",
+  "description": "Historical/native imported metadata retained losslessly. Not required by current LLM-only product workflow.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The competence record.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "person_id": {
+      "type": "string",
+      "description": "The genuine subject.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "competence": {
+      "type": "string",
+      "description": "The supported competence.",
+      "enum": [
+        "english_language_teaching",
+        "english_linguistics",
+        "phonetics",
+        "adjudication"
+      ]
+    },
+    "basis": {
+      "type": "string",
+      "description": "The evidence basis.",
+      "enum": [
+        "qualification_document",
+        "documented_competence_assessment"
+      ]
+    },
+    "evidence_asset_ids": {
+      "type": "array",
+      "description": "Supporting documents.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "issuer": {
+      "type": "string",
+      "description": "The real issuing body or assessor.",
+      "maxLength": 300,
+      "minLength": 1
+    },
+    "issued_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The issue time if supplied.",
+          "maxLength": 35,
+          "minLength": 20,
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The issue time if supplied."
+    },
+    "expires_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The issuer expiry, not an invented expiry.",
+          "maxLength": 35,
+          "minLength": 20,
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The issuer expiry, not an invented expiry."
+    },
+    "attester_person_id": {
+      "type": "string",
+      "description": "The genuine local attester.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "attested_at": {
+      "type": "string",
+      "description": "The local attestation time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "revoked_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The revocation time.",
+          "maxLength": 35,
+          "minLength": 20,
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The revocation time."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "person_id",
+    "competence",
+    "basis",
+    "evidence_asset_ids",
+    "issuer",
+    "issued_at",
+    "expires_at",
+    "attester_person_id",
+    "attested_at",
+    "revoked_at"
+  ],
+  "additionalProperties": false
+}

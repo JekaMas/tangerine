@@ -1,0 +1,239 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/source-format-binding.schema.json",
+  "title": "source-format-binding",
+  "type": "object",
+  "description": "Current LLM processing record or lossless imported source record; no human peer review prerequisite.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The exact source format binding.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "source_id": {
+      "type": "string",
+      "description": "The source profile.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "release_version": {
+      "type": "string",
+      "description": "The real source release.",
+      "maxLength": 500,
+      "minLength": 1
+    },
+    "documentation_asset_ids": {
+      "type": "array",
+      "description": "The source-owner format documentation.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "input_format": {
+      "type": "string",
+      "description": "The raw format.",
+      "enum": [
+        "xml",
+        "xlsx",
+        "m2",
+        "textgrid",
+        "json_kaldi",
+        "vendor_export"
+      ]
+    },
+    "record_selector": {
+      "type": "string",
+      "description": "An explicit XML path, worksheet/table name, or documented record boundary.",
+      "maxLength": 3000,
+      "minLength": 1
+    },
+    "fields": {
+      "type": "array",
+      "description": "Every relevant field and every raw-only field.",
+      "items": {
+        "type": "object",
+        "description": "One explicit field mapping.",
+        "properties": {
+          "source_path": {
+            "type": "string",
+            "description": "The exact path/header supplied by the source.",
+            "maxLength": 3000,
+            "minLength": 1
+          },
+          "target_field": {
+            "type": "string",
+            "description": "The permitted normalized field.",
+            "enum": [
+              "record_id",
+              "learner_id",
+              "speaker_id",
+              "task_id",
+              "prompt_id",
+              "text",
+              "correction",
+              "source_label",
+              "token_span",
+              "codepoint_span",
+              "time_span",
+              "cefr",
+              "nationality",
+              "l1",
+              "age",
+              "gender",
+              "score",
+              "comment",
+              "raw_only"
+            ]
+          },
+          "required": {
+            "type": "boolean",
+            "description": "Whether absence invalidates the mapping."
+          },
+          "conversion": {
+            "type": "string",
+            "description": "A fixed conversion.",
+            "enum": [
+              "identity",
+              "decimal",
+              "integer",
+              "source_token_span",
+              "source_seconds",
+              "raw_only"
+            ]
+          },
+          "null_values": {
+            "type": "array",
+            "description": "The exact source markers.",
+            "items": {
+              "type": "string",
+              "description": "An explicitly documented null marker.",
+              "maxLength": 1000,
+              "minLength": 0
+            },
+            "minItems": 0,
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "source_path",
+          "target_field",
+          "required",
+          "conversion",
+          "null_values"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 10000
+    },
+    "label_map_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The separately reviewed complete label map.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The separately reviewed complete label map."
+    },
+    "review_person_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The real person who checked documentation against acquired bytes.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Legacy imported value; null for LLM processing."
+    },
+    "reviewed_at": {
+      "type": "string",
+      "description": "The real format review time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "origin": {
+      "type": "string",
+      "enum": [
+        "llm",
+        "source_import"
+      ],
+      "description": "Actual label origin; never a claim of new human peer review."
+    },
+    "provider_receipt_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "uniqueItems": true
+    },
+    "input_modality": {
+      "type": "string",
+      "enum": [
+        "text",
+        "text_with_speech_evidence",
+        "audio",
+        "native_annotation"
+      ],
+      "description": "Actual input modality; transcript-only models never claim direct hearing."
+    },
+    "binding_program_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+          "description": "Existing private typed asset; historic absent field means null, never an invented asset."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Existing private typed asset; historic absent field means null, never an invented asset."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "source_id",
+    "release_version",
+    "documentation_asset_ids",
+    "input_format",
+    "record_selector",
+    "fields",
+    "label_map_asset_id",
+    "review_person_id",
+    "reviewed_at",
+    "origin",
+    "provider_receipt_ids",
+    "input_modality"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/stage-cache.schema.json",
+  "title": "stage-cache",
+  "type": "object",
+  "description": "Reuse requires equality of every scope field and current permission.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The local immutable stage cache record.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "attempt_id": {
+      "type": "string",
+      "description": "The exact attempt.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "case_sha256": {
+      "type": "string",
+      "description": "The case digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "audio_sha256": {
+      "type": "string",
+      "description": "The recording digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "answer_sha256": {
+      "type": "string",
+      "description": "The original answer digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "stage": {
+      "type": "string",
+      "description": "The processing stage.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "input_sha256": {
+      "type": "string",
+      "description": "The full input digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "binding_sha256": {
+      "type": "string",
+      "description": "The full effective binding digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "output_asset_id": {
+      "type": "string",
+      "description": "The accepted actual stage result.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "output_sha256": {
+      "type": "string",
+      "description": "Its digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "receipt_id": {
+      "type": "string",
+      "description": "The real call receipt.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "validation_version": {
+      "type": "string",
+      "description": "The full local invariant version.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "permission_epoch": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "description": "Legacy imported bookkeeping, not a runtime prerequisite or cache key input.",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Legacy imported value; null for LLM processing."
+    },
+    "created_at": {
+      "type": "string",
+      "description": "The cache commit time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "attempt_id",
+    "case_sha256",
+    "audio_sha256",
+    "answer_sha256",
+    "stage",
+    "input_sha256",
+    "binding_sha256",
+    "output_asset_id",
+    "output_sha256",
+    "receipt_id",
+    "validation_version",
+    "permission_epoch",
+    "created_at"
+  ],
+  "additionalProperties": false
+}

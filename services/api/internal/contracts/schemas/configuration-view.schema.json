@@ -1,0 +1,264 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/configuration-view.schema.json",
+  "title": "configuration-view",
+  "type": "object",
+  "description": "A redacted configuration view.",
+  "properties": {
+    "configuration_sha256": {
+      "type": "string",
+      "description": "The effective nonsecret digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "profile_ids": {
+      "type": "array",
+      "description": "Configured profiles.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "credentials": {
+      "type": "array",
+      "description": "No credential value is returned.",
+      "items": {
+        "type": "object",
+        "description": "Secret presence only.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The credential name.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "present": {
+            "type": "boolean",
+            "description": "Whether the secret exists."
+          },
+          "last_checked_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Actual local configuration check.",
+                "maxLength": 35,
+                "minLength": 20,
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Actual local configuration check."
+          }
+        },
+        "required": [
+          "name",
+          "present",
+          "last_checked_at"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 100
+    },
+    "source_statuses": {
+      "type": "array",
+      "description": "All required sources.",
+      "items": {
+        "$ref": "source-status.schema.json"
+      },
+      "minItems": 0,
+      "maxItems": 50
+    },
+    "intended_uses": {
+      "type": "array",
+      "description": "Explicit use codes.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "limits": {
+      "$ref": "configuration.schema.json#/properties/limits",
+      "description": "The explicit nonsecret limits."
+    },
+    "active_prompt_bundle_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Current saved bundle identity; null means builtin."
+    },
+    "active_prompt_bundle_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Resolved actual bundle hash when available."
+    },
+    "llm_lab_trace_enabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Local diagnostic export setting."
+    },
+    "llm_lab_capture_content": {
+      "type": "boolean",
+      "default": false,
+      "description": "Opt-in private local content copies."
+    },
+    "preparation_defaults": {
+      "type": "object",
+      "properties": {
+        "variety_policy": {
+          "type": "object",
+          "properties": {
+            "target_locale": {
+              "type": "string",
+              "enum": [
+                "en-US",
+                "en-GB"
+              ],
+              "description": "This field identifies the target English locale for the published variety policy."
+            },
+            "accepted_varieties": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1,
+              "description": "These English varieties are permitted by the fixed case context."
+            },
+            "register": {
+              "type": "string",
+              "minLength": 1,
+              "description": "This field states the social or institutional register required by the task."
+            },
+            "assessment_basis": {
+              "type": "string",
+              "enum": [
+                "intelligibility",
+                "explicit_target_form",
+                "contextual_appropriacy"
+              ],
+              "description": "This field states the declared basis for judging the language target."
+            },
+            "public_constraints": {
+              "type": "string",
+              "minLength": 1,
+              "description": "These conditions give the teacher the context necessary to judge the case fairly."
+            }
+          },
+          "required": [
+            "target_locale",
+            "accepted_varieties",
+            "register",
+            "assessment_basis",
+            "public_constraints"
+          ],
+          "additionalProperties": false,
+          "description": "This object fixes locale, permitted varieties, register, and judgment basis."
+        },
+        "task_components": {
+          "type": "object",
+          "properties": {
+            "detection": {
+              "const": true,
+              "description": "This flag states whether the task requests error detection."
+            },
+            "classification": {
+              "type": "boolean",
+              "description": "This flag states whether the task requests a category for each detected error."
+            },
+            "correction": {
+              "type": "boolean",
+              "description": "This flag or object describes correction requirements or decisions in its parent contract."
+            },
+            "explanation": {
+              "type": "boolean",
+              "description": "Legacy explanation invitation preference. Under answer-components-v2 explanation is optional and every supplied explanation is assessed independently, regardless of this flag; it does not enter the primary composite."
+            }
+          },
+          "required": [
+            "detection",
+            "classification",
+            "correction",
+            "explanation"
+          ],
+          "additionalProperties": false,
+          "description": "These flags freeze the requested answer components before the attempt."
+        },
+        "pace_wpm": {
+          "type": "integer",
+          "minimum": 60,
+          "description": "Synthesis preference, not an observed hard bound.",
+          "maximum": 250
+        },
+        "pace_tolerance_fraction": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.3,
+          "description": "Reported relative pace tolerance."
+        },
+        "gap_after_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Exact gap assembled after each turn."
+        }
+      },
+      "required": [
+        "variety_policy",
+        "task_components",
+        "pace_wpm",
+        "pace_tolerance_fraction",
+        "gap_after_ms"
+      ],
+      "additionalProperties": false,
+      "description": "Optional saved simple-form defaults; absence inherits configuration-registry.yaml simple_preparation."
+    },
+    "provider_access_policy": {
+      "$ref": "provider-access-policy.schema.json",
+      "description": "Absence on historical records inherits current registry policy; effective new snapshots contain the full policy."
+    },
+    "speech_profiles": {
+      "type": "array",
+      "items": {
+        "$ref": "speech-profile.schema.json"
+      },
+      "description": "Optional explicit configured extension profiles; unique IDs resolve only compatible installed adapters. Absence uses original registry profiles."
+    }
+  },
+  "required": [
+    "configuration_sha256",
+    "profile_ids",
+    "credentials",
+    "source_statuses",
+    "intended_uses",
+    "limits"
+  ],
+  "additionalProperties": false
+}

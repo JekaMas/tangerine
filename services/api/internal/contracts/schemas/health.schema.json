@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/health.schema.json",
+  "title": "health",
+  "type": "object",
+  "description": "Readiness is not a paid-provider conformance test.",
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "Actual health.",
+      "enum": [
+        "ok",
+        "not_ready"
+      ]
+    },
+    "database": {
+      "type": "string",
+      "description": "Actual database readiness.",
+      "enum": [
+        "ready",
+        "unavailable",
+        "migration_required"
+      ]
+    },
+    "storage": {
+      "type": "string",
+      "description": "Actual private storage readiness.",
+      "enum": [
+        "ready",
+        "unavailable"
+      ]
+    },
+    "speech": {
+      "type": "string",
+      "description": "Actual internal service readiness.",
+      "enum": [
+        "ready",
+        "unavailable"
+      ]
+    },
+    "provider_configuration": {
+      "type": "string",
+      "description": "Whether real keys are available.",
+      "enum": [
+        "ready",
+        "missing_credentials",
+        "blocked_rights"
+      ]
+    },
+    "release_id": {
+      "type": "string",
+      "description": "The actual image release label.",
+      "maxLength": 200,
+      "minLength": 1
+    }
+  },
+  "required": [
+    "status",
+    "database",
+    "storage",
+    "speech",
+    "provider_configuration",
+    "release_id"
+  ],
+  "additionalProperties": false
+}

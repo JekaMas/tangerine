@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/play-event-request.schema.json",
+  "title": "play-event-request",
+  "type": "object",
+  "description": "Exact creation/submit content projection for play_event. Response preserves the full stored record; server assigns envelope.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "attempt_id": {
+      "type": "string",
+      "description": "The existing attempt.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "audio_sha256": {
+      "type": "string",
+      "description": "The exact media resource.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "kind": {
+      "type": "string",
+      "description": "The player event.",
+      "enum": [
+        "play",
+        "pause",
+        "seek",
+        "ended"
+      ]
+    },
+    "client_sequence": {
+      "type": "integer",
+      "description": "A monotonically increasing sequence within this page instance.",
+      "minimum": 0,
+      "maximum": 2147483647
+    },
+    "page_instance_id": {
+      "type": "string",
+      "description": "The page instance identity.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "position_sample": {
+      "type": "integer",
+      "description": "The position on the delivery clock.",
+      "minimum": 0,
+      "maximum": 2147483647
+    },
+    "client_time_ms": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The reported wall time. It is not authoritative.",
+          "maxLength": 4096,
+          "minLength": 1,
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The reported wall time. It is not authoritative."
+    }
+  },
+  "required": [
+    "schema_version",
+    "attempt_id",
+    "audio_sha256",
+    "kind",
+    "client_sequence",
+    "page_instance_id",
+    "position_sample",
+    "client_time_ms"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/source-status.schema.json",
+  "title": "source-status",
+  "type": "object",
+  "description": "A source receipt summary. A metadata reference is not acquired data.",
+  "properties": {
+    "source_id": {
+      "type": "string",
+      "description": "The required source.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "selected_release_ids": {
+      "type": "array",
+      "description": "All requested releases.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "status": {
+      "type": "string",
+      "description": "The actual source state.",
+      "enum": [
+        "not_acquired",
+        "rights_missing",
+        "interface_missing",
+        "format_unbound",
+        "ready_to_import",
+        "incomplete",
+        "complete",
+        "revoked"
+      ]
+    },
+    "release_ids": {
+      "type": "array",
+      "description": "Actual acquired releases.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "import_report_ids": {
+      "type": "array",
+      "description": "Actual complete or partial imports.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "missing_component_names": {
+      "type": "array",
+      "description": "Unacquired components.",
+      "items": {
+        "type": "string",
+        "description": "An exact manifest component name.",
+        "maxLength": 1000,
+        "minLength": 1
+      },
+      "minItems": 0,
+      "maxItems": 10000
+    },
+    "reasons": {
+      "type": "array",
+      "description": "Current reasons.",
+      "items": {
+        "type": "string",
+        "description": "An actual blocker, not an invented endpoint.",
+        "maxLength": 3000,
+        "minLength": 0
+      },
+      "minItems": 0,
+      "maxItems": 100
+    },
+    "raw_complete": {
+      "type": "boolean",
+      "description": "All actual required supplied members/records inventoried with reconciled disposition; independent of semantic mapping."
+    },
+    "normalized_complete": {
+      "type": "boolean",
+      "description": "All required native semantics have an actual binding, or documented label-absence states; no guessed labels."
+    },
+    "raw_only_records": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)$",
+      "description": "Accepted raw records whose project semantic conversion is not yet available; subset of accepted_records, never extra encountered records."
+    }
+  },
+  "required": [
+    "source_id",
+    "selected_release_ids",
+    "status",
+    "release_ids",
+    "import_report_ids",
+    "missing_component_names",
+    "reasons",
+    "raw_complete",
+    "normalized_complete",
+    "raw_only_records"
+  ],
+  "additionalProperties": false
+}

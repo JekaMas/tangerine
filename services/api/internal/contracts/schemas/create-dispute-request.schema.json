@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/create-dispute-request.schema.json",
+  "title": "create-dispute-request",
+  "type": "object",
+  "description": "Exact creation/submit content projection for create_dispute. Response preserves the full stored record; server assigns envelope.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "attempt_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The affected attempt, if this dispute arose from an answer.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The affected attempt, if this dispute arose from an answer."
+    },
+    "case_version_id": {
+      "type": "string",
+      "description": "The disputed version.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "result_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The disputed result.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The disputed result."
+    },
+    "claim_ids": {
+      "type": "array",
+      "description": "Affected teacher statements.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "unit_ids": {
+      "type": "array",
+      "description": "Affected known units.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "evidence_ids": {
+      "type": "array",
+      "description": "Supporting evidence.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "statement": {
+      "type": "string",
+      "description": "The actual dispute text.",
+      "maxLength": 20000,
+      "minLength": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "attempt_id",
+    "case_version_id",
+    "result_id",
+    "claim_ids",
+    "unit_ids",
+    "evidence_ids",
+    "statement"
+  ],
+  "additionalProperties": false
+}

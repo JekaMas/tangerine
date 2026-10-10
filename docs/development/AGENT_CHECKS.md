@@ -28,3 +28,9 @@ from the pinned version, use the Dockerfile's `build` target for `go test -race
 The production web Docker build already executes locked `npm ci` and
 `npm run build`; it is the same language/build check without host Node setup.
 No host prerequisite installation follows from this adapter.
+
+Iteration2 completion selects I2-01.P1 through I2-14.P1 and the invalidated I1
+foundation closure. Run native commands sequentially: both own loopback3000.
+The56 new cases are real storage/browser fixtures; they do not establish later
+LLM/generation/scoring/import semantic acceptance. Compile/vet/race use pinned
+Go1.26.5 Docker; host Go remains an acceptance-tool mismatch, not a prerequisite.

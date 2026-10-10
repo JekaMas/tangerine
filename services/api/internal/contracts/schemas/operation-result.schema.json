@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/operation-result.schema.json",
+  "title": "operation-result",
+  "type": "object",
+  "description": "A mutation result, not evidence of an unperformed action.",
+  "properties": {
+    "operation_id": {
+      "type": "string",
+      "description": "The actual operation.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "state": {
+      "type": "string",
+      "description": "The operation state.",
+      "enum": [
+        "complete",
+        "failed",
+        "review_required",
+        "in_progress"
+      ]
+    },
+    "subject": {
+      "type": "object",
+      "description": "An explicitly typed reference.",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "description": "The kind of the referenced object.",
+          "enum": [
+            "case",
+            "unit",
+            "utterance",
+            "attempt",
+            "asset",
+            "claim",
+            "review",
+            "record",
+            "release",
+            "configuration"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "description": "The identifier in the declared kind.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        "version_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The exact version when the object is versioned.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The exact version when the object is versioned."
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "version_id"
+      ],
+      "additionalProperties": false
+    },
+    "revision": {
+      "type": "integer",
+      "description": "The new mutable revision.",
+      "minimum": 0,
+      "maximum": 2147483647
+    },
+    "artifact_ids": {
+      "type": "array",
+      "description": "Actual committed artifacts.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "issue_ids": {
+      "type": "array",
+      "description": "Existing unresolved issues.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "operation_id",
+    "state",
+    "subject",
+    "revision",
+    "artifact_ids",
+    "issue_ids"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,216 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/permission-grant.schema.json",
+  "title": "permission-grant",
+  "type": "object",
+  "description": "An explicit per-use grant. Credentials never imply permission.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The real rights evidence record.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "source_id": {
+      "type": "string",
+      "description": "The exact source owner.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "release_ids": {
+      "type": "array",
+      "description": "The covered release identifiers.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "grantee": {
+      "type": "string",
+      "description": "The actual licensed party.",
+      "maxLength": 1000,
+      "minLength": 1
+    },
+    "grantor": {
+      "type": "string",
+      "description": "The actual rights holder.",
+      "maxLength": 1000,
+      "minLength": 1
+    },
+    "uses": {
+      "type": "array",
+      "description": "The explicit grants.",
+      "items": {
+        "type": "string",
+        "description": "One separately permitted use.",
+        "enum": [
+          "local_analysis",
+          "internal_training",
+          "commercial_evaluation",
+          "derivative_exercises",
+          "distribution",
+          "model_training",
+          "external_api_transfer",
+          "voice_use"
+        ]
+      },
+      "minItems": 0,
+      "maxItems": 8,
+      "uniqueItems": true
+    },
+    "scope_document_asset_ids": {
+      "type": "array",
+      "description": "The actual license or signed agreement bytes.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "credential_ref": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "A secret reference for access, not permission evidence.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "A secret reference for access, not permission evidence."
+    },
+    "recipients": {
+      "type": "array",
+      "description": "Recipient constraints.",
+      "items": {
+        "type": "string",
+        "description": "An explicitly permitted external recipient.",
+        "maxLength": 500,
+        "minLength": 1
+      },
+      "minItems": 0,
+      "maxItems": 100
+    },
+    "territories": {
+      "type": "array",
+      "description": "Territory constraints.",
+      "items": {
+        "type": "string",
+        "description": "A documented territory restriction.",
+        "maxLength": 200,
+        "minLength": 1
+      },
+      "minItems": 0,
+      "maxItems": 100
+    },
+    "valid_from": {
+      "type": "string",
+      "description": "The actual grant start.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "valid_until": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The actual grant expiry.",
+          "maxLength": 35,
+          "minLength": 20,
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The actual grant expiry."
+    },
+    "revoked_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The actual revocation time.",
+          "maxLength": 35,
+          "minLength": 20,
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The actual revocation time."
+    },
+    "status": {
+      "type": "string",
+      "description": "The reviewed rights state.",
+      "enum": [
+        "pending",
+        "permitted",
+        "restricted",
+        "revoked"
+      ]
+    },
+    "attester_person_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The person responsible for the local rights assessment.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Legacy imported value; null for LLM processing."
+    },
+    "created_at": {
+      "type": "string",
+      "description": "The record time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "source_id",
+    "release_ids",
+    "grantee",
+    "grantor",
+    "uses",
+    "scope_document_asset_ids",
+    "credential_ref",
+    "recipients",
+    "territories",
+    "valid_from",
+    "valid_until",
+    "revoked_at",
+    "status",
+    "attester_person_id",
+    "created_at"
+  ],
+  "additionalProperties": false
+}

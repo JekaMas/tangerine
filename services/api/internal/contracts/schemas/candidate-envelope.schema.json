@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/candidate-envelope.schema.json",
+  "title": "candidate-envelope",
+  "type": "object",
+  "description": "The actual saved candidate and its generated identity.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The saved candidate.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "revision": {
+      "type": "integer",
+      "description": "The candidate revision.",
+      "minimum": 0,
+      "maximum": 2147483647
+    },
+    "candidate_sha256": {
+      "type": "string",
+      "description": "The exact candidate payload.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "candidate": {
+      "$ref": "case-candidate.schema.json"
+    },
+    "preparation_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "The durable saved preparation that produced this candidate."
+    }
+  },
+  "required": [
+    "id",
+    "revision",
+    "candidate_sha256",
+    "candidate",
+    "preparation_id"
+  ],
+  "additionalProperties": false
+}

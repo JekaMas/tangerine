@@ -1,0 +1,274 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/review-decision.schema.json",
+  "title": "review-decision",
+  "type": "object",
+  "description": "Current LLM processing record or lossless imported source record; no human peer review prerequisite.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "id": {
+      "type": "string",
+      "description": "The final decision record.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "review_context_id": {
+      "type": "string",
+      "description": "The exact review context.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "blind_annotation_id": {
+      "type": "string",
+      "description": "The preceding frozen blind submission.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "disclosure_id": {
+      "type": "string",
+      "description": "The actual key-disclosure event.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "case_version_id": {
+      "type": "string",
+      "description": "The reviewed version.",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "case_sha256": {
+      "type": "string",
+      "description": "The reviewed key and context digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "audio_sha256": {
+      "type": "string",
+      "description": "The final delivery digest.",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "decision": {
+      "type": "string",
+      "description": "The LLM decision or imported native human decision.",
+      "enum": [
+        "approve",
+        "reject",
+        "needs_review"
+      ]
+    },
+    "approved_unit_ids": {
+      "type": "array",
+      "description": "The explicitly approved units.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "correspondences": {
+      "type": "array",
+      "description": "All blind-to-key relations.",
+      "items": {
+        "type": "object",
+        "description": "A post-disclosure correspondence. It does not edit blind observations.",
+        "properties": {
+          "observation_id": {
+            "type": "string",
+            "description": "An existing blind observation.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "unit_ids": {
+            "type": "array",
+            "description": "The reviewed planned units, including none.",
+            "items": {
+              "type": "string",
+              "description": "An existing identifier.",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 100000,
+            "uniqueItems": true
+          },
+          "relation": {
+            "type": "string",
+            "description": "The reviewed correspondence.",
+            "enum": [
+              "same_event",
+              "split",
+              "merge",
+              "unplanned_error",
+              "unresolved",
+              "acceptable_control"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "description": "The reviewer justification.",
+            "maxLength": 4000,
+            "minLength": 1
+          }
+        },
+        "required": [
+          "observation_id",
+          "unit_ids",
+          "relation",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 1000
+    },
+    "rationale_record_ids": {
+      "type": "array",
+      "description": "The approved explanations.",
+      "items": {
+        "type": "string",
+        "description": "An existing identifier.",
+        "maxLength": 128,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000,
+      "uniqueItems": true
+    },
+    "reason": {
+      "type": "string",
+      "description": "The human decision explanation.",
+      "maxLength": 10000,
+      "minLength": 1
+    },
+    "adjudication_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The actual adjudication that resolved a dispute.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The actual adjudication that resolved a dispute."
+    },
+    "person_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The imported native reviewer, null for LLM review.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Legacy imported value; null for LLM processing."
+    },
+    "submitted_at": {
+      "type": "string",
+      "description": "The decision time.",
+      "maxLength": 35,
+      "minLength": 20,
+      "format": "date-time"
+    },
+    "origin": {
+      "type": "string",
+      "enum": [
+        "llm",
+        "source_import"
+      ],
+      "description": "Actual label origin; never a claim of new human peer review."
+    },
+    "provider_receipt_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "uniqueItems": true
+    },
+    "input_modality": {
+      "type": "string",
+      "enum": [
+        "text",
+        "text_with_speech_evidence",
+        "audio",
+        "native_annotation"
+      ],
+      "description": "Actual input modality; transcript-only models never claim direct hearing."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "review_context_id",
+    "blind_annotation_id",
+    "disclosure_id",
+    "case_version_id",
+    "case_sha256",
+    "audio_sha256",
+    "decision",
+    "approved_unit_ids",
+    "correspondences",
+    "rationale_record_ids",
+    "reason",
+    "adjudication_id",
+    "person_id",
+    "submitted_at",
+    "origin",
+    "provider_receipt_ids",
+    "input_modality"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "origin": {
+            "const": "llm"
+          }
+        },
+        "required": [
+          "origin"
+        ]
+      },
+      "then": {
+        "properties": {
+          "person_id": {
+            "const": null
+          },
+          "provider_receipt_ids": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,283 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/acoustic-production-plan.schema.json",
+  "title": "acoustic-production-plan",
+  "type": "object",
+  "description": "Native frozen projection of saved LLM acoustic edits; existing Python speech owner, no new public endpoint.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "Current written contract version."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Existing version-scoped identifier."
+    },
+    "case_version_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Existing version-scoped identifier."
+    },
+    "mutation_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+    },
+    "render_plan_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+    },
+    "controller_registry_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Resolved private acoustic step; intervals come from actual alignment or whole explicitly rendered target piece, never inferred from text length.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "Existing version-scoped identifier."
+          },
+          "unit_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "Existing version-scoped identifier."
+          },
+          "controller": {
+            "type": "string",
+            "enum": [
+              "phone_pair",
+              "vowel_duration",
+              "pitch_duration",
+              "pause_insert",
+              "vot_edit"
+            ],
+            "description": "Exactly one declared value."
+          },
+          "source_piece_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "Existing version-scoped identifier."
+          },
+          "source_interval": {
+            "type": "object",
+            "description": "Half-open sample interval on the saved 24kHz piece; end exceeds start.",
+            "properties": {
+              "start": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Nonnegative exact integer."
+              },
+              "end": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Nonnegative exact integer."
+              }
+            },
+            "required": [
+              "start",
+              "end"
+            ],
+            "additionalProperties": false
+          },
+          "parameters": {
+            "type": "object",
+            "description": "Explicit parameters selected by the mutation LLM and consumed by the native compiler. Null unused fields; no executable text.",
+            "properties": {
+              "duration_ratio": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "Positive target/source duration ratio; never a universal language norm."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Positive target/source duration ratio; never a universal language norm."
+              },
+              "gain_db": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "Declared gain within the selected interval."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Declared gain within the selected interval."
+              },
+              "pitch_points": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "description": "Typed private contract.",
+                  "properties": {
+                    "fraction": {
+                      "type": "number",
+                      "description": "Position in [0,1] of this interval."
+                    },
+                    "semitones": {
+                      "type": "number",
+                      "description": "Offset above 100Hz; explicit target, not measurement."
+                    }
+                  },
+                  "required": [
+                    "fraction",
+                    "semitones"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "Ordered complete values."
+              },
+              "pause_ms": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Nonnegative exact integer."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Nonnegative exact integer."
+              },
+              "vot_ms": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Nonnegative exact integer."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Nonnegative exact integer."
+              },
+              "reference_ipa": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Exact saved value."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Exact saved value."
+              },
+              "mutated_ipa": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Exact saved value."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Exact saved value."
+              },
+              "phone_start": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Nonnegative exact integer."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Nonnegative exact integer."
+              },
+              "phone_end": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Nonnegative exact integer."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Nonnegative exact integer."
+              },
+              "expected_feature": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Exact saved value."
+              },
+              "accepted_reference": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Self-contained task-specific acceptable comparison, never a population norm."
+              }
+            },
+            "required": [
+              "duration_ratio",
+              "gain_db",
+              "pitch_points",
+              "pause_ms",
+              "vot_ms",
+              "reference_ipa",
+              "mutated_ipa",
+              "phone_start",
+              "phone_end",
+              "expected_feature",
+              "accepted_reference"
+            ],
+            "additionalProperties": false
+          },
+          "reference_piece_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+                "description": "Existing version-scoped identifier."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Existing version-scoped identifier."
+          }
+        },
+        "required": [
+          "id",
+          "unit_id",
+          "controller",
+          "source_piece_id",
+          "source_interval",
+          "parameters",
+          "reference_piece_id"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Ordered complete values."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "case_version_id",
+    "mutation_manifest_sha256",
+    "render_plan_sha256",
+    "controller_registry_sha256",
+    "steps"
+  ],
+  "additionalProperties": false
+}

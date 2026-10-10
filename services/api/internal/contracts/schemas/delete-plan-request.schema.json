@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/delete-plan-request.schema.json",
+  "title": "delete-plan-request",
+  "type": "object",
+  "description": "Exact creation/submit content projection for delete_plan. Response preserves the full stored record; server assigns envelope.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The local contract version."
+    },
+    "subjects": {
+      "type": "array",
+      "description": "Every selected subject.",
+      "items": {
+        "type": "object",
+        "description": "An explicitly typed reference.",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "description": "The kind of the referenced object.",
+            "enum": [
+              "case",
+              "unit",
+              "utterance",
+              "attempt",
+              "asset",
+              "claim",
+              "review",
+              "record",
+              "release",
+              "configuration"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "The identifier in the declared kind.",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+          },
+          "version_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The exact version when the object is versioned.",
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The exact version when the object is versioned."
+          }
+        },
+        "required": [
+          "kind",
+          "id",
+          "version_id"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 100000
+    },
+    "reason": {
+      "type": "string",
+      "description": "The actual basis.",
+      "enum": [
+        "operator_delete",
+        "consent_withdrawal",
+        "license_revocation",
+        "retention_cleanup"
+      ]
+    },
+    "retain_hashes": {
+      "type": "boolean",
+      "description": "Whether the documented rights basis permits retaining hashes."
+    }
+  },
+  "required": [
+    "schema_version",
+    "subjects",
+    "reason",
+    "retain_hashes"
+  ],
+  "additionalProperties": false
+}

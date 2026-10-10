@@ -1,0 +1,820 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/llm-experiment.schema.json",
+  "title": "llm-experiment",
+  "type": "object",
+  "description": "Explicit local experiment; preserve native exact arithmetic, all failures and expected-origin distinctions.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "id": {
+      "type": "string",
+      "description": "Experiment identity."
+    },
+    "scope": {
+      "type": "string",
+      "enum": [
+        "stage",
+        "answer_pipeline",
+        "generation_pipeline",
+        "full_flow"
+      ],
+      "description": "Comparable input scope."
+    },
+    "dataset_asset_id": {
+      "type": "string",
+      "description": "Ordered frozen array/manifest of llm-quality-case records."
+    },
+    "dataset_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Actual frozen complete dataset manifest hash."
+    },
+    "scorer_version": {
+      "type": "string",
+      "description": "Exact diagnostic scorer/semantic rubric version."
+    },
+    "metric_registry_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Frozen diagnostic metric registry."
+    },
+    "variants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Frozen candidate/baseline binding.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Variant identity."
+          },
+          "bundle_id": {
+            "type": "string",
+            "description": "Already saved exact bundle."
+          },
+          "bundle_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "Exact frozen bundle."
+          },
+          "profile_id": {
+            "type": "string",
+            "description": "Existing configured provider profile."
+          },
+          "configuration_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "Frozen provider parameters and stage overrides; never changes active workspace config."
+          },
+          "judge_profile_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Explicit semantic judge profile with linguistic_audit role, null if deterministic only."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Explicit semantic judge profile with linguistic_audit role, null if deterministic only."
+          },
+          "configuration_asset_id": {
+            "type": "string",
+            "description": "Actual complete saved configuration, never mutable settings."
+          }
+        },
+        "required": [
+          "id",
+          "bundle_id",
+          "bundle_sha256",
+          "profile_id",
+          "configuration_sha256",
+          "judge_profile_id",
+          "configuration_asset_id"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Explicit variants; paired comparison needs at least two."
+    },
+    "repetitions": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Requested observations per case/variant, default1."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "running",
+        "completed",
+        "partial",
+        "failed",
+        "cancelled"
+      ],
+      "description": "Actual execution state; planned is not evidence."
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "One observed case/variant/repetition; missing work stays not_run.",
+        "properties": {
+          "case_id": {
+            "type": "string",
+            "description": "Frozen dataset row."
+          },
+          "variant_id": {
+            "type": "string",
+            "description": "Declared variant."
+          },
+          "repetition": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "One-based explicit repetition."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "complete",
+              "failed",
+              "cancelled",
+              "not_run"
+            ],
+            "description": "Actual observed outcome."
+          },
+          "receipt_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Actual provider call receipts; empty when not run."
+            },
+            "description": "Ordered actual calls."
+          },
+          "trace_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Actual local allocated OTEL IDs."
+            },
+            "description": "All involved foreground traces."
+          },
+          "output_asset_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Actual saved outputs, null if none."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Actual saved outputs, null if none."
+          },
+          "metrics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "Metric observation under domain/llm-quality-metrics.v1.json.",
+              "properties": {
+                "metric_id": {
+                  "type": "string",
+                  "description": "Registered llm_lab diagnostic ID."
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "observed",
+                    "not_applicable",
+                    "insufficient_data"
+                  ],
+                  "description": "Applicability, distinct from numeric zero."
+                },
+                "numerator": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "Exact decimal arithmetic numerator, or null for sample statistics.",
+                      "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Exact decimal arithmetic numerator, or null for sample statistics."
+                },
+                "denominator": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "Exact count/decimal denominator, or null for nonratio statistic.",
+                      "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Exact count/decimal denominator, or null for nonratio statistic."
+                },
+                "samples": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "Exact decimal observation."
+                  },
+                  "description": "Ordered observed samples when required by the metric."
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "Exact decimal result; native ratios retain numerator/denominator. MLflow float is a display copy.",
+                      "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Exact scalar decimal when representable; ratios retain numerator/denominator and may leave value null. Applicability is controlled by status; exported floats are display copies."
+                },
+                "missing_reason": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "Required when not observed."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Required when not observed."
+                },
+                "basis": {
+                  "type": "string",
+                  "enum": [
+                    "deterministic",
+                    "native_reference",
+                    "llm_judged",
+                    "self_consistency",
+                    "provider_reported",
+                    "measured_audio"
+                  ],
+                  "description": "Actual observation basis."
+                },
+                "reference_count": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Applicable reference/sample count."
+                },
+                "excluded_count": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Unavailable/inapplicable rows explicitly reported."
+                },
+                "sufficient_statistics": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string",
+                    "description": "Exact decimal raw formula variable or per-leaf count."
+                  },
+                  "description": "Unreduced counts/amounts with registry variable names."
+                },
+                "known_subtotal": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "Exact known token or USD subtotal when total is unavailable."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Exact known token or USD subtotal when total is unavailable."
+                }
+              },
+              "required": [
+                "metric_id",
+                "status",
+                "numerator",
+                "denominator",
+                "samples",
+                "value",
+                "missing_reason",
+                "basis",
+                "reference_count",
+                "excluded_count",
+                "sufficient_statistics",
+                "known_subtotal"
+              ],
+              "additionalProperties": false
+            },
+            "description": "Supported row diagnostic observations."
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Safe actual error or cancellation reason."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Safe actual error or cancellation reason."
+          },
+          "export_status": {
+            "type": "string",
+            "enum": [
+              "disabled",
+              "exported",
+              "unexported"
+            ],
+            "description": "MLflow copy status; unrelated to provider success."
+          }
+        },
+        "required": [
+          "case_id",
+          "variant_id",
+          "repetition",
+          "status",
+          "receipt_ids",
+          "trace_ids",
+          "output_asset_id",
+          "metrics",
+          "error_code",
+          "export_status"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Actual completed/error and explicit unperformed rows."
+    },
+    "comparison_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Exact paired-row deltas/exclusions/coverage artifact, null before comparison."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Exact paired-row deltas/exclusions/coverage artifact, null before comparison."
+    },
+    "created_at": {
+      "type": "string",
+      "description": "Actual plan timestamp."
+    },
+    "finished_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Actual finish timestamp, null while unperformed/running."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Actual finish timestamp, null while unperformed/running."
+    },
+    "aggregates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "One per-variant metric.",
+        "properties": {
+          "variant_id": {
+            "type": "string",
+            "description": "Variant identity."
+          },
+          "metric": {
+            "type": "object",
+            "description": "Metric observation under domain/llm-quality-metrics.v1.json.",
+            "properties": {
+              "metric_id": {
+                "type": "string",
+                "description": "Registered llm_lab diagnostic ID."
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "observed",
+                  "not_applicable",
+                  "insufficient_data"
+                ],
+                "description": "Applicability, distinct from numeric zero."
+              },
+              "numerator": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "Exact decimal arithmetic numerator, or null for sample statistics.",
+                    "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Exact decimal arithmetic numerator, or null for sample statistics."
+              },
+              "denominator": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "Exact count/decimal denominator, or null for nonratio statistic.",
+                    "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Exact count/decimal denominator, or null for nonratio statistic."
+              },
+              "samples": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Exact decimal observation."
+                },
+                "description": "Ordered observed samples when required by the metric."
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "Exact decimal result; native ratios retain numerator/denominator. MLflow float is a display copy.",
+                    "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Exact scalar decimal when representable; ratios retain numerator/denominator and may leave value null. Applicability is controlled by status; exported floats are display copies."
+              },
+              "missing_reason": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "Required when not observed."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Required when not observed."
+              },
+              "basis": {
+                "type": "string",
+                "enum": [
+                  "deterministic",
+                  "native_reference",
+                  "llm_judged",
+                  "self_consistency",
+                  "provider_reported",
+                  "measured_audio"
+                ],
+                "description": "Actual observation basis."
+              },
+              "reference_count": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Applicable reference/sample count."
+              },
+              "excluded_count": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Unavailable/inapplicable rows explicitly reported."
+              },
+              "sufficient_statistics": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string",
+                  "description": "Exact decimal raw formula variable or per-leaf count."
+                },
+                "description": "Unreduced counts/amounts with registry variable names."
+              },
+              "known_subtotal": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "Exact known token or USD subtotal when total is unavailable."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Exact known token or USD subtotal when total is unavailable."
+              }
+            },
+            "required": [
+              "metric_id",
+              "status",
+              "numerator",
+              "denominator",
+              "samples",
+              "value",
+              "missing_reason",
+              "basis",
+              "reference_count",
+              "excluded_count",
+              "sufficient_statistics",
+              "known_subtotal"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "variant_id",
+          "metric"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Full-denominator aggregates, paired deltas in separate result artifact."
+    },
+    "judge_policy_asset_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Frozen judge policy asset, null for deterministic-only."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Frozen judge policy asset, null for deterministic-only."
+    },
+    "judge_policy_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Exact policy asset byte hash."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Exact policy asset byte hash."
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "scope",
+    "dataset_asset_id",
+    "dataset_sha256",
+    "scorer_version",
+    "metric_registry_sha256",
+    "variants",
+    "repetitions",
+    "status",
+    "rows",
+    "comparison_asset_id",
+    "created_at",
+    "finished_at",
+    "aggregates",
+    "judge_policy_asset_id",
+    "judge_policy_sha256"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "judge_policy": {
+      "type": "object",
+      "properties": {
+        "prompt_text": {
+          "type": "string",
+          "description": "Exact trusted diagnostic judge text."
+        },
+        "prompt_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Prompt UTF-8 bytes."
+        },
+        "rubric_version": {
+          "type": "string",
+          "description": "Frozen rubric version."
+        },
+        "rubric_text": {
+          "type": "string",
+          "description": "Exact selected rubric."
+        },
+        "input_schema_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Actual judge-input schema bytes."
+        },
+        "output_schema_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Actual judge-output schema bytes."
+        }
+      },
+      "required": [
+        "prompt_text",
+        "prompt_sha256",
+        "rubric_version",
+        "rubric_text",
+        "input_schema_sha256",
+        "output_schema_sha256"
+      ],
+      "additionalProperties": false,
+      "description": "Saved diagnostic policy asset outside the nine application prompt bindings."
+    },
+    "comparison": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "baseline_variant_id": {
+            "type": "string",
+            "description": "Selected baseline."
+          },
+          "candidate_variant_id": {
+            "type": "string",
+            "description": "Selected candidate."
+          },
+          "metric_id": {
+            "type": "string",
+            "description": "Diagnostic identity."
+          },
+          "paired_row_keys": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "case_id": {
+                  "type": "string",
+                  "description": "Dataset case."
+                },
+                "repetition": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "One-based repetition."
+                }
+              },
+              "required": [
+                "case_id",
+                "repetition"
+              ],
+              "additionalProperties": false,
+              "description": "Paired tuple within named variants."
+            },
+            "description": "Actually paired applicable tuples."
+          },
+          "excluded_row_keys": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "object",
+                  "properties": {
+                    "case_id": {
+                      "type": "string",
+                      "description": "Dataset case."
+                    },
+                    "repetition": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "description": "One-based repetition."
+                    }
+                  },
+                  "required": [
+                    "case_id",
+                    "repetition"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Paired tuple within named variants."
+                },
+                "reason": {
+                  "type": "string",
+                  "description": "Actual exclusion reason."
+                }
+              },
+              "required": [
+                "key",
+                "reason"
+              ],
+              "additionalProperties": false,
+              "description": "Excluded comparison tuple."
+            },
+            "description": "Reported exclusions."
+          },
+          "baseline_value": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string",
+                    "description": "Signed integer numerator.",
+                    "pattern": "^-?(0|[1-9][0-9]*)$"
+                  },
+                  "denominator": {
+                    "type": "string",
+                    "description": "Positive integer denominator.",
+                    "pattern": "^[1-9][0-9]*$"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false,
+                "description": "Exact reduced rational."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Exact reduced rational."
+          },
+          "candidate_value": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string",
+                    "description": "Signed integer numerator.",
+                    "pattern": "^-?(0|[1-9][0-9]*)$"
+                  },
+                  "denominator": {
+                    "type": "string",
+                    "description": "Positive integer denominator.",
+                    "pattern": "^[1-9][0-9]*$"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false,
+                "description": "Exact reduced rational."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Exact reduced rational."
+          },
+          "candidate_minus_baseline": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string",
+                    "description": "Signed integer numerator.",
+                    "pattern": "^-?(0|[1-9][0-9]*)$"
+                  },
+                  "denominator": {
+                    "type": "string",
+                    "description": "Positive integer denominator.",
+                    "pattern": "^[1-9][0-9]*$"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false,
+                "description": "Exact reduced rational."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Exact reduced rational."
+          },
+          "missing_reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Required when comparison unavailable."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Required when comparison unavailable."
+          }
+        },
+        "required": [
+          "baseline_variant_id",
+          "candidate_variant_id",
+          "metric_id",
+          "paired_row_keys",
+          "excluded_row_keys",
+          "baseline_value",
+          "candidate_value",
+          "candidate_minus_baseline",
+          "missing_reason"
+        ],
+        "additionalProperties": false,
+        "description": "One exact paired metric comparison."
+      },
+      "description": "Ordered exact comparison artifact."
+    }
+  }
+}

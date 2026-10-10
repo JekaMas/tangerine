@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/provider-connect-result.schema.json",
+  "title": "provider-connect-result",
+  "description": "Connect action result; select/disconnect return null authorization URL.",
+  "type": "object",
+  "properties": {
+    "connection": {
+      "$ref": "provider-connection.schema.json"
+    },
+    "authorization_url": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri",
+          "description": "Ephemeral browser navigation only; never persisted/logged/captured in Lab."
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "connection",
+    "authorization_url"
+  ],
+  "additionalProperties": false
+}
