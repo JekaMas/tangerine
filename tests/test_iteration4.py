@@ -1,7 +1,7 @@
 """Native Settings, persisted provider configuration and actual MLflow readback.
 Remote protocol fixtures are explicit substitutes; no hosted model quality claim.
 """
-import base64,copy,hashlib,json,os,socket,subprocess,time,unittest,uuid,urllib.request,urllib.error
+import base64,copy,hashlib,json,os,shutil,socket,subprocess,time,unittest,uuid,urllib.request,urllib.error
 from pathlib import Path
 import test_iteration1 as foundation
 import test_iteration2 as storage
@@ -9,7 +9,19 @@ from browser_probe import Browser
 ROOT=foundation.ROOT
 sha=lambda b:hashlib.sha256(b).hexdigest()
 class Iteration4Tests(unittest.TestCase):
- cleanup=classmethod(foundation.Iteration1Tests.cleanup.__func__)
+ @classmethod
+ def cleanup(cls):
+  try:
+   if (cls.extract/'data/config/runtime.env').exists():
+    # Include the enabled profile so test-owned Lab containers/networks cannot linger.
+    p=cls.compose('--profile','llm-lab','exec','-T','llm-lab','python','/tangerine/lab.py','snapshot','/lab/retained-native.db',check=False)
+    if p.returncode==0:
+     cid=cls.compose('--profile','llm-lab','ps','-q','llm-lab').stdout.strip()
+     cls.execute(['docker','cp',cid+':/lab/retained-native.db',str(cls.receipts/'actual-mlflow.db')])
+     cls.execute(['docker','cp',cid+':/lab/artifacts',str(cls.receipts/'actual-artifacts')])
+    result=cls.compose('--profile','llm-lab','down','--volumes','--remove-orphans',check=False)
+    if result.returncode:raise AssertionError('Test-owned provider stack cleanup failed; inspect native receipts')
+  finally:shutil.rmtree(cls.sandbox,ignore_errors=True)
  execute=classmethod(foundation.Iteration1Tests.execute.__func__)
  launch=classmethod(foundation.Iteration1Tests.launch.__func__)
  compose=classmethod(foundation.Iteration1Tests.compose.__func__)

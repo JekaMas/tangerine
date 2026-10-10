@@ -476,7 +476,8 @@
       },
       "input": {
         "browser": "real Chrome",
-        "provider_keys": false
+        "provider_keys": false,
+        "executable_native_fixture": "def test_transport_public_browser_positive(self):\n        self.assertTrue(CHROME.is_file(),'Actual Chrome browser test prerequisite missing')\n        import signal\n        args=[str(CHROME),'--headless=new','--disable-gpu','--disable-background-networking','--no-first-run','--no-default-browser-check','--user-data-dir='+str(self.sandbox/'chrome'),'--virtual-time-budget=5000','--dump-dom','http://localhost:3000/']\n        terminated_after_dump=False\n        # A file cannot hold cleanup open through a surviving child's stdout pipe.\n        path=self.receipts/'browser-dom.log'\n        with path.open('w') as captured:\n            process=subprocess.Popen(args,env=self.env,text=True,stdout=captured,stderr=subprocess.STDOUT,start_new_session=True)\n            try:process.wait(timeout=30)\n            except subprocess.TimeoutExpired:\n                os.killpg(process.pid,signal.SIGKILL)\n                process.wait(timeout=5);terminated_after_dump=True\n            finally:\n                if process.poll() is None:\n                    os.killpg(process.pid,signal.SIGKILL);process.wait(timeout=5)\n        output=path.read_text()\n        (self.receipts/'browser-driver.json').write_text(json.dumps({'exit':process.returncode,'terminated_after_dump':terminated_after_dump,'complete_dom':'</html>' in output}))\n        self.assertIn('</html>',output,'Browser never produced a complete native DOM')\n        self.assertIn('No exercises yet',output);self.assertNotIn('type=\"password\"',output);self.assertNotIn('Sign in to your workspace',output)\n        for secret in self.config().values():self.assertNotIn(secret,output)"
       },
       "expected": {
         "hydrated_text": "No exercises yet",

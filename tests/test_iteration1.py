@@ -183,16 +183,19 @@ class Iteration1Tests(unittest.TestCase):
         self.assertTrue(CHROME.is_file(),'Actual Chrome browser test prerequisite missing')
         import signal
         args=[str(CHROME),'--headless=new','--disable-gpu','--disable-background-networking','--no-first-run','--no-default-browser-check','--user-data-dir='+str(self.sandbox/'chrome'),'--virtual-time-budget=5000','--dump-dom','http://localhost:3000/']
-        process=subprocess.Popen(args,env=self.env,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,start_new_session=True)
         terminated_after_dump=False
-        try:
-            output,_=process.communicate(timeout=20)
-        except subprocess.TimeoutExpired:
-            # macOS Chrome can retain its display/event loop after emitting the DOM.
-            # Capture the actual completed dump and clean only this isolated process group.
-            os.killpg(process.pid,signal.SIGKILL)
-            output,_=process.communicate(timeout=5);terminated_after_dump=True
-        (self.receipts/'browser-dom.log').write_text(output)
+        # A file cannot hold cleanup open through a surviving child's stdout pipe.
+        path=self.receipts/'browser-dom.log'
+        with path.open('w') as captured:
+            process=subprocess.Popen(args,env=self.env,text=True,stdout=captured,stderr=subprocess.STDOUT,start_new_session=True)
+            try:process.wait(timeout=30)
+            except subprocess.TimeoutExpired:
+                os.killpg(process.pid,signal.SIGKILL)
+                process.wait(timeout=5);terminated_after_dump=True
+            finally:
+                if process.poll() is None:
+                    os.killpg(process.pid,signal.SIGKILL);process.wait(timeout=5)
+        output=path.read_text()
         (self.receipts/'browser-driver.json').write_text(json.dumps({'exit':process.returncode,'terminated_after_dump':terminated_after_dump,'complete_dom':'</html>' in output}))
         self.assertIn('</html>',output,'Browser never produced a complete native DOM')
         self.assertIn('No exercises yet',output);self.assertNotIn('type="password"',output);self.assertNotIn('Sign in to your workspace',output)
