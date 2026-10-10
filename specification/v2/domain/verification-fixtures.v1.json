@@ -41404,7 +41404,7 @@
           "prompt_versions": 18,
           "restart": true,
           "host": "evil.example",
-          "executable_native_fixture": "def test_lab_restart_positive(self):\n  first=self.good(self.sdk('seed'));self.call(['sh','scripts/tangerine','lab','stop']);self.call(['sh','scripts/tangerine','lab']);second=self.good(self.sdk('seed'));self.assertEqual(first,second);self.assertEqual(len(first),18)"
+          "executable_native_fixture": "def test_lab_restart_positive(self):\n  first=self.good(self.sdk('seed'));self.call(['sh','scripts/tangerine','lab','stop']);network=self.call(['docker','network','ls','-q','--filter','label=com.docker.compose.project='+self.project,'--filter','label=com.docker.compose.network=egress']).stdout.strip();self.assertTrue(network);self.call(['docker','network','rm',network]);self.call(['sh','scripts/tangerine','lab']);second=self.good(self.sdk('seed'));self.assertEqual(first,second);self.assertEqual(len(first),18)"
         },
         "expected": {
           "loopback_ui": "200",
@@ -136345,7 +136345,7 @@
         "prompt_versions": 18,
         "restart": true,
         "host": "evil.example",
-        "executable_native_fixture": "def test_lab_restart_positive(self):\n  first=self.good(self.sdk('seed'));self.call(['sh','scripts/tangerine','lab','stop']);self.call(['sh','scripts/tangerine','lab']);second=self.good(self.sdk('seed'));self.assertEqual(first,second);self.assertEqual(len(first),18)"
+        "executable_native_fixture": "def test_lab_restart_positive(self):\n  first=self.good(self.sdk('seed'));self.call(['sh','scripts/tangerine','lab','stop']);network=self.call(['docker','network','ls','-q','--filter','label=com.docker.compose.project='+self.project,'--filter','label=com.docker.compose.network=egress']).stdout.strip();self.assertTrue(network);self.call(['docker','network','rm',network]);self.call(['sh','scripts/tangerine','lab']);second=self.good(self.sdk('seed'));self.assertEqual(first,second);self.assertEqual(len(first),18)"
       },
       "expected": {
         "loopback_ui": "200",

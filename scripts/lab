@@ -35,7 +35,9 @@ case "${1:-start}" in
   trap 'rm -f "$probe"; docker image rm "$probe_image" >/dev/null 2>&1 || :' 0
   published=$(compose port llm-lab 5000 2>/dev/null || :)
   if [ "$published" != "127.0.0.1:$TANGERINE_LAB_PORT" ]; then "$probe" lab-portcheck "$TANGERINE_LAB_PORT" || fail 'LAB_PORT_OCCUPIED: select an unused loopback port explicitly with lab --port <port>. Existing data is retained.';fi
-  compose up -d --no-deps --wait --wait-timeout 180 llm-lab || fail 'LAB_START_FAILED: check port 5000, Docker access and Lab logs; native data and Lab volume are retained.'
+  recreate=
+  [ -n "$(compose ps --status running --services llm-lab)" ] || recreate=--force-recreate
+  compose up -d --no-deps ${recreate:+$recreate} --wait --wait-timeout 180 llm-lab || fail 'LAB_START_FAILED: check port 5000, Docker access and Lab logs; native data and Lab volume are retained.'
   sdk seed > "$ROOT/data/config/lab-registry.json" || fail 'LAB_SEED_FAILED: Lab data is retained; retry lab after inspecting logs.'
   "$probe" lab-healthcheck "$TANGERINE_LAB_PORT" || fail 'LAB_START_FAILED: the advertised loopback port does not serve MLflow3.17.0. Existing data is retained.'
   printf '%s\n' "$TANGERINE_LAB_PORT" > "$port_file"

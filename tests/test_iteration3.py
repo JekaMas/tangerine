@@ -83,7 +83,7 @@ class Iteration3Tests(unittest.TestCase):
    (self.receipts/'actual-lab-browser.png').write_bytes(base64.b64decode(browser.call('Page.captureScreenshot',{'format':'png'})['data']))
   finally:browser.close()
  def test_lab_restart_positive(self):
-  first=self.good(self.sdk('seed'));self.call(['sh','scripts/tangerine','lab','stop']);self.call(['sh','scripts/tangerine','lab']);second=self.good(self.sdk('seed'));self.assertEqual(first,second);self.assertEqual(len(first),18)
+  first=self.good(self.sdk('seed'));self.call(['sh','scripts/tangerine','lab','stop']);network=self.call(['docker','network','ls','-q','--filter','label=com.docker.compose.project='+self.project,'--filter','label=com.docker.compose.network=egress']).stdout.strip();self.assertTrue(network);self.call(['docker','network','rm',network]);self.call(['sh','scripts/tangerine','lab']);second=self.good(self.sdk('seed'));self.assertEqual(first,second);self.assertEqual(len(first),18)
  def test_lab_isolation_negative(self):
   self.call(['sh','scripts/tangerine','lab','stop']);b=self.active();self.assertEqual(len(b['bindings']),9);self.compose('run','--rm','--no-deps','-T','api','initialize');self.call(['sh','scripts/tangerine','lab'])
  def test_lab_host_denied_negative(self):
