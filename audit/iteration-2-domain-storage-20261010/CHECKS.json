@@ -1,23 +1,38 @@
 {
   "go_behavior": {
     "command": [
-      "docker",
-      "run",
-      "--rm",
-      "--entrypoint",
-      "sh",
-      "tangerine-i2-go:local",
-      "-c",
-      "go test -race -json -count=1 ./..."
+      "./tests/go-docker",
+      "test",
+      "-json",
+      "-race",
+      "-count=1",
+      "./..."
     ],
-    "image_id": "sha256:9f9514d3529d6306133ff0a59f57fafcdd6810c8b760e38e05e36cfcde5572a3",
+    "image_id": "sha256:3a1dff5881553192031558e78d89a2443a75a83f4616aaedbdbb6889ff17fa38",
     "toolchain": "Go1.26.5",
     "exit": 0,
-    "exact_passed_tests": 13
+    "exact_passed_tests": 17,
+    "receipt": "openspec/changes/implement-teacher-error-trainer/evidence/iteration2/clean-full.json.iteration2-contracts-go.stdout.log",
+    "clean_candidate": "e55e28356447f50e7eefa0e7b108edd96610cd7a"
   },
   "go_static": {
-    "command": "docker run --rm --entrypoint sh tangerine-i2-go:local -c go vet ./... && test -z $(gofmt -l .)",
-    "exit": 0
+    "command": [
+      "./tests/go-docker",
+      "check"
+    ],
+    "exit": 0,
+    "image_id": "sha256:3a1dff5881553192031558e78d89a2443a75a83f4616aaedbdbb6889ff17fa38",
+    "receipt": "openspec/changes/implement-teacher-error-trainer/evidence/iteration2/stable-lint.log",
+    "unchanged_production_and_test_inputs": true
   },
-  "invalidation": "New contracts/domain/migration/asset owners and module dependencies invalidate Go package behavior and analysis. Shared workflow mechanics/pin unchanged; retained valid workflow greens remain scoped."
+  "invalidation": "New contracts/domain/migration/asset owners and module dependencies invalidate Go package behavior and analysis. Shared workflow mechanics/pin unchanged; retained valid workflow greens remain scoped.",
+  "iteration_acceptance": {
+    "required_cases": 88,
+    "positive": 44,
+    "negative": 44,
+    "receipt": "openspec/changes/implement-teacher-error-trainer/evidence/iteration2/ACCEPTANCE.json",
+    "clean_original": 36,
+    "clean_storage_rerun": 52,
+    "failed_composite_preserved": true
+  }
 }

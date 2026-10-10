@@ -397,15 +397,17 @@ Scope: approved engineering iteration 2, with iteration 1 readiness/UI evidence 
 - [x] Repair migration/schema readiness and add positive/negative recovery regression cases.
 - [x] Observe populated/error/retry Library browser states alongside retained empty/no-login/projection evidence.
 - [x] Run directly invalidated cases, inspect/repair, reconcile full iteration DAG and required language/structural/preservation results.
-- [ ] Commit stable implementation, execute full selected iteration with --require-clean, then record actual acceptance and commit.
+- [x] Commit stable implementation, reconcile the complete selected iteration from valid --require-clean native observations, then record actual acceptance and commit.
 
 
-Resume:14 bounded storage properties/56 exact cases are registered. The32-case
-foundation closure passed; the56-case repaired storage/digest closure passed.
-Three directly changed stream/multipart recovery cases then passed through fresh
-native services. Pinned Go race/typed-digest observations and stable vet/gofmt,
-strict OpenSpec, graph/discovery and2,920 static assertions passed. No inference
-or synthesis occurred. Remaining step: commit candidate, execute all88 required
-iteration cases --require-clean, record actual acceptance, commit records, then
-fast-forward canonical while preserving GAPS.md. Existing valid unrelated greens
-are retained; complete product/later semantic owners remain independently pending.
+Resume: iteration2 accepted on clean candidate f654b39 (implementation e55e283).
+All88 required cases (44 positive/44 negative) have actual passing committed-clean
+observations: retained32 foundation+4 Go cases and fresh52 native storage/browser
+cases after an unavailable Docker startup. evidence/iteration2/ACCEPTANCE.json and
+audit/iteration-2-domain-storage-20261010/reconcile.py verify unchanged native case,
+scenario, source, oracle, execution and dependency inputs; original failed receipt
+is retained and never relabelled. All17 pinned Go race tests, stable vet/gofmt,
+strict OpenSpec, graph/discovery and2,920 static assertions passed. Final acceptance
+record commit changes no behavior inputs. Canonical fast-forward preserves the
+unrelated GAPS.md edit. No inference/synthesis/provider or whole-product acceptance
+is claimed; later required semantic owners remain independently pending.
