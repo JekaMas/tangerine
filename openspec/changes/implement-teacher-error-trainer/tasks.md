@@ -463,13 +463,15 @@ Verification resume: all seven findings are repaired and closed on committed-cle
 
 ## 2026-10-10 iteration 4: provider connections and text transport
 
-- [ ] Implement protected stable host/registration credentials and durable safe Settings metadata with exact restart lineage.
-- [ ] Implement PKCE/OIDC connect/callback/reconnect, required granted scopes, credit-policy confirmation, refresh, selection and disconnect.
-- [ ] Implement real account-model catalogue and configurable frozen text profiles with included-only refusal and no billing fallback.
-- [ ] Implement shared stateless Responses transport, complete terminal handling, attempt/deadline budgets and tolerant semantic projection.
-- [ ] Persist exact private context/request/reply/native receipt evidence and reconcile selected actual Lab observations without credential capture.
-- [ ] Materialize every iteration property with distinct positive/negative packets; wire cases/discovery and observe native storage/browser/protocol behavior.
+- [x] Implement protected stable host/registration credentials and durable safe Settings metadata with exact restart lineage.
+- [x] Implement PKCE/OIDC connect/callback/reconnect, required granted scopes, credit-policy confirmation, refresh, selection and disconnect.
+- [x] Implement real account-model catalogue and configurable frozen text profiles with included-only refusal and no billing fallback.
+- [x] Implement shared stateless Responses transport, complete terminal handling, attempt/deadline budgets and tolerant semantic projection.
+- [x] Persist exact private context/request/reply/native receipt evidence and reconcile selected actual Lab observations without credential capture.
+- [x] Materialize every iteration property with distinct positive/negative packets; wire cases/discovery and observe native storage/browser/protocol behavior.
 - [ ] Inspect and repair findings; complete affected language/specification/preservation/DAG checks and committed-clean full iteration acceptance.
 - [ ] Commit acceptance, restore preview and fast-forward canonical checkout while preserving unrelated user data.
 
 Resume: baseline fe98b1b; scope and native protocol/storage/finalizer anchors recorded in audit/iteration-4-providers-20261010/PLAN.md. No provider credential or dispatch is borrowed from Codex.
+
+Native qualification resume: candidate845e7e4 is reconciled with retained valid clean faac3ca observations:320/320 current registered native cases (128 I4 plus192 affected earlier cases),160 positive/160 negative. The new clean affected136-case selection passed; retained168 Go/provider/storage plus16 storage-regression observations have unchanged current fingerprints. Browser driver readiness, pipe cleanup and test-owned Lab profile cleanup findings are repaired; actual two-span SQLite state, downloaded native artifacts and independent dispatch bytes are retained. Strict OpenSpec, DAG,3210 structural/preservation checks and valid pinned Go vet/gofmt passed. Original failed/unavailable receipts remain unchanged. The final two full-acceptance tasks stay unchecked because LIVE-BLOCKER.json witnesses unavailable Docker HTTPS/own grant/actual catalogue/included-only hosted inference; native protocol fixtures do not prove that boundary. Latest preview restored; runtime/Library/volumes and canonical GAPS.md preserved. No paid provider call or purchased credits authorized; each individual paid-credit case requires personal user approval.
