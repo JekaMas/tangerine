@@ -1,5 +1,5 @@
 """MLflow SDK edge: registry and diagnostic copies only, never model inference."""
-import json,sys,hashlib,os,tempfile,time,subprocess,uuid,datetime,contextlib
+import json,sys,hashlib,os,tempfile,time,subprocess,uuid,datetime,contextlib,base64,urllib.request
 from pathlib import Path
 os.environ['MLFLOW_DISABLE_TELEMETRY']='true'
 os.environ['DO_NOT_TRACK']='true'
@@ -37,7 +37,7 @@ def export(selection):
 
 def sync(packet):
  """Explicit export with stable run identity and byte readback, no provider SDK."""
- if type(packet.get('capture',False)) is not bool:raise ValueError('capture requires an explicit JSON boolean')
+ if type(packet.get('capture',False)) is not bool or type(packet.get('trace_enabled',False)) is not bool:raise ValueError('capture and trace settings require explicit JSON booleans')
  eid=client.get_experiment_by_name('tangerine-development')
  if eid is None:eid=client.get_experiment(client.create_experiment('tangerine-development'))
  operation=str(uuid.UUID(packet['operation']));runs=client.search_runs([eid.experiment_id],filter_string=f"tags.`tangerine.operation` = '{operation}'")
@@ -64,9 +64,26 @@ def sync(packet):
    else:client.log_artifact(run,str(p),'native')
    saved=Path(client.download_artifacts(run,'native/'+name,tmp+'/readback')).read_bytes()
    if saved!=body:raise ValueError('Lab byte readback mismatch')
-   artifacts.append({'run':run,'artifact':'native/'+name,'sha256':sha,'original_sha256':redaction['original_sha256'],'redaction_reasons':redaction['reasons'],'verified':True})
+   artifacts.append({'run':run,'artifact':'native/'+name,'sha256':sha,'original_sha256':a.get('native_original_sha256',redaction['original_sha256']),'redaction_reasons':a.get('native_redaction_reasons',[])+redaction['reasons'],'verified':True})
+ trace_exports=[]
+ if packet.get('trace_enabled',False):
+  for artifact in packet['artifacts']:
+   if artifact['name']!='provider-context-receipts.json':continue
+   payload=json.loads(artifact['body'])
+   for doc in payload['documents']:
+    if doc['kind']!='provider-receipt':continue
+    r=doc['payload'];attrs={'tangerine.operation_id':r['operation_id'],'stage':r['stage'],'receipt_id':r['id'],'context_snapshot_id':r['context_snapshot_id'],'binding_sha256':r['binding_sha256'],'input_sha256':r['input_sha256'],'attempt_index':str(r['transport_attempt'])}
+    trace={'Trace':r['trace_id'],'Span':r['span_id'],'Name':'tangerine.provider.'+r['stage'],'Start':r['started_at'],'End':r['finished_at'],'Attributes':attrs,'Error':r['outcome']!='success'}
+    row={'trace_id':r['trace_id'],'span_id':r['span_id'],'receipt_id':r['id'],'experiment_id':eid.experiment_id,'state':'unexported'}
+    try:
+     raw=base64.b64decode(native({'action':'otlp','trace':trace}));row['otlp_sha256']=digest(raw)
+     req=urllib.request.Request(URI+'/v1/traces',data=raw,headers={'Content-Type':'application/x-protobuf','x-mlflow-experiment-id':eid.experiment_id})
+     with urllib.request.urlopen(req,timeout=1) as response:
+      if response.status==200:row['state']='exported'
+    except Exception:pass
+    trace_exports.append(row)
  client.set_terminated(run)
- return {'run':run,'artifacts':artifacts,'provider_calls':0}
+ return {'run':run,'artifacts':artifacts,'provider_calls':0,'trace_exports':trace_exports}
 
 def verify(packet):
  errors=[]
@@ -89,6 +106,11 @@ def check_inventory(inv):
  paths.update(f['path_or_asset'] for e in inv['entries'] for f in e['trusted_fragments'] if f['state']=='observed')
  actual={}
  expected=json.loads(Path('/tangerine/spec/domain/ai-development.v1.json').read_text())['planned_surfaces']
+ if Path('/tangerine/source/app/provider_inference.go').is_file():
+  expected=expected+[dict(id='provider_adapter_'+suffix,stage='provider_adapter',phase=suffix,kind='llm') for suffix in ('invoke','transport_retry','semantic_repair','structured_fallback')]
+  required={'services/api/internal/app/'+name for name in ('provider_inference.go','provider_command.go','provider_configuration.go','provider_connections.go','provider-default.json')}
+  required.update('services/api/internal/provider/'+name for name in ('execute.go','connection.go','oidc.go','transport.go','projection.go'))
+  if not required.issubset(paths):raise ValueError('implemented provider dependency is missing')
  entries={e['id']:e for e in inv['entries']}
  for surface in expected:
   row=entries.get(surface['id'])
@@ -97,6 +119,9 @@ def check_inventory(inv):
   if path=='services/api/internal/lab/builtin.json':physical=Path('/tangerine/builtin.json')
   elif path.startswith('specification/v2/'):
    root=Path('/tangerine/spec').resolve();physical=(root/path[len('specification/v2/'):]).resolve()
+   if not physical.is_relative_to(root):raise ValueError('unresolved source dependency')
+  elif path.startswith(('services/api/internal/provider/','services/api/internal/app/provider_','services/api/internal/app/provider-')):
+   relative=path[len('services/api/internal/'):];root=Path('/tangerine/source').resolve();physical=(root/relative).resolve()
    if not physical.is_relative_to(root):raise ValueError('unresolved source dependency')
   else:raise ValueError('source dependency is not available in the tooling snapshot')
   actual[path]=digest(physical.read_bytes())
@@ -129,6 +154,17 @@ def inventory(revision):
      full='specification/v2/'+path;sha=dependency(full,'/tangerine/spec/'+path,'trusted '+kind)
      fragments.append({'kind':kind,'path_or_asset':full,'sha256':sha,'state':'observed'})
   entries.append(dict(id=surface['id'],stage=surface['stage'],phase=surface['phase'],kind=surface['kind'],implementation_state='planned',owner_paths=[surface['owner_root']],owner_symbols=[],adapter_paths=[],trusted_fragments=fragments,discovery_evidence_refs=['iteration3 source inspection: provider execution belongs to iteration4 onward'],coverage_reason='no implemented model-call owner in this tooling iteration'))
+ for suffix,symbol,fragment in [('invoke','Server.InvokeLLM','adapter_role_frame'),('transport_retry','Execute','fallback_wrapper'),('semantic_repair','Execute','repair_wrapper'),('structured_fallback','Execute','wire_schema_projection')]:
+  owner='services/api/internal/app/provider_inference.go';adapter='services/api/internal/provider/execute.go'
+  dependency(owner,'/tangerine/source/app/provider_inference.go','shared implemented provider owner')
+  h=dependency(adapter,'/tangerine/source/provider/execute.go','trusted repair/retry/format owner')
+  for source in ['provider_command.go','provider_configuration.go','provider_connections.go','provider-default.json']:
+   dependency('services/api/internal/app/'+source,'/tangerine/source/app/'+source,'frozen profile and native entrypoint dependency')
+  for source in ['connection.go','oidc.go','transport.go','projection.go']:
+   dependency('services/api/internal/provider/'+source,'/tangerine/source/provider/'+source,'provider dependency')
+  entries.append(dict(id='provider_adapter_'+suffix,stage='provider_adapter',phase=suffix,kind='llm',implementation_state='implemented',owner_paths=[owner]+(['services/api/internal/app/provider_command.go'] if suffix=='invoke' else []),owner_symbols=[symbol]+(['Server.ProviderCommand'] if suffix=='invoke' else []),adapter_paths=[adapter],trusted_fragments=[dict(kind=fragment,path_or_asset=adapter,sha256=h,state='observed')],discovery_evidence_refs=['iteration4 source and native positive/negative transport cases'],coverage_reason='Protocol substitution evidence; hosted admission and real model quality are separately recorded.'))
+ # Freeze unique physical dependencies once, preserving complete source inputs.
+ dependencies=list({d['path']:d for d in dependencies}.values())
  result=dict(schema_version='2.0.0',id=str(uuid.uuid4()),source_revision=revision,dependencies=dependencies,entries=entries,non_ai_calls=[{'path':'deploy/local/lab.py','reason':'MLflow registry/diagnostics; no inference'}],unresolved_paths=[],inventory_sha256='0'*64)
  # Native contract uses RFC8785; JSON values here have no non-ASCII keys or floats.
  result['inventory_sha256']=digest(canonical({k:v for k,v in result.items() if k!='inventory_sha256'}).encode())

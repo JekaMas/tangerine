@@ -12,6 +12,7 @@ x-api-environment: &api-environment
   SPEECH_INTERNAL_TOKEN: ${SPEECH_INTERNAL_TOKEN:?Run scripts/tangerine start}
   DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
   OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+  TANGERINE_PROVIDER_CREDENTIAL_DIR: /provider-secrets
 
 x-api-image: &api-image
   image: ${COMPOSE_PROJECT_NAME:-tangerine}-api:local
@@ -35,6 +36,8 @@ services:
       - ./lab.py:/tangerine/lab.py:ro
       - ../../specification/v2:/tangerine/spec:ro
       - ../../services/api/internal/lab/builtin.json:/tangerine/builtin.json:ro
+      - ../../services/api/internal/provider:/tangerine/source/provider:ro
+      - ../../services/api/internal/app:/tangerine/source/app:ro
     healthcheck:
       test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health',timeout=6)"]
       interval: 5s
@@ -89,6 +92,7 @@ services:
   api:
     <<: *api-image
     environment: *api-environment
+    volumes: [provider-credentials:/provider-secrets]
     depends_on:
       initialize: {condition: service_completed_successfully}
       speech: {condition: service_healthy}
@@ -118,6 +122,7 @@ networks:
   private: {internal: true}
   egress: {}
 volumes:
+  provider-credentials: {}
   lab-data: {}
   postgres-data: {}
   minio-data: {}

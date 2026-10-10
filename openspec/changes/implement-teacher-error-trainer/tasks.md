@@ -460,3 +460,16 @@ The implementation acceptance remains historical evidence for its registered cas
 - [x] Complete direct regressions, stable language/structural/preservation checks, full clean iteration and affected foundation acceptance; commit and preserve canonical user data.
 
 Verification resume: all seven findings are repaired and closed on committed-clean candidate 944e0a39a39eb4ae37d19c875a4314bb4ecd5b98. Exact reconciliation passed all88 I3 cases (44 positive/44 negative across22 properties) plus32 affected foundation cases. Actual observations:53 Go race tests,36 native MLflow/PostgreSQL/MinIO tests and32 foundation tests. The original full clean selection hit a test-owned orphan on port5001 after passing the Go command; that failed receipt remains unchanged. Only its unobserved native command was rerun on the identical clean candidate, then every required case fingerprint and native log was reconciled. No skipped/missing/failed case counts as acceptance. Strict OpenSpec, DAG/discovery,3050 structural/preservation assertions and stable pinned Go vet/gofmt remain valid. audit/iteration-3-verification-20261010/REPORT.md supersedes the earlier verification conclusion; evidence/iteration3/ACCEPTANCE.json binds exact retained receipts. Provider execution remains iteration4 and full AI experiments iteration14; all21 inference surfaces remain planned. No product decision, account connection, inference, speech generation or purchase occurred.
+
+## 2026-10-10 iteration 4: provider connections and text transport
+
+- [ ] Implement protected stable host/registration credentials and durable safe Settings metadata with exact restart lineage.
+- [ ] Implement PKCE/OIDC connect/callback/reconnect, required granted scopes, credit-policy confirmation, refresh, selection and disconnect.
+- [ ] Implement real account-model catalogue and configurable frozen text profiles with included-only refusal and no billing fallback.
+- [ ] Implement shared stateless Responses transport, complete terminal handling, attempt/deadline budgets and tolerant semantic projection.
+- [ ] Persist exact private context/request/reply/native receipt evidence and reconcile selected actual Lab observations without credential capture.
+- [ ] Materialize every iteration property with distinct positive/negative packets; wire cases/discovery and observe native storage/browser/protocol behavior.
+- [ ] Inspect and repair findings; complete affected language/specification/preservation/DAG checks and committed-clean full iteration acceptance.
+- [ ] Commit acceptance, restore preview and fast-forward canonical checkout while preserving unrelated user data.
+
+Resume: baseline fe98b1b; scope and native protocol/storage/finalizer anchors recorded in audit/iteration-4-providers-20261010/PLAN.md. No provider credential or dispatch is borrowed from Codex.

@@ -147,6 +147,22 @@ func validateGraph(ctx context.Context, tx pgx.Tx) error {
 	return nil
 }
 func insertDocument(ctx context.Context, tx pgx.Tx, w DocumentWrite, d SavedDocument) error {
+	if w.Kind == "provider-receipt" || w.Kind == "llm-context-snapshot" {
+		var lineage struct {
+			Operation string `json:"operation_id"`
+		}
+		if err := json.Unmarshal(d.Payload, &lineage); err != nil {
+			return err
+		}
+		var exists bool
+		if err := tx.QueryRow(ctx, "SELECT EXISTS(SELECT 1 FROM operation WHERE id=$1 AND workspace_id='local')", lineage.Operation).Scan(&exists); err != nil {
+			return err
+		}
+		if !exists {
+			return ErrReference
+		}
+	}
+
 	if _, err := tx.Exec(ctx, "INSERT INTO document(id,workspace_id,kind,schema_version,schema_sha256,payload,payload_sha256) VALUES($1,'local',$2,$3,$4,$5,$6)", d.ID, d.Kind, d.Version, d.SchemaSHA, []byte(d.Payload), d.SHA); err != nil {
 		return err
 	}
@@ -268,10 +284,17 @@ func validateProjection(w DocumentWrite, b []byte) error {
 	return nil
 }
 func externalID(kind, key string) bool {
+	if (kind == "provider-receipt" || kind == "llm-context-snapshot") && key == "operation_id" {
+		return true
+	} // validated against the relational operation owner inside the same transaction.
+
+	if kind == "provider-connection" && (key == "client_id" || key == "ext_agent_host_id") {
+		return true
+	}
 	if key == "workspace_id" || key == "provider_request_id" || key == "trace_id" || key == "span_id" || key == "source_request_id" || key == "selection_event_id" || (kind == "error-response" && key == "request_id") {
 		return true
 	}
-	if kind == "prompt-bundle" && key == "prompt_id" {
+	if (kind == "prompt-bundle" || kind == "effective-binding") && key == "prompt_id" {
 		return true
 	}
 	return kind == "asset" && key == "version_id" // owner/version lineage is guarded by asset reservation.

@@ -14,6 +14,7 @@ COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certifica
 COPY --from=build /tangerine /usr/local/bin/tangerine
 COPY --from=build /public-probe /usr/local/bin/public-probe
 LABEL org.opencontainers.image.version="0.1.0-foundation"
+RUN mkdir -p /provider-secrets && chown 65532:65532 /provider-secrets && chmod 700 /provider-secrets
 USER 65532:65532
 EXPOSE 8080
 ENTRYPOINT ["/usr/local/bin/tangerine"]

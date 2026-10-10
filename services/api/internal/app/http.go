@@ -8,6 +8,8 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
+	"tangerine.local/api/internal/provider"
 	"time"
 )
 
@@ -21,10 +23,11 @@ type Server struct {
 	client      *http.Client
 	token       string
 	speechToken string
+	Providers   *provider.Manager
 }
 
 func NewServer(store *Storage, origin, speechURL string) *Server {
-	return &Server{Store: store, Origin: origin, SpeechURL: speechURL, client: &http.Client{Timeout: 5 * time.Second}, token: os.Getenv("API_INTERNAL_TOKEN"), speechToken: os.Getenv("SPEECH_INTERNAL_TOKEN")}
+	return &Server{Store: store, Origin: origin, SpeechURL: speechURL, client: &http.Client{Timeout: 5 * time.Second}, token: os.Getenv("API_INTERNAL_TOKEN"), speechToken: os.Getenv("SPEECH_INTERNAL_TOKEN"), Providers: newProviderManager(store)}
 }
 
 func writeJSON(w http.ResponseWriter, status int, value any) {
@@ -56,9 +59,19 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /health/ready", s.ready)
 	mux.HandleFunc("GET /api/v1/health", s.ready)
 	mux.HandleFunc("GET /api/v1/library", s.library)
+	mux.HandleFunc("GET /api/v1/configuration", s.configurationGet)
+	mux.HandleFunc("PUT /api/v1/configuration", s.configurationPut)
+	mux.HandleFunc("GET /api/v1/provider-connections", s.providerConnections)
+	mux.HandleFunc("POST /api/v1/provider-connections:action", s.providerAction)
+	mux.HandleFunc("GET /auth/callback", s.providerCallback)
+	mux.HandleFunc("GET /api/v1/prepare/assets/{id}/bytes", s.providerModelBytes)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
-		if r.Method != "GET" && r.Method != "HEAD" && (r.Header.Get("Origin") != s.Origin || r.Header.Get("Sec-Fetch-Site") == "cross-site") {
+		alternate := strings.Replace(s.Origin, "localhost", "127.0.0.1", 1)
+		if alternate == s.Origin {
+			alternate = strings.Replace(s.Origin, "127.0.0.1", "localhost", 1)
+		}
+		if r.Method != "GET" && r.Method != "HEAD" && ((r.Header.Get("Origin") != s.Origin && r.Header.Get("Origin") != alternate) || r.Header.Get("Sec-Fetch-Site") == "cross-site") {
 			writeJSON(w, 403, map[string]string{"error": "origin_denied"})
 			return
 		}
@@ -76,14 +89,13 @@ func (s *Server) ready(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 	h := map[string]string{"status": "ok", "database": "ready", "storage": "ready", "speech": "ready", "provider_configuration": "missing_credentials", "release_id": ReleaseID}
-	if os.Getenv("DEEPSEEK_API_KEY") != "" || os.Getenv("OPENAI_API_KEY") != "" {
-		h["provider_configuration"] = "ready"
-	}
+
 	type dependencyResult struct {
 		name   string
 		status string
 	}
-	results := make(chan dependencyResult, 3)
+	results := make(chan dependencyResult, 4)
+	go func() { results <- dependencyResult{"provider_configuration", s.providerReadiness(ctx)} }()
 	go func() {
 		status := "ready"
 		if err := s.Store.CheckDatabase(ctx); err != nil {
@@ -115,7 +127,7 @@ func (s *Server) ready(w http.ResponseWriter, r *http.Request) {
 		}
 		results <- dependencyResult{"speech", status}
 	}()
-	for range 3 {
+	for range 4 {
 		result := <-results
 		h[result.name] = result.status
 	}

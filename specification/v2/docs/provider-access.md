@@ -47,3 +47,15 @@ Connection state ready means valid identity, required plan-use grant and recorde
 The starter setup generates no exercise corpus in advance. Each explicit new exercise request invokes the configured LLM for clean text and then mutations before rendering audio. Stored replay and matching completed-checkpoint resume reuse only the explicitly selected exercise; they are not content-generation substitutes.
 
 Account registration is distinct from app connection: OpenAI dynamically registers Tangerine during its own OAuth flow, not through a separate developer signup. The specified callback/token adapter is not implemented; no registration is attempted with a stopped callback listener or another app's credentials. The current account/setup observations and remaining operational dependencies are recorded in [registration audit](../../../audit/provider-registration-20261009/REPORT.md). Provider plan readback alone is not a successful Responses request or available-model catalogue.
+
+## Implementation clarification: Settings configuration readback
+
+`configuration-view` may include the complete safe `configuration` object,
+validated by `configuration.schema.json`, in addition to its existing summaries.
+The object contains references and parameters, never credential values. Its
+self-digest and the revision ETag bind editing/readback to the actual saved
+configuration. PUT retains the existing closed request and included-only access
+policy; failed validation or stale revision leaves the prior configuration intact.
+The field is optional for compatibility, and Tangerine's Settings owner returns it.
+Native/hosted evidence remains separately qualified as described in
+`docs/development/PROVIDERS.md` and the iteration audit.

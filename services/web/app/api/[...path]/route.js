@@ -1,21 +1,25 @@
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-const ALLOWED = new Set(['GET v1/library', 'GET v1/health']);
+const ALLOWED = new Set(['GET v1/library', 'GET v1/health', 'GET v1/provider-connections', 'POST v1/provider-connections:action', 'GET v1/configuration', 'PUT v1/configuration']);
 function failure(status, error) { return Response.json({ error }, { status, headers: { 'Cache-Control': 'no-store' } }); }
 async function proxy(request, context) {
   const { path } = await context.params;
   const target = path.join('/');
-  if (request.method !== 'GET' && request.method !== 'HEAD' &&
-      (request.headers.get('origin') !== process.env.APP_ORIGIN || request.headers.get('sec-fetch-site') === 'cross-site')) return failure(403, 'origin_denied');
   const host = request.headers.get('host');
   if (host !== 'localhost:3000' && host !== '127.0.0.1:3000') return failure(403, 'host_denied');
-  if (!ALLOWED.has(`${request.method} ${target}`)) return failure(404, 'not_implemented');
+  if (request.method !== 'GET' && request.method !== 'HEAD' &&
+      (request.headers.get('origin') !== `http://${host}` || request.headers.get('sec-fetch-site') === 'cross-site')) return failure(403, 'origin_denied');
+  const modelBytes = request.method === 'GET' && /^v1\/prepare\/assets\/[a-f0-9-]{36}\/bytes$/.test(target);
+  if (!ALLOWED.has(`${request.method} ${target}`) && !modelBytes) return failure(404, 'not_implemented');
   try {
     const response = await fetch(`${process.env.API_INTERNAL_URL}/api/${target}`, {
-      headers: { Authorization: `Bearer ${process.env.API_INTERNAL_TOKEN}` }, redirect: 'error', cache: 'no-store',
+      method: request.method,
+      headers: { Authorization: `Bearer ${process.env.API_INTERNAL_TOKEN}`, Origin: request.headers.get('origin') || '', 'Content-Type': request.headers.get('content-type') || '', 'If-Match': request.headers.get('if-match') || '', 'Idempotency-Key': request.headers.get('idempotency-key') || '' },
+      body: request.method === 'GET' || request.method === 'HEAD' ? undefined : await request.text(),
+      redirect: 'error', cache: 'no-store',
       signal: AbortSignal.any([request.signal, AbortSignal.timeout(270000)]),
     });
-    return new Response(response.body, { status: response.status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+    return new Response(response.body, { status: response.status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'ETag': response.headers.get('etag') || '', 'X-Tangerine-Active-Connection': response.headers.get('x-tangerine-active-connection') || '' } });
   } catch { return failure(503, 'service_unavailable'); }
 }
 export const GET = proxy;
