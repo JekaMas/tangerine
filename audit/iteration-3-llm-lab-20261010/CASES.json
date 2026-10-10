@@ -2130,7 +2130,7 @@
         "secret": "CANARY",
         "outage": "Lab stopped",
         "wrong_digest": "0000000000000000000000000000000000000000000000000000000000000000",
-        "executable_native_fixture": "def test_export_native_positive(self):\n  p=self.packet();asset=self.good(self.native({'action':'diagnostic-save','payload':p}));read=self.good(self.native({'action':'diagnostic-read','id':asset['id']}));self.assertEqual(read,p);export=self.good(self.sdk('sync',read));self.assertEqual(export['provider_calls'],0);self.assertEqual(self.good(self.sdk('verify',export))['status'],'observed');(self.receipts/'actual-mlflow-export.json').write_text(json.dumps(export,indent=2));(self.receipts/'native-diagnostic.json').write_text(json.dumps({'asset':asset,'packet':p},indent=2))"
+        "executable_native_fixture": "def test_export_native_positive(self):\n  p=self.packet();asset=self.good(self.native({'action':'diagnostic-save','payload':p}));self.assertEqual(asset['state'],'linked');read=self.good(self.native({'action':'diagnostic-read','id':asset['id']}));self.assertEqual(read,p);export=self.good(self.sdk('sync',read));self.assertEqual(export['provider_calls'],0);self.assertEqual(self.good(self.sdk('verify',export))['status'],'observed');(self.receipts/'actual-mlflow-export.json').write_text(json.dumps(export,indent=2));(self.receipts/'native-diagnostic.json').write_text(json.dumps({'asset':asset,'packet':p},indent=2))"
       },
       "expected": {
         "native_readback": "exact original",
@@ -2229,7 +2229,7 @@
         "secret": "CANARY",
         "outage": "Lab stopped",
         "wrong_digest": "0000000000000000000000000000000000000000000000000000000000000000",
-        "executable_native_fixture": "def test_export_hash_negative(self):\n  p=self.packet();p['artifacts'][0]['sha256']='0'*64;self.assertNotEqual(self.sdk('sync',p,ok=False).returncode,0)"
+        "executable_native_fixture": "def test_export_hash_negative(self):\n  malformed=self.packet({'answer':'private'});malformed['capture']='false';self.assertNotEqual(self.sdk('sync',malformed,ok=False).returncode,0)\n  p=self.packet();p['artifacts'][0]['sha256']='0'*64;self.assertNotEqual(self.sdk('sync',p,ok=False).returncode,0)"
       },
       "expected": {
         "native_readback": "exact original",

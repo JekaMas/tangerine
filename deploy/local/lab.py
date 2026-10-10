@@ -37,6 +37,7 @@ def export(selection):
 
 def sync(packet):
  """Explicit export with stable run identity and byte readback, no provider SDK."""
+ if type(packet.get('capture',False)) is not bool:raise ValueError('capture requires an explicit JSON boolean')
  eid=client.get_experiment_by_name('tangerine-development')
  if eid is None:eid=client.get_experiment(client.create_experiment('tangerine-development'))
  operation=str(uuid.UUID(packet['operation']));runs=client.search_runs([eid.experiment_id],filter_string=f"tags.`tangerine.operation` = '{operation}'")
@@ -50,7 +51,7 @@ def sync(packet):
    if Path(name).name!=name or name in ('','.', '..'):raise ValueError('local artifact filename required')
    body=a['body'].encode();sha=digest(body)
    if sha!=a['sha256']:raise ValueError('native artifact hash mismatch')
-   redaction=native({'action':'sanitize','payload':json.loads(body),'capture':bool(packet.get('capture',False)),'secrets':packet.get('secrets',[])})
+   redaction=native({'action':'sanitize','payload':json.loads(body),'capture':packet.get('capture',False),'secrets':packet.get('secrets',[])})
    body=canonical(redaction['bytes']).encode();sha=digest(body)
    p=Path(tmp)/name;p.write_bytes(body)
    existing=client.list_artifacts(run,'native')

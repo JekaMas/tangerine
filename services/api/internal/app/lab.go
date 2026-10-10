@@ -61,7 +61,7 @@ func (s *Storage) LabCommand(ctx context.Context, input io.Reader, output io.Wri
 			if _, e = s.UploadAsset(ctx, a.ID, raw); e != nil {
 				return e
 			}
-			if _, e = s.LinkAsset(ctx, a.ID, nil); e != nil {
+			if a, e = s.LinkAsset(ctx, a.ID, nil); e != nil {
 				return e
 			}
 		}

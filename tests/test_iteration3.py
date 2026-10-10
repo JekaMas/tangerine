@@ -23,14 +23,14 @@ class Iteration3Tests(unittest.TestCase):
  def setup(cls):
   (ROOT/'data/iteration3').mkdir(parents=True,exist_ok=True)
   cls.project='tangerine-i3-'+uuid.uuid4().hex[:10];cls.tmp=tempfile.TemporaryDirectory(prefix='stack-',dir=ROOT/'data/iteration3');cls.root=Path(cls.tmp.name)
-  for name in ['scripts','deploy/local','services/api/internal/lab','specification/v2']:
+  for name in ['scripts','deploy/local','services/api','specification/v2']:
    shutil.copytree(ROOT/name,cls.root/name)
   shutil.copyfile(ROOT/'.env.example',cls.root/'.env');(cls.root/'data/config').mkdir(parents=True)
   cls.env={**os.environ,'COMPOSE_PROJECT_NAME':cls.project,'TANGERINE_LAB_IMAGE':'tangerine-mlflow-upstream:3.17.0','TANGERINE_LAB_PORT':'5001'}
   image=json.loads(cls.call(['docker','image','inspect','tangerine-mlflow-upstream:3.17.0']).stdout)[0]
   assert image['Architecture']=='arm64' and image['Id']=='sha256:21d98f3ca5b8a7e229bb4e11df7cc87306ecb5e5a90af231e009e01d8b7525ad','native fixture image must match the verified official arm64 manifest configuration'
   host_os=cls.call(['docker','version','--format','{{.Client.Os}}']).stdout.strip();host_arch=cls.call(['docker','version','--format','{{.Client.Arch}}']).stdout.strip()
-  cls.call(['docker','build','--build-arg','HOST_OS='+host_os,'--build-arg','HOST_ARCH='+host_arch,'-f',str(ROOT/'services/api/Dockerfile'),'-t',cls.project+'-api:local',str(ROOT)])
+  cls.call(['docker','build','-f',str(ROOT/'services/api/Dockerfile'),'-t',cls.project+'-api:local',str(ROOT)])
   cls.call(['docker','build','-f',str(ROOT/'deploy/local/minio.Dockerfile'),'-t',cls.project+'-minio:local',str(ROOT)])
   cls.call(['docker','run','--rm','--user',str(os.getuid())+':'+str(os.getgid()),'-v',str(cls.root/'.env')+':/operator.env:ro','-v',str(cls.root/'data/config')+':/runtime','-e','TANGERINE_OPERATOR_FILE=/operator.env','-e','TANGERINE_RUNTIME_DIR=/runtime',cls.project+'-api:local','configure'])
   cls.compose('up','-d','--no-build','--wait','postgres','minio')
@@ -109,12 +109,13 @@ class Iteration3Tests(unittest.TestCase):
  def test_activation_corrupt_negative(self):
   old=self.active();b=self.export(self.selection());b['bindings'][0]['template']+=' unsealed';self.assertNotEqual(self.native({'action':'activate','bundle':b},ok=False).returncode,0);self.assertEqual(self.active()['bundle_sha256'],old['bundle_sha256'])
  def test_export_native_positive(self):
-  p=self.packet();asset=self.good(self.native({'action':'diagnostic-save','payload':p}));read=self.good(self.native({'action':'diagnostic-read','id':asset['id']}));self.assertEqual(read,p);export=self.good(self.sdk('sync',read));self.assertEqual(export['provider_calls'],0);self.assertEqual(self.good(self.sdk('verify',export))['status'],'observed');(self.receipts/'actual-mlflow-export.json').write_text(json.dumps(export,indent=2));(self.receipts/'native-diagnostic.json').write_text(json.dumps({'asset':asset,'packet':p},indent=2))
+  p=self.packet();asset=self.good(self.native({'action':'diagnostic-save','payload':p}));self.assertEqual(asset['state'],'linked');read=self.good(self.native({'action':'diagnostic-read','id':asset['id']}));self.assertEqual(read,p);export=self.good(self.sdk('sync',read));self.assertEqual(export['provider_calls'],0);self.assertEqual(self.good(self.sdk('verify',export))['status'],'observed');(self.receipts/'actual-mlflow-export.json').write_text(json.dumps(export,indent=2));(self.receipts/'native-diagnostic.json').write_text(json.dumps({'asset':asset,'packet':p},indent=2))
  def test_export_privacy_positive(self):
   p=self.packet({'answer':'legitimate answer','Authorization':'CANARY','url':'https://example/?key=CANARY','personal_metadata':{'name':'private'}});p['secrets']=['CANARY'];export=self.good(self.sdk('sync',p));a=export['artifacts'][0];self.assertNotEqual(a['sha256'],a['original_sha256']);self.assertTrue(a['redaction_reasons']);self.assertEqual(self.good(self.sdk('verify',export))['status'],'observed')
  def test_export_outage_recovery_negative(self):
   p=self.packet();a=self.good(self.native({'action':'diagnostic-save','payload':p}));self.call(['sh','scripts/tangerine','lab','stop']);self.assertNotEqual(self.sdk('sync',p,ok=False).returncode,0);self.assertEqual(self.good(self.native({'action':'diagnostic-read','id':a['id']})),p);self.call(['sh','scripts/tangerine','lab']);e=self.good(self.sdk('sync',self.good(self.native({'action':'diagnostic-read','id':a['id']}))));self.assertEqual(e['provider_calls'],0);self.assertEqual(self.good(self.sdk('verify',e))['status'],'observed')
  def test_export_hash_negative(self):
+  malformed=self.packet({'answer':'private'});malformed['capture']='false';self.assertNotEqual(self.sdk('sync',malformed,ok=False).returncode,0)
   p=self.packet();p['artifacts'][0]['sha256']='0'*64;self.assertNotEqual(self.sdk('sync',p,ok=False).returncode,0)
  def test_verify_exact_positive(self):
   e=self.good(self.sdk('sync',self.packet()));self.assertEqual(self.good(self.sdk('verify',e)),{'status':'observed','discrepancies':[],'provider_calls':0})

@@ -23,10 +23,16 @@ case "${1:-start}" in
   chmod 755 "$ROOT/data/config/lab-native"
   docker rm "$cid" >/dev/null
   probe="$ROOT/data/config/.lab-public-probe-$$"
-  probe_container=$(docker create "${COMPOSE_PROJECT_NAME:-tangerine}-api:local")
-  docker cp "$probe_container:/usr/local/bin/public-probe" "$probe"
+  # Compose may rebuild the Linux runtime image after start extracted its host
+  # probe. Build the optional Lab probe for the actual client, independently.
+  probe_image="tangerine-lab-probe-$$:local"
+  host_os=$(docker version --format '{{.Client.Os}}')
+  host_arch=$(docker version --format '{{.Client.Arch}}')
+  docker build --target build --build-arg "HOST_OS=$host_os" --build-arg "HOST_ARCH=$host_arch" -f services/api/Dockerfile -t "$probe_image" . >/dev/null || fail 'LAB_BUILD_FAILED: host probe build failed; native data retained.'
+  probe_container=$(docker create "$probe_image" true)
+  docker cp "$probe_container:/public-probe" "$probe"
   docker rm "$probe_container" >/dev/null;chmod 700 "$probe"
-  trap 'rm -f "$probe"' 0
+  trap 'rm -f "$probe"; docker image rm "$probe_image" >/dev/null 2>&1 || :' 0
   published=$(compose port llm-lab 5000 2>/dev/null || :)
   if [ "$published" != "127.0.0.1:$TANGERINE_LAB_PORT" ]; then "$probe" lab-portcheck "$TANGERINE_LAB_PORT" || fail 'LAB_PORT_OCCUPIED: select an unused loopback port explicitly with lab --port <port>. Existing data is retained.';fi
   compose up -d --no-deps --wait --wait-timeout 180 llm-lab || fail 'LAB_START_FAILED: check port 5000, Docker access and Lab logs; native data and Lab volume are retained.'
