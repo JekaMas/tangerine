@@ -321,6 +321,7 @@ func Exchange(ctx context.Context, client *http.Client, p Profile, wire []byte, 
 			Code     string
 		}
 		if json.Unmarshal(b, &v) != nil {
+			out.Outcome = "incomplete"
 			return fail("PROVIDER_INCOMPLETE")
 		}
 		switch v.Type {
@@ -330,6 +331,7 @@ func Exchange(ctx context.Context, client *http.Client, p Profile, wire []byte, 
 			}
 		case "response.completed":
 			if terminal {
+				out.Outcome = "incomplete"
 				return fail("PROVIDER_INCOMPLETE")
 			}
 			terminal = true
@@ -351,6 +353,7 @@ func Exchange(ctx context.Context, client *http.Client, p Profile, wire []byte, 
 			return fail("PROVIDER_INCOMPLETE")
 		case "error":
 			terminal = true
+			out.Outcome = "incomplete"
 			code := v.Code
 			if code == "" {
 				code = v.Error.Code
@@ -374,14 +377,14 @@ func Exchange(ctx context.Context, client *http.Client, p Profile, wire []byte, 
 				out.Raw = raw.Bytes()
 				return out, e
 			}
-			if terminal {
-				out.Raw = raw.Bytes()
-				return out, nil
-			}
+			// Completion qualifies the candidate, not the entire stream. Consume
+			// the remaining framing so a later error, conflicting terminal or
+			// interrupted body cannot promote partial output to a usable result.
 		}
 		if readErr != nil {
 			if readErr != io.EOF {
 				out.Raw = raw.Bytes()
+				out.Outcome = "transport_error"
 				return out, fail("PROVIDER_FAILURE")
 			}
 			if e = event(); e != nil {

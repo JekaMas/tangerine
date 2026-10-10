@@ -103,8 +103,8 @@ class Iteration4Tests(unittest.TestCase):
   with self.assertRaises(urllib.error.HTTPError) as e:urllib.request.urlopen(req,timeout=15)
   self.assertEqual(e.exception.code,422)
  def packet(self,name):return json.loads((ROOT/'data/iteration4/native'/name).read_text())
- def export(self,name):
-  packet=self.packet(name);p=self.sdk('sync',packet);self.assertEqual(p.returncode,0,p.stdout);out=json.loads(p.stdout);self.assertEqual(out['provider_calls'],0);self.assertEqual(json.loads(self.sdk('verify',out).stdout)['status'],'observed');self.actual_span(packet,out) if packet['trace_enabled'] else self.assertEqual(out['trace_exports'],[]);(self.receipts/(name+'-lab-export.json')).write_text(json.dumps(out,indent=2));return packet,out
+ def export(self,name,expected_status='STATUS_CODE_OK'):
+  packet=self.packet(name);p=self.sdk('sync',packet);self.assertEqual(p.returncode,0,p.stdout);out=json.loads(p.stdout);self.assertEqual(out['provider_calls'],0);self.assertEqual(json.loads(self.sdk('verify',out).stdout)['status'],'observed');self.actual_span(packet,out,expected_status) if packet['trace_enabled'] else self.assertEqual(out['trace_exports'],[]);(self.receipts/(name+'-lab-export.json')).write_text(json.dumps(out,indent=2));return packet,out
  def join(self,packet):
   v=json.loads(packet['artifacts'][0]['body']);self.assertEqual(v['transport_attempt_count'],1)
   receipts=[d['payload'] for d in v['documents'] if d['kind']=='provider-receipt'];contexts=[d['payload'] for d in v['documents'] if d['kind']=='llm-context-snapshot'];bindings=[d['payload'] for d in v['documents'] if d['kind']=='effective-binding'];self.assertEqual(len(receipts),1);self.assertEqual(len(contexts),1);self.assertEqual(len(bindings),1)
@@ -114,7 +114,7 @@ class Iteration4Tests(unittest.TestCase):
  def test_lab_transport_positive(self):
   packet,out=self.export('positive-diagnostic.json');self.join(packet)
  def test_lab_failed_call_positive(self):
-  packet,out=self.export('negative-diagnostic.json');self.join(packet);v=json.loads(packet['artifacts'][0]['body']);r=next(d['payload'] for d in v['documents'] if d['kind']=='provider-receipt');self.assertEqual(r['http_status'],429);self.assertIsNone(r['cost_micro_usd'])
+  packet,out=self.export('negative-diagnostic.json','STATUS_CODE_ERROR');self.join(packet);v=json.loads(packet['artifacts'][0]['body']);r=next(d['payload'] for d in v['documents'] if d['kind']=='provider-receipt');self.assertEqual(r['http_status'],429);self.assertIsNone(r['cost_micro_usd'])
  def test_lab_missing_negative(self):
   packet,out=self.export('positive-diagnostic.json');out['artifacts'][0]['artifact']='native/never-created.json';self.assertEqual(json.loads(self.sdk('verify',out).stdout)['status'],'incomplete')
  def test_lab_mismatch_negative(self):
@@ -132,7 +132,7 @@ class Iteration4Tests(unittest.TestCase):
  def test_models_unknown_negative(self):
   self.assertEqual(self.http('/api/v1/prepare/assets/'+str(uuid.uuid4())+'/bytes')[0],404);c,tag=self.cfg();before=c['configuration_sha256'];c['llm_profile']='absent-profile';code,v=self.put(c,tag);self.assertEqual(code,422);self.assertEqual(v['code'],'SCHEMA_INVALID');self.assertEqual(self.cfg()[0]['configuration_sha256'],before)
 
- def actual_span(self,packet,out):
+ def actual_span(self,packet,out,expected_status):
   self.assertTrue(packet['trace_enabled']);self.assertEqual(len(out['trace_exports']),1);row=out['trace_exports'][0];self.assertEqual(row['state'],'exported')
   code="import sqlite3,json;db=sqlite3.connect('/lab/mlflow.db');r=db.execute('SELECT span_id,name,content FROM spans WHERE span_id=?',(\""+row['span_id']+"\",)).fetchone();print(json.dumps(r))"
-  p=subprocess.run(['docker','compose','--env-file',str(self.extract/'.env'),'--env-file',str(self.extract/'data/config/runtime.env'),'-f',str(self.extract/'deploy/local/compose.yaml'),'exec','-T','llm-lab','python','-c',code],cwd=self.extract,env=self.env,text=True,capture_output=True,timeout=30);self.assertEqual(p.returncode,0,p.stderr);observed=json.loads(p.stdout);self.assertEqual(observed[0],row['span_id']);content=json.loads(observed[2]);self.assertEqual(base64.b64decode(content['trace_id']).hex(),row['trace_id']);self.assertEqual(json.loads(content['attributes']['receipt_id']),row['receipt_id']);(self.receipts/('actual-span-'+row['span_id']+'.json')).write_text(p.stdout)
+  p=subprocess.run(['docker','compose','--env-file',str(self.extract/'.env'),'--env-file',str(self.extract/'data/config/runtime.env'),'-f',str(self.extract/'deploy/local/compose.yaml'),'exec','-T','llm-lab','python','-c',code],cwd=self.extract,env=self.env,text=True,capture_output=True,timeout=30);self.assertEqual(p.returncode,0,p.stderr);observed=json.loads(p.stdout);self.assertEqual(observed[0],row['span_id']);content=json.loads(observed[2]);self.assertEqual(base64.b64decode(content['trace_id']).hex(),row['trace_id']);self.assertEqual(json.loads(content['attributes']['receipt_id']),row['receipt_id']);self.assertEqual(content['status']['code'],expected_status);(self.receipts/('actual-span-'+row['span_id']+'.json')).write_text(p.stdout)

@@ -475,3 +475,12 @@ Verification resume: all seven findings are repaired and closed on committed-cle
 Resume: baseline fe98b1b; scope and native protocol/storage/finalizer anchors recorded in audit/iteration-4-providers-20261010/PLAN.md. No provider credential or dispatch is borrowed from Codex.
 
 Native qualification resume: candidate845e7e4 is reconciled with retained valid clean faac3ca observations:320/320 current registered native cases (128 I4 plus192 affected earlier cases),160 positive/160 negative. The new clean affected136-case selection passed; retained168 Go/provider/storage plus16 storage-regression observations have unchanged current fingerprints. Browser driver readiness, pipe cleanup and test-owned Lab profile cleanup findings are repaired; actual two-span SQLite state, downloaded native artifacts and independent dispatch bytes are retained. Strict OpenSpec, DAG,3210 structural/preservation checks and valid pinned Go vet/gofmt passed. Original failed/unavailable receipts remain unchanged. The final two full-acceptance tasks stay unchecked because LIVE-BLOCKER.json witnesses unavailable Docker HTTPS/own grant/actual catalogue/included-only hosted inference; native protocol fixtures do not prove that boundary. Latest preview restored; runtime/Library/volumes and canonical GAPS.md preserved. No paid provider call or purchased credits authorized; each individual paid-credit case requires personal user approval.
+
+Iteration4 verification repairs (same canonical task list):
+
+- [x] Reproduce and repair stream-tail quota/duplicate-terminal promotion; add exact two-positive/two-negative I4-33 DAG cases.
+- [x] Repair successful native receipt span status and require actual MLflow status assertions for success/failure.
+- [x] Correct active provider specification implementation-state drift.
+- [ ] Complete fresh own I4 committed-clean132-case selection and all192 invalidated predecessor cases; reconcile actual native artifacts and preservation.
+
+Resume: audit/iteration-4-verification-20261010/PLAN.md and INVALIDATION.md own review coverage, counterexamples and exact rerun causes. Live hosted boundary and each-case paid-credit prohibition remain unchanged; no full acceptance until live requirements are observed.

@@ -3277,7 +3277,8 @@
       },
       "expected": {
         "independent_literal_expectations": "All exact independently authored assertions in the fixture must pass; failures and forbidden effects are asserted explicitly.",
-        "assertion_source": "def test_lab_transport_positive(self):\n  packet,out=self.export('positive-diagnostic.json');self.join(packet)"
+        "assertion_source": "def test_lab_transport_positive(self):\n  packet,out=self.export('positive-diagnostic.json');self.join(packet)",
+        "actual_mlflow_span_status": "STATUS_CODE_OK"
       },
       "independent_oracle": "Independent literal native test assertions, test-owned observed HTTP wire bytes and call counts, actual PostgreSQL/MinIO readback, real browser rendering and actual MLflow SDK/artifact download. Hosted inference, entitlement and model quality require separate live evidence.",
       "observation_state": "not_run",
@@ -3299,11 +3300,12 @@
       },
       "input": {
         "exact_native_test": "test_lab_failed_call_positive",
-        "literal_executable_fixture": "def test_lab_failed_call_positive(self):\n  packet,out=self.export('negative-diagnostic.json');self.join(packet);v=json.loads(packet['artifacts'][0]['body']);r=next(d['payload'] for d in v['documents'] if d['kind']=='provider-receipt');self.assertEqual(r['http_status'],429);self.assertIsNone(r['cost_micro_usd'])"
+        "literal_executable_fixture": "def test_lab_failed_call_positive(self):\n  packet,out=self.export('negative-diagnostic.json','STATUS_CODE_ERROR');self.join(packet);v=json.loads(packet['artifacts'][0]['body']);r=next(d['payload'] for d in v['documents'] if d['kind']=='provider-receipt');self.assertEqual(r['http_status'],429);self.assertIsNone(r['cost_micro_usd'])"
       },
       "expected": {
         "independent_literal_expectations": "All exact independently authored assertions in the fixture must pass; failures and forbidden effects are asserted explicitly.",
-        "assertion_source": "def test_lab_failed_call_positive(self):\n  packet,out=self.export('negative-diagnostic.json');self.join(packet);v=json.loads(packet['artifacts'][0]['body']);r=next(d['payload'] for d in v['documents'] if d['kind']=='provider-receipt');self.assertEqual(r['http_status'],429);self.assertIsNone(r['cost_micro_usd'])"
+        "assertion_source": "def test_lab_failed_call_positive(self):\n  packet,out=self.export('negative-diagnostic.json','STATUS_CODE_ERROR');self.join(packet);v=json.loads(packet['artifacts'][0]['body']);r=next(d['payload'] for d in v['documents'] if d['kind']=='provider-receipt');self.assertEqual(r['http_status'],429);self.assertIsNone(r['cost_micro_usd'])",
+        "actual_mlflow_span_status": "STATUS_CODE_ERROR"
       },
       "independent_oracle": "Independent literal native test assertions, test-owned observed HTTP wire bytes and call counts, actual PostgreSQL/MinIO readback, real browser rendering and actual MLflow SDK/artifact download. Hosted inference, entitlement and model quality require separate live evidence.",
       "observation_state": "not_run",

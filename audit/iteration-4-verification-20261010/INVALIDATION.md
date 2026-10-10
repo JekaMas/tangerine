@@ -1,0 +1,7 @@
+# Changed semantic inputs
+
+- provider/transport.go complete stream handling and added stream_verification_test.go: invalidates provider package and I4 native adapter/storage cases using this dependency. Direct new four-case red/green executions retained.
+- deploy/local/lab.py success/error mapping: invalidates I3/I4 Lab exporter cases. tests/test_iteration4.py now asserts independent literal actual SDK span status; source/fixtures/expected outputs updated truthfully. Prior successful-call error spans are counterexamples, not valid proof of the repair.
+- I1 services/deploy/fixture dependencies and I2 API/deploy dependencies include these actual changes, so all32 I1 and72 I2 registered cases require rerun. I3 dependencies include lab.py, so all88 I3 cases require rerun. I4 full selection is132 cases including four new regressions. Total current closure324.
+- The full own iteration committed-clean selection has a new source/selection/revision input; it is required by the selected verify procedure. Static DAG/discovery/OpenSpec/fixture-set checks are invalidated by four new edges and changed assertions. Go vet/gofmt invalidated by the transport edit. Historical receipts stay unchanged; no fingerprint refresh makes old observations current.
+- Original taxonomy/recipes/formulas/source/provider registries and migrations are unchanged; verify their bytes once at the stable boundary. Preview/configuration/Library/user GAPS preservation is separate runtime/canonical readback.

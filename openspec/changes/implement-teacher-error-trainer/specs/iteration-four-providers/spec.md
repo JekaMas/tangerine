@@ -449,3 +449,17 @@ The application SHALL implement this bounded obligation of DEV-12 through the re
 
 - **WHEN** the exact positive or negative native fixture for packet 2 executes
 - **THEN** its independently asserted bytes, state, call count and failure behavior SHALL hold
+
+### Requirement: I4-33 Complete stream validation before usable output
+
+The application SHALL validate the complete response stream before returning usable output. Terminal completion at EOF and harmless metadata SHALL retain their exact native bytes. A later quota error or duplicate completion SHALL reject the candidate without dispatch fallback. Exact independent fixtures are retained in audit/iteration-4-verification-20261010/CASES.json. Native protocol fixtures SHALL NOT establish hosted admission or model quality.
+
+#### Scenario: I4-33 packet 1
+
+- **WHEN** completion ends at EOF or a later quota event follows it
+- **THEN** EOF completion SHALL remain usable and quota failure SHALL remain unusable with its actual code
+
+#### Scenario: I4-33 packet 2
+
+- **WHEN** harmless metadata or a duplicate completion follows a completion event
+- **THEN** metadata SHALL be retained and duplicate completion SHALL be rejected

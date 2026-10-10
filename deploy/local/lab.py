@@ -73,7 +73,7 @@ def sync(packet):
    for doc in payload['documents']:
     if doc['kind']!='provider-receipt':continue
     r=doc['payload'];attrs={'tangerine.operation_id':r['operation_id'],'stage':r['stage'],'receipt_id':r['id'],'context_snapshot_id':r['context_snapshot_id'],'binding_sha256':r['binding_sha256'],'input_sha256':r['input_sha256'],'attempt_index':str(r['transport_attempt'])}
-    trace={'Trace':r['trace_id'],'Span':r['span_id'],'Name':'tangerine.provider.'+r['stage'],'Start':r['started_at'],'End':r['finished_at'],'Attributes':attrs,'Error':r['outcome']!='success'}
+    trace={'Trace':r['trace_id'],'Span':r['span_id'],'Name':'tangerine.provider.'+r['stage'],'Start':r['started_at'],'End':r['finished_at'],'Attributes':attrs,'Error':r['outcome']!='complete'}
     row={'trace_id':r['trace_id'],'span_id':r['span_id'],'receipt_id':r['id'],'experiment_id':eid.experiment_id,'state':'unexported'}
     try:
      raw=base64.b64decode(native({'action':'otlp','trace':trace}));row['otlp_sha256']=digest(raw)

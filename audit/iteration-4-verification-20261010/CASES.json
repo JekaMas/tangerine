@@ -1,0 +1,218 @@
+{
+  "properties": [
+    "I4-33.P1",
+    "I4-32.P1"
+  ],
+  "plans": [
+    {
+      "case_id": "I4-33.P1.S1.POSITIVE",
+      "property_id": "I4-33.P1",
+      "polarity": "positive",
+      "scenario": "I4-33 packet 1",
+      "fixture_id": "iteration4-I4-33-packet1",
+      "test_id": "tangerine.local/api/internal/provider::TestProviderStreamTailEOFPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestProviderStreamTailEOFPositive through services/api/internal/provider/transport.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestProviderStreamTailEOFPositive",
+        "literal_executable_fixture": "func TestProviderStreamTailEOFPositive(t *testing.T) {\n\tr, err, seen := send(t, 200, strings.TrimRight(completed, \"\\n\"))\n\tif err != nil || r.Outcome != \"complete\" || r.Visible != `{\"answer_text\":\"ok\",\"requested_language\":\"en\"}` || seen.Calls != 1 || string(r.Raw) != strings.TrimRight(completed, \"\\n\") {\n\t\tt.Fatal(\"terminal event at EOF lost\", err, r, seen)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "Exact literal error/status, full stream bytes and one request assertions must pass.",
+        "assertion_source": "func TestProviderStreamTailEOFPositive(t *testing.T) {\n\tr, err, seen := send(t, 200, strings.TrimRight(completed, \"\\n\"))\n\tif err != nil || r.Outcome != \"complete\" || r.Visible != `{\"answer_text\":\"ok\",\"requested_language\":\"en\"}` || seen.Calls != 1 || string(r.Raw) != strings.TrimRight(completed, \"\\n\") {\n\t\tt.Fatal(\"terminal event at EOF lost\", err, r, seen)\n\t}\n}"
+      },
+      "independent_oracle": "Independent literal expected terminal/error code, complete exact raw bytes and one observed request through the production stream parser. Controlled remote HTTP protocol only; no hosted entitlement/model quality.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I4-33.P1.S2.POSITIVE",
+      "property_id": "I4-33.P1",
+      "polarity": "positive",
+      "scenario": "I4-33 packet 2",
+      "fixture_id": "iteration4-I4-33-packet2",
+      "test_id": "tangerine.local/api/internal/provider::TestProviderStreamTailMetadataPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestProviderStreamTailMetadataPositive through services/api/internal/provider/transport.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestProviderStreamTailMetadataPositive",
+        "literal_executable_fixture": "func TestProviderStreamTailMetadataPositive(t *testing.T) {\n\tbody := completed + \"data: {\\\"type\\\":\\\"fixture.metadata\\\",\\\"note\\\":\\\"after terminal\\\"}\\n\\n\"\n\tr, err, seen := send(t, 200, body)\n\tif err != nil || r.Outcome != \"complete\" || r.Visible != `{\"answer_text\":\"ok\",\"requested_language\":\"en\"}` || seen.Calls != 1 || string(r.Raw) != body {\n\t\tt.Fatal(\"complete stream metadata not retained\", err, r, seen)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "Exact literal error/status, full stream bytes and one request assertions must pass.",
+        "assertion_source": "func TestProviderStreamTailMetadataPositive(t *testing.T) {\n\tbody := completed + \"data: {\\\"type\\\":\\\"fixture.metadata\\\",\\\"note\\\":\\\"after terminal\\\"}\\n\\n\"\n\tr, err, seen := send(t, 200, body)\n\tif err != nil || r.Outcome != \"complete\" || r.Visible != `{\"answer_text\":\"ok\",\"requested_language\":\"en\"}` || seen.Calls != 1 || string(r.Raw) != body {\n\t\tt.Fatal(\"complete stream metadata not retained\", err, r, seen)\n\t}\n}"
+      },
+      "independent_oracle": "Independent literal expected terminal/error code, complete exact raw bytes and one observed request through the production stream parser. Controlled remote HTTP protocol only; no hosted entitlement/model quality.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I4-33.P1.S1.NEGATIVE",
+      "property_id": "I4-33.P1",
+      "polarity": "negative",
+      "scenario": "I4-33 packet 1",
+      "fixture_id": "iteration4-I4-33-packet1",
+      "test_id": "tangerine.local/api/internal/provider::TestProviderStreamTailQuotaNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestProviderStreamTailQuotaNegative through services/api/internal/provider/transport.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestProviderStreamTailQuotaNegative",
+        "literal_executable_fixture": "func TestProviderStreamTailQuotaNegative(t *testing.T) {\n\tbody := completed + \"data: {\\\"type\\\":\\\"error\\\",\\\"code\\\":\\\"subscription_sharing_usage_limit_exceeded\\\"}\\n\\n\"\n\tr, err, seen := send(t, 200, body)\n\tcode, native := SafeError(err)\n\tif code != \"LOCAL_BUDGET_EXCEEDED\" || native != \"subscription_sharing_usage_limit_exceeded\" || r.Outcome == \"complete\" || seen.Calls != 1 || !strings.Contains(string(r.Raw), native) {\n\t\tt.Fatal(\"post-completion quota promoted\", err, r, seen)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "Exact literal error/status, full stream bytes and one request assertions must pass.",
+        "assertion_source": "func TestProviderStreamTailQuotaNegative(t *testing.T) {\n\tbody := completed + \"data: {\\\"type\\\":\\\"error\\\",\\\"code\\\":\\\"subscription_sharing_usage_limit_exceeded\\\"}\\n\\n\"\n\tr, err, seen := send(t, 200, body)\n\tcode, native := SafeError(err)\n\tif code != \"LOCAL_BUDGET_EXCEEDED\" || native != \"subscription_sharing_usage_limit_exceeded\" || r.Outcome == \"complete\" || seen.Calls != 1 || !strings.Contains(string(r.Raw), native) {\n\t\tt.Fatal(\"post-completion quota promoted\", err, r, seen)\n\t}\n}"
+      },
+      "independent_oracle": "Independent literal expected terminal/error code, complete exact raw bytes and one observed request through the production stream parser. Controlled remote HTTP protocol only; no hosted entitlement/model quality.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I4-33.P1.S2.NEGATIVE",
+      "property_id": "I4-33.P1",
+      "polarity": "negative",
+      "scenario": "I4-33 packet 2",
+      "fixture_id": "iteration4-I4-33-packet2",
+      "test_id": "tangerine.local/api/internal/provider::TestProviderStreamTailDuplicateNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestProviderStreamTailDuplicateNegative through services/api/internal/provider/transport.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestProviderStreamTailDuplicateNegative",
+        "literal_executable_fixture": "func TestProviderStreamTailDuplicateNegative(t *testing.T) {\n\tbody := completed + \"data: {\\\"type\\\":\\\"response.completed\\\",\\\"response\\\":{\\\"status\\\":\\\"completed\\\",\\\"output\\\":[]}}\\n\\n\"\n\tr, err, seen := send(t, 200, body)\n\tcode, _ := SafeError(err)\n\tif code != \"PROVIDER_INCOMPLETE\" || r.Outcome == \"complete\" || seen.Calls != 1 || string(r.Raw) != body {\n\t\tt.Fatal(\"contradictory terminals promoted\", err, r, seen)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "Exact literal error/status, full stream bytes and one request assertions must pass.",
+        "assertion_source": "func TestProviderStreamTailDuplicateNegative(t *testing.T) {\n\tbody := completed + \"data: {\\\"type\\\":\\\"response.completed\\\",\\\"response\\\":{\\\"status\\\":\\\"completed\\\",\\\"output\\\":[]}}\\n\\n\"\n\tr, err, seen := send(t, 200, body)\n\tcode, _ := SafeError(err)\n\tif code != \"PROVIDER_INCOMPLETE\" || r.Outcome == \"complete\" || seen.Calls != 1 || string(r.Raw) != body {\n\t\tt.Fatal(\"contradictory terminals promoted\", err, r, seen)\n\t}\n}"
+      },
+      "independent_oracle": "Independent literal expected terminal/error code, complete exact raw bytes and one observed request through the production stream parser. Controlled remote HTTP protocol only; no hosted entitlement/model quality.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I4-32.P1.S1.POSITIVE",
+      "property_id": "I4-32.P1",
+      "polarity": "positive",
+      "scenario": "I4-32 packet 1",
+      "fixture_id": "iteration4-I4-32-packet1",
+      "test_id": "unittest::test_iteration4.Iteration4Tests.test_lab_transport_positive",
+      "mode": "declared_behavior",
+      "action": "Execute test_lab_transport_positive through services/web/app/settings/page.js",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "test_lab_transport_positive",
+        "literal_executable_fixture": "def test_lab_transport_positive(self):\n  packet,out=self.export('positive-diagnostic.json');self.join(packet)"
+      },
+      "expected": {
+        "independent_literal_expectations": "All exact independently authored assertions in the fixture must pass; failures and forbidden effects are asserted explicitly.",
+        "assertion_source": "def test_lab_transport_positive(self):\n  packet,out=self.export('positive-diagnostic.json');self.join(packet)",
+        "actual_mlflow_span_status": "STATUS_CODE_OK"
+      },
+      "independent_oracle": "Independent literal native test assertions, test-owned observed HTTP wire bytes and call counts, actual PostgreSQL/MinIO readback, real browser rendering and actual MLflow SDK/artifact download. Hosted inference, entitlement and model quality require separate live evidence.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I4-32.P1.S2.POSITIVE",
+      "property_id": "I4-32.P1",
+      "polarity": "positive",
+      "scenario": "I4-32 packet 2",
+      "fixture_id": "iteration4-I4-32-packet2",
+      "test_id": "unittest::test_iteration4.Iteration4Tests.test_lab_failed_call_positive",
+      "mode": "declared_behavior",
+      "action": "Execute test_lab_failed_call_positive through services/web/app/settings/page.js",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "test_lab_failed_call_positive",
+        "literal_executable_fixture": "def test_lab_failed_call_positive(self):\n  packet,out=self.export('negative-diagnostic.json','STATUS_CODE_ERROR');self.join(packet);v=json.loads(packet['artifacts'][0]['body']);r=next(d['payload'] for d in v['documents'] if d['kind']=='provider-receipt');self.assertEqual(r['http_status'],429);self.assertIsNone(r['cost_micro_usd'])"
+      },
+      "expected": {
+        "independent_literal_expectations": "All exact independently authored assertions in the fixture must pass; failures and forbidden effects are asserted explicitly.",
+        "assertion_source": "def test_lab_failed_call_positive(self):\n  packet,out=self.export('negative-diagnostic.json','STATUS_CODE_ERROR');self.join(packet);v=json.loads(packet['artifacts'][0]['body']);r=next(d['payload'] for d in v['documents'] if d['kind']=='provider-receipt');self.assertEqual(r['http_status'],429);self.assertIsNone(r['cost_micro_usd'])",
+        "actual_mlflow_span_status": "STATUS_CODE_ERROR"
+      },
+      "independent_oracle": "Independent literal native test assertions, test-owned observed HTTP wire bytes and call counts, actual PostgreSQL/MinIO readback, real browser rendering and actual MLflow SDK/artifact download. Hosted inference, entitlement and model quality require separate live evidence.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I4-32.P1.S1.NEGATIVE",
+      "property_id": "I4-32.P1",
+      "polarity": "negative",
+      "scenario": "I4-32 packet 1",
+      "fixture_id": "iteration4-I4-32-packet1",
+      "test_id": "unittest::test_iteration4.Iteration4Tests.test_lab_missing_negative",
+      "mode": "declared_behavior",
+      "action": "Execute test_lab_missing_negative through services/web/app/settings/page.js",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "test_lab_missing_negative",
+        "literal_executable_fixture": "def test_lab_missing_negative(self):\n  packet,out=self.export('positive-diagnostic.json');out['artifacts'][0]['artifact']='native/never-created.json';self.assertEqual(json.loads(self.sdk('verify',out).stdout)['status'],'incomplete')"
+      },
+      "expected": {
+        "independent_literal_expectations": "All exact independently authored assertions in the fixture must pass; failures and forbidden effects are asserted explicitly.",
+        "assertion_source": "def test_lab_missing_negative(self):\n  packet,out=self.export('positive-diagnostic.json');out['artifacts'][0]['artifact']='native/never-created.json';self.assertEqual(json.loads(self.sdk('verify',out).stdout)['status'],'incomplete')"
+      },
+      "independent_oracle": "Independent literal native test assertions, test-owned observed HTTP wire bytes and call counts, actual PostgreSQL/MinIO readback, real browser rendering and actual MLflow SDK/artifact download. Hosted inference, entitlement and model quality require separate live evidence.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I4-32.P1.S2.NEGATIVE",
+      "property_id": "I4-32.P1",
+      "polarity": "negative",
+      "scenario": "I4-32 packet 2",
+      "fixture_id": "iteration4-I4-32-packet2",
+      "test_id": "unittest::test_iteration4.Iteration4Tests.test_lab_mismatch_negative",
+      "mode": "declared_behavior",
+      "action": "Execute test_lab_mismatch_negative through services/web/app/settings/page.js",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "test_lab_mismatch_negative",
+        "literal_executable_fixture": "def test_lab_mismatch_negative(self):\n  packet,out=self.export('canary-diagnostic.json');self.assertNotIn('OWNED_PROVIDER_CREDENTIAL_CANARY',json.dumps(packet));self.assertNotEqual(out['artifacts'][0]['original_sha256'],out['artifacts'][0]['sha256']);out['artifacts'][0]['sha256']='0'*64;self.assertEqual(json.loads(self.sdk('verify',out).stdout)['status'],'incomplete')"
+      },
+      "expected": {
+        "independent_literal_expectations": "All exact independently authored assertions in the fixture must pass; failures and forbidden effects are asserted explicitly.",
+        "assertion_source": "def test_lab_mismatch_negative(self):\n  packet,out=self.export('canary-diagnostic.json');self.assertNotIn('OWNED_PROVIDER_CREDENTIAL_CANARY',json.dumps(packet));self.assertNotEqual(out['artifacts'][0]['original_sha256'],out['artifacts'][0]['sha256']);out['artifacts'][0]['sha256']='0'*64;self.assertEqual(json.loads(self.sdk('verify',out).stdout)['status'],'incomplete')"
+      },
+      "independent_oracle": "Independent literal native test assertions, test-owned observed HTTP wire bytes and call counts, actual PostgreSQL/MinIO readback, real browser rendering and actual MLflow SDK/artifact download. Hosted inference, entitlement and model quality require separate live evidence.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    }
+  ]
+}
