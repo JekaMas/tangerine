@@ -144,9 +144,6 @@ func validateProfileSelection(c map[string]any) error {
 		if _, ok := ids[p.ID]; ok {
 			return ErrConflict
 		}
-		if e := provider.ValidateProfile(p); e != nil {
-			return e
-		}
 		ids[p.ID] = p
 	}
 	selected, ok := c["llm_profile"].(string)

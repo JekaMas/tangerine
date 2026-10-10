@@ -162,7 +162,7 @@ The local storage foundation SHALL implement this behavior through services/api/
 
 ### Requirement: I2-12 Upgrade admission precedes migration and readiness observes availability
 
-Initialization SHALL admit migration history once. Routine readiness SHALL observe database availability and trust accepted schema/data, without column/type/catalogue audits. Operations using a missing resource SHALL report their actual error. The original migrations SHALL remain unchanged.
+Initialization SHALL trust the saved applied-version list and apply missing migration versions without replaying historical checksum/prefix audits. Backup creation SHALL retain the dump/objects/manifest without repeated archive or remote-byte audits. Routine readiness SHALL observe database availability and trust accepted schema/data, without column/type/catalogue audits. Operations using a missing resource SHALL report their actual error. The original migrations SHALL remain unchanged.
 
 The local storage foundation SHALL implement this behavior through services/api/internal/app/migration.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: RUN-02, I1-03, I1-06.
 

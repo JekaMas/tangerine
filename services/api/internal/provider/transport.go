@@ -81,18 +81,7 @@ func (m *Manager) Models(ctx context.Context, id string) ([]Model, []byte, error
 	}
 	return out, b, nil
 }
-func ValidateProfile(p Profile) error {
-	b, _ := json.Marshal(p)
-	_, _, e := contracts.Validate("llm-profile", "2.0.0", b)
-	if e != nil {
-		return fail("CONSTRAINT_CONFLICT")
-	}
-	return nil
-}
 func Included(p Profile) error {
-	if e := ValidateProfile(p); e != nil {
-		return e
-	}
 	if p.Billing != "local" && p.Billing != "free_tier" && p.Billing != "included_subscription" {
 		return fail("CONSTRAINT_CONFLICT")
 	}

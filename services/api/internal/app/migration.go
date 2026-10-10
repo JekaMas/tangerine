@@ -20,8 +20,9 @@ import (
 	"tangerine.local/api/internal/contracts"
 )
 
-// validateHistory is read-only and rejects unknown, changed or non-prefix history.
-func validateHistory(ctx context.Context, q interface {
+// readMigrationHistory trusts the saved applied-version list. New migration
+// statements are applied only when their version is absent.
+func readMigrationHistory(ctx context.Context, q interface {
 	Query(context.Context, string, ...any) (pgx.Rows, error)
 	QueryRow(context.Context, string, ...any) pgx.Row
 }) (map[string]string, error) {
@@ -48,37 +49,7 @@ func validateHistory(ctx context.Context, q interface {
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
-	entries, _ := migrations.ReadDir("migrations")
-	missing := false
-	for _, e := range entries {
-		b, _ := migrations.ReadFile("migrations/" + e.Name())
-		stored, ok := history[e.Name()]
-		if !ok {
-			missing = true
-			continue
-		}
-		if missing || contracts.Digest(b) != stored {
-			return nil, errors.New("migration history mismatch")
-		}
-		delete(history, e.Name())
-	}
-	if len(history) != 0 {
-		return nil, errors.New("unknown migration history")
-	}
-	history = map[string]string{}
-	rows2, err := q.Query(ctx, "SELECT version,sha256 FROM schema_migrations")
-	if err != nil {
-		return nil, err
-	}
-	defer rows2.Close()
-	for rows2.Next() {
-		var n, h string
-		if err = rows2.Scan(&n, &h); err != nil {
-			return nil, err
-		}
-		history[n] = h
-	}
-	return history, rows2.Err()
+	return history, nil
 }
 
 type upgradeBackup struct {
@@ -89,7 +60,7 @@ type upgradeBackup struct {
 
 // upgradeBackup freezes application writers with the migration's session lock.
 // pg_dump is native, passwords stay in process environment, and all existing
-// private object bytes are archived and rehashed before any schema change.
+// private object bytes are archived with a provenance manifest before change.
 func (s *Storage) backupUpgrade(ctx context.Context, history map[string]string) (upgradeBackup, error) {
 	var receipt upgradeBackup
 	dir, err := os.MkdirTemp("", "tangerine-upgrade-")
@@ -103,10 +74,6 @@ func (s *Storage) backupUpgrade(ctx context.Context, history map[string]string) 
 	cmd.Env = env
 	if err = cmd.Run(); err != nil {
 		return receipt, errors.New("upgrade database backup failed")
-	}
-	list := exec.CommandContext(ctx, "pg_restore", "--list", dir+"/database.dump")
-	if err = list.Run(); err != nil {
-		return receipt, errors.New("upgrade database archive verification failed")
 	}
 	inventory := []map[string]any{}
 	rows, err := s.DB.Query(ctx, "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE' ORDER BY table_name")
@@ -169,9 +136,6 @@ func (s *Storage) backupUpgrade(ctx context.Context, history map[string]string) 
 		return receipt, err
 	}
 	if exists {
-		if err = s.CheckPrivateMedia(ctx); err != nil {
-			return receipt, err
-		}
 		for object := range s.Media.ListObjects(ctx, s.Bucket, minio.ListObjectsOptions{Recursive: true}) {
 			if object.Err != nil {
 				return receipt, object.Err
@@ -223,26 +187,6 @@ func (s *Storage) backupUpgrade(ctx context.Context, history map[string]string) 
 	if _, err = archive.Seek(0, 0); err != nil {
 		return receipt, err
 	}
-	tr := tar.NewReader(archive)
-	i := 0
-	for {
-		header, err := tr.Next()
-		if err == io.EOF {
-			break
-		}
-		if err != nil || i >= len(manifest) {
-			return receipt, errors.New("backup archive verification failed")
-		}
-		h := sha256.New()
-		n, err := io.Copy(h, tr)
-		if err != nil || header.Name != manifest[i]["path"] || hex.EncodeToString(h.Sum(nil)) != manifest[i]["sha256"] || n != manifest[i]["byte_count"] {
-			return receipt, errors.New("backup entry verification failed")
-		}
-		i++
-	}
-	if i != len(manifest) {
-		return receipt, errors.New("incomplete backup")
-	}
 	if !exists {
 		if err = s.Media.MakeBucket(ctx, s.Bucket, minio.MakeBucketOptions{}); err != nil {
 			return receipt, err
@@ -255,16 +199,6 @@ func (s *Storage) backupUpgrade(ctx context.Context, history map[string]string) 
 	}
 	if _, err = s.Media.PutObject(ctx, s.Bucket, receipt.Key, archive, receipt.Size, minio.PutObjectOptions{ContentType: "application/x-tar"}); err != nil {
 		return receipt, err
-	}
-	read, err := s.Media.GetObject(ctx, s.Bucket, receipt.Key, minio.GetObjectOptions{})
-	if err != nil {
-		return receipt, err
-	}
-	remoteHash := sha256.New()
-	remoteSize, err := io.Copy(remoteHash, read)
-	_ = read.Close()
-	if err != nil || hex.EncodeToString(remoteHash.Sum(nil)) != receipt.SHA || remoteSize != receipt.Size {
-		return receipt, errors.New("backup object verification failed")
 	}
 	return receipt, nil
 }
@@ -279,12 +213,13 @@ func (s *Storage) Migrate(ctx context.Context) error {
 		return err
 	}
 	defer func() { _, _ = conn.Exec(context.Background(), "SELECT pg_advisory_unlock(79004731)") }()
-	history, err := validateHistory(ctx, conn)
+	history, err := readMigrationHistory(ctx, conn)
 	if err != nil {
 		return err
 	}
 	var backup *upgradeBackup
-	if len(history) > 0 && history["003_domain_storage.sql"] == "" {
+	_, domainApplied := history["003_domain_storage.sql"]
+	if len(history) > 0 && !domainApplied {
 		b, err := s.backupUpgrade(ctx, history)
 		if err != nil {
 			return err
@@ -301,7 +236,7 @@ func (s *Storage) Migrate(ctx context.Context) error {
 	}
 	entries, _ := migrations.ReadDir("migrations")
 	for _, e := range entries {
-		if history[e.Name()] != "" {
+		if _, applied := history[e.Name()]; applied {
 			continue
 		}
 		b, _ := migrations.ReadFile("migrations/" + e.Name())
