@@ -1,5 +1,7 @@
 # Corpus acquisition and use
 
+Historical acquisition guidance follows. The active specification is specification/v2/docs/sources/acquisition-and-rights.md. For ICNALE, the owner reply recorded on2026-10-10 prohibits sound/video downloads and commercial development/AI transfers for those purposes. Do not continue media acquisition. Non-commercial app/AI use is not established; see specification/v2/docs/sources/icnale.md. Existing private acquisition receipts are preserved.
+
 A corpus is a set of source records. Gold is a set of independently reviewed reference records.
 The project needs its own permitted gold for the whole task.
 An external written or speech corpus does not provide every required observation.

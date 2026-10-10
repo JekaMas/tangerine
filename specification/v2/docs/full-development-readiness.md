@@ -54,7 +54,7 @@ Each of the following is needed for its complete selected source/report, not for
 - Doubao: participant records, transcripts/media, exact instrument wording/prompts, coding dictionary and reuse terms.
 - Moodrick and NIR: two separate full native exports with media/dictionaries/source-use terms.
 - Official L2-ARCTIC delivery if claiming that provenance: successful official bytes/readback. The acquired full mirror remains usable under its actual provenance; equivalence is unproved.
-- ICNALE separately linked media and eligible Speak&Improve release: outstanding supplementary media/access.
+- ICNALE separately linked media: unavailable under the recorded owner download prohibition (sources/icnale.md), not an outstanding engineering acquisition. Eligible Speak&Improve release: outstanding optional access.
 - Selected full TET-GOLD report: actual independently expected stimuli/observations; no startup batch or pregenerated exercise corpus is required.
 - Empirical all-leaf coverage and calibrated user outcomes: real annotated populations, denominators and attempts. No archive or approval automatically supplies them.
 

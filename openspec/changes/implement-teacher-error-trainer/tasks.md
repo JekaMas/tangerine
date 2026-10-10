@@ -534,3 +534,10 @@ Historical pre-review native verification: all376 required cases (188 positive/1
 - [x] Finish native preservation/readback and verification report; full hosted completion remains subject to actual own included-only connection and quality/MLflow evidence.
 
 Current native verification: audit/iteration-5-verification-20261010/REPORT.md and NATIVE-VERIFICATION.json reconcile380 cases (190 positive/190 negative). The own48-case I5 selection and the repaired36-case Lab selection passed clean on8b00d79;100 invalidated predecessor cases retain successful commands from the failed136 selection, whose Lab startup observed zero cases while5001 was occupied. That receipt remains failed.196 unchanged predecessor cases retain exact prior receipts. Hosted acceptance remains unchecked; LIVE-READBACK.json records the fresh API egress timeout and missing own grant/model.
+
+## ICNALE owner reply — 2026-10-10
+
+- [x] Record the user-provided owner response with provenance; supersede pending media acquisition with owner denial and distinguish explicit commercial/AI-purpose restrictions from ungranted non-commercial app/AI uses.
+- [x] Update active source research, relevance, acquisition, empirical-data and readiness guidance; preserve historical acquisition receipts, all original source identities/categories/formulas and independent generation. Extend the existing COR-01.P1.SET2 positive/negative plans.
+
+This update is source-policy/specification reconciliation, not implemented importer or LLM-use enforcement. The existing optional source implementation tasks and their native observations remain pending. No new download, owner message, inference or paid use occurred. Validation evidence: audit/icnale-owner-reply-20261010/REPORT.md.
