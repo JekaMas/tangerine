@@ -15,7 +15,7 @@ def _snapshot(root,patterns):return _original_snapshot(root,list(patterns))
 requirement_tests.dependency_snapshot=lambda root,patterns:_snapshot(root,tuple(patterns))
 
 def main():
- graph=EvidenceGraph(R,'implement-teacher-error-trainer');p=E/'clean-final.json';receipt=json.loads(p.read_text());head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip()
+ graph=EvidenceGraph(R,'implement-teacher-error-trainer');p=E/'clean-launcher-final.json';receipt=json.loads(p.read_text());head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip()
  selected={k:v for k,v in graph.cases.items() if v['property_id'].startswith(('I1-','I2-'))}
  assert len(selected)==104 and set(receipt['cases'])==set(selected)
  assert receipt['status']=='passed' and receipt['git']['status']=='known' and not receipt['git']['dirty']

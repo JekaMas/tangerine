@@ -1,0 +1,173 @@
+test_asset_delivery_positive (test_iteration2.Iteration2Tests.test_asset_delivery_positive) ... ok
+test_asset_unlinked_negative (test_iteration2.Iteration2Tests.test_asset_unlinked_negative) ... FAIL
+test_asset_verified_positive (test_iteration2.Iteration2Tests.test_asset_verified_positive) ... ok
+test_asset_wrong_input_negative (test_iteration2.Iteration2Tests.test_asset_wrong_input_negative) ... FAIL
+test_batch_audit_positive (test_iteration2.Iteration2Tests.test_batch_audit_positive) ... ok
+test_batch_dangling_negative (test_iteration2.Iteration2Tests.test_batch_dangling_negative) ... ok
+test_batch_duplicate_negative (test_iteration2.Iteration2Tests.test_batch_duplicate_negative) ... ok
+test_batch_forward_positive (test_iteration2.Iteration2Tests.test_batch_forward_positive) ... ok
+test_browser_failure_negative (test_iteration2.Iteration2Tests.test_browser_failure_negative) ... ok
+test_browser_populated_positive (test_iteration2.Iteration2Tests.test_browser_populated_positive) ... ok
+test_browser_recovery_negative (test_iteration2.Iteration2Tests.test_browser_recovery_negative) ... ok
+test_browser_refresh_positive (test_iteration2.Iteration2Tests.test_browser_refresh_positive) ... ok
+test_cas_advance_positive (test_iteration2.Iteration2Tests.test_cas_advance_positive) ... ok
+test_cas_concurrent_negative (test_iteration2.Iteration2Tests.test_cas_concurrent_negative) ... ok
+test_cas_create_positive (test_iteration2.Iteration2Tests.test_cas_create_positive) ... ok
+test_cas_stale_negative (test_iteration2.Iteration2Tests.test_cas_stale_negative) ... ok
+test_immutable_delete_negative (test_iteration2.Iteration2Tests.test_immutable_delete_negative) ... ok
+test_immutable_read_positive (test_iteration2.Iteration2Tests.test_immutable_read_positive) ... ok
+test_immutable_update_negative (test_iteration2.Iteration2Tests.test_immutable_update_negative) ... ok
+test_immutable_versions_positive (test_iteration2.Iteration2Tests.test_immutable_versions_positive) ... ok
+test_migration_fresh_positive (test_iteration2.Iteration2Tests.test_migration_fresh_positive) ... ok
+test_migration_readiness_negative (test_iteration2.Iteration2Tests.test_migration_readiness_negative) ... ok
+test_migration_unknown_negative (test_iteration2.Iteration2Tests.test_migration_unknown_negative) ... ok
+test_migration_upgrade_positive (test_iteration2.Iteration2Tests.test_migration_upgrade_positive) ... FAIL
+test_operation_body_negative (test_iteration2.Iteration2Tests.test_operation_body_negative) ... ok
+test_operation_completed_positive (test_iteration2.Iteration2Tests.test_operation_completed_positive) ... ok
+test_operation_retry_positive (test_iteration2.Iteration2Tests.test_operation_retry_positive) ... ok
+test_operation_target_negative (test_iteration2.Iteration2Tests.test_operation_target_negative) ... ok
+test_orphan_old_positive (test_iteration2.Iteration2Tests.test_orphan_old_positive) ... FAIL
+test_orphan_preview_positive (test_iteration2.Iteration2Tests.test_orphan_preview_positive) ... FAIL
+test_orphan_recent_negative (test_iteration2.Iteration2Tests.test_orphan_recent_negative) ... FAIL
+test_orphan_referenced_negative (test_iteration2.Iteration2Tests.test_orphan_referenced_negative) ... FAIL
+test_owner_bad_document_negative (test_iteration2.Iteration2Tests.test_owner_bad_document_negative) ... ok
+test_owner_link_positive (test_iteration2.Iteration2Tests.test_owner_link_positive) ... ok
+test_owner_snapshot_positive (test_iteration2.Iteration2Tests.test_owner_snapshot_positive) ... ok
+test_owner_stale_negative (test_iteration2.Iteration2Tests.test_owner_stale_negative) ... ok
+test_recovery_corrupt_negative (test_iteration2.Iteration2Tests.test_recovery_corrupt_negative) ... FAIL
+test_recovery_link_positive (test_iteration2.Iteration2Tests.test_recovery_link_positive) ... ok
+test_recovery_terminal_negative (test_iteration2.Iteration2Tests.test_recovery_terminal_negative) ... FAIL
+test_recovery_upload_positive (test_iteration2.Iteration2Tests.test_recovery_upload_positive) ... ok
+test_refs_digest_positive (test_iteration2.Iteration2Tests.test_refs_digest_positive) ... ok
+test_refs_scoped_positive (test_iteration2.Iteration2Tests.test_refs_scoped_positive) ... ok
+test_refs_wrong_digest_negative (test_iteration2.Iteration2Tests.test_refs_wrong_digest_negative) ... ok
+test_refs_wrong_scope_negative (test_iteration2.Iteration2Tests.test_refs_wrong_scope_negative) ... ok
+test_registry_exact_positive (test_iteration2.Iteration2Tests.test_registry_exact_positive) ... ok
+test_registry_extra_negative (test_iteration2.Iteration2Tests.test_registry_extra_negative) ... ok
+test_registry_missing_negative (test_iteration2.Iteration2Tests.test_registry_missing_negative) ... ok
+test_registry_readback_positive (test_iteration2.Iteration2Tests.test_registry_readback_positive) ... ok
+test_unicode_duplicates_negative (test_iteration2.Iteration2Tests.test_unicode_duplicates_negative) ... ok
+test_unicode_exact_positive (test_iteration2.Iteration2Tests.test_unicode_exact_positive) ... ok
+test_unicode_jcs_positive (test_iteration2.Iteration2Tests.test_unicode_jcs_positive) ... ok
+test_unicode_surrogate_negative (test_iteration2.Iteration2Tests.test_unicode_surrogate_negative) ... ok
+
+======================================================================
+FAIL: test_asset_unlinked_negative (test_iteration2.Iteration2Tests.test_asset_unlinked_negative)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 131, in test_asset_unlinked_negative
+    a,r,b=self.reserve();self.good(self.upload(a,b));self.bad(self.cli({'action':'asset-read','id':a['id']}),'asset_unavailable');self.native_put(a['storage_key'],b'changed-after-verification');self.bad(self.cli({'action':'link','id':a['id']}));self.assertEqual(self.sql("SELECT state FROM asset_location WHERE asset_id='"+a['id']+"'"),'orphaned')
+                                                                                                                                  ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 52, in native_put
+    self.assertEqual(self.execute(['docker','run','--rm','--network',self.project+'_private','--env-file',str(self.extract/'data/config/runtime.env'),'-v',str(path)+':/probe.cjs:ro','--entrypoint','node',self.project+'-web:local','/probe.cjs','put']).returncode,0)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_asset_wrong_input_negative (test_iteration2.Iteration2Tests.test_asset_wrong_input_negative)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 129, in test_asset_wrong_input_negative
+    a,r,b=self.reserve();self.bad(self.upload(a,b+'x'.encode()));self.assertEqual(self.sql("SELECT state FROM asset_location WHERE asset_id='"+a['id']+"'"),'reserved');self.native_put(a['storage_key'],b);self.good(self.cli({'action':'upload-stream','id':a['id'],'data_base64':base64.b64encode(b'changed').decode()}));self.good(self.cli({'action':'link','id':a['id']}));self.assertEqual(self.good(self.cli({'action':'asset-read','id':a['id']}))['sha256'],sha(b))
+                                                                                                                                                                        ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 52, in native_put
+    self.assertEqual(self.execute(['docker','run','--rm','--network',self.project+'_private','--env-file',str(self.extract/'data/config/runtime.env'),'-v',str(path)+':/probe.cjs:ro','--entrypoint','node',self.project+'-web:local','/probe.cjs','put']).returncode,0)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_migration_upgrade_positive (test_iteration2.Iteration2Tests.test_migration_upgrade_positive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 178, in test_migration_upgrade_positive
+    key,digest=oldsql('SELECT storage_key,sha256 FROM migration_backup').split('|');backup=self.native_get(key);self.assertEqual(sha(backup),digest)
+                                                                                           ~~~~~~~~~~~~~~~^^^^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 47, in native_get
+    path=self.sandbox/('s3-'+uid()+'.cjs');path.write_text(script);r=self.execute(['docker','run','--rm','--network',self.project+'_private','--env-file',str(self.extract/'data/config/runtime.env'),'-v',str(path)+':/probe.cjs:ro','--entrypoint','node',self.project+'-web:local','/probe.cjs','get']);self.assertEqual(r.returncode,0);return base64.b64decode(json.loads(r.stdout)['data_base64'])
+                                                                                                                                                                                                                                                                                                           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_orphan_old_positive (test_iteration2.Iteration2Tests.test_orphan_old_positive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 158, in test_orphan_old_positive
+    a=self.orphan();self.sql("UPDATE asset_location SET reserved_at=clock_timestamp()-interval '31 days' WHERE asset_id='"+a['id']+"'");self.assertIn(a['id'],self.good(self.cli({'action':'orphans'})))
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 156, in orphan
+    a,r,b=self.reserve();self.native_put(a['storage_key'],b'wrong');self.bad(self.cli({'action':'verify','id':a['id']}));return a
+                         ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 52, in native_put
+    self.assertEqual(self.execute(['docker','run','--rm','--network',self.project+'_private','--env-file',str(self.extract/'data/config/runtime.env'),'-v',str(path)+':/probe.cjs:ro','--entrypoint','node',self.project+'-web:local','/probe.cjs','put']).returncode,0)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_orphan_preview_positive (test_iteration2.Iteration2Tests.test_orphan_preview_positive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 160, in test_orphan_preview_positive
+    a=self.orphan();self.sql("UPDATE asset_location SET reserved_at=clock_timestamp()-interval '31 days' WHERE asset_id='"+a['id']+"'");before=self.sql("SELECT state FROM asset_location WHERE asset_id='"+a['id']+"'");self.good(self.cli({'action':'orphans'}));self.assertEqual(self.sql("SELECT state FROM asset_location WHERE asset_id='"+a['id']+"'"),before)
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 156, in orphan
+    a,r,b=self.reserve();self.native_put(a['storage_key'],b'wrong');self.bad(self.cli({'action':'verify','id':a['id']}));return a
+                         ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 52, in native_put
+    self.assertEqual(self.execute(['docker','run','--rm','--network',self.project+'_private','--env-file',str(self.extract/'data/config/runtime.env'),'-v',str(path)+':/probe.cjs:ro','--entrypoint','node',self.project+'-web:local','/probe.cjs','put']).returncode,0)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_orphan_recent_negative (test_iteration2.Iteration2Tests.test_orphan_recent_negative)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 162, in test_orphan_recent_negative
+    a=self.orphan();self.assertNotIn(a['id'],self.good(self.cli({'action':'orphans'})))
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 156, in orphan
+    a,r,b=self.reserve();self.native_put(a['storage_key'],b'wrong');self.bad(self.cli({'action':'verify','id':a['id']}));return a
+                         ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 52, in native_put
+    self.assertEqual(self.execute(['docker','run','--rm','--network',self.project+'_private','--env-file',str(self.extract/'data/config/runtime.env'),'-v',str(path)+':/probe.cjs:ro','--entrypoint','node',self.project+'-web:local','/probe.cjs','put']).returncode,0)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_orphan_referenced_negative (test_iteration2.Iteration2Tests.test_orphan_referenced_negative)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 165, in test_orphan_referenced_negative
+    a=self.orphan();self.sql("UPDATE asset_location SET reserved_at=clock_timestamp()-interval '31 days' WHERE asset_id='"+a['id']+"'");node=self.sql("SELECT document_id FROM entity_head WHERE id='"+a['id']+"'");self.sql("INSERT INTO object_node(node_id,scope_id,kind,document_id,json_pointer,content_sha256) VALUES('"+a['id']+"','"+a['id']+"','asset-bytes','"+node+"','/sha256','"+a['sha256']+"')");d=self.refdoc({'id':a['id'],'scope':a['id'],'kind':'asset-bytes','sha256':a['sha256']});self.good(self.write(d));self.assertNotIn(a['id'],self.good(self.cli({'action':'orphans'})))
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 156, in orphan
+    a,r,b=self.reserve();self.native_put(a['storage_key'],b'wrong');self.bad(self.cli({'action':'verify','id':a['id']}));return a
+                         ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 52, in native_put
+    self.assertEqual(self.execute(['docker','run','--rm','--network',self.project+'_private','--env-file',str(self.extract/'data/config/runtime.env'),'-v',str(path)+':/probe.cjs:ro','--entrypoint','node',self.project+'-web:local','/probe.cjs','put']).returncode,0)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_recovery_corrupt_negative (test_iteration2.Iteration2Tests.test_recovery_corrupt_negative)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 138, in test_recovery_corrupt_negative
+    a,r,b=self.reserve();self.native_put(a['storage_key'],b'corrupt');self.bad(self.cli({'action':'verify','id':a['id']}));self.assertEqual(self.sql("SELECT state FROM asset_location WHERE asset_id='"+a['id']+"'"),'orphaned')
+                         ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 52, in native_put
+    self.assertEqual(self.execute(['docker','run','--rm','--network',self.project+'_private','--env-file',str(self.extract/'data/config/runtime.env'),'-v',str(path)+':/probe.cjs:ro','--entrypoint','node',self.project+'-web:local','/probe.cjs','put']).returncode,0)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_recovery_terminal_negative (test_iteration2.Iteration2Tests.test_recovery_terminal_negative)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 140, in test_recovery_terminal_negative
+    partial,request,payload=self.reserve();self.good(self.cli({'action':'begin-upload','id':partial['id']}));self.assertEqual(self.good(self.cli({'action':'recover','id':partial['id']}))['state'],'orphaned');self.assertEqual(self.sql("SELECT state,error_document_id IS NOT NULL,result_document_id IS NOT NULL FROM operation WHERE id='"+partial['operation_id']+"'"),'failed|t|t');self.bad(self.upload(partial,payload),'asset_unavailable');request['operation']['idempotency_key']=uid();retry=self.good(self.cli({'action':'retry-asset','id':partial['id'],'asset':request}));self.good(self.upload(retry,payload));self.good(self.cli({'action':'link','id':retry['id']}));self.assertEqual(self.sql("SELECT state FROM operation WHERE id='"+partial['operation_id']+"'"),'failed');self.assertEqual(self.sql("SELECT multipart_upload_id IS NULL FROM asset_location WHERE asset_id='"+partial['id']+"'"),'t');a,r,b=self.reserve();self.native_put(a['storage_key'],b'bad');self.bad(self.cli({'action':'verify','id':a['id']}));self.bad(self.cli({'action':'link','id':a['id']}),'asset_unavailable');self.bad(self.upload(a,b),'asset_unavailable')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration2.py", line 52, in native_put
+    self.assertEqual(self.execute(['docker','run','--rm','--network',self.project+'_private','--env-file',str(self.extract/'data/config/runtime.env'),'-v',str(path)+':/probe.cjs:ro','--entrypoint','node',self.project+'-web:local','/probe.cjs','put']).returncode,0)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0
+
+----------------------------------------------------------------------
+Ran 52 tests in 177.682s
+
+FAILED (failures=9)

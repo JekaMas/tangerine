@@ -84,6 +84,9 @@ var ErrMigrationRequired = errors.New("database migration required")
 //go:embed required_columns.json
 var requiredColumns []byte
 
+//go:embed required_column_types.json
+var requiredColumnTypes []byte
+
 func (s *Storage) CheckDatabase(ctx context.Context) error {
 	history, err := validateHistory(ctx, s.DB)
 	if err != nil {
@@ -97,21 +100,25 @@ func (s *Storage) CheckDatabase(ctx context.Context) error {
 	if err = json.Unmarshal(requiredColumns, &expected); err != nil {
 		return err
 	}
-	rows, err := s.DB.Query(ctx, "SELECT table_name,column_name FROM information_schema.columns WHERE table_schema='public'")
+	var expectedTypes map[string]map[string]string
+	if err = json.Unmarshal(requiredColumnTypes, &expectedTypes); err != nil {
+		return err
+	}
+	rows, err := s.DB.Query(ctx, "SELECT c.relname,a.attname,pg_catalog.format_type(a.atttypid,a.atttypmod) FROM pg_catalog.pg_attribute a JOIN pg_catalog.pg_class c ON c.oid=a.attrelid JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='public' AND c.relkind IN ('r','p') AND a.attnum>0 AND NOT a.attisdropped")
 	if err != nil {
 		return err
 	}
-	actual := map[string]map[string]bool{}
+	actual := map[string]map[string]string{}
 	for rows.Next() {
-		var table, column string
-		if err = rows.Scan(&table, &column); err != nil {
+		var table, column, columnType string
+		if err = rows.Scan(&table, &column, &columnType); err != nil {
 			rows.Close()
 			return err
 		}
 		if actual[table] == nil {
-			actual[table] = map[string]bool{}
+			actual[table] = map[string]string{}
 		}
-		actual[table][column] = true
+		actual[table][column] = columnType
 	}
 	rows.Close()
 	if err = rows.Err(); err != nil {
@@ -119,7 +126,7 @@ func (s *Storage) CheckDatabase(ctx context.Context) error {
 	}
 	for table, columns := range expected {
 		for _, column := range columns {
-			if !actual[table][column] {
+			if expectedTypes[table][column] == "" || actual[table][column] != expectedTypes[table][column] {
 				return ErrMigrationRequired
 			}
 		}

@@ -106,6 +106,8 @@ The local foundation SHALL implement this bounded behavior through its real owne
 
 ### Requirement: I1-08 Launcher reports actual services and actionable failures while retaining existing data
 
+Before declaring ready, the launcher SHALL verify the actual host listener at port 3000 returns successful readiness for this installation. The public response SHALL expose only the SHA256 digest of the existing random installation credential; the probe SHALL correlate it locally without sending the credential or following redirects. An unrelated HTTP 200 listener SHALL cause START_FAILED. The probe SHALL be built for the operator host by the existing Docker build, extracted and executed locally without requiring a host language runtime or HTTP utility.
+
 The local foundation SHALL implement this bounded behavior through its real owner scripts/tangerine, preserving the original obligations RUN-01, RUN-08, V6-LOCAL-01, V6-LOCAL-02.
 
 #### Scenario: I1-08 packet 1

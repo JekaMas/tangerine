@@ -424,3 +424,7 @@ Previous iteration acceptance completeness is superseded by the native counterex
 - [ ] Complete required structural/preservation/language checks and complete committed-clean combined selection; commit acceptance and preserve canonical user edits/preview.
 
 - [ ] Repair the native retry-key cross-lineage counterexample; reject reuse for another failed result or an independent reservation and independently observe owner-reservation rejection.
+
+- [ ] Repair the native launcher public-port counterexample; correlate actual public readiness with the current installation before declaring startup success and observe positive/negative native cases.
+
+- [ ] Close the native same-name column-type readiness counterexample with migration-defined types and positive/negative/recovery observations.

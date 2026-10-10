@@ -44,12 +44,11 @@ class Iteration2Tests(unittest.TestCase):
   d=self.doc(text);d['kind']='case-head';d['payload']={'id':d['id'],'revision':0,'status':'draft','candidate_id':a['id'],'parent_case_version_id':None,'ground_truth_id':None,'delivery_asset_id':None,'created_at':'2026-10-10T10:00:00Z','quarantine_open':False};d['references']=[{'pointer':'/candidate_id','id':a['id'],'scope':a['scope'],'kind':a['kind'],'sha256':a['sha256'],'relation':'candidate'}];return d
  def native_get(self,key):
   script=(ROOT/'tests/iteration1_media.cjs').read_text().replace("const operation = process.argv[2]","const operation = 'get'").replace("'/tangerine-audio/iteration1-fixture.bin'",json.dumps('/tangerine-audio/'+key)).replace("const text=await response.text()","const text=Buffer.from(await response.arrayBuffer())").replace("size:Buffer.byteLength(text)","size:Buffer.byteLength(text),data_base64:text.toString('base64')")
-  path=self.sandbox/('s3-'+uid()+'.cjs');path.write_text(script);r=self.execute(['docker','run','--rm','--network',self.project+'_private','--env-file',str(self.extract/'data/config/runtime.env'),'-v',str(path)+':/probe.cjs:ro','--entrypoint','node',self.project+'-web:local','/probe.cjs','get']);self.assertEqual(r.returncode,0);return base64.b64decode(json.loads(r.stdout)['data_base64'])
+  r=self.execute(['docker','run','--rm','-i','--network',self.project+'_private','--env-file',str(self.extract/'data/config/runtime.env'),'--entrypoint','node',self.project+'-web:local','-'],input_text=script);self.assertEqual(r.returncode,0);return base64.b64decode(json.loads(r.stdout)['data_base64'])
  def native_put(self,key,data):
   # Copy bytes into an existing test S3 fixture via its signed native request code.
   script=(ROOT/'tests/iteration1_media.cjs').read_text().replace("const operation = process.argv[2]","const operation = 'put'").replace("'/tangerine-audio/iteration1-fixture.bin'",json.dumps('/tangerine-audio/'+key)).replace("'native-iteration1-object\\n'",json.dumps(data.decode()))
-  path=self.sandbox/('s3-'+uid()+'.cjs');path.write_text(script)
-  self.assertEqual(self.execute(['docker','run','--rm','--network',self.project+'_private','--env-file',str(self.extract/'data/config/runtime.env'),'-v',str(path)+':/probe.cjs:ro','--entrypoint','node',self.project+'-web:local','/probe.cjs','put']).returncode,0)
+  self.assertEqual(self.execute(['docker','run','--rm','-i','--network',self.project+'_private','--env-file',str(self.extract/'data/config/runtime.env'),'--entrypoint','node',self.project+'-web:local','-'],input_text=script).returncode,0)
 
  def test_registry_exact_positive(self):
   files=list((ROOT/'specification/v2/contracts').glob('*.schema.json'));self.assertEqual(int(self.sql('SELECT count(*) FROM schema_registry')),len(files))
@@ -197,6 +196,9 @@ class Iteration2Tests(unittest.TestCase):
   self.sql('ALTER TABLE exercise_catalog RENAME COLUMN public_context TO missing_context')
   try:self.assertEqual(self.http('/health/ready')[0],503);self.assertEqual(foundation.Iteration1Tests.internal.__func__(type(self),'/health/live')['status'],200);self.assertEqual(self.http('/api/v1/library')[0],503)
   finally:self.sql('ALTER TABLE exercise_catalog RENAME COLUMN missing_context TO public_context')
+  self.populated();self.sql('ALTER TABLE exercise_catalog ALTER COLUMN published_at TYPE text USING published_at::text')
+  try:self.assertEqual(self.http('/health/ready')[0],503);self.assertEqual(foundation.Iteration1Tests.internal.__func__(type(self),'/health/live')['status'],200);self.assertEqual(self.http('/api/v1/library')[0],200)
+  finally:self.sql('ALTER TABLE exercise_catalog ALTER COLUMN published_at TYPE timestamptz USING published_at::timestamptz')
   self.assertEqual(self.http('/health/ready')[0],200)
 
  def browser(self):b=Browser(self.sandbox/('chrome-'+uid()));self.addCleanup(b.close);return b

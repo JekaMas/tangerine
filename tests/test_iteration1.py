@@ -63,8 +63,8 @@ class Iteration1Tests(unittest.TestCase):
         shutil.rmtree(cls.sandbox)
 
     @classmethod
-    def execute(cls, argv, cwd=None, env=None, timeout=60):
-        result = subprocess.run(argv,cwd=cwd or cls.extract,env=env or cls.env,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=timeout)
+    def execute(cls, argv, cwd=None, env=None, timeout=60, input_text=None):
+        result = subprocess.run(argv,cwd=cwd or cls.extract,env=env or cls.env,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=timeout,input=input_text)
         cls.counter+=1
         # Launcher/config never prints credentials; retain exact command output.
         (cls.receipts/f'{cls.counter:03d}.log').write_text(result.stdout)
@@ -112,6 +112,8 @@ class Iteration1Tests(unittest.TestCase):
         self.assertEqual(self.initial.returncode,0)
         self.assertFalse((self.extract/'.git').exists());self.assertFalse((self.extract/'.agents').exists())
         self.assertEqual(self.http('/health/ready')[0],200)
+        with urllib.request.urlopen('http://localhost:3000/health/ready',timeout=10) as response:
+            self.assertEqual(response.headers['X-Tangerine-Instance'],hashlib.sha256(self.config()['API_INTERNAL_TOKEN'].encode()).hexdigest())
     def test_delivery_repeat_start_positive(self):
         before=self.sql('SELECT id FROM workspaces');self.assertEqual(self.launch('start',timeout=900).returncode,0)
         self.assertEqual(self.sql('SELECT id FROM workspaces'),before)
@@ -249,9 +251,16 @@ class Iteration1Tests(unittest.TestCase):
         finally:p.write_bytes(saved)
     def test_operations_occupied_port_negative(self):
         self.assertEqual(self.launch('stop').returncode,0)
-        listener=http.server.ThreadingHTTPServer(('127.0.0.1',3000),http.server.BaseHTTPRequestHandler)
+        received=[]
+        class ForeignReady(http.server.BaseHTTPRequestHandler):
+            def do_GET(self):
+                received.append(dict(self.headers));self.send_response(200);self.send_header('X-Tangerine-Instance','foreign-installation');self.end_headers();self.wfile.write(b'{"status":"ready"}')
+            def log_message(self,*args):pass
+        listener=http.server.ThreadingHTTPServer(('127.0.0.1',3000),ForeignReady)
         worker=threading.Thread(target=listener.serve_forever,daemon=True);worker.start()
-        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('START_FAILED',r.stdout)
+        try:
+            r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('START_FAILED',r.stdout);self.assertNotIn('Tangerine is ready',r.stdout)
+            for headers in received:self.assertNotIn('Authorization',headers);self.assertNotIn(self.config()['API_INTERNAL_TOKEN'],str(headers))
         finally:listener.shutdown();listener.server_close();worker.join();self.assertEqual(self.launch('start',timeout=900).returncode,0)
 
 if __name__=='__main__': unittest.main()

@@ -24,6 +24,9 @@ func run() error {
 	if mode == "redact" {
 		return app.Redact(os.Stdin, os.Stdout)
 	}
+	if mode == "public-healthcheck" {
+		return app.CheckPublicReady(context.Background(), "http://127.0.0.1:3000/health/ready", os.Getenv("API_INTERNAL_TOKEN"))
+	}
 	if mode == "healthcheck" {
 		client := http.Client{Timeout: 6 * time.Second}
 		req, err := http.NewRequest(http.MethodGet, "http://127.0.0.1:8080/health/ready", nil)

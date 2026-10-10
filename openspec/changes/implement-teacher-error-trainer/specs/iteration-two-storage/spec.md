@@ -162,6 +162,8 @@ The local storage foundation SHALL implement this behavior through services/api/
 
 ### Requirement: I2-12 Upgrade backup precedes additive migration and readiness rejects damaged history or shape
 
+Readiness SHALL verify every required column has the PostgreSQL type and size/precision specified by the frozen migration, including Library timestamps. A column retaining its name with an incompatible type SHALL be unavailable while liveness remains successful; restoration SHALL recover readiness. The original migrations SHALL remain unchanged.
+
 The local storage foundation SHALL implement this behavior through services/api/internal/app/migration.go, preserving the complete approved specification/v2/docs/persistence.md and runtime-and-storage.md obligations. Parent references: RUN-02, I1-03, I1-06.
 
 #### Scenario: I2-12 packet 1

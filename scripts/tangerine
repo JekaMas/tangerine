@@ -27,11 +27,26 @@ case "${1:-start}" in
   if [ ! -f data/config/runtime.env ] && [ -n "$(docker volume ls -q --filter "label=com.docker.compose.project=$PROJECT")" ]; then
    fail 'CONFIG_MISSING: restore data/config/runtime.env for the existing volumes; credentials will not be regenerated.'
   fi
-  docker build -f services/api/Dockerfile -t "$PROJECT-api:local" . || fail 'BUILD_FAILED: API build failed. Check Docker network/disk and the build error above; existing data is retained.'
+  host_os=$(docker version --format '{{.Client.Os}}')
+  host_arch=$(docker version --format '{{.Client.Arch}}')
+  docker build --build-arg "HOST_OS=$host_os" --build-arg "HOST_ARCH=$host_arch" -f services/api/Dockerfile -t "$PROJECT-api:local" . || fail 'BUILD_FAILED: API build failed. Check Docker network/disk and the build error above; existing data is retained.'
   mkdir -p data/config
   docker run --rm --user "$(id -u):$(id -g)" -v "$ROOT/.env:/operator.env:ro" -v "$ROOT/data/config:/runtime" -e TANGERINE_OPERATOR_FILE=/operator.env -e TANGERINE_RUNTIME_DIR=/runtime "$PROJECT-api:local" configure || fail 'CONFIG_INVALID: correct .env or restore durable credentials; existing data is retained.'
+  probe="$ROOT/data/config/.public-probe-$$"
+  probe_container=$(docker create "$PROJECT-api:local") || fail 'BUILD_FAILED: could not extract the public readiness probe.'
+  trap 'docker rm "$probe_container" >/dev/null 2>&1 || :; rm -f "$probe"' 0
+  docker cp "$probe_container:/usr/local/bin/public-probe" "$probe" || fail 'BUILD_FAILED: could not extract the public readiness probe.'
+  docker rm "$probe_container" >/dev/null
+  chmod 700 "$probe"
   compose build || fail 'BUILD_FAILED: service build failed. Check the build error above; existing data is retained.'
   compose up -d --wait --wait-timeout 180 || fail 'START_FAILED: check port 3000 availability and run scripts/tangerine logs. Existing data is retained.'
+  # Docker builds the host-native probe; no host runtime or curl is required.
+  if ! API_INTERNAL_TOKEN=$(sed -n 's/^API_INTERNAL_TOKEN=//p' "$ROOT/data/config/runtime.env") "$probe" public-healthcheck; then
+   # A failed host-port publication must be retried by a new web container.
+   compose stop web >/dev/null 2>&1 || :
+   compose rm -f web >/dev/null 2>&1 || :
+   fail 'START_FAILED: port 3000 does not serve this ready installation. Existing data is retained.'
+  fi
   printf '%s\n' 'Tangerine is ready at http://localhost:3000 (no sign-in).'
   ;;
  stop|status|logs)

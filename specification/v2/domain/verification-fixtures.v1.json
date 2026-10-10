@@ -38576,7 +38576,8 @@
         },
         "expected": {
           "startup_exit": 0,
-          "web_ready": 200
+          "web_ready": 200,
+          "public_installation_identity": "SHA256 of retained installation credential"
         }
       },
       "negative": {
@@ -39054,12 +39055,19 @@
       },
       "negative": {
         "input": {
-          "port_3000": "occupied"
+          "port_3000": "occupied",
+          "foreign_http_status": 200,
+          "foreign_body": {
+            "status": "ready"
+          },
+          "foreign_instance": "foreign-installation"
         },
         "expected": {
           "exit": "nonzero",
           "error": "START_FAILED",
-          "restart_after_release": 0
+          "restart_after_release": 0,
+          "credential_sent_to_foreign_listener": false,
+          "ready_success_message": false
         }
       }
     },
@@ -39781,7 +39789,14 @@
       "negative": {
         "input": {
           "damaged_digest": "001_foundation.sql",
-          "missing_column": "public_context"
+          "missing_column": "public_context",
+          "same_name_incompatible_type": {
+            "table": "exercise_catalog",
+            "column": "published_at",
+            "from": "timestamp with time zone",
+            "to": "text"
+          },
+          "populated_literal_title": "Browser fixture"
         },
         "expected": {
           "each_health": 503,
@@ -39789,7 +39804,11 @@
           "corrupt_initialize": "nonzero",
           "liveness": 200,
           "library_during_checksum_damage": 200,
-          "library_during_missing_column": 503
+          "library_during_missing_column": 503,
+          "incompatible_type_readiness": 503,
+          "incompatible_type_liveness": 200,
+          "incompatible_type_library": 200,
+          "restored_type_readiness": 200
         }
       }
     },
@@ -129658,7 +129677,8 @@
       },
       "expected": {
         "startup_exit": 0,
-        "web_ready": 200
+        "web_ready": 200,
+        "public_installation_identity": "SHA256 of retained installation credential"
       },
       "independent_oracle": "Literal independently specified exits, HTTP bodies, SQL row/digest/time snapshots and S3 object hashes; no provider or fake service observation.",
       "observation_state": "not_run",
@@ -130482,12 +130502,19 @@
         "seeded_app_exercises": 0
       },
       "input": {
-        "port_3000": "occupied"
+        "port_3000": "occupied",
+        "foreign_http_status": 200,
+        "foreign_body": {
+          "status": "ready"
+        },
+        "foreign_instance": "foreign-installation"
       },
       "expected": {
         "exit": "nonzero",
         "error": "START_FAILED",
-        "restart_after_release": 0
+        "restart_after_release": 0,
+        "credential_sent_to_foreign_listener": false,
+        "ready_success_message": false
       },
       "independent_oracle": "Literal independently specified exits, HTTP bodies, SQL row/digest/time snapshots and S3 object hashes; no provider or fake service observation.",
       "observation_state": "not_run",
@@ -131737,7 +131764,14 @@
       },
       "input": {
         "damaged_digest": "001_foundation.sql",
-        "missing_column": "public_context"
+        "missing_column": "public_context",
+        "same_name_incompatible_type": {
+          "table": "exercise_catalog",
+          "column": "published_at",
+          "from": "timestamp with time zone",
+          "to": "text"
+        },
+        "populated_literal_title": "Browser fixture"
       },
       "expected": {
         "each_health": 503,
@@ -131745,7 +131779,11 @@
         "corrupt_initialize": "nonzero",
         "liveness": 200,
         "library_during_checksum_damage": 200,
-        "library_during_missing_column": 503
+        "library_during_missing_column": 503,
+        "incompatible_type_readiness": 503,
+        "incompatible_type_liveness": 200,
+        "incompatible_type_library": 200,
+        "restored_type_readiness": 200
       },
       "independent_oracle": "Literal test-owned UTF8/bytes, independent SHA256, exact SQL rows/foreign-key rollback/revision counts, native S3 state and rendered Chrome DOM. Storage-fixture documents do not claim later domain semantic acceptance.",
       "observation_state": "not_run",
