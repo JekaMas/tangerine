@@ -36,3 +36,5 @@ LLM/generation/scoring/import semantic acceptance. Compile/vet/race use pinned
 Go1.26.5 Docker; host Go remains an acceptance-tool mismatch, not a prerequisite.
 
 The iterations1/2 repair closure selects all I1-01.P1 through I1-08.P1 and I2-01.P1 through I2-18.P1:104 exact cases. The native regression adapter owns disposable PostgreSQL/MinIO containers without published ports and observes16 actual Go race cases. The historical88-case receipts do not prove the expanded repair closure. Original taxonomy/recipes/formulas/source scopes remain required.
+
+This host's native acceptance commands explicitly bind Docker Desktop docker.raw.sock after its normal API proxy became unavailable. Both endpoints identify the same actual engine. This is a local evidence-tool transport binding, preserving real containers/browser and the product launcher. Other qualification hosts must select their actually available native Docker endpoint.
