@@ -23,13 +23,8 @@ func (s *Storage) LabCommand(ctx context.Context, input io.Reader, output io.Wri
 		Payload       json.RawMessage `json:"payload"`
 		Key           string          `json:"key"`
 	}
-	d := json.NewDecoder(io.LimitReader(input, 32*1024*1024))
-	d.DisallowUnknownFields()
-	if e := d.Decode(&r); e != nil {
+	if e := lab.DecodeCommand(input, &r); e != nil {
 		return e
-	}
-	if e := d.Decode(new(any)); e != io.EOF {
-		return errors.New("single Lab command required")
 	}
 	var result any
 	var err error

@@ -42,9 +42,20 @@ func Sanitize(raw []byte, secrets []string, capture bool) (Redaction, error) {
 			case map[string]any:
 				out := map[string]any{}
 				for k, val := range x {
+					secretName := false
+					for _, secret := range secrets {
+						if secret != "" && strings.Contains(k, secret) {
+							secretName = true
+							break
+						}
+					}
+					if secretName {
+						r.Reasons = append(r.Reasons, "omitted secret-valued field name")
+						continue
+					}
 					key := strings.ReplaceAll(strings.ToLower(k), "-", "_")
 					if strings.Contains(key, "authorization") || strings.Contains(key, "cookie") || strings.Contains(key, "api_key") || strings.Contains(key, "password") || strings.Contains(key, "secret") || key == "access_token" || key == "refresh_token" || key == "id_token" || key == "participant_id" || key == "consent" || key == "vendor_private" || key == "personal_metadata" {
-						r.Reasons = append(r.Reasons, "omitted field "+k)
+						r.Reasons = append(r.Reasons, "omitted credential/private field")
 						continue
 					}
 					out[k] = walk(val)
@@ -150,6 +161,7 @@ func Reconcile(j Join) Coverage {
 	}
 	ns := map[string]Observation{}
 	bydispatch := map[string]int{}
+	matched := map[string]string{}
 	surfaces := map[string]bool{}
 	for _, n := range j.Native {
 		if n.ID == "" || ns[n.ID].ID != "" {
@@ -203,12 +215,14 @@ func Reconcile(j Join) Coverage {
 			issue("missing/mismatched export " + n.ID)
 			continue
 		}
-		c.Matched++
-		surfaces[n.Surface] = true
+		matched[d.ID] = n.Surface
 	}
 	for id := range ds {
 		if bydispatch[id] != 1 {
 			issue("orphan or duplicate dispatch " + id)
+		} else if surface, ok := matched[id]; ok {
+			c.Matched++
+			surfaces[surface] = true
 		}
 	}
 	for id := range es {
@@ -307,4 +321,31 @@ type Witness struct{ Operation, Stage, Binding, Input, Wire, Receipt string }
 
 func MatchWitness(actual, expected Witness) bool {
 	return actual.Operation != "" && actual.Stage != "" && actual.Binding != "" && actual.Input != "" && actual.Wire != "" && actual.Receipt != "" && actual == expected
+}
+
+// MatchContextPhase identifies the generation phase independently of receipt
+// stage names, which intentionally cover both generation phases.
+func MatchContextPhase(stage string, phase *string, bindingStage string, bindingPhase *string, contextStage string, contextPhase *string) bool {
+	return stage != "" && Pair(stage, phase) == Pair(bindingStage, bindingPhase) && Pair(stage, phase) == Pair(contextStage, contextPhase)
+}
+
+func ContextAvailable(kind string, id *string) bool {
+	return (kind != "llm" && kind != "judge") || (id != nil && *id != "")
+}
+
+func ValidateContextBinding(raw []byte, stage string, phase *string) error {
+	if _, _, err := contracts.Validate("effective-binding", "2.0.0", raw); err != nil {
+		return err
+	}
+	var b struct {
+		Stage string  `json:"stage"`
+		Phase *string `json:"phase"`
+	}
+	if err := json.Unmarshal(raw, &b); err != nil {
+		return err
+	}
+	if Pair(stage, phase) != Pair(b.Stage, b.Phase) {
+		return errors.New("effective binding stage/phase mismatch")
+	}
+	return nil
 }

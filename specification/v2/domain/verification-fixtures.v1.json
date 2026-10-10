@@ -40585,7 +40585,8 @@
           "private_original": "unchanged",
           "default_copy": "metadata only",
           "malformed": "rejected",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "safe_metadata": "Identified secrets are absent from payload keys and categorical redaction reasons; original bytes unchanged."
         }
       },
       "negative": {
@@ -40597,7 +40598,7 @@
             true,
             false
           ],
-          "executable_native_fixture": "func TestLabPrivacyCanaryNegative(t *testing.T) {\n\theaders, err := Sanitize([]byte(`{\"X-API-KEY\":\"undeclared-key\",\"access_token\":\"oauth-value\",\"refresh_token\":\"refresh-value\"}`), nil, true)\n\tmust(t, err)\n\tif string(headers.Bytes) != \"{}\" {\n\t\tt.Fatal(\"credential fields exported\", string(headers.Bytes))\n\t}\n\tr, e := Sanitize([]byte(`{\"response\":\"secret-value\",\"url\":\"https://user:pass@local/?token=OTHER\"}`), []string{\"secret-value\"}, true)\n\tmust(t, e)\n\tif strings.Contains(string(r.Bytes), \"secret-value\") || strings.Contains(string(r.Bytes), \"pass\") || strings.Contains(string(r.Bytes), \"OTHER\") {\n\t\tt.Fatal(\"secret escaped\")\n\t}\n}"
+          "executable_native_fixture": "func TestLabPrivacyCanaryNegative(t *testing.T) {\n\theaders, err := Sanitize([]byte(`{\"X-API-KEY\":\"undeclared-key\",\"access_token\":\"oauth-value\",\"refresh_token\":\"refresh-value\",\"api_key_CANARY\":\"value\",\"CANARY_field\":\"value\"}`), []string{\"CANARY\"}, true)\n\tmust(t, err)\n\tencoded, _ := json.Marshal(headers)\n\tif bytes.Contains(encoded, []byte(\"CANARY\")) {\n\t\tt.Fatal(\"credential leaked through metadata\")\n\t}\n\tif string(headers.Bytes) != \"{}\" {\n\t\tt.Fatal(\"credential fields exported\", string(headers.Bytes))\n\t}\n\tr, e := Sanitize([]byte(`{\"response\":\"secret-value\",\"url\":\"https://user:pass@local/?token=OTHER\"}`), []string{\"secret-value\"}, true)\n\tmust(t, e)\n\tif strings.Contains(string(r.Bytes), \"secret-value\") || strings.Contains(string(r.Bytes), \"pass\") || strings.Contains(string(r.Bytes), \"OTHER\") {\n\t\tt.Fatal(\"secret escaped\")\n\t}\n}"
         },
         "expected": {
           "secret_and_personal": "omitted",
@@ -40605,7 +40606,8 @@
           "private_original": "unchanged",
           "default_copy": "metadata only",
           "malformed": "rejected",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "safe_metadata": "Identified secrets are absent from payload keys and categorical redaction reasons; original bytes unchanged."
         }
       }
     },
@@ -40635,7 +40637,8 @@
           "private_original": "unchanged",
           "default_copy": "metadata only",
           "malformed": "rejected",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "safe_metadata": "Identified secrets are absent from payload keys and categorical redaction reasons; original bytes unchanged."
         }
       },
       "negative": {
@@ -40647,7 +40650,7 @@
             true,
             false
           ],
-          "executable_native_fixture": "func TestLabPrivacyMalformedNegative(t *testing.T) {\n\t_, duplicate := Sanitize([]byte(`{\"answer\":\"one\",\"answer\":\"two\"}`), nil, true)\n\tno(t, duplicate)\n\t_, e := Sanitize([]byte(`{\"answer\":`), nil, true)\n\tno(t, e)\n}"
+          "executable_native_fixture": "func TestLabPrivacyMalformedNegative(t *testing.T) {\n\t_, duplicate := Sanitize([]byte(`{\"answer\":\"one\",\"answer\":\"two\"}`), nil, true)\n\tno(t, duplicate)\n\t_, e := Sanitize([]byte(`{\"answer\":`), nil, true)\n\tno(t, e)\n}\nfunc contextBinding() []byte {\n\th := strings.Repeat(\"a\", 64)\n\tb := map[string]any{\"schema_version\": \"2.0.0\", \"id\": \"fixture-binding\", \"stage\": \"blind_claim_extraction\", \"phase\": nil, \"provider\": \"constructed\", \"model\": \"no-model-call\", \"endpoint\": \"https://example.invalid/fixture\", \"reasoning_effort\": nil, \"temperature\": nil, \"max_output_tokens\": 1000, \"context_budget_tokens\": 32000, \"prompt_id\": \"extract-v1\", \"prompt_sha256\": h, \"input_schema_sha256\": h, \"output_schema_sha256\": h, \"wire_schema_sha256\": h, \"adapter_version\": \"constructed-v1\", \"credential_ref\": \"unused-fixture\", \"store\": false, \"stream\": true, \"tools\": []any{}, \"timeout_seconds\": 120}\n\thashable := map[string]any{}\n\tfor k, v := range b {\n\t\tif k != \"id\" {\n\t\t\thashable[k] = v\n\t\t}\n\t}\n\tb[\"binding_sha256\"] = Hash(hashable)\n\traw, _ := Canonical(b)\n\treturn raw\n}"
         },
         "expected": {
           "secret_and_personal": "omitted",
@@ -40655,7 +40658,8 @@
           "private_original": "unchanged",
           "default_copy": "metadata only",
           "malformed": "rejected",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "safe_metadata": "Identified secrets are absent from payload keys and categorical redaction reasons; original bytes unchanged."
         }
       }
     },
@@ -40676,13 +40680,14 @@
           "request_sha": "request1",
           "orphan": "d2",
           "changed_wire": "changed",
-          "executable_native_fixture": "func TestLabJoinMatchedPositive(t *testing.T) {\n\tw := Witness{\"op\", \"mapping\", \"binding\", \"input\", \"wire\", \"receipt\"}\n\tif !MatchWitness(w, w) {\n\t\tt.Fatal(\"matching native correspondence rejected\")\n\t}\n\tcomplete(t, join())\n\tc := Reconcile(join())\n\tif c.Ratio == nil || *c.Ratio != \"1/1\" {\n\t\tt.Fatal(c)\n\t}\n}"
+          "executable_native_fixture": "func TestLabJoinMatchedPositive(t *testing.T) {\n\tmust(t, ValidateContextBinding(contextBinding(), \"blind_claim_extraction\", nil))\n\tid := \"saved-context\"\n\tif !ContextAvailable(\"llm\", &id) || !ContextAvailable(\"tts\", nil) {\n\t\tt.Fatal(\"actual modality context rejected\")\n\t}\n\tphase := \"canonical_text\"\n\tif !MatchContextPhase(\"case_generation\", &phase, \"case_generation\", &phase, \"case_generation\", &phase) {\n\t\tt.Fatal(\"matching generation phase rejected\")\n\t}\n\tw := Witness{\"op\", \"mapping\", \"binding\", \"input\", \"wire\", \"receipt\"}\n\tif !MatchWitness(w, w) {\n\t\tt.Fatal(\"matching native correspondence rejected\")\n\t}\n\tcomplete(t, join())\n\tc := Reconcile(join())\n\tif c.Ratio == nil || *c.Ratio != \"1/1\" {\n\t\tt.Fatal(c)\n\t}\n}"
         },
         "expected": {
           "complete": "observed 1/1",
           "failed_call": "retained and accounted",
           "orphan_or_mismatch": "incomplete",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "context_identity": "Required LLM/judge context and surface/binding/context stage-phase agree; non-LLM retains typed input."
         }
       },
       "negative": {
@@ -40693,13 +40698,14 @@
           "request_sha": "request1",
           "orphan": "d2",
           "changed_wire": "changed",
-          "executable_native_fixture": "func TestLabJoinOrphanNegative(t *testing.T) {\n\twrong := join()\n\twrong.Native[0].Outcome = \"preparation_failed\"\n\tincomplete(t, wrong)\n\n\tj := join()\n\tj.Dispatches = append(j.Dispatches, Dispatch{\"d2\", \"mapping\", \"request2\"})\n\tincomplete(t, j)\n}"
+          "executable_native_fixture": "func TestLabJoinOrphanNegative(t *testing.T) {\n\tduplicate := join()\n\tduplicate.Native = append(duplicate.Native, Observation{ID: \"n2\", Dispatch: \"d1\", Surface: \"mapping\", RequestSHA: \"request1\", Receipt: \"r1\", Outcome: \"complete\"})\n\tduplicate.Exports = append(duplicate.Exports, Export{\"n2\", \"request1\", \"r1\", \"run1\", \"native/n2.json\", true})\n\tcounted := Reconcile(duplicate)\n\tif counted.Status != \"incomplete\" || counted.Matched != 0 || counted.Observed != 1 || counted.Ratio == nil || *counted.Ratio != \"0/1\" {\n\t\tt.Fatal(\"duplicate dispatch inflated coverage\", counted)\n\t}\n\n\twrong := join()\n\twrong.Native[0].Outcome = \"preparation_failed\"\n\tincomplete(t, wrong)\n\n\tj := join()\n\tj.Dispatches = append(j.Dispatches, Dispatch{\"d2\", \"mapping\", \"request2\"})\n\tincomplete(t, j)\n}"
         },
         "expected": {
           "complete": "observed 1/1",
           "failed_call": "retained and accounted",
           "orphan_or_mismatch": "incomplete",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "context_identity": "Required LLM/judge context and surface/binding/context stage-phase agree; non-LLM retains typed input."
         }
       }
     },
@@ -40726,7 +40732,8 @@
           "complete": "observed 1/1",
           "failed_call": "retained and accounted",
           "orphan_or_mismatch": "incomplete",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "context_identity": "Required LLM/judge context and surface/binding/context stage-phase agree; non-LLM retains typed input."
         }
       },
       "negative": {
@@ -40737,13 +40744,14 @@
           "request_sha": "request1",
           "orphan": "d2",
           "changed_wire": "changed",
-          "executable_native_fixture": "func TestLabJoinChangedWireNegative(t *testing.T) {\n\tw := Witness{\"op\", \"mapping\", \"binding\", \"input\", \"wire\", \"receipt\"}\n\twrong := w\n\twrong.Binding = \"different\"\n\tif MatchWitness(w, wrong) || MatchWitness(Witness{}, Witness{}) {\n\t\tt.Fatal(\"unsupported witness correspondence\")\n\t}\n\tj := join()\n\tj.Native[0].RequestSHA = \"changed\"\n\tincomplete(t, j)\n\tj = join()\n\tj.Exports[0].Receipt = \"other\"\n\tincomplete(t, j)\n}"
+          "executable_native_fixture": "func TestLabJoinChangedWireNegative(t *testing.T) {\n\tno(t, ValidateContextBinding(contextBinding(), \"feedback\", nil))\n\tvar tampered map[string]any\n\tmust(t, json.Unmarshal(contextBinding(), &tampered))\n\ttampered[\"model\"] = \"changed-after-freeze\"\n\traw, _ := Canonical(tampered)\n\tno(t, ValidateContextBinding(raw, \"blind_claim_extraction\", nil))\n\n\tif ContextAvailable(\"llm\", nil) || ContextAvailable(\"judge\", nil) {\n\t\tt.Fatal(\"missing required context accepted\")\n\t}\n\tcanonical, mutation := \"canonical_text\", \"mutation\"\n\tif MatchContextPhase(\"case_generation\", &canonical, \"case_generation\", &mutation, \"case_generation\", &canonical) || MatchContextPhase(\"case_generation\", &canonical, \"case_generation\", &canonical, \"case_generation\", nil) {\n\t\tt.Fatal(\"wrong or absent generation phase accepted\")\n\t}\n\tw := Witness{\"op\", \"mapping\", \"binding\", \"input\", \"wire\", \"receipt\"}\n\twrong := w\n\twrong.Binding = \"different\"\n\tif MatchWitness(w, wrong) || MatchWitness(Witness{}, Witness{}) {\n\t\tt.Fatal(\"unsupported witness correspondence\")\n\t}\n\tj := join()\n\tj.Native[0].RequestSHA = \"changed\"\n\tincomplete(t, j)\n\tj = join()\n\tj.Exports[0].Receipt = \"other\"\n\tincomplete(t, j)\n}"
         },
         "expected": {
           "complete": "observed 1/1",
           "failed_call": "retained and accounted",
           "orphan_or_mismatch": "incomplete",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "context_identity": "Required LLM/judge context and surface/binding/context stage-phase agree; non-LLM retains typed input."
         }
       }
     },
@@ -41177,7 +41185,7 @@
           "action": "builtins",
           "extra": "unknown",
           "trailing": "{} {}",
-          "executable_native_fixture": "func TestLabCommandTrailingNegative(t *testing.T) {\n\tvar out bytes.Buffer\n\tno(t, Command(strings.NewReader(`{\"action\":\"builtins\"} {}`), &out))\n\tif out.Len() != 0 {\n\t\tt.Fatal(\"partial result\")\n\t}\n}\nfunc inventory(dependency string) map[string]any {\n\treturn map[string]any{\"schema_version\": \"2.0.0\", \"id\": \"inventory\", \"source_revision\": \"constructed fixture\", \"dependencies\": []any{map[string]any{\"path\": \"owner.go\", \"sha256\": dependency, \"purpose\": \"test owner\"}}, \"entries\": []any{map[string]any{\"id\": \"planned\", \"stage\": \"mapping\", \"phase\": nil, \"kind\": \"llm\", \"implementation_state\": \"planned\", \"owner_paths\": []string{\"services/api\"}, \"owner_symbols\": []string{}, \"adapter_paths\": []string{}, \"trusted_fragments\": []any{}, \"discovery_evidence_refs\": []string{\"literal fixture\"}, \"coverage_reason\": \"later provider iteration\"}}, \"non_ai_calls\": []any{}, \"unresolved_paths\": []string{}}\n}\nfunc sealed(m map[string]any, key string) []byte {\n\tdelete(m, key)\n\tm[key] = Hash(m)\n\tb, _ := Canonical(m)\n\treturn b\n}"
+          "executable_native_fixture": "func TestLabCommandTrailingNegative(t *testing.T) {\n\tfor _, raw := range []string{`{\"action\":\"plan\",\"action\":\"builtins\"}`, `{\"action\":\"sanitize\",\"capture\":false,\"capture\":true}`} {\n\t\tvar out bytes.Buffer\n\t\tno(t, Command(strings.NewReader(raw), &out))\n\t\tif out.Len() != 0 {\n\t\t\tt.Fatal(\"ambiguous command emitted a result\")\n\t\t}\n\t}\n\n\tvar out bytes.Buffer\n\tno(t, Command(strings.NewReader(`{\"action\":\"builtins\"} {}`), &out))\n\tif out.Len() != 0 {\n\t\tt.Fatal(\"partial result\")\n\t}\n}\nfunc inventory(dependency string) map[string]any {\n\treturn map[string]any{\"schema_version\": \"2.0.0\", \"id\": \"inventory\", \"source_revision\": \"constructed fixture\", \"dependencies\": []any{map[string]any{\"path\": \"owner.go\", \"sha256\": dependency, \"purpose\": \"test owner\"}}, \"entries\": []any{map[string]any{\"id\": \"planned\", \"stage\": \"mapping\", \"phase\": nil, \"kind\": \"llm\", \"implementation_state\": \"planned\", \"owner_paths\": []string{\"services/api\"}, \"owner_symbols\": []string{}, \"adapter_paths\": []string{}, \"trusted_fragments\": []any{}, \"discovery_evidence_refs\": []string{\"literal fixture\"}, \"coverage_reason\": \"later provider iteration\"}}, \"non_ai_calls\": []any{}, \"unresolved_paths\": []string{}}\n}\nfunc sealed(m map[string]any, key string) []byte {\n\tdelete(m, key)\n\tm[key] = Hash(m)\n\tb, _ := Canonical(m)\n\treturn b\n}"
         },
         "expected": {
           "builtins": "nine valid bindings",
@@ -41207,7 +41215,8 @@
           "matching_source": "validated",
           "planned": "unexercised",
           "source_drift_or_hidden_path": "rejected",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "dependency_snapshot": "Order-independent exact path/hash identity; changed, missing or conflicting declarations rejected."
         }
       },
       "negative": {
@@ -41215,13 +41224,14 @@
           "source": "actual owner",
           "dependency": "owner.go",
           "unresolved": "hidden_helper.go",
-          "executable_native_fixture": "func TestLabInventoryDriftNegative(t *testing.T) {\n\th := strings.Repeat(\"a\", 64)\n\tno(t, ValidateInventory(sealed(inventory(h), \"inventory_sha256\"), map[string]string{\"owner.go\": strings.Repeat(\"b\", 64)}))\n}"
+          "executable_native_fixture": "func TestLabInventoryDriftNegative(t *testing.T) {\n\tfor _, claim := range [][]Dependency{{{\"a\", \"wrong\"}}, {{\"a\", \"one\"}, {\"a\", \"wrong\"}}, {{\"b\", \"one\"}}} {\n\t\tif MatchDependencies([]Dependency{{\"a\", \"one\"}}, claim) {\n\t\t\tt.Fatal(\"changed dependency accepted\")\n\t\t}\n\t}\n\th := strings.Repeat(\"a\", 64)\n\tno(t, ValidateInventory(sealed(inventory(h), \"inventory_sha256\"), map[string]string{\"owner.go\": strings.Repeat(\"b\", 64)}))\n}"
         },
         "expected": {
           "matching_source": "validated",
           "planned": "unexercised",
           "source_drift_or_hidden_path": "rejected",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "dependency_snapshot": "Order-independent exact path/hash identity; changed, missing or conflicting declarations rejected."
         }
       }
     },
@@ -41239,13 +41249,14 @@
           "source": "actual owner",
           "dependency": "owner.go",
           "unresolved": "hidden_helper.go",
-          "executable_native_fixture": "func TestLabInventorySourcePositive(t *testing.T) {\n\th := contracts.Digest([]byte(\"actual owner\"))\n\tmust(t, ValidateInventory(sealed(inventory(h), \"inventory_sha256\"), map[string]string{\"owner.go\": h}))\n}"
+          "executable_native_fixture": "func TestLabInventorySourcePositive(t *testing.T) {\n\tif !MatchDependencies([]Dependency{{\"a\", \"one\"}, {\"b\", \"two\"}}, []Dependency{{\"b\", \"two\"}, {\"a\", \"one\"}}) {\n\t\tt.Fatal(\"dependency order altered identity\")\n\t}\n\th := contracts.Digest([]byte(\"actual owner\"))\n\tmust(t, ValidateInventory(sealed(inventory(h), \"inventory_sha256\"), map[string]string{\"owner.go\": h}))\n}"
         },
         "expected": {
           "matching_source": "validated",
           "planned": "unexercised",
           "source_drift_or_hidden_path": "rejected",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "dependency_snapshot": "Order-independent exact path/hash identity; changed, missing or conflicting declarations rejected."
         }
       },
       "negative": {
@@ -41259,7 +41270,8 @@
           "matching_source": "validated",
           "planned": "unexercised",
           "source_drift_or_hidden_path": "rejected",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "dependency_snapshot": "Order-independent exact path/hash identity; changed, missing or conflicting declarations rejected."
         }
       }
     },
@@ -41280,12 +41292,13 @@
           "basis": "authored_assertion",
           "duplicate": "case1",
           "other_stage": "feedback",
-          "executable_native_fixture": "func TestLabDatasetFrozenPositive(t *testing.T) {\n\tmust(t, ValidateDataset(sealed(dataset(), \"dataset_sha256\")))\n}"
+          "executable_native_fixture": "func TestLabDatasetFrozenPositive(t *testing.T) {\n\tmust(t, ValidateCaseResults([]byte(`{\"cases\":[{\"case_id\":\"c1\",\"property_id\":\"p1\",\"status\":\"passed\"},{\"case_id\":\"c2\",\"property_id\":\"p1\",\"status\":\"failed\"}]}`), []string{\"p1\"}, []string{\"c1\", \"c2\"}))\n\tmust(t, ValidateDataset(sealed(dataset(), \"dataset_sha256\")))\n}"
         },
         "expected": {
           "typed_positive_and_negative": "accepted",
           "duplicate_or_stage_mismatch": "rejected",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "selected_case_results": "Unique actual case/property IDs and executed outcomes; missing, unperformed or wrong-property rows incomplete."
         }
       },
       "negative": {
@@ -41296,12 +41309,13 @@
           "basis": "authored_assertion",
           "duplicate": "case1",
           "other_stage": "feedback",
-          "executable_native_fixture": "func TestLabDatasetDuplicateNegative(t *testing.T) {\n\td := dataset()\n\td[\"cases\"] = []any{d[\"cases\"].([]any)[0], d[\"cases\"].([]any)[0]}\n\tno(t, ValidateDataset(sealed(d, \"dataset_sha256\")))\n}"
+          "executable_native_fixture": "func TestLabDatasetDuplicateNegative(t *testing.T) {\n\tfor _, raw := range []string{`{\"cases\":[]}`, `{\"cases\":[{\"case_id\":\"c1\",\"property_id\":\"p1\",\"status\":\"not_run\"}]}`, `{\"cases\":[{\"case_id\":\"c1\",\"property_id\":\"p2\",\"status\":\"passed\"}]}`, `{\"cases\":[{\"case_id\":\"c1\",\"property_id\":\"p1\",\"status\":\"passed\"},{\"case_id\":\"c1\",\"property_id\":\"p1\",\"status\":\"passed\"}]}`} {\n\t\tno(t, ValidateCaseResults([]byte(raw), []string{\"p1\"}, []string{\"c1\"}))\n\t}\n\td := dataset()\n\td[\"cases\"] = []any{d[\"cases\"].([]any)[0], d[\"cases\"].([]any)[0]}\n\tno(t, ValidateDataset(sealed(d, \"dataset_sha256\")))\n}"
         },
         "expected": {
           "typed_positive_and_negative": "accepted",
           "duplicate_or_stage_mismatch": "rejected",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "selected_case_results": "Unique actual case/property IDs and executed outcomes; missing, unperformed or wrong-property rows incomplete."
         }
       }
     },
@@ -41327,7 +41341,8 @@
         "expected": {
           "typed_positive_and_negative": "accepted",
           "duplicate_or_stage_mismatch": "rejected",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "selected_case_results": "Unique actual case/property IDs and executed outcomes; missing, unperformed or wrong-property rows incomplete."
         }
       },
       "negative": {
@@ -41343,7 +41358,8 @@
         "expected": {
           "typed_positive_and_negative": "accepted",
           "duplicate_or_stage_mismatch": "rejected",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "selected_case_results": "Unique actual case/property IDs and executed outcomes; missing, unperformed or wrong-property rows incomplete."
         }
       }
     },
@@ -41549,7 +41565,7 @@
           "edited_template": " changed",
           "missing_binding": true,
           "unsealed_template": " unsealed",
-          "executable_native_fixture": "def test_activation_invalid_negative(self):\n  old=self.active();b=self.export(self.selection());b['bindings'].pop();p=self.native({'action':'activate','bundle':b},ok=False);self.assertNotEqual(p.returncode,0);self.assertEqual(self.active()['bundle_sha256'],old['bundle_sha256'])"
+          "executable_native_fixture": "def test_activation_invalid_negative(self):\n  old=self.active();b=self.export(self.selection());b['bindings'].pop();p=self.native({'action':'activate','bundle':b},ok=False);self.assertNotEqual(p.returncode,0);self.assertEqual(self.active()['bundle_sha256'],old['bundle_sha256'])\n  duplicated=self.compose('run','--rm','--no-deps','-T','api','lab',input='{\"action\":\"activate\",\"action\":\"active\"}',ok=False);self.assertNotEqual(duplicated.returncode,0);self.assertEqual(self.active()['bundle_sha256'],old['bundle_sha256'])"
         },
         "expected": {
           "activate_revert": "exact old/new identities",
@@ -41614,7 +41630,7 @@
           "secret": "CANARY",
           "outage": "Lab stopped",
           "wrong_digest": "0000000000000000000000000000000000000000000000000000000000000000",
-          "executable_native_fixture": "def test_export_native_positive(self):\n  p=self.packet();asset=self.good(self.native({'action':'diagnostic-save','payload':p}));self.assertEqual(asset['state'],'linked');read=self.good(self.native({'action':'diagnostic-read','id':asset['id']}));self.assertEqual(read,p);export=self.good(self.sdk('sync',read));self.assertEqual(export['provider_calls'],0);self.assertEqual(self.good(self.sdk('verify',export))['status'],'observed');(self.receipts/'actual-mlflow-export.json').write_text(json.dumps(export,indent=2));(self.receipts/'native-diagnostic.json').write_text(json.dumps({'asset':asset,'packet':p},indent=2))"
+          "executable_native_fixture": "def test_export_native_positive(self):\n  p=self.packet();asset=self.good(self.native({'action':'diagnostic-save','payload':p}));self.assertEqual(asset['state'],'linked');read=self.good(self.native({'action':'diagnostic-read','id':asset['id']}));self.assertEqual(read,p);export=self.good(self.sdk('sync',read));self.assertEqual(export['provider_calls'],0);self.assertEqual(self.good(self.sdk('sync',read))['run'],export['run']);self.assertEqual(self.good(self.sdk('verify',export))['status'],'observed');(self.receipts/'actual-mlflow-export.json').write_text(json.dumps(export,indent=2));(self.receipts/'native-diagnostic.json').write_text(json.dumps({'asset':asset,'packet':p},indent=2))"
         },
         "expected": {
           "native_readback": "exact original",
@@ -41622,7 +41638,8 @@
           "outage": "native retained then sync",
           "provider_calls": 0,
           "wrong_digest": "rejected",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "run_identity": "Repeat sync reuses canonical operation run; explicit foreign run rejected without modifying original."
         }
       },
       "negative": {
@@ -41639,7 +41656,8 @@
           "outage": "native retained then sync",
           "provider_calls": 0,
           "wrong_digest": "rejected",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "run_identity": "Repeat sync reuses canonical operation run; explicit foreign run rejected without modifying original."
         }
       }
     },
@@ -41666,7 +41684,8 @@
           "outage": "native retained then sync",
           "provider_calls": 0,
           "wrong_digest": "rejected",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "run_identity": "Repeat sync reuses canonical operation run; explicit foreign run rejected without modifying original."
         }
       },
       "negative": {
@@ -41675,7 +41694,7 @@
           "secret": "CANARY",
           "outage": "Lab stopped",
           "wrong_digest": "0000000000000000000000000000000000000000000000000000000000000000",
-          "executable_native_fixture": "def test_export_hash_negative(self):\n  malformed=self.packet({'answer':'private'});malformed['capture']='false';self.assertNotEqual(self.sdk('sync',malformed,ok=False).returncode,0)\n  p=self.packet();p['artifacts'][0]['sha256']='0'*64;self.assertNotEqual(self.sdk('sync',p,ok=False).returncode,0)"
+          "executable_native_fixture": "def test_export_hash_negative(self):\n  malformed=self.packet({'answer':'private'});malformed['capture']='false';self.assertNotEqual(self.sdk('sync',malformed,ok=False).returncode,0)\n  p=self.packet();p['artifacts'][0]['sha256']='0'*64;self.assertNotEqual(self.sdk('sync',p,ok=False).returncode,0)\n  first=self.packet();e=self.good(self.sdk('sync',first));second=self.packet();second['run']=e['run'];self.assertNotEqual(self.sdk('sync',second,ok=False).returncode,0);self.assertEqual(self.good(self.sdk('verify',e))['status'],'observed')\n  upper=self.packet();upper['operation']=upper['operation'].upper();a=self.good(self.sdk('sync',upper));self.assertEqual(self.good(self.sdk('sync',upper))['run'],a['run'])"
         },
         "expected": {
           "native_readback": "exact original",
@@ -41683,7 +41702,8 @@
           "outage": "native retained then sync",
           "provider_calls": 0,
           "wrong_digest": "rejected",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "run_identity": "Repeat sync reuses canonical operation run; explicit foreign run rejected without modifying original."
         }
       }
     },
@@ -41876,7 +41896,8 @@
           "zero_call": "observed,N/A,actual retained Lab artifacts",
           "repeat_verify": "no inference",
           "missing_export_or_required_surface": "nonzero,incomplete",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "independent_scope": "Selected IDs reconcile to retained case rows; run/native revisions and dependency maps agree; actual source bytes and original surface identities reconcile."
         }
       },
       "negative": {
@@ -41889,13 +41910,14 @@
           "planned_surfaces": 21,
           "dispatches": 0,
           "required_unimplemented": "claim_mapping",
-          "executable_native_fixture": "def test_development_missing_negative(self):\n  run=self.development();run['mlflow_artifact_refs'].pop();out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertEqual(json.loads(out.stdout)['status'],'incomplete')"
+          "executable_native_fixture": "def test_development_missing_negative(self):\n  run=self.development();run['mlflow_artifact_refs'].pop();out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertEqual(json.loads(out.stdout)['status'],'incomplete')\n  run=self.development();run['selected_case_ids']=['unobserved-case'];out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertTrue(any('missing/unperformed selected case' in x for x in json.loads(out.stdout)['discrepancies']))"
         },
         "expected": {
           "zero_call": "observed,N/A,actual retained Lab artifacts",
           "repeat_verify": "no inference",
           "missing_export_or_required_surface": "nonzero,incomplete",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "independent_scope": "Selected IDs reconcile to retained case rows; run/native revisions and dependency maps agree; actual source bytes and original surface identities reconcile."
         }
       }
     },
@@ -41924,7 +41946,8 @@
           "zero_call": "observed,N/A,actual retained Lab artifacts",
           "repeat_verify": "no inference",
           "missing_export_or_required_surface": "nonzero,incomplete",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "independent_scope": "Selected IDs reconcile to retained case rows; run/native revisions and dependency maps agree; actual source bytes and original surface identities reconcile."
         }
       },
       "negative": {
@@ -41937,13 +41960,14 @@
           "planned_surfaces": 21,
           "dispatches": 0,
           "required_unimplemented": "claim_mapping",
-          "executable_native_fixture": "def test_development_false_surface_negative(self):\n  run=self.development();run['required_surface_ids']=['claim_mapping'];out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertTrue(any('unexercised' in x for x in json.loads(out.stdout)['discrepancies']))"
+          "executable_native_fixture": "def test_development_false_surface_negative(self):\n  run=self.development();run['required_surface_ids']=['claim_mapping'];out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertTrue(any('unexercised' in x for x in json.loads(out.stdout)['discrepancies']))\n  run=self.development();run['dependencies'][0]['sha256']='0'*64;out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertTrue(any('dependency mismatch' in x for x in json.loads(out.stdout)['discrepancies']))\n  run=self.development();dependency=next(d for d in run['dependencies'] if d['path'].startswith('specification/v2/prompts/'));path=self.root/dependency['path'];before=path.read_bytes()\n  try:\n   path.write_bytes(before+b'\\nchanged after snapshot');out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertIn('inventory source/dependency verification failed',json.loads(out.stdout)['discrepancies'])\n  finally:path.write_bytes(before)\n  run=self.development(lambda inv:inv['entries'].pop());out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertIn('inventory source/dependency verification failed',json.loads(out.stdout)['discrepancies'])"
         },
         "expected": {
           "zero_call": "observed,N/A,actual retained Lab artifacts",
           "repeat_verify": "no inference",
           "missing_export_or_required_surface": "nonzero,incomplete",
-          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+          "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+          "independent_scope": "Selected IDs reconcile to retained case rows; run/native revisions and dependency maps agree; actual source bytes and original surface identities reconcile."
         }
       }
     },
@@ -135140,7 +135164,8 @@
         "private_original": "unchanged",
         "default_copy": "metadata only",
         "malformed": "rejected",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "safe_metadata": "Identified secrets are absent from payload keys and categorical redaction reasons; original bytes unchanged."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -135176,7 +135201,8 @@
         "private_original": "unchanged",
         "default_copy": "metadata only",
         "malformed": "rejected",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "safe_metadata": "Identified secrets are absent from payload keys and categorical redaction reasons; original bytes unchanged."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -135204,7 +135230,7 @@
           true,
           false
         ],
-        "executable_native_fixture": "func TestLabPrivacyCanaryNegative(t *testing.T) {\n\theaders, err := Sanitize([]byte(`{\"X-API-KEY\":\"undeclared-key\",\"access_token\":\"oauth-value\",\"refresh_token\":\"refresh-value\"}`), nil, true)\n\tmust(t, err)\n\tif string(headers.Bytes) != \"{}\" {\n\t\tt.Fatal(\"credential fields exported\", string(headers.Bytes))\n\t}\n\tr, e := Sanitize([]byte(`{\"response\":\"secret-value\",\"url\":\"https://user:pass@local/?token=OTHER\"}`), []string{\"secret-value\"}, true)\n\tmust(t, e)\n\tif strings.Contains(string(r.Bytes), \"secret-value\") || strings.Contains(string(r.Bytes), \"pass\") || strings.Contains(string(r.Bytes), \"OTHER\") {\n\t\tt.Fatal(\"secret escaped\")\n\t}\n}"
+        "executable_native_fixture": "func TestLabPrivacyCanaryNegative(t *testing.T) {\n\theaders, err := Sanitize([]byte(`{\"X-API-KEY\":\"undeclared-key\",\"access_token\":\"oauth-value\",\"refresh_token\":\"refresh-value\",\"api_key_CANARY\":\"value\",\"CANARY_field\":\"value\"}`), []string{\"CANARY\"}, true)\n\tmust(t, err)\n\tencoded, _ := json.Marshal(headers)\n\tif bytes.Contains(encoded, []byte(\"CANARY\")) {\n\t\tt.Fatal(\"credential leaked through metadata\")\n\t}\n\tif string(headers.Bytes) != \"{}\" {\n\t\tt.Fatal(\"credential fields exported\", string(headers.Bytes))\n\t}\n\tr, e := Sanitize([]byte(`{\"response\":\"secret-value\",\"url\":\"https://user:pass@local/?token=OTHER\"}`), []string{\"secret-value\"}, true)\n\tmust(t, e)\n\tif strings.Contains(string(r.Bytes), \"secret-value\") || strings.Contains(string(r.Bytes), \"pass\") || strings.Contains(string(r.Bytes), \"OTHER\") {\n\t\tt.Fatal(\"secret escaped\")\n\t}\n}"
       },
       "expected": {
         "secret_and_personal": "omitted",
@@ -135212,7 +135238,8 @@
         "private_original": "unchanged",
         "default_copy": "metadata only",
         "malformed": "rejected",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "safe_metadata": "Identified secrets are absent from payload keys and categorical redaction reasons; original bytes unchanged."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -135240,7 +135267,7 @@
           true,
           false
         ],
-        "executable_native_fixture": "func TestLabPrivacyMalformedNegative(t *testing.T) {\n\t_, duplicate := Sanitize([]byte(`{\"answer\":\"one\",\"answer\":\"two\"}`), nil, true)\n\tno(t, duplicate)\n\t_, e := Sanitize([]byte(`{\"answer\":`), nil, true)\n\tno(t, e)\n}"
+        "executable_native_fixture": "func TestLabPrivacyMalformedNegative(t *testing.T) {\n\t_, duplicate := Sanitize([]byte(`{\"answer\":\"one\",\"answer\":\"two\"}`), nil, true)\n\tno(t, duplicate)\n\t_, e := Sanitize([]byte(`{\"answer\":`), nil, true)\n\tno(t, e)\n}\nfunc contextBinding() []byte {\n\th := strings.Repeat(\"a\", 64)\n\tb := map[string]any{\"schema_version\": \"2.0.0\", \"id\": \"fixture-binding\", \"stage\": \"blind_claim_extraction\", \"phase\": nil, \"provider\": \"constructed\", \"model\": \"no-model-call\", \"endpoint\": \"https://example.invalid/fixture\", \"reasoning_effort\": nil, \"temperature\": nil, \"max_output_tokens\": 1000, \"context_budget_tokens\": 32000, \"prompt_id\": \"extract-v1\", \"prompt_sha256\": h, \"input_schema_sha256\": h, \"output_schema_sha256\": h, \"wire_schema_sha256\": h, \"adapter_version\": \"constructed-v1\", \"credential_ref\": \"unused-fixture\", \"store\": false, \"stream\": true, \"tools\": []any{}, \"timeout_seconds\": 120}\n\thashable := map[string]any{}\n\tfor k, v := range b {\n\t\tif k != \"id\" {\n\t\t\thashable[k] = v\n\t\t}\n\t}\n\tb[\"binding_sha256\"] = Hash(hashable)\n\traw, _ := Canonical(b)\n\treturn raw\n}"
       },
       "expected": {
         "secret_and_personal": "omitted",
@@ -135248,7 +135275,8 @@
         "private_original": "unchanged",
         "default_copy": "metadata only",
         "malformed": "rejected",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "safe_metadata": "Identified secrets are absent from payload keys and categorical redaction reasons; original bytes unchanged."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -135275,13 +135303,14 @@
         "request_sha": "request1",
         "orphan": "d2",
         "changed_wire": "changed",
-        "executable_native_fixture": "func TestLabJoinMatchedPositive(t *testing.T) {\n\tw := Witness{\"op\", \"mapping\", \"binding\", \"input\", \"wire\", \"receipt\"}\n\tif !MatchWitness(w, w) {\n\t\tt.Fatal(\"matching native correspondence rejected\")\n\t}\n\tcomplete(t, join())\n\tc := Reconcile(join())\n\tif c.Ratio == nil || *c.Ratio != \"1/1\" {\n\t\tt.Fatal(c)\n\t}\n}"
+        "executable_native_fixture": "func TestLabJoinMatchedPositive(t *testing.T) {\n\tmust(t, ValidateContextBinding(contextBinding(), \"blind_claim_extraction\", nil))\n\tid := \"saved-context\"\n\tif !ContextAvailable(\"llm\", &id) || !ContextAvailable(\"tts\", nil) {\n\t\tt.Fatal(\"actual modality context rejected\")\n\t}\n\tphase := \"canonical_text\"\n\tif !MatchContextPhase(\"case_generation\", &phase, \"case_generation\", &phase, \"case_generation\", &phase) {\n\t\tt.Fatal(\"matching generation phase rejected\")\n\t}\n\tw := Witness{\"op\", \"mapping\", \"binding\", \"input\", \"wire\", \"receipt\"}\n\tif !MatchWitness(w, w) {\n\t\tt.Fatal(\"matching native correspondence rejected\")\n\t}\n\tcomplete(t, join())\n\tc := Reconcile(join())\n\tif c.Ratio == nil || *c.Ratio != \"1/1\" {\n\t\tt.Fatal(c)\n\t}\n}"
       },
       "expected": {
         "complete": "observed 1/1",
         "failed_call": "retained and accounted",
         "orphan_or_mismatch": "incomplete",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "context_identity": "Required LLM/judge context and surface/binding/context stage-phase agree; non-LLM retains typed input."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -135314,7 +135343,8 @@
         "complete": "observed 1/1",
         "failed_call": "retained and accounted",
         "orphan_or_mismatch": "incomplete",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "context_identity": "Required LLM/judge context and surface/binding/context stage-phase agree; non-LLM retains typed input."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -135341,13 +135371,14 @@
         "request_sha": "request1",
         "orphan": "d2",
         "changed_wire": "changed",
-        "executable_native_fixture": "func TestLabJoinOrphanNegative(t *testing.T) {\n\twrong := join()\n\twrong.Native[0].Outcome = \"preparation_failed\"\n\tincomplete(t, wrong)\n\n\tj := join()\n\tj.Dispatches = append(j.Dispatches, Dispatch{\"d2\", \"mapping\", \"request2\"})\n\tincomplete(t, j)\n}"
+        "executable_native_fixture": "func TestLabJoinOrphanNegative(t *testing.T) {\n\tduplicate := join()\n\tduplicate.Native = append(duplicate.Native, Observation{ID: \"n2\", Dispatch: \"d1\", Surface: \"mapping\", RequestSHA: \"request1\", Receipt: \"r1\", Outcome: \"complete\"})\n\tduplicate.Exports = append(duplicate.Exports, Export{\"n2\", \"request1\", \"r1\", \"run1\", \"native/n2.json\", true})\n\tcounted := Reconcile(duplicate)\n\tif counted.Status != \"incomplete\" || counted.Matched != 0 || counted.Observed != 1 || counted.Ratio == nil || *counted.Ratio != \"0/1\" {\n\t\tt.Fatal(\"duplicate dispatch inflated coverage\", counted)\n\t}\n\n\twrong := join()\n\twrong.Native[0].Outcome = \"preparation_failed\"\n\tincomplete(t, wrong)\n\n\tj := join()\n\tj.Dispatches = append(j.Dispatches, Dispatch{\"d2\", \"mapping\", \"request2\"})\n\tincomplete(t, j)\n}"
       },
       "expected": {
         "complete": "observed 1/1",
         "failed_call": "retained and accounted",
         "orphan_or_mismatch": "incomplete",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "context_identity": "Required LLM/judge context and surface/binding/context stage-phase agree; non-LLM retains typed input."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -135374,13 +135405,14 @@
         "request_sha": "request1",
         "orphan": "d2",
         "changed_wire": "changed",
-        "executable_native_fixture": "func TestLabJoinChangedWireNegative(t *testing.T) {\n\tw := Witness{\"op\", \"mapping\", \"binding\", \"input\", \"wire\", \"receipt\"}\n\twrong := w\n\twrong.Binding = \"different\"\n\tif MatchWitness(w, wrong) || MatchWitness(Witness{}, Witness{}) {\n\t\tt.Fatal(\"unsupported witness correspondence\")\n\t}\n\tj := join()\n\tj.Native[0].RequestSHA = \"changed\"\n\tincomplete(t, j)\n\tj = join()\n\tj.Exports[0].Receipt = \"other\"\n\tincomplete(t, j)\n}"
+        "executable_native_fixture": "func TestLabJoinChangedWireNegative(t *testing.T) {\n\tno(t, ValidateContextBinding(contextBinding(), \"feedback\", nil))\n\tvar tampered map[string]any\n\tmust(t, json.Unmarshal(contextBinding(), &tampered))\n\ttampered[\"model\"] = \"changed-after-freeze\"\n\traw, _ := Canonical(tampered)\n\tno(t, ValidateContextBinding(raw, \"blind_claim_extraction\", nil))\n\n\tif ContextAvailable(\"llm\", nil) || ContextAvailable(\"judge\", nil) {\n\t\tt.Fatal(\"missing required context accepted\")\n\t}\n\tcanonical, mutation := \"canonical_text\", \"mutation\"\n\tif MatchContextPhase(\"case_generation\", &canonical, \"case_generation\", &mutation, \"case_generation\", &canonical) || MatchContextPhase(\"case_generation\", &canonical, \"case_generation\", &canonical, \"case_generation\", nil) {\n\t\tt.Fatal(\"wrong or absent generation phase accepted\")\n\t}\n\tw := Witness{\"op\", \"mapping\", \"binding\", \"input\", \"wire\", \"receipt\"}\n\twrong := w\n\twrong.Binding = \"different\"\n\tif MatchWitness(w, wrong) || MatchWitness(Witness{}, Witness{}) {\n\t\tt.Fatal(\"unsupported witness correspondence\")\n\t}\n\tj := join()\n\tj.Native[0].RequestSHA = \"changed\"\n\tincomplete(t, j)\n\tj = join()\n\tj.Exports[0].Receipt = \"other\"\n\tincomplete(t, j)\n}"
       },
       "expected": {
         "complete": "observed 1/1",
         "failed_call": "retained and accounted",
         "orphan_or_mismatch": "incomplete",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "context_identity": "Required LLM/judge context and surface/binding/context stage-phase agree; non-LLM retains typed input."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -136034,7 +136066,7 @@
         "action": "builtins",
         "extra": "unknown",
         "trailing": "{} {}",
-        "executable_native_fixture": "func TestLabCommandTrailingNegative(t *testing.T) {\n\tvar out bytes.Buffer\n\tno(t, Command(strings.NewReader(`{\"action\":\"builtins\"} {}`), &out))\n\tif out.Len() != 0 {\n\t\tt.Fatal(\"partial result\")\n\t}\n}\nfunc inventory(dependency string) map[string]any {\n\treturn map[string]any{\"schema_version\": \"2.0.0\", \"id\": \"inventory\", \"source_revision\": \"constructed fixture\", \"dependencies\": []any{map[string]any{\"path\": \"owner.go\", \"sha256\": dependency, \"purpose\": \"test owner\"}}, \"entries\": []any{map[string]any{\"id\": \"planned\", \"stage\": \"mapping\", \"phase\": nil, \"kind\": \"llm\", \"implementation_state\": \"planned\", \"owner_paths\": []string{\"services/api\"}, \"owner_symbols\": []string{}, \"adapter_paths\": []string{}, \"trusted_fragments\": []any{}, \"discovery_evidence_refs\": []string{\"literal fixture\"}, \"coverage_reason\": \"later provider iteration\"}}, \"non_ai_calls\": []any{}, \"unresolved_paths\": []string{}}\n}\nfunc sealed(m map[string]any, key string) []byte {\n\tdelete(m, key)\n\tm[key] = Hash(m)\n\tb, _ := Canonical(m)\n\treturn b\n}"
+        "executable_native_fixture": "func TestLabCommandTrailingNegative(t *testing.T) {\n\tfor _, raw := range []string{`{\"action\":\"plan\",\"action\":\"builtins\"}`, `{\"action\":\"sanitize\",\"capture\":false,\"capture\":true}`} {\n\t\tvar out bytes.Buffer\n\t\tno(t, Command(strings.NewReader(raw), &out))\n\t\tif out.Len() != 0 {\n\t\t\tt.Fatal(\"ambiguous command emitted a result\")\n\t\t}\n\t}\n\n\tvar out bytes.Buffer\n\tno(t, Command(strings.NewReader(`{\"action\":\"builtins\"} {}`), &out))\n\tif out.Len() != 0 {\n\t\tt.Fatal(\"partial result\")\n\t}\n}\nfunc inventory(dependency string) map[string]any {\n\treturn map[string]any{\"schema_version\": \"2.0.0\", \"id\": \"inventory\", \"source_revision\": \"constructed fixture\", \"dependencies\": []any{map[string]any{\"path\": \"owner.go\", \"sha256\": dependency, \"purpose\": \"test owner\"}}, \"entries\": []any{map[string]any{\"id\": \"planned\", \"stage\": \"mapping\", \"phase\": nil, \"kind\": \"llm\", \"implementation_state\": \"planned\", \"owner_paths\": []string{\"services/api\"}, \"owner_symbols\": []string{}, \"adapter_paths\": []string{}, \"trusted_fragments\": []any{}, \"discovery_evidence_refs\": []string{\"literal fixture\"}, \"coverage_reason\": \"later provider iteration\"}}, \"non_ai_calls\": []any{}, \"unresolved_paths\": []string{}}\n}\nfunc sealed(m map[string]any, key string) []byte {\n\tdelete(m, key)\n\tm[key] = Hash(m)\n\tb, _ := Canonical(m)\n\treturn b\n}"
       },
       "expected": {
         "builtins": "nine valid bindings",
@@ -136070,7 +136102,8 @@
         "matching_source": "validated",
         "planned": "unexercised",
         "source_drift_or_hidden_path": "rejected",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "dependency_snapshot": "Order-independent exact path/hash identity; changed, missing or conflicting declarations rejected."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -136094,13 +136127,14 @@
         "source": "actual owner",
         "dependency": "owner.go",
         "unresolved": "hidden_helper.go",
-        "executable_native_fixture": "func TestLabInventorySourcePositive(t *testing.T) {\n\th := contracts.Digest([]byte(\"actual owner\"))\n\tmust(t, ValidateInventory(sealed(inventory(h), \"inventory_sha256\"), map[string]string{\"owner.go\": h}))\n}"
+        "executable_native_fixture": "func TestLabInventorySourcePositive(t *testing.T) {\n\tif !MatchDependencies([]Dependency{{\"a\", \"one\"}, {\"b\", \"two\"}}, []Dependency{{\"b\", \"two\"}, {\"a\", \"one\"}}) {\n\t\tt.Fatal(\"dependency order altered identity\")\n\t}\n\th := contracts.Digest([]byte(\"actual owner\"))\n\tmust(t, ValidateInventory(sealed(inventory(h), \"inventory_sha256\"), map[string]string{\"owner.go\": h}))\n}"
       },
       "expected": {
         "matching_source": "validated",
         "planned": "unexercised",
         "source_drift_or_hidden_path": "rejected",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "dependency_snapshot": "Order-independent exact path/hash identity; changed, missing or conflicting declarations rejected."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -136124,13 +136158,14 @@
         "source": "actual owner",
         "dependency": "owner.go",
         "unresolved": "hidden_helper.go",
-        "executable_native_fixture": "func TestLabInventoryDriftNegative(t *testing.T) {\n\th := strings.Repeat(\"a\", 64)\n\tno(t, ValidateInventory(sealed(inventory(h), \"inventory_sha256\"), map[string]string{\"owner.go\": strings.Repeat(\"b\", 64)}))\n}"
+        "executable_native_fixture": "func TestLabInventoryDriftNegative(t *testing.T) {\n\tfor _, claim := range [][]Dependency{{{\"a\", \"wrong\"}}, {{\"a\", \"one\"}, {\"a\", \"wrong\"}}, {{\"b\", \"one\"}}} {\n\t\tif MatchDependencies([]Dependency{{\"a\", \"one\"}}, claim) {\n\t\t\tt.Fatal(\"changed dependency accepted\")\n\t\t}\n\t}\n\th := strings.Repeat(\"a\", 64)\n\tno(t, ValidateInventory(sealed(inventory(h), \"inventory_sha256\"), map[string]string{\"owner.go\": strings.Repeat(\"b\", 64)}))\n}"
       },
       "expected": {
         "matching_source": "validated",
         "planned": "unexercised",
         "source_drift_or_hidden_path": "rejected",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "dependency_snapshot": "Order-independent exact path/hash identity; changed, missing or conflicting declarations rejected."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -136160,7 +136195,8 @@
         "matching_source": "validated",
         "planned": "unexercised",
         "source_drift_or_hidden_path": "rejected",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "dependency_snapshot": "Order-independent exact path/hash identity; changed, missing or conflicting declarations rejected."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -136187,12 +136223,13 @@
         "basis": "authored_assertion",
         "duplicate": "case1",
         "other_stage": "feedback",
-        "executable_native_fixture": "func TestLabDatasetFrozenPositive(t *testing.T) {\n\tmust(t, ValidateDataset(sealed(dataset(), \"dataset_sha256\")))\n}"
+        "executable_native_fixture": "func TestLabDatasetFrozenPositive(t *testing.T) {\n\tmust(t, ValidateCaseResults([]byte(`{\"cases\":[{\"case_id\":\"c1\",\"property_id\":\"p1\",\"status\":\"passed\"},{\"case_id\":\"c2\",\"property_id\":\"p1\",\"status\":\"failed\"}]}`), []string{\"p1\"}, []string{\"c1\", \"c2\"}))\n\tmust(t, ValidateDataset(sealed(dataset(), \"dataset_sha256\")))\n}"
       },
       "expected": {
         "typed_positive_and_negative": "accepted",
         "duplicate_or_stage_mismatch": "rejected",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "selected_case_results": "Unique actual case/property IDs and executed outcomes; missing, unperformed or wrong-property rows incomplete."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -136224,7 +136261,8 @@
       "expected": {
         "typed_positive_and_negative": "accepted",
         "duplicate_or_stage_mismatch": "rejected",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "selected_case_results": "Unique actual case/property IDs and executed outcomes; missing, unperformed or wrong-property rows incomplete."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -136251,12 +136289,13 @@
         "basis": "authored_assertion",
         "duplicate": "case1",
         "other_stage": "feedback",
-        "executable_native_fixture": "func TestLabDatasetDuplicateNegative(t *testing.T) {\n\td := dataset()\n\td[\"cases\"] = []any{d[\"cases\"].([]any)[0], d[\"cases\"].([]any)[0]}\n\tno(t, ValidateDataset(sealed(d, \"dataset_sha256\")))\n}"
+        "executable_native_fixture": "func TestLabDatasetDuplicateNegative(t *testing.T) {\n\tfor _, raw := range []string{`{\"cases\":[]}`, `{\"cases\":[{\"case_id\":\"c1\",\"property_id\":\"p1\",\"status\":\"not_run\"}]}`, `{\"cases\":[{\"case_id\":\"c1\",\"property_id\":\"p2\",\"status\":\"passed\"}]}`, `{\"cases\":[{\"case_id\":\"c1\",\"property_id\":\"p1\",\"status\":\"passed\"},{\"case_id\":\"c1\",\"property_id\":\"p1\",\"status\":\"passed\"}]}`} {\n\t\tno(t, ValidateCaseResults([]byte(raw), []string{\"p1\"}, []string{\"c1\"}))\n\t}\n\td := dataset()\n\td[\"cases\"] = []any{d[\"cases\"].([]any)[0], d[\"cases\"].([]any)[0]}\n\tno(t, ValidateDataset(sealed(d, \"dataset_sha256\")))\n}"
       },
       "expected": {
         "typed_positive_and_negative": "accepted",
         "duplicate_or_stage_mismatch": "rejected",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "selected_case_results": "Unique actual case/property IDs and executed outcomes; missing, unperformed or wrong-property rows incomplete."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -136288,7 +136327,8 @@
       "expected": {
         "typed_positive_and_negative": "accepted",
         "duplicate_or_stage_mismatch": "rejected",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "selected_case_results": "Unique actual case/property IDs and executed outcomes; missing, unperformed or wrong-property rows incomplete."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -136635,7 +136675,7 @@
         "edited_template": " changed",
         "missing_binding": true,
         "unsealed_template": " unsealed",
-        "executable_native_fixture": "def test_activation_invalid_negative(self):\n  old=self.active();b=self.export(self.selection());b['bindings'].pop();p=self.native({'action':'activate','bundle':b},ok=False);self.assertNotEqual(p.returncode,0);self.assertEqual(self.active()['bundle_sha256'],old['bundle_sha256'])"
+        "executable_native_fixture": "def test_activation_invalid_negative(self):\n  old=self.active();b=self.export(self.selection());b['bindings'].pop();p=self.native({'action':'activate','bundle':b},ok=False);self.assertNotEqual(p.returncode,0);self.assertEqual(self.active()['bundle_sha256'],old['bundle_sha256'])\n  duplicated=self.compose('run','--rm','--no-deps','-T','api','lab',input='{\"action\":\"activate\",\"action\":\"active\"}',ok=False);self.assertNotEqual(duplicated.returncode,0);self.assertEqual(self.active()['bundle_sha256'],old['bundle_sha256'])"
       },
       "expected": {
         "activate_revert": "exact old/new identities",
@@ -136697,7 +136737,7 @@
         "secret": "CANARY",
         "outage": "Lab stopped",
         "wrong_digest": "0000000000000000000000000000000000000000000000000000000000000000",
-        "executable_native_fixture": "def test_export_native_positive(self):\n  p=self.packet();asset=self.good(self.native({'action':'diagnostic-save','payload':p}));self.assertEqual(asset['state'],'linked');read=self.good(self.native({'action':'diagnostic-read','id':asset['id']}));self.assertEqual(read,p);export=self.good(self.sdk('sync',read));self.assertEqual(export['provider_calls'],0);self.assertEqual(self.good(self.sdk('verify',export))['status'],'observed');(self.receipts/'actual-mlflow-export.json').write_text(json.dumps(export,indent=2));(self.receipts/'native-diagnostic.json').write_text(json.dumps({'asset':asset,'packet':p},indent=2))"
+        "executable_native_fixture": "def test_export_native_positive(self):\n  p=self.packet();asset=self.good(self.native({'action':'diagnostic-save','payload':p}));self.assertEqual(asset['state'],'linked');read=self.good(self.native({'action':'diagnostic-read','id':asset['id']}));self.assertEqual(read,p);export=self.good(self.sdk('sync',read));self.assertEqual(export['provider_calls'],0);self.assertEqual(self.good(self.sdk('sync',read))['run'],export['run']);self.assertEqual(self.good(self.sdk('verify',export))['status'],'observed');(self.receipts/'actual-mlflow-export.json').write_text(json.dumps(export,indent=2));(self.receipts/'native-diagnostic.json').write_text(json.dumps({'asset':asset,'packet':p},indent=2))"
       },
       "expected": {
         "native_readback": "exact original",
@@ -136705,7 +136745,8 @@
         "outage": "native retained then sync",
         "provider_calls": 0,
         "wrong_digest": "rejected",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "run_identity": "Repeat sync reuses canonical operation run; explicit foreign run rejected without modifying original."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -136738,7 +136779,8 @@
         "outage": "native retained then sync",
         "provider_calls": 0,
         "wrong_digest": "rejected",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "run_identity": "Repeat sync reuses canonical operation run; explicit foreign run rejected without modifying original."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -136771,7 +136813,8 @@
         "outage": "native retained then sync",
         "provider_calls": 0,
         "wrong_digest": "rejected",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "run_identity": "Repeat sync reuses canonical operation run; explicit foreign run rejected without modifying original."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -136796,7 +136839,7 @@
         "secret": "CANARY",
         "outage": "Lab stopped",
         "wrong_digest": "0000000000000000000000000000000000000000000000000000000000000000",
-        "executable_native_fixture": "def test_export_hash_negative(self):\n  malformed=self.packet({'answer':'private'});malformed['capture']='false';self.assertNotEqual(self.sdk('sync',malformed,ok=False).returncode,0)\n  p=self.packet();p['artifacts'][0]['sha256']='0'*64;self.assertNotEqual(self.sdk('sync',p,ok=False).returncode,0)"
+        "executable_native_fixture": "def test_export_hash_negative(self):\n  malformed=self.packet({'answer':'private'});malformed['capture']='false';self.assertNotEqual(self.sdk('sync',malformed,ok=False).returncode,0)\n  p=self.packet();p['artifacts'][0]['sha256']='0'*64;self.assertNotEqual(self.sdk('sync',p,ok=False).returncode,0)\n  first=self.packet();e=self.good(self.sdk('sync',first));second=self.packet();second['run']=e['run'];self.assertNotEqual(self.sdk('sync',second,ok=False).returncode,0);self.assertEqual(self.good(self.sdk('verify',e))['status'],'observed')\n  upper=self.packet();upper['operation']=upper['operation'].upper();a=self.good(self.sdk('sync',upper));self.assertEqual(self.good(self.sdk('sync',upper))['run'],a['run'])"
       },
       "expected": {
         "native_readback": "exact original",
@@ -136804,7 +136847,8 @@
         "outage": "native retained then sync",
         "provider_calls": 0,
         "wrong_digest": "rejected",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "run_identity": "Repeat sync reuses canonical operation run; explicit foreign run rejected without modifying original."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -137091,7 +137135,8 @@
         "zero_call": "observed,N/A,actual retained Lab artifacts",
         "repeat_verify": "no inference",
         "missing_export_or_required_surface": "nonzero,incomplete",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "independent_scope": "Selected IDs reconcile to retained case rows; run/native revisions and dependency maps agree; actual source bytes and original surface identities reconcile."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -137126,7 +137171,8 @@
         "zero_call": "observed,N/A,actual retained Lab artifacts",
         "repeat_verify": "no inference",
         "missing_export_or_required_surface": "nonzero,incomplete",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "independent_scope": "Selected IDs reconcile to retained case rows; run/native revisions and dependency maps agree; actual source bytes and original surface identities reconcile."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -137155,13 +137201,14 @@
         "planned_surfaces": 21,
         "dispatches": 0,
         "required_unimplemented": "claim_mapping",
-        "executable_native_fixture": "def test_development_missing_negative(self):\n  run=self.development();run['mlflow_artifact_refs'].pop();out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertEqual(json.loads(out.stdout)['status'],'incomplete')"
+        "executable_native_fixture": "def test_development_missing_negative(self):\n  run=self.development();run['mlflow_artifact_refs'].pop();out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertEqual(json.loads(out.stdout)['status'],'incomplete')\n  run=self.development();run['selected_case_ids']=['unobserved-case'];out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertTrue(any('missing/unperformed selected case' in x for x in json.loads(out.stdout)['discrepancies']))"
       },
       "expected": {
         "zero_call": "observed,N/A,actual retained Lab artifacts",
         "repeat_verify": "no inference",
         "missing_export_or_required_surface": "nonzero,incomplete",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "independent_scope": "Selected IDs reconcile to retained case rows; run/native revisions and dependency maps agree; actual source bytes and original surface identities reconcile."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",
@@ -137190,13 +137237,14 @@
         "planned_surfaces": 21,
         "dispatches": 0,
         "required_unimplemented": "claim_mapping",
-        "executable_native_fixture": "def test_development_false_surface_negative(self):\n  run=self.development();run['required_surface_ids']=['claim_mapping'];out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertTrue(any('unexercised' in x for x in json.loads(out.stdout)['discrepancies']))"
+        "executable_native_fixture": "def test_development_false_surface_negative(self):\n  run=self.development();run['required_surface_ids']=['claim_mapping'];out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertTrue(any('unexercised' in x for x in json.loads(out.stdout)['discrepancies']))\n  run=self.development();run['dependencies'][0]['sha256']='0'*64;out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertTrue(any('dependency mismatch' in x for x in json.loads(out.stdout)['discrepancies']))\n  run=self.development();dependency=next(d for d in run['dependencies'] if d['path'].startswith('specification/v2/prompts/'));path=self.root/dependency['path'];before=path.read_bytes()\n  try:\n   path.write_bytes(before+b'\\nchanged after snapshot');out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertIn('inventory source/dependency verification failed',json.loads(out.stdout)['discrepancies'])\n  finally:path.write_bytes(before)\n  run=self.development(lambda inv:inv['entries'].pop());out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertIn('inventory source/dependency verification failed',json.loads(out.stdout)['discrepancies'])"
       },
       "expected": {
         "zero_call": "observed,N/A,actual retained Lab artifacts",
         "repeat_verify": "no inference",
         "missing_export_or_required_surface": "nonzero,incomplete",
-        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source."
+        "literal_assertions": "Exact independently authored assertions in the executable fixture; shared helpers and concrete original byte fixtures are retained in its registered source.",
+        "independent_scope": "Selected IDs reconcile to retained case rows; run/native revisions and dependency maps agree; actual source bytes and original surface identities reconcile."
       },
       "independent_oracle": "Independent literal fixtures in the exact native test; original Unicode bytes and independent SHA256, declared tuple/order/count, actual immutable PostgreSQL/MinIO readback and actual MLflow SDK/server/artifact bytes. No LLM, empirical corpus or model-quality observation is claimed.",
       "observation_state": "not_run",

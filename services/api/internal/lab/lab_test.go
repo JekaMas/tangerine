@@ -214,8 +214,12 @@ func TestLabPrivacyDisabledPositive(t *testing.T) {
 	}
 }
 func TestLabPrivacyCanaryNegative(t *testing.T) {
-	headers, err := Sanitize([]byte(`{"X-API-KEY":"undeclared-key","access_token":"oauth-value","refresh_token":"refresh-value"}`), nil, true)
+	headers, err := Sanitize([]byte(`{"X-API-KEY":"undeclared-key","access_token":"oauth-value","refresh_token":"refresh-value","api_key_CANARY":"value","CANARY_field":"value"}`), []string{"CANARY"}, true)
 	must(t, err)
+	encoded, _ := json.Marshal(headers)
+	if bytes.Contains(encoded, []byte("CANARY")) {
+		t.Fatal("credential leaked through metadata")
+	}
 	if string(headers.Bytes) != "{}" {
 		t.Fatal("credential fields exported", string(headers.Bytes))
 	}
@@ -231,7 +235,29 @@ func TestLabPrivacyMalformedNegative(t *testing.T) {
 	_, e := Sanitize([]byte(`{"answer":`), nil, true)
 	no(t, e)
 }
+func contextBinding() []byte {
+	h := strings.Repeat("a", 64)
+	b := map[string]any{"schema_version": "2.0.0", "id": "fixture-binding", "stage": "blind_claim_extraction", "phase": nil, "provider": "constructed", "model": "no-model-call", "endpoint": "https://example.invalid/fixture", "reasoning_effort": nil, "temperature": nil, "max_output_tokens": 1000, "context_budget_tokens": 32000, "prompt_id": "extract-v1", "prompt_sha256": h, "input_schema_sha256": h, "output_schema_sha256": h, "wire_schema_sha256": h, "adapter_version": "constructed-v1", "credential_ref": "unused-fixture", "store": false, "stream": true, "tools": []any{}, "timeout_seconds": 120}
+	hashable := map[string]any{}
+	for k, v := range b {
+		if k != "id" {
+			hashable[k] = v
+		}
+	}
+	b["binding_sha256"] = Hash(hashable)
+	raw, _ := Canonical(b)
+	return raw
+}
 func TestLabJoinMatchedPositive(t *testing.T) {
+	must(t, ValidateContextBinding(contextBinding(), "blind_claim_extraction", nil))
+	id := "saved-context"
+	if !ContextAvailable("llm", &id) || !ContextAvailable("tts", nil) {
+		t.Fatal("actual modality context rejected")
+	}
+	phase := "canonical_text"
+	if !MatchContextPhase("case_generation", &phase, "case_generation", &phase, "case_generation", &phase) {
+		t.Fatal("matching generation phase rejected")
+	}
 	w := Witness{"op", "mapping", "binding", "input", "wire", "receipt"}
 	if !MatchWitness(w, w) {
 		t.Fatal("matching native correspondence rejected")
@@ -256,6 +282,14 @@ func TestLabJoinFailedCallPositive(t *testing.T) {
 	complete(t, j)
 }
 func TestLabJoinOrphanNegative(t *testing.T) {
+	duplicate := join()
+	duplicate.Native = append(duplicate.Native, Observation{ID: "n2", Dispatch: "d1", Surface: "mapping", RequestSHA: "request1", Receipt: "r1", Outcome: "complete"})
+	duplicate.Exports = append(duplicate.Exports, Export{"n2", "request1", "r1", "run1", "native/n2.json", true})
+	counted := Reconcile(duplicate)
+	if counted.Status != "incomplete" || counted.Matched != 0 || counted.Observed != 1 || counted.Ratio == nil || *counted.Ratio != "0/1" {
+		t.Fatal("duplicate dispatch inflated coverage", counted)
+	}
+
 	wrong := join()
 	wrong.Native[0].Outcome = "preparation_failed"
 	incomplete(t, wrong)
@@ -265,6 +299,20 @@ func TestLabJoinOrphanNegative(t *testing.T) {
 	incomplete(t, j)
 }
 func TestLabJoinChangedWireNegative(t *testing.T) {
+	no(t, ValidateContextBinding(contextBinding(), "feedback", nil))
+	var tampered map[string]any
+	must(t, json.Unmarshal(contextBinding(), &tampered))
+	tampered["model"] = "changed-after-freeze"
+	raw, _ := Canonical(tampered)
+	no(t, ValidateContextBinding(raw, "blind_claim_extraction", nil))
+
+	if ContextAvailable("llm", nil) || ContextAvailable("judge", nil) {
+		t.Fatal("missing required context accepted")
+	}
+	canonical, mutation := "canonical_text", "mutation"
+	if MatchContextPhase("case_generation", &canonical, "case_generation", &mutation, "case_generation", &canonical) || MatchContextPhase("case_generation", &canonical, "case_generation", &canonical, "case_generation", nil) {
+		t.Fatal("wrong or absent generation phase accepted")
+	}
 	w := Witness{"op", "mapping", "binding", "input", "wire", "receipt"}
 	wrong := w
 	wrong.Binding = "different"
@@ -444,6 +492,14 @@ func TestLabCommandExtraNegative(t *testing.T) {
 	}
 }
 func TestLabCommandTrailingNegative(t *testing.T) {
+	for _, raw := range []string{`{"action":"plan","action":"builtins"}`, `{"action":"sanitize","capture":false,"capture":true}`} {
+		var out bytes.Buffer
+		no(t, Command(strings.NewReader(raw), &out))
+		if out.Len() != 0 {
+			t.Fatal("ambiguous command emitted a result")
+		}
+	}
+
 	var out bytes.Buffer
 	no(t, Command(strings.NewReader(`{"action":"builtins"} {}`), &out))
 	if out.Len() != 0 {
@@ -464,10 +520,18 @@ func TestLabInventoryPlannedPositive(t *testing.T) {
 	must(t, ValidateInventory(sealed(inventory(h), "inventory_sha256"), map[string]string{"owner.go": h}))
 }
 func TestLabInventorySourcePositive(t *testing.T) {
+	if !MatchDependencies([]Dependency{{"a", "one"}, {"b", "two"}}, []Dependency{{"b", "two"}, {"a", "one"}}) {
+		t.Fatal("dependency order altered identity")
+	}
 	h := contracts.Digest([]byte("actual owner"))
 	must(t, ValidateInventory(sealed(inventory(h), "inventory_sha256"), map[string]string{"owner.go": h}))
 }
 func TestLabInventoryDriftNegative(t *testing.T) {
+	for _, claim := range [][]Dependency{{{"a", "wrong"}}, {{"a", "one"}, {"a", "wrong"}}, {{"b", "one"}}} {
+		if MatchDependencies([]Dependency{{"a", "one"}}, claim) {
+			t.Fatal("changed dependency accepted")
+		}
+	}
 	h := strings.Repeat("a", 64)
 	no(t, ValidateInventory(sealed(inventory(h), "inventory_sha256"), map[string]string{"owner.go": strings.Repeat("b", 64)}))
 }
@@ -492,6 +556,7 @@ func dataset() map[string]any {
 	return map[string]any{"schema_version": "2.0.0", "scope": "stage", "stage": "blind_claim_extraction", "phase": nil, "cases": []any{c}}
 }
 func TestLabDatasetFrozenPositive(t *testing.T) {
+	must(t, ValidateCaseResults([]byte(`{"cases":[{"case_id":"c1","property_id":"p1","status":"passed"},{"case_id":"c2","property_id":"p1","status":"failed"}]}`), []string{"p1"}, []string{"c1", "c2"}))
 	must(t, ValidateDataset(sealed(dataset(), "dataset_sha256")))
 }
 func TestLabDatasetOriginPositive(t *testing.T) {
@@ -500,6 +565,9 @@ func TestLabDatasetOriginPositive(t *testing.T) {
 	must(t, ValidateDataset(sealed(d, "dataset_sha256")))
 }
 func TestLabDatasetDuplicateNegative(t *testing.T) {
+	for _, raw := range []string{`{"cases":[]}`, `{"cases":[{"case_id":"c1","property_id":"p1","status":"not_run"}]}`, `{"cases":[{"case_id":"c1","property_id":"p2","status":"passed"}]}`, `{"cases":[{"case_id":"c1","property_id":"p1","status":"passed"},{"case_id":"c1","property_id":"p1","status":"passed"}]}`} {
+		no(t, ValidateCaseResults([]byte(raw), []string{"p1"}, []string{"c1"}))
+	}
 	d := dataset()
 	d["cases"] = []any{d["cases"].([]any)[0], d["cases"].([]any)[0]}
 	no(t, ValidateDataset(sealed(d, "dataset_sha256")))

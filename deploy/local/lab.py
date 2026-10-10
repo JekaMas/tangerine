@@ -43,7 +43,10 @@ def sync(packet):
  operation=str(uuid.UUID(packet['operation']));runs=client.search_runs([eid.experiment_id],filter_string=f"tags.`tangerine.operation` = '{operation}'")
  if len(runs)>1:raise ValueError('duplicate diagnostic run linkage')
  run=packet.get('run') or (runs[0].info.run_id if runs else None)
- if not run:run=client.create_run(eid.experiment_id,tags={'tangerine.operation':packet['operation'],'tangerine.origin':packet.get('origin','native_diagnostic'),'tangerine.export_provider_calls':'0'}).info.run_id
+ if run:
+  existing=client.get_run(run)
+  if existing.info.experiment_id!=eid.experiment_id or existing.data.tags.get('tangerine.operation')!=operation or (runs and runs[0].info.run_id!=run):raise ValueError('diagnostic run belongs to another operation')
+ else:run=client.create_run(eid.experiment_id,tags={'tangerine.operation':operation,'tangerine.origin':packet.get('origin','native_diagnostic'),'tangerine.export_provider_calls':'0'}).info.run_id
  artifacts=[]
  with tempfile.TemporaryDirectory() as tmp:
   for a in packet['artifacts']:
@@ -79,6 +82,25 @@ def native(packet):
  p=subprocess.run(['/tangerine/native','lab-json'],input=json.dumps(packet).encode(),stdout=subprocess.PIPE,stderr=subprocess.PIPE)
  if p.returncode:raise ValueError('native bundle/context validation failed')
  return json.loads(p.stdout)
+
+def check_inventory(inv):
+ """Read source bytes independently of the saved inventory declarations."""
+ paths={d['path'] for d in inv['dependencies']}
+ paths.update(f['path_or_asset'] for e in inv['entries'] for f in e['trusted_fragments'] if f['state']=='observed')
+ actual={}
+ expected=json.loads(Path('/tangerine/spec/domain/ai-development.v1.json').read_text())['planned_surfaces']
+ entries={e['id']:e for e in inv['entries']}
+ for surface in expected:
+  row=entries.get(surface['id'])
+  if row is None or any(row[k]!=surface[k] for k in ('stage','phase','kind')):raise ValueError('declared inference surface is missing or mismatched')
+ for path in paths:
+  if path=='services/api/internal/lab/builtin.json':physical=Path('/tangerine/builtin.json')
+  elif path.startswith('specification/v2/'):
+   root=Path('/tangerine/spec').resolve();physical=(root/path[len('specification/v2/'):]).resolve()
+   if not physical.is_relative_to(root):raise ValueError('unresolved source dependency')
+  else:raise ValueError('source dependency is not available in the tooling snapshot')
+  actual[path]=digest(physical.read_bytes())
+ native({'action':'inventory','payload':inv,'dependencies':actual})
 def configuration():
  stages=['case_generation','linguistic_audit','blind_claim_extraction','claim_mapping','mapping_audit','feedback','case_review','adjudication']
  profile=dict(id='chatgpt-plan-responses-v1',provider='openai_chatgpt',model='unselected',endpoint='https://api.openai.com/v1/responses',reasoning_effort=None,temperature=None,max_output_tokens=None,context_budget_tokens=128000,adapter_version='chatgpt-plan-responses-v1',credential_ref='chatgpt_plan_oauth',store=False,stream=True,tools=[],roles=stages,auth_method='chatgpt_plan_oauth',billing_mode='included_subscription')
@@ -121,10 +143,13 @@ def main():
  elif action=='export-command':result=export_command(sys.argv[2:])
  elif action=='development-packet':result={'action':'development-prepare','payload':json.load(sys.stdin)}
  elif action=='development-verify':
-  packet=json.load(sys.stdin);v=verify(packet);j=packet['join'];verified=v['status']=='observed'
+  packet=json.load(sys.stdin);source_errors=[]
+  try:check_inventory(packet['inventory'])
+  except Exception:source_errors.append('inventory source/dependency verification failed')
+  v=verify(packet);j=packet['join'];verified=v['status']=='observed'
   for e in (j.get('exports') or []):e['verified']=verified
   if j.get('deterministic_artifact') is not None:j['deterministic_artifact']['verified']=verified
-  result=native({'action':'reconcile','join':j});result['discrepancies']+=packet['discrepancies']+v['discrepancies']
+  result=native({'action':'reconcile','join':j});result['discrepancies']+=packet['discrepancies']+v['discrepancies']+source_errors
   if result['discrepancies']:result['status']='incomplete'
   print(json.dumps(result,ensure_ascii=False));sys.exit(0 if result['status']=='observed' else 1)
  elif action=='diagnostic-packet':result={'action':'diagnostic-save','payload':json.load(sys.stdin)}

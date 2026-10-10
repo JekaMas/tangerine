@@ -1,6 +1,6 @@
 # LLM Lab: prompts, context, traces and quality experiments
 
-The selected solution is self-hosted MLflow 3.17.0. Its registry and experiment UI provide the editing/comparison workspace; Tangerine owns request construction, contextual data, native grading and the original provider adapters. This is a specification for future integration, not installed or tested MLflow behavior. The normal generate/mutate/synthesize/listen/check/recommend flow remains unchanged.
+The selected solution is self-hosted MLflow 3.17.0. Its registry and experiment UI provide the editing/comparison workspace; Tangerine owns request construction, contextual data, native grading and the original provider adapters. Iteration 3 implements and tests the local registry/context/diagnostic tooling; provider integration and model-quality experiments remain later engineering iterations. The normal generate/mutate/synthesize/listen/check/recommend flow remains unchanged.
 
 ## Local setup and ownership
 
@@ -88,3 +88,11 @@ Iteration3 supplies deterministic context/bundle construction, frozen datasets/p
 `lab sync` accepts a saved diagnostic packet file or its retained asset/original operation UUID. Native storage saves the original packet before export; repeated sync resolves the same local run and refuses to overwrite differing diagnostic bytes. Content capture is explicitly selected, false by default. Original and sanitized hashes/redaction reasons remain separate. CLI protocol stdout contains only JSON; SDK display logs go to stderr. All SDK calls disable telemetry and automatic HTTP retries.
 
 `lab verify <development-run-file>` accepts the published ai-development-run schema, reads linked native inventory/case/observer/snapshot/receipt assets and verifies actual MLflow bytes before evaluating the independent join. MLflow locators use runs:/<run-id>/native/<filename>. Required native filenames are inventory.json, cases.json, dispatches.json when observed, comparison.json when applicable, and snapshot-<observation-id>.json/receipt-<observation-id>.json per actual observation. Sanitized snapshot references resolve to saved redaction assets. Missing, duplicate, mismatched or limited evidence returns nonzero with discrepancies; zero populations remain N/A and require actual deterministic artifacts/reasons. Verification and sync dispatch no inference.
+
+### Exact native verification inputs
+
+The retained case-result artifact contains `cases` rows with `case_id`, `property_id` and `status`. Rows retain their actual command/results and origin. Verification resolves every selected case and property against these independently retained rows; a missing, duplicate, skipped or unperformed row cannot supply observed coverage. Executed failed diagnostics remain visible and do not become passed results or quality improvement claims. Constructed native command fixtures are labelled and are separate from workflow test receipts and real model observations.
+
+Development verification compares the run revision/dependency snapshot with the private inventory, then reads the corresponding mounted source bytes independently. Every original declared inference surface retains its stage/phase/kind; unimplemented surfaces remain planned. Missing or changed source bytes produce incomplete evidence. LLM/judge snapshots require their saved context link; surface, effective binding and context generation phase must agree. Non-LLM inputs retain their typed execution snapshots.
+
+Explicit diagnostic run selection must resolve to that same operation's development experiment run. Operation UUID tags use canonical spelling, so repeated sync reuses the run even when the input UUID uses uppercase. Sanitization strips identified secret field names and uses safe categorical redaction reasons; it never echoes secret-bearing field names into metadata. Native originals remain unchanged.

@@ -106,10 +106,11 @@ class Iteration3Tests(unittest.TestCase):
   b=self.export(self.selection());saved=self.activate(b);old=self.good(self.native({'action':'read','id':b['id']}));self.assertEqual(old['payload'],b);self.assertEqual(self.active()['id'],b['id']);self.assertEqual(saved[0]['kind'],'prompt-bundle')
  def test_activation_invalid_negative(self):
   old=self.active();b=self.export(self.selection());b['bindings'].pop();p=self.native({'action':'activate','bundle':b},ok=False);self.assertNotEqual(p.returncode,0);self.assertEqual(self.active()['bundle_sha256'],old['bundle_sha256'])
+  duplicated=self.compose('run','--rm','--no-deps','-T','api','lab',input='{"action":"activate","action":"active"}',ok=False);self.assertNotEqual(duplicated.returncode,0);self.assertEqual(self.active()['bundle_sha256'],old['bundle_sha256'])
  def test_activation_corrupt_negative(self):
   old=self.active();b=self.export(self.selection());b['bindings'][0]['template']+=' unsealed';self.assertNotEqual(self.native({'action':'activate','bundle':b},ok=False).returncode,0);self.assertEqual(self.active()['bundle_sha256'],old['bundle_sha256'])
  def test_export_native_positive(self):
-  p=self.packet();asset=self.good(self.native({'action':'diagnostic-save','payload':p}));self.assertEqual(asset['state'],'linked');read=self.good(self.native({'action':'diagnostic-read','id':asset['id']}));self.assertEqual(read,p);export=self.good(self.sdk('sync',read));self.assertEqual(export['provider_calls'],0);self.assertEqual(self.good(self.sdk('verify',export))['status'],'observed');(self.receipts/'actual-mlflow-export.json').write_text(json.dumps(export,indent=2));(self.receipts/'native-diagnostic.json').write_text(json.dumps({'asset':asset,'packet':p},indent=2))
+  p=self.packet();asset=self.good(self.native({'action':'diagnostic-save','payload':p}));self.assertEqual(asset['state'],'linked');read=self.good(self.native({'action':'diagnostic-read','id':asset['id']}));self.assertEqual(read,p);export=self.good(self.sdk('sync',read));self.assertEqual(export['provider_calls'],0);self.assertEqual(self.good(self.sdk('sync',read))['run'],export['run']);self.assertEqual(self.good(self.sdk('verify',export))['status'],'observed');(self.receipts/'actual-mlflow-export.json').write_text(json.dumps(export,indent=2));(self.receipts/'native-diagnostic.json').write_text(json.dumps({'asset':asset,'packet':p},indent=2))
  def test_export_privacy_positive(self):
   p=self.packet({'answer':'legitimate answer','Authorization':'CANARY','url':'https://example/?key=CANARY','personal_metadata':{'name':'private'}});p['secrets']=['CANARY'];export=self.good(self.sdk('sync',p));a=export['artifacts'][0];self.assertNotEqual(a['sha256'],a['original_sha256']);self.assertTrue(a['redaction_reasons']);self.assertEqual(self.good(self.sdk('verify',export))['status'],'observed')
  def test_export_outage_recovery_negative(self):
@@ -117,6 +118,8 @@ class Iteration3Tests(unittest.TestCase):
  def test_export_hash_negative(self):
   malformed=self.packet({'answer':'private'});malformed['capture']='false';self.assertNotEqual(self.sdk('sync',malformed,ok=False).returncode,0)
   p=self.packet();p['artifacts'][0]['sha256']='0'*64;self.assertNotEqual(self.sdk('sync',p,ok=False).returncode,0)
+  first=self.packet();e=self.good(self.sdk('sync',first));second=self.packet();second['run']=e['run'];self.assertNotEqual(self.sdk('sync',second,ok=False).returncode,0);self.assertEqual(self.good(self.sdk('verify',e))['status'],'observed')
+  upper=self.packet();upper['operation']=upper['operation'].upper();a=self.good(self.sdk('sync',upper));self.assertEqual(self.good(self.sdk('sync',upper))['run'],a['run'])
  def test_verify_exact_positive(self):
   e=self.good(self.sdk('sync',self.packet()));self.assertEqual(self.good(self.sdk('verify',e)),{'status':'observed','discrepancies':[],'provider_calls':0})
  def test_verify_zero_capture_positive(self):
@@ -165,20 +168,23 @@ print(json.dumps({'status':status,'traces':len(rows),'provider_calls':0,'request
   p={'action':'otlp','trace':{'Trace':'invalid','Span':'invalid','Name':'invalid'}};r=self.compose('exec','-T','llm-lab','/tangerine/native','lab-json',input=json.dumps(p),ok=False);self.assertNotEqual(r.returncode,0)
  def retain(self,body):
   a=self.good(self.native({'action':'diagnostic-save','key':str(uuid.uuid4()),'payload':body}));return {'asset_id':a['id'],'sha256':a['sha256']}
- def development(self):
+ def development(self,mutate_inventory=None):
   revision=subprocess.run(['git','rev-parse','HEAD'],cwd=ROOT,capture_output=True,text=True,check=True).stdout.strip()
   inv=self.good(self.compose('exec','-T','llm-lab','python','/tangerine/lab.py','inventory',revision))
   self.assertEqual(len(inv['entries']),21);self.assertTrue(all(x['implementation_state']=='planned' for x in inv['entries']))
   b=self.builtin;valid=self.compose('exec','-T','llm-lab','/tangerine/native','lab-json',input=json.dumps({'action':'validate','bundle':b}));self.assertEqual(valid.returncode,0)
   bad={**b,'bindings':[]};invalid=self.compose('exec','-T','llm-lab','/tangerine/native','lab-json',input=json.dumps({'action':'validate','bundle':bad}),ok=False);self.assertNotEqual(invalid.returncode,0)
-  case_results={'origin':'native constructed tooling','positive':{'action':'validate complete builtin bundle','exit':valid.returncode},'negative':{'action':'validate missing bindings','exit':invalid.returncode},'provider_calls':0}
+  duplicate={**b,'bindings':[b['bindings'][0]]*9};repeated=self.compose('exec','-T','llm-lab','/tangerine/native','lab-json',input=json.dumps({'action':'validate','bundle':duplicate}),ok=False);self.assertNotEqual(repeated.returncode,0)
+  case_results={'origin':'constructed_native_command_fixtures_not_workflow_test_receipts','cases':[{'case_id':'I3-01.P1.S1.POSITIVE','property_id':'I3-01.P1','status':'passed','action':'validate complete builtin bundle','expected_exit':'zero','observed_exit':valid.returncode},{'case_id':'I3-01.P1.S1.NEGATIVE','property_id':'I3-01.P1','status':'passed','action':'validate missing and duplicate bindings','expected_exit':'nonzero','observed_exits':[invalid.returncode,repeated.returncode]}],'provider_calls':0}
+  if mutate_inventory:
+   mutate_inventory(inv);inv['inventory_sha256']=sha(json.dumps({k:v for k,v in inv.items() if k!='inventory_sha256'},sort_keys=True,ensure_ascii=False,separators=(',',':')).encode())
   invref=self.retain(inv);caseref=self.retain(case_results);observer=[];observerref=self.retain(observer)
   packet=self.packet(capture=True);packet['artifacts']=[]
   for name,body in [('inventory.json',inv),('cases.json',case_results),('dispatches.json',observer)]:
    text=json.dumps(body,ensure_ascii=False,sort_keys=True,separators=(',',':'));packet['artifacts'].append({'name':name,'body':text,'sha256':sha(text.encode())})
   export=self.good(self.sdk('sync',packet));(self.receipts/'development-lab-export.json').write_text(json.dumps(export,indent=2))
   coverage={k:{'matched':0,'observed':0,'missing_reason':'zero provider calls in deterministic tooling'} for k in ['dispatch','snapshot','export']}
-  run=dict(schema_version='2.0.0',id=str(uuid.uuid4()),change_id='implement-teacher-error-trainer',source_revision=revision,inventory_asset=invref,dependencies=inv['dependencies'],affected_property_ids=['I3-20.P1'],selected_case_ids=['I3-20.P1.S1.POSITIVE','I3-20.P1.S1.NEGATIVE'],required_surface_ids=[],experiment_ids=[],lab_tracking_uri='http://llm-lab:5000',status='observed',observations=[],dispatch_observer_asset=observerref,coverage=coverage,discrepancies=[],comparison_asset=None,actual_case_result_asset=caseref,zero_call_reason='deterministic tooling; all21 provider/speech execution owners are planned',created_at='2026-10-10T07:00:00Z',mlflow_run_ids=[export['run']],mlflow_artifact_refs=['runs:/'+a['run']+'/'+a['artifact'] for a in export['artifacts']])
+  run=dict(schema_version='2.0.0',id=str(uuid.uuid4()),change_id='implement-teacher-error-trainer',source_revision=revision,inventory_asset=invref,dependencies=inv['dependencies'],affected_property_ids=['I3-01.P1'],selected_case_ids=['I3-01.P1.S1.POSITIVE','I3-01.P1.S1.NEGATIVE'],required_surface_ids=[],experiment_ids=[],lab_tracking_uri='http://llm-lab:5000',status='observed',observations=[],dispatch_observer_asset=observerref,coverage=coverage,discrepancies=[],comparison_asset=None,actual_case_result_asset=caseref,zero_call_reason='deterministic tooling; all21 provider/speech execution owners are planned',created_at='2026-10-10T07:00:00Z',mlflow_run_ids=[export['run']],mlflow_artifact_refs=['runs:/'+a['run']+'/'+a['artifact'] for a in export['artifacts']])
   return run
  def development_verify(self,run,ok=True):
   packet=self.good(self.native({'action':'development-prepare','payload':run}));return self.sdk('development-verify',packet,ok=ok)
@@ -188,8 +194,15 @@ print(json.dumps({'status':status,'traces':len(rows),'provider_calls':0,'request
   run=self.development();self.assertEqual(self.good(self.development_verify(run))['status'],'observed');self.assertEqual(self.good(self.development_verify(run))['status'],'observed');self.assertEqual(len(run['observations']),0)
  def test_development_missing_negative(self):
   run=self.development();run['mlflow_artifact_refs'].pop();out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertEqual(json.loads(out.stdout)['status'],'incomplete')
+  run=self.development();run['selected_case_ids']=['unobserved-case'];out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertTrue(any('missing/unperformed selected case' in x for x in json.loads(out.stdout)['discrepancies']))
  def test_development_false_surface_negative(self):
   run=self.development();run['required_surface_ids']=['claim_mapping'];out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertTrue(any('unexercised' in x for x in json.loads(out.stdout)['discrepancies']))
+  run=self.development();run['dependencies'][0]['sha256']='0'*64;out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertTrue(any('dependency mismatch' in x for x in json.loads(out.stdout)['discrepancies']))
+  run=self.development();dependency=next(d for d in run['dependencies'] if d['path'].startswith('specification/v2/prompts/'));path=self.root/dependency['path'];before=path.read_bytes()
+  try:
+   path.write_bytes(before+b'\nchanged after snapshot');out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertIn('inventory source/dependency verification failed',json.loads(out.stdout)['discrepancies'])
+  finally:path.write_bytes(before)
+  run=self.development(lambda inv:inv['entries'].pop());out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertIn('inventory source/dependency verification failed',json.loads(out.stdout)['discrepancies'])
  def test_lab_port_selected_positive(self):
   self.assertEqual((self.root/'data/config/lab-port').read_text().strip(),'5001');p=self.call(['sh','scripts/tangerine','lab']);self.assertIn('http://localhost:5001',p.stdout)
  def test_lab_port_readback_positive(self):

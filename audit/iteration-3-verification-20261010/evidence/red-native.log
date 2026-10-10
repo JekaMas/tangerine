@@ -1,0 +1,45 @@
+test_foreign_run_binding (__main__.Counterexamples.test_foreign_run_binding) ... FAIL
+test_unobserved_selected_case (__main__.Counterexamples.test_unobserved_selected_case) ... FAIL
+test_changed_run_dependency (__main__.Counterexamples.test_changed_run_dependency) ... FAIL
+test_redaction_reason_leak (__main__.Counterexamples.test_redaction_reason_leak) ... FAIL
+
+======================================================================
+FAIL: test_foreign_run_binding (__main__.Counterexamples.test_foreign_run_binding)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/data/iteration3-verify/reproduce.py", line 12, in test_foreign_run_binding
+    self.assertNotEqual(p.returncode,0,'different operation was accepted into the first operation run')
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : different operation was accepted into the first operation run
+
+======================================================================
+FAIL: test_unobserved_selected_case (__main__.Counterexamples.test_unobserved_selected_case)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/data/iteration3-verify/reproduce.py", line 14, in test_unobserved_selected_case
+    run=self.development();run['selected_case_ids']=['I3-20.P1.S999.POSITIVE'];p=self.development_verify(run,ok=False);(self.receipts/'unobserved-case.json').write_text(json.dumps({'selected_case_ids':run['selected_case_ids'],'native_exit':p.returncode,'actual':p.stdout}));self.assertNotEqual(p.returncode,0,'unobserved selected case accepted')
+                                                                                                                                                                                                                                                                                  ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : unobserved selected case accepted
+
+======================================================================
+FAIL: test_changed_run_dependency (__main__.Counterexamples.test_changed_run_dependency)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/data/iteration3-verify/reproduce.py", line 16, in test_changed_run_dependency
+    run=self.development();run['dependencies'][0]['sha256']='0'*64;p=self.development_verify(run,ok=False);(self.receipts/'changed-dependency.json').write_text(json.dumps({'dependency':run['dependencies'][0],'native_exit':p.returncode,'actual':p.stdout}));self.assertNotEqual(p.returncode,0,'incorrect claimed dependency accepted')
+                                                                                                                                                                                                                                                                ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : incorrect claimed dependency accepted
+
+======================================================================
+FAIL: test_redaction_reason_leak (__main__.Counterexamples.test_redaction_reason_leak)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/data/iteration3-verify/reproduce.py", line 18, in test_redaction_reason_leak
+    p=self.compose('exec','-T','llm-lab','/tangerine/native','lab-json',input=json.dumps({'action':'sanitize','payload':{'api_key_CANARY':'private value'},'capture':True,'secrets':['CANARY']}));out=self.good(p);(self.receipts/'reason-canary.json').write_text(json.dumps(out));self.assertNotIn('CANARY',json.dumps(out),'known credential escaped through a redaction reason')
+                                                                                                                                                                                                                                                                                    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'CANARY' unexpectedly found in '{"original_sha256": "26e0a9c1ddc86d812fb962cd0199b2cbae5122dfd441a3aefd38c7c30e2e1931", "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a", "bytes": {}, "reasons": ["omitted field api_key_CANARY"]}' : known credential escaped through a redaction reason
+
+----------------------------------------------------------------------
+Ran 4 tests in 58.034s
+
+FAILED (failures=4)

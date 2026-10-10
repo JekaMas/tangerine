@@ -1,12 +1,33 @@
 package lab
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"io"
 	"tangerine.local/api/internal/contracts"
 	"time"
 )
+
+// Both native tooling entrypoints use the existing canonical JSON rules before
+// dispatch. Duplicate fields must not silently choose another action or flag.
+func DecodeCommand(input io.Reader, value any) error {
+	const limit = 32 * 1024 * 1024
+	raw, err := io.ReadAll(io.LimitReader(input, limit+1))
+	if err != nil {
+		return err
+	}
+	if len(raw) > limit {
+		return errors.New("Lab command exceeds 32 MiB")
+	}
+	canonical, err := contracts.Canonical(raw)
+	if err != nil {
+		return err
+	}
+	d := json.NewDecoder(bytes.NewReader(canonical))
+	d.DisallowUnknownFields()
+	return d.Decode(value)
+}
 
 type Request struct {
 	Action       string            `json:"action"`
@@ -31,13 +52,8 @@ type Request struct {
 
 func Command(input io.Reader, output io.Writer) error {
 	var r Request
-	d := json.NewDecoder(io.LimitReader(input, 32*1024*1024))
-	d.DisallowUnknownFields()
-	if e := d.Decode(&r); e != nil {
+	if e := DecodeCommand(input, &r); e != nil {
 		return e
-	}
-	if e := d.Decode(new(any)); e != io.EOF {
-		return errors.New("single Lab command required")
 	}
 	var result any
 	var e error

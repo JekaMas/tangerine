@@ -445,3 +445,18 @@ Scope: the agreed iteration3, before provider implementation. Audit/iteration-3-
 Acceptance resume: iteration3 is accepted on committed-clean candidate a523a13daefe1d5658140ef116dfde043bd3aefd. All88 required cases (44 positive/44 negative across22 properties) passed, with53 actual Go race tests and36 actual native MLflow/PostgreSQL/MinIO integration tests. The affected32 foundation/source-ZIP/launcher cases also passed from the same clean candidate. evidence/iteration3/ACCEPTANCE.json and audit/iteration-3-llm-lab-20261010/reconcile.py reconcile exact registered case fingerprints, source bytes, command results and actual artifacts. Strict OpenSpec, DAG/discovery,3,050 structural/preservation assertions and stable pinned Go vet/gofmt passed; unchanged valid receipts are retained with their proof limits.
 
 Host-probe packaging, linked diagnostic return state, invalid capture coercion and stopped-container network recreation counterexamples are repaired and observed through native regression cases. Original passing receipts for superseded candidates remain historical. The acceptance-record commit changes no production/test/fixture/graph inputs. Explicit loopback5001 avoids macOS AirPlay without changing a system service. All21 model/speech execution surfaces remain planned; constructed diagnostics make zero provider calls with actual Lab artifacts and an explicit N/A reason. Provider connections remain iteration4; pipeline experiments and22 diagnostic arithmetic remain iteration14. No inference, synthesis, paid use, corpus import or whole-product acceptance is claimed. Original taxonomy/recipes/formulas/source scopes/migrations and prior fixtures remain unchanged. Canonical landing preserves the unrelated GAPS.md edit and preview volumes.
+
+## 2026-10-10 iteration 3 verification repairs
+
+The implementation acceptance remains historical evidence for its registered cases; verification found additional counterexamples. audit/iteration-3-verification-20261010/PLAN.md records scope, observed failures and exact invalidation.
+
+- [ ] Bind explicit diagnostic sync runs to their original operation; retain repeat-sync identity and canonical UUID linkage.
+- [ ] Reconcile every selected case/property with actual retained case results, keeping missing/unperformed cases incomplete.
+- [ ] Reconcile native/run inventory revisions and dependency snapshots against actual mounted source bytes.
+- [ ] Remove known credentials from both field-name diagnostics and sanitized payload copies while preserving native originals.
+- [ ] Require the declared LLM context and exact stage/phase/binding correspondence; retain non-LLM distinction.
+- [ ] Count only uniquely matched independent dispatches; duplicates remain incomplete with truthful arithmetic.
+- [ ] Reject duplicate command fields through the shared canonical decoder before deterministic or storage dispatch.
+- [ ] Complete direct regressions, stable language/structural/preservation checks, full clean iteration and affected foundation acceptance; commit and preserve canonical user data.
+
+Resume: four native failures confirmed on e363e96; repair in progress. No product decision, account connection, inference, speech generation or purchase is needed.

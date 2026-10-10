@@ -3,8 +3,95 @@ package lab
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"tangerine.local/api/internal/contracts"
 )
+
+type Dependency struct {
+	Path string `json:"path"`
+	SHA  string `json:"sha256"`
+}
+
+func MatchDependencies(actual, claimed []Dependency) bool {
+	index := func(rows []Dependency) (map[string]string, bool) {
+		m := map[string]string{}
+		for _, d := range rows {
+			if old, ok := m[d.Path]; ok && old != d.SHA {
+				return nil, false
+			}
+			m[d.Path] = d.SHA
+		}
+		return m, true
+	}
+	a, ok := index(actual)
+	if !ok {
+		return false
+	}
+	b, ok := index(claimed)
+	if !ok || len(a) != len(b) {
+		return false
+	}
+	for path, sha := range a {
+		if b[path] != sha {
+			return false
+		}
+	}
+	return true
+}
+
+// Actual result rows are independent of the caller's selected IDs. Failed but
+// executed diagnostics stay visible; skipped or missing work is not coverage.
+func ValidateCaseResults(raw []byte, properties, selected []string) error {
+	var packet struct {
+		Cases []struct {
+			ID       string `json:"case_id"`
+			Property string `json:"property_id"`
+			Status   string `json:"status"`
+		} `json:"cases"`
+	}
+	if err := json.Unmarshal(raw, &packet); err != nil {
+		return err
+	}
+	type row struct{ property, status string }
+	rows := map[string]row{}
+	for _, c := range packet.Cases {
+		if c.ID == "" {
+			return errors.New("empty actual case identity")
+		}
+		if _, ok := rows[c.ID]; ok {
+			return errors.New("duplicate actual case identity")
+		}
+		rows[c.ID] = row{c.Property, c.Status}
+	}
+	required := map[string]bool{}
+	for _, p := range properties {
+		if _, ok := required[p]; ok {
+			return errors.New("duplicate selected property")
+		}
+		required[p] = false
+	}
+	seen := map[string]bool{}
+	for _, id := range selected {
+		if seen[id] {
+			return errors.New("duplicate selected case")
+		}
+		seen[id] = true
+		c, ok := rows[id]
+		if !ok || (c.status != "passed" && c.status != "failed") {
+			return fmt.Errorf("missing/unperformed selected case %s", id)
+		}
+		if _, ok := required[c.property]; !ok {
+			return fmt.Errorf("selected case/property mismatch %s", id)
+		}
+		required[c.property] = true
+	}
+	for _, p := range properties {
+		if !required[p] {
+			return fmt.Errorf("unobserved selected property %s", p)
+		}
+	}
+	return nil
+}
 
 // ValidateInventory challenges declarations against independently supplied source
 // bytes. Planned surfaces remain unexercised; they cannot satisfy required calls.

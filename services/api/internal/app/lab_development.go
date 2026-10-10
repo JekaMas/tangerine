@@ -23,6 +23,7 @@ type developmentPacket struct {
 	Join          lab.Join            `json:"join"`
 	Artifacts     []labExpectedExport `json:"artifacts"`
 	Discrepancies []string            `json:"discrepancies"`
+	Inventory     json.RawMessage     `json:"inventory"`
 }
 
 // PrepareDevelopmentVerification reads authoritative private assets and actual
@@ -34,17 +35,19 @@ func (s *Storage) PrepareDevelopmentVerification(ctx context.Context, raw []byte
 		return p, e
 	}
 	var r struct {
-		Properties    []string     `json:"affected_property_ids"`
-		Cases         []string     `json:"selected_case_ids"`
-		Required      []string     `json:"required_surface_ids"`
-		Zero          *string      `json:"zero_call_reason"`
-		Inventory     labAssetRef  `json:"inventory_asset"`
-		Dispatch      *labAssetRef `json:"dispatch_observer_asset"`
-		CasesAsset    *labAssetRef `json:"actual_case_result_asset"`
-		Comparison    *labAssetRef `json:"comparison_asset"`
-		Runs          []string     `json:"mlflow_run_ids"`
-		Artifacts     []string     `json:"mlflow_artifact_refs"`
-		Discrepancies []string     `json:"discrepancies"`
+		Source        string           `json:"source_revision"`
+		Dependencies  []lab.Dependency `json:"dependencies"`
+		Properties    []string         `json:"affected_property_ids"`
+		Cases         []string         `json:"selected_case_ids"`
+		Required      []string         `json:"required_surface_ids"`
+		Zero          *string          `json:"zero_call_reason"`
+		Inventory     labAssetRef      `json:"inventory_asset"`
+		Dispatch      *labAssetRef     `json:"dispatch_observer_asset"`
+		CasesAsset    *labAssetRef     `json:"actual_case_result_asset"`
+		Comparison    *labAssetRef     `json:"comparison_asset"`
+		Runs          []string         `json:"mlflow_run_ids"`
+		Artifacts     []string         `json:"mlflow_artifact_refs"`
+		Discrepancies []string         `json:"discrepancies"`
 		Observations  []struct {
 			ID           string       `json:"id"`
 			Surface      string       `json:"surface_id"`
@@ -98,20 +101,30 @@ func (s *Storage) PrepareDevelopmentVerification(ctx context.Context, raw []byte
 		return p, e
 	}
 	expected["inventory.json"] = r.Inventory.SHA
+	p.Inventory = inventory
 	var inv struct {
-		Unresolved []string `json:"unresolved_paths"`
-		Entries    []struct {
-			ID    string `json:"id"`
-			State string `json:"implementation_state"`
-			Stage string `json:"stage"`
+		Source       string           `json:"source_revision"`
+		Dependencies []lab.Dependency `json:"dependencies"`
+		Unresolved   []string         `json:"unresolved_paths"`
+		Entries      []struct {
+			ID    string  `json:"id"`
+			State string  `json:"implementation_state"`
+			Stage string  `json:"stage"`
+			Phase *string `json:"phase"`
+			Kind  string  `json:"kind"`
 		} `json:"entries"`
 	}
 	if e = json.Unmarshal(inventory, &inv); e != nil {
 		return p, e
 	}
 	p.Discrepancies = append(p.Discrepancies, inv.Unresolved...)
+	if r.Source != inv.Source || !lab.MatchDependencies(inv.Dependencies, r.Dependencies) {
+		p.Discrepancies = append(p.Discrepancies, "run/native inventory revision or dependency mismatch")
+	}
 	states := map[string]string{}
 	stages := map[string]string{}
+	phases := map[string]*string{}
+	kinds := map[string]string{}
 	operations := map[string]string{}
 	for _, o := range r.Observations {
 		operations[o.ID] = o.Operation
@@ -122,12 +135,18 @@ func (s *Storage) PrepareDevelopmentVerification(ctx context.Context, raw []byte
 		}
 		states[x.ID] = x.State
 		stages[x.ID] = x.Stage
+		phases[x.ID] = x.Phase
+		kinds[x.ID] = x.Kind
 	}
 	if r.CasesAsset == nil {
 		return p, errors.New("actual selected case-result asset required")
 	}
-	if _, e = read(*r.CasesAsset); e != nil {
+	caseResults, e := read(*r.CasesAsset)
+	if e != nil {
 		return p, e
+	}
+	if e = lab.ValidateCaseResults(caseResults, r.Properties, r.Cases); e != nil {
+		p.Discrepancies = append(p.Discrepancies, e.Error())
 	}
 	expected["cases.json"] = r.CasesAsset.SHA
 	if r.Dispatch != nil {
@@ -184,6 +203,11 @@ func (s *Storage) PrepareDevelopmentVerification(ctx context.Context, raw []byte
 		if e != nil {
 			return p, e
 		}
+		if kinds[o.Surface] == "llm" || (kinds[o.Surface] == "judge" && stages[o.Surface] == "linguistic_audit") {
+			if e = lab.ValidateContextBinding(binding, stages[o.Surface], phases[o.Surface]); e != nil {
+				return p, e
+			}
+		}
 		for _, part := range snap.Parts {
 			if _, e = read(part.Asset); e != nil {
 				return p, e
@@ -214,6 +238,9 @@ func (s *Storage) PrepareDevelopmentVerification(ctx context.Context, raw []byte
 		if dto.Operation != operation || dto.Stage != stages[o.Surface] || (o.Kind != "cache_reference" && dto.Outcome != o.Outcome) || (o.Kind == "cache_reference" && o.Outcome != "cache_reference") || dto.Wire != snap.Wire.ID {
 			p.Discrepancies = append(p.Discrepancies, "native snapshot/receipt correspondence mismatch "+o.ID)
 		}
+		if !lab.ContextAvailable(kinds[o.Surface], snap.Context) {
+			p.Discrepancies = append(p.Discrepancies, "missing required LLM context snapshot "+o.ID)
+		}
 		if snap.Context != nil {
 			contextDoc, e := s.ReadDocument(ctx, *snap.Context)
 			if e != nil {
@@ -223,25 +250,28 @@ func (s *Storage) PrepareDevelopmentVerification(ctx context.Context, raw []byte
 				return p, errors.New("wrong context snapshot kind")
 			}
 			var bound struct {
-				SHA string `json:"binding_sha256"`
+				SHA   string  `json:"binding_sha256"`
+				Stage string  `json:"stage"`
+				Phase *string `json:"phase"`
 			}
 			if e = json.Unmarshal(binding, &bound); e != nil {
 				return p, e
 			}
 			var contextDTO struct {
-				Operation string `json:"operation_id"`
-				Stage     string `json:"stage"`
-				Receipt   string `json:"receipt_id"`
-				Wire      string `json:"rendered_request_asset_id"`
-				Binding   string `json:"binding_sha256"`
-				Input     string `json:"input_sha256"`
+				Operation string  `json:"operation_id"`
+				Stage     string  `json:"stage"`
+				Phase     *string `json:"phase"`
+				Receipt   string  `json:"receipt_id"`
+				Wire      string  `json:"rendered_request_asset_id"`
+				Binding   string  `json:"binding_sha256"`
+				Input     string  `json:"input_sha256"`
 			}
 			if e = json.Unmarshal(contextDoc.Payload, &contextDTO); e != nil {
 				return p, e
 			}
 			actual := lab.Witness{Operation: contextDTO.Operation, Stage: contextDTO.Stage, Binding: contextDTO.Binding, Input: contextDTO.Input, Wire: contextDTO.Wire, Receipt: contextDTO.Receipt}
 			expected := lab.Witness{Operation: dto.Operation, Stage: dto.Stage, Binding: bound.SHA, Input: dto.Input, Wire: snap.Wire.ID, Receipt: o.Receipt}
-			if dto.Binding != bound.SHA || !lab.MatchWitness(actual, expected) {
+			if dto.Binding != bound.SHA || !lab.MatchWitness(actual, expected) || !lab.MatchContextPhase(stages[o.Surface], phases[o.Surface], bound.Stage, bound.Phase, contextDTO.Stage, contextDTO.Phase) {
 				p.Discrepancies = append(p.Discrepancies, "context/receipt binding mismatch "+o.ID)
 			}
 		}
