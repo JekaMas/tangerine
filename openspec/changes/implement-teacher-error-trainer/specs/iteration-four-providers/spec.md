@@ -463,3 +463,17 @@ The application SHALL validate the complete response stream before returning usa
 
 - **WHEN** harmless metadata or a duplicate completion follows a completion event
 - **THEN** metadata SHALL be retained and duplicate completion SHALL be rejected
+
+### Requirement: I4-34 Known and unknown native usage remain distinct
+
+The application SHALL preserve the distinction between observed token counts and unknown usage and ignore unrelated additive metadata. Real zero and positive counts SHALL remain observed counts; explicit null flat or detail counters SHALL remain unknown. Exact original native response bytes SHALL be retained. Exact independent fixtures are retained in audit/iteration-4-verification-20261010/CASES.json. Native protocol fixtures SHALL NOT establish hosted admission or model quality.
+
+#### Scenario: I4-34 packet 1
+
+- **WHEN** real zero usage or explicit null flat counters are received
+- **THEN** zero counts SHALL remain observed zero and null flat counts SHALL remain unknown
+
+#### Scenario: I4-34 packet 2
+
+- **WHEN** positive counts or explicit null detail counters are received
+- **THEN** positive counts SHALL remain exact and null detail counts SHALL remain unknown

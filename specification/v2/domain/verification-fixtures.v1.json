@@ -44113,6 +44113,66 @@
           "assertion_source": "func TestProviderStreamTailDuplicateNegative(t *testing.T) {\n\tbody := completed + \"data: {\\\"type\\\":\\\"response.completed\\\",\\\"response\\\":{\\\"status\\\":\\\"completed\\\",\\\"output\\\":[]}}\\n\\n\"\n\tr, err, seen := send(t, 200, body)\n\tcode, _ := SafeError(err)\n\tif code != \"PROVIDER_INCOMPLETE\" || r.Outcome == \"complete\" || seen.Calls != 1 || string(r.Raw) != body {\n\t\tt.Fatal(\"contradictory terminals promoted\", err, r, seen)\n\t}\n}"
         }
       }
+    },
+    {
+      "id": "iteration4-I4-34-packet1",
+      "action": "Execute TestProviderUsageZeroPositive through services/api/internal/provider/transport.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": true
+      },
+      "independent_oracle": "Independent literal observed zero/positive and unknown/null counters, exact raw bytes and one observed request through the production usage parser. Controlled remote HTTP protocol only; no hosted entitlement/model quality.",
+      "origin": "constructed_native_provider_protocol",
+      "positive": {
+        "input": {
+          "exact_native_test": "TestProviderUsageZeroPositive",
+          "literal_executable_fixture": "func TestProviderUsageZeroPositive(t *testing.T) {\n\tbody := strings.NewReplacer(`\"input_tokens\":17`, `\"input_tokens\":0`, `\"output_tokens\":5`, `\"output_tokens\":0`, `\"cached_tokens\":3`, `\"cached_tokens\":0`, `\"reasoning_tokens\":2`, `\"reasoning_tokens\":0`).Replace(completed)\n\tr, err, seen := send(t, 200, body)\n\tfor _, key := range []string{\"input_tokens\", \"output_tokens\", \"cached_tokens\", \"reasoning_tokens\"} {\n\t\tif err != nil || r.Usage[key] == nil || *r.Usage[key] != 0 || seen.Calls != 1 {\n\t\t\tt.Fatal(\"real zero lost\", key, err, r.Usage)\n\t\t}\n\t}\n}"
+        },
+        "expected": {
+          "independent_literal_expectations": "Exact literal zero/positive/null token counters, full raw bytes and one request assertions must pass.",
+          "assertion_source": "func TestProviderUsageZeroPositive(t *testing.T) {\n\tbody := strings.NewReplacer(`\"input_tokens\":17`, `\"input_tokens\":0`, `\"output_tokens\":5`, `\"output_tokens\":0`, `\"cached_tokens\":3`, `\"cached_tokens\":0`, `\"reasoning_tokens\":2`, `\"reasoning_tokens\":0`).Replace(completed)\n\tr, err, seen := send(t, 200, body)\n\tfor _, key := range []string{\"input_tokens\", \"output_tokens\", \"cached_tokens\", \"reasoning_tokens\"} {\n\t\tif err != nil || r.Usage[key] == nil || *r.Usage[key] != 0 || seen.Calls != 1 {\n\t\t\tt.Fatal(\"real zero lost\", key, err, r.Usage)\n\t\t}\n\t}\n}"
+        }
+      },
+      "negative": {
+        "input": {
+          "exact_native_test": "TestProviderUsageNullNegative",
+          "literal_executable_fixture": "func TestProviderUsageNullNegative(t *testing.T) {\n\tbody := strings.NewReplacer(`\"input_tokens\":17`, `\"input_tokens\":null`, `\"output_tokens\":5`, `\"output_tokens\":null`).Replace(completed)\n\tr, err, seen := send(t, 200, body)\n\tif err != nil || r.Usage[\"input_tokens\"] != nil || r.Usage[\"output_tokens\"] != nil || seen.Calls != 1 || string(r.Raw) != body {\n\t\tt.Fatal(\"unknown flat usage fabricated as zero\", err, r.Usage)\n\t}\n}"
+        },
+        "expected": {
+          "independent_literal_expectations": "Exact literal zero/positive/null token counters, full raw bytes and one request assertions must pass.",
+          "assertion_source": "func TestProviderUsageNullNegative(t *testing.T) {\n\tbody := strings.NewReplacer(`\"input_tokens\":17`, `\"input_tokens\":null`, `\"output_tokens\":5`, `\"output_tokens\":null`).Replace(completed)\n\tr, err, seen := send(t, 200, body)\n\tif err != nil || r.Usage[\"input_tokens\"] != nil || r.Usage[\"output_tokens\"] != nil || seen.Calls != 1 || string(r.Raw) != body {\n\t\tt.Fatal(\"unknown flat usage fabricated as zero\", err, r.Usage)\n\t}\n}"
+        }
+      }
+    },
+    {
+      "id": "iteration4-I4-34-packet2",
+      "action": "Execute TestProviderUsageKnownPositive through services/api/internal/provider/transport.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": true
+      },
+      "independent_oracle": "Independent literal observed zero/positive and unknown/null counters, exact raw bytes and one observed request through the production usage parser. Controlled remote HTTP protocol only; no hosted entitlement/model quality.",
+      "origin": "constructed_native_provider_protocol",
+      "positive": {
+        "input": {
+          "exact_native_test": "TestProviderUsageKnownPositive",
+          "literal_executable_fixture": "func TestProviderUsageKnownPositive(t *testing.T) {\n\tbody := strings.Replace(completed, `\"cached_tokens\":3`, `\"cached_tokens\":3,\"provider_extra\":\"ignored\"`, 1)\n\tr, err, seen := send(t, 200, body)\n\tfor key, expected := range map[string]int64{\"input_tokens\": 17, \"output_tokens\": 5, \"cached_tokens\": 3, \"reasoning_tokens\": 2} {\n\t\tif err != nil || r.Usage[key] == nil || *r.Usage[key] != expected || seen.Calls != 1 {\n\t\t\tt.Fatal(\"observed count changed\", key, err, r.Usage)\n\t\t}\n\t}\n}"
+        },
+        "expected": {
+          "independent_literal_expectations": "Exact literal zero/positive/null token counters, full raw bytes and one request assertions must pass.",
+          "assertion_source": "func TestProviderUsageKnownPositive(t *testing.T) {\n\tbody := strings.Replace(completed, `\"cached_tokens\":3`, `\"cached_tokens\":3,\"provider_extra\":\"ignored\"`, 1)\n\tr, err, seen := send(t, 200, body)\n\tfor key, expected := range map[string]int64{\"input_tokens\": 17, \"output_tokens\": 5, \"cached_tokens\": 3, \"reasoning_tokens\": 2} {\n\t\tif err != nil || r.Usage[key] == nil || *r.Usage[key] != expected || seen.Calls != 1 {\n\t\t\tt.Fatal(\"observed count changed\", key, err, r.Usage)\n\t\t}\n\t}\n}"
+        }
+      },
+      "negative": {
+        "input": {
+          "exact_native_test": "TestProviderUsageDetailsNullNegative",
+          "literal_executable_fixture": "func TestProviderUsageDetailsNullNegative(t *testing.T) {\n\tbody := strings.NewReplacer(`\"cached_tokens\":3`, `\"cached_tokens\":null`, `\"reasoning_tokens\":2`, `\"reasoning_tokens\":null`).Replace(completed)\n\tr, err, seen := send(t, 200, body)\n\tif err != nil || r.Usage[\"cached_tokens\"] != nil || r.Usage[\"reasoning_tokens\"] != nil || seen.Calls != 1 || string(r.Raw) != body {\n\t\tt.Fatal(\"unknown detail usage fabricated as zero\", err, r.Usage)\n\t}\n}"
+        },
+        "expected": {
+          "independent_literal_expectations": "Exact literal zero/positive/null token counters, full raw bytes and one request assertions must pass.",
+          "assertion_source": "func TestProviderUsageDetailsNullNegative(t *testing.T) {\n\tbody := strings.NewReplacer(`\"cached_tokens\":3`, `\"cached_tokens\":null`, `\"reasoning_tokens\":2`, `\"reasoning_tokens\":null`).Replace(completed)\n\tr, err, seen := send(t, 200, body)\n\tif err != nil || r.Usage[\"cached_tokens\"] != nil || r.Usage[\"reasoning_tokens\"] != nil || seen.Calls != 1 || string(r.Raw) != body {\n\t\tt.Fatal(\"unknown detail usage fabricated as zero\", err, r.Usage)\n\t}\n}"
+        }
+      }
     }
   ],
   "property_bindings": [
@@ -49646,6 +49706,17 @@
       "scenarios": [
         "I4-33 packet 1",
         "I4-33 packet 2"
+      ],
+      "observation_state": "not_run"
+    },
+    {
+      "property_id": "I4-34.P1",
+      "fixture_id": "iteration4-I4-34-packet1",
+      "statement": "I4-34 Known and unknown native usage remain distinct",
+      "independent_oracle": "Independent literal observed zero/positive and unknown/null counters, exact raw bytes and one observed request through the production usage parser. Controlled remote HTTP protocol only; no hosted entitlement/model quality.",
+      "scenarios": [
+        "I4-34 packet 1",
+        "I4-34 packet 2"
       ],
       "observation_state": "not_run"
     }
@@ -143276,6 +143347,110 @@
         "assertion_source": "func TestProviderStreamTailDuplicateNegative(t *testing.T) {\n\tbody := completed + \"data: {\\\"type\\\":\\\"response.completed\\\",\\\"response\\\":{\\\"status\\\":\\\"completed\\\",\\\"output\\\":[]}}\\n\\n\"\n\tr, err, seen := send(t, 200, body)\n\tcode, _ := SafeError(err)\n\tif code != \"PROVIDER_INCOMPLETE\" || r.Outcome == \"complete\" || seen.Calls != 1 || string(r.Raw) != body {\n\t\tt.Fatal(\"contradictory terminals promoted\", err, r, seen)\n\t}\n}"
       },
       "independent_oracle": "Independent literal expected terminal/error code, complete exact raw bytes and one observed request through the production stream parser. Controlled remote HTTP protocol only; no hosted entitlement/model quality.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I4-34.P1.S1.POSITIVE",
+      "property_id": "I4-34.P1",
+      "polarity": "positive",
+      "scenario": "I4-34 packet 1",
+      "fixture_id": "iteration4-I4-34-packet1",
+      "test_id": "tangerine.local/api/internal/provider::TestProviderUsageZeroPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestProviderUsageZeroPositive through services/api/internal/provider/transport.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestProviderUsageZeroPositive",
+        "literal_executable_fixture": "func TestProviderUsageZeroPositive(t *testing.T) {\n\tbody := strings.NewReplacer(`\"input_tokens\":17`, `\"input_tokens\":0`, `\"output_tokens\":5`, `\"output_tokens\":0`, `\"cached_tokens\":3`, `\"cached_tokens\":0`, `\"reasoning_tokens\":2`, `\"reasoning_tokens\":0`).Replace(completed)\n\tr, err, seen := send(t, 200, body)\n\tfor _, key := range []string{\"input_tokens\", \"output_tokens\", \"cached_tokens\", \"reasoning_tokens\"} {\n\t\tif err != nil || r.Usage[key] == nil || *r.Usage[key] != 0 || seen.Calls != 1 {\n\t\t\tt.Fatal(\"real zero lost\", key, err, r.Usage)\n\t\t}\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "Exact literal zero/positive/null token counters, full raw bytes and one request assertions must pass.",
+        "assertion_source": "func TestProviderUsageZeroPositive(t *testing.T) {\n\tbody := strings.NewReplacer(`\"input_tokens\":17`, `\"input_tokens\":0`, `\"output_tokens\":5`, `\"output_tokens\":0`, `\"cached_tokens\":3`, `\"cached_tokens\":0`, `\"reasoning_tokens\":2`, `\"reasoning_tokens\":0`).Replace(completed)\n\tr, err, seen := send(t, 200, body)\n\tfor _, key := range []string{\"input_tokens\", \"output_tokens\", \"cached_tokens\", \"reasoning_tokens\"} {\n\t\tif err != nil || r.Usage[key] == nil || *r.Usage[key] != 0 || seen.Calls != 1 {\n\t\t\tt.Fatal(\"real zero lost\", key, err, r.Usage)\n\t\t}\n\t}\n}"
+      },
+      "independent_oracle": "Independent literal observed zero/positive and unknown/null counters, exact raw bytes and one observed request through the production usage parser. Controlled remote HTTP protocol only; no hosted entitlement/model quality.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I4-34.P1.S2.POSITIVE",
+      "property_id": "I4-34.P1",
+      "polarity": "positive",
+      "scenario": "I4-34 packet 2",
+      "fixture_id": "iteration4-I4-34-packet2",
+      "test_id": "tangerine.local/api/internal/provider::TestProviderUsageKnownPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestProviderUsageKnownPositive through services/api/internal/provider/transport.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestProviderUsageKnownPositive",
+        "literal_executable_fixture": "func TestProviderUsageKnownPositive(t *testing.T) {\n\tbody := strings.Replace(completed, `\"cached_tokens\":3`, `\"cached_tokens\":3,\"provider_extra\":\"ignored\"`, 1)\n\tr, err, seen := send(t, 200, body)\n\tfor key, expected := range map[string]int64{\"input_tokens\": 17, \"output_tokens\": 5, \"cached_tokens\": 3, \"reasoning_tokens\": 2} {\n\t\tif err != nil || r.Usage[key] == nil || *r.Usage[key] != expected || seen.Calls != 1 {\n\t\t\tt.Fatal(\"observed count changed\", key, err, r.Usage)\n\t\t}\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "Exact literal zero/positive/null token counters, full raw bytes and one request assertions must pass.",
+        "assertion_source": "func TestProviderUsageKnownPositive(t *testing.T) {\n\tbody := strings.Replace(completed, `\"cached_tokens\":3`, `\"cached_tokens\":3,\"provider_extra\":\"ignored\"`, 1)\n\tr, err, seen := send(t, 200, body)\n\tfor key, expected := range map[string]int64{\"input_tokens\": 17, \"output_tokens\": 5, \"cached_tokens\": 3, \"reasoning_tokens\": 2} {\n\t\tif err != nil || r.Usage[key] == nil || *r.Usage[key] != expected || seen.Calls != 1 {\n\t\t\tt.Fatal(\"observed count changed\", key, err, r.Usage)\n\t\t}\n\t}\n}"
+      },
+      "independent_oracle": "Independent literal observed zero/positive and unknown/null counters, exact raw bytes and one observed request through the production usage parser. Controlled remote HTTP protocol only; no hosted entitlement/model quality.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I4-34.P1.S1.NEGATIVE",
+      "property_id": "I4-34.P1",
+      "polarity": "negative",
+      "scenario": "I4-34 packet 1",
+      "fixture_id": "iteration4-I4-34-packet1",
+      "test_id": "tangerine.local/api/internal/provider::TestProviderUsageNullNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestProviderUsageNullNegative through services/api/internal/provider/transport.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestProviderUsageNullNegative",
+        "literal_executable_fixture": "func TestProviderUsageNullNegative(t *testing.T) {\n\tbody := strings.NewReplacer(`\"input_tokens\":17`, `\"input_tokens\":null`, `\"output_tokens\":5`, `\"output_tokens\":null`).Replace(completed)\n\tr, err, seen := send(t, 200, body)\n\tif err != nil || r.Usage[\"input_tokens\"] != nil || r.Usage[\"output_tokens\"] != nil || seen.Calls != 1 || string(r.Raw) != body {\n\t\tt.Fatal(\"unknown flat usage fabricated as zero\", err, r.Usage)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "Exact literal zero/positive/null token counters, full raw bytes and one request assertions must pass.",
+        "assertion_source": "func TestProviderUsageNullNegative(t *testing.T) {\n\tbody := strings.NewReplacer(`\"input_tokens\":17`, `\"input_tokens\":null`, `\"output_tokens\":5`, `\"output_tokens\":null`).Replace(completed)\n\tr, err, seen := send(t, 200, body)\n\tif err != nil || r.Usage[\"input_tokens\"] != nil || r.Usage[\"output_tokens\"] != nil || seen.Calls != 1 || string(r.Raw) != body {\n\t\tt.Fatal(\"unknown flat usage fabricated as zero\", err, r.Usage)\n\t}\n}"
+      },
+      "independent_oracle": "Independent literal observed zero/positive and unknown/null counters, exact raw bytes and one observed request through the production usage parser. Controlled remote HTTP protocol only; no hosted entitlement/model quality.",
+      "observation_state": "not_run",
+      "existing_case_state": "implemented",
+      "historical_receipt_not_reused_as_new_fixture_observation": true
+    },
+    {
+      "case_id": "I4-34.P1.S2.NEGATIVE",
+      "property_id": "I4-34.P1",
+      "polarity": "negative",
+      "scenario": "I4-34 packet 2",
+      "fixture_id": "iteration4-I4-34-packet2",
+      "test_id": "tangerine.local/api/internal/provider::TestProviderUsageDetailsNullNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestProviderUsageDetailsNullNegative through services/api/internal/provider/transport.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestProviderUsageDetailsNullNegative",
+        "literal_executable_fixture": "func TestProviderUsageDetailsNullNegative(t *testing.T) {\n\tbody := strings.NewReplacer(`\"cached_tokens\":3`, `\"cached_tokens\":null`, `\"reasoning_tokens\":2`, `\"reasoning_tokens\":null`).Replace(completed)\n\tr, err, seen := send(t, 200, body)\n\tif err != nil || r.Usage[\"cached_tokens\"] != nil || r.Usage[\"reasoning_tokens\"] != nil || seen.Calls != 1 || string(r.Raw) != body {\n\t\tt.Fatal(\"unknown detail usage fabricated as zero\", err, r.Usage)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "Exact literal zero/positive/null token counters, full raw bytes and one request assertions must pass.",
+        "assertion_source": "func TestProviderUsageDetailsNullNegative(t *testing.T) {\n\tbody := strings.NewReplacer(`\"cached_tokens\":3`, `\"cached_tokens\":null`, `\"reasoning_tokens\":2`, `\"reasoning_tokens\":null`).Replace(completed)\n\tr, err, seen := send(t, 200, body)\n\tif err != nil || r.Usage[\"cached_tokens\"] != nil || r.Usage[\"reasoning_tokens\"] != nil || seen.Calls != 1 || string(r.Raw) != body {\n\t\tt.Fatal(\"unknown detail usage fabricated as zero\", err, r.Usage)\n\t}\n}"
+      },
+      "independent_oracle": "Independent literal observed zero/positive and unknown/null counters, exact raw bytes and one observed request through the production usage parser. Controlled remote HTTP protocol only; no hosted entitlement/model quality.",
       "observation_state": "not_run",
       "existing_case_state": "implemented",
       "historical_receipt_not_reused_as_new_fixture_observation": true

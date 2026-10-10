@@ -223,17 +223,18 @@ func (r *Response) content(b []byte) error {
 	}
 
 	for _, field := range []string{"input_tokens", "output_tokens"} {
-		var n int64
-		if raw := v.Usage[field]; raw != nil && json.Unmarshal(raw, &n) == nil {
-			r.Usage[field] = &n
+		var n *int64
+		if raw := v.Usage[field]; raw != nil && json.Unmarshal(raw, &n) == nil && n != nil && *n >= 0 {
+			r.Usage[field] = n
 		}
 	}
 	for _, pair := range [][2]string{{"input_tokens_details", "cached_tokens"}, {"output_tokens_details", "reasoning_tokens"}} {
-		var details map[string]int64
+		var details map[string]json.RawMessage
 		if raw := v.Usage[pair[0]]; raw != nil && json.Unmarshal(raw, &details) == nil {
-			if n, ok := details[pair[1]]; ok {
+			var n *int64
+			if raw := details[pair[1]]; raw != nil && json.Unmarshal(raw, &n) == nil && n != nil && *n >= 0 {
 				key := pair[1]
-				r.Usage[key] = &n
+				r.Usage[key] = n
 			}
 		}
 	}
