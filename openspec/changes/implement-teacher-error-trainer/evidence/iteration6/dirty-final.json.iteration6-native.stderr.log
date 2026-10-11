@@ -1,0 +1,127 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.06kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 163B done
+#3 DONE 0.0s
+
+#4 [build 1/7] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 44.20kB done
+#5 DONE 0.0s
+
+#6 [build 3/7] COPY services/api/go.mod services/api/go.sum ./
+#6 CACHED
+
+#7 [build 2/7] WORKDIR /src
+#7 CACHED
+
+#8 [build 4/7] RUN go mod download
+#8 CACHED
+
+#9 [build 5/7] COPY services/api/ ./
+#9 DONE 0.1s
+
+#10 [build 6/7] RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /tangerine ./cmd/tangerine
+#10 DONE 8.1s
+
+#11 [build 7/7] RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -mod=readonly -trimpath -o /public-probe ./cmd/tangerine
+#11 DONE 1.5s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 0.5s done
+#12 writing image sha256:492677bd043038429d6d5a34f37c74be388800aae3f040e1eba801842809ca03 done
+#12 naming to docker.io/library/tangerine-mutation-0266c2ad8d1a-go done
+#12 DONE 0.5s
+
+View build details: docker-desktop://dashboard/build/default/default/f5xvtbe3bx1frmlgeooprgshk
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from minio.Dockerfile
+#1 transferring dockerfile: 1.01kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
+#3 DONE 12.7s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 163B done
+#4 DONE 0.0s
+
+#5 [build 2/7] ADD --checksum=sha256:71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6 https://codeload.github.com/minio/minio/tar.gz/7aac2a2c5b7c882e68c1ce017d8256be2feea27f /src.tar.gz
+#5 DONE 0.0s
+
+#6 [stage-1 1/4] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
+#6 DONE 0.0s
+
+#7 [build 1/7] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#7 DONE 0.0s
+
+#8 [internal] load build context
+#8 transferring context: 417B done
+#8 DONE 0.1s
+
+#9 [build 5/7] RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /minio .
+#9 CACHED
+
+#10 [build 4/7] WORKDIR /src
+#10 CACHED
+
+#11 [build 7/7] RUN CGO_ENABLED=0 go build -trimpath -o /probe /probe.go
+#11 CACHED
+
+#12 [stage-1 2/4] COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+#12 CACHED
+
+#13 [build 6/7] COPY deploy/local/probe.go /probe.go
+#13 CACHED
+
+#14 [stage-1 3/4] COPY --from=build /minio /usr/local/bin/minio
+#14 CACHED
+
+#15 [build 3/7] RUN mkdir /src && tar -xzf /src.tar.gz --strip-components=1 -C /src
+#15 CACHED
+
+#16 [build 2/7] ADD --checksum=sha256:71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6 https://codeload.github.com/minio/minio/tar.gz/7aac2a2c5b7c882e68c1ce017d8256be2feea27f /src.tar.gz
+#16 CACHED
+
+#17 [stage-1 4/4] COPY --from=build /probe /usr/local/bin/probe
+#17 CACHED
+
+#18 exporting to image
+#18 exporting layers done
+#18 writing image sha256:775f5bde398036fb9a64a87247346f01e25c2618cfd0560193849a9a84e9d8e1 done
+#18 naming to docker.io/library/tangerine-mutation-0266c2ad8d1a-minio done
+#18 DONE 0.0s
+
+View build details: docker-desktop://dashboard/build/default/default/99vcrmjntxgkfja36ypu7h3fh
+544a519b83d9cf58ebbf1772d8d70c12b40ef56e957433b9880c75bf72ad66ef
+a1c5b6d5bbe74d90ea06b2e18f518e8d641596547cb83093ec14409cd060b632
+0bf5b415606bc94feb2f545068574c0c0157212cef826cc6b28328c5d6f6c07f
+MIGRATION_FAILED: verify migration checksums and database readiness
+tangerine-mutation-0266c2ad8d1a-postgres
+tangerine-mutation-0266c2ad8d1a-media
+tangerine-mutation-0266c2ad8d1a
+Untagged: tangerine-mutation-0266c2ad8d1a-go:latest
+Deleted: sha256:492677bd043038429d6d5a34f37c74be388800aae3f040e1eba801842809ca03
+Untagged: tangerine-mutation-0266c2ad8d1a-minio:latest
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/./tests/native-mutation", line 25, in <module>
+    call(['docker','run','--rm','--network',name,'--env-file',str(config),'--entrypoint','/tangerine',name+'-go','initialize'])
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/./tests/native-mutation", line 9, in call
+    if check and p.returncode:raise RuntimeError('native test setup command failed')
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: native test setup command failed

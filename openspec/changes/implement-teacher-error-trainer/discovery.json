@@ -519,7 +519,15 @@
       "I5-09.P1",
       "I5-10.P1",
       "I5-11.P1",
-      "I5-12.P1"
+      "I5-12.P1",
+      "I6-01.P1",
+      "I6-02.P1",
+      "I6-03.P1",
+      "I6-04.P1",
+      "I6-05.P1",
+      "I6-06.P1",
+      "I6-07.P1",
+      "I6-08.P1"
     ],
     "test_ids": [
       "planned::AUT-01::negative",
@@ -3031,7 +3039,39 @@
       "tangerine.local/api/internal/app::TestNativePreparationFailedActionReplayPositive",
       "tangerine.local/api/internal/app::TestNativePreparationCompletedActionReplayPositive",
       "tangerine.local/api/internal/app::TestNativePreparationFailedReplayConflictNegative",
-      "tangerine.local/api/internal/app::TestNativePreparationMissingActionResultNegative"
+      "tangerine.local/api/internal/app::TestNativePreparationMissingActionResultNegative",
+      "tangerine.local/api/internal/app::TestMutationAdmissionPositive",
+      "tangerine.local/api/internal/app::TestMutationEmptyKeyPositive",
+      "tangerine.local/api/internal/app::TestMutationBaselineNegative",
+      "tangerine.local/api/internal/app::TestMutationLocationNegative",
+      "tangerine.local/api/internal/app::TestMutationManifestPositive",
+      "tangerine.local/api/internal/app::TestMutationUnicodeInsertPositive",
+      "tangerine.local/api/internal/app::TestMutationUnknownCategoryNegative",
+      "tangerine.local/api/internal/app::TestMutationCountNegative",
+      "tangerine.local/api/internal/app::TestMutationRegistryPositive",
+      "tangerine.local/api/internal/app::TestMutationFamilyPositive",
+      "tangerine.local/api/internal/app::TestMutationFamilyNegative",
+      "tangerine.local/api/internal/app::TestMutationReplayNegative",
+      "tangerine.local/api/internal/app::TestMutationAcousticPositive",
+      "tangerine.local/api/internal/app::TestMutationControlPositive",
+      "tangerine.local/api/internal/app::TestMutationAcousticMissingNegative",
+      "tangerine.local/api/internal/app::TestMutationObservedSoundNegative",
+      "tangerine.local/api/internal/app::TestNativeMutationCheckpointPositive",
+      "tangerine.local/api/internal/app::TestNativeMutationEvidencePositive",
+      "tangerine.local/api/internal/app::TestNativeMutationMissingCanonicalNegative",
+      "tangerine.local/api/internal/app::TestNativeMutationChangedConfigurationNegative",
+      "tangerine.local/api/internal/app::TestNativeMutationReplayPositive",
+      "tangerine.local/api/internal/app::TestNativeMutationTrustedReplayPositive",
+      "tangerine.local/api/internal/app::TestNativeMutationKeyConflictNegative",
+      "tangerine.local/api/internal/app::TestNativeMutationAttemptNegative",
+      "tangerine.local/api/internal/app::TestNativeMutationFailureResumePositive",
+      "tangerine.local/api/internal/app::TestNativeMutationFrozenSettingsPositive",
+      "tangerine.local/api/internal/app::TestNativeMutationInvalidOutputNegative",
+      "tangerine.local/api/internal/app::TestNativeMutationProviderLimitNegative",
+      "tangerine.local/api/internal/app::TestNativeMutationChildRecoveryPositive",
+      "tangerine.local/api/internal/app::TestNativeMutationRestartReadbackPositive",
+      "tangerine.local/api/internal/app::TestNativeMutationActiveOwnerNegative",
+      "tangerine.local/api/internal/app::TestNativeMutationDeadlineNegative"
     ]
   },
   "reviews": [
@@ -16482,6 +16522,98 @@
       ],
       "disposition": "current_change",
       "rationale": "Implement authorized fifth stage; preserve later scope and live provider blocker."
+    },
+    {
+      "id": "iteration6-preparation-20261010",
+      "question": "Separate on-demand mutation, complete recipes/key/Unicode replay, immutable checkpoints and shared provider ownership.",
+      "property_ids": [
+        "I6-01.P1",
+        "I6-02.P1",
+        "I6-03.P1",
+        "I6-04.P1",
+        "I6-05.P1",
+        "I6-06.P1",
+        "I6-07.P1",
+        "I6-08.P1"
+      ],
+      "test_ids": [
+        "tangerine.local/api/internal/app::TestMutationAdmissionPositive",
+        "tangerine.local/api/internal/app::TestMutationEmptyKeyPositive",
+        "tangerine.local/api/internal/app::TestMutationBaselineNegative",
+        "tangerine.local/api/internal/app::TestMutationLocationNegative",
+        "tangerine.local/api/internal/app::TestMutationManifestPositive",
+        "tangerine.local/api/internal/app::TestMutationUnicodeInsertPositive",
+        "tangerine.local/api/internal/app::TestMutationUnknownCategoryNegative",
+        "tangerine.local/api/internal/app::TestMutationCountNegative",
+        "tangerine.local/api/internal/app::TestMutationRegistryPositive",
+        "tangerine.local/api/internal/app::TestMutationFamilyPositive",
+        "tangerine.local/api/internal/app::TestMutationFamilyNegative",
+        "tangerine.local/api/internal/app::TestMutationReplayNegative",
+        "tangerine.local/api/internal/app::TestMutationAcousticPositive",
+        "tangerine.local/api/internal/app::TestMutationControlPositive",
+        "tangerine.local/api/internal/app::TestMutationAcousticMissingNegative",
+        "tangerine.local/api/internal/app::TestMutationObservedSoundNegative",
+        "tangerine.local/api/internal/app::TestNativeMutationCheckpointPositive",
+        "tangerine.local/api/internal/app::TestNativeMutationEvidencePositive",
+        "tangerine.local/api/internal/app::TestNativeMutationMissingCanonicalNegative",
+        "tangerine.local/api/internal/app::TestNativeMutationChangedConfigurationNegative",
+        "tangerine.local/api/internal/app::TestNativeMutationReplayPositive",
+        "tangerine.local/api/internal/app::TestNativeMutationTrustedReplayPositive",
+        "tangerine.local/api/internal/app::TestNativeMutationKeyConflictNegative",
+        "tangerine.local/api/internal/app::TestNativeMutationAttemptNegative",
+        "tangerine.local/api/internal/app::TestNativeMutationFailureResumePositive",
+        "tangerine.local/api/internal/app::TestNativeMutationFrozenSettingsPositive",
+        "tangerine.local/api/internal/app::TestNativeMutationInvalidOutputNegative",
+        "tangerine.local/api/internal/app::TestNativeMutationProviderLimitNegative",
+        "tangerine.local/api/internal/app::TestNativeMutationChildRecoveryPositive",
+        "tangerine.local/api/internal/app::TestNativeMutationRestartReadbackPositive",
+        "tangerine.local/api/internal/app::TestNativeMutationActiveOwnerNegative",
+        "tangerine.local/api/internal/app::TestNativeMutationDeadlineNegative"
+      ],
+      "searches": [
+        {
+          "kind": "exact",
+          "status": "completed",
+          "query": "Mutation-generation/persistence contracts traced through typed assets, original operations, shared InvokeLLM, actual head CAS, deadline and readback.",
+          "outcome": "Native mutation owner implemented; hosted entitlement and linguistic/Lab quality remain blocked.",
+          "results": [
+            {
+              "path": "services/api/internal/app/preparation.go",
+              "classification": "change_candidate",
+              "reason": "Mutation phase extends existing preparation owner"
+            },
+            {
+              "path": "services/api/internal/app/mutation_content.go",
+              "classification": "change_candidate",
+              "reason": "Single output admission and complete manifest compiler"
+            }
+          ]
+        },
+        {
+          "kind": "semantic",
+          "status": "unavailable",
+          "reason": "jbcontext has no exact worktree index at5ea9642; direct source references from context_explorer are verified.",
+          "query": "Production clean generation entrypoint and frozen durable preparation resume owner",
+          "outcome": "Context explorer reported exact5ea9642 preparation/provider/native-test anchors; semantic search unavailable because no exact index exists.",
+          "results": [
+            {
+              "path": "specification/v2/docs/preparation-persistence.md",
+              "classification": "change_candidate",
+              "reason": "Durable state contract traced to new owner"
+            }
+          ]
+        },
+        {
+          "kind": "jetbrains-index",
+          "status": "not_applicable",
+          "query": "No PSI refactor required",
+          "reason": "Finite exact new owner and output-version fix; no IDE semantic operation claimed.",
+          "outcome": "Direct source and native evidence used.",
+          "results": []
+        }
+      ],
+      "disposition": "current_change",
+      "rationale": "Implement authorized sixth stage; preserve later scope and live provider blocker."
     }
   ]
 }

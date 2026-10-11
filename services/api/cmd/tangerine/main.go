@@ -76,7 +76,7 @@ func run() error {
 		return store.InitMedia(ctx)
 	case "initialize":
 		if err := store.Migrate(ctx); err != nil {
-			return fmt.Errorf("MIGRATION_FAILED: verify migration checksums and database readiness")
+			return fmt.Errorf("MIGRATION_FAILED: inspect initialization logs and database availability")
 		}
 		if err := store.InitMedia(ctx); err != nil {
 			return fmt.Errorf("MEDIA_INIT_FAILED: verify private bucket and storage readiness")

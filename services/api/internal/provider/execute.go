@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"time"
 )
@@ -10,6 +11,14 @@ import (
 // This owned fragment is versioned with the adapter, and retained in each final
 // wire snapshot. It corrects output format/semantics without changing the task.
 const RepairInstruction = "The preceding visible reply did not satisfy the supplied output contract. Using the same complete saved input and instructions, return one corrected JSON object. Preserve valid substantive decisions. Do not invent missing evidence or fields. Validation: "
+
+// OutputValidationError keeps a public safe code and private repair guidance.
+// Only an owned output validator creates this type; provider error bodies do not.
+type OutputValidationError struct{ Detail string }
+
+func (e *OutputValidationError) Error() string            { return "PROVIDER_OUTPUT_INVALID" }
+func (e *OutputValidationError) Unwrap() error            { return fail("PROVIDER_OUTPUT_INVALID") }
+func (e *OutputValidationError) ValidationDetail() string { return e.Detail }
 
 type Attempt struct {
 	Index      int
@@ -106,7 +115,12 @@ func Execute(ctx context.Context, client *http.Client, r ExecuteRequest, credent
 			if safe == "" {
 				safe = "PROVIDER_OUTPUT_INVALID"
 			}
-			payload, _ := json.Marshal(map[string]any{"validation_code": safe, "raw_visible_output": a.Response.Visible})
+			repairData := map[string]any{"validation_code": safe, "raw_visible_output": a.Response.Visible}
+			var detail interface{ ValidationDetail() string }
+			if errors.As(e, &detail) {
+				repairData["validation_detail"] = detail.ValidationDetail()
+			}
+			payload, _ := json.Marshal(repairData)
 			instructions += "\n" + RepairInstruction + safe
 			input = append(input, map[string]any{"role": "user", "content": string(payload)})
 			repaired = true

@@ -27,11 +27,11 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | cancel-request | schema hash | derived DTO or actual operation input/output receipt | 1 |
 | candidate-envelope | schema hash | document.payload | 5 |
 | capability-record | schema hash | document.payload | 13 |
-| case-candidate | 1.0.0 | document.payload | 72 |
+| case-candidate | 1.0.0 | document.payload | 80 |
 | case-head | schema hash | document.payload | 9 |
 | claim-extraction | 2.0.0 | document.payload | 46 |
 | common | schema hash | derived DTO or actual operation input/output receipt | 10 |
-| configuration-view | schema hash | derived DTO or actual operation input/output receipt | 30 |
+| configuration-view | schema hash | derived DTO or actual operation input/output receipt | 31 |
 | configuration | 2.0.0 | document.payload | 54 |
 | connector-configuration | 2.0.0 | document.payload | 12 |
 | connector-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 10 |
@@ -151,7 +151,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | ai-surface-inventory | 2.0.0 | document.payload with linked private assets | 28 |
 
 | key-repair-proposal | 2.0.0 | LLM canonical payload stored with review/judgment and private raw receipt assets | 6 |
-| preparation-settings | 2.0.0 | immutable private settings asset linked from preparation document | 13 |
+| preparation-settings | 2.0.0 | immutable private settings asset linked from preparation document | 15 |
 | preparation-state | 2.0.0 | document.payload with entity_head revision and linked private assets | 30 |
 | provider-access-policy | 2.0.0 | configuration or transient operation DTO; never model/callback secret evidence | 4 |
 

@@ -1,0 +1,137 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.06kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 163B done
+#3 DONE 0.0s
+
+#4 [build 1/7] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 2.14MB 0.0s done
+#5 DONE 0.1s
+
+#6 [build 2/7] WORKDIR /src
+#6 CACHED
+
+#7 [build 6/7] RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /tangerine ./cmd/tangerine
+#7 CACHED
+
+#8 [build 3/7] COPY services/api/go.mod services/api/go.sum ./
+#8 CACHED
+
+#9 [build 4/7] RUN go mod download
+#9 CACHED
+
+#10 [build 5/7] COPY services/api/ ./
+#10 CACHED
+
+#11 [build 7/7] RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -mod=readonly -trimpath -o /public-probe ./cmd/tangerine
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 writing image sha256:990ff4e237ca5f815a419d8bf74d1746f66c52df5c7b172f349b866d80e03030 done
+#12 naming to docker.io/library/tangerine-local-mutation-b5504bb66e2e-go done
+#12 DONE 0.0s
+
+View build details: docker-desktop://dashboard/build/default/default/g05fq9df01b4ixfrf3g2cy1op
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from minio.Dockerfile
+#1 transferring dockerfile: 1.01kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
+#3 DONE 12.8s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 163B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/4] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
+#5 DONE 0.0s
+
+#6 [build 1/7] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#6 DONE 0.0s
+
+#7 [build 2/7] ADD --checksum=sha256:71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6 https://codeload.github.com/minio/minio/tar.gz/7aac2a2c5b7c882e68c1ce017d8256be2feea27f /src.tar.gz
+#7 DONE 0.0s
+
+#8 [internal] load build context
+#8 transferring context: 417B 0.0s done
+#8 DONE 0.1s
+
+#9 [build 3/7] RUN mkdir /src && tar -xzf /src.tar.gz --strip-components=1 -C /src
+#9 CACHED
+
+#10 [stage-1 3/4] COPY --from=build /minio /usr/local/bin/minio
+#10 CACHED
+
+#11 [build 6/7] COPY deploy/local/probe.go /probe.go
+#11 CACHED
+
+#12 [build 4/7] WORKDIR /src
+#12 CACHED
+
+#13 [build 7/7] RUN CGO_ENABLED=0 go build -trimpath -o /probe /probe.go
+#13 CACHED
+
+#14 [stage-1 2/4] COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+#14 CACHED
+
+#15 [build 5/7] RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /minio .
+#15 CACHED
+
+#16 [build 2/7] ADD --checksum=sha256:71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6 https://codeload.github.com/minio/minio/tar.gz/7aac2a2c5b7c882e68c1ce017d8256be2feea27f /src.tar.gz
+#16 CACHED
+
+#17 [stage-1 4/4] COPY --from=build /probe /usr/local/bin/probe
+#17 CACHED
+
+#18 exporting to image
+#18 exporting layers done
+#18 writing image sha256:775f5bde398036fb9a64a87247346f01e25c2618cfd0560193849a9a84e9d8e1
+#18 writing image sha256:775f5bde398036fb9a64a87247346f01e25c2618cfd0560193849a9a84e9d8e1 done
+#18 naming to docker.io/library/tangerine-local-mutation-b5504bb66e2e-minio 0.0s done
+#18 DONE 0.0s
+
+View build details: docker-desktop://dashboard/build/default/default/tcjrkqf59jnpkbkx04r8mppc3
+98e953da2ebccb49b253e8a3cfbab4515f5356ed2d33b4386b339275c2f925ff
+f93cab6a94abe2f889e72c7e0ca1148f6e78fa13190c094fdaf128b8804e377f
+3795aec8442f7a8e6d2807068221979eb6ebccb345e15d1f99f9497a6c058167
+tangerine-local-mutation-b5504bb66e2e-postgres
+tangerine-local-mutation-b5504bb66e2e-media
+tangerine-local-mutation-b5504bb66e2e
+Untagged: tangerine-local-mutation-b5504bb66e2e-go:latest
+Deleted: sha256:990ff4e237ca5f815a419d8bf74d1746f66c52df5c7b172f349b866d80e03030
+Untagged: tangerine-local-mutation-b5504bb66e2e-minio:latest
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/./tests/native-local-mutation", line 37, in <module>
+    p=subprocess.run([str(tmp/'local-model.test'),'-test.v','-test.run',sys.argv[1] if len(sys.argv)>1 else '^TestNativeLocal','-test.timeout','500s'],cwd=r,env=run_env,timeout=540);status=p.returncode
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 555, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 1039, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 1990, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/5q/gkjywh617zn6lrvf1_f51kv40000gn/T/tangerine-local-mutation-b5504bb66e2e7u9be271/local-model.test'

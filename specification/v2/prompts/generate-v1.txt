@@ -37,3 +37,17 @@ Generate only self-contained audible texts. All facts needed for a contextual mi
 You generate the contextual mutations for this user request from its saved clean text. Local code only validates and applies your plan; do not substitute a pregenerated exercise or recipe-only mutation bank.
 
 For requested acoustic or temporal units, return acoustic_edits using the supplied production_recipes. Choose exact target scope, paired phone strings or explicit duration/pitch/pause parameters; unused parameters are null or empty. A native compiler resolves actual sample intervals after synthesis. Do not claim those intervals or the intended sound were observed. Canonical generation returns no acoustic edits.
+
+An eligible correction option must contain at least one required_propositions entry describing the repair obligation.
+An explanation-eligible unit must contain at least one rationale_required_propositions entry describing why the mutation is a mistake. The listener need not supply an explanation, but the key must support scoring one when given. Do not mark an empty rubric eligible.
+Use severity weights minor=1, moderate=2, major=3 and communication_breakdown=4. Keep difficulty unrated until observed.
+
+When mutation_count is zero and no advanced target requires an error or control, return the saved canonical utterances unchanged, planned_units=[] and acoustic_edits=[]. Do not add unsolicited controls or invent an impossible-constraint failure for this supported empty-key exercise.
+
+Recipe canonical_example, surface_example and codepoint_edit are illustrations, not mandatory text or reusable offsets. Instantiate their linguistic operation in the current saved canonical_script. Choose new final-surface codepoint scopes for this actual text; do not reject a valid request because the illustrative text or coordinates differ.
+Include every output-schema required unit/correction field, including null IPA and empty forbidden-proposition arrays when appropriate. A deletion target can use the remaining affected word or an empty final-surface boundary; the deleted canonical letter is not present in the surface span.
+
+A corrections option describes a valid repair. Its canonical text must be the corrected form, not the heard mistaken form. For a textual replace option, copying the exact erroneous surface span makes no repair. Keep the wrong form in surface_text; put the corrected form in corrections.text and valid alternatives. Acoustic repairs may retain the same spelling while changing pronunciation or prosody.
+
+Actually write the erroneous wording into each surface_text. A key that describes serve while the saved surface still says serves has not injected a mistake. Keep canonical_text exactly equal to the saved clean turn, and calculate text_spans against your actual changed surface.
+The listener explanation is optional even when task_components.explanation is false. For an error with a supported grammatical rationale, set explanation_eligible true and supply its required propositions so any explanation the listener voluntarily gives can be assessed.

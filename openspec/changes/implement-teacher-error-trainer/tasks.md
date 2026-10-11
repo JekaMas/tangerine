@@ -541,3 +541,12 @@ Current native verification: audit/iteration-5-verification-20261010/REPORT.md a
 - [x] Update active source research, relevance, acquisition, empirical-data and readiness guidance; preserve historical acquisition receipts, all original source identities/categories/formulas and independent generation. Extend the existing COR-01.P1.SET2 positive/negative plans.
 
 This update is source-policy/specification reconciliation, not implemented importer or LLM-use enforcement. The existing optional source implementation tasks and their native observations remain pending. No new download, owner message, inference or paid use occurred. Validation evidence: audit/icnale-owner-reply-20261010/REPORT.md.
+
+## Iteration 6 — on-demand mutations and durable key
+
+- [ ] Materialize complete selected taxonomy/recipe/production context and single mutation admission; preserve fixed clean turns, scopes, controls, acoustic intents, correction options and explanation propositions.
+- [ ] Persist candidate/manifest and mutation checkpoint through the existing foreground/CAS owner; implement frozen retry, immutable action replay and completed-child recovery without another clean-text/model call.
+- [ ] Execute the 32 registered positive/negative iteration6 cases and invalidated preparation dependencies, repair all failures and reconcile actual native context/receipt artifacts on a committed-clean candidate.
+- [ ] Qualify actual mutation-generation linguistic quality with an own-account included/free/local model and native/Lab evidence. Actual hosted grant remains unavailable. The existing local gpt-oss:20b model is now under qualification with real calls: the initial positive key exposed an empty-rubric defect, now repaired; the initial empty-key model run exceeded its deadline. Retain those reds and qualify the revised prompt with actual native/Lab evidence. No paid credit or borrowed Codex credential is authorized. Controlled endpoints do not close this requirement.
+
+Current resume record: audit/iteration-6-mutations-20261011/PLAN.md. Later rendering, listening and evaluation remain required subsequent iterations; ordinary exercises require no external corpus acquisition.

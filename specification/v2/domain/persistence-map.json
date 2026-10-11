@@ -3523,7 +3523,7 @@
     {
       "kind": "case-candidate",
       "schema": "contracts/case-candidate.schema.json",
-      "sha256": "9f78ba3bf04111bfa0251dd54e69afdc3c025fec486036b86ebcc42730cc31cc",
+      "sha256": "8275bea97e139c107ad50e636850fcb0a695d57514e22725c68751b37a643b32",
       "schema_version": "1.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -3574,7 +3574,7 @@
           "required_in_parent": true,
           "description": "These records describe proposed targets before acoustic realization and review.",
           "schema_reference": null,
-          "rule_sha256": "4a2dc03e015bf65f41d482c97e35a54516a7833f2ea52d5a0a2e34293eb2a044"
+          "rule_sha256": "266f0da6facc53f692d05ddf75b3980173851d2cbe5a48e8a10ff49e9cebc8c1"
         },
         {
           "name": "acoustic_edits",
@@ -3734,7 +3734,7 @@
           "required_in_parent": true,
           "description": "These options define reviewed repairs and their proposition constraints.",
           "schema_reference": null,
-          "rule_sha256": "9e3fbfa0d38cc06bc4c29f2fef36b8ab6e8bbd8a35ed4160be7170596a7aca47"
+          "rule_sha256": "3d3d3467fb54444023f8bb8cca8e2dfff49e77a1061ca831686952228cbdef6b"
         },
         {
           "name": "explanation_eligible",
@@ -3972,9 +3972,9 @@
           "name": "text",
           "pointer": "/properties/planned_units/items/properties/corrections/items/properties/text",
           "required_in_parent": true,
-          "description": "This field contains literal text for the specific typed operation or feedback item.",
+          "description": "The corrected replacement, inserted wording or valid rephrasing. For a heard error such as He walk, use walks here, not walk. The erroneous wording belongs in text_spans and surface_text. Null is allowed for a repair kind that does not replace written text.",
           "schema_reference": null,
-          "rule_sha256": "a51e70d4132a608d26454953ba6338f346ae48a5cddcb0ef6c4bb5b10aab5480"
+          "rule_sha256": "323223de74283b66382d15b52ee19f9e0f99996ee97c31d9ad3ae5b6bbc6a0c2"
         },
         {
           "name": "ipa",
@@ -3988,9 +3988,9 @@
           "name": "approved_text_alternatives",
           "pointer": "/properties/planned_units/items/properties/corrections/items/properties/approved_text_alternatives",
           "required_in_parent": true,
-          "description": "These reviewed text alternatives can receive correction credit.",
+          "description": "Additional valid corrected wordings for this same option. Every alternative must repair the error; the preferred corrected wording is already in text.",
           "schema_reference": null,
-          "rule_sha256": "763fecce86319f9c14b4e1eded18c053938373a37297620b4a3701ba3d5b7dc7"
+          "rule_sha256": "47378b0cfb93737695affd662cc09870b1021da826fa566f0fdfd6ea55114013"
         },
         {
           "name": "case_insensitive",
@@ -4103,6 +4103,70 @@
           "description": "This text states one explicit proposition or field meaning in its parent contract.",
           "schema_reference": null,
           "rule_sha256": "8bd2fac9bee4146602727ed92092c5f8ed7a066f53f14b059d9a666c32bcd652"
+        },
+        {
+          "name": "correction_eligible",
+          "pointer": "/properties/planned_units/items/allOf/0/if/properties/correction_eligible",
+          "required_in_parent": true,
+          "description": "Apply this condition when the unit supports correction scoring.",
+          "schema_reference": null,
+          "rule_sha256": "7595f1a811d79913e40e8f2af62ddcf8000d58a7fe1fd2e7651d18dff0cf6840"
+        },
+        {
+          "name": "corrections",
+          "pointer": "/properties/planned_units/items/allOf/0/then/properties/corrections",
+          "required_in_parent": false,
+          "description": "Correction scoring requires at least one supported correction option.",
+          "schema_reference": null,
+          "rule_sha256": "ca1d3db7b3a9bad718592acf3bc3c130f7a5683b167127d1bdfd40a12fb704d5"
+        },
+        {
+          "name": "required_propositions",
+          "pointer": "/properties/planned_units/items/allOf/0/then/properties/corrections/items/properties/required_propositions",
+          "required_in_parent": false,
+          "description": "A scored correction option needs a nonempty required proposition rubric.",
+          "schema_reference": null,
+          "rule_sha256": "af5d8f79c46583ac75b11f3a4d3e7baedd03513529866ab745bfe7eb3a3d1ed8"
+        },
+        {
+          "name": "explanation_eligible",
+          "pointer": "/properties/planned_units/items/allOf/1/if/properties/explanation_eligible",
+          "required_in_parent": true,
+          "description": "Apply this condition when supplied explanations can be scored for the unit.",
+          "schema_reference": null,
+          "rule_sha256": "5e1ddafd6ac50d8e5f9e87d6a07ba2f9369e41327bb5dc99c20dfb23f7a4e151"
+        },
+        {
+          "name": "rationale_required_propositions",
+          "pointer": "/properties/planned_units/items/allOf/1/then/properties/rationale_required_propositions",
+          "required_in_parent": false,
+          "description": "A supplied explanation needs a nonempty rationale rubric; listener explanations remain optional.",
+          "schema_reference": null,
+          "rule_sha256": "32734af39786aa9f75a63374900551309f6b69dd3ff1d5878922694793967e5f"
+        },
+        {
+          "name": "expected_judgment",
+          "pointer": "/properties/planned_units/items/allOf/2/if/properties/expected_judgment",
+          "required_in_parent": true,
+          "description": "A deliberately injected true error has a supported explanation in its generated key.",
+          "schema_reference": null,
+          "rule_sha256": "d849942abe3e26f98909d14188d68450ced32c784353e3c7da926b8fcb4fd420"
+        },
+        {
+          "name": "explanation_eligible",
+          "pointer": "/properties/planned_units/items/allOf/2/then/properties/explanation_eligible",
+          "required_in_parent": false,
+          "description": "A generated true error must support assessing any voluntarily supplied explanation.",
+          "schema_reference": null,
+          "rule_sha256": "133696c85c2170c99565e543d00ceb5b210d6ce23aa01084b3ae9d9e486b16f1"
+        },
+        {
+          "name": "rationale_required_propositions",
+          "pointer": "/properties/planned_units/items/allOf/2/then/properties/rationale_required_propositions",
+          "required_in_parent": false,
+          "description": "The generated error key retains a nonempty explanation rubric even when the listener explanation is optional.",
+          "schema_reference": null,
+          "rule_sha256": "762c47f2ceeb83d666351269ae89172604ba2486e1aa6f9836485e58ed601797"
         }
       ]
     },
@@ -4659,7 +4723,7 @@
     {
       "kind": "configuration-view",
       "schema": "contracts/configuration-view.schema.json",
-      "sha256": "3271f03c6c81cf5e1cfbaaaf33c7e23f62a96cf2bf42092dd3fffed181a21645",
+      "sha256": "49b64a43597af4e1f2d71e5d3bbd79c39399c8a4f333bf411e910c2cf788164d",
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -4767,6 +4831,14 @@
           "description": "Optional explicit configured extension profiles; unique IDs resolve only compatible installed adapters. Absence uses original registry profiles.",
           "schema_reference": null,
           "rule_sha256": "bed50d4a56717866d56dba42f657bb427e06bb4f78aa0cc9fc4d58335f1b1b2d"
+        },
+        {
+          "name": "configuration",
+          "pointer": "/properties/configuration",
+          "required_in_parent": false,
+          "description": "Complete nonsecret effective configuration for Settings readback and editing. Credentials remain references only.",
+          "schema_reference": "configuration.schema.json",
+          "rule_sha256": "d09fd1b6e6fbb593ce1399063b23cb6caf7bb8ef772824f1688c9dbd3e836630"
         },
         {
           "name": "name",
@@ -25926,7 +25998,7 @@
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "immutable private settings asset linked from preparation document",
-      "sha256": "f1124b30614065126852c9bf156081cbc7ca61d7b398c0a2c827e97dbaa80bdb",
+      "sha256": "2253ebd470dfe7836a28ed0b926903445bc9c5c6016093283fba7559e6387ceb",
       "fields": [
         {
           "name": "schema_version",
@@ -26031,6 +26103,22 @@
           "description": "SHA-256 of actual immutable bytes or JCS payload as declared.",
           "schema_reference": null,
           "rule_sha256": "b4fba88aed97cb992e3235222b3daeb449b5c5351ae56a4e3a40fbb49bb90779"
+        },
+        {
+          "name": "taxonomy_registry_asset_id",
+          "pointer": "/properties/taxonomy_registry_asset_id",
+          "required_in_parent": false,
+          "description": "Saved taxonomy used by the mutation phase; absent on older clean-only preparations.",
+          "schema_reference": null,
+          "rule_sha256": "f7a87904ba5bec94500fd747e2c5099665539c740ba694340164636f1ff902ef"
+        },
+        {
+          "name": "taxonomy_registry_sha256",
+          "pointer": "/properties/taxonomy_registry_sha256",
+          "required_in_parent": false,
+          "description": "Taxonomy provenance frozen with new preparation settings.",
+          "schema_reference": null,
+          "rule_sha256": "52c2fdd1fbf3b09149efe69e7b832b6fdf91de1aae04cb5e3276e3d87964711e"
         }
       ]
     },

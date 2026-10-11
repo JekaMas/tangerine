@@ -20,6 +20,13 @@ func ProjectVisible(text, kind string) ([]byte, error) {
 	var schema map[string]any
 	_ = json.Unmarshal(contract.Bytes, &schema)
 	candidates := [][]byte{}
+	var validationError error
+	validationScore := -1
+	recordError := func(score int, err error) {
+		if score >= validationScore {
+			validationScore, validationError = score, err
+		}
+	}
 	quoted, escape := false, false
 	starts := []int{}
 	for i, c := range text {
@@ -44,7 +51,17 @@ func ProjectVisible(text, kind string) ([]byte, error) {
 			a := starts[len(starts)-1]
 			starts = starts[:len(starts)-1]
 			raw := []byte(text[a : i+1])
+			var object map[string]any
+			_ = json.Unmarshal(raw, &object)
+			score := 0
+			properties, _ := schema["properties"].(map[string]any)
+			for k := range object {
+				if _, ok := properties[k]; ok {
+					score++
+				}
+			}
 			if _, e = contracts.Canonical(raw); e != nil {
+				recordError(score, e)
 				continue
 			}
 			var value any
@@ -56,10 +73,15 @@ func ProjectVisible(text, kind string) ([]byte, error) {
 			_, b, e = contracts.Validate(kind, contract.Version, b)
 			if e == nil {
 				candidates = append(candidates, b)
+			} else {
+				recordError(score, e)
 			}
 		}
 	}
 	if len(candidates) == 0 {
+		if validationError != nil {
+			return nil, &OutputValidationError{Detail: validationError.Error()}
+		}
 		return nil, fail("PROVIDER_OUTPUT_INVALID")
 	}
 	first := string(candidates[0])

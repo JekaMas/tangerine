@@ -453,7 +453,7 @@
                       "type": "null"
                     }
                   ],
-                  "description": "This field contains literal text for the specific typed operation or feedback item."
+                  "description": "The corrected replacement, inserted wording or valid rephrasing. For a heard error such as He walk, use walks here, not walk. The erroneous wording belongs in text_spans and surface_text. Null is allowed for a repair kind that does not replace written text."
                 },
                 "ipa": {
                   "anyOf": [
@@ -472,7 +472,7 @@
                     "type": "string"
                   },
                   "minItems": 0,
-                  "description": "These reviewed text alternatives can receive correction credit."
+                  "description": "Additional valid corrected wordings for this same option. Every alternative must repair the error; the preferred corrected wording is already in text."
                 },
                 "case_insensitive": {
                   "type": "boolean",
@@ -644,7 +644,84 @@
           "rationale_forbidden_propositions",
           "rationale"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "correction_eligible": {
+                  "const": true,
+                  "description": "Apply this condition when the unit supports correction scoring."
+                }
+              },
+              "required": [
+                "correction_eligible"
+              ]
+            },
+            "then": {
+              "properties": {
+                "corrections": {
+                  "minItems": 1,
+                  "items": {
+                    "properties": {
+                      "required_propositions": {
+                        "minItems": 1,
+                        "description": "A scored correction option needs a nonempty required proposition rubric."
+                      }
+                    }
+                  },
+                  "description": "Correction scoring requires at least one supported correction option."
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "explanation_eligible": {
+                  "const": true,
+                  "description": "Apply this condition when supplied explanations can be scored for the unit."
+                }
+              },
+              "required": [
+                "explanation_eligible"
+              ]
+            },
+            "then": {
+              "properties": {
+                "rationale_required_propositions": {
+                  "minItems": 1,
+                  "description": "A supplied explanation needs a nonempty rationale rubric; listener explanations remain optional."
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "expected_judgment": {
+                  "const": "true_error",
+                  "description": "A deliberately injected true error has a supported explanation in its generated key."
+                }
+              },
+              "required": [
+                "expected_judgment"
+              ]
+            },
+            "then": {
+              "properties": {
+                "explanation_eligible": {
+                  "const": true,
+                  "description": "A generated true error must support assessing any voluntarily supplied explanation."
+                },
+                "rationale_required_propositions": {
+                  "minItems": 1,
+                  "description": "The generated error key retains a nonempty explanation rubric even when the listener explanation is optional."
+                }
+              }
+            }
+          }
+        ]
       },
       "description": "These records describe proposed targets before acoustic realization and review."
     },

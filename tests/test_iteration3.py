@@ -2,7 +2,7 @@
 Constructed diagnostics are not LLM/provider observations. Actual SDK/server,
 immutable native storage and independent artifact byte readbacks are exercised.
 """
-import base64,hashlib,json,os,shutil,subprocess,tempfile,time,unittest,uuid,urllib.request
+import socket,base64,hashlib,json,os,shutil,subprocess,tempfile,time,unittest,uuid,urllib.request
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sha=lambda b:hashlib.sha256(b).hexdigest()
@@ -26,7 +26,9 @@ class Iteration3Tests(unittest.TestCase):
   for name in ['scripts','deploy/local','services/api','specification/v2']:
    shutil.copytree(ROOT/name,cls.root/name)
   shutil.copyfile(ROOT/'.env.example',cls.root/'.env');(cls.root/'data/config').mkdir(parents=True)
-  cls.env={**os.environ,'COMPOSE_PROJECT_NAME':cls.project,'TANGERINE_LAB_IMAGE':'tangerine-mlflow-upstream:3.17.0','TANGERINE_LAB_PORT':'5001'}
+  with socket.socket() as listener:
+   listener.bind(('127.0.0.1',0));cls.lab_port=str(listener.getsockname()[1])
+  cls.env={**os.environ,'COMPOSE_PROJECT_NAME':cls.project,'TANGERINE_LAB_IMAGE':'tangerine-mlflow-upstream:3.17.0','TANGERINE_LAB_PORT':cls.lab_port}
   image=json.loads(cls.call(['docker','image','inspect','tangerine-mlflow-upstream:3.17.0']).stdout)[0]
   assert image['Architecture']=='arm64' and image['Id']=='sha256:21d98f3ca5b8a7e229bb4e11df7cc87306ecb5e5a90af231e009e01d8b7525ad','native fixture image must match the verified official arm64 manifest configuration'
   host_os=cls.call(['docker','version','--format','{{.Client.Os}}']).stdout.strip();host_arch=cls.call(['docker','version','--format','{{.Client.Arch}}']).stdout.strip()
@@ -70,10 +72,10 @@ class Iteration3Tests(unittest.TestCase):
  def test_lab_start_positive(self):
   version=self.good(self.compose('exec','-T','llm-lab','python','-c','import mlflow,json;print(json.dumps(mlflow.__version__))'))
   self.assertEqual(version,'3.17.0')
-  with urllib.request.build_opener(urllib.request.ProxyHandler({})).open('http://127.0.0.1:5001/health',timeout=10) as r:self.assertEqual(r.status,200)
+  with urllib.request.build_opener(urllib.request.ProxyHandler({})).open('http://127.0.0.1:'+self.lab_port+'/health',timeout=10) as r:self.assertEqual(r.status,200)
   services=self.compose('config','--services').stdout.splitlines();self.assertIn('llm-lab',services)
   from browser_probe import Browser
-  browser=Browser(self.root/'lab-browser',initial_url='http://127.0.0.1:5001/')
+  browser=Browser(self.root/'lab-browser',initial_url='http://127.0.0.1:'+self.lab_port+'/')
   try:
    browser.wait('Experiments')
    href=browser.evaluate("Array.from(document.querySelectorAll('a')).find(a=>a.innerText.trim()==='Prompts')?.href");self.assertTrue(href)
@@ -86,7 +88,7 @@ class Iteration3Tests(unittest.TestCase):
  def test_lab_isolation_negative(self):
   self.call(['sh','scripts/tangerine','lab','stop']);b=self.active();self.assertEqual(len(b['bindings']),9);self.compose('run','--rm','--no-deps','-T','api','initialize');self.call(['sh','scripts/tangerine','lab'])
  def test_lab_host_denied_negative(self):
-  req=urllib.request.Request('http://127.0.0.1:5001/',headers={'Host':'evil.example'})
+  req=urllib.request.Request('http://127.0.0.1:'+self.lab_port+'/',headers={'Host':'evil.example'})
   with self.assertRaises(urllib.error.HTTPError) as c:urllib.request.build_opener(urllib.request.ProxyHandler({})).open(req,timeout=10)
   self.assertEqual(c.exception.code,403)
  def test_registry_exact_positive(self):
@@ -160,7 +162,7 @@ print(json.dumps({'status':status,'traces':len(rows),'provider_calls':0,'request
  def test_trace_disabled_positive(self):
   native=self.packet({'status':'disabled','dispatches':[],'zero_call_reason':'diagnostic metadata only'});e=self.good(self.sdk('sync',native));self.assertEqual(e['provider_calls'],0);self.assertEqual(self.good(self.sdk('verify',e))['status'],'observed')
  def test_trace_malformed_negative(self):
-  req=urllib.request.Request('http://127.0.0.1:5001/v1/traces',data=b'not protobuf',headers={'Content-Type':'application/x-protobuf','x-mlflow-experiment-id':'0'})
+  req=urllib.request.Request('http://127.0.0.1:'+self.lab_port+'/v1/traces',data=b'not protobuf',headers={'Content-Type':'application/x-protobuf','x-mlflow-experiment-id':'0'})
   with self.assertRaises(urllib.error.HTTPError) as c:urllib.request.build_opener(urllib.request.ProxyHandler({})).open(req,timeout=10)
   self.assertGreaterEqual(c.exception.code,400)
  def test_trace_invalid_context_negative(self):
@@ -170,9 +172,10 @@ print(json.dumps({'status':status,'traces':len(rows),'provider_calls':0,'request
  def development(self,mutate_inventory=None):
   revision=subprocess.run(['git','rev-parse','HEAD'],cwd=ROOT,capture_output=True,text=True,check=True).stdout.strip()
   inv=self.good(self.compose('exec','-T','llm-lab','python','/tangerine/lab.py','inventory',revision))
-  self.assertEqual(len(inv['entries']),25);self.assertEqual(sum(x['implementation_state']=='planned' for x in inv['entries']),20);self.assertEqual(sum(x['implementation_state']=='implemented' for x in inv['entries']),5)
+  self.assertEqual(len(inv['entries']),25);self.assertEqual(sum(x['implementation_state']=='planned' for x in inv['entries']),19);self.assertEqual(sum(x['implementation_state']=='implemented' for x in inv['entries']),6)
   self.assertTrue({'services/api/internal/app/provider_configuration.go','services/api/internal/app/provider_connections.go','services/api/internal/app/provider-default.json','services/api/internal/app/provider_command.go'}.issubset({d['path'] for d in inv['dependencies']}))
   canonical=next(x for x in inv['entries'] if x['id']=='generation.canonical');self.assertEqual(canonical['implementation_state'],'implemented');self.assertEqual(canonical['owner_symbols'],['Server.PrepareCanonical']);self.assertEqual(canonical['owner_paths'],['services/api/internal/app/preparation.go','services/api/internal/app/provider_inference.go']);self.assertTrue({'services/api/internal/app/preparation.go','services/api/internal/app/preparation_content.go'}.issubset({d['path'] for d in inv['dependencies']}))
+  mutation=next(x for x in inv['entries'] if x['id']=='generation.mutation');self.assertEqual(mutation['implementation_state'],'implemented');self.assertEqual(mutation['owner_symbols'],['Server.PrepareMutation']);self.assertTrue({'services/api/internal/app/mutation.go','services/api/internal/app/mutation_content.go','services/api/internal/app/generationdata/error-taxonomy.v1.yaml'}.issubset({d['path'] for d in inv['dependencies']}))
   b=self.builtin;valid=self.compose('exec','-T','llm-lab','/tangerine/native','lab-json',input=json.dumps({'action':'validate','bundle':b}));self.assertEqual(valid.returncode,0)
   bad={**b,'bindings':[]};invalid=self.compose('exec','-T','llm-lab','/tangerine/native','lab-json',input=json.dumps({'action':'validate','bundle':bad}),ok=False);self.assertNotEqual(invalid.returncode,0)
   duplicate={**b,'bindings':[b['bindings'][0]]*9};repeated=self.compose('exec','-T','llm-lab','/tangerine/native','lab-json',input=json.dumps({'action':'validate','bundle':duplicate}),ok=False);self.assertNotEqual(repeated.returncode,0)
@@ -207,9 +210,9 @@ print(json.dumps({'status':status,'traces':len(rows),'provider_calls':0,'request
   run=self.development(lambda inv:inv['dependencies'].__setitem__(slice(None),[d for d in inv['dependencies'] if d['path']!='services/api/internal/app/provider-default.json']));out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertIn('inventory source/dependency verification failed',json.loads(out.stdout)['discrepancies'])
   run=self.development(lambda inv:inv['dependencies'].__setitem__(slice(None),[d for d in inv['dependencies'] if d['path']!='services/api/internal/app/preparation.go']));out=self.development_verify(run,ok=False);self.assertNotEqual(out.returncode,0);self.assertIn('inventory source/dependency verification failed',json.loads(out.stdout)['discrepancies'])
  def test_lab_port_selected_positive(self):
-  self.assertEqual((self.root/'data/config/lab-port').read_text().strip(),'5001');p=self.call(['sh','scripts/tangerine','lab']);self.assertIn('http://localhost:5001',p.stdout)
+  self.assertEqual((self.root/'data/config/lab-port').read_text().strip(),self.lab_port);p=self.call(['sh','scripts/tangerine','lab']);self.assertIn('http://localhost:'+self.lab_port,p.stdout)
  def test_lab_port_readback_positive(self):
-  with urllib.request.build_opener(urllib.request.ProxyHandler({})).open('http://127.0.0.1:5001/version',timeout=10) as r:self.assertEqual(r.read(),b'3.17.0')
+  with urllib.request.build_opener(urllib.request.ProxyHandler({})).open('http://127.0.0.1:'+self.lab_port+'/version',timeout=10) as r:self.assertEqual(r.read(),b'3.17.0')
  def test_lab_port_invalid_negative(self):
   p=self.call(['sh','scripts/tangerine','lab','--port','not-a-port'],ok=False);self.assertNotEqual(p.returncode,0);self.assertIn('LAB_PORT_INVALID',p.stderr);self.assertEqual(len(self.good(self.sdk('seed'))),18)
  def test_lab_port_occupied_negative(self):

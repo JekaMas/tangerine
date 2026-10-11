@@ -169,12 +169,16 @@ func (s *Storage) checkpoint(ctx context.Context, p map[string]any, expected *in
 	if len(canonicalWords) > 0 {
 		wordCount = canonicalWords[0]
 	}
+	phase := "canonical_text"
+	if p["phase_states"].(map[string]any)["mutation"] != "not_started" {
+		phase = "mutation"
+	}
 	raw, e := lab.Canonical(p)
 	if e != nil {
 		return e
 	}
-	write := DocumentWrite{ID: uuid.NewString(), Kind: "preparation-state", Version: "2.0.0", Scope: "local", Payload: raw, Head: &HeadWrite{ID: p["id"].(string), Expected: expected, State: p["phase_states"].(map[string]any)["canonical_text"].(string)}}
-	for _, k := range []string{"settings_asset_id", "canonical_asset_id"} {
+	write := DocumentWrite{ID: uuid.NewString(), Kind: "preparation-state", Version: "2.0.0", Scope: "local", Payload: raw, Head: &HeadWrite{ID: p["id"].(string), Expected: expected, State: p["phase_states"].(map[string]any)[phase].(string)}}
+	for _, k := range []string{"settings_asset_id", "canonical_asset_id", "mutated_asset_id", "mutation_manifest_asset_id"} {
 		if id, ok := p[k].(string); ok {
 			var sha string
 			e = s.DB.QueryRow(ctx, "SELECT content_sha256 FROM object_node WHERE node_id=$1 AND scope_id=$1 AND kind='asset-bytes'", id).Scan(&sha)
@@ -183,6 +187,13 @@ func (s *Storage) checkpoint(ctx context.Context, p map[string]any, expected *in
 			}
 			write.References = append(write.References, Reference{Pointer: "/" + k, ID: id, Scope: id, Kind: "asset-bytes", SHA: sha, Relation: k})
 		}
+	}
+	if id, ok := p["candidate_id"].(string); ok {
+		var sha string
+		if e := s.DB.QueryRow(ctx, "SELECT payload_sha256 FROM document WHERE id=$1 AND kind='candidate-envelope'", id).Scan(&sha); e != nil {
+			return e
+		}
+		write.References = append(write.References, Reference{Pointer: "/candidate_id", ID: id, Scope: "local", Kind: "candidate-envelope", SHA: sha, Relation: "candidate_id"})
 	}
 	saved, e := validateDocument(write)
 	if e != nil {
@@ -234,17 +245,17 @@ func (s *Storage) checkpoint(ctx context.Context, p map[string]any, expected *in
 		return e
 	}
 	if complete {
-		provenance, err := lab.Canonical(map[string]any{"preparation_id": p["id"], "operation_id": operation, "canonical_sha256": p["canonical_sha256"], "canonical_word_count": wordCount, "origin": "on_demand_model_output", "mutation_complete": false, "audio_complete": false})
+		provenance, err := lab.Canonical(map[string]any{"preparation_id": p["id"], "operation_id": operation, "canonical_sha256": p["canonical_sha256"], "canonical_word_count": wordCount, "origin": "on_demand_model_output", "mutation_complete": phase == "mutation", "mutation_manifest_asset_id": p["mutation_manifest_asset_id"], "audio_complete": false})
 		if err != nil {
 			return err
 		}
-		if _, e = tx.Exec(ctx, "INSERT INTO audit_event(workspace_id,action,subject_document_id,event_sha256,event_payload) VALUES('local','preparation.canonical.completed',$1,$2,$3)", write.ID, contracts.Digest(provenance), provenance); e != nil {
+		if _, e = tx.Exec(ctx, "INSERT INTO audit_event(workspace_id,action,subject_document_id,event_sha256,event_payload) VALUES('local',$4,$1,$2,$3)", write.ID, contracts.Digest(provenance), provenance, map[string]string{"canonical_text": "preparation.canonical.completed", "mutation": "preparation.mutation.completed"}[phase]); e != nil {
 			return e
 		}
 		if _, e = tx.Exec(ctx, "UPDATE operation SET state='complete',subject_id=$2::text,result_document_id=$3,finished_at=clock_timestamp() WHERE id=$1", operation, p["id"], write.ID); e != nil {
 			return e
 		}
-	} else if p["phase_states"].(map[string]any)["canonical_text"] == "failed" {
+	} else if p["phase_states"].(map[string]any)[phase] == "failed" {
 		errorBytes, err := lab.Canonical(p["last_failure"])
 		if err != nil {
 			return err
@@ -274,7 +285,7 @@ func (s *Server) freezePreparation(ctx context.Context, b map[string]any, c map[
 		return nil, e
 	}
 	assets := map[string]Asset{}
-	for _, n := range []string{"providers.v1.yaml", "mutation-recipes.v1.json", "acoustic-production.v1.json"} {
+	for _, n := range []string{"providers.v1.yaml", "mutation-recipes.v1.json", "acoustic-production.v1.json", "error-taxonomy.v1.yaml"} {
 		raw, e := generationRegistry(n)
 		if e != nil {
 			return nil, e
@@ -287,7 +298,7 @@ func (s *Server) freezePreparation(ctx context.Context, b map[string]any, c map[
 	}
 	speech, recipes, production := assets["providers.v1.yaml"], assets["mutation-recipes.v1.json"], assets["acoustic-production.v1.json"]
 	req := b["exercise_request"]
-	settings := map[string]any{"schema_version": "2.0.0", "exercise_request": req, "blueprint": b, "configuration": c, "prompt_bundle": bundle, "generation_bindings": bindings, "speech_registry_asset_id": speech.ID, "speech_registry_sha256": speech.SHA, "recipe_registry_asset_id": recipes.ID, "recipe_registry_sha256": recipes.SHA, "production_registry_asset_id": production.ID, "production_registry_sha256": production.SHA, "source_record_ids": []any{}}
+	settings := map[string]any{"schema_version": "2.0.0", "exercise_request": req, "blueprint": b, "configuration": c, "prompt_bundle": bundle, "generation_bindings": bindings, "speech_registry_asset_id": speech.ID, "speech_registry_sha256": speech.SHA, "recipe_registry_asset_id": recipes.ID, "recipe_registry_sha256": recipes.SHA, "production_registry_asset_id": production.ID, "production_registry_sha256": production.SHA, "source_record_ids": []any{}, "taxonomy_registry_asset_id": assets["error-taxonomy.v1.yaml"].ID, "taxonomy_registry_sha256": assets["error-taxonomy.v1.yaml"].SHA}
 	raw, _ := lab.Canonical(settings)
 	asset, e := s.Store.saveProviderBytes(ctx, raw, "provider_input")
 	if e != nil {
@@ -424,7 +435,11 @@ func (s *Server) PrepareCanonical(ctx context.Context, r CanonicalPreparationReq
 	return s.finishCanonical(ctx, p, settings, op, key, client)
 }
 
-func (s *Storage) takePreparation(ctx context.Context, p map[string]any, operation string) error {
+func (s *Storage) takePreparation(ctx context.Context, p map[string]any, operation string, phases ...string) error {
+	phase := "canonical_text"
+	if len(phases) > 0 {
+		phase = phases[0]
+	}
 	tx, e := beginWrite(ctx, s)
 	if e != nil {
 		return e
@@ -459,14 +474,18 @@ func (s *Storage) takePreparation(ctx context.Context, p map[string]any, operati
 	p["active_operation_id"] = operation
 	p["operation_ids"] = append(p["operation_ids"].([]any), operation)
 	p["updated_at"] = time.Now().UTC().Format(time.RFC3339Nano)
-	p["phase_states"].(map[string]any)["canonical_text"] = "running"
+	p["phase_states"].(map[string]any)[phase] = "running"
 	raw, _ := lab.Canonical(p)
 	w := DocumentWrite{ID: uuid.NewString(), Kind: "preparation-state", Version: "2.0.0", Scope: "local", Payload: raw, Head: &HeadWrite{ID: p["id"].(string), Expected: &rev, State: "running"}}
-	var sha string
-	if e = tx.QueryRow(ctx, "SELECT content_sha256 FROM object_node WHERE node_id=$1 AND scope_id=$1 AND kind='asset-bytes'", p["settings_asset_id"]).Scan(&sha); e != nil {
-		return e
+	for _, field := range []string{"settings_asset_id", "canonical_asset_id", "mutated_asset_id", "mutation_manifest_asset_id"} {
+		if id, ok := p[field].(string); ok {
+			var sha string
+			if e = tx.QueryRow(ctx, "SELECT content_sha256 FROM object_node WHERE node_id=$1 AND scope_id=$1 AND kind='asset-bytes'", id).Scan(&sha); e != nil {
+				return e
+			}
+			w.References = append(w.References, Reference{Pointer: "/" + field, ID: id, Scope: id, Kind: "asset-bytes", SHA: sha, Relation: field})
+		}
 	}
-	w.References = []Reference{{Pointer: "/settings_asset_id", ID: p["settings_asset_id"].(string), Scope: p["settings_asset_id"].(string), Kind: "asset-bytes", SHA: sha, Relation: "settings_asset_id"}}
 	d, e := validateDocument(w)
 	if e != nil {
 		return e
@@ -582,6 +601,8 @@ func (s *Server) PreparationCommand(ctx context.Context, input io.Reader, output
 		v, e = s.Store.Preparation(ctx, r.ID)
 	case "canonical":
 		v, e = s.PrepareCanonical(ctx, r.Request, r.Key, nil)
+	case "mutation":
+		v, e = s.PrepareMutation(ctx, r.Request, r.Key, nil)
 	case "list":
 		v, e = s.Store.Preparations(ctx, 50, "")
 	default:
