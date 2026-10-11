@@ -1,0 +1,117 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.06kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 163B done
+#3 DONE 0.0s
+
+#4 [build 1/7] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 17.90kB done
+#5 DONE 0.0s
+
+#6 [build 2/7] WORKDIR /src
+#6 CACHED
+
+#7 [build 3/7] COPY services/api/go.mod services/api/go.sum ./
+#7 CACHED
+
+#8 [build 4/7] RUN go mod download
+#8 CACHED
+
+#9 [build 6/7] RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /tangerine ./cmd/tangerine
+#9 CACHED
+
+#10 [build 5/7] COPY services/api/ ./
+#10 CACHED
+
+#11 [build 7/7] RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -mod=readonly -trimpath -o /public-probe ./cmd/tangerine
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 writing image sha256:93c7191f2dad586ccf714f78bcf3931e283229510b2a27cf6bd02241fbbed539 done
+#12 naming to docker.io/library/tangerine-mutation-a29dd95a3562-go done
+#12 DONE 0.0s
+
+View build details: docker-desktop://dashboard/build/default/default/r8y80m1wbapeexkikml07addc
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from minio.Dockerfile
+#1 transferring dockerfile: 1.01kB 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
+#3 DONE 12.8s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 163B done
+#4 DONE 0.0s
+
+#5 [build 2/7] ADD --checksum=sha256:71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6 https://codeload.github.com/minio/minio/tar.gz/7aac2a2c5b7c882e68c1ce017d8256be2feea27f /src.tar.gz
+#5 DONE 0.0s
+
+#6 [stage-1 1/4] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
+#6 DONE 0.0s
+
+#7 [build 1/7] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#7 DONE 0.0s
+
+#8 [internal] load build context
+#8 transferring context: 417B done
+#8 DONE 0.0s
+
+#9 [build 6/7] COPY deploy/local/probe.go /probe.go
+#9 CACHED
+
+#10 [build 5/7] RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /minio .
+#10 CACHED
+
+#11 [build 7/7] RUN CGO_ENABLED=0 go build -trimpath -o /probe /probe.go
+#11 CACHED
+
+#12 [build 3/7] RUN mkdir /src && tar -xzf /src.tar.gz --strip-components=1 -C /src
+#12 CACHED
+
+#13 [build 4/7] WORKDIR /src
+#13 CACHED
+
+#14 [build 2/7] ADD --checksum=sha256:71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6 https://codeload.github.com/minio/minio/tar.gz/7aac2a2c5b7c882e68c1ce017d8256be2feea27f /src.tar.gz
+#14 CACHED
+
+#15 [stage-1 2/4] COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+#15 CACHED
+
+#16 [stage-1 3/4] COPY --from=build /minio /usr/local/bin/minio
+#16 CACHED
+
+#17 [stage-1 4/4] COPY --from=build /probe /usr/local/bin/probe
+#17 CACHED
+
+#18 exporting to image
+#18 exporting layers done
+#18 writing image sha256:775f5bde398036fb9a64a87247346f01e25c2618cfd0560193849a9a84e9d8e1 done
+#18 naming to docker.io/library/tangerine-mutation-a29dd95a3562-minio done
+#18 DONE 0.0s
+
+View build details: docker-desktop://dashboard/build/default/default/sba62uunmso4b3h97d8w6gkis
+7493ba7a586a0641e29df9697896da263616b19d1237bdbbe4b7afaf048884a8
+c5b2fb3e7a498d1f5254c1fe0ff78b505e7ce168d56c347d9f05485a69a71b12
+f55d99f98fa34e5cd2337a51c1efe2b4fdac844ae2fe7f76cfe12d2eb2422fd1
+tangerine-mutation-a29dd95a3562-postgres
+tangerine-mutation-a29dd95a3562-media
+tangerine-mutation-a29dd95a3562
+Untagged: tangerine-mutation-a29dd95a3562-go:latest
+Deleted: sha256:93c7191f2dad586ccf714f78bcf3931e283229510b2a27cf6bd02241fbbed539
+Untagged: tangerine-mutation-a29dd95a3562-minio:latest

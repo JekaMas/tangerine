@@ -1,0 +1,49 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 1.06kB 0.0s done
+#1 DONE 0.2s
+
+#2 [internal] load metadata for docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 163B 0.0s done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [build 1/7] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#5 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 17.90kB 0.0s done
+#4 DONE 0.0s
+
+#6 [build 3/7] COPY services/api/go.mod services/api/go.sum ./
+#6 CACHED
+
+#7 [build 2/7] WORKDIR /src
+#7 CACHED
+
+#8 [build 4/7] RUN go mod download
+#8 CACHED
+
+#9 [build 5/7] COPY services/api/ ./
+#9 CACHED
+
+#10 [build 6/7] RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /tangerine ./cmd/tangerine
+#10 CACHED
+
+#11 [build 7/7] RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -mod=readonly -trimpath -o /public-probe ./cmd/tangerine
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 writing image sha256:93c7191f2dad586ccf714f78bcf3931e283229510b2a27cf6bd02241fbbed539 done
+#12 naming to docker.io/library/tangerine-go-check-9488:local 0.0s done
+#12 DONE 0.0s
+
+View build details: docker-desktop://dashboard/build/default/default/sxbfabhzy1pzyyuoj0lnnzoi0
