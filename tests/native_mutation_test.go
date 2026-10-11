@@ -58,6 +58,9 @@ func nativeMutationFixture(t *testing.T, mode string) (*Server, CanonicalPrepara
 			return
 		}
 		out := candidate
+		if mode == "unattributed" {
+			out["utterances"].([]any)[0].(map[string]any)["surface_text"] = "The café open tomorrows."
+		}
 		if mode == "invalid" {
 			if calls == 2 && (!strings.Contains(string(raw), "validation_detail") || !strings.Contains(string(raw), "canonical_turn_identity")) {
 				t.Error("semantic repair omitted the owning admission reason")
@@ -299,6 +302,65 @@ func TestNativeMutationDeadlineNegative(t *testing.T) {
 	_, _ = s.Store.DB.Exec(context.Background(), "UPDATE operation SET state='running',started_at=$2 WHERE id=$1", op.ID, time.Now().Add(-271*time.Second))
 	if e = s.Store.takePreparation(context.Background(), p, op.ID, "mutation"); e == nil || *n != 0 {
 		t.Fatal(e, *n)
+	}
+}
+
+func TestNativeMutationProvenancePositive(t *testing.T) {
+	s, r, client, n, _ := nativeMutationFixture(t, "")
+	p, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)
+	if e != nil || *n != 1 {
+		t.Fatal(p, e, *n)
+	}
+	var count int
+	if e = s.Store.DB.QueryRow(context.Background(), "SELECT (event_payload->>'canonical_word_count')::int FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1", p["id"]).Scan(&count); e != nil || count != 4 {
+		t.Fatal("saved clean text has four words", count, e)
+	}
+}
+
+func TestNativeMutationRecoveredProvenancePositive(t *testing.T) {
+	s, r, client, n, _ := nativeMutationFixture(t, "")
+	p, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)
+	if e != nil {
+		t.Fatal(e)
+	}
+	rev := int64(p["revision"].(float64))
+	p["revision"] = float64(rev + 1)
+	p["phase_states"].(map[string]any)["mutation"] = "running"
+	p["active_operation_id"] = p["operation_ids"].([]any)[1]
+	for _, k := range []string{"candidate_id", "mutated_asset_id", "mutation_manifest_asset_id"} {
+		p[k] = nil
+	}
+	raw, _ := json.Marshal(p)
+	_, e = s.Store.WriteDocuments(context.Background(), []DocumentWrite{{ID: uuid.NewString(), Kind: "preparation-state", Version: "2.0.0", Scope: "local", Payload: raw, Head: &HeadWrite{ID: p["id"].(string), Expected: &rev, State: "running"}, References: []Reference{{Pointer: "/settings_asset_id", ID: p["settings_asset_id"].(string), Scope: p["settings_asset_id"].(string), Kind: "asset-bytes", SHA: p["settings_sha256"].(string), Relation: "settings_asset_id"}, {Pointer: "/canonical_asset_id", ID: p["canonical_asset_id"].(string), Scope: p["canonical_asset_id"].(string), Kind: "asset-bytes", SHA: p["canonical_sha256"].(string), Relation: "canonical_asset_id"}}}})
+	if e != nil {
+		t.Fatal(e)
+	}
+	r.Attempt = 3
+	p, e = s.PrepareMutation(context.Background(), r, uuid.NewString(), client)
+	var count int
+	if e == nil {
+		e = s.Store.DB.QueryRow(context.Background(), "SELECT (event_payload->>'canonical_word_count')::int FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1 ORDER BY created_at DESC LIMIT 1", p["id"]).Scan(&count)
+	}
+	if e != nil || *n != 1 || count != 4 {
+		t.Fatal("completed child recovery retains the four-word provenance without inference", count, e, *n)
+	}
+}
+
+func TestNativeMutationUnattributedNegative(t *testing.T) {
+	s, r, client, n, clean := nativeMutationFixture(t, "unattributed")
+	p, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)
+	if e == nil || *n != 2 || p["mutated_asset_id"] != nil || p["canonical_asset_id"] != clean["canonical_asset_id"] {
+		t.Fatal("unlisted change must fail the sole repair and preserve clean text", p, e, *n)
+	}
+}
+
+func TestNativeMutationInvalidProvenanceNegative(t *testing.T) {
+	s, r, client, n, _ := nativeMutationFixture(t, "invalid")
+	p, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)
+	var count int
+	queryErr := s.Store.DB.QueryRow(context.Background(), "SELECT count(*) FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1", p["id"]).Scan(&count)
+	if e == nil || queryErr != nil || *n != 2 || count != 0 {
+		t.Fatal("rejected output cannot record completed mutation provenance", count, e, queryErr, *n)
 	}
 }
 

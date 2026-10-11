@@ -26,7 +26,7 @@ Full-scope rendering extension: full-build-contract.md owns durable per-piece pr
 
 ## Iteration5 implementation boundary
 
-The native canonical stage now has an application owner, app.PrepareCanonical, using InvokeLLM and the packaged `prepare` maintenance entrypoint. Blueprint write/read and keyset preparation pages use the existing private HTTP server. The combined user-facing Generate action, mutation, rendering and teacher workflow remain later increments; the canonical stage never returns a falsely complete mutated/playable exercise.
+The native canonical stage has an application owner, app.PrepareCanonical, using InvokeLLM and the packaged `prepare` maintenance entrypoint. Iteration6 adds app.PrepareMutation through that same entrypoint, persisting the authored candidate and mutation manifest. Blueprint write/read and keyset preparation pages use the existing private HTTP server. The combined user-facing Generate action, rendering and teacher workflow remain later increments; neither preparation stage returns a falsely playable exercise.
 
 Frozen settings retain the original blueprint, both generation bindings, prompt bundle/templates/context and selected application registry data. Reads and Resume trust accepted records. No schema/adapter definition archive or repeated byte/schema check exists.
 

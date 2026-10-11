@@ -550,3 +550,12 @@ This update is source-policy/specification reconciliation, not implemented impor
 - [x] Qualify actual mutation-generation linguistic quality with an own-account included/free/local model and native/Lab evidence. The existing local gpt-oss:20b passed the independently checked agreement mutation and zero-mutation cases on clean c4ecd720b27b379bc6cef71fa25b295f9749006d. Five actual dispatches match five native receipts/context snapshots and five Lab spans across four operations/runs. Retain failed and superseded observations as reds. No paid credit, hosted inference or borrowed Codex credential was used. This targeted observation does not claim empirical qualification across all122 categories or hosted entitlement.
 
 Completion record: audit/iteration-6-mutations-20261011/REPORT.md. The committed-clean native receipt on dbf8450bd3943711a65b778d29fe978351db113d reconciles252 registered cases (126 positive/126 negative):32 iteration6,48 preparation,84 provider and88 Lab. Accepted evidence: evidence/iteration6/committed-native.json, NATIVE-VERIFICATION.json and LOCAL-OBSERVATIONS.json. Later rendering, listening and evaluation remain required subsequent iterations; ordinary exercises require no external corpus acquisition.
+
+### Iteration6 verification repairs — 2026-10-11
+
+- [x] Reproduce and repair unattributed textual changes, acoustic edit/unit scope mismatch, missing controller operands and zero canonical word-count provenance. Keep one admission of new model output, trusted saved results and the existing single same-profile repair.
+- [x] Add12 literal positive/negative regression cases and I6-09..I6-11 DAG properties; preserve the prior32 cases and all original domain scope. Correct the stale preparation implementation boundary.
+- [ ] Complete affected native checks, structural/language validation and a committed-clean full44-case iteration6 run with its invalidated preparation/provider/Lab closure; reconcile native test identities and preserve earlier reds.
+- [ ] Requalify the changed admission/checkpoint owners with the existing local model and actual native/context/Lab evidence, finish preservation readback and record the final review outcome.
+
+Current checkpoint: audit/iteration-6-verification-20261011/REPORT.md. Earlier iteration6 receipts remain historical observations of their own code; the new counterexamples invalidate their iteration-complete conclusion until these repairs are accepted. No paid credit or hosted call is authorized.

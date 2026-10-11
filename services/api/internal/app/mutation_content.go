@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"github.com/google/uuid"
 	"go.yaml.in/yaml/v3"
+	"regexp"
+	"sort"
 	"strings"
 	"tangerine.local/api/internal/contracts"
 	"tangerine.local/api/internal/lab"
@@ -119,6 +121,7 @@ func mutationContent(raw []byte, blueprint, clean, taxonomy map[string]any) (map
 	units := c["planned_units"].([]any)
 	ids := map[string]bool{}
 	cover := map[string]bool{}
+	scopes := map[string][][2]int{}
 	counts := map[string]int{}
 	trueErrors := 0
 	for _, v := range units {
@@ -171,6 +174,7 @@ func mutationContent(raw []byte, blueprint, clean, taxonomy map[string]any) (map
 			if start > end || end > len(text) || string(text[start:end]) != span["exact_text"] {
 				return nil, &provider.OutputValidationError{Detail: "text_spans offsets are Unicode codepoints in the final surface_text; exact_text must equal that slice. Do not use canonical deletion characters or recipe-example coordinates as surface spans."}
 			}
+			scopes[turn] = append(scopes[turn], [2]int{start, end})
 			old := []rune(byTurn[turn]["canonical_text"].(string))
 			if string(old) != string(text) {
 				a, z := mutationDifference(old, text)
@@ -207,6 +211,9 @@ func mutationContent(raw []byte, blueprint, clean, taxonomy map[string]any) (map
 		if u["canonical_text"] != u["surface_text"] && !cover[u["id"].(string)] {
 			return nil, &provider.OutputValidationError{Detail: "Every changed turn needs an affected planned unit."}
 		}
+		if u["canonical_text"] != u["surface_text"] && !mutationScopedChanges(u["canonical_text"].(string), u["surface_text"].(string), scopes[u["id"].(string)]) {
+			return nil, &provider.OutputValidationError{Detail: "Every textual change must belong to the planned units' final-surface scopes. Keep all text outside those scopes unchanged, or include the complete affected scope in the key."}
+		}
 	}
 	for _, v := range blueprint["targets"].([]any) {
 		x := v.(map[string]any)
@@ -239,6 +246,17 @@ func mutationContent(raw []byte, blueprint, clean, taxonomy map[string]any) (map
 		if !ids[unitID] || acousticUnits[unitID] == nil || turn == nil || start >= end || end > len([]rune(turn["surface_text"].(string))) {
 			return nil, &provider.OutputValidationError{Detail: "Acoustic edits must name a valid acoustic unit/turn and usable final-surface scope."}
 		}
+		linked := false
+		for _, v := range acousticUnits[unitID]["text_spans"].([]any) {
+			xspan := v.(map[string]any)
+			span := xspan["span"].(map[string]any)
+			if xspan["utterance_id"] == x["utterance_id"] && start >= int(span["start_cp"].(float64)) && end <= int(span["end_cp"].(float64)) {
+				linked = true
+			}
+		}
+		if !linked || !mutationAcousticParameters(x) {
+			return nil, &provider.OutputValidationError{Detail: "Acoustic edits must stay within a text span of their own unit and supply the selected controller's operands: phone_pair needs both IPA strings, vowel_duration a positive duration_ratio, pitch_duration an explicit pitch/duration/gain cue, pause_insert pause_ms and vot_edit vot_ms. Pitch fractions increase within [0,1]."}
+		}
 		coveredAcoustic[unitID] = true
 	}
 	for id, u := range acousticUnits {
@@ -247,6 +265,59 @@ func mutationContent(raw []byte, blueprint, clean, taxonomy map[string]any) (map
 		}
 	}
 	return c, nil
+}
+
+// Unscoped text is literal and unchanged. Declared scopes may replace arbitrary
+// canonical text, including deletion at an empty surface boundary. This checks
+// only newly returned content, without a second diff or stored-value audit.
+func mutationScopedChanges(canonical, surface string, scopes [][2]int) bool {
+	sort.Slice(scopes, func(i, j int) bool { return scopes[i][0] < scopes[j][0] })
+	runes := []rune(surface)
+	position := 0
+	var pattern strings.Builder
+	pattern.WriteString("(?s)\\A")
+	for _, scope := range scopes {
+		if scope[0] > position {
+			pattern.WriteString(regexp.QuoteMeta(string(runes[position:scope[0]])))
+		}
+		pattern.WriteString(".*")
+		if scope[1] > position {
+			position = scope[1]
+		}
+	}
+	pattern.WriteString(regexp.QuoteMeta(string(runes[position:])))
+	pattern.WriteString("\\z")
+	matched, _ := regexp.MatchString(pattern.String(), canonical)
+	return matched
+}
+
+func mutationAcousticParameters(edit map[string]any) bool {
+	p := edit["parameters"].(map[string]any)
+	if n, ok := p["duration_ratio"].(float64); ok && n <= 0 {
+		return false
+	}
+	previous := -1.0
+	points := p["pitch_points"].([]any)
+	for _, v := range points {
+		fraction := v.(map[string]any)["fraction"].(float64)
+		if fraction < 0 || fraction > 1 || fraction <= previous {
+			return false
+		}
+		previous = fraction
+	}
+	switch edit["controller"] {
+	case "phone_pair":
+		return p["reference_ipa"] != nil && p["mutated_ipa"] != nil
+	case "vowel_duration":
+		return p["duration_ratio"] != nil
+	case "pitch_duration":
+		return len(points) > 0 || p["duration_ratio"] != nil || p["gain_db"] != nil
+	case "pause_insert":
+		return p["pause_ms"] != nil
+	case "vot_edit":
+		return p["vot_ms"] != nil
+	}
+	return false
 }
 
 // mutationManifest derives one explicit composite edit per changed turn. This

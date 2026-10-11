@@ -3018,49 +3018,67 @@
       "id": "I6-01",
       "capability": "iteration-six-mutations",
       "title": "I6-01 Mutation admission and fixed canonical text",
-      "fingerprint": "e4284720b319472fbc34b6bfa03c1d4deebb75d42b365f0ee1325498a0ee17d5"
+      "fingerprint": "7a95d0b3bf633ae6fd1a2bd589ca20d23577094fabc4303172ced3eaa57b0907"
     },
     {
       "id": "I6-02",
       "capability": "iteration-six-mutations",
       "title": "I6-02 Replayable mutation ledger",
-      "fingerprint": "da0f3ae9a3b89e7a490c46765247370eaf3d2206dcca2396e72857b7e6303416"
+      "fingerprint": "0b807ac0b574e575aa86245e81435c5bcd77afdda73e6363e9cbc075e9e4973b"
     },
     {
       "id": "I6-03",
       "capability": "iteration-six-mutations",
       "title": "I6-03 Complete recipe and taxonomy selection",
-      "fingerprint": "3615c272cb7c3ab7426200eaa44c78f5c64e0c69cc4fa2af151b46b7b82a2e7f"
+      "fingerprint": "ad247070335540d71cfd9ea0446de234b80c6645dc0c50cc4462171c72cd9dde"
     },
     {
       "id": "I6-04",
       "capability": "iteration-six-mutations",
       "title": "I6-04 Acoustic intent and acceptable controls",
-      "fingerprint": "f32968e35d82ee9c93eaa890101bed772251b204e34e7582531830097de939a7"
+      "fingerprint": "2a988790a8cb0169c398f31fff7086f7c824c1b6cf3b06df5330b2f674cb8ea1"
     },
     {
       "id": "I6-05",
       "capability": "iteration-six-mutations",
       "title": "I6-05 Durable mutation checkpoint and context evidence",
-      "fingerprint": "d3e7ca82e80983bbf98a138132c239c42e863986153769d7bc3a5342f0615b60"
+      "fingerprint": "de9c446768ad0df4bc05f6bc75a696d10c42b59cc1a76cb20ff0b8f18ea9601f"
     },
     {
       "id": "I6-06",
       "capability": "iteration-six-mutations",
       "title": "I6-06 Immutable replay and trusted saved results",
-      "fingerprint": "88530fbef62a469e2f387389c9244e01b3ed0895ae844c188a5bf7b146b5d03a"
+      "fingerprint": "7617a08661f5c3b5b7456dde1e6071a24dc88522a228cd3e2dddea37d417885a"
     },
     {
       "id": "I6-07",
       "capability": "iteration-six-mutations",
       "title": "I6-07 Failure retention and frozen settings on explicit retry",
-      "fingerprint": "531713e69261336f86a522d275a0dc48c1ed7e3521b2f8e91d6025e0cad018e1"
+      "fingerprint": "4a0f34f5c6051417ca3b4a9d3cfd7f0fbd6886ac759000d7f3c364066373843f"
     },
     {
       "id": "I6-08",
       "capability": "iteration-six-mutations",
       "title": "I6-08 Recovery, restart and exclusive ownership",
-      "fingerprint": "825eda6c19ae0ed3882e1b31c82086bdd8e4be252686f250102fa055315098da"
+      "fingerprint": "4604e70c31845d837a36967adf986285def9c9608bb1bd46516f4061bf4bc843"
+    },
+    {
+      "id": "I6-09",
+      "capability": "iteration-six-mutations",
+      "title": "I6-09 Complete attribution of textual changes",
+      "fingerprint": "b29bbf5ba06485312d824ee49b7b34c23a72732b690a72a487687a16ef429480"
+    },
+    {
+      "id": "I6-10",
+      "capability": "iteration-six-mutations",
+      "title": "I6-10 Linked usable acoustic controls",
+      "fingerprint": "e7d41943d0fdcf37aa3331fe04c03d9d3c8f7e6ec2d59601bad6df2885b8e84c"
+    },
+    {
+      "id": "I6-11",
+      "capability": "iteration-six-mutations",
+      "title": "I6-11 Truthful mutation completion provenance",
+      "fingerprint": "8db92320e4e5213bb7de405ca8df1d2c0f8e674d5e10101e28acacaa22d67a8b"
     }
   ],
   "properties": [
@@ -12335,6 +12353,48 @@
       ],
       "owner": "services/api/internal/app/mutation.go",
       "oracle": "The application SHALL recover a completed child mutation after a lost parent checkpoint without redispatch, read after restart and arbitrate active/expired foreground owners. A stale or competing operation SHALL NOT overwrite the preparation. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "source_globs": [
+        "services/api/internal/app/mutation.go"
+      ]
+    },
+    {
+      "id": "I6-09.P1",
+      "requirement_id": "I6-09",
+      "statement": "The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint.",
+      "scenarios": [
+        "I6-09 packet 1",
+        "I6-09 packet 2"
+      ],
+      "owner": "services/api/internal/app/mutation_content.go",
+      "oracle": "The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "source_globs": [
+        "services/api/internal/app/mutation_content.go"
+      ]
+    },
+    {
+      "id": "I6-10.P1",
+      "requirement_id": "I6-10",
+      "statement": "The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission.",
+      "scenarios": [
+        "I6-10 packet 1",
+        "I6-10 packet 2"
+      ],
+      "owner": "services/api/internal/app/mutation_content.go",
+      "oracle": "The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "source_globs": [
+        "services/api/internal/app/mutation_content.go"
+      ]
+    },
+    {
+      "id": "I6-11.P1",
+      "requirement_id": "I6-11",
+      "statement": "The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance.",
+      "scenarios": [
+        "I6-11 packet 1",
+        "I6-11 packet 2"
+      ],
+      "owner": "services/api/internal/app/mutation.go",
+      "oracle": "The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
       "source_globs": [
         "services/api/internal/app/mutation.go"
       ]
@@ -91924,7 +91984,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "8bbae242ad0a3b8786bf495b7f0ae68201f649bf45e8fe067d2e0c433cfbeb5d",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -91965,7 +92025,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "8bbae242ad0a3b8786bf495b7f0ae68201f649bf45e8fe067d2e0c433cfbeb5d",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92006,7 +92066,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "8bbae242ad0a3b8786bf495b7f0ae68201f649bf45e8fe067d2e0c433cfbeb5d",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92047,7 +92107,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "8bbae242ad0a3b8786bf495b7f0ae68201f649bf45e8fe067d2e0c433cfbeb5d",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92088,7 +92148,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "8bbae242ad0a3b8786bf495b7f0ae68201f649bf45e8fe067d2e0c433cfbeb5d",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92129,7 +92189,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "8bbae242ad0a3b8786bf495b7f0ae68201f649bf45e8fe067d2e0c433cfbeb5d",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92170,7 +92230,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "8bbae242ad0a3b8786bf495b7f0ae68201f649bf45e8fe067d2e0c433cfbeb5d",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92211,7 +92271,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "8bbae242ad0a3b8786bf495b7f0ae68201f649bf45e8fe067d2e0c433cfbeb5d",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92252,7 +92312,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "8bbae242ad0a3b8786bf495b7f0ae68201f649bf45e8fe067d2e0c433cfbeb5d",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92293,7 +92353,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "8bbae242ad0a3b8786bf495b7f0ae68201f649bf45e8fe067d2e0c433cfbeb5d",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92334,7 +92394,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "8bbae242ad0a3b8786bf495b7f0ae68201f649bf45e8fe067d2e0c433cfbeb5d",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92375,7 +92435,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "8bbae242ad0a3b8786bf495b7f0ae68201f649bf45e8fe067d2e0c433cfbeb5d",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92416,7 +92476,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "8bbae242ad0a3b8786bf495b7f0ae68201f649bf45e8fe067d2e0c433cfbeb5d",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92457,7 +92517,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "8bbae242ad0a3b8786bf495b7f0ae68201f649bf45e8fe067d2e0c433cfbeb5d",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92498,7 +92558,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "8bbae242ad0a3b8786bf495b7f0ae68201f649bf45e8fe067d2e0c433cfbeb5d",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92539,7 +92599,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "8bbae242ad0a3b8786bf495b7f0ae68201f649bf45e8fe067d2e0c433cfbeb5d",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92580,7 +92640,7 @@
       "command_id": "iteration6-native",
       "state": "implemented",
       "source_path": "tests/native_mutation_test.go",
-      "source_sha256": "08096fa99e9260044be3bf095ef66a3dced3c66af7b47f97b8d1a49d9af1d32d",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92622,7 +92682,7 @@
       "command_id": "iteration6-native",
       "state": "implemented",
       "source_path": "tests/native_mutation_test.go",
-      "source_sha256": "08096fa99e9260044be3bf095ef66a3dced3c66af7b47f97b8d1a49d9af1d32d",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92664,7 +92724,7 @@
       "command_id": "iteration6-native",
       "state": "implemented",
       "source_path": "tests/native_mutation_test.go",
-      "source_sha256": "08096fa99e9260044be3bf095ef66a3dced3c66af7b47f97b8d1a49d9af1d32d",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92706,7 +92766,7 @@
       "command_id": "iteration6-native",
       "state": "implemented",
       "source_path": "tests/native_mutation_test.go",
-      "source_sha256": "08096fa99e9260044be3bf095ef66a3dced3c66af7b47f97b8d1a49d9af1d32d",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92748,7 +92808,7 @@
       "command_id": "iteration6-native",
       "state": "implemented",
       "source_path": "tests/native_mutation_test.go",
-      "source_sha256": "08096fa99e9260044be3bf095ef66a3dced3c66af7b47f97b8d1a49d9af1d32d",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92790,7 +92850,7 @@
       "command_id": "iteration6-native",
       "state": "implemented",
       "source_path": "tests/native_mutation_test.go",
-      "source_sha256": "08096fa99e9260044be3bf095ef66a3dced3c66af7b47f97b8d1a49d9af1d32d",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92832,7 +92892,7 @@
       "command_id": "iteration6-native",
       "state": "implemented",
       "source_path": "tests/native_mutation_test.go",
-      "source_sha256": "08096fa99e9260044be3bf095ef66a3dced3c66af7b47f97b8d1a49d9af1d32d",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92874,7 +92934,7 @@
       "command_id": "iteration6-native",
       "state": "implemented",
       "source_path": "tests/native_mutation_test.go",
-      "source_sha256": "08096fa99e9260044be3bf095ef66a3dced3c66af7b47f97b8d1a49d9af1d32d",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92916,7 +92976,7 @@
       "command_id": "iteration6-native",
       "state": "implemented",
       "source_path": "tests/native_mutation_test.go",
-      "source_sha256": "08096fa99e9260044be3bf095ef66a3dced3c66af7b47f97b8d1a49d9af1d32d",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92958,7 +93018,7 @@
       "command_id": "iteration6-native",
       "state": "implemented",
       "source_path": "tests/native_mutation_test.go",
-      "source_sha256": "08096fa99e9260044be3bf095ef66a3dced3c66af7b47f97b8d1a49d9af1d32d",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -93000,7 +93060,7 @@
       "command_id": "iteration6-native",
       "state": "implemented",
       "source_path": "tests/native_mutation_test.go",
-      "source_sha256": "08096fa99e9260044be3bf095ef66a3dced3c66af7b47f97b8d1a49d9af1d32d",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -93042,7 +93102,7 @@
       "command_id": "iteration6-native",
       "state": "implemented",
       "source_path": "tests/native_mutation_test.go",
-      "source_sha256": "08096fa99e9260044be3bf095ef66a3dced3c66af7b47f97b8d1a49d9af1d32d",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -93084,7 +93144,7 @@
       "command_id": "iteration6-native",
       "state": "implemented",
       "source_path": "tests/native_mutation_test.go",
-      "source_sha256": "08096fa99e9260044be3bf095ef66a3dced3c66af7b47f97b8d1a49d9af1d32d",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -93126,7 +93186,7 @@
       "command_id": "iteration6-native",
       "state": "implemented",
       "source_path": "tests/native_mutation_test.go",
-      "source_sha256": "08096fa99e9260044be3bf095ef66a3dced3c66af7b47f97b8d1a49d9af1d32d",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -93168,7 +93228,7 @@
       "command_id": "iteration6-native",
       "state": "implemented",
       "source_path": "tests/native_mutation_test.go",
-      "source_sha256": "08096fa99e9260044be3bf095ef66a3dced3c66af7b47f97b8d1a49d9af1d32d",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -93202,15 +93262,15 @@
       "polarity": "negative",
       "scenario": "I6-08 packet 2",
       "scenario_fingerprint": "abc21eeaa267bd2967b19d027dd2c89da17f983398f05d427eefb9060d00e53e",
-      "setup": "Execute TestNativeMutationDeadlineNegative through services/api/internal/app/mutation.go {\"exact_native_test\": \"TestNativeMutationDeadlineNegative\", \"literal_executable_fixture\": \"func TestNativeMutationDeadlineNegative(t *testing.T) {\\n\\ts, _, _, n, p := nativeMutationFixture(t, \\\"\\\")\\n\\top, e := s.Store.ReserveOperation(context.Background(), OperationRequest{Name: \\\"mutation_prepare\\\", Key: uuid.NewString(), Path: \\\"/prepare/mutation\\\", Body: json.RawMessage(`{}`)})\\n\\tif e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\t_, _ = s.Store.DB.Exec(context.Background(), \\\"UPDATE operation SET state='running',started_at=$2 WHERE id=$1\\\", op.ID, time.Now().Add(-271*time.Second))\\n\\tif e = s.Store.takePreparation(context.Background(), p, op.ID, \\\"mutation\\\"); e == nil || *n != 0 {\\n\\t\\tt.Fatal(e, *n)\\n\\t}\\n}\\n\\nfunc saveNativeMutationEvidence(t *testing.T, s *Server, p map[string]any) {\\n\\tt.Helper()\\n\\troot := os.Getenv(\\\"TANGERINE_PREPARATION_TEST_EVIDENCE\\\")\\n\\tif root == \\\"\\\" {\\n\\t\\treturn\\n\\t}\\n\\tdir := filepath.Join(root, t.Name())\\n\\tif e := os.MkdirAll(dir, 0700); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\twrite := func(name string, raw []byte) {\\n\\t\\tt.Helper()\\n\\t\\tif e := os.WriteFile(filepath.Join(dir, name), raw, 0600); e != nil {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t}\\n\\traw, _ := json.MarshalIndent(map[string]any{\\\"origin\\\": \\\"constructed_remote_protocol_with_native_preparation_storage\\\", \\\"preparation\\\": p}, \\\"\\\", \\\"  \\\")\\n\\twrite(\\\"state.json\\\", raw)\\n\\tassets := map[string]bool{}\\n\\tvar collect func(any)\\n\\tcollect = func(v any) {\\n\\t\\tswitch x := v.(type) {\\n\\t\\tcase map[string]any:\\n\\t\\t\\tfor k, v := range x {\\n\\t\\t\\t\\tif strings.HasSuffix(k, \\\"asset_id\\\") {\\n\\t\\t\\t\\t\\tif id, ok := v.(string); ok {\\n\\t\\t\\t\\t\\t\\tassets[id] = true\\n\\t\\t\\t\\t\\t}\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tcollect(v)\\n\\t\\t\\t}\\n\\t\\tcase []any:\\n\\t\\t\\tfor _, v := range x {\\n\\t\\t\\t\\tcollect(v)\\n\\t\\t\\t}\\n\\t\\t}\\n\\t}\\n\\tcollect(p)\\n\\tdocuments := []SavedDocument{}\\n\\tfor _, parent := range p[\\\"operation_ids\\\"].([]any) {\\n\\t\\tvar child string\\n\\t\\tif e := s.Store.DB.QueryRow(context.Background(), \\\"SELECT child.id FROM operation parent JOIN operation child ON child.idempotency_key=parent.idempotency_key AND child.operation_name IN ('canonical_text','mutation') WHERE parent.id=$1\\\", parent).Scan(&child); e != nil {\\n\\t\\t\\tcontinue\\n\\t\\t}\\n\\t\\trows, e := s.Store.DB.Query(context.Background(), \\\"SELECT id FROM document WHERE (kind IN ('provider-receipt','llm-context-snapshot') AND payload->>'operation_id'=$1) OR id=(SELECT input_document_id FROM operation WHERE id=$1)\\\", child)\\n\\t\\tif e != nil {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t\\tids := []string{}\\n\\t\\tfor rows.Next() {\\n\\t\\t\\tvar id string\\n\\t\\t\\tif e = rows.Scan(&id); e != nil {\\n\\t\\t\\t\\tt.Fatal(e)\\n\\t\\t\\t}\\n\\t\\t\\tids = append(ids, id)\\n\\t\\t}\\n\\t\\trows.Close()\\n\\t\\tfor _, id := range ids {\\n\\t\\t\\td, e := s.Store.ReadDocument(context.Background(), id)\\n\\t\\t\\tif e != nil {\\n\\t\\t\\t\\tt.Fatal(e)\\n\\t\\t\\t}\\n\\t\\t\\tdocuments = append(documents, d)\\n\\t\\t\\tvar v any\\n\\t\\t\\t_ = json.Unmarshal(d.Payload, &v)\\n\\t\\t\\tcollect(v)\\n\\t\\t}\\n\\t}\\n\\traw, _ = json.MarshalIndent(documents, \\\"\\\", \\\"  \\\")\\n\\twrite(\\\"native-documents.json\\\", raw)\\n\\t// Settings reference their exact shipped registries. Context snapshots reference\\n\\t// each actual model-visible part. Retain both recursively before fixture teardown.\\n\\tvisited := map[string]bool{}\\n\\tfor len(assets) > 0 {\\n\\t\\tbatch := assets\\n\\t\\tassets = map[string]bool{}\\n\\t\\tfor id := range batch {\\n\\t\\t\\tif visited[id] {\\n\\t\\t\\t\\tcontinue\\n\\t\\t\\t}\\n\\t\\t\\tvisited[id] = true\\n\\t\\t\\tb, e := s.Store.ReadAsset(context.Background(), id)\\n\\t\\t\\tif e != nil {\\n\\t\\t\\t\\tt.Fatal(e)\\n\\t\\t\\t}\\n\\t\\t\\twrite(id+\\\".bytes\\\", b)\\n\\t\\t\\tvar v any\\n\\t\\t\\tif json.Unmarshal(b, &v) == nil {\\n\\t\\t\\t\\tcollect(v)\\n\\t\\t\\t}\\n\\t\\t}\\n\\t}\\n}\"}",
-      "observable": "{\"assertion_source\": \"func TestNativeMutationDeadlineNegative(t *testing.T) {\\n\\ts, _, _, n, p := nativeMutationFixture(t, \\\"\\\")\\n\\top, e := s.Store.ReserveOperation(context.Background(), OperationRequest{Name: \\\"mutation_prepare\\\", Key: uuid.NewString(), Path: \\\"/prepare/mutation\\\", Body: json.RawMessage(`{}`)})\\n\\tif e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\t_, _ = s.Store.DB.Exec(context.Background(), \\\"UPDATE operation SET state='running',started_at=$2 WHERE id=$1\\\", op.ID, time.Now().Add(-271*time.Second))\\n\\tif e = s.Store.takePreparation(context.Background(), p, op.ID, \\\"mutation\\\"); e == nil || *n != 0 {\\n\\t\\tt.Fatal(e, *n)\\n\\t}\\n}\\n\\nfunc saveNativeMutationEvidence(t *testing.T, s *Server, p map[string]any) {\\n\\tt.Helper()\\n\\troot := os.Getenv(\\\"TANGERINE_PREPARATION_TEST_EVIDENCE\\\")\\n\\tif root == \\\"\\\" {\\n\\t\\treturn\\n\\t}\\n\\tdir := filepath.Join(root, t.Name())\\n\\tif e := os.MkdirAll(dir, 0700); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\twrite := func(name string, raw []byte) {\\n\\t\\tt.Helper()\\n\\t\\tif e := os.WriteFile(filepath.Join(dir, name), raw, 0600); e != nil {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t}\\n\\traw, _ := json.MarshalIndent(map[string]any{\\\"origin\\\": \\\"constructed_remote_protocol_with_native_preparation_storage\\\", \\\"preparation\\\": p}, \\\"\\\", \\\"  \\\")\\n\\twrite(\\\"state.json\\\", raw)\\n\\tassets := map[string]bool{}\\n\\tvar collect func(any)\\n\\tcollect = func(v any) {\\n\\t\\tswitch x := v.(type) {\\n\\t\\tcase map[string]any:\\n\\t\\t\\tfor k, v := range x {\\n\\t\\t\\t\\tif strings.HasSuffix(k, \\\"asset_id\\\") {\\n\\t\\t\\t\\t\\tif id, ok := v.(string); ok {\\n\\t\\t\\t\\t\\t\\tassets[id] = true\\n\\t\\t\\t\\t\\t}\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tcollect(v)\\n\\t\\t\\t}\\n\\t\\tcase []any:\\n\\t\\t\\tfor _, v := range x {\\n\\t\\t\\t\\tcollect(v)\\n\\t\\t\\t}\\n\\t\\t}\\n\\t}\\n\\tcollect(p)\\n\\tdocuments := []SavedDocument{}\\n\\tfor _, parent := range p[\\\"operation_ids\\\"].([]any) {\\n\\t\\tvar child string\\n\\t\\tif e := s.Store.DB.QueryRow(context.Background(), \\\"SELECT child.id FROM operation parent JOIN operation child ON child.idempotency_key=parent.idempotency_key AND child.operation_name IN ('canonical_text','mutation') WHERE parent.id=$1\\\", parent).Scan(&child); e != nil {\\n\\t\\t\\tcontinue\\n\\t\\t}\\n\\t\\trows, e := s.Store.DB.Query(context.Background(), \\\"SELECT id FROM document WHERE (kind IN ('provider-receipt','llm-context-snapshot') AND payload->>'operation_id'=$1) OR id=(SELECT input_document_id FROM operation WHERE id=$1)\\\", child)\\n\\t\\tif e != nil {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t\\tids := []string{}\\n\\t\\tfor rows.Next() {\\n\\t\\t\\tvar id string\\n\\t\\t\\tif e = rows.Scan(&id); e != nil {\\n\\t\\t\\t\\tt.Fatal(e)\\n\\t\\t\\t}\\n\\t\\t\\tids = append(ids, id)\\n\\t\\t}\\n\\t\\trows.Close()\\n\\t\\tfor _, id := range ids {\\n\\t\\t\\td, e := s.Store.ReadDocument(context.Background(), id)\\n\\t\\t\\tif e != nil {\\n\\t\\t\\t\\tt.Fatal(e)\\n\\t\\t\\t}\\n\\t\\t\\tdocuments = append(documents, d)\\n\\t\\t\\tvar v any\\n\\t\\t\\t_ = json.Unmarshal(d.Payload, &v)\\n\\t\\t\\tcollect(v)\\n\\t\\t}\\n\\t}\\n\\traw, _ = json.MarshalIndent(documents, \\\"\\\", \\\"  \\\")\\n\\twrite(\\\"native-documents.json\\\", raw)\\n\\t// Settings reference their exact shipped registries. Context snapshots reference\\n\\t// each actual model-visible part. Retain both recursively before fixture teardown.\\n\\tvisited := map[string]bool{}\\n\\tfor len(assets) > 0 {\\n\\t\\tbatch := assets\\n\\t\\tassets = map[string]bool{}\\n\\t\\tfor id := range batch {\\n\\t\\t\\tif visited[id] {\\n\\t\\t\\t\\tcontinue\\n\\t\\t\\t}\\n\\t\\t\\tvisited[id] = true\\n\\t\\t\\tb, e := s.Store.ReadAsset(context.Background(), id)\\n\\t\\t\\tif e != nil {\\n\\t\\t\\t\\tt.Fatal(e)\\n\\t\\t\\t}\\n\\t\\t\\twrite(id+\\\".bytes\\\", b)\\n\\t\\t\\tvar v any\\n\\t\\t\\tif json.Unmarshal(b, &v) == nil {\\n\\t\\t\\t\\tcollect(v)\\n\\t\\t\\t}\\n\\t\\t}\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL recover a completed child mutation after a lost parent checkpoint without redispatch, read after restart and arbitrate active/expired foreground owners. A stale or competing operation SHALL NOT overwrite the preparation. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "setup": "Execute TestNativeMutationDeadlineNegative through services/api/internal/app/mutation.go {\"exact_native_test\": \"TestNativeMutationDeadlineNegative\", \"literal_executable_fixture\": \"func TestNativeMutationDeadlineNegative(t *testing.T) {\\n\\ts, _, _, n, p := nativeMutationFixture(t, \\\"\\\")\\n\\top, e := s.Store.ReserveOperation(context.Background(), OperationRequest{Name: \\\"mutation_prepare\\\", Key: uuid.NewString(), Path: \\\"/prepare/mutation\\\", Body: json.RawMessage(`{}`)})\\n\\tif e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\t_, _ = s.Store.DB.Exec(context.Background(), \\\"UPDATE operation SET state='running',started_at=$2 WHERE id=$1\\\", op.ID, time.Now().Add(-271*time.Second))\\n\\tif e = s.Store.takePreparation(context.Background(), p, op.ID, \\\"mutation\\\"); e == nil || *n != 0 {\\n\\t\\tt.Fatal(e, *n)\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestNativeMutationDeadlineNegative(t *testing.T) {\\n\\ts, _, _, n, p := nativeMutationFixture(t, \\\"\\\")\\n\\top, e := s.Store.ReserveOperation(context.Background(), OperationRequest{Name: \\\"mutation_prepare\\\", Key: uuid.NewString(), Path: \\\"/prepare/mutation\\\", Body: json.RawMessage(`{}`)})\\n\\tif e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\t_, _ = s.Store.DB.Exec(context.Background(), \\\"UPDATE operation SET state='running',started_at=$2 WHERE id=$1\\\", op.ID, time.Now().Add(-271*time.Second))\\n\\tif e = s.Store.takePreparation(context.Background(), p, op.ID, \\\"mutation\\\"); e == nil || *n != 0 {\\n\\t\\tt.Fatal(e, *n)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL recover a completed child mutation after a lost parent checkpoint without redispatch, read after restart and arbitrate active/expired foreground owners. A stale or competing operation SHALL NOT overwrite the preparation. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
       "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
       "green_expectation": "All independently declared literal outcomes pass.",
       "test_id": "tangerine.local/api/internal/app::TestNativeMutationDeadlineNegative",
       "command_id": "iteration6-native",
       "state": "implemented",
       "source_path": "tests/native_mutation_test.go",
-      "source_sha256": "08096fa99e9260044be3bf095ef66a3dced3c66af7b47f97b8d1a49d9af1d32d",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -93236,6 +93296,502 @@
         "owner_replaced": "Remote hosted model endpoint only; actual PostgreSQL/MinIO/HTTP and provider/preparation owners retained"
       },
       "designed_fixture_id": "iteration6-I6-08-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I6-09.P1.S1.POSITIVE",
+      "property_id": "I6-09.P1",
+      "polarity": "positive",
+      "scenario": "I6-09 packet 1",
+      "scenario_fingerprint": "ab0264a9e3ccede40a7e9f3245fe779620d0f5c25a925efefc666441e19ca813",
+      "setup": "Execute TestMutationMultipleScopesPositive through services/api/internal/app/mutation_content.go {\"exact_native_test\": \"TestMutationMultipleScopesPositive\", \"literal_executable_fixture\": \"func TestMutationMultipleScopesPositive(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tc[\\\"utterances\\\"].([]any)[0].(map[string]any)[\\\"surface_text\\\"] = \\\"The caf\\u00e9 open tomorrows.\\\"\\n\\tu := c[\\\"planned_units\\\"].([]any)[0].(map[string]any)\\n\\tu[\\\"text_spans\\\"] = append(u[\\\"text_spans\\\"].([]any), map[string]any{\\\"utterance_id\\\": \\\"u1\\\", \\\"span\\\": map[string]any{\\\"start_cp\\\": float64(14), \\\"end_cp\\\": float64(23), \\\"exact_text\\\": \\\"tomorrows\\\"}})\\n\\tif e := admitMutation(t, b, clean, c, tax); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestMutationMultipleScopesPositive(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tc[\\\"utterances\\\"].([]any)[0].(map[string]any)[\\\"surface_text\\\"] = \\\"The caf\\u00e9 open tomorrows.\\\"\\n\\tu := c[\\\"planned_units\\\"].([]any)[0].(map[string]any)\\n\\tu[\\\"text_spans\\\"] = append(u[\\\"text_spans\\\"].([]any), map[string]any{\\\"utterance_id\\\": \\\"u1\\\", \\\"span\\\": map[string]any{\\\"start_cp\\\": float64(14), \\\"end_cp\\\": float64(23), \\\"exact_text\\\": \\\"tomorrows\\\"}})\\n\\tif e := admitMutation(t, b, clean, c, tax); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestMutationMultipleScopesPositive",
+      "command_id": "iteration6-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/mutation_content_test.go",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "services/api/internal/app/mutation_content_test.go",
+        "tests/go-docker"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Actual synthesized audio, teacher evaluation or full-product acceptance"
+        ],
+        "note": "The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
+      },
+      "designed_fixture_id": "iteration6-I6-09-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I6-09.P1.S2.POSITIVE",
+      "property_id": "I6-09.P1",
+      "polarity": "positive",
+      "scenario": "I6-09 packet 2",
+      "scenario_fingerprint": "1d92070c17e4f4035828b60533a7dc25ada6207f275859ac3a887a9d8d95b696",
+      "setup": "Execute TestMutationDeletionBoundaryPositive through services/api/internal/app/mutation_content.go {\"exact_native_test\": \"TestMutationDeletionBoundaryPositive\", \"literal_executable_fixture\": \"func TestMutationDeletionBoundaryPositive(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tu := c[\\\"planned_units\\\"].([]any)[0].(map[string]any)\\n\\tu[\\\"text_spans\\\"].([]any)[0].(map[string]any)[\\\"span\\\"] = map[string]any{\\\"start_cp\\\": float64(13), \\\"end_cp\\\": float64(13), \\\"exact_text\\\": \\\"\\\"}\\n\\tif e := admitMutation(t, b, clean, c, tax); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestMutationDeletionBoundaryPositive(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tu := c[\\\"planned_units\\\"].([]any)[0].(map[string]any)\\n\\tu[\\\"text_spans\\\"].([]any)[0].(map[string]any)[\\\"span\\\"] = map[string]any{\\\"start_cp\\\": float64(13), \\\"end_cp\\\": float64(13), \\\"exact_text\\\": \\\"\\\"}\\n\\tif e := admitMutation(t, b, clean, c, tax); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestMutationDeletionBoundaryPositive",
+      "command_id": "iteration6-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/mutation_content_test.go",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "services/api/internal/app/mutation_content_test.go",
+        "tests/go-docker"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Actual synthesized audio, teacher evaluation or full-product acceptance"
+        ],
+        "note": "The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
+      },
+      "designed_fixture_id": "iteration6-I6-09-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I6-09.P1.S1.NEGATIVE",
+      "property_id": "I6-09.P1",
+      "polarity": "negative",
+      "scenario": "I6-09 packet 1",
+      "scenario_fingerprint": "ab0264a9e3ccede40a7e9f3245fe779620d0f5c25a925efefc666441e19ca813",
+      "setup": "Execute TestMutationUnattributedNegative through services/api/internal/app/mutation_content.go {\"exact_native_test\": \"TestMutationUnattributedNegative\", \"literal_executable_fixture\": \"func TestMutationUnattributedNegative(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tc[\\\"utterances\\\"].([]any)[0].(map[string]any)[\\\"surface_text\\\"] = \\\"The caf\\u00e9 open tomorrows.\\\"\\n\\tif e := admitMutation(t, b, clean, c, tax); e == nil {\\n\\t\\tt.Fatal(\\\"unlisted tomorrows change accepted with only the open key\\\")\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestMutationUnattributedNegative(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tc[\\\"utterances\\\"].([]any)[0].(map[string]any)[\\\"surface_text\\\"] = \\\"The caf\\u00e9 open tomorrows.\\\"\\n\\tif e := admitMutation(t, b, clean, c, tax); e == nil {\\n\\t\\tt.Fatal(\\\"unlisted tomorrows change accepted with only the open key\\\")\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestMutationUnattributedNegative",
+      "command_id": "iteration6-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/mutation_content_test.go",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "services/api/internal/app/mutation_content_test.go",
+        "tests/go-docker"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Actual synthesized audio, teacher evaluation or full-product acceptance"
+        ],
+        "note": "The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
+      },
+      "designed_fixture_id": "iteration6-I6-09-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I6-09.P1.S2.NEGATIVE",
+      "property_id": "I6-09.P1",
+      "polarity": "negative",
+      "scenario": "I6-09 packet 2",
+      "scenario_fingerprint": "1d92070c17e4f4035828b60533a7dc25ada6207f275859ac3a887a9d8d95b696",
+      "setup": "Execute TestMutationUnchangedScopeNegative through services/api/internal/app/mutation_content.go {\"exact_native_test\": \"TestMutationUnchangedScopeNegative\", \"literal_executable_fixture\": \"func TestMutationUnchangedScopeNegative(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tc[\\\"utterances\\\"].([]any)[0].(map[string]any)[\\\"surface_text\\\"] = \\\"A caf\\u00e9 open tomorrow!\\\"\\n\\tu := c[\\\"planned_units\\\"].([]any)[0].(map[string]any)\\n\\tu[\\\"text_spans\\\"].([]any)[0].(map[string]any)[\\\"span\\\"] = map[string]any{\\\"start_cp\\\": float64(12), \\\"end_cp\\\": float64(20), \\\"exact_text\\\": \\\"tomorrow\\\"}\\n\\tif e := admitMutation(t, b, clean, c, tax); e == nil {\\n\\t\\tt.Fatal(\\\"unchanged tomorrow span cannot attribute surrounding edits\\\")\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestMutationUnchangedScopeNegative(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tc[\\\"utterances\\\"].([]any)[0].(map[string]any)[\\\"surface_text\\\"] = \\\"A caf\\u00e9 open tomorrow!\\\"\\n\\tu := c[\\\"planned_units\\\"].([]any)[0].(map[string]any)\\n\\tu[\\\"text_spans\\\"].([]any)[0].(map[string]any)[\\\"span\\\"] = map[string]any{\\\"start_cp\\\": float64(12), \\\"end_cp\\\": float64(20), \\\"exact_text\\\": \\\"tomorrow\\\"}\\n\\tif e := admitMutation(t, b, clean, c, tax); e == nil {\\n\\t\\tt.Fatal(\\\"unchanged tomorrow span cannot attribute surrounding edits\\\")\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestMutationUnchangedScopeNegative",
+      "command_id": "iteration6-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/mutation_content_test.go",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "services/api/internal/app/mutation_content_test.go",
+        "tests/go-docker"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Actual synthesized audio, teacher evaluation or full-product acceptance"
+        ],
+        "note": "The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
+      },
+      "designed_fixture_id": "iteration6-I6-09-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I6-10.P1.S1.POSITIVE",
+      "property_id": "I6-10.P1",
+      "polarity": "positive",
+      "scenario": "I6-10 packet 1",
+      "scenario_fingerprint": "005022bbb664b42d2313f4259ddb90d5097f8ce8b6abc1093c75389fd7ad07a4",
+      "setup": "Execute TestMutationAcousticSubscopePositive through services/api/internal/app/mutation_content.go {\"exact_native_test\": \"TestMutationAcousticSubscopePositive\", \"literal_executable_fixture\": \"func TestMutationAcousticSubscopePositive(t *testing.T) {\\n\\tb, clean, c, tax := acousticMutationFixture()\\n\\tc[\\\"planned_units\\\"].([]any)[0].(map[string]any)[\\\"text_spans\\\"].([]any)[0].(map[string]any)[\\\"span\\\"] = map[string]any{\\\"start_cp\\\": float64(0), \\\"end_cp\\\": float64(24), \\\"exact_text\\\": \\\"The caf\\u00e9 opens tomorrow.\\\"}\\n\\tif e := admitMutation(t, b, clean, c, tax); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestMutationAcousticSubscopePositive(t *testing.T) {\\n\\tb, clean, c, tax := acousticMutationFixture()\\n\\tc[\\\"planned_units\\\"].([]any)[0].(map[string]any)[\\\"text_spans\\\"].([]any)[0].(map[string]any)[\\\"span\\\"] = map[string]any{\\\"start_cp\\\": float64(0), \\\"end_cp\\\": float64(24), \\\"exact_text\\\": \\\"The caf\\u00e9 opens tomorrow.\\\"}\\n\\tif e := admitMutation(t, b, clean, c, tax); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestMutationAcousticSubscopePositive",
+      "command_id": "iteration6-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/mutation_content_test.go",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "services/api/internal/app/mutation_content_test.go",
+        "tests/go-docker"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Actual synthesized audio, teacher evaluation or full-product acceptance"
+        ],
+        "note": "The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
+      },
+      "designed_fixture_id": "iteration6-I6-10-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I6-10.P1.S2.POSITIVE",
+      "property_id": "I6-10.P1",
+      "polarity": "positive",
+      "scenario": "I6-10 packet 2",
+      "scenario_fingerprint": "91b4f1bea1e963d7ee007c00f648806422c7905f3e4189c11882c494130d0f1c",
+      "setup": "Execute TestMutationPauseParametersPositive through services/api/internal/app/mutation_content.go {\"exact_native_test\": \"TestMutationPauseParametersPositive\", \"literal_executable_fixture\": \"func TestMutationPauseParametersPositive(t *testing.T) {\\n\\tfor _, controller := range []string{\\\"vowel_duration\\\", \\\"pitch_duration\\\", \\\"pause_insert\\\", \\\"vot_edit\\\"} {\\n\\t\\tb, clean, c, tax := acousticMutationFixture()\\n\\t\\tedit := c[\\\"acoustic_edits\\\"].([]any)[0].(map[string]any)\\n\\t\\tedit[\\\"controller\\\"] = controller\\n\\t\\tp := edit[\\\"parameters\\\"].(map[string]any)\\n\\t\\tp[\\\"reference_ipa\\\"], p[\\\"mutated_ipa\\\"] = nil, nil\\n\\t\\tswitch controller {\\n\\t\\tcase \\\"vowel_duration\\\":\\n\\t\\t\\tp[\\\"duration_ratio\\\"] = float64(0.45)\\n\\t\\tcase \\\"pitch_duration\\\":\\n\\t\\t\\tp[\\\"pitch_points\\\"] = []any{map[string]any{\\\"fraction\\\": float64(0), \\\"semitones\\\": float64(1)}, map[string]any{\\\"fraction\\\": float64(1), \\\"semitones\\\": float64(3)}}\\n\\t\\tcase \\\"pause_insert\\\":\\n\\t\\t\\tp[\\\"pause_ms\\\"] = float64(4000)\\n\\t\\tcase \\\"vot_edit\\\":\\n\\t\\t\\tp[\\\"vot_ms\\\"] = float64(0)\\n\\t\\t}\\n\\t\\tif e := admitMutation(t, b, clean, c, tax); e != nil {\\n\\t\\t\\tt.Fatal(controller, e)\\n\\t\\t}\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestMutationPauseParametersPositive(t *testing.T) {\\n\\tfor _, controller := range []string{\\\"vowel_duration\\\", \\\"pitch_duration\\\", \\\"pause_insert\\\", \\\"vot_edit\\\"} {\\n\\t\\tb, clean, c, tax := acousticMutationFixture()\\n\\t\\tedit := c[\\\"acoustic_edits\\\"].([]any)[0].(map[string]any)\\n\\t\\tedit[\\\"controller\\\"] = controller\\n\\t\\tp := edit[\\\"parameters\\\"].(map[string]any)\\n\\t\\tp[\\\"reference_ipa\\\"], p[\\\"mutated_ipa\\\"] = nil, nil\\n\\t\\tswitch controller {\\n\\t\\tcase \\\"vowel_duration\\\":\\n\\t\\t\\tp[\\\"duration_ratio\\\"] = float64(0.45)\\n\\t\\tcase \\\"pitch_duration\\\":\\n\\t\\t\\tp[\\\"pitch_points\\\"] = []any{map[string]any{\\\"fraction\\\": float64(0), \\\"semitones\\\": float64(1)}, map[string]any{\\\"fraction\\\": float64(1), \\\"semitones\\\": float64(3)}}\\n\\t\\tcase \\\"pause_insert\\\":\\n\\t\\t\\tp[\\\"pause_ms\\\"] = float64(4000)\\n\\t\\tcase \\\"vot_edit\\\":\\n\\t\\t\\tp[\\\"vot_ms\\\"] = float64(0)\\n\\t\\t}\\n\\t\\tif e := admitMutation(t, b, clean, c, tax); e != nil {\\n\\t\\t\\tt.Fatal(controller, e)\\n\\t\\t}\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestMutationPauseParametersPositive",
+      "command_id": "iteration6-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/mutation_content_test.go",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "services/api/internal/app/mutation_content_test.go",
+        "tests/go-docker"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Actual synthesized audio, teacher evaluation or full-product acceptance"
+        ],
+        "note": "The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
+      },
+      "designed_fixture_id": "iteration6-I6-10-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I6-10.P1.S1.NEGATIVE",
+      "property_id": "I6-10.P1",
+      "polarity": "negative",
+      "scenario": "I6-10 packet 1",
+      "scenario_fingerprint": "005022bbb664b42d2313f4259ddb90d5097f8ce8b6abc1093c75389fd7ad07a4",
+      "setup": "Execute TestMutationAcousticWrongScopeNegative through services/api/internal/app/mutation_content.go {\"exact_native_test\": \"TestMutationAcousticWrongScopeNegative\", \"literal_executable_fixture\": \"func TestMutationAcousticWrongScopeNegative(t *testing.T) {\\n\\tfor _, otherTurn := range []bool{false, true} {\\n\\t\\tb, clean, c, tax := acousticMutationFixture()\\n\\t\\tedit := c[\\\"acoustic_edits\\\"].([]any)[0].(map[string]any)\\n\\t\\tif otherTurn {\\n\\t\\t\\tsecond := map[string]any{\\\"id\\\": \\\"u2\\\", \\\"speaker_id\\\": \\\"s1\\\", \\\"canonical_text\\\": \\\"The caf\\u00e9 opens tomorrow.\\\", \\\"surface_text\\\": \\\"The caf\\u00e9 opens tomorrow.\\\"}\\n\\t\\t\\tc[\\\"utterances\\\"] = append(c[\\\"utterances\\\"].([]any), second)\\n\\t\\t\\tclean[\\\"utterances\\\"] = c[\\\"utterances\\\"]\\n\\t\\t\\tedit[\\\"utterance_id\\\"] = \\\"u2\\\"\\n\\t\\t} else {\\n\\t\\t\\tedit[\\\"scope\\\"] = map[string]any{\\\"start\\\": float64(0), \\\"end\\\": float64(3)}\\n\\t\\t}\\n\\t\\tif e := admitMutation(t, b, clean, c, tax); e == nil {\\n\\t\\t\\tt.Fatal(\\\"acoustic operation outside its unit span accepted\\\", otherTurn)\\n\\t\\t}\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestMutationAcousticWrongScopeNegative(t *testing.T) {\\n\\tfor _, otherTurn := range []bool{false, true} {\\n\\t\\tb, clean, c, tax := acousticMutationFixture()\\n\\t\\tedit := c[\\\"acoustic_edits\\\"].([]any)[0].(map[string]any)\\n\\t\\tif otherTurn {\\n\\t\\t\\tsecond := map[string]any{\\\"id\\\": \\\"u2\\\", \\\"speaker_id\\\": \\\"s1\\\", \\\"canonical_text\\\": \\\"The caf\\u00e9 opens tomorrow.\\\", \\\"surface_text\\\": \\\"The caf\\u00e9 opens tomorrow.\\\"}\\n\\t\\t\\tc[\\\"utterances\\\"] = append(c[\\\"utterances\\\"].([]any), second)\\n\\t\\t\\tclean[\\\"utterances\\\"] = c[\\\"utterances\\\"]\\n\\t\\t\\tedit[\\\"utterance_id\\\"] = \\\"u2\\\"\\n\\t\\t} else {\\n\\t\\t\\tedit[\\\"scope\\\"] = map[string]any{\\\"start\\\": float64(0), \\\"end\\\": float64(3)}\\n\\t\\t}\\n\\t\\tif e := admitMutation(t, b, clean, c, tax); e == nil {\\n\\t\\t\\tt.Fatal(\\\"acoustic operation outside its unit span accepted\\\", otherTurn)\\n\\t\\t}\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestMutationAcousticWrongScopeNegative",
+      "command_id": "iteration6-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/mutation_content_test.go",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "services/api/internal/app/mutation_content_test.go",
+        "tests/go-docker"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Actual synthesized audio, teacher evaluation or full-product acceptance"
+        ],
+        "note": "The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
+      },
+      "designed_fixture_id": "iteration6-I6-10-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I6-10.P1.S2.NEGATIVE",
+      "property_id": "I6-10.P1",
+      "polarity": "negative",
+      "scenario": "I6-10 packet 2",
+      "scenario_fingerprint": "91b4f1bea1e963d7ee007c00f648806422c7905f3e4189c11882c494130d0f1c",
+      "setup": "Execute TestMutationAcousticParametersNegative through services/api/internal/app/mutation_content.go {\"exact_native_test\": \"TestMutationAcousticParametersNegative\", \"literal_executable_fixture\": \"func TestMutationAcousticParametersNegative(t *testing.T) {\\n\\tfor _, controller := range []string{\\\"phone_pair\\\", \\\"vowel_duration\\\", \\\"pitch_duration\\\", \\\"pause_insert\\\", \\\"vot_edit\\\"} {\\n\\t\\tb, clean, c, tax := acousticMutationFixture()\\n\\t\\tedit := c[\\\"acoustic_edits\\\"].([]any)[0].(map[string]any)\\n\\t\\tedit[\\\"controller\\\"] = controller\\n\\t\\tp := edit[\\\"parameters\\\"].(map[string]any)\\n\\t\\tp[\\\"reference_ipa\\\"], p[\\\"mutated_ipa\\\"] = nil, nil\\n\\t\\tif e := admitMutation(t, b, clean, c, tax); e == nil {\\n\\t\\t\\tt.Fatal(\\\"controller accepted without its required operands\\\", controller)\\n\\t\\t}\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestMutationAcousticParametersNegative(t *testing.T) {\\n\\tfor _, controller := range []string{\\\"phone_pair\\\", \\\"vowel_duration\\\", \\\"pitch_duration\\\", \\\"pause_insert\\\", \\\"vot_edit\\\"} {\\n\\t\\tb, clean, c, tax := acousticMutationFixture()\\n\\t\\tedit := c[\\\"acoustic_edits\\\"].([]any)[0].(map[string]any)\\n\\t\\tedit[\\\"controller\\\"] = controller\\n\\t\\tp := edit[\\\"parameters\\\"].(map[string]any)\\n\\t\\tp[\\\"reference_ipa\\\"], p[\\\"mutated_ipa\\\"] = nil, nil\\n\\t\\tif e := admitMutation(t, b, clean, c, tax); e == nil {\\n\\t\\t\\tt.Fatal(\\\"controller accepted without its required operands\\\", controller)\\n\\t\\t}\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestMutationAcousticParametersNegative",
+      "command_id": "iteration6-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/mutation_content_test.go",
+      "source_sha256": "768d6bd00c9e9d2359431900ae315bade2c963a4bfc0d0c31984356fa48ddab0",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "services/api/internal/app/mutation_content_test.go",
+        "tests/go-docker"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Actual synthesized audio, teacher evaluation or full-product acceptance"
+        ],
+        "note": "The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
+      },
+      "designed_fixture_id": "iteration6-I6-10-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I6-11.P1.S1.POSITIVE",
+      "property_id": "I6-11.P1",
+      "polarity": "positive",
+      "scenario": "I6-11 packet 1",
+      "scenario_fingerprint": "e9f45d235fb51197aa1b92673f268b4507f271635e4caaf91ec4361a2544c25d",
+      "setup": "Execute TestNativeMutationProvenancePositive through services/api/internal/app/mutation.go {\"exact_native_test\": \"TestNativeMutationProvenancePositive\", \"literal_executable_fixture\": \"func TestNativeMutationProvenancePositive(t *testing.T) {\\n\\ts, r, client, n, _ := nativeMutationFixture(t, \\\"\\\")\\n\\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\\n\\tif e != nil || *n != 1 {\\n\\t\\tt.Fatal(p, e, *n)\\n\\t}\\n\\tvar count int\\n\\tif e = s.Store.DB.QueryRow(context.Background(), \\\"SELECT (event_payload->>'canonical_word_count')::int FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1\\\", p[\\\"id\\\"]).Scan(&count); e != nil || count != 4 {\\n\\t\\tt.Fatal(\\\"saved clean text has four words\\\", count, e)\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestNativeMutationProvenancePositive(t *testing.T) {\\n\\ts, r, client, n, _ := nativeMutationFixture(t, \\\"\\\")\\n\\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\\n\\tif e != nil || *n != 1 {\\n\\t\\tt.Fatal(p, e, *n)\\n\\t}\\n\\tvar count int\\n\\tif e = s.Store.DB.QueryRow(context.Background(), \\\"SELECT (event_payload->>'canonical_word_count')::int FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1\\\", p[\\\"id\\\"]).Scan(&count); e != nil || count != 4 {\\n\\t\\tt.Fatal(\\\"saved clean text has four words\\\", count, e)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationProvenancePositive",
+      "command_id": "iteration6-native",
+      "state": "implemented",
+      "source_path": "tests/native_mutation_test.go",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "tests/native_mutation_test.go",
+        "tests/native-mutation"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Actual synthesized audio, teacher evaluation or full-product acceptance"
+        ],
+        "note": "The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "owner_replaced": "Remote hosted model endpoint only; actual PostgreSQL/MinIO/HTTP and provider/preparation owners retained"
+      },
+      "designed_fixture_id": "iteration6-I6-11-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I6-11.P1.S2.POSITIVE",
+      "property_id": "I6-11.P1",
+      "polarity": "positive",
+      "scenario": "I6-11 packet 2",
+      "scenario_fingerprint": "10f3ee1258806710a6ee52743969c9c843a98f60ef335a702e3a828a4ad2b750",
+      "setup": "Execute TestNativeMutationRecoveredProvenancePositive through services/api/internal/app/mutation.go {\"exact_native_test\": \"TestNativeMutationRecoveredProvenancePositive\", \"literal_executable_fixture\": \"func TestNativeMutationRecoveredProvenancePositive(t *testing.T) {\\n\\ts, r, client, n, _ := nativeMutationFixture(t, \\\"\\\")\\n\\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\\n\\tif e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\trev := int64(p[\\\"revision\\\"].(float64))\\n\\tp[\\\"revision\\\"] = float64(rev + 1)\\n\\tp[\\\"phase_states\\\"].(map[string]any)[\\\"mutation\\\"] = \\\"running\\\"\\n\\tp[\\\"active_operation_id\\\"] = p[\\\"operation_ids\\\"].([]any)[1]\\n\\tfor _, k := range []string{\\\"candidate_id\\\", \\\"mutated_asset_id\\\", \\\"mutation_manifest_asset_id\\\"} {\\n\\t\\tp[k] = nil\\n\\t}\\n\\traw, _ := json.Marshal(p)\\n\\t_, e = s.Store.WriteDocuments(context.Background(), []DocumentWrite{{ID: uuid.NewString(), Kind: \\\"preparation-state\\\", Version: \\\"2.0.0\\\", Scope: \\\"local\\\", Payload: raw, Head: &HeadWrite{ID: p[\\\"id\\\"].(string), Expected: &rev, State: \\\"running\\\"}, References: []Reference{{Pointer: \\\"/settings_asset_id\\\", ID: p[\\\"settings_asset_id\\\"].(string), Scope: p[\\\"settings_asset_id\\\"].(string), Kind: \\\"asset-bytes\\\", SHA: p[\\\"settings_sha256\\\"].(string), Relation: \\\"settings_asset_id\\\"}, {Pointer: \\\"/canonical_asset_id\\\", ID: p[\\\"canonical_asset_id\\\"].(string), Scope: p[\\\"canonical_asset_id\\\"].(string), Kind: \\\"asset-bytes\\\", SHA: p[\\\"canonical_sha256\\\"].(string), Relation: \\\"canonical_asset_id\\\"}}}})\\n\\tif e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tr.Attempt = 3\\n\\tp, e = s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\\n\\tvar count int\\n\\tif e == nil {\\n\\t\\te = s.Store.DB.QueryRow(context.Background(), \\\"SELECT (event_payload->>'canonical_word_count')::int FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1 ORDER BY created_at DESC LIMIT 1\\\", p[\\\"id\\\"]).Scan(&count)\\n\\t}\\n\\tif e != nil || *n != 1 || count != 4 {\\n\\t\\tt.Fatal(\\\"completed child recovery retains the four-word provenance without inference\\\", count, e, *n)\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestNativeMutationRecoveredProvenancePositive(t *testing.T) {\\n\\ts, r, client, n, _ := nativeMutationFixture(t, \\\"\\\")\\n\\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\\n\\tif e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\trev := int64(p[\\\"revision\\\"].(float64))\\n\\tp[\\\"revision\\\"] = float64(rev + 1)\\n\\tp[\\\"phase_states\\\"].(map[string]any)[\\\"mutation\\\"] = \\\"running\\\"\\n\\tp[\\\"active_operation_id\\\"] = p[\\\"operation_ids\\\"].([]any)[1]\\n\\tfor _, k := range []string{\\\"candidate_id\\\", \\\"mutated_asset_id\\\", \\\"mutation_manifest_asset_id\\\"} {\\n\\t\\tp[k] = nil\\n\\t}\\n\\traw, _ := json.Marshal(p)\\n\\t_, e = s.Store.WriteDocuments(context.Background(), []DocumentWrite{{ID: uuid.NewString(), Kind: \\\"preparation-state\\\", Version: \\\"2.0.0\\\", Scope: \\\"local\\\", Payload: raw, Head: &HeadWrite{ID: p[\\\"id\\\"].(string), Expected: &rev, State: \\\"running\\\"}, References: []Reference{{Pointer: \\\"/settings_asset_id\\\", ID: p[\\\"settings_asset_id\\\"].(string), Scope: p[\\\"settings_asset_id\\\"].(string), Kind: \\\"asset-bytes\\\", SHA: p[\\\"settings_sha256\\\"].(string), Relation: \\\"settings_asset_id\\\"}, {Pointer: \\\"/canonical_asset_id\\\", ID: p[\\\"canonical_asset_id\\\"].(string), Scope: p[\\\"canonical_asset_id\\\"].(string), Kind: \\\"asset-bytes\\\", SHA: p[\\\"canonical_sha256\\\"].(string), Relation: \\\"canonical_asset_id\\\"}}}})\\n\\tif e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tr.Attempt = 3\\n\\tp, e = s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\\n\\tvar count int\\n\\tif e == nil {\\n\\t\\te = s.Store.DB.QueryRow(context.Background(), \\\"SELECT (event_payload->>'canonical_word_count')::int FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1 ORDER BY created_at DESC LIMIT 1\\\", p[\\\"id\\\"]).Scan(&count)\\n\\t}\\n\\tif e != nil || *n != 1 || count != 4 {\\n\\t\\tt.Fatal(\\\"completed child recovery retains the four-word provenance without inference\\\", count, e, *n)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationRecoveredProvenancePositive",
+      "command_id": "iteration6-native",
+      "state": "implemented",
+      "source_path": "tests/native_mutation_test.go",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "tests/native_mutation_test.go",
+        "tests/native-mutation"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Actual synthesized audio, teacher evaluation or full-product acceptance"
+        ],
+        "note": "The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "owner_replaced": "Remote hosted model endpoint only; actual PostgreSQL/MinIO/HTTP and provider/preparation owners retained"
+      },
+      "designed_fixture_id": "iteration6-I6-11-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I6-11.P1.S1.NEGATIVE",
+      "property_id": "I6-11.P1",
+      "polarity": "negative",
+      "scenario": "I6-11 packet 1",
+      "scenario_fingerprint": "e9f45d235fb51197aa1b92673f268b4507f271635e4caaf91ec4361a2544c25d",
+      "setup": "Execute TestNativeMutationUnattributedNegative through services/api/internal/app/mutation.go {\"exact_native_test\": \"TestNativeMutationUnattributedNegative\", \"literal_executable_fixture\": \"func TestNativeMutationUnattributedNegative(t *testing.T) {\\n\\ts, r, client, n, clean := nativeMutationFixture(t, \\\"unattributed\\\")\\n\\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\\n\\tif e == nil || *n != 2 || p[\\\"mutated_asset_id\\\"] != nil || p[\\\"canonical_asset_id\\\"] != clean[\\\"canonical_asset_id\\\"] {\\n\\t\\tt.Fatal(\\\"unlisted change must fail the sole repair and preserve clean text\\\", p, e, *n)\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestNativeMutationUnattributedNegative(t *testing.T) {\\n\\ts, r, client, n, clean := nativeMutationFixture(t, \\\"unattributed\\\")\\n\\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\\n\\tif e == nil || *n != 2 || p[\\\"mutated_asset_id\\\"] != nil || p[\\\"canonical_asset_id\\\"] != clean[\\\"canonical_asset_id\\\"] {\\n\\t\\tt.Fatal(\\\"unlisted change must fail the sole repair and preserve clean text\\\", p, e, *n)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationUnattributedNegative",
+      "command_id": "iteration6-native",
+      "state": "implemented",
+      "source_path": "tests/native_mutation_test.go",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "tests/native_mutation_test.go",
+        "tests/native-mutation"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Actual synthesized audio, teacher evaluation or full-product acceptance"
+        ],
+        "note": "The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "owner_replaced": "Remote hosted model endpoint only; actual PostgreSQL/MinIO/HTTP and provider/preparation owners retained"
+      },
+      "designed_fixture_id": "iteration6-I6-11-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I6-11.P1.S2.NEGATIVE",
+      "property_id": "I6-11.P1",
+      "polarity": "negative",
+      "scenario": "I6-11 packet 2",
+      "scenario_fingerprint": "10f3ee1258806710a6ee52743969c9c843a98f60ef335a702e3a828a4ad2b750",
+      "setup": "Execute TestNativeMutationInvalidProvenanceNegative through services/api/internal/app/mutation.go {\"exact_native_test\": \"TestNativeMutationInvalidProvenanceNegative\", \"literal_executable_fixture\": \"func TestNativeMutationInvalidProvenanceNegative(t *testing.T) {\\n\\ts, r, client, n, _ := nativeMutationFixture(t, \\\"invalid\\\")\\n\\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\\n\\tvar count int\\n\\tqueryErr := s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1\\\", p[\\\"id\\\"]).Scan(&count)\\n\\tif e == nil || queryErr != nil || *n != 2 || count != 0 {\\n\\t\\tt.Fatal(\\\"rejected output cannot record completed mutation provenance\\\", count, e, queryErr, *n)\\n\\t}\\n}\\n\\nfunc saveNativeMutationEvidence(t *testing.T, s *Server, p map[string]any) {\\n\\tt.Helper()\\n\\troot := os.Getenv(\\\"TANGERINE_PREPARATION_TEST_EVIDENCE\\\")\\n\\tif root == \\\"\\\" {\\n\\t\\treturn\\n\\t}\\n\\tdir := filepath.Join(root, t.Name())\\n\\tif e := os.MkdirAll(dir, 0700); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\twrite := func(name string, raw []byte) {\\n\\t\\tt.Helper()\\n\\t\\tif e := os.WriteFile(filepath.Join(dir, name), raw, 0600); e != nil {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t}\\n\\traw, _ := json.MarshalIndent(map[string]any{\\\"origin\\\": \\\"constructed_remote_protocol_with_native_preparation_storage\\\", \\\"preparation\\\": p}, \\\"\\\", \\\"  \\\")\\n\\twrite(\\\"state.json\\\", raw)\\n\\tassets := map[string]bool{}\\n\\tvar collect func(any)\\n\\tcollect = func(v any) {\\n\\t\\tswitch x := v.(type) {\\n\\t\\tcase map[string]any:\\n\\t\\t\\tfor k, v := range x {\\n\\t\\t\\t\\tif strings.HasSuffix(k, \\\"asset_id\\\") {\\n\\t\\t\\t\\t\\tif id, ok := v.(string); ok {\\n\\t\\t\\t\\t\\t\\tassets[id] = true\\n\\t\\t\\t\\t\\t}\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tcollect(v)\\n\\t\\t\\t}\\n\\t\\tcase []any:\\n\\t\\t\\tfor _, v := range x {\\n\\t\\t\\t\\tcollect(v)\\n\\t\\t\\t}\\n\\t\\t}\\n\\t}\\n\\tcollect(p)\\n\\tdocuments := []SavedDocument{}\\n\\tfor _, parent := range p[\\\"operation_ids\\\"].([]any) {\\n\\t\\tvar child string\\n\\t\\tif e := s.Store.DB.QueryRow(context.Background(), \\\"SELECT child.id FROM operation parent JOIN operation child ON child.idempotency_key=parent.idempotency_key AND child.operation_name IN ('canonical_text','mutation') WHERE parent.id=$1\\\", parent).Scan(&child); e != nil {\\n\\t\\t\\tcontinue\\n\\t\\t}\\n\\t\\trows, e := s.Store.DB.Query(context.Background(), \\\"SELECT id FROM document WHERE (kind IN ('provider-receipt','llm-context-snapshot') AND payload->>'operation_id'=$1) OR id=(SELECT input_document_id FROM operation WHERE id=$1)\\\", child)\\n\\t\\tif e != nil {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t\\tids := []string{}\\n\\t\\tfor rows.Next() {\\n\\t\\t\\tvar id string\\n\\t\\t\\tif e = rows.Scan(&id); e != nil {\\n\\t\\t\\t\\tt.Fatal(e)\\n\\t\\t\\t}\\n\\t\\t\\tids = append(ids, id)\\n\\t\\t}\\n\\t\\trows.Close()\\n\\t\\tfor _, id := range ids {\\n\\t\\t\\td, e := s.Store.ReadDocument(context.Background(), id)\\n\\t\\t\\tif e != nil {\\n\\t\\t\\t\\tt.Fatal(e)\\n\\t\\t\\t}\\n\\t\\t\\tdocuments = append(documents, d)\\n\\t\\t\\tvar v any\\n\\t\\t\\t_ = json.Unmarshal(d.Payload, &v)\\n\\t\\t\\tcollect(v)\\n\\t\\t}\\n\\t}\\n\\traw, _ = json.MarshalIndent(documents, \\\"\\\", \\\"  \\\")\\n\\twrite(\\\"native-documents.json\\\", raw)\\n\\t// Settings reference their exact shipped registries. Context snapshots reference\\n\\t// each actual model-visible part. Retain both recursively before fixture teardown.\\n\\tvisited := map[string]bool{}\\n\\tfor len(assets) > 0 {\\n\\t\\tbatch := assets\\n\\t\\tassets = map[string]bool{}\\n\\t\\tfor id := range batch {\\n\\t\\t\\tif visited[id] {\\n\\t\\t\\t\\tcontinue\\n\\t\\t\\t}\\n\\t\\t\\tvisited[id] = true\\n\\t\\t\\tb, e := s.Store.ReadAsset(context.Background(), id)\\n\\t\\t\\tif e != nil {\\n\\t\\t\\t\\tt.Fatal(e)\\n\\t\\t\\t}\\n\\t\\t\\twrite(id+\\\".bytes\\\", b)\\n\\t\\t\\tvar v any\\n\\t\\t\\tif json.Unmarshal(b, &v) == nil {\\n\\t\\t\\t\\tcollect(v)\\n\\t\\t\\t}\\n\\t\\t}\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestNativeMutationInvalidProvenanceNegative(t *testing.T) {\\n\\ts, r, client, n, _ := nativeMutationFixture(t, \\\"invalid\\\")\\n\\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\\n\\tvar count int\\n\\tqueryErr := s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1\\\", p[\\\"id\\\"]).Scan(&count)\\n\\tif e == nil || queryErr != nil || *n != 2 || count != 0 {\\n\\t\\tt.Fatal(\\\"rejected output cannot record completed mutation provenance\\\", count, e, queryErr, *n)\\n\\t}\\n}\\n\\nfunc saveNativeMutationEvidence(t *testing.T, s *Server, p map[string]any) {\\n\\tt.Helper()\\n\\troot := os.Getenv(\\\"TANGERINE_PREPARATION_TEST_EVIDENCE\\\")\\n\\tif root == \\\"\\\" {\\n\\t\\treturn\\n\\t}\\n\\tdir := filepath.Join(root, t.Name())\\n\\tif e := os.MkdirAll(dir, 0700); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\twrite := func(name string, raw []byte) {\\n\\t\\tt.Helper()\\n\\t\\tif e := os.WriteFile(filepath.Join(dir, name), raw, 0600); e != nil {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t}\\n\\traw, _ := json.MarshalIndent(map[string]any{\\\"origin\\\": \\\"constructed_remote_protocol_with_native_preparation_storage\\\", \\\"preparation\\\": p}, \\\"\\\", \\\"  \\\")\\n\\twrite(\\\"state.json\\\", raw)\\n\\tassets := map[string]bool{}\\n\\tvar collect func(any)\\n\\tcollect = func(v any) {\\n\\t\\tswitch x := v.(type) {\\n\\t\\tcase map[string]any:\\n\\t\\t\\tfor k, v := range x {\\n\\t\\t\\t\\tif strings.HasSuffix(k, \\\"asset_id\\\") {\\n\\t\\t\\t\\t\\tif id, ok := v.(string); ok {\\n\\t\\t\\t\\t\\t\\tassets[id] = true\\n\\t\\t\\t\\t\\t}\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tcollect(v)\\n\\t\\t\\t}\\n\\t\\tcase []any:\\n\\t\\t\\tfor _, v := range x {\\n\\t\\t\\t\\tcollect(v)\\n\\t\\t\\t}\\n\\t\\t}\\n\\t}\\n\\tcollect(p)\\n\\tdocuments := []SavedDocument{}\\n\\tfor _, parent := range p[\\\"operation_ids\\\"].([]any) {\\n\\t\\tvar child string\\n\\t\\tif e := s.Store.DB.QueryRow(context.Background(), \\\"SELECT child.id FROM operation parent JOIN operation child ON child.idempotency_key=parent.idempotency_key AND child.operation_name IN ('canonical_text','mutation') WHERE parent.id=$1\\\", parent).Scan(&child); e != nil {\\n\\t\\t\\tcontinue\\n\\t\\t}\\n\\t\\trows, e := s.Store.DB.Query(context.Background(), \\\"SELECT id FROM document WHERE (kind IN ('provider-receipt','llm-context-snapshot') AND payload->>'operation_id'=$1) OR id=(SELECT input_document_id FROM operation WHERE id=$1)\\\", child)\\n\\t\\tif e != nil {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t\\tids := []string{}\\n\\t\\tfor rows.Next() {\\n\\t\\t\\tvar id string\\n\\t\\t\\tif e = rows.Scan(&id); e != nil {\\n\\t\\t\\t\\tt.Fatal(e)\\n\\t\\t\\t}\\n\\t\\t\\tids = append(ids, id)\\n\\t\\t}\\n\\t\\trows.Close()\\n\\t\\tfor _, id := range ids {\\n\\t\\t\\td, e := s.Store.ReadDocument(context.Background(), id)\\n\\t\\t\\tif e != nil {\\n\\t\\t\\t\\tt.Fatal(e)\\n\\t\\t\\t}\\n\\t\\t\\tdocuments = append(documents, d)\\n\\t\\t\\tvar v any\\n\\t\\t\\t_ = json.Unmarshal(d.Payload, &v)\\n\\t\\t\\tcollect(v)\\n\\t\\t}\\n\\t}\\n\\traw, _ = json.MarshalIndent(documents, \\\"\\\", \\\"  \\\")\\n\\twrite(\\\"native-documents.json\\\", raw)\\n\\t// Settings reference their exact shipped registries. Context snapshots reference\\n\\t// each actual model-visible part. Retain both recursively before fixture teardown.\\n\\tvisited := map[string]bool{}\\n\\tfor len(assets) > 0 {\\n\\t\\tbatch := assets\\n\\t\\tassets = map[string]bool{}\\n\\t\\tfor id := range batch {\\n\\t\\t\\tif visited[id] {\\n\\t\\t\\t\\tcontinue\\n\\t\\t\\t}\\n\\t\\t\\tvisited[id] = true\\n\\t\\t\\tb, e := s.Store.ReadAsset(context.Background(), id)\\n\\t\\t\\tif e != nil {\\n\\t\\t\\t\\tt.Fatal(e)\\n\\t\\t\\t}\\n\\t\\t\\twrite(id+\\\".bytes\\\", b)\\n\\t\\t\\tvar v any\\n\\t\\t\\tif json.Unmarshal(b, &v) == nil {\\n\\t\\t\\t\\tcollect(v)\\n\\t\\t\\t}\\n\\t\\t}\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationInvalidProvenanceNegative",
+      "command_id": "iteration6-native",
+      "state": "implemented",
+      "source_path": "tests/native_mutation_test.go",
+      "source_sha256": "c9f517da2d1f79d2d7826b3fa0439826f122e1f3f1b8d603e20dedfd01844330",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "tests/native_mutation_test.go",
+        "tests/native-mutation"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Actual synthesized audio, teacher evaluation or full-product acceptance"
+        ],
+        "note": "The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "owner_replaced": "Remote hosted model endpoint only; actual PostgreSQL/MinIO/HTTP and provider/preparation owners retained"
+      },
+      "designed_fixture_id": "iteration6-I6-11-packet2",
       "fixture_observation_state": "not_run"
     }
   ],

@@ -273,3 +273,102 @@ func mutationOffset(v any) int {
 	}
 	return -1
 }
+
+func TestMutationMultipleScopesPositive(t *testing.T) {
+	b, clean, c, tax := mutationFixture()
+	c["utterances"].([]any)[0].(map[string]any)["surface_text"] = "The café open tomorrows."
+	u := c["planned_units"].([]any)[0].(map[string]any)
+	u["text_spans"] = append(u["text_spans"].([]any), map[string]any{"utterance_id": "u1", "span": map[string]any{"start_cp": float64(14), "end_cp": float64(23), "exact_text": "tomorrows"}})
+	if e := admitMutation(t, b, clean, c, tax); e != nil {
+		t.Fatal(e)
+	}
+}
+
+func TestMutationDeletionBoundaryPositive(t *testing.T) {
+	b, clean, c, tax := mutationFixture()
+	u := c["planned_units"].([]any)[0].(map[string]any)
+	u["text_spans"].([]any)[0].(map[string]any)["span"] = map[string]any{"start_cp": float64(13), "end_cp": float64(13), "exact_text": ""}
+	if e := admitMutation(t, b, clean, c, tax); e != nil {
+		t.Fatal(e)
+	}
+}
+
+func TestMutationUnattributedNegative(t *testing.T) {
+	b, clean, c, tax := mutationFixture()
+	c["utterances"].([]any)[0].(map[string]any)["surface_text"] = "The café open tomorrows."
+	if e := admitMutation(t, b, clean, c, tax); e == nil {
+		t.Fatal("unlisted tomorrows change accepted with only the open key")
+	}
+}
+
+func TestMutationUnchangedScopeNegative(t *testing.T) {
+	b, clean, c, tax := mutationFixture()
+	c["utterances"].([]any)[0].(map[string]any)["surface_text"] = "A café open tomorrow!"
+	u := c["planned_units"].([]any)[0].(map[string]any)
+	u["text_spans"].([]any)[0].(map[string]any)["span"] = map[string]any{"start_cp": float64(12), "end_cp": float64(20), "exact_text": "tomorrow"}
+	if e := admitMutation(t, b, clean, c, tax); e == nil {
+		t.Fatal("unchanged tomorrow span cannot attribute surrounding edits")
+	}
+}
+
+func TestMutationAcousticSubscopePositive(t *testing.T) {
+	b, clean, c, tax := acousticMutationFixture()
+	c["planned_units"].([]any)[0].(map[string]any)["text_spans"].([]any)[0].(map[string]any)["span"] = map[string]any{"start_cp": float64(0), "end_cp": float64(24), "exact_text": "The café opens tomorrow."}
+	if e := admitMutation(t, b, clean, c, tax); e != nil {
+		t.Fatal(e)
+	}
+}
+
+func TestMutationPauseParametersPositive(t *testing.T) {
+	for _, controller := range []string{"vowel_duration", "pitch_duration", "pause_insert", "vot_edit"} {
+		b, clean, c, tax := acousticMutationFixture()
+		edit := c["acoustic_edits"].([]any)[0].(map[string]any)
+		edit["controller"] = controller
+		p := edit["parameters"].(map[string]any)
+		p["reference_ipa"], p["mutated_ipa"] = nil, nil
+		switch controller {
+		case "vowel_duration":
+			p["duration_ratio"] = float64(0.45)
+		case "pitch_duration":
+			p["pitch_points"] = []any{map[string]any{"fraction": float64(0), "semitones": float64(1)}, map[string]any{"fraction": float64(1), "semitones": float64(3)}}
+		case "pause_insert":
+			p["pause_ms"] = float64(4000)
+		case "vot_edit":
+			p["vot_ms"] = float64(0)
+		}
+		if e := admitMutation(t, b, clean, c, tax); e != nil {
+			t.Fatal(controller, e)
+		}
+	}
+}
+
+func TestMutationAcousticWrongScopeNegative(t *testing.T) {
+	for _, otherTurn := range []bool{false, true} {
+		b, clean, c, tax := acousticMutationFixture()
+		edit := c["acoustic_edits"].([]any)[0].(map[string]any)
+		if otherTurn {
+			second := map[string]any{"id": "u2", "speaker_id": "s1", "canonical_text": "The café opens tomorrow.", "surface_text": "The café opens tomorrow."}
+			c["utterances"] = append(c["utterances"].([]any), second)
+			clean["utterances"] = c["utterances"]
+			edit["utterance_id"] = "u2"
+		} else {
+			edit["scope"] = map[string]any{"start": float64(0), "end": float64(3)}
+		}
+		if e := admitMutation(t, b, clean, c, tax); e == nil {
+			t.Fatal("acoustic operation outside its unit span accepted", otherTurn)
+		}
+	}
+}
+
+func TestMutationAcousticParametersNegative(t *testing.T) {
+	for _, controller := range []string{"phone_pair", "vowel_duration", "pitch_duration", "pause_insert", "vot_edit"} {
+		b, clean, c, tax := acousticMutationFixture()
+		edit := c["acoustic_edits"].([]any)[0].(map[string]any)
+		edit["controller"] = controller
+		p := edit["parameters"].(map[string]any)
+		p["reference_ipa"], p["mutated_ipa"] = nil, nil
+		if e := admitMutation(t, b, clean, c, tax); e == nil {
+			t.Fatal("controller accepted without its required operands", controller)
+		}
+	}
+}

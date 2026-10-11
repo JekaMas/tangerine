@@ -214,7 +214,11 @@ func (s *Server) finishMutation(ctx context.Context, p, settings map[string]any,
 	p["active_operation_id"] = nil
 	end, done := context.WithTimeout(context.WithoutCancel(ctx), 15*time.Second)
 	defer done()
-	if e := s.Store.checkpoint(end, p, &rev, op.ID, callErr == nil); e != nil {
+	words := 0
+	if manifest != nil {
+		words = manifest["canonical_word_count"].(int)
+	}
+	if e := s.Store.checkpoint(end, p, &rev, op.ID, callErr == nil, words); e != nil {
 		return p, e
 	}
 	return p, callErr
