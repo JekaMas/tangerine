@@ -643,6 +643,8 @@ Exact source anchors and executable counterexamples remain in the existing ignor
 
 ## Iteration 9 verification and repair (2026-10-20)
 
-- [ ] I9.R1 Repair the demonstrated concurrent-submit/Refresh false saved-answer display; retain different unsent text/language separately and verify actual immutable readback in the browser.
-- [ ] I9.R2 Separate presentation/session control and configuration/media/storage/HTTP responsibilities; verify retirement/quarantine playback, rights restriction and unaffected draft persistence through real owners.
-- [ ] I9.R3 Reconcile extended literal positive/negative cases with the DAG, preserve original scope/evidence, complete stable language/build/specification checks and a full committed-clean iteration run, then commit acceptance.
+- [x] I9.R1 Repair the demonstrated concurrent-submit/Refresh false saved-answer display; retain different unsent text/language separately and verify actual immutable readback in the browser.
+- [x] I9.R2 Separate presentation/session control and configuration/media/storage/HTTP responsibilities; verify retirement/quarantine playback, rights restriction and unaffected draft persistence through real owners.
+- [x] I9.R3 Reconcile extended literal positive/negative cases with the DAG, preserve original scope/evidence, complete stable language/build/specification checks and a full committed-clean iteration run, then commit acceptance.
+
+Iteration9 verification is green on committed-clean source3063180:52/52cases across12properties,26positive/26negative; five unchanged original finalization passes retained. Exact acceptance/failure/ownership evidence: audit/iteration-9-verification-20261020/REPORT.md and evidence/iteration9-verification-20261020/FINAL-RECONCILIATION.json. No in-scope finding remains; I8.R1–R3 remain open outside it.

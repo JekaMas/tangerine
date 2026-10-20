@@ -1,4 +1,4 @@
-# Iteration 9 verification and repair
+# Iteration 9 verification and repair — green
 
 Baseline:6396f71. This is the implementing agent's source/contract review and native counterexample verification, not an independent model/human review. Only Listening and answer persistence is accepted by this increment; later semantic evaluation and the three recorded I8 controller findings remain outside it. No product decision is needed.
 
@@ -39,4 +39,8 @@ Only real test-owned PostgreSQL/MinIO and the existing installed Chrome/Playwrig
 
 ## Acceptance checkpoint
 
-Pending the stable source commit and complete committed-clean iteration run; this line cannot be used as green acceptance. The canonical tasks.md owns completion state. Large private originals and full command outputs remain under ignored data/iteration9-verify-20261020 and data/iteration9/browser.
+**Green on committed-clean source `30631809680b39ab30535334ae41c748dbee9686`.** All52/52current iteration cases passed:26positive/26negative across12properties. The three real observers exited0:8Go contract/projection cases,34native storage/HTTP/sequence/concurrency cases and10actual Chrome browser cases. Five unchanged finalization cases retain their original clean526ee75 receipts, rather than claiming a rerun. No failed/skipped/missing/planned I9 case supplies acceptance; no unresolved in-scope finding remains.
+
+Final Go vet/gofmt, locked production Next.js build (image sha256:cadb04d86bcafbfccf5cd218fa69d532e249c9bcc8d29b2b862e96776eefa5eb), strict OpenSpec, DAG/discovery and4,224static/preservation assertions passed. A final discovery receipt was refreshed solely because final scenario fingerprints changed. The12properties/52case literal definitions match the accepted selection. The acceptance-only commit updates records/tasks, leaving production/test/contract inputs unchanged; no repeat behavior run is warranted for that record commit.
+
+Evidence: `openspec/changes/implement-teacher-error-trainer/evidence/iteration9-verification-20261020/` includes accepted-iteration9.json, all command logs, BROWSER-OBSERVATIONS.json, FINAL-RECONCILIATION.json, baseline red trace, retained dependencies, structural/language/build and preservation records. Large private originals remain under ignored data/iteration9-verify-20261020 and /Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/data/iteration9/browser/run-eb117e69dc0b. Test-owned containers/volumes are cleaned; unrelated services/data remain untouched. The canonical tasks.md owns completion state.
