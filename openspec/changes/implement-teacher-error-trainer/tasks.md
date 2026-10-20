@@ -41,7 +41,7 @@
 ## 6. Synchronous teacher loop
 
 - [x] 6.1 Persist original answers/hashes before blind extraction, mapping and separate audit; verify failure preserves answers and prevents pre-submit key leakage.
-- [ ] 6.2 Connect deterministic score calculation and grounded feedback; verify source evidence, false positives, misses, corrections, explanations and domain metrics.
+- [x] 6.2 Connect deterministic score calculation and grounded feedback; verify source evidence, false positives, misses, corrections, explanations and domain metrics.
 - [ ] 6.3 Persist complete/review_required/evaluation_failed as recovered contract states and derive ready/needs_review/technical_error UI labels and implement user-only retry with same saved answer, shared 270-second end-to-end cancellation, recovered 300-second lease/HTTP statuses, 285/300/310 outer timeouts and no queue; verify positive/negative lifecycle sequences.
 
 ## 7. Permitted corpus and empirical validation
@@ -675,6 +675,8 @@ Iteration10 verification accepted:116/116owned cases across21properties passed -
 
 - [x] I11.1 Trace exact counting/component/feedback contracts and query the existing DAG; record independent arithmetic and persistence oracles.
 - [x] I11.2 Implement separated exact scoring, source projection, per-domain populations, immutable results and configurable grounded feedback with feedback-only retry.
-- [ ] I11.3 Materialize positive/negative fixtures into executable numeric/native/browser/actual-local cases and retain context/receipt/MLflow correspondence.
-- [ ] I11.4 Complete code/contract review, repair all I11 findings, run lint on the stable batch and reconcile selected dependencies.
-- [ ] I11.5 Pass the complete committed-clean iteration selection, record acceptance and commit; preserve canonical unrelated GAPS.md.
+- [x] I11.3 Materialize positive/negative fixtures into executable numeric/native/browser/actual-local cases and retain context/receipt/MLflow correspondence.
+- [x] I11.4 Complete code/contract review, repair all I11 findings, run lint on the stable batch and reconcile selected dependencies.
+- [x] I11.5 Pass the complete committed-clean iteration selection, record acceptance and commit; preserve canonical unrelated GAPS.md.
+
+Iteration11 accepted on e906cb3883b63cd72dc179079f441c75d00c1ec2:122/122owned cases across10properties and112/112affected interpretation dependencies passed --require-clean (234total;117positive/117negative). Six actual local feedback experiments reconcile11dispatches/native receipts/contexts/MLflow spans across6operations, including bounded repair attempts.372artifact/4615property assertions, strict OpenSpec, DAG/discovery, stable pinned Go vet/gofmt, retained unchanged locked web image and original preservation pass. ACCEPTANCE.json and REPORT.md under audit/iteration-11-scoring-20261021 retain every case and proof boundary; former119/120candidate remains failed/exported. No in-scope finding remains. No paid/hosted call, install, delegation, publication or archive. I8.R1–R3 remain separate; canonical GAPS.md is preserved.
