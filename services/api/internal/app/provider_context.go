@@ -2,8 +2,10 @@ package app
 
 import (
 	"bytes"
+	"encoding/json"
 	"strings"
 	"tangerine.local/api/internal/lab"
+	"tangerine.local/api/internal/provider"
 )
 
 // inferenceFrame keeps the complete typed input once. Component evidence remains
@@ -50,4 +52,15 @@ func mutationInputCovers(part lab.Part, input map[string]any) bool {
 	}
 	raw, _ := lab.Canonical(value)
 	return bytes.Equal(raw, part.Body)
+}
+
+// Decoding is an explicit profile choice, separate from the single admission.
+func inferenceOutputFormat(p provider.Profile, schema json.RawMessage) (any, error) {
+	if !p.StructuredOutput {
+		return nil, nil
+	}
+	if p.Provider == "openai_chatgpt" {
+		return nil, &provider.Failure{Code: "CONSTRAINT_CONFLICT"}
+	}
+	return map[string]any{"type": "json_schema", "name": "tangerine_output", "strict": true, "schema": schema}, nil
 }

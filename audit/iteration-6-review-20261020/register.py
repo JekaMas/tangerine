@@ -20,6 +20,7 @@ repair='services/api/internal/app/mutation_repair_test.go'
 diag='services/api/internal/app/mutation_diagnostics_test.go'
 quality='services/api/internal/app/mutation_quality_fixture_test.go'
 locator='services/api/internal/app/mutation_locator_test.go'
+schema='services/api/internal/app/mutation_schema_test.go'
 rows=[
 ('Mutation admission and fixed canonical text', pure, 'mutation_content.go', ['AdmissionPositive', 'EmptyKeyPositive', 'BaselineNegative', 'LocationNegative'], 'The application SHALL admit a new mutation reply once with candidate output schema_version1.0.0 distinct from stage-input2.0.0, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data.'),
 ('Replayable mutation ledger', pure, 'mutation_manifest.go', ['ManifestPositive', 'UnicodeInsertPositive', 'UnknownCategoryNegative', 'CountNegative'], 'The application SHALL derive replayable canonical-coordinate edits and retain all planned units, repairs, propositions, exact selected categories and requested counts. Invented categories, unsupported counts and invalid scopes SHALL fail admission.'),
@@ -50,6 +51,8 @@ rows=[
 
 ('Independent agreement qualification detects reversed mistakes', quality, 'mutation_quality_fixture_test.go', ['QualityOpensPositive','QualityServesPositive','QualityReverseNegative','QualityExtraChangeNegative'], 'The controlled actual-model qualification SHALL require the requested correct opens/serves clean forms, exactly one corresponding erroneous surface change and the independently expected preferred repair. The harness SHALL reject the observed ungrammatical-baseline/corrected-surface reversal and unrelated extra edits. Pure oracle-sensitivity packets establish only this test reference; actual generation quality requires retained native/local-model observations.'),
 ('Literal Unicode coordinate evidence for the existing repair', locator, 'mutation_diagnostics.go', ['LocatorUnicodePositive','LocatorNarrowPositive','LocatorAmbiguousNegative','LocatorEmptyNegative'], 'The existing rejected-output repair SHALL receive actual nearby Unicode codepoints and a literal scope only when the supplied nonempty exact_text occurs exactly once, including overlapping-match ambiguity. Empty, absent or repeated literals SHALL receive no guessed location. Diagnostic hints SHALL NOT rewrite or admit a candidate; valid keys retain their single admission and stored data remains trusted.'),
+
+('Complete wire contracts and optional schema-guided decoding', schema, 'provider_context.go', ['CompleteWireSchemaPositive','StructuredWirePositive','PlainWireNegative','PlanSchemaNegative'], 'The actual owned wire_schema SHALL include all registered referenced definitions with internal document references, retaining acoustic and other supported output shapes. An explicit structured_output profile SHALL pass that complete schema through the existing same-profile decoding/fallback owner and save its actual wire-schema hash. Omitted/false retains plain output; unsupported ChatGPT-plan opt-in or an unknown owned schema SHALL not be silently enabled/fabricated. This adds no admission, stored-data check, human review or model-meaning guarantee.'),
 
 
 

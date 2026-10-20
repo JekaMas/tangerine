@@ -321,3 +321,17 @@ The existing rejected-output repair SHALL receive actual nearby Unicode codepoin
 
 - **WHEN** the second distinct literal positive or negative packet is executed
 - **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+### Requirement: I6-24 Complete wire contracts and optional schema-guided decoding
+
+The actual owned wire_schema SHALL include all registered referenced definitions with internal document references, retaining acoustic and other supported output shapes. An explicit structured_output profile SHALL pass that complete schema through the existing same-profile decoding/fallback owner and save its actual wire-schema hash. Omitted/false retains plain output; unsupported ChatGPT-plan opt-in or an unknown owned schema SHALL not be silently enabled/fabricated. This adds no admission, stored-data check, human review or model-meaning guarantee. Exact constructed fixtures and independent expected states are retained in audit/iteration-6-review-20261020/CASES.json. These tests SHALL NOT establish hosted account admission, actual LLM linguistic quality or future mutation/audio/scoring completion.
+
+#### Scenario: I6-24 packet 1
+
+- **WHEN** the first literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+#### Scenario: I6-24 packet 2
+
+- **WHEN** the second distinct literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold

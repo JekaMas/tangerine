@@ -170,6 +170,8 @@ def inventory(revision):
   h=dependency(adapter,'/tangerine/source/provider/execute.go','trusted repair/retry/format owner')
   for source in ['provider_context.go','provider_storage.go','provider_command.go','provider_configuration.go','provider_connections.go','provider-default.json']:
    dependency('services/api/internal/app/'+source,'/tangerine/source/app/'+source,'frozen profile and native entrypoint dependency')
+  for source in ['contracts.go','wire.go']:
+   dependency('services/api/internal/contracts/'+source,'/tangerine/source/contracts/'+source,'complete owned wire-schema projection')
   for source in ['connection.go','oidc.go','transport.go','projection.go','context.go']:
    dependency('services/api/internal/provider/'+source,'/tangerine/source/provider/'+source,'provider dependency')
   entries.append(dict(id='provider_adapter_'+suffix,stage='provider_adapter',phase=suffix,kind='llm',implementation_state='implemented',owner_paths=[owner]+(['services/api/internal/app/provider_command.go'] if suffix=='invoke' else []),owner_symbols=[symbol]+(['Server.ProviderCommand'] if suffix=='invoke' else []),adapter_paths=[adapter],trusted_fragments=[dict(kind=fragment,path_or_asset=adapter,sha256=h,state='observed')],discovery_evidence_refs=['iteration4 source and native positive/negative transport cases'],coverage_reason='Protocol substitution evidence; hosted admission and real model quality are separately recorded.'))

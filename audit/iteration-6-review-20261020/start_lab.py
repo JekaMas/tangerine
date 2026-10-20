@@ -11,7 +11,7 @@ try:call(['docker','cp',temporary+':/usr/local/bin/tangerine',str(root/'native')
 finally:call(['docker','rm',temporary],False)
 network=name;call(['docker','network','create',network]);(root/'lab').mkdir(exist_ok=True)
 args=['docker','run','-d','--name',name,'--network',network,'--network-alias','llm-lab','-e','MLFLOW_DISABLE_TELEMETRY=true','-e','DO_NOT_TRACK=true','-e','MLFLOW_TRACKING_URI=http://llm-lab:5000']
-for source,target in [(root/'lab','/lab'),(root/'native','/tangerine/native'),(R/'deploy/local/lab.py','/tangerine/lab.py'),(R/'specification/v2','/tangerine/spec'),(R/'services/api/internal/lab/builtin.json','/tangerine/builtin.json'),(R/'services/api/internal/provider','/tangerine/source/provider'),(R/'services/api/internal/app','/tangerine/source/app')]:args+=['-v',str(source)+':'+target+('' if target=='/lab' else ':ro')]
+for source,target in [(root/'lab','/lab'),(root/'native','/tangerine/native'),(R/'deploy/local/lab.py','/tangerine/lab.py'),(R/'specification/v2','/tangerine/spec'),(R/'services/api/internal/lab/builtin.json','/tangerine/builtin.json'),(R/'services/api/internal/contracts','/tangerine/source/contracts'),(R/'services/api/internal/provider','/tangerine/source/provider'),(R/'services/api/internal/app','/tangerine/source/app')]:args+=['-v',str(source)+':'+target+('' if target=='/lab' else ':ro')]
 args+=['tangerine-mlflow-upstream:3.17.0','mlflow','server','--host','0.0.0.0','--port','5000','--backend-store-uri','sqlite:////lab/mlflow.db','--artifacts-destination','/lab/artifacts','--allowed-hosts','localhost,127.0.0.1,llm-lab,llm-lab:5000']
 try:
  call(args)

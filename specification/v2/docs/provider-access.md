@@ -59,3 +59,5 @@ policy; failed validation or stale revision leaves the prior configuration intac
 The field is optional for compatibility, and Tangerine's Settings owner returns it.
 Native/hosted evidence remains separately qualified as described in
 `docs/development/PROVIDERS.md` and the iteration audit.
+
+For a provider with observed schema-decoding support, the optional structured_output=true profile setting passes the complete registered output contract through text.format. Omitted/false preserves plain semantic output and the existing projector. This is an explicit per-profile capability choice; ChatGPT-plan mode does not enable unsupported formatting fields. Existing same-profile unsupported-capability fallback remains bounded by the original operation budget. The frozen effective binding includes the selected setting and actual bundled wire-schema digest. No paid fallback or extra semantic-review stage is introduced.

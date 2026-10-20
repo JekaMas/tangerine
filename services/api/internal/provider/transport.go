@@ -16,22 +16,23 @@ import (
 )
 
 type Profile struct {
-	ID            string   `json:"id"`
-	Provider      string   `json:"provider"`
-	Model         string   `json:"model"`
-	Endpoint      string   `json:"endpoint"`
-	Reasoning     *string  `json:"reasoning_effort"`
-	Temperature   *float64 `json:"temperature"`
-	MaxOutput     *int     `json:"max_output_tokens"`
-	ContextBudget int      `json:"context_budget_tokens"`
-	Adapter       string   `json:"adapter_version"`
-	CredentialRef string   `json:"credential_ref"`
-	Store         bool     `json:"store"`
-	Stream        bool     `json:"stream"`
-	Tools         []any    `json:"tools"`
-	Roles         []string `json:"roles"`
-	Auth          string   `json:"auth_method,omitempty"`
-	Billing       string   `json:"billing_mode,omitempty"`
+	StructuredOutput bool     `json:"structured_output,omitempty"`
+	ID               string   `json:"id"`
+	Provider         string   `json:"provider"`
+	Model            string   `json:"model"`
+	Endpoint         string   `json:"endpoint"`
+	Reasoning        *string  `json:"reasoning_effort"`
+	Temperature      *float64 `json:"temperature"`
+	MaxOutput        *int     `json:"max_output_tokens"`
+	ContextBudget    int      `json:"context_budget_tokens"`
+	Adapter          string   `json:"adapter_version"`
+	CredentialRef    string   `json:"credential_ref"`
+	Store            bool     `json:"store"`
+	Stream           bool     `json:"stream"`
+	Tools            []any    `json:"tools"`
+	Roles            []string `json:"roles"`
+	Auth             string   `json:"auth_method,omitempty"`
+	Billing          string   `json:"billing_mode,omitempty"`
 }
 type Model struct {
 	Slug        string `json:"slug"`

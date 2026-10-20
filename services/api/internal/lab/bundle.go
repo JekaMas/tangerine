@@ -207,6 +207,7 @@ type Part struct {
 	Body  json.RawMessage `json:"body"`
 }
 type Prepared struct {
+	OutputSchema json.RawMessage   `json:"-"`
 	BundleSHA    string            `json:"bundle_sha256"`
 	BindingSHA   string            `json:"binding_sha256"`
 	InputSHA     string            `json:"input_sha256"`
@@ -259,11 +260,11 @@ func BuildContext(b Bundle, stage string, phase *string, input map[string]any, c
 	}
 	values["prompt"] = template
 	values["context_policy"] = instruction
-	reg, e := contracts.Registry()
+	p.OutputSchema, e = contracts.WireSchema(strings.TrimSuffix(binding.OutputSchema, ".schema.json"))
 	if e != nil {
 		return p, e
 	}
-	values["wire_schema"] = json.RawMessage(reg[strings.TrimSuffix(binding.OutputSchema, ".schema.json")].Bytes)
+	values["wire_schema"] = p.OutputSchema
 	allowed := map[string]bool{}
 	for _, k := range binding.Policy.Order {
 		allowed[k] = true

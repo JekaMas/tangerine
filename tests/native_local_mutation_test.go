@@ -34,8 +34,9 @@ func observeLocalMutation(t *testing.T, count int) {
 	p["adapter_version"] = "local-responses-v1"
 	p["auth_method"], p["billing_mode"], p["credential_ref"], p["stream"] = "local_none", "local", "local-none", false
 	p["context_budget_tokens"], p["max_output_tokens"] = float64(131072), float64(8000)
-	p["reasoning_effort"] = "none"
-	p["temperature"] = float64(1)
+	p["reasoning_effort"] = "low"
+	p["temperature"] = float64(0.7)
+	p["structured_output"] = true
 	c["llm_lab_capture_content"], c["llm_lab_trace_enabled"] = true, true
 	for _, k := range []string{"workspace_id", "configuration_sha256", "provider_access_policy"} {
 		delete(c, k)

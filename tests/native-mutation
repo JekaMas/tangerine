@@ -25,7 +25,7 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
   call(['docker','run','--rm','--network',name,'--env-file',str(config),'--entrypoint','/tangerine',name+'-go','initialize'])
   go_args=['test','-run','^TestNativeMutation',*sys.argv[2:]] if len(sys.argv)>1 and sys.argv[1]=='test' else ['test','-json','-race','-count=1','-run',sys.argv[1] if len(sys.argv)>1 else '^TestNativeMutation','./internal/app']
   evidence=r/'data/iteration6/native';evidence.mkdir(parents=True,exist_ok=True)
-  args=['docker','run','--rm','--name',name+'-runner','--network',name,'--env-file',str(config),'-e','TANGERINE_PREPARATION_TEST_EVIDENCE=/evidence','-v',str(evidence)+':/evidence','-v',str(r/'tests/native_preparation_test.go')+':/src/internal/app/native_preparation_test.go:ro','-v',str(r/'tests/native_mutation_test.go')+':/src/internal/app/native_mutation_test.go:ro','--entrypoint','go',name+'-go',*go_args]
+  args=['docker','run','--name',name+'-runner','--network',name,'--env-file',str(config),'-e','TANGERINE_PREPARATION_TEST_EVIDENCE=/evidence','-v',str(evidence)+':/evidence','-v',str(r/'tests/native_preparation_test.go')+':/src/internal/app/native_preparation_test.go:ro','-v',str(r/'tests/native_mutation_test.go')+':/src/internal/app/native_mutation_test.go:ro','--entrypoint','go',name+'-go',*go_args]
   p=subprocess.run(args,cwd=r,env=env,timeout=420)
   status=p.returncode
  finally:

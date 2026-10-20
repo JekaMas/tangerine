@@ -81,6 +81,10 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 			binding = b
 		}
 	}
+	format, e := inferenceOutputFormat(p, prepared.OutputSchema)
+	if e != nil {
+		return result, e
+	}
 	request.Operation.Body, _ = lab.Canonical(map[string]any{"original_request": json.RawMessage(request.Operation.Body), "configuration_sha256": lab.Hash(request.Configuration), "bundle_sha256": request.Bundle.SHA, "stage": request.Stage, "phase": request.Phase, "timeout_seconds": int(timeout / time.Second), "input_sha256": prepared.InputSHA, "components_sha256": lab.Hash(request.Components)})
 	op, e := s.Store.ReserveOperation(ctx, request.Operation)
 	if e != nil {
@@ -136,7 +140,7 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 	effective["prompt_sha256"] = binding.PromptSHA
 	effective["input_schema_sha256"] = binding.InputSHA
 	effective["output_schema_sha256"] = binding.OutputSHA
-	effective["wire_schema_sha256"] = binding.OutputSHA
+	effective["wire_schema_sha256"] = contracts.Digest(prepared.OutputSchema)
 	effective["timeout_seconds"] = int(timeout / time.Second)
 	effective["prompt_bundle_sha256"] = request.Bundle.SHA
 	effective["context_policy_sha256"] = binding.PolicySHA
@@ -177,8 +181,8 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 	inputUsage := map[int]int{}
 	trace := traceID(16)
 	requestAssets := map[int]Asset{}
-	er := provider.ExecuteRequest{Profile: p, Instructions: instructions, Input: input, OutputKind: strings.TrimSuffix(binding.OutputSchema, ".schema.json"), Timeout: timeout, Validate: request.Validate, DiagnoseInvalid: request.DiagnoseInvalid}
-	// JSON-schema capability is opt-in for profiles with tested provider support;
+	er := provider.ExecuteRequest{Profile: p, Instructions: instructions, Input: input, OutputKind: strings.TrimSuffix(binding.OutputSchema, ".schema.json"), Format: format, Timeout: timeout, Validate: request.Validate, DiagnoseInvalid: request.DiagnoseInvalid}
+	// JSON-schema decoding is opt-in for profiles with observed provider support;
 	// plain JSON still receives the same complete output contract in instructions.
 	er.Before = func(ctx context.Context, a provider.Attempt) error {
 		used, err := counter.Count(a.Wire)

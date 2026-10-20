@@ -46,6 +46,9 @@ func nativeMutationFixture(t *testing.T, mode string) (*Server, CanonicalPrepara
 		profile["provider"], profile["model"], profile["endpoint"] = "local_responses", "gpt-oss:20b", "http://127.0.0.1:11434/v1/responses"
 		profile["auth_method"], profile["billing_mode"], profile["credential_ref"] = "local_none", "local", "local-none"
 		profile["max_output_tokens"], profile["context_budget_tokens"] = float64(8000), float64(131072)
+		if mode == "token-family" || mode == "token-zero" {
+			profile["structured_output"] = true
+		}
 		if mode == "token-small" {
 			profile["context_budget_tokens"] = float64(20000)
 		}
@@ -78,12 +81,33 @@ func nativeMutationFixture(t *testing.T, mode string) (*Server, CanonicalPrepara
 	if mode == "copy-unit" {
 		copiedMutationUnit(candidate)
 	}
+	expectedModel := profile["model"]
 	calls := 0
 	target := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		calls++
 		raw, _ := io.ReadAll(req.Body)
 		if !containsMutationInput(raw) {
 			t.Error("mutation input omitted original text/recipe/phase")
+		}
+		var observedFrame map[string]any
+		_ = json.Unmarshal(raw, &observedFrame)
+		if observedFrame["model"] != expectedModel {
+			t.Error("dispatch did not retain the frozen model", observedFrame["model"], expectedModel)
+		}
+		if mode != "token-family" && mode != "token-zero" && observedFrame["text"] != nil {
+			t.Error("plain frozen profile gained an output restriction")
+		}
+		if mode == "token-family" || mode == "token-zero" {
+			frame := observedFrame
+			text, ok := frame["text"].(map[string]any)
+			if !ok {
+				t.Error("explicit structured-output profile omitted text.format")
+			} else {
+				format := text["format"].(map[string]any)
+				if format["type"] != "json_schema" || format["schema"].(map[string]any)["$defs"].(map[string]any)["acoustic-edit"] == nil {
+					t.Error("decoder omitted complete referenced contract", format)
+				}
+			}
 		}
 		w.Header().Set("Content-Type", "application/json")
 		if mode == "fail-once" && calls == 1 || mode == "limit" {
@@ -253,6 +277,7 @@ func TestNativeMutationFrozenSettingsPositive(t *testing.T) {
 		t.Fatal(e)
 	}
 	config["llm_profiles"].([]any)[0].(map[string]any)["model"] = "later-global-model"
+	config["llm_profiles"].([]any)[0].(map[string]any)["structured_output"] = true
 	for _, k := range []string{"workspace_id", "configuration_sha256", "provider_access_policy"} {
 		delete(config, k)
 	}
