@@ -78,8 +78,16 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 			if answer != "Use opens." {
 				span = nil
 			}
+			if f.currentMode() == "scoring-wrong" {
+				span = &AnswerSpan{4, 11, "opening"}
+			}
 			output = AnswerExtraction{Version: "2.0.0", Clauses: []ExtractedClause{{LocalRef: "c0", Span: AnswerSpan{0, len(text), answer}, Stance: "assert_error", Correction: span}}, Unparsed: []AnswerSpan{}, Coverage: []ClaimCoverage{}, Relations: []ClaimRelation{}}
 
+			if f.currentMode() == "scoring-false-reason" {
+				correction := AnswerSpan{4, 9, "opens"}
+				reason := AnswerSpan{10, len(text), string(text[10:])}
+				output = AnswerExtraction{Version: "2.0.0", Clauses: []ExtractedClause{{LocalRef: "c0", Span: AnswerSpan{0, len(text), answer}, Stance: "assert_error", Correction: &correction, Rationale: &reason}}, Unparsed: []AnswerSpan{}, Coverage: []ClaimCoverage{}, Relations: []ClaimRelation{}}
+			}
 			if strings.HasPrefix(f.currentMode(), "attachment-") {
 				correction := AnswerSpan{22, 27, "opens"}
 				clauses := []ExtractedClause{{LocalRef: "c0", Span: AnswerSpan{0, 18, "The verb is wrong."}, Stance: "assert_error"}, {LocalRef: "c1", Span: AnswerSpan{19, 28, "Use opens."}, Stance: "assert_error", Correction: &correction}}
@@ -134,6 +142,22 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 				for _, p := range option["required_propositions"].([]any) {
 					decision.Correction.Satisfied = append(decision.Correction.Satisfied, p.(map[string]any)["id"].(string))
 				}
+			}
+			if f.currentMode() == "scoring-false-reason" {
+				decision.Correction.Supplied = true
+				decision.Correction.Option = &optionID
+				decision.Correction.Status = "accepted"
+				for _, p := range option["required_propositions"].([]any) {
+					decision.Correction.Satisfied = append(decision.Correction.Satisfied, p.(map[string]any)["id"].(string))
+				}
+				decision.Explanation.Supplied = true
+				decision.Explanation.Status = "rejected"
+				reason := claims[0].Explanations[0]
+				decision.Explanation.Additional = []ComponentAssertion{{AnswerSpan: reason, Judgment: "unsupported", Reason: "Agreement applies to third-person singular present forms; not every English verb always ends in s."}}
+			}
+			if f.currentMode() == "scoring-wrong" {
+				decision.Correction.Supplied = true
+				decision.Correction.Status = "rejected"
 			}
 			if audit && f.currentMode() == "audit-disagreement" {
 				decision.Correction.Satisfied = []string{}
@@ -203,6 +227,13 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 	for k, v := range map[string]any{"provider": "local_responses", "model": "constructed-interpreter", "endpoint": target.URL + "/v1/responses", "adapter_version": "local-responses-v1", "auth_method": "local_none", "billing_mode": "local", "credential_ref": "local-none", "stream": false, "context_budget_tokens": 262144, "max_output_tokens": 4096} {
 		p[k] = v
 	}
+	feedbackProfile := map[string]any{}
+	for k, v := range p {
+		feedbackProfile[k] = v
+	}
+	feedbackProfile["id"], feedbackProfile["model"], feedbackProfile["roles"] = "fixture-feedback-unselected", "unselected", []any{"feedback"}
+	c["llm_profiles"] = append(c["llm_profiles"].([]any), feedbackProfile)
+	c["stage_profiles"].(map[string]any)["feedback"] = "fixture-feedback-unselected"
 	c["mapping_audit_enabled"] = strings.HasPrefix(mode, "audit")
 	if c["mapping_audit_enabled"] == true {
 		auditProfile := map[string]any{}
@@ -253,7 +284,7 @@ func TestNativeInterpretationCompletePositive(t *testing.T) {
 	requireListening(t, e)
 	r, e := f.s.Store.Attempt(context.Background(), f.attempt)
 	requireListening(t, e)
-	if r.Attempt["answer_text"] != "Use opens." || r.Attempt["state"] != "saved" || r.Attempt["lease_token"] != nil {
+	if r.Attempt["answer_text"] != "Use opens." || r.Attempt["state"] != "completed" || r.Attempt["lease_token"] != nil {
 		t.Fatal(r)
 	}
 }
@@ -547,7 +578,7 @@ func TestNativeInterpretationPublicPrivacyNegative(t *testing.T) {
 			t.Fatal("private result field", hidden)
 		}
 	}
-	if !strings.Contains(w.Body.String(), `"decision":"matched_error"`) || !strings.Contains(w.Body.String(), `"score":null`) {
+	if !strings.Contains(w.Body.String(), `"decision":"matched_error"`) || !strings.Contains(w.Body.String(), `"display":"100.0"`) {
 		t.Fatal(w.Body.String())
 	}
 }
@@ -634,7 +665,7 @@ func TestNativeInterpretationExpiredRecoveryPositive(t *testing.T) {
 	f := interpretationNative(t, "good")
 	r, e := f.s.Store.Attempt(context.Background(), f.attempt)
 	requireListening(t, e)
-	lease, e := f.s.Store.acquireInterpretation(context.Background(), f.attempt, uuid.NewString(), 1, r.Attempt["answer_utf8_sha256"].(string), r.Attempt["configuration_sha256"].(string))
+	lease, e := f.s.Store.acquireInterpretation(context.Background(), f.attempt, uuid.NewString(), 1, r.Attempt["answer_utf8_sha256"].(string), r.Attempt["configuration_sha256"].(string), false)
 	requireListening(t, e)
 	// Test-owned DB time fixture models a crashed owner, not a claim of waiting 300 seconds.
 	tx, e := beginWrite(context.Background(), f.s.Store)
@@ -656,7 +687,7 @@ func TestNativeInterpretationExpiredRecoveryPositive(t *testing.T) {
 	}
 	current, e := f.s.Store.Attempt(context.Background(), f.attempt)
 	requireListening(t, e)
-	if current.Attempt["lease_epoch"] != float64(2) || current.Attempt["state"] != "saved" {
+	if current.Attempt["lease_epoch"] != float64(2) || current.Attempt["state"] != "completed" {
 		t.Fatal(current)
 	}
 }

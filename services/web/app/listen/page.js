@@ -1,5 +1,6 @@
 'use client';
 import useListening from './useListening';
+import Results from './Results';
 
 export default function Listen() {
   const {attempt, answer, language, recovered, error, notice, busy, audioRevision,
@@ -25,11 +26,12 @@ export default function Listen() {
         {submitted ? <p>Answer submitted and saved. <a href="/attempts">Open saved attempts</a></p>
           : <div className="actions"><button onClick={() => write(false)} disabled={busy}>Save draft</button><button onClick={() => write(true)} disabled={busy}>Submit answer</button></div>}
         {submitted&&<section aria-label="Answer findings">
+          <Results results={results} busy={busy} retry={retryChecking}/>
           <h3>Answer findings</h3>
           {results?.interpretation?.status==='complete'&&<p>Answer interpretation ready.</p>}
           {results?.status==='review_required'&&<p>Some findings remain uncertain. Supported components are retained.</p>}
           {results?.status==='evaluation_failed'&&<p>Checking is unavailable. Your submitted answer is saved.</p>}
-          {(!results?.interpretation||results?.status==='evaluation_failed'||results?.status==='evaluating')&&<button disabled={busy} onClick={retryChecking}>{results?.status==='evaluating'?'Resume checking':'Check saved answer'}</button>}
+          {!results?.score&&(!results?.interpretation||results?.status==='evaluation_failed'||results?.status==='evaluating')&&<button disabled={busy} onClick={retryChecking}>{results?.status==='evaluating'?'Resume checking':'Check saved answer'}</button>}
           {results?.interpretation?.claims?.map(claim=>{
             const decision=results.interpretation.decisions.find(d=>d.claim_id===claim.id);
             return <article key={claim.id}><h4>{claim.claim_span.exact_text}</h4>
@@ -41,6 +43,7 @@ export default function Listen() {
               </>}
             </article>
           })}
+          {['failed','disagreement'].includes(results?.interpretation?.audit_status)&&<p>Optional mapping audit: {results.interpretation.audit_status}. Supported findings are retained.</p>}
           {results?.issues?.map(issue=><p key={issue.id}>{issue.explanation}</p>)}
         </section>}
         {recovered && <section aria-label="Unsubmitted response recovery">

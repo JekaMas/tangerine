@@ -115,7 +115,7 @@ export default function useListening() {
         body, signal: AbortSignal.timeout(310000),
       });
       const outcome=await response.json();
-      const committed=submit&&outcome.attempt_id===attemptID.current&&outcome.status==='evaluation_failed';
+      const committed=submit&&!response.ok&&outcome.attempt_id===attemptID.current&&(outcome.status==='evaluation_failed'||outcome.score!=null);
       if (!response.ok&&!committed) throw Error(response.status === 412
         ? 'The saved draft changed. Your text is retained. Refresh saved state, then save again.'
         : response.status === 409 ? 'This answer is already submitted or conflicts with a saved request. Your text is retained. Refresh saved state.'
@@ -124,7 +124,7 @@ export default function useListening() {
       pending.current = null;
       await load();
       setNotice(submit ? 'Answer submitted and saved.' : 'Draft saved.');
-      if(committed)setError('Your answer is saved. Checking failed. Retry checking after the service is available.');
+      if(committed)setError(outcome.score!=null?'Your answer and score are saved. Comments are unavailable. Retry comments and recommendations.':'Your answer is saved. Checking failed. Retry checking after the service is available.');
     } catch (e) { setError(e.message); }
     finally { setBusy(false); }
   }
@@ -134,7 +134,8 @@ export default function useListening() {
     const signature='retry|'+revision.current+'|'+body;
     if(pending.current?.signature!==signature)pending.current={signature,key:crypto.randomUUID()};
     try{
-      const response=await fetch('/api/v1/attempts/'+attemptID.current+':retry',{method:'POST',headers:{'Content-Type':'application/json','If-Match':revision.current,'Idempotency-Key':pending.current.key},body,signal:AbortSignal.timeout(310000)});
+      const action=results?.score?':retry-feedback':':retry';
+      const response=await fetch('/api/v1/attempts/'+attemptID.current+action,{method:'POST',headers:{'Content-Type':'application/json','If-Match':revision.current,'Idempotency-Key':pending.current.key},body,signal:AbortSignal.timeout(310000)});
       const value=await response.json();
       if(!response.ok&&value.attempt_id!==attemptID.current)throw Error(response.status===409?'Checking is already active or the saved state changed. Refresh saved state.':'Checking is unavailable. Your submitted answer is retained.');
       pending.current=null;await load();

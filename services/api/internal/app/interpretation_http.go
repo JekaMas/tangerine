@@ -33,7 +33,8 @@ func (s *Server) attemptInterpretationRetry(w http.ResponseWriter, r *http.Reque
 		attemptHTTPError(w, ErrInput)
 		return
 	}
-	state, e := s.InterpretAttempt(r.Context(), r.PathValue("id"), r.Header.Get("Idempotency-Key"), revision, input["answer_sha256"].(string), input["configuration_sha256"].(string), nil)
+	feedbackOnly := strings.HasSuffix(r.URL.Path, ":retry-feedback")
+	state, e := s.interpretAttempt(r.Context(), r.PathValue("id"), r.Header.Get("Idempotency-Key"), revision, input["answer_sha256"].(string), input["configuration_sha256"].(string), nil, feedbackOnly)
 	s.interpretationResponse(w, r, state, e)
 }
 func (s *Server) interpretationResponse(w http.ResponseWriter, r *http.Request, state InterpretationState, callErr error) {

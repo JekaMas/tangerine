@@ -12,7 +12,7 @@ async function proxy(request, context) {
   const modelBytes = request.method === 'GET' && /^v1\/prepare\/assets\/[a-f0-9-]{36}\/bytes$/.test(target);
   const audio = request.method === 'GET' && /^v1\/preparations\/[a-f0-9-]{36}\/audio$/.test(target);
   const render = request.method === 'POST' && /^v1\/preparations\/[a-f0-9-]{36}:render$/.test(target);
-  const attempt = /^(v1\/attempts\/[a-f0-9-]{36})(?::(?:submit|retry)|\/(?:answer|audio|playback|results))?$/.test(target) && ((request.method === 'GET' && !target.endsWith('/answer') && !target.endsWith('/playback') && !target.endsWith(':submit') && !target.endsWith(':retry')) || (request.method === 'PUT' && target.endsWith('/answer')) || (request.method === 'POST' && (target.endsWith(':submit') || target.endsWith(':retry') || target.endsWith('/playback'))));
+  const attempt = /^(v1\/attempts\/[a-f0-9-]{36})(?::(?:submit|retry|retry-feedback)|\/(?:answer|audio|playback|results))?$/.test(target) && ((request.method === 'GET' && !target.endsWith('/answer') && !target.endsWith('/playback') && !target.endsWith(':submit') && !target.endsWith(':retry') && !target.endsWith(':retry-feedback')) || (request.method === 'PUT' && target.endsWith('/answer')) || (request.method === 'POST' && (target.endsWith(':submit') || target.endsWith(':retry') || target.endsWith(':retry-feedback') || target.endsWith('/playback'))));
   if (!ALLOWED.has(`${request.method} ${target}`) && !modelBytes && !audio && !render && !attempt) return failure(404, 'not_implemented');
   const query = new URLSearchParams();
   if (target === 'v1/attempts') { const requested = new URL(request.url).searchParams;for(const name of ['limit','cursor'])if(requested.has(name))query.set(name,requested.get(name)); }

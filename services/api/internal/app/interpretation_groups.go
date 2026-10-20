@@ -126,6 +126,13 @@ func consolidateMapping(claims CanonicalExtraction, m SemanticMapping, key map[s
 		if !c.Active || d.Decision == "ignore" {
 			continue
 		}
+		if d.Duplicate != nil {
+			if i, exists := groupByClaim[*d.Duplicate]; exists {
+				groups[i].Members = append(groups[i].Members, c.ID)
+				groupByClaim[c.ID] = i
+				continue
+			}
+		}
 		groupKey := d.Claim
 		if d.Unit != nil {
 			groupKey = *d.Unit + ":" + c.Stance
@@ -158,13 +165,13 @@ func consolidateMapping(claims CanonicalExtraction, m SemanticMapping, key map[s
 			} else if !strings.HasPrefix(*g.Category, *d.Category+".") {
 				g.Category = nil
 				categoryConflict[i] = true
-				add(*g, "classification", enabled["classification"] == true)
+				add(*g, "classification", enabled["classification"] == true && g.Stance == "assert_error" && units[optionalID(g.Unit)]["expected_judgment"] == "true_error")
 			}
 		}
 		var incompatible bool
 		g.Correction, incompatible = mergeSemanticComponent(g.Correction, d.Correction, units[optionalID(g.Unit)], false)
 		if incompatible {
-			add(*g, "correction", enabled["correction"] == true)
+			add(*g, "correction", enabled["correction"] == true && g.Stance == "assert_error" && units[optionalID(g.Unit)]["expected_judgment"] == "true_error" && units[optionalID(g.Unit)]["correction_eligible"] == true)
 		}
 		g.Explanation, _ = mergeSemanticComponent(g.Explanation, d.Explanation, units[optionalID(g.Unit)], true)
 	}

@@ -21,6 +21,9 @@ func publicSemanticComponent(j SemanticComponent, spans []AnswerSpan) map[string
 }
 func (s *Storage) interpretationEnvelope(ctx context.Context, record AttemptRecord, state *InterpretationState) (map[string]any, error) {
 	envelope := savedResult(record.Attempt)
+	if state != nil && state.Result != nil {
+		return s.readScoringResult(ctx, *state.Result)
+	}
 	switch record.Attempt["state"] {
 	case "evaluating":
 		envelope["status"] = "evaluating"
@@ -46,6 +49,23 @@ func (s *Storage) interpretationEnvelope(ctx context.Context, record AttemptReco
 			}
 		}
 	}
+	envelope["issues"] = publicInterpretationIssues(state.Attempt, issues)
+	envelope["interpretation"] = publicInterpretation(state, claims, mapping, issues, stages)
+	switch state.Status {
+	case "failed":
+		envelope["status"] = "evaluation_failed"
+	case "review_required":
+		envelope["status"] = "review_required"
+	case "running":
+		envelope["status"] = "evaluating"
+	default:
+		envelope["status"] = "saved"
+	}
+
+	return envelope, nil
+}
+
+func publicInterpretation(state *InterpretationState, claims CanonicalExtraction, mapping SemanticMapping, issues []InterpretationIssue, stages []InterpretationStage) map[string]any {
 	publicClaims := []any{}
 	byID := map[string]CanonicalClaim{}
 	for _, c := range claims.Claims {
@@ -66,27 +86,22 @@ func (s *Storage) interpretationEnvelope(ctx context.Context, record AttemptReco
 			auditStatus = "failed"
 		}
 	}
-	publicIssues := []any{}
-	for i, issue := range issues {
+	for _, issue := range issues {
 		if issue.Code == "audit_disagreement" && auditStatus != "failed" {
 			auditStatus = "disagreement"
 		}
-		id := uuid.NewSHA1(uuid.NameSpaceOID, []byte(state.ID+":"+issue.Code+":"+strconv.Itoa(i))).String()
-		publicIssues = append(publicIssues, map[string]any{"schema_version": "2.0.0", "id": id, "code": issue.Code, "claim_ids": issue.Claims, "unit_ids": issue.Units, "evidence_ids": []any{}, "explanation": issue.Explanation, "blocks_final_score": issue.Blocks, "affected_components": issue.Components})
 	}
-	envelope["issues"] = publicIssues
-	envelope["interpretation"] = map[string]any{"schema_version": "2.0.0", "status": state.Status, "claims": publicClaims, "decisions": decisions, "error_code": state.Failure, "audit_status": auditStatus}
-	// The semantic handoff does not manufacture the next iteration's score.
-	switch state.Status {
-	case "failed":
-		envelope["status"] = "evaluation_failed"
-	case "review_required":
-		envelope["status"] = "review_required"
-	case "running":
-		envelope["status"] = "evaluating"
-	default:
-		envelope["status"] = "saved"
-	}
+	return map[string]any{"schema_version": "2.0.0", "status": state.Status, "claims": publicClaims, "decisions": decisions, "error_code": state.Failure, "audit_status": auditStatus}
+}
 
-	return envelope, nil
+func publicInterpretationIssues(attempt string, issues []InterpretationIssue) []any {
+	public := []any{}
+	for i, issue := range issues {
+		if issue.Code == "audit_disagreement" && len(issue.Components) == 0 {
+			continue
+		}
+		id := uuid.NewSHA1(uuid.NameSpaceOID, []byte(attempt+":"+issue.Code+":"+strconv.Itoa(i))).String()
+		public = append(public, map[string]any{"schema_version": "2.0.0", "id": id, "code": issue.Code, "claim_ids": issue.Claims, "unit_ids": issue.Units, "evidence_ids": []any{}, "explanation": issue.Explanation, "blocks_final_score": issue.Blocks, "affected_components": issue.Components})
+	}
+	return public
 }

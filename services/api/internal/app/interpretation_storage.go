@@ -19,21 +19,23 @@ var ErrEvaluationActive = errors.New("evaluation already active")
 var ErrEvaluationLease = errors.New("evaluation owner is stale or late")
 
 type InterpretationState struct {
-	Version    string  `json:"schema_version"`
-	ID         string  `json:"id"`
-	Attempt    string  `json:"attempt_id"`
-	Case       string  `json:"case_version_id"`
-	AnswerSHA  string  `json:"answer_sha256"`
-	ConfigSHA  string  `json:"configuration_sha256"`
-	BundleSHA  string  `json:"prompt_bundle_sha256"`
-	Status     string  `json:"status"`
-	Resources  string  `json:"resources_asset_id"`
-	Extraction *string `json:"extraction_asset_id"`
-	Mapping    *string `json:"mapping_asset_id"`
-	Audit      *string `json:"audit_asset_id"`
-	Issues     string  `json:"issues_asset_id"`
-	Stages     string  `json:"stages_asset_id"`
-	Failure    *string `json:"failure_code"`
+	Version        string  `json:"schema_version"`
+	ID             string  `json:"id"`
+	Attempt        string  `json:"attempt_id"`
+	Case           string  `json:"case_version_id"`
+	AnswerSHA      string  `json:"answer_sha256"`
+	ConfigSHA      string  `json:"configuration_sha256"`
+	BundleSHA      string  `json:"prompt_bundle_sha256"`
+	Status         string  `json:"status"`
+	Resources      string  `json:"resources_asset_id"`
+	Extraction     *string `json:"extraction_asset_id"`
+	Mapping        *string `json:"mapping_asset_id"`
+	Audit          *string `json:"audit_asset_id"`
+	Issues         string  `json:"issues_asset_id"`
+	Stages         string  `json:"stages_asset_id"`
+	Failure        *string `json:"failure_code"`
+	Result         *string `json:"result_document_id,omitempty"`
+	FeedbackStatus string  `json:"feedback_status,omitempty"`
 }
 type InterpretationLease struct {
 	Attempt, Operation, Token string
@@ -85,7 +87,7 @@ func readInterpretationState(ctx context.Context, q interface {
 func (s *Storage) interpretationState(ctx context.Context, id string) (*InterpretationState, error) {
 	return readInterpretationState(ctx, s.DB, id)
 }
-func (s *Storage) acquireInterpretation(ctx context.Context, id, key string, revision int64, answerSHA, configurationSHA string) (InterpretationLease, error) {
+func (s *Storage) acquireInterpretation(ctx context.Context, id, key string, revision int64, answerSHA, configurationSHA string, feedbackOnly bool) (InterpretationLease, error) {
 	lease := InterpretationLease{Attempt: id}
 	record, e := s.Attempt(ctx, id)
 	if e != nil {
@@ -99,6 +101,10 @@ func (s *Storage) acquireInterpretation(ctx context.Context, id, key string, rev
 	}
 	raw, _ := lab.Canonical(map[string]any{"answer_sha256": answerSHA, "configuration_sha256": configurationSHA})
 	request := OperationRequest{Name: "interpret_answer", Path: "/api/v1/attempts/" + id + ":retry", Key: key, Revision: &revision, Body: raw}
+	if feedbackOnly {
+		request.Name = "retry_feedback"
+		request.Path = "/api/v1/attempts/" + id + ":retry-feedback"
+	}
 	digest, e := operationDigest(request)
 	if e != nil {
 		return lease, ErrInput
@@ -138,6 +144,9 @@ func (s *Storage) acquireInterpretation(ctx context.Context, id, key string, rev
 	previous, e := readInterpretationState(ctx, tx, id)
 	if e != nil {
 		return lease, e
+	}
+	if feedbackOnly && (previous == nil || previous.Result == nil) {
+		return lease, ErrAttemptState
 	}
 	lease.Previous = previous
 	lease.Snapshot = record
@@ -198,6 +207,13 @@ func (s *Storage) checkpointInterpretation(ctx context.Context, lease Interpreta
 		}
 		refs = append(refs, ref)
 	}
+	if state.Result != nil {
+		var digest string
+		if e := s.DB.QueryRow(ctx, "SELECT payload_sha256 FROM document WHERE id=$1", *state.Result).Scan(&digest); e != nil {
+			return e
+		}
+		refs = append(refs, Reference{Pointer: "/result_document_id", ID: *state.Result, Scope: "local", Kind: "result-envelope", SHA: digest, Relation: "scored-result"})
+	}
 	tx, e := beginWrite(ctx, s)
 	if e != nil {
 		return e
@@ -230,11 +246,22 @@ func (s *Storage) checkpointInterpretation(ctx context.Context, lease Interpreta
 	if _, e = tx.Exec(ctx, "UPDATE interpretation_checkpoint SET document_id=$2 WHERE attempt_id=$1", lease.Attempt, state.ID); e != nil {
 		return e
 	}
+	if state.Result != nil {
+		if _, e = tx.Exec(ctx, "UPDATE attempt_context SET result_id=$2 WHERE attempt_id=$1", lease.Attempt, *state.Result); e != nil {
+			return e
+		}
+	}
 	if finish {
+		if state.FeedbackStatus != "" {
+			a["feedback_status"] = state.FeedbackStatus
+		}
 		a["lease_token"] = nil
 		a["lease_expires_at"] = nil
 		a["revision"] = float64(revision + 1)
 		next := "saved"
+		if state.Result != nil {
+			next = "completed"
+		}
 		if state.Status == "failed" {
 			next = "evaluation_failed"
 		}

@@ -1,6 +1,6 @@
 {
-  "schema_count": 157,
-  "field_count": 3492,
+  "schema_count": 158,
+  "field_count": 3611,
   "fields": [
     {
       "schema": "accept-candidate-request.schema.json",
@@ -9241,9 +9241,9 @@
       "name": "score_result",
       "pointer": "/properties/score_result",
       "required_in_parent": true,
-      "description": "The value, or null when the contract states that it is absent.",
+      "description": "Complete native comment projection or full saved result; exact metric/domain populations remain in the immutable result_id. No score is inferred from feedback prose.",
       "schema_reference": null,
-      "rule_sha256": "7011f537cd1d7781c7f3768f9bf1dba34a2f9ab72899dff4aa58011dc0783aa3"
+      "rule_sha256": "f8f253983115b556b4ddbaaeca93aef1b51922dcefb46dc7d81f4c34716cd285"
     },
     {
       "schema": "feedback-input.schema.json",
@@ -9279,7 +9279,7 @@
       "required_in_parent": true,
       "description": "The feedback items.",
       "schema_reference": null,
-      "rule_sha256": "7586854f8e8d570aad8a7b185f402e231bb8ea4c08a942780c74671b07c3534e"
+      "rule_sha256": "2e466e55bdcfe3dde111ddb57ebfbc8c319fe97c08ddcb3460dc6473a5b34a98"
     },
     {
       "schema": "feedback-output.schema.json",
@@ -9304,9 +9304,9 @@
       "name": "unit_ids",
       "pointer": "/properties/items/items/properties/unit_ids",
       "required_in_parent": true,
-      "description": "Existing units. Empty only for an off-key assertion.",
+      "description": "Existing key units for recording findings. May be empty for an off-key assertion or practice scoped to the saved result as a whole.",
       "schema_reference": null,
-      "rule_sha256": "8fa52542f25806de57eb5db45f43f26dc47d0b250b9ea457ff273cf213f7e584"
+      "rule_sha256": "5bfc81d9b63c42330ce4049a79d4269e3e8dd9db64bcf108cd2327fe3304e096"
     },
     {
       "schema": "feedback-output.schema.json",
@@ -9378,7 +9378,7 @@
       "required_in_parent": true,
       "description": "The feedback items.",
       "schema_reference": null,
-      "rule_sha256": "7586854f8e8d570aad8a7b185f402e231bb8ea4c08a942780c74671b07c3534e"
+      "rule_sha256": "2e466e55bdcfe3dde111ddb57ebfbc8c319fe97c08ddcb3460dc6473a5b34a98"
     },
     {
       "schema": "feedback.schema.json",
@@ -9421,9 +9421,9 @@
       "name": "unit_ids",
       "pointer": "/properties/items/items/properties/unit_ids",
       "required_in_parent": true,
-      "description": "Existing units. Empty only for an off-key assertion.",
+      "description": "Existing key units for recording findings. May be empty for an off-key assertion or practice scoped to the saved result as a whole.",
       "schema_reference": null,
-      "rule_sha256": "8fa52542f25806de57eb5db45f43f26dc47d0b250b9ea457ff273cf213f7e584"
+      "rule_sha256": "5bfc81d9b63c42330ce4049a79d4269e3e8dd9db64bcf108cd2327fe3304e096"
     },
     {
       "schema": "feedback.schema.json",
@@ -16182,7 +16182,7 @@
       "required_in_parent": true,
       "description": "This object contains the registered metric results and applicability reasons.",
       "schema_reference": null,
-      "rule_sha256": "2cbf9272612dbebc7f0b97aae774a6daa972293e62ea64cafc3b87e03df8ed9a"
+      "rule_sha256": "ffa3ed81450f0785a0cb308d8f16c8a1c6bb6cd1e02e0a9b6f38e705560f9123"
     },
     {
       "schema": "score-result.schema.json",
@@ -16191,7 +16191,7 @@
       "required_in_parent": true,
       "description": "These results partition opportunities by their primary reporting domain.",
       "schema_reference": null,
-      "rule_sha256": "a837ca71da11b24781b756295f26f58acdef28c50f95ad7d433041323acd57f6"
+      "rule_sha256": "5d64badc4c0032fd95585166301ac8b734f18dcb5c4ad6c2ca85a4b6abc495b4"
     },
     {
       "schema": "score-result.schema.json",
@@ -16200,7 +16200,7 @@
       "required_in_parent": true,
       "description": "Policy-derived primary grade; answer-components-v2 excludes optional explanation while historical frozen policies retain their original definition.",
       "schema_reference": null,
-      "rule_sha256": "c195ce993e1ad46876645c6df0dc6c3bc9fe58d68cc81fab4608ef8fb7a2cc3e"
+      "rule_sha256": "a56c094bd9df3dd747558fd7dddbdd398502628dbaf244a250a6d3088217e909"
     },
     {
       "schema": "score-result.schema.json",
@@ -16228,6 +16228,24 @@
       "description": "These counts and sums permit exact recomputation of the metric ratios.",
       "schema_reference": null,
       "rule_sha256": "ec4b72ba09daaf75a7ecfeeba15f363692e9bf8344ed47ca8dea90582111104e"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "optional_explanation",
+      "pointer": "/properties/optional_explanation",
+      "required_in_parent": false,
+      "description": "This ratio measures proposition-based explanation credit among proposed explanations.",
+      "schema_reference": null,
+      "rule_sha256": "2de639c9bc90c1495895388ffead62afe82942222a2f58490db4fa460155d7e5"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "items",
+      "pointer": "/properties/items",
+      "required_in_parent": false,
+      "description": "Native per-unit recording findings and supported off-key assertions. Excluded units are omitted; unresolved detection is not a confirmed miss.",
+      "schema_reference": null,
+      "rule_sha256": "9f2fb51d9ca80f28a107cfd5c58cfb4a036c015decae25c3db6c90f13a278646"
     },
     {
       "schema": "score-result.schema.json",
@@ -16308,7 +16326,7 @@
       "required_in_parent": true,
       "description": "This ratio measures supported error assertions among all distinct error assertions.",
       "schema_reference": null,
-      "rule_sha256": "5ce73811497f5ab50adad2ae0c0fa7c4de9e54c9165d58b007e273a59dcf9106"
+      "rule_sha256": "1f96aaf6f65438dd4f6f2e358f9ac15a98839727b64746f116d235c2216dc630"
     },
     {
       "schema": "score-result.schema.json",
@@ -16317,7 +16335,7 @@
       "required_in_parent": true,
       "description": "This ratio measures the true detection units that the teacher found.",
       "schema_reference": null,
-      "rule_sha256": "aa7021c0d3d50c61453465c67fa3aeb847cadef27bba156e89f8734e16653775"
+      "rule_sha256": "e8c3e56be7a5bf1daa299ba0ed8adc90e702a5dab5a335b58b4036936252ec06"
     },
     {
       "schema": "score-result.schema.json",
@@ -16326,7 +16344,7 @@
       "required_in_parent": true,
       "description": "This ratio combines detection precision and recall. If true opportunities exist and the teacher finds none, its value is zero.",
       "schema_reference": null,
-      "rule_sha256": "d1e80756f85963484c267a40ad3ffa5761df8c0a6eb58f3312ccf6155b3a4bd5"
+      "rule_sha256": "ae00f0a12d3826f93c946c2205919d7881df77ad77dcbf60b526e66c8e82541c"
     },
     {
       "schema": "score-result.schema.json",
@@ -16335,7 +16353,7 @@
       "required_in_parent": true,
       "description": "This ratio measures true units that the teacher missed.",
       "schema_reference": null,
-      "rule_sha256": "792098f943b8ba7b8907c808f6b1c06f428b66869cb334daf61ec5e9298a8b62"
+      "rule_sha256": "face4650ef2f7d41907cb33f5aec1203eaca9c5a6966eab066d06d3fe5b9143d"
     },
     {
       "schema": "score-result.schema.json",
@@ -16344,7 +16362,7 @@
       "required_in_parent": true,
       "description": "This ratio measures unsupported error assertions among all distinct error assertions.",
       "schema_reference": null,
-      "rule_sha256": "eef096cc0bc9b695e22890028a78471903cb6e99b924084ed24b29014d6f16e1"
+      "rule_sha256": "4a840df272a1ed65d1f468660f1c626d1060f02de602ed90304850e165898190"
     },
     {
       "schema": "score-result.schema.json",
@@ -16353,7 +16371,7 @@
       "required_in_parent": true,
       "description": "This ratio measures detected units with a category that the teacher explicitly supplied.",
       "schema_reference": null,
-      "rule_sha256": "93c4398cd2f9efdcbe7e1dbd48b0bd0bcdfb84a7c5faf2d62114659d132153e1"
+      "rule_sha256": "4ad981c73d08d3c29c137f2b09e55f7838cec309a310fe00cd0388d898039ede"
     },
     {
       "schema": "score-result.schema.json",
@@ -16362,7 +16380,7 @@
       "required_in_parent": true,
       "description": "This ratio measures correct primary domains among explicitly categorized detections.",
       "schema_reference": null,
-      "rule_sha256": "7517a6524537612ff4d7f7fe430d1f0ed411112ca3af4e303ebf98232d3bc5fc"
+      "rule_sha256": "881def03c95c2f33d5d7fbd96319fbc21963baf4b407ecb5562a7d8f64d0e70d"
     },
     {
       "schema": "score-result.schema.json",
@@ -16371,7 +16389,7 @@
       "required_in_parent": true,
       "description": "This ratio measures exact permitted taxonomy IDs among explicitly categorized detections.",
       "schema_reference": null,
-      "rule_sha256": "bf10dd513f7616e879f7628428ec61e27ec5dbc1785293be76ce89c8d88c533e"
+      "rule_sha256": "f0df00bc34426f9b9b55584968322912f01cb9fe5ddec169e9b303c1d5fd3812"
     },
     {
       "schema": "score-result.schema.json",
@@ -16380,7 +16398,7 @@
       "required_in_parent": true,
       "description": "This ratio measures tree-based category credit among explicitly categorized detections.",
       "schema_reference": null,
-      "rule_sha256": "96474bcd89299c22cb2aff351c0a037084c686af759e00a9543147973779cfdd"
+      "rule_sha256": "7a1d31ca2a68aad84bed6f9926e82491a870cab867a18176463d71b2a506d85a"
     },
     {
       "schema": "score-result.schema.json",
@@ -16389,7 +16407,7 @@
       "required_in_parent": true,
       "description": "This ratio measures category credit across all true units. Missing detections and missing categories contribute zero.",
       "schema_reference": null,
-      "rule_sha256": "e258c03941d3216fb6dd0afdc91a810c7b1c1e6f44c709d4d1592327373736e9"
+      "rule_sha256": "5fa6ccce2e7a26aa0cd57b345aef12426c4d1fdbe01af5bb1cbc74f11e34cdde"
     },
     {
       "schema": "score-result.schema.json",
@@ -16398,7 +16416,7 @@
       "required_in_parent": true,
       "description": "This ratio measures proposed corrections among detected units that permit correction.",
       "schema_reference": null,
-      "rule_sha256": "0fd760ae8c146263317531e84dd069f631f852f7b8c5dd4604c1df5d0b91964e"
+      "rule_sha256": "16247b7951a03f2fa2f7c43fbd2acade2f36d76599fb95bd30bb64e168cdf29a"
     },
     {
       "schema": "score-result.schema.json",
@@ -16407,7 +16425,7 @@
       "required_in_parent": true,
       "description": "This ratio measures fully correct corrections among proposed corrections of true detections.",
       "schema_reference": null,
-      "rule_sha256": "e62b4a91050fbcadf9f716f1581ca9653fab6eae8afc7c75e2268364cd1a787a"
+      "rule_sha256": "fd87c83e168ab86caa01fb8d91e49154da3ced54059b176e3e1e167819213217"
     },
     {
       "schema": "score-result.schema.json",
@@ -16416,7 +16434,7 @@
       "required_in_parent": true,
       "description": "This ratio measures proposition-based correction credit among proposed corrections. The model cannot choose an arbitrary partial score.",
       "schema_reference": null,
-      "rule_sha256": "3e8ab0d5110cd2f161d9f1739184a1c69338b6b2919a4eefb7f717636b5f1ce4"
+      "rule_sha256": "a4718cb41587089bcf6c7a02de6271fb2754bdcb78ad7a7c87ff483374e0ae53"
     },
     {
       "schema": "score-result.schema.json",
@@ -16425,7 +16443,7 @@
       "required_in_parent": true,
       "description": "This ratio measures fully corrected units among all true units that permit correction.",
       "schema_reference": null,
-      "rule_sha256": "224476a7b9a3b3276eaed2adbc86fa74a64ce69502a7cc1a1d64618ce504a5ee"
+      "rule_sha256": "e39ce362dcb4cd330f4df59123a05a923a720876b5dfe7914258e1be0ffb7f3d"
     },
     {
       "schema": "score-result.schema.json",
@@ -16434,7 +16452,7 @@
       "required_in_parent": true,
       "description": "This ratio measures correction credit across all true correction opportunities. Missed units contribute zero.",
       "schema_reference": null,
-      "rule_sha256": "a6dd5579ccaebfbd38b32ef6471cd131f572c3b4a96f6bc97cbadf6e09e706f2"
+      "rule_sha256": "784c0d4e30a50b4374afc4c33939babe4e7de9dfab53a240700dfa4852bae94d"
     },
     {
       "schema": "score-result.schema.json",
@@ -16443,7 +16461,7 @@
       "required_in_parent": true,
       "description": "This ratio measures fully correct repairs among repairs of true detections and unnecessary repairs.",
       "schema_reference": null,
-      "rule_sha256": "9ab5e6f32288bffc2b1a3b35351abc008e6a89080026f071d028e6e7f0ca5607"
+      "rule_sha256": "364e9b1f0b61e54c92b359bd067afa497936265452092bc62671d8036db165d4"
     },
     {
       "schema": "score-result.schema.json",
@@ -16452,7 +16470,7 @@
       "required_in_parent": true,
       "description": "This ratio measures proposed explanations among detected units that permit explanation.",
       "schema_reference": null,
-      "rule_sha256": "df731927dcf2d759ca4d93330d688a987ebd51e926b3df8c7c7db5d992055acc"
+      "rule_sha256": "d758381bc4c249093617f3e58b81235192956317f264868968caa2550af8bb33"
     },
     {
       "schema": "score-result.schema.json",
@@ -16461,7 +16479,7 @@
       "required_in_parent": true,
       "description": "This ratio measures fully correct explanations among proposed explanations of true detections.",
       "schema_reference": null,
-      "rule_sha256": "66b552a2aefca234e965493b8bf1a5c25d185ec21758623e0e650424aeac26bf"
+      "rule_sha256": "57ca973a16870f1dc694214132f72da78afc68d97b69202fd3f8d6f8a2c1b5e6"
     },
     {
       "schema": "score-result.schema.json",
@@ -16470,7 +16488,7 @@
       "required_in_parent": true,
       "description": "This ratio measures proposition-based explanation credit among proposed explanations.",
       "schema_reference": null,
-      "rule_sha256": "385cab5b8eda5e9d230b7029b1ba44ba2bea4fb080bd8432043000b395a2ef1f"
+      "rule_sha256": "2de639c9bc90c1495895388ffead62afe82942222a2f58490db4fa460155d7e5"
     },
     {
       "schema": "score-result.schema.json",
@@ -16479,7 +16497,7 @@
       "required_in_parent": true,
       "description": "This ratio measures explanation credit across all true explanation opportunities. Missed units contribute zero.",
       "schema_reference": null,
-      "rule_sha256": "8f208fb08379d946b40d29939e9234b17c354d55e0ae687b811765b9fa76b89d"
+      "rule_sha256": "8689d08d3bb915debba7aff6c0898347c63cee7a8969914d96af0fe1987e5ed0"
     },
     {
       "schema": "score-result.schema.json",
@@ -16488,7 +16506,7 @@
       "required_in_parent": true,
       "description": "This ratio measures designated permitted units that the teacher wrongly marks as errors.",
       "schema_reference": null,
-      "rule_sha256": "d16ec05fc8d1cb2537ec58fdb9ccc0345cc368cfdad7086b709f44bcca7ede43"
+      "rule_sha256": "002b8d5c70b9df8aa1c965de63762cfb4471b1770b5684ef1849dc88237df2a3"
     },
     {
       "schema": "score-result.schema.json",
@@ -16497,7 +16515,7 @@
       "required_in_parent": true,
       "description": "This ratio measures designated permitted units that the teacher does not mark as errors. Silence does not prove conscious recognition.",
       "schema_reference": null,
-      "rule_sha256": "53f87b2482239250a8a2a7d7f1212861e30dc68ea303cc636e8118feb13d9520"
+      "rule_sha256": "ad79042e9887a0f90a3d40ca7e35cdba9506652c7f7c087200f4e56baac0186b"
     },
     {
       "schema": "score-result.schema.json",
@@ -16506,7 +16524,7 @@
       "required_in_parent": true,
       "description": "This ratio measures correct explicit judgments among explicitly judged negative controls.",
       "schema_reference": null,
-      "rule_sha256": "259dd591d8508b1f0778d6cc4698345b0c8e9f2bcd5c76decbf9abac7d4d2ad6"
+      "rule_sha256": "a11401caf55d96382471c2c67bcf5b159ce7615c66d24beabf9a03e74af22300"
     },
     {
       "schema": "score-result.schema.json",
@@ -16515,7 +16533,7 @@
       "required_in_parent": true,
       "description": "This ratio measures correct explicit judgments among mapped units. Unsupported off-key assertions remain false positives outside this denominator.",
       "schema_reference": null,
-      "rule_sha256": "5cf7d56297a09512c968c4f0afd7f9ebe9a4160986905f6842d955b805eb0dde"
+      "rule_sha256": "d2d74811d940ae8c58a9dd071e2b2847118aeca55eeadf1f8c954b18f2fdf0f0"
     },
     {
       "schema": "score-result.schema.json",
@@ -16524,7 +16542,7 @@
       "required_in_parent": true,
       "description": "This ratio applies fixed severity weights to true detections. Each false positive has penalty one.",
       "schema_reference": null,
-      "rule_sha256": "0f8a5f2e6604541d50df8d6451ff8f50cb652e77ea8e5c88b63f2fcd404200b0"
+      "rule_sha256": "e0b899a3d31b476678fc8585c61fd0203e282c1203262fe3e3a1cedef7f00ad4"
     },
     {
       "schema": "score-result.schema.json",
@@ -16533,7 +16551,7 @@
       "required_in_parent": true,
       "description": "This ratio applies the case weights to detected and missed opportunities. The case fixes these weights before answer entry.",
       "schema_reference": null,
-      "rule_sha256": "dee57d030e0d731a0570db79ad333c38da93bc2a5f294fe48c94b2b40bc58035"
+      "rule_sha256": "cc0a77253a8d2e32c159dd3d4059e4f03afd078d47220500793058286e5a8b56"
     },
     {
       "schema": "score-result.schema.json",
@@ -16542,7 +16560,7 @@
       "required_in_parent": true,
       "description": "This ratio combines weighted precision and recall. It does not replace the unweighted metrics.",
       "schema_reference": null,
-      "rule_sha256": "f21dfa35233dbe176f746321a47f98330dab263f51a1ee4d4190a34849149614"
+      "rule_sha256": "6bcf4ab407912e1038eb2991ceae2768c20bf297a6575e00ca07dfa6640f7518"
     },
     {
       "schema": "score-result.schema.json",
@@ -16591,6 +16609,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/detection.precision/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/metrics/properties/detection.recall/properties/value",
       "required_in_parent": true,
@@ -16633,6 +16660,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/detection.recall/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -16681,6 +16717,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/detection.f1/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/metrics/properties/detection.miss_rate/properties/value",
       "required_in_parent": true,
@@ -16723,6 +16768,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/detection.miss_rate/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -16771,6 +16825,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/detection.false_discovery_rate/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/metrics/properties/classification.coverage/properties/value",
       "required_in_parent": true,
@@ -16813,6 +16876,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/classification.coverage/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -16861,6 +16933,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/classification.family_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/metrics/properties/classification.exact_accuracy/properties/value",
       "required_in_parent": true,
@@ -16903,6 +16984,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/classification.exact_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -16951,6 +17041,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/classification.hierarchical_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/metrics/properties/classification.hierarchical_recall/properties/value",
       "required_in_parent": true,
@@ -16993,6 +17092,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/classification.hierarchical_recall/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -17041,6 +17149,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/correction.attempt_rate/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/metrics/properties/correction.strict_accuracy/properties/value",
       "required_in_parent": true,
@@ -17083,6 +17200,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/correction.strict_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -17131,6 +17257,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/correction.graded_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/metrics/properties/correction.strict_recall/properties/value",
       "required_in_parent": true,
@@ -17173,6 +17308,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/correction.strict_recall/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -17221,6 +17365,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/correction.graded_recall/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/metrics/properties/correction.assertion_precision/properties/value",
       "required_in_parent": true,
@@ -17263,6 +17416,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/correction.assertion_precision/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -17311,6 +17473,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/explanation.coverage/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/metrics/properties/explanation.strict_accuracy/properties/value",
       "required_in_parent": true,
@@ -17353,6 +17524,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/explanation.strict_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -17401,6 +17581,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/explanation.graded_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/metrics/properties/explanation.graded_recall/properties/value",
       "required_in_parent": true,
@@ -17443,6 +17632,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/explanation.graded_recall/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -17491,6 +17689,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/decoy.overcorrection_rate/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/metrics/properties/decoy.unflagged_rate/properties/value",
       "required_in_parent": true,
@@ -17533,6 +17740,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/decoy.unflagged_rate/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -17581,6 +17797,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/decoy.explicit_acceptability_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/metrics/properties/acceptability.explicit_accuracy/properties/value",
       "required_in_parent": true,
@@ -17623,6 +17848,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/acceptability.explicit_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -17671,6 +17905,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/weighted.precision/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/metrics/properties/weighted.recall/properties/value",
       "required_in_parent": true,
@@ -17716,6 +17959,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/weighted.recall/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/metrics/properties/weighted.f1/properties/value",
       "required_in_parent": true,
@@ -17758,6 +18010,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/metrics/properties/weighted.f1/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -17811,7 +18072,7 @@
       "required_in_parent": true,
       "description": "This ratio contains detection precision under the stated counting policy.",
       "schema_reference": null,
-      "rule_sha256": "755752d0495ee878b19d56e17bb7c05533292dbe9425b9ed333e5b37988a8dd8"
+      "rule_sha256": "c942b0bb7d62aa58096102994fe61d2ef8101728d47c6a771ee175429c08789f"
     },
     {
       "schema": "score-result.schema.json",
@@ -17820,7 +18081,7 @@
       "required_in_parent": true,
       "description": "This ratio contains detection recall under the stated counting policy.",
       "schema_reference": null,
-      "rule_sha256": "dce0a8234e0a73404c6c68f8916065fbdf68703aff7ec24b369b78380e1b6875"
+      "rule_sha256": "9a8604d6b23e24977f4c6a93232e428124b45c1cbb58e37ff0bf64edf480a896"
     },
     {
       "schema": "score-result.schema.json",
@@ -17829,7 +18090,7 @@
       "required_in_parent": true,
       "description": "This ratio contains the F1 value under the stated counting policy.",
       "schema_reference": null,
-      "rule_sha256": "73564c8462d90eb2c793efd93c96f4002f15e124b1bf3db3effeee6019f93dc0"
+      "rule_sha256": "d9f06d4783dea829d1c1a3d5e5ed3c779cbff5bd831251a0056690bc4ce8f19b"
     },
     {
       "schema": "score-result.schema.json",
@@ -17838,7 +18099,7 @@
       "required_in_parent": true,
       "description": "This object contains the registered metric results and applicability reasons.",
       "schema_reference": null,
-      "rule_sha256": "2cbf9272612dbebc7f0b97aae774a6daa972293e62ea64cafc3b87e03df8ed9a"
+      "rule_sha256": "ffa3ed81450f0785a0cb308d8f16c8a1c6bb6cd1e02e0a9b6f38e705560f9123"
     },
     {
       "schema": "score-result.schema.json",
@@ -17887,6 +18148,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/precision/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/domain_results/items/properties/recall/properties/value",
       "required_in_parent": true,
@@ -17929,6 +18199,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/recall/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -17977,12 +18256,21 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/f1/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "detection.precision",
       "pointer": "/properties/domain_results/items/properties/metrics/properties/detection.precision",
       "required_in_parent": true,
       "description": "This ratio measures supported error assertions among all distinct error assertions.",
       "schema_reference": null,
-      "rule_sha256": "5ce73811497f5ab50adad2ae0c0fa7c4de9e54c9165d58b007e273a59dcf9106"
+      "rule_sha256": "1f96aaf6f65438dd4f6f2e358f9ac15a98839727b64746f116d235c2216dc630"
     },
     {
       "schema": "score-result.schema.json",
@@ -17991,7 +18279,7 @@
       "required_in_parent": true,
       "description": "This ratio measures the true detection units that the teacher found.",
       "schema_reference": null,
-      "rule_sha256": "aa7021c0d3d50c61453465c67fa3aeb847cadef27bba156e89f8734e16653775"
+      "rule_sha256": "e8c3e56be7a5bf1daa299ba0ed8adc90e702a5dab5a335b58b4036936252ec06"
     },
     {
       "schema": "score-result.schema.json",
@@ -18000,7 +18288,7 @@
       "required_in_parent": true,
       "description": "This ratio combines detection precision and recall. If true opportunities exist and the teacher finds none, its value is zero.",
       "schema_reference": null,
-      "rule_sha256": "d1e80756f85963484c267a40ad3ffa5761df8c0a6eb58f3312ccf6155b3a4bd5"
+      "rule_sha256": "ae00f0a12d3826f93c946c2205919d7881df77ad77dcbf60b526e66c8e82541c"
     },
     {
       "schema": "score-result.schema.json",
@@ -18009,7 +18297,7 @@
       "required_in_parent": true,
       "description": "This ratio measures true units that the teacher missed.",
       "schema_reference": null,
-      "rule_sha256": "792098f943b8ba7b8907c808f6b1c06f428b66869cb334daf61ec5e9298a8b62"
+      "rule_sha256": "face4650ef2f7d41907cb33f5aec1203eaca9c5a6966eab066d06d3fe5b9143d"
     },
     {
       "schema": "score-result.schema.json",
@@ -18018,7 +18306,7 @@
       "required_in_parent": true,
       "description": "This ratio measures unsupported error assertions among all distinct error assertions.",
       "schema_reference": null,
-      "rule_sha256": "eef096cc0bc9b695e22890028a78471903cb6e99b924084ed24b29014d6f16e1"
+      "rule_sha256": "4a840df272a1ed65d1f468660f1c626d1060f02de602ed90304850e165898190"
     },
     {
       "schema": "score-result.schema.json",
@@ -18027,7 +18315,7 @@
       "required_in_parent": true,
       "description": "This ratio measures detected units with a category that the teacher explicitly supplied.",
       "schema_reference": null,
-      "rule_sha256": "93c4398cd2f9efdcbe7e1dbd48b0bd0bcdfb84a7c5faf2d62114659d132153e1"
+      "rule_sha256": "4ad981c73d08d3c29c137f2b09e55f7838cec309a310fe00cd0388d898039ede"
     },
     {
       "schema": "score-result.schema.json",
@@ -18036,7 +18324,7 @@
       "required_in_parent": true,
       "description": "This ratio measures correct primary domains among explicitly categorized detections.",
       "schema_reference": null,
-      "rule_sha256": "7517a6524537612ff4d7f7fe430d1f0ed411112ca3af4e303ebf98232d3bc5fc"
+      "rule_sha256": "881def03c95c2f33d5d7fbd96319fbc21963baf4b407ecb5562a7d8f64d0e70d"
     },
     {
       "schema": "score-result.schema.json",
@@ -18045,7 +18333,7 @@
       "required_in_parent": true,
       "description": "This ratio measures exact permitted taxonomy IDs among explicitly categorized detections.",
       "schema_reference": null,
-      "rule_sha256": "bf10dd513f7616e879f7628428ec61e27ec5dbc1785293be76ce89c8d88c533e"
+      "rule_sha256": "f0df00bc34426f9b9b55584968322912f01cb9fe5ddec169e9b303c1d5fd3812"
     },
     {
       "schema": "score-result.schema.json",
@@ -18054,7 +18342,7 @@
       "required_in_parent": true,
       "description": "This ratio measures tree-based category credit among explicitly categorized detections.",
       "schema_reference": null,
-      "rule_sha256": "96474bcd89299c22cb2aff351c0a037084c686af759e00a9543147973779cfdd"
+      "rule_sha256": "7a1d31ca2a68aad84bed6f9926e82491a870cab867a18176463d71b2a506d85a"
     },
     {
       "schema": "score-result.schema.json",
@@ -18063,7 +18351,7 @@
       "required_in_parent": true,
       "description": "This ratio measures category credit across all true units. Missing detections and missing categories contribute zero.",
       "schema_reference": null,
-      "rule_sha256": "e258c03941d3216fb6dd0afdc91a810c7b1c1e6f44c709d4d1592327373736e9"
+      "rule_sha256": "5fa6ccce2e7a26aa0cd57b345aef12426c4d1fdbe01af5bb1cbc74f11e34cdde"
     },
     {
       "schema": "score-result.schema.json",
@@ -18072,7 +18360,7 @@
       "required_in_parent": true,
       "description": "This ratio measures proposed corrections among detected units that permit correction.",
       "schema_reference": null,
-      "rule_sha256": "0fd760ae8c146263317531e84dd069f631f852f7b8c5dd4604c1df5d0b91964e"
+      "rule_sha256": "16247b7951a03f2fa2f7c43fbd2acade2f36d76599fb95bd30bb64e168cdf29a"
     },
     {
       "schema": "score-result.schema.json",
@@ -18081,7 +18369,7 @@
       "required_in_parent": true,
       "description": "This ratio measures fully correct corrections among proposed corrections of true detections.",
       "schema_reference": null,
-      "rule_sha256": "e62b4a91050fbcadf9f716f1581ca9653fab6eae8afc7c75e2268364cd1a787a"
+      "rule_sha256": "fd87c83e168ab86caa01fb8d91e49154da3ced54059b176e3e1e167819213217"
     },
     {
       "schema": "score-result.schema.json",
@@ -18090,7 +18378,7 @@
       "required_in_parent": true,
       "description": "This ratio measures proposition-based correction credit among proposed corrections. The model cannot choose an arbitrary partial score.",
       "schema_reference": null,
-      "rule_sha256": "3e8ab0d5110cd2f161d9f1739184a1c69338b6b2919a4eefb7f717636b5f1ce4"
+      "rule_sha256": "a4718cb41587089bcf6c7a02de6271fb2754bdcb78ad7a7c87ff483374e0ae53"
     },
     {
       "schema": "score-result.schema.json",
@@ -18099,7 +18387,7 @@
       "required_in_parent": true,
       "description": "This ratio measures fully corrected units among all true units that permit correction.",
       "schema_reference": null,
-      "rule_sha256": "224476a7b9a3b3276eaed2adbc86fa74a64ce69502a7cc1a1d64618ce504a5ee"
+      "rule_sha256": "e39ce362dcb4cd330f4df59123a05a923a720876b5dfe7914258e1be0ffb7f3d"
     },
     {
       "schema": "score-result.schema.json",
@@ -18108,7 +18396,7 @@
       "required_in_parent": true,
       "description": "This ratio measures correction credit across all true correction opportunities. Missed units contribute zero.",
       "schema_reference": null,
-      "rule_sha256": "a6dd5579ccaebfbd38b32ef6471cd131f572c3b4a96f6bc97cbadf6e09e706f2"
+      "rule_sha256": "784c0d4e30a50b4374afc4c33939babe4e7de9dfab53a240700dfa4852bae94d"
     },
     {
       "schema": "score-result.schema.json",
@@ -18117,7 +18405,7 @@
       "required_in_parent": true,
       "description": "This ratio measures fully correct repairs among repairs of true detections and unnecessary repairs.",
       "schema_reference": null,
-      "rule_sha256": "9ab5e6f32288bffc2b1a3b35351abc008e6a89080026f071d028e6e7f0ca5607"
+      "rule_sha256": "364e9b1f0b61e54c92b359bd067afa497936265452092bc62671d8036db165d4"
     },
     {
       "schema": "score-result.schema.json",
@@ -18126,7 +18414,7 @@
       "required_in_parent": true,
       "description": "This ratio measures proposed explanations among detected units that permit explanation.",
       "schema_reference": null,
-      "rule_sha256": "df731927dcf2d759ca4d93330d688a987ebd51e926b3df8c7c7db5d992055acc"
+      "rule_sha256": "d758381bc4c249093617f3e58b81235192956317f264868968caa2550af8bb33"
     },
     {
       "schema": "score-result.schema.json",
@@ -18135,7 +18423,7 @@
       "required_in_parent": true,
       "description": "This ratio measures fully correct explanations among proposed explanations of true detections.",
       "schema_reference": null,
-      "rule_sha256": "66b552a2aefca234e965493b8bf1a5c25d185ec21758623e0e650424aeac26bf"
+      "rule_sha256": "57ca973a16870f1dc694214132f72da78afc68d97b69202fd3f8d6f8a2c1b5e6"
     },
     {
       "schema": "score-result.schema.json",
@@ -18144,7 +18432,7 @@
       "required_in_parent": true,
       "description": "This ratio measures proposition-based explanation credit among proposed explanations.",
       "schema_reference": null,
-      "rule_sha256": "385cab5b8eda5e9d230b7029b1ba44ba2bea4fb080bd8432043000b395a2ef1f"
+      "rule_sha256": "2de639c9bc90c1495895388ffead62afe82942222a2f58490db4fa460155d7e5"
     },
     {
       "schema": "score-result.schema.json",
@@ -18153,7 +18441,7 @@
       "required_in_parent": true,
       "description": "This ratio measures explanation credit across all true explanation opportunities. Missed units contribute zero.",
       "schema_reference": null,
-      "rule_sha256": "8f208fb08379d946b40d29939e9234b17c354d55e0ae687b811765b9fa76b89d"
+      "rule_sha256": "8689d08d3bb915debba7aff6c0898347c63cee7a8969914d96af0fe1987e5ed0"
     },
     {
       "schema": "score-result.schema.json",
@@ -18162,7 +18450,7 @@
       "required_in_parent": true,
       "description": "This ratio measures designated permitted units that the teacher wrongly marks as errors.",
       "schema_reference": null,
-      "rule_sha256": "d16ec05fc8d1cb2537ec58fdb9ccc0345cc368cfdad7086b709f44bcca7ede43"
+      "rule_sha256": "002b8d5c70b9df8aa1c965de63762cfb4471b1770b5684ef1849dc88237df2a3"
     },
     {
       "schema": "score-result.schema.json",
@@ -18171,7 +18459,7 @@
       "required_in_parent": true,
       "description": "This ratio measures designated permitted units that the teacher does not mark as errors. Silence does not prove conscious recognition.",
       "schema_reference": null,
-      "rule_sha256": "53f87b2482239250a8a2a7d7f1212861e30dc68ea303cc636e8118feb13d9520"
+      "rule_sha256": "ad79042e9887a0f90a3d40ca7e35cdba9506652c7f7c087200f4e56baac0186b"
     },
     {
       "schema": "score-result.schema.json",
@@ -18180,7 +18468,7 @@
       "required_in_parent": true,
       "description": "This ratio measures correct explicit judgments among explicitly judged negative controls.",
       "schema_reference": null,
-      "rule_sha256": "259dd591d8508b1f0778d6cc4698345b0c8e9f2bcd5c76decbf9abac7d4d2ad6"
+      "rule_sha256": "a11401caf55d96382471c2c67bcf5b159ce7615c66d24beabf9a03e74af22300"
     },
     {
       "schema": "score-result.schema.json",
@@ -18189,7 +18477,7 @@
       "required_in_parent": true,
       "description": "This ratio measures correct explicit judgments among mapped units. Unsupported off-key assertions remain false positives outside this denominator.",
       "schema_reference": null,
-      "rule_sha256": "5cf7d56297a09512c968c4f0afd7f9ebe9a4160986905f6842d955b805eb0dde"
+      "rule_sha256": "d2d74811d940ae8c58a9dd071e2b2847118aeca55eeadf1f8c954b18f2fdf0f0"
     },
     {
       "schema": "score-result.schema.json",
@@ -18198,7 +18486,7 @@
       "required_in_parent": true,
       "description": "This ratio applies fixed severity weights to true detections. Each false positive has penalty one.",
       "schema_reference": null,
-      "rule_sha256": "0f8a5f2e6604541d50df8d6451ff8f50cb652e77ea8e5c88b63f2fcd404200b0"
+      "rule_sha256": "e0b899a3d31b476678fc8585c61fd0203e282c1203262fe3e3a1cedef7f00ad4"
     },
     {
       "schema": "score-result.schema.json",
@@ -18207,7 +18495,7 @@
       "required_in_parent": true,
       "description": "This ratio applies the case weights to detected and missed opportunities. The case fixes these weights before answer entry.",
       "schema_reference": null,
-      "rule_sha256": "dee57d030e0d731a0570db79ad333c38da93bc2a5f294fe48c94b2b40bc58035"
+      "rule_sha256": "cc0a77253a8d2e32c159dd3d4059e4f03afd078d47220500793058286e5a8b56"
     },
     {
       "schema": "score-result.schema.json",
@@ -18216,7 +18504,7 @@
       "required_in_parent": true,
       "description": "This ratio combines weighted precision and recall. It does not replace the unweighted metrics.",
       "schema_reference": null,
-      "rule_sha256": "f21dfa35233dbe176f746321a47f98330dab263f51a1ee4d4190a34849149614"
+      "rule_sha256": "6bcf4ab407912e1038eb2991ceae2768c20bf297a6575e00ca07dfa6640f7518"
     },
     {
       "schema": "score-result.schema.json",
@@ -18265,6 +18553,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/detection.precision/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/domain_results/items/properties/metrics/properties/detection.recall/properties/value",
       "required_in_parent": true,
@@ -18307,6 +18604,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/detection.recall/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -18355,6 +18661,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/detection.f1/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/domain_results/items/properties/metrics/properties/detection.miss_rate/properties/value",
       "required_in_parent": true,
@@ -18397,6 +18712,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/detection.miss_rate/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -18445,6 +18769,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/detection.false_discovery_rate/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/domain_results/items/properties/metrics/properties/classification.coverage/properties/value",
       "required_in_parent": true,
@@ -18487,6 +18820,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/classification.coverage/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -18535,6 +18877,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/classification.family_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/domain_results/items/properties/metrics/properties/classification.exact_accuracy/properties/value",
       "required_in_parent": true,
@@ -18577,6 +18928,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/classification.exact_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -18625,6 +18985,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/classification.hierarchical_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/domain_results/items/properties/metrics/properties/classification.hierarchical_recall/properties/value",
       "required_in_parent": true,
@@ -18667,6 +19036,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/classification.hierarchical_recall/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -18715,6 +19093,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/correction.attempt_rate/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/domain_results/items/properties/metrics/properties/correction.strict_accuracy/properties/value",
       "required_in_parent": true,
@@ -18757,6 +19144,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/correction.strict_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -18805,6 +19201,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/correction.graded_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/domain_results/items/properties/metrics/properties/correction.strict_recall/properties/value",
       "required_in_parent": true,
@@ -18847,6 +19252,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/correction.strict_recall/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -18895,6 +19309,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/correction.graded_recall/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/domain_results/items/properties/metrics/properties/correction.assertion_precision/properties/value",
       "required_in_parent": true,
@@ -18937,6 +19360,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/correction.assertion_precision/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -18985,6 +19417,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/explanation.coverage/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/domain_results/items/properties/metrics/properties/explanation.strict_accuracy/properties/value",
       "required_in_parent": true,
@@ -19027,6 +19468,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/explanation.strict_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -19075,6 +19525,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/explanation.graded_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/domain_results/items/properties/metrics/properties/explanation.graded_recall/properties/value",
       "required_in_parent": true,
@@ -19117,6 +19576,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/explanation.graded_recall/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -19165,6 +19633,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/decoy.overcorrection_rate/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/domain_results/items/properties/metrics/properties/decoy.unflagged_rate/properties/value",
       "required_in_parent": true,
@@ -19207,6 +19684,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/decoy.unflagged_rate/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -19255,6 +19741,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/decoy.explicit_acceptability_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/domain_results/items/properties/metrics/properties/acceptability.explicit_accuracy/properties/value",
       "required_in_parent": true,
@@ -19297,6 +19792,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/acceptability.explicit_accuracy/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -19345,6 +19849,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/weighted.precision/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value",
       "pointer": "/properties/domain_results/items/properties/metrics/properties/weighted.recall/properties/value",
       "required_in_parent": true,
@@ -19387,6 +19900,15 @@
       "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
       "schema_reference": null,
       "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/weighted.recall/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -19435,6 +19957,15 @@
     },
     {
       "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/domain_results/items/properties/metrics/properties/weighted.f1/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
       "name": "value_0_100",
       "pointer": "/properties/composite/properties/value_0_100",
       "required_in_parent": true,
@@ -19468,6 +19999,15 @@
       "description": "The authoritative exact composite.",
       "schema_reference": null,
       "rule_sha256": "7cdaf723605a05aeca82d4d9c4e0db415cee60a5cc946b43893cfd4ccb56a018"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/composite/properties/display",
+      "required_in_parent": false,
+      "description": "Native exact half-up one decimal display; not an arithmetic input.",
+      "schema_reference": null,
+      "rule_sha256": "c38caec19f3173f5cf54ef5e8de915ce2160c7b0d4c4910b1fc3088a321d946e"
     },
     {
       "schema": "score-result.schema.json",
@@ -19765,6 +20305,159 @@
       "description": "The exact positive denominator.",
       "schema_reference": null,
       "rule_sha256": "0ccd8df9addf56c8d15be598b66fbfb8b8e03035bc18e7e216337f018569220d"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "value",
+      "pointer": "/properties/optional_explanation/properties/value",
+      "required_in_parent": true,
+      "description": "This field contains the numeric result or null under the parent applicability rule.",
+      "schema_reference": null,
+      "rule_sha256": "dc015fd54016b855e5b878906540219bb22d13d7a355c3850b9d2f379aa689a1"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "numerator",
+      "pointer": "/properties/optional_explanation/properties/numerator",
+      "required_in_parent": true,
+      "description": "The exact nonnegative numerator.",
+      "schema_reference": null,
+      "rule_sha256": "4ae923c18d891af84d8563f2af8bc15e42a8ad6ee909516f9bb9f876e0c869c9"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "denominator",
+      "pointer": "/properties/optional_explanation/properties/denominator",
+      "required_in_parent": true,
+      "description": "The exact positive denominator.",
+      "schema_reference": null,
+      "rule_sha256": "51d6995af1fe52c890b71401112dc92eff3fcf0c2cd502d04d71f88a689f29bc"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "status",
+      "pointer": "/properties/optional_explanation/properties/status",
+      "required_in_parent": true,
+      "description": "This field states the parent operation result from its declared enumeration.",
+      "schema_reference": null,
+      "rule_sha256": "af09cb962f4380037b69ad8e1053fa92f0032500b054c57e6efde3f70e31d7e5"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "reason",
+      "pointer": "/properties/optional_explanation/properties/reason",
+      "required_in_parent": true,
+      "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
+      "schema_reference": null,
+      "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "display",
+      "pointer": "/properties/optional_explanation/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "unit_id",
+      "pointer": "/properties/items/items/properties/unit_id",
+      "required_in_parent": true,
+      "description": "Exact frozen key unit; empty only for an off-key assertion.",
+      "schema_reference": null,
+      "rule_sha256": "a4f8ad5b79a964b2f914159fa037bc3dfe6dea9d64d68a826e60a8926d3902c7"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "kind",
+      "pointer": "/properties/items/items/properties/kind",
+      "required_in_parent": true,
+      "description": "Native finding kind from truth, source stance and component finality.",
+      "schema_reference": null,
+      "rule_sha256": "fe008291b37fa67cdf70587e162bb4d71fde4b56790d1b613fb89be8170f089f"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "category_id",
+      "pointer": "/properties/items/items/properties/category_id",
+      "required_in_parent": true,
+      "description": "Primary key category, or the actual attributed category for an off-key assertion; empty when unattributed.",
+      "schema_reference": null,
+      "rule_sha256": "91d2ebef91df34676cae681c6983896ce3e587c0e16216b95a3f7377051c8d39"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "decision_ids",
+      "pointer": "/properties/items/items/properties/decision_ids",
+      "required_in_parent": true,
+      "description": "Saved consolidated source representatives supporting this finding.",
+      "schema_reference": null,
+      "rule_sha256": "4b4448b23dd3b502db2351bbca6e2346bffe95335cc3a1c26ec13e001da412c5"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "reference",
+      "pointer": "/properties/items/items/properties/reference",
+      "required_in_parent": false,
+      "description": "Post-submission key text, permitted repairs, rationale and actual containing audio interval; this does not certify a requested acoustic operation.",
+      "schema_reference": null,
+      "rule_sha256": "72a1981d5181992a4c73fc49a6da48c4bc26d49e62e29ef7326eddb5ad5761f0"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "target_texts",
+      "pointer": "/properties/items/items/properties/reference/properties/target_texts",
+      "required_in_parent": true,
+      "description": "Exact target quotes from the frozen rendered-text key.",
+      "schema_reference": null,
+      "rule_sha256": "0746925f65185669adafc734789bd2cf55d4887d2455a49defa9717c45dd5d75"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "repairs",
+      "pointer": "/properties/items/items/properties/reference/properties/repairs",
+      "required_in_parent": true,
+      "description": "Permitted authored text alternatives and IPA when supplied; not a requirement to type IPA.",
+      "schema_reference": null,
+      "rule_sha256": "fd787df013e5c14ffc244c318ff2254be5b13d84454311ed566f314f959da70f"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "rationale",
+      "pointer": "/properties/items/items/properties/reference/properties/rationale",
+      "required_in_parent": true,
+      "description": "Stored key rationale; optional user explanations are assessed separately.",
+      "schema_reference": null,
+      "rule_sha256": "12ed7b8e3f02dc60ce5dc27a1719d1ca793cb0f1007c419eb93d36b66d6f6389"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "audio_intervals",
+      "pointer": "/properties/items/items/properties/reference/properties/audio_intervals",
+      "required_in_parent": true,
+      "description": "Actual final-audio intervals from the key; containing-turn timing is retained when finer timing was unavailable.",
+      "schema_reference": null,
+      "rule_sha256": "cd0ded238cae2c0b9ba4d317ac6325c3776bc05baa0f8f057382feccef8ec65c"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "start_ms",
+      "pointer": "/properties/items/items/properties/reference/properties/audio_intervals/items/properties/start_ms",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "f0765dbf409c74f001806c446f2cf171d8c46b5b15779d54423dde921a4b0670"
+    },
+    {
+      "schema": "score-result.schema.json",
+      "name": "end_ms",
+      "pointer": "/properties/items/items/properties/reference/properties/audio_intervals/items/properties/end_ms",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "f0765dbf409c74f001806c446f2cf171d8c46b5b15779d54423dde921a4b0670"
     },
     {
       "schema": "scoring-input.schema.json",
@@ -31035,6 +31728,24 @@
       "rule_sha256": "f090cb615c84d7324e2e4975c584267473e030c801e11713a3ec1d99192db7bd"
     },
     {
+      "schema": "interpretation-checkpoint.schema.json",
+      "name": "result_document_id",
+      "pointer": "/properties/result_document_id",
+      "required_in_parent": false,
+      "description": "Accepted immutable numeric/result document published by the interpretation lease; reused without regrading on feedback retry.",
+      "schema_reference": null,
+      "rule_sha256": "b46690da9ddec4d25df84a02909519bf7ecb50a406bf234358fdbf80a97893de"
+    },
+    {
+      "schema": "interpretation-checkpoint.schema.json",
+      "name": "feedback_status",
+      "pointer": "/properties/feedback_status",
+      "required_in_parent": false,
+      "description": "Actual independent feedback state associated with the saved result.",
+      "schema_reference": null,
+      "rule_sha256": "3c9b55dcb991f929adbde25478fc40817ea4a40c9098219a603bd0d8b64d7aeb"
+    },
+    {
       "schema": "interpretation-view.schema.json",
       "name": "schema_version",
       "pointer": "/properties/schema_version",
@@ -31429,6 +32140,366 @@
       "description": null,
       "schema_reference": null,
       "rule_sha256": "7cb541e84f226754a46c21c79f131fa2898354e1242456e6fd1c162bce319553"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "schema_version",
+      "pointer": "/properties/schema_version",
+      "required_in_parent": true,
+      "description": "The explicit changed local contract version.",
+      "schema_reference": null,
+      "rule_sha256": "cc251c072a1181dd6683dc3dce4a2ab62eae774450b139ef6621275d97eea5a8"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "attempt_id",
+      "pointer": "/properties/attempt_id",
+      "required_in_parent": true,
+      "description": "This identifier refers to the frozen teacher attempt.",
+      "schema_reference": null,
+      "rule_sha256": "1628006eb98d2751bbca4fa04d075cdd708ceb293d9eac917093ae716570f7a0"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "case_version_id",
+      "pointer": "/properties/case_version_id",
+      "required_in_parent": true,
+      "description": "This identifier refers to one immutable case version.",
+      "schema_reference": null,
+      "rule_sha256": "431f1cc1602e194388a713bff33c1240129c66ece35c4383a0b6f22a8490da43"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "decision_set_sha256",
+      "pointer": "/properties/decision_set_sha256",
+      "required_in_parent": true,
+      "description": "This hash identifies the immutable set of decisions used for the score.",
+      "schema_reference": null,
+      "rule_sha256": "7202f9fba10b83bc986f6fe7d4c60f54ff9c8bcfe8eff63a4d434d4836700962"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "scoring_policy_version",
+      "pointer": "/properties/scoring_policy_version",
+      "required_in_parent": true,
+      "description": "This field identifies the exact formula and counting policy.",
+      "schema_reference": null,
+      "rule_sha256": "5a0659ac78ebfa4540ce05e15bd14c157b54d8eeff895da0fcfcd18fff2f61d5"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "status",
+      "pointer": "/properties/status",
+      "required_in_parent": true,
+      "description": "This field states the parent operation result from its declared enumeration.",
+      "schema_reference": null,
+      "rule_sha256": "63aeb210309ab6d7effc59573f7c01cfb12fd2516d7221447cb85f29cf8feba2"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "counts",
+      "pointer": "/properties/counts",
+      "required_in_parent": true,
+      "description": "This object contains raw counts, not reduced metric fractions.",
+      "schema_reference": null,
+      "rule_sha256": "4d669e2dcc472a333127af742f9203575af395885c8ebd608c7c0e52da8b49b6"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "composite",
+      "pointer": "/properties/composite",
+      "required_in_parent": true,
+      "description": "Policy-derived primary grade; answer-components-v2 excludes optional explanation while historical frozen policies retain their original definition.",
+      "schema_reference": null,
+      "rule_sha256": "a56c094bd9df3dd747558fd7dddbdd398502628dbaf244a250a6d3088217e909"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "optional_explanation",
+      "pointer": "/properties/optional_explanation",
+      "required_in_parent": true,
+      "description": "This ratio measures proposition-based explanation credit among proposed explanations.",
+      "schema_reference": null,
+      "rule_sha256": "2de639c9bc90c1495895388ffead62afe82942222a2f58490db4fa460155d7e5"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "items",
+      "pointer": "/properties/items",
+      "required_in_parent": true,
+      "description": "Native per-unit recording findings and supported off-key assertions. Excluded units are omitted; unresolved detection is not a confirmed miss.",
+      "schema_reference": null,
+      "rule_sha256": "9f2fb51d9ca80f28a107cfd5c58cfb4a036c015decae25c3db6c90f13a278646"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "true_errors",
+      "pointer": "/properties/counts/anyOf/0/properties/true_errors",
+      "required_in_parent": true,
+      "description": "This count gives all confirmed true-error units in the case.",
+      "schema_reference": null,
+      "rule_sha256": "6e04ed4734422dfcb6d5f76d61736c4c3b9356a6bd8c7b46526f0e06a2948d9b"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "tp",
+      "pointer": "/properties/counts/anyOf/0/properties/tp",
+      "required_in_parent": true,
+      "description": "This count gives distinct supported true detections.",
+      "schema_reference": null,
+      "rule_sha256": "f1f6749a272baf03c33541de5195d89d76c78b4f75fec03c5704d30ac9100bcb"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "fn",
+      "pointer": "/properties/counts/anyOf/0/properties/fn",
+      "required_in_parent": true,
+      "description": "This count gives missed true units.",
+      "schema_reference": null,
+      "rule_sha256": "d278d31647d4bcecccf8170a947643ae0c1d60e4893798a044291126e5684dc5"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "fp",
+      "pointer": "/properties/counts/anyOf/0/properties/fp",
+      "required_in_parent": true,
+      "description": "This count gives resolved false error assertions after duplicate removal.",
+      "schema_reference": null,
+      "rule_sha256": "7f5501ba11be3122826969bc0fa1398576498492721780f74fe62272914ae255"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "designated_decoys",
+      "pointer": "/properties/counts/anyOf/0/properties/designated_decoys",
+      "required_in_parent": true,
+      "description": "This count gives the reviewed permitted controls in the case.",
+      "schema_reference": null,
+      "rule_sha256": "55d07eef6a55f3841bc845f52be4bf6acf57766f81202ee3674cd10a690b1581"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "decoy_false_positives",
+      "pointer": "/properties/counts/anyOf/0/properties/decoy_false_positives",
+      "required_in_parent": true,
+      "description": "This count gives designated permitted units wrongly marked as errors.",
+      "schema_reference": null,
+      "rule_sha256": "656c8e62fef6cc0e49a633b33934f7acd29ef7d32bd910664657f365f2d92a83"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "duplicate_claims",
+      "pointer": "/properties/counts/anyOf/0/properties/duplicate_claims",
+      "required_in_parent": true,
+      "description": "This count identifies claims excluded from extra credit because they repeat a prior claim.",
+      "schema_reference": null,
+      "rule_sha256": "974479394e4ca2d5d87f41250d1504fa2ae1e539dd86bab4bb95032d82ec360c"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "unresolved_claims",
+      "pointer": "/properties/counts/anyOf/0/properties/unresolved_claims",
+      "required_in_parent": true,
+      "description": "This count gives score-relevant claims that still require review.",
+      "schema_reference": null,
+      "rule_sha256": "60a8947a7cbe128688e8991b3beb5a2fbaec1a37b4ecab0166713dea72523438"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "value_0_100",
+      "pointer": "/properties/composite/properties/value_0_100",
+      "required_in_parent": true,
+      "description": "Non-authoritative legacy UI approximation. Never use this field to calculate a result.",
+      "schema_reference": null,
+      "rule_sha256": "523942b138b73a7567a516225bb4818ca8c8db23a8858a2bac0219ab77484861"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "enabled_components",
+      "pointer": "/properties/composite/properties/enabled_components",
+      "required_in_parent": true,
+      "description": "These component names identify the fixed inputs used by the composite.",
+      "schema_reference": null,
+      "rule_sha256": "1eee769848e151d6d7488b3a483aaa04a490de07a641ebb1a598cb833d7e858c"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "reason",
+      "pointer": "/properties/composite/properties/reason",
+      "required_in_parent": true,
+      "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
+      "schema_reference": null,
+      "rule_sha256": "232521057df15d48b994e7579cb55c509e7de935bb57d2c4596d28171ea8791b"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "exact_value_0_100",
+      "pointer": "/properties/composite/properties/exact_value_0_100",
+      "required_in_parent": true,
+      "description": "The authoritative exact composite.",
+      "schema_reference": null,
+      "rule_sha256": "7cdaf723605a05aeca82d4d9c4e0db415cee60a5cc946b43893cfd4ccb56a018"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "display",
+      "pointer": "/properties/composite/properties/display",
+      "required_in_parent": false,
+      "description": "Native exact half-up one decimal display; not an arithmetic input.",
+      "schema_reference": null,
+      "rule_sha256": "c38caec19f3173f5cf54ef5e8de915ce2160c7b0d4c4910b1fc3088a321d946e"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "value",
+      "pointer": "/properties/optional_explanation/properties/value",
+      "required_in_parent": true,
+      "description": "This field contains the numeric result or null under the parent applicability rule.",
+      "schema_reference": null,
+      "rule_sha256": "dc015fd54016b855e5b878906540219bb22d13d7a355c3850b9d2f379aa689a1"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "numerator",
+      "pointer": "/properties/optional_explanation/properties/numerator",
+      "required_in_parent": true,
+      "description": "The exact nonnegative numerator.",
+      "schema_reference": null,
+      "rule_sha256": "4ae923c18d891af84d8563f2af8bc15e42a8ad6ee909516f9bb9f876e0c869c9"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "denominator",
+      "pointer": "/properties/optional_explanation/properties/denominator",
+      "required_in_parent": true,
+      "description": "The exact positive denominator.",
+      "schema_reference": null,
+      "rule_sha256": "51d6995af1fe52c890b71401112dc92eff3fcf0c2cd502d04d71f88a689f29bc"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "status",
+      "pointer": "/properties/optional_explanation/properties/status",
+      "required_in_parent": true,
+      "description": "This field states the parent operation result from its declared enumeration.",
+      "schema_reference": null,
+      "rule_sha256": "af09cb962f4380037b69ad8e1053fa92f0032500b054c57e6efde3f70e31d7e5"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "reason",
+      "pointer": "/properties/optional_explanation/properties/reason",
+      "required_in_parent": true,
+      "description": "This field explains why a metric or decision is unavailable under the stated enumeration.",
+      "schema_reference": null,
+      "rule_sha256": "3fd5c0edf7a037732dc49d2a692e8502e6d33b4b24f29be21d04a7898cce62f7"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "display",
+      "pointer": "/properties/optional_explanation/properties/display",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "unit_id",
+      "pointer": "/properties/items/items/properties/unit_id",
+      "required_in_parent": true,
+      "description": "Exact frozen key unit; empty only for an off-key assertion.",
+      "schema_reference": null,
+      "rule_sha256": "a4f8ad5b79a964b2f914159fa037bc3dfe6dea9d64d68a826e60a8926d3902c7"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "kind",
+      "pointer": "/properties/items/items/properties/kind",
+      "required_in_parent": true,
+      "description": "Native finding kind from truth, source stance and component finality.",
+      "schema_reference": null,
+      "rule_sha256": "fe008291b37fa67cdf70587e162bb4d71fde4b56790d1b613fb89be8170f089f"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "category_id",
+      "pointer": "/properties/items/items/properties/category_id",
+      "required_in_parent": true,
+      "description": "Primary key category, or the actual attributed category for an off-key assertion; empty when unattributed.",
+      "schema_reference": null,
+      "rule_sha256": "91d2ebef91df34676cae681c6983896ce3e587c0e16216b95a3f7377051c8d39"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "decision_ids",
+      "pointer": "/properties/items/items/properties/decision_ids",
+      "required_in_parent": true,
+      "description": "Saved consolidated source representatives supporting this finding.",
+      "schema_reference": null,
+      "rule_sha256": "4b4448b23dd3b502db2351bbca6e2346bffe95335cc3a1c26ec13e001da412c5"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "reference",
+      "pointer": "/properties/items/items/properties/reference",
+      "required_in_parent": false,
+      "description": "Post-submission key text, permitted repairs, rationale and actual containing audio interval; this does not certify a requested acoustic operation.",
+      "schema_reference": null,
+      "rule_sha256": "72a1981d5181992a4c73fc49a6da48c4bc26d49e62e29ef7326eddb5ad5761f0"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "target_texts",
+      "pointer": "/properties/items/items/properties/reference/properties/target_texts",
+      "required_in_parent": true,
+      "description": "Exact target quotes from the frozen rendered-text key.",
+      "schema_reference": null,
+      "rule_sha256": "0746925f65185669adafc734789bd2cf55d4887d2455a49defa9717c45dd5d75"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "repairs",
+      "pointer": "/properties/items/items/properties/reference/properties/repairs",
+      "required_in_parent": true,
+      "description": "Permitted authored text alternatives and IPA when supplied; not a requirement to type IPA.",
+      "schema_reference": null,
+      "rule_sha256": "fd787df013e5c14ffc244c318ff2254be5b13d84454311ed566f314f959da70f"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "rationale",
+      "pointer": "/properties/items/items/properties/reference/properties/rationale",
+      "required_in_parent": true,
+      "description": "Stored key rationale; optional user explanations are assessed separately.",
+      "schema_reference": null,
+      "rule_sha256": "12ed7b8e3f02dc60ce5dc27a1719d1ca793cb0f1007c419eb93d36b66d6f6389"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "audio_intervals",
+      "pointer": "/properties/items/items/properties/reference/properties/audio_intervals",
+      "required_in_parent": true,
+      "description": "Actual final-audio intervals from the key; containing-turn timing is retained when finer timing was unavailable.",
+      "schema_reference": null,
+      "rule_sha256": "cd0ded238cae2c0b9ba4d317ac6325c3776bc05baa0f8f057382feccef8ec65c"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "start_ms",
+      "pointer": "/properties/items/items/properties/reference/properties/audio_intervals/items/properties/start_ms",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "f0765dbf409c74f001806c446f2cf171d8c46b5b15779d54423dde921a4b0670"
+    },
+    {
+      "schema": "feedback-score.schema.json",
+      "name": "end_ms",
+      "pointer": "/properties/items/items/properties/reference/properties/audio_intervals/items/properties/end_ms",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "f0765dbf409c74f001806c446f2cf171d8c46b5b15779d54423dde921a4b0670"
     }
   ]
 }

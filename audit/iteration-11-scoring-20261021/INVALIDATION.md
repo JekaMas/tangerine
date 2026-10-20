@@ -1,0 +1,13 @@
+# Semantic invalidation
+
+I11 introduces new arithmetic/output/persistence/feedback/UI owners and literal tests: its full selection requires new observations. Preliminary dirty-tree runs do not establish committed-clean acceptance.
+
+I10 native controller/persistence and fixture observations are invalidated by result finalization, completed state, source-bound result data and the deliberately unselected optional feedback profile. Its two scaffold expectations (saved state, null score) are superseded by the actual native grade contract, without changing semantic interpretation truth. The original idempotency request/revision remains required.
+
+I10 consolidation requires direct positive/negative re-observation after fixing declared off-key duplicate membership. I10 browser observations require the current web image after adding scores and the actual feedback-only proxy route. Pure non-AI interpretation checks run through their current selected native command. The semantic extractor/mapper prompts and underlying provider adapter behavior are unchanged; prior actual local linguistic results retain their original proof boundary and are not relabelled current-score evidence.
+
+All original definition and migration bytes remain unchanged. I8 acoustic findings remain outside I11. Unrelated evidence/document changes and commits do not invalidate arithmetic or model behavior; a clean/revision gate has its own explicit source-state input. Manifest/schema indexes are refreshed once after the implementation/assertion batch stabilizes, without rewriting original receipts.
+
+The last review repair changes native auxiliary ratio/decimal displays (including signed half-up rounding), the optional-audit/feedback-only orchestration split and unknown supplied category finality. These real owner/assertion changes invalidate the corresponding earlier preliminary receipts and the earlier lint observation. The repaired stable batch receives one subsequent lint and a complete clean iteration run. Original formula values and independent score expectations are unchanged.
+
+A real post-score PostgreSQL write-fault counterexample invalidated the browser submit observation:503contained a persisted grade but the UI did not recognize the submission. The repaired commit predicate and accepted-checkpoint feedback rollback invalidate their direct native/browser cases and the previous lint source. New write-fault/recovery assertions leave exact numeric expectations unchanged. Source records for the former red image and late-state fields are retained in FAILED-OBSERVATIONS.json and private native/browser logs.

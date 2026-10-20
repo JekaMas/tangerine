@@ -670,3 +670,11 @@ I10 acceptance: the complete 96-case --require-clean selection passed on 61d7352
 - [x] I10.R3 Extend DAG/discovery, reconcile unchanged dependency evidence, complete actual local/Lab observations and stable language/spec/preservation checks, commit and pass the full committed-clean I10 selection; commit final verification.
 
 Iteration10 verification accepted:116/116owned cases across21properties passed --require-clean on59d46f20302b1a304bd89e22a0ab814fe8491772. Exact unchanged28provider/listening passes reconcile144/144cases (72positive/72negative). Five reproduced defects are repaired;20regressions are wired. Four unchanged local-model expectations passed;10dispatches/native receipts/contexts/MLflow spans across9operations reconcile. Artifact370/property-set4361, strict OpenSpec, DAG/discovery, current pinned Go vet/gofmt, retained unchanged web build and original preservation pass. Earlier failed105/106and111/112candidates remain failed/exported. See audit/iteration-10-verification-20261021/REPORT.md and ACCEPTANCE.json. No in-scope finding, paid/hosted call, borrowed credential, install, delegation or publication; I8.R1–R3/later scoring and feedback remain separate.
+
+## Iteration11 — Scoring, results and recommendations (2026-10-21)
+
+- [x] I11.1 Trace exact counting/component/feedback contracts and query the existing DAG; record independent arithmetic and persistence oracles.
+- [x] I11.2 Implement separated exact scoring, source projection, per-domain populations, immutable results and configurable grounded feedback with feedback-only retry.
+- [ ] I11.3 Materialize positive/negative fixtures into executable numeric/native/browser/actual-local cases and retain context/receipt/MLflow correspondence.
+- [ ] I11.4 Complete code/contract review, repair all I11 findings, run lint on the stable batch and reconcile selected dependencies.
+- [ ] I11.5 Pass the complete committed-clean iteration selection, record acceptance and commit; preserve canonical unrelated GAPS.md.

@@ -104,7 +104,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | review-context | 2.0.0 | document.payload | 19 |
 | review-decide-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 5 |
 | review-decision | 2.0.0 | document.payload | 26 |
-| score-result | 2.0.0 | document.payload | 406 |
+| score-result | 2.0.0 | document.payload | 483 |
 | scoring-input | schema hash | derived DTO or actual operation input/output receipt | 29 |
 | source-format-binding | 2.0.0 | document.payload | 20 |
 | source-release-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 20 |
@@ -181,7 +181,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | audio-sample-map | schema hash | derived DTO or actual operation input/output receipt | 17 |
 
-| interpretation-checkpoint | 2.0.0 | private immutable document and linked stage assets | 15 |
+| interpretation-checkpoint | 2.0.0 | private immutable document and linked stage assets | 17 |
 
 | interpretation-view | 2.0.0 | closed HTTP projection; no separate durable copy | 26 |
 
@@ -192,3 +192,5 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | preparation-render-request | schema hash | derived DTO or actual operation input/output receipt | 2 |
 
 | preparation-summary | schema hash | derived DTO or actual operation input/output receipt | 12 |
+
+| feedback-score | schema hash | derived DTO or actual operation input/output receipt | 40 |

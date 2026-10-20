@@ -99,7 +99,7 @@ func (s *Storage) StartAttempt(ctx context.Context, raw []byte, key string) (map
 	var components, itemValue map[string]any
 	_ = json.Unmarshal(flags, &components)
 	_ = json.Unmarshal(item, &itemValue)
-	a := map[string]any{"schema_version": "2.0.0", "attempt_id": id, "case_version_id": input["case_version_id"], "case_sha256": input["case_sha256"], "answer_text": "", "answer_utf8_sha256": contracts.Digest(nil), "task_components": components, "evaluation_policy_version": "answer-components-v2", "scoring_policy_version": "2.0.0", "state": "started", "revision": float64(0), "submitted_at": nil, "idempotency_key": key, "lease_token": nil, "lease_expires_at": nil, "workspace_id": "local", "started_at": at, "lease_epoch": 0, "audio_sha256": audioSHA, "configuration_sha256": configuration["configuration_sha256"], "feedback_status": "not_started"}
+	a := map[string]any{"schema_version": "2.0.0", "attempt_id": id, "case_version_id": input["case_version_id"], "case_sha256": input["case_sha256"], "answer_text": "", "answer_utf8_sha256": contracts.Digest(nil), "task_components": components, "evaluation_policy_version": "answer-components-v2", "scoring_policy_version": "answer-components-v2", "state": "started", "revision": float64(0), "submitted_at": nil, "idempotency_key": key, "lease_token": nil, "lease_expires_at": nil, "workspace_id": "local", "started_at": at, "lease_epoch": 0, "audio_sha256": audioSHA, "configuration_sha256": configuration["configuration_sha256"], "feedback_status": "not_started"}
 	w := attemptWrite(a, id, nil, casePayloadSHA, "")
 	d, e := validateDocument(w)
 	if e != nil {

@@ -31,7 +31,10 @@ func interpretationCallKey(operation, stage string) string {
 	return id.String()
 }
 func (s *Server) InterpretAttempt(ctx context.Context, id, key string, revision int64, answerSHA, configSHA string, client *http.Client) (InterpretationState, error) {
-	lease, e := s.Store.acquireInterpretation(ctx, id, key, revision, answerSHA, configSHA)
+	return s.interpretAttempt(ctx, id, key, revision, answerSHA, configSHA, client, false)
+}
+func (s *Server) interpretAttempt(ctx context.Context, id, key string, revision int64, answerSHA, configSHA string, client *http.Client, feedbackOnly bool) (InterpretationState, error) {
+	lease, e := s.Store.acquireInterpretation(ctx, id, key, revision, answerSHA, configSHA, feedbackOnly)
 	if e != nil {
 		return InterpretationState{}, e
 	}
@@ -98,6 +101,8 @@ func (s *Server) InterpretAttempt(ctx context.Context, id, key string, revision 
 			state.Extraction = acceptedState.Extraction
 			state.Mapping = acceptedState.Mapping
 			state.Audit = acceptedState.Audit
+			state.Result = acceptedState.Result
+			state.FeedbackStatus = acceptedState.FeedbackStatus
 		}
 		return err
 	}
@@ -106,6 +111,8 @@ func (s *Server) InterpretAttempt(ctx context.Context, id, key string, revision 
 		state.Extraction = acceptedState.Extraction
 		state.Mapping = acceptedState.Mapping
 		state.Audit = acceptedState.Audit
+		state.Result = acceptedState.Result
+		state.FeedbackStatus = acceptedState.FeedbackStatus
 		code, _ := provider.SafeError(err)
 		if code == "" {
 			code = "INFRASTRUCTURE_UNAVAILABLE"
@@ -251,7 +258,7 @@ func (s *Server) InterpretAttempt(ctx context.Context, id, key string, revision 
 			return fail(e)
 		}
 	}
-	if lease.Snapshot.Context["configuration"].(map[string]any)["mapping_audit_enabled"] == true && state.Audit == nil && len(extraction.Claims) > 0 {
+	if !feedbackOnly && lease.Snapshot.Context["configuration"].(map[string]any)["mapping_audit_enabled"] == true && state.Audit == nil && len(extraction.Claims) > 0 {
 		// An audit is a separate request over the same frozen extraction and key. Its
 		// input is built without the mapper output, and its failure is nonblocking.
 		currentIssues := []InterpretationIssue{}
@@ -285,6 +292,9 @@ func (s *Server) InterpretAttempt(ctx context.Context, id, key string, revision 
 		if issue.Blocks {
 			state.Status = "review_required"
 		}
+	}
+	if e = s.finalizeScoring(ctx, work, lease, &state, resources, extraction, mapping, issues, &stages, client, retry, checkpoint); e != nil {
+		return fail(e)
 	}
 	if e = checkpoint(true); e != nil {
 		return fail(e)

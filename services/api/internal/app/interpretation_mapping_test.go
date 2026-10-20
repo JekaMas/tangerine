@@ -17,7 +17,7 @@ func interpretationMappingFixture() (string, CanonicalExtraction, map[string]any
 	reason := AnswerSpan{17, 38, "every verb ends in s."}
 	c := CanonicalClaim{ExtractedClause: ExtractedClause{LocalRef: "c0", Span: AnswerSpan{0, 38, answer}, Stance: "assert_error", Correction: &correction, Rationale: &reason}, ID: id, Group: id, Active: true, Corrections: []AnswerSpan{correction}, Explanations: []AnswerSpan{reason}, Categories: []AnswerSpan{}}
 	extraction := CanonicalExtraction{Extraction: AnswerExtraction{Version: "2.0.0", Unparsed: []AnswerSpan{}}, Claims: []CanonicalClaim{c}}
-	key := map[string]any{"case_version_id": "case1", "units": []any{map[string]any{"id": unit, "expected_judgment": "true_error", "corrections": []any{map[string]any{"id": option, "required_propositions": []any{map[string]any{"id": "required1"}}, "forbidden_propositions": []any{map[string]any{"id": "forbidden1"}}}}, "rationale_required_propositions": []any{map[string]any{"id": "reason1"}}, "rationale_forbidden_propositions": []any{}}}}
+	key := map[string]any{"case_version_id": "case1", "units": []any{map[string]any{"id": unit, "expected_judgment": "true_error", "correction_eligible": true, "corrections": []any{map[string]any{"id": option, "required_propositions": []any{map[string]any{"id": "required1"}}, "forbidden_propositions": []any{map[string]any{"id": "forbidden1"}}}}, "rationale_required_propositions": []any{map[string]any{"id": "reason1"}}, "rationale_forbidden_propositions": []any{}}}}
 	d := SemanticDecision{Claim: id, Unit: &unit, Decision: "matched_error", Reason: "supported", Correction: semanticEmpty(), Explanation: semanticEmpty(), Evidence: []string{}}
 	d.Correction.Supplied = true
 	d.Correction.Option = &option

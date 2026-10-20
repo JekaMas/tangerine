@@ -1,0 +1,374 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/feedback-score.schema.json",
+  "title": "feedback-score",
+  "type": "object",
+  "description": "Native score facts needed for comments. Full metrics/statistics/domain populations remain in the immutable result referenced by result_id; this is a complete declared feedback projection, never an LLM numeric grade.",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0",
+      "description": "The explicit changed local contract version."
+    },
+    "attempt_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This identifier refers to the frozen teacher attempt."
+    },
+    "case_version_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "This identifier refers to one immutable case version."
+    },
+    "decision_set_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "This hash identifies the immutable set of decisions used for the score."
+    },
+    "scoring_policy_version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This field identifies the exact formula and counting policy."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "review_required"
+      ],
+      "description": "This field states the parent operation result from its declared enumeration."
+    },
+    "counts": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "true_errors": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "This count gives all confirmed true-error units in the case.",
+              "maximum": 9007199254740991
+            },
+            "tp": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "This count gives distinct supported true detections.",
+              "maximum": 9007199254740991
+            },
+            "fn": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "This count gives missed true units.",
+              "maximum": 9007199254740991
+            },
+            "fp": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "This count gives resolved false error assertions after duplicate removal.",
+              "maximum": 9007199254740991
+            },
+            "designated_decoys": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "This count gives the reviewed permitted controls in the case.",
+              "maximum": 9007199254740991
+            },
+            "decoy_false_positives": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "This count gives designated permitted units wrongly marked as errors.",
+              "maximum": 9007199254740991
+            },
+            "duplicate_claims": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "This count identifies claims excluded from extra credit because they repeat a prior claim.",
+              "maximum": 9007199254740991
+            },
+            "unresolved_claims": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "This count gives score-relevant claims that still require review.",
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "true_errors",
+            "tp",
+            "fn",
+            "fp",
+            "designated_decoys",
+            "decoy_false_positives",
+            "duplicate_claims",
+            "unresolved_claims"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "This object contains raw counts, not reduced metric fractions."
+    },
+    "composite": {
+      "type": "object",
+      "properties": {
+        "value_0_100": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Non-authoritative legacy UI approximation. Never use this field to calculate a result."
+        },
+        "enabled_components": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "detection",
+              "classification",
+              "correction",
+              "explanation"
+            ]
+          },
+          "minItems": 0,
+          "description": "These component names identify the fixed inputs used by the composite."
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+        },
+        "exact_value_0_100": {
+          "anyOf": [
+            {
+              "$ref": "exact-rational.schema.json",
+              "description": "The authoritative exact composite."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The authoritative exact composite."
+        },
+        "display": {
+          "type": "string",
+          "description": "Native exact half-up one decimal display; not an arithmetic input."
+        }
+      },
+      "required": [
+        "value_0_100",
+        "enabled_components",
+        "reason",
+        "exact_value_0_100"
+      ],
+      "additionalProperties": false,
+      "description": "Policy-derived primary grade; answer-components-v2 excludes optional explanation while historical frozen policies retain their original definition."
+    },
+    "optional_explanation": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "This field contains the numeric result or null under the parent applicability rule."
+        },
+        "numerator": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The exact nonnegative numerator.",
+              "maxLength": 4096,
+              "minLength": 1,
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The exact nonnegative numerator."
+        },
+        "denominator": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The exact positive denominator.",
+              "maxLength": 4096,
+              "minLength": 1,
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The exact positive denominator."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "available",
+            "not_applicable",
+            "review_required"
+          ],
+          "description": "This field states the parent operation result from its declared enumeration."
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "no_opportunities",
+                "no_assertions",
+                "not_requested",
+                "unresolved",
+                "not_observable_in_this_mode"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "This field explains why a metric or decision is unavailable under the stated enumeration."
+        },
+        "display": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "numerator",
+        "denominator",
+        "status",
+        "reason"
+      ],
+      "additionalProperties": false,
+      "description": "This ratio measures proposition-based explanation credit among proposed explanations."
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "unit_id": {
+            "type": "string",
+            "description": "Exact frozen key unit; empty only for an off-key assertion."
+          },
+          "kind": {
+            "enum": [
+              "detected",
+              "missed",
+              "false_positive",
+              "acceptable",
+              "unjudged_control",
+              "wrong_acceptance",
+              "pending"
+            ],
+            "description": "Native finding kind from truth, source stance and component finality."
+          },
+          "category_id": {
+            "type": "string",
+            "description": "Primary key category, or the actual attributed category for an off-key assertion; empty when unattributed."
+          },
+          "decision_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Saved consolidated source representatives supporting this finding."
+          },
+          "reference": {
+            "type": "object",
+            "properties": {
+              "target_texts": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Exact target quotes from the frozen rendered-text key."
+              },
+              "repairs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Permitted authored text alternatives and IPA when supplied; not a requirement to type IPA."
+              },
+              "rationale": {
+                "type": "string",
+                "description": "Stored key rationale; optional user explanations are assessed separately."
+              },
+              "audio_intervals": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "start_ms": {
+                      "type": "integer"
+                    },
+                    "end_ms": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "start_ms",
+                    "end_ms"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "Actual final-audio intervals from the key; containing-turn timing is retained when finer timing was unavailable."
+              }
+            },
+            "required": [
+              "target_texts",
+              "repairs",
+              "rationale",
+              "audio_intervals"
+            ],
+            "additionalProperties": false,
+            "description": "Post-submission key text, permitted repairs, rationale and actual containing audio interval; this does not certify a requested acoustic operation."
+          }
+        },
+        "required": [
+          "unit_id",
+          "kind",
+          "category_id",
+          "decision_ids"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Native per-unit recording findings and supported off-key assertions. Excluded units are omitted; unresolved detection is not a confirmed miss."
+    }
+  },
+  "required": [
+    "schema_version",
+    "attempt_id",
+    "case_version_id",
+    "decision_set_sha256",
+    "scoring_policy_version",
+    "status",
+    "counts",
+    "composite",
+    "optional_explanation",
+    "items"
+  ],
+  "additionalProperties": false
+}

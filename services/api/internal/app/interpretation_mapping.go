@@ -385,7 +385,7 @@ func normalizeMapping(answer string, claims CanonicalExtraction, key map[string]
 			}
 		}
 		if len(c.Categories) > 0 && d.Category == nil {
-			addIssue("unknown_alias", *d, []string{"classification"}, false, "The supplied category is not mapped; supported detection is preserved.")
+			addIssue("unknown_alias", *d, []string{"classification"}, components["classification"] == true && d.Decision == "matched_error", "The supplied category is not mapped; supported detection is preserved.")
 		}
 		decisions[d.Claim] = d
 	}
