@@ -412,9 +412,16 @@ func TestNativeInterpretationFullRegistryPositive(t *testing.T) {
 	}
 	f.mu.Lock()
 	defer f.mu.Unlock()
+	unusedAliasesOmitted := false
 	declaredReference := false
 	for _, message := range f.wires[1]["input"].([]any) {
 		text, _ := message.(map[string]any)["content"].(string)
+		if strings.HasPrefix(text, "Complete stage input: ") {
+			var input map[string]any
+			requireListening(t, json.Unmarshal([]byte(strings.TrimPrefix(text, "Complete stage input: ")), &input))
+			aliases, _ := input["alias_entries"].([]any)
+			unusedAliasesOmitted = len(aliases) == 0
+		}
 		if strings.HasPrefix(text, "extraction: ") {
 			var frame map[string]any
 			requireListening(t, json.Unmarshal([]byte(strings.TrimPrefix(text, "extraction: ")), &frame))
@@ -424,6 +431,9 @@ func TestNativeInterpretationFullRegistryPositive(t *testing.T) {
 				declaredReference = row["local_ref"] == "u1" && row["unit_id"] == "e1"
 			}
 		}
+	}
+	if !unusedAliasesOmitted {
+		t.Fatal("unnamed category has no alias-data consumer")
 	}
 	if !declaredReference {
 		t.Fatal("target alias was not declared on the provider wire")

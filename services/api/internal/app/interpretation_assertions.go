@@ -6,6 +6,7 @@ func normalizeAssertionOwnership(answer string, claim CanonicalClaim, decision *
 	spans := [][]AnswerSpan{claim.Corrections, claim.Explanations}
 	input := [][]ComponentAssertion{decision.Correction.Additional, decision.Explanation.Additional}
 	output := [][]ComponentAssertion{{}, {}}
+	movedCorrectionFinding := false
 	for original, assertions := range input {
 		for _, assertion := range assertions {
 			if err := normalizeAnswerSpan(answer, &assertion.AnswerSpan); err != nil {
@@ -41,6 +42,9 @@ func normalizeAssertionOwnership(answer string, claim CanonicalClaim, decision *
 				}
 				assertion.AnswerSpan = *candidate
 			}
+			if original == 0 && target == 1 {
+				movedCorrectionFinding = true
+			}
 			duplicate := false
 			for _, existing := range output[target] {
 				duplicate = duplicate || existing == assertion
@@ -51,5 +55,9 @@ func normalizeAssertionOwnership(answer string, claim CanonicalClaim, decision *
 		}
 	}
 	decision.Correction.Additional, decision.Explanation.Additional = output[0], output[1]
+	correction := decision.Correction
+	if movedCorrectionFinding && len(output[0]) == 0 && correction.Option == nil && len(correction.Satisfied)+len(correction.Violated) == 0 && correction.Status == "rejected" && correction.Unresolved == nil {
+		return interpretationInvalid("The correction rejection was justified only by words in the supplied explanation. Those findings belong to explanation and do not assess the proposed repair. Independently judge the actual correction words against the existing options, recording supported required IDs for a valid repair or a source-quoted contextual judgment for a genuinely wrong repair. Preserve the independently judged reason.")
+	}
 	return nil
 }

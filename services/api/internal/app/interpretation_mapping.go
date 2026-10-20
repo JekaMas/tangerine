@@ -334,6 +334,9 @@ func normalizeMapping(answer string, claims CanonicalExtraction, key map[string]
 			return out, issues, interpretationInvalid("Cited evidence must belong to this exact case and target unit.")
 		}
 		if err := normalizeAssertionOwnership(answer, c, d); err != nil {
+			if detail, ok := err.(interface{ ValidationDetail() string }); ok {
+				return out, issues, interpretationInvalid(detail.ValidationDetail() + " " + mappingTargetHint(key, c))
+			}
 			return out, issues, err
 		}
 		if err := normalizeComponent(&d.Correction, c.Corrections, unit, false, scopedEvidence); err != nil {

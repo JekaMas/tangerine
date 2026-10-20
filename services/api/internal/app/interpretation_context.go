@@ -176,18 +176,12 @@ func interpretationInput(record AttemptRecord, r InterpretationResources, c *Can
 		input["listener_components"] = listener
 		input["ground_truth"] = r.Key
 		input["alias_registry_sha256"] = r.AliasesSHA
-		aliases := []any{}
+		categoryText := mappingCategoryText(c)
 		russian := record.Context["requested_language"] == "ru" || strings.ContainsFunc(a["answer_text"].(string), func(c rune) bool { return unicode.In(c, unicode.Cyrillic) })
-		for _, v := range r.Aliases {
-			row := v.(map[string]any)
-			if row["language"] == "en" || russian {
-				aliases = append(aliases, row)
-			}
-		}
-		input["alias_entries"] = aliases
+		input["alias_entries"] = mappingAliasEntries(r, categoryText, russian)
 		input["evidence"] = r.Evidence
 		input["rationales"] = r.Rationales
-		parts["taxonomy"] = mappingTaxonomyContext(r, a["answer_text"].(string))
+		parts["taxonomy"] = mappingTaxonomyContext(r, categoryText)
 		parts["public_context"] = r.Key["public_context"]
 		parts["mutation_key"] = r.Key
 		parts["evidence"] = r.Evidence
@@ -279,4 +273,29 @@ func mappingTargetReferences(key map[string]any) []MappingTargetReference {
 		next++
 	}
 	return refs
+}
+
+// Classification aliases have a consumer only when the source names a category.
+// The immutable resources retain the entire dictionary, independent of projection.
+func mappingCategoryText(extraction *CanonicalExtraction) string {
+	words := []string{}
+	for _, claim := range extraction.Claims {
+		for _, span := range claim.Categories {
+			words = append(words, span.Text)
+		}
+	}
+	return strings.Join(words, " ")
+}
+func mappingAliasEntries(resources InterpretationResources, categoryText string, russian bool) []any {
+	selected := []any{}
+	if categoryText == "" {
+		return selected
+	}
+	for _, value := range resources.Aliases {
+		row := value.(map[string]any)
+		if row["language"] == "en" || russian && row["language"] == "ru" {
+			selected = append(selected, row)
+		}
+	}
+	return selected
 }

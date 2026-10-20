@@ -67,6 +67,10 @@ func TestInterpretationUnknownCorrectionPositive(t *testing.T) {
 	}
 }
 func TestInterpretationCategoryOmissionPositive(t *testing.T) {
+	resources := InterpretationResources{Aliases: []any{map[string]any{"language": "en", "id": "english"}, map[string]any{"language": "ru", "id": "russian"}}}
+	if len(mappingAliasEntries(resources, "", true)) != 0 || len(mappingAliasEntries(resources, "agreement", false)) != 1 || len(mappingAliasEntries(resources, "согласование", true)) != 2 {
+		t.Fatal("alias projection lost needed data or injected unused data")
+	}
 	a, c, k, tax, m := interpretationMappingFixture()
 	unsolicited := "grammar.verbs.subject_verb_agreement"
 	for _, category := range []*string{nil, &unsolicited} {
@@ -274,6 +278,11 @@ func TestInterpretationUncertainRejectionNegative(t *testing.T) {
 	}
 }
 func TestInterpretationNoOptionCreditNegative(t *testing.T) {
+	answer, claims, key, taxonomy, rejected := rejectionFixture()
+	rejected.Decisions[0].Correction.Additional = []ComponentAssertion{{AnswerSpan: claims.Claims[0].Explanations[0], Judgment: "unsupported", Reason: "A false reason cannot reject the valid repair."}}
+	if _, _, err := admitMappingFixture(answer, claims, key, taxonomy, rejected); err == nil {
+		t.Fatal("explanation-only evidence determined a correction rejection")
+	}
 	a, c, k, tax, m := rejectionFixture()
 	m.Decisions[0].Correction.Status = "accepted"
 	if _, _, e := admitMappingFixture(a, c, k, tax, m); e == nil {
