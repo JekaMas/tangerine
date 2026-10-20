@@ -150,22 +150,14 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 		return result, e
 	}
 	components := []any{}
-	instructions := []string{}
-	input := []any{}
 	for _, part := range prepared.Parts {
 		a, e := s.Store.saveProviderBytes(ctx, part.Body, "provider_input")
 		if e != nil {
 			return result, e
 		}
 		components = append(components, map[string]any{"kind": part.Kind, "trust": part.Trust, "asset_id": a.ID, "asset_sha256": part.SHA, "included": true, "reason": nil, "byte_count": part.Bytes, "token_count": nil})
-		if part.Trust == "owned_instruction" {
-			instructions = append(instructions, part.Kind+": "+string(part.Body))
-		} else {
-			input = append(input, map[string]any{"role": "user", "content": part.Kind + ": " + string(part.Body)})
-		}
 	}
-	typed, _ := lab.Canonical(request.Input)
-	input = append(input, map[string]any{"role": "user", "content": "Complete stage input: " + string(typed)})
+	instructions, input := inferenceFrame(prepared, request.Stage, request.Phase, request.Input)
 	// Omitted components are retained deterministically and without invented counts.
 	for _, kind := range binding.Policy.Order {
 		if reason, ok := prepared.Omitted[kind]; ok {
@@ -183,7 +175,7 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 	inputUsage := map[int]int{}
 	trace := traceID(16)
 	requestAssets := map[int]Asset{}
-	er := provider.ExecuteRequest{Profile: p, Instructions: strings.Join(instructions, "\n"), Input: input, OutputKind: strings.TrimSuffix(binding.OutputSchema, ".schema.json"), Timeout: stageTimeout(request.Stage, request.Phase), Validate: request.Validate}
+	er := provider.ExecuteRequest{Profile: p, Instructions: instructions, Input: input, OutputKind: strings.TrimSuffix(binding.OutputSchema, ".schema.json"), Timeout: stageTimeout(request.Stage, request.Phase), Validate: request.Validate}
 	// JSON-schema capability is opt-in for profiles with tested provider support;
 	// plain JSON still receives the same complete output contract in instructions.
 	er.Before = func(ctx context.Context, a provider.Attempt) error {

@@ -545,6 +545,15 @@ func checkMutationBudgetSnapshot(t *testing.T, s *Server, p map[string]any) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	var frame struct {
+		Input []struct{ Role, Content string }
+	}
+	if err = json.Unmarshal(wire, &frame); err != nil {
+		t.Fatal(err)
+	}
+	if len(frame.Input) != 1 || !strings.HasPrefix(frame.Input[0].Content, "Complete stage input: ") {
+		t.Fatal("mutation context was duplicated", frame.Input)
+	}
 	if snapshot["budget_method"] != "tokenizer" || snapshot["tokenizer"] != "o200k_base-ordinary@tiktoken-go/v0.8.1" || snapshot["reserved_output_tokens"] != float64(8000) || snapshot["context_budget_tokens"] != float64(131072) || snapshot["input_budget_used"].(float64) >= float64(len(wire)) || snapshot["input_budget_used"].(float64)+8000 > 131072 {
 		t.Fatal(snapshot, len(wire))
 	}

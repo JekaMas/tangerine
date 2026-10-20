@@ -237,3 +237,17 @@ The shared inference owner SHALL measure final provider wire once per new attemp
 
 - **WHEN** the second distinct literal positive or negative packet is executed
 - **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+### Requirement: I6-18 Complete mutation context without duplicate payloads
+
+The inference frame SHALL retain the complete typed mutation input once and all trusted instructions without repeating identical blueprint/taxonomy/recipe/canonical/public-context values as extra messages. Different/custom/unknown components and other phases SHALL retain their existing messages. Saved component evidence SHALL remain complete; no required data is truncated or rejected by compaction. Exact constructed fixtures and independent expected states are retained in audit/iteration-6-review-20261020/CASES.json. These tests SHALL NOT establish hosted account admission, actual LLM linguistic quality or future mutation/audio/scoring completion.
+
+#### Scenario: I6-18 packet 1
+
+- **WHEN** the first literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+#### Scenario: I6-18 packet 2
+
+- **WHEN** the second distinct literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 	"tangerine.local/api/internal/contracts"
+	"tangerine.local/api/internal/lab"
 	"tangerine.local/api/internal/provider"
 	"testing"
 )
@@ -562,5 +563,72 @@ func TestMutationWrongProviderTokenizerNegative(t *testing.T) {
 	n, countErr := counter.Count([]byte("The café opens tomorrow."))
 	if err != nil || countErr != nil || n != 25 || counter.Method != "conservative_utf8_bytes" || counter.Tokenizer != nil {
 		t.Fatal(counter, n, err, countErr)
+	}
+}
+
+func mutationFrameFixture() (map[string]any, lab.Prepared) {
+	input := map[string]any{"schema_version": "2.0.0", "blueprint": map[string]any{"id": "b1", "public_context": map[string]any{"text": "A public situation."}}, "taxonomy_context": map[string]any{"entries": []any{"grammar-target"}}, "canonical_script": map[string]any{"text": "Clean text."}, "mutation_recipes": []any{"recipe-a"}, "production_recipes": []any{"production-a"}, "phase": "mutation", "canonical_script_sha256": "frozen-clean", "request_language": "en"}
+	p := lab.Prepared{}
+	for _, x := range []struct {
+		kind, trust string
+		body        any
+	}{
+		{"prompt", "owned_instruction", "Mutate the saved text."},
+		{"wire_schema", "owned_instruction", map[string]any{"type": "object"}},
+		{"blueprint", "input_data", input["blueprint"]},
+		{"taxonomy", "input_data", input["taxonomy_context"]},
+		{"canonical_script", "input_data", input["canonical_script"]},
+		{"recipes", "input_data", map[string]any{"mutation_recipes": input["mutation_recipes"], "production_recipes": input["production_recipes"]}},
+		{"public_context", "input_data", input["blueprint"].(map[string]any)["public_context"]},
+	} {
+		raw, _ := lab.Canonical(x.body)
+		p.Parts = append(p.Parts, lab.Part{Kind: x.kind, Trust: x.trust, Body: raw})
+	}
+	return input, p
+}
+func TestMutationFrameCompactPositive(t *testing.T) {
+	input, p := mutationFrameFixture()
+	phase := "mutation"
+	instructions, messages := inferenceFrame(p, "case_generation", &phase, input)
+	if len(messages) != 1 || !strings.Contains(instructions, "Mutate the saved text.") || !strings.Contains(instructions, "wire_schema") {
+		t.Fatal(instructions, messages)
+	}
+	body := messages[0].(map[string]any)["content"].(string)
+	var decoded map[string]any
+	if err := json.Unmarshal([]byte(strings.TrimPrefix(body, "Complete stage input: ")), &decoded); err != nil {
+		t.Fatal(err)
+	}
+	a, _ := lab.Canonical(input)
+	b, _ := lab.Canonical(decoded)
+	if string(a) != string(b) || strings.Count(body, "recipe-a") != 1 || strings.Count(body, "grammar-target") != 1 {
+		t.Fatal(body)
+	}
+}
+func TestMutationFrameCustomPositive(t *testing.T) {
+	input, p := mutationFrameFixture()
+	phase := "mutation"
+	raw, _ := lab.Canonical(map[string]any{"custom": "additional recipe guidance"})
+	p.Parts = append(p.Parts, lab.Part{Kind: "recipes", Trust: "input_data", Body: raw})
+	_, messages := inferenceFrame(p, "case_generation", &phase, input)
+	if len(messages) != 2 || !strings.Contains(messages[0].(map[string]any)["content"].(string), "additional recipe guidance") || !strings.Contains(messages[1].(map[string]any)["content"].(string), "recipe-a") {
+		t.Fatal(messages)
+	}
+}
+func TestMutationFrameOtherPhaseNegative(t *testing.T) {
+	input, p := mutationFrameFixture()
+	phase := "canonical_text"
+	_, messages := inferenceFrame(p, "case_generation", &phase, input)
+	if len(messages) != 6 || !strings.HasPrefix(messages[0].(map[string]any)["content"].(string), "blueprint: ") {
+		t.Fatal(messages)
+	}
+}
+func TestMutationFrameUnknownPartNegative(t *testing.T) {
+	input, p := mutationFrameFixture()
+	phase := "mutation"
+	raw, _ := lab.Canonical(input["taxonomy_context"])
+	p.Parts = append(p.Parts, lab.Part{Kind: "evidence", Trust: "input_data", Body: raw})
+	_, messages := inferenceFrame(p, "case_generation", &phase, input)
+	if len(messages) != 2 || !strings.HasPrefix(messages[0].(map[string]any)["content"].(string), "evidence: ") {
+		t.Fatal(messages)
 	}
 }
