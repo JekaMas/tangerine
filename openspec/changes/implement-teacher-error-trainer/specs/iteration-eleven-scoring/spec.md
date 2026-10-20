@@ -248,6 +248,11 @@ The application SHALL complete only harmless missing feedback envelope metadata 
 - **WHEN** the named literal positive or negative fixture executes through its declared production owner
 - **THEN** every independently expected arithmetic, state, feedback, privacy or recovery observation SHALL hold
 
+#### Scenario: I11-07 packet 4
+
+- **WHEN** the named literal positive or negative fixture executes through its declared production owner
+- **THEN** every independently expected arithmetic, state, feedback, privacy or recovery observation SHALL hold
+
 ### Requirement: I11-08 Durable result and feedback-only retry
 
 The application SHALL save numeric results before configurable feedback, retain immutable source/configuration/score through feedback failure, retry only commentary, reopen/replay without model calls and refuse invented feedback references.

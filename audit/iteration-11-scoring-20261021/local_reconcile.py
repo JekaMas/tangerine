@@ -14,7 +14,7 @@ def main():
   state=json.loads((directory/'state.json').read_text());assert state['status']=='complete'
   expected_case=json.loads((directory/'expectation.json').read_text());result=json.loads((directory/'result.json').read_text())
   assert result['score']['composite']['display']==expected_case['grade'] and result['feedback_status']=='complete'
-  assert expected_case['feedback_kind'] in {v['kind'] for v in result['feedback']['items']}
+  assert any(v['text'].strip() and (v['kind']=='missed' if expected_case['feedback_subject']=='missed' else v['kind'] in ('detected','correction','explanation') and v['decision_ids']) for v in result['feedback']['items'])
   for path in directory.glob('diagnostic-*.json'):
    p=json.loads(path.read_text());assert p['capture'] and p['trace_enabled'];body=json.loads(p['artifacts'][0]['body'])
    if any(v['kind']=='provider-receipt' and v['payload']['stage']=='feedback' for v in body['documents']):packets[p['operation']]=(p,path)

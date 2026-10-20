@@ -20,7 +20,7 @@ import (
 type scoringTrip func(*http.Request) (*http.Response, error)
 
 func (f scoringTrip) RoundTrip(r *http.Request) (*http.Response, error) { return f(r) }
-func observeLocalScoring(t *testing.T, answer, mode, grade string, wantKind string, locale string) {
+func observeLocalScoring(t *testing.T, answer, mode, grade string, subject string, locale string) {
 	f := scoringFixture(t, false)
 	f.mode.Store(mode)
 	ctx := context.Background()
@@ -111,7 +111,9 @@ func observeLocalScoring(t *testing.T, answer, mode, grade string, wantKind stri
 	found := false
 	for _, v := range envelope["feedback"].(map[string]any)["items"].([]any) {
 		item := v.(map[string]any)
-		if item["kind"] == wantKind && strings.TrimSpace(item["text"].(string)) != "" {
+		// Combined comments may cover a finding, correction and reason. The
+		// oracle is the actual source subject, not a presentation label.
+		if strings.TrimSpace(item["text"].(string)) != "" && ((subject == "missed" && item["kind"] == "missed" && len(item["unit_ids"].([]any)) > 0) || (subject != "missed" && (item["kind"] == "detected" || item["kind"] == "correction" || item["kind"] == "explanation") && len(item["decision_ids"].([]any)) > 0 && len(item["unit_ids"].([]any)) > 0)) {
 			found = true
 		}
 	}
@@ -124,13 +126,16 @@ func observeLocalScoring(t *testing.T, answer, mode, grade string, wantKind stri
 			t.Fatal("requested Russian prose is absent")
 		}
 	}
+	if mode == "rubric-repair" && score["optional_explanation"].(map[string]any)["display"] != "100.0" {
+		t.Fatal("valid supplied reason lost independent credit")
+	}
 	if mode == "scoring-false-reason" && score["optional_explanation"].(map[string]any)["display"] != "0.0" {
 		t.Fatal("false reason changed primary or gained reason credit")
 	}
 	if !found {
-		t.Fatal("missing independently expected feedback subject", wantKind)
+		t.Fatal("missing independently expected feedback subject", subject)
 	}
-	requireListening(t, os.WriteFile(filepath.Join(dir, "expectation.json"), mustJSON(map[string]any{"answer": answer, "grade": grade, "feedback_kind": wantKind, "semantic_fixture": "authored cafe agreement and supplied correction/reason", "actual_model_stage": "feedback"}), 0600))
+	requireListening(t, os.WriteFile(filepath.Join(dir, "expectation.json"), mustJSON(map[string]any{"answer": answer, "grade": grade, "feedback_subject": subject, "semantic_fixture": "authored cafe agreement and supplied correction/reason", "actual_model_stage": "feedback"}), 0600))
 }
 func TestLocalScoringRepairPositive(t *testing.T) {
 	observeLocalScoring(t, "Use opens.", "good", "100.0", "correction", "en")

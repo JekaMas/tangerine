@@ -51,3 +51,31 @@ func TestScoringUnscopedFindingNegative(t *testing.T) {
 	}
 }
 func mustScoringJSON(v any) []byte { b, _ := json.Marshal(v); return b }
+
+// Literal counterexample: one truthful comment covers the finding, correction
+// and optional reason. Separate cards do not establish semantic correctness.
+func combinedFeedbackFixture() (map[string]any, AttemptRecord, InterpretationResources, SemanticMapping, map[string]any) {
+	root := map[string]any{"items": []any{
+		map[string]any{"kind": "detected", "text": "Use opens: the cafe is singular. Your correction and reason are correct.", "unit_ids": []any{"e1"}, "decision_ids": []any{"c1"}},
+		map[string]any{"kind": "recommendation", "text": "New practice: The shop opens at nine."},
+	}}
+	normalizeFeedbackShape(root, "en")
+	mapping := SemanticMapping{Groups: []SemanticGroup{{Representative: "c1"}}}
+	mapping.Groups[0].Correction.Supplied = true
+	mapping.Groups[0].Explanation.Supplied = true
+	mapping.Decisions = append(mapping.Decisions, SemanticDecision{Claim: "c1"})
+	return root, AttemptRecord{Context: map[string]any{"requested_language": "en"}}, InterpretationResources{Key: map[string]any{"units": []any{map[string]any{"id": "e1"}}}, Rationales: []any{}}, mapping, map[string]any{"issues": []any{}, "score": map[string]any{"items": []any{map[string]any{"kind": "detected", "unit_id": "e1"}}}}
+}
+func TestScoringCombinedCommentPositive(t *testing.T) {
+	root, record, resources, mapping, result := combinedFeedbackFixture()
+	if _, e := admitFeedback(mustScoringJSON(root), record, resources, mapping, result); e != nil {
+		t.Fatal(e)
+	}
+}
+func TestScoringMissingFactualCommentNegative(t *testing.T) {
+	root, record, resources, mapping, result := combinedFeedbackFixture()
+	root["items"] = root["items"].([]any)[1:]
+	if _, e := admitFeedback(mustScoringJSON(root), record, resources, mapping, result); e == nil {
+		t.Fatal("practice alone covered no factual finding")
+	}
+}

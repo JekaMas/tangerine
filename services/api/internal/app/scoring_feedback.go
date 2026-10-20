@@ -79,7 +79,11 @@ func admitFeedback(raw []byte, record AttemptRecord, r InterpretationResources, 
 	covered := func(kind, field, id string) bool {
 		for _, v := range out["items"].([]any) {
 			item := v.(map[string]any)
-			if item["kind"] != kind {
+			actual := item["kind"]
+			// A source-bound factual comment may discuss the finding, repair
+			// and optional reason together. Item labels are presentation hints.
+			combined := actual == "detected" || actual == "correction" || actual == "explanation"
+			if actual != kind && !((kind == "detected" || kind == "component") && combined) {
 				continue
 			}
 			for _, ref := range item[field].([]any) {
@@ -111,8 +115,8 @@ func admitFeedback(raw []byte, record AttemptRecord, r InterpretationResources, 
 			kind     string
 			supplied bool
 		}{{"correction", g.Correction.Supplied}, {"explanation", g.Explanation.Supplied}} {
-			if component.supplied && !covered(component.kind, "decision_ids", g.Representative) {
-				return nil, fmt.Errorf("include separate %s feedback for supplied claim %s", component.kind, g.Representative)
+			if component.supplied && !covered("component", "decision_ids", g.Representative) {
+				return nil, fmt.Errorf("include factual feedback linked to supplied %s claim %s", component.kind, g.Representative)
 			}
 		}
 	}
@@ -139,7 +143,7 @@ func (s *Server) scoringFeedback(ctx context.Context, lease InterpretationLease,
 		return nil, stage, context.DeadlineExceeded
 	}
 	var out map[string]any
-	diagnostic := "Return a complete JSON object with concise grounded findings, including a distinct correction item for every supplied repair and an explanation item for every supplied reason."
+	diagnostic := "Return concise source-bound factual comments covering the findings, supplied repairs and optional reasons. Related assessments may share one comment."
 	result, e := s.InvokeLLM(ctx, LLMRequest{NormalizeProjection: func(v any) any {
 		return normalizeFeedbackShape(v, lease.Snapshot.Context["requested_language"].(string))
 	}, DiagnoseInvalid: func([]byte) string { return diagnostic }, FrozenProfile: &p, TransportRetry: retry, Timeout: cap, Stage: "feedback", Operation: OperationRequest{Name: "feedback", Key: interpretationCallKey(lease.Operation, "feedback"), Path: "/api/v1/attempts/" + lease.Attempt + "/feedback", Body: json.RawMessage(`{}`)}, Input: input, Components: parts, Configuration: lease.Snapshot.Context["configuration"].(map[string]any), Bundle: interpretationBundle(lease.Snapshot), Validate: func(raw []byte) error {
@@ -147,8 +151,9 @@ func (s *Server) scoringFeedback(ctx context.Context, lease InterpretationLease,
 		out, err = admitFeedback(raw, lease.Snapshot, r, m, envelope)
 		if err != nil {
 			diagnostic = err.Error()
+			return interpretationInvalid(diagnostic)
 		}
-		return err
+		return nil
 	}}, client)
 	stage.Result = result
 	if len(result.ReceiptIDs) > 0 {

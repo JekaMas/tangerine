@@ -53668,7 +53668,7 @@
           "exact_native_test": "TestScoringShapeMetadataPositive",
           "literal_executable_fixture": "func TestScoringShapeMetadataPositive(t *testing.T) {\n\titem := map[string]any{\"kind\": \"recommendation\", \"text\": \"New practice: The shop opens.\", \"unit_ids\": []any{\"u1\"}}\n\troot := map[string]any{\"items\": []any{item}}\n\tnormalizeFeedbackShape(root, \"en\")\n\tif root[\"language\"] != \"en\" || item[\"grounding_status\"] != \"practice_recommendation\" || len(item[\"decision_ids\"].([]any)) != 0 {\n\t\tt.Fatal(root)\n\t}\n}\n",
           "fixture_source_path": "services/api/internal/app/scoring_feedback_shape_test.go",
-          "fixture_source_sha256": "92d5f84941b869431018b4172ef14cf740b1a0eb29f6f80308807ced083eee3b"
+          "fixture_source_sha256": "211f37e4bf6c4bca6e5443a1ab3574cbb3f4cf912039d104076ea85f5dbe8885"
         },
         "expected": {
           "independent_literal_assertions": "func TestScoringShapeMetadataPositive(t *testing.T) {\n\titem := map[string]any{\"kind\": \"recommendation\", \"text\": \"New practice: The shop opens.\", \"unit_ids\": []any{\"u1\"}}\n\troot := map[string]any{\"items\": []any{item}}\n\tnormalizeFeedbackShape(root, \"en\")\n\tif root[\"language\"] != \"en\" || item[\"grounding_status\"] != \"practice_recommendation\" || len(item[\"decision_ids\"].([]any)) != 0 {\n\t\tt.Fatal(root)\n\t}\n}\n",
@@ -53680,7 +53680,7 @@
           "exact_native_test": "TestScoringShapeMeaningNegative",
           "literal_executable_fixture": "func TestScoringShapeMeaningNegative(t *testing.T) {\n\titem := map[string]any{\"kind\": \"missed\", \"unit_ids\": []any{\"invented\"}, \"status\": \"wrong\", \"text\": \"actual prose\"}\n\tnormalizeFeedbackShape(map[string]any{\"language\": \"ru\", \"items\": []any{item}}, \"en\")\n\tif item[\"status\"] != \"wrong\" || item[\"unit_ids\"].([]any)[0] != \"invented\" || item[\"text\"] != \"actual prose\" {\n\t\tt.Fatal(item)\n\t}\n}\n",
           "fixture_source_path": "services/api/internal/app/scoring_feedback_shape_test.go",
-          "fixture_source_sha256": "92d5f84941b869431018b4172ef14cf740b1a0eb29f6f80308807ced083eee3b"
+          "fixture_source_sha256": "211f37e4bf6c4bca6e5443a1ab3574cbb3f4cf912039d104076ea85f5dbe8885"
         },
         "expected": {
           "independent_literal_assertions": "func TestScoringShapeMeaningNegative(t *testing.T) {\n\titem := map[string]any{\"kind\": \"missed\", \"unit_ids\": []any{\"invented\"}, \"status\": \"wrong\", \"text\": \"actual prose\"}\n\tnormalizeFeedbackShape(map[string]any{\"language\": \"ru\", \"items\": []any{item}}, \"en\")\n\tif item[\"status\"] != \"wrong\" || item[\"unit_ids\"].([]any)[0] != \"invented\" || item[\"text\"] != \"actual prose\" {\n\t\tt.Fatal(item)\n\t}\n}\n",
@@ -53702,7 +53702,7 @@
           "exact_native_test": "TestScoringShapePendingPositive",
           "literal_executable_fixture": "func TestScoringShapePendingPositive(t *testing.T) {\n\titem := map[string]any{\"kind\": \"pending\", \"text\": \"Meaning is uncertain.\"}\n\tnormalizeFeedbackShape(map[string]any{\"items\": []any{item}}, \"ru\")\n\tif item[\"status\"] != \"needs_review\" {\n\t\tt.Fatal(item)\n\t}\n}\n",
           "fixture_source_path": "services/api/internal/app/scoring_feedback_shape_test.go",
-          "fixture_source_sha256": "92d5f84941b869431018b4172ef14cf740b1a0eb29f6f80308807ced083eee3b"
+          "fixture_source_sha256": "211f37e4bf6c4bca6e5443a1ab3574cbb3f4cf912039d104076ea85f5dbe8885"
         },
         "expected": {
           "independent_literal_assertions": "func TestScoringShapePendingPositive(t *testing.T) {\n\titem := map[string]any{\"kind\": \"pending\", \"text\": \"Meaning is uncertain.\"}\n\tnormalizeFeedbackShape(map[string]any{\"items\": []any{item}}, \"ru\")\n\tif item[\"status\"] != \"needs_review\" {\n\t\tt.Fatal(item)\n\t}\n}\n",
@@ -53714,7 +53714,7 @@
           "exact_native_test": "TestScoringShapeNoFindingsNegative",
           "literal_executable_fixture": "func TestScoringShapeNoFindingsNegative(t *testing.T) {\n\troot := map[string]any{}\n\tnormalizeFeedbackShape(root, \"en\")\n\tif root[\"items\"] != nil {\n\t\tt.Fatal(\"invented findings\")\n\t}\n}\n",
           "fixture_source_path": "services/api/internal/app/scoring_feedback_shape_test.go",
-          "fixture_source_sha256": "92d5f84941b869431018b4172ef14cf740b1a0eb29f6f80308807ced083eee3b"
+          "fixture_source_sha256": "211f37e4bf6c4bca6e5443a1ab3574cbb3f4cf912039d104076ea85f5dbe8885"
         },
         "expected": {
           "independent_literal_assertions": "func TestScoringShapeNoFindingsNegative(t *testing.T) {\n\troot := map[string]any{}\n\tnormalizeFeedbackShape(root, \"en\")\n\tif root[\"items\"] != nil {\n\t\tt.Fatal(\"invented findings\")\n\t}\n}\n",
@@ -53736,7 +53736,7 @@
           "exact_native_test": "TestScoringResultScopedPracticePositive",
           "literal_executable_fixture": "func TestScoringResultScopedPracticePositive(t *testing.T) {\n\troot := map[string]any{\"items\": []any{map[string]any{\"kind\": \"recommendation\", \"text\": \"New practice: The shop opens.\"}}}\n\tnormalizeFeedbackShape(root, \"en\")\n\t_, e := admitFeedback(mustScoringJSON(root), AttemptRecord{Context: map[string]any{\"requested_language\": \"en\"}}, InterpretationResources{Key: map[string]any{\"units\": []any{}}, Rationales: []any{}}, SemanticMapping{}, map[string]any{\"issues\": []any{}, \"score\": map[string]any{\"items\": []any{}}})\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
           "fixture_source_path": "services/api/internal/app/scoring_feedback_shape_test.go",
-          "fixture_source_sha256": "92d5f84941b869431018b4172ef14cf740b1a0eb29f6f80308807ced083eee3b"
+          "fixture_source_sha256": "211f37e4bf6c4bca6e5443a1ab3574cbb3f4cf912039d104076ea85f5dbe8885"
         },
         "expected": {
           "independent_literal_assertions": "func TestScoringResultScopedPracticePositive(t *testing.T) {\n\troot := map[string]any{\"items\": []any{map[string]any{\"kind\": \"recommendation\", \"text\": \"New practice: The shop opens.\"}}}\n\tnormalizeFeedbackShape(root, \"en\")\n\t_, e := admitFeedback(mustScoringJSON(root), AttemptRecord{Context: map[string]any{\"requested_language\": \"en\"}}, InterpretationResources{Key: map[string]any{\"units\": []any{}}, Rationales: []any{}}, SemanticMapping{}, map[string]any{\"issues\": []any{}, \"score\": map[string]any{\"items\": []any{}}})\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
@@ -53746,12 +53746,46 @@
       "negative": {
         "input": {
           "exact_native_test": "TestScoringUnscopedFindingNegative",
-          "literal_executable_fixture": "func TestScoringUnscopedFindingNegative(t *testing.T) {\n\troot := map[string]any{\"items\": []any{map[string]any{\"kind\": \"detected\", \"text\": \"An additional mistake was heard.\"}}}\n\tnormalizeFeedbackShape(root, \"en\")\n\t_, e := admitFeedback(mustScoringJSON(root), AttemptRecord{Context: map[string]any{\"requested_language\": \"en\"}}, InterpretationResources{Key: map[string]any{\"units\": []any{}}, Rationales: []any{}}, SemanticMapping{}, map[string]any{\"issues\": []any{}, \"score\": map[string]any{\"items\": []any{}}})\n\tif e == nil {\n\t\tt.Fatal(\"unscoped recording assertion accepted\")\n\t}\n}\nfunc mustScoringJSON(v any) []byte { b, _ := json.Marshal(v); return b }\n",
+          "literal_executable_fixture": "func TestScoringUnscopedFindingNegative(t *testing.T) {\n\troot := map[string]any{\"items\": []any{map[string]any{\"kind\": \"detected\", \"text\": \"An additional mistake was heard.\"}}}\n\tnormalizeFeedbackShape(root, \"en\")\n\t_, e := admitFeedback(mustScoringJSON(root), AttemptRecord{Context: map[string]any{\"requested_language\": \"en\"}}, InterpretationResources{Key: map[string]any{\"units\": []any{}}, Rationales: []any{}}, SemanticMapping{}, map[string]any{\"issues\": []any{}, \"score\": map[string]any{\"items\": []any{}}})\n\tif e == nil {\n\t\tt.Fatal(\"unscoped recording assertion accepted\")\n\t}\n}\nfunc mustScoringJSON(v any) []byte { b, _ := json.Marshal(v); return b }\n\n// Literal counterexample: one truthful comment covers the finding, correction\n// and optional reason. Separate cards do not establish semantic correctness.\nfunc combinedFeedbackFixture() (map[string]any, AttemptRecord, InterpretationResources, SemanticMapping, map[string]any) {\n\troot := map[string]any{\"items\": []any{\n\t\tmap[string]any{\"kind\": \"detected\", \"text\": \"Use opens: the cafe is singular. Your correction and reason are correct.\", \"unit_ids\": []any{\"e1\"}, \"decision_ids\": []any{\"c1\"}},\n\t\tmap[string]any{\"kind\": \"recommendation\", \"text\": \"New practice: The shop opens at nine.\"},\n\t}}\n\tnormalizeFeedbackShape(root, \"en\")\n\tmapping := SemanticMapping{Groups: []SemanticGroup{{Representative: \"c1\"}}}\n\tmapping.Groups[0].Correction.Supplied = true\n\tmapping.Groups[0].Explanation.Supplied = true\n\tmapping.Decisions = append(mapping.Decisions, SemanticDecision{Claim: \"c1\"})\n\treturn root, AttemptRecord{Context: map[string]any{\"requested_language\": \"en\"}}, InterpretationResources{Key: map[string]any{\"units\": []any{map[string]any{\"id\": \"e1\"}}}, Rationales: []any{}}, mapping, map[string]any{\"issues\": []any{}, \"score\": map[string]any{\"items\": []any{map[string]any{\"kind\": \"detected\", \"unit_id\": \"e1\"}}}}\n}\n",
           "fixture_source_path": "services/api/internal/app/scoring_feedback_shape_test.go",
-          "fixture_source_sha256": "92d5f84941b869431018b4172ef14cf740b1a0eb29f6f80308807ced083eee3b"
+          "fixture_source_sha256": "211f37e4bf6c4bca6e5443a1ab3574cbb3f4cf912039d104076ea85f5dbe8885"
         },
         "expected": {
-          "independent_literal_assertions": "func TestScoringUnscopedFindingNegative(t *testing.T) {\n\troot := map[string]any{\"items\": []any{map[string]any{\"kind\": \"detected\", \"text\": \"An additional mistake was heard.\"}}}\n\tnormalizeFeedbackShape(root, \"en\")\n\t_, e := admitFeedback(mustScoringJSON(root), AttemptRecord{Context: map[string]any{\"requested_language\": \"en\"}}, InterpretationResources{Key: map[string]any{\"units\": []any{}}, Rationales: []any{}}, SemanticMapping{}, map[string]any{\"issues\": []any{}, \"score\": map[string]any{\"items\": []any{}}})\n\tif e == nil {\n\t\tt.Fatal(\"unscoped recording assertion accepted\")\n\t}\n}\nfunc mustScoringJSON(v any) []byte { b, _ := json.Marshal(v); return b }\n",
+          "independent_literal_assertions": "func TestScoringUnscopedFindingNegative(t *testing.T) {\n\troot := map[string]any{\"items\": []any{map[string]any{\"kind\": \"detected\", \"text\": \"An additional mistake was heard.\"}}}\n\tnormalizeFeedbackShape(root, \"en\")\n\t_, e := admitFeedback(mustScoringJSON(root), AttemptRecord{Context: map[string]any{\"requested_language\": \"en\"}}, InterpretationResources{Key: map[string]any{\"units\": []any{}}, Rationales: []any{}}, SemanticMapping{}, map[string]any{\"issues\": []any{}, \"score\": map[string]any{\"items\": []any{}}})\n\tif e == nil {\n\t\tt.Fatal(\"unscoped recording assertion accepted\")\n\t}\n}\nfunc mustScoringJSON(v any) []byte { b, _ := json.Marshal(v); return b }\n\n// Literal counterexample: one truthful comment covers the finding, correction\n// and optional reason. Separate cards do not establish semantic correctness.\nfunc combinedFeedbackFixture() (map[string]any, AttemptRecord, InterpretationResources, SemanticMapping, map[string]any) {\n\troot := map[string]any{\"items\": []any{\n\t\tmap[string]any{\"kind\": \"detected\", \"text\": \"Use opens: the cafe is singular. Your correction and reason are correct.\", \"unit_ids\": []any{\"e1\"}, \"decision_ids\": []any{\"c1\"}},\n\t\tmap[string]any{\"kind\": \"recommendation\", \"text\": \"New practice: The shop opens at nine.\"},\n\t}}\n\tnormalizeFeedbackShape(root, \"en\")\n\tmapping := SemanticMapping{Groups: []SemanticGroup{{Representative: \"c1\"}}}\n\tmapping.Groups[0].Correction.Supplied = true\n\tmapping.Groups[0].Explanation.Supplied = true\n\tmapping.Decisions = append(mapping.Decisions, SemanticDecision{Claim: \"c1\"})\n\treturn root, AttemptRecord{Context: map[string]any{\"requested_language\": \"en\"}}, InterpretationResources{Key: map[string]any{\"units\": []any{map[string]any{\"id\": \"e1\"}}}, Rationales: []any{}}, mapping, map[string]any{\"issues\": []any{}, \"score\": map[string]any{\"items\": []any{map[string]any{\"kind\": \"detected\", \"unit_id\": \"e1\"}}}}\n}\n",
+          "oracle": "The application SHALL complete only harmless missing feedback envelope metadata before the single output admission, preserve actual prose/references and explicit judgments, and never invent missing findings. Independent literal counts/fractions, source judgments and lifecycle expectations are in the executable fixture; transport substitutes do not establish general linguistic accuracy."
+        }
+      }
+    },
+    {
+      "id": "iteration11-I11-07-packet4",
+      "action": "Execute TestScoringCombinedCommentPositive through services/api/internal/app/scoring_feedback_shape.go",
+      "initial_state": {
+        "origin": "Independent literal fixture with actual native owners",
+        "isolated_database_media": false
+      },
+      "independent_oracle": "The application SHALL complete only harmless missing feedback envelope metadata before the single output admission, preserve actual prose/references and explicit judgments, and never invent missing findings. Independent literal counts/fractions, source judgments and lifecycle expectations are in the executable fixture; transport substitutes do not establish general linguistic accuracy.",
+      "origin": "Independent exact arithmetic/source and controlled transport fixture",
+      "positive": {
+        "input": {
+          "exact_native_test": "TestScoringCombinedCommentPositive",
+          "literal_executable_fixture": "func TestScoringCombinedCommentPositive(t *testing.T) {\n\troot, record, resources, mapping, result := combinedFeedbackFixture()\n\tif _, e := admitFeedback(mustScoringJSON(root), record, resources, mapping, result); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
+          "fixture_source_path": "services/api/internal/app/scoring_feedback_shape_test.go",
+          "fixture_source_sha256": "211f37e4bf6c4bca6e5443a1ab3574cbb3f4cf912039d104076ea85f5dbe8885"
+        },
+        "expected": {
+          "independent_literal_assertions": "func TestScoringCombinedCommentPositive(t *testing.T) {\n\troot, record, resources, mapping, result := combinedFeedbackFixture()\n\tif _, e := admitFeedback(mustScoringJSON(root), record, resources, mapping, result); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
+          "oracle": "The application SHALL complete only harmless missing feedback envelope metadata before the single output admission, preserve actual prose/references and explicit judgments, and never invent missing findings. Independent literal counts/fractions, source judgments and lifecycle expectations are in the executable fixture; transport substitutes do not establish general linguistic accuracy."
+        }
+      },
+      "negative": {
+        "input": {
+          "exact_native_test": "TestScoringMissingFactualCommentNegative",
+          "literal_executable_fixture": "func TestScoringMissingFactualCommentNegative(t *testing.T) {\n\troot, record, resources, mapping, result := combinedFeedbackFixture()\n\troot[\"items\"] = root[\"items\"].([]any)[1:]\n\tif _, e := admitFeedback(mustScoringJSON(root), record, resources, mapping, result); e == nil {\n\t\tt.Fatal(\"practice alone covered no factual finding\")\n\t}\n}\n",
+          "fixture_source_path": "services/api/internal/app/scoring_feedback_shape_test.go",
+          "fixture_source_sha256": "211f37e4bf6c4bca6e5443a1ab3574cbb3f4cf912039d104076ea85f5dbe8885"
+        },
+        "expected": {
+          "independent_literal_assertions": "func TestScoringMissingFactualCommentNegative(t *testing.T) {\n\troot, record, resources, mapping, result := combinedFeedbackFixture()\n\troot[\"items\"] = root[\"items\"].([]any)[1:]\n\tif _, e := admitFeedback(mustScoringJSON(root), record, resources, mapping, result); e == nil {\n\t\tt.Fatal(\"practice alone covered no factual finding\")\n\t}\n}\n",
           "oracle": "The application SHALL complete only harmless missing feedback envelope metadata before the single output admission, preserve actual prose/references and explicit judgments, and never invent missing findings. Independent literal counts/fractions, source judgments and lifecycle expectations are in the executable fixture; transport substitutes do not establish general linguistic accuracy."
         }
       }
@@ -54212,7 +54246,7 @@
           "exact_native_test": "TestLocalScoringRepairPositive",
           "literal_executable_fixture": "func TestLocalScoringRepairPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens.\", \"good\", \"100.0\", \"correction\", \"en\")\n}\n",
           "fixture_source_path": "tests/native_local_scoring_test.go",
-          "fixture_source_sha256": "c5a2bc40770caa1bd0920f27d0c823b0979b0c6c8b47eaca3388ee927434cc78"
+          "fixture_source_sha256": "4426f4f60a6c8aa29c224450bf93fcb78f1d67fa6b61af687101d6084bc75463"
         },
         "expected": {
           "independent_literal_assertions": "func TestLocalScoringRepairPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens.\", \"good\", \"100.0\", \"correction\", \"en\")\n}\n",
@@ -54224,7 +54258,7 @@
           "exact_native_test": "TestLocalScoringWrongRepairNegative",
           "literal_executable_fixture": "func TestLocalScoringWrongRepairNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opening.\", \"scoring-wrong\", \"60.0\", \"correction\", \"en\")\n}\n",
           "fixture_source_path": "tests/native_local_scoring_test.go",
-          "fixture_source_sha256": "c5a2bc40770caa1bd0920f27d0c823b0979b0c6c8b47eaca3388ee927434cc78"
+          "fixture_source_sha256": "4426f4f60a6c8aa29c224450bf93fcb78f1d67fa6b61af687101d6084bc75463"
         },
         "expected": {
           "independent_literal_assertions": "func TestLocalScoringWrongRepairNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opening.\", \"scoring-wrong\", \"60.0\", \"correction\", \"en\")\n}\n",
@@ -54246,7 +54280,7 @@
           "exact_native_test": "TestLocalScoringReasonPositive",
           "literal_executable_fixture": "func TestLocalScoringReasonPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens because the cafe is singular.\", \"rubric-repair\", \"100.0\", \"explanation\", \"en\")\n}\n",
           "fixture_source_path": "tests/native_local_scoring_test.go",
-          "fixture_source_sha256": "c5a2bc40770caa1bd0920f27d0c823b0979b0c6c8b47eaca3388ee927434cc78"
+          "fixture_source_sha256": "4426f4f60a6c8aa29c224450bf93fcb78f1d67fa6b61af687101d6084bc75463"
         },
         "expected": {
           "independent_literal_assertions": "func TestLocalScoringReasonPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens because the cafe is singular.\", \"rubric-repair\", \"100.0\", \"explanation\", \"en\")\n}\n",
@@ -54258,7 +54292,7 @@
           "exact_native_test": "TestLocalScoringMissNegative",
           "literal_executable_fixture": "func TestLocalScoringMissNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"\", \"good\", \"0.0\", \"missed\", \"en\")\n}\n\n",
           "fixture_source_path": "tests/native_local_scoring_test.go",
-          "fixture_source_sha256": "c5a2bc40770caa1bd0920f27d0c823b0979b0c6c8b47eaca3388ee927434cc78"
+          "fixture_source_sha256": "4426f4f60a6c8aa29c224450bf93fcb78f1d67fa6b61af687101d6084bc75463"
         },
         "expected": {
           "independent_literal_assertions": "func TestLocalScoringMissNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"\", \"good\", \"0.0\", \"missed\", \"en\")\n}\n\n",
@@ -54280,7 +54314,7 @@
           "exact_native_test": "TestLocalScoringRussianPositive",
           "literal_executable_fixture": "func TestLocalScoringRussianPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens.\", \"good\", \"100.0\", \"correction\", \"ru\")\n}\n",
           "fixture_source_path": "tests/native_local_scoring_test.go",
-          "fixture_source_sha256": "c5a2bc40770caa1bd0920f27d0c823b0979b0c6c8b47eaca3388ee927434cc78"
+          "fixture_source_sha256": "4426f4f60a6c8aa29c224450bf93fcb78f1d67fa6b61af687101d6084bc75463"
         },
         "expected": {
           "independent_literal_assertions": "func TestLocalScoringRussianPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens.\", \"good\", \"100.0\", \"correction\", \"ru\")\n}\n",
@@ -54292,7 +54326,7 @@
           "exact_native_test": "TestLocalScoringFalseReasonNegative",
           "literal_executable_fixture": "func TestLocalScoringFalseReasonNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens because every English verb always ends in s.\", \"scoring-false-reason\", \"100.0\", \"explanation\", \"en\")\n}\n",
           "fixture_source_path": "tests/native_local_scoring_test.go",
-          "fixture_source_sha256": "c5a2bc40770caa1bd0920f27d0c823b0979b0c6c8b47eaca3388ee927434cc78"
+          "fixture_source_sha256": "4426f4f60a6c8aa29c224450bf93fcb78f1d67fa6b61af687101d6084bc75463"
         },
         "expected": {
           "independent_literal_assertions": "func TestLocalScoringFalseReasonNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens because every English verb always ends in s.\", \"scoring-false-reason\", \"100.0\", \"explanation\", \"en\")\n}\n",
@@ -61342,7 +61376,8 @@
       "scenarios": [
         "I11-07 packet 1",
         "I11-07 packet 2",
-        "I11-07 packet 3"
+        "I11-07 packet 3",
+        "I11-07 packet 4"
       ],
       "observation_state": "not_run"
     },
@@ -170191,7 +170226,7 @@
         "exact_native_test": "TestScoringShapeMetadataPositive",
         "literal_executable_fixture": "func TestScoringShapeMetadataPositive(t *testing.T) {\n\titem := map[string]any{\"kind\": \"recommendation\", \"text\": \"New practice: The shop opens.\", \"unit_ids\": []any{\"u1\"}}\n\troot := map[string]any{\"items\": []any{item}}\n\tnormalizeFeedbackShape(root, \"en\")\n\tif root[\"language\"] != \"en\" || item[\"grounding_status\"] != \"practice_recommendation\" || len(item[\"decision_ids\"].([]any)) != 0 {\n\t\tt.Fatal(root)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/scoring_feedback_shape_test.go",
-        "fixture_source_sha256": "92d5f84941b869431018b4172ef14cf740b1a0eb29f6f80308807ced083eee3b"
+        "fixture_source_sha256": "211f37e4bf6c4bca6e5443a1ab3574cbb3f4cf912039d104076ea85f5dbe8885"
       },
       "expected": {
         "independent_literal_assertions": "func TestScoringShapeMetadataPositive(t *testing.T) {\n\titem := map[string]any{\"kind\": \"recommendation\", \"text\": \"New practice: The shop opens.\", \"unit_ids\": []any{\"u1\"}}\n\troot := map[string]any{\"items\": []any{item}}\n\tnormalizeFeedbackShape(root, \"en\")\n\tif root[\"language\"] != \"en\" || item[\"grounding_status\"] != \"practice_recommendation\" || len(item[\"decision_ids\"].([]any)) != 0 {\n\t\tt.Fatal(root)\n\t}\n}\n",
@@ -170217,7 +170252,7 @@
         "exact_native_test": "TestScoringShapePendingPositive",
         "literal_executable_fixture": "func TestScoringShapePendingPositive(t *testing.T) {\n\titem := map[string]any{\"kind\": \"pending\", \"text\": \"Meaning is uncertain.\"}\n\tnormalizeFeedbackShape(map[string]any{\"items\": []any{item}}, \"ru\")\n\tif item[\"status\"] != \"needs_review\" {\n\t\tt.Fatal(item)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/scoring_feedback_shape_test.go",
-        "fixture_source_sha256": "92d5f84941b869431018b4172ef14cf740b1a0eb29f6f80308807ced083eee3b"
+        "fixture_source_sha256": "211f37e4bf6c4bca6e5443a1ab3574cbb3f4cf912039d104076ea85f5dbe8885"
       },
       "expected": {
         "independent_literal_assertions": "func TestScoringShapePendingPositive(t *testing.T) {\n\titem := map[string]any{\"kind\": \"pending\", \"text\": \"Meaning is uncertain.\"}\n\tnormalizeFeedbackShape(map[string]any{\"items\": []any{item}}, \"ru\")\n\tif item[\"status\"] != \"needs_review\" {\n\t\tt.Fatal(item)\n\t}\n}\n",
@@ -170243,7 +170278,7 @@
         "exact_native_test": "TestScoringShapeMeaningNegative",
         "literal_executable_fixture": "func TestScoringShapeMeaningNegative(t *testing.T) {\n\titem := map[string]any{\"kind\": \"missed\", \"unit_ids\": []any{\"invented\"}, \"status\": \"wrong\", \"text\": \"actual prose\"}\n\tnormalizeFeedbackShape(map[string]any{\"language\": \"ru\", \"items\": []any{item}}, \"en\")\n\tif item[\"status\"] != \"wrong\" || item[\"unit_ids\"].([]any)[0] != \"invented\" || item[\"text\"] != \"actual prose\" {\n\t\tt.Fatal(item)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/scoring_feedback_shape_test.go",
-        "fixture_source_sha256": "92d5f84941b869431018b4172ef14cf740b1a0eb29f6f80308807ced083eee3b"
+        "fixture_source_sha256": "211f37e4bf6c4bca6e5443a1ab3574cbb3f4cf912039d104076ea85f5dbe8885"
       },
       "expected": {
         "independent_literal_assertions": "func TestScoringShapeMeaningNegative(t *testing.T) {\n\titem := map[string]any{\"kind\": \"missed\", \"unit_ids\": []any{\"invented\"}, \"status\": \"wrong\", \"text\": \"actual prose\"}\n\tnormalizeFeedbackShape(map[string]any{\"language\": \"ru\", \"items\": []any{item}}, \"en\")\n\tif item[\"status\"] != \"wrong\" || item[\"unit_ids\"].([]any)[0] != \"invented\" || item[\"text\"] != \"actual prose\" {\n\t\tt.Fatal(item)\n\t}\n}\n",
@@ -170269,7 +170304,7 @@
         "exact_native_test": "TestScoringShapeNoFindingsNegative",
         "literal_executable_fixture": "func TestScoringShapeNoFindingsNegative(t *testing.T) {\n\troot := map[string]any{}\n\tnormalizeFeedbackShape(root, \"en\")\n\tif root[\"items\"] != nil {\n\t\tt.Fatal(\"invented findings\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/scoring_feedback_shape_test.go",
-        "fixture_source_sha256": "92d5f84941b869431018b4172ef14cf740b1a0eb29f6f80308807ced083eee3b"
+        "fixture_source_sha256": "211f37e4bf6c4bca6e5443a1ab3574cbb3f4cf912039d104076ea85f5dbe8885"
       },
       "expected": {
         "independent_literal_assertions": "func TestScoringShapeNoFindingsNegative(t *testing.T) {\n\troot := map[string]any{}\n\tnormalizeFeedbackShape(root, \"en\")\n\tif root[\"items\"] != nil {\n\t\tt.Fatal(\"invented findings\")\n\t}\n}\n",
@@ -170295,7 +170330,7 @@
         "exact_native_test": "TestScoringResultScopedPracticePositive",
         "literal_executable_fixture": "func TestScoringResultScopedPracticePositive(t *testing.T) {\n\troot := map[string]any{\"items\": []any{map[string]any{\"kind\": \"recommendation\", \"text\": \"New practice: The shop opens.\"}}}\n\tnormalizeFeedbackShape(root, \"en\")\n\t_, e := admitFeedback(mustScoringJSON(root), AttemptRecord{Context: map[string]any{\"requested_language\": \"en\"}}, InterpretationResources{Key: map[string]any{\"units\": []any{}}, Rationales: []any{}}, SemanticMapping{}, map[string]any{\"issues\": []any{}, \"score\": map[string]any{\"items\": []any{}}})\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/scoring_feedback_shape_test.go",
-        "fixture_source_sha256": "92d5f84941b869431018b4172ef14cf740b1a0eb29f6f80308807ced083eee3b"
+        "fixture_source_sha256": "211f37e4bf6c4bca6e5443a1ab3574cbb3f4cf912039d104076ea85f5dbe8885"
       },
       "expected": {
         "independent_literal_assertions": "func TestScoringResultScopedPracticePositive(t *testing.T) {\n\troot := map[string]any{\"items\": []any{map[string]any{\"kind\": \"recommendation\", \"text\": \"New practice: The shop opens.\"}}}\n\tnormalizeFeedbackShape(root, \"en\")\n\t_, e := admitFeedback(mustScoringJSON(root), AttemptRecord{Context: map[string]any{\"requested_language\": \"en\"}}, InterpretationResources{Key: map[string]any{\"units\": []any{}}, Rationales: []any{}}, SemanticMapping{}, map[string]any{\"issues\": []any{}, \"score\": map[string]any{\"items\": []any{}}})\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
@@ -170319,12 +170354,64 @@
       },
       "input": {
         "exact_native_test": "TestScoringUnscopedFindingNegative",
-        "literal_executable_fixture": "func TestScoringUnscopedFindingNegative(t *testing.T) {\n\troot := map[string]any{\"items\": []any{map[string]any{\"kind\": \"detected\", \"text\": \"An additional mistake was heard.\"}}}\n\tnormalizeFeedbackShape(root, \"en\")\n\t_, e := admitFeedback(mustScoringJSON(root), AttemptRecord{Context: map[string]any{\"requested_language\": \"en\"}}, InterpretationResources{Key: map[string]any{\"units\": []any{}}, Rationales: []any{}}, SemanticMapping{}, map[string]any{\"issues\": []any{}, \"score\": map[string]any{\"items\": []any{}}})\n\tif e == nil {\n\t\tt.Fatal(\"unscoped recording assertion accepted\")\n\t}\n}\nfunc mustScoringJSON(v any) []byte { b, _ := json.Marshal(v); return b }\n",
+        "literal_executable_fixture": "func TestScoringUnscopedFindingNegative(t *testing.T) {\n\troot := map[string]any{\"items\": []any{map[string]any{\"kind\": \"detected\", \"text\": \"An additional mistake was heard.\"}}}\n\tnormalizeFeedbackShape(root, \"en\")\n\t_, e := admitFeedback(mustScoringJSON(root), AttemptRecord{Context: map[string]any{\"requested_language\": \"en\"}}, InterpretationResources{Key: map[string]any{\"units\": []any{}}, Rationales: []any{}}, SemanticMapping{}, map[string]any{\"issues\": []any{}, \"score\": map[string]any{\"items\": []any{}}})\n\tif e == nil {\n\t\tt.Fatal(\"unscoped recording assertion accepted\")\n\t}\n}\nfunc mustScoringJSON(v any) []byte { b, _ := json.Marshal(v); return b }\n\n// Literal counterexample: one truthful comment covers the finding, correction\n// and optional reason. Separate cards do not establish semantic correctness.\nfunc combinedFeedbackFixture() (map[string]any, AttemptRecord, InterpretationResources, SemanticMapping, map[string]any) {\n\troot := map[string]any{\"items\": []any{\n\t\tmap[string]any{\"kind\": \"detected\", \"text\": \"Use opens: the cafe is singular. Your correction and reason are correct.\", \"unit_ids\": []any{\"e1\"}, \"decision_ids\": []any{\"c1\"}},\n\t\tmap[string]any{\"kind\": \"recommendation\", \"text\": \"New practice: The shop opens at nine.\"},\n\t}}\n\tnormalizeFeedbackShape(root, \"en\")\n\tmapping := SemanticMapping{Groups: []SemanticGroup{{Representative: \"c1\"}}}\n\tmapping.Groups[0].Correction.Supplied = true\n\tmapping.Groups[0].Explanation.Supplied = true\n\tmapping.Decisions = append(mapping.Decisions, SemanticDecision{Claim: \"c1\"})\n\treturn root, AttemptRecord{Context: map[string]any{\"requested_language\": \"en\"}}, InterpretationResources{Key: map[string]any{\"units\": []any{map[string]any{\"id\": \"e1\"}}}, Rationales: []any{}}, mapping, map[string]any{\"issues\": []any{}, \"score\": map[string]any{\"items\": []any{map[string]any{\"kind\": \"detected\", \"unit_id\": \"e1\"}}}}\n}\n",
         "fixture_source_path": "services/api/internal/app/scoring_feedback_shape_test.go",
-        "fixture_source_sha256": "92d5f84941b869431018b4172ef14cf740b1a0eb29f6f80308807ced083eee3b"
+        "fixture_source_sha256": "211f37e4bf6c4bca6e5443a1ab3574cbb3f4cf912039d104076ea85f5dbe8885"
       },
       "expected": {
-        "independent_literal_assertions": "func TestScoringUnscopedFindingNegative(t *testing.T) {\n\troot := map[string]any{\"items\": []any{map[string]any{\"kind\": \"detected\", \"text\": \"An additional mistake was heard.\"}}}\n\tnormalizeFeedbackShape(root, \"en\")\n\t_, e := admitFeedback(mustScoringJSON(root), AttemptRecord{Context: map[string]any{\"requested_language\": \"en\"}}, InterpretationResources{Key: map[string]any{\"units\": []any{}}, Rationales: []any{}}, SemanticMapping{}, map[string]any{\"issues\": []any{}, \"score\": map[string]any{\"items\": []any{}}})\n\tif e == nil {\n\t\tt.Fatal(\"unscoped recording assertion accepted\")\n\t}\n}\nfunc mustScoringJSON(v any) []byte { b, _ := json.Marshal(v); return b }\n",
+        "independent_literal_assertions": "func TestScoringUnscopedFindingNegative(t *testing.T) {\n\troot := map[string]any{\"items\": []any{map[string]any{\"kind\": \"detected\", \"text\": \"An additional mistake was heard.\"}}}\n\tnormalizeFeedbackShape(root, \"en\")\n\t_, e := admitFeedback(mustScoringJSON(root), AttemptRecord{Context: map[string]any{\"requested_language\": \"en\"}}, InterpretationResources{Key: map[string]any{\"units\": []any{}}, Rationales: []any{}}, SemanticMapping{}, map[string]any{\"issues\": []any{}, \"score\": map[string]any{\"items\": []any{}}})\n\tif e == nil {\n\t\tt.Fatal(\"unscoped recording assertion accepted\")\n\t}\n}\nfunc mustScoringJSON(v any) []byte { b, _ := json.Marshal(v); return b }\n\n// Literal counterexample: one truthful comment covers the finding, correction\n// and optional reason. Separate cards do not establish semantic correctness.\nfunc combinedFeedbackFixture() (map[string]any, AttemptRecord, InterpretationResources, SemanticMapping, map[string]any) {\n\troot := map[string]any{\"items\": []any{\n\t\tmap[string]any{\"kind\": \"detected\", \"text\": \"Use opens: the cafe is singular. Your correction and reason are correct.\", \"unit_ids\": []any{\"e1\"}, \"decision_ids\": []any{\"c1\"}},\n\t\tmap[string]any{\"kind\": \"recommendation\", \"text\": \"New practice: The shop opens at nine.\"},\n\t}}\n\tnormalizeFeedbackShape(root, \"en\")\n\tmapping := SemanticMapping{Groups: []SemanticGroup{{Representative: \"c1\"}}}\n\tmapping.Groups[0].Correction.Supplied = true\n\tmapping.Groups[0].Explanation.Supplied = true\n\tmapping.Decisions = append(mapping.Decisions, SemanticDecision{Claim: \"c1\"})\n\treturn root, AttemptRecord{Context: map[string]any{\"requested_language\": \"en\"}}, InterpretationResources{Key: map[string]any{\"units\": []any{map[string]any{\"id\": \"e1\"}}}, Rationales: []any{}}, mapping, map[string]any{\"issues\": []any{}, \"score\": map[string]any{\"items\": []any{map[string]any{\"kind\": \"detected\", \"unit_id\": \"e1\"}}}}\n}\n",
+        "oracle": "The application SHALL complete only harmless missing feedback envelope metadata before the single output admission, preserve actual prose/references and explicit judgments, and never invent missing findings. Independent literal counts/fractions, source judgments and lifecycle expectations are in the executable fixture; transport substitutes do not establish general linguistic accuracy."
+      },
+      "independent_oracle": "The application SHALL complete only harmless missing feedback envelope metadata before the single output admission, preserve actual prose/references and explicit judgments, and never invent missing findings. Independent literal counts/fractions, source judgments and lifecycle expectations are in the executable fixture; transport substitutes do not establish general linguistic accuracy.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I11-07.P1.S4.POSITIVE",
+      "property_id": "I11-07.P1",
+      "polarity": "positive",
+      "scenario": "I11-07 packet 4",
+      "fixture_id": "iteration11-I11-07-packet4",
+      "test_id": "tangerine.local/api/internal/app::TestScoringCombinedCommentPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestScoringCombinedCommentPositive through services/api/internal/app/scoring_feedback_shape.go",
+      "initial_state": {
+        "origin": "Independent literal fixture with actual native owners",
+        "isolated_database_media": false
+      },
+      "input": {
+        "exact_native_test": "TestScoringCombinedCommentPositive",
+        "literal_executable_fixture": "func TestScoringCombinedCommentPositive(t *testing.T) {\n\troot, record, resources, mapping, result := combinedFeedbackFixture()\n\tif _, e := admitFeedback(mustScoringJSON(root), record, resources, mapping, result); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/scoring_feedback_shape_test.go",
+        "fixture_source_sha256": "211f37e4bf6c4bca6e5443a1ab3574cbb3f4cf912039d104076ea85f5dbe8885"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestScoringCombinedCommentPositive(t *testing.T) {\n\troot, record, resources, mapping, result := combinedFeedbackFixture()\n\tif _, e := admitFeedback(mustScoringJSON(root), record, resources, mapping, result); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "oracle": "The application SHALL complete only harmless missing feedback envelope metadata before the single output admission, preserve actual prose/references and explicit judgments, and never invent missing findings. Independent literal counts/fractions, source judgments and lifecycle expectations are in the executable fixture; transport substitutes do not establish general linguistic accuracy."
+      },
+      "independent_oracle": "The application SHALL complete only harmless missing feedback envelope metadata before the single output admission, preserve actual prose/references and explicit judgments, and never invent missing findings. Independent literal counts/fractions, source judgments and lifecycle expectations are in the executable fixture; transport substitutes do not establish general linguistic accuracy.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I11-07.P1.S4.NEGATIVE",
+      "property_id": "I11-07.P1",
+      "polarity": "negative",
+      "scenario": "I11-07 packet 4",
+      "fixture_id": "iteration11-I11-07-packet4",
+      "test_id": "tangerine.local/api/internal/app::TestScoringMissingFactualCommentNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestScoringMissingFactualCommentNegative through services/api/internal/app/scoring_feedback_shape.go",
+      "initial_state": {
+        "origin": "Independent literal fixture with actual native owners",
+        "isolated_database_media": false
+      },
+      "input": {
+        "exact_native_test": "TestScoringMissingFactualCommentNegative",
+        "literal_executable_fixture": "func TestScoringMissingFactualCommentNegative(t *testing.T) {\n\troot, record, resources, mapping, result := combinedFeedbackFixture()\n\troot[\"items\"] = root[\"items\"].([]any)[1:]\n\tif _, e := admitFeedback(mustScoringJSON(root), record, resources, mapping, result); e == nil {\n\t\tt.Fatal(\"practice alone covered no factual finding\")\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/scoring_feedback_shape_test.go",
+        "fixture_source_sha256": "211f37e4bf6c4bca6e5443a1ab3574cbb3f4cf912039d104076ea85f5dbe8885"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestScoringMissingFactualCommentNegative(t *testing.T) {\n\troot, record, resources, mapping, result := combinedFeedbackFixture()\n\troot[\"items\"] = root[\"items\"].([]any)[1:]\n\tif _, e := admitFeedback(mustScoringJSON(root), record, resources, mapping, result); e == nil {\n\t\tt.Fatal(\"practice alone covered no factual finding\")\n\t}\n}\n",
         "oracle": "The application SHALL complete only harmless missing feedback envelope metadata before the single output admission, preserve actual prose/references and explicit judgments, and never invent missing findings. Independent literal counts/fractions, source judgments and lifecycle expectations are in the executable fixture; transport substitutes do not establish general linguistic accuracy."
       },
       "independent_oracle": "The application SHALL complete only harmless missing feedback envelope metadata before the single output admission, preserve actual prose/references and explicit judgments, and never invent missing findings. Independent literal counts/fractions, source judgments and lifecycle expectations are in the executable fixture; transport substitutes do not establish general linguistic accuracy.",
@@ -171023,7 +171110,7 @@
         "exact_native_test": "TestLocalScoringRepairPositive",
         "literal_executable_fixture": "func TestLocalScoringRepairPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens.\", \"good\", \"100.0\", \"correction\", \"en\")\n}\n",
         "fixture_source_path": "tests/native_local_scoring_test.go",
-        "fixture_source_sha256": "c5a2bc40770caa1bd0920f27d0c823b0979b0c6c8b47eaca3388ee927434cc78"
+        "fixture_source_sha256": "4426f4f60a6c8aa29c224450bf93fcb78f1d67fa6b61af687101d6084bc75463"
       },
       "expected": {
         "independent_literal_assertions": "func TestLocalScoringRepairPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens.\", \"good\", \"100.0\", \"correction\", \"en\")\n}\n",
@@ -171049,7 +171136,7 @@
         "exact_native_test": "TestLocalScoringReasonPositive",
         "literal_executable_fixture": "func TestLocalScoringReasonPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens because the cafe is singular.\", \"rubric-repair\", \"100.0\", \"explanation\", \"en\")\n}\n",
         "fixture_source_path": "tests/native_local_scoring_test.go",
-        "fixture_source_sha256": "c5a2bc40770caa1bd0920f27d0c823b0979b0c6c8b47eaca3388ee927434cc78"
+        "fixture_source_sha256": "4426f4f60a6c8aa29c224450bf93fcb78f1d67fa6b61af687101d6084bc75463"
       },
       "expected": {
         "independent_literal_assertions": "func TestLocalScoringReasonPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens because the cafe is singular.\", \"rubric-repair\", \"100.0\", \"explanation\", \"en\")\n}\n",
@@ -171075,7 +171162,7 @@
         "exact_native_test": "TestLocalScoringWrongRepairNegative",
         "literal_executable_fixture": "func TestLocalScoringWrongRepairNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opening.\", \"scoring-wrong\", \"60.0\", \"correction\", \"en\")\n}\n",
         "fixture_source_path": "tests/native_local_scoring_test.go",
-        "fixture_source_sha256": "c5a2bc40770caa1bd0920f27d0c823b0979b0c6c8b47eaca3388ee927434cc78"
+        "fixture_source_sha256": "4426f4f60a6c8aa29c224450bf93fcb78f1d67fa6b61af687101d6084bc75463"
       },
       "expected": {
         "independent_literal_assertions": "func TestLocalScoringWrongRepairNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opening.\", \"scoring-wrong\", \"60.0\", \"correction\", \"en\")\n}\n",
@@ -171101,7 +171188,7 @@
         "exact_native_test": "TestLocalScoringMissNegative",
         "literal_executable_fixture": "func TestLocalScoringMissNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"\", \"good\", \"0.0\", \"missed\", \"en\")\n}\n\n",
         "fixture_source_path": "tests/native_local_scoring_test.go",
-        "fixture_source_sha256": "c5a2bc40770caa1bd0920f27d0c823b0979b0c6c8b47eaca3388ee927434cc78"
+        "fixture_source_sha256": "4426f4f60a6c8aa29c224450bf93fcb78f1d67fa6b61af687101d6084bc75463"
       },
       "expected": {
         "independent_literal_assertions": "func TestLocalScoringMissNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"\", \"good\", \"0.0\", \"missed\", \"en\")\n}\n\n",
@@ -171127,7 +171214,7 @@
         "exact_native_test": "TestLocalScoringRussianPositive",
         "literal_executable_fixture": "func TestLocalScoringRussianPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens.\", \"good\", \"100.0\", \"correction\", \"ru\")\n}\n",
         "fixture_source_path": "tests/native_local_scoring_test.go",
-        "fixture_source_sha256": "c5a2bc40770caa1bd0920f27d0c823b0979b0c6c8b47eaca3388ee927434cc78"
+        "fixture_source_sha256": "4426f4f60a6c8aa29c224450bf93fcb78f1d67fa6b61af687101d6084bc75463"
       },
       "expected": {
         "independent_literal_assertions": "func TestLocalScoringRussianPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens.\", \"good\", \"100.0\", \"correction\", \"ru\")\n}\n",
@@ -171153,7 +171240,7 @@
         "exact_native_test": "TestLocalScoringFalseReasonNegative",
         "literal_executable_fixture": "func TestLocalScoringFalseReasonNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens because every English verb always ends in s.\", \"scoring-false-reason\", \"100.0\", \"explanation\", \"en\")\n}\n",
         "fixture_source_path": "tests/native_local_scoring_test.go",
-        "fixture_source_sha256": "c5a2bc40770caa1bd0920f27d0c823b0979b0c6c8b47eaca3388ee927434cc78"
+        "fixture_source_sha256": "4426f4f60a6c8aa29c224450bf93fcb78f1d67fa6b61af687101d6084bc75463"
       },
       "expected": {
         "independent_literal_assertions": "func TestLocalScoringFalseReasonNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens because every English verb always ends in s.\", \"scoring-false-reason\", \"100.0\", \"explanation\", \"en\")\n}\n",
