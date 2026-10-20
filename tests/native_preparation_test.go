@@ -35,9 +35,16 @@ type preparationTrip func(*http.Request) (*http.Response, error)
 
 func (f preparationTrip) RoundTrip(r *http.Request) (*http.Response, error) { return f(r) }
 func prepareNativeFixture(t *testing.T, response string, status int) (*Server, CanonicalPreparationRequest, *http.Client, *int) {
-	return prepareNativeFixtureConfigured(t, response, status, nil)
+	return prepareNativeFixtureRequest(t, response, status, nil)
+}
+func prepareNativeFixtureRequest(t *testing.T, response string, status int, configure func(map[string]any)) (*Server, CanonicalPreparationRequest, *http.Client, *int) {
+	return prepareNativeFixtureOptions(t, response, status, nil, configure)
 }
 func prepareNativeFixtureConfigured(t *testing.T, response string, status int, configure func(map[string]any)) (*Server, CanonicalPreparationRequest, *http.Client, *int) {
+	return prepareNativeFixtureOptions(t, response, status, configure, nil)
+}
+func prepareNativeFixtureOptions(t *testing.T, response string, status int, configureSettings, configure func(map[string]any)) (*Server, CanonicalPreparationRequest, *http.Client, *int) {
+
 	t.Helper()
 	store := preparationNative(t)
 	ctx := context.Background()
@@ -47,8 +54,8 @@ func prepareNativeFixtureConfigured(t *testing.T, response string, status int, c
 	}
 	c["speech_profile"] = "kokoro-local-en-v1"
 	c["speech_profiles"] = []any{}
-	if configure != nil {
-		configure(c)
+	if configureSettings != nil {
+		configureSettings(c)
 	}
 	p := c["llm_profiles"].([]any)[0].(map[string]any)
 	p["provider"] = "openai"
@@ -66,9 +73,20 @@ func prepareNativeFixtureConfigured(t *testing.T, response string, status int, c
 	if e != nil {
 		t.Fatal(e)
 	}
-	b, e := store.WriteBlueprint(ctx, []byte(`{"exercise_request":{"topic":"Café opening","speaker_count":1,"text_length_words":50}}`), uuid.NewString())
+	request := map[string]any{"exercise_request": map[string]any{"topic": "Café opening", "speaker_count": 1, "text_length_words": 50}}
+	if configure != nil {
+		configure(request)
+	}
+	requestBytes, _ := json.Marshal(request)
+	b, e := store.WriteBlueprint(ctx, requestBytes, uuid.NewString())
 	if e != nil {
 		t.Fatal(e)
+	}
+	defect := ""
+	repairOnce := strings.HasSuffix(response, "-once")
+	if strings.HasPrefix(response, "canonical-") {
+		defect = strings.TrimSuffix(response, "-once")
+		response = ""
 	}
 	failFirst := response == "fail-once"
 	if failFirst {
@@ -92,6 +110,42 @@ func prepareNativeFixtureConfigured(t *testing.T, response string, status int, c
 			w.WriteHeader(429)
 			_, _ = io.WriteString(w, `{"error":{"code":"subscription_sharing_usage_limit_exceeded"}}`)
 			return
+		}
+		if defect != "" {
+			keyword := map[string]string{"canonical-units": "canonical_text", "canonical-speaker": "blueprint speakers", "canonical-surface": "canonical_text"}[defect]
+			if n == 2 {
+				var frame struct{ Input []struct{ Content string } }
+				_ = json.Unmarshal(wire, &frame)
+				var diagnostic struct {
+					Detail string `json:"validation_detail"`
+				}
+				_ = json.Unmarshal([]byte(frame.Input[len(frame.Input)-1].Content), &diagnostic)
+				if !strings.Contains(diagnostic.Detail, keyword) {
+					t.Error("canonical repair lacks owning validation reason", keyword, diagnostic.Detail)
+				}
+			}
+			if n == 1 || !repairOnce {
+				base, _ := json.Marshal(candidate)
+				var invalid map[string]any
+				_ = json.Unmarshal(base, &invalid)
+				switch defect {
+				case "canonical-units":
+					_, _, mutation, _ := mutationFixture()
+					invalid["planned_units"] = mutation["planned_units"]
+					u := invalid["planned_units"].([]any)[0].(map[string]any)
+					u["explanation_eligible"] = false
+					delete(u["corrections"].([]any)[0].(map[string]any), "canonical")
+				case "canonical-speaker":
+					invalid["utterances"].([]any)[0].(map[string]any)["speaker_id"] = "not-requested"
+				case "canonical-surface":
+					invalid["utterances"].([]any)[0].(map[string]any)["surface_text"] = "The café open tomorrow."
+				}
+				payload, _ := json.Marshal(invalid)
+				encoded, _ := json.Marshal(string(payload))
+				w.WriteHeader(status)
+				_, _ = io.WriteString(w, `{"object":"response","id":"canonical-defect","status":"completed","model":"constructed-clean-text","output":[{"type":"message","content":[{"type":"output_text","text":`+string(encoded)+`}]}]}`)
+				return
+			}
 		}
 		w.WriteHeader(status)
 		_, _ = io.WriteString(w, response)

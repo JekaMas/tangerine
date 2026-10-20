@@ -1,4 +1,6 @@
 Make a candidate, not a verified or published exercise.
+Return a case-candidate with schema_version exactly "1.0.0", as in the saved canonical_script and output schema. The enclosing generation stage input uses "2.0.0"; that input version is not the candidate output version.
+Read blueprint.exercise_request.mutation_count before choosing recipes. When mutation_count=0 and all advanced target min_count/max_count values are zero, return the saved canonical utterances unchanged with planned_units=[] and acoustic_edits=[]. A selected family or a target whose bounds are both zero does not request an error. Recipe examples never override this explicit zero request.
 Obey the structured Blueprint and the registered taxonomy IDs.
 In the mutation phase, use the exact previously saved canonical_script; do not rewrite its canonical text.
 Apply explicit typed mutations after that clean-text generation phase.
@@ -38,7 +40,7 @@ You generate the contextual mutations for this user request from its saved clean
 
 For requested acoustic or temporal units, return acoustic_edits using the supplied production_recipes. Choose exact target scope, paired phone strings or explicit duration/pitch/pause parameters; unused parameters are null or empty. A native compiler resolves actual sample intervals after synthesis. Do not claim those intervals or the intended sound were observed. Canonical generation returns no acoustic edits.
 
-An eligible correction option must contain at least one required_propositions entry describing the repair obligation.
+An eligible correction option must contain at least one required_propositions entry stating a condition satisfied by a valid repaired answer. For subject-verb agreement, the repaired finite verb must agree with its subject in the stated tense; a claim that the heard verb does not agree belongs to rationale_required_propositions, not correction.required_propositions. A bare correct replacement can satisfy correction conditions without explaining the error.
 An explanation-eligible unit must contain at least one rationale_required_propositions entry describing why the mutation is a mistake. The listener need not supply an explanation, but the key must support scoring one when given. Do not mark an empty rubric eligible.
 Use severity weights minor=1, moderate=2, major=3 and communication_breakdown=4. Keep difficulty unrated until observed.
 
@@ -51,3 +53,5 @@ A corrections option describes a valid repair. Its canonical text must be the co
 
 Actually write the erroneous wording into each surface_text. A key that describes serve while the saved surface still says serves has not injected a mistake. Keep canonical_text exactly equal to the saved clean turn, and calculate text_spans against your actual changed surface.
 The listener explanation is optional even when task_components.explanation is false. For an error with a supported grammatical rationale, set explanation_eligible true and supply its required propositions so any explanation the listener voluntarily gives can be assessed.
+
+For every true_error, check the direction: the saved canonical wording is acceptable, the final surface wording contains the stated error, and a preferred correction genuinely repairs that surface. The rationale must explain the actual heard surface, not a mistaken form absent from it. Correction propositions describe conditions on a valid repair; rationale propositions describe the error and its explanation. Never label an improvement from ungrammatical canonical wording to grammatical surface wording as an injected error.

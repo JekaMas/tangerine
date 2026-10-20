@@ -29,15 +29,16 @@ type Attempt struct {
 	Err        error
 }
 type ExecuteRequest struct {
-	Profile      Profile
-	Instructions string
-	Input        []any
-	Format       any
-	OutputKind   string
-	Timeout      time.Duration
-	Validate     func([]byte) error
-	Before       func(context.Context, Attempt) error
-	After        func(context.Context, Attempt) error
+	Profile         Profile
+	Instructions    string
+	Input           []any
+	Format          any
+	OutputKind      string
+	Timeout         time.Duration
+	DiagnoseInvalid func([]byte) string
+	Validate        func([]byte) error
+	Before          func(context.Context, Attempt) error
+	After           func(context.Context, Attempt) error
 }
 
 func Execute(ctx context.Context, client *http.Client, r ExecuteRequest, credential string) ([]byte, []Attempt, error) {
@@ -65,7 +66,19 @@ func Execute(ctx context.Context, client *http.Client, r ExecuteRequest, credent
 		}
 		a.Response, e = Exchange(ctx, client, r.Profile, wire, credential)
 		if e == nil {
-			a.Projection, e = ProjectVisible(a.Response.Visible, r.OutputKind)
+			if r.DiagnoseInvalid == nil {
+				a.Projection, e = ProjectVisible(a.Response.Visible, r.OutputKind)
+			} else {
+				a.Projection, e = projectVisible(a.Response.Visible, r.OutputKind, true)
+				if e != nil && len(a.Projection) > 0 {
+					if detail := r.DiagnoseInvalid(a.Projection); detail != "" {
+						var invalid *OutputValidationError
+						if errors.As(e, &invalid) {
+							e = &OutputValidationError{Detail: invalid.Detail + "\n" + detail}
+						}
+					}
+				}
+			}
 			if e == nil && r.Validate != nil {
 				e = r.Validate(a.Projection)
 			}
@@ -115,13 +128,12 @@ func Execute(ctx context.Context, client *http.Client, r ExecuteRequest, credent
 			if safe == "" {
 				safe = "PROVIDER_OUTPUT_INVALID"
 			}
-			repairData := map[string]any{"validation_code": safe, "raw_visible_output": a.Response.Visible}
+			repairData := map[string]any{"repair_instruction": RepairInstruction + safe, "validation_code": safe, "raw_visible_output": a.Response.Visible}
 			var detail interface{ ValidationDetail() string }
 			if errors.As(e, &detail) {
 				repairData["validation_detail"] = detail.ValidationDetail()
 			}
 			payload, _ := json.Marshal(repairData)
-			instructions += "\n" + RepairInstruction + safe
 			input = append(input, map[string]any{"role": "user", "content": string(payload)})
 			repaired = true
 			kind = "semantic_repair"

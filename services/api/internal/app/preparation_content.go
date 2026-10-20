@@ -9,6 +9,8 @@ import (
 	"strings"
 	"tangerine.local/api/internal/contracts"
 	"tangerine.local/api/internal/lab"
+	"tangerine.local/api/internal/provider"
+	"time"
 )
 
 // Frozen registries are packaged byte-for-byte from the active specification.
@@ -160,10 +162,10 @@ func canonicalContent(raw []byte, blueprint map[string]any) (map[string]any, int
 		return nil, 0, e
 	}
 	if c["blueprint_id"] != blueprint["id"] || c["status"] != "candidate" || c["failure_reason"] != nil || len(c["planned_units"].([]any)) != 0 {
-		return nil, 0, ErrConflict
+		return nil, 0, &provider.OutputValidationError{Detail: "Preserve the saved blueprint_id, candidate status and null failure_reason. This is canonical_text: planned_units must be empty; targets describe the later mutation phase."}
 	}
 	if ops, ok := c["acoustic_edits"].([]any); ok && len(ops) != 0 {
-		return nil, 0, ErrConflict
+		return nil, 0, &provider.OutputValidationError{Detail: "This clean canonical_text phase requires acoustic_edits empty; acoustic mutations belong to the next phase."}
 	}
 	expected := map[string]bool{}
 	for _, s := range blueprint["speakers"].([]any) {
@@ -177,10 +179,10 @@ func canonicalContent(raw []byte, blueprint map[string]any) (map[string]any, int
 		speaker := v["speaker_id"].(string)
 		text := v["canonical_text"].(string)
 		if _, ok := expected[speaker]; !ok {
-			return nil, 0, ErrConflict
+			return nil, 0, &provider.OutputValidationError{Detail: "Use only the expanded blueprint speakers and retain their exact speaker_id values."}
 		}
 		if ids[id] || strings.TrimSpace(text) == "" || text != v["surface_text"] {
-			return nil, 0, ErrConflict
+			return nil, 0, &provider.OutputValidationError{Detail: "Keep unique turn IDs, nonempty canonical_text and surface_text exactly equal to canonical_text in this clean phase."}
 		}
 		ids[id] = true
 		expected[speaker] = true
@@ -188,7 +190,7 @@ func canonicalContent(raw []byte, blueprint map[string]any) (map[string]any, int
 	}
 	for _, present := range expected {
 		if !present {
-			return nil, 0, ErrConflict
+			return nil, 0, &provider.OutputValidationError{Detail: "Give every requested blueprint speaker at least one clean utterance."}
 		}
 	}
 	return c, words, nil
@@ -219,7 +221,11 @@ func preparationBindings(c map[string]any, b lab.Bundle) ([]any, error) {
 			effective["prompt_sha256"] = v.PromptSHA
 			effective["input_schema_sha256"] = v.InputSHA
 			effective["output_schema_sha256"] = v.OutputSHA
-			effective["wire_schema_sha256"] = v.OutputSHA
+			wireSchema, err := contracts.WireSchema(strings.TrimSuffix(v.OutputSchema, ".schema.json"))
+			if err != nil {
+				return nil, err
+			}
+			effective["wire_schema_sha256"] = contracts.Digest(wireSchema)
 			effective["timeout_seconds"] = int(stageTimeout("case_generation", &phase).Seconds())
 			effective["prompt_bundle_sha256"] = b.SHA
 			effective["context_policy_sha256"] = v.PolicySHA
@@ -232,4 +238,21 @@ func preparationBindings(c map[string]any, b lab.Bundle) ([]any, error) {
 		}
 	}
 	return bindings, nil
+}
+
+// Preparation bindings were admitted and saved at creation. Reuse their phase
+// budget, including an earlier deployment's policy, without revalidating assets.
+func preparationTimeout(settings map[string]any, phase string) time.Duration {
+	for _, item := range settings["generation_bindings"].([]any) {
+		binding := item.(map[string]any)
+		if binding["phase"] == phase {
+			switch seconds := binding["timeout_seconds"].(type) {
+			case int:
+				return time.Duration(seconds) * time.Second
+			case float64:
+				return time.Duration(seconds) * time.Second
+			}
+		}
+	}
+	return 0
 }

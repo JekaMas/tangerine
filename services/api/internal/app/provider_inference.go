@@ -16,14 +16,16 @@ import (
 )
 
 type LLMRequest struct {
-	Operation     OperationRequest
-	Stage         string
-	Phase         *string
-	Input         map[string]any
-	Components    map[string]any
-	Configuration map[string]any
-	Bundle        lab.Bundle
-	Validate      func([]byte) error
+	Timeout         time.Duration
+	Operation       OperationRequest
+	Stage           string
+	Phase           *string
+	Input           map[string]any
+	Components      map[string]any
+	Configuration   map[string]any
+	Bundle          lab.Bundle
+	DiagnoseInvalid func([]byte) string
+	Validate        func([]byte) error
 }
 type LLMResult struct {
 	Output         json.RawMessage `json:"output"`
@@ -40,7 +42,7 @@ func stageTimeout(stage string, phase *string) time.Duration {
 		if phase != nil && *phase == "canonical_text" {
 			return 90 * time.Second
 		}
-		return 150 * time.Second
+		return 240 * time.Second
 	case "blind_claim_extraction", "feedback":
 		return 40 * time.Second
 	case "claim_mapping":
@@ -65,7 +67,11 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 	if e != nil {
 		return result, e
 	}
-	prepared, e := lab.Prepare(request.Bundle, request.Stage, request.Phase, request.Input, request.Components, p.ContextBudget, 4096)
+	timeout := request.Timeout
+	if timeout == 0 {
+		timeout = stageTimeout(request.Stage, request.Phase)
+	}
+	prepared, e := lab.BuildContext(request.Bundle, request.Stage, request.Phase, request.Input, request.Components)
 	if e != nil {
 		return result, e
 	}
@@ -75,7 +81,11 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 			binding = b
 		}
 	}
-	request.Operation.Body, _ = lab.Canonical(map[string]any{"original_request": json.RawMessage(request.Operation.Body), "configuration_sha256": lab.Hash(request.Configuration), "bundle_sha256": request.Bundle.SHA, "stage": request.Stage, "phase": request.Phase, "input_sha256": prepared.InputSHA, "components_sha256": lab.Hash(request.Components)})
+	format, e := inferenceOutputFormat(p, prepared.OutputSchema)
+	if e != nil {
+		return result, e
+	}
+	request.Operation.Body, _ = lab.Canonical(map[string]any{"original_request": json.RawMessage(request.Operation.Body), "configuration_sha256": lab.Hash(request.Configuration), "bundle_sha256": request.Bundle.SHA, "stage": request.Stage, "phase": request.Phase, "timeout_seconds": int(timeout / time.Second), "input_sha256": prepared.InputSHA, "components_sha256": lab.Hash(request.Components)})
 	op, e := s.Store.ReserveOperation(ctx, request.Operation)
 	if e != nil {
 		return result, e
@@ -108,17 +118,13 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 			return result, &provider.Failure{Code: "CONSTRAINT_CONFLICT"}
 		}
 	}
-	claim, e := s.Store.DB.Exec(ctx, "UPDATE operation SET state='running' WHERE id=$1 AND state='reserved'", op.ID)
-	if e != nil {
+	if e = s.Store.claimInference(ctx, op.ID); e != nil {
 		return result, e
-	}
-	if claim.RowsAffected() != 1 {
-		return result, &provider.Failure{Code: "LEASE_ACTIVE"}
 	}
 	defer func() {
 		end, done := context.WithTimeout(context.WithoutCancel(ctx), 5*time.Second)
 		defer done()
-		_, _ = s.Store.DB.Exec(end, "UPDATE operation SET state='interrupted',finished_at=clock_timestamp() WHERE id=$1 AND state='running'", op.ID)
+		s.Store.releaseInference(end, op.ID)
 	}()
 
 	// Bindings have a server-generated immutable envelope and a semantic self digest
@@ -134,8 +140,8 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 	effective["prompt_sha256"] = binding.PromptSHA
 	effective["input_schema_sha256"] = binding.InputSHA
 	effective["output_schema_sha256"] = binding.OutputSHA
-	effective["wire_schema_sha256"] = binding.OutputSHA
-	effective["timeout_seconds"] = int(stageTimeout(request.Stage, request.Phase) / time.Second)
+	effective["wire_schema_sha256"] = contracts.Digest(prepared.OutputSchema)
+	effective["timeout_seconds"] = int(timeout / time.Second)
 	effective["prompt_bundle_sha256"] = request.Bundle.SHA
 	effective["context_policy_sha256"] = binding.PolicySHA
 	delete(effective, "id")
@@ -146,41 +152,47 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 	if _, e = s.Store.WriteDocuments(ctx, []DocumentWrite{{ID: result.BindingID, Kind: "effective-binding", Version: "2.0.0", Scope: "local", Payload: body}}); e != nil {
 		return result, e
 	}
-	if _, e = s.Store.DB.Exec(ctx, "UPDATE operation SET input_document_id=$2 WHERE id=$1", op.ID, result.BindingID); e != nil {
+	if e = s.Store.bindInference(ctx, op.ID, result.BindingID); e != nil {
 		return result, e
 	}
 	components := []any{}
-	instructions := []string{}
-	input := []any{}
 	for _, part := range prepared.Parts {
 		a, e := s.Store.saveProviderBytes(ctx, part.Body, "provider_input")
 		if e != nil {
 			return result, e
 		}
 		components = append(components, map[string]any{"kind": part.Kind, "trust": part.Trust, "asset_id": a.ID, "asset_sha256": part.SHA, "included": true, "reason": nil, "byte_count": part.Bytes, "token_count": nil})
-		if part.Trust == "owned_instruction" {
-			instructions = append(instructions, part.Kind+": "+string(part.Body))
-		} else {
-			input = append(input, map[string]any{"role": "user", "content": part.Kind + ": " + string(part.Body)})
-		}
 	}
-	typed, _ := lab.Canonical(request.Input)
-	input = append(input, map[string]any{"role": "user", "content": "Complete stage input: " + string(typed)})
+	instructions, input := inferenceFrame(prepared, request.Stage, request.Phase, request.Input)
 	// Omitted components are retained deterministically and without invented counts.
 	for _, kind := range binding.Policy.Order {
 		if reason, ok := prepared.Omitted[kind]; ok {
 			components = append(components, map[string]any{"kind": kind, "trust": "input_data", "asset_id": nil, "asset_sha256": nil, "included": false, "reason": reason, "byte_count": nil, "token_count": nil})
 		}
 	}
+	counter, e := provider.NewContextCounter(p)
+	if e != nil {
+		return result, e
+	}
+	reserved := 4096
+	if p.MaxOutput != nil && *p.MaxOutput > reserved {
+		reserved = *p.MaxOutput
+	}
+	inputUsage := map[int]int{}
 	trace := traceID(16)
 	requestAssets := map[int]Asset{}
-	er := provider.ExecuteRequest{Profile: p, Instructions: strings.Join(instructions, "\n"), Input: input, OutputKind: strings.TrimSuffix(binding.OutputSchema, ".schema.json"), Timeout: stageTimeout(request.Stage, request.Phase), Validate: request.Validate}
-	// JSON-schema capability is opt-in for profiles with tested provider support;
+	er := provider.ExecuteRequest{Profile: p, Instructions: instructions, Input: input, OutputKind: strings.TrimSuffix(binding.OutputSchema, ".schema.json"), Format: format, Timeout: timeout, Validate: request.Validate, DiagnoseInvalid: request.DiagnoseInvalid}
+	// JSON-schema decoding is opt-in for profiles with observed provider support;
 	// plain JSON still receives the same complete output contract in instructions.
 	er.Before = func(ctx context.Context, a provider.Attempt) error {
-		if len(a.Wire) > p.ContextBudget-4096 {
+		used, err := counter.Count(a.Wire)
+		if err != nil {
+			return err
+		}
+		if reserved >= p.ContextBudget || used > p.ContextBudget-reserved {
 			return &provider.Failure{Code: "INPUT_CAPACITY_EXCEEDED"}
 		}
+		inputUsage[a.Index] = used
 		asset, e := s.Store.saveProviderBytes(ctx, a.Wire, "provider_input")
 		if e == nil {
 			requestAssets[a.Index] = asset
@@ -214,7 +226,11 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 				Input        []struct{ Content string }
 			}
 			_ = json.Unmarshal(a.Wire, &final)
-			for _, part := range []struct{ Kind, Trust, Body string }{{"prompt", "owned_instruction", final.Instructions}, {"candidate", "input_data", final.Input[len(final.Input)-1].Content}} {
+			var repair struct {
+				Instruction string `json:"repair_instruction"`
+			}
+			_ = json.Unmarshal([]byte(final.Input[len(final.Input)-1].Content), &repair)
+			for _, part := range []struct{ Kind, Trust, Body string }{{"prompt", "owned_instruction", repair.Instruction}, {"candidate", "input_data", final.Input[len(final.Input)-1].Content}} {
 				asset, e := s.Store.saveProviderBytes(ctx, []byte(part.Body), "provider_input")
 				if e != nil {
 					return e
@@ -222,7 +238,7 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 				attemptComponents = append(attemptComponents, map[string]any{"kind": part.Kind, "trust": part.Trust, "asset_id": asset.ID, "asset_sha256": asset.SHA, "included": true, "reason": nil, "byte_count": len(part.Body), "token_count": nil})
 			}
 		}
-		snapshot := map[string]any{"schema_version": "2.0.0", "id": snapshotID, "operation_id": op.ID, "stage": request.Stage, "phase": request.Phase, "bundle_sha256": request.Bundle.SHA, "binding_sha256": effective["binding_sha256"], "input_sha256": prepared.InputSHA, "components": attemptComponents, "tokenizer": nil, "budget_method": "conservative_utf8_bytes", "context_budget_tokens": p.ContextBudget, "reserved_output_tokens": 4096, "input_budget_used": len(a.Wire), "rendered_request_asset_id": req.ID, "receipt_id": receiptID, "trace_id": trace, "span_id": span, "created_at": a.Response.Finished.Format(time.RFC3339Nano)}
+		snapshot := map[string]any{"schema_version": "2.0.0", "id": snapshotID, "operation_id": op.ID, "stage": request.Stage, "phase": request.Phase, "bundle_sha256": request.Bundle.SHA, "binding_sha256": effective["binding_sha256"], "input_sha256": prepared.InputSHA, "components": attemptComponents, "tokenizer": counter.Tokenizer, "budget_method": counter.Method, "context_budget_tokens": p.ContextBudget, "reserved_output_tokens": reserved, "input_budget_used": inputUsage[a.Index], "rendered_request_asset_id": req.ID, "receipt_id": receiptID, "trace_id": trace, "span_id": span, "created_at": a.Response.Finished.Format(time.RFC3339Nano)}
 		rb, _ := lab.Canonical(receipt)
 		sb, _ := lab.Canonical(snapshot)
 		rw := DocumentWrite{ID: receiptID, Kind: "provider-receipt", Version: "2.0.0", Scope: "local", Payload: rb}
@@ -284,7 +300,7 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 		if saveErr != nil {
 			return result, saveErr
 		}
-		_, e = s.Store.DB.Exec(finishCtx, "UPDATE operation SET state='complete',subject_id=$2::text,result_document_id=(SELECT document_id FROM entity_head WHERE id=$2),finished_at=clock_timestamp() WHERE id=$1 AND state='running'", op.ID, asset.ID)
+		e = s.Store.completeInference(finishCtx, op.ID, asset.ID)
 	}
 	if e == nil && ctx.Err() != nil {
 		e = ctx.Err()
@@ -293,32 +309,4 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 		result.Output = output
 	}
 	return result, e
-}
-
-func (s *Storage) ReadLLMResult(ctx context.Context, id string) (LLMResult, error) {
-	r := LLMResult{OperationID: id, ReceiptIDs: []string{}, ContextIDs: []string{}}
-	var asset string
-	e := s.DB.QueryRow(ctx, "SELECT subject_id,input_document_id FROM operation WHERE id=$1 AND state='complete'", id).Scan(&asset, &r.BindingID)
-	if e != nil {
-		return r, e
-	}
-	b, e := s.ReadAsset(ctx, asset)
-	if e != nil {
-		return r, e
-	}
-	r.Output = b
-	rows, e := s.DB.Query(ctx, "SELECT id,payload->>'context_snapshot_id' FROM document WHERE kind='provider-receipt' AND payload->>'operation_id'=$1 ORDER BY (payload->>'transport_attempt')::int", id)
-	if e != nil {
-		return r, e
-	}
-	defer rows.Close()
-	for rows.Next() {
-		var a, b string
-		if e = rows.Scan(&a, &b); e != nil {
-			return r, e
-		}
-		r.ReceiptIDs = append(r.ReceiptIDs, a)
-		r.ContextIDs = append(r.ContextIDs, b)
-	}
-	return r, rows.Err()
 }

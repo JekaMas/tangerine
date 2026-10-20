@@ -30,10 +30,17 @@ func observeLocalMutation(t *testing.T, count int) {
 		t.Fatal(e)
 	}
 	p := c["llm_profiles"].([]any)[0].(map[string]any)
-	p["provider"], p["model"], p["endpoint"] = "local_responses", "gpt-oss:20b", "http://127.0.0.1:11434/v1/responses"
-	p["auth_method"], p["billing_mode"], p["credential_ref"], p["stream"] = "local_none", "local", "local-none", false
-	p["context_budget_tokens"], p["max_output_tokens"] = float64(131072), float64(8000)
-	p["reasoning_effort"] = "low"
+	profileRaw, err := os.ReadFile(os.Getenv("TANGERINE_LOCAL_MUTATION_PROFILE"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var selected map[string]any
+	if err = json.Unmarshal(profileRaw, &selected); err != nil {
+		t.Fatal(err)
+	}
+	for name, value := range selected {
+		p[name] = value
+	}
 	c["llm_lab_capture_content"], c["llm_lab_trace_enabled"] = true, true
 	for _, k := range []string{"workspace_id", "configuration_sha256", "provider_access_policy"} {
 		delete(c, k)
@@ -58,7 +65,7 @@ func observeLocalMutation(t *testing.T, count int) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	request := map[string]any{"exercise_request": map[string]any{"topic": "A café opens every morning. Describe its opening hours and fresh coffee in the third person, with the café as the singular subject.", "speaker_count": 1, "text_length_words": 20, "english_level": "B1", "mutation_count": count, "category_families": []any{"grammar"}}, "targets": []any{map[string]any{"taxonomy_id": "grammar.verbs.subject_verb_agreement", "min_count": count, "max_count": count, "expected_judgment": "true_error", "hard_render_constraints": []any{}}}}
+	request := map[string]any{"exercise_request": map[string]any{"topic": "Describe a café’s opening hours and fresh coffee in the simple present, with the café as the singular subject. For the clean text use opens and serves exactly once each as its two finite verbs. The later mutation may intentionally change one of these forms.", "speaker_count": 1, "text_length_words": 20, "english_level": "B1", "mutation_count": count, "category_families": []any{"grammar"}}, "targets": []any{map[string]any{"taxonomy_id": "grammar.verbs.subject_verb_agreement", "min_count": count, "max_count": count, "expected_judgment": "true_error", "hard_render_constraints": []any{}}}}
 	raw, _ = json.Marshal(request)
 	b, e := store.WriteBlueprint(ctx, raw, uuid.NewString())
 	if e != nil {
@@ -84,7 +91,9 @@ func observeLocalMutation(t *testing.T, count int) {
 		}
 		req.Body = io.NopCloser(bytes.NewReader(body))
 		response, e := transport.RoundTrip(req)
-		event := map[string]any{"wire_request_sha256": contracts.Digest(body), "endpoint": req.URL.String(), "route": "127.0.0.1:11434", "model": "gpt-oss:20b", "billing_mode": "local", "fixture_response": false}
+		var sent struct{ Model string }
+		_ = json.Unmarshal(body, &sent)
+		event := map[string]any{"wire_request_sha256": contracts.Digest(body), "endpoint": req.URL.String(), "route": "127.0.0.1:11434", "model": sent.Model, "billing_mode": "local", "fixture_response": false}
 		if e == nil {
 			bytes, e2 := io.ReadAll(response.Body)
 			response.Body.Close()
@@ -110,6 +119,19 @@ func observeLocalMutation(t *testing.T, count int) {
 	if e != nil {
 		t.Fatal("actual local canonical phase", e)
 	}
+	cleanRaw, readErr := store.ReadAsset(ctx, clean["canonical_asset_id"].(string))
+	if readErr != nil {
+		t.Fatal(readErr)
+	}
+	var cleanContent map[string]any
+	_ = json.Unmarshal(cleanRaw, &cleanContent)
+	cleanParts := []string{}
+	for _, v := range cleanContent["utterances"].([]any) {
+		cleanParts = append(cleanParts, v.(map[string]any)["canonical_text"].(string))
+	}
+	if err := agreementFixtureCanonical(strings.Join(cleanParts, "\n")); err != nil {
+		t.Fatal("independent clean agreement expectation", err)
+	}
 	ident := clean["id"].(string)
 	r.PreparationID = &ident
 	r.Attempt = 2
@@ -131,6 +153,29 @@ func observeLocalMutation(t *testing.T, count int) {
 		t.Fatal("independent requested count", content)
 	}
 	if count > 0 {
+		canonicalParts, surfaceParts := []string{}, []string{}
+		for _, v := range content["utterances"].([]any) {
+			turn := v.(map[string]any)
+			canonicalParts = append(canonicalParts, turn["canonical_text"].(string))
+			surfaceParts = append(surfaceParts, turn["surface_text"].(string))
+		}
+		expected, err := agreementFixtureMutation(strings.Join(canonicalParts, "\n"), strings.Join(surfaceParts, "\n"))
+		if err != nil {
+			t.Fatal("independent mutation direction", err)
+		}
+		preferred := 0
+		for _, v := range content["planned_units"].([]any)[0].(map[string]any)["corrections"].([]any) {
+			option := v.(map[string]any)
+			if option["canonical"] == true {
+				preferred++
+				if !agreementFixtureCorrection(expected, option["kind"].(string), option["text"].(string)) {
+					t.Fatal("independent preferred correction", expected, option)
+				}
+			}
+		}
+		if preferred == 0 {
+			t.Fatal("missing independently expected preferred correction", expected)
+		}
 		// Independent linguistic expectations: an agreement error has a changed verb,
 		// an actual repair, and supported optional-explanation rubrics.
 		u := content["planned_units"].([]any)[0].(map[string]any)
@@ -207,7 +252,9 @@ func saveLocalDiagnostics(t *testing.T, store *Storage, dir string) {
 func saveActualLocalEvidence(t *testing.T, s *Server, p map[string]any) {
 	t.Helper()
 	saveNativeMutationEvidence(t, s, p)
-	raw, _ := json.MarshalIndent(map[string]any{"origin": "actual_local_ollama_with_native_preparation_storage", "model": "gpt-oss:20b", "billing_mode": "local", "fixture_response": false, "preparation": p}, "", "  ")
+	// The captured effective binding and wire request identify the actual model.
+	// Keep this snapshot free of a second, independently maintained model label.
+	raw, _ := json.MarshalIndent(map[string]any{"origin": "actual_local_ollama_with_native_preparation_storage", "billing_mode": "local", "fixture_response": false, "preparation": p}, "", "  ")
 	if e := os.WriteFile(filepath.Join(os.Getenv("TANGERINE_PREPARATION_TEST_EVIDENCE"), t.Name(), "state.json"), raw, 0600); e != nil {
 		t.Fatal(e)
 	}

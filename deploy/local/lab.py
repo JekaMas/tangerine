@@ -108,8 +108,8 @@ def check_inventory(inv):
  expected=json.loads(Path('/tangerine/spec/domain/ai-development.v1.json').read_text())['planned_surfaces']
  if Path('/tangerine/source/app/provider_inference.go').is_file():
   expected=expected+[dict(id='provider_adapter_'+suffix,stage='provider_adapter',phase=suffix,kind='llm',implementation_state='implemented') for suffix in ('invoke','transport_retry','semantic_repair','structured_fallback')]
-  required={'services/api/internal/app/'+name for name in ('provider_inference.go','provider_command.go','provider_configuration.go','provider_connections.go','provider-default.json')}
-  required.update('services/api/internal/provider/'+name for name in ('execute.go','connection.go','oidc.go','transport.go','projection.go'))
+  required={'services/api/internal/app/'+name for name in ('provider_inference.go','provider_context.go','provider_storage.go','provider_command.go','provider_configuration.go','provider_connections.go','provider-default.json')}
+  required.update('services/api/internal/provider/'+name for name in ('execute.go','connection.go','oidc.go','transport.go','projection.go','context.go'))
   if not required.issubset(paths):raise ValueError('implemented provider dependency is missing')
  entries={e['id']:e for e in inv['entries']}
  for surface in expected:
@@ -127,7 +127,7 @@ def check_inventory(inv):
   elif path.startswith('services/speech/'):
    root=Path('/tangerine/speech-source').resolve();physical=(root/path[len('services/speech/'):]).resolve()
    if not physical.is_relative_to(root):raise ValueError('unresolved speech dependency')
-  elif path.startswith(('services/api/internal/provider/','services/api/internal/app/')):
+  elif path.startswith(('services/api/internal/provider/','services/api/internal/app/','services/api/internal/contracts/')):
    relative=path[len('services/api/internal/'):];root=Path('/tangerine/source').resolve();physical=(root/relative).resolve()
    if not physical.is_relative_to(root):raise ValueError('unresolved source dependency')
   else:raise ValueError('source dependency is not available in the tooling snapshot')
@@ -163,17 +163,19 @@ def inventory(revision):
   state=surface['implementation_state'];owners=surface.get('owner_paths',[surface['owner_root']])
   if state=='implemented':
    for owner in owners:
-    dependency(owner,('/tangerine/source/'+owner[len('services/api/internal/'):]) if owner.startswith('services/api/internal/') else '/tangerine/speech-source/'+owner[len('services/speech/'):],'implemented pipeline owner')
+    dependency(owner,'/tangerine/source/'+owner[len('services/api/internal/'):],'implemented pipeline owner')
    for source in ('app/preparation_content.go','app/generationdata/providers.v1.yaml','app/generationdata/configuration-registry.yaml','app/generationdata/mutation-recipes.v1.json','app/generationdata/acoustic-production.v1.json','app/generationdata/error-taxonomy.v1.yaml'):
     dependency('services/api/internal/'+source,'/tangerine/source/'+source,'frozen preparation definition')
-  entries.append(dict(id=surface['id'],stage=surface['stage'],phase=surface['phase'],kind=surface['kind'],implementation_state=state,owner_paths=owners,owner_symbols=surface.get('owner_symbols',[('Server.PrepareMutation' if surface['id']=='generation.mutation' else 'Server.PrepareCanonical')]) if state=='implemented' else [],adapter_paths=surface.get('adapter_paths',['services/api/internal/app/provider_inference.go']) if state=='implemented' else [],trusted_fragments=fragments,discovery_evidence_refs=['finite source registry and exact packaged source bytes'],coverage_reason=surface['proof']))
+  entries.append(dict(id=surface['id'],stage=surface['stage'],phase=surface['phase'],kind=surface['kind'],implementation_state=state,owner_paths=owners,owner_symbols=[('Server.PrepareMutation' if surface['id']=='generation.mutation' else 'Server.PrepareCanonical')] if state=='implemented' else [],adapter_paths=['services/api/internal/app/provider_inference.go'] if state=='implemented' else [],trusted_fragments=fragments,discovery_evidence_refs=['finite source registry and exact packaged source bytes'],coverage_reason=surface['proof']))
  for suffix,symbol,fragment in [('invoke','Server.InvokeLLM','adapter_role_frame'),('transport_retry','Execute','fallback_wrapper'),('semantic_repair','Execute','repair_wrapper'),('structured_fallback','Execute','wire_schema_projection')]:
   owner='services/api/internal/app/provider_inference.go';adapter='services/api/internal/provider/execute.go'
   dependency(owner,'/tangerine/source/app/provider_inference.go','shared implemented provider owner')
   h=dependency(adapter,'/tangerine/source/provider/execute.go','trusted repair/retry/format owner')
-  for source in ['provider_command.go','provider_configuration.go','provider_connections.go','provider-default.json']:
+  for source in ['provider_context.go','provider_storage.go','provider_command.go','provider_configuration.go','provider_connections.go','provider-default.json']:
    dependency('services/api/internal/app/'+source,'/tangerine/source/app/'+source,'frozen profile and native entrypoint dependency')
-  for source in ['connection.go','oidc.go','transport.go','projection.go']:
+  for source in ['contracts.go','wire.go']:
+   dependency('services/api/internal/contracts/'+source,'/tangerine/source/contracts/'+source,'complete owned wire-schema projection')
+  for source in ['connection.go','oidc.go','transport.go','projection.go','context.go']:
    dependency('services/api/internal/provider/'+source,'/tangerine/source/provider/'+source,'provider dependency')
   entries.append(dict(id='provider_adapter_'+suffix,stage='provider_adapter',phase=suffix,kind='llm',implementation_state='implemented',owner_paths=[owner]+(['services/api/internal/app/provider_command.go'] if suffix=='invoke' else []),owner_symbols=[symbol]+(['Server.ProviderCommand'] if suffix=='invoke' else []),adapter_paths=[adapter],trusted_fragments=[dict(kind=fragment,path_or_asset=adapter,sha256=h,state='observed')],discovery_evidence_refs=['iteration4 source and native positive/negative transport cases'],coverage_reason='Protocol substitution evidence; hosted admission and real model quality are separately recorded.'))
  # Freeze unique physical dependencies once, preserving complete source inputs.

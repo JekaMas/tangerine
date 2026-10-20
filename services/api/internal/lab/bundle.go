@@ -207,6 +207,7 @@ type Part struct {
 	Body  json.RawMessage `json:"body"`
 }
 type Prepared struct {
+	OutputSchema json.RawMessage   `json:"-"`
 	BundleSHA    string            `json:"bundle_sha256"`
 	BindingSHA   string            `json:"binding_sha256"`
 	InputSHA     string            `json:"input_sha256"`
@@ -218,10 +219,10 @@ type Prepared struct {
 	BudgetUsed   int               `json:"input_budget_used"`
 }
 
-// Prepare retains the complete typed DTO. The provider adapter in iteration4
-// freezes its final role/default projection separately at dispatch.
-func Prepare(b Bundle, stage string, phase *string, input map[string]any, components map[string]any, budget, reserved int) (Prepared, error) {
-	p := Prepared{Omitted: map[string]string{}, BudgetMethod: "conservative_bytes"}
+// BuildContext retains the complete typed DTO. Capacity belongs to the provider
+// adapter, which knows the model and the final serialized request.
+func BuildContext(b Bundle, stage string, phase *string, input map[string]any, components map[string]any) (Prepared, error) {
+	p := Prepared{Omitted: map[string]string{}}
 	var binding *Binding
 	for i := range b.Bindings {
 		if Pair(b.Bindings[i].Stage, b.Bindings[i].Phase) == Pair(stage, phase) {
@@ -259,11 +260,11 @@ func Prepare(b Bundle, stage string, phase *string, input map[string]any, compon
 	}
 	values["prompt"] = template
 	values["context_policy"] = instruction
-	reg, e := contracts.Registry()
+	p.OutputSchema, e = contracts.WireSchema(strings.TrimSuffix(binding.OutputSchema, ".schema.json"))
 	if e != nil {
 		return p, e
 	}
-	values["wire_schema"] = json.RawMessage(reg[strings.TrimSuffix(binding.OutputSchema, ".schema.json")].Bytes)
+	values["wire_schema"] = p.OutputSchema
 	allowed := map[string]bool{}
 	for _, k := range binding.Policy.Order {
 		allowed[k] = true
@@ -300,14 +301,25 @@ func Prepare(b Bundle, stage string, phase *string, input map[string]any, compon
 	if e != nil {
 		return p, e
 	}
-	p.BudgetUsed = len(p.Wire)
-	if budget <= reserved || p.BudgetUsed > budget-reserved {
-		return p, errors.New("required context exceeds conservative byte budget; input retained")
-	}
 	p.BundleSHA = b.SHA
 	p.BindingSHA = Hash(binding)
 	p.InputSHA = contracts.Digest(raw)
 	p.WireSHA = contracts.Digest(p.Wire)
+	return p, nil
+}
+
+// Prepare provides the conservative bound for standalone Lab context previews.
+// Runtime dispatch measures the final provider wire instead of this intermediate DTO.
+func Prepare(b Bundle, stage string, phase *string, input map[string]any, components map[string]any, budget, reserved int) (Prepared, error) {
+	p, err := BuildContext(b, stage, phase, input, components)
+	if err != nil {
+		return p, err
+	}
+	p.BudgetMethod = "conservative_bytes"
+	p.BudgetUsed = len(p.Wire)
+	if budget <= reserved || p.BudgetUsed > budget-reserved {
+		return p, errors.New("required context exceeds conservative byte budget; input retained")
+	}
 	return p, nil
 }
 

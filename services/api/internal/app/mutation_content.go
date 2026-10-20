@@ -2,87 +2,12 @@ package app
 
 import (
 	"encoding/json"
-	"github.com/google/uuid"
-	"go.yaml.in/yaml/v3"
 	"regexp"
 	"sort"
 	"strings"
-	"tangerine.local/api/internal/contracts"
 	"tangerine.local/api/internal/lab"
 	"tangerine.local/api/internal/provider"
 )
-
-// MutationSelection projects the complete requested families/leaves from frozen
-// source definitions. Corpus names inside recipes are metadata, never excerpts.
-func mutationSelection(blueprint map[string]any, taxonomyBytes, recipeBytes, productionBytes []byte) (map[string]any, []any, []any, error) {
-	var taxonomy map[string]any
-	if e := yaml.Unmarshal(taxonomyBytes, &taxonomy); e != nil {
-		return nil, nil, nil, e
-	}
-	var recipe, production map[string]any
-	if e := json.Unmarshal(recipeBytes, &recipe); e != nil {
-		return nil, nil, nil, e
-	}
-	if e := json.Unmarshal(productionBytes, &production); e != nil {
-		return nil, nil, nil, e
-	}
-	requested := map[string]bool{}
-	for _, v := range blueprint["targets"].([]any) {
-		requested[v.(map[string]any)["taxonomy_id"].(string)] = true
-	}
-	families := []string{}
-	if r, ok := blueprint["exercise_request"].(map[string]any); ok {
-		for _, v := range r["category_families"].([]any) {
-			families = append(families, v.(string))
-		}
-	}
-	selected := func(id, domain string) bool {
-		if len(requested) > 0 {
-			return requested[id]
-		}
-		if len(families) == 0 {
-			return true
-		}
-		for _, f := range families {
-			if f == domain || strings.HasPrefix(domain, f+".") {
-				return true
-			}
-		}
-		return false
-	}
-	entries := []any{}
-	ids := map[string]bool{}
-	for _, v := range taxonomy["items"].([]any) {
-		leaf := v.(map[string]any)
-		id := leaf["id"].(string)
-		domain := leaf["reporting_domain"].(string)
-		if !selected(id, domain) {
-			continue
-		}
-		ids[id] = true
-		entries = append(entries, map[string]any{"id": id, "domain": domain, "definition": leaf["definition"], "inclusion": leaf["inclusion_criteria"], "exclusion": leaf["exclusion_criteria"], "correction_requirements": []any{leaf["correction_contract"]}, "verification_requirements": []any{leaf["verification_route"]}})
-	}
-	if len(entries) == 0 {
-		return nil, nil, nil, ErrConflict
-	}
-	recipes := []any{}
-	producers := []any{}
-	for _, v := range recipe["recipes"].([]any) {
-		if ids[v.(map[string]any)["taxonomy_id"].(string)] {
-			recipes = append(recipes, v)
-		}
-	}
-	for _, v := range production["rows"].([]any) {
-		if ids[v.(map[string]any)["taxonomy_id"].(string)] {
-			producers = append(producers, v)
-		}
-	}
-	rules := []any{}
-	if v, ok := taxonomy["judgment_rules"].([]any); ok {
-		rules = v
-	}
-	return map[string]any{"taxonomy_sha256": contracts.Digest(taxonomyBytes), "entries": entries, "judgment_rules": rules}, recipes, producers, nil
-}
 
 // mutationContent is the semantic half of the single new model-output admission.
 // The shared provider adapter already normalized and schema-checked this reply.
@@ -124,6 +49,8 @@ func mutationContent(raw []byte, blueprint, clean, taxonomy map[string]any) (map
 	scopes := map[string][][2]int{}
 	counts := map[string]int{}
 	trueErrors := 0
+	familyEvents := map[string]bool{}
+	obligations := map[string]bool{}
 	for _, v := range units {
 		u := v.(map[string]any)
 		id := u["id"].(string)
@@ -148,6 +75,12 @@ func mutationContent(raw []byte, blueprint, clean, taxonomy map[string]any) (map
 		}
 		if u["expected_judgment"] == "true_error" {
 			trueErrors++
+			familyEvents[u["domain"].(string)] = true
+			obligation := mutationObligation(u)
+			if obligations[obligation] {
+				return nil, &provider.OutputValidationError{Detail: "Copied units or renamed correction options do not create another independent repair obligation. Keep one unit for the same event."}
+			}
+			obligations[obligation] = true
 		}
 		counts[primary+":"+u["expected_judgment"].(string)]++
 		utterances := map[string]bool{}
@@ -172,7 +105,7 @@ func mutationContent(raw []byte, blueprint, clean, taxonomy map[string]any) (map
 			text := []rune(byTurn[turn]["surface_text"].(string))
 			start, end := int(span["start_cp"].(float64)), int(span["end_cp"].(float64))
 			if start > end || end > len(text) || string(text[start:end]) != span["exact_text"] {
-				return nil, &provider.OutputValidationError{Detail: "text_spans offsets are Unicode codepoints in the final surface_text; exact_text must equal that slice. Do not use canonical deletion characters or recipe-example coordinates as surface spans."}
+				return nil, &provider.OutputValidationError{Detail: surfaceLocatorHint(turn, text, start, end, span["exact_text"].(string))}
 			}
 			scopes[turn] = append(scopes[turn], [2]int{start, end})
 			old := []rune(byTurn[turn]["canonical_text"].(string))
@@ -227,6 +160,29 @@ func mutationContent(raw []byte, blueprint, clean, taxonomy map[string]any) (map
 			return nil, &provider.OutputValidationError{Detail: "The number of true_error units must equal the requested mutation_count."}
 		}
 	}
+	if r, ok := blueprint["exercise_request"].(map[string]any); ok {
+		if n, explicit := r["mutation_count"].(float64); !explicit || n != 0 {
+			if trueErrors == 0 {
+				return nil, &provider.OutputValidationError{Detail: "Automatic mutation_count chooses a positive number of true errors. Only explicit zero requests an empty/control-only key."}
+			}
+			if families, ok := r["category_families"].([]any); ok {
+				for _, v := range families {
+					family := v.(string)
+					covered := false
+					for domain := range familyEvents {
+						if mutationFamilyMatches([]string{family}, domain) {
+							covered = true
+							break
+						}
+					}
+					if !covered {
+						return nil, &provider.OutputValidationError{Detail: "Include at least one independent true-error event in every requested category family; broad pronunciation may use either subdomain. Only explicit mutation_count=0 overrides family coverage."}
+					}
+				}
+			}
+		}
+	}
+
 	ops, _ := c["acoustic_edits"].([]any)
 	acousticUnits := map[string]map[string]any{}
 	for _, v := range units {
@@ -320,71 +276,6 @@ func mutationAcousticParameters(edit map[string]any) bool {
 	return false
 }
 
-// mutationManifest derives one explicit composite edit per changed turn. This
-// deterministic compiler records the accepted LLM plan; it never creates errors.
-func mutationManifest(c map[string]any, canonicalID, canonicalSHA, mutatedID, mutatedSHA, recipeSHA string, recipes []any, seed any) map[string]any {
-	edits := []any{}
-	intents := []any{}
-	recipeIDs := []any{}
-	seenRecipes := map[string]bool{}
-	canonicalWords, surfaceWords := 0, 0
-	for _, v := range c["utterances"].([]any) {
-		u := v.(map[string]any)
-		old, new := []rune(u["canonical_text"].(string)), []rune(u["surface_text"].(string))
-		canonicalWords += len(strings.Fields(string(old)))
-		surfaceWords += len(strings.Fields(string(new)))
-		if string(old) == string(new) {
-			continue
-		}
-		start := 0
-		for start < len(old) && start < len(new) && old[start] == new[start] {
-			start++
-		}
-		oldEnd, newEnd := len(old), len(new)
-		for oldEnd > start && newEnd > start && old[oldEnd-1] == new[newEnd-1] {
-			oldEnd--
-			newEnd--
-		}
-		unitIDs := []any{}
-		for _, v := range c["planned_units"].([]any) {
-			unit := v.(map[string]any)
-			for _, v := range unit["text_spans"].([]any) {
-				if v.(map[string]any)["utterance_id"] == u["id"] {
-					unitIDs = append(unitIDs, unit["id"])
-					break
-				}
-			}
-		}
-		edits = append(edits, map[string]any{"utterance_id": u["id"], "start_cp": start, "end_cp": oldEnd, "original_text": string(old[start:oldEnd]), "replacement_text": string(new[start:newEnd]), "order": 0, "unit_ids": unitIDs})
-	}
-	for _, v := range c["planned_units"].([]any) {
-		unit := v.(map[string]any)
-		id := unit["primary_taxonomy_id"].(string)
-		if !seenRecipes[id] {
-			recipeIDs = append(recipeIDs, id)
-			seenRecipes[id] = true
-		}
-		r := unit["realization"].(map[string]any)
-		if r["mode"] == "acoustic_segmental" || r["mode"] == "acoustic_suprasegmental" || r["mode"] == "temporal_fluency" {
-			for _, v := range unit["text_spans"].([]any) {
-				span := v.(map[string]any)
-				scope := span["span"].(map[string]any)
-				intents = append(intents, map[string]any{"unit_id": unit["id"], "utterance_id": span["utterance_id"], "surface_start_cp": scope["start_cp"], "surface_end_cp": scope["end_cp"], "realization": r})
-			}
-		}
-	}
-	m := map[string]any{"schema_version": "2.0.0", "id": uuid.NewString(), "canonical_asset_id": canonicalID, "canonical_sha256": canonicalSHA, "mutated_asset_id": mutatedID, "mutated_sha256": mutatedSHA, "recipe_registry_sha256": recipeSHA, "recipe_ids": recipeIDs, "seed": seed, "method_version": "canonical-composite-codepoint-v1", "canonical_word_count": canonicalWords, "surface_word_count": surfaceWords, "edits": edits, "acoustic_intents": intents, "acoustic_edits": mutationAcousticEdits(c), "planned_units": c["planned_units"]}
-	m["manifest_sha256"] = lab.Hash(m)
-	return m
-}
-
-func mutationAcousticEdits(c map[string]any) []any {
-	if v, ok := c["acoustic_edits"].([]any); ok {
-		return v
-	}
-	return []any{}
-}
-
 func mutationDifference(old, surface []rune) (int, int) {
 	start := 0
 	for start < len(old) && start < len(surface) && old[start] == surface[start] {
@@ -396,4 +287,15 @@ func mutationDifference(old, surface []rune) (int, int) {
 		b--
 	}
 	return start, b
+}
+
+// A literal copy cannot become another event merely by changing routing IDs or
+// explanatory prose. Different locations or repair actions remain independent.
+func mutationObligation(unit map[string]any) string {
+	repairs := []any{}
+	for _, v := range unit["corrections"].([]any) {
+		option := v.(map[string]any)
+		repairs = append(repairs, map[string]any{"kind": option["kind"], "text": option["text"], "ipa": option["ipa"], "alternatives": option["approved_text_alternatives"]})
+	}
+	return lab.Hash(map[string]any{"category": unit["primary_taxonomy_id"], "spans": unit["text_spans"], "realization": unit["realization"], "repairs": repairs})
 }

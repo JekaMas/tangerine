@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 	"tangerine.local/api/internal/contracts"
+	"tangerine.local/api/internal/lab"
 	"tangerine.local/api/internal/provider"
 	"testing"
 )
@@ -49,6 +50,11 @@ func TestMutationEmptyKeyPositive(t *testing.T) {
 }
 func TestMutationBaselineNegative(t *testing.T) {
 	b, clean, c, tax := mutationFixture()
+	c["schema_version"] = "2.0.0"
+	if e := admitMutation(t, b, clean, c, tax); e == nil {
+		t.Fatal("stage input version accepted as candidate output version")
+	}
+	c["schema_version"] = "1.0.0"
 	c["utterances"].([]any)[0].(map[string]any)["canonical_text"] = "A different story."
 	if e := admitMutation(t, b, clean, c, tax); e == nil {
 		t.Fatal("rewritten baseline accepted")
@@ -188,6 +194,7 @@ func TestMutationReplayNegative(t *testing.T) {
 
 func acousticMutationFixture() (map[string]any, map[string]any, map[string]any, map[string]any) {
 	b, clean, c, tax := mutationFixture()
+	b["exercise_request"].(map[string]any)["category_families"] = []any{"pronunciation"}
 	c["utterances"] = clean["utterances"]
 	u := c["planned_units"].([]any)[0].(map[string]any)
 	u["primary_taxonomy_id"] = "pronunciation.segmental.consonant_voicing"
@@ -370,5 +377,263 @@ func TestMutationAcousticParametersNegative(t *testing.T) {
 		if e := admitMutation(t, b, clean, c, tax); e == nil {
 			t.Fatal("controller accepted without its required operands", controller)
 		}
+	}
+}
+
+func multipleFamilyMutationFixture() (map[string]any, map[string]any, map[string]any, map[string]any) {
+	b, clean, c, tax := mutationFixture()
+	request := b["exercise_request"].(map[string]any)
+	request["category_families"] = []any{"grammar", "lexis"}
+	request["mutation_count"] = float64(2)
+	canonical := "The team makes a decision."
+	surface := "The team does a decision."
+	clean["utterances"] = append(clean["utterances"].([]any), map[string]any{"id": "u2", "speaker_id": "s1", "canonical_text": canonical, "surface_text": canonical})
+	c["utterances"] = append(c["utterances"].([]any), map[string]any{"id": "u2", "speaker_id": "s1", "canonical_text": canonical, "surface_text": surface})
+	raw, _ := json.Marshal(c["planned_units"].([]any)[0])
+	var unit map[string]any
+	_ = json.Unmarshal(raw, &unit)
+	unit["id"] = "e2"
+	unit["primary_taxonomy_id"] = "lexis.collocation"
+	unit["accepted_taxonomy_ids"] = []any{"lexis.collocation"}
+	unit["domain"] = "lexis"
+	unit["utterance_ids"] = []any{"u2"}
+	unit["text_spans"] = []any{map[string]any{"utterance_id": "u2", "span": map[string]any{"start_cp": float64(9), "end_cp": float64(13), "exact_text": "does"}}}
+	unit["realization"].(map[string]any)["canonical_text"] = "makes"
+	unit["realization"].(map[string]any)["surface_text"] = "does"
+	unit["corrections"].([]any)[0].(map[string]any)["text"] = "makes"
+	unit["rationale"] = "Make a decision is the standard collocation."
+	c["planned_units"] = append(c["planned_units"].([]any), unit)
+	tax["entries"] = append(tax["entries"].([]any), map[string]any{"id": "lexis.collocation", "domain": "lexis"})
+	return b, clean, c, tax
+}
+func TestMutationFamilyCoveragePositive(t *testing.T) {
+	b, clean, c, tax := multipleFamilyMutationFixture()
+	if e := admitMutation(t, b, clean, c, tax); e != nil {
+		t.Fatal(e)
+	}
+}
+func TestMutationPronunciationFamilyPositive(t *testing.T) {
+	b, clean, c, tax := acousticMutationFixture()
+	b["exercise_request"].(map[string]any)["category_families"] = []any{"pronunciation"}
+	if e := admitMutation(t, b, clean, c, tax); e != nil {
+		t.Fatal(e)
+	}
+}
+func TestMutationMissingFamilyNegative(t *testing.T) {
+	b, clean, c, tax := mutationFixture()
+	b["exercise_request"].(map[string]any)["category_families"] = []any{"grammar", "lexis"}
+	b["exercise_request"].(map[string]any)["mutation_count"] = nil
+	if e := admitMutation(t, b, clean, c, tax); e == nil {
+		t.Fatal("Requested lexis family silently omitted")
+	}
+}
+func TestMutationAutomaticEmptyNegative(t *testing.T) {
+	b, clean, c, tax := mutationFixture()
+	b["exercise_request"].(map[string]any)["mutation_count"] = nil
+	c["utterances"] = clean["utterances"]
+	c["planned_units"] = []any{}
+	if e := admitMutation(t, b, clean, c, tax); e == nil {
+		t.Fatal("Automatic mutation count silently became zero")
+	}
+}
+func mutationSelectionFixture(t *testing.T, b map[string]any) (map[string]any, error) {
+	t.Helper()
+	a, _ := generationRegistry("error-taxonomy.v1.yaml")
+	r, _ := generationRegistry("mutation-recipes.v1.json")
+	p, _ := generationRegistry("acoustic-production.v1.json")
+	tax, _, _, e := mutationSelection(b, a, r, p)
+	return tax, e
+}
+func exactMutationTarget(id string) map[string]any {
+	return map[string]any{"taxonomy_id": id, "expected_judgment": "true_error", "min_count": float64(1), "max_count": float64(1)}
+}
+func TestMutationExactFamilySelectionPositive(t *testing.T) {
+	b, _, _, _ := mutationFixture()
+	b["targets"] = []any{exactMutationTarget("grammar.verbs.subject_verb_agreement")}
+	tax, e := mutationSelectionFixture(t, b)
+	if e != nil || len(tax["entries"].([]any)) <= 1 {
+		t.Fatal("Exact target erased explicitly requested family context", tax, e)
+	}
+}
+func TestMutationExactOnlySelectionPositive(t *testing.T) {
+	b, _, _, _ := mutationFixture()
+	b["exercise_request"].(map[string]any)["category_families"] = []any{}
+	b["targets"] = []any{exactMutationTarget("grammar.verbs.subject_verb_agreement")}
+	tax, e := mutationSelectionFixture(t, b)
+	if e != nil || len(tax["entries"].([]any)) != 1 {
+		t.Fatal(tax, e)
+	}
+}
+func TestMutationContradictorySelectionNegative(t *testing.T) {
+	b, _, _, _ := mutationFixture()
+	b["targets"] = []any{exactMutationTarget("lexis.collocation")}
+	if _, e := mutationSelectionFixture(t, b); e == nil {
+		t.Fatal("Exact lexis target silently erased requested grammar family")
+	}
+}
+func TestMutationUnknownTargetNegative(t *testing.T) {
+	b, _, _, _ := mutationFixture()
+	b["exercise_request"].(map[string]any)["category_families"] = []any{}
+	unknown := exactMutationTarget("unknown.category")
+	unknown["min_count"] = float64(0)
+	b["targets"] = []any{exactMutationTarget("grammar.verbs.subject_verb_agreement"), unknown}
+	if _, e := mutationSelectionFixture(t, b); e == nil {
+		t.Fatal("Partially unknown target selection silently dropped the unknown leaf")
+	}
+}
+func TestMutationDistinctEventsPositive(t *testing.T) {
+	b, clean, c, tax := multipleFamilyMutationFixture()
+	if e := admitMutation(t, b, clean, c, tax); e != nil {
+		t.Fatal(e)
+	}
+}
+func TestMutationZeroFamilyControlPositive(t *testing.T) {
+	b, clean, c, tax := mutationFixture()
+	b["exercise_request"].(map[string]any)["category_families"] = []any{"grammar", "lexis"}
+	b["exercise_request"].(map[string]any)["mutation_count"] = float64(0)
+	c["utterances"] = clean["utterances"]
+	u := c["planned_units"].([]any)[0].(map[string]any)
+	u["expected_judgment"] = "acceptable"
+	u["status_label"] = "decoy_non_error"
+	u["correction_eligible"] = false
+	u["corrections"] = []any{}
+	u["text_spans"].([]any)[0].(map[string]any)["span"] = map[string]any{"start_cp": float64(9), "end_cp": float64(14), "exact_text": "opens"}
+	if e := admitMutation(t, b, clean, c, tax); e != nil {
+		t.Fatal(e)
+	}
+}
+func copiedMutationUnit(c map[string]any) map[string]any {
+	raw, _ := json.Marshal(c["planned_units"].([]any)[0])
+	var u map[string]any
+	_ = json.Unmarshal(raw, &u)
+	u["id"] = "copied-unit"
+	c["planned_units"] = append(c["planned_units"].([]any), u)
+	return u
+}
+func TestMutationCopiedUnitNegative(t *testing.T) {
+	b, clean, c, tax := mutationFixture()
+	b["exercise_request"].(map[string]any)["mutation_count"] = float64(2)
+	copiedMutationUnit(c)
+	if e := admitMutation(t, b, clean, c, tax); e == nil {
+		t.Fatal("Copying an event with a new ID inflated the independent-event count")
+	}
+}
+func TestMutationCopiedOptionNegative(t *testing.T) {
+	b, clean, c, tax := mutationFixture()
+	b["exercise_request"].(map[string]any)["mutation_count"] = float64(2)
+	copy := copiedMutationUnit(c)
+	copy["corrections"].([]any)[0].(map[string]any)["id"] = "renamed-option"
+	copy["rationale"] = "Same agreement obligation, reworded."
+	if e := admitMutation(t, b, clean, c, tax); e == nil {
+		t.Fatal("Renaming a correction option created a second event")
+	}
+}
+
+// Literal independent token counts come from OpenAI tiktoken 0.12.0
+// encode_ordinary for both o200k_base and o200k_harmony, retained in the audit.
+func TestMutationTokenReferencePositive(t *testing.T) {
+	counter, err := provider.NewContextCounter(provider.Profile{Provider: "local_responses", Model: "gpt-oss:20b"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for text, want := range map[string]int{"hello world": 2, "🙂": 1, "The café opens tomorrow.": 5, "お誕生日おめでとう": 8} {
+		n, err := counter.Count([]byte(text))
+		if err != nil || n != want {
+			t.Fatal(text, n, want, err)
+		}
+	}
+	if counter.Method != "tokenizer" || counter.Tokenizer == nil {
+		t.Fatal(counter)
+	}
+}
+func TestMutationTokenLiteralPositive(t *testing.T) {
+	counter, err := provider.NewContextCounter(provider.Profile{Provider: "local_responses", Model: "gpt-oss:120b"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	n, err := counter.Count([]byte("<|start|>user<|message|>hello<|end|>"))
+	if err != nil || n != 17 {
+		t.Fatal(n, err)
+	}
+}
+func TestMutationUnknownTokenizerNegative(t *testing.T) {
+	counter, err := provider.NewContextCounter(provider.Profile{Provider: "local_responses", Model: "unknown"})
+	n, countErr := counter.Count([]byte("🙂"))
+	if err != nil || countErr != nil || n != 4 || counter.Method != "conservative_utf8_bytes" || counter.Tokenizer != nil {
+		t.Fatal(counter, n, err, countErr)
+	}
+}
+func TestMutationWrongProviderTokenizerNegative(t *testing.T) {
+	counter, err := provider.NewContextCounter(provider.Profile{Provider: "openai", Model: "gpt-oss:20b"})
+	n, countErr := counter.Count([]byte("The café opens tomorrow."))
+	if err != nil || countErr != nil || n != 25 || counter.Method != "conservative_utf8_bytes" || counter.Tokenizer != nil {
+		t.Fatal(counter, n, err, countErr)
+	}
+}
+
+func mutationFrameFixture() (map[string]any, lab.Prepared) {
+	input := map[string]any{"schema_version": "2.0.0", "blueprint": map[string]any{"id": "b1", "public_context": map[string]any{"text": "A public situation."}}, "taxonomy_context": map[string]any{"entries": []any{"grammar-target"}}, "canonical_script": map[string]any{"text": "Clean text."}, "mutation_recipes": []any{"recipe-a"}, "production_recipes": []any{"production-a"}, "phase": "mutation", "canonical_script_sha256": "frozen-clean", "request_language": "en"}
+	p := lab.Prepared{}
+	for _, x := range []struct {
+		kind, trust string
+		body        any
+	}{
+		{"prompt", "owned_instruction", "Mutate the saved text."},
+		{"wire_schema", "owned_instruction", map[string]any{"type": "object"}},
+		{"blueprint", "input_data", input["blueprint"]},
+		{"taxonomy", "input_data", input["taxonomy_context"]},
+		{"canonical_script", "input_data", input["canonical_script"]},
+		{"recipes", "input_data", map[string]any{"mutation_recipes": input["mutation_recipes"], "production_recipes": input["production_recipes"]}},
+		{"public_context", "input_data", input["blueprint"].(map[string]any)["public_context"]},
+	} {
+		raw, _ := lab.Canonical(x.body)
+		p.Parts = append(p.Parts, lab.Part{Kind: x.kind, Trust: x.trust, Body: raw})
+	}
+	return input, p
+}
+func TestMutationFrameCompactPositive(t *testing.T) {
+	input, p := mutationFrameFixture()
+	phase := "mutation"
+	instructions, messages := inferenceFrame(p, "case_generation", &phase, input)
+	if len(messages) != 1 || !strings.Contains(instructions, "Mutate the saved text.") || !strings.Contains(instructions, "wire_schema") {
+		t.Fatal(instructions, messages)
+	}
+	body := messages[0].(map[string]any)["content"].(string)
+	var decoded map[string]any
+	if err := json.Unmarshal([]byte(strings.TrimPrefix(body, "Complete stage input: ")), &decoded); err != nil {
+		t.Fatal(err)
+	}
+	a, _ := lab.Canonical(input)
+	b, _ := lab.Canonical(decoded)
+	if string(a) != string(b) || strings.Count(body, "recipe-a") != 1 || strings.Count(body, "grammar-target") != 1 {
+		t.Fatal(body)
+	}
+}
+func TestMutationFrameCustomPositive(t *testing.T) {
+	input, p := mutationFrameFixture()
+	phase := "mutation"
+	raw, _ := lab.Canonical(map[string]any{"custom": "additional recipe guidance"})
+	p.Parts = append(p.Parts, lab.Part{Kind: "recipes", Trust: "input_data", Body: raw})
+	_, messages := inferenceFrame(p, "case_generation", &phase, input)
+	if len(messages) != 2 || !strings.Contains(messages[0].(map[string]any)["content"].(string), "additional recipe guidance") || !strings.Contains(messages[1].(map[string]any)["content"].(string), "recipe-a") {
+		t.Fatal(messages)
+	}
+}
+func TestMutationFrameOtherPhaseNegative(t *testing.T) {
+	input, p := mutationFrameFixture()
+	phase := "canonical_text"
+	_, messages := inferenceFrame(p, "case_generation", &phase, input)
+	if len(messages) != 6 || !strings.HasPrefix(messages[0].(map[string]any)["content"].(string), "blueprint: ") {
+		t.Fatal(messages)
+	}
+}
+func TestMutationFrameUnknownPartNegative(t *testing.T) {
+	input, p := mutationFrameFixture()
+	phase := "mutation"
+	raw, _ := lab.Canonical(input["taxonomy_context"])
+	p.Parts = append(p.Parts, lab.Part{Kind: "evidence", Trust: "input_data", Body: raw})
+	_, messages := inferenceFrame(p, "case_generation", &phase, input)
+	if len(messages) != 2 || !strings.HasPrefix(messages[0].(map[string]any)["content"].(string), "evidence: ") {
+		t.Fatal(messages)
 	}
 }

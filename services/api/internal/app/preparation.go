@@ -563,7 +563,7 @@ func (s *Server) finishCanonical(ctx context.Context, p, settings map[string]any
 		break
 	}
 	if result.OperationID == "" {
-		result, callErr = s.InvokeLLM(ctx, LLMRequest{Operation: OperationRequest{Name: "canonical_text", Key: key, Path: "/prepare/canonical", Body: json.RawMessage(`{}`)}, Stage: "case_generation", Phase: &phase, Input: input, Components: components, Configuration: config, Bundle: bundle, Validate: func(raw []byte) error { _, _, e := canonicalContent(raw, blueprint); return e }}, client)
+		result, callErr = s.InvokeLLM(ctx, LLMRequest{DiagnoseInvalid: func(raw []byte) string { return canonicalPhaseDiagnostic(raw, blueprint) }, Timeout: preparationTimeout(settings, "canonical_text"), Operation: OperationRequest{Name: "canonical_text", Key: key, Path: "/prepare/canonical", Body: json.RawMessage(`{}`)}, Stage: "case_generation", Phase: &phase, Input: input, Components: components, Configuration: config, Bundle: bundle, Validate: func(raw []byte) error { _, _, e := canonicalContent(raw, blueprint); return e }}, client)
 	}
 	if len(result.ReceiptIDs) > 0 {
 		finish, done := context.WithTimeout(context.WithoutCancel(ctx), 15*time.Second)

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"tangerine.local/api/internal/lab"
 	"testing"
+	"time"
 )
 
 func preparationBlueprint(t *testing.T, n int) map[string]any {
@@ -139,8 +140,27 @@ func TestPreparationFrozenBindingsPositive(t *testing.T) {
 		t.Fatal(e)
 	}
 	c["llm_profiles"].([]any)[0].(map[string]any)["model"] = "fixture-changed"
-	if bs[0].(map[string]any)["model"] != "fixture-original" || bs[0].(map[string]any)["timeout_seconds"] != 90 || bs[1].(map[string]any)["timeout_seconds"] != 150 {
+	if bs[0].(map[string]any)["model"] != "fixture-original" || bs[0].(map[string]any)["timeout_seconds"] != 90 || bs[1].(map[string]any)["timeout_seconds"] != 240 {
 		t.Fatal(bs)
+	}
+	if preparationTimeout(map[string]any{"generation_bindings": bs}, "mutation") != 240*time.Second {
+		t.Fatal("fresh frozen mutation budget")
+	}
+	// A resumed preparation keeps its earlier budget after the runtime default changes.
+	bs[1].(map[string]any)["timeout_seconds"] = 150
+	legacyBinding := bs[1].(map[string]any)
+	pre := map[string]any{}
+	for k, v := range legacyBinding {
+		if k != "id" && k != "binding_sha256" {
+			pre[k] = v
+		}
+	}
+	legacyBinding["binding_sha256"] = lab.Hash(pre)
+	raw, _ := json.Marshal(map[string]any{"generation_bindings": bs})
+	var legacy map[string]any
+	_ = json.Unmarshal(raw, &legacy)
+	if preparationTimeout(legacy, "mutation") != 150*time.Second {
+		t.Fatal("saved timeout replaced by current policy")
 	}
 }
 func TestPreparationExactPromptPositive(t *testing.T) {
