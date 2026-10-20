@@ -89,8 +89,18 @@ for binding in f['case_bindings']:
   binding['input']['literal_executable_fixture']=body;binding['expected']['assertion_source']=body
   packet=next(x for x in f['fixtures'] if x['id']==binding['fixture_id']);packet[binding['polarity']]=dict(input=binding['input'],expected=binding['expected'])
   case=next(x for x in g['cases'] if x['id']==binding['case_id']);case['setup']=binding['action']+' '+json.dumps(binding['input'],sort_keys=True);case['observable']=json.dumps(binding['expected'],sort_keys=True)
+# The model catalogue adds the controlled route; retain every prior profile and
+# update the literal expectation rather than hiding the new capability.
+server_text=(R/'tests/test_speech_server.py').read_text();server_bodies={}
+for cls in [x for x in ast.parse(server_text).body if isinstance(x,ast.ClassDef)]:
+ for fn in [x for x in cls.body if isinstance(x,ast.FunctionDef)]:server_bodies[fn.name]=ast.get_source_segment(server_text,fn)
+for binding in f['case_bindings']:
+ if binding['test_id'].startswith('unittest::test_speech_server.'):
+  body=server_bodies[binding['test_id'].split('.')[-1]];binding['input']['literal_executable_fixture']=body;binding['expected']['assertion_source']=body
+  packet=next(x for x in f['fixtures'] if x['id']==binding['fixture_id']);packet[binding['polarity']]=dict(input=binding['input'],expected=binding['expected'])
+  case=next(x for x in g['cases'] if x['id']==binding['case_id']);case['setup']=binding['action']+' '+json.dumps(binding['input'],sort_keys=True);case['observable']=json.dumps(binding['expected'],sort_keys=True)
 # Actual changed assertion/fixture inputs invalidate their old source receipts.
 for case in g['cases']:
- if case.get('source_path') in ('services/api/internal/app/preparation_content_test.go','tests/native_speech_test.go','tests/speech-browser','tests/test_speech_browser.py'):case['source_sha256']=sha(R/case['source_path'])
+ if case.get('source_path') in ('services/api/internal/app/preparation_content_test.go','tests/native_speech_test.go','tests/speech-browser','tests/test_speech_browser.py','tests/test_speech_server.py'):case['source_sha256']=sha(R/case['source_path'])
 for p,v in [(C/'verification.json',g),(C/'property-inventory.json',inv),(C/'discovery.json',d),(V/'verification-fixtures.v1.json',f),(V/'property-test-sets.v1.json',sets),(A/'CASES.json',dict(properties=props,plans=plans))]:save(p,v)
 print(json.dumps(dict(properties=len(props),cases=len(plans))))

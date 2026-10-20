@@ -36,7 +36,7 @@ def resolve_parameters(step, audio, words=None, gap_samples=0, target_wpm=None):
         median = float(np.median([r['semitones'] for r in points]))
         p['pitch_points'] = [{'fraction': r['fraction'], 'semitones': median + 2 * (r['semitones'] - median)} for r in points]
     if step.get('taxonomy_id') == 'fluency.speech_rate' and p.get('duration_ratio') is None:
-        lexical = [r for r in words or [] if any(c.isalpha() for c in r['text']) and r.get('phonemes')]
+        lexical = [{**r,'start_sample':max(a,r['start_sample']),'end_sample':min(b,r['end_sample'])} for r in words or [] if any(c.isalpha() for c in r['text']) and r.get('phonemes') and r['start_sample']<b and r['end_sample']>a]
         if not lexical or not target_wpm: raise Unmeasurable('timed_lexical_tokens_unavailable')
         # Decoder token/word association is retained as model-derived evidence;
         # never claim independent ASR or auditory review from these projections.

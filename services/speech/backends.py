@@ -246,4 +246,6 @@ if __name__=='__main__':
  except Exception as e:
   # Raw library/provider exceptions may contain credentials or private text.
   code=str(e) if isinstance(e,ValueError) and str(e) in {'PAID_USE_FORBIDDEN','PROVIDER_QUOTA','PROVIDER_FAILED','MISSING_CREDENTIALS','CAPABILITY_UNAVAILABLE','VOICE_UNAVAILABLE','VOICE_SETUP_REQUIRED','MODEL_SETUP_REQUIRED','INPUT_CAPACITY_EXCEEDED','AUDIO_FORMAT_INVALID','AUDIO_SILENT','SYNTHESIS_FAILED','CONSTRAINT_CONFLICT','ALIGNMENT_UNAVAILABLE','ACOUSTIC_NOT_MEASURABLE'} else 'SYNTHESIS_FAILED'
-  print(json.dumps({'error':code,'reason':getattr(e,'reason',None),'observations':getattr(e,'observations',None)}));sys.exit(1)
+  failure={'error':code}
+  if getattr(e,'reason',None) is not None:failure.update(reason=e.reason,observations=e.observations)
+  print(json.dumps(failure));sys.exit(1)

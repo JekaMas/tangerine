@@ -144,6 +144,9 @@ class AcousticControls(unittest.TestCase):
     def test_rate_ratio_positive(self):
         from acoustic_controls import duration_ratio_for_rate
         words=[dict(start_sample=0,end_sample=4800),dict(start_sample=9600,end_sample=14400)];self.assertEqual(duration_ratio_for_rate(words,120),2)
+        raw=encode(tone(48000));op=step(a=12000,b=36000);op['taxonomy_id']='fluency.speech_rate';words=[dict(text='one',phonemes='x',start_sample=a,end_sample=b) for a,b in [(0,6000),(12000,18000),(24000,36000),(42000,48000)]]
+        resolved,_=resolve_parameters(op,raw,words,target_wpm=180);self.assertEqual(resolved['source_interval'],dict(start=12000,end=36000));self.assertAlmostEqual(resolved['parameters']['duration_ratio'],5/9)
+        actual=base64.b64decode(transform(raw,resolved)['audio_base64']);self.assertEqual(actual[44:24044],raw[44:24044]);self.assertEqual(actual[-24000:],raw[-24000:])
     def test_rate_internal_gap_positive(self):
         from acoustic_controls import duration_ratio_for_rate
         words=[dict(start_sample=0,end_sample=4800),dict(start_sample=9600,end_sample=14400)];self.assertEqual(duration_ratio_for_rate(words,120,2400),1.75)
