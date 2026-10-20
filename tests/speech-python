@@ -1,0 +1,5 @@
+#!/bin/sh
+# Resolve this checkout; never mount a different worktree's source.
+set -eu
+project_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+exec docker run --rm -v "$project_root:/tangerine:ro" -v "$project_root/data/iteration7/models:/models:ro" -w /tangerine --entrypoint python "${TANGERINE_SPEECH_TEST_RUNTIME_IMAGE:?Select the qualified local speech runtime image}" -B "$@"
