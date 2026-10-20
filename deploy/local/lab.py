@@ -124,7 +124,7 @@ def check_inventory(inv):
   elif path.startswith('specification/v2/'):
    root=Path('/tangerine/spec').resolve();physical=(root/path[len('specification/v2/'):]).resolve()
    if not physical.is_relative_to(root):raise ValueError('unresolved source dependency')
-  elif path.startswith(('services/api/internal/provider/','services/api/internal/app/')):
+  elif path.startswith(('services/api/internal/provider/','services/api/internal/app/','services/api/internal/contracts/')):
    relative=path[len('services/api/internal/'):];root=Path('/tangerine/source').resolve();physical=(root/relative).resolve()
    if not physical.is_relative_to(root):raise ValueError('unresolved source dependency')
   else:raise ValueError('source dependency is not available in the tooling snapshot')

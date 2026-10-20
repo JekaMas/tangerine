@@ -42,6 +42,7 @@ func nativeMutationFixture(t *testing.T, mode string) (*Server, CanonicalPrepara
 	}
 	profile := config["llm_profiles"].([]any)[0].(map[string]any)
 	profile["context_budget_tokens"] = float64(1000000)
+	profile["structured_output"] = false
 	if strings.HasPrefix(mode, "token-") {
 		profile["provider"], profile["model"], profile["endpoint"] = "local_responses", "gpt-oss:20b", "http://127.0.0.1:11434/v1/responses"
 		profile["auth_method"], profile["billing_mode"], profile["credential_ref"] = "local_none", "local", "local-none"
