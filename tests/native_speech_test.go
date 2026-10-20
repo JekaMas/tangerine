@@ -26,6 +26,9 @@ func nativeSpeechFixture(t *testing.T, fail int) (*Server, map[string]any, *int)
 	return nativeSpeechFixtureMode(t, fail, false)
 }
 func nativeSpeechFixtureMode(t *testing.T, fail int, live bool) (*Server, map[string]any, *int) {
+	return nativeSpeechFixtureQuality(t, fail, live, 200, `{"origin":"constructed_transport_fixture","warnings":[]}`)
+}
+func nativeSpeechFixtureQuality(t *testing.T, fail int, live bool, qualityStatus int, qualityBody string) (*Server, map[string]any, *int) {
 	t.Helper()
 	mode := ""
 	if live {
@@ -61,7 +64,8 @@ func nativeSpeechFixtureMode(t *testing.T, fail int, live bool) (*Server, map[st
 			return
 		}
 		if req.URL.Path == "/internal/v1/quality" {
-			_ = json.NewEncoder(w).Encode(map[string]any{"origin": "constructed_transport_fixture", "warnings": []any{}})
+			w.WriteHeader(qualityStatus)
+			_, _ = io.WriteString(w, qualityBody)
 			return
 		}
 		calls++
@@ -81,6 +85,64 @@ func nativeSpeechFixtureMode(t *testing.T, fail int, live bool) (*Server, map[st
 	s.SpeechURL = endpoint.URL
 	s.speechToken = "speech-test-token"
 	return s, p, &calls
+}
+
+func nativeSpeechQualityResult(t *testing.T, status int, body string) (map[string]any, *int) {
+	t.Helper()
+	s, p, calls := nativeSpeechFixtureQuality(t, 0, false, status, body)
+	p = renderNative(t, s, p, uuid.NewString(), 1)
+	if *calls != 2 || p["phase_states"].(map[string]any)["render"] != "complete" {
+		t.Fatal("advisory measurement withheld complete audio", p, *calls)
+	}
+	progress := speechProgress(t, s, p)
+	raw, err := s.Store.ReadAsset(context.Background(), progress["sample_map_asset_id"].(string))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var mapping map[string]any
+	if err = json.Unmarshal(raw, &mapping); err != nil {
+		t.Fatal(err)
+	}
+	audio, err := s.Store.ReadAsset(context.Background(), p["audio_asset_id"].(string))
+	if err != nil || len(audio) != 12056 {
+		t.Fatal("accepted samples changed", len(audio), err)
+	}
+	return mapping["quality"].(map[string]any), calls
+}
+func TestNativeSpeechQualityMeasuredPositive(t *testing.T) {
+	quality, _ := nativeSpeechQualityResult(t, 200, `{"warnings":[],"integrated_lufs":-18,"loudness_state":"measured"}`)
+	if quality["integrated_lufs"] != float64(-18) || quality["loudness_state"] != "measured" {
+		t.Fatal(quality)
+	}
+}
+func TestNativeSpeechQualityWarningPositive(t *testing.T) {
+	quality, _ := nativeSpeechQualityResult(t, 200, `{"warnings":["low_level"],"rms_full_scale":0.001}`)
+	if quality["warnings"].([]any)[0] != "low_level" || quality["rms_full_scale"] != .001 {
+		t.Fatal(quality)
+	}
+}
+func TestNativeSpeechQualityUnavailableNegative(t *testing.T) {
+	quality, _ := nativeSpeechQualityResult(t, 503, `{"error":"SPEECH_UNAVAILABLE"}`)
+	if quality["state"] != "not_measurable" || quality["error_code"] != "SPEECH_UNAVAILABLE" || quality["integrated_lufs"] != nil {
+		t.Fatal(quality)
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	endpoint := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		cancel()
+		w.WriteHeader(503)
+	}))
+	defer endpoint.Close()
+	s := &Server{SpeechURL: endpoint.URL}
+	if result, err := s.speechQuality(ctx, []byte{1, 0}, nil, nil); !errors.Is(err, context.Canceled) || result != nil {
+		t.Fatal("advisory handling swallowed foreground cancellation", result, err)
+	}
+}
+func TestNativeSpeechQualityMalformedNegative(t *testing.T) {
+	quality, _ := nativeSpeechQualityResult(t, 200, `measurement unavailable`)
+	if quality["state"] != "not_measurable" || quality["warnings"].([]any)[0] != "quality_unavailable" || quality["true_peak_dbtp"] != nil {
+		t.Fatal(quality)
+	}
 }
 func renderNative(t *testing.T, s *Server, p map[string]any, key string, attempt int) map[string]any {
 	t.Helper()

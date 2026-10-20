@@ -363,3 +363,31 @@ The application SHALL preserve explicitly supplied speaker voices independently 
 
 - **WHEN** the second distinct positive or negative literal packet executes
 - **THEN** its independently declared state, bytes, error or dispatch count SHALL hold
+
+### Requirement: I7-27 Advisory measurement transport
+
+The application SHALL preserve measured values/warnings and finish accepted audio despite unavailable or malformed advisory measurement replies; record explicit unknowns and never swallow foreground cancellation. Literal tests and independent expectations SHALL be retained in audit/iteration-7-speech-20261011/CASES.json. These cases do not establish hosted account entitlement, perceived accent fidelity or later acoustic/listening/scoring features.
+
+#### Scenario: I7-27 packet 1
+
+- **WHEN** the first positive or negative literal packet executes
+- **THEN** its independently declared state, bytes, error or dispatch count SHALL hold
+
+#### Scenario: I7-27 packet 2
+
+- **WHEN** the second distinct positive or negative literal packet executes
+- **THEN** its independently declared state, bytes, error or dispatch count SHALL hold
+
+### Requirement: I7-28 Frozen pace and honest observations
+
+The application SHALL retain every frozen speaker pace target/tolerance in assembly diagnostics and record actual rate/deviation as unknown without timed lexical evidence; written counts and full-clip duration SHALL NOT fabricate spoken WPM. Literal tests and independent expectations SHALL be retained in audit/iteration-7-speech-20261011/CASES.json. These cases do not establish hosted account entitlement, perceived accent fidelity or later acoustic/listening/scoring features.
+
+#### Scenario: I7-28 packet 1
+
+- **WHEN** the first positive or negative literal packet executes
+- **THEN** its independently declared state, bytes, error or dispatch count SHALL hold
+
+#### Scenario: I7-28 packet 2
+
+- **WHEN** the second distinct positive or negative literal packet executes
+- **THEN** its independently declared state, bytes, error or dispatch count SHALL hold

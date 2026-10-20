@@ -3,6 +3,7 @@ package app
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"github.com/google/uuid"
 	"io"
@@ -15,6 +16,20 @@ import (
 func (s *Server) speechCall(ctx context.Context, path string, packet any, client *http.Client) (map[string]any, error) {
 	output, _, _, err := s.speechExchange(ctx, path, packet, client)
 	return output, err
+}
+
+// speechQuality is advisory. A failed diagnostic is an unknown observation,
+// while cancellation still terminates the foreground operation.
+func (s *Server) speechQuality(ctx context.Context, pcm []byte, pauses []any, client *http.Client) (map[string]any, error) {
+	result, err := s.speechCall(ctx, "/internal/v1/quality", map[string]any{"pcm_base64": base64.StdEncoding.EncodeToString(pcm), "planned_pause_intervals": pauses}, client)
+	if ctx.Err() != nil {
+		return nil, ctx.Err()
+	}
+	if err != nil {
+		code, _ := provider.SafeError(err)
+		return map[string]any{"state": "not_measurable", "error_code": code, "warnings": []any{"quality_unavailable"}, "integrated_lufs": nil, "true_peak_dbtp": nil, "observed_accent": nil, "speech_intelligibility": nil}, nil
+	}
+	return result, nil
 }
 
 func (s *Server) speechExchange(ctx context.Context, path string, packet any, client *http.Client) (map[string]any, []byte, int, error) {

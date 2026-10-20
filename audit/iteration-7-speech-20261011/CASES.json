@@ -25,7 +25,9 @@
     "I7-23.P1",
     "I7-24.P1",
     "I7-25.P1",
-    "I7-26.P1"
+    "I7-26.P1",
+    "I7-27.P1",
+    "I7-28.P1"
   ],
   "plans": [
     {
@@ -2522,6 +2524,198 @@
         "assertion_source": "func TestSpeechMissingDefaultLocaleNegative(t *testing.T) {\n\traw, c := explicitSpeechInput(1, nil)\n\tif _, err := ExpandBlueprint(raw, c); err == nil {\n\t\tt.Fatal(\"missing default voice silently substituted\")\n\t}\n}\n\nfunc speechFixture(t *testing.T) (map[string]any, map[string]any, map[string]any) {\n\tt.Helper()\n\tblueprint, _, candidate, _ := mutationFixture()\n\tprofile := map[string]any{\"id\": \"kokoro-local-en-v1\", \"provider\": \"local_kokoro\", \"voices\": []any{map[string]any{\"id\": \"af_heart\", \"locale\": \"en-US\"}}, \"billing_mode\": \"local\"}\n\tblueprint[\"provider_profile_id\"] = \"kokoro-local-en-v1\"\n\tblueprint[\"speakers\"] = []any{map[string]any{\"id\": \"s1\", \"voice_profile_id\": \"af_heart\"}}\n\tblueprint[\"variety_policy\"] = map[string]any{\"target_locale\": \"en-US\"}\n\treturn map[string]any{\"blueprint\": blueprint}, candidate, profile\n}"
       },
       "independent_oracle": "The application SHALL preserve explicitly supplied speaker voices independently of assessment variety, skip unused default-voice requirements, and reject a wrong speaker count or a missing required default without silent substitution. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I7-27.P1.S1.POSITIVE",
+      "property_id": "I7-27.P1",
+      "polarity": "positive",
+      "scenario": "I7-27 packet 1",
+      "fixture_id": "iteration7-I7-27-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSpeechQualityMeasuredPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeSpeechQualityMeasuredPositive through services/api/internal/app/speech_transport.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeSpeechQualityMeasuredPositive",
+        "literal_executable_fixture": "func TestNativeSpeechQualityMeasuredPositive(t *testing.T) {\n\tquality, _ := nativeSpeechQualityResult(t, 200, `{\"warnings\":[],\"integrated_lufs\":-18,\"loudness_state\":\"measured\"}`)\n\tif quality[\"integrated_lufs\"] != float64(-18) || quality[\"loudness_state\"] != \"measured\" {\n\t\tt.Fatal(quality)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL preserve measured values/warnings and finish accepted audio despite unavailable or malformed advisory measurement replies; record explicit unknowns and never swallow foreground cancellation. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
+        "assertion_source": "func TestNativeSpeechQualityMeasuredPositive(t *testing.T) {\n\tquality, _ := nativeSpeechQualityResult(t, 200, `{\"warnings\":[],\"integrated_lufs\":-18,\"loudness_state\":\"measured\"}`)\n\tif quality[\"integrated_lufs\"] != float64(-18) || quality[\"loudness_state\"] != \"measured\" {\n\t\tt.Fatal(quality)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL preserve measured values/warnings and finish accepted audio despite unavailable or malformed advisory measurement replies; record explicit unknowns and never swallow foreground cancellation. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I7-27.P1.S2.POSITIVE",
+      "property_id": "I7-27.P1",
+      "polarity": "positive",
+      "scenario": "I7-27 packet 2",
+      "fixture_id": "iteration7-I7-27-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSpeechQualityWarningPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeSpeechQualityWarningPositive through services/api/internal/app/speech_transport.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeSpeechQualityWarningPositive",
+        "literal_executable_fixture": "func TestNativeSpeechQualityWarningPositive(t *testing.T) {\n\tquality, _ := nativeSpeechQualityResult(t, 200, `{\"warnings\":[\"low_level\"],\"rms_full_scale\":0.001}`)\n\tif quality[\"warnings\"].([]any)[0] != \"low_level\" || quality[\"rms_full_scale\"] != .001 {\n\t\tt.Fatal(quality)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL preserve measured values/warnings and finish accepted audio despite unavailable or malformed advisory measurement replies; record explicit unknowns and never swallow foreground cancellation. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
+        "assertion_source": "func TestNativeSpeechQualityWarningPositive(t *testing.T) {\n\tquality, _ := nativeSpeechQualityResult(t, 200, `{\"warnings\":[\"low_level\"],\"rms_full_scale\":0.001}`)\n\tif quality[\"warnings\"].([]any)[0] != \"low_level\" || quality[\"rms_full_scale\"] != .001 {\n\t\tt.Fatal(quality)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL preserve measured values/warnings and finish accepted audio despite unavailable or malformed advisory measurement replies; record explicit unknowns and never swallow foreground cancellation. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I7-27.P1.S1.NEGATIVE",
+      "property_id": "I7-27.P1",
+      "polarity": "negative",
+      "scenario": "I7-27 packet 1",
+      "fixture_id": "iteration7-I7-27-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSpeechQualityUnavailableNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeSpeechQualityUnavailableNegative through services/api/internal/app/speech_transport.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeSpeechQualityUnavailableNegative",
+        "literal_executable_fixture": "func TestNativeSpeechQualityUnavailableNegative(t *testing.T) {\n\tquality, _ := nativeSpeechQualityResult(t, 503, `{\"error\":\"SPEECH_UNAVAILABLE\"}`)\n\tif quality[\"state\"] != \"not_measurable\" || quality[\"error_code\"] != \"SPEECH_UNAVAILABLE\" || quality[\"integrated_lufs\"] != nil {\n\t\tt.Fatal(quality)\n\t}\n\tctx, cancel := context.WithCancel(context.Background())\n\tdefer cancel()\n\tendpoint := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\n\t\tcancel()\n\t\tw.WriteHeader(503)\n\t}))\n\tdefer endpoint.Close()\n\ts := &Server{SpeechURL: endpoint.URL}\n\tif result, err := s.speechQuality(ctx, []byte{1, 0}, nil, nil); !errors.Is(err, context.Canceled) || result != nil {\n\t\tt.Fatal(\"advisory handling swallowed foreground cancellation\", result, err)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL preserve measured values/warnings and finish accepted audio despite unavailable or malformed advisory measurement replies; record explicit unknowns and never swallow foreground cancellation. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
+        "assertion_source": "func TestNativeSpeechQualityUnavailableNegative(t *testing.T) {\n\tquality, _ := nativeSpeechQualityResult(t, 503, `{\"error\":\"SPEECH_UNAVAILABLE\"}`)\n\tif quality[\"state\"] != \"not_measurable\" || quality[\"error_code\"] != \"SPEECH_UNAVAILABLE\" || quality[\"integrated_lufs\"] != nil {\n\t\tt.Fatal(quality)\n\t}\n\tctx, cancel := context.WithCancel(context.Background())\n\tdefer cancel()\n\tendpoint := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\n\t\tcancel()\n\t\tw.WriteHeader(503)\n\t}))\n\tdefer endpoint.Close()\n\ts := &Server{SpeechURL: endpoint.URL}\n\tif result, err := s.speechQuality(ctx, []byte{1, 0}, nil, nil); !errors.Is(err, context.Canceled) || result != nil {\n\t\tt.Fatal(\"advisory handling swallowed foreground cancellation\", result, err)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL preserve measured values/warnings and finish accepted audio despite unavailable or malformed advisory measurement replies; record explicit unknowns and never swallow foreground cancellation. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I7-27.P1.S2.NEGATIVE",
+      "property_id": "I7-27.P1",
+      "polarity": "negative",
+      "scenario": "I7-27 packet 2",
+      "fixture_id": "iteration7-I7-27-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSpeechQualityMalformedNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeSpeechQualityMalformedNegative through services/api/internal/app/speech_transport.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeSpeechQualityMalformedNegative",
+        "literal_executable_fixture": "func TestNativeSpeechQualityMalformedNegative(t *testing.T) {\n\tquality, _ := nativeSpeechQualityResult(t, 200, `measurement unavailable`)\n\tif quality[\"state\"] != \"not_measurable\" || quality[\"warnings\"].([]any)[0] != \"quality_unavailable\" || quality[\"true_peak_dbtp\"] != nil {\n\t\tt.Fatal(quality)\n\t}\n}\nfunc renderNative(t *testing.T, s *Server, p map[string]any, key string, attempt int) map[string]any {\n\tt.Helper()\n\tv, e := s.RenderPreparation(context.Background(), p[\"id\"].(string), key, attempt, nil)\n\tif e != nil {\n\t\tt.Fatal(v, e)\n\t}\n\treturn v\n}\nfunc speechProgress(t *testing.T, s *Server, p map[string]any) map[string]any {\n\tt.Helper()\n\traw, e := s.Store.ReadAsset(context.Background(), p[\"render_progress_asset_id\"].(string))\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tvar d map[string]any\n\t_ = json.Unmarshal(raw, &d)\n\treturn d\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL preserve measured values/warnings and finish accepted audio despite unavailable or malformed advisory measurement replies; record explicit unknowns and never swallow foreground cancellation. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
+        "assertion_source": "func TestNativeSpeechQualityMalformedNegative(t *testing.T) {\n\tquality, _ := nativeSpeechQualityResult(t, 200, `measurement unavailable`)\n\tif quality[\"state\"] != \"not_measurable\" || quality[\"warnings\"].([]any)[0] != \"quality_unavailable\" || quality[\"true_peak_dbtp\"] != nil {\n\t\tt.Fatal(quality)\n\t}\n}\nfunc renderNative(t *testing.T, s *Server, p map[string]any, key string, attempt int) map[string]any {\n\tt.Helper()\n\tv, e := s.RenderPreparation(context.Background(), p[\"id\"].(string), key, attempt, nil)\n\tif e != nil {\n\t\tt.Fatal(v, e)\n\t}\n\treturn v\n}\nfunc speechProgress(t *testing.T, s *Server, p map[string]any) map[string]any {\n\tt.Helper()\n\traw, e := s.Store.ReadAsset(context.Background(), p[\"render_progress_asset_id\"].(string))\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tvar d map[string]any\n\t_ = json.Unmarshal(raw, &d)\n\treturn d\n}"
+      },
+      "independent_oracle": "The application SHALL preserve measured values/warnings and finish accepted audio despite unavailable or malformed advisory measurement replies; record explicit unknowns and never swallow foreground cancellation. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I7-28.P1.S1.POSITIVE",
+      "property_id": "I7-28.P1",
+      "polarity": "positive",
+      "scenario": "I7-28 packet 1",
+      "fixture_id": "iteration7-I7-28-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestSpeechPaceTargetPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestSpeechPaceTargetPositive through services/api/internal/app/speech_audio.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestSpeechPaceTargetPositive",
+        "literal_executable_fixture": "func TestSpeechPaceTargetPositive(t *testing.T) {\n\tsettings := map[string]any{\"blueprint\": map[string]any{\"speakers\": []any{explicitSpeechSpeaker(\"s1\", \"bf_emma\")}}}\n\trow := speechPaceObservations(settings)[0].(map[string]any)\n\tif row[\"speaker_id\"] != \"s1\" || row[\"target_wpm\"] != 150 || row[\"tolerance_fraction\"] != .1 {\n\t\tt.Fatal(row)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain every frozen speaker pace target/tolerance in assembly diagnostics and record actual rate/deviation as unknown without timed lexical evidence; written counts and full-clip duration SHALL NOT fabricate spoken WPM. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
+        "assertion_source": "func TestSpeechPaceTargetPositive(t *testing.T) {\n\tsettings := map[string]any{\"blueprint\": map[string]any{\"speakers\": []any{explicitSpeechSpeaker(\"s1\", \"bf_emma\")}}}\n\trow := speechPaceObservations(settings)[0].(map[string]any)\n\tif row[\"speaker_id\"] != \"s1\" || row[\"target_wpm\"] != 150 || row[\"tolerance_fraction\"] != .1 {\n\t\tt.Fatal(row)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL retain every frozen speaker pace target/tolerance in assembly diagnostics and record actual rate/deviation as unknown without timed lexical evidence; written counts and full-clip duration SHALL NOT fabricate spoken WPM. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I7-28.P1.S2.POSITIVE",
+      "property_id": "I7-28.P1",
+      "polarity": "positive",
+      "scenario": "I7-28 packet 2",
+      "fixture_id": "iteration7-I7-28-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestSpeechPaceSpeakersPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestSpeechPaceSpeakersPositive through services/api/internal/app/speech_audio.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestSpeechPaceSpeakersPositive",
+        "literal_executable_fixture": "func TestSpeechPaceSpeakersPositive(t *testing.T) {\n\ta, b := explicitSpeechSpeaker(\"s1\", \"bf_emma\"), explicitSpeechSpeaker(\"s2\", \"am_adam\")\n\tb[\"pace_wpm\"] = 120\n\tb[\"pace_tolerance_fraction\"] = .2\n\trows := speechPaceObservations(map[string]any{\"blueprint\": map[string]any{\"speakers\": []any{a, b}}})\n\tif len(rows) != 2 || rows[0].(map[string]any)[\"target_wpm\"] != 150 || rows[1].(map[string]any)[\"speaker_id\"] != \"s2\" || rows[1].(map[string]any)[\"target_wpm\"] != 120 {\n\t\tt.Fatal(rows)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain every frozen speaker pace target/tolerance in assembly diagnostics and record actual rate/deviation as unknown without timed lexical evidence; written counts and full-clip duration SHALL NOT fabricate spoken WPM. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
+        "assertion_source": "func TestSpeechPaceSpeakersPositive(t *testing.T) {\n\ta, b := explicitSpeechSpeaker(\"s1\", \"bf_emma\"), explicitSpeechSpeaker(\"s2\", \"am_adam\")\n\tb[\"pace_wpm\"] = 120\n\tb[\"pace_tolerance_fraction\"] = .2\n\trows := speechPaceObservations(map[string]any{\"blueprint\": map[string]any{\"speakers\": []any{a, b}}})\n\tif len(rows) != 2 || rows[0].(map[string]any)[\"target_wpm\"] != 150 || rows[1].(map[string]any)[\"speaker_id\"] != \"s2\" || rows[1].(map[string]any)[\"target_wpm\"] != 120 {\n\t\tt.Fatal(rows)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL retain every frozen speaker pace target/tolerance in assembly diagnostics and record actual rate/deviation as unknown without timed lexical evidence; written counts and full-clip duration SHALL NOT fabricate spoken WPM. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I7-28.P1.S1.NEGATIVE",
+      "property_id": "I7-28.P1",
+      "polarity": "negative",
+      "scenario": "I7-28 packet 1",
+      "fixture_id": "iteration7-I7-28-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestSpeechPaceUnobservedNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestSpeechPaceUnobservedNegative through services/api/internal/app/speech_audio.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestSpeechPaceUnobservedNegative",
+        "literal_executable_fixture": "func TestSpeechPaceUnobservedNegative(t *testing.T) {\n\trow := speechPaceObservations(map[string]any{\"blueprint\": map[string]any{\"speakers\": []any{explicitSpeechSpeaker(\"s1\", \"bf_emma\")}}})[0].(map[string]any)\n\tif row[\"observed_wpm\"] != nil || row[\"deviation_fraction\"] != nil || row[\"state\"] != \"not_measurable\" {\n\t\tt.Fatal(\"request cannot fabricate observed pace/deviation\", row)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain every frozen speaker pace target/tolerance in assembly diagnostics and record actual rate/deviation as unknown without timed lexical evidence; written counts and full-clip duration SHALL NOT fabricate spoken WPM. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
+        "assertion_source": "func TestSpeechPaceUnobservedNegative(t *testing.T) {\n\trow := speechPaceObservations(map[string]any{\"blueprint\": map[string]any{\"speakers\": []any{explicitSpeechSpeaker(\"s1\", \"bf_emma\")}}})[0].(map[string]any)\n\tif row[\"observed_wpm\"] != nil || row[\"deviation_fraction\"] != nil || row[\"state\"] != \"not_measurable\" {\n\t\tt.Fatal(\"request cannot fabricate observed pace/deviation\", row)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL retain every frozen speaker pace target/tolerance in assembly diagnostics and record actual rate/deviation as unknown without timed lexical evidence; written counts and full-clip duration SHALL NOT fabricate spoken WPM. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I7-28.P1.S2.NEGATIVE",
+      "property_id": "I7-28.P1",
+      "polarity": "negative",
+      "scenario": "I7-28 packet 2",
+      "fixture_id": "iteration7-I7-28-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestSpeechPaceWrittenCountNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestSpeechPaceWrittenCountNegative through services/api/internal/app/speech_audio.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestSpeechPaceWrittenCountNegative",
+        "literal_executable_fixture": "func TestSpeechPaceWrittenCountNegative(t *testing.T) {\n\tsettings := map[string]any{\"canonical_word_count\": 150, \"surface_word_count\": 150, \"duration_ms\": 60000, \"blueprint\": map[string]any{\"speakers\": []any{explicitSpeechSpeaker(\"s1\", \"bf_emma\")}}}\n\trow := speechPaceObservations(settings)[0].(map[string]any)\n\tif row[\"observed_wpm\"] != nil || row[\"deviation_fraction\"] != nil || row[\"reason\"] != \"timed_lexical_tokens_unavailable\" {\n\t\tt.Fatal(\"written text/full duration cannot substitute actual tokens and onset/offset\", row)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain every frozen speaker pace target/tolerance in assembly diagnostics and record actual rate/deviation as unknown without timed lexical evidence; written counts and full-clip duration SHALL NOT fabricate spoken WPM. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
+        "assertion_source": "func TestSpeechPaceWrittenCountNegative(t *testing.T) {\n\tsettings := map[string]any{\"canonical_word_count\": 150, \"surface_word_count\": 150, \"duration_ms\": 60000, \"blueprint\": map[string]any{\"speakers\": []any{explicitSpeechSpeaker(\"s1\", \"bf_emma\")}}}\n\trow := speechPaceObservations(settings)[0].(map[string]any)\n\tif row[\"observed_wpm\"] != nil || row[\"deviation_fraction\"] != nil || row[\"reason\"] != \"timed_lexical_tokens_unavailable\" {\n\t\tt.Fatal(\"written text/full duration cannot substitute actual tokens and onset/offset\", row)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL retain every frozen speaker pace target/tolerance in assembly diagnostics and record actual rate/deviation as unknown without timed lexical evidence; written counts and full-clip duration SHALL NOT fabricate spoken WPM. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
       "observation_state": "not_run"
     }
   ]

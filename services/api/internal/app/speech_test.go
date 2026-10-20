@@ -225,3 +225,33 @@ func TestSpeechNoInventedTimingNegative(t *testing.T) {
 		t.Fatal(interval)
 	}
 }
+
+func TestSpeechPaceTargetPositive(t *testing.T) {
+	settings := map[string]any{"blueprint": map[string]any{"speakers": []any{explicitSpeechSpeaker("s1", "bf_emma")}}}
+	row := speechPaceObservations(settings)[0].(map[string]any)
+	if row["speaker_id"] != "s1" || row["target_wpm"] != 150 || row["tolerance_fraction"] != .1 {
+		t.Fatal(row)
+	}
+}
+func TestSpeechPaceSpeakersPositive(t *testing.T) {
+	a, b := explicitSpeechSpeaker("s1", "bf_emma"), explicitSpeechSpeaker("s2", "am_adam")
+	b["pace_wpm"] = 120
+	b["pace_tolerance_fraction"] = .2
+	rows := speechPaceObservations(map[string]any{"blueprint": map[string]any{"speakers": []any{a, b}}})
+	if len(rows) != 2 || rows[0].(map[string]any)["target_wpm"] != 150 || rows[1].(map[string]any)["speaker_id"] != "s2" || rows[1].(map[string]any)["target_wpm"] != 120 {
+		t.Fatal(rows)
+	}
+}
+func TestSpeechPaceUnobservedNegative(t *testing.T) {
+	row := speechPaceObservations(map[string]any{"blueprint": map[string]any{"speakers": []any{explicitSpeechSpeaker("s1", "bf_emma")}}})[0].(map[string]any)
+	if row["observed_wpm"] != nil || row["deviation_fraction"] != nil || row["state"] != "not_measurable" {
+		t.Fatal("request cannot fabricate observed pace/deviation", row)
+	}
+}
+func TestSpeechPaceWrittenCountNegative(t *testing.T) {
+	settings := map[string]any{"canonical_word_count": 150, "surface_word_count": 150, "duration_ms": 60000, "blueprint": map[string]any{"speakers": []any{explicitSpeechSpeaker("s1", "bf_emma")}}}
+	row := speechPaceObservations(settings)[0].(map[string]any)
+	if row["observed_wpm"] != nil || row["deviation_fraction"] != nil || row["reason"] != "timed_lexical_tokens_unavailable" {
+		t.Fatal("written text/full duration cannot substitute actual tokens and onset/offset", row)
+	}
+}
