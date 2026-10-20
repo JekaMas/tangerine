@@ -16,6 +16,7 @@ import (
 )
 
 type LLMRequest struct {
+	Timeout       time.Duration
 	Operation     OperationRequest
 	Stage         string
 	Phase         *string
@@ -40,7 +41,7 @@ func stageTimeout(stage string, phase *string) time.Duration {
 		if phase != nil && *phase == "canonical_text" {
 			return 90 * time.Second
 		}
-		return 150 * time.Second
+		return 240 * time.Second
 	case "blind_claim_extraction", "feedback":
 		return 40 * time.Second
 	case "claim_mapping":
@@ -65,6 +66,10 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 	if e != nil {
 		return result, e
 	}
+	timeout := request.Timeout
+	if timeout == 0 {
+		timeout = stageTimeout(request.Stage, request.Phase)
+	}
 	prepared, e := lab.BuildContext(request.Bundle, request.Stage, request.Phase, request.Input, request.Components)
 	if e != nil {
 		return result, e
@@ -75,7 +80,7 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 			binding = b
 		}
 	}
-	request.Operation.Body, _ = lab.Canonical(map[string]any{"original_request": json.RawMessage(request.Operation.Body), "configuration_sha256": lab.Hash(request.Configuration), "bundle_sha256": request.Bundle.SHA, "stage": request.Stage, "phase": request.Phase, "input_sha256": prepared.InputSHA, "components_sha256": lab.Hash(request.Components)})
+	request.Operation.Body, _ = lab.Canonical(map[string]any{"original_request": json.RawMessage(request.Operation.Body), "configuration_sha256": lab.Hash(request.Configuration), "bundle_sha256": request.Bundle.SHA, "stage": request.Stage, "phase": request.Phase, "timeout_seconds": int(timeout / time.Second), "input_sha256": prepared.InputSHA, "components_sha256": lab.Hash(request.Components)})
 	op, e := s.Store.ReserveOperation(ctx, request.Operation)
 	if e != nil {
 		return result, e
@@ -131,7 +136,7 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 	effective["input_schema_sha256"] = binding.InputSHA
 	effective["output_schema_sha256"] = binding.OutputSHA
 	effective["wire_schema_sha256"] = binding.OutputSHA
-	effective["timeout_seconds"] = int(stageTimeout(request.Stage, request.Phase) / time.Second)
+	effective["timeout_seconds"] = int(timeout / time.Second)
 	effective["prompt_bundle_sha256"] = request.Bundle.SHA
 	effective["context_policy_sha256"] = binding.PolicySHA
 	delete(effective, "id")
@@ -171,7 +176,7 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 	inputUsage := map[int]int{}
 	trace := traceID(16)
 	requestAssets := map[int]Asset{}
-	er := provider.ExecuteRequest{Profile: p, Instructions: instructions, Input: input, OutputKind: strings.TrimSuffix(binding.OutputSchema, ".schema.json"), Timeout: stageTimeout(request.Stage, request.Phase), Validate: request.Validate}
+	er := provider.ExecuteRequest{Profile: p, Instructions: instructions, Input: input, OutputKind: strings.TrimSuffix(binding.OutputSchema, ".schema.json"), Timeout: timeout, Validate: request.Validate}
 	// JSON-schema capability is opt-in for profiles with tested provider support;
 	// plain JSON still receives the same complete output contract in instructions.
 	er.Before = func(ctx context.Context, a provider.Attempt) error {

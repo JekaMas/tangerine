@@ -10,6 +10,7 @@ import (
 	"tangerine.local/api/internal/contracts"
 	"tangerine.local/api/internal/lab"
 	"tangerine.local/api/internal/provider"
+	"time"
 )
 
 // Frozen registries are packaged byte-for-byte from the active specification.
@@ -222,4 +223,21 @@ func preparationBindings(c map[string]any, b lab.Bundle) ([]any, error) {
 		}
 	}
 	return bindings, nil
+}
+
+// Preparation bindings were admitted and saved at creation. Reuse their phase
+// budget, including an earlier deployment's policy, without revalidating assets.
+func preparationTimeout(settings map[string]any, phase string) time.Duration {
+	for _, item := range settings["generation_bindings"].([]any) {
+		binding := item.(map[string]any)
+		if binding["phase"] == phase {
+			switch seconds := binding["timeout_seconds"].(type) {
+			case int:
+				return time.Duration(seconds) * time.Second
+			case float64:
+				return time.Duration(seconds) * time.Second
+			}
+		}
+	}
+	return 0
 }

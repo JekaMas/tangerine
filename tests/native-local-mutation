@@ -42,7 +42,7 @@ with tempfile.TemporaryDirectory(prefix=name,dir=r/'data/iteration6/local/tmp') 
   def port(kind,p):return subprocess.check_output(['docker','port',name+'-'+kind,p],env=env,text=True).strip().rsplit(':',1)[1]
   evidence=r/'data/iteration6/local'/name;evidence.mkdir(parents=True,exist_ok=True)
   run_env={**env,'DATABASE_URL':'postgres://tangerine:'+password+'@127.0.0.1:'+port('postgres','5432/tcp')+'/tangerine?sslmode=disable','MINIO_ENDPOINT':'127.0.0.1:'+port('media','9000/tcp'),'MINIO_ROOT_USER':'native-regression','MINIO_ROOT_PASSWORD':password,'TANGERINE_PREPARATION_TEST_EVIDENCE':str(evidence),'TANGERINE_LOCAL_MUTATION_BUNDLE':str(bundle)}
-  p=subprocess.run([str(tmp/'local-model.test'),'-test.v','-test.run',test_args[0] if test_args else '^TestNativeLocal','-test.timeout','500s'],cwd=r,env=run_env,timeout=540,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True);status=p.returncode
+  p=subprocess.run([str(tmp/'local-model.test'),'-test.v','-test.run',test_args[0] if test_args else '^TestNativeLocal','-test.timeout','720s'],cwd=r,env=run_env,timeout=760,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True);status=p.returncode
   print(p.stdout,end='');(evidence/'test-output.log').write_text(p.stdout)
   final={'head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=r,text=True).strip(),'dirty':bool(subprocess.check_output(['git','status','--porcelain'],cwd=r,text=True).strip())}
   observed=[line.split()[2] for line in p.stdout.splitlines() if line.startswith('--- PASS: TestNativeLocal')]

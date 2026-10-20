@@ -1,0 +1,47 @@
+{
+  "reason": "Retained full grammar-family context exceeds this host local model150-second mutation budget. Allow240 seconds under the unchanged270-second foreground ownership window, retaining30 seconds for preparation/finalization. No requested data, key expectation, bounded repair count or operation ownership rule is weakened.",
+  "old_seconds": 150,
+  "new_seconds": 240,
+  "previous_binding_case": {
+    "id": "I5-04.P1.S1.POSITIVE",
+    "property_id": "I5-04.P1",
+    "polarity": "positive",
+    "scenario": "I5-04 packet 1",
+    "scenario_fingerprint": "72fffc917a3b22ecc318cc282a6e8504d45eadcb2a62492997334474722f87f4",
+    "setup": "Execute TestPreparationFrozenBindingsPositive through services/api/internal/app/preparation_content.go {\"exact_native_test\": \"TestPreparationFrozenBindingsPositive\", \"literal_executable_fixture\": \"func TestPreparationFrozenBindingsPositive(t *testing.T) {\\n\\tc := DefaultConfiguration()\\n\\tc[\\\"llm_profiles\\\"].([]any)[0].(map[string]any)[\\\"model\\\"] = \\\"fixture-original\\\"\\n\\tbs, e := preparationBindings(c, lab.Shipped())\\n\\tif e != nil || len(bs) != 2 {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tc[\\\"llm_profiles\\\"].([]any)[0].(map[string]any)[\\\"model\\\"] = \\\"fixture-changed\\\"\\n\\tif bs[0].(map[string]any)[\\\"model\\\"] != \\\"fixture-original\\\" || bs[0].(map[string]any)[\\\"timeout_seconds\\\"] != 90 || bs[1].(map[string]any)[\\\"timeout_seconds\\\"] != 150 {\\n\\t\\tt.Fatal(bs)\\n\\t}\\n}\"}",
+    "observable": "{\"assertion_source\": \"func TestPreparationFrozenBindingsPositive(t *testing.T) {\\n\\tc := DefaultConfiguration()\\n\\tc[\\\"llm_profiles\\\"].([]any)[0].(map[string]any)[\\\"model\\\"] = \\\"fixture-original\\\"\\n\\tbs, e := preparationBindings(c, lab.Shipped())\\n\\tif e != nil || len(bs) != 2 {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tc[\\\"llm_profiles\\\"].([]any)[0].(map[string]any)[\\\"model\\\"] = \\\"fixture-changed\\\"\\n\\tif bs[0].(map[string]any)[\\\"model\\\"] != \\\"fixture-original\\\" || bs[0].(map[string]any)[\\\"timeout_seconds\\\"] != 90 || bs[1].(map[string]any)[\\\"timeout_seconds\\\"] != 150 {\\n\\t\\tt.Fatal(bs)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL freeze both generation phases, exact bundle/prompt/schema hashes and phase budgets. Current aliases SHALL NOT rewrite saved bindings; unselected or metered models SHALL NOT dispatch. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+    "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+    "green_expectation": "All independently declared literal outcomes pass.",
+    "test_id": "tangerine.local/api/internal/app::TestPreparationFrozenBindingsPositive",
+    "command_id": "iteration5-go",
+    "state": "implemented",
+    "source_path": "services/api/internal/app/preparation_content_test.go",
+    "source_sha256": "7b743ac70a74e42a591753c0c359c8297b5cad89eafbbdd6692b1a6af8e63781",
+    "invalidation_dependencies": [
+      "services/api/internal/app/**",
+      "services/api/internal/contracts/**",
+      "services/api/internal/lab/**",
+      "services/api/internal/provider/**",
+      "services/api/go.mod",
+      "services/api/go.sum",
+      "services/api/Dockerfile",
+      "services/api/internal/app/preparation_content_test.go",
+      "tests/go-docker"
+    ],
+    "substitution": {
+      "classification": "NO_TEST_DOUBLE",
+      "proof_claims": [
+        "Literal production preparation/schema/transport behavior"
+      ],
+      "forbidden_claims": [
+        "Hosted entitlement or included-only account admission",
+        "Actual LLM linguistic quality",
+        "Mutation/audio/answer/scoring acceptance"
+      ],
+      "note": "The application SHALL freeze both generation phases, exact bundle/prompt/schema hashes and phase budgets. Current aliases SHALL NOT rewrite saved bindings; unselected or metered models SHALL NOT dispatch. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
+    },
+    "designed_fixture_id": "iteration5-I5-04-packet1",
+    "fixture_observation_state": "not_run"
+  },
+  "observed_failed_root": "data/iteration6/local/tangerine-local-mutation-bb2c170672d6"
+}

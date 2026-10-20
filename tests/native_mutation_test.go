@@ -158,6 +158,10 @@ func TestNativeMutationEvidencePositive(t *testing.T) {
 	_ = s.Store.DB.QueryRow(context.Background(), "SELECT count(*) FROM document d WHERE kind='provider-receipt' AND payload->>'operation_id' IN (SELECT child.id::text FROM operation parent JOIN operation child ON child.idempotency_key=parent.idempotency_key AND child.operation_name IN ('canonical_text','mutation') WHERE parent.subject_id=$1)", p["id"]).Scan(&receipts)
 	_ = s.Store.DB.QueryRow(context.Background(), "SELECT count(*) FROM document d WHERE kind='llm-context-snapshot' AND payload->>'operation_id' IN (SELECT child.id::text FROM operation parent JOIN operation child ON child.idempotency_key=parent.idempotency_key AND child.operation_name IN ('canonical_text','mutation') WHERE parent.subject_id=$1)", p["id"]).Scan(&contexts)
 	_ = s.Store.DB.QueryRow(context.Background(), "SELECT count(*) FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1", p["id"]).Scan(&audits)
+	var timeout int
+	if err := s.Store.DB.QueryRow(context.Background(), `SELECT (d.payload->>'timeout_seconds')::int FROM document d JOIN operation child ON child.input_document_id=d.id JOIN operation parent ON parent.idempotency_key=child.idempotency_key WHERE d.kind='effective-binding' AND child.operation_name='mutation' AND parent.subject_id=$1 LIMIT 1`, p["id"]).Scan(&timeout); err != nil || timeout != 240 {
+		t.Fatal("frozen mutation budget", timeout, err)
+	}
 	if receipts != 2 || contexts != 2 || audits != 1 {
 		t.Fatal(receipts, contexts, audits)
 	}
