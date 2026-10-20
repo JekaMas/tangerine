@@ -207,3 +207,24 @@ def decoder_scopes(turn,decoder):
             intervals.append({'start':x,'end':y})
         scopes.append({'unit_id':row['unit_id'],'start':start,'end':end,'phonemes':decoder['phonemes'][a:b],'phone_intervals':intervals})
     return scopes
+
+
+def reference_tokens(tokens,text,edits):
+    """Supply explicit whole-scope references before upstream empty-phone filtering.
+
+    This retains literal targets such as currency symbols; it does not feed
+    embedded pronunciation markup to Misaki or split surrounding phrase audio.
+    """
+    rows=[];cursor=0
+    for token in tokens:
+        a=text.find(token.text,cursor)
+        if a<0:raise ValueError('ALIGNMENT_UNAVAILABLE')
+        b=a+len(token.text);rows.append((a,b,copy.deepcopy(token)));cursor=b
+    groups={}
+    for e in edits:groups.setdefault((e['scope']['start'],e['scope']['end']),set()).add(e['parameters']['reference_ipa'])
+    for (a,b),references in sorted(groups.items(),reverse=True):
+        if len(references)!=1:raise ValueError('CONSTRAINT_CONFLICT')
+        matched=[i for i,(x,y,t) in enumerate(rows) if y>a and x<b]
+        if not matched or rows[matched[0]][0]!=a or rows[matched[-1]][1]!=b:raise ValueError('ALIGNMENT_UNAVAILABLE')
+        i,j=matched[0],matched[-1]+1;first=rows[i][2];first.text=text[a:b];first.phonemes=next(iter(references));first.whitespace=rows[j-1][2].whitespace;rows[i:j]=[(a,b,first)]
+    return [t for a,b,t in rows]

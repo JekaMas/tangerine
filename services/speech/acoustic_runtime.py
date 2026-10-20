@@ -14,6 +14,7 @@ def controlled_plan(profile,render_plan,text_plan):
  pieces=[]
  for turn,segments in partition:
   source=copy.deepcopy(turn);source.pop('acoustic_edits',None)
+  source['g2p_reference_edits']=[e for _,_,_,group in segments for e in group if e['controller']=='phone_pair']
   packet=text_plan(profile,{'turns':[source]})
   edits=[e for _,_,_,group in reversed(segments) for e in group]
   if not kokoro:
@@ -24,6 +25,7 @@ def controlled_plan(profile,render_plan,text_plan):
    if any(e['controller']=='phone_pair' for e in edits) and 'ipa' not in profile.get('capabilities',[]):raise ValueError('CAPABILITY_UNAVAILABLE')
   cursor=0;assigned=0
   for piece in packet['pieces']:
+   piece.pop('g2p_reference_edits',None)
    surface=piece['operations'][0]['text'];a,b=cursor,cursor+len(surface);cursor=b
    piece['surface_scope']={'start':a,'end':b}
    selected=[e for e in edits if a<=e['scope']['start'] and e['scope']['end']<=b]

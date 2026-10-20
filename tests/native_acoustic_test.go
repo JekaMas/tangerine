@@ -592,11 +592,11 @@ func TestNativeAcousticAlignmentNegative(t *testing.T) {
 }
 func TestNativeAcousticUnvoicedNegative(t *testing.T) {
 	s, p := nativeAcousticFixtureCandidate(t, "vot_edit", func(c map[string]any) {
-		c["acoustic_edits"].([]any)[0].(map[string]any)["scope"] = map[string]any{"start": float64(12), "end": float64(15)}
+		c["acoustic_edits"].([]any)[0].(map[string]any)["scope"] = map[string]any{"start": float64(7), "end": float64(12)}
 		u := c["planned_units"].([]any)[0].(map[string]any)
-		u["text_spans"].([]any)[0].(map[string]any)["span"] = map[string]any{"start_cp": float64(12), "end_cp": float64(15), "exact_text": "the"}
-		u["realization"].(map[string]any)["canonical_text"] = "the"
-		u["realization"].(map[string]any)["surface_text"] = "the"
+		u["text_spans"].([]any)[0].(map[string]any)["span"] = map[string]any{"start_cp": float64(7), "end_cp": float64(12), "exact_text": "ready"}
+		u["realization"].(map[string]any)["canonical_text"] = "ready"
+		u["realization"].(map[string]any)["surface_text"] = "ready"
 	})
 	p, e := s.RenderPreparation(context.Background(), p["id"].(string), uuid.NewString(), 1, nil)
 	if e == nil || p["key_id"] != nil || p["phase_states"].(map[string]any)["render"] != "failed" || p["last_failure"].(map[string]any)["code"] != "CAPABILITY_UNQUALIFIED" {

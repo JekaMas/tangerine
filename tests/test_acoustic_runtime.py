@@ -12,6 +12,7 @@ class AcousticRuntime(unittest.TestCase):
  def test_plan_pair_positive(self):
   result=plan(self.profile(),dict(turns=[self.turn([edit('phone_pair',4,7,reference_ipa='pæn',mutated_ipa='bæn')])]))
   piece=result['pieces'][0];self.assertEqual(len(result['pieces']),1);self.assertIn('pæn',piece['compiled_phonemes']);self.assertIn('bæn',piece['phone_variants']['e1']['compiled_phonemes']);self.assertEqual(piece['gap_after_ms'],250);self.assertEqual(piece['operations'][0]['text'],'The pan is ready.');self.assertTrue(piece['compiled_phonemes'].startswith('ð'));self.assertTrue(piece['phone_variants']['e1']['compiled_phonemes'].endswith(piece['compiled_phonemes'].split('pæn')[1]))
+  currency=self.turn([edit('phone_pair',0,1,reference_ipa='dɑləɹ',mutated_ipa='tɑləɹ')],text='$');currency_result=plan(self.profile(),dict(turns=[currency]));self.assertEqual(currency_result['pieces'][0]['operations'][0]['text'],'$');self.assertEqual(currency_result['pieces'][0]['compiled_phonemes'],'dɑləɹ')
 
  def test_plan_phrases_positive(self):
   text='The pan is ready.';ops=[edit('pause_insert',4,7,pause_ms=100),dict(edit('pitch_duration',11,16,gain_db=2),unit_id='e2')]

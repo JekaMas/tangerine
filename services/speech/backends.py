@@ -199,6 +199,9 @@ def plan(profile,render_plan):
     pipe.g2p.preprocess=lambda text:(text,text.split(),{})
     pipes[code]=pipe
    pipe=pipes[code];_,tokens=pipe.g2p(text)
+   if turn.get('g2p_reference_edits'):
+    from acoustic_alignment import reference_tokens
+    tokens=reference_tokens(tokens,text,turn['g2p_reference_edits'])
    for graphemes,phones,tokens in pipe.en_tokenize(tokens):
     if not phones or len(phones)>510:raise ValueError('INPUT_CAPACITY_EXCEEDED')
     chunks.append((graphemes,phones,[{'text':t.text,'phonemes':t.phonemes,'whitespace':t.whitespace} for t in tokens]))
