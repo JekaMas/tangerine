@@ -163,10 +163,11 @@ def inventory(revision):
   state=surface['implementation_state'];owners=surface.get('owner_paths',[surface['owner_root']])
   if state=='implemented':
    for owner in owners:
-    dependency(owner,'/tangerine/source/'+owner[len('services/api/internal/'):],'implemented pipeline owner')
+    physical='/tangerine/speech-source/'+owner[len('services/speech/'):] if owner.startswith('services/speech/') else '/tangerine/source/'+owner[len('services/api/internal/'):]
+    dependency(owner,physical,'implemented pipeline owner')
    for source in ('app/preparation_content.go','app/generationdata/providers.v1.yaml','app/generationdata/configuration-registry.yaml','app/generationdata/mutation-recipes.v1.json','app/generationdata/acoustic-production.v1.json','app/generationdata/error-taxonomy.v1.yaml'):
     dependency('services/api/internal/'+source,'/tangerine/source/'+source,'frozen preparation definition')
-  entries.append(dict(id=surface['id'],stage=surface['stage'],phase=surface['phase'],kind=surface['kind'],implementation_state=state,owner_paths=owners,owner_symbols=[('Server.PrepareMutation' if surface['id']=='generation.mutation' else 'Server.PrepareCanonical')] if state=='implemented' else [],adapter_paths=['services/api/internal/app/provider_inference.go'] if state=='implemented' else [],trusted_fragments=fragments,discovery_evidence_refs=['finite source registry and exact packaged source bytes'],coverage_reason=surface['proof']))
+  entries.append(dict(id=surface['id'],stage=surface['stage'],phase=surface['phase'],kind=surface['kind'],implementation_state=state,owner_paths=owners,owner_symbols=surface.get('owner_symbols',[('Server.PrepareMutation' if surface['id']=='generation.mutation' else 'Server.PrepareCanonical')]) if state=='implemented' else [],adapter_paths=surface.get('adapter_paths',['services/api/internal/app/provider_inference.go']) if state=='implemented' else [],trusted_fragments=fragments,discovery_evidence_refs=['finite source registry and exact packaged source bytes'],coverage_reason=surface['proof']))
  for suffix,symbol,fragment in [('invoke','Server.InvokeLLM','adapter_role_frame'),('transport_retry','Execute','fallback_wrapper'),('semantic_repair','Execute','repair_wrapper'),('structured_fallback','Execute','wire_schema_projection')]:
   owner='services/api/internal/app/provider_inference.go';adapter='services/api/internal/provider/execute.go'
   dependency(owner,'/tangerine/source/app/provider_inference.go','shared implemented provider owner')

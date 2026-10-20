@@ -27,8 +27,12 @@ func speechProfile(settings map[string]any, registry []byte) (map[string]any, er
 		if p["id"] != id {
 			continue
 		}
+		groups, available := p["voices"].(map[string]any)
+		if !available {
+			return nil, &provider.Failure{Code: "CAPABILITY_UNAVAILABLE"}
+		}
 		voices := []any{}
-		for locale, items := range p["voices"].(map[string]any) {
+		for locale, items := range groups {
 			for _, voice := range items.([]any) {
 				voices = append(voices, map[string]any{"id": voice, "locale": locale, "accent_description": nil})
 			}

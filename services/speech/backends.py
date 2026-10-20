@@ -107,6 +107,9 @@ def hosted(profile,turn,timeout):
 def qwen(profile,turn):
  from qwen_tts import Qwen3TTSModel
  import numpy as np,torch
+ # Small autoregressive CPU steps lose time to oversized intra-op pools.
+ torch.set_num_threads(min(4,os.cpu_count() or 1))
+ execution={'device':'cpu','dtype':'float32','attention_implementation':'eager','torch_num_threads':torch.get_num_threads(),'torch_interop_threads':torch.get_num_interop_threads()}
  text=''.join(op['text'] for op in turn['operations'] if op['kind']=='text')
  if len(turn['operations'])!=1 or turn['operations'][0]['kind']!='text':raise ValueError('CAPABILITY_UNAVAILABLE')
  custom=profile.get('adapter_version')=='qwen-custom-v1'
@@ -127,7 +130,7 @@ def qwen(profile,turn):
   else:audio,rate=model.generate_voice_clone(text=text,language='English',voice_clone_prompt=prompt)
  import soundfile as sf
  output=io.BytesIO();sf.write(output,audio[0],rate,format='WAV',subtype='PCM_16')
- return normalize(output.getvalue()),{'model_manifest':manifest,'speaker':turn['voice_id'],'instruction':turn.get('accent_description'),'conditioning_manifest':conditioning_manifest,'model_visible_calls':inputs},None
+ return normalize(output.getvalue()),{'model_manifest':manifest,'speaker':turn['voice_id'],'instruction':turn.get('accent_description'),'conditioning_manifest':conditioning_manifest,'model_visible_calls':inputs,'execution_parameters':execution},None
 
 ROOT_CONDITION=pathlib.Path(os.environ.get('TANGERINE_MODEL_DIR','/models'))/'voices'
 
@@ -170,10 +173,16 @@ def plan(profile,render_plan):
     if not phones or len(phones)>510:raise ValueError('INPUT_CAPACITY_EXCEEDED')
     chunks.append((graphemes,phones))
   else:
+   # Short Qwen pieces allow durable progress within the foreground deadline.
+   # This is a preferred split, not a new input limit: a longer word is kept.
+   preferred=64 if profile['provider']=='local_qwen3_tts' else 2000
    rest=text
-   while len(rest)>2000:
-    end=rest.rfind(' ',0,2001)
-    if end<=0:raise ValueError('INPUT_CAPACITY_EXCEEDED')
+   while len(rest)>preferred:
+    end=rest.rfind(' ',1,preferred+1)
+    if end<0:end=rest.find(' ',preferred+1,2001)
+    if end<0:
+     if len(rest)>2000:raise ValueError('INPUT_CAPACITY_EXCEEDED')
+     break
     chunks.append((rest[:end],None));rest=rest[end:]
    if rest:chunks.append((rest,None))
   if not chunks:raise ValueError('SYNTHESIS_FAILED')

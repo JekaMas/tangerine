@@ -118,10 +118,16 @@ class SpeechContracts(unittest.TestCase):
   with self.assertRaisesRegex(ValueError,'PAID_USE_FORBIDDEN'):backends.billing(p)
  def test_split_positive(self):
   t=turn('word '*900);d=backends.plan(profile(),{'turns':[t]});pieces=d['pieces'];self.assertEqual(''.join(x['operations'][0]['text'] for x in pieces),t['operations'][0]['text']);self.assertEqual([x['gap_after_ms'] for x in pieces],[0,0,250]);self.assertTrue(all(x['voice_id']=='en-us' and x['speaker_id']=='s1' for x in pieces))
+  q=backends.plan(profile('local_qwen3_tts'),{'turns':[turn('word '*30)]})['pieces']
+  self.assertEqual([x['operations'][0]['text'] for x in q],['word '*12+'word',' '+'word '*11+'word',' '+'word '*5])
+  self.assertEqual([x['gap_after_ms'] for x in q],[0,0,250]);self.assertTrue(all(x['speaker_id']=='s1' and x['voice_id']=='en-us' for x in q))
  def test_unicode_positive(self):
   d=backends.plan(profile(),{'turns':[turn('The café says <speak> literally & clearly.')]});self.assertEqual(d['pieces'][0]['operations'][0]['text'],'The café says <speak> literally & clearly.')
+  text='café '+('a'*100)+' end';q=backends.plan(profile('local_qwen3_tts'),{'turns':[turn(text)]})['pieces']
+  self.assertEqual(''.join(x['operations'][0]['text'] for x in q),text);self.assertEqual(len(q),3)
  def test_indivisible_negative(self):
   with self.assertRaisesRegex(ValueError,'INPUT_CAPACITY_EXCEEDED'):backends.plan(profile(),{'turns':[turn('a'*2001)]})
+  with self.assertRaisesRegex(ValueError,'INPUT_CAPACITY_EXCEEDED'):backends.plan(profile('local_qwen3_tts'),{'turns':[turn('a'*2001)]})
  def test_voice_negative(self):
   t=turn();t['voice_id']='invented'
   with self.assertRaisesRegex(ValueError,'VOICE_UNAVAILABLE'):backends.plan(profile(),{'turns':[t]})

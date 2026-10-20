@@ -139,6 +139,11 @@ func TestSpeechProfileMalformedNegative(t *testing.T) {
 	if _, e := speechProfile(s, []byte("profiles: [")); e == nil {
 		t.Fatal("malformed registry accepted")
 	}
+	s["blueprint"].(map[string]any)["provider_profile_id"] = "deepseek-flash-low-v1"
+	registry, _ := generationRegistry("providers.v1.yaml")
+	if _, e := speechProfile(s, registry); e == nil || e.Error() != "CAPABILITY_UNAVAILABLE" {
+		t.Fatal("registered text-only profile must fail without panic or fallback", e)
+	}
 }
 func TestSpeechProfileLocalPositive(t *testing.T) {
 	s, _, _ := speechFixture(t)
