@@ -11,7 +11,7 @@ class SpeechBrowser(unittest.TestCase):
   if p.returncode:raise AssertionError('Native browser observation failed; inspect '+str(evidence/'driver.stderr'))
   cls.observed=json.loads((evidence/'observations.json').read_text())
  def test_playback_positive(self):self.assertIs(self.observed['values']['test_playback_positive'],True);self.assertFalse(self.observed['network_substitution'])
- def test_refresh_positive(self):self.assertEqual(self.observed['values']['test_refresh_positive'],1);self.assertTrue(self.observed['recovery_observed'])
+ def test_refresh_positive(self):self.assertEqual(self.observed['values']['test_refresh_positive'],1);self.assertTrue(self.observed['recovery_observed']);self.assertEqual(self.observed['refresh_requests']['after'],self.observed['refresh_requests']['before']+1)
  def test_dependency_negative(self):self.assertEqual(self.observed['values']['test_dependency_negative'],'Saved preparations are unavailable. Refresh to retry.')
  def test_audio_failure_negative(self):self.assertEqual(self.observed['values']['test_audio_failure_negative'],'Saved audio is temporarily unavailable. Refresh and retry playback; saved text and audio are retained.');self.assertTrue(self.observed['recovery_observed'])
 if __name__=='__main__':unittest.main()

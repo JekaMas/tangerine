@@ -52,7 +52,14 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
    if browser.evaluate("document.querySelector('audio').currentTime > 0"):break
    time.sleep(.1)
   record('test_playback_positive',"document.querySelector('audio').currentTime > 0",True)
-  browser.evaluate("document.querySelector('button').click(); true");browser.wait('Exercise '+fixture['preparation_id'][:8]);record('test_refresh_positive',"document.querySelectorAll('audio').length",1)
+  list_requests="performance.getEntriesByType('resource').filter(e=>e.name.includes('/api/v1/preparations?')).length"
+  refresh_before=browser.evaluate(list_requests)
+  browser.evaluate("document.querySelector('button').click(); true")
+  for n in range(100):
+   if browser.evaluate(list_requests)>refresh_before:break
+   time.sleep(.1)
+  refresh_after=browser.evaluate(list_requests);assert refresh_after==refresh_before+1
+  browser.wait('Exercise '+fixture['preparation_id'][:8]);record('test_refresh_positive',"document.querySelectorAll('audio').length",1)
   call(['docker','stop',name+'-postgres']);browser.evaluate("document.querySelector('button').click(); true");browser.wait('Saved preparations are unavailable');record('test_dependency_negative',"document.querySelector('[role=alert]').textContent",'Saved preparations are unavailable. Refresh to retry.');call(['docker','start',name+'-postgres']);time.sleep(1);browser.evaluate("document.querySelector('button').click(); true")
   for n in range(100):
    if browser.evaluate("document.querySelector('[role=alert]')===null"):break
@@ -64,7 +71,7 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
   assert browser.evaluate("document.querySelector('audio').currentTime>0")
   assert browser.evaluate("document.querySelector('[role=alert]')===null")
   (evidence/'browser-done').write_text('done');assert go.wait(timeout=30)==0
-  (evidence/'observations.json').write_text(json.dumps({'tests':observed,'values':values,'driver':browser.driver_version,'fixture':fixture,'network_substitution':False,'recovery_observed':True},indent=2))
+  (evidence/'observations.json').write_text(json.dumps({'tests':observed,'values':values,'driver':browser.driver_version,'fixture':fixture,'network_substitution':False,'recovery_observed':True,'refresh_requests':{'before':refresh_before,'after':refresh_after}},indent=2))
   for test in observed:print('speech-browser::'+test)
  finally:
   if browser:
