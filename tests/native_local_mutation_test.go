@@ -30,13 +30,17 @@ func observeLocalMutation(t *testing.T, count int) {
 		t.Fatal(e)
 	}
 	p := c["llm_profiles"].([]any)[0].(map[string]any)
-	p["provider"], p["model"], p["endpoint"] = "local_responses", "gpt-oss:20b", "http://127.0.0.1:11434/v1/responses"
-	p["adapter_version"] = "local-responses-v1"
-	p["auth_method"], p["billing_mode"], p["credential_ref"], p["stream"] = "local_none", "local", "local-none", false
-	p["context_budget_tokens"], p["max_output_tokens"] = float64(131072), float64(8000)
-	p["reasoning_effort"] = "low"
-	p["temperature"] = float64(0.7)
-	p["structured_output"] = true
+	profileRaw, err := os.ReadFile(os.Getenv("TANGERINE_LOCAL_MUTATION_PROFILE"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var selected map[string]any
+	if err = json.Unmarshal(profileRaw, &selected); err != nil {
+		t.Fatal(err)
+	}
+	for name, value := range selected {
+		p[name] = value
+	}
 	c["llm_lab_capture_content"], c["llm_lab_trace_enabled"] = true, true
 	for _, k := range []string{"workspace_id", "configuration_sha256", "provider_access_policy"} {
 		delete(c, k)
@@ -87,7 +91,9 @@ func observeLocalMutation(t *testing.T, count int) {
 		}
 		req.Body = io.NopCloser(bytes.NewReader(body))
 		response, e := transport.RoundTrip(req)
-		event := map[string]any{"wire_request_sha256": contracts.Digest(body), "endpoint": req.URL.String(), "route": "127.0.0.1:11434", "model": "gpt-oss:20b", "billing_mode": "local", "fixture_response": false}
+		var sent struct{ Model string }
+		_ = json.Unmarshal(body, &sent)
+		event := map[string]any{"wire_request_sha256": contracts.Digest(body), "endpoint": req.URL.String(), "route": "127.0.0.1:11434", "model": sent.Model, "billing_mode": "local", "fixture_response": false}
 		if e == nil {
 			bytes, e2 := io.ReadAll(response.Body)
 			response.Body.Close()

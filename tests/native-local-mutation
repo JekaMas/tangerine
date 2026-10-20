@@ -11,6 +11,8 @@ def call(args,check=True,input=None):
  if p.stdout:print(p.stdout,file=sys.stderr,end='')
  if check and p.returncode:raise RuntimeError('local observation setup failed')
  return p
+profile_path=r/'audit/iteration-6-review-20261020/LOCAL-PROFILE.json'
+selected_profile=json.loads(profile_path.read_text())
 clean_required='--require-clean' in sys.argv
 test_args=[x for x in sys.argv[1:] if x!='--require-clean']
 pin={'head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=r,text=True).strip(),'dirty':bool(subprocess.check_output(['git','status','--porcelain'],cwd=r,text=True).strip())}
@@ -41,14 +43,14 @@ with tempfile.TemporaryDirectory(prefix=name,dir=r/'data/iteration6/local/tmp') 
   call(['docker','run','--rm','-e','CGO_ENABLED=0','-e','GOOS='+goos,'-e','GOARCH='+goarch,'-v',str(tmp)+':/hostbin',*mounts,'--entrypoint','go',name+'-go','test','-c','-o','/hostbin/local-model.test','./internal/app'])
   def port(kind,p):return subprocess.check_output(['docker','port',name+'-'+kind,p],env=env,text=True).strip().rsplit(':',1)[1]
   evidence=r/'data/iteration6/local'/name;evidence.mkdir(parents=True,exist_ok=True)
-  run_env={**env,'DATABASE_URL':'postgres://tangerine:'+password+'@127.0.0.1:'+port('postgres','5432/tcp')+'/tangerine?sslmode=disable','MINIO_ENDPOINT':'127.0.0.1:'+port('media','9000/tcp'),'MINIO_ROOT_USER':'native-regression','MINIO_ROOT_PASSWORD':password,'TANGERINE_PREPARATION_TEST_EVIDENCE':str(evidence),'TANGERINE_LOCAL_MUTATION_BUNDLE':str(bundle)}
+  run_env={**env,'DATABASE_URL':'postgres://tangerine:'+password+'@127.0.0.1:'+port('postgres','5432/tcp')+'/tangerine?sslmode=disable','MINIO_ENDPOINT':'127.0.0.1:'+port('media','9000/tcp'),'MINIO_ROOT_USER':'native-regression','MINIO_ROOT_PASSWORD':password,'TANGERINE_PREPARATION_TEST_EVIDENCE':str(evidence),'TANGERINE_LOCAL_MUTATION_BUNDLE':str(bundle),'TANGERINE_LOCAL_MUTATION_PROFILE':str(profile_path)}
   p=subprocess.run([str(tmp/'local-model.test'),'-test.v','-test.run',test_args[0] if test_args else '^TestNativeLocal','-test.timeout','720s'],cwd=r,env=run_env,timeout=760,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True);status=p.returncode
   print(p.stdout,end='');(evidence/'test-output.log').write_text(p.stdout)
   final={'head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=r,text=True).strip(),'dirty':bool(subprocess.check_output(['git','status','--porcelain'],cwd=r,text=True).strip())}
   observed=[line.split()[2] for line in p.stdout.splitlines() if line.startswith('--- PASS: TestNativeLocal')]
   expected=['TestNativeLocalMutationPositive','TestNativeLocalZeroMutationNegative'] if not test_args else [test_args[0].strip('^$')]
   if sorted(observed)!=sorted(expected):status=1
-  receipt={'observed_tests':observed,'expected_tests':expected,'git':pin,'git_after':final,'require_clean':clean_required,'exit_code':status,'status':'passed' if status==0 and final==pin else 'failed','evidence_root':str(evidence.relative_to(r)),'model':'gpt-oss:20b','billing_mode':'local','fixture_response':False}
+  receipt={'observed_tests':observed,'expected_tests':expected,'git':pin,'git_after':final,'require_clean':clean_required,'exit_code':status,'status':'passed' if status==0 and final==pin else 'failed','evidence_root':str(evidence.relative_to(r)),'model':selected_profile['model'],'billing_mode':'local','fixture_response':False}
   (evidence/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n');print(json.dumps(receipt))
   if final!=pin:status=1
  finally:
