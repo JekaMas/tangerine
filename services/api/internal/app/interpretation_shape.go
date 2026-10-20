@@ -49,10 +49,12 @@ func normalizeInterpretationShape(value any, extraction *CanonicalExtraction) an
 					switch key {
 					case "supplied":
 						empty = empty && field == false
-					case "option_id", "unresolved_reason":
+					case "option_id":
 						empty = empty && field == nil
-					case "status":
-						empty = empty && (field == "not_supplied" || field == nil)
+					case "status", "unresolved_reason":
+						// These labels have no consumer when source confirms absence and
+						// no supplied flag, option, evidence or substantive findings exist.
+						// Their original values remain in the raw provider diagnostic.
 					case "satisfied_proposition_ids", "violated_proposition_ids", "support_evidence_ids", "additional_assertions":
 						list, ok := field.([]any)
 						empty = empty && ok && len(list) == 0

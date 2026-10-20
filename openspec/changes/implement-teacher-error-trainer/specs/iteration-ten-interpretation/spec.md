@@ -177,6 +177,11 @@ The application SHALL interpret a saved answer through real provider/context/sto
 - **WHEN** the named literal attachment/retraction packet executes through its real source, consolidation or persistence owner
 - **THEN** endorsed components and complete original source membership SHALL match independently authored expectations, excluding withdrawn components from assessment
 
+#### Scenario: I10-08 packet 6
+
+- **WHEN** the named literal attachment/retraction packet executes through its real source, consolidation or persistence owner
+- **THEN** endorsed components and complete original source membership SHALL match independently authored expectations, excluding withdrawn components from assessment
+
 ### Requirement: I10-09 Frozen retry and idempotent stage reuse
 
 The application SHALL reuse admitted durable extraction on explicit retry, replay identical operations without calls, preserve the frozen model configuration, and reject conflicting answer identities without changing the answer. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
@@ -319,7 +324,7 @@ The application SHALL keep wrong acceptance distinct from false assertion, recog
 
 ### Requirement: I10-19 Tolerant source-confirmed component absence
 
-The application SHALL normalize source-confirmed absent component envelopes and missing optional note prose, preserving meaningful fields and refusing to manufacture an assessment for actual supplied text. The combined schema/source admission still runs once. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
+The application SHALL normalize source-confirmed absent component envelopes including unused status/uncertainty metadata, without discarding actual supplied text or substantive findings, and missing optional note prose, preserving meaningful fields and refusing to manufacture an assessment for actual supplied text. The combined schema/source admission still runs once. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
 
 #### Scenario: I10-19 packet 1
 
@@ -335,6 +340,11 @@ The application SHALL normalize source-confirmed absent component envelopes and 
 
 - **WHEN** the third distinct literal positive or negative packet executes through its real owner
 - **THEN** its independently expected source evidence or rejection SHALL hold
+
+#### Scenario: I10-19 packet 4
+
+- **WHEN** the named literal attachment/retraction packet executes through its real source, consolidation or persistence owner
+- **THEN** endorsed components and complete original source membership SHALL match independently authored expectations, excluding withdrawn components from assessment
 
 ### Requirement: I10-20 Definite rejection without a valid repair option
 

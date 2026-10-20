@@ -93,7 +93,7 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 				output = AnswerExtraction{Version: "2.0.0", Clauses: clauses, Relations: []ClaimRelation{relation}, Unparsed: []AnswerSpan{}, Coverage: []ClaimCoverage{}}
 			}
 
-			if strings.HasPrefix(f.currentMode(), "rubric-") {
+			if strings.HasPrefix(f.currentMode(), "rubric-") || f.currentMode() == "supplied-uncertainty" {
 				correction := AnswerSpan{4, 9, "opens"}
 				reason := AnswerSpan{10, 39, "because the cafe is singular."}
 				output = AnswerExtraction{Version: "2.0.0", Clauses: []ExtractedClause{{LocalRef: "c0", Span: AnswerSpan{0, 39, answer}, Stance: "assert_error", Correction: &correction, Rationale: &reason}}, Unparsed: []AnswerSpan{}, Coverage: []ClaimCoverage{}, Relations: []ClaimRelation{}}
@@ -140,7 +140,7 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 				decision.Correction.Status = "rejected"
 			}
 
-			if strings.HasPrefix(f.currentMode(), "rubric-") {
+			if strings.HasPrefix(f.currentMode(), "rubric-") || f.currentMode() == "supplied-uncertainty" {
 				decision.Correction.Supplied = true
 				decision.Correction.Option = &optionID
 				decision.Correction.Status = "accepted"
@@ -155,6 +155,18 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 						decision.Explanation.Satisfied = append(decision.Explanation.Satisfied, p.(map[string]any)["id"].(string))
 					}
 				}
+			}
+
+			if f.currentMode() == "absent-metadata" {
+				reason := "insufficient_context"
+				decision.Explanation.Unresolved = &reason
+			}
+			if f.currentMode() == "supplied-uncertainty" {
+				reason := "unsupported_rationale"
+				decision.Explanation.Unresolved = &reason
+				decision.Explanation.Status = "unresolved"
+				decision.Explanation.Additional[0].Judgment = "unknown"
+				decision.Explanation.Additional[0].Reason = "Constructed supplied uncertainty, not absent wording."
 			}
 			output = SemanticMapping{Version: "1.0.0", Decisions: []SemanticDecision{decision}}
 			if strings.HasPrefix(f.currentMode(), "attachment-") {
@@ -209,7 +221,7 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 	requireListening(t, e)
 	f.attempt = f.start(t)
 	answer := "Use opens."
-	if strings.HasPrefix(mode, "rubric-") {
+	if strings.HasPrefix(mode, "rubric-") || mode == "supplied-uncertainty" {
 		answer = "Use opens because the cafe is singular."
 	}
 	if strings.HasPrefix(mode, "attachment-") {
@@ -802,5 +814,32 @@ func TestNativeInterpretationRubricExhaustedNegative(t *testing.T) {
 	requireListening(t, e)
 	if r.Attempt["answer_text"] != "Use opens because the cafe is singular." || r.Attempt["state"] != "evaluation_failed" || r.Attempt["lease_token"] != nil {
 		t.Fatal(r.Attempt)
+	}
+}
+
+func TestNativeInterpretationAbsentMetadataPositive(t *testing.T) {
+	f := interpretationNative(t, "absent-metadata")
+	state, err := f.interpret(t, uuid.NewString())
+	requireListening(t, err)
+	if state.Status != "complete" || state.Mapping == nil || f.maps.Load() != 1 || f.calls.Load() != 2 {
+		t.Fatal(state, f.calls.Load())
+	}
+	var m SemanticMapping
+	requireListening(t, f.s.Store.readInterpretationJSON(context.Background(), *state.Mapping, &m))
+	if m.Decisions[0].Correction.Status != "accepted" || m.Decisions[0].Explanation.Status != "not_supplied" || m.Decisions[0].Explanation.Unresolved != nil {
+		t.Fatal(m)
+	}
+}
+func TestNativeInterpretationSuppliedUncertaintyNegative(t *testing.T) {
+	f := interpretationNative(t, "supplied-uncertainty")
+	state, err := f.interpret(t, uuid.NewString())
+	requireListening(t, err)
+	if state.Status != "complete" || state.Mapping == nil || f.maps.Load() != 1 {
+		t.Fatal(state, f.maps.Load())
+	}
+	var m SemanticMapping
+	requireListening(t, f.s.Store.readInterpretationJSON(context.Background(), *state.Mapping, &m))
+	if m.Decisions[0].Correction.Status != "accepted" || m.Decisions[0].Explanation.Status != "unresolved" || m.Decisions[0].Explanation.Unresolved == nil || !m.Decisions[0].Explanation.Supplied {
+		t.Fatal("actual supplied reason uncertainty erased or poisoned correction", m)
 	}
 }

@@ -72,3 +72,23 @@ func TestInterpretationMeaningfulNoteNegative(t *testing.T) {
 		}
 	}
 }
+
+func TestInterpretationAbsentUncertaintyPositive(t *testing.T) {
+	for _, status := range []string{"not_supplied", "unresolved", "accepted"} {
+		value, c := emptyShapeFixture(map[string]any{"supplied": false, "status": status, "option_id": nil, "unresolved_reason": "insufficient_context", "satisfied_proposition_ids": []any{}, "violated_proposition_ids": []any{}, "support_evidence_ids": []any{}, "additional_assertions": []any{}}, false)
+		result := normalizeInterpretationShape(value, c).(map[string]any)["decisions"].([]any)[0].(map[string]any)["explanation"].(map[string]any)
+		if result["status"] != "not_supplied" || result["unresolved_reason"] != nil || result["supplied"] != false {
+			t.Fatal("absent explanation labels consumed the answer's repair budget or invented credit", result)
+		}
+	}
+}
+func TestInterpretationPresentUncertaintyNegative(t *testing.T) {
+	component := map[string]any{"supplied": true, "status": "unresolved", "option_id": nil, "unresolved_reason": "unsupported_rationale", "satisfied_proposition_ids": []any{}, "violated_proposition_ids": []any{}, "support_evidence_ids": []any{}, "additional_assertions": []any{map[string]any{"judgment": "unknown", "exact_text": "rule"}}}
+	value, c := emptyShapeFixture(component, true)
+	before, _ := json.Marshal(component)
+	normalized := normalizeInterpretationShape(value, c).(map[string]any)
+	after, _ := json.Marshal(normalized["decisions"].([]any)[0].(map[string]any)["explanation"])
+	if string(before) != string(after) {
+		t.Fatal("actual supplied uncertainty erased", string(after))
+	}
+}
