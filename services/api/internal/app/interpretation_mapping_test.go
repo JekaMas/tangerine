@@ -368,7 +368,9 @@ func TestInterpretationAuditAssertionOrderPositive(t *testing.T) {
 	a := ComponentAssertion{AnswerSpan: AnswerSpan{17, 22, "every"}, Judgment: "unsupported", Reason: "Scope is false"}
 	b := ComponentAssertion{AnswerSpan: AnswerSpan{23, 27, "verb"}, Judgment: "supported", Reason: "Word reference"}
 	left.Decisions[0].Explanation.Additional = []ComponentAssertion{a, b}
-	right.Decisions[0].Explanation.Additional = []ComponentAssertion{b, a}
+	duplicate := a
+	duplicate.Reason = "Same supported judgment, different explanatory prose"
+	right.Decisions[0].Explanation.Additional = []ComponentAssertion{b, a, duplicate}
 	if !compareMapping(left, right) {
 		t.Fatal("assertion output order created a semantic audit disagreement")
 	}
@@ -390,5 +392,38 @@ func TestInterpretationAuditAssertionChangedNegative(t *testing.T) {
 	}
 	if duplicateComponentSignature(left.Decisions[0].Explanation) == duplicateComponentSignature(right.Decisions[0].Explanation) {
 		t.Fatal("different judgment treated as duplicate")
+	}
+}
+
+func TestInterpretationRubricExplanationPositive(t *testing.T) {
+	a, c, k, tax, m := interpretationMappingFixture()
+	m.Decisions[0].Explanation.Satisfied = []string{"reason1"}
+	m.Decisions[0].Explanation.Additional[0].Judgment = "supported"
+	got, _, err := admitMappingFixture(a, c, k, tax, m)
+	if err != nil || got.Decisions[0].Explanation.Status != "accepted" || got.Decisions[0].Correction.Status != "accepted" {
+		t.Fatal(got, err)
+	}
+}
+func TestInterpretationMissingReasonRubricNegative(t *testing.T) {
+	a, c, k, tax, m := interpretationMappingFixture()
+	m.Decisions[0].Explanation.Additional[0].Judgment = "supported"
+	if got, _, err := admitMappingFixture(a, c, k, tax, m); err == nil {
+		t.Fatal("positive explanation missing required findings silently became", got.Decisions[0].Explanation.Status)
+	}
+}
+func TestInterpretationRubricCorrectionPositive(t *testing.T) {
+	a, c, k, tax, m := interpretationMappingFixture()
+	m.Decisions[0].Correction.Additional = []ComponentAssertion{{AnswerSpan: c.Claims[0].Corrections[0], Judgment: "supported", Reason: "Proposal satisfies the existing correction proposition"}}
+	got, _, err := admitMappingFixture(a, c, k, tax, m)
+	if err != nil || got.Decisions[0].Correction.Status != "accepted" || got.Decisions[0].Explanation.Status != "rejected" {
+		t.Fatal(got, err)
+	}
+}
+func TestInterpretationMissingRepairRubricNegative(t *testing.T) {
+	a, c, k, tax, m := interpretationMappingFixture()
+	m.Decisions[0].Correction.Satisfied = []string{}
+	m.Decisions[0].Correction.Additional = []ComponentAssertion{{AnswerSpan: c.Claims[0].Corrections[0], Judgment: "supported", Reason: "Proposal is valid"}}
+	if got, _, err := admitMappingFixture(a, c, k, tax, m); err == nil {
+		t.Fatal("positive repair missing required findings silently became", got.Decisions[0].Correction.Status)
 	}
 }

@@ -64,7 +64,7 @@ The application SHALL assess supplied correction and explanation independently, 
 
 ### Requirement: I10-04 Component uncertainty preserves support
 
-The application SHALL retain unknown optional reason findings without erasing supported components, preserve additional unknown assertions alongside decisive false claims, and require complete actual claim decisions and exact rubric references. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
+The application SHALL request the existing bounded output repair for a claimed positive component with missing required rubric findings instead of silently deriving zero, retain unknown optional reason findings without erasing supported components, preserve additional unknown assertions alongside decisive false claims, and require complete actual claim decisions and exact rubric references. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
 
 #### Scenario: I10-04 packet 1
 
@@ -80,6 +80,16 @@ The application SHALL retain unknown optional reason findings without erasing su
 
 - **WHEN** the third distinct literal positive or negative packet executes through its real owner
 - **THEN** its independently expected source evidence or rejection SHALL hold
+
+#### Scenario: I10-04 packet 4
+
+- **WHEN** the named literal attachment/retraction packet executes through its real source, consolidation or persistence owner
+- **THEN** endorsed components and complete original source membership SHALL match independently authored expectations, excluding withdrawn components from assessment
+
+#### Scenario: I10-04 packet 5
+
+- **WHEN** the named literal attachment/retraction packet executes through its real source, consolidation or persistence owner
+- **THEN** endorsed components and complete original source membership SHALL match independently authored expectations, excluding withdrawn components from assessment
 
 ### Requirement: I10-05 Category and novel correction interpretation
 
@@ -158,6 +168,11 @@ The application SHALL interpret a saved answer through real provider/context/sto
 - **THEN** the admitted completed findings SHALL reopen without inference and the failed answer SHALL remain immutable with no manufactured score
 
 #### Scenario: I10-08 packet 4
+
+- **WHEN** the named literal attachment/retraction packet executes through its real source, consolidation or persistence owner
+- **THEN** endorsed components and complete original source membership SHALL match independently authored expectations, excluding withdrawn components from assessment
+
+#### Scenario: I10-08 packet 5
 
 - **WHEN** the named literal attachment/retraction packet executes through its real source, consolidation or persistence owner
 - **THEN** endorsed components and complete original source membership SHALL match independently authored expectations, excluding withdrawn components from assessment

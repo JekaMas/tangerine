@@ -51,5 +51,13 @@ func comparisonAssertions(input []ComponentAssertion, duplicate bool) []Componen
 		}
 		return a.Judgment < b.Judgment
 	})
-	return out
+	// Equal copied source/judgment tuples are one semantic finding. Their raw
+	// reasons and multiplicity remain retained in the original model decisions.
+	unique := out[:0]
+	for _, assertion := range out {
+		if len(unique) == 0 || unique[len(unique)-1] != assertion {
+			unique = append(unique, assertion)
+		}
+	}
+	return unique
 }

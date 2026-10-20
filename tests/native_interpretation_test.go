@@ -92,6 +92,12 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 				}
 				output = AnswerExtraction{Version: "2.0.0", Clauses: clauses, Relations: []ClaimRelation{relation}, Unparsed: []AnswerSpan{}, Coverage: []ClaimCoverage{}}
 			}
+
+			if strings.HasPrefix(f.currentMode(), "rubric-") {
+				correction := AnswerSpan{4, 9, "opens"}
+				reason := AnswerSpan{10, 39, "because the cafe is singular."}
+				output = AnswerExtraction{Version: "2.0.0", Clauses: []ExtractedClause{{LocalRef: "c0", Span: AnswerSpan{0, 39, answer}, Stance: "assert_error", Correction: &correction, Rationale: &reason}}, Unparsed: []AnswerSpan{}, Coverage: []ClaimCoverage{}, Relations: []ClaimRelation{}}
+			}
 		} else {
 			audit := wire["model"] == "constructed-auditor"
 			if audit {
@@ -132,6 +138,23 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 			if audit && f.currentMode() == "audit-disagreement" {
 				decision.Correction.Satisfied = []string{}
 				decision.Correction.Status = "rejected"
+			}
+
+			if strings.HasPrefix(f.currentMode(), "rubric-") {
+				decision.Correction.Supplied = true
+				decision.Correction.Option = &optionID
+				decision.Correction.Status = "accepted"
+				for _, p := range option["required_propositions"].([]any) {
+					decision.Correction.Satisfied = append(decision.Correction.Satisfied, p.(map[string]any)["id"].(string))
+				}
+				decision.Explanation.Supplied = true
+				decision.Explanation.Status = "accepted"
+				decision.Explanation.Additional = []ComponentAssertion{{AnswerSpan: AnswerSpan{10, 39, "because the cafe is singular."}, Judgment: "supported", Reason: "The singular subject requires singular agreement."}}
+				if f.currentMode() == "rubric-repair" && f.maps.Load() > 1 {
+					for _, p := range unit["rationale_required_propositions"].([]any) {
+						decision.Explanation.Satisfied = append(decision.Explanation.Satisfied, p.(map[string]any)["id"].(string))
+					}
+				}
 			}
 			output = SemanticMapping{Version: "1.0.0", Decisions: []SemanticDecision{decision}}
 			if strings.HasPrefix(f.currentMode(), "attachment-") {
@@ -186,6 +209,9 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 	requireListening(t, e)
 	f.attempt = f.start(t)
 	answer := "Use opens."
+	if strings.HasPrefix(mode, "rubric-") {
+		answer = "Use opens because the cafe is singular."
+	}
 	if strings.HasPrefix(mode, "attachment-") {
 		answer = "The verb is wrong. Use opens."
 		if mode == "attachment-retracted" {
@@ -744,4 +770,37 @@ func TestNativeInterpretationEndorsedAttachmentPositive(t *testing.T) {
 }
 func TestNativeInterpretationWithdrawnAttachmentNegative(t *testing.T) {
 	nativeAttachmentResult(t, "attachment-retracted", "not_supplied")
+}
+
+func TestNativeInterpretationRubricCompletenessPositive(t *testing.T) {
+	f := interpretationNative(t, "rubric-repair")
+	state, err := f.interpret(t, uuid.NewString())
+	requireListening(t, err)
+	if state.Status != "complete" || state.Mapping == nil || f.maps.Load() != 2 || f.calls.Load() != 3 {
+		t.Fatal(state, f.calls.Load())
+	}
+	var m SemanticMapping
+	requireListening(t, f.s.Store.readInterpretationJSON(context.Background(), *state.Mapping, &m))
+	if m.Decisions[0].Explanation.Status != "accepted" || len(m.Decisions[0].Explanation.Satisfied) == 0 || m.Decisions[0].Correction.Status != "accepted" {
+		t.Fatal(m)
+	}
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	wire := f.wires[len(f.wires)-1]
+	serialized := string(mustJSON(wire))
+	if !strings.Contains(serialized, "Complete the supplied positive explanation assessment") || !strings.Contains(serialized, "Existing explanation rubric") {
+		t.Fatal("repair omitted actionable scoped rubric")
+	}
+}
+func TestNativeInterpretationRubricExhaustedNegative(t *testing.T) {
+	f := interpretationNative(t, "rubric-exhausted")
+	state, err := f.interpret(t, uuid.NewString())
+	if err == nil || state.Status != "failed" || state.Mapping != nil || state.Extraction == nil || f.maps.Load() != 2 || f.calls.Load() != 3 {
+		t.Fatal(state, err, f.calls.Load())
+	}
+	r, e := f.s.Store.Attempt(context.Background(), f.attempt)
+	requireListening(t, e)
+	if r.Attempt["answer_text"] != "Use opens because the cafe is singular." || r.Attempt["state"] != "evaluation_failed" || r.Attempt["lease_token"] != nil {
+		t.Fatal(r.Attempt)
+	}
 }

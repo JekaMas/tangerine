@@ -169,6 +169,15 @@ func normalizeComponent(j *SemanticComponent, spans []AnswerSpan, unit map[strin
 	if explanation && len(j.Additional) == 0 && j.Unresolved == nil {
 		return interpretationInvalid("Assess the listener's entire supplied explanation, independently of its rubric overlap. Include a source-quoted supported/unsupported/unknown judgment and a contextual reason in explanation.additional_assertions. Proposition IDs alone do not assess the full assertion or its scope. Do not substitute the narrower gold rationale for the listener's words.")
 	}
+	if unit != nil && len(required) > 0 && len(j.Satisfied)+len(j.Violated) == 0 && !bad && !unknown && j.Unresolved == nil && (j.Status == "accepted" || j.Status == "partial") {
+		component, detail := "correction", correctionRubricDetail(unit)
+		if explanation {
+			component = "explanation"
+			raw, _ := json.Marshal(map[string]any{"required_propositions": unit["rationale_required_propositions"], "forbidden_propositions": unit["rationale_forbidden_propositions"]})
+			detail = " Existing explanation rubric: " + string(raw)
+		}
+		return interpretationInvalid("Complete the supplied positive " + component + " assessment with the existing required proposition IDs actually satisfied. Source-level supported assertions do not replace the scoped rubric findings used for credit. Assess the listener's words; do not invent satisfaction, silently assign zero, or use explicit uncertainty merely to avoid the assessment." + detail)
+	}
 	if bad {
 		j.Status = "rejected"
 	} else if unknown || j.Unresolved != nil {
