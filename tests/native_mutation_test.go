@@ -20,10 +20,13 @@ func nativeMutationFixture(t *testing.T, mode string) (*Server, CanonicalPrepara
 	t.Helper()
 	configure := func(b map[string]any) {
 		r := b["exercise_request"].(map[string]any)
+		if strings.HasPrefix(mode, "token-") {
+			r["category_families"] = []any{"grammar"}
+		}
 		if mode == "missing-family" || mode == "zero" {
 			r["category_families"] = []any{"grammar", "lexis"}
 		}
-		if mode == "zero" {
+		if mode == "zero" || mode == "token-zero" {
 			r["mutation_count"] = 0
 		}
 		if mode == "copy-unit" {
@@ -37,7 +40,19 @@ func nativeMutationFixture(t *testing.T, mode string) (*Server, CanonicalPrepara
 	if err != nil {
 		t.Fatal(err)
 	}
-	config["llm_profiles"].([]any)[0].(map[string]any)["context_budget_tokens"] = float64(1000000)
+	profile := config["llm_profiles"].([]any)[0].(map[string]any)
+	profile["context_budget_tokens"] = float64(1000000)
+	if strings.HasPrefix(mode, "token-") {
+		profile["provider"], profile["model"], profile["endpoint"] = "local_responses", "gpt-oss:20b", "http://127.0.0.1:11434/v1/responses"
+		profile["auth_method"], profile["billing_mode"], profile["credential_ref"] = "local_none", "local", "local-none"
+		profile["max_output_tokens"], profile["context_budget_tokens"] = float64(8000), float64(131072)
+		if mode == "token-small" {
+			profile["context_budget_tokens"] = float64(20000)
+		}
+		if mode == "token-unknown" {
+			profile["model"] = "unmapped-local-fixture"
+		}
+	}
 	for _, k := range []string{"workspace_id", "configuration_sha256", "provider_access_policy"} {
 		delete(config, k)
 	}
@@ -56,7 +71,7 @@ func nativeMutationFixture(t *testing.T, mode string) (*Server, CanonicalPrepara
 	r.Attempt = 2
 	_, _, candidate, _ := mutationFixture()
 	candidate["blueprint_id"] = r.BlueprintID
-	if mode == "zero" {
+	if mode == "zero" || mode == "token-zero" {
 		candidate["utterances"].([]any)[0].(map[string]any)["surface_text"] = "The café opens tomorrow."
 		candidate["planned_units"] = []any{}
 	}
@@ -512,5 +527,55 @@ func TestNativeMutationCopiedKeyNegative(t *testing.T) {
 	p, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)
 	if e == nil || *n != 2 || p["candidate_id"] != nil || p["mutation_manifest_asset_id"] != nil || p["canonical_asset_id"] != clean["canonical_asset_id"] {
 		t.Fatal(p, e, *n)
+	}
+}
+
+func checkMutationBudgetSnapshot(t *testing.T, s *Server, p map[string]any) {
+	t.Helper()
+	var raw []byte
+	err := s.Store.DB.QueryRow(context.Background(), `SELECT d.payload FROM document d JOIN operation child ON child.id::text=d.payload->>'operation_id' JOIN operation parent ON parent.idempotency_key=child.idempotency_key WHERE d.kind='llm-context-snapshot' AND child.operation_name='mutation' AND parent.subject_id=$1 LIMIT 1`, p["id"]).Scan(&raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var snapshot map[string]any
+	if err = json.Unmarshal(raw, &snapshot); err != nil {
+		t.Fatal(err)
+	}
+	wire, err := s.Store.ReadAsset(context.Background(), snapshot["rendered_request_asset_id"].(string))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if snapshot["budget_method"] != "tokenizer" || snapshot["tokenizer"] != "o200k_base-ordinary@tiktoken-go/v0.8.1" || snapshot["reserved_output_tokens"] != float64(8000) || snapshot["context_budget_tokens"] != float64(131072) || snapshot["input_budget_used"].(float64) >= float64(len(wire)) || snapshot["input_budget_used"].(float64)+8000 > 131072 {
+		t.Fatal(snapshot, len(wire))
+	}
+}
+func TestNativeMutationTokenFamilyPositive(t *testing.T) {
+	s, r, client, calls, _ := nativeMutationFixture(t, "token-family")
+	p, err := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)
+	if err != nil || *calls != 1 || p["phase_states"].(map[string]any)["mutation"] != "complete" {
+		t.Fatal(p, err, *calls)
+	}
+	checkMutationBudgetSnapshot(t, s, p)
+}
+func TestNativeMutationTokenZeroPositive(t *testing.T) {
+	s, r, client, calls, _ := nativeMutationFixture(t, "token-zero")
+	p, err := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)
+	if err != nil || *calls != 1 || p["phase_states"].(map[string]any)["mutation"] != "complete" {
+		t.Fatal(p, err, *calls)
+	}
+	checkMutationBudgetSnapshot(t, s, p)
+}
+func TestNativeMutationTokenCapacityNegative(t *testing.T) {
+	s, r, client, calls, clean := nativeMutationFixture(t, "token-small")
+	p, err := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)
+	if err == nil || err.Error() != "INPUT_CAPACITY_EXCEEDED" || *calls != 0 || p["canonical_asset_id"] != clean["canonical_asset_id"] || p["mutated_asset_id"] != nil {
+		t.Fatal(p, err, *calls)
+	}
+}
+func TestNativeMutationUnknownCapacityNegative(t *testing.T) {
+	s, r, client, calls, clean := nativeMutationFixture(t, "token-unknown")
+	p, err := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)
+	if err == nil || err.Error() != "INPUT_CAPACITY_EXCEEDED" || *calls != 0 || p["canonical_asset_id"] != clean["canonical_asset_id"] || p["mutated_asset_id"] != nil {
+		t.Fatal(p, err, *calls)
 	}
 }

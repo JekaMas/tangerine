@@ -209,3 +209,31 @@ The application SHALL persist valid automatic or explicit-zero authored keys thr
 
 - **WHEN** the second distinct literal positive or negative packet is executed
 - **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+### Requirement: I6-16 Known-model offline context counting
+
+The provider layer SHALL count known local gpt-oss serialized text with the offline ordinary o200k counter and retain literal Unicode/special-spelling reference counts. Unknown model/provider pairs SHALL retain the conservative UTF-8 bound without guessed mappings or runtime vocabulary downloads. Exact constructed fixtures and independent expected states are retained in audit/iteration-6-review-20261020/CASES.json. These tests SHALL NOT establish hosted account admission, actual LLM linguistic quality or future mutation/audio/scoring completion.
+
+#### Scenario: I6-16 packet 1
+
+- **WHEN** the first literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+#### Scenario: I6-16 packet 2
+
+- **WHEN** the second distinct literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+### Requirement: I6-17 Final-wire mutation capacity and truthful snapshots
+
+The shared inference owner SHALL measure final provider wire once per new attempt, reserve at least configured output tokens and record actual tokenizer/count/budget. Full requested family context and explicit-zero generation SHALL fit a documented adequate model; insufficient or unknown-model conservative capacity SHALL dispatch zero mutation calls and retain the canonical checkpoint. No required content SHALL be truncated. Exact constructed fixtures and independent expected states are retained in audit/iteration-6-review-20261020/CASES.json. These tests SHALL NOT establish hosted account admission, actual LLM linguistic quality or future mutation/audio/scoring completion.
+
+#### Scenario: I6-17 packet 1
+
+- **WHEN** the first literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+#### Scenario: I6-17 packet 2
+
+- **WHEN** the second distinct literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold

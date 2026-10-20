@@ -218,10 +218,10 @@ type Prepared struct {
 	BudgetUsed   int               `json:"input_budget_used"`
 }
 
-// Prepare retains the complete typed DTO. The provider adapter in iteration4
-// freezes its final role/default projection separately at dispatch.
-func Prepare(b Bundle, stage string, phase *string, input map[string]any, components map[string]any, budget, reserved int) (Prepared, error) {
-	p := Prepared{Omitted: map[string]string{}, BudgetMethod: "conservative_bytes"}
+// BuildContext retains the complete typed DTO. Capacity belongs to the provider
+// adapter, which knows the model and the final serialized request.
+func BuildContext(b Bundle, stage string, phase *string, input map[string]any, components map[string]any) (Prepared, error) {
+	p := Prepared{Omitted: map[string]string{}}
 	var binding *Binding
 	for i := range b.Bindings {
 		if Pair(b.Bindings[i].Stage, b.Bindings[i].Phase) == Pair(stage, phase) {
@@ -300,14 +300,25 @@ func Prepare(b Bundle, stage string, phase *string, input map[string]any, compon
 	if e != nil {
 		return p, e
 	}
-	p.BudgetUsed = len(p.Wire)
-	if budget <= reserved || p.BudgetUsed > budget-reserved {
-		return p, errors.New("required context exceeds conservative byte budget; input retained")
-	}
 	p.BundleSHA = b.SHA
 	p.BindingSHA = Hash(binding)
 	p.InputSHA = contracts.Digest(raw)
 	p.WireSHA = contracts.Digest(p.Wire)
+	return p, nil
+}
+
+// Prepare provides the conservative bound for standalone Lab context previews.
+// Runtime dispatch measures the final provider wire instead of this intermediate DTO.
+func Prepare(b Bundle, stage string, phase *string, input map[string]any, components map[string]any, budget, reserved int) (Prepared, error) {
+	p, err := BuildContext(b, stage, phase, input, components)
+	if err != nil {
+		return p, err
+	}
+	p.BudgetMethod = "conservative_bytes"
+	p.BudgetUsed = len(p.Wire)
+	if budget <= reserved || p.BudgetUsed > budget-reserved {
+		return p, errors.New("required context exceeds conservative byte budget; input retained")
+	}
 	return p, nil
 }
 

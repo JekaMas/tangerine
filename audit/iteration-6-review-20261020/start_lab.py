@@ -1,7 +1,7 @@
 """Start an owned local MLflow observer with the exact native binary; no inference."""
 from pathlib import Path
 import json,os,subprocess,time,uuid
-R=Path(__file__).resolve().parents[2];root=R/'data/iteration6-review-20261020/observer';root.mkdir(parents=True,exist_ok=True);name='tangerine-i6-observer-'+uuid.uuid4().hex[:8]
+R=Path(__file__).resolve().parents[2];name='tangerine-i6-observer-'+uuid.uuid4().hex[:8];root=R/'data/iteration6-review-20261020'/name;root.mkdir(parents=True,exist_ok=True)
 def call(args,check=True):
  p=subprocess.run(args,cwd=R,env=os.environ,capture_output=True,text=True,timeout=180)
  if check and p.returncode:raise RuntimeError('Observer command failed: '+p.stderr[-2000:])
@@ -19,6 +19,6 @@ try:
   if call(['docker','exec',name,'python','-c',"import urllib.request;urllib.request.urlopen('http://127.0.0.1:5000/health',timeout=2)"],False).returncode==0:break
   time.sleep(1)
  else:raise RuntimeError('Owned observer did not become ready')
- receipt={'container':name,'network':network,'image':image,'data':str(root.relative_to(R)),'provider_calls':0};(root/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n');print(json.dumps(receipt))
+ receipt={'candidate':subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip(),'container':name,'network':network,'image':image,'data':str(root.relative_to(R)),'provider_calls':0};(root/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n');print(json.dumps(receipt))
 except BaseException:
  call(['docker','rm','-f',name],False);call(['docker','network','rm',network],False);raise

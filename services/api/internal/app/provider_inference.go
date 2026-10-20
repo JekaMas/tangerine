@@ -65,7 +65,7 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 	if e != nil {
 		return result, e
 	}
-	prepared, e := lab.Prepare(request.Bundle, request.Stage, request.Phase, request.Input, request.Components, p.ContextBudget, 4096)
+	prepared, e := lab.BuildContext(request.Bundle, request.Stage, request.Phase, request.Input, request.Components)
 	if e != nil {
 		return result, e
 	}
@@ -172,15 +172,29 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 			components = append(components, map[string]any{"kind": kind, "trust": "input_data", "asset_id": nil, "asset_sha256": nil, "included": false, "reason": reason, "byte_count": nil, "token_count": nil})
 		}
 	}
+	counter, e := provider.NewContextCounter(p)
+	if e != nil {
+		return result, e
+	}
+	reserved := 4096
+	if p.MaxOutput != nil && *p.MaxOutput > reserved {
+		reserved = *p.MaxOutput
+	}
+	inputUsage := map[int]int{}
 	trace := traceID(16)
 	requestAssets := map[int]Asset{}
 	er := provider.ExecuteRequest{Profile: p, Instructions: strings.Join(instructions, "\n"), Input: input, OutputKind: strings.TrimSuffix(binding.OutputSchema, ".schema.json"), Timeout: stageTimeout(request.Stage, request.Phase), Validate: request.Validate}
 	// JSON-schema capability is opt-in for profiles with tested provider support;
 	// plain JSON still receives the same complete output contract in instructions.
 	er.Before = func(ctx context.Context, a provider.Attempt) error {
-		if len(a.Wire) > p.ContextBudget-4096 {
+		used, err := counter.Count(a.Wire)
+		if err != nil {
+			return err
+		}
+		if reserved >= p.ContextBudget || used > p.ContextBudget-reserved {
 			return &provider.Failure{Code: "INPUT_CAPACITY_EXCEEDED"}
 		}
+		inputUsage[a.Index] = used
 		asset, e := s.Store.saveProviderBytes(ctx, a.Wire, "provider_input")
 		if e == nil {
 			requestAssets[a.Index] = asset
@@ -222,7 +236,7 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 				attemptComponents = append(attemptComponents, map[string]any{"kind": part.Kind, "trust": part.Trust, "asset_id": asset.ID, "asset_sha256": asset.SHA, "included": true, "reason": nil, "byte_count": len(part.Body), "token_count": nil})
 			}
 		}
-		snapshot := map[string]any{"schema_version": "2.0.0", "id": snapshotID, "operation_id": op.ID, "stage": request.Stage, "phase": request.Phase, "bundle_sha256": request.Bundle.SHA, "binding_sha256": effective["binding_sha256"], "input_sha256": prepared.InputSHA, "components": attemptComponents, "tokenizer": nil, "budget_method": "conservative_utf8_bytes", "context_budget_tokens": p.ContextBudget, "reserved_output_tokens": 4096, "input_budget_used": len(a.Wire), "rendered_request_asset_id": req.ID, "receipt_id": receiptID, "trace_id": trace, "span_id": span, "created_at": a.Response.Finished.Format(time.RFC3339Nano)}
+		snapshot := map[string]any{"schema_version": "2.0.0", "id": snapshotID, "operation_id": op.ID, "stage": request.Stage, "phase": request.Phase, "bundle_sha256": request.Bundle.SHA, "binding_sha256": effective["binding_sha256"], "input_sha256": prepared.InputSHA, "components": attemptComponents, "tokenizer": counter.Tokenizer, "budget_method": counter.Method, "context_budget_tokens": p.ContextBudget, "reserved_output_tokens": reserved, "input_budget_used": inputUsage[a.Index], "rendered_request_asset_id": req.ID, "receipt_id": receiptID, "trace_id": trace, "span_id": span, "created_at": a.Response.Finished.Format(time.RFC3339Nano)}
 		rb, _ := lab.Canonical(receipt)
 		sb, _ := lab.Canonical(snapshot)
 		rw := DocumentWrite{ID: receiptID, Kind: "provider-receipt", Version: "2.0.0", Scope: "local", Payload: rb}

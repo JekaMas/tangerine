@@ -564,7 +564,7 @@ Verification acceptance: be7b603e6a595b9276dd8f28b1e589b2e111c170 is the committ
 
 ### Iteration 6 code review and repair — 2026-10-20
 
-- [ ] Repair demonstrated family coverage, automatic-empty-key, conflicting/narrowed exact-target selection and copied-event count defects; retain explicit zero controls and all supported acoustic intents.
+- [ ] Repair demonstrated family coverage, automatic-empty-key, conflicting/narrowed exact-target selection, copied-event count and model context-budget defects; retain explicit zero controls and all supported acoustic intents.
 - [ ] Keep mutation layers cohesive: Server owns orchestration/context/dispatch, Storage owns SQL/result lifecycle, and pure selection/admission/manifest files own their respective transformations. Preserve one output admission and trusted reuse.
 - [ ] Add literal positive/negative regression sets and wire all new properties into the existing DAG, fixture sets, discovery and actual AI-surface inventory; correct the inconsistent acoustic test fixture's requested family.
 - [ ] Complete a committed-clean full iteration6 selection with affected preparation/provider/Lab cases, actual local model/native/context/MLflow reconciliation, language/specification/preservation checks; commit the repaired result and final review evidence.

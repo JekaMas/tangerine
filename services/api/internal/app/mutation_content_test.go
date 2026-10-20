@@ -522,3 +522,45 @@ func TestMutationCopiedOptionNegative(t *testing.T) {
 		t.Fatal("Renaming a correction option created a second event")
 	}
 }
+
+// Literal independent token counts come from OpenAI tiktoken 0.12.0
+// encode_ordinary for both o200k_base and o200k_harmony, retained in the audit.
+func TestMutationTokenReferencePositive(t *testing.T) {
+	counter, err := provider.NewContextCounter(provider.Profile{Provider: "local_responses", Model: "gpt-oss:20b"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for text, want := range map[string]int{"hello world": 2, "🙂": 1, "The café opens tomorrow.": 5, "お誕生日おめでとう": 8} {
+		n, err := counter.Count([]byte(text))
+		if err != nil || n != want {
+			t.Fatal(text, n, want, err)
+		}
+	}
+	if counter.Method != "tokenizer" || counter.Tokenizer == nil {
+		t.Fatal(counter)
+	}
+}
+func TestMutationTokenLiteralPositive(t *testing.T) {
+	counter, err := provider.NewContextCounter(provider.Profile{Provider: "local_responses", Model: "gpt-oss:120b"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	n, err := counter.Count([]byte("<|start|>user<|message|>hello<|end|>"))
+	if err != nil || n != 17 {
+		t.Fatal(n, err)
+	}
+}
+func TestMutationUnknownTokenizerNegative(t *testing.T) {
+	counter, err := provider.NewContextCounter(provider.Profile{Provider: "local_responses", Model: "unknown"})
+	n, countErr := counter.Count([]byte("🙂"))
+	if err != nil || countErr != nil || n != 4 || counter.Method != "conservative_utf8_bytes" || counter.Tokenizer != nil {
+		t.Fatal(counter, n, err, countErr)
+	}
+}
+func TestMutationWrongProviderTokenizerNegative(t *testing.T) {
+	counter, err := provider.NewContextCounter(provider.Profile{Provider: "openai", Model: "gpt-oss:20b"})
+	n, countErr := counter.Count([]byte("The café opens tomorrow."))
+	if err != nil || countErr != nil || n != 25 || counter.Method != "conservative_utf8_bytes" || counter.Tokenizer != nil {
+		t.Fatal(counter, n, err, countErr)
+	}
+}
