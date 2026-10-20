@@ -615,19 +615,21 @@ Iteration8 acceptance: source e5a9c51;108/108 I8 and696/696 implemented I1–I8 
 
 ## Iteration 9 — Listening and answer persistence (2026-10-20)
 
-- [ ] I9.1 Publish immutable playable case versions and safe Library selection through the existing render finalizer.
-- [ ] I9.2 Freeze attempt case/audio, task/policies, configuration, prompt bundle and effective evaluator bindings before answer entry.
-- [ ] I9.3 Save exact Unicode drafts and submission with atomic revision/idempotency replay and durable history; no inference before answer commit.
-- [ ] I9.4 Persist validated descriptive playback events, stream frozen audio and retain safe pre-submit projections without private key/context leakage.
-- [ ] I9.5 Implement Library/listening/history browser flows with explicit save/submit, reload and dependency/conflict recovery preserving input.
-- [ ] I9.6 Materialize positive/negative fixtures, sequence/concurrency tests and real DB/media/browser evidence, wire exact cases to the DAG, review and repair in scope.
-- [ ] I9.7 Complete language/build/specification/preservation checks, committed-clean complete iteration run, acceptance reconciliation and commits.
+- [x] I9.1 Publish immutable playable case versions and safe Library selection through the existing render finalizer.
+- [x] I9.2 Freeze attempt case/audio, task/policies, configuration, prompt bundle and effective evaluator bindings before answer entry.
+- [x] I9.3 Save exact Unicode drafts and submission with atomic revision/idempotency replay and durable history; no inference before answer commit.
+- [x] I9.4 Persist validated descriptive playback events, stream frozen audio and retain safe pre-submit projections without private key/context leakage.
+- [x] I9.5 Implement Library/listening/history browser flows with explicit save/submit, reload and dependency/conflict recovery preserving input.
+- [x] I9.6 Materialize positive/negative fixtures, sequence/concurrency tests and real DB/media/browser evidence, wire exact cases to the DAG, review and repair in scope.
+- [x] I9.7 Complete language/build/specification/preservation checks, committed-clean complete iteration run, acceptance reconciliation and commits.
 
 Current anchors and proof scope: audit/iteration-9-listening-20261020/PLAN.md. LLM answer interpretation/scoring are later iterations, not simulated completion. The separate iteration8 review has three open controller defects; iteration9 does not close or recertify them. Preserve canonical unrelated GAPS.md and all original category/formula/source data.
 
-- [ ] I9.8 Keep unselected optional audit/feedback/adjudication profiles from blocking ordinary attempt entry; preserve their frozen metadata and the configured core-checking/access-policy prerequisite, with native red/green regression.
+- [x] I9.8 Keep unselected optional audit/feedback/adjudication profiles from blocking ordinary attempt entry; preserve their frozen metadata and the configured core-checking/access-policy prerequisite, with native red/green regression.
 
-- [ ] I9.9 Retain unique playback reports arriving out of client-ordinal order, while deduplicating equal reports and rejecting conflicting duplicate payloads; preserve descriptive event data without an arrival-order gate.
+- [x] I9.9 Retain unique playback reports arriving out of client-ordinal order, while deduplicating equal reports and rejecting conflicting duplicate payloads; preserve descriptive event data without an arrival-order gate.
+
+Iteration9 completion:48/48 current cases across12properties (24positive/24negative) passed the full committed-clean selection on `5f0b2d2d2b2fe845fa77800d82effdebddcece7f`. Five unchanged render dependencies retain their clean526ee75 receipt and exact original proof boundary. Language/build, strict OpenSpec, graph/discovery,4,220 static assertions and preservation checks passed with their actual source inputs. See audit/iteration-9-listening-20261020/REPORT.md. No later semantic/scoring or iteration8-wide acceptance is claimed.
 
 ### Reopened predecessor findings from the iteration8 verification
 
