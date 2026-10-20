@@ -269,3 +269,42 @@ func TestInterpretationNoOptionCreditNegative(t *testing.T) {
 		t.Fatal(got, issues, e)
 	}
 }
+
+func TestInterpretationContextAssertionPositive(t *testing.T) {
+	answer := "The verb open is wrong. Change it to opening."
+	_, c, k, tax, m := rejectionFixture()
+	claim := &c.Claims[0]
+	claim.Span = AnswerSpan{0, 45, answer}
+	claim.Corrections = []AnswerSpan{{37, 44, "opening"}}
+	claim.Explanations = []AnswerSpan{}
+	m.Decisions[0].Explanation = semanticEmpty()
+	m.Decisions[0].Correction.Additional = []ComponentAssertion{{AnswerSpan: AnswerSpan{0, 45, answer}, Judgment: "unsupported", Reason: "Opening does not repair the finite singular verb."}}
+	got, issues, err := admitMappingFixture(answer, c, k, tax, m)
+	if err != nil || len(issues) != 0 || got.Decisions[0].Correction.Status != "rejected" || got.Decisions[0].Correction.Additional[0].AnswerSpan != (AnswerSpan{37, 44, "opening"}) {
+		t.Fatal(got, issues, err)
+	}
+}
+func TestInterpretationCrossComponentContextNegative(t *testing.T) {
+	answer, c, k, tax, m := interpretationMappingFixture()
+	m.Decisions[0].Correction.Additional = []ComponentAssertion{{AnswerSpan: AnswerSpan{0, len([]rune(answer)), answer}, Judgment: "unsupported", Reason: "This quote includes both components."}}
+	if _, _, err := admitMappingFixture(answer, c, k, tax, m); err == nil {
+		t.Fatal("borrowed rationale through a broad correction quote")
+	}
+}
+func TestInterpretationRepresentedReasonPositive(t *testing.T) {
+	answer, c, k, tax, m := interpretationMappingFixture()
+	m.Decisions[0].Explanation.Additional = []ComponentAssertion{}
+	m.Decisions[0].Explanation.Satisfied = []string{"reason1"}
+	got, issues, err := admitMappingFixture(answer, c, k, tax, m)
+	if err != nil || len(issues) != 0 || got.Decisions[0].Explanation.Status != "accepted" {
+		t.Fatal(got, issues, err)
+	}
+}
+func TestInterpretationUnrepresentedReasonNegative(t *testing.T) {
+	answer, c, k, tax, m := interpretationMappingFixture()
+	m.Decisions[0].Explanation.Additional = []ComponentAssertion{}
+	m.Decisions[0].Explanation.Status = "rejected"
+	if _, _, err := admitMappingFixture(answer, c, k, tax, m); err == nil {
+		t.Fatal("supplied reason was never assessed")
+	}
+}

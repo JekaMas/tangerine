@@ -50567,6 +50567,36 @@
       }
     },
     {
+      "id": "iteration10-I10-02-packet3",
+      "action": "Execute TestInterpretationWholeWordPositive through services/api/internal/app/interpretation_claims.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": false
+      },
+      "independent_oracle": "The application SHALL recover uniquely supported Unicode/UTF16 source coordinates, preserve actual backwards retractions and source attachments, and refuse ambiguous repeated quotes or forward retractions without inventing text. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior.",
+      "origin": "Constructed listening persistence fixture with literal independent expectations",
+      "positive": {
+        "input": {
+          "exact_native_test": "TestInterpretationWholeWordPositive",
+          "literal_executable_fixture": "func TestInterpretationWholeWordPositive(t *testing.T) {\n\tanswer := \"The verb open should be opens.\"\n\ttarget := AnswerSpan{13, 18, \"open\"}\n\tx, err := normalizeExtraction(answer, \"answer-sha\", extractionPacket([]ExtractedClause{{LocalRef: \"c0\", Span: AnswerSpan{0, 30, answer}, Stance: \"assert_error\", Target: &target}}, nil))\n\tif err != nil || len(x.Claims) != 1 || *x.Claims[0].Target != (AnswerSpan{9, 13, \"open\"}) {\n\t\tt.Fatal(x, err)\n\t}\n}\n"
+        },
+        "expected": {
+          "independent_literal_assertions": "func TestInterpretationWholeWordPositive(t *testing.T) {\n\tanswer := \"The verb open should be opens.\"\n\ttarget := AnswerSpan{13, 18, \"open\"}\n\tx, err := normalizeExtraction(answer, \"answer-sha\", extractionPacket([]ExtractedClause{{LocalRef: \"c0\", Span: AnswerSpan{0, 30, answer}, Stance: \"assert_error\", Target: &target}}, nil))\n\tif err != nil || len(x.Claims) != 1 || *x.Claims[0].Target != (AnswerSpan{9, 13, \"open\"}) {\n\t\tt.Fatal(x, err)\n\t}\n}\n",
+          "oracle": "The application SHALL recover uniquely supported Unicode/UTF16 source coordinates, preserve actual backwards retractions and source attachments, and refuse ambiguous repeated quotes or forward retractions without inventing text. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
+        }
+      },
+      "negative": {
+        "input": {
+          "exact_native_test": "TestInterpretationRepeatedWordNegative",
+          "literal_executable_fixture": "func TestInterpretationRepeatedWordNegative(t *testing.T) {\n\tfor _, answer := range []string{\"open opens open\", \"go go\", \"\u6253\u5f00 \u6253\u5f00\"} {\n\t\tspan := AnswerSpan{90, 95, \"open\"}\n\t\tif answer == \"go go\" {\n\t\t\tspan.Text = \"go\"\n\t\t} else if answer == \"\u6253\u5f00 \u6253\u5f00\" {\n\t\t\tspan.Text = \"\u6253\u5f00\"\n\t\t}\n\t\tif err := normalizeAnswerSpan(answer, &span); err == nil {\n\t\t\tt.Fatal(\"guessed repeated complete word\", answer, span)\n\t\t}\n\t}\n}\n"
+        },
+        "expected": {
+          "independent_literal_assertions": "func TestInterpretationRepeatedWordNegative(t *testing.T) {\n\tfor _, answer := range []string{\"open opens open\", \"go go\", \"\u6253\u5f00 \u6253\u5f00\"} {\n\t\tspan := AnswerSpan{90, 95, \"open\"}\n\t\tif answer == \"go go\" {\n\t\t\tspan.Text = \"go\"\n\t\t} else if answer == \"\u6253\u5f00 \u6253\u5f00\" {\n\t\t\tspan.Text = \"\u6253\u5f00\"\n\t\t}\n\t\tif err := normalizeAnswerSpan(answer, &span); err == nil {\n\t\t\tt.Fatal(\"guessed repeated complete word\", answer, span)\n\t\t}\n\t}\n}\n",
+          "oracle": "The application SHALL recover uniquely supported Unicode/UTF16 source coordinates, preserve actual backwards retractions and source attachments, and refuse ambiguous repeated quotes or forward retractions without inventing text. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
+        }
+      }
+    },
+    {
       "id": "iteration10-I10-03-packet1",
       "action": "Execute TestInterpretationSeparateExplanationPositive through services/api/internal/app/interpretation_mapping.go",
       "initial_state": {
@@ -50627,6 +50657,36 @@
       }
     },
     {
+      "id": "iteration10-I10-03-packet3",
+      "action": "Execute TestInterpretationContextAssertionPositive through services/api/internal/app/interpretation_mapping.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": false
+      },
+      "independent_oracle": "The application SHALL assess supplied correction and explanation independently, preserve supported repair/detection when a reason is false or absent, and refuse borrowed component quotes or decisions inconsistent with the frozen assertion and target truth. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior.",
+      "origin": "Constructed listening persistence fixture with literal independent expectations",
+      "positive": {
+        "input": {
+          "exact_native_test": "TestInterpretationContextAssertionPositive",
+          "literal_executable_fixture": "func TestInterpretationContextAssertionPositive(t *testing.T) {\n\tanswer := \"The verb open is wrong. Change it to opening.\"\n\t_, c, k, tax, m := rejectionFixture()\n\tclaim := &c.Claims[0]\n\tclaim.Span = AnswerSpan{0, 45, answer}\n\tclaim.Corrections = []AnswerSpan{{37, 44, \"opening\"}}\n\tclaim.Explanations = []AnswerSpan{}\n\tm.Decisions[0].Explanation = semanticEmpty()\n\tm.Decisions[0].Correction.Additional = []ComponentAssertion{{AnswerSpan: AnswerSpan{0, 45, answer}, Judgment: \"unsupported\", Reason: \"Opening does not repair the finite singular verb.\"}}\n\tgot, issues, err := admitMappingFixture(answer, c, k, tax, m)\n\tif err != nil || len(issues) != 0 || got.Decisions[0].Correction.Status != \"rejected\" || got.Decisions[0].Correction.Additional[0].AnswerSpan != (AnswerSpan{37, 44, \"opening\"}) {\n\t\tt.Fatal(got, issues, err)\n\t}\n}\n"
+        },
+        "expected": {
+          "independent_literal_assertions": "func TestInterpretationContextAssertionPositive(t *testing.T) {\n\tanswer := \"The verb open is wrong. Change it to opening.\"\n\t_, c, k, tax, m := rejectionFixture()\n\tclaim := &c.Claims[0]\n\tclaim.Span = AnswerSpan{0, 45, answer}\n\tclaim.Corrections = []AnswerSpan{{37, 44, \"opening\"}}\n\tclaim.Explanations = []AnswerSpan{}\n\tm.Decisions[0].Explanation = semanticEmpty()\n\tm.Decisions[0].Correction.Additional = []ComponentAssertion{{AnswerSpan: AnswerSpan{0, 45, answer}, Judgment: \"unsupported\", Reason: \"Opening does not repair the finite singular verb.\"}}\n\tgot, issues, err := admitMappingFixture(answer, c, k, tax, m)\n\tif err != nil || len(issues) != 0 || got.Decisions[0].Correction.Status != \"rejected\" || got.Decisions[0].Correction.Additional[0].AnswerSpan != (AnswerSpan{37, 44, \"opening\"}) {\n\t\tt.Fatal(got, issues, err)\n\t}\n}\n",
+          "oracle": "The application SHALL assess supplied correction and explanation independently, preserve supported repair/detection when a reason is false or absent, and refuse borrowed component quotes or decisions inconsistent with the frozen assertion and target truth. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
+        }
+      },
+      "negative": {
+        "input": {
+          "exact_native_test": "TestInterpretationCrossComponentContextNegative",
+          "literal_executable_fixture": "func TestInterpretationCrossComponentContextNegative(t *testing.T) {\n\tanswer, c, k, tax, m := interpretationMappingFixture()\n\tm.Decisions[0].Correction.Additional = []ComponentAssertion{{AnswerSpan: AnswerSpan{0, len([]rune(answer)), answer}, Judgment: \"unsupported\", Reason: \"This quote includes both components.\"}}\n\tif _, _, err := admitMappingFixture(answer, c, k, tax, m); err == nil {\n\t\tt.Fatal(\"borrowed rationale through a broad correction quote\")\n\t}\n}\n"
+        },
+        "expected": {
+          "independent_literal_assertions": "func TestInterpretationCrossComponentContextNegative(t *testing.T) {\n\tanswer, c, k, tax, m := interpretationMappingFixture()\n\tm.Decisions[0].Correction.Additional = []ComponentAssertion{{AnswerSpan: AnswerSpan{0, len([]rune(answer)), answer}, Judgment: \"unsupported\", Reason: \"This quote includes both components.\"}}\n\tif _, _, err := admitMappingFixture(answer, c, k, tax, m); err == nil {\n\t\tt.Fatal(\"borrowed rationale through a broad correction quote\")\n\t}\n}\n",
+          "oracle": "The application SHALL assess supplied correction and explanation independently, preserve supported repair/detection when a reason is false or absent, and refuse borrowed component quotes or decisions inconsistent with the frozen assertion and target truth. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
+        }
+      }
+    },
+    {
       "id": "iteration10-I10-04-packet1",
       "action": "Execute TestInterpretationUnknownExplanationPositive through services/api/internal/app/interpretation_mapping.go",
       "initial_state": {
@@ -50682,6 +50742,36 @@
         },
         "expected": {
           "independent_literal_assertions": "func TestInterpretationMissingDecisionNegative(t *testing.T) {\n\ta, c, k, tax, m := interpretationMappingFixture()\n\tm.Decisions = []SemanticDecision{}\n\tif _, _, e := admitMappingFixture(a, c, k, tax, m); e == nil {\n\t\tt.Fatal(\"claim omitted\")\n\t}\n}\n",
+          "oracle": "The application SHALL retain unknown optional reason findings without erasing supported components, preserve additional unknown assertions alongside decisive false claims, and require complete actual claim decisions and exact rubric references. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
+        }
+      }
+    },
+    {
+      "id": "iteration10-I10-04-packet3",
+      "action": "Execute TestInterpretationRepresentedReasonPositive through services/api/internal/app/interpretation_mapping.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": false
+      },
+      "independent_oracle": "The application SHALL retain unknown optional reason findings without erasing supported components, preserve additional unknown assertions alongside decisive false claims, and require complete actual claim decisions and exact rubric references. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior.",
+      "origin": "Constructed listening persistence fixture with literal independent expectations",
+      "positive": {
+        "input": {
+          "exact_native_test": "TestInterpretationRepresentedReasonPositive",
+          "literal_executable_fixture": "func TestInterpretationRepresentedReasonPositive(t *testing.T) {\n\tanswer, c, k, tax, m := interpretationMappingFixture()\n\tm.Decisions[0].Explanation.Additional = []ComponentAssertion{}\n\tm.Decisions[0].Explanation.Satisfied = []string{\"reason1\"}\n\tgot, issues, err := admitMappingFixture(answer, c, k, tax, m)\n\tif err != nil || len(issues) != 0 || got.Decisions[0].Explanation.Status != \"accepted\" {\n\t\tt.Fatal(got, issues, err)\n\t}\n}\n"
+        },
+        "expected": {
+          "independent_literal_assertions": "func TestInterpretationRepresentedReasonPositive(t *testing.T) {\n\tanswer, c, k, tax, m := interpretationMappingFixture()\n\tm.Decisions[0].Explanation.Additional = []ComponentAssertion{}\n\tm.Decisions[0].Explanation.Satisfied = []string{\"reason1\"}\n\tgot, issues, err := admitMappingFixture(answer, c, k, tax, m)\n\tif err != nil || len(issues) != 0 || got.Decisions[0].Explanation.Status != \"accepted\" {\n\t\tt.Fatal(got, issues, err)\n\t}\n}\n",
+          "oracle": "The application SHALL retain unknown optional reason findings without erasing supported components, preserve additional unknown assertions alongside decisive false claims, and require complete actual claim decisions and exact rubric references. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
+        }
+      },
+      "negative": {
+        "input": {
+          "exact_native_test": "TestInterpretationUnrepresentedReasonNegative",
+          "literal_executable_fixture": "func TestInterpretationUnrepresentedReasonNegative(t *testing.T) {\n\tanswer, c, k, tax, m := interpretationMappingFixture()\n\tm.Decisions[0].Explanation.Additional = []ComponentAssertion{}\n\tm.Decisions[0].Explanation.Status = \"rejected\"\n\tif _, _, err := admitMappingFixture(answer, c, k, tax, m); err == nil {\n\t\tt.Fatal(\"supplied reason was never assessed\")\n\t}\n}\n"
+        },
+        "expected": {
+          "independent_literal_assertions": "func TestInterpretationUnrepresentedReasonNegative(t *testing.T) {\n\tanswer, c, k, tax, m := interpretationMappingFixture()\n\tm.Decisions[0].Explanation.Additional = []ComponentAssertion{}\n\tm.Decisions[0].Explanation.Status = \"rejected\"\n\tif _, _, err := admitMappingFixture(answer, c, k, tax, m); err == nil {\n\t\tt.Fatal(\"supplied reason was never assessed\")\n\t}\n}\n",
           "oracle": "The application SHALL retain unknown optional reason findings without erasing supported components, preserve additional unknown assertions alongside decisive false claims, and require complete actual claim decisions and exact rubric references. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
         }
       }
@@ -51488,10 +51578,10 @@
       "negative": {
         "input": {
           "exact_native_test": "TestInterpretationConflictSelectionNegative",
-          "literal_executable_fixture": "func TestInterpretationConflictSelectionNegative(t *testing.T) {\n\tanswer, c, key, tax, m := interpretationMappingFixture()\n\tc.Conflicts = []string{c.Claims[0].ID}\n\traw, _ := json.Marshal(m)\n\tif _, _, e := normalizeMapping(answer, c, key, tax, nil, map[string]any{}, raw); e == nil {\n\t\tt.Fatal(\"conflicted meaning scored as certain\")\n\t}\n}\n"
+          "literal_executable_fixture": "func TestInterpretationConflictSelectionNegative(t *testing.T) {\n\tanswer, c, key, tax, m := interpretationMappingFixture()\n\tc.Conflicts = []string{c.Claims[0].ID}\n\traw, _ := json.Marshal(m)\n\tif _, _, e := normalizeMapping(answer, c, key, tax, nil, map[string]any{}, raw); e == nil {\n\t\tt.Fatal(\"conflicted meaning scored as certain\")\n\t}\n}\n\n"
         },
         "expected": {
-          "independent_literal_assertions": "func TestInterpretationConflictSelectionNegative(t *testing.T) {\n\tanswer, c, key, tax, m := interpretationMappingFixture()\n\tc.Conflicts = []string{c.Claims[0].ID}\n\traw, _ := json.Marshal(m)\n\tif _, _, e := normalizeMapping(answer, c, key, tax, nil, map[string]any{}, raw); e == nil {\n\t\tt.Fatal(\"conflicted meaning scored as certain\")\n\t}\n}\n",
+          "independent_literal_assertions": "func TestInterpretationConflictSelectionNegative(t *testing.T) {\n\tanswer, c, key, tax, m := interpretationMappingFixture()\n\tc.Conflicts = []string{c.Claims[0].ID}\n\traw, _ := json.Marshal(m)\n\tif _, _, e := normalizeMapping(answer, c, key, tax, nil, map[string]any{}, raw); e == nil {\n\t\tt.Fatal(\"conflicted meaning scored as certain\")\n\t}\n}\n\n",
           "oracle": "The application SHALL retain competing identical-span interpretations without overwriting either or scoring one as certain, admit only declared contained source attachments, and reject undeclared overlaps through the existing output repair. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
         }
       }
@@ -51668,10 +51758,10 @@
       "negative": {
         "input": {
           "exact_native_test": "TestInterpretationNoOptionCreditNegative",
-          "literal_executable_fixture": "func TestInterpretationNoOptionCreditNegative(t *testing.T) {\n\ta, c, k, tax, m := rejectionFixture()\n\tm.Decisions[0].Correction.Status = \"accepted\"\n\tgot, issues, e := admitMappingFixture(a, c, k, tax, m)\n\tif e != nil || got.Decisions[0].Correction.Status != \"unresolved\" || len(issues) != 1 {\n\t\tt.Fatal(got, issues, e)\n\t}\n}\n"
+          "literal_executable_fixture": "func TestInterpretationNoOptionCreditNegative(t *testing.T) {\n\ta, c, k, tax, m := rejectionFixture()\n\tm.Decisions[0].Correction.Status = \"accepted\"\n\tgot, issues, e := admitMappingFixture(a, c, k, tax, m)\n\tif e != nil || got.Decisions[0].Correction.Status != \"unresolved\" || len(issues) != 1 {\n\t\tt.Fatal(got, issues, e)\n\t}\n}\n\n"
         },
         "expected": {
-          "independent_literal_assertions": "func TestInterpretationNoOptionCreditNegative(t *testing.T) {\n\ta, c, k, tax, m := rejectionFixture()\n\tm.Decisions[0].Correction.Status = \"accepted\"\n\tgot, issues, e := admitMappingFixture(a, c, k, tax, m)\n\tif e != nil || got.Decisions[0].Correction.Status != \"unresolved\" || len(issues) != 1 {\n\t\tt.Fatal(got, issues, e)\n\t}\n}\n",
+          "independent_literal_assertions": "func TestInterpretationNoOptionCreditNegative(t *testing.T) {\n\ta, c, k, tax, m := rejectionFixture()\n\tm.Decisions[0].Correction.Status = \"accepted\"\n\tgot, issues, e := admitMappingFixture(a, c, k, tax, m)\n\tif e != nil || got.Decisions[0].Correction.Status != \"unresolved\" || len(issues) != 1 {\n\t\tt.Fatal(got, issues, e)\n\t}\n}\n\n",
           "oracle": "The application SHALL preserve a definite LLM rejection of a supplied correction even when no valid repair option matches, retain additional unknown findings, and give no positive credit without a valid rubric or turn explicit uncertainty into a resolved rejection. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
         }
       }
@@ -58386,7 +58476,8 @@
       "independent_oracle": "The application SHALL recover uniquely supported Unicode/UTF16 source coordinates, preserve actual backwards retractions and source attachments, and refuse ambiguous repeated quotes or forward retractions without inventing text. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior.",
       "scenarios": [
         "I10-02 packet 1",
-        "I10-02 packet 2"
+        "I10-02 packet 2",
+        "I10-02 packet 3"
       ],
       "observation_state": "not_run"
     },
@@ -58397,7 +58488,8 @@
       "independent_oracle": "The application SHALL assess supplied correction and explanation independently, preserve supported repair/detection when a reason is false or absent, and refuse borrowed component quotes or decisions inconsistent with the frozen assertion and target truth. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior.",
       "scenarios": [
         "I10-03 packet 1",
-        "I10-03 packet 2"
+        "I10-03 packet 2",
+        "I10-03 packet 3"
       ],
       "observation_state": "not_run"
     },
@@ -58408,7 +58500,8 @@
       "independent_oracle": "The application SHALL retain unknown optional reason findings without erasing supported components, preserve additional unknown assertions alongside decisive false claims, and require complete actual claim decisions and exact rubric references. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior.",
       "scenarios": [
         "I10-04 packet 1",
-        "I10-04 packet 2"
+        "I10-04 packet 2",
+        "I10-04 packet 3"
       ],
       "observation_state": "not_run"
     },
@@ -162577,6 +162670,54 @@
       "observation_state": "not_run"
     },
     {
+      "case_id": "I10-02.P1.S3.POSITIVE",
+      "property_id": "I10-02.P1",
+      "polarity": "positive",
+      "scenario": "I10-02 packet 3",
+      "fixture_id": "iteration10-I10-02-packet3",
+      "test_id": "tangerine.local/api/internal/app::TestInterpretationWholeWordPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestInterpretationWholeWordPositive through services/api/internal/app/interpretation_claims.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": false
+      },
+      "input": {
+        "exact_native_test": "TestInterpretationWholeWordPositive",
+        "literal_executable_fixture": "func TestInterpretationWholeWordPositive(t *testing.T) {\n\tanswer := \"The verb open should be opens.\"\n\ttarget := AnswerSpan{13, 18, \"open\"}\n\tx, err := normalizeExtraction(answer, \"answer-sha\", extractionPacket([]ExtractedClause{{LocalRef: \"c0\", Span: AnswerSpan{0, 30, answer}, Stance: \"assert_error\", Target: &target}}, nil))\n\tif err != nil || len(x.Claims) != 1 || *x.Claims[0].Target != (AnswerSpan{9, 13, \"open\"}) {\n\t\tt.Fatal(x, err)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestInterpretationWholeWordPositive(t *testing.T) {\n\tanswer := \"The verb open should be opens.\"\n\ttarget := AnswerSpan{13, 18, \"open\"}\n\tx, err := normalizeExtraction(answer, \"answer-sha\", extractionPacket([]ExtractedClause{{LocalRef: \"c0\", Span: AnswerSpan{0, 30, answer}, Stance: \"assert_error\", Target: &target}}, nil))\n\tif err != nil || len(x.Claims) != 1 || *x.Claims[0].Target != (AnswerSpan{9, 13, \"open\"}) {\n\t\tt.Fatal(x, err)\n\t}\n}\n",
+        "oracle": "The application SHALL recover uniquely supported Unicode/UTF16 source coordinates, preserve actual backwards retractions and source attachments, and refuse ambiguous repeated quotes or forward retractions without inventing text. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
+      },
+      "independent_oracle": "The application SHALL recover uniquely supported Unicode/UTF16 source coordinates, preserve actual backwards retractions and source attachments, and refuse ambiguous repeated quotes or forward retractions without inventing text. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I10-02.P1.S3.NEGATIVE",
+      "property_id": "I10-02.P1",
+      "polarity": "negative",
+      "scenario": "I10-02 packet 3",
+      "fixture_id": "iteration10-I10-02-packet3",
+      "test_id": "tangerine.local/api/internal/app::TestInterpretationRepeatedWordNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestInterpretationRepeatedWordNegative through services/api/internal/app/interpretation_claims.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": false
+      },
+      "input": {
+        "exact_native_test": "TestInterpretationRepeatedWordNegative",
+        "literal_executable_fixture": "func TestInterpretationRepeatedWordNegative(t *testing.T) {\n\tfor _, answer := range []string{\"open opens open\", \"go go\", \"\u6253\u5f00 \u6253\u5f00\"} {\n\t\tspan := AnswerSpan{90, 95, \"open\"}\n\t\tif answer == \"go go\" {\n\t\t\tspan.Text = \"go\"\n\t\t} else if answer == \"\u6253\u5f00 \u6253\u5f00\" {\n\t\t\tspan.Text = \"\u6253\u5f00\"\n\t\t}\n\t\tif err := normalizeAnswerSpan(answer, &span); err == nil {\n\t\t\tt.Fatal(\"guessed repeated complete word\", answer, span)\n\t\t}\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestInterpretationRepeatedWordNegative(t *testing.T) {\n\tfor _, answer := range []string{\"open opens open\", \"go go\", \"\u6253\u5f00 \u6253\u5f00\"} {\n\t\tspan := AnswerSpan{90, 95, \"open\"}\n\t\tif answer == \"go go\" {\n\t\t\tspan.Text = \"go\"\n\t\t} else if answer == \"\u6253\u5f00 \u6253\u5f00\" {\n\t\t\tspan.Text = \"\u6253\u5f00\"\n\t\t}\n\t\tif err := normalizeAnswerSpan(answer, &span); err == nil {\n\t\t\tt.Fatal(\"guessed repeated complete word\", answer, span)\n\t\t}\n\t}\n}\n",
+        "oracle": "The application SHALL recover uniquely supported Unicode/UTF16 source coordinates, preserve actual backwards retractions and source attachments, and refuse ambiguous repeated quotes or forward retractions without inventing text. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
+      },
+      "independent_oracle": "The application SHALL recover uniquely supported Unicode/UTF16 source coordinates, preserve actual backwards retractions and source attachments, and refuse ambiguous repeated quotes or forward retractions without inventing text. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior.",
+      "observation_state": "not_run"
+    },
+    {
       "case_id": "I10-03.P1.S1.POSITIVE",
       "property_id": "I10-03.P1",
       "polarity": "positive",
@@ -162673,6 +162814,54 @@
       "observation_state": "not_run"
     },
     {
+      "case_id": "I10-03.P1.S3.POSITIVE",
+      "property_id": "I10-03.P1",
+      "polarity": "positive",
+      "scenario": "I10-03 packet 3",
+      "fixture_id": "iteration10-I10-03-packet3",
+      "test_id": "tangerine.local/api/internal/app::TestInterpretationContextAssertionPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestInterpretationContextAssertionPositive through services/api/internal/app/interpretation_mapping.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": false
+      },
+      "input": {
+        "exact_native_test": "TestInterpretationContextAssertionPositive",
+        "literal_executable_fixture": "func TestInterpretationContextAssertionPositive(t *testing.T) {\n\tanswer := \"The verb open is wrong. Change it to opening.\"\n\t_, c, k, tax, m := rejectionFixture()\n\tclaim := &c.Claims[0]\n\tclaim.Span = AnswerSpan{0, 45, answer}\n\tclaim.Corrections = []AnswerSpan{{37, 44, \"opening\"}}\n\tclaim.Explanations = []AnswerSpan{}\n\tm.Decisions[0].Explanation = semanticEmpty()\n\tm.Decisions[0].Correction.Additional = []ComponentAssertion{{AnswerSpan: AnswerSpan{0, 45, answer}, Judgment: \"unsupported\", Reason: \"Opening does not repair the finite singular verb.\"}}\n\tgot, issues, err := admitMappingFixture(answer, c, k, tax, m)\n\tif err != nil || len(issues) != 0 || got.Decisions[0].Correction.Status != \"rejected\" || got.Decisions[0].Correction.Additional[0].AnswerSpan != (AnswerSpan{37, 44, \"opening\"}) {\n\t\tt.Fatal(got, issues, err)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestInterpretationContextAssertionPositive(t *testing.T) {\n\tanswer := \"The verb open is wrong. Change it to opening.\"\n\t_, c, k, tax, m := rejectionFixture()\n\tclaim := &c.Claims[0]\n\tclaim.Span = AnswerSpan{0, 45, answer}\n\tclaim.Corrections = []AnswerSpan{{37, 44, \"opening\"}}\n\tclaim.Explanations = []AnswerSpan{}\n\tm.Decisions[0].Explanation = semanticEmpty()\n\tm.Decisions[0].Correction.Additional = []ComponentAssertion{{AnswerSpan: AnswerSpan{0, 45, answer}, Judgment: \"unsupported\", Reason: \"Opening does not repair the finite singular verb.\"}}\n\tgot, issues, err := admitMappingFixture(answer, c, k, tax, m)\n\tif err != nil || len(issues) != 0 || got.Decisions[0].Correction.Status != \"rejected\" || got.Decisions[0].Correction.Additional[0].AnswerSpan != (AnswerSpan{37, 44, \"opening\"}) {\n\t\tt.Fatal(got, issues, err)\n\t}\n}\n",
+        "oracle": "The application SHALL assess supplied correction and explanation independently, preserve supported repair/detection when a reason is false or absent, and refuse borrowed component quotes or decisions inconsistent with the frozen assertion and target truth. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
+      },
+      "independent_oracle": "The application SHALL assess supplied correction and explanation independently, preserve supported repair/detection when a reason is false or absent, and refuse borrowed component quotes or decisions inconsistent with the frozen assertion and target truth. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I10-03.P1.S3.NEGATIVE",
+      "property_id": "I10-03.P1",
+      "polarity": "negative",
+      "scenario": "I10-03 packet 3",
+      "fixture_id": "iteration10-I10-03-packet3",
+      "test_id": "tangerine.local/api/internal/app::TestInterpretationCrossComponentContextNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestInterpretationCrossComponentContextNegative through services/api/internal/app/interpretation_mapping.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": false
+      },
+      "input": {
+        "exact_native_test": "TestInterpretationCrossComponentContextNegative",
+        "literal_executable_fixture": "func TestInterpretationCrossComponentContextNegative(t *testing.T) {\n\tanswer, c, k, tax, m := interpretationMappingFixture()\n\tm.Decisions[0].Correction.Additional = []ComponentAssertion{{AnswerSpan: AnswerSpan{0, len([]rune(answer)), answer}, Judgment: \"unsupported\", Reason: \"This quote includes both components.\"}}\n\tif _, _, err := admitMappingFixture(answer, c, k, tax, m); err == nil {\n\t\tt.Fatal(\"borrowed rationale through a broad correction quote\")\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestInterpretationCrossComponentContextNegative(t *testing.T) {\n\tanswer, c, k, tax, m := interpretationMappingFixture()\n\tm.Decisions[0].Correction.Additional = []ComponentAssertion{{AnswerSpan: AnswerSpan{0, len([]rune(answer)), answer}, Judgment: \"unsupported\", Reason: \"This quote includes both components.\"}}\n\tif _, _, err := admitMappingFixture(answer, c, k, tax, m); err == nil {\n\t\tt.Fatal(\"borrowed rationale through a broad correction quote\")\n\t}\n}\n",
+        "oracle": "The application SHALL assess supplied correction and explanation independently, preserve supported repair/detection when a reason is false or absent, and refuse borrowed component quotes or decisions inconsistent with the frozen assertion and target truth. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
+      },
+      "independent_oracle": "The application SHALL assess supplied correction and explanation independently, preserve supported repair/detection when a reason is false or absent, and refuse borrowed component quotes or decisions inconsistent with the frozen assertion and target truth. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior.",
+      "observation_state": "not_run"
+    },
+    {
       "case_id": "I10-04.P1.S1.POSITIVE",
       "property_id": "I10-04.P1",
       "polarity": "positive",
@@ -162763,6 +162952,54 @@
       },
       "expected": {
         "independent_literal_assertions": "func TestInterpretationMissingDecisionNegative(t *testing.T) {\n\ta, c, k, tax, m := interpretationMappingFixture()\n\tm.Decisions = []SemanticDecision{}\n\tif _, _, e := admitMappingFixture(a, c, k, tax, m); e == nil {\n\t\tt.Fatal(\"claim omitted\")\n\t}\n}\n",
+        "oracle": "The application SHALL retain unknown optional reason findings without erasing supported components, preserve additional unknown assertions alongside decisive false claims, and require complete actual claim decisions and exact rubric references. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
+      },
+      "independent_oracle": "The application SHALL retain unknown optional reason findings without erasing supported components, preserve additional unknown assertions alongside decisive false claims, and require complete actual claim decisions and exact rubric references. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I10-04.P1.S3.POSITIVE",
+      "property_id": "I10-04.P1",
+      "polarity": "positive",
+      "scenario": "I10-04 packet 3",
+      "fixture_id": "iteration10-I10-04-packet3",
+      "test_id": "tangerine.local/api/internal/app::TestInterpretationRepresentedReasonPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestInterpretationRepresentedReasonPositive through services/api/internal/app/interpretation_mapping.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": false
+      },
+      "input": {
+        "exact_native_test": "TestInterpretationRepresentedReasonPositive",
+        "literal_executable_fixture": "func TestInterpretationRepresentedReasonPositive(t *testing.T) {\n\tanswer, c, k, tax, m := interpretationMappingFixture()\n\tm.Decisions[0].Explanation.Additional = []ComponentAssertion{}\n\tm.Decisions[0].Explanation.Satisfied = []string{\"reason1\"}\n\tgot, issues, err := admitMappingFixture(answer, c, k, tax, m)\n\tif err != nil || len(issues) != 0 || got.Decisions[0].Explanation.Status != \"accepted\" {\n\t\tt.Fatal(got, issues, err)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestInterpretationRepresentedReasonPositive(t *testing.T) {\n\tanswer, c, k, tax, m := interpretationMappingFixture()\n\tm.Decisions[0].Explanation.Additional = []ComponentAssertion{}\n\tm.Decisions[0].Explanation.Satisfied = []string{\"reason1\"}\n\tgot, issues, err := admitMappingFixture(answer, c, k, tax, m)\n\tif err != nil || len(issues) != 0 || got.Decisions[0].Explanation.Status != \"accepted\" {\n\t\tt.Fatal(got, issues, err)\n\t}\n}\n",
+        "oracle": "The application SHALL retain unknown optional reason findings without erasing supported components, preserve additional unknown assertions alongside decisive false claims, and require complete actual claim decisions and exact rubric references. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
+      },
+      "independent_oracle": "The application SHALL retain unknown optional reason findings without erasing supported components, preserve additional unknown assertions alongside decisive false claims, and require complete actual claim decisions and exact rubric references. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I10-04.P1.S3.NEGATIVE",
+      "property_id": "I10-04.P1",
+      "polarity": "negative",
+      "scenario": "I10-04 packet 3",
+      "fixture_id": "iteration10-I10-04-packet3",
+      "test_id": "tangerine.local/api/internal/app::TestInterpretationUnrepresentedReasonNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestInterpretationUnrepresentedReasonNegative through services/api/internal/app/interpretation_mapping.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": false
+      },
+      "input": {
+        "exact_native_test": "TestInterpretationUnrepresentedReasonNegative",
+        "literal_executable_fixture": "func TestInterpretationUnrepresentedReasonNegative(t *testing.T) {\n\tanswer, c, k, tax, m := interpretationMappingFixture()\n\tm.Decisions[0].Explanation.Additional = []ComponentAssertion{}\n\tm.Decisions[0].Explanation.Status = \"rejected\"\n\tif _, _, err := admitMappingFixture(answer, c, k, tax, m); err == nil {\n\t\tt.Fatal(\"supplied reason was never assessed\")\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestInterpretationUnrepresentedReasonNegative(t *testing.T) {\n\tanswer, c, k, tax, m := interpretationMappingFixture()\n\tm.Decisions[0].Explanation.Additional = []ComponentAssertion{}\n\tm.Decisions[0].Explanation.Status = \"rejected\"\n\tif _, _, err := admitMappingFixture(answer, c, k, tax, m); err == nil {\n\t\tt.Fatal(\"supplied reason was never assessed\")\n\t}\n}\n",
         "oracle": "The application SHALL retain unknown optional reason findings without erasing supported components, preserve additional unknown assertions alongside decisive false claims, and require complete actual claim decisions and exact rubric references. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
       },
       "independent_oracle": "The application SHALL retain unknown optional reason findings without erasing supported components, preserve additional unknown assertions alongside decisive false claims, and require complete actual claim decisions and exact rubric references. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior.",
@@ -164055,10 +164292,10 @@
       },
       "input": {
         "exact_native_test": "TestInterpretationConflictSelectionNegative",
-        "literal_executable_fixture": "func TestInterpretationConflictSelectionNegative(t *testing.T) {\n\tanswer, c, key, tax, m := interpretationMappingFixture()\n\tc.Conflicts = []string{c.Claims[0].ID}\n\traw, _ := json.Marshal(m)\n\tif _, _, e := normalizeMapping(answer, c, key, tax, nil, map[string]any{}, raw); e == nil {\n\t\tt.Fatal(\"conflicted meaning scored as certain\")\n\t}\n}\n"
+        "literal_executable_fixture": "func TestInterpretationConflictSelectionNegative(t *testing.T) {\n\tanswer, c, key, tax, m := interpretationMappingFixture()\n\tc.Conflicts = []string{c.Claims[0].ID}\n\traw, _ := json.Marshal(m)\n\tif _, _, e := normalizeMapping(answer, c, key, tax, nil, map[string]any{}, raw); e == nil {\n\t\tt.Fatal(\"conflicted meaning scored as certain\")\n\t}\n}\n\n"
       },
       "expected": {
-        "independent_literal_assertions": "func TestInterpretationConflictSelectionNegative(t *testing.T) {\n\tanswer, c, key, tax, m := interpretationMappingFixture()\n\tc.Conflicts = []string{c.Claims[0].ID}\n\traw, _ := json.Marshal(m)\n\tif _, _, e := normalizeMapping(answer, c, key, tax, nil, map[string]any{}, raw); e == nil {\n\t\tt.Fatal(\"conflicted meaning scored as certain\")\n\t}\n}\n",
+        "independent_literal_assertions": "func TestInterpretationConflictSelectionNegative(t *testing.T) {\n\tanswer, c, key, tax, m := interpretationMappingFixture()\n\tc.Conflicts = []string{c.Claims[0].ID}\n\traw, _ := json.Marshal(m)\n\tif _, _, e := normalizeMapping(answer, c, key, tax, nil, map[string]any{}, raw); e == nil {\n\t\tt.Fatal(\"conflicted meaning scored as certain\")\n\t}\n}\n\n",
         "oracle": "The application SHALL retain competing identical-span interpretations without overwriting either or scoring one as certain, admit only declared contained source attachments, and reject undeclared overlaps through the existing output repair. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
       },
       "independent_oracle": "The application SHALL retain competing identical-span interpretations without overwriting either or scoring one as certain, admit only declared contained source attachments, and reject undeclared overlaps through the existing output repair. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior.",
@@ -164343,10 +164580,10 @@
       },
       "input": {
         "exact_native_test": "TestInterpretationNoOptionCreditNegative",
-        "literal_executable_fixture": "func TestInterpretationNoOptionCreditNegative(t *testing.T) {\n\ta, c, k, tax, m := rejectionFixture()\n\tm.Decisions[0].Correction.Status = \"accepted\"\n\tgot, issues, e := admitMappingFixture(a, c, k, tax, m)\n\tif e != nil || got.Decisions[0].Correction.Status != \"unresolved\" || len(issues) != 1 {\n\t\tt.Fatal(got, issues, e)\n\t}\n}\n"
+        "literal_executable_fixture": "func TestInterpretationNoOptionCreditNegative(t *testing.T) {\n\ta, c, k, tax, m := rejectionFixture()\n\tm.Decisions[0].Correction.Status = \"accepted\"\n\tgot, issues, e := admitMappingFixture(a, c, k, tax, m)\n\tif e != nil || got.Decisions[0].Correction.Status != \"unresolved\" || len(issues) != 1 {\n\t\tt.Fatal(got, issues, e)\n\t}\n}\n\n"
       },
       "expected": {
-        "independent_literal_assertions": "func TestInterpretationNoOptionCreditNegative(t *testing.T) {\n\ta, c, k, tax, m := rejectionFixture()\n\tm.Decisions[0].Correction.Status = \"accepted\"\n\tgot, issues, e := admitMappingFixture(a, c, k, tax, m)\n\tif e != nil || got.Decisions[0].Correction.Status != \"unresolved\" || len(issues) != 1 {\n\t\tt.Fatal(got, issues, e)\n\t}\n}\n",
+        "independent_literal_assertions": "func TestInterpretationNoOptionCreditNegative(t *testing.T) {\n\ta, c, k, tax, m := rejectionFixture()\n\tm.Decisions[0].Correction.Status = \"accepted\"\n\tgot, issues, e := admitMappingFixture(a, c, k, tax, m)\n\tif e != nil || got.Decisions[0].Correction.Status != \"unresolved\" || len(issues) != 1 {\n\t\tt.Fatal(got, issues, e)\n\t}\n}\n\n",
         "oracle": "The application SHALL preserve a definite LLM rejection of a supplied correction even when no valid repair option matches, retain additional unknown findings, and give no positive credit without a valid rubric or turn explicit uncertainty into a resolved rejection. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior."
       },
       "independent_oracle": "The application SHALL preserve a definite LLM rejection of a supplied correction even when no valid repair option matches, retain additional unknown findings, and give no positive credit without a valid rubric or turn explicit uncertainty into a resolved rejection. Independent literal source spans, target/rubric identities and component/status/state expectations; no production scorer supplies expectations. Constructed protocol responses prove controller behavior only; explicitly local cases alone prove actual observed model behavior.",

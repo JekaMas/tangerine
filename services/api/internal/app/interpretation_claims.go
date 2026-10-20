@@ -83,7 +83,8 @@ func containsAnswerSpan(outer, inner AnswerSpan) bool {
 }
 
 // Recover only exact evidence: correct codepoints, matching UTF-16 coordinates,
-// or one unique literal quote. Ambiguous repeated quotes remain unresolved.
+// or one unique literal quote (including a unique complete-word occurrence).
+// Ambiguous repeated quotes remain unresolved.
 func normalizeAnswerSpan(text string, s *AnswerSpan) error {
 	if s == nil {
 		return nil
@@ -118,6 +119,24 @@ func normalizeAnswerSpan(text string, s *AnswerSpan) error {
 		if pos >= 0 && !strings.Contains(text[pos+len(s.Text):], s.Text) {
 			s.Start = utf8.RuneCountInString(text[:pos])
 			s.End = s.Start + utf8.RuneCountInString(s.Text)
+			return nil
+		}
+		// A word can also be a prefix inside another word (open/opens).
+		// Resolve only one complete-word occurrence, never the nearest offset.
+		quoted := []rune(s.Text)
+		word := func(r rune) bool { return unicode.IsLetter(r) || unicode.IsNumber(r) || unicode.IsMark(r) || r == '_' }
+		match, count := -1, 0
+		for i := 0; i+len(quoted) <= len(runes); i++ {
+			if string(runes[i:i+len(quoted)]) != s.Text {
+				continue
+			}
+			if word(quoted[0]) && i > 0 && word(runes[i-1]) || word(quoted[len(quoted)-1]) && i+len(quoted) < len(runes) && word(runes[i+len(quoted)]) {
+				continue
+			}
+			match, count = i, count+1
+		}
+		if count == 1 {
+			s.Start, s.End = match, match+len(quoted)
 			return nil
 		}
 	}

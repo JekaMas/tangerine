@@ -122,3 +122,25 @@ func TestInterpretationConflictSelectionNegative(t *testing.T) {
 		t.Fatal("conflicted meaning scored as certain")
 	}
 }
+
+func TestInterpretationWholeWordPositive(t *testing.T) {
+	answer := "The verb open should be opens."
+	target := AnswerSpan{13, 18, "open"}
+	x, err := normalizeExtraction(answer, "answer-sha", extractionPacket([]ExtractedClause{{LocalRef: "c0", Span: AnswerSpan{0, 30, answer}, Stance: "assert_error", Target: &target}}, nil))
+	if err != nil || len(x.Claims) != 1 || *x.Claims[0].Target != (AnswerSpan{9, 13, "open"}) {
+		t.Fatal(x, err)
+	}
+}
+func TestInterpretationRepeatedWordNegative(t *testing.T) {
+	for _, answer := range []string{"open opens open", "go go", "打开 打开"} {
+		span := AnswerSpan{90, 95, "open"}
+		if answer == "go go" {
+			span.Text = "go"
+		} else if answer == "打开 打开" {
+			span.Text = "打开"
+		}
+		if err := normalizeAnswerSpan(answer, &span); err == nil {
+			t.Fatal("guessed repeated complete word", answer, span)
+		}
+	}
+}

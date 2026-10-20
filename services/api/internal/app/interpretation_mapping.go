@@ -81,7 +81,7 @@ func optionalID(p *string) string {
 	}
 	return *p
 }
-func normalizeComponent(answer string, j *SemanticComponent, spans []AnswerSpan, unit map[string]any, explanation bool, allowedEvidence map[string]bool) error {
+func normalizeComponent(answer string, j *SemanticComponent, source AnswerSpan, spans, otherSpans []AnswerSpan, unit map[string]any, explanation bool, allowedEvidence map[string]bool) error {
 	if j.Supplied != (len(spans) > 0) {
 		return interpretationInvalid("Supplied flags must match actual original correction/explanation spans, including declared attachments.")
 	}
@@ -137,10 +137,38 @@ func normalizeComponent(answer string, j *SemanticComponent, spans []AnswerSpan,
 			}
 		}
 		if !contained {
-			return interpretationInvalid("An additional assertion must quote actual source text inside its correction or explanation component.")
+			// Models sometimes quote the containing claim as context. Preserve
+			// its raw output, but anchor this judgment to the one whole component
+			// it contains. A quote crossing the other component cannot be narrowed.
+			if !containsAnswerSpan(source, a.AnswerSpan) {
+				return interpretationInvalid("A contextual assertion quote must stay inside its original source claim.")
+			}
+			var candidate *AnswerSpan
+			for _, s := range spans {
+				if containsAnswerSpan(a.AnswerSpan, s) {
+					if candidate != nil {
+						return interpretationInvalid("An assertion quote covering multiple source components needs an exact component location.")
+					}
+					copy := s
+					candidate = &copy
+				}
+			}
+			for _, other := range otherSpans {
+				if a.Start < other.End && other.Start < a.End {
+					candidate = nil
+					break
+				}
+			}
+			if candidate == nil {
+				return interpretationInvalid("An additional assertion must quote its actual component, without borrowing the other component's words.")
+			}
+			a.AnswerSpan = *candidate
 		}
 		unknown = unknown || a.Judgment == "unknown"
 		bad = bad || a.Judgment == "unsupported"
+	}
+	if explanation && len(j.Satisfied)+len(j.Violated)+len(j.Additional) == 0 && j.Unresolved == nil {
+		return interpretationInvalid("Assess the supplied explanation: record its supported/forbidden rubric propositions, or a source-quoted supported/unsupported/unknown assertion with a contextual reason. An empty judgment does not assess the listener's reason.")
 	}
 	if bad {
 		j.Status = "rejected"
@@ -290,10 +318,10 @@ func normalizeMapping(answer string, claims CanonicalExtraction, key map[string]
 		if !subsetDistinct(d.Evidence, scopedEvidence) {
 			return out, issues, interpretationInvalid("Cited evidence must belong to this exact case and target unit.")
 		}
-		if err := normalizeComponent(answer, &d.Correction, c.Corrections, unit, false, scopedEvidence); err != nil {
+		if err := normalizeComponent(answer, &d.Correction, c.Span, c.Corrections, c.Explanations, unit, false, scopedEvidence); err != nil {
 			return out, issues, err
 		}
-		if err := normalizeComponent(answer, &d.Explanation, c.Explanations, unit, true, scopedEvidence); err != nil {
+		if err := normalizeComponent(answer, &d.Explanation, c.Span, c.Explanations, c.Corrections, unit, true, scopedEvidence); err != nil {
 			return out, issues, err
 		}
 		if d.Duplicate != nil {

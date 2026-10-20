@@ -28,6 +28,11 @@ The application SHALL recover uniquely supported Unicode/UTF16 source coordinate
 - **WHEN** the second distinct literal positive or negative packet executes through its real owner
 - **THEN** its independently expected data, state, response or failure SHALL hold
 
+#### Scenario: I10-02 packet 3
+
+- **WHEN** the third distinct literal positive or negative packet executes through its real owner
+- **THEN** its independently expected source evidence or rejection SHALL hold
+
 ### Requirement: I10-03 Separate correction and optional explanation
 
 The application SHALL assess supplied correction and explanation independently, preserve supported repair/detection when a reason is false or absent, and refuse borrowed component quotes or decisions inconsistent with the frozen assertion and target truth. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
@@ -42,6 +47,11 @@ The application SHALL assess supplied correction and explanation independently, 
 - **WHEN** the second distinct literal positive or negative packet executes through its real owner
 - **THEN** its independently expected data, state, response or failure SHALL hold
 
+#### Scenario: I10-03 packet 3
+
+- **WHEN** the third distinct literal positive or negative packet executes through its real owner
+- **THEN** its independently expected source evidence or rejection SHALL hold
+
 ### Requirement: I10-04 Component uncertainty preserves support
 
 The application SHALL retain unknown optional reason findings without erasing supported components, preserve additional unknown assertions alongside decisive false claims, and require complete actual claim decisions and exact rubric references. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
@@ -55,6 +65,11 @@ The application SHALL retain unknown optional reason findings without erasing su
 
 - **WHEN** the second distinct literal positive or negative packet executes through its real owner
 - **THEN** its independently expected data, state, response or failure SHALL hold
+
+#### Scenario: I10-04 packet 3
+
+- **WHEN** the third distinct literal positive or negative packet executes through its real owner
+- **THEN** its independently expected source evidence or rejection SHALL hold
 
 ### Requirement: I10-05 Category and novel correction interpretation
 
