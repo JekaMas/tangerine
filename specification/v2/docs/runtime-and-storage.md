@@ -65,7 +65,7 @@ A profile change creates a separate explicit reconsideration operation, not a re
 
 Reuse only a completed stage whose full cache identity matches.
 Store source-use restrictions/revocation notices as metadata; normal operations use local settings, with no permission-epoch or grant-closure service. Actual source terms and unknown observations remain visible.
-Reapply local semantic checks to the stored output before reuse.
+Trust the admitted completed stage in the saved attempt checkpoint; do not repeat schema, hash or semantic admission on read/reuse (single-validation-policy.md).
 Do not reuse partial/refused or genuinely disputed output; a successfully repaired validated output is reusable under its exact binding.
 Mapping audit is optional; disagreements are diagnostic. Genuine score-relevant uncertainty may use one LLM adjudication, never retries selected for favorable grades.
 
@@ -113,3 +113,5 @@ Current admission/readiness/reuse policy: [single validation](single-validation-
 The mutation request frame carries the full typed stage input once. When the selected blueprint, taxonomy, recipes, canonical script or public-context component is already identically present in that input, omit its redundant second message. Keep all trusted instructions, complete private component evidence and the full original DTO. Different/custom/unknown components remain separate messages, and other phases keep their existing frame. This serialization compaction never drops required data, changes the selected category set or adds an accepted-data audit.
 
 A same-profile semantic repair preserves the complete original instructions and initial input prefix. Append a final user data turn with the versioned owned repair_instruction, validation code/detail and the raw visible candidate; retain the exact owned instruction and the data separately in the snapshot. Do not rebuild or prepend changed system instructions for a repair. This preserves a reusable context prefix without claiming that an opaque provider uses or reports a cache hit. The current bounded attempt count, phase deadline and private evidence requirements remain unchanged.
+
+Iteration10 semantic interpretation uses answer-interpretation-runtime.md, interpretation-checkpoint and interpretation-view schemas and migration005. No external runtime or account is introduced.

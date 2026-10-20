@@ -64,6 +64,11 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/v1/attempts/{id}", s.attemptGet)
 	mux.HandleFunc("PUT /api/v1/attempts/{id}/answer", func(w http.ResponseWriter, r *http.Request) { s.attemptAnswer(w, r, false) })
 	mux.HandleFunc("POST /api/v1/attempts/{action}", func(w http.ResponseWriter, r *http.Request) {
+		if id, ok := strings.CutSuffix(r.PathValue("action"), ":retry"); ok {
+			r.SetPathValue("id", id)
+			s.attemptInterpretationRetry(w, r)
+			return
+		}
 		id, ok := strings.CutSuffix(r.PathValue("action"), ":submit")
 		if !ok {
 			preparationHTTPError(w, 404, "NOT_FOUND")

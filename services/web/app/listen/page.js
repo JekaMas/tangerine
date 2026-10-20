@@ -3,7 +3,7 @@ import useListening from './useListening';
 
 export default function Listen() {
   const {attempt, answer, language, recovered, error, notice, busy, audioRevision,
-    canRefresh, refresh, write, editAnswer, editLanguage, playback, audioError} = useListening();
+    canRefresh, refresh, write, editAnswer, editLanguage, playback, audioError, results, retryChecking} = useListening();
   const submitted = attempt?.submitted_at != null;
   return <main>
     <header><a className="brand" href="/">Tangerine</a><a href="/attempts">Saved attempts</a><a href="/settings">Settings</a></header>
@@ -24,6 +24,25 @@ export default function Listen() {
         <p>{Array.from(answer).length.toLocaleString('en-US')} / 20,000 characters · {attempt.state}</p>
         {submitted ? <p>Answer submitted and saved. <a href="/attempts">Open saved attempts</a></p>
           : <div className="actions"><button onClick={() => write(false)} disabled={busy}>Save draft</button><button onClick={() => write(true)} disabled={busy}>Submit answer</button></div>}
+        {submitted&&<section aria-label="Answer findings">
+          <h3>Answer findings</h3>
+          {results?.interpretation?.status==='complete'&&<p>Answer interpretation ready.</p>}
+          {results?.status==='review_required'&&<p>Some findings remain uncertain. Supported components are retained.</p>}
+          {results?.status==='evaluation_failed'&&<p>Checking is unavailable. Your submitted answer is saved.</p>}
+          {(!results?.interpretation||results?.status==='evaluation_failed'||results?.status==='evaluating')&&<button disabled={busy} onClick={retryChecking}>{results?.status==='evaluating'?'Resume checking':'Check saved answer'}</button>}
+          {results?.interpretation?.claims?.map(claim=>{
+            const decision=results.interpretation.decisions.find(d=>d.claim_id===claim.id);
+            return <article key={claim.id}><h4>{claim.claim_span.exact_text}</h4>
+              {decision&&<><p>{decision.decision.replaceAll('_',' ')}{decision.category_id?' · '+decision.category_id:''}</p>
+                <p>Correction: {decision.correction.supplied?decision.correction.status.replaceAll('_',' '):'not provided'}</p>
+                <p>Explanation: {decision.explanation.supplied?decision.explanation.status.replaceAll('_',' '):'not provided (optional)'}</p>
+                {decision.note&&<p>{decision.note}</p>}
+                {[...decision.correction.additional_assertions,...decision.explanation.additional_assertions].map((a,i)=><p key={i}>{a.exact_text} · {a.judgment}: {a.reason}</p>)}
+              </>}
+            </article>
+          })}
+          {results?.issues?.map(issue=><p key={issue.id}>{issue.explanation}</p>)}
+        </section>}
         {recovered && <section aria-label="Unsubmitted response recovery">
           <h3>Unsubmitted local text</h3>
           <p>This attempt was submitted in another window. The submitted answer is shown above. Your different local text ({recovered.language}) is retained below for copying; it was not submitted.</p>

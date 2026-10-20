@@ -1,0 +1,56 @@
+{
+  "iteration": 10,
+  "stages": [
+    "blind_claim_extraction",
+    "claim_mapping",
+    "mapping_audit"
+  ],
+  "dispatch_owner": "services/api/internal/app/provider_inference.go:InvokeLLM",
+  "trusted_fragments": [
+    {
+      "path": "specification/v2/prompts/extract-v1.txt",
+      "purpose": "blind source interpretation and original coordinates"
+    },
+    {
+      "path": "specification/v2/prompts/map-v1.txt",
+      "purpose": "target/correction/optional reason judgments"
+    },
+    {
+      "path": "specification/v2/prompts/audit-map-v1.txt",
+      "purpose": "independent optional map audit"
+    },
+    {
+      "path": "services/api/internal/provider/execute.go",
+      "symbol": "RepairInstruction",
+      "purpose": "one same-profile output repair"
+    },
+    {
+      "path": "services/api/internal/app/interpretation_context.go",
+      "purpose": "frozen source selection; all122 IDs, relevant full rules, bilingual aliases, original source coordinates and complete key"
+    },
+    {
+      "path": "services/api/internal/app/provider_context.go",
+      "purpose": "complete typed input and final wire serialization"
+    },
+    {
+      "path": "services/api/internal/app/interpretation_shape.go",
+      "purpose": "Source-confirmed empty-component envelope normalization before the single admission; no substantive judgment defaults"
+    }
+  ],
+  "preprocessing": "Exact original text; source-only Unicode word coordinates; no required text/key/target/category truncated. Resources retain full definitions and both alias languages. Mapping projection selects all identity/labels plus full authored/mentioned rules and actual language aliases before dispatch. Unknown tokenizer bound is explicit; gpt-oss uses the existing offline counter.",
+  "quality_cases": [
+    "TestLocalInterpretationCorrectionPositive",
+    "TestLocalInterpretationExplanationPositive",
+    "TestLocalInterpretationFalseCorrectionNegative",
+    "TestLocalInterpretationFalseExplanationNegative"
+  ],
+  "independent_oracle": "Independently authored singular cafe/open agreement key. Opens repairs it; singular agreement explains it; opening and the universal every-verb-s rule do not. Native tests assert consolidated semantic component outcomes, never model prose similarity or a production-derived numeric score.",
+  "retention": "All failed/incomplete actual local runs remain in ignored data/iteration10/local; no favorable sample selection or silent retry. Final acceptance observes all four cases on the committed source. Native receipt/context/wire and actual MLflow spans reconcile through local_reconcile.py.",
+  "billing": "genuinely local only; no paid/cloud/hosted call, borrowed credential, purchase or overage",
+  "proof_boundary": "Finite selected local linguistic cases and real production controller; universal model accuracy, audio quality, hosted entitlement, native numeric score and later feedback are not claimed.",
+  "schema_subject_repair": "Evaluator component status/proposition descriptions now explicitly concern listener wording, rather than parent operation success or reference-key correctness. Mapping input includes canonical listener-component identities and verbatim quotes.",
+  "model_profiles": [
+    "LOCAL-PROFILE.json",
+    "MAPPING-PROFILE.json"
+  ]
+}

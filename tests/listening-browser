@@ -75,7 +75,7 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
   local='Unsubmitted local text 🟠';frozen='Submitted in another window. Ошибка.'
   type_answer(local);browser.evaluate("const locale=document.querySelector('select');locale.value='ru';locale.dispatchEvent(new Event('change',{bubbles:true}));true")
   status=browser.evaluate("fetch('/api/v1/attempts/'+new URLSearchParams(location.search).get('attempt')+':submit',{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':crypto.randomUUID(),'If-Match':'\"0\"'},body:JSON.stringify({answer_text:"+json.dumps(frozen)+",requested_language:'en'})}).then(r=>r.status)")
-  assert status==200,status
+  assert status==503,status
   click('Save draft');browser.wait('The saved draft changed.');click('Refresh saved state');browser.wait('Answer submitted and saved.')
   record('test_remote_submission_positive',"({answer:document.querySelector('[aria-label=\"Your answer\"]').value,disabled:document.querySelector('[aria-label=\"Your answer\"]').disabled,language:document.querySelector('select').value})",{'answer':frozen,'disabled':True,'language':'en'})
   click('Refresh saved state');browser.wait('Saved state refreshed.')

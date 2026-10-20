@@ -12,7 +12,7 @@ async function proxy(request, context) {
   const modelBytes = request.method === 'GET' && /^v1\/prepare\/assets\/[a-f0-9-]{36}\/bytes$/.test(target);
   const audio = request.method === 'GET' && /^v1\/preparations\/[a-f0-9-]{36}\/audio$/.test(target);
   const render = request.method === 'POST' && /^v1\/preparations\/[a-f0-9-]{36}:render$/.test(target);
-  const attempt = /^(v1\/attempts\/[a-f0-9-]{36})(?::submit|\/(?:answer|audio|playback|results))?$/.test(target) && ((request.method === 'GET' && !target.endsWith('/answer') && !target.endsWith('/playback') && !target.endsWith(':submit')) || (request.method === 'PUT' && target.endsWith('/answer')) || (request.method === 'POST' && (target.endsWith(':submit') || target.endsWith('/playback'))));
+  const attempt = /^(v1\/attempts\/[a-f0-9-]{36})(?::(?:submit|retry)|\/(?:answer|audio|playback|results))?$/.test(target) && ((request.method === 'GET' && !target.endsWith('/answer') && !target.endsWith('/playback') && !target.endsWith(':submit') && !target.endsWith(':retry')) || (request.method === 'PUT' && target.endsWith('/answer')) || (request.method === 'POST' && (target.endsWith(':submit') || target.endsWith(':retry') || target.endsWith('/playback'))));
   if (!ALLOWED.has(`${request.method} ${target}`) && !modelBytes && !audio && !render && !attempt) return failure(404, 'not_implemented');
   const query = new URLSearchParams();
   if (target === 'v1/attempts') { const requested = new URL(request.url).searchParams;for(const name of ['limit','cursor'])if(requested.has(name))query.set(name,requested.get(name)); }
@@ -30,7 +30,7 @@ async function proxy(request, context) {
       redirect: 'error', cache: 'no-store',
       signal: AbortSignal.any([request.signal, AbortSignal.timeout(270000)]),
     });
-    return new Response(response.body, { status: response.status, headers: { 'Content-Type': response.headers.get('content-type') || 'application/json', 'Cache-Control': 'no-store', 'Content-Range': response.headers.get('content-range') || '', 'Accept-Ranges': response.headers.get('accept-ranges') || '', 'ETag': response.headers.get('etag') || '', 'X-Tangerine-Audio-SHA256': response.headers.get('x-tangerine-audio-sha256') || '', 'X-Tangerine-Next-Cursor': response.headers.get('x-tangerine-next-cursor') || '', 'X-Tangerine-Active-Connection': response.headers.get('x-tangerine-active-connection') || '' } });
+    return new Response(response.body, { status: response.status, headers: { 'Content-Type': response.headers.get('content-type') || 'application/json', 'Cache-Control': 'no-store', 'Content-Range': response.headers.get('content-range') || '', 'Accept-Ranges': response.headers.get('accept-ranges') || '', 'ETag': response.headers.get('etag') || '', 'X-Tangerine-Audio-SHA256': response.headers.get('x-tangerine-audio-sha256') || '', 'X-Tangerine-Answer-SHA256': response.headers.get('x-tangerine-answer-sha256') || '', 'X-Tangerine-Configuration-SHA256': response.headers.get('x-tangerine-configuration-sha256') || '', 'X-Tangerine-Next-Cursor': response.headers.get('x-tangerine-next-cursor') || '', 'X-Tangerine-Active-Connection': response.headers.get('x-tangerine-active-connection') || '' } });
   } catch { return failure(503, 'service_unavailable'); }
 }
 export const GET = proxy;

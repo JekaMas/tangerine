@@ -1,0 +1,66 @@
+package app
+
+// Normalize only a source-confirmed absent component. No proposal, assertion,
+// identifier or judgment for supplied text is created or discarded here.
+func normalizeInterpretationShape(value any, extraction *CanonicalExtraction) any {
+	if extraction == nil {
+		return value
+	}
+	root, ok := value.(map[string]any)
+	if !ok {
+		return value
+	}
+	rows, ok := root["decisions"].([]any)
+	if !ok {
+		return value
+	}
+	byID := map[string]CanonicalClaim{}
+	for _, claim := range extraction.Claims {
+		byID[claim.ID] = claim
+	}
+	for _, raw := range rows {
+		decision, ok := raw.(map[string]any)
+		if !ok {
+			continue
+		}
+		id, _ := decision["claim_id"].(string)
+		claim, known := byID[id]
+		if !known {
+			continue
+		}
+		for _, component := range []struct {
+			name  string
+			spans []AnswerSpan
+		}{{"correction", claim.Corrections}, {"explanation", claim.Explanations}} {
+			if len(component.spans) > 0 {
+				continue
+			}
+			current := decision[component.name]
+			empty := current == nil
+			switch v := current.(type) {
+			case []any:
+				empty = len(v) == 0
+			case map[string]any:
+				empty = true
+				for key, field := range v {
+					switch key {
+					case "supplied":
+						empty = empty && field == false
+					case "option_id", "unresolved_reason":
+						empty = empty && field == nil
+					case "status":
+						empty = empty && (field == "not_supplied" || field == nil)
+					case "satisfied_proposition_ids", "violated_proposition_ids", "support_evidence_ids", "additional_assertions":
+						list, ok := field.([]any)
+						empty = empty && ok && len(list) == 0
+					default: /* Harmless additive fields remain in the retained raw response. */
+					}
+				}
+			}
+			if empty {
+				decision[component.name] = map[string]any{"supplied": false, "option_id": nil, "satisfied_proposition_ids": []any{}, "violated_proposition_ids": []any{}, "status": "not_supplied", "support_evidence_ids": []any{}, "unresolved_reason": nil, "additional_assertions": []any{}}
+			}
+		}
+	}
+	return value
+}

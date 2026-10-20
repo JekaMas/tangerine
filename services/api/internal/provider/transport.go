@@ -148,6 +148,7 @@ func Serialize(p Profile, instructions string, input []any, format any) ([]byte,
 }
 
 type Response struct {
+	RetryAfter        string
 	Raw               []byte
 	Visible           string
 	Reasoning         string
@@ -270,6 +271,7 @@ func Exchange(ctx context.Context, client *http.Client, p Profile, wire []byte, 
 		return out, fail("PROVIDER_FAILURE")
 	}
 	defer res.Body.Close()
+	out.RetryAfter = res.Header.Get("Retry-After")
 	status := res.StatusCode
 	out.HTTPStatus = &status
 	if id := res.Header.Get("x-request-id"); id != "" {

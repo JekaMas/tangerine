@@ -648,3 +648,17 @@ Exact source anchors and executable counterexamples remain in the existing ignor
 - [x] I9.R3 Reconcile extended literal positive/negative cases with the DAG, preserve original scope/evidence, complete stable language/build/specification checks and a full committed-clean iteration run, then commit acceptance.
 
 Iteration9 verification is green on committed-clean source3063180:52/52cases across12properties,26positive/26negative; five unchanged original finalization passes retained. Exact acceptance/failure/ownership evidence: audit/iteration-9-verification-20261020/REPORT.md and evidence/iteration9-verification-20261020/FINAL-RECONCILIATION.json. No in-scope finding remains; I8.R1–R3 remain open outside it.
+
+## Iteration 10 — LLM answer interpretation (2026-10-20)
+
+- [ ] I10.1 Normalize exact Unicode extraction spans, stable claim IDs, complete coverage, retractions/duplicates/attachments without manufacturing teacher text.
+- [ ] I10.2 Admit complete mapping decisions and case/unit/category/evidence/rubric references; preserve independently assessed optional explanations and supported correction/detection.
+- [ ] I10.3 Build blind and mapped/audit contexts through InvokeLLM with frozen settings, aliases/key/text and full actual context/receipt evidence; no first-map disclosure to audit.
+- [ ] I10.4 Persist foreground leases/checkpoints/failures, explicit retry/cache reuse and final semantic handoff; reject stale/late writers while preserving original answers/receipts.
+- [ ] I10.5 Reach interpretation from actual submission/retry/readback and local UI; display saved findings/uncertainty without fabricated native grades or feedback.
+- [ ] I10.6 Materialize positive/negative literal, native, sequence/concurrency and browser cases, wire exact DAG/discovery and actual local-model/Lab evidence.
+- [ ] I10.7 Review/repair every in-scope finding, complete stable language/build/specification/preservation checks, commit and pass the complete iteration selection with --require-clean, then commit acceptance.
+
+Anchors/lineage/evidence scope: audit/iteration-10-interpretation-20261020/PLAN.md. Previous I8.R1–R3 remain open outside this iteration. Preserve canonical unrelated GAPS.md and all existing user/model data.
+
+I10 execution checkpoint (not acceptance): separated source/mapping/group/context/shape/controller/storage/view owners are implemented. The new absence-shape negative tests now preserve each actual component while allowing independent absent-envelope normalization. The current scope is20properties/82new cases plus28direct provider/listening dependencies. Native recovery, conflict/attachment/stance, provider and real browser observations are retained under data/iteration10; actual local candidate four-case inference is running. Qwen, low/medium reasoning and prior prompt failures remain retained; none is relabelled green. No I10 task is checked until the complete committed-clean selection, stable checks and actual local/native/MLflow reconciliation pass. Current model profile is genuinely local gpt-oss:20b, low reasoning, tolerant JSON, no paid/cloud use. The canonical GAPS.md edit and all original scopes/migrations remain protected. No delegation, install, push or archive.

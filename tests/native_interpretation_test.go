@@ -1,0 +1,617 @@
+package app
+
+// The external model protocol is constructed. Application/provider/context,
+// PostgreSQL, MinIO, exact spans and durable state are actual production owners.
+import (
+	"context"
+	"encoding/json"
+	"io"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"strings"
+	"sync"
+	"sync/atomic"
+	"testing"
+	"time"
+
+	"github.com/google/uuid"
+	"tangerine.local/api/internal/contracts"
+)
+
+type nativeInterpretation struct {
+	listeningFixture
+	attempt                       string
+	model                         *httptest.Server
+	calls, extracts, maps, audits atomic.Int32
+	mode                          atomic.Value
+	mu                            sync.Mutex
+	wires                         []map[string]any
+	entered                       chan struct{}
+	release                       chan struct{}
+	once                          sync.Once
+	modePath                      string
+}
+
+func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
+	t.Helper()
+	f := &nativeInterpretation{listeningFixture: listeningCase(t), entered: make(chan struct{}), release: make(chan struct{})}
+	f.mode.Store(mode)
+	target := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		f.calls.Add(1)
+		body, _ := io.ReadAll(r.Body)
+		var wire map[string]any
+		_ = json.Unmarshal(body, &wire)
+		f.mu.Lock()
+		f.wires = append(f.wires, wire)
+		f.mu.Unlock()
+		var input map[string]any
+		var claims []CanonicalClaim
+		for _, v := range wire["input"].([]any) {
+			content := v.(map[string]any)["content"].(string)
+			if strings.HasPrefix(content, "Complete stage input: ") {
+				_ = json.Unmarshal([]byte(strings.TrimPrefix(content, "Complete stage input: ")), &input)
+			}
+			if strings.HasPrefix(content, "extraction: ") {
+				var c struct {
+					Claims []CanonicalClaim `json:"claims"`
+				}
+				_ = json.Unmarshal([]byte(strings.TrimPrefix(content, "extraction: ")), &c)
+				claims = c.Claims
+			}
+		}
+		var output any
+		answer := input["answer_text"].(string)
+		if _, mapping := input["ground_truth"]; !mapping {
+			f.extracts.Add(1)
+			if f.currentMode() == "blocked" {
+				f.once.Do(func() { close(f.entered) })
+				<-f.release
+			}
+			text := []rune(answer)
+			if f.currentMode() == "bad-extraction" {
+				output = map[string]any{"schema_version": "2.0.0", "clauses": []any{}, "unparsed_spans": []any{}, "coverage": []any{}, "relations": []any{}}
+				_ = json.NewEncoder(w).Encode(map[string]any{"id": "bad", "object": "response", "status": "completed", "output": []any{map[string]any{"type": "message", "content": []any{map[string]any{"type": "output_text", "text": string(mustJSON(output))}}}}})
+				return
+			}
+			span := &AnswerSpan{Start: 4, End: 9, Text: "opens"}
+			if answer != "Use opens." {
+				span = nil
+			}
+			output = AnswerExtraction{Version: "2.0.0", Clauses: []ExtractedClause{{LocalRef: "c0", Span: AnswerSpan{0, len(text), answer}, Stance: "assert_error", Correction: span}}, Unparsed: []AnswerSpan{}, Coverage: []ClaimCoverage{}, Relations: []ClaimRelation{}}
+		} else {
+			audit := strings.Contains(wire["instructions"].(string), "Calculate the mappings again")
+			if audit {
+				if f.currentMode() == "audit-blocked" {
+					f.once.Do(func() { close(f.entered) })
+					<-f.release
+				}
+				f.audits.Add(1)
+			} else {
+				f.maps.Add(1)
+			}
+			if f.currentMode() == "mapping-failure" || (f.currentMode() == "audit-retry-budget" && !audit && f.maps.Load() == 1) || (f.currentMode() == "audit-retry-budget" && audit) {
+				w.WriteHeader(503)
+				_, _ = io.WriteString(w, `{"error":{"code":"unavailable"}}`)
+				return
+			}
+			if audit && f.currentMode() == "audit-failure" {
+				w.WriteHeader(503)
+				_, _ = io.WriteString(w, `{"error":{"code":"unavailable"}}`)
+				return
+			}
+			unit := input["ground_truth"].(map[string]any)["units"].([]any)[0].(map[string]any)
+			id := unit["id"].(string)
+			if f.currentMode() == "bad-unit" {
+				id = "other-case-unit"
+			}
+			option := unit["corrections"].([]any)[0].(map[string]any)
+			optionID := option["id"].(string)
+			decision := SemanticDecision{Claim: claims[0].ID, Unit: &id, Decision: "matched_error", Correction: semanticEmpty(), Explanation: semanticEmpty(), Evidence: []string{}, Reason: "supported", Note: "The present-tense verb should agree with its singular subject."}
+			if answer == "Use opens." {
+				decision.Correction.Supplied = true
+				decision.Correction.Option = &optionID
+				decision.Correction.Status = "accepted"
+				for _, p := range option["required_propositions"].([]any) {
+					decision.Correction.Satisfied = append(decision.Correction.Satisfied, p.(map[string]any)["id"].(string))
+				}
+			}
+			if audit && f.currentMode() == "audit-disagreement" {
+				decision.Correction.Satisfied = []string{}
+			}
+			output = SemanticMapping{Version: "1.0.0", Decisions: []SemanticDecision{decision}}
+		}
+		encoded, _ := json.Marshal(output)
+		response := map[string]any{"id": "constructed-response", "object": "response", "status": "completed", "model": "constructed-interpreter", "output": []any{map[string]any{"type": "message", "content": []any{map[string]any{"type": "output_text", "text": string(encoded)}}}}}
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(response)
+	}))
+	f.model = target
+	t.Cleanup(target.Close)
+	c, rev, e := f.s.Store.Configuration(context.Background())
+	requireListening(t, e)
+	p := c["llm_profiles"].([]any)[0].(map[string]any)
+	for k, v := range map[string]any{"provider": "local_responses", "model": "constructed-interpreter", "endpoint": target.URL + "/v1/responses", "adapter_version": "local-responses-v1", "auth_method": "local_none", "billing_mode": "local", "credential_ref": "local-none", "stream": false, "context_budget_tokens": 262144, "max_output_tokens": 4096} {
+		p[k] = v
+	}
+	c["mapping_audit_enabled"] = strings.HasPrefix(mode, "audit")
+	for _, field := range []string{"workspace_id", "configuration_sha256", "provider_access_policy"} {
+		delete(c, field)
+	}
+	raw, _ := json.Marshal(c)
+	_, _, e = f.s.Store.PutConfiguration(context.Background(), raw, uuid.NewString(), rev)
+	requireListening(t, e)
+	f.attempt = f.start(t)
+	_, _, e = f.s.Store.WriteAnswer(context.Background(), f.attempt, uuid.NewString(), 0, answerPacket("Use opens.", "en"), true)
+	requireListening(t, e)
+	return f
+}
+func (f *nativeInterpretation) interpret(t *testing.T, key string) (InterpretationState, error) {
+	t.Helper()
+	r, e := f.s.Store.Attempt(context.Background(), f.attempt)
+	requireListening(t, e)
+	return f.s.InterpretAttempt(context.Background(), f.attempt, key, int64(r.Attempt["revision"].(float64)), r.Attempt["answer_utf8_sha256"].(string), r.Attempt["configuration_sha256"].(string), f.model.Client())
+}
+func TestNativeInterpretationCompletePositive(t *testing.T) {
+	f := interpretationNative(t, "good")
+	state, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	if state.Status != "complete" || state.Extraction == nil || state.Mapping == nil || f.extracts.Load() != 1 || f.maps.Load() != 1 {
+		t.Fatal(state, f.calls.Load())
+	}
+	document, e := f.s.Store.ReadDocument(context.Background(), state.ID)
+	requireListening(t, e)
+	_, _, e = contracts.Validate("interpretation-checkpoint", "2.0.0", document.Payload)
+	requireListening(t, e)
+	r, e := f.s.Store.Attempt(context.Background(), f.attempt)
+	requireListening(t, e)
+	if r.Attempt["answer_text"] != "Use opens." || r.Attempt["state"] != "saved" || r.Attempt["lease_token"] != nil {
+		t.Fatal(r)
+	}
+}
+func TestNativeInterpretationRepairExhaustedNegative(t *testing.T) {
+	f := interpretationNative(t, "bad-unit")
+	state, e := f.interpret(t, uuid.NewString())
+	if e == nil || state.Status != "failed" || f.maps.Load() != 2 {
+		t.Fatal(state, e, f.calls.Load())
+	}
+	r, e := f.s.Store.Attempt(context.Background(), f.attempt)
+	requireListening(t, e)
+	if r.Attempt["answer_text"] != "Use opens." || r.Attempt["state"] != "evaluation_failed" || r.Attempt["lease_token"] != nil {
+		t.Fatal(r)
+	}
+}
+func TestNativeInterpretationResumePositive(t *testing.T) {
+	f := interpretationNative(t, "mapping-failure")
+	state, e := f.interpret(t, uuid.NewString())
+	if e == nil || state.Extraction == nil || state.Mapping != nil {
+		t.Fatal(state, e)
+	}
+	old := *state.Extraction
+	f.mode.Store("good")
+	next, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	if next.Status != "complete" || *next.Extraction != old || f.extracts.Load() != 1 {
+		t.Fatal(next, f.extracts.Load())
+	}
+}
+func TestNativeInterpretationConcurrentNegative(t *testing.T) {
+	f := interpretationNative(t, "blocked")
+	t.Cleanup(func() {
+		select {
+		case <-f.release:
+		default:
+			close(f.release)
+		}
+	})
+	result := make(chan error, 1)
+	go func() { _, e := f.interpret(t, uuid.NewString()); result <- e }()
+	select {
+	case <-f.entered:
+	case err := <-result:
+		t.Fatal("first evaluation failed before dispatch", err)
+	}
+	var active string
+	requireListening(t, f.s.Store.DB.QueryRow(context.Background(), "SELECT o.state FROM operation o JOIN interpretation_checkpoint c ON c.operation_id=o.id WHERE c.attempt_id=$1", f.attempt).Scan(&active))
+	if active != "running" {
+		t.Fatal(active)
+	}
+	w := f.request("GET", "/api/v1/attempts/"+f.attempt+"/results", "", "", "")
+	if w.Code != 200 || !strings.Contains(w.Body.String(), `"status":"evaluating"`) {
+		t.Fatal(w.Code, w.Body.String())
+	}
+	_, e := f.interpret(t, uuid.NewString())
+	if e != ErrEvaluationActive {
+		t.Fatal(e)
+	}
+	close(f.release)
+	requireListening(t, <-result)
+	if f.extracts.Load() != 1 || f.maps.Load() != 1 {
+		t.Fatal(f.calls.Load())
+	}
+}
+
+func TestNativeInterpretationEmptyPositive(t *testing.T) {
+	f := interpretationNative(t, "good")
+	f.attempt = f.start(t)
+	_, _, e := f.s.Store.WriteAnswer(context.Background(), f.attempt, uuid.NewString(), 0, answerPacket("", "ru"), true)
+	requireListening(t, e)
+	state, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	if state.Status != "complete" || f.calls.Load() != 0 {
+		t.Fatal(state, f.calls.Load())
+	}
+	var m SemanticMapping
+	requireListening(t, f.s.Store.readInterpretationJSON(context.Background(), *state.Mapping, &m))
+	if len(m.Decisions) != 0 {
+		t.Fatal(m)
+	}
+	f.attempt = f.start(t)
+	_, _, e = f.s.Store.WriteAnswer(context.Background(), f.attempt, uuid.NewString(), 0, answerPacket(" \t\n ", "en"), true)
+	requireListening(t, e)
+	whitespace, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	var x CanonicalExtraction
+	requireListening(t, f.s.Store.readInterpretationJSON(context.Background(), *whitespace.Extraction, &x))
+	if len(x.Extraction.Coverage) != 1 || x.Extraction.Coverage[0].Kind != "whitespace" || x.Extraction.Coverage[0].Span.Start != 0 || x.Extraction.Coverage[0].Span.End != 4 || f.calls.Load() != 0 {
+		t.Fatal(x, f.calls.Load())
+	}
+
+}
+func TestNativeInterpretationBeforeSubmitNegative(t *testing.T) {
+	f := interpretationNative(t, "good")
+	f.attempt = f.start(t)
+	_, e := f.interpret(t, uuid.NewString())
+	if e != ErrAttemptState || f.calls.Load() != 0 {
+		t.Fatal(e, f.calls.Load())
+	}
+}
+func TestNativeInterpretationReplayPositive(t *testing.T) {
+	f := interpretationNative(t, "good")
+	r, e := f.s.Store.Attempt(context.Background(), f.attempt)
+	requireListening(t, e)
+	key := uuid.NewString()
+	first, e := f.interpret(t, key)
+	requireListening(t, e)
+	second, e := f.s.InterpretAttempt(context.Background(), f.attempt, key, 1, r.Attempt["answer_utf8_sha256"].(string), r.Attempt["configuration_sha256"].(string), f.model.Client())
+	requireListening(t, e)
+	if first.ID != second.ID || f.calls.Load() != 2 {
+		t.Fatal(first, second, f.calls.Load())
+	}
+}
+func TestNativeInterpretationRetryConflictNegative(t *testing.T) {
+	f := interpretationNative(t, "good")
+	r, e := f.s.Store.Attempt(context.Background(), f.attempt)
+	requireListening(t, e)
+	_, e = f.s.InterpretAttempt(context.Background(), f.attempt, uuid.NewString(), 1, strings.Repeat("0", 64), r.Attempt["configuration_sha256"].(string), f.model.Client())
+	if e != ErrConflict || f.calls.Load() != 0 {
+		t.Fatal(e, f.calls.Load())
+	}
+}
+func TestNativeInterpretationFrozenSettingsNegative(t *testing.T) {
+	f := interpretationNative(t, "good")
+	c, rev, e := f.s.Store.Configuration(context.Background())
+	requireListening(t, e)
+	c["llm_profiles"].([]any)[0].(map[string]any)["model"] = "changed-after-start"
+	for _, k := range []string{"workspace_id", "configuration_sha256", "provider_access_policy"} {
+		delete(c, k)
+	}
+	raw, _ := json.Marshal(c)
+	_, _, e = f.s.Store.PutConfiguration(context.Background(), raw, uuid.NewString(), rev)
+	requireListening(t, e)
+	state, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	if state.Status != "complete" {
+		t.Fatal(state)
+	}
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	for _, wire := range f.wires {
+		if wire["model"] != "constructed-interpreter" {
+			t.Fatal("attempt silently adopted new model")
+		}
+	}
+}
+func TestNativeInterpretationAuditPositive(t *testing.T) {
+	f := interpretationNative(t, "audit-good")
+	state, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	if state.Status != "complete" || state.Audit == nil || f.audits.Load() != 1 {
+		t.Fatal(state, f.calls.Load())
+	}
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	wire, _ := json.Marshal(f.wires[2])
+	if strings.Contains(string(wire), "The present-tense verb should agree with its singular subject.") || strings.Contains(string(wire), "prior_decisions") {
+		t.Fatal("auditor received first mapping output")
+	}
+}
+func TestNativeInterpretationAuditUnavailableNegative(t *testing.T) {
+	f := interpretationNative(t, "audit-retry-budget")
+	state, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	if state.Status != "complete" || state.Mapping == nil || state.Audit != nil || f.maps.Load() != 2 || f.audits.Load() != 1 {
+		t.Fatal(state)
+	}
+	var issues []InterpretationIssue
+	requireListening(t, f.s.Store.readInterpretationJSON(context.Background(), state.Issues, &issues))
+	if len(issues) != 1 || issues[0].Code != "audit_disagreement" || issues[0].Blocks {
+		t.Fatal(issues)
+	}
+	f.mode.Store("good")
+	next, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	if next.Audit == nil || f.extracts.Load() != 1 || f.maps.Load() != 2 || f.audits.Load() != 2 {
+		t.Fatal(next, f.calls.Load())
+	}
+	w := f.request("GET", "/api/v1/attempts/"+f.attempt+"/results", "", "", "")
+	if w.Code != 200 || !strings.Contains(w.Body.String(), `"audit_status":"complete"`) || !strings.Contains(w.Body.String(), `"issues":[]`) {
+		t.Fatal(w.Code, w.Body.String())
+	}
+}
+func TestNativeInterpretationBlindContextPositive(t *testing.T) {
+	f := interpretationNative(t, "good")
+	_, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	wire, _ := json.Marshal(f.wires[0])
+	for _, hidden := range []string{"ground_truth", "mutation_key:", "canonical_text", "surface_text", "The café opens tomorrow."} {
+		if strings.Contains(string(wire), hidden) {
+			t.Fatal("blind key disclosure", hidden)
+		}
+	}
+	if !strings.Contains(string(wire), "Use opens.") {
+		t.Fatal("missing original answer")
+	}
+}
+func TestNativeInterpretationFullRegistryPositive(t *testing.T) {
+	f := interpretationNative(t, "good")
+	state, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	var r InterpretationResources
+	requireListening(t, f.s.Store.readInterpretationJSON(context.Background(), state.Resources, &r))
+	if len(r.Taxonomy) != 122 {
+		t.Fatal(len(r.Taxonomy))
+	}
+	covered := map[string]bool{}
+	for _, v := range r.Aliases {
+		a := v.(map[string]any)
+		for _, id := range a["target_ids"].([]any) {
+			covered[id.(string)] = true
+		}
+	}
+	projection := mappingTaxonomyContext(r, "Use opens.")
+	if len(projection) != 122 {
+		t.Fatal("taxonomy member dropped")
+	}
+	found := false
+	for _, v := range projection {
+		row := v.(map[string]any)
+		if row["id"] == "grammar.verbs.subject_verb_agreement" {
+			found = row["definition"] != "" && row["definition"] != nil
+		}
+	}
+	if !found {
+		t.Fatal("actual target definition omitted")
+	}
+	for _, v := range r.Taxonomy {
+		if !covered[v.(map[string]any)["id"].(string)] {
+			t.Fatal("missing alias context")
+		}
+	}
+}
+func TestNativeInterpretationWrongConfigurationNegative(t *testing.T) {
+	f := interpretationNative(t, "good")
+	r, e := f.s.Store.Attempt(context.Background(), f.attempt)
+	requireListening(t, e)
+	_, e = f.s.InterpretAttempt(context.Background(), f.attempt, uuid.NewString(), 1, r.Attempt["answer_utf8_sha256"].(string), strings.Repeat("0", 64), f.model.Client())
+	if e != ErrConflict || f.calls.Load() != 0 {
+		t.Fatal(e, f.calls.Load())
+	}
+}
+func TestNativeInterpretationPublicPrivacyNegative(t *testing.T) {
+	f := interpretationNative(t, "good")
+	_, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	w := f.request("GET", "/api/v1/attempts/"+f.attempt+"/results", "", "", "")
+	if w.Code != 200 {
+		t.Fatal(w.Code, w.Body.String())
+	}
+	if _, _, e := contracts.Validate("result-envelope", "2.0.0", w.Body.Bytes()); e != nil {
+		t.Fatal(e)
+	}
+	for _, hidden := range []string{"resources_asset_id", "receipt_ids", "context_snapshot_id", "provider_request_id", "wire_request", "credential_ref", "mapping_asset_id", "canonical_text"} {
+		if strings.Contains(w.Body.String(), hidden) {
+			t.Fatal("private result field", hidden)
+		}
+	}
+	if !strings.Contains(w.Body.String(), `"decision":"matched_error"`) || !strings.Contains(w.Body.String(), `"score":null`) {
+		t.Fatal(w.Body.String())
+	}
+}
+
+func mustJSON(v any) []byte { b, _ := json.Marshal(v); return b }
+func TestNativeInterpretationMalformedExtractionNegative(t *testing.T) {
+	f := interpretationNative(t, "bad-extraction")
+	state, e := f.interpret(t, uuid.NewString())
+	if e == nil || state.Extraction != nil || state.Status != "failed" || f.extracts.Load() != 2 || f.maps.Load() != 0 {
+		t.Fatal(state, e, f.calls.Load())
+	}
+}
+func TestNativeInterpretationLateNegative(t *testing.T) {
+	f := interpretationNative(t, "blocked")
+	t.Cleanup(func() {
+		select {
+		case <-f.release:
+		default:
+			close(f.release)
+		}
+	})
+	done := make(chan error, 1)
+	go func() { _, e := f.interpret(t, uuid.NewString()); done <- e }()
+	<-f.entered
+	_, e := f.s.Store.DB.Exec(context.Background(), "UPDATE interpretation_checkpoint SET deadline_at=clock_timestamp()-interval '1 second' WHERE attempt_id=$1", f.attempt)
+	requireListening(t, e)
+	close(f.release)
+	if e = <-done; e == nil {
+		t.Fatal("late output accepted")
+	}
+	state, e := f.s.Store.interpretationState(context.Background(), f.attempt)
+	requireListening(t, e)
+	if state.Extraction != nil || state.Mapping != nil || state.Status != "failed" {
+		t.Fatal(state)
+	}
+	f.mode.Store("good")
+	next, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	if next.Status != "complete" || f.extracts.Load() != 2 {
+		t.Fatal(next, f.extracts.Load())
+	}
+	lateAuditFinalizer(t)
+}
+func TestNativeInterpretationCancellationPositive(t *testing.T) {
+	f := interpretationNative(t, "blocked")
+	t.Cleanup(func() {
+		select {
+		case <-f.release:
+		default:
+			close(f.release)
+		}
+	})
+	r, e := f.s.Store.Attempt(context.Background(), f.attempt)
+	requireListening(t, e)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	done := make(chan error, 1)
+	go func() {
+		_, e := f.s.InterpretAttempt(ctx, f.attempt, uuid.NewString(), 1, r.Attempt["answer_utf8_sha256"].(string), r.Attempt["configuration_sha256"].(string), f.model.Client())
+		done <- e
+	}()
+	<-f.entered
+	cancel()
+	if e = <-done; e == nil {
+		t.Fatal("cancellation accepted")
+	}
+	close(f.release)
+	f.mode.Store("good")
+	state, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	if state.Status != "complete" || f.extracts.Load() != 2 {
+		t.Fatal(state, f.extracts.Load())
+	}
+}
+func TestNativeInterpretationExpiredRecoveryPositive(t *testing.T) {
+	f := interpretationNative(t, "good")
+	r, e := f.s.Store.Attempt(context.Background(), f.attempt)
+	requireListening(t, e)
+	lease, e := f.s.Store.acquireInterpretation(context.Background(), f.attempt, uuid.NewString(), 1, r.Attempt["answer_utf8_sha256"].(string), r.Attempt["configuration_sha256"].(string))
+	requireListening(t, e)
+	// Test-owned DB time fixture models a crashed owner, not a claim of waiting 300 seconds.
+	tx, e := beginWrite(context.Background(), f.s.Store)
+	requireListening(t, e)
+	a, e := f.s.Store.Attempt(context.Background(), f.attempt)
+	requireListening(t, e)
+	a.Attempt["lease_expires_at"] = time.Now().Add(-time.Hour).UTC().Format(time.RFC3339Nano)
+	a.Attempt["revision"] = float64(3)
+	requireListening(t, f.s.Store.writeInterpretationAttempt(context.Background(), tx, a.Attempt, 2))
+	requireListening(t, tx.Commit(context.Background()))
+	next, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	if next.Status != "complete" {
+		t.Fatal(next)
+	}
+	_, e = f.s.Store.failInterpretationLease(context.Background(), lease, "STALE")
+	if e != ErrEvaluationLease {
+		t.Fatal("old owner finalized", e)
+	}
+	current, e := f.s.Store.Attempt(context.Background(), f.attempt)
+	requireListening(t, e)
+	if current.Attempt["lease_epoch"] != float64(2) || current.Attempt["state"] != "saved" {
+		t.Fatal(current)
+	}
+}
+
+func (f *nativeInterpretation) currentMode() string {
+	if f.modePath != "" {
+		if b, e := os.ReadFile(f.modePath); e == nil {
+			return strings.TrimSpace(string(b))
+		}
+	}
+	return f.mode.Load().(string)
+}
+
+func TestNativeInterpretationRestartPositive(t *testing.T) {
+	f := interpretationNative(t, "good")
+	state, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	server := NewServer(f.s.Store, f.s.Origin, "")
+	server.token = f.s.token
+	f.s = server
+	w := f.request("GET", "/api/v1/attempts/"+f.attempt+"/results", "", "", "")
+	if w.Code != 200 || !strings.Contains(w.Body.String(), `"decision":"matched_error"`) || f.calls.Load() != 2 {
+		t.Fatal(w.Code, w.Body.String())
+	}
+	saved, e := f.s.Store.interpretationState(context.Background(), f.attempt)
+	requireListening(t, e)
+	if saved.ID != state.ID {
+		t.Fatal(saved)
+	}
+}
+func TestNativeInterpretationAuditDiagnosticPositive(t *testing.T) {
+	f := interpretationNative(t, "audit-disagreement")
+	state, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	var issues []InterpretationIssue
+	requireListening(t, f.s.Store.readInterpretationJSON(context.Background(), state.Issues, &issues))
+	if state.Status != "complete" || len(issues) != 1 || issues[0].Blocks {
+		t.Fatal(state, issues)
+	}
+}
+func TestNativeInterpretationAuditIndependenceNegative(t *testing.T) {
+	f := interpretationNative(t, "audit-good")
+	_, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	wire := string(mustJSON(f.wires[2]))
+	for _, forbidden := range []string{"prior_decisions", "The present-tense verb should agree with its singular subject."} {
+		if strings.Contains(wire, forbidden) {
+			t.Fatal("auditor received mapper finding", forbidden)
+		}
+	}
+	if f.audits.Load() != 1 || f.maps.Load() != 1 {
+		t.Fatal(f.calls.Load())
+	}
+}
+
+func lateAuditFinalizer(t *testing.T) {
+	f := interpretationNative(t, "audit-blocked")
+	t.Cleanup(func() {
+		select {
+		case <-f.release:
+		default:
+			close(f.release)
+		}
+	})
+	done := make(chan error, 1)
+	go func() { _, e := f.interpret(t, uuid.NewString()); done <- e }()
+	<-f.entered
+	_, e := f.s.Store.DB.Exec(context.Background(), "UPDATE interpretation_checkpoint SET deadline_at=clock_timestamp()-interval '1 second' WHERE attempt_id=$1", f.attempt)
+	requireListening(t, e)
+	close(f.release)
+	if e = <-done; e == nil {
+		t.Fatal("late finalizer accepted")
+	}
+	state, e := f.s.Store.interpretationState(context.Background(), f.attempt)
+	requireListening(t, e)
+	if state.Status != "failed" || state.Mapping == nil || state.Audit != nil {
+		t.Fatal(state)
+	}
+	f.mode.Store("good")
+	next, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	if next.Status != "complete" || f.extracts.Load() != 1 || f.maps.Load() != 1 {
+		t.Fatal(next, f.calls.Load())
+	}
+}

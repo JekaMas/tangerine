@@ -4,6 +4,8 @@ import {useEffect, useRef, useState} from 'react';
 // Own the listening session and HTTP transitions; rendering lives in page.js.
 export default function useListening() {
   const [attempt, setAttempt] = useState(null);
+  const [results,setResults]=useState(null);
+  const answerHash=useRef(''),configurationHash=useRef('');
   const [answer, setAnswer] = useState('');
   const [language, setLanguage] = useState('en');
   const [recovered, setRecovered] = useState(null);
@@ -30,6 +32,8 @@ export default function useListening() {
     const value = await response.json();
     revision.current = response.headers.get('etag');
     audioHash.current = response.headers.get('x-tangerine-audio-sha256');
+    answerHash.current=response.headers.get('x-tangerine-answer-sha256');
+    configurationHash.current=response.headers.get('x-tangerine-configuration-sha256');
     setAttempt(value);
     if (value.submitted_at != null) {
       const local = draft.current;
@@ -40,6 +44,8 @@ export default function useListening() {
       // survives separately and can never masquerade as the immutable submission.
       showDraft(value.answer_text, value.requested_language);
       pending.current = null;
+      const saved=await fetch(value.results_path,{cache:'no-store'});
+      if(saved.ok){setResults(await saved.json());}else{setError('Your answer is saved. Findings are temporarily unavailable. Refresh to retry.');}
     } else if (!preserve || !draft.current.dirty) {
       showDraft(value.answer_text, value.requested_language);
     }
@@ -106,9 +112,11 @@ export default function useListening() {
       const response = await fetch('/api/v1/attempts/' + attemptID.current + action, {
         method: submit ? 'POST' : 'PUT',
         headers: {'Content-Type': 'application/json', 'If-Match': revision.current, 'Idempotency-Key': pending.current.key},
-        body, signal: AbortSignal.timeout(270000),
+        body, signal: AbortSignal.timeout(310000),
       });
-      if (!response.ok) throw Error(response.status === 412
+      const outcome=await response.json();
+      const committed=submit&&outcome.attempt_id===attemptID.current&&outcome.status==='evaluation_failed';
+      if (!response.ok&&!committed) throw Error(response.status === 412
         ? 'The saved draft changed. Your text is retained. Refresh saved state, then save again.'
         : response.status === 409 ? 'This answer is already submitted or conflicts with a saved request. Your text is retained. Refresh saved state.'
           : 'Your answer could not be saved. Your text is retained. Retry the same action.');
@@ -116,8 +124,23 @@ export default function useListening() {
       pending.current = null;
       await load();
       setNotice(submit ? 'Answer submitted and saved.' : 'Draft saved.');
+      if(committed)setError('Your answer is saved. Checking failed. Retry checking after the service is available.');
     } catch (e) { setError(e.message); }
     finally { setBusy(false); }
+  }
+  async function retryChecking(){
+    setBusy(true);setError('');setNotice('');
+    const body=JSON.stringify({answer_sha256:answerHash.current,configuration_sha256:configurationHash.current});
+    const signature='retry|'+revision.current+'|'+body;
+    if(pending.current?.signature!==signature)pending.current={signature,key:crypto.randomUUID()};
+    try{
+      const response=await fetch('/api/v1/attempts/'+attemptID.current+':retry',{method:'POST',headers:{'Content-Type':'application/json','If-Match':revision.current,'Idempotency-Key':pending.current.key},body,signal:AbortSignal.timeout(310000)});
+      const value=await response.json();
+      if(!response.ok&&value.attempt_id!==attemptID.current)throw Error(response.status===409?'Checking is already active or the saved state changed. Refresh saved state.':'Checking is unavailable. Your submitted answer is retained.');
+      pending.current=null;await load();
+      if(value.status==='evaluation_failed')setError('Your answer is saved. Checking failed. Retry checking after the service is available.');
+      else setNotice('Saved findings refreshed.');
+    }catch(e){setError(e.message)}finally{setBusy(false)}
   }
   function editAnswer(text) {
     draft.current.answer = text; draft.current.dirty = true;
@@ -140,7 +163,7 @@ export default function useListening() {
       body: JSON.stringify(value),
     }).catch(() => {});
   }
-  return {attempt, answer, language, recovered, error, notice, busy, audioRevision,
+  return {attempt, answer, language, recovered, results, error, notice, busy, audioRevision, retryChecking,
     canRefresh: !!attemptID.current, refresh, write, editAnswer, editLanguage, playback,
     audioError: () => setError('Saved audio is temporarily unavailable. Your answer is retained. Refresh saved state to retry playback.')};
 }

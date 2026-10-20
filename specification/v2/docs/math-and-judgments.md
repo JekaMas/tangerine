@@ -60,7 +60,7 @@ Missing category text gives zero classification coverage. It is not an unknown-a
 ## Correction and explanation tuple rules
 
 For an eligible detected unit, an absent correction has supplied=false, option_id=null, empty proposition sets, and zero credit.
-A supplied correction refers to exactly one reviewed option or a reviewed equivalent option set.
+For positive or partial repair credit, a supplied correction refers to exactly one authored option or an equivalent option set. A definite LLM rejection of the actual supplied correction can have option_id=null and empty proposition sets: no valid option matched, and the bounded rejected finding yields native zero credit. Do not convert that resolved rejection into novel-alternative uncertainty merely because no valid option matched. An explicit unresolved reason remains unresolved; no accepted/partial credit is created without a valid nonempty rubric.
 The required proposition set must be nonempty. Every satisfied or violated ID must belong to that exact unit and option.
 `violated_proposition_ids` identifies forbidden assertions, not required propositions that were merely omitted.
 If that component has a forbidden assertion or a verified unsupported additional_assertion, code sets that component credit to zero. Unknown additional assertions make only that component unavailable when no verified forbidden condition already determines zero.

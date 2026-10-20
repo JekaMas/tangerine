@@ -13,6 +13,9 @@ func ProjectVisible(text, kind string) ([]byte, error) { return projectVisible(t
 // A rejected projection is available only to an opt-in diagnostic callback. It
 // never becomes an admitted result; the public projection API keeps nil on error.
 func projectVisible(text, kind string, includeRejected bool) ([]byte, error) {
+	return projectStageVisible(text, kind, includeRejected, nil)
+}
+func projectStageVisible(text, kind string, includeRejected bool, normalize func(any) any) ([]byte, error) {
 	registry, e := contracts.Registry()
 	if e != nil {
 		return nil, e
@@ -75,6 +78,9 @@ func projectVisible(text, kind string, includeRejected bool) ([]byte, error) {
 			var value any
 			if json.Unmarshal(raw, &value) != nil {
 				continue
+			}
+			if normalize != nil {
+				value = normalize(value)
 			}
 			value = projectValue(value, schema, registry)
 			projected, _ := json.Marshal(value)

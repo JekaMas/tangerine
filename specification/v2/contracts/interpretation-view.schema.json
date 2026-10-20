@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/interpretation-view.schema.json",
+  "title": "interpretation-view",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "status": {
+      "enum": [
+        "running",
+        "complete",
+        "review_required",
+        "failed"
+      ]
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "group_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "claim_span": {
+            "$ref": "claim-extraction.schema.json#/properties/clauses/items/properties/claim_span"
+          },
+          "stance": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "group_id",
+          "claim_span",
+          "stance",
+          "active"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claim_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "unit_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "decision": {
+            "type": "string"
+          },
+          "category_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "correction": {
+            "type": "object",
+            "properties": {
+              "supplied": {
+                "type": "boolean"
+              },
+              "status": {
+                "type": "string"
+              },
+              "source_texts": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "additional_assertions": {
+                "type": "array",
+                "items": {
+                  "$ref": "evaluator-output.schema.json#/properties/decisions/items/properties/explanation/properties/additional_assertions/items"
+                }
+              }
+            },
+            "required": [
+              "supplied",
+              "status",
+              "source_texts",
+              "additional_assertions"
+            ],
+            "additionalProperties": false
+          },
+          "explanation": {
+            "type": "object",
+            "properties": {
+              "supplied": {
+                "type": "boolean"
+              },
+              "status": {
+                "type": "string"
+              },
+              "source_texts": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "additional_assertions": {
+                "type": "array",
+                "items": {
+                  "$ref": "evaluator-output.schema.json#/properties/decisions/items/properties/explanation/properties/additional_assertions/items"
+                }
+              }
+            },
+            "required": [
+              "supplied",
+              "status",
+              "source_texts",
+              "additional_assertions"
+            ],
+            "additionalProperties": false
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "claim_id",
+          "unit_id",
+          "decision",
+          "category_id",
+          "correction",
+          "explanation",
+          "note"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "error_code": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "audit_status": {
+      "enum": [
+        "not_run",
+        "complete",
+        "failed",
+        "disagreement"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "status",
+    "claims",
+    "decisions",
+    "error_code",
+    "audit_status"
+  ],
+  "additionalProperties": false
+}

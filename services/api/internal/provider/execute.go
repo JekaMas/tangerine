@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -29,16 +31,18 @@ type Attempt struct {
 	Err        error
 }
 type ExecuteRequest struct {
-	Profile         Profile
-	Instructions    string
-	Input           []any
-	Format          any
-	OutputKind      string
-	Timeout         time.Duration
-	DiagnoseInvalid func([]byte) string
-	Validate        func([]byte) error
-	Before          func(context.Context, Attempt) error
-	After           func(context.Context, Attempt) error
+	NormalizeProjection func(any) any
+	AllowTransportRetry func() bool
+	Profile             Profile
+	Instructions        string
+	Input               []any
+	Format              any
+	OutputKind          string
+	Timeout             time.Duration
+	DiagnoseInvalid     func([]byte) string
+	Validate            func([]byte) error
+	Before              func(context.Context, Attempt) error
+	After               func(context.Context, Attempt) error
 }
 
 func Execute(ctx context.Context, client *http.Client, r ExecuteRequest, credential string) ([]byte, []Attempt, error) {
@@ -67,9 +71,9 @@ func Execute(ctx context.Context, client *http.Client, r ExecuteRequest, credent
 		a.Response, e = Exchange(ctx, client, r.Profile, wire, credential)
 		if e == nil {
 			if r.DiagnoseInvalid == nil {
-				a.Projection, e = ProjectVisible(a.Response.Visible, r.OutputKind)
+				a.Projection, e = projectStageVisible(a.Response.Visible, r.OutputKind, false, r.NormalizeProjection)
 			} else {
-				a.Projection, e = projectVisible(a.Response.Visible, r.OutputKind, true)
+				a.Projection, e = projectStageVisible(a.Response.Visible, r.OutputKind, true, r.NormalizeProjection)
 				if e != nil && len(a.Projection) > 0 {
 					if detail := r.DiagnoseInvalid(a.Projection); detail != "" {
 						var invalid *OutputValidationError
@@ -118,7 +122,21 @@ func Execute(ctx context.Context, client *http.Client, r ExecuteRequest, credent
 			kind = "structured_fallback"
 			continue
 		}
-		if a.Response.Outcome == "transport_error" && !retried && (a.Response.HTTPStatus == nil || *a.Response.HTTPStatus >= 500) {
+		if a.Response.Outcome == "transport_error" && !retried && retryableTransport(a.Response, r.AllowTransportRetry != nil) && (r.AllowTransportRetry == nil || r.AllowTransportRetry()) {
+			if r.AllowTransportRetry != nil {
+				delay := transportRetryDelay(a.Response.RetryAfter, time.Now())
+				deadline, _ := ctx.Deadline()
+				if time.Until(deadline) < delay+5*time.Second {
+					return nil, attempts, e
+				}
+				timer := time.NewTimer(delay)
+				select {
+				case <-ctx.Done():
+					timer.Stop()
+					return nil, attempts, ctx.Err()
+				case <-timer.C:
+				}
+			}
 			retried = true
 			kind = "transport_retry"
 			continue
@@ -142,4 +160,30 @@ func Execute(ctx context.Context, client *http.Client, r ExecuteRequest, credent
 		return nil, attempts, e
 	}
 	return nil, attempts, fail("PROVIDER_OUTPUT_INVALID")
+}
+
+// Existing standalone callers retain their adapter retry policy. Foreground
+// evaluation shares one retry and follows its narrower saved runtime contract.
+func retryableTransport(r Response, foreground bool) bool {
+	if r.HTTPStatus == nil {
+		return len(r.Raw) == 0
+	}
+	if !foreground {
+		return *r.HTTPStatus >= 500
+	}
+	switch *r.HTTPStatus {
+	case 408, 429, 502, 503, 504:
+		return true
+	}
+	return false
+}
+func transportRetryDelay(value string, now time.Time) time.Duration {
+	value = strings.TrimSpace(value)
+	if seconds, e := strconv.ParseInt(value, 10, 32); e == nil && seconds >= 0 {
+		return time.Duration(seconds) * time.Second
+	}
+	if at, e := http.ParseTime(value); e == nil && !at.Before(now) {
+		return at.Sub(now)
+	}
+	return time.Second
 }

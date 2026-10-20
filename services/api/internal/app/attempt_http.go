@@ -15,6 +15,10 @@ import (
 func attemptHTTPError(w http.ResponseWriter, e error) {
 	status, code := 503, "INFRASTRUCTURE_UNAVAILABLE"
 	switch {
+	case errors.Is(e, ErrEvaluationActive):
+		status, code = 409, "EVALUATION_ACTIVE"
+	case errors.Is(e, ErrEvaluationLease):
+		status, code = 409, "EVALUATION_LEASE_STALE"
 	case errors.Is(e, ErrInput):
 		status, code = 400, "INVALID_JSON"
 	case errors.Is(e, ErrCapacity):
@@ -49,6 +53,8 @@ func attemptBody(w http.ResponseWriter, r *http.Request) ([]byte, error) {
 func attemptETag(w http.ResponseWriter, a map[string]any) {
 	w.Header().Set("ETag", strconv.Quote(strconv.Itoa(int(a["revision"].(float64)))))
 	w.Header().Set("X-Tangerine-Audio-SHA256", a["audio_sha256"].(string))
+	w.Header().Set("X-Tangerine-Answer-SHA256", a["answer_utf8_sha256"].(string))
+	w.Header().Set("X-Tangerine-Configuration-SHA256", a["configuration_sha256"].(string))
 }
 func (s *Server) attemptStart(w http.ResponseWriter, r *http.Request) {
 	raw, e := attemptBody(w, r)
@@ -96,7 +102,8 @@ func (s *Server) attemptAnswer(w http.ResponseWriter, r *http.Request, submit bo
 	}
 	attemptETag(w, a)
 	if submit {
-		writeJSON(w, 200, savedResult(a))
+		state, callErr := s.InterpretAttempt(r.Context(), r.PathValue("id"), r.Header.Get("Idempotency-Key"), int64(a["revision"].(float64)), a["answer_utf8_sha256"].(string), a["configuration_sha256"].(string), nil)
+		s.interpretationResponse(w, r, state, callErr)
 	} else {
 		writeJSON(w, 200, attemptOperation(op, a))
 	}
@@ -164,5 +171,15 @@ func (s *Server) attemptResults(w http.ResponseWriter, r *http.Request) {
 		attemptHTTPError(w, ErrAttemptState)
 		return
 	}
-	writeJSON(w, 200, savedResult(v.Attempt))
+	state, e := s.Store.interpretationState(r.Context(), r.PathValue("id"))
+	if e != nil {
+		attemptHTTPError(w, e)
+		return
+	}
+	envelope, e := s.Store.interpretationEnvelope(r.Context(), v, state)
+	if e != nil {
+		attemptHTTPError(w, e)
+		return
+	}
+	writeJSON(w, 200, envelope)
 }

@@ -7001,7 +7001,7 @@
     {
       "kind": "error-response",
       "schema": "contracts/error-response.schema.json",
-      "sha256": "e9000cfaecb892108ba15cfe04ae71c32d5c084493349cd5a8ab4d13b36c9387",
+      "sha256": "0df9387a2a368a2aaa36287649f63995c021d73d62f6877647c2efec513effd1",
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -7012,7 +7012,7 @@
           "required_in_parent": true,
           "description": "The fixed error code from domain/error-codes.yaml.",
           "schema_reference": null,
-          "rule_sha256": "7b3d5da4514564f96121e8dfa5978c3c09748ce04f3a184fbeaf9e0db10197fc"
+          "rule_sha256": "90f00e704c4bdccc0a0826523a0f3716ade38763fea248dca00c0c23500f8acc"
         },
         {
           "name": "message",
@@ -8005,7 +8005,7 @@
     {
       "kind": "evaluator-output",
       "schema": "contracts/evaluator-output.schema.json",
-      "sha256": "2b85b07cbf9bfb1c74687542a74bc1252a19b8cb4b7fd05da8690f0773218ed8",
+      "sha256": "5fe6a5188cfb145bfbd3effe297cf6d5b810b76df041ed015e33169ee918c198",
       "schema_version": "1.0.0",
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -8024,7 +8024,7 @@
           "required_in_parent": true,
           "description": "These records contain one supported outcome for every extracted claim.",
           "schema_reference": null,
-          "rule_sha256": "f2d850844cec6f445e108640fdadb0ae6eed1c91f0d031a95e82e7ac9037fb26"
+          "rule_sha256": "e8897153d233b070d62109592d12eea829a36aced29a373066deb0dea5d57b81"
         },
         {
           "name": "claim_id",
@@ -8046,9 +8046,9 @@
           "name": "decision",
           "pointer": "/properties/decisions/items/properties/decision",
           "required_in_parent": true,
-          "description": "This field states the supported mapping outcome for one claim.",
+          "description": "Whether the listener identified or accepted the original heard target. This is separate from whether their proposed repair or explanation is correct.",
           "schema_reference": null,
-          "rule_sha256": "91057a91378be808b9fba02629e287430ff69f83e9db2f315f8c52f600b5a51c"
+          "rule_sha256": "2544e8f93944cd5ffe2604660690e5b4c972d49238bb15842f7de9cb78002e92"
         },
         {
           "name": "duplicate_of_claim_id",
@@ -8072,7 +8072,7 @@
           "required_in_parent": true,
           "description": "Independent correction assessment; rationale assertions cannot cancel a valid repair.",
           "schema_reference": null,
-          "rule_sha256": "18103ff40b8ef937b7adaa7ae1fe2bd8624862399fc7f254793bd2bfd0a194d1"
+          "rule_sha256": "dbcee2a2525e1266c4d647fa0737f6389dcff646536bbe49e500ed62bc2229c9"
         },
         {
           "name": "explanation",
@@ -8080,7 +8080,7 @@
           "required_in_parent": true,
           "description": "Optional explanation assessment even when task flag is false; absence is not a primary-grade penalty.",
           "schema_reference": null,
-          "rule_sha256": "826dbd574a01782eec0d25fd2b74cef9aeb8d29096958dea0786f755d39a8fbd"
+          "rule_sha256": "0a642422070305d28b70de3455dc4e59f5047c475119de16355fd21a952a0160"
         },
         {
           "name": "evidence_ids",
@@ -8118,17 +8118,17 @@
           "name": "option_id",
           "pointer": "/properties/decisions/items/properties/correction/properties/option_id",
           "required_in_parent": true,
-          "description": "This identifier selects one existing reviewed correction option.",
+          "description": "An existing comparison rubric for the listener proposal. Its gold text is not the listener's proposal. A definite rejected repair can have null here when no valid option matches; null never grants positive credit.",
           "schema_reference": null,
-          "rule_sha256": "8d43125a6178459f7271f7e04742335aa11450fa409431bbece3ff121cd5752b"
+          "rule_sha256": "3afa17ef42736ea02373cdf82a8e581583cf8de10163defe91338db7dd6e35d0"
         },
         {
           "name": "satisfied_proposition_ids",
           "pointer": "/properties/decisions/items/properties/correction/properties/satisfied_proposition_ids",
           "required_in_parent": true,
-          "description": "These existing required propositions match the actual teacher answer.",
+          "description": "IDs of reference conditions actually satisfied by the listener's correction wording. Do not copy IDs merely because they appear in the gold key. Reference text and listener text are different subjects.",
           "schema_reference": null,
-          "rule_sha256": "8f3998822131cb829addc163a4d67a7ea630f8f446c8abe1aa08e51454dd530e"
+          "rule_sha256": "f639d978ae48e590f0f1693d6b6afabbe3104c6b04d954da4cf113d17e31b7a4"
         },
         {
           "name": "violated_proposition_ids",
@@ -8142,9 +8142,9 @@
           "name": "status",
           "pointer": "/properties/decisions/items/properties/correction/properties/status",
           "required_in_parent": true,
-          "description": "This field states the parent operation result from its declared enumeration.",
+          "description": "Semantic correctness of the LISTENER'S actual supplied correction, not processing success, not correct detection, and not correctness of the reference key. A matched_error decision does not imply accepted correction.",
           "schema_reference": null,
-          "rule_sha256": "420a54d5b72af7ddf4493ad06348b0f82ef49f07c6956a0db7c0b988faabb7a6"
+          "rule_sha256": "de6263ce1f1b432ad9a168e467c03a488d16f6a6ff3286b407848c39b3211e26"
         },
         {
           "name": "support_evidence_ids",
@@ -8166,9 +8166,9 @@
           "name": "additional_assertions",
           "pointer": "/properties/decisions/items/properties/correction/properties/additional_assertions",
           "required_in_parent": true,
-          "description": "Actual substantive assertions not already represented by required/forbidden propositions, only within this component.",
+          "description": "Exact original listener assertions and their contextual truth, including overbroad or distorted versions of a rule even when part of the sentence also satisfies a narrower required proposition.",
           "schema_reference": null,
-          "rule_sha256": "4795769e9d451e5fbbdc593ccde2cdb762ec07fc3d9f97be4c8ec2dd5d8ec780"
+          "rule_sha256": "bb343a602d5d3973b71479650515cd211b1cecfc3007ccd06ee22cc455877e92"
         },
         {
           "name": "start_cp",
@@ -8222,17 +8222,17 @@
           "name": "option_id",
           "pointer": "/properties/decisions/items/properties/explanation/properties/option_id",
           "required_in_parent": true,
-          "description": "This identifier selects one existing reviewed correction option.",
+          "description": "Always null: explanation conditions come from unit.rationale_required_propositions and unit.rationale_forbidden_propositions, not correction options.",
           "schema_reference": null,
-          "rule_sha256": "8d43125a6178459f7271f7e04742335aa11450fa409431bbece3ff121cd5752b"
+          "rule_sha256": "562f120b3ef8acb3d4348e4526269a3fc5f0b07fa09e196c220b795c3fe0aaf6"
         },
         {
           "name": "satisfied_proposition_ids",
           "pointer": "/properties/decisions/items/properties/explanation/properties/satisfied_proposition_ids",
           "required_in_parent": true,
-          "description": "These existing required propositions match the actual teacher answer.",
+          "description": "IDs of reference conditions actually satisfied by the listener's explanation wording. Do not copy IDs merely because they appear in the gold key. Reference text and listener text are different subjects.",
           "schema_reference": null,
-          "rule_sha256": "8f3998822131cb829addc163a4d67a7ea630f8f446c8abe1aa08e51454dd530e"
+          "rule_sha256": "c3cbee34a6947e0a3b088d69927d0c8e6ffb93031608301049bc96b959831855"
         },
         {
           "name": "violated_proposition_ids",
@@ -8246,9 +8246,9 @@
           "name": "status",
           "pointer": "/properties/decisions/items/properties/explanation/properties/status",
           "required_in_parent": true,
-          "description": "This field states the parent operation result from its declared enumeration.",
+          "description": "Semantic correctness of the LISTENER'S actual supplied explanation, not processing success, not correct detection, and not correctness of the reference key. A matched_error decision does not imply accepted explanation.",
           "schema_reference": null,
-          "rule_sha256": "420a54d5b72af7ddf4493ad06348b0f82ef49f07c6956a0db7c0b988faabb7a6"
+          "rule_sha256": "16584c2b63957a2adc3ae42d24ca404a7f773a462cb29347e808f42e9f98aa84"
         },
         {
           "name": "support_evidence_ids",
@@ -8270,9 +8270,9 @@
           "name": "additional_assertions",
           "pointer": "/properties/decisions/items/properties/explanation/properties/additional_assertions",
           "required_in_parent": true,
-          "description": "Actual substantive assertions not already represented by required/forbidden propositions, only within this component.",
+          "description": "Exact original listener assertions and their contextual truth, including overbroad or distorted versions of a rule even when part of the sentence also satisfies a narrower required proposition.",
           "schema_reference": null,
-          "rule_sha256": "4795769e9d451e5fbbdc593ccde2cdb762ec07fc3d9f97be4c8ec2dd5d8ec780"
+          "rule_sha256": "bb343a602d5d3973b71479650515cd211b1cecfc3007ccd06ee22cc455877e92"
         },
         {
           "name": "start_cp",
@@ -8515,7 +8515,7 @@
     {
       "kind": "extraction-input",
       "schema": "contracts/extraction-input.schema.json",
-      "sha256": "df472564250ad6ac31fb18ba07e963bb96fba9983afbc3d97e818bc56994ead7",
+      "sha256": "e76127c14cd57945b3ae7fa1a984888b2f3eeeaee1d3264ec93c9c030d98577b",
       "schema_version": "2.0.0",
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -8561,6 +8561,14 @@
           "rule_sha256": "457fdf9e0a276f8df1a0c59b7027dfa08d2b5cc1f22568685a84b14601e19b97"
         },
         {
+          "name": "source_tokens",
+          "pointer": "/properties/source_tokens",
+          "required_in_parent": false,
+          "description": "Server-derived exact whitespace token coordinates in the unchanged original answer, for source location only; no key or inferred claim.",
+          "schema_reference": null,
+          "rule_sha256": "0882c1087b939f59c0c96e2fea416062d71c1ee031b11917b02217fefa19f1db"
+        },
+        {
           "name": "detection",
           "pointer": "/properties/task_components/properties/detection",
           "required_in_parent": true,
@@ -8591,6 +8599,30 @@
           "description": "Legacy explanation invitation preference. Under answer-components-v2 explanation is optional and every supplied explanation is assessed independently, regardless of this flag; it does not enter the primary composite.",
           "schema_reference": null,
           "rule_sha256": "7ce90125e31f8eb53804e6e9786b9c8afb8d333e5faca3474c3d96e0264c022b"
+        },
+        {
+          "name": "start_cp",
+          "pointer": "/properties/source_tokens/items/properties/start_cp",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "686f40289f17bc2d6be905d9268764859f8b4cc81d29306a4bc83ff1a337caae"
+        },
+        {
+          "name": "end_cp",
+          "pointer": "/properties/source_tokens/items/properties/end_cp",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "686f40289f17bc2d6be905d9268764859f8b4cc81d29306a4bc83ff1a337caae"
+        },
+        {
+          "name": "exact_text",
+          "pointer": "/properties/source_tokens/items/properties/exact_text",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
         }
       ]
     },
@@ -11777,7 +11809,7 @@
     {
       "kind": "mapping-input",
       "schema": "contracts/mapping-input.schema.json",
-      "sha256": "f372dc2379239964e176fd20cdbfd09d0a043f12cc4a3cbe2da6919484a5686a",
+      "sha256": "6bae29ea3332492243c0410db3114b8f56b6c9670faa0f888cd90502ba34f762",
       "schema_version": "2.0.0",
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -11855,6 +11887,14 @@
           "rule_sha256": "8cd9d9ac43005c321472d0f50a7e2b72f8631fbc9da582e1bad8805f2f19f3e7"
         },
         {
+          "name": "listener_components",
+          "pointer": "/properties/listener_components",
+          "required_in_parent": false,
+          "description": "Canonical source claim IDs and verbatim listener component quotes, making the typed input self-contained; these are not gold corrections or model judgments.",
+          "schema_reference": null,
+          "rule_sha256": "a695fa76e9c819b68d36e3b2a602aada29eceeb81024a56614f4a1315e60fb55"
+        },
+        {
           "name": "normalized_alias",
           "pointer": "/properties/alias_entries/items/properties/normalized_alias",
           "required_in_parent": true,
@@ -11877,6 +11917,30 @@
           "description": "All approved target IDs. Multiple targets remain ambiguous.",
           "schema_reference": null,
           "rule_sha256": "f8a1d3d67581f7459bbb48afeb63fdd5994acc3ba9e864d5d5dfec21728de99d"
+        },
+        {
+          "name": "claim_id",
+          "pointer": "/properties/listener_components/items/properties/claim_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "correction_quotes",
+          "pointer": "/properties/listener_components/items/properties/correction_quotes",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "d7a19ad6de43b74d74eee1584d61d8a1cd8e3460563dc8378a32bea8f4cbeb1e"
+        },
+        {
+          "name": "explanation_quotes",
+          "pointer": "/properties/listener_components/items/properties/explanation_quotes",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "d7a19ad6de43b74d74eee1584d61d8a1cd8e3460563dc8378a32bea8f4cbeb1e"
         }
       ]
     },
@@ -14601,7 +14665,7 @@
     {
       "kind": "result-envelope",
       "schema": "contracts/result-envelope.schema.json",
-      "sha256": "346e814ad94cfc2f4c11044fd3501c7c969d7b2103ce6f30ce922d05c37e420f",
+      "sha256": "eaf354bdbe4c665a1b70680b2d08a6e136da2868f55197da8d823f4ab086dac0",
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -14693,6 +14757,14 @@
           "description": "Historical and reviewed result versions.",
           "schema_reference": null,
           "rule_sha256": "826ded13e147f08e52a55901165af002dbe75b6d6da4d6dcb66a938db4f41dcf"
+        },
+        {
+          "name": "interpretation",
+          "pointer": "/properties/interpretation",
+          "required_in_parent": false,
+          "description": "Saved semantic findings; complete interpretation is not an authoritative numeric grade.",
+          "schema_reference": "interpretation-view.schema.json",
+          "rule_sha256": "e237eb64a9aea2422f62841ddd71e4432485d39e9bf35987953cf7ca098ca586"
         }
       ]
     },
@@ -28901,6 +28973,538 @@
           "description": "Null for no actual source/transform only.",
           "schema_reference": null,
           "rule_sha256": "10c5c6ca0d24746dd77f29cd0919c1633f8beee714bf71f8e2b0ae8b0fb4ffbb"
+        }
+      ]
+    },
+    {
+      "kind": "interpretation-checkpoint",
+      "schema": "contracts/interpretation-checkpoint.schema.json",
+      "schema_version": "2.0.0",
+      "persistent_domain_record": true,
+      "storage": "private immutable document and linked stage assets",
+      "sha256": "b3d339ce1175b3af979dca09878d071038f10813a69ad8b3512db28f2e96a9c8",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "85a2d8aa93ae1cc535108ec2ee447f40f68925db0cd97bb3dc7c597388c444c6"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c51e0a9b62f9658aa2f71f14feb42a7f67c1c6bf2ce2e2fb2d373bda4f994af1"
+        },
+        {
+          "name": "attempt_id",
+          "pointer": "/properties/attempt_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c51e0a9b62f9658aa2f71f14feb42a7f67c1c6bf2ce2e2fb2d373bda4f994af1"
+        },
+        {
+          "name": "case_version_id",
+          "pointer": "/properties/case_version_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c51e0a9b62f9658aa2f71f14feb42a7f67c1c6bf2ce2e2fb2d373bda4f994af1"
+        },
+        {
+          "name": "answer_sha256",
+          "pointer": "/properties/answer_sha256",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "2bc7825d922e6db89d507d832aa4cc3f3c38b01166311bef13d87151c8c67763"
+        },
+        {
+          "name": "configuration_sha256",
+          "pointer": "/properties/configuration_sha256",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "2bc7825d922e6db89d507d832aa4cc3f3c38b01166311bef13d87151c8c67763"
+        },
+        {
+          "name": "prompt_bundle_sha256",
+          "pointer": "/properties/prompt_bundle_sha256",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "2bc7825d922e6db89d507d832aa4cc3f3c38b01166311bef13d87151c8c67763"
+        },
+        {
+          "name": "status",
+          "pointer": "/properties/status",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "7c74c83f0020fd995b27a47c50cf07e90eb08981d05ddb0c7ec7f2043b568847"
+        },
+        {
+          "name": "resources_asset_id",
+          "pointer": "/properties/resources_asset_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c51e0a9b62f9658aa2f71f14feb42a7f67c1c6bf2ce2e2fb2d373bda4f994af1"
+        },
+        {
+          "name": "extraction_asset_id",
+          "pointer": "/properties/extraction_asset_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c2b63c68c5d2da6d5b9d03a8ff6e93a0aa4b1e597f11943d8735338dfb76d9cd"
+        },
+        {
+          "name": "mapping_asset_id",
+          "pointer": "/properties/mapping_asset_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c2b63c68c5d2da6d5b9d03a8ff6e93a0aa4b1e597f11943d8735338dfb76d9cd"
+        },
+        {
+          "name": "audit_asset_id",
+          "pointer": "/properties/audit_asset_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c2b63c68c5d2da6d5b9d03a8ff6e93a0aa4b1e597f11943d8735338dfb76d9cd"
+        },
+        {
+          "name": "issues_asset_id",
+          "pointer": "/properties/issues_asset_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c51e0a9b62f9658aa2f71f14feb42a7f67c1c6bf2ce2e2fb2d373bda4f994af1"
+        },
+        {
+          "name": "stages_asset_id",
+          "pointer": "/properties/stages_asset_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c51e0a9b62f9658aa2f71f14feb42a7f67c1c6bf2ce2e2fb2d373bda4f994af1"
+        },
+        {
+          "name": "failure_code",
+          "pointer": "/properties/failure_code",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "f090cb615c84d7324e2e4975c584267473e030c801e11713a3ec1d99192db7bd"
+        }
+      ]
+    },
+    {
+      "kind": "interpretation-view",
+      "schema": "contracts/interpretation-view.schema.json",
+      "schema_version": "2.0.0",
+      "persistent_domain_record": false,
+      "storage": "closed HTTP projection; no separate durable copy",
+      "sha256": "ad2901778e9cf069c2594b3693a5b49648687a2323950726bbf71602bbc5313f",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "85a2d8aa93ae1cc535108ec2ee447f40f68925db0cd97bb3dc7c597388c444c6"
+        },
+        {
+          "name": "status",
+          "pointer": "/properties/status",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "7c74c83f0020fd995b27a47c50cf07e90eb08981d05ddb0c7ec7f2043b568847"
+        },
+        {
+          "name": "claims",
+          "pointer": "/properties/claims",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c3b6f9eaf98bee6d386bcfaf906fcb0d4b45ae9a1c13915bbe551827a9bf1c0a"
+        },
+        {
+          "name": "decisions",
+          "pointer": "/properties/decisions",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "3d91518e784c2194eb97d0eea372c44cbd9bf2f83eee5155e61dac5aa6c6d297"
+        },
+        {
+          "name": "error_code",
+          "pointer": "/properties/error_code",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "f090cb615c84d7324e2e4975c584267473e030c801e11713a3ec1d99192db7bd"
+        },
+        {
+          "name": "audit_status",
+          "pointer": "/properties/audit_status",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "90621db49c63c0de23598d68cc9614ae50263beecaa7c19ae6e2c331350d377a"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/claims/items/properties/id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c51e0a9b62f9658aa2f71f14feb42a7f67c1c6bf2ce2e2fb2d373bda4f994af1"
+        },
+        {
+          "name": "group_id",
+          "pointer": "/properties/claims/items/properties/group_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c51e0a9b62f9658aa2f71f14feb42a7f67c1c6bf2ce2e2fb2d373bda4f994af1"
+        },
+        {
+          "name": "claim_span",
+          "pointer": "/properties/claims/items/properties/claim_span",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": "claim-extraction.schema.json#/properties/clauses/items/properties/claim_span",
+          "rule_sha256": "2dcd847fdf770ec0b0d06648291f06da8b81f1af9502924b1f89736ac857e9a0"
+        },
+        {
+          "name": "stance",
+          "pointer": "/properties/claims/items/properties/stance",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "active",
+          "pointer": "/properties/claims/items/properties/active",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "7cb541e84f226754a46c21c79f131fa2898354e1242456e6fd1c162bce319553"
+        },
+        {
+          "name": "claim_id",
+          "pointer": "/properties/decisions/items/properties/claim_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c51e0a9b62f9658aa2f71f14feb42a7f67c1c6bf2ce2e2fb2d373bda4f994af1"
+        },
+        {
+          "name": "unit_id",
+          "pointer": "/properties/decisions/items/properties/unit_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c2b63c68c5d2da6d5b9d03a8ff6e93a0aa4b1e597f11943d8735338dfb76d9cd"
+        },
+        {
+          "name": "decision",
+          "pointer": "/properties/decisions/items/properties/decision",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "category_id",
+          "pointer": "/properties/decisions/items/properties/category_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c2b63c68c5d2da6d5b9d03a8ff6e93a0aa4b1e597f11943d8735338dfb76d9cd"
+        },
+        {
+          "name": "correction",
+          "pointer": "/properties/decisions/items/properties/correction",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "f0217ea372bec7afa37e235ba06c547be7ec3376735d35e98c84a37d264426fd"
+        },
+        {
+          "name": "explanation",
+          "pointer": "/properties/decisions/items/properties/explanation",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "f0217ea372bec7afa37e235ba06c547be7ec3376735d35e98c84a37d264426fd"
+        },
+        {
+          "name": "note",
+          "pointer": "/properties/decisions/items/properties/note",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "supplied",
+          "pointer": "/properties/decisions/items/properties/correction/properties/supplied",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "7cb541e84f226754a46c21c79f131fa2898354e1242456e6fd1c162bce319553"
+        },
+        {
+          "name": "status",
+          "pointer": "/properties/decisions/items/properties/correction/properties/status",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "source_texts",
+          "pointer": "/properties/decisions/items/properties/correction/properties/source_texts",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "d7a19ad6de43b74d74eee1584d61d8a1cd8e3460563dc8378a32bea8f4cbeb1e"
+        },
+        {
+          "name": "additional_assertions",
+          "pointer": "/properties/decisions/items/properties/correction/properties/additional_assertions",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "80a7b87d67f784725429c1794ed134e764e0f7045e79bf7647ada40bf9f44478"
+        },
+        {
+          "name": "supplied",
+          "pointer": "/properties/decisions/items/properties/explanation/properties/supplied",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "7cb541e84f226754a46c21c79f131fa2898354e1242456e6fd1c162bce319553"
+        },
+        {
+          "name": "status",
+          "pointer": "/properties/decisions/items/properties/explanation/properties/status",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "source_texts",
+          "pointer": "/properties/decisions/items/properties/explanation/properties/source_texts",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "d7a19ad6de43b74d74eee1584d61d8a1cd8e3460563dc8378a32bea8f4cbeb1e"
+        },
+        {
+          "name": "additional_assertions",
+          "pointer": "/properties/decisions/items/properties/explanation/properties/additional_assertions",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "80a7b87d67f784725429c1794ed134e764e0f7045e79bf7647ada40bf9f44478"
+        }
+      ]
+    },
+    {
+      "kind": "preparation-list",
+      "schema": "contracts/preparation-list.schema.json",
+      "schema_version": null,
+      "persistent_domain_record": false,
+      "storage": "derived DTO or actual operation input/output receipt",
+      "sha256": "446963ea69eda1852052efb0d394a4b7f09ede1ee8aee54fe01f48f6b1cf102a",
+      "fields": [
+        {
+          "name": "items",
+          "pointer": "/properties/items",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "93ca59d64df4cd0347ea26f9001dddceb88608f0e904f53651fca25c7f97ff08"
+        },
+        {
+          "name": "next_cursor",
+          "pointer": "/properties/next_cursor",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "174e29b899b9ef9154a4d74f2c92ab3c556781ce17e916f91e14d80521818844"
+        }
+      ]
+    },
+    {
+      "kind": "preparation-render-error",
+      "schema": "contracts/preparation-render-error.schema.json",
+      "schema_version": null,
+      "persistent_domain_record": false,
+      "storage": "derived DTO or actual operation input/output receipt",
+      "sha256": "f2aa5626d81ba12d618c0df6ec04837bcea94e5ae092311146a9f416616ed812",
+      "fields": [
+        {
+          "name": "preparation",
+          "pointer": "/properties/preparation",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "df7016b6294aa4311c92b717463ed2b39a08780790f208f6ea0b5d20a1b22aaa"
+        },
+        {
+          "name": "code",
+          "pointer": "/properties/code",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": "error-response.schema.json#/properties/code",
+          "rule_sha256": "dd7d3b8c20feb259ad9ad26176e08124f04c0099d7d7ebdef2bae2694a933f21"
+        }
+      ]
+    },
+    {
+      "kind": "preparation-render-request",
+      "schema": "contracts/preparation-render-request.schema.json",
+      "schema_version": null,
+      "persistent_domain_record": false,
+      "storage": "derived DTO or actual operation input/output receipt",
+      "sha256": "cf66a102bba0c79e0bb1ca754ced2f8ea26d867e373faf6fdda8a3de3fc50236",
+      "fields": [
+        {
+          "name": "preparation_id",
+          "pointer": "/properties/preparation_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "f0ebe3aa93e19c80180d6d6225c66c39cd7ad20e6c32e30d129c6cb933d720b7"
+        },
+        {
+          "name": "render_attempt",
+          "pointer": "/properties/render_attempt",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "be5ac72348ac0f643845bd6d067291b863394c92680a17cba91f49f5e165e46c"
+        }
+      ]
+    },
+    {
+      "kind": "preparation-summary",
+      "schema": "contracts/preparation-summary.schema.json",
+      "schema_version": null,
+      "persistent_domain_record": false,
+      "storage": "derived DTO or actual operation input/output receipt",
+      "sha256": "22e2e312e1a21b5a05f18566a8d3c25dc96f4ac01eb76911bed92f31d430fb60",
+      "fields": [
+        {
+          "name": "id",
+          "pointer": "/properties/id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "revision",
+          "pointer": "/properties/revision",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "686f40289f17bc2d6be905d9268764859f8b4cc81d29306a4bc83ff1a337caae"
+        },
+        {
+          "name": "phase_states",
+          "pointer": "/properties/phase_states",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": "preparation-state.schema.json#/properties/phase_states",
+          "rule_sha256": "11687ecf740ce4c67313b7ebca783233c15b422338a4a4da16f9315d5ca930ad"
+        },
+        {
+          "name": "audio_available",
+          "pointer": "/properties/audio_available",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "7cb541e84f226754a46c21c79f131fa2898354e1242456e6fd1c162bce319553"
+        },
+        {
+          "name": "last_failure",
+          "pointer": "/properties/last_failure",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": "preparation-state.schema.json#/properties/last_failure",
+          "rule_sha256": "1a6783cb81c77ef7c7bd5c375e5ca9f817c2b9464b0a03b8f850cb6b3165b4df"
+        },
+        {
+          "name": "next_render_attempt",
+          "pointer": "/properties/next_render_attempt",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "be5ac72348ac0f643845bd6d067291b863394c92680a17cba91f49f5e165e46c"
+        },
+        {
+          "name": "speech_profile_id",
+          "pointer": "/properties/speech_profile_id",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "render_progress_summary",
+          "pointer": "/properties/render_progress_summary",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "3a2da2d6cca0a0fb0efc052d3ad2e3a2dd1408c1d9166bdef4ab22f23c3f1d9a"
+        },
+        {
+          "name": "complete_pieces",
+          "pointer": "/properties/render_progress_summary/properties/complete_pieces",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "686f40289f17bc2d6be905d9268764859f8b4cc81d29306a4bc83ff1a337caae"
+        },
+        {
+          "name": "total_pieces",
+          "pointer": "/properties/render_progress_summary/properties/total_pieces",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "686f40289f17bc2d6be905d9268764859f8b4cc81d29306a4bc83ff1a337caae"
+        },
+        {
+          "name": "first_unfinished_piece_id",
+          "pointer": "/properties/render_progress_summary/properties/first_unfinished_piece_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "174e29b899b9ef9154a4d74f2c92ab3c556781ce17e916f91e14d80521818844"
+        },
+        {
+          "name": "ready_to_assemble",
+          "pointer": "/properties/render_progress_summary/properties/ready_to_assemble",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "7cb541e84f226754a46c21c79f131fa2898354e1242456e6fd1c162bce319553"
         }
       ]
     }

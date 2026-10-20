@@ -16,16 +16,19 @@ import (
 )
 
 type LLMRequest struct {
-	Timeout         time.Duration
-	Operation       OperationRequest
-	Stage           string
-	Phase           *string
-	Input           map[string]any
-	Components      map[string]any
-	Configuration   map[string]any
-	Bundle          lab.Bundle
-	DiagnoseInvalid func([]byte) string
-	Validate        func([]byte) error
+	NormalizeProjection func(any) any
+	FrozenProfile       *provider.Profile
+	TransportRetry      func() bool
+	Timeout             time.Duration
+	Operation           OperationRequest
+	Stage               string
+	Phase               *string
+	Input               map[string]any
+	Components          map[string]any
+	Configuration       map[string]any
+	Bundle              lab.Bundle
+	DiagnoseInvalid     func([]byte) string
+	Validate            func([]byte) error
 }
 type LLMResult struct {
 	Output         json.RawMessage `json:"output"`
@@ -63,7 +66,17 @@ func traceID(n int) string {
 // bundle and independently validated inputs; this owner never changes selection.
 func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http.Client) (LLMResult, error) {
 	result := LLMResult{ReceiptIDs: []string{}, ContextIDs: []string{}}
-	p, e := FreezeProfile(request.Configuration, request.Stage)
+	var p provider.Profile
+	var e error
+	if request.FrozenProfile != nil {
+		p = *request.FrozenProfile
+		e = provider.Included(p)
+		if p.Model == "unselected" {
+			e = &provider.Failure{Code: "CONSTRAINT_CONFLICT"}
+		}
+	} else {
+		p, e = FreezeProfile(request.Configuration, request.Stage)
+	}
 	if e != nil {
 		return result, e
 	}
@@ -181,7 +194,7 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 	inputUsage := map[int]int{}
 	trace := traceID(16)
 	requestAssets := map[int]Asset{}
-	er := provider.ExecuteRequest{Profile: p, Instructions: instructions, Input: input, OutputKind: strings.TrimSuffix(binding.OutputSchema, ".schema.json"), Format: format, Timeout: timeout, Validate: request.Validate, DiagnoseInvalid: request.DiagnoseInvalid}
+	er := provider.ExecuteRequest{NormalizeProjection: request.NormalizeProjection, Profile: p, Instructions: instructions, Input: input, OutputKind: strings.TrimSuffix(binding.OutputSchema, ".schema.json"), Format: format, Timeout: timeout, Validate: request.Validate, DiagnoseInvalid: request.DiagnoseInvalid, AllowTransportRetry: request.TransportRetry}
 	// JSON-schema decoding is opt-in for profiles with observed provider support;
 	// plain JSON still receives the same complete output contract in instructions.
 	er.Before = func(ctx context.Context, a provider.Attempt) error {

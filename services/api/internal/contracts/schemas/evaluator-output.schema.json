@@ -40,7 +40,7 @@
               "unresolved",
               "ignore"
             ],
-            "description": "This field states the supported mapping outcome for one claim."
+            "description": "Whether the listener identified or accepted the original heard target. This is separate from whether their proposed repair or explanation is correct."
           },
           "duplicate_of_claim_id": {
             "anyOf": [
@@ -83,7 +83,7 @@
                     "type": "null"
                   }
                 ],
-                "description": "This identifier selects one existing reviewed correction option."
+                "description": "An existing comparison rubric for the listener proposal. Its gold text is not the listener's proposal. A definite rejected repair can have null here when no valid option matches; null never grants positive credit."
               },
               "satisfied_proposition_ids": {
                 "type": "array",
@@ -92,7 +92,7 @@
                   "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
                 },
                 "minItems": 0,
-                "description": "These existing required propositions match the actual teacher answer."
+                "description": "IDs of reference conditions actually satisfied by the listener's correction wording. Do not copy IDs merely because they appear in the gold key. Reference text and listener text are different subjects."
               },
               "violated_proposition_ids": {
                 "type": "array",
@@ -112,7 +112,7 @@
                   "not_supplied",
                   "unresolved"
                 ],
-                "description": "This field states the parent operation result from its declared enumeration."
+                "description": "Semantic correctness of the LISTENER'S actual supplied correction, not processing success, not correct detection, and not correctness of the reference key. A matched_error decision does not imply accepted correction."
               },
               "support_evidence_ids": {
                 "type": "array",
@@ -185,7 +185,7 @@
                   ],
                   "additionalProperties": false
                 },
-                "description": "Actual substantive assertions not already represented by required/forbidden propositions, only within this component."
+                "description": "Exact original listener assertions and their contextual truth, including overbroad or distorted versions of a rule even when part of the sentence also satisfies a narrower required proposition."
               }
             },
             "required": [
@@ -218,7 +218,7 @@
                     "type": "null"
                   }
                 ],
-                "description": "This identifier selects one existing reviewed correction option."
+                "description": "Always null: explanation conditions come from unit.rationale_required_propositions and unit.rationale_forbidden_propositions, not correction options."
               },
               "satisfied_proposition_ids": {
                 "type": "array",
@@ -227,7 +227,7 @@
                   "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
                 },
                 "minItems": 0,
-                "description": "These existing required propositions match the actual teacher answer."
+                "description": "IDs of reference conditions actually satisfied by the listener's explanation wording. Do not copy IDs merely because they appear in the gold key. Reference text and listener text are different subjects."
               },
               "violated_proposition_ids": {
                 "type": "array",
@@ -247,7 +247,7 @@
                   "not_supplied",
                   "unresolved"
                 ],
-                "description": "This field states the parent operation result from its declared enumeration."
+                "description": "Semantic correctness of the LISTENER'S actual supplied explanation, not processing success, not correct detection, and not correctness of the reference key. A matched_error decision does not imply accepted explanation."
               },
               "support_evidence_ids": {
                 "type": "array",
@@ -320,7 +320,7 @@
                   ],
                   "additionalProperties": false
                 },
-                "description": "Actual substantive assertions not already represented by required/forbidden propositions, only within this component."
+                "description": "Exact original listener assertions and their contextual truth, including overbroad or distorted versions of a rule even when part of the sentence also satisfies a narrower required proposition."
               }
             },
             "required": [

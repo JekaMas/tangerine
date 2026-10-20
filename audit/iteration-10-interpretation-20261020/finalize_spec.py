@@ -1,0 +1,7 @@
+"""Refresh static specification indexes once after the implementation batch."""
+from pathlib import Path
+import json,subprocess
+R=Path(__file__).resolve().parents[2]
+subprocess.run(['python3','-B',str(R/'audit/simple-generation-flow-20261009/reconcile.py'),'--indexes-only'],cwd=R,check=True)
+node=r"""const fs=require('fs'),Y=require('/opt/homebrew/lib/node_modules/@fission-ai/openspec/node_modules/yaml'),crypto=require('crypto'),V='specification/v2/';let sha=p=>crypto.createHash('sha256').update(fs.readFileSync(V+p)).digest('hex'),load=p=>Y.parse(fs.readFileSync(V+p,'utf8')),save=(p,d)=>fs.writeFileSync(V+p,Y.stringify(d));let s=load('domain/semantic-invariants.yaml');for(let r of Object.values(s.schemas))r.schema_sha256=sha(r.schema);save('domain/semantic-invariants.yaml',s);let m=load('prompts/manifest.yaml');for(let b of m.bindings){b.prompt_sha256=sha(b.path);b.input_schema_sha256=sha('contracts/'+b.input_schema);b.output_schema_sha256=sha('contracts/'+b.output_schema);}save('prompts/manifest.yaml',m);let c=load('domain/version-compatibility.yaml'),files=[];function walk(p){for(let e of fs.readdirSync(V+p,{withFileTypes:true})){let q=p+e.name;if(e.isDirectory())walk(q+'/');else if(q!='domain/version-compatibility.yaml')files.push({path:q,sha256:sha(q)});}}walk('');c.files=files.sort((a,b)=>a.path.localeCompare(b.path));save('domain/version-compatibility.yaml',c);"""
+subprocess.run(['node','-e',node],cwd=R,check=True)
