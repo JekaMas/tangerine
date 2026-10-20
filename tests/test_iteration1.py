@@ -27,7 +27,7 @@ def restore_fixture_file(path, data):
     # expose a truncated predecessor to the next independent startup case.
     temporary=path.with_name(path.name+'.fixture-restore')
     temporary.write_bytes(data)
-    temporary.chmod(path.stat().st_mode & 0o777)
+    temporary.chmod(path.stat().st_mode & 0o777 if path.exists() else 0o600)
     temporary.replace(path)
 
 class Iteration1Tests(unittest.TestCase):
