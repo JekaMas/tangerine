@@ -293,3 +293,17 @@ An already structurally rejected generation reply SHALL include independently kn
 
 - **WHEN** the second distinct literal positive or negative packet is executed
 - **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+### Requirement: I6-22 Independent agreement qualification detects reversed mistakes
+
+The controlled actual-model qualification SHALL require the requested correct opens/serves clean forms, exactly one corresponding erroneous surface change and the independently expected preferred repair. The harness SHALL reject the observed ungrammatical-baseline/corrected-surface reversal and unrelated extra edits. Pure oracle-sensitivity packets establish only this test reference; actual generation quality requires retained native/local-model observations. Exact constructed fixtures and independent expected states are retained in audit/iteration-6-review-20261020/CASES.json. These tests SHALL NOT establish hosted account admission, actual LLM linguistic quality or future mutation/audio/scoring completion.
+
+#### Scenario: I6-22 packet 1
+
+- **WHEN** the first literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+#### Scenario: I6-22 packet 2
+
+- **WHEN** the second distinct literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold

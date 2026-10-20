@@ -18,6 +18,7 @@ d['reviews']=[x for x in d['reviews'] if x['id'] not in ('iteration6-preparation
 pure='services/api/internal/app/mutation_content_test.go';native='tests/native_mutation_test.go';projection='services/api/internal/provider/projection_version_test.go'
 repair='services/api/internal/app/mutation_repair_test.go'
 diag='services/api/internal/app/mutation_diagnostics_test.go'
+quality='services/api/internal/app/mutation_quality_fixture_test.go'
 rows=[
 ('Mutation admission and fixed canonical text', pure, 'mutation_content.go', ['AdmissionPositive', 'EmptyKeyPositive', 'BaselineNegative', 'LocationNegative'], 'The application SHALL admit a new mutation reply once with candidate output schema_version1.0.0 distinct from stage-input2.0.0, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data.'),
 ('Replayable mutation ledger', pure, 'mutation_manifest.go', ['ManifestPositive', 'UnicodeInsertPositive', 'UnknownCategoryNegative', 'CountNegative'], 'The application SHALL derive replayable canonical-coordinate edits and retain all planned units, repairs, propositions, exact selected categories and requested counts. Invented categories, unsupported counts and invalid scopes SHALL fail admission.'),
@@ -46,6 +47,8 @@ rows=[
 
 ('One admission reports independently available repair issues together', diag, 'mutation_diagnostics.go', ['CombinedDiagnosticsPositive','CanonicalDiagnosticsPositive','RejectedProjectionNegative','UnknownPartialNegative'], 'An already structurally rejected generation reply SHALL include independently known final-surface or clean-phase diagnostics in the same existing repair payload. Safe whole-turn scope hints SHALL derive only from actual supplied surface text. Rejected partial projections SHALL never be admitted, exposed through the public projection API or persisted as a completed key; unknown types SHALL not produce guessed hints. Healthy schema-valid replies retain their single semantic admission.'),
 
+('Independent agreement qualification detects reversed mistakes', quality, 'mutation_quality_fixture_test.go', ['QualityOpensPositive','QualityServesPositive','QualityReverseNegative','QualityExtraChangeNegative'], 'The controlled actual-model qualification SHALL require the requested correct opens/serves clean forms, exactly one corresponding erroneous surface change and the independently expected preferred repair. The harness SHALL reject the observed ungrammatical-baseline/corrected-surface reversal and unrelated extra edits. Pure oracle-sensitivity packets establish only this test reference; actual generation quality requires retained native/local-model observations.'),
+
 
 ]
 cap='iteration-six-mutations';lines=['## ADDED Requirements',''];plans=[];props=[];tests=[]
@@ -70,6 +73,7 @@ for i,(label,src,owner,names,rule) in enumerate(rows,1):
   fixture[polarity]=dict(input=inp,expected=exp)
   substitution=dict(classification='EXTERNAL_BOUNDARY' if src in (native,repair,diag) else 'NO_TEST_DOUBLE',proof_claims=['Literal production preparation/schema/transport behavior'],forbidden_claims=['Hosted entitlement or included-only account admission','Actual LLM linguistic quality','Actual synthesized audio, teacher evaluation or full-product acceptance'],note=oracle)
   if src in (native,repair,diag):substitution['owner_replaced']='Only the remote model endpoint/protocol reply; all claimed production owners execute. PostgreSQL/MinIO are retained in native cases only.'
+  if src==quality:substitution['proof_claims']=['Qualification-oracle sensitivity against independently authored English fixtures only; no application or model execution is inferred']
   deps=['services/api/internal/app/**','services/api/internal/contracts/**','services/api/internal/lab/**','services/api/internal/provider/**','services/api/go.mod','services/api/go.sum','services/api/Dockerfile',src,'tests/native-mutation' if src==native else 'tests/go-docker']
   g['cases'].append(dict(id=cid,property_id=pid,polarity=polarity,scenario=scenario,scenario_fingerprint=spec['scenario_fingerprints'][scenario],setup=action+' '+json.dumps(inp,sort_keys=True),observable=json.dumps(exp,sort_keys=True),red_expectation='The literal violated invariant must fail with no invented completed phase or extra model call.',green_expectation='All independently declared literal outcomes pass.',test_id=tid,command_id='iteration6-native' if src==native else 'iteration6-go',state='implemented',source_path=src,source_sha256=sha(R/src),invalidation_dependencies=deps,substitution=substitution,designed_fixture_id=fid,fixture_observation_state='not_run'))
   (positive if j<2 else negative).append(cid)

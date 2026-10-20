@@ -20,7 +20,8 @@
     "I6-18.P1",
     "I6-19.P1",
     "I6-20.P1",
-    "I6-21.P1"
+    "I6-21.P1",
+    "I6-22.P1"
   ],
   "plans": [
     {
@@ -2037,6 +2038,102 @@
         "assertion_source": "func TestMutationUnknownPartialNegative(t *testing.T) {\n\tr := generationDiagnosticFixture(t, \"malformed\")\n\tif r.Err == nil || len(r.Output) != 0 || len(r.Frames) != 2 || r.Admitted != 0 {\n\t\tt.Fatal(r)\n\t}\n\tdetail := diagnosticRepairPayload(t, r)[\"validation_detail\"].(string)\n\tif strings.Contains(detail, \"whole-turn scope\") {\n\t\tt.Fatal(\"invented a scope from an unknown partial shape\", detail)\n\t}\n\tif projected, err := provider.ProjectVisible(`{}`, \"case-candidate\"); err == nil || len(projected) != 0 {\n\t\tt.Fatal(\"public projection exposed rejected data\", string(projected), err)\n\t}\n}"
       },
       "independent_oracle": "An already structurally rejected generation reply SHALL include independently known final-surface or clean-phase diagnostics in the same existing repair payload. Safe whole-turn scope hints SHALL derive only from actual supplied surface text. Rejected partial projections SHALL never be admitted, exposed through the public projection API or persisted as a completed key; unknown types SHALL not produce guessed hints. Healthy schema-valid replies retain their single semantic admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-22.P1.S1.POSITIVE",
+      "property_id": "I6-22.P1",
+      "polarity": "positive",
+      "scenario": "I6-22 packet 1",
+      "fixture_id": "iteration6-I6-22-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationQualityOpensPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationQualityOpensPositive through services/api/internal/app/mutation_quality_fixture_test.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationQualityOpensPositive",
+        "literal_executable_fixture": "func TestMutationQualityOpensPositive(t *testing.T) {\n\tc := \"The caf\u00e9 opens at seven and serves fresh coffee.\"\n\tif correct, err := agreementFixtureMutation(c, \"The caf\u00e9 open at seven and serves fresh coffee.\"); err != nil || correct != \"opens\" {\n\t\tt.Fatal(correct, err)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The controlled actual-model qualification SHALL require the requested correct opens/serves clean forms, exactly one corresponding erroneous surface change and the independently expected preferred repair. The harness SHALL reject the observed ungrammatical-baseline/corrected-surface reversal and unrelated extra edits. Pure oracle-sensitivity packets establish only this test reference; actual generation quality requires retained native/local-model observations. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationQualityOpensPositive(t *testing.T) {\n\tc := \"The caf\u00e9 opens at seven and serves fresh coffee.\"\n\tif correct, err := agreementFixtureMutation(c, \"The caf\u00e9 open at seven and serves fresh coffee.\"); err != nil || correct != \"opens\" {\n\t\tt.Fatal(correct, err)\n\t}\n}"
+      },
+      "independent_oracle": "The controlled actual-model qualification SHALL require the requested correct opens/serves clean forms, exactly one corresponding erroneous surface change and the independently expected preferred repair. The harness SHALL reject the observed ungrammatical-baseline/corrected-surface reversal and unrelated extra edits. Pure oracle-sensitivity packets establish only this test reference; actual generation quality requires retained native/local-model observations. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-22.P1.S2.POSITIVE",
+      "property_id": "I6-22.P1",
+      "polarity": "positive",
+      "scenario": "I6-22 packet 2",
+      "fixture_id": "iteration6-I6-22-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationQualityServesPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationQualityServesPositive through services/api/internal/app/mutation_quality_fixture_test.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationQualityServesPositive",
+        "literal_executable_fixture": "func TestMutationQualityServesPositive(t *testing.T) {\n\tc := \"The caf\u00e9 opens at seven and serves fresh coffee.\"\n\tif correct, err := agreementFixtureMutation(c, \"The caf\u00e9 opens at seven and serve fresh coffee.\"); err != nil || correct != \"serves\" {\n\t\tt.Fatal(correct, err)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The controlled actual-model qualification SHALL require the requested correct opens/serves clean forms, exactly one corresponding erroneous surface change and the independently expected preferred repair. The harness SHALL reject the observed ungrammatical-baseline/corrected-surface reversal and unrelated extra edits. Pure oracle-sensitivity packets establish only this test reference; actual generation quality requires retained native/local-model observations. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationQualityServesPositive(t *testing.T) {\n\tc := \"The caf\u00e9 opens at seven and serves fresh coffee.\"\n\tif correct, err := agreementFixtureMutation(c, \"The caf\u00e9 opens at seven and serve fresh coffee.\"); err != nil || correct != \"serves\" {\n\t\tt.Fatal(correct, err)\n\t}\n}"
+      },
+      "independent_oracle": "The controlled actual-model qualification SHALL require the requested correct opens/serves clean forms, exactly one corresponding erroneous surface change and the independently expected preferred repair. The harness SHALL reject the observed ungrammatical-baseline/corrected-surface reversal and unrelated extra edits. Pure oracle-sensitivity packets establish only this test reference; actual generation quality requires retained native/local-model observations. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-22.P1.S1.NEGATIVE",
+      "property_id": "I6-22.P1",
+      "polarity": "negative",
+      "scenario": "I6-22 packet 1",
+      "fixture_id": "iteration6-I6-22-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationQualityReverseNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationQualityReverseNegative through services/api/internal/app/mutation_quality_fixture_test.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationQualityReverseNegative",
+        "literal_executable_fixture": "func TestMutationQualityReverseNegative(t *testing.T) {\n\tif agreementFixtureCorrection(\"serves\", \"replace\", \"serve\") {\n\t\tt.Fatal(\"wrong preferred correction passed\")\n\t}\n\tif _, err := agreementFixtureMutation(\"The caf\u00e9 opens every morning and serve fresh coffee.\", \"The caf\u00e9 opens every morning and serves fresh coffee.\"); err == nil {\n\t\tt.Fatal(\"the observed reverse mutation falsely passed\")\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The controlled actual-model qualification SHALL require the requested correct opens/serves clean forms, exactly one corresponding erroneous surface change and the independently expected preferred repair. The harness SHALL reject the observed ungrammatical-baseline/corrected-surface reversal and unrelated extra edits. Pure oracle-sensitivity packets establish only this test reference; actual generation quality requires retained native/local-model observations. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationQualityReverseNegative(t *testing.T) {\n\tif agreementFixtureCorrection(\"serves\", \"replace\", \"serve\") {\n\t\tt.Fatal(\"wrong preferred correction passed\")\n\t}\n\tif _, err := agreementFixtureMutation(\"The caf\u00e9 opens every morning and serve fresh coffee.\", \"The caf\u00e9 opens every morning and serves fresh coffee.\"); err == nil {\n\t\tt.Fatal(\"the observed reverse mutation falsely passed\")\n\t}\n}"
+      },
+      "independent_oracle": "The controlled actual-model qualification SHALL require the requested correct opens/serves clean forms, exactly one corresponding erroneous surface change and the independently expected preferred repair. The harness SHALL reject the observed ungrammatical-baseline/corrected-surface reversal and unrelated extra edits. Pure oracle-sensitivity packets establish only this test reference; actual generation quality requires retained native/local-model observations. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-22.P1.S2.NEGATIVE",
+      "property_id": "I6-22.P1",
+      "polarity": "negative",
+      "scenario": "I6-22 packet 2",
+      "fixture_id": "iteration6-I6-22-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationQualityExtraChangeNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationQualityExtraChangeNegative through services/api/internal/app/mutation_quality_fixture_test.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationQualityExtraChangeNegative",
+        "literal_executable_fixture": "func TestMutationQualityExtraChangeNegative(t *testing.T) {\n\tc := \"The caf\u00e9 opens at seven and serves fresh coffee.\"\n\tif _, err := agreementFixtureMutation(c, \"The caf\u00e9 open at eight and serves fresh coffee.\"); err == nil {\n\t\tt.Fatal(\"unrelated content change passed the controlled fixture\")\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The controlled actual-model qualification SHALL require the requested correct opens/serves clean forms, exactly one corresponding erroneous surface change and the independently expected preferred repair. The harness SHALL reject the observed ungrammatical-baseline/corrected-surface reversal and unrelated extra edits. Pure oracle-sensitivity packets establish only this test reference; actual generation quality requires retained native/local-model observations. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationQualityExtraChangeNegative(t *testing.T) {\n\tc := \"The caf\u00e9 opens at seven and serves fresh coffee.\"\n\tif _, err := agreementFixtureMutation(c, \"The caf\u00e9 open at eight and serves fresh coffee.\"); err == nil {\n\t\tt.Fatal(\"unrelated content change passed the controlled fixture\")\n\t}\n}"
+      },
+      "independent_oracle": "The controlled actual-model qualification SHALL require the requested correct opens/serves clean forms, exactly one corresponding erroneous surface change and the independently expected preferred repair. The harness SHALL reject the observed ungrammatical-baseline/corrected-surface reversal and unrelated extra edits. Pure oracle-sensitivity packets establish only this test reference; actual generation quality requires retained native/local-model observations. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
       "observation_state": "not_run"
     }
   ]

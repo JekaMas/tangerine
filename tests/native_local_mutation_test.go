@@ -60,7 +60,7 @@ func observeLocalMutation(t *testing.T, count int) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	request := map[string]any{"exercise_request": map[string]any{"topic": "A café opens every morning. Describe its opening hours and fresh coffee in the third person, with the café as the singular subject.", "speaker_count": 1, "text_length_words": 20, "english_level": "B1", "mutation_count": count, "category_families": []any{"grammar"}}, "targets": []any{map[string]any{"taxonomy_id": "grammar.verbs.subject_verb_agreement", "min_count": count, "max_count": count, "expected_judgment": "true_error", "hard_render_constraints": []any{}}}}
+	request := map[string]any{"exercise_request": map[string]any{"topic": "Describe a café’s opening hours and fresh coffee in the simple present, with the café as the singular subject. For the clean text use opens and serves exactly once each as its two finite verbs. The later mutation may intentionally change one of these forms.", "speaker_count": 1, "text_length_words": 20, "english_level": "B1", "mutation_count": count, "category_families": []any{"grammar"}}, "targets": []any{map[string]any{"taxonomy_id": "grammar.verbs.subject_verb_agreement", "min_count": count, "max_count": count, "expected_judgment": "true_error", "hard_render_constraints": []any{}}}}
 	raw, _ = json.Marshal(request)
 	b, e := store.WriteBlueprint(ctx, raw, uuid.NewString())
 	if e != nil {
@@ -112,6 +112,19 @@ func observeLocalMutation(t *testing.T, count int) {
 	if e != nil {
 		t.Fatal("actual local canonical phase", e)
 	}
+	cleanRaw, readErr := store.ReadAsset(ctx, clean["canonical_asset_id"].(string))
+	if readErr != nil {
+		t.Fatal(readErr)
+	}
+	var cleanContent map[string]any
+	_ = json.Unmarshal(cleanRaw, &cleanContent)
+	cleanParts := []string{}
+	for _, v := range cleanContent["utterances"].([]any) {
+		cleanParts = append(cleanParts, v.(map[string]any)["canonical_text"].(string))
+	}
+	if err := agreementFixtureCanonical(strings.Join(cleanParts, "\n")); err != nil {
+		t.Fatal("independent clean agreement expectation", err)
+	}
 	ident := clean["id"].(string)
 	r.PreparationID = &ident
 	r.Attempt = 2
@@ -133,6 +146,29 @@ func observeLocalMutation(t *testing.T, count int) {
 		t.Fatal("independent requested count", content)
 	}
 	if count > 0 {
+		canonicalParts, surfaceParts := []string{}, []string{}
+		for _, v := range content["utterances"].([]any) {
+			turn := v.(map[string]any)
+			canonicalParts = append(canonicalParts, turn["canonical_text"].(string))
+			surfaceParts = append(surfaceParts, turn["surface_text"].(string))
+		}
+		expected, err := agreementFixtureMutation(strings.Join(canonicalParts, "\n"), strings.Join(surfaceParts, "\n"))
+		if err != nil {
+			t.Fatal("independent mutation direction", err)
+		}
+		preferred := 0
+		for _, v := range content["planned_units"].([]any)[0].(map[string]any)["corrections"].([]any) {
+			option := v.(map[string]any)
+			if option["canonical"] == true {
+				preferred++
+				if !agreementFixtureCorrection(expected, option["kind"].(string), option["text"].(string)) {
+					t.Fatal("independent preferred correction", expected, option)
+				}
+			}
+		}
+		if preferred == 0 {
+			t.Fatal("missing independently expected preferred correction", expected)
+		}
 		// Independent linguistic expectations: an agreement error has a changed verb,
 		// an actual repair, and supported optional-explanation rubrics.
 		u := content["planned_units"].([]any)[0].(map[string]any)
