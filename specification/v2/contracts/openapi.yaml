@@ -7071,39 +7071,11 @@ paths:
             maxLength: 2048
       responses:
         "200":
-          description: Read saved preparation checkpoints without dispatch.
+          description: Keyset page; view=public returns safe preparation summaries.
           content:
             application/json:
               schema:
-                type: object
-                description: One stable keyset page.
-                properties:
-                  items:
-                    type: array
-                    description: Page items.
-                    items:
-                      $ref: preparation-state.schema.json
-                    minItems: 0
-                    maxItems: 100
-                  next_cursor:
-                    anyOf:
-                      - type: string
-                        description: Opaque signed continuation.
-                        maxLength: 2048
-                        minLength: 1
-                      - type: "null"
-                    description: Opaque signed continuation.
-                  snapshot_revision:
-                    type: string
-                    description: Stable page snapshot revision.
-                    maxLength: 4096
-                    minLength: 1
-                    pattern: ^(0|[1-9][0-9]*)$
-                required:
-                  - items
-                  - next_cursor
-                  - snapshot_revision
-                additionalProperties: false
+                $ref: preparation-list.schema.json
         "400":
           description: Malformed request
           content:
@@ -7293,6 +7265,73 @@ paths:
             application/json:
               schema:
                 $ref: error-response.schema.json
+  /api/v1/preparations/{id}:render:
+    post:
+      operationId: render_preparation
+      description: Render the frozen generated candidate synchronously with saved pieces,
+        key, sample map and final audio. Explicit retry reuses completed work.
+      tags:
+      - prepare
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Render the frozen generated candidate synchronously with saved
+            pieces, key, sample map and final audio. Explicit retry reuses completed
+            work.
+          content:
+            application/json:
+              schema:
+                $ref: preparation-summary.schema.json
+        '422':
+          description: Retained failed checkpoint with a canonical application error
+          content:
+            application/json:
+              schema:
+                $ref: preparation-render-error.schema.json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: preparation-render-request.schema.json
+  /api/v1/preparations/{id}/audio:
+    get:
+      operationId: play_preparation_audio
+      description: Serve completed saved WAV bytes with byte ranges, without synthesis
+        or key disclosure.
+      tags:
+      - teacher
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Serve completed saved WAV bytes with byte ranges, without synthesis
+            or key disclosure.
+          content:
+            audio/wav:
+              schema:
+                type: string
+                format: binary
+        '206':
+          description: Byte-range playback of the same stored asset
+          headers:
+            Content-Range:
+              schema:
+                type: string
+          content:
+            audio/wav:
+              schema:
+                type: string
+                format: binary
 components:
   securitySchemes:
     SpeechServiceToken:

@@ -23,7 +23,7 @@ operations:
     method: GET
     path: /api/v1/preparations
     request: null
-    response: list:preparation-state
+    response: preparation-list
     success: 200
     effect: Read persisted preparation checkpoints and explicit resume choices without model/speech
       dispatch.
@@ -646,4 +646,24 @@ operations:
     effect: Exchange one-use loopback OAuth authorization and persist validated provider metadata/secret
       references.
     activity: configuration
+    revision: false
+  - id: render_preparation
+    method: POST
+    path: /api/v1/preparations/{id}:render
+    request: preparation-render-request
+    response: preparation-summary
+    success: 200
+    effect: Render the frozen generated candidate synchronously with saved pieces, key,
+      sample map and final audio. Explicit retry reuses completed work.
+    activity: prepare
+    revision: false
+  - id: play_preparation_audio
+    method: GET
+    path: /api/v1/preparations/{id}/audio
+    request: null
+    response: binary:audio/wav
+    success: 200
+    effect: Serve completed saved WAV bytes with byte ranges, without synthesis or key
+      disclosure.
+    activity: teacher
     revision: false

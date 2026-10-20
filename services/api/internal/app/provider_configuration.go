@@ -178,6 +178,15 @@ func validateProfileSelection(c map[string]any) error {
 			return ErrReference
 		}
 	}
+	speechIDs := map[string]bool{}
+	for _, p := range speechProfiles(c) {
+		id := p["id"].(string)
+		if speechIDs[id] {
+			return ErrConflict
+		}
+		speechIDs[id] = true
+	}
+
 	return nil
 }
 func configurationView(c map[string]any) map[string]any {
@@ -187,7 +196,7 @@ func configurationView(c map[string]any) map[string]any {
 	}
 	creds := []any{}
 	now := time.Now().UTC().Format(time.RFC3339Nano)
-	for _, name := range []string{"OPENAI_API_KEY", "DEEPSEEK_API_KEY", "AZURE_SPEECH_KEY"} {
+	for _, name := range []string{"OPENAI_API_KEY", "DEEPSEEK_API_KEY", "AZURE_SPEECH_KEY", "ELEVENLABS_API_KEY"} {
 		creds = append(creds, map[string]any{"name": name, "present": os.Getenv(name) != "", "last_checked_at": now})
 	}
 	return map[string]any{"configuration_sha256": c["configuration_sha256"], "profile_ids": ids, "credentials": creds, "source_statuses": []any{}, "intended_uses": c["intended_uses"], "limits": c["limits"], "configuration": c}

@@ -23,7 +23,7 @@ class Iteration3Tests(unittest.TestCase):
  def setup(cls):
   (ROOT/'data/iteration3').mkdir(parents=True,exist_ok=True)
   cls.project='tangerine-i3-'+uuid.uuid4().hex[:10];cls.tmp=tempfile.TemporaryDirectory(prefix='stack-',dir=ROOT/'data/iteration3');cls.root=Path(cls.tmp.name)
-  for name in ['scripts','deploy/local','services/api','specification/v2']:
+  for name in ['scripts','deploy/local','services/api','services/speech','specification/v2']:
    shutil.copytree(ROOT/name,cls.root/name)
   shutil.copyfile(ROOT/'.env.example',cls.root/'.env');(cls.root/'data/config').mkdir(parents=True)
   with socket.socket() as listener:

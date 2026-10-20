@@ -35,12 +35,20 @@ type preparationTrip func(*http.Request) (*http.Response, error)
 
 func (f preparationTrip) RoundTrip(r *http.Request) (*http.Response, error) { return f(r) }
 func prepareNativeFixture(t *testing.T, response string, status int) (*Server, CanonicalPreparationRequest, *http.Client, *int) {
+	return prepareNativeFixtureConfigured(t, response, status, nil)
+}
+func prepareNativeFixtureConfigured(t *testing.T, response string, status int, configure func(map[string]any)) (*Server, CanonicalPreparationRequest, *http.Client, *int) {
 	t.Helper()
 	store := preparationNative(t)
 	ctx := context.Background()
 	c, rev, e := store.Configuration(ctx)
 	if e != nil {
 		t.Fatal(e)
+	}
+	c["speech_profile"] = "kokoro-local-en-v1"
+	c["speech_profiles"] = []any{}
+	if configure != nil {
+		configure(c)
 	}
 	p := c["llm_profiles"].([]any)[0].(map[string]any)
 	p["provider"] = "openai"

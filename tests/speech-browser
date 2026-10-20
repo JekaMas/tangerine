@@ -1,0 +1,80 @@
+#!/usr/bin/env python3
+"""Actual native Chrome with test-owned API/DB/media; preview web restored unchanged."""
+from pathlib import Path
+import json,os,subprocess,tempfile,secrets,time,uuid,sys
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from browser_probe import Browser
+r=Path(__file__).resolve().parents[1];name='tangerine-speech-browser-'+uuid.uuid4().hex[:8];env={**os.environ};evidence=r/'data/iteration7/browser';evidence.mkdir(parents=True,exist_ok=True)
+def call(args,check=True):
+ p=subprocess.run(args,cwd=r,env=env,capture_output=True,text=True,timeout=180)
+ if p.stdout:print(p.stdout,file=sys.stderr,end='')
+ if p.stderr:print(p.stderr,file=sys.stderr,end='')
+ if check and p.returncode:raise RuntimeError('native browser setup failed')
+ return p
+preview=False;go=None;browser=None
+with tempfile.TemporaryDirectory(prefix=name) as tmp:
+ config=Path(tmp)/'runtime.env';password=secrets.token_hex(24);token=secrets.token_hex(24)
+ config.write_text(f'POSTGRES_DB=tangerine\nPOSTGRES_USER=tangerine\nPOSTGRES_PASSWORD={password}\nDATABASE_URL=postgres://tangerine:{password}@postgres:5432/tangerine?sslmode=disable\nMINIO_ROOT_USER=native-regression\nMINIO_ROOT_PASSWORD={password}\nMINIO_ENDPOINT=minio:9000\nMINIO_ACCESS_KEY=native-regression\nMINIO_SECRET_KEY={password}\nMINIO_BUCKET=regressions\nAPI_INTERNAL_TOKEN={token}\nAPI_INTERNAL_URL=http://api:8080\n');config.chmod(0o600)
+ try:
+  call(['docker','build','--target','build','-t',name+'-go','-f','services/api/Dockerfile','.'])
+  call(['docker','build','-t',name+'-media','-f','deploy/local/minio.Dockerfile','.'])
+  call(['docker','network','create',name])
+  for kind,image in [('postgres','postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826'),('media',name+'-media')]:
+   call(['docker','run','-d','--name',name+'-'+kind,'--network',name,'--network-alias','postgres' if kind=='postgres' else 'minio','--env-file',str(config),image])
+  for kind in ['postgres','media']:
+   for n in range(60):
+    probe=['pg_isready','-h','127.0.0.1','-U','tangerine','-d','tangerine'] if kind=='postgres' else ['/usr/local/bin/probe','http://127.0.0.1:9000/minio/health/ready']
+    if call(['docker','exec',name+'-'+kind,*probe],False).returncode==0:break
+    time.sleep(.5)
+   else:raise RuntimeError('owned service unavailable')
+  call(['docker','run','-d','--name',name+'-speech','--network',name,'--network-alias','speech','-e','SPEECH_INTERNAL_TOKEN=actual-local-speech-test','-v',str(r/'services/speech')+':/app:ro','-v',str(r/'data/iteration7/models')+':/models:ro',env['TANGERINE_SPEECH_TEST_RUNTIME_IMAGE']])
+  call(['docker','run','--rm','--network',name,'--env-file',str(config),'--entrypoint','/tangerine',name+'-go','initialize'])
+  for p in [evidence/'browser-fixture.json',evidence/'browser-done']:p.unlink(missing_ok=True)
+  args=['docker','run','--rm','--name',name+'-api','--network',name,'--network-alias','api','--env-file',str(config),'-e','TANGERINE_PREPARATION_TEST_EVIDENCE=/evidence','-e','TANGERINE_SPEECH_TEST_URL=http://speech:8090','-v',str(evidence)+':/evidence']
+  for f in ['native_speech_test.go','native_mutation_test.go','native_preparation_test.go','speech_browser_fixture_test.go']:args+=['-v',str(r/'tests'/f)+':/src/internal/app/'+f+':ro']
+  go=subprocess.Popen(args+['--entrypoint','go',name+'-go','test','-json','-race','-count=1','-run','^TestNativeSpeechBrowserFixture$','./internal/app'],cwd=r,env=env,stdout=(evidence/'native.jsonl').open('w'),stderr=(evidence/'native.stderr').open('w'))
+  for n in range(1200):
+   if (evidence/'browser-fixture.json').exists():break
+   if go.poll() is not None:raise RuntimeError('actual preparation fixture failed')
+   time.sleep(.1)
+  else:raise RuntimeError('fixture startup deadline')
+  fixture=json.loads((evidence/'browser-fixture.json').read_text())
+  running=call(['docker','inspect','-f','{{.State.Running}}','tangerine-i1-web-1'],False)
+  if running.returncode==0 and running.stdout.strip()=='true':call(['docker','stop','tangerine-i1-web-1']);preview=True
+  call(['docker','run','-d','--name',name+'-web','--network',name,'--env-file',str(config),'-p','127.0.0.1:3000:3000',env['TANGERINE_SPEECH_TEST_WEB_IMAGE']])
+  time.sleep(1);browser=Browser(Path(tmp)/'chrome','http://localhost:3000/audio');browser.wait('Exercise '+fixture['preparation_id'][:8]);observed=[];values={}
+  def record(test,expression,expected):
+   value=browser.evaluate(expression)
+   if value!=expected:raise AssertionError((test,value,expected))
+   observed.append(test);values[test]=value;(evidence/(test+'.html')).write_text(browser.evaluate('document.documentElement.outerHTML'))
+  browser.evaluate("document.querySelector('audio').play(); true")
+  for n in range(100):
+   if browser.evaluate("document.querySelector('audio').currentTime > 0"):break
+   time.sleep(.1)
+  record('test_playback_positive',"document.querySelector('audio').currentTime > 0",True)
+  browser.evaluate("document.querySelector('button').click(); true");browser.wait('Exercise '+fixture['preparation_id'][:8]);record('test_refresh_positive',"document.querySelectorAll('audio').length",1)
+  call(['docker','stop',name+'-postgres']);browser.evaluate("document.querySelector('button').click(); true");browser.wait('Saved preparations are unavailable');record('test_dependency_negative',"document.querySelector('[role=alert]').textContent",'Saved preparations are unavailable. Refresh to retry.');call(['docker','start',name+'-postgres']);time.sleep(1);browser.evaluate("document.querySelector('button').click(); true")
+  for n in range(100):
+   if browser.evaluate("document.querySelector('[role=alert]')===null"):break
+   time.sleep(.1)
+  call(['docker','stop',name+'-media']);browser.evaluate("document.querySelector('button').click(); true");browser.evaluate("document.querySelector('audio').play().catch(()=>{}); true");browser.wait('Saved audio is temporarily unavailable');record('test_audio_failure_negative',"document.querySelector('[role=alert]').textContent",'Saved audio is temporarily unavailable. Refresh and retry playback; saved text and audio are retained.');call(['docker','start',name+'-media']);time.sleep(1);browser.evaluate("document.querySelector('button').click(); true");browser.evaluate("document.querySelector('audio').play(); true")
+  for n in range(100):
+   if browser.evaluate("document.querySelector('audio').currentTime>0"):break
+   time.sleep(.1)
+  assert browser.evaluate("document.querySelector('audio').currentTime>0")
+  assert browser.evaluate("document.querySelector('[role=alert]')===null")
+  (evidence/'browser-done').write_text('done');assert go.wait(timeout=30)==0
+  (evidence/'observations.json').write_text(json.dumps({'tests':observed,'values':values,'driver':browser.driver_version,'fixture':fixture,'network_substitution':False,'recovery_observed':True},indent=2))
+  for test in observed:print('speech-browser::'+test)
+ finally:
+  if browser:
+   try:(evidence/'final-dom.html').write_text(browser.evaluate('document.documentElement.outerHTML'))
+   finally:browser.close()
+  (evidence/'browser-done').write_text('done')
+  for kind in ['web','api','speech','postgres','media']:call(['docker','unpause',name+'-'+kind],False);call(['docker','rm','-f','-v',name+'-'+kind],False)
+  if go:
+   try:go.wait(timeout=10)
+   except subprocess.TimeoutExpired:go.terminate();go.wait()
+  call(['docker','network','rm',name],False)
+  for kind in ['go','media']:call(['docker','image','rm',name+'-'+kind],False)
+  if preview:call(['docker','start','tangerine-i1-web-1'])

@@ -60,6 +60,16 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/v1/health", s.ready)
 	mux.HandleFunc("GET /api/v1/library", s.library)
 	mux.HandleFunc("GET /api/v1/preparations", s.preparationList)
+	mux.HandleFunc("POST /api/v1/preparations/{action}", func(w http.ResponseWriter, r *http.Request) {
+		id, ok := strings.CutSuffix(r.PathValue("action"), ":render")
+		if !ok {
+			preparationHTTPError(w, 404, "NOT_FOUND")
+			return
+		}
+		r.SetPathValue("id", id)
+		s.speechRender(w, r)
+	})
+	mux.HandleFunc("GET /api/v1/preparations/{id}/audio", s.speechPlayback)
 	mux.HandleFunc("POST /api/v1/blueprints", s.blueprintWrite)
 	mux.HandleFunc("GET /api/v1/blueprints/{id}", s.blueprintGet)
 	mux.HandleFunc("GET /api/v1/configuration", s.configurationGet)

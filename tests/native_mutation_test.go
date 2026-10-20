@@ -18,7 +18,30 @@ import (
 
 func nativeMutationFixture(t *testing.T, mode string) (*Server, CanonicalPreparationRequest, *http.Client, *int, map[string]any) {
 	t.Helper()
-	s, r, cleanClient, cleanCalls := prepareNativeFixture(t, "", 200)
+	var configure func(map[string]any)
+	if mode == "speech-espeak" || mode == "speech-qwen-custom" || mode == "speech-qwen-base" {
+		configure = func(c map[string]any) {
+			c["speech_profile"] = "local-espeak-test"
+			c["speech_profiles"] = []any{map[string]any{"id": "local-espeak-test", "provider": "local_espeak_ng", "adapter_version": "espeak-ng-v1", "model": nil, "endpoint": nil, "credential_refs": []any{}, "billing_mode": "local", "account_tier": nil, "overage_disabled": true, "capabilities": []any{"plain_text", "voice_identity", "locale", "multi_turn"}, "voices": []any{map[string]any{"id": "en-us", "locale": "en-US", "accent_description": "American English"}}, "assets": []any{}, "voice_settings": map[string]any{"stability": nil, "similarity_boost": nil, "style": nil, "use_speaker_boost": nil, "speed": nil}, "catalogue_asset_id": nil, "voice_description_asset_id": nil}}
+			if mode != "speech-espeak" {
+				profile := c["speech_profiles"].([]any)[0].(map[string]any)
+				id := "qwen-custom-v1"
+				voice := "Ryan"
+				if mode == "speech-qwen-base" {
+					id = "qwen-base-v1"
+					voice = "tangerine-american-1"
+				}
+				profile["id"] = id
+				profile["provider"] = "local_qwen3_tts"
+				profile["adapter_version"] = id
+				profile["model"] = id
+				profile["voices"].([]any)[0].(map[string]any)["id"] = voice
+				c["speech_profile"] = id
+			}
+
+		}
+	}
+	s, r, cleanClient, cleanCalls := prepareNativeFixtureConfigured(t, "", 200, configure)
 	// This constructed model has no tokenizer. Its explicit byte-conservative
 	// budget must hold the complete selected records; no category is truncated.
 	config, rev, err := s.Store.Configuration(context.Background())
@@ -26,6 +49,10 @@ func nativeMutationFixture(t *testing.T, mode string) (*Server, CanonicalPrepara
 		t.Fatal(err)
 	}
 	config["llm_profiles"].([]any)[0].(map[string]any)["context_budget_tokens"] = float64(1000000)
+	if mode == "speech-live" || strings.HasPrefix(mode, "speech-") {
+		config["llm_lab_capture_content"] = true
+		config["llm_lab_trace_enabled"] = true
+	}
 	for _, k := range []string{"workspace_id", "configuration_sha256", "provider_access_policy"} {
 		delete(config, k)
 	}

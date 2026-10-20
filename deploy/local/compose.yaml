@@ -38,6 +38,7 @@ services:
       - ../../services/api/internal/lab/builtin.json:/tangerine/builtin.json:ro
       - ../../services/api/internal/provider:/tangerine/source/provider:ro
       - ../../services/api/internal/app:/tangerine/source/app:ro
+      - ../../services/speech:/tangerine/speech-source:ro
     healthcheck:
       test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health',timeout=6)"]
       interval: 5s
@@ -83,12 +84,16 @@ services:
     build: {context: ../.., dockerfile: services/speech/Dockerfile}
     environment:
       SPEECH_INTERNAL_TOKEN: ${SPEECH_INTERNAL_TOKEN:?Run scripts/tangerine start}
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}
+      AZURE_SPEECH_KEY: ${AZURE_SPEECH_KEY:-}
+      AZURE_SPEECH_REGION: ${AZURE_SPEECH_REGION:-}
+    volumes: [speech-models:/models]
     healthcheck:
       test: [CMD, python, -c, "import os,urllib.request; r=urllib.request.Request('http://127.0.0.1:8090/health/ready',headers={'Authorization':'Bearer '+os.environ['SPEECH_INTERNAL_TOKEN']}); urllib.request.urlopen(r,timeout=6)"]
       interval: 5s
       timeout: 7s
       retries: 12
-    networks: [private]
+    networks: [private, egress]
   api:
     <<: *api-image
     environment: *api-environment
@@ -126,3 +131,4 @@ volumes:
   lab-data: {}
   postgres-data: {}
   minio-data: {}
+  speech-models: {}

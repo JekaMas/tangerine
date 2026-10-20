@@ -91,6 +91,17 @@ func expandBlueprint(raw []byte, configuration map[string]any) (map[string]any, 
 				}
 			}
 		}
+		for _, entry := range speechProfiles(configuration) {
+			if entry["id"] == speech {
+				voices = []any{}
+				for _, v := range entry["voices"].([]any) {
+					voice := v.(map[string]any)
+					if voice["locale"] == locale {
+						voices = append(voices, voice["id"])
+					}
+				}
+			}
+		}
 		if len(voices) == 0 {
 			return nil, fmt.Errorf("speech profile has no voices for %s", locale)
 		}
