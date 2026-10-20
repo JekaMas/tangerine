@@ -1,7 +1,7 @@
 package app
 
-// Normalize only a source-confirmed absent component. No proposal, assertion,
-// identifier or judgment for supplied text is created or discarded here.
+// Normalize source-confirmed absence and missing optional prose. No proposal,
+// assertion, identifier or judgment for supplied text is created or discarded.
 func normalizeInterpretationShape(value any, extraction *CanonicalExtraction) any {
 	if extraction == nil {
 		return value
@@ -27,6 +27,9 @@ func normalizeInterpretationShape(value any, extraction *CanonicalExtraction) an
 		claim, known := byID[id]
 		if !known {
 			continue
+		}
+		if note, exists := decision["note"]; !exists || note == nil {
+			decision["note"] = ""
 		}
 		for _, component := range []struct {
 			name  string

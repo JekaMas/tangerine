@@ -167,8 +167,8 @@ func normalizeComponent(answer string, j *SemanticComponent, source AnswerSpan, 
 		unknown = unknown || a.Judgment == "unknown"
 		bad = bad || a.Judgment == "unsupported"
 	}
-	if explanation && len(j.Satisfied)+len(j.Violated)+len(j.Additional) == 0 && j.Unresolved == nil {
-		return interpretationInvalid("Assess the supplied explanation: record its supported/forbidden rubric propositions, or a source-quoted supported/unsupported/unknown assertion with a contextual reason. An empty judgment does not assess the listener's reason.")
+	if explanation && len(j.Additional) == 0 && j.Unresolved == nil {
+		return interpretationInvalid("Assess the listener's entire supplied explanation, independently of its rubric overlap. Include a source-quoted supported/unsupported/unknown judgment and a contextual reason in explanation.additional_assertions. Proposition IDs alone do not assess the full assertion or its scope. Do not substitute the narrower gold rationale for the listener's words.")
 	}
 	if bad {
 		j.Status = "rejected"
@@ -253,7 +253,12 @@ func normalizeMapping(answer string, claims CanonicalExtraction, key map[string]
 		if d.Unit != nil && unit == nil {
 			return out, issues, interpretationInvalid("A mapped target must exist in this frozen case.")
 		}
-		if d.Category != nil && (!taxonomy[*d.Category] || len(c.Categories) == 0) {
+		// Classification can only credit what the listener supplied. An
+		// unsolicited model label is discarded, not a failed whole answer.
+		if len(c.Categories) == 0 {
+			d.Category = nil
+		}
+		if d.Category != nil && !taxonomy[*d.Category] {
 			return out, issues, interpretationInvalid("A category must be an existing taxonomy ID justified by actual category wording.")
 		}
 		if !subsetDistinct(d.Evidence, ev) {

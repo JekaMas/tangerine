@@ -274,7 +274,7 @@ The application SHALL keep wrong acceptance distinct from false assertion, recog
 
 ### Requirement: I10-19 Tolerant source-confirmed component absence
 
-The application SHALL normalize an empty list/object/null or omitted component only when the frozen source confirms its absence, preserving meaningful fields and refusing to manufacture an assessment for actual supplied text. The combined schema/source admission still runs once. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
+The application SHALL normalize source-confirmed absent component envelopes and missing optional note prose, preserving meaningful fields and refusing to manufacture an assessment for actual supplied text. The combined schema/source admission still runs once. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
 
 #### Scenario: I10-19 packet 1
 
@@ -285,6 +285,11 @@ The application SHALL normalize an empty list/object/null or omitted component o
 
 - **WHEN** the second distinct literal positive or negative packet executes through its real owner
 - **THEN** its independently expected data, state, response or failure SHALL hold
+
+#### Scenario: I10-19 packet 3
+
+- **WHEN** the third distinct literal positive or negative packet executes through its real owner
+- **THEN** its independently expected source evidence or rejection SHALL hold
 
 ### Requirement: I10-20 Definite rejection without a valid repair option
 

@@ -68,9 +68,13 @@ func TestInterpretationUnknownCorrectionPositive(t *testing.T) {
 }
 func TestInterpretationCategoryOmissionPositive(t *testing.T) {
 	a, c, k, tax, m := interpretationMappingFixture()
-	got, _, e := admitMappingFixture(a, c, k, tax, m)
-	if e != nil || got.Decisions[0].Category != nil || got.Decisions[0].Decision != "matched_error" {
-		t.Fatal(got, e)
+	unsolicited := "grammar.verbs.subject_verb_agreement"
+	for _, category := range []*string{nil, &unsolicited} {
+		m.Decisions[0].Category = category
+		got, _, e := admitMappingFixture(a, c, k, tax, m)
+		if e != nil || got.Decisions[0].Category != nil || got.Decisions[0].Decision != "matched_error" || got.Decisions[0].Correction.Status != "accepted" {
+			t.Fatal(got, e)
+		}
 	}
 }
 func TestInterpretationForbiddenDeterminesZeroPositive(t *testing.T) {
@@ -113,10 +117,11 @@ func TestInterpretationBorrowedAssertionNegative(t *testing.T) {
 }
 func TestInterpretationInventedCategoryNegative(t *testing.T) {
 	a, c, k, tax, m := interpretationMappingFixture()
-	category := "grammar.verbs.subject_verb_agreement"
+	c.Claims[0].Categories = []AnswerSpan{{23, 27, "verb"}}
+	category := "grammar.verbs.not_a_category"
 	m.Decisions[0].Category = &category
 	if _, _, e := admitMappingFixture(a, c, k, tax, m); e == nil {
-		t.Fatal("category added without source wording")
+		t.Fatal("invented taxonomy identity accepted")
 	}
 }
 func TestInterpretationWrongStanceNegative(t *testing.T) {
@@ -293,7 +298,10 @@ func TestInterpretationCrossComponentContextNegative(t *testing.T) {
 }
 func TestInterpretationRepresentedReasonPositive(t *testing.T) {
 	answer, c, k, tax, m := interpretationMappingFixture()
-	m.Decisions[0].Explanation.Additional = []ComponentAssertion{}
+	answer = "Use goes because the subject is singular."
+	c.Claims[0].Span = AnswerSpan{0, 41, answer}
+	c.Claims[0].Explanations = []AnswerSpan{{17, 41, "the subject is singular."}}
+	m.Decisions[0].Explanation.Additional = []ComponentAssertion{{AnswerSpan: AnswerSpan{17, 41, "the subject is singular."}, Judgment: "supported", Reason: "The present-tense third-person singular subject requires agreement."}}
 	m.Decisions[0].Explanation.Satisfied = []string{"reason1"}
 	got, issues, err := admitMappingFixture(answer, c, k, tax, m)
 	if err != nil || len(issues) != 0 || got.Decisions[0].Explanation.Status != "accepted" {
@@ -303,8 +311,14 @@ func TestInterpretationRepresentedReasonPositive(t *testing.T) {
 func TestInterpretationUnrepresentedReasonNegative(t *testing.T) {
 	answer, c, k, tax, m := interpretationMappingFixture()
 	m.Decisions[0].Explanation.Additional = []ComponentAssertion{}
-	m.Decisions[0].Explanation.Status = "rejected"
-	if _, _, err := admitMappingFixture(answer, c, k, tax, m); err == nil {
-		t.Fatal("supplied reason was never assessed")
+	for _, status := range []string{"rejected", "accepted"} {
+		m.Decisions[0].Explanation.Status = status
+		m.Decisions[0].Explanation.Satisfied = []string{}
+		if status == "accepted" {
+			m.Decisions[0].Explanation.Satisfied = []string{"reason1"}
+		}
+		if _, _, err := admitMappingFixture(answer, c, k, tax, m); err == nil {
+			t.Fatal("supplied reason was never assessed beyond rubric overlap", status)
+		}
 	}
 }

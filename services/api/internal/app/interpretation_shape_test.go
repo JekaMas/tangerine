@@ -47,3 +47,28 @@ func TestInterpretationMeaningfulTupleNegative(t *testing.T) {
 		t.Fatal("meaningful wrong fields discarded")
 	}
 }
+
+func TestInterpretationMissingNotePositive(t *testing.T) {
+	for _, explicitNull := range []bool{false, true} {
+		value, c := emptyShapeFixture(nil, false)
+		decision := value["decisions"].([]any)[0].(map[string]any)
+		if explicitNull {
+			decision["note"] = nil
+		}
+		normalizeInterpretationShape(value, c)
+		if decision["note"] != "" {
+			t.Fatal("missing optional prose consumed repair", decision)
+		}
+	}
+}
+func TestInterpretationMeaningfulNoteNegative(t *testing.T) {
+	for _, note := range []any{"Keep this context", 17, true} {
+		value, c := emptyShapeFixture(nil, false)
+		decision := value["decisions"].([]any)[0].(map[string]any)
+		decision["note"] = note
+		normalizeInterpretationShape(value, c)
+		if decision["note"] != note {
+			t.Fatal("existing prose or meaningful wrong type was erased", decision)
+		}
+	}
+}

@@ -400,6 +400,13 @@ func TestNativeInterpretationFullRegistryPositive(t *testing.T) {
 			t.Fatal("missing alias context")
 		}
 	}
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	mappingPrompt, _ := f.wires[1]["instructions"].(string)
+	if !strings.Contains(mappingPrompt, "For EVERY supplied explanation") || !strings.Contains(mappingPrompt, "rubric overlap is not a judgment") {
+		t.Fatal("authored full-reason assessment is missing from the shipped provider input")
+	}
+
 }
 func TestNativeInterpretationWrongConfigurationNegative(t *testing.T) {
 	f := interpretationNative(t, "good")
