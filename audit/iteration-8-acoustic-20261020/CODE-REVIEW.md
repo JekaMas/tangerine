@@ -1,0 +1,15 @@
+# Iteration 8 source review
+
+This is the implementing agent's complete source/contract review and real-owner test repair, not a separate human or model review.
+
+- Preparation/profile owners resolve the initial controlled adapter and save complete settings; accepted configuration data is unchanged. Explicit profiles, zero-mutation and text-only choices remain.
+- Go plan/key projections contain no waveform or SQL work. Foreground orchestration calls separate transport/evidence, asset, progress/CAS and finalization owners. Acoustic stage progression does not own model algorithms.
+- Python acoustic_plan compiles meaningful intent/order; acoustic_alignment owns exact grapheme/token/decoder correspondence; acoustic_measurements owns Praat F0/formants and VOT proposals; acoustic_controls owns PCM transformations and correspondence. acoustic_runtime coordinates those pure/native owners; backends owns actual model calls. No extra service, queue or model/human approval stage.
+- Complete phrases replace independent context/target clip synthesis. Full paired phrase recordings remain private; target-only splices preserve surrounding PCM. Explicit full-scope reference phones must enter before G2P empty-phone filtering, preserving literal symbol targets.
+- Each newly generated input/output is admitted once. Accepted source/native/child/transform/DB assets are trusted on reuse; no raw-schema byte archives or repeated consistency/hash audits were added.
+- A source/child/running checkpoint commits before transform. Lost parent linkage reuses the original completed child receipt/production plan. Failed/wrong-child operations do not fabricate accepted results. Finalization reuses completed audio without synthesis.
+- Exact silence/crossfade/source clocks and target intervals are retained. Zero-duration pause is a true no-op. Measured F0, formants, release/onset and missingness remain observations, not perceived IPA/accent or universal category validity.
+- Listener views contain safe DB-only counters/profile/available final media. Source/reference audio, mutation key, native context and private asset IDs stay private; dependency failure does not erase saved text or progress.
+- All 122 recipes/categories, 42 formulas and eleven original full-source identities are preserved. No paid/model-review/hosted inference, account signup, corpus requirement, peer review or publication occurred.
+
+Findings repaired: initial controlled-profile admission bridge; child/core-hash coupling; exact source/native lineage; final map versus advisory diagnostic separation; media-independent Library readback; compatible gain/pause ordering; source-derived pitch-range admission; zero pause; whole-phrase context preservation; explicit literal reference/G2P ordering. Initial harness/transport/body-length/context assertion failures and Docker interruptions remain excluded from acceptance. A short-aspiration connected-speech example remains explicitly not measurable rather than receiving invented landmarks.

@@ -608,5 +608,7 @@ Authority: actual user requests full apply, repair through green, separated code
 - [x] Implement separate native vowel duration, pitch/duration/gain, pause and VOT controllers with exact sample maps, explicit unresolved landmarks and no silent repair.
 - [x] Persist source/alignment/production plan before transform, retain intermediate/reference assets and receipts, resume through existing preparation CAS and finalize actual audio/key intervals.
 - [x] Wire meaningful measurements, capability/setup/readback and private render compatibility through existing owners; keep listener answer keys private.
-- [ ] Materialize literal positive/negative I8 tests and dependent DAG cases, qualify actual local controls/alignment and retain native context/model/MLflow evidence.
-- [ ] Review all I8 owners for contracts/layer responsibilities; repair findings, reconcile retained/invalidated evidence, run stable committed-clean I8 checks, record acceptance and commit.
+- [x] Materialize literal positive/negative I8 tests and dependent DAG cases, qualify actual local controls/alignment and retain native context/model/MLflow evidence.
+- [x] Review all I8 owners for contracts/layer responsibilities; repair findings, reconcile retained/invalidated evidence, run stable committed-clean I8 checks, record acceptance and commit.
+
+Iteration8 acceptance: source e5a9c51;108/108 I8 and696/696 implemented I1–I8 closure, original semantic retentions preserved. Actual local acoustic/context/MLflow and independent numerical evidence are recorded in audit/iteration-8-acoustic-20261020/REPORT.md. No in-scope finding remains. Future/product/provider-qualification tasks retain their original scope and status.

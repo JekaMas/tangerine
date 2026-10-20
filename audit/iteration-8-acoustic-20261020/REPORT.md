@@ -1,3 +1,19 @@
+# Iteration 8 — accepted controlled acoustic mutations
+
+Iteration8 is applied, source-reviewed, repaired and green for its declared scope. The final source candidate is `e5a9c51b8e126f6cadfd41484b97fcec3cb6caf0`; later acceptance-only records do not change its production behavior. No in-scope finding or product decision remains open.
+
+- **108/108 I8 cases across27 properties** are accepted, with54positive/54negative cases. The I1–I8 implemented closure reconciles **696/696** cases (348positive/348negative), with no missing/stale case.252 have exact current fingerprints;444 retain explicitly reviewed unchanged behavior with their original candidates, fingerprints and exit0 receipts. This turn observed364 of those cases;332 prior unchanged cases are retained. No passing row from an exit-nonzero command supplies acceptance.
+- Current committed-clean observations include all20 actual local acoustic/control/recovery cases,64 acoustic Python cases, the36 earlier native speech cases, all8 worker cases, preparation/mutation dependencies, pure Go cases and8 real browser cases. Go race/vet/gofmt, strict OpenSpec, graph/discovery and4,160 static assertions passed within their recorded scope. Later unrelated evidence/commit changes do not invalidate those checks.
+- Six acoustic development examples retain20 native stage receipts with actual full-phrase source/paired audio, model-visible inputs, decoder timing, resolved production children, transform parameters, output and measurements. Four further speech examples retain actual Kokoro/eSpeak/Qwen Custom/Base observations.24 actual native spans/runs plus one deterministic run are retained in the25-run MLflow snapshot. Export performed zero model/provider calls. The independent standard-library waveform/autocorrelation qualification was repeated against the actual committed native /p/ source, rather than assuming separately generated audio has identical bytes.
+- Review repaired unplanned target-word clip boundaries, scope-relative decoder/VOT correspondence, exact target intervals, source-derived pitch-range admission, speech-rate scope arithmetic, zero-pause behavior, child/core-plan coupling and lost-parent recovery, media-independent safe summaries, private lineage and generic worker compatibility. Numerical/audio failures remain explicit; no hidden normalization, human review, corpus prerequisite, publication gate, queue or repeated stored-data/schema/hash audit was added.
+- All122 category/recipe routes,42 formulas and11 original full-source identities remain unchanged. The source, timing/compiler, measurement, DSP, orchestration, storage/transport and key/view owners keep separate responsibilities. Canonical unrelated GAPS.md and user/model data remain protected. No paid provider/LLM call, purchased credit, overage, external publication or host prerequisite installation occurred.
+
+This acceptance qualifies the declared local controlled flow and its finite positive/negative behavior. Upstream text-LLM responses and hosted protocol replies are constructed test boundaries. Hosted account entitlement, universal perceived IPA/accent validity and later auditory/scoring/source/product iterations are not claimed as implemented or empirically accepted.
+
+Evidence is in `openspec/changes/implement-teacher-error-trainer/evidence/iteration8-acoustic-20261020/`. FINAL-RECONCILIATION.json and the three retention records preserve original proof boundaries; ARTIFACTS.json locates private originals and the consistent SQLite snapshot. CODE-REVIEW.md records the responsibility trace. Earlier failed/provisional records below are retained history and are superseded by this acceptance.
+
+---
+
 # Iteration 8 — controlled acoustic mutations
 
 Status: implementation and self-review repairs completed; stable committed-clean acceptance remains pending. No full-product, hosted entitlement or perceived linguistic-quality claim is made by this record.
