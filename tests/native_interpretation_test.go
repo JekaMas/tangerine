@@ -79,6 +79,19 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 				span = nil
 			}
 			output = AnswerExtraction{Version: "2.0.0", Clauses: []ExtractedClause{{LocalRef: "c0", Span: AnswerSpan{0, len(text), answer}, Stance: "assert_error", Correction: span}}, Unparsed: []AnswerSpan{}, Coverage: []ClaimCoverage{}, Relations: []ClaimRelation{}}
+
+			if strings.HasPrefix(f.currentMode(), "attachment-") {
+				correction := AnswerSpan{22, 27, "opens"}
+				clauses := []ExtractedClause{{LocalRef: "c0", Span: AnswerSpan{0, 18, "The verb is wrong."}, Stance: "assert_error"}, {LocalRef: "c1", Span: AnswerSpan{19, 28, "Use opens."}, Stance: "assert_error", Correction: &correction}}
+				relation := ClaimRelation{From: "c1", To: "c0", Kind: "correction_attachment"}
+				relation.Evidence.Start = 19
+				relation.Evidence.End = 28
+				if f.currentMode() == "attachment-retracted" {
+					target := clauses[1].Span
+					clauses = append(clauses, ExtractedClause{LocalRef: "c2", Span: AnswerSpan{29, 43, "Withdraw that."}, Stance: "meta", Retraction: &target})
+				}
+				output = AnswerExtraction{Version: "2.0.0", Clauses: clauses, Relations: []ClaimRelation{relation}, Unparsed: []AnswerSpan{}, Coverage: []ClaimCoverage{}}
+			}
 		} else {
 			audit := wire["model"] == "constructed-auditor"
 			if audit {
@@ -121,6 +134,26 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 				decision.Correction.Status = "rejected"
 			}
 			output = SemanticMapping{Version: "1.0.0", Decisions: []SemanticDecision{decision}}
+			if strings.HasPrefix(f.currentMode(), "attachment-") {
+				decisions := []SemanticDecision{}
+				for i, claim := range claims {
+					d := SemanticDecision{Claim: claim.ID, Unit: &id, Decision: "matched_error", Correction: semanticEmpty(), Explanation: semanticEmpty(), Evidence: []string{}, Reason: "supported", Note: "Constructed attachment assessment"}
+					if i == 1 || i == 0 && f.currentMode() == "attachment-kept" {
+						d.Correction.Supplied = true
+						d.Correction.Option = &optionID
+						d.Correction.Status = "accepted"
+						for _, v := range option["required_propositions"].([]any) {
+							d.Correction.Satisfied = append(d.Correction.Satisfied, v.(map[string]any)["id"].(string))
+						}
+					}
+					if i > 0 {
+						d.Decision = "ignore"
+					}
+					decisions = append(decisions, d)
+				}
+				output = SemanticMapping{Version: "1.0.0", Decisions: decisions}
+			}
+
 		}
 		encoded, _ := json.Marshal(output)
 		response := map[string]any{"id": "constructed-response", "object": "response", "status": "completed", "model": wire["model"], "output": []any{map[string]any{"type": "message", "content": []any{map[string]any{"type": "output_text", "text": string(encoded)}}}}}
@@ -152,7 +185,14 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 	_, _, e = f.s.Store.PutConfiguration(context.Background(), raw, uuid.NewString(), rev)
 	requireListening(t, e)
 	f.attempt = f.start(t)
-	_, _, e = f.s.Store.WriteAnswer(context.Background(), f.attempt, uuid.NewString(), 0, answerPacket("Use opens.", "en"), true)
+	answer := "Use opens."
+	if strings.HasPrefix(mode, "attachment-") {
+		answer = "The verb is wrong. Use opens."
+		if mode == "attachment-retracted" {
+			answer += " Withdraw that."
+		}
+	}
+	_, _, e = f.s.Store.WriteAnswer(context.Background(), f.attempt, uuid.NewString(), 0, answerPacket(answer, "en"), true)
 	requireListening(t, e)
 	return f
 }
@@ -669,4 +709,39 @@ func lateAuditFinalizer(t *testing.T) {
 	if next.Status != "complete" || f.extracts.Load() != 1 || f.maps.Load() != 1 {
 		t.Fatal(next, f.calls.Load())
 	}
+}
+
+func nativeAttachmentResult(t *testing.T, mode, want string) {
+	t.Helper()
+	f := interpretationNative(t, mode)
+	state, err := f.interpret(t, uuid.NewString())
+	requireListening(t, err)
+	if state.Status != "complete" || state.Mapping == nil || f.calls.Load() != 2 {
+		t.Fatal(state, f.calls.Load())
+	}
+	var mapping SemanticMapping
+	requireListening(t, f.s.Store.readInterpretationJSON(context.Background(), *state.Mapping, &mapping))
+	if len(mapping.Groups) != 1 || len(mapping.Groups[0].Members) != 2 || mapping.Groups[0].Correction.Status != want || mapping.Decisions[1].Decision != "ignore" {
+		t.Fatal("wrong persisted attachment semantics", mapping)
+	}
+	record, err := f.s.Store.Attempt(context.Background(), f.attempt)
+	requireListening(t, err)
+	before := f.calls.Load()
+	saved, err := f.s.Store.interpretationState(context.Background(), f.attempt)
+	requireListening(t, err)
+	view, err := f.s.Store.interpretationEnvelope(context.Background(), record, saved)
+	requireListening(t, err)
+	decisions := view["interpretation"].(map[string]any)["decisions"].([]any)
+	if decisions[0].(map[string]any)["correction"].(map[string]any)["status"] != want || f.calls.Load() != before {
+		t.Fatal("readback changed source semantics", view)
+	}
+	if mode == "attachment-retracted" && record.Attempt["answer_text"] != "The verb is wrong. Use opens. Withdraw that." {
+		t.Fatal("source changed", record.Attempt)
+	}
+}
+func TestNativeInterpretationEndorsedAttachmentPositive(t *testing.T) {
+	nativeAttachmentResult(t, "attachment-kept", "accepted")
+}
+func TestNativeInterpretationWithdrawnAttachmentNegative(t *testing.T) {
+	nativeAttachmentResult(t, "attachment-retracted", "not_supplied")
 }

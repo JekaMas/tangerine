@@ -96,6 +96,7 @@ func consolidateMapping(claims CanonicalExtraction, m SemanticMapping, key map[s
 	groups := []SemanticGroup{}
 	issues := []InterpretationIssue{}
 	index := map[string]int{}
+	groupByClaim := map[string]int{}
 	categoryConflict := map[int]bool{}
 	byClaim := map[string]CanonicalClaim{}
 	units := map[string]map[string]any{}
@@ -116,7 +117,13 @@ func consolidateMapping(claims CanonicalExtraction, m SemanticMapping, key map[s
 	}
 	for _, d := range m.Decisions {
 		c := byClaim[d.Claim]
-		if !c.Active || c.Group != c.ID || d.Decision == "ignore" {
+		if c.Group != c.ID {
+			if i, exists := groupByClaim[c.Group]; exists {
+				groups[i].Members = append(groups[i].Members, c.ID)
+			}
+			continue
+		}
+		if !c.Active || d.Decision == "ignore" {
 			continue
 		}
 		groupKey := d.Claim
@@ -127,6 +134,7 @@ func consolidateMapping(claims CanonicalExtraction, m SemanticMapping, key map[s
 		if !exists {
 			g := SemanticGroup{Representative: d.Claim, Members: []string{d.Claim}, Unit: d.Unit, Stance: c.Stance, Category: d.Category, Correction: d.Correction, Explanation: d.Explanation}
 			index[groupKey] = len(groups)
+			groupByClaim[c.ID] = len(groups)
 			groups = append(groups, g)
 			if d.Unit != nil {
 				if earlier, ok := stanceByUnit[*d.Unit]; ok && earlier != c.Stance {
@@ -136,6 +144,7 @@ func consolidateMapping(claims CanonicalExtraction, m SemanticMapping, key map[s
 			}
 			continue
 		}
+		groupByClaim[c.ID] = i
 		g := &groups[i]
 		g.Members = append(g.Members, d.Claim)
 		if d.Duplicate != nil {

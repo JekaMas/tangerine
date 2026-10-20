@@ -361,3 +361,34 @@ func TestInterpretationUnrepresentedReasonNegative(t *testing.T) {
 		}
 	}
 }
+
+func TestInterpretationAuditAssertionOrderPositive(t *testing.T) {
+	_, _, _, _, left := interpretationMappingFixture()
+	right := SemanticMapping{Version: left.Version, Decisions: append([]SemanticDecision{}, left.Decisions...)}
+	a := ComponentAssertion{AnswerSpan: AnswerSpan{17, 22, "every"}, Judgment: "unsupported", Reason: "Scope is false"}
+	b := ComponentAssertion{AnswerSpan: AnswerSpan{23, 27, "verb"}, Judgment: "supported", Reason: "Word reference"}
+	left.Decisions[0].Explanation.Additional = []ComponentAssertion{a, b}
+	right.Decisions[0].Explanation.Additional = []ComponentAssertion{b, a}
+	if !compareMapping(left, right) {
+		t.Fatal("assertion output order created a semantic audit disagreement")
+	}
+	if duplicateComponentSignature(left.Decisions[0].Explanation) != duplicateComponentSignature(right.Decisions[0].Explanation) {
+		t.Fatal("assertion output order prevented duplicate correspondence")
+	}
+	if left.Decisions[0].Explanation.Additional[0] != a || right.Decisions[0].Explanation.Additional[0] != b {
+		t.Fatal("comparison mutated retained model assertions")
+	}
+
+}
+func TestInterpretationAuditAssertionChangedNegative(t *testing.T) {
+	_, _, _, _, left := interpretationMappingFixture()
+	right := SemanticMapping{Version: left.Version, Decisions: append([]SemanticDecision{}, left.Decisions...)}
+	right.Decisions[0].Explanation.Additional = append([]ComponentAssertion{}, left.Decisions[0].Explanation.Additional...)
+	right.Decisions[0].Explanation.Additional[0].Judgment = "supported"
+	if compareMapping(left, right) {
+		t.Fatal("audit erased a changed linguistic judgment")
+	}
+	if duplicateComponentSignature(left.Decisions[0].Explanation) == duplicateComponentSignature(right.Decisions[0].Explanation) {
+		t.Fatal("different judgment treated as duplicate")
+	}
+}

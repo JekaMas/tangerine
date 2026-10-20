@@ -1,6 +1,9 @@
 package app
 
-import "tangerine.local/api/internal/lab"
+import (
+	"sort"
+	"tangerine.local/api/internal/lab"
+)
 
 // Audit compares admitted semantic content without mutating saved findings or
 // allowing free prose differences to become a grading gate.
@@ -9,14 +12,8 @@ func compareMapping(a, b SemanticMapping) bool {
 		rows := []SemanticDecision{}
 		for _, d := range m.Decisions {
 			d.Note = ""
-			d.Correction.Additional = append([]ComponentAssertion(nil), d.Correction.Additional...)
-			d.Explanation.Additional = append([]ComponentAssertion(nil), d.Explanation.Additional...)
-			for i := range d.Correction.Additional {
-				d.Correction.Additional[i].Reason = ""
-			}
-			for i := range d.Explanation.Additional {
-				d.Explanation.Additional[i].Reason = ""
-			}
+			d.Correction.Additional = comparisonAssertions(d.Correction.Additional, false)
+			d.Explanation.Additional = comparisonAssertions(d.Explanation.Additional, false)
 			rows = append(rows, d)
 		}
 		return rows
@@ -25,12 +22,34 @@ func compareMapping(a, b SemanticMapping) bool {
 }
 
 func duplicateComponentSignature(j SemanticComponent) string {
-	j.Additional = append([]ComponentAssertion{}, j.Additional...)
-	for i := range j.Additional {
-		j.Additional[i].Start = 0
-		j.Additional[i].End = 0
-		j.Additional[i].Reason = ""
-		j.Additional[i].Text = duplicateWording(j.Additional[i].Text)
-	}
+	j.Additional = comparisonAssertions(j.Additional, true)
 	return lab.Hash(j)
+}
+
+// Assertion order and explanatory prose carry no credit. Exact source/judgment
+// differences remain observable; only duplicate comparison removes coordinates.
+func comparisonAssertions(input []ComponentAssertion, duplicate bool) []ComponentAssertion {
+	out := append([]ComponentAssertion{}, input...)
+	for i := range out {
+		out[i].Reason = ""
+		if duplicate {
+			out[i].Start = 0
+			out[i].End = 0
+			out[i].Text = duplicateWording(out[i].Text)
+		}
+	}
+	sort.Slice(out, func(i, j int) bool {
+		a, b := out[i], out[j]
+		if a.Start != b.Start {
+			return a.Start < b.Start
+		}
+		if a.End != b.End {
+			return a.End < b.End
+		}
+		if a.Text != b.Text {
+			return a.Text < b.Text
+		}
+		return a.Judgment < b.Judgment
+	})
+	return out
 }

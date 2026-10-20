@@ -74,3 +74,25 @@ func TestInterpretationOppositeStanceNegative(t *testing.T) {
 		t.Fatal(issues)
 	}
 }
+
+func TestInterpretationAttachedMembersPositive(t *testing.T) {
+	c, m, k := twoClaimGroupFixture()
+	c.Claims[1].Group = c.Claims[0].ID
+	m.Decisions[0].Correction = mappingGroupCorrection()
+	m.Decisions[1].Decision = "ignore"
+	groups, issues := consolidateMapping(c, m, k, map[string]any{})
+	if len(groups) != 1 || len(groups[0].Members) != 2 || groups[0].Members[0] != c.Claims[0].ID || groups[0].Members[1] != c.Claims[1].ID || groups[0].Correction.Status != "accepted" || len(issues) != 0 {
+		t.Fatal("attached source member lost", groups, issues)
+	}
+}
+func TestInterpretationWithdrawnMemberNegative(t *testing.T) {
+	c, m, k := twoClaimGroupFixture()
+	c.Claims[1].Group = c.Claims[0].ID
+	c.Claims[1].Active = false
+	m.Decisions[0].Correction = mappingGroupCorrection()
+	m.Decisions[1].Decision = "ignore"
+	groups, issues := consolidateMapping(c, m, k, map[string]any{})
+	if len(groups) != 1 || len(groups[0].Members) != 2 || groups[0].Correction.Status != "accepted" || len(issues) != 0 {
+		t.Fatal("withdrawal must retain source membership without merging its decision", groups, issues)
+	}
+}

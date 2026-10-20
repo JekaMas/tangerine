@@ -145,3 +145,86 @@ func TestInterpretationRepeatedWordNegative(t *testing.T) {
 		}
 	}
 }
+
+func attachmentRetractionFixture(t *testing.T, retract bool, reason bool) CanonicalExtraction {
+	t.Helper()
+	text := "Wrong verb. Use goes. Withdraw that."
+	component := AnswerSpan{16, 20, "goes"}
+	clauses := []ExtractedClause{{LocalRef: "c0", Span: AnswerSpan{0, 11, "Wrong verb."}, Stance: "assert_error"}, {LocalRef: "c1", Span: AnswerSpan{12, 21, "Use goes."}, Stance: "assert_error"}, {LocalRef: "c2", Span: AnswerSpan{22, 36, "Withdraw that."}, Stance: "meta"}}
+	kind := "correction_attachment"
+	if reason {
+		clauses[1].Rationale = &component
+		kind = "explanation_attachment"
+	} else {
+		clauses[1].Correction = &component
+	}
+	relation := ClaimRelation{From: "c1", To: "c0", Kind: kind}
+	relation.Evidence.Start = 12
+	relation.Evidence.End = 21
+	relations := []ClaimRelation{relation}
+	if retract {
+		target := clauses[1].Span
+		clauses[2].Retraction = &target
+	}
+	x, err := normalizeExtraction(text, "fixture-answer", extractionPacket(clauses, relations))
+	if err != nil {
+		t.Fatal(err)
+	}
+	return x
+}
+func TestInterpretationEndorsedAttachmentPositive(t *testing.T) {
+	for _, reason := range []bool{false, true} {
+		x := attachmentRetractionFixture(t, false, reason)
+		spans := x.Claims[0].Corrections
+		if reason {
+			spans = x.Claims[0].Explanations
+		}
+		if len(spans) != 1 || spans[0].Text != "goes" || !x.Claims[1].Active {
+			t.Fatal("endorsed attachment lost", x)
+		}
+	}
+}
+func TestInterpretationWithdrawnAttachmentNegative(t *testing.T) {
+	for _, reason := range []bool{false, true} {
+		x := attachmentRetractionFixture(t, true, reason)
+		spans := x.Claims[0].Corrections
+		if reason {
+			spans = x.Claims[0].Explanations
+		}
+		if len(spans) != 0 || x.Claims[1].Active || len(x.Extraction.Clauses) != 3 {
+			t.Fatal("withdrawn attachment remains in parent assessment", x)
+		}
+	}
+}
+
+func TestInterpretationRelationWithdrawalNegative(t *testing.T) {
+	text := "Wrong verb. Use goes. Withdraw that."
+	span := AnswerSpan{16, 20, "goes"}
+	clauses := []ExtractedClause{{LocalRef: "c0", Span: AnswerSpan{0, 11, "Wrong verb."}, Stance: "assert_error"}, {LocalRef: "c1", Span: AnswerSpan{12, 21, "Use goes."}, Stance: "assert_error", Correction: &span}, {LocalRef: "c2", Span: AnswerSpan{22, 36, "Withdraw that."}, Stance: "meta"}}
+	attach := ClaimRelation{From: "c1", To: "c0", Kind: "correction_attachment"}
+	attach.Evidence.Start = 12
+	attach.Evidence.End = 21
+	retract := ClaimRelation{From: "c2", To: "c1", Kind: "retracts"}
+	retract.Evidence.Start = 22
+	retract.Evidence.End = 36
+	x, err := normalizeExtraction(text, "fixture-answer", extractionPacket(clauses, []ClaimRelation{attach, retract}))
+	if err != nil || len(x.Claims[0].Corrections) != 0 || x.Claims[1].Active {
+		t.Fatal("relation withdrawal left endorsed text", x, err)
+	}
+}
+func TestInterpretationIndependentAttachmentPositive(t *testing.T) {
+	text := "Wrong verb. Use goes. Because singular. Withdraw correction."
+	correction := AnswerSpan{16, 20, "goes"}
+	reason := AnswerSpan{29, 37, "singular"}
+	clauses := []ExtractedClause{{LocalRef: "c0", Span: AnswerSpan{0, 11, "Wrong verb."}, Stance: "assert_error"}, {LocalRef: "c1", Span: AnswerSpan{12, 21, "Use goes."}, Stance: "assert_error", Correction: &correction}, {LocalRef: "c2", Span: AnswerSpan{22, 38, "Because singular."}, Stance: "assert_error", Rationale: &reason}, {LocalRef: "c3", Span: AnswerSpan{39, 59, "Withdraw correction."}, Stance: "meta", Retraction: &AnswerSpan{12, 21, "Use goes."}}}
+	first := ClaimRelation{From: "c1", To: "c0", Kind: "correction_attachment"}
+	first.Evidence.Start = 12
+	first.Evidence.End = 21
+	second := ClaimRelation{From: "c2", To: "c0", Kind: "explanation_attachment"}
+	second.Evidence.Start = 22
+	second.Evidence.End = 38
+	x, err := normalizeExtraction(text, "fixture-answer", extractionPacket(clauses, []ClaimRelation{first, second}))
+	if err != nil || len(x.Claims[0].Corrections) != 0 || len(x.Claims[0].Explanations) != 1 || x.Claims[0].Explanations[0].Text != "singular" {
+		t.Fatal("withdrawal erased independent reason or kept withdrawn correction", x, err)
+	}
+}

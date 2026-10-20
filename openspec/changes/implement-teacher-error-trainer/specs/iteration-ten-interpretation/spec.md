@@ -16,7 +16,7 @@ The application SHALL derive stable source IDs from the original answer and exac
 
 ### Requirement: I10-02 Unicode locations and backwards relations
 
-The application SHALL recover uniquely supported Unicode/UTF16 source coordinates, preserve actual backwards retractions and source attachments, and refuse ambiguous repeated quotes or forward retractions without inventing text. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
+The application SHALL recover uniquely supported Unicode/UTF16 source coordinates, preserve actual backwards retractions and source attachments, project only endorsed attachment components after resolving withdrawals while retaining original source history, and refuse ambiguous repeated quotes or forward retractions without inventing text. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
 
 #### Scenario: I10-02 packet 1
 
@@ -32,6 +32,16 @@ The application SHALL recover uniquely supported Unicode/UTF16 source coordinate
 
 - **WHEN** the third distinct literal positive or negative packet executes through its real owner
 - **THEN** its independently expected source evidence or rejection SHALL hold
+
+#### Scenario: I10-02 packet 4
+
+- **WHEN** the named literal attachment/retraction packet executes through its real source, consolidation or persistence owner
+- **THEN** endorsed components and complete original source membership SHALL match independently authored expectations, excluding withdrawn components from assessment
+
+#### Scenario: I10-02 packet 5
+
+- **WHEN** the named literal attachment/retraction packet executes through its real source, consolidation or persistence owner
+- **THEN** endorsed components and complete original source membership SHALL match independently authored expectations, excluding withdrawn components from assessment
 
 ### Requirement: I10-03 Separate correction and optional explanation
 
@@ -104,9 +114,14 @@ The application SHALL preserve every source member with an earliest representati
 - **WHEN** the second distinct literal positive or negative packet executes through its real owner
 - **THEN** its independently expected data, state, response or failure SHALL hold
 
+#### Scenario: I10-06 packet 3
+
+- **WHEN** the third distinct literal positive or negative packet executes through its real owner
+- **THEN** its independently expected source evidence or rejection SHALL hold
+
 ### Requirement: I10-07 Audit semantic correspondence
 
-The application SHALL compare score-relevant semantic decisions independently of free prose, preserving any actual component or target discrepancy without mutating the saved mapper decisions. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
+The application SHALL compare score-relevant semantic decisions independently of free prose and assertion array order, preserving any actual component or target discrepancy without mutating the saved mapper decisions. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
 
 #### Scenario: I10-07 packet 1
 
@@ -117,6 +132,11 @@ The application SHALL compare score-relevant semantic decisions independently of
 
 - **WHEN** the second distinct literal positive or negative packet executes through its real owner
 - **THEN** its independently expected data, state, response or failure SHALL hold
+
+#### Scenario: I10-07 packet 3
+
+- **WHEN** the third distinct literal positive or negative packet executes through its real owner
+- **THEN** its independently expected source evidence or rejection SHALL hold
 
 ### Requirement: I10-08 Durable foreground semantic handoff
 
@@ -136,6 +156,11 @@ The application SHALL interpret a saved answer through real provider/context/sto
 
 - **WHEN** saved interpretation is reopened or a mapper repair exhausts
 - **THEN** the admitted completed findings SHALL reopen without inference and the failed answer SHALL remain immutable with no manufactured score
+
+#### Scenario: I10-08 packet 4
+
+- **WHEN** the named literal attachment/retraction packet executes through its real source, consolidation or persistence owner
+- **THEN** endorsed components and complete original source membership SHALL match independently authored expectations, excluding withdrawn components from assessment
 
 ### Requirement: I10-09 Frozen retry and idempotent stage reuse
 

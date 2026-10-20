@@ -662,3 +662,9 @@ Iteration9 verification is green on committed-clean source3063180:52/52cases acr
 Anchors/lineage/evidence scope: audit/iteration-10-interpretation-20261020/PLAN.md. Previous I8.R1–R3 remain open outside this iteration. Preserve canonical unrelated GAPS.md and all existing user/model data.
 
 I10 acceptance: the complete 96-case --require-clean selection passed on 61d735226cda35993943787d6b65335b63a38989. All 28 unchanged provider/listening dependencies retain their exact passed 6321ac3 fingerprints, reconciling 124/124 cases (62 positive/62 negative). Four actual local gpt-oss:20b cases passed; 10 dispatches match 10 native receipts, 10 context snapshots and 10 actual MLflow spans across 9 operations. Strict OpenSpec, DAG/discovery, 370 artifact and 4,341 property-set checks, pinned Go vet/gofmt, retained unchanged web build and original preservation checks passed. Full evidence: audit/iteration-10-interpretation-20261020/ACCEPTANCE.json and REPORT.md. Earlier failed/superseded observations remain retained/exported; none is relabelled green. No hosted/paid call, borrowed credential, install, delegation, push or archive occurred. I8.R1–R3 and later native scoring/final feedback retain their separate scope; canonical GAPS.md remains protected.
+
+## Iteration 10 verification and repair (2026-10-21)
+
+- [ ] I10.R1 Challenge source relations and complete semantic-group membership with literal positive/negative counterexamples; repair demonstrated defects through their cohesive owners.
+- [ ] I10.R2 Review all I10 contracts, layers, persistence/retry/context/readback and selected evidence; address every demonstrated in-scope finding.
+- [ ] I10.R3 Extend DAG/discovery, reconcile unchanged dependency evidence, complete actual local/Lab observations and stable language/spec/preservation checks, commit and pass the full committed-clean I10 selection; commit final verification.

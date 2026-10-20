@@ -232,65 +232,8 @@ func normalizeExtraction(answer, answerSHA string, raw []byte) (CanonicalExtract
 		}
 		result.Claims = append(result.Claims, out)
 	}
-	sort.SliceStable(x.Relations, func(i, j int) bool { return byRef[x.Relations[i].From] < byRef[x.Relations[j].From] })
-	for _, rel := range x.Relations {
-		a, okA := byRef[rel.From]
-		b, okB := byRef[rel.To]
-		if !okA || !okB || a <= b || result.Claims[a].Span.Start <= result.Claims[b].Span.Start {
-			return result, interpretationInvalid("Relations require an actual later source claim and an earlier distinct claim.")
-		}
-		if rel.Evidence.Start < 0 || rel.Evidence.Start >= rel.Evidence.End || rel.Evidence.End > len([]rune(answer)) {
-			return result, interpretationInvalid("Relation evidence must be an actual original source interval.")
-		}
-		later, earlier := &result.Claims[a], &result.Claims[b]
-		if rel.Kind == "retracts" {
-			if rel.Evidence.Start < earlier.Span.End {
-				return result, interpretationInvalid("A retraction must follow its earlier assertion.")
-			}
-			earlier.Active = false
-		} else if rel.Kind == "exact_duplicate" {
-			if duplicateWording(later.Span.Text) != duplicateWording(earlier.Span.Text) {
-				return result, interpretationInvalid("Exact duplicate normalization cannot erase case or punctuation or change substantive wording.")
-			}
-		} else {
-			// Attachments keep all original members and source spans, with one earliest
-			// assertion representative. Target/stance semantics remain the mapper's job.
-			group := earlier.Group
-			var root *CanonicalClaim
-			for j := range result.Claims {
-				if result.Claims[j].ID == group {
-					root = &result.Claims[j]
-					break
-				}
-			}
-			if root == nil {
-				return result, interpretationInvalid("Attachment has no source representative.")
-			}
-			if rel.Kind == "correction_attachment" || rel.Kind == "compatible_fragment" {
-				root.Corrections = append(root.Corrections, later.Corrections...)
-			}
-			if rel.Kind == "explanation_attachment" || rel.Kind == "compatible_fragment" {
-				root.Explanations = append(root.Explanations, later.Explanations...)
-			}
-			root.Categories = append(root.Categories, later.Categories...)
-			later.Group = group
-		}
-	}
-	for i := range result.Claims {
-		c := &result.Claims[i]
-		if c.Retraction != nil {
-			found := false
-			for j := 0; j < i; j++ {
-				if result.Claims[j].Span == *c.Retraction {
-					result.Claims[j].Active = false
-					found = true
-					break
-				}
-			}
-			if !found {
-				return result, interpretationInvalid("The explicit retraction must name an earlier actual claim.")
-			}
-		}
+	if err := normalizeClaimRelations(answer, &result, byRef); err != nil {
+		return result, err
 	}
 	for i := range x.Unparsed {
 		if err := normalizeAnswerSpan(answer, &x.Unparsed[i]); err != nil {
