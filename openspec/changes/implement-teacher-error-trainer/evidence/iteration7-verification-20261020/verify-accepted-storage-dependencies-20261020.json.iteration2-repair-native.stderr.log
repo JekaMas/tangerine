@@ -1,0 +1,92 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.06kB done
+#1 DONE 0.2s
+
+#2 [internal] load metadata for docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 163B done
+#3 DONE 0.0s
+
+#4 [build 1/7] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 19.82kB 0.0s done
+#5 DONE 0.1s
+
+#6 [build 2/7] WORKDIR /src
+#6 CACHED
+
+#7 [build 3/7] COPY services/api/go.mod services/api/go.sum ./
+#7 CACHED
+
+#8 [build 5/7] COPY services/api/ ./
+#8 CACHED
+
+#9 [build 6/7] RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /tangerine ./cmd/tangerine
+#9 CACHED
+
+#10 [build 4/7] RUN go mod download
+#10 CACHED
+
+#11 [build 7/7] RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -mod=readonly -trimpath -o /public-probe ./cmd/tangerine
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 writing image sha256:cda89a4e76d2b750e09a87c6509fd6afad80161a36170e297687359be1cefeea done
+#12 naming to docker.io/library/tangerine-regression-0a0520d0a36b-go done
+#12 DONE 0.0s
+
+View build details: docker-desktop://dashboard/build/default/default/04zu2yqthhlfj0sxnblvvw0ni
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from minio.Dockerfile
+#1 transferring dockerfile: 1.01kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
+#3 DONE 12.7s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 163B done
+#4 DONE 0.0s
+
+#5 [build 2/7] ADD --checksum=sha256:71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6 https://codeload.github.com/minio/minio/tar.gz/7aac2a2c5b7c882e68c1ce017d8256be2feea27f /src.tar.gz
+#5 DONE 0.0s
+
+#6 [stage-1 1/4] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
+#6 DONE 0.0s
+
+#7 [build 1/7] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+#7 DONE 0.0s
+
+#8 [internal] load build context
+#8 transferring context: 417B 0.0s done
+#8 DONE 0.0s
+
+#9 [stage-1 4/4] COPY --from=build /probe /usr/local/bin/probe
+#9 CACHED
+
+#10 exporting to image
+#10 exporting layers done
+#10 writing image sha256:775f5bde398036fb9a64a87247346f01e25c2618cfd0560193849a9a84e9d8e1 done
+#10 naming to docker.io/library/tangerine-regression-0a0520d0a36b-minio done
+#10 DONE 0.0s
+
+View build details: docker-desktop://dashboard/build/default/default/hma7cd347gjjmzf5uxuce8co3
+9e966488d3acb7a2e85183ace7da6a199b17a0a14f6596d6926d20c8f16d20ee
+85b87ba7e1d31a562c578934a8a691ea99665ce38dbb46a2d414814691ebfad0
+f9673e7eab41aae4f61b718b32ec0094d5fbc234f63bcbdb6a2c0bcdb729eb79
+tangerine-regression-0a0520d0a36b-postgres
+tangerine-regression-0a0520d0a36b-media
+tangerine-regression-0a0520d0a36b
+Untagged: tangerine-regression-0a0520d0a36b-go:latest
+Untagged: tangerine-regression-0a0520d0a36b-minio:latest

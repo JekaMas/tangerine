@@ -591,7 +591,9 @@ Acceptance:104 I7 cases across 26 properties and the full 580-case implemented d
 
 - [x] Reproduce and repair advisory quality transport failure; preserve cancellation and actual saved audio.
 - [x] Preserve frozen pace requests and honest unknown measurement/deviation without guessing lexical audio evidence.
-- [ ] Extend literal positive/negative cases and DAG; review separated responsibilities and reconcile all affected evidence.
-- [ ] Complete stable committed-clean full I7 selection, native/Lab joins, structural/language/preservation checks and commit verification.
+- [x] Extend literal positive/negative cases and DAG; review separated responsibilities and reconcile all affected evidence.
+- [x] Complete stable committed-clean full I7 selection, native/Lab joins, structural/language/preservation checks and commit verification.
 
 Current review: audit/iteration-7-verification-20261020/REPORT.md. Paid calls remain forbidden without individual approval.
+
+Verification accepted:112/112 I7 cases and588/588 unique I1–I7 dependency cases reconcile to exact current fingerprints, observed tests and exit0 commands on committed-clean candidates. Full I7 ran on4d65a5c; final foundation fixture repairs passed100 cases on4e935a8 while all112 I7 fingerprints remained unchanged. Five fresh local model calls reconcile to five native/context/MLflow spans; deterministic repairs have a separate zero-call Lab run. All failed/cancelled trials remain retained and rejected. No paid calls, source-data changes or later iteration acceptance. Final report: audit/iteration-7-verification-20261020/REPORT.md; evidence: evidence/iteration7-verification-20261020/.

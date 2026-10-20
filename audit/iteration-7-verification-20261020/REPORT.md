@@ -1,3 +1,28 @@
+# Accepted verification — 2026-10-20
+
+Iteration7 is green for its complete declared scope. The final reconciliation on clean4e935a840c61db8674b6648cc052b0d360342235 accepts588/588 required I1–I7 cases (294positive/294negative), including112/112 I7 cases across28properties, with no missing/stale case and no contribution from an exit-nonzero command. Original receipts are unchanged.
+
+## Resolved findings
+
+1. **Product defect:** final advisory quality HTTP503 or malformed replies previously failed otherwise complete audio. speech_transport.go now returns an explicit not_measurable diagnostic, preserving warnings/unknowns and foreground cancellation. Native PostgreSQL/MinIO regression negatives failed on baseline and pass after repair; measured/warning positives and exact12056-byte sample assembly remain supported.
+2. **Missing diagnostic:** assembly now retains frozen speaker pace targets/tolerances and explicitly unknown actual WPM/deviation. Written counts/clip duration never fabricate timed lexical observations. Actual acoustic measurement remains iteration8.
+3. **Review/design:** assembly moved into speech_assembly.go. Foreground orchestration, SQL/CAS, asset persistence, pure audio/key projections, HTTP/transport and evidence retain separate responsibilities. No new queue, fallback, content revalidation or approval gate was added.
+4. **Dependency harness:** atomic restoration is limited to the damaged runtime configuration fixture. Unrelated source/operator/deletion cleanup is unchanged from baseline. Initial failures, the broader-helper mistakes and the cancelled permission trial remain retained and excluded. The final32 launcher,52 storage/browser and16 provider/Settings cases all passed on committed-clean4e935a8. The first transient container-read cause remains unconfirmed; no product filesystem defect or runtime retry was invented.
+
+## Accepted observations
+
+- Full I7 selection:112passed on committed-clean4d65a5c (Go24, native36, Python40, worker8, browser4). Subsequent foundation-only fixture edits leave all112 fingerprints unchanged; these greens are retained rather than synthesizing again.
+- Shared fresh dependencies:168Go,76storage/preparation/mutation and36Lab cases passed on4d65a5c; final100 foundation cases passed on4e935a8. Earlier unaffected exact-matching observations retain their original candidates. The588 unique required cases are reconciled individually rather than summed across overlapping runs.
+- Five fresh actual local synthesis calls: KokoroUS/GB, eSpeak, QwenCustomVoice and saved QwenBase conditioning. Each joins independent actual dispatch, original HTTP bytes/status, native receipt/model context and one MLflow span/run. A sixth MLflow run retains the eight deterministic repair cases with zero model calls. Observer snapshot retains5spans/6runs; only owned test resources were removed.
+- Go race/vet/gofmt, native browser playback and dependency recovery, strict OpenSpec, current graph/discovery and4025static assertions passed within their recorded scope. Source/test changes, failed commands and retention decisions are detailed below. Web/speech production images and model bindings are unchanged and retain their qualified build evidence.
+- All122 categories/recipes,42 formulas and11 original full-source identities remain byte-identical. No migration, provider purchase/paid call, billing fallback, user-data mutation or later iteration implementation occurred. Canonical unrelated GAPS.md and model assets are preserved.
+
+Evidence: openspec/changes/implement-teacher-error-trainer/evidence/iteration7-verification-20261020/VERIFY-FINAL-RECONCILIATION-20261020.json, LOCAL-OBSERVATIONS.json and ARTIFACTS.json. Large original native/audio/context/MLflow bodies remain private under the indexed data/ paths. Hosted account entitlement, perceptual accent/intelligibility and future acoustic controllers are outside this local proof. Upstream text/key inputs are constructed fixtures, not text-LLM inference. Review is this agent's source review; independently expected test observations are not an independent human review.
+
+No in-scope finding or product decision remains open. Whole-product/future-iteration tasks remain visible and unaccepted.
+
+---
+
 # Iteration 7 verification and repair — 2026-10-20
 
 Baseline: 5804886bc26d1ee103530b644636d228a9bd68fa, clean isolated tangerine/iteration-7-speech. Canonical unrelated GAPS.md is protected. Scope: complete iteration 7 review, repair, graph and committed-clean verification; no paid calls or later iteration implementation.
@@ -15,7 +40,7 @@ Before repair add native positive/negative transport regressions and pure diagno
 
 Review orchestration, frozen pure plan, storage/CAS, accepted asset reuse, sample transformations, HTTP projection/transport, synthesis/worker lifecycle and evidence export separately. Findings are repaired through their existing owners. No SQL belongs in orchestration or pure diagnostics.
 
-## Current checkpoint
+## Historical implementation checkpoint
 
 Repair and direct regressions passed: four native advisory cases plus 24 pure speech cases, including four new pace cases. Existing observations remain separate from committed-clean acceptance. Full I7/dependency acceptance and Lab reconciliation pending.
 

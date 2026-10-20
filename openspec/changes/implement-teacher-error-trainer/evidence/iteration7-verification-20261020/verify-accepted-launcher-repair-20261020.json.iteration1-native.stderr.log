@@ -1,0 +1,318 @@
+test_config_damaged_negative (test_iteration1.Iteration1Tests.test_config_damaged_negative) ... ok
+test_config_durable_positive (test_iteration1.Iteration1Tests.test_config_durable_positive) ... ok
+test_config_no_keys_positive (test_iteration1.Iteration1Tests.test_config_no_keys_positive) ... ok
+test_config_unknown_negative (test_iteration1.Iteration1Tests.test_config_unknown_negative) ... ok
+test_delivery_missing_source_negative (test_iteration1.Iteration1Tests.test_delivery_missing_source_negative) ... ERROR
+test_delivery_no_docker_negative (test_iteration1.Iteration1Tests.test_delivery_no_docker_negative) ... ok
+test_delivery_repeat_start_positive (test_iteration1.Iteration1Tests.test_delivery_repeat_start_positive) ... FAIL
+test_delivery_zip_start_positive (test_iteration1.Iteration1Tests.test_delivery_zip_start_positive) ... ok
+test_health_dependencies_positive (test_iteration1.Iteration1Tests.test_health_dependencies_positive) ... ok
+test_health_liveness_positive (test_iteration1.Iteration1Tests.test_health_liveness_positive) ... ok
+test_health_media_failure_negative (test_iteration1.Iteration1Tests.test_health_media_failure_negative) ... ok
+test_health_speech_failure_negative (test_iteration1.Iteration1Tests.test_health_speech_failure_negative) ... ok
+test_init_checksum_negative (test_iteration1.Iteration1Tests.test_init_checksum_negative) ... ok
+test_init_idempotent_positive (test_iteration1.Iteration1Tests.test_init_idempotent_positive) ... ok
+test_init_public_bucket_negative (test_iteration1.Iteration1Tests.test_init_public_bucket_negative) ... ok
+test_init_workspace_positive (test_iteration1.Iteration1Tests.test_init_workspace_positive) ... ok
+test_library_empty_positive (test_iteration1.Iteration1Tests.test_library_empty_positive) ... ok
+test_library_legacy_incomplete_negative (test_iteration1.Iteration1Tests.test_library_legacy_incomplete_negative) ... ok
+test_library_projection_positive (test_iteration1.Iteration1Tests.test_library_projection_positive) ... ok
+test_library_storage_failure_negative (test_iteration1.Iteration1Tests.test_library_storage_failure_negative) ... ok
+test_operations_build_failure_negative (test_iteration1.Iteration1Tests.test_operations_build_failure_negative) ... FAIL
+test_operations_logs_positive (test_iteration1.Iteration1Tests.test_operations_logs_positive) ... ok
+test_operations_occupied_port_negative (test_iteration1.Iteration1Tests.test_operations_occupied_port_negative) ... FAIL
+test_operations_status_positive (test_iteration1.Iteration1Tests.test_operations_status_positive) ... FAIL
+test_restart_database_positive (test_iteration1.Iteration1Tests.test_restart_database_positive) ... FAIL
+test_restart_media_positive (test_iteration1.Iteration1Tests.test_restart_media_positive) ... FAIL
+test_restart_missing_config_negative (test_iteration1.Iteration1Tests.test_restart_missing_config_negative) ... ERROR
+test_restart_unknown_command_negative (test_iteration1.Iteration1Tests.test_restart_unknown_command_negative) ... FAIL
+test_transport_foreign_origin_negative (test_iteration1.Iteration1Tests.test_transport_foreign_origin_negative) ... ERROR
+test_transport_internal_token_negative (test_iteration1.Iteration1Tests.test_transport_internal_token_negative) ... ERROR
+test_transport_no_session_positive (test_iteration1.Iteration1Tests.test_transport_no_session_positive) ... ERROR
+test_transport_public_browser_positive (test_iteration1.Iteration1Tests.test_transport_public_browser_positive) ... ERROR
+
+======================================================================
+ERROR: test_delivery_missing_source_negative (test_iteration1.Iteration1Tests.test_delivery_missing_source_negative)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 132, in test_delivery_missing_source_negative
+    finally:restore_fixture_file(p,saved)
+            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 30, in restore_fixture_file
+    temporary.chmod(path.stat().st_mode & 0o777)
+                    ~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py", line 654, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/5q/gkjywh617zn6lrvf1_f51kv40000gn/T/tangerine-i1-0ni_tfo9/source/services/web/package-lock.json'
+
+======================================================================
+ERROR: test_restart_missing_config_negative (test_iteration1.Iteration1Tests.test_restart_missing_config_negative)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 238, in test_restart_missing_config_negative
+    try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_MISSING',r.stdout);self.assertFalse(p.exists())
+                                                                   ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'CONFIG_MISSING' not found in 'SOURCE_INCOMPLETE: missing services/web/package-lock.json. Extract the complete release; existing data is retained.\n'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 239, in test_restart_missing_config_negative
+    finally:restore_fixture_file(p,saved);p.chmod(0o600)
+            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 30, in restore_fixture_file
+    temporary.chmod(path.stat().st_mode & 0o777)
+                    ~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py", line 654, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/5q/gkjywh617zn6lrvf1_f51kv40000gn/T/tangerine-i1-0ni_tfo9/source/data/config/runtime.env'
+
+======================================================================
+ERROR: test_transport_foreign_origin_negative (test_iteration1.Iteration1Tests.test_transport_foreign_origin_negative)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 1320, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+              encode_chunked=req.has_header('Transfer-encoding'))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1386, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1432, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1381, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1141, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1085, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1051, in connect
+    self.sock = self._create_connection(
+                ~~~~~~~~~~~~~~~~~~~~~~~^
+        (self.host,self.port), self.timeout, self.source_address)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socket.py", line 874, in create_connection
+    raise exceptions[0]
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socket.py", line 859, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [Errno 61] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 206, in test_transport_foreign_origin_negative
+    self.assertEqual(self.http('/api/v1/library',{'Origin':'http://foreign.invalid'},method)[0],403)
+                     ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 99, in http
+    with urllib.request.urlopen(req,timeout=15) as r:return r.status,r.read(),dict(r.headers)
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 187, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 487, in open
+    response = self._open(req, data)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 504, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+                              '_open', req)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 464, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 1349, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 1323, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 61] Connection refused>
+
+======================================================================
+ERROR: test_transport_internal_token_negative (test_iteration1.Iteration1Tests.test_transport_internal_token_negative)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 209, in test_transport_internal_token_negative
+    r=self.internal('/api/v1/library',False);self.assertEqual(r['status'],403)
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 107, in internal
+    code=code.replace("os.environ['API_INTERNAL_TOKEN']",repr(cls.config()['API_INTERNAL_TOKEN'])).replace('127.0.0.1:8080','api:8080')
+                                                              ~~~~~~~~~~^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 112, in config
+    def config(cls): return dict(line.split('=',1) for line in (cls.extract/'data/config/runtime.env').read_text().splitlines())
+                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py", line 787, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py", line 771, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/5q/gkjywh617zn6lrvf1_f51kv40000gn/T/tangerine-i1-0ni_tfo9/source/data/config/runtime.env'
+
+======================================================================
+ERROR: test_transport_no_session_positive (test_iteration1.Iteration1Tests.test_transport_no_session_positive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 1320, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+              encode_chunked=req.has_header('Transfer-encoding'))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1386, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1432, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1381, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1141, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1085, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1051, in connect
+    self.sock = self._create_connection(
+                ~~~~~~~~~~~~~~~~~~~~~~~^
+        (self.host,self.port), self.timeout, self.source_address)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socket.py", line 874, in create_connection
+    raise exceptions[0]
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socket.py", line 859, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [Errno 61] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 189, in test_transport_no_session_positive
+    code,_,headers=self.http(headers={'Cookie':'tangerine_session=invalid','Authorization':'Bearer ignored-user-token'})
+                   ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 99, in http
+    with urllib.request.urlopen(req,timeout=15) as r:return r.status,r.read(),dict(r.headers)
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 187, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 487, in open
+    response = self._open(req, data)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 504, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+                              '_open', req)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 464, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 1349, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 1323, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 61] Connection refused>
+
+======================================================================
+ERROR: test_transport_public_browser_positive (test_iteration1.Iteration1Tests.test_transport_public_browser_positive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 194, in test_transport_public_browser_positive
+    browser=Browser(self.sandbox/'chrome')
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/browser_probe.py", line 14, in __init__
+    if not ready.get('ready'):raise RuntimeError(ready.get('error','Native browser not ready'))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/
+Call log:
+[2m  - navigating to "http://localhost:3000/", waiting until "load"[22m
+
+    at /Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/browser_playwright.cjs:11:33
+
+======================================================================
+FAIL: test_delivery_repeat_start_positive (test_iteration1.Iteration1Tests.test_delivery_repeat_start_positive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 127, in test_delivery_repeat_start_positive
+    before=self.sql('SELECT id FROM workspaces');self.assertEqual(self.launch('start',timeout=900).returncode,0)
+                                                 ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_operations_build_failure_negative (test_iteration1.Iteration1Tests.test_operations_build_failure_negative)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 253, in test_operations_build_failure_negative
+    try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('BUILD_FAILED',r.stdout);self.assertEqual(self.http('/health/ready')[0],200)
+                                                                               ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'BUILD_FAILED' not found in 'SOURCE_INCOMPLETE: missing services/web/package-lock.json. Extract the complete release; existing data is retained.\n'
+
+======================================================================
+FAIL: test_operations_occupied_port_negative (test_iteration1.Iteration1Tests.test_operations_occupied_port_negative)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 265, in test_operations_occupied_port_negative
+    r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('START_FAILED',r.stdout);self.assertNotIn('Tangerine is ready',r.stdout)
+                                                                           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'START_FAILED' not found in 'SOURCE_INCOMPLETE: missing services/web/package-lock.json. Extract the complete release; existing data is retained.\n'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 267, in test_operations_occupied_port_negative
+    finally:listener.shutdown();listener.server_close();worker.join();self.assertEqual(self.launch('start',timeout=900).returncode,0)
+                                                                      ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_operations_status_positive (test_iteration1.Iteration1Tests.test_operations_status_positive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 245, in test_operations_status_positive
+    for service in ('postgres','minio','api','web','speech'):self.assertIn(service,r.stdout)
+                                                             ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+AssertionError: 'postgres' not found in 'NAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS\n'
+
+======================================================================
+FAIL: test_restart_database_positive (test_iteration1.Iteration1Tests.test_restart_database_positive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 231, in test_restart_database_positive
+    before=self.sql('SELECT id,created_at FROM workspaces');self.assertEqual(self.launch('stop').returncode,0);self.assertEqual(self.launch('start',timeout=900).returncode,0)
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 93, in sql
+    return cls.compose('exec','-T','postgres','psql','-X','-v','ON_ERROR_STOP=1','-U','tangerine','-d','tangerine','-At','-c',text).stdout.strip()
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 88, in compose
+    if check and r.returncode: raise AssertionError('Compose failed; inspect '+str(cls.receipts))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Compose failed; inspect /Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/data/iteration1-native-33162
+
+======================================================================
+FAIL: test_restart_media_positive (test_iteration1.Iteration1Tests.test_restart_media_positive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 234, in test_restart_media_positive
+    self.media('put');before=self.media('get');self.assertEqual(before['sha256'],hashlib.sha256(b'native-iteration1-object\n').hexdigest())
+    ~~~~~~~~~~^^^^^^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 117, in media
+    if r.returncode: raise AssertionError('Native S3 fixture failed; inspect '+str(cls.receipts))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Native S3 fixture failed; inspect /Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/data/iteration1-native-33162
+
+======================================================================
+FAIL: test_restart_unknown_command_negative (test_iteration1.Iteration1Tests.test_restart_unknown_command_negative)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 241, in test_restart_unknown_command_negative
+    before=self.sql('SELECT id FROM workspaces');r=self.launch('invalid-command');self.assertNotEqual(r.returncode,0);self.assertIn('UNKNOWN_COMMAND',r.stdout);self.assertEqual(self.sql('SELECT id FROM workspaces'),before)
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 93, in sql
+    return cls.compose('exec','-T','postgres','psql','-X','-v','ON_ERROR_STOP=1','-U','tangerine','-d','tangerine','-At','-c',text).stdout.strip()
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/tests/test_iteration1.py", line 88, in compose
+    if check and r.returncode: raise AssertionError('Compose failed; inspect '+str(cls.receipts))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Compose failed; inspect /Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/data/iteration1-native-33162
+
+----------------------------------------------------------------------
+Ran 32 tests in 165.319s
+
+FAILED (failures=7, errors=6)
