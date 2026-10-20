@@ -72,13 +72,8 @@ func (s *Storage) RecordPlayback(ctx context.Context, id, key string, raw []byte
 	if e != pgx.ErrNoRows {
 		return nil, e
 	}
-	var max int64
-	if e = tx.QueryRow(ctx, "SELECT coalesce(max(event_sequence),-1) FROM playback_index WHERE attempt_id=$1 AND page_instance_id=$2", id, page).Scan(&max); e != nil {
-		return nil, e
-	}
-	if sequence <= max {
-		return nil, ErrConflict
-	}
+	// Preserve each unique reported client ordinal even if HTTP arrives out of order.
+	// Arrival order does not establish the order of listening actions.
 	if e = retainAttemptRequest(ctx, tx, "play-event-request", raw, op.ID); e != nil {
 		return nil, e
 	}

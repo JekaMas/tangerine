@@ -3510,7 +3510,7 @@
       "id": "I9-04",
       "capability": "iteration-nine-listening",
       "title": "I9-04 Frozen attempt entry",
-      "fingerprint": "3d29758302038a99d93f57b0b033bf1c8a3dedc744562f20019daca5d965e132"
+      "fingerprint": "c11fb541bf2886191b77782c0dd9b859c85a4c147e53fdc2fd3acfb54083c1f6"
     },
     {
       "id": "I9-05",
@@ -3528,7 +3528,7 @@
       "id": "I9-07",
       "capability": "iteration-nine-listening",
       "title": "I9-07 Descriptive playback persistence",
-      "fingerprint": "9b54f327dfe9e9342122023417a01daf4f9bcaccff139208559bd48e4e28ea51"
+      "fingerprint": "01b98ffbad48e0bb7dd222dadc4c767e967a38ee94e1fbb32d0a56e67a5cc6c2"
     },
     {
       "id": "I9-08",
@@ -13876,13 +13876,13 @@
     {
       "id": "I9-04.P1",
       "requirement_id": "I9-04",
-      "statement": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes.",
+      "statement": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry without requiring unused optional profiles to be ready, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes.",
       "scenarios": [
         "I9-04 packet 1",
         "I9-04 packet 2"
       ],
       "owner": "services/api/internal/app/attempt_storage.go",
-      "oracle": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "oracle": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry without requiring unused optional profiles to be ready, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
       "source_globs": [
         "services/api/internal/app/attempt_storage.go"
       ]
@@ -13918,13 +13918,13 @@
     {
       "id": "I9-07.P1",
       "requirement_id": "I9-07",
-      "statement": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability.",
+      "statement": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, retain unique out-of-order arrivals, and reject wrong attempt/audio/sample scope or conflicting duplicate reports without inferring ability.",
       "scenarios": [
         "I9-07 packet 1",
         "I9-07 packet 2"
       ],
       "owner": "services/api/internal/app/attempt_playback.go",
-      "oracle": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "oracle": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, retain unique out-of-order arrivals, and reject wrong attempt/audio/sample scope or conflicting duplicate reports without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
       "source_globs": [
         "services/api/internal/app/attempt_playback.go"
       ]
@@ -108355,10 +108355,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "services/api/internal/app/attempt_content_test.go",
-        "tests/listening-native",
-        "tests/native_listening_test.go",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -108369,7 +108365,11 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "services/api/internal/app/attempt_content_test.go",
+        "tests/listening-native",
+        "tests/native_listening_test.go"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -108410,10 +108410,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "services/api/internal/app/attempt_content_test.go",
-        "tests/listening-native",
-        "tests/native_listening_test.go",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -108424,7 +108420,11 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "services/api/internal/app/attempt_content_test.go",
+        "tests/listening-native",
+        "tests/native_listening_test.go"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -108465,10 +108465,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "services/api/internal/app/attempt_content_test.go",
-        "tests/listening-native",
-        "tests/native_listening_test.go",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -108479,7 +108475,11 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "services/api/internal/app/attempt_content_test.go",
+        "tests/listening-native",
+        "tests/native_listening_test.go"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -108520,10 +108520,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "services/api/internal/app/attempt_content_test.go",
-        "tests/listening-native",
-        "tests/native_listening_test.go",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -108534,7 +108530,11 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "services/api/internal/app/attempt_content_test.go",
+        "tests/listening-native",
+        "tests/native_listening_test.go"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -108575,10 +108575,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "services/api/internal/app/attempt_content_test.go",
-        "tests/listening-native",
-        "tests/native_listening_test.go",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -108589,7 +108585,11 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "services/api/internal/app/attempt_content_test.go",
+        "tests/listening-native",
+        "tests/native_listening_test.go"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -108630,10 +108630,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "services/api/internal/app/attempt_content_test.go",
-        "tests/listening-native",
-        "tests/native_listening_test.go",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -108644,7 +108640,11 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "services/api/internal/app/attempt_content_test.go",
+        "tests/listening-native",
+        "tests/native_listening_test.go"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -108685,10 +108685,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "services/api/internal/app/attempt_content_test.go",
-        "tests/listening-native",
-        "tests/native_listening_test.go",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -108699,7 +108695,11 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "services/api/internal/app/attempt_content_test.go",
+        "tests/listening-native",
+        "tests/native_listening_test.go"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -108740,10 +108740,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "services/api/internal/app/attempt_content_test.go",
-        "tests/listening-native",
-        "tests/native_listening_test.go",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -108754,7 +108750,11 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "services/api/internal/app/attempt_content_test.go",
+        "tests/listening-native",
+        "tests/native_listening_test.go"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -108785,7 +108785,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -108795,9 +108795,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -108808,7 +108805,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -108839,7 +108839,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -108849,9 +108849,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -108862,7 +108859,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -108893,7 +108893,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -108903,9 +108903,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -108916,7 +108913,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -108947,7 +108947,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -108957,9 +108957,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -108970,7 +108967,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -108994,14 +108994,14 @@
       "scenario": "I9-04 packet 1",
       "scenario_fingerprint": "2fdc6e9f74d15d6df416274dcdec7fdc17341c8b31c339a40a18d23d855ca815",
       "setup": "Execute TestNativeListeningStartPositive through services/api/internal/app/attempt_storage.go {\"exact_native_test\": \"TestNativeListeningStartPositive\", \"literal_executable_fixture\": \"func TestNativeListeningStartPositive(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\tr, e := f.s.Store.Attempt(context.Background(), id)\\n\\trequireListening(t, e)\\n\\tif r.Attempt[\\\"case_version_id\\\"] != f.id || r.Attempt[\\\"audio_sha256\\\"] != f.audioSHA || r.Attempt[\\\"state\\\"] != \\\"started\\\" || r.Attempt[\\\"evaluation_policy_version\\\"] != \\\"answer-components-v2\\\" || len(r.Context[\\\"evaluator_bindings\\\"].([]any)) != 5 {\\n\\t\\tt.Fatal(r)\\n\\t}\\n\\tvar n int\\n\\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM operation WHERE operation_name IN('llm-inference','speech-inference')\\\").Scan(&n))\\n\\tif n != 0 {\\n\\t\\tt.Fatal(n)\\n\\t}\\n}\\n\"}",
-      "observable": "{\"independent_literal_assertions\": \"func TestNativeListeningStartPositive(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\tr, e := f.s.Store.Attempt(context.Background(), id)\\n\\trequireListening(t, e)\\n\\tif r.Attempt[\\\"case_version_id\\\"] != f.id || r.Attempt[\\\"audio_sha256\\\"] != f.audioSHA || r.Attempt[\\\"state\\\"] != \\\"started\\\" || r.Attempt[\\\"evaluation_policy_version\\\"] != \\\"answer-components-v2\\\" || len(r.Context[\\\"evaluator_bindings\\\"].([]any)) != 5 {\\n\\t\\tt.Fatal(r)\\n\\t}\\n\\tvar n int\\n\\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM operation WHERE operation_name IN('llm-inference','speech-inference')\\\").Scan(&n))\\n\\tif n != 0 {\\n\\t\\tt.Fatal(n)\\n\\t}\\n}\\n\", \"oracle\": \"The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.\"}",
+      "observable": "{\"independent_literal_assertions\": \"func TestNativeListeningStartPositive(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\tr, e := f.s.Store.Attempt(context.Background(), id)\\n\\trequireListening(t, e)\\n\\tif r.Attempt[\\\"case_version_id\\\"] != f.id || r.Attempt[\\\"audio_sha256\\\"] != f.audioSHA || r.Attempt[\\\"state\\\"] != \\\"started\\\" || r.Attempt[\\\"evaluation_policy_version\\\"] != \\\"answer-components-v2\\\" || len(r.Context[\\\"evaluator_bindings\\\"].([]any)) != 5 {\\n\\t\\tt.Fatal(r)\\n\\t}\\n\\tvar n int\\n\\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM operation WHERE operation_name IN('llm-inference','speech-inference')\\\").Scan(&n))\\n\\tif n != 0 {\\n\\t\\tt.Fatal(n)\\n\\t}\\n}\\n\", \"oracle\": \"The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry without requiring unused optional profiles to be ready, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.\"}",
       "red_expectation": "Any violated independent data/state/privacy/receipt expectation fails.",
       "green_expectation": "Every exact literal observation holds through its real owner.",
       "test_id": "tangerine.local/api/internal/app::TestNativeListeningStartPositive",
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109011,9 +109011,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109024,7 +109021,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109036,7 +109036,7 @@
           "Actual upstream LLM or synthesis quality",
           "Semantic scoring or full-product acceptance"
         ],
-        "note": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+        "note": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry without requiring unused optional profiles to be ready, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
       },
       "designed_fixture_id": "iteration9-I9-04-packet1",
       "fixture_observation_state": "not_run"
@@ -109048,14 +109048,14 @@
       "scenario": "I9-04 packet 2",
       "scenario_fingerprint": "e57f30a0b16daa95adbaffa36cbe633353d26cd8cf647d184ac3fe38c4b4054b",
       "setup": "Execute TestNativeListeningStartReplayPositive through services/api/internal/app/attempt_storage.go {\"exact_native_test\": \"TestNativeListeningStartReplayPositive\", \"literal_executable_fixture\": \"func TestNativeListeningStartReplayPositive(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tkey := uuid.NewString()\\n\\traw, _ := json.Marshal(map[string]any{\\\"case_version_id\\\": f.id, \\\"case_sha256\\\": f.sha, \\\"requested_language\\\": \\\"ru\\\"})\\n\\ta, e := f.s.Store.StartAttempt(context.Background(), raw, key)\\n\\trequireListening(t, e)\\n\\tb, e := f.s.Store.StartAttempt(context.Background(), raw, key)\\n\\trequireListening(t, e)\\n\\tif lab.Hash(a) != lab.Hash(b) {\\n\\t\\tt.Fatal(a, b)\\n\\t}\\n}\\n\"}",
-      "observable": "{\"independent_literal_assertions\": \"func TestNativeListeningStartReplayPositive(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tkey := uuid.NewString()\\n\\traw, _ := json.Marshal(map[string]any{\\\"case_version_id\\\": f.id, \\\"case_sha256\\\": f.sha, \\\"requested_language\\\": \\\"ru\\\"})\\n\\ta, e := f.s.Store.StartAttempt(context.Background(), raw, key)\\n\\trequireListening(t, e)\\n\\tb, e := f.s.Store.StartAttempt(context.Background(), raw, key)\\n\\trequireListening(t, e)\\n\\tif lab.Hash(a) != lab.Hash(b) {\\n\\t\\tt.Fatal(a, b)\\n\\t}\\n}\\n\", \"oracle\": \"The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.\"}",
+      "observable": "{\"independent_literal_assertions\": \"func TestNativeListeningStartReplayPositive(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tkey := uuid.NewString()\\n\\traw, _ := json.Marshal(map[string]any{\\\"case_version_id\\\": f.id, \\\"case_sha256\\\": f.sha, \\\"requested_language\\\": \\\"ru\\\"})\\n\\ta, e := f.s.Store.StartAttempt(context.Background(), raw, key)\\n\\trequireListening(t, e)\\n\\tb, e := f.s.Store.StartAttempt(context.Background(), raw, key)\\n\\trequireListening(t, e)\\n\\tif lab.Hash(a) != lab.Hash(b) {\\n\\t\\tt.Fatal(a, b)\\n\\t}\\n}\\n\", \"oracle\": \"The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry without requiring unused optional profiles to be ready, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.\"}",
       "red_expectation": "Any violated independent data/state/privacy/receipt expectation fails.",
       "green_expectation": "Every exact literal observation holds through its real owner.",
       "test_id": "tangerine.local/api/internal/app::TestNativeListeningStartReplayPositive",
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109065,9 +109065,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109078,7 +109075,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109090,7 +109090,7 @@
           "Actual upstream LLM or synthesis quality",
           "Semantic scoring or full-product acceptance"
         ],
-        "note": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+        "note": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry without requiring unused optional profiles to be ready, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
       },
       "designed_fixture_id": "iteration9-I9-04-packet2",
       "fixture_observation_state": "not_run"
@@ -109101,15 +109101,15 @@
       "polarity": "negative",
       "scenario": "I9-04 packet 1",
       "scenario_fingerprint": "2fdc6e9f74d15d6df416274dcdec7fdc17341c8b31c339a40a18d23d855ca815",
-      "setup": "Execute TestNativeListeningStartConflictNegative through services/api/internal/app/attempt_storage.go {\"exact_native_test\": \"TestNativeListeningStartConflictNegative\", \"literal_executable_fixture\": \"func TestNativeListeningStartConflictNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tkey := uuid.NewString()\\n\\traw, _ := json.Marshal(map[string]any{\\\"case_version_id\\\": f.id, \\\"case_sha256\\\": f.sha, \\\"requested_language\\\": \\\"en\\\"})\\n\\t_, e := f.s.Store.StartAttempt(context.Background(), raw, key)\\n\\trequireListening(t, e)\\n\\traw, _ = json.Marshal(map[string]any{\\\"case_version_id\\\": f.id, \\\"case_sha256\\\": f.sha, \\\"requested_language\\\": \\\"ru\\\"})\\n\\t_, e = f.s.Store.StartAttempt(context.Background(), raw, key)\\n\\tif !errors.Is(e, ErrConflict) {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\\n\"}",
-      "observable": "{\"independent_literal_assertions\": \"func TestNativeListeningStartConflictNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tkey := uuid.NewString()\\n\\traw, _ := json.Marshal(map[string]any{\\\"case_version_id\\\": f.id, \\\"case_sha256\\\": f.sha, \\\"requested_language\\\": \\\"en\\\"})\\n\\t_, e := f.s.Store.StartAttempt(context.Background(), raw, key)\\n\\trequireListening(t, e)\\n\\traw, _ = json.Marshal(map[string]any{\\\"case_version_id\\\": f.id, \\\"case_sha256\\\": f.sha, \\\"requested_language\\\": \\\"ru\\\"})\\n\\t_, e = f.s.Store.StartAttempt(context.Background(), raw, key)\\n\\tif !errors.Is(e, ErrConflict) {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\\n\", \"oracle\": \"The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.\"}",
+      "setup": "Execute TestNativeListeningStartConflictNegative through services/api/internal/app/attempt_storage.go {\"exact_native_test\": \"TestNativeListeningStartConflictNegative\", \"literal_executable_fixture\": \"func TestNativeListeningStartConflictNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tkey := uuid.NewString()\\n\\traw, _ := json.Marshal(map[string]any{\\\"case_version_id\\\": f.id, \\\"case_sha256\\\": f.sha, \\\"requested_language\\\": \\\"en\\\"})\\n\\t_, e := f.s.Store.StartAttempt(context.Background(), raw, key)\\n\\trequireListening(t, e)\\n\\traw, _ = json.Marshal(map[string]any{\\\"case_version_id\\\": f.id, \\\"case_sha256\\\": f.sha, \\\"requested_language\\\": \\\"ru\\\"})\\n\\t_, e = f.s.Store.StartAttempt(context.Background(), raw, key)\\n\\tif !errors.Is(e, ErrConflict) {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\t// A missing core evaluator still needs Settings; optional readiness is separate.\\n\\tc, rev, e := f.s.Store.Configuration(context.Background())\\n\\trequireListening(t, e)\\n\\tc[\\\"llm_profiles\\\"].([]any)[0].(map[string]any)[\\\"model\\\"] = \\\"unselected\\\"\\n\\tfor _, field := range []string{\\\"workspace_id\\\", \\\"configuration_sha256\\\", \\\"provider_access_policy\\\"} {\\n\\t\\tdelete(c, field)\\n\\t}\\n\\tconfigRaw, _ := json.Marshal(c)\\n\\t_, _, e = f.s.Store.PutConfiguration(context.Background(), configRaw, uuid.NewString(), rev)\\n\\trequireListening(t, e)\\n\\tresponse := f.request(\\\"POST\\\", \\\"/api/v1/attempts\\\", string(raw), uuid.NewString(), \\\"\\\")\\n\\tif response.Code != 409 || !strings.Contains(response.Body.String(), \\\"CAPABILITY_UNQUALIFIED\\\") {\\n\\t\\tt.Fatal(response.Code, response.Body.String())\\n\\t}\\n\\n}\\n\"}",
+      "observable": "{\"independent_literal_assertions\": \"func TestNativeListeningStartConflictNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tkey := uuid.NewString()\\n\\traw, _ := json.Marshal(map[string]any{\\\"case_version_id\\\": f.id, \\\"case_sha256\\\": f.sha, \\\"requested_language\\\": \\\"en\\\"})\\n\\t_, e := f.s.Store.StartAttempt(context.Background(), raw, key)\\n\\trequireListening(t, e)\\n\\traw, _ = json.Marshal(map[string]any{\\\"case_version_id\\\": f.id, \\\"case_sha256\\\": f.sha, \\\"requested_language\\\": \\\"ru\\\"})\\n\\t_, e = f.s.Store.StartAttempt(context.Background(), raw, key)\\n\\tif !errors.Is(e, ErrConflict) {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\t// A missing core evaluator still needs Settings; optional readiness is separate.\\n\\tc, rev, e := f.s.Store.Configuration(context.Background())\\n\\trequireListening(t, e)\\n\\tc[\\\"llm_profiles\\\"].([]any)[0].(map[string]any)[\\\"model\\\"] = \\\"unselected\\\"\\n\\tfor _, field := range []string{\\\"workspace_id\\\", \\\"configuration_sha256\\\", \\\"provider_access_policy\\\"} {\\n\\t\\tdelete(c, field)\\n\\t}\\n\\tconfigRaw, _ := json.Marshal(c)\\n\\t_, _, e = f.s.Store.PutConfiguration(context.Background(), configRaw, uuid.NewString(), rev)\\n\\trequireListening(t, e)\\n\\tresponse := f.request(\\\"POST\\\", \\\"/api/v1/attempts\\\", string(raw), uuid.NewString(), \\\"\\\")\\n\\tif response.Code != 409 || !strings.Contains(response.Body.String(), \\\"CAPABILITY_UNQUALIFIED\\\") {\\n\\t\\tt.Fatal(response.Code, response.Body.String())\\n\\t}\\n\\n}\\n\", \"oracle\": \"The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry without requiring unused optional profiles to be ready, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.\"}",
       "red_expectation": "Any violated independent data/state/privacy/receipt expectation fails.",
       "green_expectation": "Every exact literal observation holds through its real owner.",
       "test_id": "tangerine.local/api/internal/app::TestNativeListeningStartConflictNegative",
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109119,9 +109119,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109132,7 +109129,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109144,7 +109144,7 @@
           "Actual upstream LLM or synthesis quality",
           "Semantic scoring or full-product acceptance"
         ],
-        "note": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+        "note": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry without requiring unused optional profiles to be ready, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
       },
       "designed_fixture_id": "iteration9-I9-04-packet1",
       "fixture_observation_state": "not_run"
@@ -109155,15 +109155,15 @@
       "polarity": "negative",
       "scenario": "I9-04 packet 2",
       "scenario_fingerprint": "e57f30a0b16daa95adbaffa36cbe633353d26cd8cf647d184ac3fe38c4b4054b",
-      "setup": "Execute TestNativeListeningFrozenSettingsNegative through services/api/internal/app/attempt_storage.go {\"exact_native_test\": \"TestNativeListeningFrozenSettingsNegative\", \"literal_executable_fixture\": \"func TestNativeListeningFrozenSettingsNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\tbefore, e := f.s.Store.Attempt(context.Background(), id)\\n\\trequireListening(t, e)\\n\\tc, rev, e := f.s.Store.Configuration(context.Background())\\n\\trequireListening(t, e)\\n\\tc[\\\"feedback_language\\\"] = \\\"ru\\\"\\n\\tfor _, k := range []string{\\\"workspace_id\\\", \\\"configuration_sha256\\\", \\\"provider_access_policy\\\"} {\\n\\t\\tdelete(c, k)\\n\\t}\\n\\traw, _ := json.Marshal(c)\\n\\t_, _, e = f.s.Store.PutConfiguration(context.Background(), raw, uuid.NewString(), rev)\\n\\trequireListening(t, e)\\n\\tafter, e := f.s.Store.Attempt(context.Background(), id)\\n\\trequireListening(t, e)\\n\\tif lab.Hash(before.Context[\\\"configuration\\\"]) != lab.Hash(after.Context[\\\"configuration\\\"]) {\\n\\t\\tt.Fatal(\\\"old attempt adopted settings\\\")\\n\\t}\\n}\\n\"}",
-      "observable": "{\"independent_literal_assertions\": \"func TestNativeListeningFrozenSettingsNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\tbefore, e := f.s.Store.Attempt(context.Background(), id)\\n\\trequireListening(t, e)\\n\\tc, rev, e := f.s.Store.Configuration(context.Background())\\n\\trequireListening(t, e)\\n\\tc[\\\"feedback_language\\\"] = \\\"ru\\\"\\n\\tfor _, k := range []string{\\\"workspace_id\\\", \\\"configuration_sha256\\\", \\\"provider_access_policy\\\"} {\\n\\t\\tdelete(c, k)\\n\\t}\\n\\traw, _ := json.Marshal(c)\\n\\t_, _, e = f.s.Store.PutConfiguration(context.Background(), raw, uuid.NewString(), rev)\\n\\trequireListening(t, e)\\n\\tafter, e := f.s.Store.Attempt(context.Background(), id)\\n\\trequireListening(t, e)\\n\\tif lab.Hash(before.Context[\\\"configuration\\\"]) != lab.Hash(after.Context[\\\"configuration\\\"]) {\\n\\t\\tt.Fatal(\\\"old attempt adopted settings\\\")\\n\\t}\\n}\\n\", \"oracle\": \"The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.\"}",
+      "setup": "Execute TestNativeListeningFrozenSettingsNegative through services/api/internal/app/attempt_storage.go {\"exact_native_test\": \"TestNativeListeningFrozenSettingsNegative\", \"literal_executable_fixture\": \"func TestNativeListeningFrozenSettingsNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\t// Optional audit/feedback/adjudication setup cannot gate ordinary entry.\\n\\toptionalConfig, optionalRevision, e := f.s.Store.Configuration(context.Background())\\n\\trequireListening(t, e)\\n\\toriginal := optionalConfig[\\\"llm_profiles\\\"].([]any)[0].(map[string]any)\\n\\toptional := map[string]any{}\\n\\tfor field, value := range original {\\n\\t\\toptional[field] = value\\n\\t}\\n\\toptional[\\\"id\\\"] = \\\"optional-unselected\\\"\\n\\toptional[\\\"model\\\"] = \\\"unselected\\\"\\n\\toptionalConfig[\\\"llm_profiles\\\"] = append(optionalConfig[\\\"llm_profiles\\\"].([]any), optional)\\n\\tfor _, role := range []string{\\\"mapping_audit\\\", \\\"feedback\\\", \\\"adjudication\\\"} {\\n\\t\\toptionalConfig[\\\"stage_profiles\\\"].(map[string]any)[role] = \\\"optional-unselected\\\"\\n\\t}\\n\\tfor _, field := range []string{\\\"workspace_id\\\", \\\"configuration_sha256\\\", \\\"provider_access_policy\\\"} {\\n\\t\\tdelete(optionalConfig, field)\\n\\t}\\n\\tconfigRaw, _ := json.Marshal(optionalConfig)\\n\\t_, _, e = f.s.Store.PutConfiguration(context.Background(), configRaw, uuid.NewString(), optionalRevision)\\n\\trequireListening(t, e)\\n\\tid := f.start(t)\\n\\tbefore, e := f.s.Store.Attempt(context.Background(), id)\\n\\trequireListening(t, e)\\n\\toptionalCount := 0\\n\\tfor _, item := range before.Context[\\\"evaluator_bindings\\\"].([]any) {\\n\\t\\tprofile := item.(map[string]any)[\\\"profile\\\"].(map[string]any)\\n\\t\\tif profile[\\\"id\\\"] == \\\"optional-unselected\\\" && profile[\\\"model\\\"] == \\\"unselected\\\" {\\n\\t\\t\\toptionalCount++\\n\\t\\t}\\n\\t}\\n\\tif optionalCount != 3 {\\n\\t\\tt.Fatal(\\\"optional selections were not retained\\\", before.Context[\\\"evaluator_bindings\\\"])\\n\\t}\\n\\tc, rev, e := f.s.Store.Configuration(context.Background())\\n\\trequireListening(t, e)\\n\\tc[\\\"feedback_language\\\"] = \\\"ru\\\"\\n\\tfor _, k := range []string{\\\"workspace_id\\\", \\\"configuration_sha256\\\", \\\"provider_access_policy\\\"} {\\n\\t\\tdelete(c, k)\\n\\t}\\n\\traw, _ := json.Marshal(c)\\n\\t_, _, e = f.s.Store.PutConfiguration(context.Background(), raw, uuid.NewString(), rev)\\n\\trequireListening(t, e)\\n\\tafter, e := f.s.Store.Attempt(context.Background(), id)\\n\\trequireListening(t, e)\\n\\tif lab.Hash(before.Context[\\\"configuration\\\"]) != lab.Hash(after.Context[\\\"configuration\\\"]) {\\n\\t\\tt.Fatal(\\\"old attempt adopted settings\\\")\\n\\t}\\n}\\n\"}",
+      "observable": "{\"independent_literal_assertions\": \"func TestNativeListeningFrozenSettingsNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\t// Optional audit/feedback/adjudication setup cannot gate ordinary entry.\\n\\toptionalConfig, optionalRevision, e := f.s.Store.Configuration(context.Background())\\n\\trequireListening(t, e)\\n\\toriginal := optionalConfig[\\\"llm_profiles\\\"].([]any)[0].(map[string]any)\\n\\toptional := map[string]any{}\\n\\tfor field, value := range original {\\n\\t\\toptional[field] = value\\n\\t}\\n\\toptional[\\\"id\\\"] = \\\"optional-unselected\\\"\\n\\toptional[\\\"model\\\"] = \\\"unselected\\\"\\n\\toptionalConfig[\\\"llm_profiles\\\"] = append(optionalConfig[\\\"llm_profiles\\\"].([]any), optional)\\n\\tfor _, role := range []string{\\\"mapping_audit\\\", \\\"feedback\\\", \\\"adjudication\\\"} {\\n\\t\\toptionalConfig[\\\"stage_profiles\\\"].(map[string]any)[role] = \\\"optional-unselected\\\"\\n\\t}\\n\\tfor _, field := range []string{\\\"workspace_id\\\", \\\"configuration_sha256\\\", \\\"provider_access_policy\\\"} {\\n\\t\\tdelete(optionalConfig, field)\\n\\t}\\n\\tconfigRaw, _ := json.Marshal(optionalConfig)\\n\\t_, _, e = f.s.Store.PutConfiguration(context.Background(), configRaw, uuid.NewString(), optionalRevision)\\n\\trequireListening(t, e)\\n\\tid := f.start(t)\\n\\tbefore, e := f.s.Store.Attempt(context.Background(), id)\\n\\trequireListening(t, e)\\n\\toptionalCount := 0\\n\\tfor _, item := range before.Context[\\\"evaluator_bindings\\\"].([]any) {\\n\\t\\tprofile := item.(map[string]any)[\\\"profile\\\"].(map[string]any)\\n\\t\\tif profile[\\\"id\\\"] == \\\"optional-unselected\\\" && profile[\\\"model\\\"] == \\\"unselected\\\" {\\n\\t\\t\\toptionalCount++\\n\\t\\t}\\n\\t}\\n\\tif optionalCount != 3 {\\n\\t\\tt.Fatal(\\\"optional selections were not retained\\\", before.Context[\\\"evaluator_bindings\\\"])\\n\\t}\\n\\tc, rev, e := f.s.Store.Configuration(context.Background())\\n\\trequireListening(t, e)\\n\\tc[\\\"feedback_language\\\"] = \\\"ru\\\"\\n\\tfor _, k := range []string{\\\"workspace_id\\\", \\\"configuration_sha256\\\", \\\"provider_access_policy\\\"} {\\n\\t\\tdelete(c, k)\\n\\t}\\n\\traw, _ := json.Marshal(c)\\n\\t_, _, e = f.s.Store.PutConfiguration(context.Background(), raw, uuid.NewString(), rev)\\n\\trequireListening(t, e)\\n\\tafter, e := f.s.Store.Attempt(context.Background(), id)\\n\\trequireListening(t, e)\\n\\tif lab.Hash(before.Context[\\\"configuration\\\"]) != lab.Hash(after.Context[\\\"configuration\\\"]) {\\n\\t\\tt.Fatal(\\\"old attempt adopted settings\\\")\\n\\t}\\n}\\n\", \"oracle\": \"The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry without requiring unused optional profiles to be ready, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.\"}",
       "red_expectation": "Any violated independent data/state/privacy/receipt expectation fails.",
       "green_expectation": "Every exact literal observation holds through its real owner.",
       "test_id": "tangerine.local/api/internal/app::TestNativeListeningFrozenSettingsNegative",
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109173,9 +109173,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109186,7 +109183,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109198,7 +109198,7 @@
           "Actual upstream LLM or synthesis quality",
           "Semantic scoring or full-product acceptance"
         ],
-        "note": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+        "note": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry without requiring unused optional profiles to be ready, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
       },
       "designed_fixture_id": "iteration9-I9-04-packet2",
       "fixture_observation_state": "not_run"
@@ -109217,7 +109217,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109227,9 +109227,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109240,7 +109237,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109271,7 +109271,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109281,9 +109281,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109294,7 +109291,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109325,7 +109325,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109335,9 +109335,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109348,7 +109345,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109379,7 +109379,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109389,9 +109389,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109402,7 +109399,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109433,7 +109433,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109443,9 +109443,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109456,7 +109453,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109487,7 +109487,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109497,9 +109497,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109510,7 +109507,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109541,7 +109541,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109551,9 +109551,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109564,7 +109561,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109595,7 +109595,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109605,9 +109605,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109618,7 +109615,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109642,14 +109642,14 @@
       "scenario": "I9-07 packet 1",
       "scenario_fingerprint": "70d94c126de09bf1f0bd8c70f89545f1560936fa9f923c0222bddf00feb91a30",
       "setup": "Execute TestNativeListeningPlaybackPositive through services/api/internal/app/attempt_playback.go {\"exact_native_test\": \"TestNativeListeningPlaybackPositive\", \"literal_executable_fixture\": \"func TestNativeListeningPlaybackPositive(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\tfor i, k := range []string{\\\"play\\\", \\\"pause\\\", \\\"seek\\\", \\\"ended\\\"} {\\n\\t\\t_, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \\\"page1\\\", k, i, 24000))\\n\\t\\trequireListening(t, e)\\n\\t}\\n\\tvar n int\\n\\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM playback_index WHERE attempt_id=$1\\\", id).Scan(&n))\\n\\tif n != 4 {\\n\\t\\tt.Fatal(n)\\n\\t}\\n}\\n\"}",
-      "observable": "{\"independent_literal_assertions\": \"func TestNativeListeningPlaybackPositive(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\tfor i, k := range []string{\\\"play\\\", \\\"pause\\\", \\\"seek\\\", \\\"ended\\\"} {\\n\\t\\t_, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \\\"page1\\\", k, i, 24000))\\n\\t\\trequireListening(t, e)\\n\\t}\\n\\tvar n int\\n\\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM playback_index WHERE attempt_id=$1\\\", id).Scan(&n))\\n\\tif n != 4 {\\n\\t\\tt.Fatal(n)\\n\\t}\\n}\\n\", \"oracle\": \"The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.\"}",
+      "observable": "{\"independent_literal_assertions\": \"func TestNativeListeningPlaybackPositive(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\tfor i, k := range []string{\\\"play\\\", \\\"pause\\\", \\\"seek\\\", \\\"ended\\\"} {\\n\\t\\t_, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \\\"page1\\\", k, i, 24000))\\n\\t\\trequireListening(t, e)\\n\\t}\\n\\tvar n int\\n\\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM playback_index WHERE attempt_id=$1\\\", id).Scan(&n))\\n\\tif n != 4 {\\n\\t\\tt.Fatal(n)\\n\\t}\\n}\\n\", \"oracle\": \"The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, retain unique out-of-order arrivals, and reject wrong attempt/audio/sample scope or conflicting duplicate reports without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.\"}",
       "red_expectation": "Any violated independent data/state/privacy/receipt expectation fails.",
       "green_expectation": "Every exact literal observation holds through its real owner.",
       "test_id": "tangerine.local/api/internal/app::TestNativeListeningPlaybackPositive",
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109659,9 +109659,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109672,7 +109669,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109684,7 +109684,7 @@
           "Actual upstream LLM or synthesis quality",
           "Semantic scoring or full-product acceptance"
         ],
-        "note": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+        "note": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, retain unique out-of-order arrivals, and reject wrong attempt/audio/sample scope or conflicting duplicate reports without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
       },
       "designed_fixture_id": "iteration9-I9-07-packet1",
       "fixture_observation_state": "not_run"
@@ -109695,15 +109695,15 @@
       "polarity": "positive",
       "scenario": "I9-07 packet 2",
       "scenario_fingerprint": "db1ddd75f6c326719473d60abf7b8949699a30642e33512bdb004c34c169b9f6",
-      "setup": "Execute TestNativeListeningPlaybackReplayPositive through services/api/internal/app/attempt_playback.go {\"exact_native_test\": \"TestNativeListeningPlaybackReplayPositive\", \"literal_executable_fixture\": \"func TestNativeListeningPlaybackReplayPositive(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\\\"draft1\\\", \\\"en\\\"), false)\\n\\trequireListening(t, e)\\n\\traw := f.event(id, \\\"p1\\\", \\\"play\\\", 0, 0)\\n\\tkey := uuid.NewString()\\n\\ta, e := f.s.Store.RecordPlayback(context.Background(), id, key, raw)\\n\\trequireListening(t, e)\\n\\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 1, answerPacket(\\\"draft2\\\", \\\"en\\\"), false)\\n\\trequireListening(t, e)\\n\\tb, e := f.s.Store.RecordPlayback(context.Background(), id, key, raw)\\n\\trequireListening(t, e)\\n\\tc, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw)\\n\\trequireListening(t, e)\\n\\tif lab.Hash(a) != lab.Hash(b) || lab.Hash(a[\\\"artifact_ids\\\"]) != lab.Hash(c[\\\"artifact_ids\\\"]) || a[\\\"revision\\\"] != int64(1) || c[\\\"revision\\\"] != int64(1) {\\n\\t\\tt.Fatal(a, b, c)\\n\\t}\\n\\t_, e = f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \\\"p2\\\", \\\"play\\\", 0, 0))\\n\\trequireListening(t, e)\\n}\\n\"}",
-      "observable": "{\"independent_literal_assertions\": \"func TestNativeListeningPlaybackReplayPositive(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\\\"draft1\\\", \\\"en\\\"), false)\\n\\trequireListening(t, e)\\n\\traw := f.event(id, \\\"p1\\\", \\\"play\\\", 0, 0)\\n\\tkey := uuid.NewString()\\n\\ta, e := f.s.Store.RecordPlayback(context.Background(), id, key, raw)\\n\\trequireListening(t, e)\\n\\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 1, answerPacket(\\\"draft2\\\", \\\"en\\\"), false)\\n\\trequireListening(t, e)\\n\\tb, e := f.s.Store.RecordPlayback(context.Background(), id, key, raw)\\n\\trequireListening(t, e)\\n\\tc, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw)\\n\\trequireListening(t, e)\\n\\tif lab.Hash(a) != lab.Hash(b) || lab.Hash(a[\\\"artifact_ids\\\"]) != lab.Hash(c[\\\"artifact_ids\\\"]) || a[\\\"revision\\\"] != int64(1) || c[\\\"revision\\\"] != int64(1) {\\n\\t\\tt.Fatal(a, b, c)\\n\\t}\\n\\t_, e = f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \\\"p2\\\", \\\"play\\\", 0, 0))\\n\\trequireListening(t, e)\\n}\\n\", \"oracle\": \"The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.\"}",
+      "setup": "Execute TestNativeListeningPlaybackReplayPositive through services/api/internal/app/attempt_playback.go {\"exact_native_test\": \"TestNativeListeningPlaybackReplayPositive\", \"literal_executable_fixture\": \"func TestNativeListeningPlaybackReplayPositive(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\\\"draft1\\\", \\\"en\\\"), false)\\n\\trequireListening(t, e)\\n\\traw := f.event(id, \\\"p1\\\", \\\"play\\\", 0, 0)\\n\\tkey := uuid.NewString()\\n\\ta, e := f.s.Store.RecordPlayback(context.Background(), id, key, raw)\\n\\trequireListening(t, e)\\n\\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 1, answerPacket(\\\"draft2\\\", \\\"en\\\"), false)\\n\\trequireListening(t, e)\\n\\tb, e := f.s.Store.RecordPlayback(context.Background(), id, key, raw)\\n\\trequireListening(t, e)\\n\\tc, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw)\\n\\trequireListening(t, e)\\n\\tif lab.Hash(a) != lab.Hash(b) || lab.Hash(a[\\\"artifact_ids\\\"]) != lab.Hash(c[\\\"artifact_ids\\\"]) || a[\\\"revision\\\"] != int64(1) || c[\\\"revision\\\"] != int64(1) {\\n\\t\\tt.Fatal(a, b, c)\\n\\t}\\n\\t// Browser HTTP reports may arrive in a different order than client ordinals.\\n\\t_, e = f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \\\"p1\\\", \\\"ended\\\", 2, 24000))\\n\\trequireListening(t, e)\\n\\t_, e = f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \\\"p1\\\", \\\"pause\\\", 1, 12000))\\n\\trequireListening(t, e)\\n\\t_, e = f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \\\"p2\\\", \\\"play\\\", 0, 0))\\n\\trequireListening(t, e)\\n}\\n\"}",
+      "observable": "{\"independent_literal_assertions\": \"func TestNativeListeningPlaybackReplayPositive(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\\\"draft1\\\", \\\"en\\\"), false)\\n\\trequireListening(t, e)\\n\\traw := f.event(id, \\\"p1\\\", \\\"play\\\", 0, 0)\\n\\tkey := uuid.NewString()\\n\\ta, e := f.s.Store.RecordPlayback(context.Background(), id, key, raw)\\n\\trequireListening(t, e)\\n\\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 1, answerPacket(\\\"draft2\\\", \\\"en\\\"), false)\\n\\trequireListening(t, e)\\n\\tb, e := f.s.Store.RecordPlayback(context.Background(), id, key, raw)\\n\\trequireListening(t, e)\\n\\tc, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw)\\n\\trequireListening(t, e)\\n\\tif lab.Hash(a) != lab.Hash(b) || lab.Hash(a[\\\"artifact_ids\\\"]) != lab.Hash(c[\\\"artifact_ids\\\"]) || a[\\\"revision\\\"] != int64(1) || c[\\\"revision\\\"] != int64(1) {\\n\\t\\tt.Fatal(a, b, c)\\n\\t}\\n\\t// Browser HTTP reports may arrive in a different order than client ordinals.\\n\\t_, e = f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \\\"p1\\\", \\\"ended\\\", 2, 24000))\\n\\trequireListening(t, e)\\n\\t_, e = f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \\\"p1\\\", \\\"pause\\\", 1, 12000))\\n\\trequireListening(t, e)\\n\\t_, e = f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \\\"p2\\\", \\\"play\\\", 0, 0))\\n\\trequireListening(t, e)\\n}\\n\", \"oracle\": \"The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, retain unique out-of-order arrivals, and reject wrong attempt/audio/sample scope or conflicting duplicate reports without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.\"}",
       "red_expectation": "Any violated independent data/state/privacy/receipt expectation fails.",
       "green_expectation": "Every exact literal observation holds through its real owner.",
       "test_id": "tangerine.local/api/internal/app::TestNativeListeningPlaybackReplayPositive",
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109713,9 +109713,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109726,7 +109723,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109738,7 +109738,7 @@
           "Actual upstream LLM or synthesis quality",
           "Semantic scoring or full-product acceptance"
         ],
-        "note": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+        "note": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, retain unique out-of-order arrivals, and reject wrong attempt/audio/sample scope or conflicting duplicate reports without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
       },
       "designed_fixture_id": "iteration9-I9-07-packet2",
       "fixture_observation_state": "not_run"
@@ -109750,14 +109750,14 @@
       "scenario": "I9-07 packet 1",
       "scenario_fingerprint": "70d94c126de09bf1f0bd8c70f89545f1560936fa9f923c0222bddf00feb91a30",
       "setup": "Execute TestNativeListeningPlaybackMismatchNegative through services/api/internal/app/attempt_playback.go {\"exact_native_test\": \"TestNativeListeningPlaybackMismatchNegative\", \"literal_executable_fixture\": \"func TestNativeListeningPlaybackMismatchNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\tfor _, raw := range [][]byte{f.event(id, \\\"p1\\\", \\\"play\\\", 0, 24001), f.event(\\\"another-attempt\\\", \\\"p1\\\", \\\"play\\\", 0, 0), []byte(strings.ReplaceAll(string(f.event(id, \\\"p1\\\", \\\"play\\\", 0, 0)), f.audioSHA, strings.Repeat(\\\"0\\\", 64)))} {\\n\\t\\tif _, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw); !errors.Is(e, ErrInput) {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t}\\n}\\n\"}",
-      "observable": "{\"independent_literal_assertions\": \"func TestNativeListeningPlaybackMismatchNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\tfor _, raw := range [][]byte{f.event(id, \\\"p1\\\", \\\"play\\\", 0, 24001), f.event(\\\"another-attempt\\\", \\\"p1\\\", \\\"play\\\", 0, 0), []byte(strings.ReplaceAll(string(f.event(id, \\\"p1\\\", \\\"play\\\", 0, 0)), f.audioSHA, strings.Repeat(\\\"0\\\", 64)))} {\\n\\t\\tif _, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw); !errors.Is(e, ErrInput) {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t}\\n}\\n\", \"oracle\": \"The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.\"}",
+      "observable": "{\"independent_literal_assertions\": \"func TestNativeListeningPlaybackMismatchNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\tfor _, raw := range [][]byte{f.event(id, \\\"p1\\\", \\\"play\\\", 0, 24001), f.event(\\\"another-attempt\\\", \\\"p1\\\", \\\"play\\\", 0, 0), []byte(strings.ReplaceAll(string(f.event(id, \\\"p1\\\", \\\"play\\\", 0, 0)), f.audioSHA, strings.Repeat(\\\"0\\\", 64)))} {\\n\\t\\tif _, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw); !errors.Is(e, ErrInput) {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t}\\n}\\n\", \"oracle\": \"The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, retain unique out-of-order arrivals, and reject wrong attempt/audio/sample scope or conflicting duplicate reports without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.\"}",
       "red_expectation": "Any violated independent data/state/privacy/receipt expectation fails.",
       "green_expectation": "Every exact literal observation holds through its real owner.",
       "test_id": "tangerine.local/api/internal/app::TestNativeListeningPlaybackMismatchNegative",
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109767,9 +109767,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109780,7 +109777,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109792,7 +109792,7 @@
           "Actual upstream LLM or synthesis quality",
           "Semantic scoring or full-product acceptance"
         ],
-        "note": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+        "note": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, retain unique out-of-order arrivals, and reject wrong attempt/audio/sample scope or conflicting duplicate reports without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
       },
       "designed_fixture_id": "iteration9-I9-07-packet1",
       "fixture_observation_state": "not_run"
@@ -109803,15 +109803,15 @@
       "polarity": "negative",
       "scenario": "I9-07 packet 2",
       "scenario_fingerprint": "db1ddd75f6c326719473d60abf7b8949699a30642e33512bdb004c34c169b9f6",
-      "setup": "Execute TestNativeListeningPlaybackReorderedNegative through services/api/internal/app/attempt_playback.go {\"exact_native_test\": \"TestNativeListeningPlaybackReorderedNegative\", \"literal_executable_fixture\": \"func TestNativeListeningPlaybackReorderedNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\t_, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \\\"p1\\\", \\\"play\\\", 2, 0))\\n\\trequireListening(t, e)\\n\\tfor _, raw := range [][]byte{f.event(id, \\\"p1\\\", \\\"pause\\\", 1, 0), f.event(id, \\\"p1\\\", \\\"pause\\\", 2, 1)} {\\n\\t\\tif _, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw); !errors.Is(e, ErrConflict) {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t}\\n}\\n\"}",
-      "observable": "{\"independent_literal_assertions\": \"func TestNativeListeningPlaybackReorderedNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\t_, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \\\"p1\\\", \\\"play\\\", 2, 0))\\n\\trequireListening(t, e)\\n\\tfor _, raw := range [][]byte{f.event(id, \\\"p1\\\", \\\"pause\\\", 1, 0), f.event(id, \\\"p1\\\", \\\"pause\\\", 2, 1)} {\\n\\t\\tif _, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw); !errors.Is(e, ErrConflict) {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t}\\n}\\n\", \"oracle\": \"The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.\"}",
+      "setup": "Execute TestNativeListeningPlaybackConflictNegative through services/api/internal/app/attempt_playback.go {\"exact_native_test\": \"TestNativeListeningPlaybackConflictNegative\", \"literal_executable_fixture\": \"func TestNativeListeningPlaybackConflictNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\t_, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \\\"p1\\\", \\\"play\\\", 2, 0))\\n\\trequireListening(t, e)\\n\\tfor _, raw := range [][]byte{f.event(id, \\\"p1\\\", \\\"pause\\\", 2, 1), f.event(id, \\\"p1\\\", \\\"seek\\\", 2, 0)} {\\n\\t\\tif _, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw); !errors.Is(e, ErrConflict) {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t}\\n}\\n\"}",
+      "observable": "{\"independent_literal_assertions\": \"func TestNativeListeningPlaybackConflictNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\t_, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \\\"p1\\\", \\\"play\\\", 2, 0))\\n\\trequireListening(t, e)\\n\\tfor _, raw := range [][]byte{f.event(id, \\\"p1\\\", \\\"pause\\\", 2, 1), f.event(id, \\\"p1\\\", \\\"seek\\\", 2, 0)} {\\n\\t\\tif _, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw); !errors.Is(e, ErrConflict) {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t}\\n}\\n\", \"oracle\": \"The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, retain unique out-of-order arrivals, and reject wrong attempt/audio/sample scope or conflicting duplicate reports without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.\"}",
       "red_expectation": "Any violated independent data/state/privacy/receipt expectation fails.",
       "green_expectation": "Every exact literal observation holds through its real owner.",
-      "test_id": "tangerine.local/api/internal/app::TestNativeListeningPlaybackReorderedNegative",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningPlaybackConflictNegative",
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109821,9 +109821,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109834,7 +109831,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109846,7 +109846,7 @@
           "Actual upstream LLM or synthesis quality",
           "Semantic scoring or full-product acceptance"
         ],
-        "note": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+        "note": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, retain unique out-of-order arrivals, and reject wrong attempt/audio/sample scope or conflicting duplicate reports without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
       },
       "designed_fixture_id": "iteration9-I9-07-packet2",
       "fixture_observation_state": "not_run"
@@ -109865,7 +109865,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109875,9 +109875,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109888,7 +109885,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109919,7 +109919,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109929,9 +109929,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109942,7 +109939,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -109973,7 +109973,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -109983,9 +109983,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -109996,7 +109993,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -110027,7 +110027,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -110037,9 +110037,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -110050,7 +110047,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -110081,7 +110081,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -110091,9 +110091,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -110104,7 +110101,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -110135,7 +110135,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -110145,9 +110145,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -110158,7 +110155,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -110189,7 +110189,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -110199,9 +110199,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -110212,7 +110209,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -110243,7 +110243,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -110253,9 +110253,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -110266,7 +110263,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -110297,7 +110297,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -110307,9 +110307,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -110320,7 +110317,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -110351,7 +110351,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -110361,9 +110361,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -110374,7 +110371,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -110405,7 +110405,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -110415,9 +110415,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -110428,7 +110425,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -110459,7 +110459,7 @@
       "command_id": "iteration9-native",
       "state": "implemented",
       "source_path": "tests/native_listening_test.go",
-      "source_sha256": "b14f8da747d232a4242ced7ec3354d2e980d8f05d7e46387d8c5a75fc84d6e35",
+      "source_sha256": "8604ccc1e4b855ed9153fe0b2ac740ea23a1c399dab3a6ccac7d58427b0fef8a",
       "invalidation_dependencies": [
         "services/api/internal/app/attempt_*.go",
         "services/api/internal/app/listening_publication.go",
@@ -110469,9 +110469,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/native_listening_test.go",
-        "tests/listening-native",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -110482,7 +110479,10 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/native_listening_test.go",
+        "tests/listening-native"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -110523,15 +110523,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/test_listening_browser.py",
-        "tests/listening-native",
-        "tests/native_listening_test.go",
-        "services/web/**",
-        "tests/listening-browser",
-        "tests/listening_browser_fixture_test.go",
-        "tests/browser_probe.py",
-        "tests/browser_playwright.cjs",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -110542,7 +110533,16 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/test_listening_browser.py",
+        "tests/listening-native",
+        "tests/native_listening_test.go",
+        "services/web/**",
+        "tests/listening-browser",
+        "tests/listening_browser_fixture_test.go",
+        "tests/browser_probe.py",
+        "tests/browser_playwright.cjs"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -110583,15 +110583,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/test_listening_browser.py",
-        "tests/listening-native",
-        "tests/native_listening_test.go",
-        "services/web/**",
-        "tests/listening-browser",
-        "tests/listening_browser_fixture_test.go",
-        "tests/browser_probe.py",
-        "tests/browser_playwright.cjs",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -110602,7 +110593,16 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/test_listening_browser.py",
+        "tests/listening-native",
+        "tests/native_listening_test.go",
+        "services/web/**",
+        "tests/listening-browser",
+        "tests/listening_browser_fixture_test.go",
+        "tests/browser_probe.py",
+        "tests/browser_playwright.cjs"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -110643,15 +110643,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/test_listening_browser.py",
-        "tests/listening-native",
-        "tests/native_listening_test.go",
-        "services/web/**",
-        "tests/listening-browser",
-        "tests/listening_browser_fixture_test.go",
-        "tests/browser_probe.py",
-        "tests/browser_playwright.cjs",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -110662,7 +110653,16 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/test_listening_browser.py",
+        "tests/listening-native",
+        "tests/native_listening_test.go",
+        "services/web/**",
+        "tests/listening-browser",
+        "tests/listening_browser_fixture_test.go",
+        "tests/browser_probe.py",
+        "tests/browser_playwright.cjs"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -110703,15 +110703,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/test_listening_browser.py",
-        "tests/listening-native",
-        "tests/native_listening_test.go",
-        "services/web/**",
-        "tests/listening-browser",
-        "tests/listening_browser_fixture_test.go",
-        "tests/browser_probe.py",
-        "tests/browser_playwright.cjs",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -110722,7 +110713,16 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/test_listening_browser.py",
+        "tests/listening-native",
+        "tests/native_listening_test.go",
+        "services/web/**",
+        "tests/listening-browser",
+        "tests/listening_browser_fixture_test.go",
+        "tests/browser_probe.py",
+        "tests/browser_playwright.cjs"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -110763,15 +110763,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/test_listening_browser.py",
-        "tests/listening-native",
-        "tests/native_listening_test.go",
-        "services/web/**",
-        "tests/listening-browser",
-        "tests/listening_browser_fixture_test.go",
-        "tests/browser_probe.py",
-        "tests/browser_playwright.cjs",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -110782,7 +110773,16 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/test_listening_browser.py",
+        "tests/listening-native",
+        "tests/native_listening_test.go",
+        "services/web/**",
+        "tests/listening-browser",
+        "tests/listening_browser_fixture_test.go",
+        "tests/browser_probe.py",
+        "tests/browser_playwright.cjs"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -110823,15 +110823,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/test_listening_browser.py",
-        "tests/listening-native",
-        "tests/native_listening_test.go",
-        "services/web/**",
-        "tests/listening-browser",
-        "tests/listening_browser_fixture_test.go",
-        "tests/browser_probe.py",
-        "tests/browser_playwright.cjs",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -110842,7 +110833,16 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/test_listening_browser.py",
+        "tests/listening-native",
+        "tests/native_listening_test.go",
+        "services/web/**",
+        "tests/listening-browser",
+        "tests/listening_browser_fixture_test.go",
+        "tests/browser_probe.py",
+        "tests/browser_playwright.cjs"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -110883,15 +110883,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/test_listening_browser.py",
-        "tests/listening-native",
-        "tests/native_listening_test.go",
-        "services/web/**",
-        "tests/listening-browser",
-        "tests/listening_browser_fixture_test.go",
-        "tests/browser_probe.py",
-        "tests/browser_playwright.cjs",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -110902,7 +110893,16 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/test_listening_browser.py",
+        "tests/listening-native",
+        "tests/native_listening_test.go",
+        "services/web/**",
+        "tests/listening-browser",
+        "tests/listening_browser_fixture_test.go",
+        "tests/browser_probe.py",
+        "tests/browser_playwright.cjs"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
@@ -110943,15 +110943,6 @@
         "services/api/internal/app/http.go",
         "services/api/internal/app/migrations/004_listening.sql",
         "services/api/internal/contracts/**",
-        "services/api/internal/lab/bundle.go",
-        "tests/test_listening_browser.py",
-        "tests/listening-native",
-        "tests/native_listening_test.go",
-        "services/web/**",
-        "tests/listening-browser",
-        "tests/listening_browser_fixture_test.go",
-        "tests/browser_probe.py",
-        "tests/browser_playwright.cjs",
         "services/api/internal/provider/**",
         "services/api/internal/app/storage.go",
         "services/api/internal/app/assets.go",
@@ -110962,7 +110953,16 @@
         "services/api/internal/app/preparation_content_test.go",
         "services/api/internal/app/mutation_content_test.go",
         "services/api/internal/app/generationdata/configuration-registry.yaml",
-        "services/api/internal/app/generationdata/providers.v1.yaml"
+        "services/api/internal/app/generationdata/providers.v1.yaml",
+        "services/api/internal/lab/bundle.go",
+        "tests/test_listening_browser.py",
+        "tests/listening-native",
+        "tests/native_listening_test.go",
+        "services/web/**",
+        "tests/listening-browser",
+        "tests/listening_browser_fixture_test.go",
+        "tests/browser_probe.py",
+        "tests/browser_playwright.cjs"
       ],
       "substitution": {
         "classification": "NO_TEST_DOUBLE",

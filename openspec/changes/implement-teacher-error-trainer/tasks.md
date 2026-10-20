@@ -625,6 +625,10 @@ Iteration8 acceptance: source e5a9c51;108/108 I8 and696/696 implemented I1–I8 
 
 Current anchors and proof scope: audit/iteration-9-listening-20261020/PLAN.md. LLM answer interpretation/scoring are later iterations, not simulated completion. The separate iteration8 review has three open controller defects; iteration9 does not close or recertify them. Preserve canonical unrelated GAPS.md and all original category/formula/source data.
 
+- [ ] I9.8 Keep unselected optional audit/feedback/adjudication profiles from blocking ordinary attempt entry; preserve their frozen metadata and the configured core-checking/access-policy prerequisite, with native red/green regression.
+
+- [ ] I9.9 Retain unique playback reports arriving out of client-ordinal order, while deduplicating equal reports and rejecting conflicting duplicate payloads; preserve descriptive event data without an arrival-order gate.
+
 ### Reopened predecessor findings from the iteration8 verification
 
 These remain outside the current iteration9 implementation and prevent an iteration8-wide green claim:

@@ -219,12 +219,57 @@ func TestNativeListeningStartConflictNegative(t *testing.T) {
 	if !errors.Is(e, ErrConflict) {
 		t.Fatal(e)
 	}
+	// A missing core evaluator still needs Settings; optional readiness is separate.
+	c, rev, e := f.s.Store.Configuration(context.Background())
+	requireListening(t, e)
+	c["llm_profiles"].([]any)[0].(map[string]any)["model"] = "unselected"
+	for _, field := range []string{"workspace_id", "configuration_sha256", "provider_access_policy"} {
+		delete(c, field)
+	}
+	configRaw, _ := json.Marshal(c)
+	_, _, e = f.s.Store.PutConfiguration(context.Background(), configRaw, uuid.NewString(), rev)
+	requireListening(t, e)
+	response := f.request("POST", "/api/v1/attempts", string(raw), uuid.NewString(), "")
+	if response.Code != 409 || !strings.Contains(response.Body.String(), "CAPABILITY_UNQUALIFIED") {
+		t.Fatal(response.Code, response.Body.String())
+	}
+
 }
 func TestNativeListeningFrozenSettingsNegative(t *testing.T) {
 	f := listeningCase(t)
+	// Optional audit/feedback/adjudication setup cannot gate ordinary entry.
+	optionalConfig, optionalRevision, e := f.s.Store.Configuration(context.Background())
+	requireListening(t, e)
+	original := optionalConfig["llm_profiles"].([]any)[0].(map[string]any)
+	optional := map[string]any{}
+	for field, value := range original {
+		optional[field] = value
+	}
+	optional["id"] = "optional-unselected"
+	optional["model"] = "unselected"
+	optionalConfig["llm_profiles"] = append(optionalConfig["llm_profiles"].([]any), optional)
+	for _, role := range []string{"mapping_audit", "feedback", "adjudication"} {
+		optionalConfig["stage_profiles"].(map[string]any)[role] = "optional-unselected"
+	}
+	for _, field := range []string{"workspace_id", "configuration_sha256", "provider_access_policy"} {
+		delete(optionalConfig, field)
+	}
+	configRaw, _ := json.Marshal(optionalConfig)
+	_, _, e = f.s.Store.PutConfiguration(context.Background(), configRaw, uuid.NewString(), optionalRevision)
+	requireListening(t, e)
 	id := f.start(t)
 	before, e := f.s.Store.Attempt(context.Background(), id)
 	requireListening(t, e)
+	optionalCount := 0
+	for _, item := range before.Context["evaluator_bindings"].([]any) {
+		profile := item.(map[string]any)["profile"].(map[string]any)
+		if profile["id"] == "optional-unselected" && profile["model"] == "unselected" {
+			optionalCount++
+		}
+	}
+	if optionalCount != 3 {
+		t.Fatal("optional selections were not retained", before.Context["evaluator_bindings"])
+	}
 	c, rev, e := f.s.Store.Configuration(context.Background())
 	requireListening(t, e)
 	c["feedback_language"] = "ru"
@@ -373,6 +418,11 @@ func TestNativeListeningPlaybackReplayPositive(t *testing.T) {
 	if lab.Hash(a) != lab.Hash(b) || lab.Hash(a["artifact_ids"]) != lab.Hash(c["artifact_ids"]) || a["revision"] != int64(1) || c["revision"] != int64(1) {
 		t.Fatal(a, b, c)
 	}
+	// Browser HTTP reports may arrive in a different order than client ordinals.
+	_, e = f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, "p1", "ended", 2, 24000))
+	requireListening(t, e)
+	_, e = f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, "p1", "pause", 1, 12000))
+	requireListening(t, e)
 	_, e = f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, "p2", "play", 0, 0))
 	requireListening(t, e)
 }
@@ -385,12 +435,12 @@ func TestNativeListeningPlaybackMismatchNegative(t *testing.T) {
 		}
 	}
 }
-func TestNativeListeningPlaybackReorderedNegative(t *testing.T) {
+func TestNativeListeningPlaybackConflictNegative(t *testing.T) {
 	f := listeningCase(t)
 	id := f.start(t)
 	_, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, "p1", "play", 2, 0))
 	requireListening(t, e)
-	for _, raw := range [][]byte{f.event(id, "p1", "pause", 1, 0), f.event(id, "p1", "pause", 2, 1)} {
+	for _, raw := range [][]byte{f.event(id, "p1", "pause", 2, 1), f.event(id, "p1", "seek", 2, 0)} {
 		if _, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw); !errors.Is(e, ErrConflict) {
 			t.Fatal(e)
 		}

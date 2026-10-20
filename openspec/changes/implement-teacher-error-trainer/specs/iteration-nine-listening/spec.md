@@ -44,7 +44,7 @@ The application SHALL publish an actual immutable playable key/version and safe 
 
 ### Requirement: I9-04 Frozen attempt entry
 
-The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Existing complete product scopes remain preserved; this requirement covers listening/persistence, not unperformed semantic scoring.
+The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry without requiring unused optional profiles to be ready, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Existing complete product scopes remain preserved; this requirement covers listening/persistence, not unperformed semantic scoring.
 
 #### Scenario: I9-04 packet 1
 
@@ -86,7 +86,7 @@ The application SHALL commit an exact nonempty or empty answer and actual databa
 
 ### Requirement: I9-07 Descriptive playback persistence
 
-The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Existing complete product scopes remain preserved; this requirement covers listening/persistence, not unperformed semantic scoring.
+The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, retain unique out-of-order arrivals, and reject wrong attempt/audio/sample scope or conflicting duplicate reports without inferring ability. Existing complete product scopes remain preserved; this requirement covers listening/persistence, not unperformed semantic scoring.
 
 #### Scenario: I9-07 packet 1
 

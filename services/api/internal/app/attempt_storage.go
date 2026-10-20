@@ -84,11 +84,15 @@ func configurationInTransaction(ctx context.Context, tx pgx.Tx) (map[string]any,
 		if p.ID == "" {
 			return nil, bundle, nil, ErrReference
 		}
-		if p.Model == "unselected" {
-			return nil, bundle, nil, &provider.Failure{Code: "CONSTRAINT_CONFLICT"}
-		}
-		if e = provider.Included(p); e != nil {
-			return nil, bundle, nil, e
+		// Only the ordinary semantic checking stages are entry prerequisites.
+		// Optional diagnostics/feedback are frozen honestly, then admitted on use.
+		if role == "blind_claim_extraction" || role == "claim_mapping" {
+			if p.Model == "unselected" {
+				return nil, bundle, nil, &provider.Failure{Code: "CONSTRAINT_CONFLICT"}
+			}
+			if e = provider.Included(p); e != nil {
+				return nil, bundle, nil, e
+			}
 		}
 		for _, binding := range bundle.Bindings {
 			if binding.Stage == role {
