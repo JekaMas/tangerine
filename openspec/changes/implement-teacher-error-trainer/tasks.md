@@ -564,11 +564,13 @@ Verification acceptance: be7b603e6a595b9276dd8f28b1e589b2e111c170 is the committ
 
 ### Iteration 6 code review and repair — 2026-10-20
 
-- [ ] Repair demonstrated family coverage, automatic-empty-key, conflicting/narrowed exact-target selection, copied-event count and model context-budget defects; retain explicit zero controls and all supported acoustic intents.
-- [ ] Keep mutation layers cohesive: Server owns orchestration/context/dispatch, Storage owns SQL/result lifecycle, and pure selection/admission/manifest files own their respective transformations. Preserve one output admission and trusted reuse.
-- [ ] Add literal positive/negative regression sets and wire all new properties into the existing DAG, fixture sets, discovery and actual AI-surface inventory; correct the inconsistent acoustic test fixture's requested family.
-- [ ] Complete a committed-clean full iteration6 selection with affected preparation/provider/Lab cases, actual local model/native/context/MLflow reconciliation, language/specification/preservation checks; commit the repaired result and final review evidence.
+- [x] Repair demonstrated family coverage, automatic-empty-key, conflicting/narrowed exact-target selection, copied-event count and model context-budget defects; retain explicit zero controls and all supported acoustic intents.
+- [x] Keep mutation layers cohesive: Server owns orchestration/context/dispatch, Storage owns SQL/result lifecycle, and pure selection/admission/manifest files own their respective transformations. Preserve one output admission and trusted reuse.
+- [x] Add literal positive/negative regression sets and wire all new properties into the existing DAG, fixture sets, discovery and actual AI-surface inventory; correct the inconsistent acoustic test fixture's requested family.
+- [x] Complete a committed-clean full iteration6 selection with affected preparation/provider/Lab cases, actual local model/native/context/MLflow reconciliation, language/specification/preservation checks; commit the repaired result and final review evidence.
 
-- [ ] Preserve frozen preparation timing across policy changes; provide actionable clean-phase output repair and preserve the full initial context prefix during the existing single repair. Qualify the complete requested family with actual local model/native/Lab evidence.
+- [x] Preserve frozen preparation timing across policy changes; provide actionable clean-phase output repair and preserve the full initial context prefix during the existing single repair. Qualify the complete requested family with actual local model/native/Lab evidence.
 
 Current review record: audit/iteration-6-review-20261020/REPORT.md. Earlier44-case receipts remain valid observations of their own inputs but do not cover the new request/count counterexamples. No paid call or later iteration work is authorized by this review.
+
+Verification accepted: all316 selected DAG cases (158positive/158negative), including96 iteration6 cases across24 properties, reconcile to successful committed-clean observations. Provider84 is retained from62dc798; the affected preparation48/mutation96/Lab88 passed on3cb3bc8. Actual free local Qwen3.5-9B passed the fixed full-family positive and explicit-zero cases on clean749fe78: five actual dispatches/receipts/contexts reconcile to five MLflow spans across four operations/runs. The independent key readback supports correct mutation direction, localization, correction and optional explanation propositions. No paid/hosted inference or later iteration acceptance is claimed. Final report: audit/iteration-6-review-20261020/REPORT.md; accepted evidence: evidence/iteration6-review-20261020/. Earlier failed trials remain retained and rejected.

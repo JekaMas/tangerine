@@ -252,7 +252,9 @@ func saveLocalDiagnostics(t *testing.T, store *Storage, dir string) {
 func saveActualLocalEvidence(t *testing.T, s *Server, p map[string]any) {
 	t.Helper()
 	saveNativeMutationEvidence(t, s, p)
-	raw, _ := json.MarshalIndent(map[string]any{"origin": "actual_local_ollama_with_native_preparation_storage", "model": "gpt-oss:20b", "billing_mode": "local", "fixture_response": false, "preparation": p}, "", "  ")
+	// The captured effective binding and wire request identify the actual model.
+	// Keep this snapshot free of a second, independently maintained model label.
+	raw, _ := json.MarshalIndent(map[string]any{"origin": "actual_local_ollama_with_native_preparation_storage", "billing_mode": "local", "fixture_response": false, "preparation": p}, "", "  ")
 	if e := os.WriteFile(filepath.Join(os.Getenv("TANGERINE_PREPARATION_TEST_EVIDENCE"), t.Name(), "state.json"), raw, 0600); e != nil {
 		t.Fatal(e)
 	}
