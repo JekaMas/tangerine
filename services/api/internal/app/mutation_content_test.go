@@ -50,6 +50,11 @@ func TestMutationEmptyKeyPositive(t *testing.T) {
 }
 func TestMutationBaselineNegative(t *testing.T) {
 	b, clean, c, tax := mutationFixture()
+	c["schema_version"] = "2.0.0"
+	if e := admitMutation(t, b, clean, c, tax); e == nil {
+		t.Fatal("stage input version accepted as candidate output version")
+	}
+	c["schema_version"] = "1.0.0"
 	c["utterances"].([]any)[0].(map[string]any)["canonical_text"] = "A different story."
 	if e := admitMutation(t, b, clean, c, tax); e == nil {
 		t.Fatal("rewritten baseline accepted")

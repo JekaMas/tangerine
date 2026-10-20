@@ -3018,7 +3018,7 @@
       "id": "I6-01",
       "capability": "iteration-six-mutations",
       "title": "I6-01 Mutation admission and fixed canonical text",
-      "fingerprint": "679044ce17281bcae4ebc82852b1a89ab4907bc8b51f55710773567316d37ef2"
+      "fingerprint": "a99ee74eb58e84ddefc124b04879b1037629566058a278aee4c1405c35b850e2"
     },
     {
       "id": "I6-02",
@@ -12290,13 +12290,13 @@
     {
       "id": "I6-01.P1",
       "requirement_id": "I6-01",
-      "statement": "The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data.",
+      "statement": "The application SHALL admit a new mutation reply once with candidate output schema_version1.0.0 distinct from stage-input2.0.0, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data.",
       "scenarios": [
         "I6-01 packet 1",
         "I6-01 packet 2"
       ],
       "owner": "services/api/internal/app/mutation_content.go",
-      "oracle": "The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "oracle": "The application SHALL admit a new mutation reply once with candidate output schema_version1.0.0 distinct from stage-input2.0.0, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
       "source_globs": [
         "services/api/internal/app/mutation_content.go"
       ]
@@ -92117,14 +92117,14 @@
       "scenario": "I6-01 packet 1",
       "scenario_fingerprint": "7e3677d3855765ab40db31c40817088d6deee0a345e7aa5a0d32950017c07577",
       "setup": "Execute TestMutationAdmissionPositive through services/api/internal/app/mutation_content.go {\"exact_native_test\": \"TestMutationAdmissionPositive\", \"literal_executable_fixture\": \"func TestMutationAdmissionPositive(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tif e := admitMutation(t, b, clean, c, tax); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\"}",
-      "observable": "{\"assertion_source\": \"func TestMutationAdmissionPositive(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tif e := admitMutation(t, b, clean, c, tax); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "observable": "{\"assertion_source\": \"func TestMutationAdmissionPositive(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tif e := admitMutation(t, b, clean, c, tax); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL admit a new mutation reply once with candidate output schema_version1.0.0 distinct from stage-input2.0.0, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
       "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
       "green_expectation": "All independently declared literal outcomes pass.",
       "test_id": "tangerine.local/api/internal/app::TestMutationAdmissionPositive",
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92146,7 +92146,7 @@
           "Actual LLM linguistic quality",
           "Actual synthesized audio, teacher evaluation or full-product acceptance"
         ],
-        "note": "The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
+        "note": "The application SHALL admit a new mutation reply once with candidate output schema_version1.0.0 distinct from stage-input2.0.0, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
       },
       "designed_fixture_id": "iteration6-I6-01-packet1",
       "fixture_observation_state": "not_run"
@@ -92158,14 +92158,14 @@
       "scenario": "I6-01 packet 2",
       "scenario_fingerprint": "41a1044e7ee2fd8968e39b2684d30e6200867da43e33c2cbc725964a1369843e",
       "setup": "Execute TestMutationEmptyKeyPositive through services/api/internal/app/mutation_content.go {\"exact_native_test\": \"TestMutationEmptyKeyPositive\", \"literal_executable_fixture\": \"func TestMutationEmptyKeyPositive(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tb[\\\"exercise_request\\\"].(map[string]any)[\\\"mutation_count\\\"] = float64(0)\\n\\tc[\\\"utterances\\\"] = clean[\\\"utterances\\\"]\\n\\tc[\\\"planned_units\\\"] = []any{}\\n\\tif e := admitMutation(t, b, clean, c, tax); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\"}",
-      "observable": "{\"assertion_source\": \"func TestMutationEmptyKeyPositive(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tb[\\\"exercise_request\\\"].(map[string]any)[\\\"mutation_count\\\"] = float64(0)\\n\\tc[\\\"utterances\\\"] = clean[\\\"utterances\\\"]\\n\\tc[\\\"planned_units\\\"] = []any{}\\n\\tif e := admitMutation(t, b, clean, c, tax); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "observable": "{\"assertion_source\": \"func TestMutationEmptyKeyPositive(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tb[\\\"exercise_request\\\"].(map[string]any)[\\\"mutation_count\\\"] = float64(0)\\n\\tc[\\\"utterances\\\"] = clean[\\\"utterances\\\"]\\n\\tc[\\\"planned_units\\\"] = []any{}\\n\\tif e := admitMutation(t, b, clean, c, tax); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL admit a new mutation reply once with candidate output schema_version1.0.0 distinct from stage-input2.0.0, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
       "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
       "green_expectation": "All independently declared literal outcomes pass.",
       "test_id": "tangerine.local/api/internal/app::TestMutationEmptyKeyPositive",
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92187,7 +92187,7 @@
           "Actual LLM linguistic quality",
           "Actual synthesized audio, teacher evaluation or full-product acceptance"
         ],
-        "note": "The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
+        "note": "The application SHALL admit a new mutation reply once with candidate output schema_version1.0.0 distinct from stage-input2.0.0, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
       },
       "designed_fixture_id": "iteration6-I6-01-packet2",
       "fixture_observation_state": "not_run"
@@ -92198,15 +92198,15 @@
       "polarity": "negative",
       "scenario": "I6-01 packet 1",
       "scenario_fingerprint": "7e3677d3855765ab40db31c40817088d6deee0a345e7aa5a0d32950017c07577",
-      "setup": "Execute TestMutationBaselineNegative through services/api/internal/app/mutation_content.go {\"exact_native_test\": \"TestMutationBaselineNegative\", \"literal_executable_fixture\": \"func TestMutationBaselineNegative(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tc[\\\"utterances\\\"].([]any)[0].(map[string]any)[\\\"canonical_text\\\"] = \\\"A different story.\\\"\\n\\tif e := admitMutation(t, b, clean, c, tax); e == nil {\\n\\t\\tt.Fatal(\\\"rewritten baseline accepted\\\")\\n\\t}\\n}\"}",
-      "observable": "{\"assertion_source\": \"func TestMutationBaselineNegative(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tc[\\\"utterances\\\"].([]any)[0].(map[string]any)[\\\"canonical_text\\\"] = \\\"A different story.\\\"\\n\\tif e := admitMutation(t, b, clean, c, tax); e == nil {\\n\\t\\tt.Fatal(\\\"rewritten baseline accepted\\\")\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "setup": "Execute TestMutationBaselineNegative through services/api/internal/app/mutation_content.go {\"exact_native_test\": \"TestMutationBaselineNegative\", \"literal_executable_fixture\": \"func TestMutationBaselineNegative(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tc[\\\"schema_version\\\"] = \\\"2.0.0\\\"\\n\\tif e := admitMutation(t, b, clean, c, tax); e == nil {\\n\\t\\tt.Fatal(\\\"stage input version accepted as candidate output version\\\")\\n\\t}\\n\\tc[\\\"schema_version\\\"] = \\\"1.0.0\\\"\\n\\tc[\\\"utterances\\\"].([]any)[0].(map[string]any)[\\\"canonical_text\\\"] = \\\"A different story.\\\"\\n\\tif e := admitMutation(t, b, clean, c, tax); e == nil {\\n\\t\\tt.Fatal(\\\"rewritten baseline accepted\\\")\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestMutationBaselineNegative(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tc[\\\"schema_version\\\"] = \\\"2.0.0\\\"\\n\\tif e := admitMutation(t, b, clean, c, tax); e == nil {\\n\\t\\tt.Fatal(\\\"stage input version accepted as candidate output version\\\")\\n\\t}\\n\\tc[\\\"schema_version\\\"] = \\\"1.0.0\\\"\\n\\tc[\\\"utterances\\\"].([]any)[0].(map[string]any)[\\\"canonical_text\\\"] = \\\"A different story.\\\"\\n\\tif e := admitMutation(t, b, clean, c, tax); e == nil {\\n\\t\\tt.Fatal(\\\"rewritten baseline accepted\\\")\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL admit a new mutation reply once with candidate output schema_version1.0.0 distinct from stage-input2.0.0, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
       "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
       "green_expectation": "All independently declared literal outcomes pass.",
       "test_id": "tangerine.local/api/internal/app::TestMutationBaselineNegative",
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92228,7 +92228,7 @@
           "Actual LLM linguistic quality",
           "Actual synthesized audio, teacher evaluation or full-product acceptance"
         ],
-        "note": "The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
+        "note": "The application SHALL admit a new mutation reply once with candidate output schema_version1.0.0 distinct from stage-input2.0.0, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
       },
       "designed_fixture_id": "iteration6-I6-01-packet1",
       "fixture_observation_state": "not_run"
@@ -92240,14 +92240,14 @@
       "scenario": "I6-01 packet 2",
       "scenario_fingerprint": "41a1044e7ee2fd8968e39b2684d30e6200867da43e33c2cbc725964a1369843e",
       "setup": "Execute TestMutationLocationNegative through services/api/internal/app/mutation_content.go {\"exact_native_test\": \"TestMutationLocationNegative\", \"literal_executable_fixture\": \"func TestMutationLocationNegative(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tc[\\\"planned_units\\\"].([]any)[0].(map[string]any)[\\\"text_spans\\\"].([]any)[0].(map[string]any)[\\\"span\\\"].(map[string]any)[\\\"start_cp\\\"] = float64(10)\\n\\tif e := admitMutation(t, b, clean, c, tax); e == nil {\\n\\t\\tt.Fatal(\\\"stale surface span accepted\\\")\\n\\t}\\n}\"}",
-      "observable": "{\"assertion_source\": \"func TestMutationLocationNegative(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tc[\\\"planned_units\\\"].([]any)[0].(map[string]any)[\\\"text_spans\\\"].([]any)[0].(map[string]any)[\\\"span\\\"].(map[string]any)[\\\"start_cp\\\"] = float64(10)\\n\\tif e := admitMutation(t, b, clean, c, tax); e == nil {\\n\\t\\tt.Fatal(\\\"stale surface span accepted\\\")\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "observable": "{\"assertion_source\": \"func TestMutationLocationNegative(t *testing.T) {\\n\\tb, clean, c, tax := mutationFixture()\\n\\tc[\\\"planned_units\\\"].([]any)[0].(map[string]any)[\\\"text_spans\\\"].([]any)[0].(map[string]any)[\\\"span\\\"].(map[string]any)[\\\"start_cp\\\"] = float64(10)\\n\\tif e := admitMutation(t, b, clean, c, tax); e == nil {\\n\\t\\tt.Fatal(\\\"stale surface span accepted\\\")\\n\\t}\\n}\", \"independent_literal_expectations\": \"The application SHALL admit a new mutation reply once with candidate output schema_version1.0.0 distinct from stage-input2.0.0, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
       "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
       "green_expectation": "All independently declared literal outcomes pass.",
       "test_id": "tangerine.local/api/internal/app::TestMutationLocationNegative",
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92269,7 +92269,7 @@
           "Actual LLM linguistic quality",
           "Actual synthesized audio, teacher evaluation or full-product acceptance"
         ],
-        "note": "The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
+        "note": "The application SHALL admit a new mutation reply once with candidate output schema_version1.0.0 distinct from stage-input2.0.0, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
       },
       "designed_fixture_id": "iteration6-I6-01-packet2",
       "fixture_observation_state": "not_run"
@@ -92288,7 +92288,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92329,7 +92329,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92370,7 +92370,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92411,7 +92411,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92452,7 +92452,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92493,7 +92493,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92534,7 +92534,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92575,7 +92575,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92616,7 +92616,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92657,7 +92657,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92698,7 +92698,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -92739,7 +92739,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -93452,7 +93452,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -93493,7 +93493,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -93534,7 +93534,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -93575,7 +93575,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -93616,7 +93616,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -93657,7 +93657,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -93698,7 +93698,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -93739,7 +93739,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -93948,7 +93948,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -93989,7 +93989,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -94030,7 +94030,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -94071,7 +94071,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -94112,7 +94112,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -94153,7 +94153,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -94194,7 +94194,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -94235,7 +94235,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -94276,7 +94276,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -94317,7 +94317,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -94358,7 +94358,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -94399,7 +94399,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -94608,7 +94608,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -94649,7 +94649,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -94690,7 +94690,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -94731,7 +94731,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -94940,7 +94940,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -94981,7 +94981,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -95022,7 +95022,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",
@@ -95063,7 +95063,7 @@
       "command_id": "iteration6-go",
       "state": "implemented",
       "source_path": "services/api/internal/app/mutation_content_test.go",
-      "source_sha256": "c3d0513a58ade98d2d6fff08c8733bbd7583ed84f750d9485c583465412e317f",
+      "source_sha256": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
       "invalidation_dependencies": [
         "services/api/internal/app/**",
         "services/api/internal/contracts/**",

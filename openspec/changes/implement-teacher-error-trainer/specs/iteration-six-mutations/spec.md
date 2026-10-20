@@ -2,7 +2,7 @@
 
 ### Requirement: I6-01 Mutation admission and fixed canonical text
 
-The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Exact constructed fixtures and independent expected states are retained in audit/iteration-6-review-20261020/CASES.json. These tests SHALL NOT establish hosted account admission, actual LLM linguistic quality or future mutation/audio/scoring completion.
+The application SHALL admit a new mutation reply once with candidate output schema_version1.0.0 distinct from stage-input2.0.0, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Exact constructed fixtures and independent expected states are retained in audit/iteration-6-review-20261020/CASES.json. These tests SHALL NOT establish hosted account admission, actual LLM linguistic quality or future mutation/audio/scoring completion.
 
 #### Scenario: I6-01 packet 1
 
