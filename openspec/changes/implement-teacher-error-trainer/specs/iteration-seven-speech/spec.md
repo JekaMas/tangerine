@@ -293,3 +293,73 @@ The application SHALL render actually stored preparations and play actual local 
 
 - **WHEN** the second distinct positive or negative literal packet executes
 - **THEN** its independently declared state, bytes, error or dispatch count SHALL hold
+
+### Requirement: I7-22 Actual local preprocessing capture
+
+The application SHALL retain actual framed tokenizer output and resolved decoder inputs with one native invocation; preserve original results/exceptions and restore observers without fabricating a call. Literal tests and independent expectations SHALL be retained in audit/iteration-7-speech-20261011/CASES.json. These cases do not establish hosted account entitlement, perceived accent fidelity or later acoustic/listening/scoring features.
+
+#### Scenario: I7-22 packet 1
+
+- **WHEN** the first positive or negative literal packet executes
+- **THEN** its independently declared state, bytes, error or dispatch count SHALL hold
+
+#### Scenario: I7-22 packet 2
+
+- **WHEN** the second distinct positive or negative literal packet executes
+- **THEN** its independently declared state, bytes, error or dispatch count SHALL hold
+
+### Requirement: I7-23 Saved voice setup lifecycle
+
+The application SHALL persist admitted reference audio/text and clone conditioning, reuse an accepted voice without another inference, and reject changed identities or missing reference before inference. Learned model output is an explicit boundary fixture. Literal tests and independent expectations SHALL be retained in audit/iteration-7-speech-20261011/CASES.json. These cases do not establish hosted account entitlement, perceived accent fidelity or later acoustic/listening/scoring features.
+
+#### Scenario: I7-23 packet 1
+
+- **WHEN** the first positive or negative literal packet executes
+- **THEN** its independently declared state, bytes, error or dispatch count SHALL hold
+
+#### Scenario: I7-23 packet 2
+
+- **WHEN** the second distinct positive or negative literal packet executes
+- **THEN** its independently declared state, bytes, error or dispatch count SHALL hold
+
+### Requirement: I7-24 Explicit resumable model acquisition
+
+The application SHALL admit new downloaded bytes once, resume partial Range responses or restart when Range is ignored, and retain no accepted file for wrong ranges or hashes. Ordinary inference reuses accepted manifests offline. Literal tests and independent expectations SHALL be retained in audit/iteration-7-speech-20261011/CASES.json. These cases do not establish hosted account entitlement, perceived accent fidelity or later acoustic/listening/scoring features.
+
+#### Scenario: I7-24 packet 1
+
+- **WHEN** the first positive or negative literal packet executes
+- **THEN** its independently declared state, bytes, error or dispatch count SHALL hold
+
+#### Scenario: I7-24 packet 2
+
+- **WHEN** the second distinct positive or negative literal packet executes
+- **THEN** its independently declared state, bytes, error or dispatch count SHALL hold
+
+### Requirement: I7-25 Single audio admission and advisory failures
+
+The application SHALL normalize audio as a transformation, admit newly generated output once, reject silence and preserve usable output when advisory loudness measurement times out. Runtime executable rehashing is unnecessary; retain method/version and build identity. Literal tests and independent expectations SHALL be retained in audit/iteration-7-speech-20261011/CASES.json. These cases do not establish hosted account entitlement, perceived accent fidelity or later acoustic/listening/scoring features.
+
+#### Scenario: I7-25 packet 1
+
+- **WHEN** the first positive or negative literal packet executes
+- **THEN** its independently declared state, bytes, error or dispatch count SHALL hold
+
+#### Scenario: I7-25 packet 2
+
+- **WHEN** the second distinct positive or negative literal packet executes
+- **THEN** its independently declared state, bytes, error or dispatch count SHALL hold
+
+### Requirement: I7-26 Explicit voice and assessment variety
+
+The application SHALL preserve explicitly supplied speaker voices independently of assessment variety, skip unused default-voice requirements, and reject a wrong speaker count or a missing required default without silent substitution. Literal tests and independent expectations SHALL be retained in audit/iteration-7-speech-20261011/CASES.json. These cases do not establish hosted account entitlement, perceived accent fidelity or later acoustic/listening/scoring features.
+
+#### Scenario: I7-26 packet 1
+
+- **WHEN** the first positive or negative literal packet executes
+- **THEN** its independently declared state, bytes, error or dispatch count SHALL hold
+
+#### Scenario: I7-26 packet 2
+
+- **WHEN** the second distinct positive or negative literal packet executes
+- **THEN** its independently declared state, bytes, error or dispatch count SHALL hold

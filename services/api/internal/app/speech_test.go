@@ -2,9 +2,59 @@ package app
 
 import (
 	"encoding/binary"
+	"encoding/json"
 	"strings"
 	"testing"
 )
+
+func explicitSpeechInput(n int, speakers []any) ([]byte, map[string]any) {
+	c := DefaultConfiguration()
+	c["speech_profile"] = "british-only"
+	c["speech_profiles"] = []any{map[string]any{"id": "british-only", "voices": []any{map[string]any{"id": "bf_emma", "locale": "en-GB"}}}}
+	input := map[string]any{"exercise_request": map[string]any{"topic": "A café visit", "speaker_count": n, "text_length_words": 50}}
+	if speakers != nil {
+		input["speakers"] = speakers
+	}
+	raw, _ := json.Marshal(input)
+	return raw, c
+}
+func explicitSpeechSpeaker(id, voice string) map[string]any {
+	return map[string]any{"id": id, "voice_profile_id": voice, "learner_cefr": "B1", "l1": nil, "requested_accent": "British English", "pace_wpm": 150, "pace_tolerance_fraction": .1}
+}
+func TestSpeechExplicitLocalePositive(t *testing.T) {
+	raw, c := explicitSpeechInput(1, []any{explicitSpeechSpeaker("s1", "bf_emma")})
+	b, err := ExpandBlueprint(raw, c)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if b["variety_policy"].(map[string]any)["target_locale"] != "en-US" || b["speakers"].([]any)[0].(map[string]any)["voice_profile_id"] != "bf_emma" {
+		t.Fatal("explicit accent changed the assessment variety", b)
+	}
+}
+func TestSpeechExplicitVoiceSetPositive(t *testing.T) {
+	raw, c := explicitSpeechInput(2, []any{explicitSpeechSpeaker("s1", "bf_emma"), explicitSpeechSpeaker("s2", "bm_george")})
+	c["speech_profiles"].([]any)[0].(map[string]any)["voices"] = []any{map[string]any{"id": "bf_emma", "locale": "en-GB"}, map[string]any{"id": "bm_george", "locale": "en-GB"}}
+	b, err := ExpandBlueprint(raw, c)
+	if err != nil {
+		t.Fatal(err)
+	}
+	speakers := b["speakers"].([]any)
+	if speakers[0].(map[string]any)["voice_profile_id"] != "bf_emma" || speakers[1].(map[string]any)["voice_profile_id"] != "bm_george" {
+		t.Fatal(b)
+	}
+}
+func TestSpeechExplicitCountNegative(t *testing.T) {
+	raw, c := explicitSpeechInput(2, []any{explicitSpeechSpeaker("s1", "bf_emma")})
+	if _, err := ExpandBlueprint(raw, c); err == nil {
+		t.Fatal("wrong explicit speaker count admitted")
+	}
+}
+func TestSpeechMissingDefaultLocaleNegative(t *testing.T) {
+	raw, c := explicitSpeechInput(1, nil)
+	if _, err := ExpandBlueprint(raw, c); err == nil {
+		t.Fatal("missing default voice silently substituted")
+	}
+}
 
 func speechFixture(t *testing.T) (map[string]any, map[string]any, map[string]any) {
 	t.Helper()
@@ -28,9 +78,19 @@ func TestSpeechPlanPositive(t *testing.T) {
 }
 func TestSpeechPlanStablePositive(t *testing.T) {
 	s, c, p := speechFixture(t)
+	s["blueprint"].(map[string]any)["speakers"] = append(s["blueprint"].(map[string]any)["speakers"].([]any), map[string]any{"id": "s2", "voice_profile_id": "bf_emma"})
+	p["voices"] = append(p["voices"].([]any), map[string]any{"id": "bf_emma", "locale": "en-GB"})
+	c["utterances"] = append(c["utterances"].([]any), map[string]any{"id": "u2", "speaker_id": "s2", "surface_text": "The station is nearby."}, map[string]any{"id": "u3", "speaker_id": "s1", "surface_text": "Thank you."})
 	a, e := compileSpeechPlan("p1", s, c, p)
 	if e != nil {
 		t.Fatal(e)
+	}
+	turns := a["turns"].([]any)
+	for i, expected := range []struct{ speaker, voice, locale, text string }{{"s1", "af_heart", "en-US", "The café open tomorrow."}, {"s2", "bf_emma", "en-GB", "The station is nearby."}, {"s1", "af_heart", "en-US", "Thank you."}} {
+		turn := turns[i].(map[string]any)
+		if turn["speaker_id"] != expected.speaker || turn["voice_id"] != expected.voice || turn["locale"] != expected.locale || turn["operations"].([]any)[0].(map[string]any)["text"] != expected.text {
+			t.Fatal("dialogue voice/text/order changed", turn)
+		}
 	}
 	b, _ := compileSpeechPlan("p1", s, c, p)
 	if a["plan_sha256"] != b["plan_sha256"] || a["case_version_id"] != b["case_version_id"] {

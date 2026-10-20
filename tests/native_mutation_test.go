@@ -19,11 +19,11 @@ import (
 func nativeMutationFixture(t *testing.T, mode string) (*Server, CanonicalPreparationRequest, *http.Client, *int, map[string]any) {
 	t.Helper()
 	var configureSpeech func(map[string]any)
-	if mode == "speech-espeak" || mode == "speech-qwen-custom" || mode == "speech-qwen-base" {
+	if mode == "speech-espeak" || mode == "speech-qwen-custom" || mode == "speech-qwen-base" || mode == "speech-british" {
 		configureSpeech = func(c map[string]any) {
 			c["speech_profile"] = "local-espeak-test"
 			c["speech_profiles"] = []any{map[string]any{"id": "local-espeak-test", "provider": "local_espeak_ng", "adapter_version": "espeak-ng-v1", "model": nil, "endpoint": nil, "credential_refs": []any{}, "billing_mode": "local", "account_tier": nil, "overage_disabled": true, "capabilities": []any{"plain_text", "voice_identity", "locale", "multi_turn"}, "voices": []any{map[string]any{"id": "en-us", "locale": "en-US", "accent_description": "American English"}}, "assets": []any{}, "voice_settings": map[string]any{"stability": nil, "similarity_boost": nil, "style": nil, "use_speaker_boost": nil, "speed": nil}, "catalogue_asset_id": nil, "voice_description_asset_id": nil}}
-			if mode != "speech-espeak" {
+			if strings.HasPrefix(mode, "speech-qwen") {
 				profile := c["speech_profiles"].([]any)[0].(map[string]any)
 				id := "qwen-custom-v1"
 				voice := "Ryan"
@@ -39,10 +39,20 @@ func nativeMutationFixture(t *testing.T, mode string) (*Server, CanonicalPrepara
 				c["speech_profile"] = id
 			}
 
+			if mode == "speech-british" {
+				profile := c["speech_profiles"].([]any)[0].(map[string]any)
+				profile["id"], profile["provider"], profile["adapter_version"], profile["model"] = "kokoro-british-test", "local_kokoro", "kokoro-v1", "Kokoro-82M"
+				profile["voices"] = []any{map[string]any{"id": "bf_emma", "locale": "en-GB", "accent_description": "British English"}}
+				c["speech_profile"] = "kokoro-british-test"
+			}
+
 		}
 	}
 	configure := func(b map[string]any) {
 		r := b["exercise_request"].(map[string]any)
+		if mode == "speech-british" {
+			b["speakers"] = []any{map[string]any{"id": "s1", "voice_profile_id": "bf_emma", "learner_cefr": "B1", "l1": nil, "requested_accent": "British English", "pace_wpm": 150, "pace_tolerance_fraction": .1}}
+		}
 		if strings.HasPrefix(mode, "token-") {
 			r["category_families"] = []any{"grammar"}
 		}

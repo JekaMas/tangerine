@@ -104,12 +104,15 @@ func expandBlueprint(raw []byte, configuration map[string]any) (map[string]any, 
 				}
 			}
 		}
-		if len(voices) == 0 {
-			return nil, fmt.Errorf("speech profile has no voices for %s", locale)
-		}
-		speakers := []any{}
-		for i := 0; i < n; i++ {
-			speakers = append(speakers, map[string]any{"id": fmt.Sprintf("s%d", i+1), "voice_profile_id": voices[i%len(voices)], "learner_cefr": req["english_level"], "l1": nil, "requested_accent": nil, "pace_wpm": prep["pace_wpm"], "pace_tolerance_fraction": prep["pace_tolerance_fraction"]})
+		speakers, explicit := input["speakers"].([]any)
+		if !explicit {
+			if len(voices) == 0 {
+				return nil, fmt.Errorf("speech profile has no voices for %s", locale)
+			}
+			speakers = []any{}
+			for i := 0; i < n; i++ {
+				speakers = append(speakers, map[string]any{"id": fmt.Sprintf("s%d", i+1), "voice_profile_id": voices[i%len(voices)], "learner_cefr": req["english_level"], "l1": nil, "requested_accent": nil, "pace_wpm": prep["pace_wpm"], "pace_tolerance_fraction": prep["pace_tolerance_fraction"]})
+			}
 		}
 		format := "monologue"
 		if n > 1 {

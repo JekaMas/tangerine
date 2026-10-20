@@ -4,7 +4,7 @@ from pathlib import Path
 import json,os,subprocess,tempfile,secrets,time,uuid,sys
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from browser_probe import Browser
-r=Path(__file__).resolve().parents[1];name='tangerine-speech-browser-'+uuid.uuid4().hex[:8];env={**os.environ};evidence=r/'data/iteration7/browser';evidence.mkdir(parents=True,exist_ok=True)
+r=Path(__file__).resolve().parents[1];name='tangerine-speech-browser-'+uuid.uuid4().hex[:8];env={**os.environ};evidence=Path(env.get('TANGERINE_SPEECH_BROWSER_EVIDENCE',str(r/'data/iteration7/browser'/name)));evidence.mkdir(parents=True,exist_ok=True)
 def call(args,check=True):
  p=subprocess.run(args,cwd=r,env=env,capture_output=True,text=True,timeout=180)
  if p.stdout:print(p.stdout,file=sys.stderr,end='')

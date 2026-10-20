@@ -30,7 +30,8 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
    else:raise RuntimeError('native service not ready')
   call(['docker','run','--rm','--network',name,'--env-file',str(config),'--entrypoint','/tangerine',name+'-go','initialize'])
   go_args=['test','-run','^TestNativeSpeech',*sys.argv[2:]] if len(sys.argv)>1 and sys.argv[1]=='test' else ['test','-json','-race','-count=1','-run',sys.argv[1] if len(sys.argv)>1 else '^TestNativeSpeech','./internal/app']
-  evidence=r/'data/iteration7/native';evidence.mkdir(parents=True,exist_ok=True)
+  evidence=r/'data/iteration7/native'/name;evidence.mkdir(parents=True,exist_ok=True)
+  print('Private evidence: '+str(evidence.relative_to(r)),file=sys.stderr)
   args=['docker','run','--rm','--network',name,'--env-file',str(config),'-e','TANGERINE_PREPARATION_TEST_EVIDENCE=/evidence','-e','TANGERINE_SPEECH_TEST_URL=http://speech:8090','-v',str(evidence)+':/evidence','-v',str(r/'tests/native_preparation_test.go')+':/src/internal/app/native_preparation_test.go:ro','-v',str(r/'tests/native_mutation_test.go')+':/src/internal/app/native_mutation_test.go:ro','-v',str(r/'tests/native_speech_test.go')+':/src/internal/app/native_speech_test.go:ro','--entrypoint','go',name+'-go',*go_args]
   p=subprocess.run(args,cwd=r,env=env,timeout=600)
   status=p.returncode

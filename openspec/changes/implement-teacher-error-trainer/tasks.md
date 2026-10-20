@@ -574,3 +574,13 @@ Verification acceptance: be7b603e6a595b9276dd8f28b1e589b2e111c170 is the committ
 Current review record: audit/iteration-6-review-20261020/REPORT.md. Earlier44-case receipts remain valid observations of their own inputs but do not cover the new request/count counterexamples. No paid call or later iteration work is authorized by this review.
 
 Verification accepted: all316 selected DAG cases (158positive/158negative), including96 iteration6 cases across24 properties, reconcile to successful committed-clean observations. Provider84 is retained from62dc798; the affected preparation48/mutation96/Lab88 passed on3cb3bc8. Actual free local Qwen3.5-9B passed the fixed full-family positive and explicit-zero cases on clean749fe78: five actual dispatches/receipts/contexts reconcile to five MLflow spans across four operations/runs. The independent key readback supports correct mutation direction, localization, correction and optional explanation propositions. No paid/hosted inference or later iteration acceptance is claimed. Final report: audit/iteration-6-review-20261020/REPORT.md; accepted evidence: evidence/iteration6-review-20261020/. Earlier failed trials remain retained and rejected.
+
+## Iteration 7 — speech and accent generation
+
+- [ ] Implement frozen local/configured hosted speech profiles, explicit offline model/voice setup and voice/accent bindings; retain included-only policy and no fallback.
+- [ ] Complete foreground ordered render pieces, interruption/recovery, immutable failed replay, sample-exact final WAV/key/case persistence and safe saved playback.
+- [ ] Keep orchestration, storage SQL, pure plan/audio transformations, HTTP, transport and evidence responsibilities separate; preserve one output admission and trusted saved reuse.
+- [ ] Exercise actual local Kokoro/eSpeak and Qwen saved voice paths with independent model-visible input/dispatch/native/MLflow evidence; keep hosted fixtures and acoustic unknowns explicit.
+- [ ] Complete positive/negative property sets, native UI playback/failure/recovery, affected dependency checks, structural/language/preservation verification and committed-clean full iteration acceptance; commit the result.
+
+Current record: audit/iteration-7-speech-20261011/REPORT.md. Existing preview/data and canonical unrelated GAPS.md remain protected. Controlled acoustic transforms, listening/answering and scoring remain their subsequent accepted iterations. No paid call, purchase, provider fallback or publication is authorized.

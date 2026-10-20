@@ -3,13 +3,102 @@ import base64, io, json, os, pathlib, struct, sys, tempfile, unittest, wave
 from unittest.mock import patch
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'services/speech'))
-import audio,backends,model_setup
+import audio,backends,model_setup,voice_setup
+from inference_capture import observe_method
 
 def profile(provider='local_espeak_ng',mode='local'):
  return {'id':'test','provider':provider,'billing_mode':mode,'overage_disabled':True,'model':'fixture-model','voices':[{'id':'en-us','locale':'en-US','accent_description':None}],'voice_settings':{}}
 def turn(text='The café open tomorrow.'):
  return {'id':'u1','utterance_id':'u1','speaker_id':'s1','voice_id':'en-us','locale':'en-US','gap_after_ms':250,'operations':[{'kind':'text','text':text}]}
 class SpeechContracts(unittest.TestCase):
+ def test_admission_once_positive(self):
+  from unittest.mock import Mock
+  sample=audio.wav_bytes(b'\x07\x00'*2400);admission=Mock(wraps=audio.admit)
+  with patch.object(audio,'admit',admission),patch.object(backends,'admit',admission),patch.object(backends,'espeak',side_effect=lambda p,t:(audio.normalize(sample),{},None)):
+   result=backends.render(profile(),turn())
+  self.assertEqual(admission.call_count,1);self.assertEqual(result['sample_count'],2400)
+ def test_normalize_conversion_positive(self):
+  sample=audio.wav_bytes(b'\x07\x00'*2400)
+  with patch.object(audio,'admit',side_effect=AssertionError('normalization must not repeat owning admission')):converted=audio.normalize(sample)
+  self.assertEqual(converted[44:],sample[44:]);self.assertEqual(converted[:4],b'RIFF')
+ def test_admission_silent_negative(self):
+  with patch.object(backends,'espeak',return_value=(audio.wav_bytes(b'\0\0'*2400),{},None)),self.assertRaisesRegex(ValueError,'AUDIO_SILENT'):backends.render(profile(),turn())
+ def test_advisory_timeout_negative(self):
+  import subprocess
+  with patch.object(audio.subprocess,'run',side_effect=subprocess.TimeoutExpired('ffmpeg',60)):result=audio.measure(b'\x07\x00'*12000)
+  self.assertEqual(result['loudness_state'],'not_measurable');self.assertIsNone(result['integrated_lufs']);self.assertIn('loudness_not_measurable',result['warnings'])
+ def test_download_complete_positive(self):
+  import hashlib
+  with tempfile.TemporaryDirectory() as tmp:
+   dest=pathlib.Path(tmp)/'model';response=io.BytesIO(b'abcd');response.status=200;response.headers={}
+   with patch.object(model_setup.urllib.request,'urlopen',return_value=response):row=model_setup.download('https://fixture.invalid/model',dest,hashlib.sha256(b'abcd').hexdigest())
+   self.assertEqual(dest.read_bytes(),b'abcd');self.assertEqual(row['size'],4)
+ def test_download_resume_positive(self):
+  import hashlib
+  for status,body,headers in [(206,b'cd',{'Content-Range':'bytes 2-3/4'}),(200,b'abcd',{})]:
+   with self.subTest(status=status),tempfile.TemporaryDirectory() as tmp:
+    dest=pathlib.Path(tmp)/'model';dest.with_name('model.partial').write_bytes(b'ab');response=io.BytesIO(body);response.status=status;response.headers=headers
+    with patch.object(model_setup.urllib.request,'urlopen',return_value=response) as request:row=model_setup.download('https://fixture.invalid/model',dest,hashlib.sha256(b'abcd').hexdigest())
+    self.assertEqual(request.call_args.args[0].get_header('Range'),'bytes=2-');self.assertEqual(dest.read_bytes(),b'abcd');self.assertEqual(row['size'],4)
+ def test_download_range_negative(self):
+  with tempfile.TemporaryDirectory() as tmp:
+   dest=pathlib.Path(tmp)/'model';partial=dest.with_name('model.partial');partial.write_bytes(b'ab');response=io.BytesIO(b'cd');response.status=206;response.headers={'Content-Range':'bytes 1-2/4'}
+   with patch.object(model_setup.urllib.request,'urlopen',return_value=response),self.assertRaisesRegex(ValueError,'MODEL_DOWNLOAD_INVALID'):model_setup.download('https://fixture.invalid/model',dest)
+   self.assertFalse(dest.exists());self.assertEqual(partial.read_bytes(),b'ab')
+ def test_download_hash_negative(self):
+  with tempfile.TemporaryDirectory() as tmp:
+   dest=pathlib.Path(tmp)/'model';response=io.BytesIO(b'abcd');response.status=200;response.headers={}
+   with patch.object(model_setup.urllib.request,'urlopen',return_value=response),self.assertRaisesRegex(ValueError,'MODEL_DOWNLOAD_INVALID'):model_setup.download('https://fixture.invalid/model',dest,'0'*64)
+   self.assertFalse(dest.exists());self.assertFalse(dest.with_name('model.partial').exists())
+ def voice_request(self):
+  return {'profile_id':'qwen-base-v1','voice_id':'saved-test','mode':'local_reference','reference_text':'Hello.','locale':'en-US','reference_path':'source.wav'}
+ def test_voice_setup_reference_positive(self):
+  from qwen_tts import Qwen3TTSModel
+  import torch
+  with tempfile.TemporaryDirectory() as tmp:
+   root=pathlib.Path(tmp);(root/'source.wav').write_bytes(audio.wav_bytes(b'\x07\x00'*2400));request=self.voice_request()
+   with patch.object(voice_setup,'ROOT',root),patch.object(voice_setup,'installed',return_value=(root,{'repo':'constructed-base'})),patch.object(Qwen3TTSModel,'from_pretrained') as factory:
+    factory.return_value.create_voice_clone_prompt.return_value=[{'speaker':torch.tensor([.25,.5])}];manifest=voice_setup.setup(request)
+   self.assertEqual(manifest['request'],request);self.assertEqual(manifest['origin'],'local_reference');self.assertEqual({v['path'] for v in manifest['files']},{'reference.wav','reference.txt','conditioning.pt'});self.assertEqual(factory.call_count,1);self.assertEqual(factory.return_value.create_voice_clone_prompt.call_args.kwargs['ref_text'],'Hello.');self.assertTrue((root/'voices/qwen-base-v1/saved-test/conditioning.pt').exists())
+ def test_voice_setup_replay_positive(self):
+  from qwen_tts import Qwen3TTSModel
+  with tempfile.TemporaryDirectory() as tmp:
+   root=pathlib.Path(tmp);request=self.voice_request();dest=root/'voices/qwen-base-v1/saved-test';dest.mkdir(parents=True);manifest={'request':request,'origin':'accepted-saved-fixture'};(dest/'manifest.json').write_text(json.dumps(manifest))
+   with patch.object(voice_setup,'ROOT',root),patch.object(Qwen3TTSModel,'from_pretrained',side_effect=AssertionError('unexpected inference')):self.assertEqual(voice_setup.setup(request),manifest)
+ def test_voice_setup_conflict_negative(self):
+  from qwen_tts import Qwen3TTSModel
+  with tempfile.TemporaryDirectory() as tmp:
+   root=pathlib.Path(tmp);request=self.voice_request();dest=root/'voices/qwen-base-v1/saved-test';dest.mkdir(parents=True);(dest/'manifest.json').write_text(json.dumps({'request':{**request,'reference_text':'Different.'}}))
+   with patch.object(voice_setup,'ROOT',root),patch.object(Qwen3TTSModel,'from_pretrained',side_effect=AssertionError('unexpected inference')),self.assertRaisesRegex(ValueError,'VOICE_ID_CONFLICT'):voice_setup.setup(request)
+ def test_voice_setup_missing_negative(self):
+  from qwen_tts import Qwen3TTSModel
+  with tempfile.TemporaryDirectory() as tmp:
+   with patch.object(voice_setup,'ROOT',pathlib.Path(tmp)),patch.object(Qwen3TTSModel,'from_pretrained',side_effect=AssertionError('unexpected inference')),self.assertRaises(FileNotFoundError):voice_setup.setup(self.voice_request())
+ def test_token_capture_positive(self):
+  class Tokenizer:
+   def tokenize(self,text):return [17,23]
+  owner=Tokenizer();events=[]
+  with observe_method(owner,'tokenize',events):result=owner.tokenize('<assistant>café</assistant>')
+  self.assertEqual(result,[17,23]);self.assertEqual(events,[{'method':'tokenize','args':['<assistant>café</assistant>'],'kwargs':{},'outcome':'complete','result':[17,23]}])
+ def test_decoder_capture_positive(self):
+  class Decoder:
+   def generate(self,**kwargs):return marker
+  owner=Decoder();events=[];marker=object()
+  with observe_method(owner,'generate',events,capture_result=False):result=owner.generate(input_ids=[[17,23]],temperature=.9,speakers=['Ryan'])
+  self.assertIs(result,marker);self.assertEqual(events,[{'method':'generate','args':[],'kwargs':{'input_ids':[[17,23]],'temperature':.9,'speakers':['Ryan']},'outcome':'complete'}])
+ def test_capture_failure_negative(self):
+  class Decoder:
+   def generate(self):raise ValueError('private-canary')
+  owner=Decoder();original=owner.generate;events=[]
+  with self.assertRaisesRegex(ValueError,'private-canary'):
+   with observe_method(owner,'generate',events):owner.generate()
+  self.assertEqual(owner.generate,original);self.assertNotIn('private-canary',json.dumps(events));self.assertEqual(events[0]['exception_type'],'ValueError')
+ def test_capture_no_call_negative(self):
+  class Decoder:
+   def generate(self):raise AssertionError('unexpected inference')
+  owner=Decoder();original=owner.generate;events=[]
+  with observe_method(owner,'generate',events):pass
+  self.assertEqual(events,[]);self.assertEqual(owner.generate,original)
  def test_wave_positive(self):
   b=audio.wav_bytes(b'\x07\x00\x08\x00');self.assertEqual(audio.admit(b),b'\x07\x00\x08\x00');self.assertEqual(struct.unpack_from('<I',b,24)[0],24000)
  def test_assembly_positive(self):

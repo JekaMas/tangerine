@@ -1,6 +1,7 @@
 package app
 
 import (
+	"bytes"
 	"context"
 	"encoding/base64"
 	"encoding/json"
@@ -12,6 +13,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"tangerine.local/api/internal/contracts"
 	"tangerine.local/api/internal/provider"
 	"testing"
 	"time"
@@ -259,6 +261,10 @@ func TestNativeSpeechEvidencePositive(t *testing.T) {
 		if receipt["stage"] != "tts" || receipt["context_snapshot_id"] == nil || receipt["outcome"] != "complete" {
 			t.Fatal(receipt)
 		}
+		wire, err := s.Store.ReadAsset(context.Background(), receipt["wire_response_asset_id"].(string))
+		if err != nil || !strings.HasSuffix(string(wire), "\n") || receipt["http_status"] != float64(200) {
+			t.Fatal("original JSONEncoder response newline and actual HTTP status lost", string(wire), receipt["http_status"], err)
+		}
 	}
 }
 func TestNativeSpeechFrozenPositive(t *testing.T) {
@@ -317,13 +323,17 @@ var _ = io.EOF
 var _ = time.Second
 
 func TestNativeSpeechActualKokoroPositive(t *testing.T) {
-	s, p, _ := nativeSpeechFixtureMode(t, 0, true)
+	s, r, c, _, _ := nativeMutationFixture(t, "speech-british")
+	p, err := s.PrepareMutation(context.Background(), r, uuid.NewString(), c)
+	if err != nil {
+		t.Fatal(err)
+	}
 	s.SpeechURL = os.Getenv("TANGERINE_SPEECH_TEST_URL")
 	s.speechToken = "actual-local-speech-test"
 	if s.SpeechURL == "" {
 		t.Fatal("Actual local speech service is required")
 	}
-	p = renderNative(t, s, p, uuid.NewString(), 1)
+	p = renderNativeActual(t, s, p, uuid.NewString(), 1)
 	progress := speechProgress(t, s, p)
 	first := progress["pieces"].([]any)[0].(map[string]any)
 	if first["sample_count"].(float64) < 2400 || len(first["receipt_ids"].([]any)) != 1 {
@@ -343,7 +353,7 @@ func TestNativeSpeechActualKokoroPositive(t *testing.T) {
 	var response map[string]any
 	_ = json.Unmarshal(raw, &response)
 	native := response["receipt"].(map[string]any)
-	if native["provider"] != "local_kokoro" || native["voice_id"] != "af_heart" || native["observed_accent"] != nil {
+	if native["provider"] != "local_kokoro" || native["voice_id"] != "bf_emma" || native["locale"] != "en-GB" || native["observed_accent"] != nil {
 		t.Fatal(native)
 	}
 	dir := os.Getenv("TANGERINE_PREPARATION_TEST_EVIDENCE")
@@ -374,7 +384,7 @@ func TestNativeSpeechActualEspeakPositive(t *testing.T) {
 	if s.SpeechURL == "" {
 		t.Fatal("Actual local speech service is required")
 	}
-	p = renderNative(t, s, p, uuid.NewString(), 1)
+	p = renderNativeActual(t, s, p, uuid.NewString(), 1)
 	progress := speechProgress(t, s, p)
 	first := progress["pieces"].([]any)[0].(map[string]any)
 	if first["sample_count"].(float64) < 2400 || len(first["receipt_ids"].([]any)) != 1 {
@@ -567,7 +577,7 @@ func TestNativeSpeechActualQwenCustomPositive(t *testing.T) {
 	if s.SpeechURL == "" {
 		t.Fatal("Actual local speech service is required")
 	}
-	p = renderNative(t, s, p, uuid.NewString(), 1)
+	p = renderNativeActual(t, s, p, uuid.NewString(), 1)
 	progress := speechProgress(t, s, p)
 	first := progress["pieces"].([]any)[0].(map[string]any)
 	if first["sample_count"].(float64) < 2400 || len(first["receipt_ids"].([]any)) != 1 {
@@ -589,6 +599,14 @@ func TestNativeSpeechActualQwenCustomPositive(t *testing.T) {
 	native := response["receipt"].(map[string]any)
 	if native["provider"] != "local_qwen3_tts" || native["voice_id"] != "Ryan" || native["observed_accent"] != nil {
 		t.Fatal(native)
+	}
+	calls, ok := native["native"].(map[string]any)["model_visible_calls"].([]any)
+	if !ok || len(calls) < 2 {
+		t.Fatal("actual Qwen tokenizer/decoder inputs absent", native["native"])
+	}
+	encodedCalls, _ := json.Marshal(calls)
+	if !strings.Contains(string(encodedCalls), "_tokenize_texts") || !strings.Contains(string(encodedCalls), "input_ids") || strings.Contains(string(encodedCalls), "inspection_limit") {
+		t.Fatal("incomplete actual model input capture", string(encodedCalls))
 	}
 	dir := os.Getenv("TANGERINE_PREPARATION_TEST_EVIDENCE")
 	if dir != "" {
@@ -618,7 +636,7 @@ func TestNativeSpeechActualQwenBasePositive(t *testing.T) {
 	if s.SpeechURL == "" {
 		t.Fatal("Actual local speech service is required")
 	}
-	p = renderNative(t, s, p, uuid.NewString(), 1)
+	p = renderNativeActual(t, s, p, uuid.NewString(), 1)
 	progress := speechProgress(t, s, p)
 	first := progress["pieces"].([]any)[0].(map[string]any)
 	if first["sample_count"].(float64) < 2400 || len(first["receipt_ids"].([]any)) != 1 {
@@ -640,6 +658,14 @@ func TestNativeSpeechActualQwenBasePositive(t *testing.T) {
 	native := response["receipt"].(map[string]any)
 	if native["provider"] != "local_qwen3_tts" || native["voice_id"] != "tangerine-american-1" || native["observed_accent"] != nil {
 		t.Fatal(native)
+	}
+	calls, ok := native["native"].(map[string]any)["model_visible_calls"].([]any)
+	if !ok || len(calls) < 2 {
+		t.Fatal("actual Qwen tokenizer/decoder inputs absent", native["native"])
+	}
+	encodedCalls, _ := json.Marshal(calls)
+	if !strings.Contains(string(encodedCalls), "_tokenize_texts") || !strings.Contains(string(encodedCalls), "input_ids") || strings.Contains(string(encodedCalls), "inspection_limit") {
+		t.Fatal("incomplete actual model input capture", string(encodedCalls))
 	}
 	dir := os.Getenv("TANGERINE_PREPARATION_TEST_EVIDENCE")
 	if dir != "" {
@@ -677,4 +703,64 @@ func TestNativeSpeechQwenUnsupportedOperationNegative(t *testing.T) {
 	if !errors.As(e, &failure) || failure.Code != "CAPABILITY_UNAVAILABLE" {
 		t.Fatal(e)
 	}
+}
+
+// Independent observer around the actual private HTTP transport. It does not
+// replace speech, storage or evidence writers, and never records credentials.
+func renderNativeActual(t *testing.T, s *Server, p map[string]any, key string, attempt int) map[string]any {
+	t.Helper()
+	root := os.Getenv("TANGERINE_PREPARATION_TEST_EVIDENCE")
+	dir := filepath.Join(root, t.Name())
+	if e := os.MkdirAll(dir, 0700); e != nil {
+		t.Fatal(e)
+	}
+	file, e := os.OpenFile(filepath.Join(dir, "dispatch-observations.jsonl"), os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600)
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer file.Close()
+	transport := &http.Transport{}
+	defer transport.CloseIdleConnections()
+	client := &http.Client{Transport: preparationTrip(func(req *http.Request) (*http.Response, error) {
+		request, err := io.ReadAll(req.Body)
+		if err != nil {
+			return nil, err
+		}
+		req.Body = io.NopCloser(bytes.NewReader(request))
+		response, err := transport.RoundTrip(req)
+		row := map[string]any{"path": req.URL.Path, "wire_request_sha256": contracts.Digest(request), "fixture_response": false, "origin": "actual_private_speech_http"}
+		capture := uuid.NewString()
+		requestPath := capture + "-request.bytes"
+		if e := os.WriteFile(filepath.Join(dir, requestPath), request, 0600); e != nil {
+			t.Error(e)
+		}
+		row["request_artifact"] = requestPath
+		if response != nil {
+			body, readErr := io.ReadAll(response.Body)
+			response.Body.Close()
+			response.Body = io.NopCloser(bytes.NewReader(body))
+			row["wire_response_sha256"] = contracts.Digest(body)
+			row["http_status"] = response.StatusCode
+			responsePath := capture + "-response.bytes"
+			if e := os.WriteFile(filepath.Join(dir, responsePath), body, 0600); e != nil {
+				t.Error(e)
+			}
+			row["response_artifact"] = responsePath
+			if err == nil {
+				err = readErr
+			}
+		}
+		if err != nil {
+			row["transport_error"] = err.Error()
+		}
+		if e := json.NewEncoder(file).Encode(row); e != nil {
+			t.Error(e)
+		}
+		return response, err
+	})}
+	out, err := s.RenderPreparation(context.Background(), p["id"].(string), key, attempt, client)
+	if err != nil {
+		t.Fatal(out, err)
+	}
+	return out
 }

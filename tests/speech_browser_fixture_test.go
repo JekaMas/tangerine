@@ -19,7 +19,7 @@ func TestNativeSpeechBrowserFixture(t *testing.T) {
 	s.SpeechURL = os.Getenv("TANGERINE_SPEECH_TEST_URL")
 	s.speechToken = "actual-local-speech-test"
 	s.token = os.Getenv("API_INTERNAL_TOKEN")
-	p = renderNative(t, s, p, uuid.NewString(), 1)
+	p = renderNativeActual(t, s, p, uuid.NewString(), 1)
 	listener, e := net.Listen("tcp", "0.0.0.0:8080")
 	if e != nil {
 		t.Fatal(e)

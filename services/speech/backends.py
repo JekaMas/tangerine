@@ -2,6 +2,7 @@
 import contextlib, base64, hashlib, io, json, os, pathlib, subprocess, sys, time, urllib.error, urllib.parse, urllib.request, uuid, xml.etree.ElementTree as ET
 from audio import admit, normalize, wav_bytes, quality, measure
 from model_setup import installed
+from inference_capture import observe_method
 
 CACHE={}
 os.environ.setdefault('NUMBA_CACHE_DIR','/tmp/numba-cache')
@@ -58,18 +59,20 @@ def kokoro(profile,turn):
   CACHE[code]=pipe
  pipe=CACHE[code];voice=str(root/'voices'/(turn['voice_id']+'.pt'));frames=[];tokens=[];offset=0
  import numpy as np
- for op in turn['operations']:
-  if op['kind']=='pause':frames.append(np.zeros(op['duration_ms']*24,dtype=np.float32));offset+=op['duration_ms']*24;continue
-  if op['kind']!='text':raise ValueError('CAPABILITY_UNAVAILABLE')
-  results = pipe.generate_from_tokens(turn['compiled_phonemes'],voice=voice,speed=profile.get('voice_settings',{}).get('speed') or 1) if turn.get('compiled_phonemes') else pipe(op['text'],voice=voice,speed=profile.get('voice_settings',{}).get('speed') or 1)
-  for result in results:
-   if result.audio is None or not result.phonemes:raise ValueError('SYNTHESIS_FAILED')
-   frames.append(result.audio.numpy());tokens.append({'graphemes':result.graphemes,'phonemes':result.phonemes,'start_sample':offset,'sample_count':len(result.audio),'pred_dur':result.output.pred_dur.tolist()});offset+=len(result.audio)
+ model_calls=[]
+ with observe_method(CACHE['model'],'forward_with_tokens',model_calls,capture_result=False):
+  for op in turn['operations']:
+   if op['kind']=='pause':frames.append(np.zeros(op['duration_ms']*24,dtype=np.float32));offset+=op['duration_ms']*24;continue
+   if op['kind']!='text':raise ValueError('CAPABILITY_UNAVAILABLE')
+   results = pipe.generate_from_tokens(turn['compiled_phonemes'],voice=voice,speed=profile.get('voice_settings',{}).get('speed') or 1) if turn.get('compiled_phonemes') else pipe(op['text'],voice=voice,speed=profile.get('voice_settings',{}).get('speed') or 1)
+   for result in results:
+    if result.audio is None or not result.phonemes:raise ValueError('SYNTHESIS_FAILED')
+    frames.append(result.audio.numpy());tokens.append({'graphemes':result.graphemes,'phonemes':result.phonemes,'start_sample':offset,'sample_count':len(result.audio),'pred_dur':result.output.pred_dur.tolist()});offset+=len(result.audio)
  if not frames:raise ValueError('SYNTHESIS_FAILED')
  samples=np.concatenate(frames)
  if not np.isfinite(samples).all():raise ValueError('AUDIO_FORMAT_INVALID')
  pcm=(np.clip(samples,-1,1)*32767).astype('<i2').tobytes()
- return wav_bytes(pcm),{'model_manifest':manifest,'decoder':tokens},None
+ return wav_bytes(pcm),{'model_manifest':manifest,'decoder':tokens,'model_visible_calls':model_calls},None
 
 def espeak(profile,turn):
  pcm=bytearray();calls=[]
@@ -79,7 +82,7 @@ def espeak(profile,turn):
   args=['espeak-ng','--stdout','-v',turn['voice_id'],'--stdin']
   p=subprocess.run(args,input=op['text'].encode(),capture_output=True,timeout=60,check=False)
   if p.returncode:raise ValueError('SYNTHESIS_FAILED')
-  pcm.extend(admit(normalize(p.stdout)));calls.append({'argv':args,'text':op['text']})
+  pcm.extend(normalize(p.stdout)[44:]);calls.append({'argv':args,'text':op['text']})
  return wav_bytes(pcm),{'calls':calls,'engine':'espeak-ng','version':subprocess.run(['espeak-ng','--version'],capture_output=True,timeout=5,check=False).stdout.decode()},p.stdout
 
 def hosted(profile,turn,timeout):
@@ -108,19 +111,23 @@ def qwen(profile,turn):
  if len(turn['operations'])!=1 or turn['operations'][0]['kind']!='text':raise ValueError('CAPABILITY_UNAVAILABLE')
  custom=profile.get('adapter_version')=='qwen-custom-v1'
  root,manifest=installed('qwen-custom-v1' if custom else 'qwen-base-v1')
+ conditioning=None;conditioning_manifest=None
+ if not custom:
+  conditioning=ROOT_CONDITION/profile['id']/turn['voice_id']
+  try:
+   prompt=torch.load(conditioning/'conditioning.pt',map_location='cpu',weights_only=False)
+   conditioning_manifest=json.loads((conditioning/'manifest.json').read_text())
+  except FileNotFoundError:raise ValueError('VOICE_SETUP_REQUIRED') from None
  key=str(root)
  if key not in CACHE:CACHE[key]=Qwen3TTSModel.from_pretrained(str(root),device_map='cpu',dtype=torch.float32,attn_implementation='eager',local_files_only=True)
  model=CACHE[key]
- if custom:audio,rate=model.generate_custom_voice(text=text,language='English',speaker=turn['voice_id'],instruct=turn.get('accent_description') or '')
- else:
-  conditioning=ROOT_CONDITION/profile['id']/turn['voice_id']
-  if not (conditioning/'reference.wav').exists():raise ValueError('VOICE_SETUP_REQUIRED')
-  if not (conditioning/'conditioning.pt').exists():raise ValueError('VOICE_SETUP_REQUIRED')
-  prompt=torch.load(conditioning/'conditioning.pt',map_location='cpu',weights_only=False)
-  audio,rate=model.generate_voice_clone(text=text,language='English',voice_clone_prompt=prompt)
+ inputs=[]
+ with observe_method(model,'_tokenize_texts',inputs),observe_method(model.model,'generate',inputs,capture_result=False):
+  if custom:audio,rate=model.generate_custom_voice(text=text,language='English',speaker=turn['voice_id'],instruct=turn.get('accent_description') or '')
+  else:audio,rate=model.generate_voice_clone(text=text,language='English',voice_clone_prompt=prompt)
  import soundfile as sf
  output=io.BytesIO();sf.write(output,audio[0],rate,format='WAV',subtype='PCM_16')
- return normalize(output.getvalue()),{'model_manifest':manifest,'speaker':turn['voice_id'],'instruction':turn.get('accent_description'),'conditioning_manifest':json.loads((conditioning/'manifest.json').read_text()) if not custom else None},None
+ return normalize(output.getvalue()),{'model_manifest':manifest,'speaker':turn['voice_id'],'instruction':turn.get('accent_description'),'conditioning_manifest':conditioning_manifest,'model_visible_calls':inputs},None
 
 ROOT_CONDITION=pathlib.Path(os.environ.get('TANGERINE_MODEL_DIR','/models'))/'voices'
 

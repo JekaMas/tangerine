@@ -14,7 +14,7 @@ import (
 
 // The snapshot is native synthesis context, not an invented text-LLM prompt.
 // The existing receipt and Lab exporter own real model inputs/outputs/traces.
-func (s *Server) saveSpeechEvidence(ctx context.Context, op Operation, profile, configuration map[string]any, input, response Asset, start, end time.Time, callErr error) (string, error) {
+func (s *Server) saveSpeechEvidence(ctx context.Context, op Operation, profile, configuration map[string]any, input, response Asset, start, end time.Time, status int, callErr error) (string, error) {
 	contextRaw, _ := lab.Canonical(map[string]any{"origin": "native_speech_transport", "operation_id": op.ID, "profile": profile, "wire_request_asset_id": input.ID, "wire_response_asset_id": response.ID, "input_sha256": input.SHA, "binding_sha256": lab.Hash(profile)})
 	snapshot, e := s.Store.saveProviderBytes(ctx, contextRaw, "provider_input")
 	if e != nil {
@@ -37,7 +37,11 @@ func (s *Server) saveSpeechEvidence(ctx context.Context, op Operation, profile, 
 		actualModel = native["model"]
 	}
 	id := uuid.NewString()
-	receipt := map[string]any{"schema_version": "2.0.0", "id": id, "operation_id": op.ID, "stage": "tts", "binding_sha256": lab.Hash(profile), "input_sha256": input.SHA, "wire_request_asset_id": input.ID, "wire_response_asset_id": response.ID, "provider_request_id": nil, "http_status": nil, "outcome": outcome, "error_code": code, "input_tokens": nil, "cached_input_tokens": nil, "output_tokens": nil, "reasoning_tokens": nil, "cost_micro_usd": nil, "cost_basis": "unknown", "transport_attempt": 1, "started_at": start.Format(time.RFC3339Nano), "finished_at": end.Format(time.RFC3339Nano), "model_returned": actualModel, "context_snapshot_id": snapshot.ID, "trace_id": traceID(16), "span_id": traceID(8)}
+	var httpStatus any
+	if status != 0 {
+		httpStatus = status
+	}
+	receipt := map[string]any{"schema_version": "2.0.0", "id": id, "operation_id": op.ID, "stage": "tts", "binding_sha256": lab.Hash(profile), "input_sha256": input.SHA, "wire_request_asset_id": input.ID, "wire_response_asset_id": response.ID, "provider_request_id": nil, "http_status": httpStatus, "outcome": outcome, "error_code": code, "input_tokens": nil, "cached_input_tokens": nil, "output_tokens": nil, "reasoning_tokens": nil, "cost_micro_usd": nil, "cost_basis": "unknown", "transport_attempt": 1, "started_at": start.Format(time.RFC3339Nano), "finished_at": end.Format(time.RFC3339Nano), "model_returned": actualModel, "context_snapshot_id": snapshot.ID, "trace_id": traceID(16), "span_id": traceID(8)}
 	raw, _ := lab.Canonical(receipt)
 	write := DocumentWrite{ID: id, Kind: "provider-receipt", Version: "2.0.0", Scope: "local", Payload: raw}
 	for pointer, asset := range map[string]Asset{"/wire_request_asset_id": input, "/wire_response_asset_id": response, "/context_snapshot_id": snapshot} {

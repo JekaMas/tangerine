@@ -1,7 +1,7 @@
 """Explicit synthetic voice design/reference admission and saved clone conditioning."""
 import contextlib, hashlib, io, json, os, pathlib, sys, tempfile, time
 from model_setup import installed, ROOT
-from audio import normalize
+from audio import normalize,admit
 os.environ.setdefault('NUMBA_CACHE_DIR','/tmp/numba-cache')
 
 def setup(request):
@@ -24,6 +24,7 @@ def setup(request):
  elif origin=='local_reference':
   source=ROOT/request['reference_path'];source.resolve().relative_to(ROOT.resolve());data=normalize(source.read_bytes());design_manifest=None
  else:raise ValueError('INVALID_VOICE_MODE')
+ admit(data)
  (dest/'reference.wav').write_bytes(data);(dest/'reference.txt').write_text(text)
  root,base_manifest=installed('qwen-base-v1')
  model=Qwen3TTSModel.from_pretrained(str(root),device_map='cpu',dtype=torch.float32,attn_implementation='eager',local_files_only=True)

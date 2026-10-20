@@ -22,7 +22,7 @@ def normalize(data):
  if p.returncode:raise ValueError('AUDIO_FORMAT_INVALID')
  # FFmpeg streaming WAV uses unknown-size headers; decode and write a finite RIFF.
  with wave.open(io.BytesIO(p.stdout),'rb') as w:pcm=w.readframes(w.getnframes())
- final=wav_bytes(pcm);admit(final);return final
+ return wav_bytes(pcm)
 
 def assemble(pieces):
  out=bytearray();intervals=[]
@@ -47,7 +47,7 @@ def quality(pcm):
 
 
 def measure(pcm,planned=()):
- import math,re,shutil,hashlib
+ import math,re
  result=quality(pcm);n=result['sample_count'];values=array.array('h');values.frombytes(pcm)
  if sys.byteorder!='little':values.byteswap()
  silent=[]
@@ -72,11 +72,13 @@ def measure(pcm,planned=()):
  if any(b-a>=48000 for a,b in unwanted):result['warnings'].append('unwanted_silence')
  command=['ffmpeg','-nostdin','-v','info','-f','s16le','-ar','24000','-ac','1','-i','pipe:0','-filter_complex','ebur128=peak=true','-f','null','-']
  if n<9600:result.update(integrated_lufs=None,true_peak_dbtp=None,loudness_state='not_measurable');result['warnings'].append('loudness_not_measurable');return result
- process=subprocess.run(command,input=pcm,capture_output=True,timeout=60,check=False)
+ try:process=subprocess.run(command,input=pcm,capture_output=True,timeout=60,check=False)
+ except (OSError,subprocess.TimeoutExpired):
+  result.update(integrated_lufs=None,true_peak_dbtp=None,loudness_state='not_measurable');result['warnings'].append('loudness_not_measurable');return result
  summary=process.stderr.decode(errors='replace').rsplit('Summary:',1)[-1];integrated=re.search(r'I:\s*([-+0-9.]+) LUFS',summary);peak=re.search(r'Peak:\s*([-+0-9.]+) dBFS',summary)
- version=subprocess.run(['ffmpeg','-version'],capture_output=True,timeout=5,check=False).stdout.decode(errors='replace')
- binary=shutil.which('ffmpeg')
- result.update(integrated_lufs=float(integrated[1]) if integrated and process.returncode==0 else None,true_peak_dbtp=float(peak[1]) if peak and process.returncode==0 else None,loudness_state='measured' if integrated and peak and process.returncode==0 else 'not_measurable',method={'id':'ffmpeg-ebur128-v1','command':command,'version_and_build':version,'binary_sha256':hashlib.sha256(open(binary,'rb').read()).hexdigest()})
+ try:version=subprocess.run(['ffmpeg','-version'],capture_output=True,timeout=5,check=False).stdout.decode(errors='replace')
+ except (OSError,subprocess.TimeoutExpired):version=None
+ result.update(integrated_lufs=float(integrated[1]) if integrated and process.returncode==0 else None,true_peak_dbtp=float(peak[1]) if peak and process.returncode==0 else None,loudness_state='measured' if integrated and peak and process.returncode==0 else 'not_measurable',method={'id':'ffmpeg-ebur128-v1','command':command,'version_and_build':version})
  if result['integrated_lufs'] is None:result['warnings'].append('loudness_not_measurable')
  elif not -20<=result['integrated_lufs']<=-16:result['warnings'].append('loudness_outside_target')
  if result['true_peak_dbtp'] is not None and result['true_peak_dbtp']>-1:result['warnings'].append('true_peak_outside_target')
