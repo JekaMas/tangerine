@@ -159,3 +159,9 @@ All316 cases reconciled on the prior sources. Final readback found that new prep
 This real preparation-content change invalidates the preparation/mutation/Lab closure. Provider84 is unchanged and retained. The final selection is316 cases (158positive/158negative); every accepted command must have a successful committed-clean receipt and current case/source/dependency fingerprints. No failed aggregate contributes final accepted cases. The free model weight download continues independently.
 
 Both frozen/actual wire-schema native regression cases passed after the retained red. Stable Go vet/gofmt, strict OpenSpec, graph/discovery and3885 structural assertions passed. Final affected committed-clean closure and actual Qwen quality/MLflow observations remain pending.
+
+## Final native acceptance checkpoint
+
+The final own96-case mutation selection,48 preparation cases and88 Lab cases passed committed-clean on3cb3bc8. All84 provider cases retain clean62dc798 receipts; their current source/scenario/dependency fingerprints match. The reconciler reparsed every command event and verified all316 registered cases (158positive/158negative), including all96 iteration6 cases. Every accepted command exited successfully; earlier failed aggregates and model-quality observations remain rejected historical evidence. Public native receipts/logs and NATIVE-VERIFICATION.json are retained under evidence/iteration6-review-20261020.
+
+Production repairs, selected native acceptance, structural checks and Go vet/gofmt are complete. Full iteration acceptance remains pending actual adequate local-model quality and native/context/MLflow readback for the fixed controlled positive and zero requests. LOCAL-PROFILE.json selects the free Qwen local alias whose complete weight download is still in progress. No paid inference is authorized.
