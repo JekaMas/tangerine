@@ -21,13 +21,11 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 CHROME = Path('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
 
-def restore_fixture_file(path, data):
-    # Publish restored fault inputs atomically across the Docker directory mount.
-    # Ordinary configuration already uses atomic publication; cleanup must not
-    # expose a truncated predecessor to the next independent startup case.
+def restore_runtime_fixture(path, data):
+    # Only the damaged runtime-config fault needs an atomic replacement.
     temporary=path.with_name(path.name+'.fixture-restore')
     temporary.write_bytes(data)
-    temporary.chmod(path.stat().st_mode & 0o777 if path.exists() else 0o600)
+    temporary.chmod(0o600)
     temporary.replace(path)
 
 class Iteration1Tests(unittest.TestCase):
@@ -129,7 +127,7 @@ class Iteration1Tests(unittest.TestCase):
     def test_delivery_missing_source_negative(self):
         p=self.extract/'services/web/package-lock.json';saved=p.read_bytes();p.unlink()
         try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('SOURCE_INCOMPLETE',r.stdout)
-        finally:restore_fixture_file(p,saved)
+        finally:p.write_bytes(saved)
     def test_delivery_no_docker_negative(self):
         r=self.execute(['/bin/sh','scripts/tangerine','start'],env={**self.env,'PATH':'/nonexistent'})
         self.assertNotEqual(r.returncode,0);self.assertIn('DOCKER_REQUIRED',r.stdout)
@@ -146,11 +144,11 @@ class Iteration1Tests(unittest.TestCase):
     def test_config_unknown_negative(self):
         p=self.extract/'.env';saved=p.read_bytes();p.write_text('UNKNOWN_OPERATOR=value\n')
         try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_INVALID',r.stdout)
-        finally:restore_fixture_file(p,saved)
+        finally:p.write_bytes(saved)
     def test_config_damaged_negative(self):
         p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.write_text('damaged\n')
         try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_DAMAGED',r.stdout);self.assertEqual(p.read_text(),'damaged\n')
-        finally:restore_fixture_file(p,saved)
+        finally:restore_runtime_fixture(p,saved)
 
     def test_init_workspace_positive(self):
         self.assertEqual(self.sql('SELECT count(*) FROM workspaces'), '1')
@@ -236,7 +234,7 @@ class Iteration1Tests(unittest.TestCase):
     def test_restart_missing_config_negative(self):
         p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.unlink()
         try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_MISSING',r.stdout);self.assertFalse(p.exists())
-        finally:restore_fixture_file(p,saved);p.chmod(0o600)
+        finally:p.write_bytes(saved);p.chmod(0o600)
     def test_restart_unknown_command_negative(self):
         before=self.sql('SELECT id FROM workspaces');r=self.launch('invalid-command');self.assertNotEqual(r.returncode,0);self.assertIn('UNKNOWN_COMMAND',r.stdout);self.assertEqual(self.sql('SELECT id FROM workspaces'),before)
 
@@ -251,7 +249,7 @@ class Iteration1Tests(unittest.TestCase):
     def test_operations_build_failure_negative(self):
         p=self.extract/'services/api/Dockerfile';saved=p.read_bytes();p.write_text('FROM debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587\nRUN exit 17\n')
         try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('BUILD_FAILED',r.stdout);self.assertEqual(self.http('/health/ready')[0],200)
-        finally:restore_fixture_file(p,saved)
+        finally:p.write_bytes(saved)
     def test_operations_occupied_port_negative(self):
         self.assertEqual(self.launch('stop').returncode,0)
         received=[]
