@@ -18,4 +18,6 @@ class ListeningBrowser(unittest.TestCase):
  def test_conflict_negative(self):self.assertEqual(self.observed['values']['test_conflict_negative'],'  The verb needs agreement.\nОшибка: goes. 🟠  ')
  def test_database_recovery_negative(self):self.assertTrue(self.observed['database_recovered']);self.assertEqual(self.observed['values']['test_database_recovery_negative'],'  The verb needs agreement.\nОшибка: goes. 🟠  ')
  def test_audio_recovery_negative(self):self.assertTrue(self.observed['media_recovered']);self.assertEqual(self.observed['values']['test_audio_recovery_negative'],'  The verb needs agreement.\nОшибка: goes. 🟠  ')
+ def test_remote_submission_positive(self):self.assertEqual(self.observed['values']['test_remote_submission_positive'],{'answer':'Submitted in another window. Ошибка.','disabled':True,'language':'en'})
+ def test_unsent_recovery_negative(self):self.assertEqual(self.observed['values']['test_unsent_recovery_negative'],{'answer':'Unsubmitted local text 🟠','languageRetained':True})
 if __name__=='__main__':unittest.main()

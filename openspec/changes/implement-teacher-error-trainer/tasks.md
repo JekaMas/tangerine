@@ -640,3 +640,9 @@ These remain outside the current iteration9 implementation and prevent an iterat
 - [ ] I8.R3 Preserve multiple surface scopes/answer-key intervals belonging to one unit; pan/ready targets currently both resolve to ready.
 
 Exact source anchors and executable counterexamples remain in the existing ignored `data/iteration8-verify-20261020/REVIEW.md` on the working checkout. Original iteration8 receipts retain their registered-case boundaries only.
+
+## Iteration 9 verification and repair (2026-10-20)
+
+- [ ] I9.R1 Repair the demonstrated concurrent-submit/Refresh false saved-answer display; retain different unsent text/language separately and verify actual immutable readback in the browser.
+- [ ] I9.R2 Separate presentation/session control and configuration/media/storage/HTTP responsibilities; verify retirement/quarantine playback, rights restriction and unaffected draft persistence through real owners.
+- [ ] I9.R3 Reconcile extended literal positive/negative cases with the DAG, preserve original scope/evidence, complete stable language/build/specification checks and a full committed-clean iteration run, then commit acceptance.

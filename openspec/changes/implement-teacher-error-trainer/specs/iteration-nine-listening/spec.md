@@ -100,7 +100,7 @@ The application SHALL retain actual reported play/pause/seek/ended events with s
 
 ### Requirement: I9-08 Reachable safe HTTP and exact media
 
-The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses. Existing complete product scopes remain preserved; this requirement covers listening/persistence, not unperformed semantic scoring.
+The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses, preserving existing audio after quarantine/retirement and blocking rights-restricted audio without preventing answer persistence. Existing complete product scopes remain preserved; this requirement covers listening/persistence, not unperformed semantic scoring.
 
 #### Scenario: I9-08 packet 1
 
@@ -111,6 +111,11 @@ The application SHALL serve real same-origin listening/answer operations includi
 
 - **WHEN** the second distinct literal positive or negative packet executes through its real owner
 - **THEN** its independently expected data, state, response or failure SHALL hold
+
+#### Scenario: I9-08 packet 3
+
+- **WHEN** audio availability changes after an attempt has started
+- **THEN** quarantine/retirement SHALL preserve exact playback, while a rights restriction SHALL block audio without blocking answer persistence
 
 ### Requirement: I9-09 Persistent paginated history
 
@@ -156,7 +161,7 @@ The application SHALL play actual stored media, save/reopen exact English/Russia
 
 ### Requirement: I9-12 Native browser submission and outages
 
-The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Existing complete product scopes remain preserved; this requirement covers listening/persistence, not unperformed semantic scoring.
+The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Refresh after another window submits SHALL display the actual frozen answer and language, retaining different unsent local text and language separately without presenting it as submitted. Existing complete product scopes remain preserved; this requirement covers listening/persistence, not unperformed semantic scoring.
 
 #### Scenario: I9-12 packet 1
 
@@ -167,3 +172,8 @@ The application SHALL submit and reopen frozen nonempty or empty answers through
 
 - **WHEN** the second distinct literal positive or negative packet executes through its real owner
 - **THEN** its independently expected data, state, response or failure SHALL hold
+
+#### Scenario: I9-12 packet 3
+
+- **WHEN** another window submits a different answer while this window has an unsent response and Refresh is used repeatedly
+- **THEN** the actual submitted answer/language SHALL appear read-only, and different local text/language SHALL remain separately labelled unsubmitted without changing durable history

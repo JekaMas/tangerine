@@ -115,33 +115,25 @@ func (s *Server) attemptPlaybackEvent(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, 200, v)
 }
 func (s *Server) attemptAudio(w http.ResponseWriter, r *http.Request) {
-	record, e := s.Store.Attempt(r.Context(), r.PathValue("id"))
+	audio, sha, e := s.Store.AttemptAudio(r.Context(), r.PathValue("id"))
 	if e != nil {
-		attemptHTTPError(w, e)
-		return
-	}
-	var availability string
-	if e = s.Store.DB.QueryRow(r.Context(), "SELECT availability FROM exercise_catalog WHERE id::text=$1", record.Attempt["case_version_id"]).Scan(&availability); e != nil {
-		attemptHTTPError(w, e)
-		return
-	}
-	if availability == "rights_restricted" {
-		preparationHTTPError(w, 403, "RIGHTS_BLOCKED")
+		if errors.Is(e, ErrAttemptRights) {
+			preparationHTTPError(w, 403, "RIGHTS_BLOCKED")
+		} else if errors.Is(e, ErrUnavailable) {
+			preparationHTTPError(w, 503, "STORAGE_UNAVAILABLE")
+		} else {
+			attemptHTTPError(w, e)
+		}
 		return
 	}
 	if strings.Contains(r.Header.Get("Range"), ",") {
-		w.Header().Set("Content-Range", "bytes */"+strconv.Itoa(int(record.Context["sample_count"].(float64))*2+44))
+		w.Header().Set("Content-Range", "bytes */"+strconv.Itoa(len(audio)))
 		w.WriteHeader(416)
-		return
-	}
-	audio, e := s.Store.ReadAsset(r.Context(), record.Context["audio_asset_id"].(string))
-	if e != nil {
-		preparationHTTPError(w, 503, "STORAGE_UNAVAILABLE")
 		return
 	}
 	w.Header().Set("Content-Type", "audio/wav")
 	w.Header().Set("Cache-Control", "no-store")
-	w.Header().Set("ETag", strconv.Quote(record.Attempt["audio_sha256"].(string)))
+	w.Header().Set("ETag", strconv.Quote(sha))
 	http.ServeContent(w, r, "exercise.wav", time.Time{}, bytes.NewReader(audio))
 }
 func (s *Server) attemptList(w http.ResponseWriter, r *http.Request) {

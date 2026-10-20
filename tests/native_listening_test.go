@@ -646,3 +646,34 @@ func TestNativeListeningImmutableNegative(t *testing.T) {
 		t.Fatal("immutable document changed")
 	}
 }
+
+func TestNativeListeningRetiredAudioPositive(t *testing.T) {
+	f := listeningCase(t)
+	id := f.start(t)
+	for _, state := range []string{"quarantined", "retired"} {
+		_, e := f.s.Store.DB.Exec(context.Background(), "UPDATE exercise_catalog SET availability=$2 WHERE id=$1", f.id, state)
+		requireListening(t, e)
+		w := f.request("GET", "/api/v1/attempts/"+id+"/audio", "", "", "")
+		if w.Code != 200 || string(w.Body.Bytes()) != string(f.audio) {
+			t.Fatal(w.Code, w.Body.String())
+		}
+	}
+}
+func TestNativeListeningRightsAudioNegative(t *testing.T) {
+	f := listeningCase(t)
+	id := f.start(t)
+	_, e := f.s.Store.DB.Exec(context.Background(), "UPDATE exercise_catalog SET availability='rights_restricted' WHERE id=$1", f.id)
+	requireListening(t, e)
+	w := f.request("GET", "/api/v1/attempts/"+id+"/audio", "", "", "")
+	if w.Code != 403 || !strings.Contains(w.Body.String(), "RIGHTS_BLOCKED") || strings.Contains(w.Body.String(), "canonical_text") {
+		t.Fatal(w.Code, w.Body.String())
+	}
+	// A media restriction must neither erase the frozen response nor stop draft storage.
+	_, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket("Still saved", "en"), false)
+	requireListening(t, e)
+	record, e := f.s.Store.Attempt(context.Background(), id)
+	requireListening(t, e)
+	if record.Attempt["answer_text"] != "Still saved" {
+		t.Fatal(record)
+	}
+}

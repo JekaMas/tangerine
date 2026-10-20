@@ -1,3 +1,5 @@
+> Historical apply acceptance on5f0b2d2/6396f71. The subsequent verification found and repaired an additional concurrent-submission browser defect and extended media-state evidence. Current status: [iteration9 verification](../iteration-9-verification-20261020/REPORT.md). Original receipts remain unchanged.
+
 # Iteration 9 implementation review
 
 This is the implementing agent's complete source/contract review, not an independent model or human review.

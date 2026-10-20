@@ -1,3 +1,5 @@
+> Historical apply acceptance on5f0b2d2/6396f71. The subsequent verification found and repaired an additional concurrent-submission browser defect and extended media-state evidence. Current status: [iteration9 verification](../iteration-9-verification-20261020/REPORT.md). Original receipts remain unchanged.
+
 # Iteration 9 — listening and answer persistence accepted
 
 **Iteration9 is implemented, reviewed, repaired and green for its full declared scope.** Source candidate: `5f0b2d2d2b2fe845fa77800d82effdebddcece7f`. The acceptance-only commit changes task/evidence records and does not change production/test inputs. No in-scope finding or product decision remains open.

@@ -70,7 +70,19 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
   screenshot=browser.call('Page.captureScreenshot');(evidence/'submitted.png').write_bytes(base64.b64decode(screenshot['data']))
   browser.call('Page.navigate',{'url':'http://localhost:3000/attempts'});browser.wait('Open saved answer');click('Open saved answer');browser.wait('Your answer');record('test_history_positive',"document.querySelector('textarea').value",text)
   browser.call('Page.navigate',{'url':'http://localhost:3000/'});browser.wait('Listen and answer');click('Listen and answer');browser.wait('Your answer');wait_value("document.querySelector('textarea').disabled",False);click('Submit answer');browser.wait('Answer submitted and saved.');record('test_empty_positive',"({answer:document.querySelector('textarea').value,disabled:document.querySelector('textarea').disabled})",{'answer':'','disabled':True})
-  # Fold the history readback observation into the submission scenario, retaining eight distinct DAG tests.
+  # A concurrent submission is a real second HTTP writer, never a DOM/state substitution.
+  browser.call('Page.navigate',{'url':'http://localhost:3000/'});browser.wait('Listen and answer');click('Listen and answer');browser.wait('Your answer');wait_value("document.querySelector('textarea').disabled",False)
+  local='Unsubmitted local text 🟠';frozen='Submitted in another window. Ошибка.'
+  type_answer(local);browser.evaluate("const locale=document.querySelector('select');locale.value='ru';locale.dispatchEvent(new Event('change',{bubbles:true}));true")
+  status=browser.evaluate("fetch('/api/v1/attempts/'+new URLSearchParams(location.search).get('attempt')+':submit',{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':crypto.randomUUID(),'If-Match':'\"0\"'},body:JSON.stringify({answer_text:"+json.dumps(frozen)+",requested_language:'en'})}).then(r=>r.status)")
+  assert status==200,status
+  click('Save draft');browser.wait('The saved draft changed.');click('Refresh saved state');browser.wait('Answer submitted and saved.')
+  record('test_remote_submission_positive',"({answer:document.querySelector('[aria-label=\"Your answer\"]').value,disabled:document.querySelector('[aria-label=\"Your answer\"]').disabled,language:document.querySelector('select').value})",{'answer':frozen,'disabled':True,'language':'en'})
+  click('Refresh saved state');browser.wait('Saved state refreshed.')
+  record('test_unsent_recovery_negative',"({answer:document.querySelector('[aria-label=\"Unsubmitted local text\"]')?.value,languageRetained:document.querySelector('[aria-label=\"Unsubmitted response recovery\"]')?.textContent.includes('(ru)')})",{'answer':local,'languageRetained':True})
+  # Reopening shows the real immutable submitted answer, never the unsubmitted buffer.
+  remote_url=browser.evaluate('location.href');browser.call('Page.navigate',{'url':remote_url});browser.wait('Answer submitted and saved.');wait_value("document.querySelector('[aria-label=\"Your answer\"]').value",frozen)
+  # Fold the history readback observation into the submission scenario, retaining ten distinct DAG tests.
   observed['test_submit_positive']['history_readback']=observed.pop('test_history_positive')
   (evidence/'done').write_text('done');assert go.wait(timeout=30)==0
   (evidence/'observations.json').write_text(json.dumps({'values':observed,'fixture':fixture,'driver':browser.driver_version,'network_substitution':False,'database_recovered':True,'media_recovered':True},indent=2))

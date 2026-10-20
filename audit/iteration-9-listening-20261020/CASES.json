@@ -705,9 +705,9 @@
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeListeningHTTPPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tw := f.request(\"GET\", \"/api/v1/attempts/\"+id, \"\", \"\", \"\")\n\tif w.Code != 200 || w.Header().Get(\"ETag\") != `\"0\"` || w.Header().Get(\"X-Tangerine-Audio-SHA256\") != f.audioSHA {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n\tw = f.request(\"PUT\", \"/api/v1/attempts/\"+id+\"/answer\", string(answerPacket(strings.Repeat(\"\ud83d\udfe0\", 20000), \"ru\")), uuid.NewString(), `\"0\"`)\n\tif w.Code != 200 {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n}\n",
-        "oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+        "oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses, preserving existing audio after quarantine/retirement and blocking rights-restricted audio without preventing answer persistence. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
       },
-      "independent_oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "independent_oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses, preserving existing audio after quarantine/retirement and blocking rights-restricted audio without preventing answer persistence. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
       "observation_state": "not_run"
     },
     {
@@ -729,9 +729,9 @@
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeListeningRangePositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tr := httptest.NewRequest(\"GET\", \"/api/v1/attempts/\"+id+\"/audio\", nil)\n\tr.Header.Set(\"Authorization\", \"Bearer \"+f.s.token)\n\tr.Header.Set(\"Range\", \"bytes=44-47\")\n\tw := httptest.NewRecorder()\n\tf.s.Handler().ServeHTTP(w, r)\n\tif w.Code != 206 || string(w.Body.Bytes()) != string(f.audio[44:48]) || w.Header().Get(\"ETag\") != `\"`+f.audioSHA+`\"` {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n}\n",
-        "oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+        "oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses, preserving existing audio after quarantine/retirement and blocking rights-restricted audio without preventing answer persistence. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
       },
-      "independent_oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "independent_oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses, preserving existing audio after quarantine/retirement and blocking rights-restricted audio without preventing answer persistence. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
       "observation_state": "not_run"
     },
     {
@@ -753,9 +753,9 @@
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeListeningPublicPrivateNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tw := f.request(\"GET\", \"/api/v1/attempts/\"+id, \"\", \"\", \"\")\n\tfor _, hidden := range []string{\"canonical_text\", \"surface_text\", \"planned_units\", \"source_key_id\", \"provider\", \"lease_token\", \"mutation_count\", \"The caf\u00e9 open tomorrow.\"} {\n\t\tif strings.Contains(w.Body.String(), hidden) {\n\t\t\tt.Fatal(hidden, w.Body.String())\n\t\t}\n\t}\n\tw = f.request(\"GET\", \"/api/v1/attempts/\"+uuid.NewString(), \"\", \"\", \"\")\n\tif w.Code != 404 {\n\t\tt.Fatal(w.Code)\n\t}\n}\n",
-        "oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+        "oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses, preserving existing audio after quarantine/retirement and blocking rights-restricted audio without preventing answer persistence. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
       },
-      "independent_oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "independent_oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses, preserving existing audio after quarantine/retirement and blocking rights-restricted audio without preventing answer persistence. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
       "observation_state": "not_run"
     },
     {
@@ -777,9 +777,57 @@
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeListeningHTTPGuardsNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tw := f.request(\"PUT\", \"/api/v1/attempts/\"+id+\"/answer\", string(answerPacket(\"x\", \"en\")), uuid.NewString(), \"\")\n\tif w.Code != 412 {\n\t\tt.Fatal(w.Code)\n\t}\n\tr := httptest.NewRequest(\"POST\", \"/api/v1/attempts\", strings.NewReader(`{}`))\n\tw = httptest.NewRecorder()\n\tf.s.Handler().ServeHTTP(w, r)\n\tif w.Code != 403 {\n\t\tt.Fatal(w.Code)\n\t}\n}\n",
-        "oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+        "oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses, preserving existing audio after quarantine/retirement and blocking rights-restricted audio without preventing answer persistence. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
       },
-      "independent_oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "independent_oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses, preserving existing audio after quarantine/retirement and blocking rights-restricted audio without preventing answer persistence. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-08.P1.S3.POSITIVE",
+      "property_id": "I9-08.P1",
+      "polarity": "positive",
+      "scenario": "I9-08 packet 3",
+      "fixture_id": "iteration9-I9-08-packet3",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningRetiredAudioPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningRetiredAudioPositive through services/api/internal/app/attempt_http.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningRetiredAudioPositive",
+        "literal_executable_fixture": "func TestNativeListeningRetiredAudioPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tfor _, state := range []string{\"quarantined\", \"retired\"} {\n\t\t_, e := f.s.Store.DB.Exec(context.Background(), \"UPDATE exercise_catalog SET availability=$2 WHERE id=$1\", f.id, state)\n\t\trequireListening(t, e)\n\t\tw := f.request(\"GET\", \"/api/v1/attempts/\"+id+\"/audio\", \"\", \"\", \"\")\n\t\tif w.Code != 200 || string(w.Body.Bytes()) != string(f.audio) {\n\t\t\tt.Fatal(w.Code, w.Body.String())\n\t\t}\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningRetiredAudioPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tfor _, state := range []string{\"quarantined\", \"retired\"} {\n\t\t_, e := f.s.Store.DB.Exec(context.Background(), \"UPDATE exercise_catalog SET availability=$2 WHERE id=$1\", f.id, state)\n\t\trequireListening(t, e)\n\t\tw := f.request(\"GET\", \"/api/v1/attempts/\"+id+\"/audio\", \"\", \"\", \"\")\n\t\tif w.Code != 200 || string(w.Body.Bytes()) != string(f.audio) {\n\t\t\tt.Fatal(w.Code, w.Body.String())\n\t\t}\n\t}\n}\n",
+        "oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses, preserving existing audio after quarantine/retirement and blocking rights-restricted audio without preventing answer persistence. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses, preserving existing audio after quarantine/retirement and blocking rights-restricted audio without preventing answer persistence. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-08.P1.S3.NEGATIVE",
+      "property_id": "I9-08.P1",
+      "polarity": "negative",
+      "scenario": "I9-08 packet 3",
+      "fixture_id": "iteration9-I9-08-packet3",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningRightsAudioNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningRightsAudioNegative through services/api/internal/app/attempt_http.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningRightsAudioNegative",
+        "literal_executable_fixture": "func TestNativeListeningRightsAudioNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, e := f.s.Store.DB.Exec(context.Background(), \"UPDATE exercise_catalog SET availability='rights_restricted' WHERE id=$1\", f.id)\n\trequireListening(t, e)\n\tw := f.request(\"GET\", \"/api/v1/attempts/\"+id+\"/audio\", \"\", \"\", \"\")\n\tif w.Code != 403 || !strings.Contains(w.Body.String(), \"RIGHTS_BLOCKED\") || strings.Contains(w.Body.String(), \"canonical_text\") {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n\t// A media restriction must neither erase the frozen response nor stop draft storage.\n\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"Still saved\", \"en\"), false)\n\trequireListening(t, e)\n\trecord, e := f.s.Store.Attempt(context.Background(), id)\n\trequireListening(t, e)\n\tif record.Attempt[\"answer_text\"] != \"Still saved\" {\n\t\tt.Fatal(record)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningRightsAudioNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, e := f.s.Store.DB.Exec(context.Background(), \"UPDATE exercise_catalog SET availability='rights_restricted' WHERE id=$1\", f.id)\n\trequireListening(t, e)\n\tw := f.request(\"GET\", \"/api/v1/attempts/\"+id+\"/audio\", \"\", \"\", \"\")\n\tif w.Code != 403 || !strings.Contains(w.Body.String(), \"RIGHTS_BLOCKED\") || strings.Contains(w.Body.String(), \"canonical_text\") {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n\t// A media restriction must neither erase the frozen response nor stop draft storage.\n\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"Still saved\", \"en\"), false)\n\trequireListening(t, e)\n\trecord, e := f.s.Store.Attempt(context.Background(), id)\n\trequireListening(t, e)\n\tif record.Attempt[\"answer_text\"] != \"Still saved\" {\n\t\tt.Fatal(record)\n\t}\n}\n",
+        "oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses, preserving existing audio after quarantine/retirement and blocking rights-restricted audio without preventing answer persistence. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses, preserving existing audio after quarantine/retirement and blocking rights-restricted audio without preventing answer persistence. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
       "observation_state": "not_run"
     },
     {
@@ -965,10 +1013,10 @@
       },
       "input": {
         "exact_native_test": "TestNativeListeningImmutableNegative",
-        "literal_executable_fixture": "func TestNativeListeningImmutableNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"new\", \"en\"), false)\n\trequireListening(t, e)\n\toriginal, e := f.s.Store.ReadDocument(context.Background(), id)\n\trequireListening(t, e)\n\tvar a map[string]any\n\t_ = json.Unmarshal(original.Payload, &a)\n\tif a[\"answer_text\"] != \"\" || a[\"revision\"] != float64(0) {\n\t\tt.Fatal(a)\n\t}\n\tif _, e = f.s.Store.DB.Exec(context.Background(), \"UPDATE document SET payload='{}' WHERE id=$1\", id); e == nil {\n\t\tt.Fatal(\"immutable document changed\")\n\t}\n}\n"
+        "literal_executable_fixture": "func TestNativeListeningImmutableNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"new\", \"en\"), false)\n\trequireListening(t, e)\n\toriginal, e := f.s.Store.ReadDocument(context.Background(), id)\n\trequireListening(t, e)\n\tvar a map[string]any\n\t_ = json.Unmarshal(original.Payload, &a)\n\tif a[\"answer_text\"] != \"\" || a[\"revision\"] != float64(0) {\n\t\tt.Fatal(a)\n\t}\n\tif _, e = f.s.Store.DB.Exec(context.Background(), \"UPDATE document SET payload='{}' WHERE id=$1\", id); e == nil {\n\t\tt.Fatal(\"immutable document changed\")\n\t}\n}\n\n"
       },
       "expected": {
-        "independent_literal_assertions": "func TestNativeListeningImmutableNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"new\", \"en\"), false)\n\trequireListening(t, e)\n\toriginal, e := f.s.Store.ReadDocument(context.Background(), id)\n\trequireListening(t, e)\n\tvar a map[string]any\n\t_ = json.Unmarshal(original.Payload, &a)\n\tif a[\"answer_text\"] != \"\" || a[\"revision\"] != float64(0) {\n\t\tt.Fatal(a)\n\t}\n\tif _, e = f.s.Store.DB.Exec(context.Background(), \"UPDATE document SET payload='{}' WHERE id=$1\", id); e == nil {\n\t\tt.Fatal(\"immutable document changed\")\n\t}\n}\n",
+        "independent_literal_assertions": "func TestNativeListeningImmutableNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"new\", \"en\"), false)\n\trequireListening(t, e)\n\toriginal, e := f.s.Store.ReadDocument(context.Background(), id)\n\trequireListening(t, e)\n\tvar a map[string]any\n\t_ = json.Unmarshal(original.Payload, &a)\n\tif a[\"answer_text\"] != \"\" || a[\"revision\"] != float64(0) {\n\t\tt.Fatal(a)\n\t}\n\tif _, e = f.s.Store.DB.Exec(context.Background(), \"UPDATE document SET payload='{}' WHERE id=$1\", id); e == nil {\n\t\tt.Fatal(\"immutable document changed\")\n\t}\n}\n\n",
         "oracle": "The application SHALL apply every ordered draft/submit event through the production boundary, retain independent expected revisions/state after each event, admit one of two concurrent same-revision writers, and preserve immutable predecessors through stale/rejected events. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
       },
       "independent_oracle": "The application SHALL apply every ordered draft/submit event through the production boundary, retain independent expected revisions/state after each event, admit one of two concurrent same-revision writers, and preserve immutable predecessors through stale/rejected events. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
@@ -982,7 +1030,7 @@
       "fixture_id": "iteration9-I9-11-packet1",
       "test_id": "unittest::test_listening_browser.ListeningBrowser.test_listening_positive",
       "mode": "declared_behavior",
-      "action": "Execute test_listening_positive through services/web/app/listen/page.js",
+      "action": "Execute test_listening_positive through services/web/app/listen/useListening.js",
       "initial_state": {
         "origin": "Admitted constructed input; real production owners and test-owned dependencies",
         "isolated_database_media": true
@@ -1006,7 +1054,7 @@
       "fixture_id": "iteration9-I9-11-packet2",
       "test_id": "unittest::test_listening_browser.ListeningBrowser.test_draft_positive",
       "mode": "declared_behavior",
-      "action": "Execute test_draft_positive through services/web/app/listen/page.js",
+      "action": "Execute test_draft_positive through services/web/app/listen/useListening.js",
       "initial_state": {
         "origin": "Admitted constructed input; real production owners and test-owned dependencies",
         "isolated_database_media": true
@@ -1030,7 +1078,7 @@
       "fixture_id": "iteration9-I9-11-packet1",
       "test_id": "unittest::test_listening_browser.ListeningBrowser.test_private_negative",
       "mode": "declared_behavior",
-      "action": "Execute test_private_negative through services/web/app/listen/page.js",
+      "action": "Execute test_private_negative through services/web/app/listen/useListening.js",
       "initial_state": {
         "origin": "Admitted constructed input; real production owners and test-owned dependencies",
         "isolated_database_media": true
@@ -1054,7 +1102,7 @@
       "fixture_id": "iteration9-I9-11-packet2",
       "test_id": "unittest::test_listening_browser.ListeningBrowser.test_conflict_negative",
       "mode": "declared_behavior",
-      "action": "Execute test_conflict_negative through services/web/app/listen/page.js",
+      "action": "Execute test_conflict_negative through services/web/app/listen/useListening.js",
       "initial_state": {
         "origin": "Admitted constructed input; real production owners and test-owned dependencies",
         "isolated_database_media": true
@@ -1078,7 +1126,7 @@
       "fixture_id": "iteration9-I9-12-packet1",
       "test_id": "unittest::test_listening_browser.ListeningBrowser.test_submit_positive",
       "mode": "declared_behavior",
-      "action": "Execute test_submit_positive through services/web/app/listen/page.js",
+      "action": "Execute test_submit_positive through services/web/app/listen/useListening.js",
       "initial_state": {
         "origin": "Admitted constructed input; real production owners and test-owned dependencies",
         "isolated_database_media": true
@@ -1089,9 +1137,9 @@
       },
       "expected": {
         "independent_literal_assertions": "def test_submit_positive(self):self.assertEqual(self.observed['values']['test_submit_positive'],{'answer':'  The verb needs agreement.\\n\u041e\u0448\u0438\u0431\u043a\u0430: goes. \ud83d\udfe0  ','disabled':True,'history_readback':'  The verb needs agreement.\\n\u041e\u0448\u0438\u0431\u043a\u0430: goes. \ud83d\udfe0  '})",
-        "oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+        "oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Refresh after another window submits SHALL display the actual frozen answer and language, retaining different unsent local text and language separately without presenting it as submitted. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
       },
-      "independent_oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "independent_oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Refresh after another window submits SHALL display the actual frozen answer and language, retaining different unsent local text and language separately without presenting it as submitted. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
       "observation_state": "not_run"
     },
     {
@@ -1102,7 +1150,7 @@
       "fixture_id": "iteration9-I9-12-packet2",
       "test_id": "unittest::test_listening_browser.ListeningBrowser.test_empty_positive",
       "mode": "declared_behavior",
-      "action": "Execute test_empty_positive through services/web/app/listen/page.js",
+      "action": "Execute test_empty_positive through services/web/app/listen/useListening.js",
       "initial_state": {
         "origin": "Admitted constructed input; real production owners and test-owned dependencies",
         "isolated_database_media": true
@@ -1113,9 +1161,9 @@
       },
       "expected": {
         "independent_literal_assertions": "def test_empty_positive(self):self.assertEqual(self.observed['values']['test_empty_positive'],{'answer':'','disabled':True})",
-        "oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+        "oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Refresh after another window submits SHALL display the actual frozen answer and language, retaining different unsent local text and language separately without presenting it as submitted. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
       },
-      "independent_oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "independent_oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Refresh after another window submits SHALL display the actual frozen answer and language, retaining different unsent local text and language separately without presenting it as submitted. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
       "observation_state": "not_run"
     },
     {
@@ -1126,7 +1174,7 @@
       "fixture_id": "iteration9-I9-12-packet1",
       "test_id": "unittest::test_listening_browser.ListeningBrowser.test_database_recovery_negative",
       "mode": "declared_behavior",
-      "action": "Execute test_database_recovery_negative through services/web/app/listen/page.js",
+      "action": "Execute test_database_recovery_negative through services/web/app/listen/useListening.js",
       "initial_state": {
         "origin": "Admitted constructed input; real production owners and test-owned dependencies",
         "isolated_database_media": true
@@ -1137,9 +1185,9 @@
       },
       "expected": {
         "independent_literal_assertions": "def test_database_recovery_negative(self):self.assertTrue(self.observed['database_recovered']);self.assertEqual(self.observed['values']['test_database_recovery_negative'],'  The verb needs agreement.\\n\u041e\u0448\u0438\u0431\u043a\u0430: goes. \ud83d\udfe0  ')",
-        "oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+        "oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Refresh after another window submits SHALL display the actual frozen answer and language, retaining different unsent local text and language separately without presenting it as submitted. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
       },
-      "independent_oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "independent_oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Refresh after another window submits SHALL display the actual frozen answer and language, retaining different unsent local text and language separately without presenting it as submitted. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
       "observation_state": "not_run"
     },
     {
@@ -1150,7 +1198,7 @@
       "fixture_id": "iteration9-I9-12-packet2",
       "test_id": "unittest::test_listening_browser.ListeningBrowser.test_audio_recovery_negative",
       "mode": "declared_behavior",
-      "action": "Execute test_audio_recovery_negative through services/web/app/listen/page.js",
+      "action": "Execute test_audio_recovery_negative through services/web/app/listen/useListening.js",
       "initial_state": {
         "origin": "Admitted constructed input; real production owners and test-owned dependencies",
         "isolated_database_media": true
@@ -1161,9 +1209,57 @@
       },
       "expected": {
         "independent_literal_assertions": "def test_audio_recovery_negative(self):self.assertTrue(self.observed['media_recovered']);self.assertEqual(self.observed['values']['test_audio_recovery_negative'],'  The verb needs agreement.\\n\u041e\u0448\u0438\u0431\u043a\u0430: goes. \ud83d\udfe0  ')",
-        "oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+        "oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Refresh after another window submits SHALL display the actual frozen answer and language, retaining different unsent local text and language separately without presenting it as submitted. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
       },
-      "independent_oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "independent_oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Refresh after another window submits SHALL display the actual frozen answer and language, retaining different unsent local text and language separately without presenting it as submitted. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-12.P1.S3.POSITIVE",
+      "property_id": "I9-12.P1",
+      "polarity": "positive",
+      "scenario": "I9-12 packet 3",
+      "fixture_id": "iteration9-I9-12-packet3",
+      "test_id": "unittest::test_listening_browser.ListeningBrowser.test_remote_submission_positive",
+      "mode": "declared_behavior",
+      "action": "Execute test_remote_submission_positive through services/web/app/listen/useListening.js",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "test_remote_submission_positive",
+        "literal_executable_fixture": "def test_remote_submission_positive(self):self.assertEqual(self.observed['values']['test_remote_submission_positive'],{'answer':'Submitted in another window. \u041e\u0448\u0438\u0431\u043a\u0430.','disabled':True,'language':'en'})"
+      },
+      "expected": {
+        "independent_literal_assertions": "def test_remote_submission_positive(self):self.assertEqual(self.observed['values']['test_remote_submission_positive'],{'answer':'Submitted in another window. \u041e\u0448\u0438\u0431\u043a\u0430.','disabled':True,'language':'en'})",
+        "oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Refresh after another window submits SHALL display the actual frozen answer and language, retaining different unsent local text and language separately without presenting it as submitted. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Refresh after another window submits SHALL display the actual frozen answer and language, retaining different unsent local text and language separately without presenting it as submitted. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-12.P1.S3.NEGATIVE",
+      "property_id": "I9-12.P1",
+      "polarity": "negative",
+      "scenario": "I9-12 packet 3",
+      "fixture_id": "iteration9-I9-12-packet3",
+      "test_id": "unittest::test_listening_browser.ListeningBrowser.test_unsent_recovery_negative",
+      "mode": "declared_behavior",
+      "action": "Execute test_unsent_recovery_negative through services/web/app/listen/useListening.js",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "test_unsent_recovery_negative",
+        "literal_executable_fixture": "def test_unsent_recovery_negative(self):self.assertEqual(self.observed['values']['test_unsent_recovery_negative'],{'answer':'Unsubmitted local text \ud83d\udfe0','languageRetained':True})"
+      },
+      "expected": {
+        "independent_literal_assertions": "def test_unsent_recovery_negative(self):self.assertEqual(self.observed['values']['test_unsent_recovery_negative'],{'answer':'Unsubmitted local text \ud83d\udfe0','languageRetained':True})",
+        "oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Refresh after another window submits SHALL display the actual frozen answer and language, retaining different unsent local text and language separately without presenting it as submitted. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Refresh after another window submits SHALL display the actual frozen answer and language, retaining different unsent local text and language separately without presenting it as submitted. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
       "observation_state": "not_run"
     }
   ]
