@@ -80,7 +80,7 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 			}
 			output = AnswerExtraction{Version: "2.0.0", Clauses: []ExtractedClause{{LocalRef: "c0", Span: AnswerSpan{0, len(text), answer}, Stance: "assert_error", Correction: span}}, Unparsed: []AnswerSpan{}, Coverage: []ClaimCoverage{}, Relations: []ClaimRelation{}}
 		} else {
-			audit := strings.Contains(wire["instructions"].(string), "Calculate the mappings again")
+			audit := wire["model"] == "constructed-auditor"
 			if audit {
 				if f.currentMode() == "audit-blocked" {
 					f.once.Do(func() { close(f.entered) })
@@ -118,11 +118,12 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 			}
 			if audit && f.currentMode() == "audit-disagreement" {
 				decision.Correction.Satisfied = []string{}
+				decision.Correction.Status = "rejected"
 			}
 			output = SemanticMapping{Version: "1.0.0", Decisions: []SemanticDecision{decision}}
 		}
 		encoded, _ := json.Marshal(output)
-		response := map[string]any{"id": "constructed-response", "object": "response", "status": "completed", "model": "constructed-interpreter", "output": []any{map[string]any{"type": "message", "content": []any{map[string]any{"type": "output_text", "text": string(encoded)}}}}}
+		response := map[string]any{"id": "constructed-response", "object": "response", "status": "completed", "model": wire["model"], "output": []any{map[string]any{"type": "message", "content": []any{map[string]any{"type": "output_text", "text": string(encoded)}}}}}
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(response)
 	}))
@@ -135,6 +136,15 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 		p[k] = v
 	}
 	c["mapping_audit_enabled"] = strings.HasPrefix(mode, "audit")
+	if c["mapping_audit_enabled"] == true {
+		auditProfile := map[string]any{}
+		for key, value := range p {
+			auditProfile[key] = value
+		}
+		auditProfile["id"], auditProfile["model"], auditProfile["roles"] = "constructed-audit", "constructed-auditor", []any{"mapping_audit"}
+		c["llm_profiles"] = append(c["llm_profiles"].([]any), auditProfile)
+		c["stage_profiles"].(map[string]any)["mapping_audit"] = "constructed-audit"
+	}
 	for _, field := range []string{"workspace_id", "configuration_sha256", "provider_access_policy"} {
 		delete(c, field)
 	}
@@ -457,7 +467,11 @@ func TestNativeInterpretationLateNegative(t *testing.T) {
 	})
 	done := make(chan error, 1)
 	go func() { _, e := f.interpret(t, uuid.NewString()); done <- e }()
-	<-f.entered
+	select {
+	case <-f.entered:
+	case err := <-done:
+		t.Fatal("expected fixture stage returned before its blocking hook", err)
+	}
 	_, e := f.s.Store.DB.Exec(context.Background(), "UPDATE interpretation_checkpoint SET deadline_at=clock_timestamp()-interval '1 second' WHERE attempt_id=$1", f.attempt)
 	requireListening(t, e)
 	close(f.release)
@@ -495,7 +509,11 @@ func TestNativeInterpretationCancellationPositive(t *testing.T) {
 		_, e := f.s.InterpretAttempt(ctx, f.attempt, uuid.NewString(), 1, r.Attempt["answer_utf8_sha256"].(string), r.Attempt["configuration_sha256"].(string), f.model.Client())
 		done <- e
 	}()
-	<-f.entered
+	select {
+	case <-f.entered:
+	case err := <-done:
+		t.Fatal("expected fixture stage returned before its blocking hook", err)
+	}
 	cancel()
 	if e = <-done; e == nil {
 		t.Fatal("cancellation accepted")
@@ -603,7 +621,11 @@ func lateAuditFinalizer(t *testing.T) {
 	})
 	done := make(chan error, 1)
 	go func() { _, e := f.interpret(t, uuid.NewString()); done <- e }()
-	<-f.entered
+	select {
+	case <-f.entered:
+	case err := <-done:
+		t.Fatal("expected fixture stage returned before its blocking hook", err)
+	}
 	_, e := f.s.Store.DB.Exec(context.Background(), "UPDATE interpretation_checkpoint SET deadline_at=clock_timestamp()-interval '1 second' WHERE attempt_id=$1", f.attempt)
 	requireListening(t, e)
 	close(f.release)

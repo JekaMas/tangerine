@@ -73,7 +73,7 @@ The application SHALL retain unknown optional reason findings without erasing su
 
 ### Requirement: I10-05 Category and novel correction interpretation
 
-The application SHALL retain novel-correction uncertainty and unknown aliases while preserving supported detection, and refuse fabricated taxonomy or target identities. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
+The application SHALL resolve an omitted correction option only through uniquely identifying scoped proposition IDs, retain novel-correction uncertainty and unknown aliases while preserving supported detection, and refuse fabricated taxonomy or target identities. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
 
 #### Scenario: I10-05 packet 1
 
@@ -84,6 +84,11 @@ The application SHALL retain novel-correction uncertainty and unknown aliases wh
 
 - **WHEN** the second distinct literal positive or negative packet executes through its real owner
 - **THEN** its independently expected data, state, response or failure SHALL hold
+
+#### Scenario: I10-05 packet 3
+
+- **WHEN** the third distinct literal positive or negative packet executes through its real owner
+- **THEN** its independently expected source evidence or rejection SHALL hold
 
 ### Requirement: I10-06 Deterministic compatible claim consolidation
 

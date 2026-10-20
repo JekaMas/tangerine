@@ -81,6 +81,31 @@ func optionalID(p *string) string {
 	}
 	return *p
 }
+func resolveCorrectionRubric(j *SemanticComponent, unit map[string]any) error {
+	if unit == nil || j.Option != nil || len(j.Satisfied)+len(j.Violated) == 0 {
+		return nil
+	}
+	var selected *string
+	for _, value := range unit["corrections"].([]any) {
+		option := value.(map[string]any)
+		if !subsetDistinct(j.Satisfied, propositionSet(option["required_propositions"])) || !subsetDistinct(j.Violated, propositionSet(option["forbidden_propositions"])) {
+			continue
+		}
+		if selected != nil {
+			return interpretationInvalid("The supplied proposition IDs identify multiple correction options; select the actual comparison option instead of guessing.")
+		}
+		id := option["id"].(string)
+		selected = &id
+	}
+	if selected != nil {
+		j.Option = selected
+	}
+	return nil
+}
+func correctionRubricDetail(unit map[string]any) string {
+	raw, _ := json.Marshal(unit["corrections"])
+	return " Existing correction options and their scoped conditions: " + string(raw)
+}
 func normalizeComponent(answer string, j *SemanticComponent, source AnswerSpan, spans, otherSpans []AnswerSpan, unit map[string]any, explanation bool, allowedEvidence map[string]bool) error {
 	if j.Supplied != (len(spans) > 0) {
 		return interpretationInvalid("Supplied flags must match actual original correction/explanation spans, including declared attachments.")
@@ -94,6 +119,14 @@ func normalizeComponent(answer string, j *SemanticComponent, source AnswerSpan, 
 		}
 		j.Status = "not_supplied"
 		return nil
+	}
+	if !explanation {
+		if err := resolveCorrectionRubric(j, unit); err != nil {
+			return err
+		}
+		if unit != nil && j.Unresolved == nil && (j.Status == "accepted" || j.Status == "partial") && (j.Option == nil || len(j.Satisfied)+len(j.Violated)+len(j.Additional) == 0) {
+			return interpretationInvalid("Complete the supplied positive correction assessment: select its existing option_id and record the required propositions actually satisfied. A bare accepted label without rubric findings cannot determine credit; use explicit unresolved only for genuine uncertainty." + correctionRubricDetail(unit))
+		}
 	}
 	required, forbidden := map[string]bool{}, map[string]bool{}
 	if unit != nil {
@@ -120,7 +153,11 @@ func normalizeComponent(answer string, j *SemanticComponent, source AnswerSpan, 
 		}
 	}
 	if !subsetDistinct(j.Satisfied, required) || !subsetDistinct(j.Violated, forbidden) {
-		return interpretationInvalid("Required and forbidden proposition IDs must belong to the selected unit and exact correction/rationale rubric.")
+		detail := "Required and forbidden proposition IDs must belong to the selected unit and exact correction/rationale rubric. An unmet required condition is omitted from satisfied IDs; it is not a forbidden ID. violated_proposition_ids contains only actually asserted forbidden propositions. Judge a wrong proposal using a source-quoted unsupported assertion with a contextual reason."
+		if !explanation && unit != nil {
+			detail += correctionRubricDetail(unit)
+		}
+		return interpretationInvalid(detail)
 	}
 	explicitRejection := !explanation && unit != nil && j.Option == nil && j.Status == "rejected" && j.Unresolved == nil
 	unknown, bad := false, len(j.Violated) > 0 || explicitRejection

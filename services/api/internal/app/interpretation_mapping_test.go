@@ -269,9 +269,26 @@ func TestInterpretationUncertainRejectionNegative(t *testing.T) {
 func TestInterpretationNoOptionCreditNegative(t *testing.T) {
 	a, c, k, tax, m := rejectionFixture()
 	m.Decisions[0].Correction.Status = "accepted"
-	got, issues, e := admitMappingFixture(a, c, k, tax, m)
-	if e != nil || got.Decisions[0].Correction.Status != "unresolved" || len(issues) != 1 {
-		t.Fatal(got, issues, e)
+	if _, _, e := admitMappingFixture(a, c, k, tax, m); e == nil {
+		t.Fatal("positive label without rubric findings bypassed bounded repair")
+	}
+}
+
+func TestInterpretationUniqueRubricPositive(t *testing.T) {
+	a, c, k, tax, m := interpretationMappingFixture()
+	m.Decisions[0].Correction.Option = nil
+	got, _, err := admitMappingFixture(a, c, k, tax, m)
+	if err != nil || optionalID(got.Decisions[0].Correction.Option) != "option1" || got.Decisions[0].Correction.Status != "accepted" {
+		t.Fatal(got, err)
+	}
+}
+func TestInterpretationAmbiguousRubricNegative(t *testing.T) {
+	a, c, k, tax, m := interpretationMappingFixture()
+	m.Decisions[0].Correction.Option = nil
+	u := k["units"].([]any)[0].(map[string]any)
+	u["corrections"] = append(u["corrections"].([]any), map[string]any{"id": "option2", "required_propositions": []any{map[string]any{"id": "required1"}}, "forbidden_propositions": []any{}})
+	if _, _, err := admitMappingFixture(a, c, k, tax, m); err == nil {
+		t.Fatal("selected a favorable option from ambiguous proposition IDs")
 	}
 }
 
