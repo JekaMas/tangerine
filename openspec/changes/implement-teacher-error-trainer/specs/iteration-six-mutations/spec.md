@@ -307,3 +307,17 @@ The controlled actual-model qualification SHALL require the requested correct op
 
 - **WHEN** the second distinct literal positive or negative packet is executed
 - **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+### Requirement: I6-23 Literal Unicode coordinate evidence for the existing repair
+
+The existing rejected-output repair SHALL receive actual nearby Unicode codepoints and a literal scope only when the supplied nonempty exact_text occurs exactly once, including overlapping-match ambiguity. Empty, absent or repeated literals SHALL receive no guessed location. Diagnostic hints SHALL NOT rewrite or admit a candidate; valid keys retain their single admission and stored data remains trusted. Exact constructed fixtures and independent expected states are retained in audit/iteration-6-review-20261020/CASES.json. These tests SHALL NOT establish hosted account admission, actual LLM linguistic quality or future mutation/audio/scoring completion.
+
+#### Scenario: I6-23 packet 1
+
+- **WHEN** the first literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+#### Scenario: I6-23 packet 2
+
+- **WHEN** the second distinct literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold

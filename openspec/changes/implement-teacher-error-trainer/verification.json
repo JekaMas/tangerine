@@ -3145,6 +3145,12 @@
       "capability": "iteration-six-mutations",
       "title": "I6-22 Independent agreement qualification detects reversed mistakes",
       "fingerprint": "5a0d4c395adc0047fc12228097b0df89aa3ee0f0315f42b46c3ac57b1c9ab3ad"
+    },
+    {
+      "id": "I6-23",
+      "capability": "iteration-six-mutations",
+      "title": "I6-23 Literal Unicode coordinate evidence for the existing repair",
+      "fingerprint": "c13fa130889cd8da2f7e4a90f51fd303389cab7fcdcc988f8c6cdf68a7ce1a23"
     }
   ],
   "properties": [
@@ -12617,6 +12623,20 @@
       "oracle": "The controlled actual-model qualification SHALL require the requested correct opens/serves clean forms, exactly one corresponding erroneous surface change and the independently expected preferred repair. The harness SHALL reject the observed ungrammatical-baseline/corrected-surface reversal and unrelated extra edits. Pure oracle-sensitivity packets establish only this test reference; actual generation quality requires retained native/local-model observations. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
       "source_globs": [
         "services/api/internal/app/mutation_quality_fixture_test.go"
+      ]
+    },
+    {
+      "id": "I6-23.P1",
+      "requirement_id": "I6-23",
+      "statement": "The existing rejected-output repair SHALL receive actual nearby Unicode codepoints and a literal scope only when the supplied nonempty exact_text occurs exactly once, including overlapping-match ambiguity. Empty, absent or repeated literals SHALL receive no guessed location. Diagnostic hints SHALL NOT rewrite or admit a candidate; valid keys retain their single admission and stored data remains trusted.",
+      "scenarios": [
+        "I6-23 packet 1",
+        "I6-23 packet 2"
+      ],
+      "owner": "services/api/internal/app/mutation_diagnostics.go",
+      "oracle": "The existing rejected-output repair SHALL receive actual nearby Unicode codepoints and a literal scope only when the supplied nonempty exact_text occurs exactly once, including overlapping-match ambiguity. Empty, absent or repeated literals SHALL receive no guessed location. Diagnostic hints SHALL NOT rewrite or admit a candidate; valid keys retain their single admission and stored data remains trusted. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "source_globs": [
+        "services/api/internal/app/mutation_diagnostics.go"
       ]
     }
   ],
@@ -95836,6 +95856,170 @@
         "note": "The controlled actual-model qualification SHALL require the requested correct opens/serves clean forms, exactly one corresponding erroneous surface change and the independently expected preferred repair. The harness SHALL reject the observed ungrammatical-baseline/corrected-surface reversal and unrelated extra edits. Pure oracle-sensitivity packets establish only this test reference; actual generation quality requires retained native/local-model observations. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
       },
       "designed_fixture_id": "iteration6-I6-22-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I6-23.P1.S1.POSITIVE",
+      "property_id": "I6-23.P1",
+      "polarity": "positive",
+      "scenario": "I6-23 packet 1",
+      "scenario_fingerprint": "1c85e6fd0243ec4468a7f7438fb253dbc23203dae566c1f2ead96e5fb746e80e",
+      "setup": "Execute TestMutationLocatorUnicodePositive through services/api/internal/app/mutation_diagnostics.go {\"exact_native_test\": \"TestMutationLocatorUnicodePositive\", \"literal_executable_fixture\": \"func TestMutationLocatorUnicodePositive(t *testing.T) {\\n\\te := locatorEvidence(t, surfaceLocatorHint(\\\"u1\\\", []rune(\\\"The caf\\u00e9 open tomorrow.\\\"), 10, 14, \\\"open\\\"))\\n\\tfound := false\\n\\tfor _, v := range e[\\\"coordinate_window\\\"].([]any) {\\n\\t\\tp := v.(map[string]any)\\n\\t\\tif p[\\\"cp\\\"] == float64(7) && p[\\\"text\\\"] == \\\"\\u00e9\\\" {\\n\\t\\t\\tfound = true\\n\\t\\t}\\n\\t}\\n\\tif !found {\\n\\t\\tt.Fatal(\\\"Unicode codepoints must not be UTF-8 byte offsets\\\", e)\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestMutationLocatorUnicodePositive(t *testing.T) {\\n\\te := locatorEvidence(t, surfaceLocatorHint(\\\"u1\\\", []rune(\\\"The caf\\u00e9 open tomorrow.\\\"), 10, 14, \\\"open\\\"))\\n\\tfound := false\\n\\tfor _, v := range e[\\\"coordinate_window\\\"].([]any) {\\n\\t\\tp := v.(map[string]any)\\n\\t\\tif p[\\\"cp\\\"] == float64(7) && p[\\\"text\\\"] == \\\"\\u00e9\\\" {\\n\\t\\t\\tfound = true\\n\\t\\t}\\n\\t}\\n\\tif !found {\\n\\t\\tt.Fatal(\\\"Unicode codepoints must not be UTF-8 byte offsets\\\", e)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The existing rejected-output repair SHALL receive actual nearby Unicode codepoints and a literal scope only when the supplied nonempty exact_text occurs exactly once, including overlapping-match ambiguity. Empty, absent or repeated literals SHALL receive no guessed location. Diagnostic hints SHALL NOT rewrite or admit a candidate; valid keys retain their single admission and stored data remains trusted. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestMutationLocatorUnicodePositive",
+      "command_id": "iteration6-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/mutation_locator_test.go",
+      "source_sha256": "9ecb3ad040ec7b40681cea2b849f952484a6999e4a4395fd18af9134ef70902e",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "services/api/internal/app/mutation_locator_test.go",
+        "tests/go-docker"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Actual synthesized audio, teacher evaluation or full-product acceptance"
+        ],
+        "note": "The existing rejected-output repair SHALL receive actual nearby Unicode codepoints and a literal scope only when the supplied nonempty exact_text occurs exactly once, including overlapping-match ambiguity. Empty, absent or repeated literals SHALL receive no guessed location. Diagnostic hints SHALL NOT rewrite or admit a candidate; valid keys retain their single admission and stored data remains trusted. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
+      },
+      "designed_fixture_id": "iteration6-I6-23-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I6-23.P1.S2.POSITIVE",
+      "property_id": "I6-23.P1",
+      "polarity": "positive",
+      "scenario": "I6-23 packet 2",
+      "scenario_fingerprint": "142ba16e8b4f0c052b6f7b5074a65821d5c119de6f9ea24dacdf4beb8db632bb",
+      "setup": "Execute TestMutationLocatorNarrowPositive through services/api/internal/app/mutation_diagnostics.go {\"exact_native_test\": \"TestMutationLocatorNarrowPositive\", \"literal_executable_fixture\": \"func TestMutationLocatorNarrowPositive(t *testing.T) {\\n\\te := locatorEvidence(t, surfaceLocatorHint(\\\"u1\\\", []rune(\\\"The caf\\u00e9 open tomorrow.\\\"), 10, 14, \\\"open\\\"))\\n\\ts := e[\\\"unique_literal_scope\\\"].(map[string]any)[\\\"span\\\"].(map[string]any)\\n\\tif s[\\\"start_cp\\\"] != float64(9) || s[\\\"end_cp\\\"] != float64(13) || s[\\\"exact_text\\\"] != \\\"open\\\" {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestMutationLocatorNarrowPositive(t *testing.T) {\\n\\te := locatorEvidence(t, surfaceLocatorHint(\\\"u1\\\", []rune(\\\"The caf\\u00e9 open tomorrow.\\\"), 10, 14, \\\"open\\\"))\\n\\ts := e[\\\"unique_literal_scope\\\"].(map[string]any)[\\\"span\\\"].(map[string]any)\\n\\tif s[\\\"start_cp\\\"] != float64(9) || s[\\\"end_cp\\\"] != float64(13) || s[\\\"exact_text\\\"] != \\\"open\\\" {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The existing rejected-output repair SHALL receive actual nearby Unicode codepoints and a literal scope only when the supplied nonempty exact_text occurs exactly once, including overlapping-match ambiguity. Empty, absent or repeated literals SHALL receive no guessed location. Diagnostic hints SHALL NOT rewrite or admit a candidate; valid keys retain their single admission and stored data remains trusted. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestMutationLocatorNarrowPositive",
+      "command_id": "iteration6-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/mutation_locator_test.go",
+      "source_sha256": "9ecb3ad040ec7b40681cea2b849f952484a6999e4a4395fd18af9134ef70902e",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "services/api/internal/app/mutation_locator_test.go",
+        "tests/go-docker"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Actual synthesized audio, teacher evaluation or full-product acceptance"
+        ],
+        "note": "The existing rejected-output repair SHALL receive actual nearby Unicode codepoints and a literal scope only when the supplied nonempty exact_text occurs exactly once, including overlapping-match ambiguity. Empty, absent or repeated literals SHALL receive no guessed location. Diagnostic hints SHALL NOT rewrite or admit a candidate; valid keys retain their single admission and stored data remains trusted. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
+      },
+      "designed_fixture_id": "iteration6-I6-23-packet2",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I6-23.P1.S1.NEGATIVE",
+      "property_id": "I6-23.P1",
+      "polarity": "negative",
+      "scenario": "I6-23 packet 1",
+      "scenario_fingerprint": "1c85e6fd0243ec4468a7f7438fb253dbc23203dae566c1f2ead96e5fb746e80e",
+      "setup": "Execute TestMutationLocatorAmbiguousNegative through services/api/internal/app/mutation_diagnostics.go {\"exact_native_test\": \"TestMutationLocatorAmbiguousNegative\", \"literal_executable_fixture\": \"func TestMutationLocatorAmbiguousNegative(t *testing.T) {\\n\\te := locatorEvidence(t, surfaceLocatorHint(\\\"u1\\\", []rune(\\\"open then open\\\"), 999, 1000, \\\"open\\\"))\\n\\tif e[\\\"unique_literal_scope\\\"] != nil {\\n\\t\\tt.Fatal(\\\"ambiguous location guessed\\\", e)\\n\\t}\\n\\te = locatorEvidence(t, surfaceLocatorHint(\\\"u1\\\", []rune(\\\"aaa\\\"), 0, 1, \\\"aa\\\"))\\n\\tif e[\\\"unique_literal_scope\\\"] != nil {\\n\\t\\tt.Fatal(\\\"overlapping matches guessed\\\", e)\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestMutationLocatorAmbiguousNegative(t *testing.T) {\\n\\te := locatorEvidence(t, surfaceLocatorHint(\\\"u1\\\", []rune(\\\"open then open\\\"), 999, 1000, \\\"open\\\"))\\n\\tif e[\\\"unique_literal_scope\\\"] != nil {\\n\\t\\tt.Fatal(\\\"ambiguous location guessed\\\", e)\\n\\t}\\n\\te = locatorEvidence(t, surfaceLocatorHint(\\\"u1\\\", []rune(\\\"aaa\\\"), 0, 1, \\\"aa\\\"))\\n\\tif e[\\\"unique_literal_scope\\\"] != nil {\\n\\t\\tt.Fatal(\\\"overlapping matches guessed\\\", e)\\n\\t}\\n}\", \"independent_literal_expectations\": \"The existing rejected-output repair SHALL receive actual nearby Unicode codepoints and a literal scope only when the supplied nonempty exact_text occurs exactly once, including overlapping-match ambiguity. Empty, absent or repeated literals SHALL receive no guessed location. Diagnostic hints SHALL NOT rewrite or admit a candidate; valid keys retain their single admission and stored data remains trusted. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestMutationLocatorAmbiguousNegative",
+      "command_id": "iteration6-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/mutation_locator_test.go",
+      "source_sha256": "9ecb3ad040ec7b40681cea2b849f952484a6999e4a4395fd18af9134ef70902e",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "services/api/internal/app/mutation_locator_test.go",
+        "tests/go-docker"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Actual synthesized audio, teacher evaluation or full-product acceptance"
+        ],
+        "note": "The existing rejected-output repair SHALL receive actual nearby Unicode codepoints and a literal scope only when the supplied nonempty exact_text occurs exactly once, including overlapping-match ambiguity. Empty, absent or repeated literals SHALL receive no guessed location. Diagnostic hints SHALL NOT rewrite or admit a candidate; valid keys retain their single admission and stored data remains trusted. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
+      },
+      "designed_fixture_id": "iteration6-I6-23-packet1",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I6-23.P1.S2.NEGATIVE",
+      "property_id": "I6-23.P1",
+      "polarity": "negative",
+      "scenario": "I6-23 packet 2",
+      "scenario_fingerprint": "142ba16e8b4f0c052b6f7b5074a65821d5c119de6f9ea24dacdf4beb8db632bb",
+      "setup": "Execute TestMutationLocatorEmptyNegative through services/api/internal/app/mutation_diagnostics.go {\"exact_native_test\": \"TestMutationLocatorEmptyNegative\", \"literal_executable_fixture\": \"func TestMutationLocatorEmptyNegative(t *testing.T) {\\n\\te := locatorEvidence(t, surfaceLocatorHint(\\\"u1\\\", []rune(\\\"The caf\\u00e9 open tomorrow.\\\"), -1, 999, \\\"\\\"))\\n\\tif e[\\\"unique_literal_scope\\\"] != nil {\\n\\t\\tt.Fatal(\\\"empty boundary guessed\\\", e)\\n\\t}\\n\\te = locatorEvidence(t, surfaceLocatorHint(\\\"u1\\\", []rune(\\\"The caf\\u00e9 open tomorrow.\\\"), 9, 14, \\\"opens\\\"))\\n\\tif e[\\\"unique_literal_scope\\\"] != nil {\\n\\t\\tt.Fatal(\\\"absent canonical word located in the surface\\\", e)\\n\\t}\\n\\tb, clean, c, tax := mutationFixture()\\n\\tc[\\\"planned_units\\\"].([]any)[0].(map[string]any)[\\\"text_spans\\\"].([]any)[0].(map[string]any)[\\\"span\\\"].(map[string]any)[\\\"end_cp\\\"] = float64(14)\\n\\tif admitMutation(t, b, clean, c, tax) == nil {\\n\\t\\tt.Fatal(\\\"coordinate hint silently admitted an invalid key\\\")\\n\\t}\\n}\"}",
+      "observable": "{\"assertion_source\": \"func TestMutationLocatorEmptyNegative(t *testing.T) {\\n\\te := locatorEvidence(t, surfaceLocatorHint(\\\"u1\\\", []rune(\\\"The caf\\u00e9 open tomorrow.\\\"), -1, 999, \\\"\\\"))\\n\\tif e[\\\"unique_literal_scope\\\"] != nil {\\n\\t\\tt.Fatal(\\\"empty boundary guessed\\\", e)\\n\\t}\\n\\te = locatorEvidence(t, surfaceLocatorHint(\\\"u1\\\", []rune(\\\"The caf\\u00e9 open tomorrow.\\\"), 9, 14, \\\"opens\\\"))\\n\\tif e[\\\"unique_literal_scope\\\"] != nil {\\n\\t\\tt.Fatal(\\\"absent canonical word located in the surface\\\", e)\\n\\t}\\n\\tb, clean, c, tax := mutationFixture()\\n\\tc[\\\"planned_units\\\"].([]any)[0].(map[string]any)[\\\"text_spans\\\"].([]any)[0].(map[string]any)[\\\"span\\\"].(map[string]any)[\\\"end_cp\\\"] = float64(14)\\n\\tif admitMutation(t, b, clean, c, tax) == nil {\\n\\t\\tt.Fatal(\\\"coordinate hint silently admitted an invalid key\\\")\\n\\t}\\n}\", \"independent_literal_expectations\": \"The existing rejected-output repair SHALL receive actual nearby Unicode codepoints and a literal scope only when the supplied nonempty exact_text occurs exactly once, including overlapping-match ambiguity. Empty, absent or repeated literals SHALL receive no guessed location. Diagnostic hints SHALL NOT rewrite or admit a candidate; valid keys retain their single admission and stored data remains trusted. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.\"}",
+      "red_expectation": "The literal violated invariant must fail with no invented completed phase or extra model call.",
+      "green_expectation": "All independently declared literal outcomes pass.",
+      "test_id": "tangerine.local/api/internal/app::TestMutationLocatorEmptyNegative",
+      "command_id": "iteration6-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/mutation_locator_test.go",
+      "source_sha256": "9ecb3ad040ec7b40681cea2b849f952484a6999e4a4395fd18af9134ef70902e",
+      "invalidation_dependencies": [
+        "services/api/internal/app/**",
+        "services/api/internal/contracts/**",
+        "services/api/internal/lab/**",
+        "services/api/internal/provider/**",
+        "services/api/go.mod",
+        "services/api/go.sum",
+        "services/api/Dockerfile",
+        "services/api/internal/app/mutation_locator_test.go",
+        "tests/go-docker"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Literal production preparation/schema/transport behavior"
+        ],
+        "forbidden_claims": [
+          "Hosted entitlement or included-only account admission",
+          "Actual LLM linguistic quality",
+          "Actual synthesized audio, teacher evaluation or full-product acceptance"
+        ],
+        "note": "The existing rejected-output repair SHALL receive actual nearby Unicode codepoints and a literal scope only when the supplied nonempty exact_text occurs exactly once, including overlapping-match ambiguity. Empty, absent or repeated literals SHALL receive no guessed location. Diagnostic hints SHALL NOT rewrite or admit a candidate; valid keys retain their single admission and stored data remains trusted. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture."
+      },
+      "designed_fixture_id": "iteration6-I6-23-packet2",
       "fixture_observation_state": "not_run"
     }
   ],

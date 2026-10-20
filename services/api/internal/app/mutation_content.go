@@ -105,7 +105,7 @@ func mutationContent(raw []byte, blueprint, clean, taxonomy map[string]any) (map
 			text := []rune(byTurn[turn]["surface_text"].(string))
 			start, end := int(span["start_cp"].(float64)), int(span["end_cp"].(float64))
 			if start > end || end > len(text) || string(text[start:end]) != span["exact_text"] {
-				return nil, &provider.OutputValidationError{Detail: surfaceScopeHint(turn, text)}
+				return nil, &provider.OutputValidationError{Detail: surfaceLocatorHint(turn, text, start, end, span["exact_text"].(string))}
 			}
 			scopes[turn] = append(scopes[turn], [2]int{start, end})
 			old := []rune(byTurn[turn]["canonical_text"].(string))

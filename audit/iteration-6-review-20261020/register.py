@@ -19,6 +19,7 @@ pure='services/api/internal/app/mutation_content_test.go';native='tests/native_m
 repair='services/api/internal/app/mutation_repair_test.go'
 diag='services/api/internal/app/mutation_diagnostics_test.go'
 quality='services/api/internal/app/mutation_quality_fixture_test.go'
+locator='services/api/internal/app/mutation_locator_test.go'
 rows=[
 ('Mutation admission and fixed canonical text', pure, 'mutation_content.go', ['AdmissionPositive', 'EmptyKeyPositive', 'BaselineNegative', 'LocationNegative'], 'The application SHALL admit a new mutation reply once with candidate output schema_version1.0.0 distinct from stage-input2.0.0, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data.'),
 ('Replayable mutation ledger', pure, 'mutation_manifest.go', ['ManifestPositive', 'UnicodeInsertPositive', 'UnknownCategoryNegative', 'CountNegative'], 'The application SHALL derive replayable canonical-coordinate edits and retain all planned units, repairs, propositions, exact selected categories and requested counts. Invented categories, unsupported counts and invalid scopes SHALL fail admission.'),
@@ -48,6 +49,8 @@ rows=[
 ('One admission reports independently available repair issues together', diag, 'mutation_diagnostics.go', ['CombinedDiagnosticsPositive','CanonicalDiagnosticsPositive','RejectedProjectionNegative','UnknownPartialNegative'], 'An already structurally rejected generation reply SHALL include independently known final-surface or clean-phase diagnostics in the same existing repair payload. Safe whole-turn scope hints SHALL derive only from actual supplied surface text. Rejected partial projections SHALL never be admitted, exposed through the public projection API or persisted as a completed key; unknown types SHALL not produce guessed hints. Healthy schema-valid replies retain their single semantic admission.'),
 
 ('Independent agreement qualification detects reversed mistakes', quality, 'mutation_quality_fixture_test.go', ['QualityOpensPositive','QualityServesPositive','QualityReverseNegative','QualityExtraChangeNegative'], 'The controlled actual-model qualification SHALL require the requested correct opens/serves clean forms, exactly one corresponding erroneous surface change and the independently expected preferred repair. The harness SHALL reject the observed ungrammatical-baseline/corrected-surface reversal and unrelated extra edits. Pure oracle-sensitivity packets establish only this test reference; actual generation quality requires retained native/local-model observations.'),
+('Literal Unicode coordinate evidence for the existing repair', locator, 'mutation_diagnostics.go', ['LocatorUnicodePositive','LocatorNarrowPositive','LocatorAmbiguousNegative','LocatorEmptyNegative'], 'The existing rejected-output repair SHALL receive actual nearby Unicode codepoints and a literal scope only when the supplied nonempty exact_text occurs exactly once, including overlapping-match ambiguity. Empty, absent or repeated literals SHALL receive no guessed location. Diagnostic hints SHALL NOT rewrite or admit a candidate; valid keys retain their single admission and stored data remains trusted.'),
+
 
 
 ]

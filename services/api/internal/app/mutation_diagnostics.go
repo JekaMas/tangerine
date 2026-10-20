@@ -33,6 +33,40 @@ func surfaceScopeHint(id string, text []rune) string {
 	scope, _ := json.Marshal(map[string]any{"utterance_id": id, "span": map[string]any{"start_cp": 0, "end_cp": len(text), "exact_text": string(text)}})
 	return "Final-surface span offsets/exact_text must match the actual surface, not the canonical wording. Fix every listed issue. A valid whole-turn scope is " + string(scope) + "; use this when a narrower affected scope cannot be located reliably."
 }
+
+// Coordinate evidence is feedback for the existing repair, never a rewritten
+// candidate. An absent, empty or repeated literal receives no guessed locator.
+func surfaceLocatorHint(id string, text []rune, start, end int, exact string) string {
+	at := start
+	if at < 0 {
+		at = 0
+	}
+	if at > len(text) {
+		at = len(text)
+	}
+	lo, hi := at-3, at+12
+	if lo < 0 {
+		lo = 0
+	}
+	if hi > len(text) {
+		hi = len(text)
+	}
+	window := []any{}
+	for cp := lo; cp < hi; cp++ {
+		window = append(window, map[string]any{"cp": cp, "text": string(text[cp])})
+	}
+	var unique any
+	surface := string(text)
+	if exact != "" {
+		first := strings.Index(surface, exact)
+		if first >= 0 && first == strings.LastIndex(surface, exact) {
+			a := len([]rune(surface[:first]))
+			unique = map[string]any{"utterance_id": id, "span": map[string]any{"start_cp": a, "end_cp": a + len([]rune(exact)), "exact_text": exact}}
+		}
+	}
+	evidence, _ := json.Marshal(map[string]any{"submitted_start_cp": start, "submitted_end_cp": end, "submitted_exact_text": exact, "coordinate_window": window, "unique_literal_scope": unique})
+	return surfaceScopeHint(id, text) + "\nSurface coordinate evidence: " + string(evidence)
+}
 func mutationLocatorDiagnostic(raw []byte) string {
 	var p partialGeneration
 	if json.Unmarshal(raw, &p) != nil {
@@ -55,7 +89,7 @@ func mutationLocatorDiagnostic(raw []byte) string {
 			a, z := *s.Span.Start, *s.Span.End
 			if a < 0 || z < a || z > len(text) || string(text[a:z]) != *s.Span.Exact {
 				if !seen[s.Turn] {
-					hints = append(hints, surfaceScopeHint(s.Turn, text))
+					hints = append(hints, surfaceLocatorHint(s.Turn, text, a, z, *s.Span.Exact))
 					seen[s.Turn] = true
 				}
 			}
