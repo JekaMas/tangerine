@@ -221,7 +221,11 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 				Input        []struct{ Content string }
 			}
 			_ = json.Unmarshal(a.Wire, &final)
-			for _, part := range []struct{ Kind, Trust, Body string }{{"prompt", "owned_instruction", final.Instructions}, {"candidate", "input_data", final.Input[len(final.Input)-1].Content}} {
+			var repair struct {
+				Instruction string `json:"repair_instruction"`
+			}
+			_ = json.Unmarshal([]byte(final.Input[len(final.Input)-1].Content), &repair)
+			for _, part := range []struct{ Kind, Trust, Body string }{{"prompt", "owned_instruction", repair.Instruction}, {"candidate", "input_data", final.Input[len(final.Input)-1].Content}} {
 				asset, e := s.Store.saveProviderBytes(ctx, []byte(part.Body), "provider_input")
 				if e != nil {
 					return e

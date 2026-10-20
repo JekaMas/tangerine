@@ -31,6 +31,7 @@ func observeLocalMutation(t *testing.T, count int) {
 	}
 	p := c["llm_profiles"].([]any)[0].(map[string]any)
 	p["provider"], p["model"], p["endpoint"] = "local_responses", "gpt-oss:20b", "http://127.0.0.1:11434/v1/responses"
+	p["adapter_version"] = "local-responses-v1"
 	p["auth_method"], p["billing_mode"], p["credential_ref"], p["stream"] = "local_none", "local", "local-none", false
 	p["context_budget_tokens"], p["max_output_tokens"] = float64(131072), float64(8000)
 	p["reasoning_effort"] = "low"

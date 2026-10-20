@@ -569,4 +569,6 @@ Verification acceptance: be7b603e6a595b9276dd8f28b1e589b2e111c170 is the committ
 - [ ] Add literal positive/negative regression sets and wire all new properties into the existing DAG, fixture sets, discovery and actual AI-surface inventory; correct the inconsistent acoustic test fixture's requested family.
 - [ ] Complete a committed-clean full iteration6 selection with affected preparation/provider/Lab cases, actual local model/native/context/MLflow reconciliation, language/specification/preservation checks; commit the repaired result and final review evidence.
 
+- [ ] Preserve frozen preparation timing across policy changes; provide actionable clean-phase output repair and preserve the full initial context prefix during the existing single repair. Qualify the complete requested family with actual local model/native/Lab evidence.
+
 Current review record: audit/iteration-6-review-20261020/REPORT.md. Earlier44-case receipts remain valid observations of their own inputs but do not cover the new request/count counterexamples. No paid call or later iteration work is authorized by this review.

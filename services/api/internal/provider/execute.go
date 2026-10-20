@@ -115,13 +115,12 @@ func Execute(ctx context.Context, client *http.Client, r ExecuteRequest, credent
 			if safe == "" {
 				safe = "PROVIDER_OUTPUT_INVALID"
 			}
-			repairData := map[string]any{"validation_code": safe, "raw_visible_output": a.Response.Visible}
+			repairData := map[string]any{"repair_instruction": RepairInstruction + safe, "validation_code": safe, "raw_visible_output": a.Response.Visible}
 			var detail interface{ ValidationDetail() string }
 			if errors.As(e, &detail) {
 				repairData["validation_detail"] = detail.ValidationDetail()
 			}
 			payload, _ := json.Marshal(repairData)
-			instructions += "\n" + RepairInstruction + safe
 			input = append(input, map[string]any{"role": "user", "content": string(payload)})
 			repaired = true
 			kind = "semantic_repair"

@@ -16,6 +16,7 @@ d['scope']['property_ids']=[x for x in d['scope']['property_ids'] if not x.start
 d['scope']['test_ids']=[x for x in d['scope']['test_ids'] if not x.startswith(('tangerine.local/api/internal/app::TestMutation','tangerine.local/api/internal/app::TestNativeMutation'))]
 d['reviews']=[x for x in d['reviews'] if x['id'] not in ('iteration6-preparation-20261010','iteration6-verification-20261011','iteration6-review-20261020')]
 pure='services/api/internal/app/mutation_content_test.go';native='tests/native_mutation_test.go';projection='services/api/internal/provider/projection_version_test.go'
+repair='services/api/internal/app/mutation_repair_test.go'
 rows=[
 ('Mutation admission and fixed canonical text', pure, 'mutation_content.go', ['AdmissionPositive', 'EmptyKeyPositive', 'BaselineNegative', 'LocationNegative'], 'The application SHALL admit a new mutation reply once with candidate output schema_version1.0.0 distinct from stage-input2.0.0, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data.'),
 ('Replayable mutation ledger', pure, 'mutation_manifest.go', ['ManifestPositive', 'UnicodeInsertPositive', 'UnknownCategoryNegative', 'CountNegative'], 'The application SHALL derive replayable canonical-coordinate edits and retain all planned units, repairs, propositions, exact selected categories and requested counts. Invented categories, unsupported counts and invalid scopes SHALL fail admission.'),
@@ -40,6 +41,8 @@ rows=[
 
 ('Actionable clean-phase semantic repair', native, 'preparation_content.go', ['CanonicalUnitRepairPositive','CanonicalSpeakerRepairPositive','CanonicalUnitRepairNegative','CanonicalSurfaceRepairNegative'], 'The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added.'),
 
+('Repair preserves the complete initial context prefix', repair, 'services/api/internal/provider/execute.go', ['RepairPrefixPositive','RepairDetailPositive','RepairBoundNegative','RepairQuotaNegative'], 'The provider SHALL retain the original trusted instructions and complete initial input prefix unchanged during its single semantic repair. Append the owned repair instruction, actual validation detail and raw visible candidate in a final data turn; capture that actual instruction separately. A still-invalid reply or quota SHALL NOT add further repair calls or fallback. This avoids needless prefix invalidation without asserting provider cache hits.'),
+
 
 ]
 cap='iteration-six-mutations';lines=['## ADDED Requirements',''];plans=[];props=[];tests=[]
@@ -50,7 +53,7 @@ p=C/'specs'/cap/'spec.md';p.parent.mkdir(exist_ok=True);p.write_text('\n'.join(l
 parsed=parse_delta_specs(C)
 for i,(label,src,owner,names,rule) in enumerate(rows,1):
  rid=f'I6-{i:02}';pid=rid+'.P1';title=rid+' '+label;spec=parsed[cap,title];scenarios=list(spec['scenarios']);props.append(pid)
- owner_path='services/api/internal/app/'+owner
+ owner_path=owner if owner.startswith('services/') else 'services/api/internal/app/'+owner
  oracle=rule+' Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.'
  g['requirements'].append(dict(id=rid,capability=cap,title=title,fingerprint=spec['fingerprint']));g['properties'].append(dict(id=pid,requirement_id=rid,statement=rule,scenarios=scenarios,owner=owner_path,oracle=oracle,source_globs=[owner_path]));inv.append(dict(id=rid,capability=cap,title=title,statement=rule,scenarios=scenarios,owner=owner_path,source='Authorized iteration6 canonical preparation decomposition; later pipeline scope remains required.'))
  text=(R/src).read_text();matches=list(re.finditer(r'^func (Test\w+)\(t \*testing.T\)\s*\{',text,re.M));bodies={m.group(1):text[m.start():matches[j+1].start() if j+1<len(matches) else len(text)].strip() for j,m in enumerate(matches)}
@@ -58,12 +61,12 @@ for i,(label,src,owner,names,rule) in enumerate(rows,1):
  for j,suffix in enumerate(names):
   name=('TestNativeMutation' if src==native else 'TestProjection' if src==projection else 'TestMutation')+suffix;body=bodies[name];polarity='positive' if j<2 else 'negative';packet=1 if j in (0,2) else 2;scenario=scenarios[packet-1];cid=f'{pid}.S{packet}.{polarity.upper()}';fid=f'iteration6-{rid}-packet{packet}';tid=('tangerine.local/api/internal/provider' if src==projection else 'tangerine.local/api/internal/app')+'::'+name;tests.append(tid)
   inp=dict(exact_native_test=name,literal_executable_fixture=body);exp=dict(independent_literal_expectations=oracle,assertion_source=body);action='Execute '+name+' through '+owner_path
-  plan=dict(case_id=cid,property_id=pid,polarity=polarity,scenario=scenario,fixture_id=fid,test_id=tid,mode='declared_behavior',action=action,initial_state=dict(isolated_native_dependencies=src==native,external_protocol_substitution=src==native),input=inp,expected=exp,independent_oracle=oracle,observation_state='not_run');plans.append(plan);f['case_bindings'].append(plan)
+  plan=dict(case_id=cid,property_id=pid,polarity=polarity,scenario=scenario,fixture_id=fid,test_id=tid,mode='declared_behavior',action=action,initial_state=dict(isolated_native_dependencies=src==native,external_protocol_substitution=src in (native,repair)),input=inp,expected=exp,independent_oracle=oracle,observation_state='not_run');plans.append(plan);f['case_bindings'].append(plan)
   fixture=next((v for v in f['fixtures'] if v['id']==fid),None)
   if fixture is None:fixture=dict(id=fid,action=action,initial_state=plan['initial_state'],independent_oracle=oracle,origin='constructed_native_preparation_fixture');f['fixtures'].append(fixture)
   fixture[polarity]=dict(input=inp,expected=exp)
-  substitution=dict(classification='EXTERNAL_BOUNDARY' if src==native else 'NO_TEST_DOUBLE',proof_claims=['Literal production preparation/schema/transport behavior'],forbidden_claims=['Hosted entitlement or included-only account admission','Actual LLM linguistic quality','Actual synthesized audio, teacher evaluation or full-product acceptance'],note=oracle)
-  if src==native:substitution['owner_replaced']='Remote hosted model endpoint only; actual PostgreSQL/MinIO/HTTP and provider/preparation owners retained'
+  substitution=dict(classification='EXTERNAL_BOUNDARY' if src in (native,repair) else 'NO_TEST_DOUBLE',proof_claims=['Literal production preparation/schema/transport behavior'],forbidden_claims=['Hosted entitlement or included-only account admission','Actual LLM linguistic quality','Actual synthesized audio, teacher evaluation or full-product acceptance'],note=oracle)
+  if src in (native,repair):substitution['owner_replaced']='Only the remote model endpoint/protocol reply; all claimed production owners execute. PostgreSQL/MinIO are retained in native cases only.'
   deps=['services/api/internal/app/**','services/api/internal/contracts/**','services/api/internal/lab/**','services/api/internal/provider/**','services/api/go.mod','services/api/go.sum','services/api/Dockerfile',src,'tests/native-mutation' if src==native else 'tests/go-docker']
   g['cases'].append(dict(id=cid,property_id=pid,polarity=polarity,scenario=scenario,scenario_fingerprint=spec['scenario_fingerprints'][scenario],setup=action+' '+json.dumps(inp,sort_keys=True),observable=json.dumps(exp,sort_keys=True),red_expectation='The literal violated invariant must fail with no invented completed phase or extra model call.',green_expectation='All independently declared literal outcomes pass.',test_id=tid,command_id='iteration6-native' if src==native else 'iteration6-go',state='implemented',source_path=src,source_sha256=sha(R/src),invalidation_dependencies=deps,substitution=substitution,designed_fixture_id=fid,fixture_observation_state='not_run'))
   (positive if j<2 else negative).append(cid)

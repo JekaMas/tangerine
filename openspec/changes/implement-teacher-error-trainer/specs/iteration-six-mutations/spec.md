@@ -265,3 +265,17 @@ The canonical output owner SHALL supply precise safe validation detail to the ex
 
 - **WHEN** the second distinct literal positive or negative packet is executed
 - **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+### Requirement: I6-20 Repair preserves the complete initial context prefix
+
+The provider SHALL retain the original trusted instructions and complete initial input prefix unchanged during its single semantic repair. Append the owned repair instruction, actual validation detail and raw visible candidate in a final data turn; capture that actual instruction separately. A still-invalid reply or quota SHALL NOT add further repair calls or fallback. This avoids needless prefix invalidation without asserting provider cache hits. Exact constructed fixtures and independent expected states are retained in audit/iteration-6-review-20261020/CASES.json. These tests SHALL NOT establish hosted account admission, actual LLM linguistic quality or future mutation/audio/scoring completion.
+
+#### Scenario: I6-20 packet 1
+
+- **WHEN** the first literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+#### Scenario: I6-20 packet 2
+
+- **WHEN** the second distinct literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
