@@ -9,6 +9,7 @@ import (
 	"strings"
 	"tangerine.local/api/internal/contracts"
 	"tangerine.local/api/internal/lab"
+	"tangerine.local/api/internal/provider"
 )
 
 // Frozen registries are packaged byte-for-byte from the active specification.
@@ -149,10 +150,10 @@ func canonicalContent(raw []byte, blueprint map[string]any) (map[string]any, int
 		return nil, 0, e
 	}
 	if c["blueprint_id"] != blueprint["id"] || c["status"] != "candidate" || c["failure_reason"] != nil || len(c["planned_units"].([]any)) != 0 {
-		return nil, 0, ErrConflict
+		return nil, 0, &provider.OutputValidationError{Detail: "Preserve the saved blueprint_id, candidate status and null failure_reason. This is canonical_text: planned_units must be empty; targets describe the later mutation phase."}
 	}
 	if ops, ok := c["acoustic_edits"].([]any); ok && len(ops) != 0 {
-		return nil, 0, ErrConflict
+		return nil, 0, &provider.OutputValidationError{Detail: "This clean canonical_text phase requires acoustic_edits empty; acoustic mutations belong to the next phase."}
 	}
 	expected := map[string]bool{}
 	for _, s := range blueprint["speakers"].([]any) {
@@ -166,10 +167,10 @@ func canonicalContent(raw []byte, blueprint map[string]any) (map[string]any, int
 		speaker := v["speaker_id"].(string)
 		text := v["canonical_text"].(string)
 		if _, ok := expected[speaker]; !ok {
-			return nil, 0, ErrConflict
+			return nil, 0, &provider.OutputValidationError{Detail: "Use only the expanded blueprint speakers and retain their exact speaker_id values."}
 		}
 		if ids[id] || strings.TrimSpace(text) == "" || text != v["surface_text"] {
-			return nil, 0, ErrConflict
+			return nil, 0, &provider.OutputValidationError{Detail: "Keep unique turn IDs, nonempty canonical_text and surface_text exactly equal to canonical_text in this clean phase."}
 		}
 		ids[id] = true
 		expected[speaker] = true
@@ -177,7 +178,7 @@ func canonicalContent(raw []byte, blueprint map[string]any) (map[string]any, int
 	}
 	for _, present := range expected {
 		if !present {
-			return nil, 0, ErrConflict
+			return nil, 0, &provider.OutputValidationError{Detail: "Give every requested blueprint speaker at least one clean utterance."}
 		}
 	}
 	return c, words, nil

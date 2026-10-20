@@ -71,6 +71,12 @@ func prepareNativeFixtureRequest(t *testing.T, response string, status int, conf
 	if e != nil {
 		t.Fatal(e)
 	}
+	defect := ""
+	repairOnce := strings.HasSuffix(response, "-once")
+	if strings.HasPrefix(response, "canonical-") {
+		defect = strings.TrimSuffix(response, "-once")
+		response = ""
+	}
 	failFirst := response == "fail-once"
 	if failFirst {
 		response = ""
@@ -93,6 +99,31 @@ func prepareNativeFixtureRequest(t *testing.T, response string, status int, conf
 			w.WriteHeader(429)
 			_, _ = io.WriteString(w, `{"error":{"code":"subscription_sharing_usage_limit_exceeded"}}`)
 			return
+		}
+		if defect != "" {
+			keyword := map[string]string{"canonical-units": "planned_units", "canonical-speaker": "blueprint speakers", "canonical-surface": "canonical_text"}[defect]
+			if n == 2 && (!strings.Contains(string(wire), "validation_detail") || !strings.Contains(string(wire), keyword)) {
+				t.Error("canonical repair lacks owning validation reason", keyword)
+			}
+			if n == 1 || !repairOnce {
+				base, _ := json.Marshal(candidate)
+				var invalid map[string]any
+				_ = json.Unmarshal(base, &invalid)
+				switch defect {
+				case "canonical-units":
+					_, _, mutation, _ := mutationFixture()
+					invalid["planned_units"] = mutation["planned_units"]
+				case "canonical-speaker":
+					invalid["utterances"].([]any)[0].(map[string]any)["speaker_id"] = "not-requested"
+				case "canonical-surface":
+					invalid["utterances"].([]any)[0].(map[string]any)["surface_text"] = "The café open tomorrow."
+				}
+				payload, _ := json.Marshal(invalid)
+				encoded, _ := json.Marshal(string(payload))
+				w.WriteHeader(status)
+				_, _ = io.WriteString(w, `{"object":"response","id":"canonical-defect","status":"completed","model":"constructed-clean-text","output":[{"type":"message","content":[{"type":"output_text","text":`+string(encoded)+`}]}]}`)
+				return
+			}
 		}
 		w.WriteHeader(status)
 		_, _ = io.WriteString(w, response)

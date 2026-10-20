@@ -45969,6 +45969,66 @@
           "assertion_source": "func TestMutationFrameUnknownPartNegative(t *testing.T) {\n\tinput, p := mutationFrameFixture()\n\tphase := \"mutation\"\n\traw, _ := lab.Canonical(input[\"taxonomy_context\"])\n\tp.Parts = append(p.Parts, lab.Part{Kind: \"evidence\", Trust: \"input_data\", Body: raw})\n\t_, messages := inferenceFrame(p, \"case_generation\", &phase, input)\n\tif len(messages) != 2 || !strings.HasPrefix(messages[0].(map[string]any)[\"content\"].(string), \"evidence: \") {\n\t\tt.Fatal(messages)\n\t}\n}"
         }
       }
+    },
+    {
+      "id": "iteration6-I6-19-packet1",
+      "action": "Execute TestNativeMutationCanonicalUnitRepairPositive through services/api/internal/app/preparation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "independent_oracle": "The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "origin": "constructed_native_preparation_fixture",
+      "positive": {
+        "input": {
+          "exact_native_test": "TestNativeMutationCanonicalUnitRepairPositive",
+          "literal_executable_fixture": "func TestNativeMutationCanonicalUnitRepairPositive(t *testing.T) {\n\ts, r, client, calls := prepareNativeFixture(t, \"canonical-units-once\", 200)\n\tp, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)\n\tif err != nil || *calls != 2 || p[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"complete\" || p[\"phase_states\"].(map[string]any)[\"mutation\"] != \"not_started\" || p[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(p, err, *calls)\n\t}\n}"
+        },
+        "expected": {
+          "independent_literal_expectations": "The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+          "assertion_source": "func TestNativeMutationCanonicalUnitRepairPositive(t *testing.T) {\n\ts, r, client, calls := prepareNativeFixture(t, \"canonical-units-once\", 200)\n\tp, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)\n\tif err != nil || *calls != 2 || p[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"complete\" || p[\"phase_states\"].(map[string]any)[\"mutation\"] != \"not_started\" || p[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(p, err, *calls)\n\t}\n}"
+        }
+      },
+      "negative": {
+        "input": {
+          "exact_native_test": "TestNativeMutationCanonicalUnitRepairNegative",
+          "literal_executable_fixture": "func TestNativeMutationCanonicalUnitRepairNegative(t *testing.T) {\n\ts, r, client, calls := prepareNativeFixture(t, \"canonical-units\", 200)\n\tp, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)\n\tif err == nil || err.Error() != \"PROVIDER_OUTPUT_INVALID\" || *calls != 2 || p[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"failed\" || p[\"canonical_asset_id\"] != nil || p[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(p, err, *calls)\n\t}\n}"
+        },
+        "expected": {
+          "independent_literal_expectations": "The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+          "assertion_source": "func TestNativeMutationCanonicalUnitRepairNegative(t *testing.T) {\n\ts, r, client, calls := prepareNativeFixture(t, \"canonical-units\", 200)\n\tp, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)\n\tif err == nil || err.Error() != \"PROVIDER_OUTPUT_INVALID\" || *calls != 2 || p[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"failed\" || p[\"canonical_asset_id\"] != nil || p[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(p, err, *calls)\n\t}\n}"
+        }
+      }
+    },
+    {
+      "id": "iteration6-I6-19-packet2",
+      "action": "Execute TestNativeMutationCanonicalSpeakerRepairPositive through services/api/internal/app/preparation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "independent_oracle": "The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "origin": "constructed_native_preparation_fixture",
+      "positive": {
+        "input": {
+          "exact_native_test": "TestNativeMutationCanonicalSpeakerRepairPositive",
+          "literal_executable_fixture": "func TestNativeMutationCanonicalSpeakerRepairPositive(t *testing.T) {\n\ts, r, client, calls := prepareNativeFixture(t, \"canonical-speaker-once\", 200)\n\tp, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)\n\tif err != nil || *calls != 2 || p[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"complete\" || p[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(p, err, *calls)\n\t}\n}"
+        },
+        "expected": {
+          "independent_literal_expectations": "The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+          "assertion_source": "func TestNativeMutationCanonicalSpeakerRepairPositive(t *testing.T) {\n\ts, r, client, calls := prepareNativeFixture(t, \"canonical-speaker-once\", 200)\n\tp, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)\n\tif err != nil || *calls != 2 || p[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"complete\" || p[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(p, err, *calls)\n\t}\n}"
+        }
+      },
+      "negative": {
+        "input": {
+          "exact_native_test": "TestNativeMutationCanonicalSurfaceRepairNegative",
+          "literal_executable_fixture": "func TestNativeMutationCanonicalSurfaceRepairNegative(t *testing.T) {\n\ts, r, client, calls := prepareNativeFixture(t, \"canonical-surface\", 200)\n\tp, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)\n\tif err == nil || err.Error() != \"PROVIDER_OUTPUT_INVALID\" || *calls != 2 || p[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"failed\" || p[\"canonical_asset_id\"] != nil || p[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(p, err, *calls)\n\t}\n}"
+        },
+        "expected": {
+          "independent_literal_expectations": "The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+          "assertion_source": "func TestNativeMutationCanonicalSurfaceRepairNegative(t *testing.T) {\n\ts, r, client, calls := prepareNativeFixture(t, \"canonical-surface\", 200)\n\tp, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)\n\tif err == nil || err.Error() != \"PROVIDER_OUTPUT_INVALID\" || *calls != 2 || p[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"failed\" || p[\"canonical_asset_id\"] != nil || p[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(p, err, *calls)\n\t}\n}"
+        }
+      }
     }
   ],
   "property_bindings": [
@@ -51854,6 +51914,17 @@
       "scenarios": [
         "I6-18 packet 1",
         "I6-18 packet 2"
+      ],
+      "observation_state": "not_run"
+    },
+    {
+      "property_id": "I6-19.P1",
+      "fixture_id": "iteration6-I6-19-packet1",
+      "statement": "The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added.",
+      "independent_oracle": "The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "scenarios": [
+        "I6-19 packet 1",
+        "I6-19 packet 2"
       ],
       "observation_state": "not_run"
     }
@@ -148510,6 +148581,102 @@
         "assertion_source": "func TestMutationFrameUnknownPartNegative(t *testing.T) {\n\tinput, p := mutationFrameFixture()\n\tphase := \"mutation\"\n\traw, _ := lab.Canonical(input[\"taxonomy_context\"])\n\tp.Parts = append(p.Parts, lab.Part{Kind: \"evidence\", Trust: \"input_data\", Body: raw})\n\t_, messages := inferenceFrame(p, \"case_generation\", &phase, input)\n\tif len(messages) != 2 || !strings.HasPrefix(messages[0].(map[string]any)[\"content\"].(string), \"evidence: \") {\n\t\tt.Fatal(messages)\n\t}\n}"
       },
       "independent_oracle": "The inference frame SHALL retain the complete typed mutation input once and all trusted instructions without repeating identical blueprint/taxonomy/recipe/canonical/public-context values as extra messages. Different/custom/unknown components and other phases SHALL retain their existing messages. Saved component evidence SHALL remain complete; no required data is truncated or rejected by compaction. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-19.P1.S1.POSITIVE",
+      "property_id": "I6-19.P1",
+      "polarity": "positive",
+      "scenario": "I6-19 packet 1",
+      "fixture_id": "iteration6-I6-19-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationCanonicalUnitRepairPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationCanonicalUnitRepairPositive through services/api/internal/app/preparation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationCanonicalUnitRepairPositive",
+        "literal_executable_fixture": "func TestNativeMutationCanonicalUnitRepairPositive(t *testing.T) {\n\ts, r, client, calls := prepareNativeFixture(t, \"canonical-units-once\", 200)\n\tp, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)\n\tif err != nil || *calls != 2 || p[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"complete\" || p[\"phase_states\"].(map[string]any)[\"mutation\"] != \"not_started\" || p[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(p, err, *calls)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationCanonicalUnitRepairPositive(t *testing.T) {\n\ts, r, client, calls := prepareNativeFixture(t, \"canonical-units-once\", 200)\n\tp, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)\n\tif err != nil || *calls != 2 || p[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"complete\" || p[\"phase_states\"].(map[string]any)[\"mutation\"] != \"not_started\" || p[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(p, err, *calls)\n\t}\n}"
+      },
+      "independent_oracle": "The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-19.P1.S2.POSITIVE",
+      "property_id": "I6-19.P1",
+      "polarity": "positive",
+      "scenario": "I6-19 packet 2",
+      "fixture_id": "iteration6-I6-19-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationCanonicalSpeakerRepairPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationCanonicalSpeakerRepairPositive through services/api/internal/app/preparation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationCanonicalSpeakerRepairPositive",
+        "literal_executable_fixture": "func TestNativeMutationCanonicalSpeakerRepairPositive(t *testing.T) {\n\ts, r, client, calls := prepareNativeFixture(t, \"canonical-speaker-once\", 200)\n\tp, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)\n\tif err != nil || *calls != 2 || p[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"complete\" || p[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(p, err, *calls)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationCanonicalSpeakerRepairPositive(t *testing.T) {\n\ts, r, client, calls := prepareNativeFixture(t, \"canonical-speaker-once\", 200)\n\tp, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)\n\tif err != nil || *calls != 2 || p[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"complete\" || p[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(p, err, *calls)\n\t}\n}"
+      },
+      "independent_oracle": "The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-19.P1.S1.NEGATIVE",
+      "property_id": "I6-19.P1",
+      "polarity": "negative",
+      "scenario": "I6-19 packet 1",
+      "fixture_id": "iteration6-I6-19-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationCanonicalUnitRepairNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationCanonicalUnitRepairNegative through services/api/internal/app/preparation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationCanonicalUnitRepairNegative",
+        "literal_executable_fixture": "func TestNativeMutationCanonicalUnitRepairNegative(t *testing.T) {\n\ts, r, client, calls := prepareNativeFixture(t, \"canonical-units\", 200)\n\tp, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)\n\tif err == nil || err.Error() != \"PROVIDER_OUTPUT_INVALID\" || *calls != 2 || p[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"failed\" || p[\"canonical_asset_id\"] != nil || p[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(p, err, *calls)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationCanonicalUnitRepairNegative(t *testing.T) {\n\ts, r, client, calls := prepareNativeFixture(t, \"canonical-units\", 200)\n\tp, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)\n\tif err == nil || err.Error() != \"PROVIDER_OUTPUT_INVALID\" || *calls != 2 || p[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"failed\" || p[\"canonical_asset_id\"] != nil || p[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(p, err, *calls)\n\t}\n}"
+      },
+      "independent_oracle": "The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-19.P1.S2.NEGATIVE",
+      "property_id": "I6-19.P1",
+      "polarity": "negative",
+      "scenario": "I6-19 packet 2",
+      "fixture_id": "iteration6-I6-19-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationCanonicalSurfaceRepairNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationCanonicalSurfaceRepairNegative through services/api/internal/app/preparation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationCanonicalSurfaceRepairNegative",
+        "literal_executable_fixture": "func TestNativeMutationCanonicalSurfaceRepairNegative(t *testing.T) {\n\ts, r, client, calls := prepareNativeFixture(t, \"canonical-surface\", 200)\n\tp, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)\n\tif err == nil || err.Error() != \"PROVIDER_OUTPUT_INVALID\" || *calls != 2 || p[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"failed\" || p[\"canonical_asset_id\"] != nil || p[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(p, err, *calls)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationCanonicalSurfaceRepairNegative(t *testing.T) {\n\ts, r, client, calls := prepareNativeFixture(t, \"canonical-surface\", 200)\n\tp, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)\n\tif err == nil || err.Error() != \"PROVIDER_OUTPUT_INVALID\" || *calls != 2 || p[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"failed\" || p[\"canonical_asset_id\"] != nil || p[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(p, err, *calls)\n\t}\n}"
+      },
+      "independent_oracle": "The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
       "observation_state": "not_run"
     }
   ]

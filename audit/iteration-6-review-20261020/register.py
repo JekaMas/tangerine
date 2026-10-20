@@ -38,6 +38,8 @@ rows=[
 
 ('Complete mutation context without duplicate payloads', pure, 'provider_context.go', ['FrameCompactPositive','FrameCustomPositive','FrameOtherPhaseNegative','FrameUnknownPartNegative'], 'The inference frame SHALL retain the complete typed mutation input once and all trusted instructions without repeating identical blueprint/taxonomy/recipe/canonical/public-context values as extra messages. Different/custom/unknown components and other phases SHALL retain their existing messages. Saved component evidence SHALL remain complete; no required data is truncated or rejected by compaction.'),
 
+('Actionable clean-phase semantic repair', native, 'preparation_content.go', ['CanonicalUnitRepairPositive','CanonicalSpeakerRepairPositive','CanonicalUnitRepairNegative','CanonicalSurfaceRepairNegative'], 'The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added.'),
+
 
 ]
 cap='iteration-six-mutations';lines=['## ADDED Requirements',''];plans=[];props=[];tests=[]

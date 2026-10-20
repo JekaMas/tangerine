@@ -588,3 +588,32 @@ func TestNativeMutationUnknownCapacityNegative(t *testing.T) {
 		t.Fatal(p, err, *calls)
 	}
 }
+
+func TestNativeMutationCanonicalUnitRepairPositive(t *testing.T) {
+	s, r, client, calls := prepareNativeFixture(t, "canonical-units-once", 200)
+	p, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)
+	if err != nil || *calls != 2 || p["phase_states"].(map[string]any)["canonical_text"] != "complete" || p["phase_states"].(map[string]any)["mutation"] != "not_started" || p["mutated_asset_id"] != nil {
+		t.Fatal(p, err, *calls)
+	}
+}
+func TestNativeMutationCanonicalSpeakerRepairPositive(t *testing.T) {
+	s, r, client, calls := prepareNativeFixture(t, "canonical-speaker-once", 200)
+	p, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)
+	if err != nil || *calls != 2 || p["phase_states"].(map[string]any)["canonical_text"] != "complete" || p["mutated_asset_id"] != nil {
+		t.Fatal(p, err, *calls)
+	}
+}
+func TestNativeMutationCanonicalUnitRepairNegative(t *testing.T) {
+	s, r, client, calls := prepareNativeFixture(t, "canonical-units", 200)
+	p, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)
+	if err == nil || err.Error() != "PROVIDER_OUTPUT_INVALID" || *calls != 2 || p["phase_states"].(map[string]any)["canonical_text"] != "failed" || p["canonical_asset_id"] != nil || p["mutated_asset_id"] != nil {
+		t.Fatal(p, err, *calls)
+	}
+}
+func TestNativeMutationCanonicalSurfaceRepairNegative(t *testing.T) {
+	s, r, client, calls := prepareNativeFixture(t, "canonical-surface", 200)
+	p, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)
+	if err == nil || err.Error() != "PROVIDER_OUTPUT_INVALID" || *calls != 2 || p["phase_states"].(map[string]any)["canonical_text"] != "failed" || p["canonical_asset_id"] != nil || p["mutated_asset_id"] != nil {
+		t.Fatal(p, err, *calls)
+	}
+}

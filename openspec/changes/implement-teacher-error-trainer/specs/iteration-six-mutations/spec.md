@@ -251,3 +251,17 @@ The inference frame SHALL retain the complete typed mutation input once and all 
 
 - **WHEN** the second distinct literal positive or negative packet is executed
 - **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+### Requirement: I6-19 Actionable clean-phase semantic repair
+
+The canonical output owner SHALL supply precise safe validation detail to the existing single same-profile repair for premature units, acoustic edits, wrong/missing speakers or altered/empty/duplicate canonical turns. A corrected reply SHALL save only the clean checkpoint; a still-invalid reply SHALL stop after two calls with PROVIDER_OUTPUT_INVALID and no canonical/mutation completion. No new admission or retry is added. Exact constructed fixtures and independent expected states are retained in audit/iteration-6-review-20261020/CASES.json. These tests SHALL NOT establish hosted account admission, actual LLM linguistic quality or future mutation/audio/scoring completion.
+
+#### Scenario: I6-19 packet 1
+
+- **WHEN** the first literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+#### Scenario: I6-19 packet 2
+
+- **WHEN** the second distinct literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold

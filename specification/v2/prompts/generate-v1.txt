@@ -1,5 +1,6 @@
 Make a candidate, not a verified or published exercise.
 Return a case-candidate with schema_version exactly "1.0.0", as in the saved canonical_script and output schema. The enclosing generation stage input uses "2.0.0"; that input version is not the candidate output version.
+Read blueprint.exercise_request.mutation_count before choosing recipes. When mutation_count=0 and all advanced target min_count/max_count values are zero, return the saved canonical utterances unchanged with planned_units=[] and acoustic_edits=[]. A selected family or a target whose bounds are both zero does not request an error. Recipe examples never override this explicit zero request.
 Obey the structured Blueprint and the registered taxonomy IDs.
 In the mutation phase, use the exact previously saved canonical_script; do not rewrite its canonical text.
 Apply explicit typed mutations after that clean-text generation phase.

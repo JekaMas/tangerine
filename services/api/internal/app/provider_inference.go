@@ -108,17 +108,13 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 			return result, &provider.Failure{Code: "CONSTRAINT_CONFLICT"}
 		}
 	}
-	claim, e := s.Store.DB.Exec(ctx, "UPDATE operation SET state='running' WHERE id=$1 AND state='reserved'", op.ID)
-	if e != nil {
+	if e = s.Store.claimInference(ctx, op.ID); e != nil {
 		return result, e
-	}
-	if claim.RowsAffected() != 1 {
-		return result, &provider.Failure{Code: "LEASE_ACTIVE"}
 	}
 	defer func() {
 		end, done := context.WithTimeout(context.WithoutCancel(ctx), 5*time.Second)
 		defer done()
-		_, _ = s.Store.DB.Exec(end, "UPDATE operation SET state='interrupted',finished_at=clock_timestamp() WHERE id=$1 AND state='running'", op.ID)
+		s.Store.releaseInference(end, op.ID)
 	}()
 
 	// Bindings have a server-generated immutable envelope and a semantic self digest
@@ -146,7 +142,7 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 	if _, e = s.Store.WriteDocuments(ctx, []DocumentWrite{{ID: result.BindingID, Kind: "effective-binding", Version: "2.0.0", Scope: "local", Payload: body}}); e != nil {
 		return result, e
 	}
-	if _, e = s.Store.DB.Exec(ctx, "UPDATE operation SET input_document_id=$2 WHERE id=$1", op.ID, result.BindingID); e != nil {
+	if e = s.Store.bindInference(ctx, op.ID, result.BindingID); e != nil {
 		return result, e
 	}
 	components := []any{}
@@ -290,7 +286,7 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 		if saveErr != nil {
 			return result, saveErr
 		}
-		_, e = s.Store.DB.Exec(finishCtx, "UPDATE operation SET state='complete',subject_id=$2::text,result_document_id=(SELECT document_id FROM entity_head WHERE id=$2),finished_at=clock_timestamp() WHERE id=$1 AND state='running'", op.ID, asset.ID)
+		e = s.Store.completeInference(finishCtx, op.ID, asset.ID)
 	}
 	if e == nil && ctx.Err() != nil {
 		e = ctx.Err()
@@ -299,32 +295,4 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 		result.Output = output
 	}
 	return result, e
-}
-
-func (s *Storage) ReadLLMResult(ctx context.Context, id string) (LLMResult, error) {
-	r := LLMResult{OperationID: id, ReceiptIDs: []string{}, ContextIDs: []string{}}
-	var asset string
-	e := s.DB.QueryRow(ctx, "SELECT subject_id,input_document_id FROM operation WHERE id=$1 AND state='complete'", id).Scan(&asset, &r.BindingID)
-	if e != nil {
-		return r, e
-	}
-	b, e := s.ReadAsset(ctx, asset)
-	if e != nil {
-		return r, e
-	}
-	r.Output = b
-	rows, e := s.DB.Query(ctx, "SELECT id,payload->>'context_snapshot_id' FROM document WHERE kind='provider-receipt' AND payload->>'operation_id'=$1 ORDER BY (payload->>'transport_attempt')::int", id)
-	if e != nil {
-		return r, e
-	}
-	defer rows.Close()
-	for rows.Next() {
-		var a, b string
-		if e = rows.Scan(&a, &b); e != nil {
-			return r, e
-		}
-		r.ReceiptIDs = append(r.ReceiptIDs, a)
-		r.ContextIDs = append(r.ContextIDs, b)
-	}
-	return r, rows.Err()
 }

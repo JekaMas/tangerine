@@ -108,7 +108,7 @@ def check_inventory(inv):
  expected=json.loads(Path('/tangerine/spec/domain/ai-development.v1.json').read_text())['planned_surfaces']
  if Path('/tangerine/source/app/provider_inference.go').is_file():
   expected=expected+[dict(id='provider_adapter_'+suffix,stage='provider_adapter',phase=suffix,kind='llm',implementation_state='implemented') for suffix in ('invoke','transport_retry','semantic_repair','structured_fallback')]
-  required={'services/api/internal/app/'+name for name in ('provider_inference.go','provider_context.go','provider_command.go','provider_configuration.go','provider_connections.go','provider-default.json')}
+  required={'services/api/internal/app/'+name for name in ('provider_inference.go','provider_context.go','provider_storage.go','provider_command.go','provider_configuration.go','provider_connections.go','provider-default.json')}
   required.update('services/api/internal/provider/'+name for name in ('execute.go','connection.go','oidc.go','transport.go','projection.go','context.go'))
   if not required.issubset(paths):raise ValueError('implemented provider dependency is missing')
  entries={e['id']:e for e in inv['entries']}
@@ -168,7 +168,7 @@ def inventory(revision):
   owner='services/api/internal/app/provider_inference.go';adapter='services/api/internal/provider/execute.go'
   dependency(owner,'/tangerine/source/app/provider_inference.go','shared implemented provider owner')
   h=dependency(adapter,'/tangerine/source/provider/execute.go','trusted repair/retry/format owner')
-  for source in ['provider_context.go','provider_command.go','provider_configuration.go','provider_connections.go','provider-default.json']:
+  for source in ['provider_context.go','provider_storage.go','provider_command.go','provider_configuration.go','provider_connections.go','provider-default.json']:
    dependency('services/api/internal/app/'+source,'/tangerine/source/app/'+source,'frozen profile and native entrypoint dependency')
   for source in ['connection.go','oidc.go','transport.go','projection.go','context.go']:
    dependency('services/api/internal/provider/'+source,'/tangerine/source/provider/'+source,'provider dependency')
