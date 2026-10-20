@@ -210,7 +210,11 @@ func preparationBindings(c map[string]any, b lab.Bundle) ([]any, error) {
 			effective["prompt_sha256"] = v.PromptSHA
 			effective["input_schema_sha256"] = v.InputSHA
 			effective["output_schema_sha256"] = v.OutputSHA
-			effective["wire_schema_sha256"] = v.OutputSHA
+			wireSchema, err := contracts.WireSchema(strings.TrimSuffix(v.OutputSchema, ".schema.json"))
+			if err != nil {
+				return nil, err
+			}
+			effective["wire_schema_sha256"] = contracts.Digest(wireSchema)
 			effective["timeout_seconds"] = int(stageTimeout("case_generation", &phase).Seconds())
 			effective["prompt_bundle_sha256"] = b.SHA
 			effective["context_policy_sha256"] = v.PolicySHA

@@ -151,3 +151,11 @@ Only changed Lab/provider dependency commands and the changed native mutation co
 ## Free local model qualification input
 
 LOCAL-PROFILE.json is the single explicit test-profile artifact; the existing local harness overlays it into the real saved configuration and labels receipts from the same selected profile. Independent dispatch observations read the actual wire model. RUNTIME-MODEL-SETUP.json prepares a distinct Qwen3.5-9B alias with its262144 context and documented non-thinking sampling parameters; it changes no existing model defaults or application default. The existing unknown-model UTF-8 bound is retained: the observed complete formatted mutation wire is about221KB, so this advertised context can hold that conservative bound plus8000 output reservation without a guessed tokenizer or category truncation. Actual download/setup/quality observations remain pending.
+
+## Frozen wire-schema metadata closure
+
+All316 cases reconciled on the prior sources. Final readback found that new preparation role bindings still populated wire_schema_sha256 with the source root hash, while actual dispatch correctly recorded the complete bundled schema. A native cross-owner assertion reproduced the mismatch before repair (root8275bea... versus actualf5d0ab...). Creation now records the actual bundled wire digest using the same pure schema projector; no stored data is checked, rewritten or rejected. Native positive full-family/zero cases compare the frozen role binding with the captured actual dispatch binding and schema component. Existing accepted historical bindings remain trusted.
+
+This real preparation-content change invalidates the preparation/mutation/Lab closure. Provider84 is unchanged and retained. The final selection is316 cases (158positive/158negative); every accepted command must have a successful committed-clean receipt and current case/source/dependency fingerprints. No failed aggregate contributes final accepted cases. The free model weight download continues independently.
+
+Both frozen/actual wire-schema native regression cases passed after the retained red. Stable Go vet/gofmt, strict OpenSpec, graph/discovery and3885 structural assertions passed. Final affected committed-clean closure and actual Qwen quality/MLflow observations remain pending.
