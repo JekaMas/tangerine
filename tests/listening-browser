@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+"""Real Chrome/Next.js/API/PostgreSQL/MinIO listening observations; no UI doubles."""
+from pathlib import Path
+import base64,json,os,secrets,subprocess,sys,tempfile,time,uuid
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from browser_probe import Browser
+r=Path(__file__).resolve().parents[1];name='tangerine-listening-browser-'+uuid.uuid4().hex[:8];env=dict(os.environ)
+evidence=Path(env['TANGERINE_LISTENING_BROWSER_EVIDENCE']);evidence.mkdir(parents=True,exist_ok=True)
+def call(args,check=True):
+ p=subprocess.run(args,cwd=r,env=env,capture_output=True,text=True,timeout=180)
+ if p.stdout:print(p.stdout,file=sys.stderr,end='')
+ if p.stderr:print(p.stderr,file=sys.stderr,end='')
+ if check and p.returncode:raise RuntimeError('owned browser setup command failed')
+ return p
+browser=None;go=None;preview=False
+with tempfile.TemporaryDirectory(prefix=name) as tmp:
+ config=Path(tmp)/'runtime.env';password=secrets.token_hex(24)
+ config.write_text(f'POSTGRES_DB=tangerine\nPOSTGRES_USER=tangerine\nPOSTGRES_PASSWORD={password}\nDATABASE_URL=postgres://tangerine:{password}@postgres:5432/tangerine?sslmode=disable\nMINIO_ROOT_USER=native-regression\nMINIO_ROOT_PASSWORD={password}\nMINIO_ENDPOINT=minio:9000\nMINIO_ACCESS_KEY=native-regression\nMINIO_SECRET_KEY={password}\nMINIO_BUCKET=regressions\nAPI_INTERNAL_TOKEN=listening-owned-token\nAPI_INTERNAL_URL=http://api:8080\n');config.chmod(0o600)
+ def ready(kind):
+  for _ in range(60):
+   probe=['pg_isready','-h','127.0.0.1','-U','tangerine','-d','tangerine'] if kind=='postgres' else ['/usr/local/bin/probe','http://127.0.0.1:9000/minio/health/ready']
+   if call(['docker','exec',name+'-'+kind,*probe],False).returncode==0:return
+   time.sleep(.1)
+  raise AssertionError('owned dependency did not recover')
+ try:
+  call(['docker','build','--target','build','-t',name+'-go','-f','services/api/Dockerfile','.']);call(['docker','build','-t',name+'-media','-f','deploy/local/minio.Dockerfile','.']);call(['docker','network','create',name])
+  for kind,image in [('postgres','postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826'),('media',name+'-media')]:call(['docker','run','-d','--name',name+'-'+kind,'--network',name,'--network-alias','postgres' if kind=='postgres' else 'minio','--env-file',str(config),image]);ready(kind)
+  args=['docker','run','--rm','--name',name+'-api','--network',name,'--network-alias','api','--env-file',str(config),'-e','TANGERINE_LISTENING_EVIDENCE=/evidence','-v',str(evidence)+':/evidence']
+  for source in ['native_listening_test.go','listening_browser_fixture_test.go']:args+=['-v',str(r/'tests'/source)+':/src/internal/app/'+source+':ro']
+  go=subprocess.Popen(args+['--entrypoint','go',name+'-go','test','-json','-race','-count=1','-run','^TestNativeListeningBrowserFixture$','./internal/app'],cwd=r,env=env,stdout=(evidence/'native.jsonl').open('w'),stderr=(evidence/'native.stderr').open('w'))
+  for _ in range(1200):
+   if (evidence/'fixture.json').exists():break
+   if go.poll() is not None:raise AssertionError('native publication fixture failed')
+   time.sleep(.1)
+  else:raise AssertionError('native fixture timeout')
+  fixture=json.loads((evidence/'fixture.json').read_text())
+  running=call(['docker','inspect','-f','{{.State.Running}}','tangerine-i1-web-1'],False)
+  if running.returncode==0 and running.stdout.strip()=='true':call(['docker','stop','tangerine-i1-web-1']);preview=True
+  call(['docker','run','-d','--name',name+'-web','--network',name,'--env-file',str(config),'-p','127.0.0.1:3000:3000',env['TANGERINE_LISTENING_TEST_WEB_IMAGE']])
+  browser=Browser(Path(tmp)/'chrome','http://localhost:3000/');browser.wait('Listen and answer');observed={}
+  def click(text):
+   selector="[...document.querySelectorAll('button,a')].find(e=>e.textContent==="+json.dumps(text)+")"
+   link=browser.evaluate("(()=>{const e="+selector+";return e?.tagName==='A'?e.href:null})()")
+   if link:browser.call('Page.navigate',{'url':link})
+   else:browser.evaluate(selector+".click();true")
+  def wait_value(expression,expected):
+   for _ in range(150):
+    value=browser.evaluate(expression)
+    if value==expected:return value
+    time.sleep(.1)
+   raise AssertionError((expression,value,expected))
+  def record(test,expression,expected):
+   value=wait_value(expression,expected);observed[test]=value;(evidence/(test+'.html')).write_text(browser.evaluate('document.documentElement.outerHTML'))
+  def type_answer(text):
+   browser.evaluate("document.querySelector('textarea').focus();true");browser.call('Input.insertText',{'text':text});wait_value("document.querySelector('textarea').value",text)
+  click('Listen and answer');browser.wait('Your answer');wait_value("document.querySelector('textarea').disabled",False)
+  browser.evaluate("document.querySelector('audio').play();true");wait_value("document.querySelector('audio').currentTime>0",True)
+  record('test_listening_positive',"document.querySelector('audio').currentTime>0",True)
+  record('test_private_negative',"/canonical_text|surface_text|planned_units|mutation_count|source_key_id|The café open tomorrow/.test(document.documentElement.outerHTML)",False)
+  text='  The verb needs agreement.\nОшибка: goes. 🟠  '
+  type_answer(text);browser.evaluate("const s=document.querySelector('select');s.value='ru';s.dispatchEvent(new Event('change',{bubbles:true}));true");click('Save draft');browser.wait('Draft saved.');url=browser.evaluate('location.href');browser.call('Page.navigate',{'url':url});browser.wait('Your answer')
+  record('test_draft_positive',"({answer:document.querySelector('textarea').value,language:document.querySelector('select').value})",{'answer':text,'language':'ru'})
+  # A real second HTTP writer creates the conflicting revision; no application state mutation.
+  browser.evaluate("fetch('/api/v1/attempts/'+new URLSearchParams(location.search).get('attempt')+'/answer',{method:'PUT',headers:{'Content-Type':'application/json','Idempotency-Key':crypto.randomUUID(),'If-Match':'\"1\"'},body:JSON.stringify({answer_text:'Other window',requested_language:'en'})}).then(r=>r.status)")
+  click('Save draft');browser.wait('The saved draft changed.');wait_value("document.querySelector('textarea').value",text);click('Refresh saved state');browser.wait('Saved state refreshed.');record('test_conflict_negative',"document.querySelector('textarea').value",text);click('Save draft');browser.wait('Draft saved.')
+  # DB interruption must retain entered input and recover using the same action/key.
+  call(['docker','stop',name+'-postgres']);click('Save draft');browser.wait('Your answer could not be saved.');record('test_database_recovery_negative',"document.querySelector('textarea').value",text);call(['docker','start',name+'-postgres']);ready('postgres');click('Save draft');browser.wait('Draft saved.')
+  call(['docker','stop',name+'-media']);click('Refresh saved state');browser.wait('Saved audio is temporarily unavailable.');record('test_audio_recovery_negative',"document.querySelector('textarea').value",text);click('Save draft');browser.wait('Draft saved.');call(['docker','start',name+'-media']);ready('media');click('Refresh saved state');browser.wait('Saved state refreshed.');browser.evaluate("document.querySelector('audio').play();true");wait_value("document.querySelector('audio').currentTime>0",True)
+  click('Submit answer');browser.wait('Answer submitted and saved.');record('test_submit_positive',"({answer:document.querySelector('textarea').value,disabled:document.querySelector('textarea').disabled})",{'answer':text,'disabled':True})
+  screenshot=browser.call('Page.captureScreenshot');(evidence/'submitted.png').write_bytes(base64.b64decode(screenshot['data']))
+  browser.call('Page.navigate',{'url':'http://localhost:3000/attempts'});browser.wait('Open saved answer');click('Open saved answer');browser.wait('Your answer');record('test_history_positive',"document.querySelector('textarea').value",text)
+  browser.call('Page.navigate',{'url':'http://localhost:3000/'});browser.wait('Listen and answer');click('Listen and answer');browser.wait('Your answer');wait_value("document.querySelector('textarea').disabled",False);click('Submit answer');browser.wait('Answer submitted and saved.');record('test_empty_positive',"({answer:document.querySelector('textarea').value,disabled:document.querySelector('textarea').disabled})",{'answer':'','disabled':True})
+  # Fold the history readback observation into the submission scenario, retaining eight distinct DAG tests.
+  observed['test_submit_positive']['history_readback']=observed.pop('test_history_positive')
+  (evidence/'done').write_text('done');assert go.wait(timeout=30)==0
+  (evidence/'observations.json').write_text(json.dumps({'values':observed,'fixture':fixture,'driver':browser.driver_version,'network_substitution':False,'database_recovered':True,'media_recovered':True},indent=2))
+ finally:
+  if browser:
+   try:(evidence/'final-dom.html').write_text(browser.evaluate('document.documentElement.outerHTML'))
+   finally:browser.close()
+  (evidence/'done').write_text('done')
+  for kind in ['web','api','postgres','media']:call(['docker','rm','-f','-v',name+'-'+kind],False)
+  if go:
+   try:go.wait(timeout=10)
+   except subprocess.TimeoutExpired:go.terminate();go.wait()
+  call(['docker','network','rm',name],False)
+  for kind in ['go','media']:call(['docker','image','rm',name+'-'+kind],False)
+  if preview:call(['docker','start','tangerine-i1-web-1'])

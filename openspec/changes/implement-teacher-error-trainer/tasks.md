@@ -612,3 +612,25 @@ Authority: actual user requests full apply, repair through green, separated code
 - [x] Review all I8 owners for contracts/layer responsibilities; repair findings, reconcile retained/invalidated evidence, run stable committed-clean I8 checks, record acceptance and commit.
 
 Iteration8 acceptance: source e5a9c51;108/108 I8 and696/696 implemented I1–I8 closure, original semantic retentions preserved. Actual local acoustic/context/MLflow and independent numerical evidence are recorded in audit/iteration-8-acoustic-20261020/REPORT.md. No in-scope finding remains. Future/product/provider-qualification tasks retain their original scope and status.
+
+## Iteration 9 — Listening and answer persistence (2026-10-20)
+
+- [ ] I9.1 Publish immutable playable case versions and safe Library selection through the existing render finalizer.
+- [ ] I9.2 Freeze attempt case/audio, task/policies, configuration, prompt bundle and effective evaluator bindings before answer entry.
+- [ ] I9.3 Save exact Unicode drafts and submission with atomic revision/idempotency replay and durable history; no inference before answer commit.
+- [ ] I9.4 Persist validated descriptive playback events, stream frozen audio and retain safe pre-submit projections without private key/context leakage.
+- [ ] I9.5 Implement Library/listening/history browser flows with explicit save/submit, reload and dependency/conflict recovery preserving input.
+- [ ] I9.6 Materialize positive/negative fixtures, sequence/concurrency tests and real DB/media/browser evidence, wire exact cases to the DAG, review and repair in scope.
+- [ ] I9.7 Complete language/build/specification/preservation checks, committed-clean complete iteration run, acceptance reconciliation and commits.
+
+Current anchors and proof scope: audit/iteration-9-listening-20261020/PLAN.md. LLM answer interpretation/scoring are later iterations, not simulated completion. The separate iteration8 review has three open controller defects; iteration9 does not close or recertify them. Preserve canonical unrelated GAPS.md and all original category/formula/source data.
+
+### Reopened predecessor findings from the iteration8 verification
+
+These remain outside the current iteration9 implementation and prevent an iteration8-wide green claim:
+
+- [ ] I8.R1 Preserve internal silence when applying source-derived WPM controls; the independent120WPM fixture currently produces100WPM.
+- [ ] I8.R2 Project VOT edits with their actual piecewise clock before subsequent phone-targeted controls; the copied vowel begins at600samples but projects to2220.
+- [ ] I8.R3 Preserve multiple surface scopes/answer-key intervals belonging to one unit; pan/ready targets currently both resolve to ready.
+
+Exact source anchors and executable counterexamples remain in the existing ignored `data/iteration8-verify-20261020/REVIEW.md` on the working checkout. Original iteration8 receipts retain their registered-case boundaries only.

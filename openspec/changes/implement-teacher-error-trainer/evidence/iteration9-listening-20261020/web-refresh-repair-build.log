@@ -1,0 +1,86 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 722B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:22.22.0-bookworm-slim@sha256:dd9d21971ec4395903fa6143c2b9267d048ae01ca6d3ea96f16cb30df6187d94
+#2 DONE 12.7s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 163B done
+#3 DONE 0.0s
+
+#4 [build 1/6] FROM docker.io/library/node:22.22.0-bookworm-slim@sha256:dd9d21971ec4395903fa6143c2b9267d048ae01ca6d3ea96f16cb30df6187d94
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 65.32kB done
+#5 DONE 0.0s
+
+#6 [build 2/6] WORKDIR /app
+#6 CACHED
+
+#7 [build 3/6] COPY services/web/package.json services/web/package-lock.json ./
+#7 CACHED
+
+#8 [build 4/6] RUN npm ci --ignore-scripts --no-audit --no-fund
+#8 CACHED
+
+#9 [build 5/6] COPY services/web/ ./
+#9 DONE 0.1s
+
+#10 [build 6/6] RUN npm run build
+#10 0.304 
+#10 0.304 > tangerine-web@0.1.0 build
+#10 0.304 > next build
+#10 0.304 
+#10 0.603 ▲ Next.js 16.4.0 (Turbopack)
+#10 0.613 ✓ Running next.config.mjs took 10ms
+#10 0.632 
+#10 0.653   Creating an optimized production build ...
+#10 3.527 ✓ Compiled successfully in 2.9s
+#10 3.530   Running TypeScript ...
+#10 3.536   Finished TypeScript in 5ms ...
+#10 3.541   Collecting page data using 9 workers ...
+#10 4.547   Generating static pages using 9 workers (0/7) ...
+#10 4.731   Generating static pages using 9 workers (1/7) 
+#10 4.737   Generating static pages using 9 workers (3/7) 
+#10 4.737   Generating static pages using 9 workers (5/7) 
+#10 4.738 ✓ Generating static pages using 9 workers (7/7) in 190ms
+#10 4.742   Finalizing page optimization ...
+#10 4.902 
+#10 4.903 Route (app)
+#10 4.903 ┌ ○ /
+#10 4.903 ├ ○ /_not-found
+#10 4.903 ├ ƒ /api/[...path]
+#10 4.903 ├ ○ /attempts
+#10 4.903 ├ ○ /audio
+#10 4.903 ├ ƒ /auth/callback
+#10 4.903 ├ ƒ /health/ready
+#10 4.903 ├ ○ /listen
+#10 4.903 └ ○ /settings
+#10 4.903 
+#10 4.903 
+#10 4.903 ○  (Static)   prerendered as static content
+#10 4.903 ƒ  (Dynamic)  server-rendered on demand
+#10 4.903 
+#10 DONE 5.0s
+
+#6 [build 2/6] WORKDIR /app
+#6 CACHED
+
+#11 [stage-1 3/4] COPY --from=build --chown=node:node /app/.next/standalone ./
+#11 DONE 0.3s
+
+#12 [stage-1 4/4] COPY --from=build --chown=node:node /app/.next/static ./.next/static
+#12 DONE 0.0s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 0.2s done
+#13 writing image sha256:1cd1b32fb174d127861819366c3b7ee7fbed8dd39e431ce41772d41adf124b83 done
+#13 naming to docker.io/library/tangerine-i9-web-20261020:local done
+#13 DONE 0.2s
+
+View build details: docker-desktop://dashboard/build/default/default/oy63851l2g1sb8amu789obd8l

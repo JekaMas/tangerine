@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+"""Native Go acceptance with an owned disposable PostgreSQL/MinIO stack, no ports."""
+from pathlib import Path
+import os,secrets,subprocess,sys,tempfile,time,uuid
+r=Path(__file__).resolve().parents[1];name='tangerine-listening-'+uuid.uuid4().hex[:12];env={**os.environ}
+def call(args,check=True):
+ p=subprocess.run(args,cwd=r,env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=900)
+ if p.stdout:print(p.stdout,file=sys.stderr,end='')
+ if check and p.returncode:raise RuntimeError('native test setup command failed')
+ return p
+with tempfile.TemporaryDirectory(prefix=name) as tmp:
+ config=Path(tmp)/'runtime.env';password=secrets.token_hex(24);config.write_text('POSTGRES_DB=tangerine\nPOSTGRES_USER=tangerine\nPOSTGRES_PASSWORD='+password+'\nMINIO_ROOT_USER=native-regression\nMINIO_ROOT_PASSWORD='+password+'\nDATABASE_URL=postgres://tangerine:'+password+'@postgres:5432/tangerine?sslmode=disable\nMINIO_ENDPOINT=minio:9000\nMINIO_ACCESS_KEY=native-regression\nMINIO_SECRET_KEY='+password+'\nMINIO_BUCKET=regressions\n');config.chmod(0o600)
+ try:
+  call(['docker','build','--target','build','-t',name+'-go','-f','services/api/Dockerfile','.'])
+  call(['docker','build','-t',name+'-minio','-f','deploy/local/minio.Dockerfile','.'])
+  call(['docker','network','create',name])
+  call(['docker','run','-d','--name',name+'-postgres','--network',name,'--network-alias','postgres','--env-file',str(config),'postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826'])
+  call(['docker','run','-d','--name',name+'-media','--network',name,'--network-alias','minio','--env-file',str(config),name+'-minio'])
+  for kind in ['postgres','media']:
+   for n in range(60):
+    args=['docker','exec',name+'-'+kind]+(['pg_isready','-h','127.0.0.1','-U','tangerine','-d','tangerine'] if kind=='postgres' else ['/usr/local/bin/probe','http://127.0.0.1:9000/minio/health/ready'])
+    if subprocess.run(args,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode==0:break
+    time.sleep(.5)
+   else:raise RuntimeError('native service not ready')
+  call(['docker','run','--rm','--network',name,'--env-file',str(config),'--entrypoint','/tangerine',name+'-go','initialize'])
+  go_args=['test','-run','^TestNativeListening',*sys.argv[2:]] if len(sys.argv)>1 and sys.argv[1]=='test' else ['test','-json','-race','-count=1','-run',sys.argv[1] if len(sys.argv)>1 else '^TestNativeListening','./internal/app']
+  evidence=r/'data/iteration9/native'/name;evidence.mkdir(parents=True,exist_ok=True)
+  print('Private evidence: '+str(evidence.relative_to(r)),file=sys.stderr)
+  args=['docker','run','--rm','--network',name,'--env-file',str(config),'-v',str(evidence)+':/evidence','-v',str(r/'tests/native_listening_test.go')+':/src/internal/app/native_listening_test.go:ro','--entrypoint','go',name+'-go',*go_args]
+  p=subprocess.run(args,cwd=r,env=env,timeout=1200)
+  status=p.returncode
+ finally:
+  for kind in ['postgres','media']:call(['docker','rm','-f','-v',name+'-'+kind],check=False)
+  call(['docker','network','rm',name],check=False)
+  for kind in ['go','minio']:call(['docker','image','rm',name+'-'+kind],check=False)
+ sys.exit(status)

@@ -1,6 +1,6 @@
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-const ALLOWED = new Set(['GET v1/library', 'GET v1/health', 'GET v1/provider-connections', 'POST v1/provider-connections:action', 'GET v1/configuration', 'GET v1/preparations', 'PUT v1/configuration']);
+const ALLOWED = new Set(['GET v1/library', 'GET v1/attempts', 'POST v1/attempts', 'GET v1/health', 'GET v1/provider-connections', 'POST v1/provider-connections:action', 'GET v1/configuration', 'GET v1/preparations', 'PUT v1/configuration']);
 function failure(status, error) { return Response.json({ error }, { status, headers: { 'Cache-Control': 'no-store' } }); }
 async function proxy(request, context) {
   const { path } = await context.params;
@@ -12,13 +12,16 @@ async function proxy(request, context) {
   const modelBytes = request.method === 'GET' && /^v1\/prepare\/assets\/[a-f0-9-]{36}\/bytes$/.test(target);
   const audio = request.method === 'GET' && /^v1\/preparations\/[a-f0-9-]{36}\/audio$/.test(target);
   const render = request.method === 'POST' && /^v1\/preparations\/[a-f0-9-]{36}:render$/.test(target);
-  if (!ALLOWED.has(`${request.method} ${target}`) && !modelBytes && !audio && !render) return failure(404, 'not_implemented');
+  const attempt = /^(v1\/attempts\/[a-f0-9-]{36})(?::submit|\/(?:answer|audio|playback|results))?$/.test(target) && ((request.method === 'GET' && !target.endsWith('/answer') && !target.endsWith('/playback') && !target.endsWith(':submit')) || (request.method === 'PUT' && target.endsWith('/answer')) || (request.method === 'POST' && (target.endsWith(':submit') || target.endsWith('/playback'))));
+  if (!ALLOWED.has(`${request.method} ${target}`) && !modelBytes && !audio && !render && !attempt) return failure(404, 'not_implemented');
   const query = new URLSearchParams();
+  if (target === 'v1/attempts') { const requested = new URL(request.url).searchParams;for(const name of ['limit','cursor'])if(requested.has(name))query.set(name,requested.get(name)); }
   if (target === 'v1/preparations') {
     query.set('view', 'public');
     const requested = new URL(request.url).searchParams;
     for (const name of ['limit', 'cursor']) if (requested.has(name)) query.set(name, requested.get(name));
   }
+  if(attempt && target.endsWith('/audio')) { const refresh=new URL(request.url).searchParams.get('playback_revision');if(refresh!==null)query.set('playback_revision',refresh); }
   try {
     const response = await fetch(`${process.env.API_INTERNAL_URL}/api/${target}${query.size ? '?' + query.toString() : ''}`, {
       method: request.method,
@@ -27,7 +30,7 @@ async function proxy(request, context) {
       redirect: 'error', cache: 'no-store',
       signal: AbortSignal.any([request.signal, AbortSignal.timeout(270000)]),
     });
-    return new Response(response.body, { status: response.status, headers: { 'Content-Type': response.headers.get('content-type') || 'application/json', 'Cache-Control': 'no-store', 'Content-Range': response.headers.get('content-range') || '', 'Accept-Ranges': response.headers.get('accept-ranges') || '', 'ETag': response.headers.get('etag') || '', 'X-Tangerine-Active-Connection': response.headers.get('x-tangerine-active-connection') || '' } });
+    return new Response(response.body, { status: response.status, headers: { 'Content-Type': response.headers.get('content-type') || 'application/json', 'Cache-Control': 'no-store', 'Content-Range': response.headers.get('content-range') || '', 'Accept-Ranges': response.headers.get('accept-ranges') || '', 'ETag': response.headers.get('etag') || '', 'X-Tangerine-Audio-SHA256': response.headers.get('x-tangerine-audio-sha256') || '', 'X-Tangerine-Next-Cursor': response.headers.get('x-tangerine-next-cursor') || '', 'X-Tangerine-Active-Connection': response.headers.get('x-tangerine-active-connection') || '' } });
   } catch { return failure(503, 'service_unavailable'); }
 }
 export const GET = proxy;

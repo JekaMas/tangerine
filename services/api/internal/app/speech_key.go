@@ -111,30 +111,33 @@ func (s *Server) saveSpeechKey(ctx context.Context, p, settings, frozen, progres
 		return e
 	}
 	key := projectSpeechKey(settings, candidate, frozen, progress, p["audio_asset_id"].(string), p["audio_sha256"].(string), taxonomy["version"].(string))
-	raw, e = lab.Canonical(key)
+	id, e := s.Store.saveGroundTruth(ctx, key)
+	if e == nil {
+		p["key_id"] = id
+	}
+	return e
+}
+
+// Newly produced/imported complete keys share one schema admission and immutable write.
+func (s *Storage) saveGroundTruth(ctx context.Context, key map[string]any) (string, error) {
+	raw, e := lab.Canonical(key)
 	if e != nil {
-		return e
+		return "", e
 	}
 	c, raw, e := contracts.Validate("ground-truth", "2.0.0", raw)
 	if e != nil {
-		return fmt.Errorf("new render key: %w", e)
+		return "", fmt.Errorf("new render key: %w", e)
 	}
 	id := uuid.NewString()
-	write := DocumentWrite{ID: id, Kind: "ground-truth", Version: c.Version, Scope: "local", Payload: raw}
-	saved := SavedDocument{ID: id, Kind: "ground-truth", Version: c.Version, SchemaSHA: c.SHA, SHA: contracts.Digest(raw), Payload: raw}
-	// This derived snapshot contains accepted registry/role/unit IDs. It has no
-	// imported generic graph claims. The final case/preparation CAS owns its key link.
-	tx, e := beginWrite(ctx, s.Store)
+	w := DocumentWrite{ID: id, Kind: "ground-truth", Version: c.Version, Scope: "local", Payload: raw}
+	d := SavedDocument{ID: id, Kind: w.Kind, Version: w.Version, SchemaSHA: c.SHA, SHA: contracts.Digest(raw), Payload: raw}
+	tx, e := beginWrite(ctx, s)
 	if e != nil {
-		return e
+		return "", e
 	}
 	defer tx.Rollback(context.Background())
-	if e = insertDocument(ctx, tx, write, saved); e != nil {
-		return e
+	if e = insertDocument(ctx, tx, w, d); e != nil {
+		return "", e
 	}
-	if e = tx.Commit(ctx); e != nil {
-		return e
-	}
-	p["key_id"] = id
-	return nil
+	return id, tx.Commit(ctx)
 }

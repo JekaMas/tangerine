@@ -291,6 +291,9 @@ func validateProjection(w DocumentWrite, b []byte) error {
 	return nil
 }
 func externalID(kind, key string) bool {
+	if (kind == "playback-event" || kind == "play-event-request") && key == "page_instance_id" {
+		return true
+	} // Browser-instance metadata, not a domain object.
 	if kind == "preparation-state" && (key == "original_operation_id" || key == "operation_ids" || key == "active_operation_id" || key == "request_id") {
 		return true // Preparation owner validates these relational operations in its checkpoint transaction.
 	}

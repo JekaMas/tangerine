@@ -59,6 +59,22 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /health/ready", s.ready)
 	mux.HandleFunc("GET /api/v1/health", s.ready)
 	mux.HandleFunc("GET /api/v1/library", s.library)
+	mux.HandleFunc("POST /api/v1/attempts", s.attemptStart)
+	mux.HandleFunc("GET /api/v1/attempts", s.attemptList)
+	mux.HandleFunc("GET /api/v1/attempts/{id}", s.attemptGet)
+	mux.HandleFunc("PUT /api/v1/attempts/{id}/answer", func(w http.ResponseWriter, r *http.Request) { s.attemptAnswer(w, r, false) })
+	mux.HandleFunc("POST /api/v1/attempts/{action}", func(w http.ResponseWriter, r *http.Request) {
+		id, ok := strings.CutSuffix(r.PathValue("action"), ":submit")
+		if !ok {
+			preparationHTTPError(w, 404, "NOT_FOUND")
+			return
+		}
+		r.SetPathValue("id", id)
+		s.attemptAnswer(w, r, true)
+	})
+	mux.HandleFunc("POST /api/v1/attempts/{id}/playback", s.attemptPlaybackEvent)
+	mux.HandleFunc("GET /api/v1/attempts/{id}/audio", s.attemptAudio)
+	mux.HandleFunc("GET /api/v1/attempts/{id}/results", s.attemptResults)
 	mux.HandleFunc("GET /api/v1/preparations", s.preparationList)
 	mux.HandleFunc("POST /api/v1/preparations/{action}", func(w http.ResponseWriter, r *http.Request) {
 		id, ok := strings.CutSuffix(r.PathValue("action"), ":render")
@@ -153,17 +169,18 @@ func (s *Server) ready(w http.ResponseWriter, r *http.Request) {
 }
 
 type LibraryItem struct {
-	ID            string `json:"id"`
-	Title         string `json:"title"`
-	PublicContext string `json:"public_context"`
-	DurationMS    int    `json:"duration_ms"`
-	Format        string `json:"format"`
-	Difficulty    string `json:"difficulty"`
-	Availability  string `json:"availability"`
+	ID            string  `json:"id"`
+	Title         string  `json:"title"`
+	PublicContext string  `json:"public_context"`
+	DurationMS    int     `json:"duration_ms"`
+	Format        string  `json:"format"`
+	Difficulty    string  `json:"difficulty"`
+	Availability  string  `json:"availability"`
+	CaseSHA256    *string `json:"case_sha256,omitempty"`
 }
 
 func (s *Server) library(w http.ResponseWriter, r *http.Request) {
-	rows, err := s.Store.DB.Query(r.Context(), `SELECT id::text,title,public_context,duration_ms,format,difficulty,availability FROM exercise_catalog WHERE public_context IS NOT NULL AND duration_ms IS NOT NULL AND format IS NOT NULL AND difficulty IS NOT NULL AND availability IN ('published','retired','quarantined','rights_restricted') ORDER BY published_at DESC,id`)
+	rows, err := s.Store.DB.Query(r.Context(), `SELECT c.id::text,c.title,c.public_context,c.duration_ms,c.format,c.difficulty,c.availability,l.case_sha256 FROM exercise_catalog c LEFT JOIN listening_case l ON l.case_version_id=c.id::text WHERE public_context IS NOT NULL AND duration_ms IS NOT NULL AND format IS NOT NULL AND difficulty IS NOT NULL AND availability IN ('published','retired','quarantined','rights_restricted') ORDER BY published_at DESC,c.id`)
 	if err != nil {
 		writeJSON(w, 503, map[string]string{"error": "storage_unavailable"})
 		return
@@ -172,7 +189,7 @@ func (s *Server) library(w http.ResponseWriter, r *http.Request) {
 	items := make([]LibraryItem, 0)
 	for rows.Next() {
 		var x LibraryItem
-		if rows.Scan(&x.ID, &x.Title, &x.PublicContext, &x.DurationMS, &x.Format, &x.Difficulty, &x.Availability) != nil {
+		if rows.Scan(&x.ID, &x.Title, &x.PublicContext, &x.DurationMS, &x.Format, &x.Difficulty, &x.Availability, &x.CaseSHA256) != nil {
 			writeJSON(w, 503, map[string]string{"error": "storage_unavailable"})
 			return
 		}

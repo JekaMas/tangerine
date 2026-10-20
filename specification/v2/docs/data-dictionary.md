@@ -44,7 +44,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | difficulty-study | 2.0.0 | document.payload | 14 |
 | disclosure-record | 2.0.0 | document.payload | 8 |
 | dispute | 2.0.0 | document.payload | 21 |
-| effective-binding | 2.0.0 | document.payload | 35 |
+| effective-binding | 2.0.0 | document.payload | 36 |
 | error-opportunity | schema hash | document.payload | 11 |
 | error-response | schema hash | derived DTO or actual operation input/output receipt | 8 |
 | evaluation-key | 2.0.0 | document.payload | 115 |
@@ -67,10 +67,10 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | judgment-issue | 2.0.0 | document.payload | 9 |
 | key-disclosure | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | key-write | schema hash | document.payload | 3 |
-| library-item | schema hash | derived DTO or actual operation input/output receipt | 7 |
+| library-item | schema hash | derived DTO or actual operation input/output receipt | 8 |
 | linguistic-audit-input | 2.0.0 | derived DTO or actual operation input/output receipt | 8 |
 | linguistic-audit | 2.0.0 | document.payload | 16 |
-| llm-profile | schema hash | Derived projection/configuration member; not an independent evidence document | 24 |
+| llm-profile | schema hash | Derived projection/configuration member; not an independent evidence document | 25 |
 | llm-review-input | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 14 |
 | llm-review-output | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 13 |
 | maintenance-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
@@ -94,7 +94,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | raw-record | 2.0.0 | document.payload | 13 |
 | reconsider-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | render-constraint | schema hash | document.payload | 11 |
-| render-plan | 2.0.0 | document.payload | 36 |
+| render-plan | 2.0.0 | document.payload | 59 |
 | render-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | resolve-dispute-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 8 |
 | restore-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
@@ -110,7 +110,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | source-release-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 20 |
 | source-release | 2.0.0 | document.payload | 26 |
 | source-status | schema hash | document.payload | 10 |
-| speech-render-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 39 |
+| speech-render-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 62 |
 | speech-render-result | schema hash | document.payload | 15 |
 | split-manifest | 2.0.0 | document.payload | 17 |
 | split-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 15 |
@@ -151,8 +151,8 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | ai-surface-inventory | 2.0.0 | document.payload with linked private assets | 28 |
 
 | key-repair-proposal | 2.0.0 | LLM canonical payload stored with review/judgment and private raw receipt assets | 6 |
-| preparation-settings | 2.0.0 | immutable private settings asset linked from preparation document | 15 |
-| preparation-state | 2.0.0 | document.payload with entity_head revision and linked private assets | 30 |
+| preparation-settings | 2.0.0 | immutable private settings asset linked from preparation document | 16 |
+| preparation-state | 2.0.0 | document.payload with entity_head revision and linked private assets | 31 |
 | provider-access-policy | 2.0.0 | configuration or transient operation DTO; never model/callback secret evidence | 4 |
 
 | provider-callback-query | 2.0.0 | configuration or transient operation DTO; never model/callback secret evidence | 6 |
@@ -167,7 +167,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | acoustic-edit | schema hash | derived DTO or actual operation input/output receipt | 20 |
 
-| acoustic-production-plan | schema hash | derived DTO or actual operation input/output receipt | 29 |
+| acoustic-production-plan | schema hash | derived DTO or actual operation input/output receipt | 30 |
 
 | audio-judge-input | schema hash | derived DTO or actual operation input/output receipt | 17 |
 
@@ -175,7 +175,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | audio-judge-profile | schema hash | derived DTO or actual operation input/output receipt | 12 |
 
-| render-progress | schema hash | derived DTO or actual operation input/output receipt | 21 |
+| render-progress | schema hash | derived DTO or actual operation input/output receipt | 37 |
 
 | source-mapping-program | schema hash | derived DTO or actual operation input/output receipt | 47 |
 

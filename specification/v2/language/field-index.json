@@ -1,6 +1,6 @@
 {
   "schema_count": 151,
-  "field_count": 3356,
+  "field_count": 3424,
   "fields": [
     {
       "schema": "accept-candidate-request.schema.json",
@@ -7222,6 +7222,15 @@
     },
     {
       "schema": "effective-binding.schema.json",
+      "name": "structured_output",
+      "pointer": "/properties/structured_output",
+      "required_in_parent": false,
+      "description": "Explicit opt-in to observed provider JSON-schema decoding support; omitted/false preserves plain output. Same-profile capability fallback does not change the task or billing route.",
+      "schema_reference": null,
+      "rule_sha256": "67e440ad17bc7374b4ecaff1a1c3faf75952023a732ab74d074271cf06f2a3bd"
+    },
+    {
+      "schema": "effective-binding.schema.json",
       "name": "auth_method",
       "pointer": "/allOf/0/if/properties/auth_method",
       "required_in_parent": true,
@@ -11730,6 +11739,15 @@
       "rule_sha256": "6a1ec43f685d15bc007555c51b8396931ce1c20872c3418c91364f4ea0e127f9"
     },
     {
+      "schema": "library-item.schema.json",
+      "name": "case_sha256",
+      "pointer": "/properties/case_sha256",
+      "required_in_parent": false,
+      "description": "Immutable playable case selection digest; present for bound listening cases. No transcript or target data.",
+      "schema_reference": null,
+      "rule_sha256": "f2f4380a27f1a056b637ae8a30266a4a544ca68df3e4f6dd23ea9e3457a54b72"
+    },
+    {
       "schema": "linguistic-audit-input.schema.json",
       "name": "schema_version",
       "pointer": "/properties/schema_version",
@@ -12088,6 +12106,15 @@
       "description": "Access route, distinct from actual observed charges and quota. Unknown/metered is unavailable under included_only.",
       "schema_reference": null,
       "rule_sha256": "91657d8e22b6032f7f79b1665a5667e413eaeb85ffd9037614176a2d01dec04e"
+    },
+    {
+      "schema": "llm-profile.schema.json",
+      "name": "structured_output",
+      "pointer": "/properties/structured_output",
+      "required_in_parent": false,
+      "description": "Explicit opt-in to observed provider JSON-schema decoding support; omitted/false preserves plain output. Same-profile capability fallback does not change the task or billing route.",
+      "schema_reference": null,
+      "rule_sha256": "67e440ad17bc7374b4ecaff1a1c3faf75952023a732ab74d074271cf06f2a3bd"
     },
     {
       "schema": "llm-profile.schema.json",
@@ -14751,7 +14778,7 @@
       "required_in_parent": true,
       "description": "Every utterance in order.",
       "schema_reference": null,
-      "rule_sha256": "13373a13e528aefbc2214c35c52e5b629f70dbb6d385706800dbf67975d04017"
+      "rule_sha256": "f67400cb6812872d21d93ebc1097a2302085388682bb5bcddd93ff52cb363129"
     },
     {
       "schema": "render-plan.schema.json",
@@ -14842,6 +14869,24 @@
       "description": "A separate gap after this turn.",
       "schema_reference": null,
       "rule_sha256": "e195ea2c3fac97a42e5dc601b97f4b92c7d7b309dcf335008a8c653da610974b"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "acoustic_edits",
+      "pointer": "/properties/turns/items/properties/acoustic_edits",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "2ca75eae5a722b605d0ce46efbcfb7ebe190a5df28cf89c503da20327bde950f"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "target_wpm",
+      "pointer": "/properties/turns/items/properties/target_wpm",
+      "required_in_parent": false,
+      "description": "Frozen requested preference; never an acoustic measurement.",
+      "schema_reference": null,
+      "rule_sha256": "9b7f8b16ee42997bfb64971fd674d569c21187341636de33d1e1815f43bec88d"
     },
     {
       "schema": "render-plan.schema.json",
@@ -15004,6 +15049,195 @@
       "description": "Relative pitch.",
       "schema_reference": null,
       "rule_sha256": "dae9587c2c6ba7403109fc9aa4e93a2754c65134cba9e1bbe51018e5076abcd9"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "unit_id",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/unit_id",
+      "required_in_parent": true,
+      "description": "Existing version-scoped identifier.",
+      "schema_reference": null,
+      "rule_sha256": "7cb944148fffb469a5c472b8405051999ef0c83178c872cf4476992845dc97b2"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "utterance_id",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/utterance_id",
+      "required_in_parent": true,
+      "description": "Existing version-scoped identifier.",
+      "schema_reference": null,
+      "rule_sha256": "7cb944148fffb469a5c472b8405051999ef0c83178c872cf4476992845dc97b2"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "scope",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/scope",
+      "required_in_parent": true,
+      "description": "Half-open codepoint interval in the saved surface utterance; end exceeds start.",
+      "schema_reference": null,
+      "rule_sha256": "cc7eda23423664f3d96b3fbfa95001271bb505dbce0947152422e98cd5127f1b"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "controller",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/controller",
+      "required_in_parent": true,
+      "description": "Exactly one declared value.",
+      "schema_reference": null,
+      "rule_sha256": "1c6225d438c6c420b89094237ef6ba1cd9df83f627f0c8dba2b962d1c295121b"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "parameters",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters",
+      "required_in_parent": true,
+      "description": "Explicit parameters selected by the mutation LLM and consumed by the native compiler. Null unused fields; no executable text.",
+      "schema_reference": null,
+      "rule_sha256": "c8e5ea4413784c1f8dfa286fb739dee001763d3dcfa2eacff5f6ea02a190876e"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "taxonomy_id",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/taxonomy_id",
+      "required_in_parent": false,
+      "description": "Accepted primary category projected by native code, not reclassified.",
+      "schema_reference": null,
+      "rule_sha256": "f58be65a765dbffd2773f38bd358ca622ce3dd02694e4c1b477736e08ea29fe4"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "start",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/scope/properties/start",
+      "required_in_parent": true,
+      "description": "Nonnegative exact integer.",
+      "schema_reference": null,
+      "rule_sha256": "faabe07f81b651d78bfc3dd57b332805ba23029958fae655499a9eca69bd3176"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "end",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/scope/properties/end",
+      "required_in_parent": true,
+      "description": "Nonnegative exact integer.",
+      "schema_reference": null,
+      "rule_sha256": "faabe07f81b651d78bfc3dd57b332805ba23029958fae655499a9eca69bd3176"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "duration_ratio",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/duration_ratio",
+      "required_in_parent": true,
+      "description": "Positive target/source duration ratio; never a universal language norm.",
+      "schema_reference": null,
+      "rule_sha256": "f4f3d52af26c8c75b07bb310b5ee295764f582d49684d8f98faf4e169a913c5b"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "gain_db",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/gain_db",
+      "required_in_parent": true,
+      "description": "Declared gain within the selected interval.",
+      "schema_reference": null,
+      "rule_sha256": "77a8aed09c9864ac9e46af8d08dc195704a30d71581e2eb59f7033a5bd8d7ff2"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "pitch_points",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/pitch_points",
+      "required_in_parent": true,
+      "description": "Ordered complete values.",
+      "schema_reference": null,
+      "rule_sha256": "1f3960a5b0df94d1c9e27336ec7b0889124de7f2d0130962ca69a80a6a098524"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "pause_ms",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/pause_ms",
+      "required_in_parent": true,
+      "description": "Nonnegative exact integer.",
+      "schema_reference": null,
+      "rule_sha256": "e9ed1fb487d8ce814c9181d4fa66621f88dd13fbf9b9d04b00afc345e22334dd"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "vot_ms",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/vot_ms",
+      "required_in_parent": true,
+      "description": "Nonnegative exact integer.",
+      "schema_reference": null,
+      "rule_sha256": "e9ed1fb487d8ce814c9181d4fa66621f88dd13fbf9b9d04b00afc345e22334dd"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "reference_ipa",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/reference_ipa",
+      "required_in_parent": true,
+      "description": "Exact saved value.",
+      "schema_reference": null,
+      "rule_sha256": "551428c8db96cef4f4e1303d5e4e7e74bbf2e93b902cdacbda2d23a6c6ab105c"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "mutated_ipa",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/mutated_ipa",
+      "required_in_parent": true,
+      "description": "Exact saved value.",
+      "schema_reference": null,
+      "rule_sha256": "551428c8db96cef4f4e1303d5e4e7e74bbf2e93b902cdacbda2d23a6c6ab105c"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "phone_start",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/phone_start",
+      "required_in_parent": true,
+      "description": "Nonnegative exact integer.",
+      "schema_reference": null,
+      "rule_sha256": "e9ed1fb487d8ce814c9181d4fa66621f88dd13fbf9b9d04b00afc345e22334dd"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "phone_end",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/phone_end",
+      "required_in_parent": true,
+      "description": "Nonnegative exact integer.",
+      "schema_reference": null,
+      "rule_sha256": "e9ed1fb487d8ce814c9181d4fa66621f88dd13fbf9b9d04b00afc345e22334dd"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "expected_feature",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/expected_feature",
+      "required_in_parent": true,
+      "description": "Exact saved value.",
+      "schema_reference": null,
+      "rule_sha256": "79a5853c340184e5fa1e2aeb2fb56963d265773cb92864dc54703b995b76dea7"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "accepted_reference",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/accepted_reference",
+      "required_in_parent": true,
+      "description": "Self-contained task-specific acceptable comparison, never a population norm.",
+      "schema_reference": null,
+      "rule_sha256": "f7f88812cdc7c6bd48df7f15493ef956a20b54028c66503adcd879bc3a413329"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "fraction",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/pitch_points/items/properties/fraction",
+      "required_in_parent": true,
+      "description": "Position in [0,1] of this interval.",
+      "schema_reference": null,
+      "rule_sha256": "dbbdf63decd478b4a85c0957d0c677b65959f2059404f30a384eaf33153025fe"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "semitones",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/pitch_points/items/properties/semitones",
+      "required_in_parent": true,
+      "description": "Offset above 100Hz; explicit target, not measurement.",
+      "schema_reference": null,
+      "rule_sha256": "dd8b7764aad164c32dab10cb4401898792868916c5ae991cef7de4ba5cba440a"
     },
     {
       "schema": "render-request.schema.json",
@@ -20457,7 +20691,7 @@
       "required_in_parent": true,
       "description": "Every utterance in order.",
       "schema_reference": null,
-      "rule_sha256": "13373a13e528aefbc2214c35c52e5b629f70dbb6d385706800dbf67975d04017"
+      "rule_sha256": "f67400cb6812872d21d93ebc1097a2302085388682bb5bcddd93ff52cb363129"
     },
     {
       "schema": "speech-render-request.schema.json",
@@ -20557,6 +20791,24 @@
       "description": "A separate gap after this turn.",
       "schema_reference": null,
       "rule_sha256": "e195ea2c3fac97a42e5dc601b97f4b92c7d7b309dcf335008a8c653da610974b"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "acoustic_edits",
+      "pointer": "/properties/turns/items/properties/acoustic_edits",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "2ca75eae5a722b605d0ce46efbcfb7ebe190a5df28cf89c503da20327bde950f"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "target_wpm",
+      "pointer": "/properties/turns/items/properties/target_wpm",
+      "required_in_parent": false,
+      "description": "Frozen requested preference; never an acoustic measurement.",
+      "schema_reference": null,
+      "rule_sha256": "9b7f8b16ee42997bfb64971fd674d569c21187341636de33d1e1815f43bec88d"
     },
     {
       "schema": "speech-render-request.schema.json",
@@ -20719,6 +20971,195 @@
       "description": "Relative pitch.",
       "schema_reference": null,
       "rule_sha256": "dae9587c2c6ba7403109fc9aa4e93a2754c65134cba9e1bbe51018e5076abcd9"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "unit_id",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/unit_id",
+      "required_in_parent": true,
+      "description": "Existing version-scoped identifier.",
+      "schema_reference": null,
+      "rule_sha256": "7cb944148fffb469a5c472b8405051999ef0c83178c872cf4476992845dc97b2"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "utterance_id",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/utterance_id",
+      "required_in_parent": true,
+      "description": "Existing version-scoped identifier.",
+      "schema_reference": null,
+      "rule_sha256": "7cb944148fffb469a5c472b8405051999ef0c83178c872cf4476992845dc97b2"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "scope",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/scope",
+      "required_in_parent": true,
+      "description": "Half-open codepoint interval in the saved surface utterance; end exceeds start.",
+      "schema_reference": null,
+      "rule_sha256": "cc7eda23423664f3d96b3fbfa95001271bb505dbce0947152422e98cd5127f1b"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "controller",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/controller",
+      "required_in_parent": true,
+      "description": "Exactly one declared value.",
+      "schema_reference": null,
+      "rule_sha256": "1c6225d438c6c420b89094237ef6ba1cd9df83f627f0c8dba2b962d1c295121b"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "parameters",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters",
+      "required_in_parent": true,
+      "description": "Explicit parameters selected by the mutation LLM and consumed by the native compiler. Null unused fields; no executable text.",
+      "schema_reference": null,
+      "rule_sha256": "c8e5ea4413784c1f8dfa286fb739dee001763d3dcfa2eacff5f6ea02a190876e"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "taxonomy_id",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/taxonomy_id",
+      "required_in_parent": false,
+      "description": "Accepted primary category projected by native code, not reclassified.",
+      "schema_reference": null,
+      "rule_sha256": "f58be65a765dbffd2773f38bd358ca622ce3dd02694e4c1b477736e08ea29fe4"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "start",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/scope/properties/start",
+      "required_in_parent": true,
+      "description": "Nonnegative exact integer.",
+      "schema_reference": null,
+      "rule_sha256": "faabe07f81b651d78bfc3dd57b332805ba23029958fae655499a9eca69bd3176"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "end",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/scope/properties/end",
+      "required_in_parent": true,
+      "description": "Nonnegative exact integer.",
+      "schema_reference": null,
+      "rule_sha256": "faabe07f81b651d78bfc3dd57b332805ba23029958fae655499a9eca69bd3176"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "duration_ratio",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/duration_ratio",
+      "required_in_parent": true,
+      "description": "Positive target/source duration ratio; never a universal language norm.",
+      "schema_reference": null,
+      "rule_sha256": "f4f3d52af26c8c75b07bb310b5ee295764f582d49684d8f98faf4e169a913c5b"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "gain_db",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/gain_db",
+      "required_in_parent": true,
+      "description": "Declared gain within the selected interval.",
+      "schema_reference": null,
+      "rule_sha256": "77a8aed09c9864ac9e46af8d08dc195704a30d71581e2eb59f7033a5bd8d7ff2"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "pitch_points",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/pitch_points",
+      "required_in_parent": true,
+      "description": "Ordered complete values.",
+      "schema_reference": null,
+      "rule_sha256": "1f3960a5b0df94d1c9e27336ec7b0889124de7f2d0130962ca69a80a6a098524"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "pause_ms",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/pause_ms",
+      "required_in_parent": true,
+      "description": "Nonnegative exact integer.",
+      "schema_reference": null,
+      "rule_sha256": "e9ed1fb487d8ce814c9181d4fa66621f88dd13fbf9b9d04b00afc345e22334dd"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "vot_ms",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/vot_ms",
+      "required_in_parent": true,
+      "description": "Nonnegative exact integer.",
+      "schema_reference": null,
+      "rule_sha256": "e9ed1fb487d8ce814c9181d4fa66621f88dd13fbf9b9d04b00afc345e22334dd"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "reference_ipa",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/reference_ipa",
+      "required_in_parent": true,
+      "description": "Exact saved value.",
+      "schema_reference": null,
+      "rule_sha256": "551428c8db96cef4f4e1303d5e4e7e74bbf2e93b902cdacbda2d23a6c6ab105c"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "mutated_ipa",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/mutated_ipa",
+      "required_in_parent": true,
+      "description": "Exact saved value.",
+      "schema_reference": null,
+      "rule_sha256": "551428c8db96cef4f4e1303d5e4e7e74bbf2e93b902cdacbda2d23a6c6ab105c"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "phone_start",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/phone_start",
+      "required_in_parent": true,
+      "description": "Nonnegative exact integer.",
+      "schema_reference": null,
+      "rule_sha256": "e9ed1fb487d8ce814c9181d4fa66621f88dd13fbf9b9d04b00afc345e22334dd"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "phone_end",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/phone_end",
+      "required_in_parent": true,
+      "description": "Nonnegative exact integer.",
+      "schema_reference": null,
+      "rule_sha256": "e9ed1fb487d8ce814c9181d4fa66621f88dd13fbf9b9d04b00afc345e22334dd"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "expected_feature",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/expected_feature",
+      "required_in_parent": true,
+      "description": "Exact saved value.",
+      "schema_reference": null,
+      "rule_sha256": "79a5853c340184e5fa1e2aeb2fb56963d265773cb92864dc54703b995b76dea7"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "accepted_reference",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/accepted_reference",
+      "required_in_parent": true,
+      "description": "Self-contained task-specific acceptable comparison, never a population norm.",
+      "schema_reference": null,
+      "rule_sha256": "f7f88812cdc7c6bd48df7f15493ef956a20b54028c66503adcd879bc3a413329"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "fraction",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/pitch_points/items/properties/fraction",
+      "required_in_parent": true,
+      "description": "Position in [0,1] of this interval.",
+      "schema_reference": null,
+      "rule_sha256": "dbbdf63decd478b4a85c0957d0c677b65959f2059404f30a384eaf33153025fe"
+    },
+    {
+      "schema": "speech-render-request.schema.json",
+      "name": "semitones",
+      "pointer": "/properties/turns/items/properties/acoustic_edits/items/properties/parameters/properties/pitch_points/items/properties/semitones",
+      "required_in_parent": true,
+      "description": "Offset above 100Hz; explicit target, not measurement.",
+      "schema_reference": null,
+      "rule_sha256": "dd8b7764aad164c32dab10cb4401898792868916c5ae991cef7de4ba5cba440a"
     },
     {
       "schema": "speech-render-request.schema.json",
@@ -27858,6 +28299,15 @@
       "rule_sha256": "52c2fdd1fbf3b09149efe69e7b832b6fdf91de1aae04cb5e3276e3d87964711e"
     },
     {
+      "schema": "preparation-settings.schema.json",
+      "name": "speech_profile",
+      "pointer": "/properties/speech_profile",
+      "required_in_parent": false,
+      "description": "Complete initially resolved speech extension; frozen separately so the accepted configuration payload/digest remain unchanged.",
+      "schema_reference": null,
+      "rule_sha256": "46cfd254887a557576cf7b4ad3927374e4deaa1d622ae0c64f7bcbba05f6bcfa"
+    },
+    {
       "schema": "preparation-state.schema.json",
       "name": "schema_version",
       "pointer": "/properties/schema_version",
@@ -28060,9 +28510,18 @@
       "name": "render_progress_summary",
       "pointer": "/properties/render_progress_summary",
       "required_in_parent": false,
-      "description": "Exact scoped native transport/projection.",
+      "description": null,
       "schema_reference": null,
-      "rule_sha256": "b1ec0b857e435de06ee8243b5bb24e40ec6b0f8b503a3a6ae61e214f853f0d73"
+      "rule_sha256": "8e7bb7eaa8fd8ca9f2ef2bc20044e9d49f26b07b42ccf5522ac483d1beddd580"
+    },
+    {
+      "schema": "preparation-state.schema.json",
+      "name": "selected_speech_profile",
+      "pointer": "/properties/selected_speech_profile",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "preparation-state.schema.json",
@@ -28096,36 +28555,36 @@
       "name": "complete_pieces",
       "pointer": "/properties/render_progress_summary/properties/complete_pieces",
       "required_in_parent": true,
-      "description": "Count of actually complete read-back piece artifacts.",
+      "description": null,
       "schema_reference": null,
-      "rule_sha256": "2da6e17f8e2ac81c19814250ebffd1002b797f8c209a902cfe079c996c729111"
+      "rule_sha256": "686f40289f17bc2d6be905d9268764859f8b4cc81d29306a4bc83ff1a337caae"
     },
     {
       "schema": "preparation-state.schema.json",
       "name": "total_pieces",
       "pointer": "/properties/render_progress_summary/properties/total_pieces",
       "required_in_parent": true,
-      "description": "Count of all frozen required pieces.",
+      "description": null,
       "schema_reference": null,
-      "rule_sha256": "8ce0d67cd7a54a53dca2db999c4f495f0c3b11629a3f2ce67eef2948da2b733a"
-    },
-    {
-      "schema": "preparation-state.schema.json",
-      "name": "first_unfinished_piece_id",
-      "pointer": "/properties/render_progress_summary/properties/first_unfinished_piece_id",
-      "required_in_parent": true,
-      "description": "Null only where the declared scope does not select an identity.",
-      "schema_reference": null,
-      "rule_sha256": "eb4ee7beb149e7624407a708bb5dec3f01e3eaaff3d99e926d2108469fe538f0"
+      "rule_sha256": "686f40289f17bc2d6be905d9268764859f8b4cc81d29306a4bc83ff1a337caae"
     },
     {
       "schema": "preparation-state.schema.json",
       "name": "ready_to_assemble",
       "pointer": "/properties/render_progress_summary/properties/ready_to_assemble",
       "required_in_parent": true,
-      "description": "True only when all required pieces have complete actual bytes.",
+      "description": null,
       "schema_reference": null,
-      "rule_sha256": "69632dc85cbffb682402b08f80ee42ecc58e6199ae64b5c03c8056d33e0e1818"
+      "rule_sha256": "7cb541e84f226754a46c21c79f131fa2898354e1242456e6fd1c162bce319553"
+    },
+    {
+      "schema": "preparation-state.schema.json",
+      "name": "first_unfinished_piece",
+      "pointer": "/properties/render_progress_summary/properties/first_unfinished_piece",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "174e29b899b9ef9154a4d74f2c92ab3c556781ce17e916f91e14d80521818844"
     },
     {
       "schema": "provider-access-policy.schema.json",
@@ -28872,7 +29331,7 @@
       "required_in_parent": true,
       "description": "Ordered complete values.",
       "schema_reference": null,
-      "rule_sha256": "23ba3d673ad39252a74e3db205cdbe6342f88f6be57b536de8ead2873a9b2937"
+      "rule_sha256": "462e307802ce904f112ba841a097197932074f3c04f0adffb7dfcc6fa9e00726"
     },
     {
       "schema": "acoustic-production-plan.schema.json",
@@ -28936,6 +29395,15 @@
       "description": "Existing version-scoped identifier.",
       "schema_reference": null,
       "rule_sha256": "68eb19ec8366416ad4b7388506cec7bffe0241579ff7f9f7d19dd7d45bea1a9c"
+    },
+    {
+      "schema": "acoustic-production-plan.schema.json",
+      "name": "landmarks",
+      "pointer": "/properties/steps/items/properties/landmarks",
+      "required_in_parent": false,
+      "description": "Actual native release/onset/F0/pulse proposal frozen before VOT transformation; private measurement, never requested or perceived VOT.",
+      "schema_reference": null,
+      "rule_sha256": "b85c89df03ae7d3e8f87ae02e047736bdcff26b15e807a3939eb57ec6965a725"
     },
     {
       "schema": "acoustic-production-plan.schema.json",
@@ -29502,7 +29970,7 @@
       "required_in_parent": true,
       "description": "Ordered complete values.",
       "schema_reference": null,
-      "rule_sha256": "141feda4b312a3ca26b5a391167fbe3d19ab7afc6dd51d52cde00856bdbd05b8"
+      "rule_sha256": "a9bb8127531014bf2c4824a3b31013fe65588aeca2c7dc0e25c1505f909d48c9"
     },
     {
       "schema": "render-progress.schema.json",
@@ -29530,6 +29998,15 @@
       "description": "Private exact sample map, null until actual complete bytes exist.",
       "schema_reference": null,
       "rule_sha256": "97adda559a03f429c93673abde28a65b464de1496f5698032486ff9395b77644"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "diagnostic_asset_id",
+      "pointer": "/properties/diagnostic_asset_id",
+      "required_in_parent": false,
+      "description": "Private assembly quality/pace diagnostic separate from the strict sample-map asset.",
+      "schema_reference": null,
+      "rule_sha256": "af9584d8e9dd38e61a104786b48ac1887f0fe5ccb9e6a9101a8b745418a3651e"
     },
     {
       "schema": "render-progress.schema.json",
@@ -29629,6 +30106,141 @@
       "description": "Existing version-scoped identifier.",
       "schema_reference": null,
       "rule_sha256": "68eb19ec8366416ad4b7388506cec7bffe0241579ff7f9f7d19dd7d45bea1a9c"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "acoustic_state",
+      "pointer": "/properties/pieces/items/properties/acoustic_state",
+      "required_in_parent": false,
+      "description": "Private incremental acoustic state, actual source/reference/plan/result asset lineage; absent on plain pieces.",
+      "schema_reference": null,
+      "rule_sha256": "3f006de21bcf4eb50fb9a5fda7b50d53817c31a24fee57bbd4922a1aa7a57ab8"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "unit_intervals",
+      "pointer": "/properties/pieces/items/properties/unit_intervals",
+      "required_in_parent": false,
+      "description": "Actual scoped intervals after transformations, in piece-local 24 kHz samples; no character proportions.",
+      "schema_reference": null,
+      "rule_sha256": "82764f073bb2a6106dd920316d699b9e2ef55834bcf25921a9725e60ce42ff1c"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "native_asset_id",
+      "pointer": "/properties/pieces/items/properties/acoustic_state/properties/native_asset_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "current_asset_id",
+      "pointer": "/properties/pieces/items/properties/acoustic_state/properties/current_asset_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "active_production_plan_asset_id",
+      "pointer": "/properties/pieces/items/properties/acoustic_state/properties/active_production_plan_asset_id",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "next_step",
+      "pointer": "/properties/pieces/items/properties/acoustic_state/properties/next_step",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "686f40289f17bc2d6be905d9268764859f8b4cc81d29306a4bc83ff1a337caae"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "completed_steps",
+      "pointer": "/properties/pieces/items/properties/acoustic_state/properties/completed_steps",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "494f67fb92e1cc453dacabf8c09b3bb114322b9bffc3a86479e2a1cdde4434ab"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "paired_assets",
+      "pointer": "/properties/pieces/items/properties/acoustic_state/properties/paired_assets",
+      "required_in_parent": false,
+      "description": "Private whole-phrase paired recordings by scoring unit.",
+      "schema_reference": null,
+      "rule_sha256": "0ab6ac07bc80e063e8a708d0d0d53a753a432cc6e67460af6a70ce4c245d4b0e"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "production_plan_asset_id",
+      "pointer": "/properties/pieces/items/properties/acoustic_state/properties/completed_steps/items/properties/production_plan_asset_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "source_asset_id",
+      "pointer": "/properties/pieces/items/properties/acoustic_state/properties/completed_steps/items/properties/source_asset_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "result_asset_id",
+      "pointer": "/properties/pieces/items/properties/acoustic_state/properties/completed_steps/items/properties/result_asset_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "diagnostic_asset_id",
+      "pointer": "/properties/pieces/items/properties/acoustic_state/properties/completed_steps/items/properties/diagnostic_asset_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "unit_id",
+      "pointer": "/properties/pieces/items/properties/acoustic_state/properties/completed_steps/items/properties/unit_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "start",
+      "pointer": "/properties/pieces/items/properties/unit_intervals/additionalProperties/properties/start",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "686f40289f17bc2d6be905d9268764859f8b4cc81d29306a4bc83ff1a337caae"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "end",
+      "pointer": "/properties/pieces/items/properties/unit_intervals/additionalProperties/properties/end",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "be5ac72348ac0f643845bd6d067291b863394c92680a17cba91f49f5e165e46c"
     },
     {
       "schema": "source-mapping-program.schema.json",

@@ -184,8 +184,21 @@ func TestNativeSpeechCasePositive(t *testing.T) {
 	var audio string
 	id := uuid.NewSHA1(uuid.NameSpaceOID, []byte(p["id"].(string)+":speech-case")).String()
 	e := s.Store.DB.QueryRow(context.Background(), "SELECT state,d.payload->>'delivery_asset_id' FROM entity_head h JOIN document d ON d.id=h.document_id WHERE h.id=$1", id).Scan(&status, &audio)
-	if e != nil || status != "rendered" || audio != p["audio_asset_id"] {
+	if e != nil || status != "published" || audio != p["audio_asset_id"] {
 		t.Fatal(status, audio, e)
+	}
+	var version, digest string
+	e = s.Store.DB.QueryRow(context.Background(), "SELECT l.case_version_id,l.case_sha256 FROM listening_case l JOIN exercise_catalog c ON c.id::text=l.case_version_id WHERE l.source_key_id=$1 AND c.availability='published'", p["key_id"]).Scan(&version, &digest)
+	if e != nil || version == "" || len(digest) != 64 {
+		t.Fatal(version, digest, e)
+	}
+	// An explicit continuation of already published work returns the same case,
+	// without adding another publication or dispatching model/speech work.
+	p = renderNative(t, s, p, uuid.NewString(), 2)
+	var count int
+	e = s.Store.DB.QueryRow(context.Background(), "SELECT count(*) FROM listening_case WHERE source_key_id=$1", p["key_id"]).Scan(&count)
+	if e != nil || count != 1 {
+		t.Fatal(count, e)
 	}
 }
 func TestNativeSpeechMissingMutationNegative(t *testing.T) {

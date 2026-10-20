@@ -47,12 +47,21 @@ func (s *Storage) finishSpeechCase(ctx context.Context, tx pgx.Tx, p map[string]
 	if e = json.Unmarshal(current, &head); e != nil {
 		return e
 	}
+	if head["status"] == "published" {
+		var exists bool
+		if e = tx.QueryRow(ctx, "SELECT EXISTS(SELECT 1 FROM listening_case WHERE source_key_id=$1)", p["key_id"]).Scan(&exists); e != nil {
+			return e
+		}
+		if exists {
+			return nil
+		}
+	}
 	head["revision"] = float64(revision + 1)
-	head["status"] = "rendered"
+	head["status"] = "published"
 	head["delivery_asset_id"] = p["audio_asset_id"]
 	head["ground_truth_id"] = p["key_id"]
 	raw, _ = lab.Canonical(head)
-	write := DocumentWrite{ID: uuid.NewString(), Kind: "case-head", Version: "2.0.0", Scope: "local", Payload: raw, Head: &HeadWrite{ID: id.(string), Expected: &revision, State: "rendered"}}
+	write := DocumentWrite{ID: uuid.NewString(), Kind: "case-head", Version: "2.0.0", Scope: "local", Payload: raw, Head: &HeadWrite{ID: id.(string), Expected: &revision, State: "published"}}
 	var sha string
 	if e = tx.QueryRow(ctx, "SELECT payload_sha256 FROM document WHERE id=$1", head["candidate_id"]).Scan(&sha); e != nil {
 		return e
@@ -72,6 +81,22 @@ func (s *Storage) finishSpeechCase(ctx context.Context, tx pgx.Tx, p map[string]
 		return e
 	}
 	if e = insertDocument(ctx, tx, write, saved); e != nil {
+		return e
+	}
+	settingsRaw, e := s.ReadAsset(ctx, p["settings_asset_id"].(string))
+	if e != nil {
+		return e
+	}
+	var settings map[string]any
+	if e = json.Unmarshal(settingsRaw, &settings); e != nil {
+		return e
+	}
+	b := settings["blueprint"].(map[string]any)
+	title := "Listening exercise"
+	if request, ok := b["exercise_request"].(map[string]any); ok {
+		title, _ = request["topic"].(string)
+	}
+	if _, e = s.publishListeningCase(ctx, tx, p["key_id"].(string), b["task_components"].(map[string]any), title, b["format"].(string)); e != nil {
 		return e
 	}
 	return validateGraph(ctx, tx, write.ID)
@@ -114,8 +139,29 @@ func (s *Storage) speechActionResult(ctx context.Context, operation string) (map
 	return p, e
 }
 func (s *Storage) acknowledgeSpeech(ctx context.Context, operation, preparation string) error {
-	_, e := s.DB.Exec(ctx, "UPDATE operation SET state='complete',subject_id=$2::text,result_document_id=(SELECT document_id FROM entity_head WHERE id=$2::text),finished_at=clock_timestamp() WHERE id=$1 AND state='reserved'", operation, preparation)
-	return e
+	p, e := s.Preparation(ctx, preparation)
+	if e != nil {
+		return e
+	}
+	tx, e := beginWrite(ctx, s)
+	if e != nil {
+		return e
+	}
+	defer tx.Rollback(context.Background())
+	var published bool
+	if e = tx.QueryRow(ctx, "SELECT EXISTS(SELECT 1 FROM listening_case WHERE source_key_id=$1)", p["key_id"]).Scan(&published); e != nil {
+		return e
+	}
+	if !published {
+		if e = s.finishSpeechCase(ctx, tx, p); e != nil {
+			return e
+		}
+	}
+	_, e = tx.Exec(ctx, "UPDATE operation SET state='complete',subject_id=$2::text,result_document_id=(SELECT document_id FROM entity_head WHERE id=$2::text),finished_at=clock_timestamp() WHERE id=$1 AND state='reserved'", operation, preparation)
+	if e != nil {
+		return e
+	}
+	return tx.Commit(ctx)
 }
 func (s *Storage) speechAttemptCount(ctx context.Context, preparation string) (int, error) {
 	var count int

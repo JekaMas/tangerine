@@ -1,0 +1,1170 @@
+{
+  "properties": [
+    "I9-01.P1",
+    "I9-02.P1",
+    "I9-03.P1",
+    "I9-04.P1",
+    "I9-05.P1",
+    "I9-06.P1",
+    "I9-07.P1",
+    "I9-08.P1",
+    "I9-09.P1",
+    "I9-10.P1",
+    "I9-11.P1",
+    "I9-12.P1"
+  ],
+  "plans": [
+    {
+      "case_id": "I9-01.P1.S1.POSITIVE",
+      "property_id": "I9-01.P1",
+      "polarity": "positive",
+      "scenario": "I9-01 packet 1",
+      "fixture_id": "iteration9-I9-01-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestListeningUnicodePositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestListeningUnicodePositive through services/api/internal/app/attempt_content.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": false
+      },
+      "input": {
+        "exact_native_test": "TestListeningUnicodePositive",
+        "literal_executable_fixture": "func TestListeningUnicodePositive(t *testing.T) {\n\ttext := \"  \u041e\u0448\u0438\u0431\u043a\u0430: cafe\\u0301 \ud83d\udc69\u200d\ud83c\udfeb\\r\\nHe go \u2192 He goes.\\t\"\n\tv, _, e := attemptInput(\"answer-write\", answerPacket(text, \"ru\"))\n\tif e != nil || v[\"answer_text\"] != text {\n\t\tt.Fatal(v, e)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestListeningUnicodePositive(t *testing.T) {\n\ttext := \"  \u041e\u0448\u0438\u0431\u043a\u0430: cafe\\u0301 \ud83d\udc69\u200d\ud83c\udfeb\\r\\nHe go \u2192 He goes.\\t\"\n\tv, _, e := attemptInput(\"answer-write\", answerPacket(text, \"ru\"))\n\tif e != nil || v[\"answer_text\"] != text {\n\t\tt.Fatal(v, e)\n\t}\n}\n",
+        "oracle": "The application SHALL preserve exact decoded UTF-8 answers in English or Russian, including combining marks and whitespace, admit20000Unicode codepoints including non-BMP text, and reject over-capacity or malformed required content without changing saved data. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL preserve exact decoded UTF-8 answers in English or Russian, including combining marks and whitespace, admit20000Unicode codepoints including non-BMP text, and reject over-capacity or malformed required content without changing saved data. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-01.P1.S2.POSITIVE",
+      "property_id": "I9-01.P1",
+      "polarity": "positive",
+      "scenario": "I9-01 packet 2",
+      "fixture_id": "iteration9-I9-01-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestListeningLimitPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestListeningLimitPositive through services/api/internal/app/attempt_content.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": false
+      },
+      "input": {
+        "exact_native_test": "TestListeningLimitPositive",
+        "literal_executable_fixture": "func TestListeningLimitPositive(t *testing.T) {\n\ttext := strings.Repeat(\"\ud83d\udfe0\", 20000)\n\tv, _, e := attemptInput(\"answer-write\", answerPacket(text, \"en\"))\n\tif e != nil || len([]rune(v[\"answer_text\"].(string))) != 20000 {\n\t\tt.Fatal(e)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestListeningLimitPositive(t *testing.T) {\n\ttext := strings.Repeat(\"\ud83d\udfe0\", 20000)\n\tv, _, e := attemptInput(\"answer-write\", answerPacket(text, \"en\"))\n\tif e != nil || len([]rune(v[\"answer_text\"].(string))) != 20000 {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "oracle": "The application SHALL preserve exact decoded UTF-8 answers in English or Russian, including combining marks and whitespace, admit20000Unicode codepoints including non-BMP text, and reject over-capacity or malformed required content without changing saved data. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL preserve exact decoded UTF-8 answers in English or Russian, including combining marks and whitespace, admit20000Unicode codepoints including non-BMP text, and reject over-capacity or malformed required content without changing saved data. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-01.P1.S1.NEGATIVE",
+      "property_id": "I9-01.P1",
+      "polarity": "negative",
+      "scenario": "I9-01 packet 1",
+      "fixture_id": "iteration9-I9-01-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestListeningOverLimitNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestListeningOverLimitNegative through services/api/internal/app/attempt_content.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": false
+      },
+      "input": {
+        "exact_native_test": "TestListeningOverLimitNegative",
+        "literal_executable_fixture": "func TestListeningOverLimitNegative(t *testing.T) {\n\tif _, _, e := attemptInput(\"answer-write\", answerPacket(strings.Repeat(\"x\", 20001), \"en\")); e != ErrCapacity {\n\t\tt.Fatal(e)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestListeningOverLimitNegative(t *testing.T) {\n\tif _, _, e := attemptInput(\"answer-write\", answerPacket(strings.Repeat(\"x\", 20001), \"en\")); e != ErrCapacity {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "oracle": "The application SHALL preserve exact decoded UTF-8 answers in English or Russian, including combining marks and whitespace, admit20000Unicode codepoints including non-BMP text, and reject over-capacity or malformed required content without changing saved data. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL preserve exact decoded UTF-8 answers in English or Russian, including combining marks and whitespace, admit20000Unicode codepoints including non-BMP text, and reject over-capacity or malformed required content without changing saved data. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-01.P1.S2.NEGATIVE",
+      "property_id": "I9-01.P1",
+      "polarity": "negative",
+      "scenario": "I9-01 packet 2",
+      "fixture_id": "iteration9-I9-01-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestListeningInvalidInputNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestListeningInvalidInputNegative through services/api/internal/app/attempt_content.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": false
+      },
+      "input": {
+        "exact_native_test": "TestListeningInvalidInputNegative",
+        "literal_executable_fixture": "func TestListeningInvalidInputNegative(t *testing.T) {\n\tfor _, raw := range [][]byte{[]byte(`{\"answer_text\":\"x\",\"requested_language\":\"fr\"}`), []byte(\"{\\\"answer_text\\\":\\\"\\xff\\\",\\\"requested_language\\\":\\\"en\\\"}\"), []byte(`null`)} {\n\t\tif _, _, e := attemptInput(\"answer-write\", raw); e == nil {\n\t\t\tt.Fatal(\"accepted\", string(raw))\n\t\t}\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestListeningInvalidInputNegative(t *testing.T) {\n\tfor _, raw := range [][]byte{[]byte(`{\"answer_text\":\"x\",\"requested_language\":\"fr\"}`), []byte(\"{\\\"answer_text\\\":\\\"\\xff\\\",\\\"requested_language\\\":\\\"en\\\"}\"), []byte(`null`)} {\n\t\tif _, _, e := attemptInput(\"answer-write\", raw); e == nil {\n\t\t\tt.Fatal(\"accepted\", string(raw))\n\t\t}\n\t}\n}\n",
+        "oracle": "The application SHALL preserve exact decoded UTF-8 answers in English or Russian, including combining marks and whitespace, admit20000Unicode codepoints including non-BMP text, and reject over-capacity or malformed required content without changing saved data. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL preserve exact decoded UTF-8 answers in English or Russian, including combining marks and whitespace, admit20000Unicode codepoints including non-BMP text, and reject over-capacity or malformed required content without changing saved data. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-02.P1.S1.POSITIVE",
+      "property_id": "I9-02.P1",
+      "polarity": "positive",
+      "scenario": "I9-02 packet 1",
+      "fixture_id": "iteration9-I9-02-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestListeningProjectionPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestListeningProjectionPositive through services/api/internal/app/attempt_content.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": false
+      },
+      "input": {
+        "exact_native_test": "TestListeningProjectionPositive",
+        "literal_executable_fixture": "func TestListeningProjectionPositive(t *testing.T) {\n\ta := map[string]any{\"attempt_id\": \"a1\", \"revision\": float64(0), \"state\": \"started\", \"started_at\": \"2026-10-20T00:00:00Z\", \"submitted_at\": nil, \"answer_text\": \"\", \"task_components\": map[string]any{\"detection\": true, \"classification\": true, \"correction\": true, \"explanation\": false}}\n\tc := map[string]any{\"case_item\": map[string]any{\"id\": \"c\"}, \"requested_language\": \"en\"}\n\tv := attemptView(a, c)\n\tif len(v) != 11 || v[\"results_path\"] != nil || v[\"answer_text\"] != \"\" {\n\t\tt.Fatal(v)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestListeningProjectionPositive(t *testing.T) {\n\ta := map[string]any{\"attempt_id\": \"a1\", \"revision\": float64(0), \"state\": \"started\", \"started_at\": \"2026-10-20T00:00:00Z\", \"submitted_at\": nil, \"answer_text\": \"\", \"task_components\": map[string]any{\"detection\": true, \"classification\": true, \"correction\": true, \"explanation\": false}}\n\tc := map[string]any{\"case_item\": map[string]any{\"id\": \"c\"}, \"requested_language\": \"en\"}\n\tv := attemptView(a, c)\n\tif len(v) != 11 || v[\"results_path\"] != nil || v[\"answer_text\"] != \"\" {\n\t\tt.Fatal(v)\n\t}\n}\n",
+        "oracle": "The application SHALL project only safe listening/answer data and a truthful saved result with unperformed semantic values, excluding private key/lease/provider context and ignoring harmless or server-claiming additive fields. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL project only safe listening/answer data and a truthful saved result with unperformed semantic values, excluding private key/lease/provider context and ignoring harmless or server-claiming additive fields. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-02.P1.S2.POSITIVE",
+      "property_id": "I9-02.P1",
+      "polarity": "positive",
+      "scenario": "I9-02 packet 2",
+      "fixture_id": "iteration9-I9-02-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestListeningSavedEnvelopePositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestListeningSavedEnvelopePositive through services/api/internal/app/attempt_content.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": false
+      },
+      "input": {
+        "exact_native_test": "TestListeningSavedEnvelopePositive",
+        "literal_executable_fixture": "func TestListeningSavedEnvelopePositive(t *testing.T) {\n\tv := savedResult(map[string]any{\"attempt_id\": \"a1\", \"case_version_id\": \"c1\"})\n\traw, _ := json.Marshal(v)\n\tif _, _, e := contracts.Validate(\"result-envelope\", \"2.0.0\", raw); e != nil {\n\t\tt.Fatal(e)\n\t}\n\tif v[\"score\"] != nil || v[\"status\"] != \"saved\" {\n\t\tt.Fatal(v)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestListeningSavedEnvelopePositive(t *testing.T) {\n\tv := savedResult(map[string]any{\"attempt_id\": \"a1\", \"case_version_id\": \"c1\"})\n\traw, _ := json.Marshal(v)\n\tif _, _, e := contracts.Validate(\"result-envelope\", \"2.0.0\", raw); e != nil {\n\t\tt.Fatal(e)\n\t}\n\tif v[\"score\"] != nil || v[\"status\"] != \"saved\" {\n\t\tt.Fatal(v)\n\t}\n}\n",
+        "oracle": "The application SHALL project only safe listening/answer data and a truthful saved result with unperformed semantic values, excluding private key/lease/provider context and ignoring harmless or server-claiming additive fields. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL project only safe listening/answer data and a truthful saved result with unperformed semantic values, excluding private key/lease/provider context and ignoring harmless or server-claiming additive fields. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-02.P1.S1.NEGATIVE",
+      "property_id": "I9-02.P1",
+      "polarity": "negative",
+      "scenario": "I9-02 packet 1",
+      "fixture_id": "iteration9-I9-02-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestListeningProjectionPrivateNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestListeningProjectionPrivateNegative through services/api/internal/app/attempt_content.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": false
+      },
+      "input": {
+        "exact_native_test": "TestListeningProjectionPrivateNegative",
+        "literal_executable_fixture": "func TestListeningProjectionPrivateNegative(t *testing.T) {\n\ta := map[string]any{\"attempt_id\": \"a1\", \"revision\": float64(0), \"submitted_at\": nil, \"key\": \"hidden\", \"lease_token\": \"secret\", \"provider_body\": \"private\"}\n\tv := attemptView(a, map[string]any{})\n\tfor _, k := range []string{\"key\", \"lease_token\", \"provider_body\", \"configuration\"} {\n\t\tif _, ok := v[k]; ok {\n\t\t\tt.Fatal(k)\n\t\t}\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestListeningProjectionPrivateNegative(t *testing.T) {\n\ta := map[string]any{\"attempt_id\": \"a1\", \"revision\": float64(0), \"submitted_at\": nil, \"key\": \"hidden\", \"lease_token\": \"secret\", \"provider_body\": \"private\"}\n\tv := attemptView(a, map[string]any{})\n\tfor _, k := range []string{\"key\", \"lease_token\", \"provider_body\", \"configuration\"} {\n\t\tif _, ok := v[k]; ok {\n\t\t\tt.Fatal(k)\n\t\t}\n\t}\n}\n",
+        "oracle": "The application SHALL project only safe listening/answer data and a truthful saved result with unperformed semantic values, excluding private key/lease/provider context and ignoring harmless or server-claiming additive fields. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL project only safe listening/answer data and a truthful saved result with unperformed semantic values, excluding private key/lease/provider context and ignoring harmless or server-claiming additive fields. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-02.P1.S2.NEGATIVE",
+      "property_id": "I9-02.P1",
+      "polarity": "negative",
+      "scenario": "I9-02 packet 2",
+      "fixture_id": "iteration9-I9-02-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestListeningHarmlessFieldsNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestListeningHarmlessFieldsNegative through services/api/internal/app/attempt_content.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": false
+      },
+      "input": {
+        "exact_native_test": "TestListeningHarmlessFieldsNegative",
+        "literal_executable_fixture": "func TestListeningHarmlessFieldsNegative(t *testing.T) {\n\tv, _, e := attemptInput(\"answer-write\", []byte(`{\"answer_text\":\"\",\"requested_language\":\"en\",\"state\":\"completed\",\"revision\":99,\"lease_token\":\"fake\",\"extra\":\"ignored\"}`))\n\tif e != nil || len(v) != 2 || v[\"answer_text\"] != \"\" {\n\t\tt.Fatal(v, e)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestListeningHarmlessFieldsNegative(t *testing.T) {\n\tv, _, e := attemptInput(\"answer-write\", []byte(`{\"answer_text\":\"\",\"requested_language\":\"en\",\"state\":\"completed\",\"revision\":99,\"lease_token\":\"fake\",\"extra\":\"ignored\"}`))\n\tif e != nil || len(v) != 2 || v[\"answer_text\"] != \"\" {\n\t\tt.Fatal(v, e)\n\t}\n}\n",
+        "oracle": "The application SHALL project only safe listening/answer data and a truthful saved result with unperformed semantic values, excluding private key/lease/provider context and ignoring harmless or server-claiming additive fields. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL project only safe listening/answer data and a truthful saved result with unperformed semantic values, excluding private key/lease/provider context and ignoring harmless or server-claiming additive fields. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-03.P1.S1.POSITIVE",
+      "property_id": "I9-03.P1",
+      "polarity": "positive",
+      "scenario": "I9-03 packet 1",
+      "fixture_id": "iteration9-I9-03-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningPublishPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningPublishPositive through services/api/internal/app/listening_publication.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningPublishPositive",
+        "literal_executable_fixture": "func TestNativeListeningPublishPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tw := f.request(\"GET\", \"/api/v1/library\", \"\", \"\", \"\")\n\tif w.Code != 200 || !strings.Contains(w.Body.String(), f.id) || !strings.Contains(w.Body.String(), f.sha) {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n\td, e := f.s.Store.ReadDocument(context.Background(), f.id)\n\trequireListening(t, e)\n\tvar key map[string]any\n\t_ = json.Unmarshal(d.Payload, &key)\n\tif key[\"case_version_id\"] != f.id || key[\"case_sha256\"] != f.sha || key[\"status\"] != \"published\" {\n\t\tt.Fatal(key)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningPublishPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tw := f.request(\"GET\", \"/api/v1/library\", \"\", \"\", \"\")\n\tif w.Code != 200 || !strings.Contains(w.Body.String(), f.id) || !strings.Contains(w.Body.String(), f.sha) {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n\td, e := f.s.Store.ReadDocument(context.Background(), f.id)\n\trequireListening(t, e)\n\tvar key map[string]any\n\t_ = json.Unmarshal(d.Payload, &key)\n\tif key[\"case_version_id\"] != f.id || key[\"case_sha256\"] != f.sha || key[\"status\"] != \"published\" {\n\t\tt.Fatal(key)\n\t}\n}\n",
+        "oracle": "The application SHALL publish an actual immutable playable key/version and safe Library row atomically, reuse publication on repeated finalization, and reject unavailable or mismatching case selections without provider calls or a review gate. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL publish an actual immutable playable key/version and safe Library row atomically, reuse publication on repeated finalization, and reject unavailable or mismatching case selections without provider calls or a review gate. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-03.P1.S2.POSITIVE",
+      "property_id": "I9-03.P1",
+      "polarity": "positive",
+      "scenario": "I9-03 packet 2",
+      "fixture_id": "iteration9-I9-03-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningPublicationReplayPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningPublicationReplayPositive through services/api/internal/app/listening_publication.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningPublicationReplayPositive",
+        "literal_executable_fixture": "func TestNativeListeningPublicationReplayPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tvar source string\n\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT source_key_id FROM listening_case WHERE case_version_id=$1\", f.id).Scan(&source))\n\ttx, e := beginWrite(context.Background(), f.s.Store)\n\trequireListening(t, e)\n\tdefer tx.Rollback(context.Background())\n\tid, e := f.s.Store.publishListeningCase(context.Background(), tx, source, map[string]any{}, \"Different\", \"dialogue\")\n\trequireListening(t, e)\n\tif id != f.id {\n\t\tt.Fatal(id)\n\t}\n\trequireListening(t, tx.Commit(context.Background()))\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningPublicationReplayPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tvar source string\n\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT source_key_id FROM listening_case WHERE case_version_id=$1\", f.id).Scan(&source))\n\ttx, e := beginWrite(context.Background(), f.s.Store)\n\trequireListening(t, e)\n\tdefer tx.Rollback(context.Background())\n\tid, e := f.s.Store.publishListeningCase(context.Background(), tx, source, map[string]any{}, \"Different\", \"dialogue\")\n\trequireListening(t, e)\n\tif id != f.id {\n\t\tt.Fatal(id)\n\t}\n\trequireListening(t, tx.Commit(context.Background()))\n}\n",
+        "oracle": "The application SHALL publish an actual immutable playable key/version and safe Library row atomically, reuse publication on repeated finalization, and reject unavailable or mismatching case selections without provider calls or a review gate. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL publish an actual immutable playable key/version and safe Library row atomically, reuse publication on repeated finalization, and reject unavailable or mismatching case selections without provider calls or a review gate. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-03.P1.S1.NEGATIVE",
+      "property_id": "I9-03.P1",
+      "polarity": "negative",
+      "scenario": "I9-03 packet 1",
+      "fixture_id": "iteration9-I9-03-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningUnavailableNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningUnavailableNegative through services/api/internal/app/listening_publication.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningUnavailableNegative",
+        "literal_executable_fixture": "func TestNativeListeningUnavailableNegative(t *testing.T) {\n\tf := listeningCase(t)\n\t_, e := f.s.Store.DB.Exec(context.Background(), \"UPDATE exercise_catalog SET availability='quarantined' WHERE id=$1\", f.id)\n\trequireListening(t, e)\n\traw, _ := json.Marshal(map[string]any{\"case_version_id\": f.id, \"case_sha256\": f.sha, \"requested_language\": \"en\"})\n\t_, e = f.s.Store.StartAttempt(context.Background(), raw, uuid.NewString())\n\tif !errors.Is(e, ErrCaseUnavailable) {\n\t\tt.Fatal(e)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningUnavailableNegative(t *testing.T) {\n\tf := listeningCase(t)\n\t_, e := f.s.Store.DB.Exec(context.Background(), \"UPDATE exercise_catalog SET availability='quarantined' WHERE id=$1\", f.id)\n\trequireListening(t, e)\n\traw, _ := json.Marshal(map[string]any{\"case_version_id\": f.id, \"case_sha256\": f.sha, \"requested_language\": \"en\"})\n\t_, e = f.s.Store.StartAttempt(context.Background(), raw, uuid.NewString())\n\tif !errors.Is(e, ErrCaseUnavailable) {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "oracle": "The application SHALL publish an actual immutable playable key/version and safe Library row atomically, reuse publication on repeated finalization, and reject unavailable or mismatching case selections without provider calls or a review gate. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL publish an actual immutable playable key/version and safe Library row atomically, reuse publication on repeated finalization, and reject unavailable or mismatching case selections without provider calls or a review gate. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-03.P1.S2.NEGATIVE",
+      "property_id": "I9-03.P1",
+      "polarity": "negative",
+      "scenario": "I9-03 packet 2",
+      "fixture_id": "iteration9-I9-03-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningSelectionDigestNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningSelectionDigestNegative through services/api/internal/app/listening_publication.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningSelectionDigestNegative",
+        "literal_executable_fixture": "func TestNativeListeningSelectionDigestNegative(t *testing.T) {\n\tf := listeningCase(t)\n\traw, _ := json.Marshal(map[string]any{\"case_version_id\": f.id, \"case_sha256\": strings.Repeat(\"0\", 64), \"requested_language\": \"en\"})\n\t_, e := f.s.Store.StartAttempt(context.Background(), raw, uuid.NewString())\n\tif !errors.Is(e, ErrCaseUnavailable) {\n\t\tt.Fatal(e)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningSelectionDigestNegative(t *testing.T) {\n\tf := listeningCase(t)\n\traw, _ := json.Marshal(map[string]any{\"case_version_id\": f.id, \"case_sha256\": strings.Repeat(\"0\", 64), \"requested_language\": \"en\"})\n\t_, e := f.s.Store.StartAttempt(context.Background(), raw, uuid.NewString())\n\tif !errors.Is(e, ErrCaseUnavailable) {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "oracle": "The application SHALL publish an actual immutable playable key/version and safe Library row atomically, reuse publication on repeated finalization, and reject unavailable or mismatching case selections without provider calls or a review gate. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL publish an actual immutable playable key/version and safe Library row atomically, reuse publication on repeated finalization, and reject unavailable or mismatching case selections without provider calls or a review gate. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-04.P1.S1.POSITIVE",
+      "property_id": "I9-04.P1",
+      "polarity": "positive",
+      "scenario": "I9-04 packet 1",
+      "fixture_id": "iteration9-I9-04-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningStartPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningStartPositive through services/api/internal/app/attempt_storage.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningStartPositive",
+        "literal_executable_fixture": "func TestNativeListeningStartPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tr, e := f.s.Store.Attempt(context.Background(), id)\n\trequireListening(t, e)\n\tif r.Attempt[\"case_version_id\"] != f.id || r.Attempt[\"audio_sha256\"] != f.audioSHA || r.Attempt[\"state\"] != \"started\" || r.Attempt[\"evaluation_policy_version\"] != \"answer-components-v2\" || len(r.Context[\"evaluator_bindings\"].([]any)) != 5 {\n\t\tt.Fatal(r)\n\t}\n\tvar n int\n\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM operation WHERE operation_name IN('llm-inference','speech-inference')\").Scan(&n))\n\tif n != 0 {\n\t\tt.Fatal(n)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningStartPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tr, e := f.s.Store.Attempt(context.Background(), id)\n\trequireListening(t, e)\n\tif r.Attempt[\"case_version_id\"] != f.id || r.Attempt[\"audio_sha256\"] != f.audioSHA || r.Attempt[\"state\"] != \"started\" || r.Attempt[\"evaluation_policy_version\"] != \"answer-components-v2\" || len(r.Context[\"evaluator_bindings\"].([]any)) != 5 {\n\t\tt.Fatal(r)\n\t}\n\tvar n int\n\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM operation WHERE operation_name IN('llm-inference','speech-inference')\").Scan(&n))\n\tif n != 0 {\n\t\tt.Fatal(n)\n\t}\n}\n",
+        "oracle": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-04.P1.S2.POSITIVE",
+      "property_id": "I9-04.P1",
+      "polarity": "positive",
+      "scenario": "I9-04 packet 2",
+      "fixture_id": "iteration9-I9-04-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningStartReplayPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningStartReplayPositive through services/api/internal/app/attempt_storage.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningStartReplayPositive",
+        "literal_executable_fixture": "func TestNativeListeningStartReplayPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tkey := uuid.NewString()\n\traw, _ := json.Marshal(map[string]any{\"case_version_id\": f.id, \"case_sha256\": f.sha, \"requested_language\": \"ru\"})\n\ta, e := f.s.Store.StartAttempt(context.Background(), raw, key)\n\trequireListening(t, e)\n\tb, e := f.s.Store.StartAttempt(context.Background(), raw, key)\n\trequireListening(t, e)\n\tif lab.Hash(a) != lab.Hash(b) {\n\t\tt.Fatal(a, b)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningStartReplayPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tkey := uuid.NewString()\n\traw, _ := json.Marshal(map[string]any{\"case_version_id\": f.id, \"case_sha256\": f.sha, \"requested_language\": \"ru\"})\n\ta, e := f.s.Store.StartAttempt(context.Background(), raw, key)\n\trequireListening(t, e)\n\tb, e := f.s.Store.StartAttempt(context.Background(), raw, key)\n\trequireListening(t, e)\n\tif lab.Hash(a) != lab.Hash(b) {\n\t\tt.Fatal(a, b)\n\t}\n}\n",
+        "oracle": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-04.P1.S1.NEGATIVE",
+      "property_id": "I9-04.P1",
+      "polarity": "negative",
+      "scenario": "I9-04 packet 1",
+      "fixture_id": "iteration9-I9-04-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningStartConflictNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningStartConflictNegative through services/api/internal/app/attempt_storage.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningStartConflictNegative",
+        "literal_executable_fixture": "func TestNativeListeningStartConflictNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tkey := uuid.NewString()\n\traw, _ := json.Marshal(map[string]any{\"case_version_id\": f.id, \"case_sha256\": f.sha, \"requested_language\": \"en\"})\n\t_, e := f.s.Store.StartAttempt(context.Background(), raw, key)\n\trequireListening(t, e)\n\traw, _ = json.Marshal(map[string]any{\"case_version_id\": f.id, \"case_sha256\": f.sha, \"requested_language\": \"ru\"})\n\t_, e = f.s.Store.StartAttempt(context.Background(), raw, key)\n\tif !errors.Is(e, ErrConflict) {\n\t\tt.Fatal(e)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningStartConflictNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tkey := uuid.NewString()\n\traw, _ := json.Marshal(map[string]any{\"case_version_id\": f.id, \"case_sha256\": f.sha, \"requested_language\": \"en\"})\n\t_, e := f.s.Store.StartAttempt(context.Background(), raw, key)\n\trequireListening(t, e)\n\traw, _ = json.Marshal(map[string]any{\"case_version_id\": f.id, \"case_sha256\": f.sha, \"requested_language\": \"ru\"})\n\t_, e = f.s.Store.StartAttempt(context.Background(), raw, key)\n\tif !errors.Is(e, ErrConflict) {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "oracle": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-04.P1.S2.NEGATIVE",
+      "property_id": "I9-04.P1",
+      "polarity": "negative",
+      "scenario": "I9-04 packet 2",
+      "fixture_id": "iteration9-I9-04-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningFrozenSettingsNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningFrozenSettingsNegative through services/api/internal/app/attempt_storage.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningFrozenSettingsNegative",
+        "literal_executable_fixture": "func TestNativeListeningFrozenSettingsNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tbefore, e := f.s.Store.Attempt(context.Background(), id)\n\trequireListening(t, e)\n\tc, rev, e := f.s.Store.Configuration(context.Background())\n\trequireListening(t, e)\n\tc[\"feedback_language\"] = \"ru\"\n\tfor _, k := range []string{\"workspace_id\", \"configuration_sha256\", \"provider_access_policy\"} {\n\t\tdelete(c, k)\n\t}\n\traw, _ := json.Marshal(c)\n\t_, _, e = f.s.Store.PutConfiguration(context.Background(), raw, uuid.NewString(), rev)\n\trequireListening(t, e)\n\tafter, e := f.s.Store.Attempt(context.Background(), id)\n\trequireListening(t, e)\n\tif lab.Hash(before.Context[\"configuration\"]) != lab.Hash(after.Context[\"configuration\"]) {\n\t\tt.Fatal(\"old attempt adopted settings\")\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningFrozenSettingsNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tbefore, e := f.s.Store.Attempt(context.Background(), id)\n\trequireListening(t, e)\n\tc, rev, e := f.s.Store.Configuration(context.Background())\n\trequireListening(t, e)\n\tc[\"feedback_language\"] = \"ru\"\n\tfor _, k := range []string{\"workspace_id\", \"configuration_sha256\", \"provider_access_policy\"} {\n\t\tdelete(c, k)\n\t}\n\traw, _ := json.Marshal(c)\n\t_, _, e = f.s.Store.PutConfiguration(context.Background(), raw, uuid.NewString(), rev)\n\trequireListening(t, e)\n\tafter, e := f.s.Store.Attempt(context.Background(), id)\n\trequireListening(t, e)\n\tif lab.Hash(before.Context[\"configuration\"]) != lab.Hash(after.Context[\"configuration\"]) {\n\t\tt.Fatal(\"old attempt adopted settings\")\n\t}\n}\n",
+        "oracle": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL freeze exact published case/audio, task and policy versions, configuration, active prompt bundle and effective evaluator bindings at entry, replay identical starts, and preserve the snapshot across conflicting starts or subsequent Settings changes. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-05.P1.S1.POSITIVE",
+      "property_id": "I9-05.P1",
+      "polarity": "positive",
+      "scenario": "I9-05 packet 1",
+      "fixture_id": "iteration9-I9-05-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningDraftPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningDraftPositive through services/api/internal/app/attempt_storage.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningDraftPositive",
+        "literal_executable_fixture": "func TestNativeListeningDraftPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\ttext := \"  He go \u2192 He goes.\\r\\n\u041e\u0448\u0438\u0431\u043a\u0430 e\\u0301 \ud83d\udfe0  \"\n\ta, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(text, \"ru\"), false)\n\trequireListening(t, e)\n\tif a[\"state\"] != \"started\" || a[\"answer_text\"] != text || a[\"answer_utf8_sha256\"] != contracts.Digest([]byte(text)) || a[\"revision\"] != float64(1) {\n\t\tt.Fatal(a)\n\t}\n\tr, e := f.s.Store.Attempt(context.Background(), id)\n\trequireListening(t, e)\n\tif r.Attempt[\"answer_text\"] != text || r.Context[\"requested_language\"] != \"ru\" {\n\t\tt.Fatal(r)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningDraftPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\ttext := \"  He go \u2192 He goes.\\r\\n\u041e\u0448\u0438\u0431\u043a\u0430 e\\u0301 \ud83d\udfe0  \"\n\ta, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(text, \"ru\"), false)\n\trequireListening(t, e)\n\tif a[\"state\"] != \"started\" || a[\"answer_text\"] != text || a[\"answer_utf8_sha256\"] != contracts.Digest([]byte(text)) || a[\"revision\"] != float64(1) {\n\t\tt.Fatal(a)\n\t}\n\tr, e := f.s.Store.Attempt(context.Background(), id)\n\trequireListening(t, e)\n\tif r.Attempt[\"answer_text\"] != text || r.Context[\"requested_language\"] != \"ru\" {\n\t\tt.Fatal(r)\n\t}\n}\n",
+        "oracle": "The application SHALL save original answer bytes/hash and language while started, retain admitted request content, replay exact draft operations, and reject stale or conflicting writes without losing the winning answer. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL save original answer bytes/hash and language while started, retain admitted request content, replay exact draft operations, and reject stale or conflicting writes without losing the winning answer. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-05.P1.S2.POSITIVE",
+      "property_id": "I9-05.P1",
+      "polarity": "positive",
+      "scenario": "I9-05 packet 2",
+      "fixture_id": "iteration9-I9-05-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningDraftReplayPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningDraftReplayPositive through services/api/internal/app/attempt_storage.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningDraftReplayPositive",
+        "literal_executable_fixture": "func TestNativeListeningDraftReplayPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tkey := uuid.NewString()\n\ta, op, e := f.s.Store.WriteAnswer(context.Background(), id, key, 0, answerPacket(\"draft\", \"en\"), false)\n\trequireListening(t, e)\n\tb, replay, e := f.s.Store.WriteAnswer(context.Background(), id, key, 0, answerPacket(\"draft\", \"en\"), false)\n\trequireListening(t, e)\n\tif op != replay || lab.Hash(a) != lab.Hash(b) {\n\t\tt.Fatal(a, b)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningDraftReplayPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tkey := uuid.NewString()\n\ta, op, e := f.s.Store.WriteAnswer(context.Background(), id, key, 0, answerPacket(\"draft\", \"en\"), false)\n\trequireListening(t, e)\n\tb, replay, e := f.s.Store.WriteAnswer(context.Background(), id, key, 0, answerPacket(\"draft\", \"en\"), false)\n\trequireListening(t, e)\n\tif op != replay || lab.Hash(a) != lab.Hash(b) {\n\t\tt.Fatal(a, b)\n\t}\n}\n",
+        "oracle": "The application SHALL save original answer bytes/hash and language while started, retain admitted request content, replay exact draft operations, and reject stale or conflicting writes without losing the winning answer. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL save original answer bytes/hash and language while started, retain admitted request content, replay exact draft operations, and reject stale or conflicting writes without losing the winning answer. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-05.P1.S1.NEGATIVE",
+      "property_id": "I9-05.P1",
+      "polarity": "negative",
+      "scenario": "I9-05 packet 1",
+      "fixture_id": "iteration9-I9-05-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningDraftStaleNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningDraftStaleNegative through services/api/internal/app/attempt_storage.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningDraftStaleNegative",
+        "literal_executable_fixture": "func TestNativeListeningDraftStaleNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"first\", \"en\"), false)\n\trequireListening(t, e)\n\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"stale\", \"en\"), false)\n\tif !errors.Is(e, ErrRevision) {\n\t\tt.Fatal(e)\n\t}\n\tr, e := f.s.Store.Attempt(context.Background(), id)\n\trequireListening(t, e)\n\tif r.Attempt[\"answer_text\"] != \"first\" {\n\t\tt.Fatal(r)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningDraftStaleNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"first\", \"en\"), false)\n\trequireListening(t, e)\n\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"stale\", \"en\"), false)\n\tif !errors.Is(e, ErrRevision) {\n\t\tt.Fatal(e)\n\t}\n\tr, e := f.s.Store.Attempt(context.Background(), id)\n\trequireListening(t, e)\n\tif r.Attempt[\"answer_text\"] != \"first\" {\n\t\tt.Fatal(r)\n\t}\n}\n",
+        "oracle": "The application SHALL save original answer bytes/hash and language while started, retain admitted request content, replay exact draft operations, and reject stale or conflicting writes without losing the winning answer. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL save original answer bytes/hash and language while started, retain admitted request content, replay exact draft operations, and reject stale or conflicting writes without losing the winning answer. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-05.P1.S2.NEGATIVE",
+      "property_id": "I9-05.P1",
+      "polarity": "negative",
+      "scenario": "I9-05 packet 2",
+      "fixture_id": "iteration9-I9-05-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningDraftConflictNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningDraftConflictNegative through services/api/internal/app/attempt_storage.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningDraftConflictNegative",
+        "literal_executable_fixture": "func TestNativeListeningDraftConflictNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tkey := uuid.NewString()\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, key, 0, answerPacket(\"first\", \"en\"), false)\n\trequireListening(t, e)\n\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, key, 0, answerPacket(\"different\", \"en\"), false)\n\tif !errors.Is(e, ErrConflict) {\n\t\tt.Fatal(e)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningDraftConflictNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tkey := uuid.NewString()\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, key, 0, answerPacket(\"first\", \"en\"), false)\n\trequireListening(t, e)\n\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, key, 0, answerPacket(\"different\", \"en\"), false)\n\tif !errors.Is(e, ErrConflict) {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "oracle": "The application SHALL save original answer bytes/hash and language while started, retain admitted request content, replay exact draft operations, and reject stale or conflicting writes without losing the winning answer. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL save original answer bytes/hash and language while started, retain admitted request content, replay exact draft operations, and reject stale or conflicting writes without losing the winning answer. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-06.P1.S1.POSITIVE",
+      "property_id": "I9-06.P1",
+      "polarity": "positive",
+      "scenario": "I9-06 packet 1",
+      "fixture_id": "iteration9-I9-06-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningSubmitPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningSubmitPositive through services/api/internal/app/attempt_storage.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningSubmitPositive",
+        "literal_executable_fixture": "func TestNativeListeningSubmitPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\ta, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"\u0421\u043e\u0433\u043b\u0430\u0441\u043e\u0432\u0430\u043d\u0438\u0435: goes.\", \"ru\"), true)\n\trequireListening(t, e)\n\tif a[\"state\"] != \"saved\" || a[\"submitted_at\"] == nil || a[\"started_at\"] == nil {\n\t\tt.Fatal(a)\n\t}\n\tw := f.request(\"GET\", \"/api/v1/attempts/\"+id+\"/results\", \"\", \"\", \"\")\n\tif w.Code != 200 || !strings.Contains(w.Body.String(), `\"status\":\"saved\"`) || !strings.Contains(w.Body.String(), `\"score\":null`) {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningSubmitPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\ta, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"\u0421\u043e\u0433\u043b\u0430\u0441\u043e\u0432\u0430\u043d\u0438\u0435: goes.\", \"ru\"), true)\n\trequireListening(t, e)\n\tif a[\"state\"] != \"saved\" || a[\"submitted_at\"] == nil || a[\"started_at\"] == nil {\n\t\tt.Fatal(a)\n\t}\n\tw := f.request(\"GET\", \"/api/v1/attempts/\"+id+\"/results\", \"\", \"\", \"\")\n\tif w.Code != 200 || !strings.Contains(w.Body.String(), `\"status\":\"saved\"`) || !strings.Contains(w.Body.String(), `\"score\":null`) {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n}\n",
+        "oracle": "The application SHALL commit an exact nonempty or empty answer and actual database submission time as saved before evaluation, replay the same submitted operation, and refuse later drafts/replacements without changing frozen history. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL commit an exact nonempty or empty answer and actual database submission time as saved before evaluation, replay the same submitted operation, and refuse later drafts/replacements without changing frozen history. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-06.P1.S2.POSITIVE",
+      "property_id": "I9-06.P1",
+      "polarity": "positive",
+      "scenario": "I9-06 packet 2",
+      "fixture_id": "iteration9-I9-06-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningEmptySubmitPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningEmptySubmitPositive through services/api/internal/app/attempt_storage.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningEmptySubmitPositive",
+        "literal_executable_fixture": "func TestNativeListeningEmptySubmitPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tkey := uuid.NewString()\n\ta, _, e := f.s.Store.WriteAnswer(context.Background(), id, key, 0, answerPacket(\"\", \"en\"), true)\n\trequireListening(t, e)\n\tb, _, e := f.s.Store.WriteAnswer(context.Background(), id, key, 0, answerPacket(\"\", \"en\"), true)\n\trequireListening(t, e)\n\tif a[\"answer_text\"] != \"\" || a[\"answer_utf8_sha256\"] != \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\" || lab.Hash(a) != lab.Hash(b) {\n\t\tt.Fatal(a, b)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningEmptySubmitPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tkey := uuid.NewString()\n\ta, _, e := f.s.Store.WriteAnswer(context.Background(), id, key, 0, answerPacket(\"\", \"en\"), true)\n\trequireListening(t, e)\n\tb, _, e := f.s.Store.WriteAnswer(context.Background(), id, key, 0, answerPacket(\"\", \"en\"), true)\n\trequireListening(t, e)\n\tif a[\"answer_text\"] != \"\" || a[\"answer_utf8_sha256\"] != \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\" || lab.Hash(a) != lab.Hash(b) {\n\t\tt.Fatal(a, b)\n\t}\n}\n",
+        "oracle": "The application SHALL commit an exact nonempty or empty answer and actual database submission time as saved before evaluation, replay the same submitted operation, and refuse later drafts/replacements without changing frozen history. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL commit an exact nonempty or empty answer and actual database submission time as saved before evaluation, replay the same submitted operation, and refuse later drafts/replacements without changing frozen history. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-06.P1.S1.NEGATIVE",
+      "property_id": "I9-06.P1",
+      "polarity": "negative",
+      "scenario": "I9-06 packet 1",
+      "fixture_id": "iteration9-I9-06-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningAfterSubmitNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningAfterSubmitNegative through services/api/internal/app/attempt_storage.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningAfterSubmitNegative",
+        "literal_executable_fixture": "func TestNativeListeningAfterSubmitNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"frozen\", \"en\"), true)\n\trequireListening(t, e)\n\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 1, answerPacket(\"edit\", \"en\"), false)\n\tif !errors.Is(e, ErrAttemptState) {\n\t\tt.Fatal(e)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningAfterSubmitNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"frozen\", \"en\"), true)\n\trequireListening(t, e)\n\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 1, answerPacket(\"edit\", \"en\"), false)\n\tif !errors.Is(e, ErrAttemptState) {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "oracle": "The application SHALL commit an exact nonempty or empty answer and actual database submission time as saved before evaluation, replay the same submitted operation, and refuse later drafts/replacements without changing frozen history. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL commit an exact nonempty or empty answer and actual database submission time as saved before evaluation, replay the same submitted operation, and refuse later drafts/replacements without changing frozen history. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-06.P1.S2.NEGATIVE",
+      "property_id": "I9-06.P1",
+      "polarity": "negative",
+      "scenario": "I9-06 packet 2",
+      "fixture_id": "iteration9-I9-06-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningResubmitNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningResubmitNegative through services/api/internal/app/attempt_storage.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningResubmitNegative",
+        "literal_executable_fixture": "func TestNativeListeningResubmitNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"frozen\", \"en\"), true)\n\trequireListening(t, e)\n\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 1, answerPacket(\"replace\", \"en\"), true)\n\tif !errors.Is(e, ErrAttemptState) {\n\t\tt.Fatal(e)\n\t}\n}\nfunc (f listeningFixture) event(id, page, kind string, seq, pos int) []byte {\n\traw, _ := json.Marshal(map[string]any{\"schema_version\": \"2.0.0\", \"attempt_id\": id, \"audio_sha256\": f.audioSHA, \"kind\": kind, \"client_sequence\": seq, \"page_instance_id\": page, \"position_sample\": pos, \"client_time_ms\": nil})\n\treturn raw\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningResubmitNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"frozen\", \"en\"), true)\n\trequireListening(t, e)\n\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 1, answerPacket(\"replace\", \"en\"), true)\n\tif !errors.Is(e, ErrAttemptState) {\n\t\tt.Fatal(e)\n\t}\n}\nfunc (f listeningFixture) event(id, page, kind string, seq, pos int) []byte {\n\traw, _ := json.Marshal(map[string]any{\"schema_version\": \"2.0.0\", \"attempt_id\": id, \"audio_sha256\": f.audioSHA, \"kind\": kind, \"client_sequence\": seq, \"page_instance_id\": page, \"position_sample\": pos, \"client_time_ms\": nil})\n\treturn raw\n}\n",
+        "oracle": "The application SHALL commit an exact nonempty or empty answer and actual database submission time as saved before evaluation, replay the same submitted operation, and refuse later drafts/replacements without changing frozen history. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL commit an exact nonempty or empty answer and actual database submission time as saved before evaluation, replay the same submitted operation, and refuse later drafts/replacements without changing frozen history. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-07.P1.S1.POSITIVE",
+      "property_id": "I9-07.P1",
+      "polarity": "positive",
+      "scenario": "I9-07 packet 1",
+      "fixture_id": "iteration9-I9-07-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningPlaybackPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningPlaybackPositive through services/api/internal/app/attempt_playback.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningPlaybackPositive",
+        "literal_executable_fixture": "func TestNativeListeningPlaybackPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tfor i, k := range []string{\"play\", \"pause\", \"seek\", \"ended\"} {\n\t\t_, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \"page1\", k, i, 24000))\n\t\trequireListening(t, e)\n\t}\n\tvar n int\n\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM playback_index WHERE attempt_id=$1\", id).Scan(&n))\n\tif n != 4 {\n\t\tt.Fatal(n)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningPlaybackPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tfor i, k := range []string{\"play\", \"pause\", \"seek\", \"ended\"} {\n\t\t_, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \"page1\", k, i, 24000))\n\t\trequireListening(t, e)\n\t}\n\tvar n int\n\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM playback_index WHERE attempt_id=$1\", id).Scan(&n))\n\tif n != 4 {\n\t\tt.Fatal(n)\n\t}\n}\n",
+        "oracle": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-07.P1.S2.POSITIVE",
+      "property_id": "I9-07.P1",
+      "polarity": "positive",
+      "scenario": "I9-07 packet 2",
+      "fixture_id": "iteration9-I9-07-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningPlaybackReplayPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningPlaybackReplayPositive through services/api/internal/app/attempt_playback.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningPlaybackReplayPositive",
+        "literal_executable_fixture": "func TestNativeListeningPlaybackReplayPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"draft1\", \"en\"), false)\n\trequireListening(t, e)\n\traw := f.event(id, \"p1\", \"play\", 0, 0)\n\tkey := uuid.NewString()\n\ta, e := f.s.Store.RecordPlayback(context.Background(), id, key, raw)\n\trequireListening(t, e)\n\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 1, answerPacket(\"draft2\", \"en\"), false)\n\trequireListening(t, e)\n\tb, e := f.s.Store.RecordPlayback(context.Background(), id, key, raw)\n\trequireListening(t, e)\n\tc, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw)\n\trequireListening(t, e)\n\tif lab.Hash(a) != lab.Hash(b) || lab.Hash(a[\"artifact_ids\"]) != lab.Hash(c[\"artifact_ids\"]) || a[\"revision\"] != int64(1) || c[\"revision\"] != int64(1) {\n\t\tt.Fatal(a, b, c)\n\t}\n\t_, e = f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \"p2\", \"play\", 0, 0))\n\trequireListening(t, e)\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningPlaybackReplayPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"draft1\", \"en\"), false)\n\trequireListening(t, e)\n\traw := f.event(id, \"p1\", \"play\", 0, 0)\n\tkey := uuid.NewString()\n\ta, e := f.s.Store.RecordPlayback(context.Background(), id, key, raw)\n\trequireListening(t, e)\n\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 1, answerPacket(\"draft2\", \"en\"), false)\n\trequireListening(t, e)\n\tb, e := f.s.Store.RecordPlayback(context.Background(), id, key, raw)\n\trequireListening(t, e)\n\tc, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw)\n\trequireListening(t, e)\n\tif lab.Hash(a) != lab.Hash(b) || lab.Hash(a[\"artifact_ids\"]) != lab.Hash(c[\"artifact_ids\"]) || a[\"revision\"] != int64(1) || c[\"revision\"] != int64(1) {\n\t\tt.Fatal(a, b, c)\n\t}\n\t_, e = f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \"p2\", \"play\", 0, 0))\n\trequireListening(t, e)\n}\n",
+        "oracle": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-07.P1.S1.NEGATIVE",
+      "property_id": "I9-07.P1",
+      "polarity": "negative",
+      "scenario": "I9-07 packet 1",
+      "fixture_id": "iteration9-I9-07-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningPlaybackMismatchNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningPlaybackMismatchNegative through services/api/internal/app/attempt_playback.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningPlaybackMismatchNegative",
+        "literal_executable_fixture": "func TestNativeListeningPlaybackMismatchNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tfor _, raw := range [][]byte{f.event(id, \"p1\", \"play\", 0, 24001), f.event(\"another-attempt\", \"p1\", \"play\", 0, 0), []byte(strings.ReplaceAll(string(f.event(id, \"p1\", \"play\", 0, 0)), f.audioSHA, strings.Repeat(\"0\", 64)))} {\n\t\tif _, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw); !errors.Is(e, ErrInput) {\n\t\t\tt.Fatal(e)\n\t\t}\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningPlaybackMismatchNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tfor _, raw := range [][]byte{f.event(id, \"p1\", \"play\", 0, 24001), f.event(\"another-attempt\", \"p1\", \"play\", 0, 0), []byte(strings.ReplaceAll(string(f.event(id, \"p1\", \"play\", 0, 0)), f.audioSHA, strings.Repeat(\"0\", 64)))} {\n\t\tif _, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw); !errors.Is(e, ErrInput) {\n\t\t\tt.Fatal(e)\n\t\t}\n\t}\n}\n",
+        "oracle": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-07.P1.S2.NEGATIVE",
+      "property_id": "I9-07.P1",
+      "polarity": "negative",
+      "scenario": "I9-07 packet 2",
+      "fixture_id": "iteration9-I9-07-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningPlaybackReorderedNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningPlaybackReorderedNegative through services/api/internal/app/attempt_playback.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningPlaybackReorderedNegative",
+        "literal_executable_fixture": "func TestNativeListeningPlaybackReorderedNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \"p1\", \"play\", 2, 0))\n\trequireListening(t, e)\n\tfor _, raw := range [][]byte{f.event(id, \"p1\", \"pause\", 1, 0), f.event(id, \"p1\", \"pause\", 2, 1)} {\n\t\tif _, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw); !errors.Is(e, ErrConflict) {\n\t\t\tt.Fatal(e)\n\t\t}\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningPlaybackReorderedNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), f.event(id, \"p1\", \"play\", 2, 0))\n\trequireListening(t, e)\n\tfor _, raw := range [][]byte{f.event(id, \"p1\", \"pause\", 1, 0), f.event(id, \"p1\", \"pause\", 2, 1)} {\n\t\tif _, e := f.s.Store.RecordPlayback(context.Background(), id, uuid.NewString(), raw); !errors.Is(e, ErrConflict) {\n\t\t\tt.Fatal(e)\n\t\t}\n\t}\n}\n",
+        "oracle": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL retain actual reported play/pause/seek/ended events with server times, deduplicate page/sequence and operation retries across answer revisions, and reject wrong attempt/audio/sample scope or conflicting/reordered events without inferring ability. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-08.P1.S1.POSITIVE",
+      "property_id": "I9-08.P1",
+      "polarity": "positive",
+      "scenario": "I9-08 packet 1",
+      "fixture_id": "iteration9-I9-08-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningHTTPPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningHTTPPositive through services/api/internal/app/attempt_http.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningHTTPPositive",
+        "literal_executable_fixture": "func TestNativeListeningHTTPPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tw := f.request(\"GET\", \"/api/v1/attempts/\"+id, \"\", \"\", \"\")\n\tif w.Code != 200 || w.Header().Get(\"ETag\") != `\"0\"` || w.Header().Get(\"X-Tangerine-Audio-SHA256\") != f.audioSHA {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n\tw = f.request(\"PUT\", \"/api/v1/attempts/\"+id+\"/answer\", string(answerPacket(strings.Repeat(\"\ud83d\udfe0\", 20000), \"ru\")), uuid.NewString(), `\"0\"`)\n\tif w.Code != 200 {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningHTTPPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tw := f.request(\"GET\", \"/api/v1/attempts/\"+id, \"\", \"\", \"\")\n\tif w.Code != 200 || w.Header().Get(\"ETag\") != `\"0\"` || w.Header().Get(\"X-Tangerine-Audio-SHA256\") != f.audioSHA {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n\tw = f.request(\"PUT\", \"/api/v1/attempts/\"+id+\"/answer\", string(answerPacket(strings.Repeat(\"\ud83d\udfe0\", 20000), \"ru\")), uuid.NewString(), `\"0\"`)\n\tif w.Code != 200 {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n}\n",
+        "oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-08.P1.S2.POSITIVE",
+      "property_id": "I9-08.P1",
+      "polarity": "positive",
+      "scenario": "I9-08 packet 2",
+      "fixture_id": "iteration9-I9-08-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningRangePositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningRangePositive through services/api/internal/app/attempt_http.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningRangePositive",
+        "literal_executable_fixture": "func TestNativeListeningRangePositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tr := httptest.NewRequest(\"GET\", \"/api/v1/attempts/\"+id+\"/audio\", nil)\n\tr.Header.Set(\"Authorization\", \"Bearer \"+f.s.token)\n\tr.Header.Set(\"Range\", \"bytes=44-47\")\n\tw := httptest.NewRecorder()\n\tf.s.Handler().ServeHTTP(w, r)\n\tif w.Code != 206 || string(w.Body.Bytes()) != string(f.audio[44:48]) || w.Header().Get(\"ETag\") != `\"`+f.audioSHA+`\"` {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningRangePositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tr := httptest.NewRequest(\"GET\", \"/api/v1/attempts/\"+id+\"/audio\", nil)\n\tr.Header.Set(\"Authorization\", \"Bearer \"+f.s.token)\n\tr.Header.Set(\"Range\", \"bytes=44-47\")\n\tw := httptest.NewRecorder()\n\tf.s.Handler().ServeHTTP(w, r)\n\tif w.Code != 206 || string(w.Body.Bytes()) != string(f.audio[44:48]) || w.Header().Get(\"ETag\") != `\"`+f.audioSHA+`\"` {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n}\n",
+        "oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-08.P1.S1.NEGATIVE",
+      "property_id": "I9-08.P1",
+      "polarity": "negative",
+      "scenario": "I9-08 packet 1",
+      "fixture_id": "iteration9-I9-08-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningPublicPrivateNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningPublicPrivateNegative through services/api/internal/app/attempt_http.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningPublicPrivateNegative",
+        "literal_executable_fixture": "func TestNativeListeningPublicPrivateNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tw := f.request(\"GET\", \"/api/v1/attempts/\"+id, \"\", \"\", \"\")\n\tfor _, hidden := range []string{\"canonical_text\", \"surface_text\", \"planned_units\", \"source_key_id\", \"provider\", \"lease_token\", \"mutation_count\", \"The caf\u00e9 open tomorrow.\"} {\n\t\tif strings.Contains(w.Body.String(), hidden) {\n\t\t\tt.Fatal(hidden, w.Body.String())\n\t\t}\n\t}\n\tw = f.request(\"GET\", \"/api/v1/attempts/\"+uuid.NewString(), \"\", \"\", \"\")\n\tif w.Code != 404 {\n\t\tt.Fatal(w.Code)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningPublicPrivateNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tw := f.request(\"GET\", \"/api/v1/attempts/\"+id, \"\", \"\", \"\")\n\tfor _, hidden := range []string{\"canonical_text\", \"surface_text\", \"planned_units\", \"source_key_id\", \"provider\", \"lease_token\", \"mutation_count\", \"The caf\u00e9 open tomorrow.\"} {\n\t\tif strings.Contains(w.Body.String(), hidden) {\n\t\t\tt.Fatal(hidden, w.Body.String())\n\t\t}\n\t}\n\tw = f.request(\"GET\", \"/api/v1/attempts/\"+uuid.NewString(), \"\", \"\", \"\")\n\tif w.Code != 404 {\n\t\tt.Fatal(w.Code)\n\t}\n}\n",
+        "oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-08.P1.S2.NEGATIVE",
+      "property_id": "I9-08.P1",
+      "polarity": "negative",
+      "scenario": "I9-08 packet 2",
+      "fixture_id": "iteration9-I9-08-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningHTTPGuardsNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningHTTPGuardsNegative through services/api/internal/app/attempt_http.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningHTTPGuardsNegative",
+        "literal_executable_fixture": "func TestNativeListeningHTTPGuardsNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tw := f.request(\"PUT\", \"/api/v1/attempts/\"+id+\"/answer\", string(answerPacket(\"x\", \"en\")), uuid.NewString(), \"\")\n\tif w.Code != 412 {\n\t\tt.Fatal(w.Code)\n\t}\n\tr := httptest.NewRequest(\"POST\", \"/api/v1/attempts\", strings.NewReader(`{}`))\n\tw = httptest.NewRecorder()\n\tf.s.Handler().ServeHTTP(w, r)\n\tif w.Code != 403 {\n\t\tt.Fatal(w.Code)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningHTTPGuardsNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tw := f.request(\"PUT\", \"/api/v1/attempts/\"+id+\"/answer\", string(answerPacket(\"x\", \"en\")), uuid.NewString(), \"\")\n\tif w.Code != 412 {\n\t\tt.Fatal(w.Code)\n\t}\n\tr := httptest.NewRequest(\"POST\", \"/api/v1/attempts\", strings.NewReader(`{}`))\n\tw = httptest.NewRecorder()\n\tf.s.Handler().ServeHTTP(w, r)\n\tif w.Code != 403 {\n\t\tt.Fatal(w.Code)\n\t}\n}\n",
+        "oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL serve real same-origin listening/answer operations including full Unicode capacity and frozen single-range audio/ETag, keeping private content and invalid-origin, missing-ID or missing-revision writes out of teacher responses. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-09.P1.S1.POSITIVE",
+      "property_id": "I9-09.P1",
+      "polarity": "positive",
+      "scenario": "I9-09 packet 1",
+      "fixture_id": "iteration9-I9-09-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningHistoryPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningHistoryPositive through services/api/internal/app/attempt_history.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningHistoryPositive",
+        "literal_executable_fixture": "func TestNativeListeningHistoryPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tids := map[string]bool{}\n\tfor i := 0; i < 5; i++ {\n\t\tids[f.start(t)] = true\n\t}\n\tcursor := \"\"\n\tseen := map[string]bool{}\n\tfor {\n\t\trows, next, e := f.s.Store.AttemptHistory(context.Background(), 2, cursor)\n\t\trequireListening(t, e)\n\t\tfor _, v := range rows {\n\t\t\ta := v.(map[string]any)\n\t\t\tid := a[\"id\"].(string)\n\t\t\tif !ids[id] || seen[id] {\n\t\t\t\tt.Fatal(id)\n\t\t\t}\n\t\t\tseen[id] = true\n\t\t}\n\t\tif next == \"\" {\n\t\t\tbreak\n\t\t}\n\t\tcursor = next\n\t}\n\tif len(seen) != 5 {\n\t\tt.Fatal(seen)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningHistoryPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tids := map[string]bool{}\n\tfor i := 0; i < 5; i++ {\n\t\tids[f.start(t)] = true\n\t}\n\tcursor := \"\"\n\tseen := map[string]bool{}\n\tfor {\n\t\trows, next, e := f.s.Store.AttemptHistory(context.Background(), 2, cursor)\n\t\trequireListening(t, e)\n\t\tfor _, v := range rows {\n\t\t\ta := v.(map[string]any)\n\t\t\tid := a[\"id\"].(string)\n\t\t\tif !ids[id] || seen[id] {\n\t\t\t\tt.Fatal(id)\n\t\t\t}\n\t\t\tseen[id] = true\n\t\t}\n\t\tif next == \"\" {\n\t\t\tbreak\n\t\t}\n\t\tcursor = next\n\t}\n\tif len(seen) != 5 {\n\t\tt.Fatal(seen)\n\t}\n}\n",
+        "oracle": "The application SHALL read all attempts through stable original-time/ID keyset pages and reopened storage with no inference, retaining original answers while rejecting invalid cursors/capacity or pre-submit result disclosure. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL read all attempts through stable original-time/ID keyset pages and reopened storage with no inference, retaining original answers while rejecting invalid cursors/capacity or pre-submit result disclosure. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-09.P1.S2.POSITIVE",
+      "property_id": "I9-09.P1",
+      "polarity": "positive",
+      "scenario": "I9-09 packet 2",
+      "fixture_id": "iteration9-I9-09-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningRestartPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningRestartPositive through services/api/internal/app/attempt_history.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningRestartPositive",
+        "literal_executable_fixture": "func TestNativeListeningRestartPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"Persistent answer \ud83d\udfe0\", \"en\"), false)\n\trequireListening(t, e)\n\tconnection := f.s.Store.DB.Config().ConnConfig.ConnString()\n\tf.s.Store.DB.Close()\n\treopened, e := OpenStorage(context.Background(), connection, \"minio:9000\", os.Getenv(\"MINIO_ROOT_USER\"), os.Getenv(\"MINIO_ROOT_PASSWORD\"), \"regressions\")\n\trequireListening(t, e)\n\tt.Cleanup(reopened.DB.Close)\n\tserver := NewServer(reopened, f.s.Origin, \"http://unused.invalid\")\n\tr, e := server.Store.Attempt(context.Background(), id)\n\trequireListening(t, e)\n\tif r.Attempt[\"answer_text\"] != \"Persistent answer \ud83d\udfe0\" || r.Attempt[\"revision\"] != float64(1) {\n\t\tt.Fatal(r)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningRestartPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"Persistent answer \ud83d\udfe0\", \"en\"), false)\n\trequireListening(t, e)\n\tconnection := f.s.Store.DB.Config().ConnConfig.ConnString()\n\tf.s.Store.DB.Close()\n\treopened, e := OpenStorage(context.Background(), connection, \"minio:9000\", os.Getenv(\"MINIO_ROOT_USER\"), os.Getenv(\"MINIO_ROOT_PASSWORD\"), \"regressions\")\n\trequireListening(t, e)\n\tt.Cleanup(reopened.DB.Close)\n\tserver := NewServer(reopened, f.s.Origin, \"http://unused.invalid\")\n\tr, e := server.Store.Attempt(context.Background(), id)\n\trequireListening(t, e)\n\tif r.Attempt[\"answer_text\"] != \"Persistent answer \ud83d\udfe0\" || r.Attempt[\"revision\"] != float64(1) {\n\t\tt.Fatal(r)\n\t}\n}\n",
+        "oracle": "The application SHALL read all attempts through stable original-time/ID keyset pages and reopened storage with no inference, retaining original answers while rejecting invalid cursors/capacity or pre-submit result disclosure. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL read all attempts through stable original-time/ID keyset pages and reopened storage with no inference, retaining original answers while rejecting invalid cursors/capacity or pre-submit result disclosure. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-09.P1.S1.NEGATIVE",
+      "property_id": "I9-09.P1",
+      "polarity": "negative",
+      "scenario": "I9-09 packet 1",
+      "fixture_id": "iteration9-I9-09-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningCursorNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningCursorNegative through services/api/internal/app/attempt_history.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningCursorNegative",
+        "literal_executable_fixture": "func TestNativeListeningCursorNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tfor _, cursor := range []string{\"not-base64\", \"bm90LXZh bGlk\"} {\n\t\tif _, _, e := f.s.Store.AttemptHistory(context.Background(), 2, cursor); !errors.Is(e, ErrInput) {\n\t\t\tt.Fatal(e)\n\t\t}\n\t}\n\tif _, _, e := f.s.Store.AttemptHistory(context.Background(), 101, \"\"); !errors.Is(e, ErrInput) {\n\t\tt.Fatal(e)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningCursorNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tfor _, cursor := range []string{\"not-base64\", \"bm90LXZh bGlk\"} {\n\t\tif _, _, e := f.s.Store.AttemptHistory(context.Background(), 2, cursor); !errors.Is(e, ErrInput) {\n\t\t\tt.Fatal(e)\n\t\t}\n\t}\n\tif _, _, e := f.s.Store.AttemptHistory(context.Background(), 101, \"\"); !errors.Is(e, ErrInput) {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "oracle": "The application SHALL read all attempts through stable original-time/ID keyset pages and reopened storage with no inference, retaining original answers while rejecting invalid cursors/capacity or pre-submit result disclosure. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL read all attempts through stable original-time/ID keyset pages and reopened storage with no inference, retaining original answers while rejecting invalid cursors/capacity or pre-submit result disclosure. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-09.P1.S2.NEGATIVE",
+      "property_id": "I9-09.P1",
+      "polarity": "negative",
+      "scenario": "I9-09 packet 2",
+      "fixture_id": "iteration9-I9-09-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningResultsBeforeSubmitNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningResultsBeforeSubmitNegative through services/api/internal/app/attempt_history.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningResultsBeforeSubmitNegative",
+        "literal_executable_fixture": "func TestNativeListeningResultsBeforeSubmitNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tw := f.request(\"GET\", \"/api/v1/attempts/\"+id+\"/results\", \"\", \"\", \"\")\n\tif w.Code != 409 {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningResultsBeforeSubmitNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tw := f.request(\"GET\", \"/api/v1/attempts/\"+id+\"/results\", \"\", \"\", \"\")\n\tif w.Code != 409 {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n}\n",
+        "oracle": "The application SHALL read all attempts through stable original-time/ID keyset pages and reopened storage with no inference, retaining original answers while rejecting invalid cursors/capacity or pre-submit result disclosure. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL read all attempts through stable original-time/ID keyset pages and reopened storage with no inference, retaining original answers while rejecting invalid cursors/capacity or pre-submit result disclosure. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-10.P1.S1.POSITIVE",
+      "property_id": "I9-10.P1",
+      "polarity": "positive",
+      "scenario": "I9-10 packet 1",
+      "fixture_id": "iteration9-I9-10-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningSequencePositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningSequencePositive through services/api/internal/app/attempt_storage.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningSequencePositive",
+        "literal_executable_fixture": "func TestNativeListeningSequencePositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\trevision := int64(0)\n\tfor i := 0; i < 8; i++ {\n\t\ttext := fmt.Sprintf(\"draft-%d\", i)\n\t\ta, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), revision, answerPacket(text, \"en\"), false)\n\t\trequireListening(t, e)\n\t\trevision++\n\t\tif a[\"revision\"] != float64(revision) || a[\"state\"] != \"started\" {\n\t\t\tt.Fatal(a)\n\t\t}\n\t}\n\ta, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), revision, answerPacket(\"final\", \"en\"), true)\n\trequireListening(t, e)\n\tif a[\"revision\"] != float64(9) || a[\"state\"] != \"saved\" {\n\t\tt.Fatal(a)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningSequencePositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\trevision := int64(0)\n\tfor i := 0; i < 8; i++ {\n\t\ttext := fmt.Sprintf(\"draft-%d\", i)\n\t\ta, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), revision, answerPacket(text, \"en\"), false)\n\t\trequireListening(t, e)\n\t\trevision++\n\t\tif a[\"revision\"] != float64(revision) || a[\"state\"] != \"started\" {\n\t\t\tt.Fatal(a)\n\t\t}\n\t}\n\ta, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), revision, answerPacket(\"final\", \"en\"), true)\n\trequireListening(t, e)\n\tif a[\"revision\"] != float64(9) || a[\"state\"] != \"saved\" {\n\t\tt.Fatal(a)\n\t}\n}\n",
+        "oracle": "The application SHALL apply every ordered draft/submit event through the production boundary, retain independent expected revisions/state after each event, admit one of two concurrent same-revision writers, and preserve immutable predecessors through stale/rejected events. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL apply every ordered draft/submit event through the production boundary, retain independent expected revisions/state after each event, admit one of two concurrent same-revision writers, and preserve immutable predecessors through stale/rejected events. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-10.P1.S2.POSITIVE",
+      "property_id": "I9-10.P1",
+      "polarity": "positive",
+      "scenario": "I9-10 packet 2",
+      "fixture_id": "iteration9-I9-10-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningConcurrentPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningConcurrentPositive through services/api/internal/app/attempt_storage.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningConcurrentPositive",
+        "literal_executable_fixture": "func TestNativeListeningConcurrentPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tgate := make(chan struct{})\n\tresults := make(chan error, 2)\n\tvar wg sync.WaitGroup\n\tfor _, text := range []string{\"left\", \"right\"} {\n\t\twg.Add(1)\n\t\tgo func(v string) {\n\t\t\tdefer wg.Done()\n\t\t\t<-gate\n\t\t\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(v, \"en\"), false)\n\t\t\tresults <- e\n\t\t}(text)\n\t}\n\tclose(gate)\n\twg.Wait()\n\tclose(results)\n\tsuccess, stale := 0, 0\n\tfor e := range results {\n\t\tif e == nil {\n\t\t\tsuccess++\n\t\t} else if errors.Is(e, ErrRevision) {\n\t\t\tstale++\n\t\t} else {\n\t\t\tt.Fatal(e)\n\t\t}\n\t}\n\tif success != 1 || stale != 1 {\n\t\tt.Fatal(success, stale)\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningConcurrentPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tgate := make(chan struct{})\n\tresults := make(chan error, 2)\n\tvar wg sync.WaitGroup\n\tfor _, text := range []string{\"left\", \"right\"} {\n\t\twg.Add(1)\n\t\tgo func(v string) {\n\t\t\tdefer wg.Done()\n\t\t\t<-gate\n\t\t\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(v, \"en\"), false)\n\t\t\tresults <- e\n\t\t}(text)\n\t}\n\tclose(gate)\n\twg.Wait()\n\tclose(results)\n\tsuccess, stale := 0, 0\n\tfor e := range results {\n\t\tif e == nil {\n\t\t\tsuccess++\n\t\t} else if errors.Is(e, ErrRevision) {\n\t\t\tstale++\n\t\t} else {\n\t\t\tt.Fatal(e)\n\t\t}\n\t}\n\tif success != 1 || stale != 1 {\n\t\tt.Fatal(success, stale)\n\t}\n}\n",
+        "oracle": "The application SHALL apply every ordered draft/submit event through the production boundary, retain independent expected revisions/state after each event, admit one of two concurrent same-revision writers, and preserve immutable predecessors through stale/rejected events. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL apply every ordered draft/submit event through the production boundary, retain independent expected revisions/state after each event, admit one of two concurrent same-revision writers, and preserve immutable predecessors through stale/rejected events. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-10.P1.S1.NEGATIVE",
+      "property_id": "I9-10.P1",
+      "polarity": "negative",
+      "scenario": "I9-10 packet 1",
+      "fixture_id": "iteration9-I9-10-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningSequenceStaleNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningSequenceStaleNegative through services/api/internal/app/attempt_storage.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningSequenceStaleNegative",
+        "literal_executable_fixture": "func TestNativeListeningSequenceStaleNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tfor i := 0; i < 3; i++ {\n\t\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), int64(i), answerPacket(fmt.Sprint(i), \"en\"), false)\n\t\trequireListening(t, e)\n\t\tif _, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), int64(i), answerPacket(\"stale\", \"en\"), true); !errors.Is(e, ErrRevision) {\n\t\t\tt.Fatal(e)\n\t\t}\n\n\t\tobserved, e := f.s.Store.Attempt(context.Background(), id)\n\t\trequireListening(t, e)\n\t\tif observed.Attempt[\"answer_text\"] != fmt.Sprint(i) || observed.Attempt[\"revision\"] != float64(i+1) || observed.Attempt[\"state\"] != \"started\" {\n\t\t\tt.Fatal(observed)\n\t\t}\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningSequenceStaleNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\tfor i := 0; i < 3; i++ {\n\t\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), int64(i), answerPacket(fmt.Sprint(i), \"en\"), false)\n\t\trequireListening(t, e)\n\t\tif _, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), int64(i), answerPacket(\"stale\", \"en\"), true); !errors.Is(e, ErrRevision) {\n\t\t\tt.Fatal(e)\n\t\t}\n\n\t\tobserved, e := f.s.Store.Attempt(context.Background(), id)\n\t\trequireListening(t, e)\n\t\tif observed.Attempt[\"answer_text\"] != fmt.Sprint(i) || observed.Attempt[\"revision\"] != float64(i+1) || observed.Attempt[\"state\"] != \"started\" {\n\t\t\tt.Fatal(observed)\n\t\t}\n\t}\n}\n",
+        "oracle": "The application SHALL apply every ordered draft/submit event through the production boundary, retain independent expected revisions/state after each event, admit one of two concurrent same-revision writers, and preserve immutable predecessors through stale/rejected events. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL apply every ordered draft/submit event through the production boundary, retain independent expected revisions/state after each event, admit one of two concurrent same-revision writers, and preserve immutable predecessors through stale/rejected events. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-10.P1.S2.NEGATIVE",
+      "property_id": "I9-10.P1",
+      "polarity": "negative",
+      "scenario": "I9-10 packet 2",
+      "fixture_id": "iteration9-I9-10-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeListeningImmutableNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeListeningImmutableNegative through services/api/internal/app/attempt_storage.go",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeListeningImmutableNegative",
+        "literal_executable_fixture": "func TestNativeListeningImmutableNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"new\", \"en\"), false)\n\trequireListening(t, e)\n\toriginal, e := f.s.Store.ReadDocument(context.Background(), id)\n\trequireListening(t, e)\n\tvar a map[string]any\n\t_ = json.Unmarshal(original.Payload, &a)\n\tif a[\"answer_text\"] != \"\" || a[\"revision\"] != float64(0) {\n\t\tt.Fatal(a)\n\t}\n\tif _, e = f.s.Store.DB.Exec(context.Background(), \"UPDATE document SET payload='{}' WHERE id=$1\", id); e == nil {\n\t\tt.Fatal(\"immutable document changed\")\n\t}\n}\n"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeListeningImmutableNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tid := f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\"new\", \"en\"), false)\n\trequireListening(t, e)\n\toriginal, e := f.s.Store.ReadDocument(context.Background(), id)\n\trequireListening(t, e)\n\tvar a map[string]any\n\t_ = json.Unmarshal(original.Payload, &a)\n\tif a[\"answer_text\"] != \"\" || a[\"revision\"] != float64(0) {\n\t\tt.Fatal(a)\n\t}\n\tif _, e = f.s.Store.DB.Exec(context.Background(), \"UPDATE document SET payload='{}' WHERE id=$1\", id); e == nil {\n\t\tt.Fatal(\"immutable document changed\")\n\t}\n}\n",
+        "oracle": "The application SHALL apply every ordered draft/submit event through the production boundary, retain independent expected revisions/state after each event, admit one of two concurrent same-revision writers, and preserve immutable predecessors through stale/rejected events. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL apply every ordered draft/submit event through the production boundary, retain independent expected revisions/state after each event, admit one of two concurrent same-revision writers, and preserve immutable predecessors through stale/rejected events. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-11.P1.S1.POSITIVE",
+      "property_id": "I9-11.P1",
+      "polarity": "positive",
+      "scenario": "I9-11 packet 1",
+      "fixture_id": "iteration9-I9-11-packet1",
+      "test_id": "unittest::test_listening_browser.ListeningBrowser.test_listening_positive",
+      "mode": "declared_behavior",
+      "action": "Execute test_listening_positive through services/web/app/listen/page.js",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "test_listening_positive",
+        "literal_executable_fixture": "def test_listening_positive(self):self.assertIs(self.observed['values']['test_listening_positive'],True);self.assertFalse(self.observed['network_substitution'])"
+      },
+      "expected": {
+        "independent_literal_assertions": "def test_listening_positive(self):self.assertIs(self.observed['values']['test_listening_positive'],True);self.assertFalse(self.observed['network_substitution'])",
+        "oracle": "The application SHALL play actual stored media, save/reopen exact English/Russian drafts through the real browser, preserve unsaved input through a real concurrent conflict, and omit hidden transcript/key/count data without DOM/network owner substitution. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL play actual stored media, save/reopen exact English/Russian drafts through the real browser, preserve unsaved input through a real concurrent conflict, and omit hidden transcript/key/count data without DOM/network owner substitution. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-11.P1.S2.POSITIVE",
+      "property_id": "I9-11.P1",
+      "polarity": "positive",
+      "scenario": "I9-11 packet 2",
+      "fixture_id": "iteration9-I9-11-packet2",
+      "test_id": "unittest::test_listening_browser.ListeningBrowser.test_draft_positive",
+      "mode": "declared_behavior",
+      "action": "Execute test_draft_positive through services/web/app/listen/page.js",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "test_draft_positive",
+        "literal_executable_fixture": "def test_draft_positive(self):self.assertEqual(self.observed['values']['test_draft_positive'],{'answer':'  The verb needs agreement.\\n\u041e\u0448\u0438\u0431\u043a\u0430: goes. \ud83d\udfe0  ','language':'ru'})"
+      },
+      "expected": {
+        "independent_literal_assertions": "def test_draft_positive(self):self.assertEqual(self.observed['values']['test_draft_positive'],{'answer':'  The verb needs agreement.\\n\u041e\u0448\u0438\u0431\u043a\u0430: goes. \ud83d\udfe0  ','language':'ru'})",
+        "oracle": "The application SHALL play actual stored media, save/reopen exact English/Russian drafts through the real browser, preserve unsaved input through a real concurrent conflict, and omit hidden transcript/key/count data without DOM/network owner substitution. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL play actual stored media, save/reopen exact English/Russian drafts through the real browser, preserve unsaved input through a real concurrent conflict, and omit hidden transcript/key/count data without DOM/network owner substitution. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-11.P1.S1.NEGATIVE",
+      "property_id": "I9-11.P1",
+      "polarity": "negative",
+      "scenario": "I9-11 packet 1",
+      "fixture_id": "iteration9-I9-11-packet1",
+      "test_id": "unittest::test_listening_browser.ListeningBrowser.test_private_negative",
+      "mode": "declared_behavior",
+      "action": "Execute test_private_negative through services/web/app/listen/page.js",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "test_private_negative",
+        "literal_executable_fixture": "def test_private_negative(self):self.assertIs(self.observed['values']['test_private_negative'],False)"
+      },
+      "expected": {
+        "independent_literal_assertions": "def test_private_negative(self):self.assertIs(self.observed['values']['test_private_negative'],False)",
+        "oracle": "The application SHALL play actual stored media, save/reopen exact English/Russian drafts through the real browser, preserve unsaved input through a real concurrent conflict, and omit hidden transcript/key/count data without DOM/network owner substitution. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL play actual stored media, save/reopen exact English/Russian drafts through the real browser, preserve unsaved input through a real concurrent conflict, and omit hidden transcript/key/count data without DOM/network owner substitution. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-11.P1.S2.NEGATIVE",
+      "property_id": "I9-11.P1",
+      "polarity": "negative",
+      "scenario": "I9-11 packet 2",
+      "fixture_id": "iteration9-I9-11-packet2",
+      "test_id": "unittest::test_listening_browser.ListeningBrowser.test_conflict_negative",
+      "mode": "declared_behavior",
+      "action": "Execute test_conflict_negative through services/web/app/listen/page.js",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "test_conflict_negative",
+        "literal_executable_fixture": "def test_conflict_negative(self):self.assertEqual(self.observed['values']['test_conflict_negative'],'  The verb needs agreement.\\n\u041e\u0448\u0438\u0431\u043a\u0430: goes. \ud83d\udfe0  ')"
+      },
+      "expected": {
+        "independent_literal_assertions": "def test_conflict_negative(self):self.assertEqual(self.observed['values']['test_conflict_negative'],'  The verb needs agreement.\\n\u041e\u0448\u0438\u0431\u043a\u0430: goes. \ud83d\udfe0  ')",
+        "oracle": "The application SHALL play actual stored media, save/reopen exact English/Russian drafts through the real browser, preserve unsaved input through a real concurrent conflict, and omit hidden transcript/key/count data without DOM/network owner substitution. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL play actual stored media, save/reopen exact English/Russian drafts through the real browser, preserve unsaved input through a real concurrent conflict, and omit hidden transcript/key/count data without DOM/network owner substitution. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-12.P1.S1.POSITIVE",
+      "property_id": "I9-12.P1",
+      "polarity": "positive",
+      "scenario": "I9-12 packet 1",
+      "fixture_id": "iteration9-I9-12-packet1",
+      "test_id": "unittest::test_listening_browser.ListeningBrowser.test_submit_positive",
+      "mode": "declared_behavior",
+      "action": "Execute test_submit_positive through services/web/app/listen/page.js",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "test_submit_positive",
+        "literal_executable_fixture": "def test_submit_positive(self):self.assertEqual(self.observed['values']['test_submit_positive'],{'answer':'  The verb needs agreement.\\n\u041e\u0448\u0438\u0431\u043a\u0430: goes. \ud83d\udfe0  ','disabled':True,'history_readback':'  The verb needs agreement.\\n\u041e\u0448\u0438\u0431\u043a\u0430: goes. \ud83d\udfe0  '})"
+      },
+      "expected": {
+        "independent_literal_assertions": "def test_submit_positive(self):self.assertEqual(self.observed['values']['test_submit_positive'],{'answer':'  The verb needs agreement.\\n\u041e\u0448\u0438\u0431\u043a\u0430: goes. \ud83d\udfe0  ','disabled':True,'history_readback':'  The verb needs agreement.\\n\u041e\u0448\u0438\u0431\u043a\u0430: goes. \ud83d\udfe0  '})",
+        "oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-12.P1.S2.POSITIVE",
+      "property_id": "I9-12.P1",
+      "polarity": "positive",
+      "scenario": "I9-12 packet 2",
+      "fixture_id": "iteration9-I9-12-packet2",
+      "test_id": "unittest::test_listening_browser.ListeningBrowser.test_empty_positive",
+      "mode": "declared_behavior",
+      "action": "Execute test_empty_positive through services/web/app/listen/page.js",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "test_empty_positive",
+        "literal_executable_fixture": "def test_empty_positive(self):self.assertEqual(self.observed['values']['test_empty_positive'],{'answer':'','disabled':True})"
+      },
+      "expected": {
+        "independent_literal_assertions": "def test_empty_positive(self):self.assertEqual(self.observed['values']['test_empty_positive'],{'answer':'','disabled':True})",
+        "oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-12.P1.S1.NEGATIVE",
+      "property_id": "I9-12.P1",
+      "polarity": "negative",
+      "scenario": "I9-12 packet 1",
+      "fixture_id": "iteration9-I9-12-packet1",
+      "test_id": "unittest::test_listening_browser.ListeningBrowser.test_database_recovery_negative",
+      "mode": "declared_behavior",
+      "action": "Execute test_database_recovery_negative through services/web/app/listen/page.js",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "test_database_recovery_negative",
+        "literal_executable_fixture": "def test_database_recovery_negative(self):self.assertTrue(self.observed['database_recovered']);self.assertEqual(self.observed['values']['test_database_recovery_negative'],'  The verb needs agreement.\\n\u041e\u0448\u0438\u0431\u043a\u0430: goes. \ud83d\udfe0  ')"
+      },
+      "expected": {
+        "independent_literal_assertions": "def test_database_recovery_negative(self):self.assertTrue(self.observed['database_recovered']);self.assertEqual(self.observed['values']['test_database_recovery_negative'],'  The verb needs agreement.\\n\u041e\u0448\u0438\u0431\u043a\u0430: goes. \ud83d\udfe0  ')",
+        "oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I9-12.P1.S2.NEGATIVE",
+      "property_id": "I9-12.P1",
+      "polarity": "negative",
+      "scenario": "I9-12 packet 2",
+      "fixture_id": "iteration9-I9-12-packet2",
+      "test_id": "unittest::test_listening_browser.ListeningBrowser.test_audio_recovery_negative",
+      "mode": "declared_behavior",
+      "action": "Execute test_audio_recovery_negative through services/web/app/listen/page.js",
+      "initial_state": {
+        "origin": "Admitted constructed input; real production owners and test-owned dependencies",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "test_audio_recovery_negative",
+        "literal_executable_fixture": "def test_audio_recovery_negative(self):self.assertTrue(self.observed['media_recovered']);self.assertEqual(self.observed['values']['test_audio_recovery_negative'],'  The verb needs agreement.\\n\u041e\u0448\u0438\u0431\u043a\u0430: goes. \ud83d\udfe0  ')"
+      },
+      "expected": {
+        "independent_literal_assertions": "def test_audio_recovery_negative(self):self.assertTrue(self.observed['media_recovered']);self.assertEqual(self.observed['values']['test_audio_recovery_negative'],'  The verb needs agreement.\\n\u041e\u0448\u0438\u0431\u043a\u0430: goes. \ud83d\udfe0  ')",
+        "oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence."
+      },
+      "independent_oracle": "The application SHALL submit and reopen frozen nonempty or empty answers through the real browser and preserve input through actual database/media failure and recovery; media failure SHALL not prevent draft persistence or fabricate evaluation. Independently expected literal text, hashes, counts, states, revisions and rejected effects; constructed source key/PCM/profile are declared external data, never actual LLM/audio-quality evidence.",
+      "observation_state": "not_run"
+    }
+  ]
+}
