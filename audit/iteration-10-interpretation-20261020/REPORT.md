@@ -1,5 +1,7 @@
 # Iteration 10 — LLM answer interpretation
 
+Subsequent verification repaired counterexamples outside this receipt: see `../iteration-10-verification-20261021/REPORT.md` for current acceptance. This report retains its original source/evidence boundary.
+
 Accepted on committed-clean source `61d735226cda35993943787d6b65335b63a38989`. All **124/124 required cases** reconcile: **96 current iteration cases** across 21 properties (48positive/48negative) and **28 retained dependency passes** with exact current fingerprints. The earlier larger dependency receipt remains failed overall; only its independently passed, unchanged cases contribute. ACCEPTANCE.json records every case, test identity, source and original fingerprint.
 
 Submission saves the exact response before blind extraction, semantic mapping and optional independent audit. Source claims retain Unicode positions, stable IDs, complete coverage, retractions, duplicates, attachments and conflicts. The mapper compares the listener's actual proposal and optional reason separately with saved clean/surface text and the mutation key. A false or absent reason cannot erase a supported repair/detection. Canonical semantic findings persist without fabricating a native grade or completed final feedback.
