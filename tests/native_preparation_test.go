@@ -35,6 +35,10 @@ type preparationTrip func(*http.Request) (*http.Response, error)
 
 func (f preparationTrip) RoundTrip(r *http.Request) (*http.Response, error) { return f(r) }
 func prepareNativeFixture(t *testing.T, response string, status int) (*Server, CanonicalPreparationRequest, *http.Client, *int) {
+	return prepareNativeFixtureRequest(t, response, status, nil)
+}
+func prepareNativeFixtureRequest(t *testing.T, response string, status int, configure func(map[string]any)) (*Server, CanonicalPreparationRequest, *http.Client, *int) {
+
 	t.Helper()
 	store := preparationNative(t)
 	ctx := context.Background()
@@ -58,7 +62,12 @@ func prepareNativeFixture(t *testing.T, response string, status int) (*Server, C
 	if e != nil {
 		t.Fatal(e)
 	}
-	b, e := store.WriteBlueprint(ctx, []byte(`{"exercise_request":{"topic":"Café opening","speaker_count":1,"text_length_words":50}}`), uuid.NewString())
+	request := map[string]any{"exercise_request": map[string]any{"topic": "Café opening", "speaker_count": 1, "text_length_words": 50}}
+	if configure != nil {
+		configure(request)
+	}
+	requestBytes, _ := json.Marshal(request)
+	b, e := store.WriteBlueprint(ctx, requestBytes, uuid.NewString())
 	if e != nil {
 		t.Fatal(e)
 	}

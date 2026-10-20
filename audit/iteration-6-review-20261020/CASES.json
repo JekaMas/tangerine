@@ -1,0 +1,1461 @@
+{
+  "properties": [
+    "I6-01.P1",
+    "I6-02.P1",
+    "I6-03.P1",
+    "I6-04.P1",
+    "I6-05.P1",
+    "I6-06.P1",
+    "I6-07.P1",
+    "I6-08.P1",
+    "I6-09.P1",
+    "I6-10.P1",
+    "I6-11.P1",
+    "I6-12.P1",
+    "I6-13.P1",
+    "I6-14.P1",
+    "I6-15.P1"
+  ],
+  "plans": [
+    {
+      "case_id": "I6-01.P1.S1.POSITIVE",
+      "property_id": "I6-01.P1",
+      "polarity": "positive",
+      "scenario": "I6-01 packet 1",
+      "fixture_id": "iteration6-I6-01-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationAdmissionPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationAdmissionPositive through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationAdmissionPositive",
+        "literal_executable_fixture": "func TestMutationAdmissionPositive(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationAdmissionPositive(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-01.P1.S2.POSITIVE",
+      "property_id": "I6-01.P1",
+      "polarity": "positive",
+      "scenario": "I6-01 packet 2",
+      "fixture_id": "iteration6-I6-01-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationEmptyKeyPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationEmptyKeyPositive through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationEmptyKeyPositive",
+        "literal_executable_fixture": "func TestMutationEmptyKeyPositive(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"mutation_count\"] = float64(0)\n\tc[\"utterances\"] = clean[\"utterances\"]\n\tc[\"planned_units\"] = []any{}\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationEmptyKeyPositive(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"mutation_count\"] = float64(0)\n\tc[\"utterances\"] = clean[\"utterances\"]\n\tc[\"planned_units\"] = []any{}\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-01.P1.S1.NEGATIVE",
+      "property_id": "I6-01.P1",
+      "polarity": "negative",
+      "scenario": "I6-01 packet 1",
+      "fixture_id": "iteration6-I6-01-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationBaselineNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationBaselineNegative through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationBaselineNegative",
+        "literal_executable_fixture": "func TestMutationBaselineNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tc[\"utterances\"].([]any)[0].(map[string]any)[\"canonical_text\"] = \"A different story.\"\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"rewritten baseline accepted\")\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationBaselineNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tc[\"utterances\"].([]any)[0].(map[string]any)[\"canonical_text\"] = \"A different story.\"\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"rewritten baseline accepted\")\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-01.P1.S2.NEGATIVE",
+      "property_id": "I6-01.P1",
+      "polarity": "negative",
+      "scenario": "I6-01 packet 2",
+      "fixture_id": "iteration6-I6-01-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationLocationNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationLocationNegative through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationLocationNegative",
+        "literal_executable_fixture": "func TestMutationLocationNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tc[\"planned_units\"].([]any)[0].(map[string]any)[\"text_spans\"].([]any)[0].(map[string]any)[\"span\"].(map[string]any)[\"start_cp\"] = float64(10)\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"stale surface span accepted\")\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationLocationNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tc[\"planned_units\"].([]any)[0].(map[string]any)[\"text_spans\"].([]any)[0].(map[string]any)[\"span\"].(map[string]any)[\"start_cp\"] = float64(10)\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"stale surface span accepted\")\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL admit a new mutation reply once, preserve the saved role/turn/canonical sequence and exact final-surface Unicode spans, including an explicit empty key. Reuse SHALL trust accepted data. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-02.P1.S1.POSITIVE",
+      "property_id": "I6-02.P1",
+      "polarity": "positive",
+      "scenario": "I6-02 packet 1",
+      "fixture_id": "iteration6-I6-02-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationManifestPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationManifestPositive through services/api/internal/app/mutation_manifest.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationManifestPositive",
+        "literal_executable_fixture": "func TestMutationManifestPositive(t *testing.T) {\n\t_, clean, c, _ := mutationFixture()\n\tm := mutationManifest(c, \"clean\", strings.Repeat(\"a\", 64), \"mutated\", strings.Repeat(\"b\", 64), strings.Repeat(\"c\", 64), nil, nil)\n\traw, _ := json.Marshal(m)\n\tif _, _, e := contracts.Validate(\"mutation-manifest\", \"2.0.0\", raw); e != nil {\n\t\tt.Fatal(e)\n\t}\n\tedits := m[\"edits\"].([]any)\n\tif len(edits) != 1 || edits[0].(map[string]any)[\"start_cp\"] != 13 || edits[0].(map[string]any)[\"original_text\"] != \"s\" || edits[0].(map[string]any)[\"replacement_text\"] != \"\" {\n\t\tt.Fatal(edits)\n\t}\n\ttext, e := ReplayMutation(clean[\"utterances\"].([]any)[0].(map[string]any)[\"canonical_text\"].(string), edits)\n\tif e != nil || text != \"The caf\u00e9 open tomorrow.\" {\n\t\tt.Fatal(text, e)\n\t}\n\tif m[\"canonical_word_count\"] != 4 || m[\"surface_word_count\"] != 4 {\n\t\tt.Fatal(m)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL derive replayable canonical-coordinate edits and retain all planned units, repairs, propositions, exact selected categories and requested counts. Invented categories, unsupported counts and invalid scopes SHALL fail admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationManifestPositive(t *testing.T) {\n\t_, clean, c, _ := mutationFixture()\n\tm := mutationManifest(c, \"clean\", strings.Repeat(\"a\", 64), \"mutated\", strings.Repeat(\"b\", 64), strings.Repeat(\"c\", 64), nil, nil)\n\traw, _ := json.Marshal(m)\n\tif _, _, e := contracts.Validate(\"mutation-manifest\", \"2.0.0\", raw); e != nil {\n\t\tt.Fatal(e)\n\t}\n\tedits := m[\"edits\"].([]any)\n\tif len(edits) != 1 || edits[0].(map[string]any)[\"start_cp\"] != 13 || edits[0].(map[string]any)[\"original_text\"] != \"s\" || edits[0].(map[string]any)[\"replacement_text\"] != \"\" {\n\t\tt.Fatal(edits)\n\t}\n\ttext, e := ReplayMutation(clean[\"utterances\"].([]any)[0].(map[string]any)[\"canonical_text\"].(string), edits)\n\tif e != nil || text != \"The caf\u00e9 open tomorrow.\" {\n\t\tt.Fatal(text, e)\n\t}\n\tif m[\"canonical_word_count\"] != 4 || m[\"surface_word_count\"] != 4 {\n\t\tt.Fatal(m)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL derive replayable canonical-coordinate edits and retain all planned units, repairs, propositions, exact selected categories and requested counts. Invented categories, unsupported counts and invalid scopes SHALL fail admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-02.P1.S2.POSITIVE",
+      "property_id": "I6-02.P1",
+      "polarity": "positive",
+      "scenario": "I6-02 packet 2",
+      "fixture_id": "iteration6-I6-02-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationUnicodeInsertPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationUnicodeInsertPositive through services/api/internal/app/mutation_manifest.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationUnicodeInsertPositive",
+        "literal_executable_fixture": "func TestMutationUnicodeInsertPositive(t *testing.T) {\n\t_, _, c, _ := mutationFixture()\n\tc[\"utterances\"].([]any)[0].(map[string]any)[\"surface_text\"] = \"\ud83d\ude42The caf\u00e9 opens tomorrow.\"\n\tm := mutationManifest(c, \"a\", strings.Repeat(\"a\", 64), \"b\", strings.Repeat(\"b\", 64), strings.Repeat(\"c\", 64), nil, float64(17))\n\ttext, e := ReplayMutation(\"The caf\u00e9 opens tomorrow.\", m[\"edits\"].([]any))\n\tif e != nil || text != \"\ud83d\ude42The caf\u00e9 opens tomorrow.\" || m[\"edits\"].([]any)[0].(map[string]any)[\"end_cp\"] != 0 {\n\t\tt.Fatal(text, m, e)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL derive replayable canonical-coordinate edits and retain all planned units, repairs, propositions, exact selected categories and requested counts. Invented categories, unsupported counts and invalid scopes SHALL fail admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationUnicodeInsertPositive(t *testing.T) {\n\t_, _, c, _ := mutationFixture()\n\tc[\"utterances\"].([]any)[0].(map[string]any)[\"surface_text\"] = \"\ud83d\ude42The caf\u00e9 opens tomorrow.\"\n\tm := mutationManifest(c, \"a\", strings.Repeat(\"a\", 64), \"b\", strings.Repeat(\"b\", 64), strings.Repeat(\"c\", 64), nil, float64(17))\n\ttext, e := ReplayMutation(\"The caf\u00e9 opens tomorrow.\", m[\"edits\"].([]any))\n\tif e != nil || text != \"\ud83d\ude42The caf\u00e9 opens tomorrow.\" || m[\"edits\"].([]any)[0].(map[string]any)[\"end_cp\"] != 0 {\n\t\tt.Fatal(text, m, e)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL derive replayable canonical-coordinate edits and retain all planned units, repairs, propositions, exact selected categories and requested counts. Invented categories, unsupported counts and invalid scopes SHALL fail admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-02.P1.S1.NEGATIVE",
+      "property_id": "I6-02.P1",
+      "polarity": "negative",
+      "scenario": "I6-02 packet 1",
+      "fixture_id": "iteration6-I6-02-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationUnknownCategoryNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationUnknownCategoryNegative through services/api/internal/app/mutation_manifest.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationUnknownCategoryNegative",
+        "literal_executable_fixture": "func TestMutationUnknownCategoryNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tc[\"planned_units\"].([]any)[0].(map[string]any)[\"primary_taxonomy_id\"] = \"invented.leaf\"\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"invented category accepted\")\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL derive replayable canonical-coordinate edits and retain all planned units, repairs, propositions, exact selected categories and requested counts. Invented categories, unsupported counts and invalid scopes SHALL fail admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationUnknownCategoryNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tc[\"planned_units\"].([]any)[0].(map[string]any)[\"primary_taxonomy_id\"] = \"invented.leaf\"\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"invented category accepted\")\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL derive replayable canonical-coordinate edits and retain all planned units, repairs, propositions, exact selected categories and requested counts. Invented categories, unsupported counts and invalid scopes SHALL fail admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-02.P1.S2.NEGATIVE",
+      "property_id": "I6-02.P1",
+      "polarity": "negative",
+      "scenario": "I6-02 packet 2",
+      "fixture_id": "iteration6-I6-02-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationCountNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationCountNegative through services/api/internal/app/mutation_manifest.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationCountNegative",
+        "literal_executable_fixture": "func TestMutationCountNegative(t *testing.T) {\n\t{\n\t\tb, clean, c, tax := mutationFixture()\n\t\tc[\"planned_units\"].([]any)[0].(map[string]any)[\"explanation_eligible\"] = false\n\t\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\t\tt.Fatal(\"optional listener explanation cannot disable a generated error's rubric\")\n\t\t}\n\t}\n\n\tduplicated := `{\"schema_version\":\"1.0.0\",\"blueprint_id\":\"b1\",\"status\":\"candidate\",\"failure_reason\":null,\"utterances\":[],\"planned_units\":[],\"schema_version\":\"1.0.0\"}`\n\tif _, e := provider.ProjectVisible(duplicated, \"case-candidate\"); e == nil || !strings.Contains(e.(*provider.OutputValidationError).Detail, \"duplicate\") {\n\t\tt.Fatal(\"independent duplicate-root repair detail\", e)\n\t}\n\n\tb, clean, c, tax := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"mutation_count\"] = float64(2)\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"wrong requested count accepted\")\n\t}\n\tb, clean, c, tax = mutationFixture()\n\tc[\"planned_units\"].([]any)[0].(map[string]any)[\"rationale_required_propositions\"] = []any{}\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"eligible explanation admitted with a zero-required rubric\")\n\t}\n\tb, clean, c, tax = mutationFixture()\n\tc[\"planned_units\"].([]any)[0].(map[string]any)[\"corrections\"].([]any)[0].(map[string]any)[\"required_propositions\"] = []any{}\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"eligible correction admitted with a zero-required rubric\")\n\t}\n\tb, clean, c, tax = mutationFixture()\n\tc[\"planned_units\"].([]any)[0].(map[string]any)[\"corrections\"].([]any)[0].(map[string]any)[\"text\"] = \"open\"\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"literal no-op offered as a true textual repair\")\n\t}\n\tb, clean, c, tax = mutationFixture()\n\tunit := c[\"planned_units\"].([]any)[0].(map[string]any)\n\tunit[\"rationale_required_propositions\"] = []any{}\n\tdelete(unit[\"text_spans\"].([]any)[0].(map[string]any), \"utterance_id\")\n\traw, _ := json.Marshal(c)\n\t_, e := provider.ProjectVisible(string(raw), \"case-candidate\")\n\tdetail, ok := e.(*provider.OutputValidationError)\n\tif !ok || !strings.Contains(detail.Detail, \"utterance_id\") || !strings.Contains(detail.Detail, \"rationale_required_propositions\") {\n\t\tt.Fatal(\"single admission omitted simultaneous key defects\", e)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL derive replayable canonical-coordinate edits and retain all planned units, repairs, propositions, exact selected categories and requested counts. Invented categories, unsupported counts and invalid scopes SHALL fail admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationCountNegative(t *testing.T) {\n\t{\n\t\tb, clean, c, tax := mutationFixture()\n\t\tc[\"planned_units\"].([]any)[0].(map[string]any)[\"explanation_eligible\"] = false\n\t\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\t\tt.Fatal(\"optional listener explanation cannot disable a generated error's rubric\")\n\t\t}\n\t}\n\n\tduplicated := `{\"schema_version\":\"1.0.0\",\"blueprint_id\":\"b1\",\"status\":\"candidate\",\"failure_reason\":null,\"utterances\":[],\"planned_units\":[],\"schema_version\":\"1.0.0\"}`\n\tif _, e := provider.ProjectVisible(duplicated, \"case-candidate\"); e == nil || !strings.Contains(e.(*provider.OutputValidationError).Detail, \"duplicate\") {\n\t\tt.Fatal(\"independent duplicate-root repair detail\", e)\n\t}\n\n\tb, clean, c, tax := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"mutation_count\"] = float64(2)\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"wrong requested count accepted\")\n\t}\n\tb, clean, c, tax = mutationFixture()\n\tc[\"planned_units\"].([]any)[0].(map[string]any)[\"rationale_required_propositions\"] = []any{}\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"eligible explanation admitted with a zero-required rubric\")\n\t}\n\tb, clean, c, tax = mutationFixture()\n\tc[\"planned_units\"].([]any)[0].(map[string]any)[\"corrections\"].([]any)[0].(map[string]any)[\"required_propositions\"] = []any{}\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"eligible correction admitted with a zero-required rubric\")\n\t}\n\tb, clean, c, tax = mutationFixture()\n\tc[\"planned_units\"].([]any)[0].(map[string]any)[\"corrections\"].([]any)[0].(map[string]any)[\"text\"] = \"open\"\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"literal no-op offered as a true textual repair\")\n\t}\n\tb, clean, c, tax = mutationFixture()\n\tunit := c[\"planned_units\"].([]any)[0].(map[string]any)\n\tunit[\"rationale_required_propositions\"] = []any{}\n\tdelete(unit[\"text_spans\"].([]any)[0].(map[string]any), \"utterance_id\")\n\traw, _ := json.Marshal(c)\n\t_, e := provider.ProjectVisible(string(raw), \"case-candidate\")\n\tdetail, ok := e.(*provider.OutputValidationError)\n\tif !ok || !strings.Contains(detail.Detail, \"utterance_id\") || !strings.Contains(detail.Detail, \"rationale_required_propositions\") {\n\t\tt.Fatal(\"single admission omitted simultaneous key defects\", e)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL derive replayable canonical-coordinate edits and retain all planned units, repairs, propositions, exact selected categories and requested counts. Invented categories, unsupported counts and invalid scopes SHALL fail admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-03.P1.S1.POSITIVE",
+      "property_id": "I6-03.P1",
+      "polarity": "positive",
+      "scenario": "I6-03 packet 1",
+      "fixture_id": "iteration6-I6-03-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationRegistryPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationRegistryPositive through services/api/internal/app/mutation_selection.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationRegistryPositive",
+        "literal_executable_fixture": "func TestMutationRegistryPositive(t *testing.T) {\n\tb, _, _, _ := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"category_families\"] = []any{}\n\ta, _ := generationRegistry(\"error-taxonomy.v1.yaml\")\n\tr, _ := generationRegistry(\"mutation-recipes.v1.json\")\n\tp, _ := generationRegistry(\"acoustic-production.v1.json\")\n\ttax, recipes, production, e := mutationSelection(b, a, r, p)\n\tif e != nil || len(tax[\"entries\"].([]any)) != 122 || len(recipes) != 122 || len(production) != 122 {\n\t\tt.Fatal(tax, e, len(recipes), len(production))\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL preserve all122taxonomy/recipe/production rows and select complete requested families/exact leaves into actual mutation context. Unknown selections or invalid new replay coordinates SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationRegistryPositive(t *testing.T) {\n\tb, _, _, _ := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"category_families\"] = []any{}\n\ta, _ := generationRegistry(\"error-taxonomy.v1.yaml\")\n\tr, _ := generationRegistry(\"mutation-recipes.v1.json\")\n\tp, _ := generationRegistry(\"acoustic-production.v1.json\")\n\ttax, recipes, production, e := mutationSelection(b, a, r, p)\n\tif e != nil || len(tax[\"entries\"].([]any)) != 122 || len(recipes) != 122 || len(production) != 122 {\n\t\tt.Fatal(tax, e, len(recipes), len(production))\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL preserve all122taxonomy/recipe/production rows and select complete requested families/exact leaves into actual mutation context. Unknown selections or invalid new replay coordinates SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-03.P1.S2.POSITIVE",
+      "property_id": "I6-03.P1",
+      "polarity": "positive",
+      "scenario": "I6-03 packet 2",
+      "fixture_id": "iteration6-I6-03-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationFamilyPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationFamilyPositive through services/api/internal/app/mutation_selection.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationFamilyPositive",
+        "literal_executable_fixture": "func TestMutationFamilyPositive(t *testing.T) {\n\tb, _, _, _ := mutationFixture()\n\ta, _ := generationRegistry(\"error-taxonomy.v1.yaml\")\n\tr, _ := generationRegistry(\"mutation-recipes.v1.json\")\n\tp, _ := generationRegistry(\"acoustic-production.v1.json\")\n\ttax, recipes, _, e := mutationSelection(b, a, r, p)\n\tif e != nil || len(recipes) == 0 {\n\t\tt.Fatal(e)\n\t}\n\tfor _, v := range tax[\"entries\"].([]any) {\n\t\tif v.(map[string]any)[\"domain\"] != \"grammar\" {\n\t\t\tt.Fatal(v)\n\t\t}\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL preserve all122taxonomy/recipe/production rows and select complete requested families/exact leaves into actual mutation context. Unknown selections or invalid new replay coordinates SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationFamilyPositive(t *testing.T) {\n\tb, _, _, _ := mutationFixture()\n\ta, _ := generationRegistry(\"error-taxonomy.v1.yaml\")\n\tr, _ := generationRegistry(\"mutation-recipes.v1.json\")\n\tp, _ := generationRegistry(\"acoustic-production.v1.json\")\n\ttax, recipes, _, e := mutationSelection(b, a, r, p)\n\tif e != nil || len(recipes) == 0 {\n\t\tt.Fatal(e)\n\t}\n\tfor _, v := range tax[\"entries\"].([]any) {\n\t\tif v.(map[string]any)[\"domain\"] != \"grammar\" {\n\t\t\tt.Fatal(v)\n\t\t}\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL preserve all122taxonomy/recipe/production rows and select complete requested families/exact leaves into actual mutation context. Unknown selections or invalid new replay coordinates SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-03.P1.S1.NEGATIVE",
+      "property_id": "I6-03.P1",
+      "polarity": "negative",
+      "scenario": "I6-03 packet 1",
+      "fixture_id": "iteration6-I6-03-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationFamilyNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationFamilyNegative through services/api/internal/app/mutation_selection.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationFamilyNegative",
+        "literal_executable_fixture": "func TestMutationFamilyNegative(t *testing.T) {\n\tb, _, _, _ := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"category_families\"] = []any{\"invented\"}\n\ta, _ := generationRegistry(\"error-taxonomy.v1.yaml\")\n\tr, _ := generationRegistry(\"mutation-recipes.v1.json\")\n\tp, _ := generationRegistry(\"acoustic-production.v1.json\")\n\tif _, _, _, e := mutationSelection(b, a, r, p); e == nil {\n\t\tt.Fatal(\"unknown family accepted\")\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL preserve all122taxonomy/recipe/production rows and select complete requested families/exact leaves into actual mutation context. Unknown selections or invalid new replay coordinates SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationFamilyNegative(t *testing.T) {\n\tb, _, _, _ := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"category_families\"] = []any{\"invented\"}\n\ta, _ := generationRegistry(\"error-taxonomy.v1.yaml\")\n\tr, _ := generationRegistry(\"mutation-recipes.v1.json\")\n\tp, _ := generationRegistry(\"acoustic-production.v1.json\")\n\tif _, _, _, e := mutationSelection(b, a, r, p); e == nil {\n\t\tt.Fatal(\"unknown family accepted\")\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL preserve all122taxonomy/recipe/production rows and select complete requested families/exact leaves into actual mutation context. Unknown selections or invalid new replay coordinates SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-03.P1.S2.NEGATIVE",
+      "property_id": "I6-03.P1",
+      "polarity": "negative",
+      "scenario": "I6-03 packet 2",
+      "fixture_id": "iteration6-I6-03-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationReplayNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationReplayNegative through services/api/internal/app/mutation_selection.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationReplayNegative",
+        "literal_executable_fixture": "func TestMutationReplayNegative(t *testing.T) {\n\t_, _, c, _ := mutationFixture()\n\tm := mutationManifest(c, \"a\", strings.Repeat(\"a\", 64), \"b\", strings.Repeat(\"b\", 64), strings.Repeat(\"c\", 64), nil, nil)\n\tm[\"edits\"].([]any)[0].(map[string]any)[\"original_text\"] = \"x\"\n\tif _, e := ReplayMutation(\"The caf\u00e9 opens tomorrow.\", m[\"edits\"].([]any)); e == nil {\n\t\tt.Fatal(\"invalid new edit accepted\")\n\t}\n}\n\nfunc acousticMutationFixture() (map[string]any, map[string]any, map[string]any, map[string]any) {\n\tb, clean, c, tax := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"category_families\"] = []any{\"pronunciation\"}\n\tc[\"utterances\"] = clean[\"utterances\"]\n\tu := c[\"planned_units\"].([]any)[0].(map[string]any)\n\tu[\"primary_taxonomy_id\"] = \"pronunciation.segmental.consonant_voicing\"\n\tu[\"accepted_taxonomy_ids\"] = []any{u[\"primary_taxonomy_id\"]}\n\tu[\"domain\"] = \"pronunciation.segmental\"\n\tu[\"text_spans\"].([]any)[0].(map[string]any)[\"span\"] = map[string]any{\"start_cp\": float64(9), \"end_cp\": float64(14), \"exact_text\": \"opens\"}\n\tr := u[\"realization\"].(map[string]any)\n\tr[\"mode\"] = \"acoustic_segmental\"\n\tr[\"canonical_text\"] = \"opens\"\n\tr[\"surface_text\"] = \"opens\"\n\tr[\"canonical_ipa\"] = \"o\u028ap\u0259nz\"\n\tr[\"intended_ipa\"] = \"o\u028ap\u0259ns\"\n\ttax[\"entries\"] = []any{map[string]any{\"id\": u[\"primary_taxonomy_id\"], \"domain\": u[\"domain\"]}}\n\tc[\"acoustic_edits\"] = []any{map[string]any{\"unit_id\": \"e1\", \"utterance_id\": \"u1\", \"scope\": map[string]any{\"start\": float64(9), \"end\": float64(14)}, \"controller\": \"phone_pair\", \"parameters\": map[string]any{\"duration_ratio\": nil, \"gain_db\": nil, \"pitch_points\": []any{}, \"pause_ms\": nil, \"vot_ms\": nil, \"reference_ipa\": \"o\u028ap\u0259nz\", \"mutated_ipa\": \"o\u028ap\u0259ns\", \"phone_start\": float64(4), \"phone_end\": float64(5), \"expected_feature\": \"final z to s\", \"accepted_reference\": \"final z\"}}}\n\treturn b, clean, c, tax\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL preserve all122taxonomy/recipe/production rows and select complete requested families/exact leaves into actual mutation context. Unknown selections or invalid new replay coordinates SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationReplayNegative(t *testing.T) {\n\t_, _, c, _ := mutationFixture()\n\tm := mutationManifest(c, \"a\", strings.Repeat(\"a\", 64), \"b\", strings.Repeat(\"b\", 64), strings.Repeat(\"c\", 64), nil, nil)\n\tm[\"edits\"].([]any)[0].(map[string]any)[\"original_text\"] = \"x\"\n\tif _, e := ReplayMutation(\"The caf\u00e9 opens tomorrow.\", m[\"edits\"].([]any)); e == nil {\n\t\tt.Fatal(\"invalid new edit accepted\")\n\t}\n}\n\nfunc acousticMutationFixture() (map[string]any, map[string]any, map[string]any, map[string]any) {\n\tb, clean, c, tax := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"category_families\"] = []any{\"pronunciation\"}\n\tc[\"utterances\"] = clean[\"utterances\"]\n\tu := c[\"planned_units\"].([]any)[0].(map[string]any)\n\tu[\"primary_taxonomy_id\"] = \"pronunciation.segmental.consonant_voicing\"\n\tu[\"accepted_taxonomy_ids\"] = []any{u[\"primary_taxonomy_id\"]}\n\tu[\"domain\"] = \"pronunciation.segmental\"\n\tu[\"text_spans\"].([]any)[0].(map[string]any)[\"span\"] = map[string]any{\"start_cp\": float64(9), \"end_cp\": float64(14), \"exact_text\": \"opens\"}\n\tr := u[\"realization\"].(map[string]any)\n\tr[\"mode\"] = \"acoustic_segmental\"\n\tr[\"canonical_text\"] = \"opens\"\n\tr[\"surface_text\"] = \"opens\"\n\tr[\"canonical_ipa\"] = \"o\u028ap\u0259nz\"\n\tr[\"intended_ipa\"] = \"o\u028ap\u0259ns\"\n\ttax[\"entries\"] = []any{map[string]any{\"id\": u[\"primary_taxonomy_id\"], \"domain\": u[\"domain\"]}}\n\tc[\"acoustic_edits\"] = []any{map[string]any{\"unit_id\": \"e1\", \"utterance_id\": \"u1\", \"scope\": map[string]any{\"start\": float64(9), \"end\": float64(14)}, \"controller\": \"phone_pair\", \"parameters\": map[string]any{\"duration_ratio\": nil, \"gain_db\": nil, \"pitch_points\": []any{}, \"pause_ms\": nil, \"vot_ms\": nil, \"reference_ipa\": \"o\u028ap\u0259nz\", \"mutated_ipa\": \"o\u028ap\u0259ns\", \"phone_start\": float64(4), \"phone_end\": float64(5), \"expected_feature\": \"final z to s\", \"accepted_reference\": \"final z\"}}}\n\treturn b, clean, c, tax\n}"
+      },
+      "independent_oracle": "The application SHALL preserve all122taxonomy/recipe/production rows and select complete requested families/exact leaves into actual mutation context. Unknown selections or invalid new replay coordinates SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-04.P1.S1.POSITIVE",
+      "property_id": "I6-04.P1",
+      "polarity": "positive",
+      "scenario": "I6-04 packet 1",
+      "fixture_id": "iteration6-I6-04-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationAcousticPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationAcousticPositive through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationAcousticPositive",
+        "literal_executable_fixture": "func TestMutationAcousticPositive(t *testing.T) {\n\tb, clean, c, tax := acousticMutationFixture()\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n\tm := mutationManifest(c, \"a\", strings.Repeat(\"a\", 64), \"b\", strings.Repeat(\"b\", 64), strings.Repeat(\"c\", 64), nil, nil)\n\tif len(m[\"edits\"].([]any)) != 0 || len(m[\"acoustic_intents\"].([]any)) != 1 || len(m[\"acoustic_edits\"].([]any)) != 1 {\n\t\tt.Fatal(m)\n\t}\n\tif m[\"acoustic_intents\"].([]any)[0].(map[string]any)[\"realization\"].(map[string]any)[\"observed_ipa\"] != nil {\n\t\tt.Fatal(m)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain typed acoustic operations/intents and acceptable controls without fabricated observed sound or true-error counts. Acoustic errors without a usable operation SHALL fail admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationAcousticPositive(t *testing.T) {\n\tb, clean, c, tax := acousticMutationFixture()\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n\tm := mutationManifest(c, \"a\", strings.Repeat(\"a\", 64), \"b\", strings.Repeat(\"b\", 64), strings.Repeat(\"c\", 64), nil, nil)\n\tif len(m[\"edits\"].([]any)) != 0 || len(m[\"acoustic_intents\"].([]any)) != 1 || len(m[\"acoustic_edits\"].([]any)) != 1 {\n\t\tt.Fatal(m)\n\t}\n\tif m[\"acoustic_intents\"].([]any)[0].(map[string]any)[\"realization\"].(map[string]any)[\"observed_ipa\"] != nil {\n\t\tt.Fatal(m)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL retain typed acoustic operations/intents and acceptable controls without fabricated observed sound or true-error counts. Acoustic errors without a usable operation SHALL fail admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-04.P1.S2.POSITIVE",
+      "property_id": "I6-04.P1",
+      "polarity": "positive",
+      "scenario": "I6-04 packet 2",
+      "fixture_id": "iteration6-I6-04-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationControlPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationControlPositive through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationControlPositive",
+        "literal_executable_fixture": "func TestMutationControlPositive(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tc[\"utterances\"] = clean[\"utterances\"]\n\tb[\"exercise_request\"].(map[string]any)[\"mutation_count\"] = float64(0)\n\tu := c[\"planned_units\"].([]any)[0].(map[string]any)\n\tu[\"expected_judgment\"] = \"acceptable\"\n\tu[\"status_label\"] = \"decoy_non_error\"\n\tu[\"correction_eligible\"] = false\n\tu[\"corrections\"] = []any{}\n\tu[\"text_spans\"].([]any)[0].(map[string]any)[\"span\"] = map[string]any{\"start_cp\": float64(9), \"end_cp\": float64(14), \"exact_text\": \"opens\"}\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain typed acoustic operations/intents and acceptable controls without fabricated observed sound or true-error counts. Acoustic errors without a usable operation SHALL fail admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationControlPositive(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tc[\"utterances\"] = clean[\"utterances\"]\n\tb[\"exercise_request\"].(map[string]any)[\"mutation_count\"] = float64(0)\n\tu := c[\"planned_units\"].([]any)[0].(map[string]any)\n\tu[\"expected_judgment\"] = \"acceptable\"\n\tu[\"status_label\"] = \"decoy_non_error\"\n\tu[\"correction_eligible\"] = false\n\tu[\"corrections\"] = []any{}\n\tu[\"text_spans\"].([]any)[0].(map[string]any)[\"span\"] = map[string]any{\"start_cp\": float64(9), \"end_cp\": float64(14), \"exact_text\": \"opens\"}\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL retain typed acoustic operations/intents and acceptable controls without fabricated observed sound or true-error counts. Acoustic errors without a usable operation SHALL fail admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-04.P1.S1.NEGATIVE",
+      "property_id": "I6-04.P1",
+      "polarity": "negative",
+      "scenario": "I6-04 packet 1",
+      "fixture_id": "iteration6-I6-04-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationAcousticMissingNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationAcousticMissingNegative through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationAcousticMissingNegative",
+        "literal_executable_fixture": "func TestMutationAcousticMissingNegative(t *testing.T) {\n\tb, clean, c, tax := acousticMutationFixture()\n\tc[\"acoustic_edits\"] = []any{}\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"unsupported acoustic intent accepted without operation\")\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain typed acoustic operations/intents and acceptable controls without fabricated observed sound or true-error counts. Acoustic errors without a usable operation SHALL fail admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationAcousticMissingNegative(t *testing.T) {\n\tb, clean, c, tax := acousticMutationFixture()\n\tc[\"acoustic_edits\"] = []any{}\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"unsupported acoustic intent accepted without operation\")\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL retain typed acoustic operations/intents and acceptable controls without fabricated observed sound or true-error counts. Acoustic errors without a usable operation SHALL fail admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-04.P1.S2.NEGATIVE",
+      "property_id": "I6-04.P1",
+      "polarity": "negative",
+      "scenario": "I6-04 packet 2",
+      "fixture_id": "iteration6-I6-04-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationObservedSoundNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationObservedSoundNegative through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationObservedSoundNegative",
+        "literal_executable_fixture": "func TestMutationObservedSoundNegative(t *testing.T) {\n\tb, clean, c, tax := acousticMutationFixture()\n\tc[\"planned_units\"].([]any)[0].(map[string]any)[\"realization\"].(map[string]any)[\"observed_ipa\"] = \"fabricated\"\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"unmeasured sound accepted\")\n\t}\n}\n\n// ReplayMutation is an independent test-only ledger replay; it is not shipped.\nfunc ReplayMutation(text string, edits []any) (string, error) {\n\trunes := []rune(text)\n\tposition := 0\n\tvar out strings.Builder\n\tfor _, v := range edits {\n\t\te := v.(map[string]any)\n\t\tstart, end := mutationOffset(e[\"start_cp\"]), mutationOffset(e[\"end_cp\"])\n\t\tif start < position || start > end || end > len(runes) || string(runes[start:end]) != e[\"original_text\"] {\n\t\t\treturn \"\", fmt.Errorf(\"invalid canonical edit\")\n\t\t}\n\t\tout.WriteString(string(runes[position:start]))\n\t\tout.WriteString(e[\"replacement_text\"].(string))\n\t\tposition = end\n\t}\n\tout.WriteString(string(runes[position:]))\n\treturn out.String(), nil\n}\nfunc mutationOffset(v any) int {\n\tswitch x := v.(type) {\n\tcase int:\n\t\treturn x\n\tcase float64:\n\t\treturn int(x)\n\t}\n\treturn -1\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain typed acoustic operations/intents and acceptable controls without fabricated observed sound or true-error counts. Acoustic errors without a usable operation SHALL fail admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationObservedSoundNegative(t *testing.T) {\n\tb, clean, c, tax := acousticMutationFixture()\n\tc[\"planned_units\"].([]any)[0].(map[string]any)[\"realization\"].(map[string]any)[\"observed_ipa\"] = \"fabricated\"\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"unmeasured sound accepted\")\n\t}\n}\n\n// ReplayMutation is an independent test-only ledger replay; it is not shipped.\nfunc ReplayMutation(text string, edits []any) (string, error) {\n\trunes := []rune(text)\n\tposition := 0\n\tvar out strings.Builder\n\tfor _, v := range edits {\n\t\te := v.(map[string]any)\n\t\tstart, end := mutationOffset(e[\"start_cp\"]), mutationOffset(e[\"end_cp\"])\n\t\tif start < position || start > end || end > len(runes) || string(runes[start:end]) != e[\"original_text\"] {\n\t\t\treturn \"\", fmt.Errorf(\"invalid canonical edit\")\n\t\t}\n\t\tout.WriteString(string(runes[position:start]))\n\t\tout.WriteString(e[\"replacement_text\"].(string))\n\t\tposition = end\n\t}\n\tout.WriteString(string(runes[position:]))\n\treturn out.String(), nil\n}\nfunc mutationOffset(v any) int {\n\tswitch x := v.(type) {\n\tcase int:\n\t\treturn x\n\tcase float64:\n\t\treturn int(x)\n\t}\n\treturn -1\n}"
+      },
+      "independent_oracle": "The application SHALL retain typed acoustic operations/intents and acceptable controls without fabricated observed sound or true-error counts. Acoustic errors without a usable operation SHALL fail admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-05.P1.S1.POSITIVE",
+      "property_id": "I6-05.P1",
+      "polarity": "positive",
+      "scenario": "I6-05 packet 1",
+      "fixture_id": "iteration6-I6-05-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationCheckpointPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationCheckpointPositive through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationCheckpointPositive",
+        "literal_executable_fixture": "func TestNativeMutationCheckpointPositive(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil || *n != 1 || p[\"phase_states\"].(map[string]any)[\"mutation\"] != \"complete\" || p[\"canonical_asset_id\"] != clean[\"canonical_asset_id\"] || p[\"audio_asset_id\"] != nil {\n\t\tt.Fatal(p, e, *n)\n\t}\n\traw, e := s.Store.ReadAsset(context.Background(), p[\"mutation_manifest_asset_id\"].(string))\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tvar m map[string]any\n\t_ = json.Unmarshal(raw, &m)\n\tif m[\"surface_word_count\"] != float64(4) || len(m[\"planned_units\"].([]any)) != 1 || m[\"edits\"].([]any)[0].(map[string]any)[\"original_text\"] != \"s\" {\n\t\tt.Fatal(m)\n\t}\n\tsaveNativeMutationEvidence(t, s, p)\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL save the accepted mutated asset, candidate envelope and manifest with the preparation head, original canonical checkpoint and native context/receipt evidence. Missing canonical preparations and changed saved identity SHALL dispatch zero calls. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationCheckpointPositive(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil || *n != 1 || p[\"phase_states\"].(map[string]any)[\"mutation\"] != \"complete\" || p[\"canonical_asset_id\"] != clean[\"canonical_asset_id\"] || p[\"audio_asset_id\"] != nil {\n\t\tt.Fatal(p, e, *n)\n\t}\n\traw, e := s.Store.ReadAsset(context.Background(), p[\"mutation_manifest_asset_id\"].(string))\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tvar m map[string]any\n\t_ = json.Unmarshal(raw, &m)\n\tif m[\"surface_word_count\"] != float64(4) || len(m[\"planned_units\"].([]any)) != 1 || m[\"edits\"].([]any)[0].(map[string]any)[\"original_text\"] != \"s\" {\n\t\tt.Fatal(m)\n\t}\n\tsaveNativeMutationEvidence(t, s, p)\n}"
+      },
+      "independent_oracle": "The application SHALL save the accepted mutated asset, candidate envelope and manifest with the preparation head, original canonical checkpoint and native context/receipt evidence. Missing canonical preparations and changed saved identity SHALL dispatch zero calls. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-05.P1.S2.POSITIVE",
+      "property_id": "I6-05.P1",
+      "polarity": "positive",
+      "scenario": "I6-05 packet 2",
+      "fixture_id": "iteration6-I6-05-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationEvidencePositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationEvidencePositive through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationEvidencePositive",
+        "literal_executable_fixture": "func TestNativeMutationEvidencePositive(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil || *n != 1 {\n\t\tt.Fatal(p, e)\n\t}\n\tdoc, e := s.Store.ReadDocument(context.Background(), p[\"candidate_id\"].(string))\n\tif e != nil || doc.Kind != \"candidate-envelope\" {\n\t\tt.Fatal(doc, e)\n\t}\n\tvar receipts, contexts, audits int\n\t_ = s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM document d WHERE kind='provider-receipt' AND payload->>'operation_id' IN (SELECT child.id::text FROM operation parent JOIN operation child ON child.idempotency_key=parent.idempotency_key AND child.operation_name IN ('canonical_text','mutation') WHERE parent.subject_id=$1)\", p[\"id\"]).Scan(&receipts)\n\t_ = s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM document d WHERE kind='llm-context-snapshot' AND payload->>'operation_id' IN (SELECT child.id::text FROM operation parent JOIN operation child ON child.idempotency_key=parent.idempotency_key AND child.operation_name IN ('canonical_text','mutation') WHERE parent.subject_id=$1)\", p[\"id\"]).Scan(&contexts)\n\t_ = s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1\", p[\"id\"]).Scan(&audits)\n\tif receipts != 2 || contexts != 2 || audits != 1 {\n\t\tt.Fatal(receipts, contexts, audits)\n\t}\n\tsaveNativeMutationEvidence(t, s, p)\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL save the accepted mutated asset, candidate envelope and manifest with the preparation head, original canonical checkpoint and native context/receipt evidence. Missing canonical preparations and changed saved identity SHALL dispatch zero calls. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationEvidencePositive(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil || *n != 1 {\n\t\tt.Fatal(p, e)\n\t}\n\tdoc, e := s.Store.ReadDocument(context.Background(), p[\"candidate_id\"].(string))\n\tif e != nil || doc.Kind != \"candidate-envelope\" {\n\t\tt.Fatal(doc, e)\n\t}\n\tvar receipts, contexts, audits int\n\t_ = s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM document d WHERE kind='provider-receipt' AND payload->>'operation_id' IN (SELECT child.id::text FROM operation parent JOIN operation child ON child.idempotency_key=parent.idempotency_key AND child.operation_name IN ('canonical_text','mutation') WHERE parent.subject_id=$1)\", p[\"id\"]).Scan(&receipts)\n\t_ = s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM document d WHERE kind='llm-context-snapshot' AND payload->>'operation_id' IN (SELECT child.id::text FROM operation parent JOIN operation child ON child.idempotency_key=parent.idempotency_key AND child.operation_name IN ('canonical_text','mutation') WHERE parent.subject_id=$1)\", p[\"id\"]).Scan(&contexts)\n\t_ = s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1\", p[\"id\"]).Scan(&audits)\n\tif receipts != 2 || contexts != 2 || audits != 1 {\n\t\tt.Fatal(receipts, contexts, audits)\n\t}\n\tsaveNativeMutationEvidence(t, s, p)\n}"
+      },
+      "independent_oracle": "The application SHALL save the accepted mutated asset, candidate envelope and manifest with the preparation head, original canonical checkpoint and native context/receipt evidence. Missing canonical preparations and changed saved identity SHALL dispatch zero calls. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-05.P1.S1.NEGATIVE",
+      "property_id": "I6-05.P1",
+      "polarity": "negative",
+      "scenario": "I6-05 packet 1",
+      "fixture_id": "iteration6-I6-05-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationMissingCanonicalNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationMissingCanonicalNegative through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationMissingCanonicalNegative",
+        "literal_executable_fixture": "func TestNativeMutationMissingCanonicalNegative(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tr.PreparationID = nil\n\tif _, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client); e == nil || *n != 0 {\n\t\tt.Fatal(e, *n)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL save the accepted mutated asset, candidate envelope and manifest with the preparation head, original canonical checkpoint and native context/receipt evidence. Missing canonical preparations and changed saved identity SHALL dispatch zero calls. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationMissingCanonicalNegative(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tr.PreparationID = nil\n\tif _, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client); e == nil || *n != 0 {\n\t\tt.Fatal(e, *n)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL save the accepted mutated asset, candidate envelope and manifest with the preparation head, original canonical checkpoint and native context/receipt evidence. Missing canonical preparations and changed saved identity SHALL dispatch zero calls. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-05.P1.S2.NEGATIVE",
+      "property_id": "I6-05.P1",
+      "polarity": "negative",
+      "scenario": "I6-05 packet 2",
+      "fixture_id": "iteration6-I6-05-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationChangedConfigurationNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationChangedConfigurationNegative through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationChangedConfigurationNegative",
+        "literal_executable_fixture": "func TestNativeMutationChangedConfigurationNegative(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tr.ConfigurationSHA = strings.Repeat(\"f\", 64)\n\tif _, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client); !errors.Is(e, ErrConflict) || *n != 0 {\n\t\tt.Fatal(e, *n)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL save the accepted mutated asset, candidate envelope and manifest with the preparation head, original canonical checkpoint and native context/receipt evidence. Missing canonical preparations and changed saved identity SHALL dispatch zero calls. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationChangedConfigurationNegative(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tr.ConfigurationSHA = strings.Repeat(\"f\", 64)\n\tif _, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client); !errors.Is(e, ErrConflict) || *n != 0 {\n\t\tt.Fatal(e, *n)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL save the accepted mutated asset, candidate envelope and manifest with the preparation head, original canonical checkpoint and native context/receipt evidence. Missing canonical preparations and changed saved identity SHALL dispatch zero calls. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-06.P1.S1.POSITIVE",
+      "property_id": "I6-06.P1",
+      "polarity": "positive",
+      "scenario": "I6-06 packet 1",
+      "fixture_id": "iteration6-I6-06-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationReplayPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationReplayPositive through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationReplayPositive",
+        "literal_executable_fixture": "func TestNativeMutationReplayPositive(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tkey := uuid.NewString()\n\ta, e := s.PrepareMutation(context.Background(), r, key, client)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tb, e := s.PrepareMutation(context.Background(), r, key, client)\n\tif e != nil || *n != 1 || a[\"mutation_manifest_asset_id\"] != b[\"mutation_manifest_asset_id\"] {\n\t\tt.Fatal(a, b, e, *n)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL return a saved action result without another model call or accepted-asset audit. Conflicting reused keys and invalid next-attempt counters SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationReplayPositive(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tkey := uuid.NewString()\n\ta, e := s.PrepareMutation(context.Background(), r, key, client)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tb, e := s.PrepareMutation(context.Background(), r, key, client)\n\tif e != nil || *n != 1 || a[\"mutation_manifest_asset_id\"] != b[\"mutation_manifest_asset_id\"] {\n\t\tt.Fatal(a, b, e, *n)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL return a saved action result without another model call or accepted-asset audit. Conflicting reused keys and invalid next-attempt counters SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-06.P1.S2.POSITIVE",
+      "property_id": "I6-06.P1",
+      "polarity": "positive",
+      "scenario": "I6-06 packet 2",
+      "fixture_id": "iteration6-I6-06-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationTrustedReplayPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationTrustedReplayPositive through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationTrustedReplayPositive",
+        "literal_executable_fixture": "func TestNativeMutationTrustedReplayPositive(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tkey := uuid.NewString()\n\ta, e := s.PrepareMutation(context.Background(), r, key, client)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t} // accepted manifest is deliberately changed at the storage boundary: read/replay must not audit it.\n\t_, e = s.Store.DB.Exec(context.Background(), \"UPDATE asset_location SET storage_key='test-owned-absent' WHERE asset_id=$1\", a[\"mutation_manifest_asset_id\"])\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tb, e := s.PrepareMutation(context.Background(), r, key, client)\n\tif e != nil || *n != 1 || b[\"mutation_manifest_asset_id\"] != a[\"mutation_manifest_asset_id\"] {\n\t\tt.Fatal(b, e, *n)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL return a saved action result without another model call or accepted-asset audit. Conflicting reused keys and invalid next-attempt counters SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationTrustedReplayPositive(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tkey := uuid.NewString()\n\ta, e := s.PrepareMutation(context.Background(), r, key, client)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t} // accepted manifest is deliberately changed at the storage boundary: read/replay must not audit it.\n\t_, e = s.Store.DB.Exec(context.Background(), \"UPDATE asset_location SET storage_key='test-owned-absent' WHERE asset_id=$1\", a[\"mutation_manifest_asset_id\"])\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tb, e := s.PrepareMutation(context.Background(), r, key, client)\n\tif e != nil || *n != 1 || b[\"mutation_manifest_asset_id\"] != a[\"mutation_manifest_asset_id\"] {\n\t\tt.Fatal(b, e, *n)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL return a saved action result without another model call or accepted-asset audit. Conflicting reused keys and invalid next-attempt counters SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-06.P1.S1.NEGATIVE",
+      "property_id": "I6-06.P1",
+      "polarity": "negative",
+      "scenario": "I6-06 packet 1",
+      "fixture_id": "iteration6-I6-06-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationKeyConflictNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationKeyConflictNegative through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationKeyConflictNegative",
+        "literal_executable_fixture": "func TestNativeMutationKeyConflictNegative(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tkey := uuid.NewString()\n\tif _, e := s.PrepareMutation(context.Background(), r, key, client); e != nil {\n\t\tt.Fatal(e)\n\t}\n\tr.Attempt = 3\n\tif _, e := s.PrepareMutation(context.Background(), r, key, client); !errors.Is(e, ErrConflict) || *n != 1 {\n\t\tt.Fatal(e, *n)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL return a saved action result without another model call or accepted-asset audit. Conflicting reused keys and invalid next-attempt counters SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationKeyConflictNegative(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tkey := uuid.NewString()\n\tif _, e := s.PrepareMutation(context.Background(), r, key, client); e != nil {\n\t\tt.Fatal(e)\n\t}\n\tr.Attempt = 3\n\tif _, e := s.PrepareMutation(context.Background(), r, key, client); !errors.Is(e, ErrConflict) || *n != 1 {\n\t\tt.Fatal(e, *n)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL return a saved action result without another model call or accepted-asset audit. Conflicting reused keys and invalid next-attempt counters SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-06.P1.S2.NEGATIVE",
+      "property_id": "I6-06.P1",
+      "polarity": "negative",
+      "scenario": "I6-06 packet 2",
+      "fixture_id": "iteration6-I6-06-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationAttemptNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationAttemptNegative through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationAttemptNegative",
+        "literal_executable_fixture": "func TestNativeMutationAttemptNegative(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tr.Attempt = 9\n\tif _, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client); !errors.Is(e, ErrConflict) || *n != 0 {\n\t\tt.Fatal(e, *n)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL return a saved action result without another model call or accepted-asset audit. Conflicting reused keys and invalid next-attempt counters SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationAttemptNegative(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tr.Attempt = 9\n\tif _, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client); !errors.Is(e, ErrConflict) || *n != 0 {\n\t\tt.Fatal(e, *n)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL return a saved action result without another model call or accepted-asset audit. Conflicting reused keys and invalid next-attempt counters SHALL fail. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-07.P1.S1.POSITIVE",
+      "property_id": "I6-07.P1",
+      "polarity": "positive",
+      "scenario": "I6-07 packet 1",
+      "fixture_id": "iteration6-I6-07-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationFailureResumePositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationFailureResumePositive through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationFailureResumePositive",
+        "literal_executable_fixture": "func TestNativeMutationFailureResumePositive(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"fail-once\")\n\tkey := uuid.NewString()\n\tfailed, e := s.PrepareMutation(context.Background(), r, key, client)\n\tif e == nil || *n != 1 || failed[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"complete\" || failed[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(failed, e, *n)\n\t}\n\tr.Attempt = 3\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil || *n != 2 || p[\"settings_asset_id\"] != clean[\"settings_asset_id\"] || p[\"last_failure\"] != nil {\n\t\tt.Fatal(p, e, *n)\n\t}\n\tr.Attempt = 2\n\treplay, e := s.PrepareMutation(context.Background(), r, key, client)\n\tif e == nil || replay[\"last_failure\"] == nil || *n != 2 {\n\t\tt.Fatal(replay, e, *n)\n\t}\n\tsaveNativeMutationEvidence(t, s, p)\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain clean text/settings on failure, reuse frozen configuration on retry and replay an earlier failed result after later success. One same-profile semantic repair is allowed; quota SHALL trigger no billed fallback. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationFailureResumePositive(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"fail-once\")\n\tkey := uuid.NewString()\n\tfailed, e := s.PrepareMutation(context.Background(), r, key, client)\n\tif e == nil || *n != 1 || failed[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"complete\" || failed[\"mutated_asset_id\"] != nil {\n\t\tt.Fatal(failed, e, *n)\n\t}\n\tr.Attempt = 3\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil || *n != 2 || p[\"settings_asset_id\"] != clean[\"settings_asset_id\"] || p[\"last_failure\"] != nil {\n\t\tt.Fatal(p, e, *n)\n\t}\n\tr.Attempt = 2\n\treplay, e := s.PrepareMutation(context.Background(), r, key, client)\n\tif e == nil || replay[\"last_failure\"] == nil || *n != 2 {\n\t\tt.Fatal(replay, e, *n)\n\t}\n\tsaveNativeMutationEvidence(t, s, p)\n}"
+      },
+      "independent_oracle": "The application SHALL retain clean text/settings on failure, reuse frozen configuration on retry and replay an earlier failed result after later success. One same-profile semantic repair is allowed; quota SHALL trigger no billed fallback. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-07.P1.S2.POSITIVE",
+      "property_id": "I6-07.P1",
+      "polarity": "positive",
+      "scenario": "I6-07 packet 2",
+      "fixture_id": "iteration6-I6-07-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationFrozenSettingsPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationFrozenSettingsPositive through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationFrozenSettingsPositive",
+        "literal_executable_fixture": "func TestNativeMutationFrozenSettingsPositive(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"\")\n\tconfig, rev, e := s.Store.Configuration(context.Background())\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tconfig[\"llm_profiles\"].([]any)[0].(map[string]any)[\"model\"] = \"later-global-model\"\n\tfor _, k := range []string{\"workspace_id\", \"configuration_sha256\", \"provider_access_policy\"} {\n\t\tdelete(config, k)\n\t}\n\traw, _ := json.Marshal(config)\n\tif _, _, e = s.Store.PutConfiguration(context.Background(), raw, uuid.NewString(), rev); e != nil {\n\t\tt.Fatal(e)\n\t}\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil || *n != 1 || p[\"settings_asset_id\"] != clean[\"settings_asset_id\"] {\n\t\tt.Fatal(p, e, *n)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain clean text/settings on failure, reuse frozen configuration on retry and replay an earlier failed result after later success. One same-profile semantic repair is allowed; quota SHALL trigger no billed fallback. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationFrozenSettingsPositive(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"\")\n\tconfig, rev, e := s.Store.Configuration(context.Background())\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tconfig[\"llm_profiles\"].([]any)[0].(map[string]any)[\"model\"] = \"later-global-model\"\n\tfor _, k := range []string{\"workspace_id\", \"configuration_sha256\", \"provider_access_policy\"} {\n\t\tdelete(config, k)\n\t}\n\traw, _ := json.Marshal(config)\n\tif _, _, e = s.Store.PutConfiguration(context.Background(), raw, uuid.NewString(), rev); e != nil {\n\t\tt.Fatal(e)\n\t}\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil || *n != 1 || p[\"settings_asset_id\"] != clean[\"settings_asset_id\"] {\n\t\tt.Fatal(p, e, *n)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL retain clean text/settings on failure, reuse frozen configuration on retry and replay an earlier failed result after later success. One same-profile semantic repair is allowed; quota SHALL trigger no billed fallback. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-07.P1.S1.NEGATIVE",
+      "property_id": "I6-07.P1",
+      "polarity": "negative",
+      "scenario": "I6-07 packet 1",
+      "fixture_id": "iteration6-I6-07-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationInvalidOutputNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationInvalidOutputNegative through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationInvalidOutputNegative",
+        "literal_executable_fixture": "func TestNativeMutationInvalidOutputNegative(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"invalid\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e == nil || *n != 2 || p[\"candidate_id\"] != nil || p[\"canonical_asset_id\"] != clean[\"canonical_asset_id\"] || p[\"phase_states\"].(map[string]any)[\"mutation\"] != \"failed\" {\n\t\tt.Fatal(p, e, *n)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain clean text/settings on failure, reuse frozen configuration on retry and replay an earlier failed result after later success. One same-profile semantic repair is allowed; quota SHALL trigger no billed fallback. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationInvalidOutputNegative(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"invalid\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e == nil || *n != 2 || p[\"candidate_id\"] != nil || p[\"canonical_asset_id\"] != clean[\"canonical_asset_id\"] || p[\"phase_states\"].(map[string]any)[\"mutation\"] != \"failed\" {\n\t\tt.Fatal(p, e, *n)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL retain clean text/settings on failure, reuse frozen configuration on retry and replay an earlier failed result after later success. One same-profile semantic repair is allowed; quota SHALL trigger no billed fallback. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-07.P1.S2.NEGATIVE",
+      "property_id": "I6-07.P1",
+      "polarity": "negative",
+      "scenario": "I6-07 packet 2",
+      "fixture_id": "iteration6-I6-07-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationProviderLimitNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationProviderLimitNegative through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationProviderLimitNegative",
+        "literal_executable_fixture": "func TestNativeMutationProviderLimitNegative(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"limit\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e == nil || *n != 1 || p[\"mutation_manifest_asset_id\"] != nil || p[\"canonical_asset_id\"] != clean[\"canonical_asset_id\"] {\n\t\tt.Fatal(p, e, *n)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain clean text/settings on failure, reuse frozen configuration on retry and replay an earlier failed result after later success. One same-profile semantic repair is allowed; quota SHALL trigger no billed fallback. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationProviderLimitNegative(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"limit\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e == nil || *n != 1 || p[\"mutation_manifest_asset_id\"] != nil || p[\"canonical_asset_id\"] != clean[\"canonical_asset_id\"] {\n\t\tt.Fatal(p, e, *n)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL retain clean text/settings on failure, reuse frozen configuration on retry and replay an earlier failed result after later success. One same-profile semantic repair is allowed; quota SHALL trigger no billed fallback. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-08.P1.S1.POSITIVE",
+      "property_id": "I6-08.P1",
+      "polarity": "positive",
+      "scenario": "I6-08 packet 1",
+      "fixture_id": "iteration6-I6-08-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationChildRecoveryPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationChildRecoveryPositive through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationChildRecoveryPositive",
+        "literal_executable_fixture": "func TestNativeMutationChildRecoveryPositive(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\trev := int64(p[\"revision\"].(float64))\n\tp[\"revision\"] = float64(rev + 1)\n\tp[\"phase_states\"].(map[string]any)[\"mutation\"] = \"running\"\n\tfor _, k := range []string{\"candidate_id\", \"mutated_asset_id\", \"mutation_manifest_asset_id\"} {\n\t\tp[k] = nil\n\t}\n\tp[\"active_operation_id\"] = p[\"operation_ids\"].([]any)[1]\n\traw, _ := json.Marshal(p)\n\t_, e = s.Store.WriteDocuments(context.Background(), []DocumentWrite{{ID: uuid.NewString(), Kind: \"preparation-state\", Version: \"2.0.0\", Scope: \"local\", Payload: raw, Head: &HeadWrite{ID: p[\"id\"].(string), Expected: &rev, State: \"running\"}, References: []Reference{{Pointer: \"/settings_asset_id\", ID: p[\"settings_asset_id\"].(string), Scope: p[\"settings_asset_id\"].(string), Kind: \"asset-bytes\", SHA: p[\"settings_sha256\"].(string), Relation: \"settings_asset_id\"}, {Pointer: \"/canonical_asset_id\", ID: p[\"canonical_asset_id\"].(string), Scope: p[\"canonical_asset_id\"].(string), Kind: \"asset-bytes\", SHA: p[\"canonical_sha256\"].(string), Relation: \"canonical_asset_id\"}}}})\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tr.Attempt = 3\n\trecovered, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil || *n != 1 || recovered[\"candidate_id\"] == nil {\n\t\tt.Fatal(recovered, e, *n)\n\t}\n\tsaveNativeMutationEvidence(t, s, recovered)\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL recover a completed child mutation after a lost parent checkpoint without redispatch, read after restart and arbitrate active/expired foreground owners. A stale or competing operation SHALL NOT overwrite the preparation. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationChildRecoveryPositive(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\trev := int64(p[\"revision\"].(float64))\n\tp[\"revision\"] = float64(rev + 1)\n\tp[\"phase_states\"].(map[string]any)[\"mutation\"] = \"running\"\n\tfor _, k := range []string{\"candidate_id\", \"mutated_asset_id\", \"mutation_manifest_asset_id\"} {\n\t\tp[k] = nil\n\t}\n\tp[\"active_operation_id\"] = p[\"operation_ids\"].([]any)[1]\n\traw, _ := json.Marshal(p)\n\t_, e = s.Store.WriteDocuments(context.Background(), []DocumentWrite{{ID: uuid.NewString(), Kind: \"preparation-state\", Version: \"2.0.0\", Scope: \"local\", Payload: raw, Head: &HeadWrite{ID: p[\"id\"].(string), Expected: &rev, State: \"running\"}, References: []Reference{{Pointer: \"/settings_asset_id\", ID: p[\"settings_asset_id\"].(string), Scope: p[\"settings_asset_id\"].(string), Kind: \"asset-bytes\", SHA: p[\"settings_sha256\"].(string), Relation: \"settings_asset_id\"}, {Pointer: \"/canonical_asset_id\", ID: p[\"canonical_asset_id\"].(string), Scope: p[\"canonical_asset_id\"].(string), Kind: \"asset-bytes\", SHA: p[\"canonical_sha256\"].(string), Relation: \"canonical_asset_id\"}}}})\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tr.Attempt = 3\n\trecovered, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil || *n != 1 || recovered[\"candidate_id\"] == nil {\n\t\tt.Fatal(recovered, e, *n)\n\t}\n\tsaveNativeMutationEvidence(t, s, recovered)\n}"
+      },
+      "independent_oracle": "The application SHALL recover a completed child mutation after a lost parent checkpoint without redispatch, read after restart and arbitrate active/expired foreground owners. A stale or competing operation SHALL NOT overwrite the preparation. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-08.P1.S2.POSITIVE",
+      "property_id": "I6-08.P1",
+      "polarity": "positive",
+      "scenario": "I6-08 packet 2",
+      "fixture_id": "iteration6-I6-08-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationRestartReadbackPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationRestartReadbackPositive through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationRestartReadbackPositive",
+        "literal_executable_fixture": "func TestNativeMutationRestartReadbackPositive(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tother := NewServer(preparationNative(t), \"http://localhost:3000\", \"\")\n\tsaved, e := other.Store.Preparation(context.Background(), p[\"id\"].(string))\n\tif e != nil || *n != 1 || saved[\"mutation_manifest_asset_id\"] != p[\"mutation_manifest_asset_id\"] || saved[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"complete\" {\n\t\tt.Fatal(saved, e, *n)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL recover a completed child mutation after a lost parent checkpoint without redispatch, read after restart and arbitrate active/expired foreground owners. A stale or competing operation SHALL NOT overwrite the preparation. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationRestartReadbackPositive(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tother := NewServer(preparationNative(t), \"http://localhost:3000\", \"\")\n\tsaved, e := other.Store.Preparation(context.Background(), p[\"id\"].(string))\n\tif e != nil || *n != 1 || saved[\"mutation_manifest_asset_id\"] != p[\"mutation_manifest_asset_id\"] || saved[\"phase_states\"].(map[string]any)[\"canonical_text\"] != \"complete\" {\n\t\tt.Fatal(saved, e, *n)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL recover a completed child mutation after a lost parent checkpoint without redispatch, read after restart and arbitrate active/expired foreground owners. A stale or competing operation SHALL NOT overwrite the preparation. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-08.P1.S1.NEGATIVE",
+      "property_id": "I6-08.P1",
+      "polarity": "negative",
+      "scenario": "I6-08 packet 1",
+      "fixture_id": "iteration6-I6-08-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationActiveOwnerNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationActiveOwnerNegative through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationActiveOwnerNegative",
+        "literal_executable_fixture": "func TestNativeMutationActiveOwnerNegative(t *testing.T) {\n\ts, r, client, n, p := nativeMutationFixture(t, \"\")\n\top, e := s.Store.ReserveOperation(context.Background(), OperationRequest{Name: \"mutation_prepare\", Key: uuid.NewString(), Path: \"/prepare/mutation\", Body: json.RawMessage(`{}`)})\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\t_, _ = s.Store.DB.Exec(context.Background(), \"UPDATE operation SET state='running' WHERE id=$1\", op.ID)\n\tif e = s.Store.takePreparation(context.Background(), p, op.ID, \"mutation\"); e != nil {\n\t\tt.Fatal(e)\n\t}\n\tr.Attempt = 3\n\tif _, e = s.PrepareMutation(context.Background(), r, uuid.NewString(), client); e == nil || *n != 0 {\n\t\tt.Fatal(e, *n)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL recover a completed child mutation after a lost parent checkpoint without redispatch, read after restart and arbitrate active/expired foreground owners. A stale or competing operation SHALL NOT overwrite the preparation. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationActiveOwnerNegative(t *testing.T) {\n\ts, r, client, n, p := nativeMutationFixture(t, \"\")\n\top, e := s.Store.ReserveOperation(context.Background(), OperationRequest{Name: \"mutation_prepare\", Key: uuid.NewString(), Path: \"/prepare/mutation\", Body: json.RawMessage(`{}`)})\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\t_, _ = s.Store.DB.Exec(context.Background(), \"UPDATE operation SET state='running' WHERE id=$1\", op.ID)\n\tif e = s.Store.takePreparation(context.Background(), p, op.ID, \"mutation\"); e != nil {\n\t\tt.Fatal(e)\n\t}\n\tr.Attempt = 3\n\tif _, e = s.PrepareMutation(context.Background(), r, uuid.NewString(), client); e == nil || *n != 0 {\n\t\tt.Fatal(e, *n)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL recover a completed child mutation after a lost parent checkpoint without redispatch, read after restart and arbitrate active/expired foreground owners. A stale or competing operation SHALL NOT overwrite the preparation. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-08.P1.S2.NEGATIVE",
+      "property_id": "I6-08.P1",
+      "polarity": "negative",
+      "scenario": "I6-08 packet 2",
+      "fixture_id": "iteration6-I6-08-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationDeadlineNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationDeadlineNegative through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationDeadlineNegative",
+        "literal_executable_fixture": "func TestNativeMutationDeadlineNegative(t *testing.T) {\n\ts, _, _, n, p := nativeMutationFixture(t, \"\")\n\top, e := s.Store.ReserveOperation(context.Background(), OperationRequest{Name: \"mutation_prepare\", Key: uuid.NewString(), Path: \"/prepare/mutation\", Body: json.RawMessage(`{}`)})\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\t_, _ = s.Store.DB.Exec(context.Background(), \"UPDATE operation SET state='running',started_at=$2 WHERE id=$1\", op.ID, time.Now().Add(-271*time.Second))\n\tif e = s.Store.takePreparation(context.Background(), p, op.ID, \"mutation\"); e == nil || *n != 0 {\n\t\tt.Fatal(e, *n)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL recover a completed child mutation after a lost parent checkpoint without redispatch, read after restart and arbitrate active/expired foreground owners. A stale or competing operation SHALL NOT overwrite the preparation. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationDeadlineNegative(t *testing.T) {\n\ts, _, _, n, p := nativeMutationFixture(t, \"\")\n\top, e := s.Store.ReserveOperation(context.Background(), OperationRequest{Name: \"mutation_prepare\", Key: uuid.NewString(), Path: \"/prepare/mutation\", Body: json.RawMessage(`{}`)})\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\t_, _ = s.Store.DB.Exec(context.Background(), \"UPDATE operation SET state='running',started_at=$2 WHERE id=$1\", op.ID, time.Now().Add(-271*time.Second))\n\tif e = s.Store.takePreparation(context.Background(), p, op.ID, \"mutation\"); e == nil || *n != 0 {\n\t\tt.Fatal(e, *n)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL recover a completed child mutation after a lost parent checkpoint without redispatch, read after restart and arbitrate active/expired foreground owners. A stale or competing operation SHALL NOT overwrite the preparation. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-09.P1.S1.POSITIVE",
+      "property_id": "I6-09.P1",
+      "polarity": "positive",
+      "scenario": "I6-09 packet 1",
+      "fixture_id": "iteration6-I6-09-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationMultipleScopesPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationMultipleScopesPositive through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationMultipleScopesPositive",
+        "literal_executable_fixture": "func TestMutationMultipleScopesPositive(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tc[\"utterances\"].([]any)[0].(map[string]any)[\"surface_text\"] = \"The caf\u00e9 open tomorrows.\"\n\tu := c[\"planned_units\"].([]any)[0].(map[string]any)\n\tu[\"text_spans\"] = append(u[\"text_spans\"].([]any), map[string]any{\"utterance_id\": \"u1\", \"span\": map[string]any{\"start_cp\": float64(14), \"end_cp\": float64(23), \"exact_text\": \"tomorrows\"}})\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationMultipleScopesPositive(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tc[\"utterances\"].([]any)[0].(map[string]any)[\"surface_text\"] = \"The caf\u00e9 open tomorrows.\"\n\tu := c[\"planned_units\"].([]any)[0].(map[string]any)\n\tu[\"text_spans\"] = append(u[\"text_spans\"].([]any), map[string]any{\"utterance_id\": \"u1\", \"span\": map[string]any{\"start_cp\": float64(14), \"end_cp\": float64(23), \"exact_text\": \"tomorrows\"}})\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-09.P1.S2.POSITIVE",
+      "property_id": "I6-09.P1",
+      "polarity": "positive",
+      "scenario": "I6-09 packet 2",
+      "fixture_id": "iteration6-I6-09-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationDeletionBoundaryPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationDeletionBoundaryPositive through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationDeletionBoundaryPositive",
+        "literal_executable_fixture": "func TestMutationDeletionBoundaryPositive(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tu := c[\"planned_units\"].([]any)[0].(map[string]any)\n\tu[\"text_spans\"].([]any)[0].(map[string]any)[\"span\"] = map[string]any{\"start_cp\": float64(13), \"end_cp\": float64(13), \"exact_text\": \"\"}\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationDeletionBoundaryPositive(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tu := c[\"planned_units\"].([]any)[0].(map[string]any)\n\tu[\"text_spans\"].([]any)[0].(map[string]any)[\"span\"] = map[string]any{\"start_cp\": float64(13), \"end_cp\": float64(13), \"exact_text\": \"\"}\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-09.P1.S1.NEGATIVE",
+      "property_id": "I6-09.P1",
+      "polarity": "negative",
+      "scenario": "I6-09 packet 1",
+      "fixture_id": "iteration6-I6-09-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationUnattributedNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationUnattributedNegative through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationUnattributedNegative",
+        "literal_executable_fixture": "func TestMutationUnattributedNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tc[\"utterances\"].([]any)[0].(map[string]any)[\"surface_text\"] = \"The caf\u00e9 open tomorrows.\"\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"unlisted tomorrows change accepted with only the open key\")\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationUnattributedNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tc[\"utterances\"].([]any)[0].(map[string]any)[\"surface_text\"] = \"The caf\u00e9 open tomorrows.\"\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"unlisted tomorrows change accepted with only the open key\")\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-09.P1.S2.NEGATIVE",
+      "property_id": "I6-09.P1",
+      "polarity": "negative",
+      "scenario": "I6-09 packet 2",
+      "fixture_id": "iteration6-I6-09-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationUnchangedScopeNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationUnchangedScopeNegative through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationUnchangedScopeNegative",
+        "literal_executable_fixture": "func TestMutationUnchangedScopeNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tc[\"utterances\"].([]any)[0].(map[string]any)[\"surface_text\"] = \"A caf\u00e9 open tomorrow!\"\n\tu := c[\"planned_units\"].([]any)[0].(map[string]any)\n\tu[\"text_spans\"].([]any)[0].(map[string]any)[\"span\"] = map[string]any{\"start_cp\": float64(12), \"end_cp\": float64(20), \"exact_text\": \"tomorrow\"}\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"unchanged tomorrow span cannot attribute surrounding edits\")\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationUnchangedScopeNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tc[\"utterances\"].([]any)[0].(map[string]any)[\"surface_text\"] = \"A caf\u00e9 open tomorrow!\"\n\tu := c[\"planned_units\"].([]any)[0].(map[string]any)\n\tu[\"text_spans\"].([]any)[0].(map[string]any)[\"span\"] = map[string]any{\"start_cp\": float64(12), \"end_cp\": float64(20), \"exact_text\": \"tomorrow\"}\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"unchanged tomorrow span cannot attribute surrounding edits\")\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL keep all text outside declared final-surface unit scopes unchanged; complete localized and whole-context scopes, including empty deletion boundaries, remain supported. Unattributed changes SHALL use the existing single repair then fail without a mutation checkpoint. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-10.P1.S1.POSITIVE",
+      "property_id": "I6-10.P1",
+      "polarity": "positive",
+      "scenario": "I6-10 packet 1",
+      "fixture_id": "iteration6-I6-10-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationAcousticSubscopePositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationAcousticSubscopePositive through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationAcousticSubscopePositive",
+        "literal_executable_fixture": "func TestMutationAcousticSubscopePositive(t *testing.T) {\n\tb, clean, c, tax := acousticMutationFixture()\n\tc[\"planned_units\"].([]any)[0].(map[string]any)[\"text_spans\"].([]any)[0].(map[string]any)[\"span\"] = map[string]any{\"start_cp\": float64(0), \"end_cp\": float64(24), \"exact_text\": \"The caf\u00e9 opens tomorrow.\"}\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationAcousticSubscopePositive(t *testing.T) {\n\tb, clean, c, tax := acousticMutationFixture()\n\tc[\"planned_units\"].([]any)[0].(map[string]any)[\"text_spans\"].([]any)[0].(map[string]any)[\"span\"] = map[string]any{\"start_cp\": float64(0), \"end_cp\": float64(24), \"exact_text\": \"The caf\u00e9 opens tomorrow.\"}\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-10.P1.S2.POSITIVE",
+      "property_id": "I6-10.P1",
+      "polarity": "positive",
+      "scenario": "I6-10 packet 2",
+      "fixture_id": "iteration6-I6-10-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationPauseParametersPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationPauseParametersPositive through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationPauseParametersPositive",
+        "literal_executable_fixture": "func TestMutationPauseParametersPositive(t *testing.T) {\n\tfor _, controller := range []string{\"vowel_duration\", \"pitch_duration\", \"pause_insert\", \"vot_edit\"} {\n\t\tb, clean, c, tax := acousticMutationFixture()\n\t\tedit := c[\"acoustic_edits\"].([]any)[0].(map[string]any)\n\t\tedit[\"controller\"] = controller\n\t\tp := edit[\"parameters\"].(map[string]any)\n\t\tp[\"reference_ipa\"], p[\"mutated_ipa\"] = nil, nil\n\t\tswitch controller {\n\t\tcase \"vowel_duration\":\n\t\t\tp[\"duration_ratio\"] = float64(0.45)\n\t\tcase \"pitch_duration\":\n\t\t\tp[\"pitch_points\"] = []any{map[string]any{\"fraction\": float64(0), \"semitones\": float64(1)}, map[string]any{\"fraction\": float64(1), \"semitones\": float64(3)}}\n\t\tcase \"pause_insert\":\n\t\t\tp[\"pause_ms\"] = float64(4000)\n\t\tcase \"vot_edit\":\n\t\t\tp[\"vot_ms\"] = float64(0)\n\t\t}\n\t\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\t\tt.Fatal(controller, e)\n\t\t}\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationPauseParametersPositive(t *testing.T) {\n\tfor _, controller := range []string{\"vowel_duration\", \"pitch_duration\", \"pause_insert\", \"vot_edit\"} {\n\t\tb, clean, c, tax := acousticMutationFixture()\n\t\tedit := c[\"acoustic_edits\"].([]any)[0].(map[string]any)\n\t\tedit[\"controller\"] = controller\n\t\tp := edit[\"parameters\"].(map[string]any)\n\t\tp[\"reference_ipa\"], p[\"mutated_ipa\"] = nil, nil\n\t\tswitch controller {\n\t\tcase \"vowel_duration\":\n\t\t\tp[\"duration_ratio\"] = float64(0.45)\n\t\tcase \"pitch_duration\":\n\t\t\tp[\"pitch_points\"] = []any{map[string]any{\"fraction\": float64(0), \"semitones\": float64(1)}, map[string]any{\"fraction\": float64(1), \"semitones\": float64(3)}}\n\t\tcase \"pause_insert\":\n\t\t\tp[\"pause_ms\"] = float64(4000)\n\t\tcase \"vot_edit\":\n\t\t\tp[\"vot_ms\"] = float64(0)\n\t\t}\n\t\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\t\tt.Fatal(controller, e)\n\t\t}\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-10.P1.S1.NEGATIVE",
+      "property_id": "I6-10.P1",
+      "polarity": "negative",
+      "scenario": "I6-10 packet 1",
+      "fixture_id": "iteration6-I6-10-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationAcousticWrongScopeNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationAcousticWrongScopeNegative through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationAcousticWrongScopeNegative",
+        "literal_executable_fixture": "func TestMutationAcousticWrongScopeNegative(t *testing.T) {\n\tfor _, otherTurn := range []bool{false, true} {\n\t\tb, clean, c, tax := acousticMutationFixture()\n\t\tedit := c[\"acoustic_edits\"].([]any)[0].(map[string]any)\n\t\tif otherTurn {\n\t\t\tsecond := map[string]any{\"id\": \"u2\", \"speaker_id\": \"s1\", \"canonical_text\": \"The caf\u00e9 opens tomorrow.\", \"surface_text\": \"The caf\u00e9 opens tomorrow.\"}\n\t\t\tc[\"utterances\"] = append(c[\"utterances\"].([]any), second)\n\t\t\tclean[\"utterances\"] = c[\"utterances\"]\n\t\t\tedit[\"utterance_id\"] = \"u2\"\n\t\t} else {\n\t\t\tedit[\"scope\"] = map[string]any{\"start\": float64(0), \"end\": float64(3)}\n\t\t}\n\t\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\t\tt.Fatal(\"acoustic operation outside its unit span accepted\", otherTurn)\n\t\t}\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationAcousticWrongScopeNegative(t *testing.T) {\n\tfor _, otherTurn := range []bool{false, true} {\n\t\tb, clean, c, tax := acousticMutationFixture()\n\t\tedit := c[\"acoustic_edits\"].([]any)[0].(map[string]any)\n\t\tif otherTurn {\n\t\t\tsecond := map[string]any{\"id\": \"u2\", \"speaker_id\": \"s1\", \"canonical_text\": \"The caf\u00e9 opens tomorrow.\", \"surface_text\": \"The caf\u00e9 opens tomorrow.\"}\n\t\t\tc[\"utterances\"] = append(c[\"utterances\"].([]any), second)\n\t\t\tclean[\"utterances\"] = c[\"utterances\"]\n\t\t\tedit[\"utterance_id\"] = \"u2\"\n\t\t} else {\n\t\t\tedit[\"scope\"] = map[string]any{\"start\": float64(0), \"end\": float64(3)}\n\t\t}\n\t\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\t\tt.Fatal(\"acoustic operation outside its unit span accepted\", otherTurn)\n\t\t}\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-10.P1.S2.NEGATIVE",
+      "property_id": "I6-10.P1",
+      "polarity": "negative",
+      "scenario": "I6-10 packet 2",
+      "fixture_id": "iteration6-I6-10-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationAcousticParametersNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationAcousticParametersNegative through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationAcousticParametersNegative",
+        "literal_executable_fixture": "func TestMutationAcousticParametersNegative(t *testing.T) {\n\tfor _, controller := range []string{\"phone_pair\", \"vowel_duration\", \"pitch_duration\", \"pause_insert\", \"vot_edit\"} {\n\t\tb, clean, c, tax := acousticMutationFixture()\n\t\tedit := c[\"acoustic_edits\"].([]any)[0].(map[string]any)\n\t\tedit[\"controller\"] = controller\n\t\tp := edit[\"parameters\"].(map[string]any)\n\t\tp[\"reference_ipa\"], p[\"mutated_ipa\"] = nil, nil\n\t\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\t\tt.Fatal(\"controller accepted without its required operands\", controller)\n\t\t}\n\t}\n}\n\nfunc multipleFamilyMutationFixture() (map[string]any, map[string]any, map[string]any, map[string]any) {\n\tb, clean, c, tax := mutationFixture()\n\trequest := b[\"exercise_request\"].(map[string]any)\n\trequest[\"category_families\"] = []any{\"grammar\", \"lexis\"}\n\trequest[\"mutation_count\"] = float64(2)\n\tcanonical := \"The team makes a decision.\"\n\tsurface := \"The team does a decision.\"\n\tclean[\"utterances\"] = append(clean[\"utterances\"].([]any), map[string]any{\"id\": \"u2\", \"speaker_id\": \"s1\", \"canonical_text\": canonical, \"surface_text\": canonical})\n\tc[\"utterances\"] = append(c[\"utterances\"].([]any), map[string]any{\"id\": \"u2\", \"speaker_id\": \"s1\", \"canonical_text\": canonical, \"surface_text\": surface})\n\traw, _ := json.Marshal(c[\"planned_units\"].([]any)[0])\n\tvar unit map[string]any\n\t_ = json.Unmarshal(raw, &unit)\n\tunit[\"id\"] = \"e2\"\n\tunit[\"primary_taxonomy_id\"] = \"lexis.collocation\"\n\tunit[\"accepted_taxonomy_ids\"] = []any{\"lexis.collocation\"}\n\tunit[\"domain\"] = \"lexis\"\n\tunit[\"utterance_ids\"] = []any{\"u2\"}\n\tunit[\"text_spans\"] = []any{map[string]any{\"utterance_id\": \"u2\", \"span\": map[string]any{\"start_cp\": float64(9), \"end_cp\": float64(13), \"exact_text\": \"does\"}}}\n\tunit[\"realization\"].(map[string]any)[\"canonical_text\"] = \"makes\"\n\tunit[\"realization\"].(map[string]any)[\"surface_text\"] = \"does\"\n\tunit[\"corrections\"].([]any)[0].(map[string]any)[\"text\"] = \"makes\"\n\tunit[\"rationale\"] = \"Make a decision is the standard collocation.\"\n\tc[\"planned_units\"] = append(c[\"planned_units\"].([]any), unit)\n\ttax[\"entries\"] = append(tax[\"entries\"].([]any), map[string]any{\"id\": \"lexis.collocation\", \"domain\": \"lexis\"})\n\treturn b, clean, c, tax\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationAcousticParametersNegative(t *testing.T) {\n\tfor _, controller := range []string{\"phone_pair\", \"vowel_duration\", \"pitch_duration\", \"pause_insert\", \"vot_edit\"} {\n\t\tb, clean, c, tax := acousticMutationFixture()\n\t\tedit := c[\"acoustic_edits\"].([]any)[0].(map[string]any)\n\t\tedit[\"controller\"] = controller\n\t\tp := edit[\"parameters\"].(map[string]any)\n\t\tp[\"reference_ipa\"], p[\"mutated_ipa\"] = nil, nil\n\t\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\t\tt.Fatal(\"controller accepted without its required operands\", controller)\n\t\t}\n\t}\n}\n\nfunc multipleFamilyMutationFixture() (map[string]any, map[string]any, map[string]any, map[string]any) {\n\tb, clean, c, tax := mutationFixture()\n\trequest := b[\"exercise_request\"].(map[string]any)\n\trequest[\"category_families\"] = []any{\"grammar\", \"lexis\"}\n\trequest[\"mutation_count\"] = float64(2)\n\tcanonical := \"The team makes a decision.\"\n\tsurface := \"The team does a decision.\"\n\tclean[\"utterances\"] = append(clean[\"utterances\"].([]any), map[string]any{\"id\": \"u2\", \"speaker_id\": \"s1\", \"canonical_text\": canonical, \"surface_text\": canonical})\n\tc[\"utterances\"] = append(c[\"utterances\"].([]any), map[string]any{\"id\": \"u2\", \"speaker_id\": \"s1\", \"canonical_text\": canonical, \"surface_text\": surface})\n\traw, _ := json.Marshal(c[\"planned_units\"].([]any)[0])\n\tvar unit map[string]any\n\t_ = json.Unmarshal(raw, &unit)\n\tunit[\"id\"] = \"e2\"\n\tunit[\"primary_taxonomy_id\"] = \"lexis.collocation\"\n\tunit[\"accepted_taxonomy_ids\"] = []any{\"lexis.collocation\"}\n\tunit[\"domain\"] = \"lexis\"\n\tunit[\"utterance_ids\"] = []any{\"u2\"}\n\tunit[\"text_spans\"] = []any{map[string]any{\"utterance_id\": \"u2\", \"span\": map[string]any{\"start_cp\": float64(9), \"end_cp\": float64(13), \"exact_text\": \"does\"}}}\n\tunit[\"realization\"].(map[string]any)[\"canonical_text\"] = \"makes\"\n\tunit[\"realization\"].(map[string]any)[\"surface_text\"] = \"does\"\n\tunit[\"corrections\"].([]any)[0].(map[string]any)[\"text\"] = \"makes\"\n\tunit[\"rationale\"] = \"Make a decision is the standard collocation.\"\n\tc[\"planned_units\"] = append(c[\"planned_units\"].([]any), unit)\n\ttax[\"entries\"] = append(tax[\"entries\"].([]any), map[string]any{\"id\": \"lexis.collocation\", \"domain\": \"lexis\"})\n\treturn b, clean, c, tax\n}"
+      },
+      "independent_oracle": "The application SHALL link each new acoustic edit to its own unit and containing final-surface span and retain explicit operands required by its controller. Scoped phrase targets, positive duration and pitch cues, explicit pauses and zero-millisecond VOT remain supported. Wrong-turn/outside-scope edits and absent controller operands SHALL fail the existing admission. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-11.P1.S1.POSITIVE",
+      "property_id": "I6-11.P1",
+      "polarity": "positive",
+      "scenario": "I6-11 packet 1",
+      "fixture_id": "iteration6-I6-11-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationProvenancePositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationProvenancePositive through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationProvenancePositive",
+        "literal_executable_fixture": "func TestNativeMutationProvenancePositive(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil || *n != 1 {\n\t\tt.Fatal(p, e, *n)\n\t}\n\tvar count int\n\tif e = s.Store.DB.QueryRow(context.Background(), \"SELECT (event_payload->>'canonical_word_count')::int FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1\", p[\"id\"]).Scan(&count); e != nil || count != 4 {\n\t\tt.Fatal(\"saved clean text has four words\", count, e)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationProvenancePositive(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil || *n != 1 {\n\t\tt.Fatal(p, e, *n)\n\t}\n\tvar count int\n\tif e = s.Store.DB.QueryRow(context.Background(), \"SELECT (event_payload->>'canonical_word_count')::int FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1\", p[\"id\"]).Scan(&count); e != nil || count != 4 {\n\t\tt.Fatal(\"saved clean text has four words\", count, e)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-11.P1.S2.POSITIVE",
+      "property_id": "I6-11.P1",
+      "polarity": "positive",
+      "scenario": "I6-11 packet 2",
+      "fixture_id": "iteration6-I6-11-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationRecoveredProvenancePositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationRecoveredProvenancePositive through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationRecoveredProvenancePositive",
+        "literal_executable_fixture": "func TestNativeMutationRecoveredProvenancePositive(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\trev := int64(p[\"revision\"].(float64))\n\tp[\"revision\"] = float64(rev + 1)\n\tp[\"phase_states\"].(map[string]any)[\"mutation\"] = \"running\"\n\tp[\"active_operation_id\"] = p[\"operation_ids\"].([]any)[1]\n\tfor _, k := range []string{\"candidate_id\", \"mutated_asset_id\", \"mutation_manifest_asset_id\"} {\n\t\tp[k] = nil\n\t}\n\traw, _ := json.Marshal(p)\n\t_, e = s.Store.WriteDocuments(context.Background(), []DocumentWrite{{ID: uuid.NewString(), Kind: \"preparation-state\", Version: \"2.0.0\", Scope: \"local\", Payload: raw, Head: &HeadWrite{ID: p[\"id\"].(string), Expected: &rev, State: \"running\"}, References: []Reference{{Pointer: \"/settings_asset_id\", ID: p[\"settings_asset_id\"].(string), Scope: p[\"settings_asset_id\"].(string), Kind: \"asset-bytes\", SHA: p[\"settings_sha256\"].(string), Relation: \"settings_asset_id\"}, {Pointer: \"/canonical_asset_id\", ID: p[\"canonical_asset_id\"].(string), Scope: p[\"canonical_asset_id\"].(string), Kind: \"asset-bytes\", SHA: p[\"canonical_sha256\"].(string), Relation: \"canonical_asset_id\"}}}})\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tr.Attempt = 3\n\tp, e = s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tvar count int\n\tif e == nil {\n\t\te = s.Store.DB.QueryRow(context.Background(), \"SELECT (event_payload->>'canonical_word_count')::int FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1 ORDER BY created_at DESC LIMIT 1\", p[\"id\"]).Scan(&count)\n\t}\n\tif e != nil || *n != 1 || count != 4 {\n\t\tt.Fatal(\"completed child recovery retains the four-word provenance without inference\", count, e, *n)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationRecoveredProvenancePositive(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\trev := int64(p[\"revision\"].(float64))\n\tp[\"revision\"] = float64(rev + 1)\n\tp[\"phase_states\"].(map[string]any)[\"mutation\"] = \"running\"\n\tp[\"active_operation_id\"] = p[\"operation_ids\"].([]any)[1]\n\tfor _, k := range []string{\"candidate_id\", \"mutated_asset_id\", \"mutation_manifest_asset_id\"} {\n\t\tp[k] = nil\n\t}\n\traw, _ := json.Marshal(p)\n\t_, e = s.Store.WriteDocuments(context.Background(), []DocumentWrite{{ID: uuid.NewString(), Kind: \"preparation-state\", Version: \"2.0.0\", Scope: \"local\", Payload: raw, Head: &HeadWrite{ID: p[\"id\"].(string), Expected: &rev, State: \"running\"}, References: []Reference{{Pointer: \"/settings_asset_id\", ID: p[\"settings_asset_id\"].(string), Scope: p[\"settings_asset_id\"].(string), Kind: \"asset-bytes\", SHA: p[\"settings_sha256\"].(string), Relation: \"settings_asset_id\"}, {Pointer: \"/canonical_asset_id\", ID: p[\"canonical_asset_id\"].(string), Scope: p[\"canonical_asset_id\"].(string), Kind: \"asset-bytes\", SHA: p[\"canonical_sha256\"].(string), Relation: \"canonical_asset_id\"}}}})\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tr.Attempt = 3\n\tp, e = s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tvar count int\n\tif e == nil {\n\t\te = s.Store.DB.QueryRow(context.Background(), \"SELECT (event_payload->>'canonical_word_count')::int FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1 ORDER BY created_at DESC LIMIT 1\", p[\"id\"]).Scan(&count)\n\t}\n\tif e != nil || *n != 1 || count != 4 {\n\t\tt.Fatal(\"completed child recovery retains the four-word provenance without inference\", count, e, *n)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-11.P1.S1.NEGATIVE",
+      "property_id": "I6-11.P1",
+      "polarity": "negative",
+      "scenario": "I6-11 packet 1",
+      "fixture_id": "iteration6-I6-11-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationUnattributedNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationUnattributedNegative through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationUnattributedNegative",
+        "literal_executable_fixture": "func TestNativeMutationUnattributedNegative(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"unattributed\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e == nil || *n != 2 || p[\"mutated_asset_id\"] != nil || p[\"canonical_asset_id\"] != clean[\"canonical_asset_id\"] {\n\t\tt.Fatal(\"unlisted change must fail the sole repair and preserve clean text\", p, e, *n)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationUnattributedNegative(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"unattributed\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e == nil || *n != 2 || p[\"mutated_asset_id\"] != nil || p[\"canonical_asset_id\"] != clean[\"canonical_asset_id\"] {\n\t\tt.Fatal(\"unlisted change must fail the sole repair and preserve clean text\", p, e, *n)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-11.P1.S2.NEGATIVE",
+      "property_id": "I6-11.P1",
+      "polarity": "negative",
+      "scenario": "I6-11 packet 2",
+      "fixture_id": "iteration6-I6-11-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationInvalidProvenanceNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationInvalidProvenanceNegative through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationInvalidProvenanceNegative",
+        "literal_executable_fixture": "func TestNativeMutationInvalidProvenanceNegative(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"invalid\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tvar count int\n\tqueryErr := s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1\", p[\"id\"]).Scan(&count)\n\tif e == nil || queryErr != nil || *n != 2 || count != 0 {\n\t\tt.Fatal(\"rejected output cannot record completed mutation provenance\", count, e, queryErr, *n)\n\t}\n}\n\nfunc saveNativeMutationEvidence(t *testing.T, s *Server, p map[string]any) {\n\tt.Helper()\n\troot := os.Getenv(\"TANGERINE_PREPARATION_TEST_EVIDENCE\")\n\tif root == \"\" {\n\t\treturn\n\t}\n\tdir := filepath.Join(root, t.Name())\n\tif e := os.MkdirAll(dir, 0700); e != nil {\n\t\tt.Fatal(e)\n\t}\n\twrite := func(name string, raw []byte) {\n\t\tt.Helper()\n\t\tif e := os.WriteFile(filepath.Join(dir, name), raw, 0600); e != nil {\n\t\t\tt.Fatal(e)\n\t\t}\n\t}\n\traw, _ := json.MarshalIndent(map[string]any{\"origin\": \"constructed_remote_protocol_with_native_preparation_storage\", \"preparation\": p}, \"\", \"  \")\n\twrite(\"state.json\", raw)\n\tassets := map[string]bool{}\n\tvar collect func(any)\n\tcollect = func(v any) {\n\t\tswitch x := v.(type) {\n\t\tcase map[string]any:\n\t\t\tfor k, v := range x {\n\t\t\t\tif strings.HasSuffix(k, \"asset_id\") {\n\t\t\t\t\tif id, ok := v.(string); ok {\n\t\t\t\t\t\tassets[id] = true\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tcollect(v)\n\t\t\t}\n\t\tcase []any:\n\t\t\tfor _, v := range x {\n\t\t\t\tcollect(v)\n\t\t\t}\n\t\t}\n\t}\n\tcollect(p)\n\tdocuments := []SavedDocument{}\n\tfor _, parent := range p[\"operation_ids\"].([]any) {\n\t\tvar child string\n\t\tif e := s.Store.DB.QueryRow(context.Background(), \"SELECT child.id FROM operation parent JOIN operation child ON child.idempotency_key=parent.idempotency_key AND child.operation_name IN ('canonical_text','mutation') WHERE parent.id=$1\", parent).Scan(&child); e != nil {\n\t\t\tcontinue\n\t\t}\n\t\trows, e := s.Store.DB.Query(context.Background(), \"SELECT id FROM document WHERE (kind IN ('provider-receipt','llm-context-snapshot') AND payload->>'operation_id'=$1) OR id=(SELECT input_document_id FROM operation WHERE id=$1)\", child)\n\t\tif e != nil {\n\t\t\tt.Fatal(e)\n\t\t}\n\t\tids := []string{}\n\t\tfor rows.Next() {\n\t\t\tvar id string\n\t\t\tif e = rows.Scan(&id); e != nil {\n\t\t\t\tt.Fatal(e)\n\t\t\t}\n\t\t\tids = append(ids, id)\n\t\t}\n\t\trows.Close()\n\t\tfor _, id := range ids {\n\t\t\td, e := s.Store.ReadDocument(context.Background(), id)\n\t\t\tif e != nil {\n\t\t\t\tt.Fatal(e)\n\t\t\t}\n\t\t\tdocuments = append(documents, d)\n\t\t\tvar v any\n\t\t\t_ = json.Unmarshal(d.Payload, &v)\n\t\t\tcollect(v)\n\t\t}\n\t}\n\traw, _ = json.MarshalIndent(documents, \"\", \"  \")\n\twrite(\"native-documents.json\", raw)\n\t// Settings reference their exact shipped registries. Context snapshots reference\n\t// each actual model-visible part. Retain both recursively before fixture teardown.\n\tvisited := map[string]bool{}\n\tfor len(assets) > 0 {\n\t\tbatch := assets\n\t\tassets = map[string]bool{}\n\t\tfor id := range batch {\n\t\t\tif visited[id] {\n\t\t\t\tcontinue\n\t\t\t}\n\t\t\tvisited[id] = true\n\t\t\tb, e := s.Store.ReadAsset(context.Background(), id)\n\t\t\tif e != nil {\n\t\t\t\tt.Fatal(e)\n\t\t\t}\n\t\t\twrite(id+\".bytes\", b)\n\t\t\tvar v any\n\t\t\tif json.Unmarshal(b, &v) == nil {\n\t\t\t\tcollect(v)\n\t\t\t}\n\t\t}\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationInvalidProvenanceNegative(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"invalid\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tvar count int\n\tqueryErr := s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM audit_event WHERE action='preparation.mutation.completed' AND event_payload->>'preparation_id'=$1\", p[\"id\"]).Scan(&count)\n\tif e == nil || queryErr != nil || *n != 2 || count != 0 {\n\t\tt.Fatal(\"rejected output cannot record completed mutation provenance\", count, e, queryErr, *n)\n\t}\n}\n\nfunc saveNativeMutationEvidence(t *testing.T, s *Server, p map[string]any) {\n\tt.Helper()\n\troot := os.Getenv(\"TANGERINE_PREPARATION_TEST_EVIDENCE\")\n\tif root == \"\" {\n\t\treturn\n\t}\n\tdir := filepath.Join(root, t.Name())\n\tif e := os.MkdirAll(dir, 0700); e != nil {\n\t\tt.Fatal(e)\n\t}\n\twrite := func(name string, raw []byte) {\n\t\tt.Helper()\n\t\tif e := os.WriteFile(filepath.Join(dir, name), raw, 0600); e != nil {\n\t\t\tt.Fatal(e)\n\t\t}\n\t}\n\traw, _ := json.MarshalIndent(map[string]any{\"origin\": \"constructed_remote_protocol_with_native_preparation_storage\", \"preparation\": p}, \"\", \"  \")\n\twrite(\"state.json\", raw)\n\tassets := map[string]bool{}\n\tvar collect func(any)\n\tcollect = func(v any) {\n\t\tswitch x := v.(type) {\n\t\tcase map[string]any:\n\t\t\tfor k, v := range x {\n\t\t\t\tif strings.HasSuffix(k, \"asset_id\") {\n\t\t\t\t\tif id, ok := v.(string); ok {\n\t\t\t\t\t\tassets[id] = true\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tcollect(v)\n\t\t\t}\n\t\tcase []any:\n\t\t\tfor _, v := range x {\n\t\t\t\tcollect(v)\n\t\t\t}\n\t\t}\n\t}\n\tcollect(p)\n\tdocuments := []SavedDocument{}\n\tfor _, parent := range p[\"operation_ids\"].([]any) {\n\t\tvar child string\n\t\tif e := s.Store.DB.QueryRow(context.Background(), \"SELECT child.id FROM operation parent JOIN operation child ON child.idempotency_key=parent.idempotency_key AND child.operation_name IN ('canonical_text','mutation') WHERE parent.id=$1\", parent).Scan(&child); e != nil {\n\t\t\tcontinue\n\t\t}\n\t\trows, e := s.Store.DB.Query(context.Background(), \"SELECT id FROM document WHERE (kind IN ('provider-receipt','llm-context-snapshot') AND payload->>'operation_id'=$1) OR id=(SELECT input_document_id FROM operation WHERE id=$1)\", child)\n\t\tif e != nil {\n\t\t\tt.Fatal(e)\n\t\t}\n\t\tids := []string{}\n\t\tfor rows.Next() {\n\t\t\tvar id string\n\t\t\tif e = rows.Scan(&id); e != nil {\n\t\t\t\tt.Fatal(e)\n\t\t\t}\n\t\t\tids = append(ids, id)\n\t\t}\n\t\trows.Close()\n\t\tfor _, id := range ids {\n\t\t\td, e := s.Store.ReadDocument(context.Background(), id)\n\t\t\tif e != nil {\n\t\t\t\tt.Fatal(e)\n\t\t\t}\n\t\t\tdocuments = append(documents, d)\n\t\t\tvar v any\n\t\t\t_ = json.Unmarshal(d.Payload, &v)\n\t\t\tcollect(v)\n\t\t}\n\t}\n\traw, _ = json.MarshalIndent(documents, \"\", \"  \")\n\twrite(\"native-documents.json\", raw)\n\t// Settings reference their exact shipped registries. Context snapshots reference\n\t// each actual model-visible part. Retain both recursively before fixture teardown.\n\tvisited := map[string]bool{}\n\tfor len(assets) > 0 {\n\t\tbatch := assets\n\t\tassets = map[string]bool{}\n\t\tfor id := range batch {\n\t\t\tif visited[id] {\n\t\t\t\tcontinue\n\t\t\t}\n\t\t\tvisited[id] = true\n\t\t\tb, e := s.Store.ReadAsset(context.Background(), id)\n\t\t\tif e != nil {\n\t\t\t\tt.Fatal(e)\n\t\t\t}\n\t\t\twrite(id+\".bytes\", b)\n\t\t\tvar v any\n\t\t\tif json.Unmarshal(b, &v) == nil {\n\t\t\t\tcollect(v)\n\t\t\t}\n\t\t}\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL record the actual canonical word count on new and recovered mutation completion without another model call. A rejected mutation SHALL preserve clean text and SHALL NOT emit completed mutation provenance. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-12.P1.S1.POSITIVE",
+      "property_id": "I6-12.P1",
+      "polarity": "positive",
+      "scenario": "I6-12 packet 1",
+      "fixture_id": "iteration6-I6-12-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationFamilyCoveragePositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationFamilyCoveragePositive through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationFamilyCoveragePositive",
+        "literal_executable_fixture": "func TestMutationFamilyCoveragePositive(t *testing.T) {\n\tb, clean, c, tax := multipleFamilyMutationFixture()\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain a true-error event for every explicit requested family, with broad pronunciation satisfied by either subdomain. Automatic mutation_count SHALL choose a positive number; explicit zero controls remain supported. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationFamilyCoveragePositive(t *testing.T) {\n\tb, clean, c, tax := multipleFamilyMutationFixture()\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL retain a true-error event for every explicit requested family, with broad pronunciation satisfied by either subdomain. Automatic mutation_count SHALL choose a positive number; explicit zero controls remain supported. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-12.P1.S2.POSITIVE",
+      "property_id": "I6-12.P1",
+      "polarity": "positive",
+      "scenario": "I6-12 packet 2",
+      "fixture_id": "iteration6-I6-12-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationPronunciationFamilyPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationPronunciationFamilyPositive through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationPronunciationFamilyPositive",
+        "literal_executable_fixture": "func TestMutationPronunciationFamilyPositive(t *testing.T) {\n\tb, clean, c, tax := acousticMutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"category_families\"] = []any{\"pronunciation\"}\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain a true-error event for every explicit requested family, with broad pronunciation satisfied by either subdomain. Automatic mutation_count SHALL choose a positive number; explicit zero controls remain supported. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationPronunciationFamilyPositive(t *testing.T) {\n\tb, clean, c, tax := acousticMutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"category_families\"] = []any{\"pronunciation\"}\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL retain a true-error event for every explicit requested family, with broad pronunciation satisfied by either subdomain. Automatic mutation_count SHALL choose a positive number; explicit zero controls remain supported. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-12.P1.S1.NEGATIVE",
+      "property_id": "I6-12.P1",
+      "polarity": "negative",
+      "scenario": "I6-12 packet 1",
+      "fixture_id": "iteration6-I6-12-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationMissingFamilyNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationMissingFamilyNegative through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationMissingFamilyNegative",
+        "literal_executable_fixture": "func TestMutationMissingFamilyNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"category_families\"] = []any{\"grammar\", \"lexis\"}\n\tb[\"exercise_request\"].(map[string]any)[\"mutation_count\"] = nil\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"Requested lexis family silently omitted\")\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain a true-error event for every explicit requested family, with broad pronunciation satisfied by either subdomain. Automatic mutation_count SHALL choose a positive number; explicit zero controls remain supported. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationMissingFamilyNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"category_families\"] = []any{\"grammar\", \"lexis\"}\n\tb[\"exercise_request\"].(map[string]any)[\"mutation_count\"] = nil\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"Requested lexis family silently omitted\")\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL retain a true-error event for every explicit requested family, with broad pronunciation satisfied by either subdomain. Automatic mutation_count SHALL choose a positive number; explicit zero controls remain supported. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-12.P1.S2.NEGATIVE",
+      "property_id": "I6-12.P1",
+      "polarity": "negative",
+      "scenario": "I6-12 packet 2",
+      "fixture_id": "iteration6-I6-12-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationAutomaticEmptyNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationAutomaticEmptyNegative through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationAutomaticEmptyNegative",
+        "literal_executable_fixture": "func TestMutationAutomaticEmptyNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"mutation_count\"] = nil\n\tc[\"utterances\"] = clean[\"utterances\"]\n\tc[\"planned_units\"] = []any{}\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"Automatic mutation count silently became zero\")\n\t}\n}\nfunc mutationSelectionFixture(t *testing.T, b map[string]any) (map[string]any, error) {\n\tt.Helper()\n\ta, _ := generationRegistry(\"error-taxonomy.v1.yaml\")\n\tr, _ := generationRegistry(\"mutation-recipes.v1.json\")\n\tp, _ := generationRegistry(\"acoustic-production.v1.json\")\n\ttax, _, _, e := mutationSelection(b, a, r, p)\n\treturn tax, e\n}\nfunc exactMutationTarget(id string) map[string]any {\n\treturn map[string]any{\"taxonomy_id\": id, \"expected_judgment\": \"true_error\", \"min_count\": float64(1), \"max_count\": float64(1)}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain a true-error event for every explicit requested family, with broad pronunciation satisfied by either subdomain. Automatic mutation_count SHALL choose a positive number; explicit zero controls remain supported. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationAutomaticEmptyNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"mutation_count\"] = nil\n\tc[\"utterances\"] = clean[\"utterances\"]\n\tc[\"planned_units\"] = []any{}\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"Automatic mutation count silently became zero\")\n\t}\n}\nfunc mutationSelectionFixture(t *testing.T, b map[string]any) (map[string]any, error) {\n\tt.Helper()\n\ta, _ := generationRegistry(\"error-taxonomy.v1.yaml\")\n\tr, _ := generationRegistry(\"mutation-recipes.v1.json\")\n\tp, _ := generationRegistry(\"acoustic-production.v1.json\")\n\ttax, _, _, e := mutationSelection(b, a, r, p)\n\treturn tax, e\n}\nfunc exactMutationTarget(id string) map[string]any {\n\treturn map[string]any{\"taxonomy_id\": id, \"expected_judgment\": \"true_error\", \"min_count\": float64(1), \"max_count\": float64(1)}\n}"
+      },
+      "independent_oracle": "The application SHALL retain a true-error event for every explicit requested family, with broad pronunciation satisfied by either subdomain. Automatic mutation_count SHALL choose a positive number; explicit zero controls remain supported. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-13.P1.S1.POSITIVE",
+      "property_id": "I6-13.P1",
+      "polarity": "positive",
+      "scenario": "I6-13 packet 1",
+      "fixture_id": "iteration6-I6-13-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationExactFamilySelectionPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationExactFamilySelectionPositive through services/api/internal/app/mutation_selection.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationExactFamilySelectionPositive",
+        "literal_executable_fixture": "func TestMutationExactFamilySelectionPositive(t *testing.T) {\n\tb, _, _, _ := mutationFixture()\n\tb[\"targets\"] = []any{exactMutationTarget(\"grammar.verbs.subject_verb_agreement\")}\n\ttax, e := mutationSelectionFixture(t, b)\n\tif e != nil || len(tax[\"entries\"].([]any)) <= 1 {\n\t\tt.Fatal(\"Exact target erased explicitly requested family context\", tax, e)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain complete explicit family context together with compatible exact targets, and restrict exact-only selection when no family was requested. Contradictory or unknown exact targets SHALL fail without silently erasing a request. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationExactFamilySelectionPositive(t *testing.T) {\n\tb, _, _, _ := mutationFixture()\n\tb[\"targets\"] = []any{exactMutationTarget(\"grammar.verbs.subject_verb_agreement\")}\n\ttax, e := mutationSelectionFixture(t, b)\n\tif e != nil || len(tax[\"entries\"].([]any)) <= 1 {\n\t\tt.Fatal(\"Exact target erased explicitly requested family context\", tax, e)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL retain complete explicit family context together with compatible exact targets, and restrict exact-only selection when no family was requested. Contradictory or unknown exact targets SHALL fail without silently erasing a request. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-13.P1.S2.POSITIVE",
+      "property_id": "I6-13.P1",
+      "polarity": "positive",
+      "scenario": "I6-13 packet 2",
+      "fixture_id": "iteration6-I6-13-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationExactOnlySelectionPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationExactOnlySelectionPositive through services/api/internal/app/mutation_selection.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationExactOnlySelectionPositive",
+        "literal_executable_fixture": "func TestMutationExactOnlySelectionPositive(t *testing.T) {\n\tb, _, _, _ := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"category_families\"] = []any{}\n\tb[\"targets\"] = []any{exactMutationTarget(\"grammar.verbs.subject_verb_agreement\")}\n\ttax, e := mutationSelectionFixture(t, b)\n\tif e != nil || len(tax[\"entries\"].([]any)) != 1 {\n\t\tt.Fatal(tax, e)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain complete explicit family context together with compatible exact targets, and restrict exact-only selection when no family was requested. Contradictory or unknown exact targets SHALL fail without silently erasing a request. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationExactOnlySelectionPositive(t *testing.T) {\n\tb, _, _, _ := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"category_families\"] = []any{}\n\tb[\"targets\"] = []any{exactMutationTarget(\"grammar.verbs.subject_verb_agreement\")}\n\ttax, e := mutationSelectionFixture(t, b)\n\tif e != nil || len(tax[\"entries\"].([]any)) != 1 {\n\t\tt.Fatal(tax, e)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL retain complete explicit family context together with compatible exact targets, and restrict exact-only selection when no family was requested. Contradictory or unknown exact targets SHALL fail without silently erasing a request. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-13.P1.S1.NEGATIVE",
+      "property_id": "I6-13.P1",
+      "polarity": "negative",
+      "scenario": "I6-13 packet 1",
+      "fixture_id": "iteration6-I6-13-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationContradictorySelectionNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationContradictorySelectionNegative through services/api/internal/app/mutation_selection.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationContradictorySelectionNegative",
+        "literal_executable_fixture": "func TestMutationContradictorySelectionNegative(t *testing.T) {\n\tb, _, _, _ := mutationFixture()\n\tb[\"targets\"] = []any{exactMutationTarget(\"lexis.collocation\")}\n\tif _, e := mutationSelectionFixture(t, b); e == nil {\n\t\tt.Fatal(\"Exact lexis target silently erased requested grammar family\")\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain complete explicit family context together with compatible exact targets, and restrict exact-only selection when no family was requested. Contradictory or unknown exact targets SHALL fail without silently erasing a request. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationContradictorySelectionNegative(t *testing.T) {\n\tb, _, _, _ := mutationFixture()\n\tb[\"targets\"] = []any{exactMutationTarget(\"lexis.collocation\")}\n\tif _, e := mutationSelectionFixture(t, b); e == nil {\n\t\tt.Fatal(\"Exact lexis target silently erased requested grammar family\")\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL retain complete explicit family context together with compatible exact targets, and restrict exact-only selection when no family was requested. Contradictory or unknown exact targets SHALL fail without silently erasing a request. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-13.P1.S2.NEGATIVE",
+      "property_id": "I6-13.P1",
+      "polarity": "negative",
+      "scenario": "I6-13 packet 2",
+      "fixture_id": "iteration6-I6-13-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationUnknownTargetNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationUnknownTargetNegative through services/api/internal/app/mutation_selection.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationUnknownTargetNegative",
+        "literal_executable_fixture": "func TestMutationUnknownTargetNegative(t *testing.T) {\n\tb, _, _, _ := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"category_families\"] = []any{}\n\tunknown := exactMutationTarget(\"unknown.category\")\n\tunknown[\"min_count\"] = float64(0)\n\tb[\"targets\"] = []any{exactMutationTarget(\"grammar.verbs.subject_verb_agreement\"), unknown}\n\tif _, e := mutationSelectionFixture(t, b); e == nil {\n\t\tt.Fatal(\"Partially unknown target selection silently dropped the unknown leaf\")\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL retain complete explicit family context together with compatible exact targets, and restrict exact-only selection when no family was requested. Contradictory or unknown exact targets SHALL fail without silently erasing a request. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationUnknownTargetNegative(t *testing.T) {\n\tb, _, _, _ := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"category_families\"] = []any{}\n\tunknown := exactMutationTarget(\"unknown.category\")\n\tunknown[\"min_count\"] = float64(0)\n\tb[\"targets\"] = []any{exactMutationTarget(\"grammar.verbs.subject_verb_agreement\"), unknown}\n\tif _, e := mutationSelectionFixture(t, b); e == nil {\n\t\tt.Fatal(\"Partially unknown target selection silently dropped the unknown leaf\")\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL retain complete explicit family context together with compatible exact targets, and restrict exact-only selection when no family was requested. Contradictory or unknown exact targets SHALL fail without silently erasing a request. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-14.P1.S1.POSITIVE",
+      "property_id": "I6-14.P1",
+      "polarity": "positive",
+      "scenario": "I6-14 packet 1",
+      "fixture_id": "iteration6-I6-14-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationDistinctEventsPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationDistinctEventsPositive through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationDistinctEventsPositive",
+        "literal_executable_fixture": "func TestMutationDistinctEventsPositive(t *testing.T) {\n\tb, clean, c, tax := multipleFamilyMutationFixture()\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL preserve distinct repair obligations and explicit zero/control-only keys. A copied event or renamed correction identifier SHALL NOT inflate the independent-event count. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationDistinctEventsPositive(t *testing.T) {\n\tb, clean, c, tax := multipleFamilyMutationFixture()\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL preserve distinct repair obligations and explicit zero/control-only keys. A copied event or renamed correction identifier SHALL NOT inflate the independent-event count. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-14.P1.S2.POSITIVE",
+      "property_id": "I6-14.P1",
+      "polarity": "positive",
+      "scenario": "I6-14 packet 2",
+      "fixture_id": "iteration6-I6-14-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationZeroFamilyControlPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationZeroFamilyControlPositive through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationZeroFamilyControlPositive",
+        "literal_executable_fixture": "func TestMutationZeroFamilyControlPositive(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"category_families\"] = []any{\"grammar\", \"lexis\"}\n\tb[\"exercise_request\"].(map[string]any)[\"mutation_count\"] = float64(0)\n\tc[\"utterances\"] = clean[\"utterances\"]\n\tu := c[\"planned_units\"].([]any)[0].(map[string]any)\n\tu[\"expected_judgment\"] = \"acceptable\"\n\tu[\"status_label\"] = \"decoy_non_error\"\n\tu[\"correction_eligible\"] = false\n\tu[\"corrections\"] = []any{}\n\tu[\"text_spans\"].([]any)[0].(map[string]any)[\"span\"] = map[string]any{\"start_cp\": float64(9), \"end_cp\": float64(14), \"exact_text\": \"opens\"}\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\nfunc copiedMutationUnit(c map[string]any) map[string]any {\n\traw, _ := json.Marshal(c[\"planned_units\"].([]any)[0])\n\tvar u map[string]any\n\t_ = json.Unmarshal(raw, &u)\n\tu[\"id\"] = \"copied-unit\"\n\tc[\"planned_units\"] = append(c[\"planned_units\"].([]any), u)\n\treturn u\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL preserve distinct repair obligations and explicit zero/control-only keys. A copied event or renamed correction identifier SHALL NOT inflate the independent-event count. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationZeroFamilyControlPositive(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"category_families\"] = []any{\"grammar\", \"lexis\"}\n\tb[\"exercise_request\"].(map[string]any)[\"mutation_count\"] = float64(0)\n\tc[\"utterances\"] = clean[\"utterances\"]\n\tu := c[\"planned_units\"].([]any)[0].(map[string]any)\n\tu[\"expected_judgment\"] = \"acceptable\"\n\tu[\"status_label\"] = \"decoy_non_error\"\n\tu[\"correction_eligible\"] = false\n\tu[\"corrections\"] = []any{}\n\tu[\"text_spans\"].([]any)[0].(map[string]any)[\"span\"] = map[string]any{\"start_cp\": float64(9), \"end_cp\": float64(14), \"exact_text\": \"opens\"}\n\tif e := admitMutation(t, b, clean, c, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\nfunc copiedMutationUnit(c map[string]any) map[string]any {\n\traw, _ := json.Marshal(c[\"planned_units\"].([]any)[0])\n\tvar u map[string]any\n\t_ = json.Unmarshal(raw, &u)\n\tu[\"id\"] = \"copied-unit\"\n\tc[\"planned_units\"] = append(c[\"planned_units\"].([]any), u)\n\treturn u\n}"
+      },
+      "independent_oracle": "The application SHALL preserve distinct repair obligations and explicit zero/control-only keys. A copied event or renamed correction identifier SHALL NOT inflate the independent-event count. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-14.P1.S1.NEGATIVE",
+      "property_id": "I6-14.P1",
+      "polarity": "negative",
+      "scenario": "I6-14 packet 1",
+      "fixture_id": "iteration6-I6-14-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestMutationCopiedUnitNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationCopiedUnitNegative through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationCopiedUnitNegative",
+        "literal_executable_fixture": "func TestMutationCopiedUnitNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"mutation_count\"] = float64(2)\n\tcopiedMutationUnit(c)\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"Copying an event with a new ID inflated the independent-event count\")\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL preserve distinct repair obligations and explicit zero/control-only keys. A copied event or renamed correction identifier SHALL NOT inflate the independent-event count. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationCopiedUnitNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"mutation_count\"] = float64(2)\n\tcopiedMutationUnit(c)\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"Copying an event with a new ID inflated the independent-event count\")\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL preserve distinct repair obligations and explicit zero/control-only keys. A copied event or renamed correction identifier SHALL NOT inflate the independent-event count. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-14.P1.S2.NEGATIVE",
+      "property_id": "I6-14.P1",
+      "polarity": "negative",
+      "scenario": "I6-14 packet 2",
+      "fixture_id": "iteration6-I6-14-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestMutationCopiedOptionNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestMutationCopiedOptionNegative through services/api/internal/app/mutation_content.go",
+      "initial_state": {
+        "isolated_native_dependencies": false,
+        "external_protocol_substitution": false
+      },
+      "input": {
+        "exact_native_test": "TestMutationCopiedOptionNegative",
+        "literal_executable_fixture": "func TestMutationCopiedOptionNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"mutation_count\"] = float64(2)\n\tcopy := copiedMutationUnit(c)\n\tcopy[\"corrections\"].([]any)[0].(map[string]any)[\"id\"] = \"renamed-option\"\n\tcopy[\"rationale\"] = \"Same agreement obligation, reworded.\"\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"Renaming a correction option created a second event\")\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL preserve distinct repair obligations and explicit zero/control-only keys. A copied event or renamed correction identifier SHALL NOT inflate the independent-event count. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestMutationCopiedOptionNegative(t *testing.T) {\n\tb, clean, c, tax := mutationFixture()\n\tb[\"exercise_request\"].(map[string]any)[\"mutation_count\"] = float64(2)\n\tcopy := copiedMutationUnit(c)\n\tcopy[\"corrections\"].([]any)[0].(map[string]any)[\"id\"] = \"renamed-option\"\n\tcopy[\"rationale\"] = \"Same agreement obligation, reworded.\"\n\tif e := admitMutation(t, b, clean, c, tax); e == nil {\n\t\tt.Fatal(\"Renaming a correction option created a second event\")\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL preserve distinct repair obligations and explicit zero/control-only keys. A copied event or renamed correction identifier SHALL NOT inflate the independent-event count. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-15.P1.S1.POSITIVE",
+      "property_id": "I6-15.P1",
+      "polarity": "positive",
+      "scenario": "I6-15 packet 1",
+      "fixture_id": "iteration6-I6-15-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationAutomaticKeyPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationAutomaticKeyPositive through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationAutomaticKeyPositive",
+        "literal_executable_fixture": "func TestNativeMutationAutomaticKeyPositive(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil || *n != 1 || p[\"phase_states\"].(map[string]any)[\"mutation\"] != \"complete\" {\n\t\tt.Fatal(p, e, *n)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL persist valid automatic or explicit-zero authored keys through the existing owner. Missing requested families or copied event counts SHALL use at most one same-profile output repair, retain the clean baseline and emit no completed candidate/manifest. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationAutomaticKeyPositive(t *testing.T) {\n\ts, r, client, n, _ := nativeMutationFixture(t, \"\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil || *n != 1 || p[\"phase_states\"].(map[string]any)[\"mutation\"] != \"complete\" {\n\t\tt.Fatal(p, e, *n)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL persist valid automatic or explicit-zero authored keys through the existing owner. Missing requested families or copied event counts SHALL use at most one same-profile output repair, retain the clean baseline and emit no completed candidate/manifest. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-15.P1.S2.POSITIVE",
+      "property_id": "I6-15.P1",
+      "polarity": "positive",
+      "scenario": "I6-15 packet 2",
+      "fixture_id": "iteration6-I6-15-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationExplicitZeroPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationExplicitZeroPositive through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationExplicitZeroPositive",
+        "literal_executable_fixture": "func TestNativeMutationExplicitZeroPositive(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"zero\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil || *n != 1 || p[\"canonical_asset_id\"] != clean[\"canonical_asset_id\"] {\n\t\tt.Fatal(p, e, *n)\n\t}\n\traw, e := s.Store.ReadAsset(context.Background(), p[\"mutation_manifest_asset_id\"].(string))\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tvar m map[string]any\n\t_ = json.Unmarshal(raw, &m)\n\tif len(m[\"planned_units\"].([]any)) != 0 || len(m[\"edits\"].([]any)) != 0 {\n\t\tt.Fatal(m)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL persist valid automatic or explicit-zero authored keys through the existing owner. Missing requested families or copied event counts SHALL use at most one same-profile output repair, retain the clean baseline and emit no completed candidate/manifest. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationExplicitZeroPositive(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"zero\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e != nil || *n != 1 || p[\"canonical_asset_id\"] != clean[\"canonical_asset_id\"] {\n\t\tt.Fatal(p, e, *n)\n\t}\n\traw, e := s.Store.ReadAsset(context.Background(), p[\"mutation_manifest_asset_id\"].(string))\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tvar m map[string]any\n\t_ = json.Unmarshal(raw, &m)\n\tif len(m[\"planned_units\"].([]any)) != 0 || len(m[\"edits\"].([]any)) != 0 {\n\t\tt.Fatal(m)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL persist valid automatic or explicit-zero authored keys through the existing owner. Missing requested families or copied event counts SHALL use at most one same-profile output repair, retain the clean baseline and emit no completed candidate/manifest. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-15.P1.S1.NEGATIVE",
+      "property_id": "I6-15.P1",
+      "polarity": "negative",
+      "scenario": "I6-15 packet 1",
+      "fixture_id": "iteration6-I6-15-packet1",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationMissingFamilyNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationMissingFamilyNegative through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationMissingFamilyNegative",
+        "literal_executable_fixture": "func TestNativeMutationMissingFamilyNegative(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"missing-family\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e == nil || *n != 2 || p[\"phase_states\"].(map[string]any)[\"mutation\"] != \"failed\" || p[\"mutation_manifest_asset_id\"] != nil || p[\"canonical_asset_id\"] != clean[\"canonical_asset_id\"] {\n\t\tt.Fatal(p, e, *n)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL persist valid automatic or explicit-zero authored keys through the existing owner. Missing requested families or copied event counts SHALL use at most one same-profile output repair, retain the clean baseline and emit no completed candidate/manifest. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationMissingFamilyNegative(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"missing-family\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e == nil || *n != 2 || p[\"phase_states\"].(map[string]any)[\"mutation\"] != \"failed\" || p[\"mutation_manifest_asset_id\"] != nil || p[\"canonical_asset_id\"] != clean[\"canonical_asset_id\"] {\n\t\tt.Fatal(p, e, *n)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL persist valid automatic or explicit-zero authored keys through the existing owner. Missing requested families or copied event counts SHALL use at most one same-profile output repair, retain the clean baseline and emit no completed candidate/manifest. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I6-15.P1.S2.NEGATIVE",
+      "property_id": "I6-15.P1",
+      "polarity": "negative",
+      "scenario": "I6-15 packet 2",
+      "fixture_id": "iteration6-I6-15-packet2",
+      "test_id": "tangerine.local/api/internal/app::TestNativeMutationCopiedKeyNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeMutationCopiedKeyNegative through services/api/internal/app/mutation.go",
+      "initial_state": {
+        "isolated_native_dependencies": true,
+        "external_protocol_substitution": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeMutationCopiedKeyNegative",
+        "literal_executable_fixture": "func TestNativeMutationCopiedKeyNegative(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"copy-unit\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e == nil || *n != 2 || p[\"candidate_id\"] != nil || p[\"mutation_manifest_asset_id\"] != nil || p[\"canonical_asset_id\"] != clean[\"canonical_asset_id\"] {\n\t\tt.Fatal(p, e, *n)\n\t}\n}"
+      },
+      "expected": {
+        "independent_literal_expectations": "The application SHALL persist valid automatic or explicit-zero authored keys through the existing owner. Missing requested families or copied event counts SHALL use at most one same-profile output repair, retain the clean baseline and emit no completed candidate/manifest. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+        "assertion_source": "func TestNativeMutationCopiedKeyNegative(t *testing.T) {\n\ts, r, client, n, clean := nativeMutationFixture(t, \"copy-unit\")\n\tp, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\tif e == nil || *n != 2 || p[\"candidate_id\"] != nil || p[\"mutation_manifest_asset_id\"] != nil || p[\"canonical_asset_id\"] != clean[\"canonical_asset_id\"] {\n\t\tt.Fatal(p, e, *n)\n\t}\n}"
+      },
+      "independent_oracle": "The application SHALL persist valid automatic or explicit-zero authored keys through the existing owner. Missing requested families or copied event counts SHALL use at most one same-profile output repair, retain the clean baseline and emit no completed candidate/manifest. Independent literal input/output/arithmetic assertions use constructed examples. Native tests retain actual PostgreSQL/MinIO and production dispatch; the remote model response is an explicit fixture.",
+      "observation_state": "not_run"
+    }
+  ]
+}

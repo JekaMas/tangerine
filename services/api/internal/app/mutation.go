@@ -3,9 +3,7 @@ package app
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v5"
 	"net/http"
 	"tangerine.local/api/internal/contracts"
 	"tangerine.local/api/internal/lab"
@@ -28,16 +26,8 @@ func (s *Server) PrepareMutation(ctx context.Context, r CanonicalPreparationRequ
 		return nil, e
 	}
 	if op.State == "complete" || op.State == "failed" {
-		var docID string
-		if e = s.Store.DB.QueryRow(ctx, "SELECT result_document_id FROM operation WHERE id=$1", op.ID).Scan(&docID); e != nil {
-			return nil, e
-		}
-		doc, e := s.Store.ReadDocument(ctx, docID)
+		p, e := s.Store.mutationActionResult(ctx, op.ID)
 		if e != nil {
-			return nil, e
-		}
-		var p map[string]any
-		if e = json.Unmarshal(doc.Payload, &p); e != nil {
 			return nil, e
 		}
 		if op.State == "failed" {
@@ -65,23 +55,19 @@ func (s *Server) PrepareMutation(ctx context.Context, r CanonicalPreparationRequ
 		return p, ErrConflict
 	}
 	if states["mutation"] == "complete" {
-		_, e = s.Store.DB.Exec(ctx, "UPDATE operation SET state='complete',subject_id=$2::text,result_document_id=(SELECT document_id FROM entity_head WHERE id=$2::text),finished_at=clock_timestamp() WHERE id=$1 AND state='reserved'", op.ID, p["id"])
+		e = s.Store.acknowledgeMutation(ctx, op.ID, p["id"].(string))
 		return p, e
 	}
 	if r.Attempt != len(p["operation_ids"].([]any))+1 {
 		return p, ErrConflict
 	}
-	claim, e := s.Store.DB.Exec(ctx, "UPDATE operation SET state='running' WHERE id=$1 AND state='reserved'", op.ID)
-	if e != nil {
+	if e = s.Store.claimMutation(ctx, op.ID); e != nil {
 		return p, e
-	}
-	if claim.RowsAffected() != 1 {
-		return p, &provider.Failure{Code: "LEASE_ACTIVE"}
 	}
 	defer func() {
 		end, done := context.WithTimeout(context.WithoutCancel(ctx), 5*time.Second)
 		defer done()
-		_, _ = s.Store.DB.Exec(end, "UPDATE operation SET state='interrupted',finished_at=clock_timestamp() WHERE id=$1 AND state='running'", op.ID)
+		s.Store.releaseMutation(end, op.ID)
 	}()
 	if e = s.Store.takePreparation(ctx, p, op.ID, "mutation"); e != nil {
 		return p, e
@@ -96,62 +82,15 @@ func (s *Server) finishMutation(ctx context.Context, p, settings map[string]any,
 	var callErr error
 	var candidate map[string]any
 	var manifest map[string]any
-	// Recover only a completed child belonging to this preparation's actions.
-	for _, parent := range p["operation_ids"].([]any) {
-		var child string
-		e := s.Store.DB.QueryRow(ctx, "SELECT child.id FROM operation parent JOIN operation child ON child.idempotency_key=parent.idempotency_key AND child.operation_name='mutation' WHERE parent.id=$1 AND parent.operation_name='mutation_prepare' AND child.state='complete'", parent).Scan(&child)
-		if errors.Is(e, pgx.ErrNoRows) {
-			continue
-		}
-		if e != nil {
-			callErr = e
-			break
-		}
+	child, e := s.Store.completedMutationChild(ctx, p["operation_ids"].([]any))
+	callErr = e
+	if callErr == nil && child != "" {
 		result, callErr = s.Store.ReadLLMResult(ctx, child)
-		break
 	}
 	if callErr == nil && result.OperationID == "" {
-		callErr = func() error {
-			raw, e := s.Store.ReadAsset(ctx, p["canonical_asset_id"].(string))
-			if e != nil {
-				return e
-			}
-			var clean map[string]any
-			if e = json.Unmarshal(raw, &clean); e != nil {
-				return e
-			}
-			taxonomyID, ok := settings["taxonomy_registry_asset_id"].(string)
-			if !ok {
-				return &provider.Failure{Code: "CONSTRAINT_CONFLICT"}
-			}
-			taxonomyBytes, e := s.Store.ReadAsset(ctx, taxonomyID)
-			if e != nil {
-				return e
-			}
-			recipeBytes, e := s.Store.ReadAsset(ctx, settings["recipe_registry_asset_id"].(string))
-			if e != nil {
-				return e
-			}
-			productionBytes, e := s.Store.ReadAsset(ctx, settings["production_registry_asset_id"].(string))
-			if e != nil {
-				return e
-			}
-			taxonomy, recipes, production, e := mutationSelection(blueprint, taxonomyBytes, recipeBytes, productionBytes)
-			if e != nil {
-				return e
-			}
-			input := map[string]any{"schema_version": "2.0.0", "blueprint": blueprint, "taxonomy_records_asset_id": taxonomyID, "taxonomy_records_sha256": settings["taxonomy_registry_sha256"], "allowed_source_record_ids": []any{}, "request_language": "en", "source_excerpts": []any{}, "taxonomy_context": taxonomy, "phase": "mutation", "canonical_script": clean, "canonical_script_sha256": p["canonical_sha256"], "mutation_recipes": recipes, "recipe_registry_sha256": settings["recipe_registry_sha256"], "production_recipes": production, "production_registry_sha256": settings["production_registry_sha256"]}
-			components := map[string]any{"blueprint": blueprint, "taxonomy": taxonomy, "public_context": blueprint["public_context"], "source_excerpt": nil, "canonical_script": clean, "recipes": map[string]any{"mutation_recipes": recipes, "production_recipes": production}}
-			var bundle lab.Bundle
-			bundleRaw, _ := json.Marshal(settings["prompt_bundle"])
-			if e = json.Unmarshal(bundleRaw, &bundle); e != nil {
-				return e
-			}
-			phase := "mutation"
-			result, e = s.InvokeLLM(ctx, LLMRequest{Operation: OperationRequest{Name: "mutation", Key: key, Path: "/prepare/mutation/model", Body: json.RawMessage(`{}`)}, Stage: "case_generation", Phase: &phase, Input: input, Components: components, Configuration: config, Bundle: bundle, Validate: func(raw []byte) error { _, e := mutationContent(raw, blueprint, clean, taxonomy); return e }}, client)
-			return e
-		}()
+		result, callErr = s.invokeMutation(ctx, p, settings, key, client)
 	}
+
 	if len(result.ReceiptIDs) > 0 {
 		end, done := context.WithTimeout(context.WithoutCancel(ctx), 15*time.Second)
 		_, e := s.Store.LLMDiagnostic(end, result, config["llm_lab_capture_content"] == true, config["llm_lab_trace_enabled"] == true)
@@ -224,24 +163,46 @@ func (s *Server) finishMutation(ctx context.Context, p, settings map[string]any,
 	return p, callErr
 }
 
-// The candidate content already passed its owning admission. This server-created
-// envelope adds only routing/version metadata; persist it without checking the
-// accepted candidate a second time. The preparation CAS owns its association.
-func (s *Storage) saveMutationCandidate(ctx context.Context, id string, body []byte) error {
-	registry, e := contracts.Registry()
+// invokeMutation owns only frozen model/context construction and dispatch.
+func (s *Server) invokeMutation(ctx context.Context, p, settings map[string]any, key string, client *http.Client) (LLMResult, error) {
+	blueprint := settings["blueprint"].(map[string]any)
+	config := settings["configuration"].(map[string]any)
+	raw, e := s.Store.ReadAsset(ctx, p["canonical_asset_id"].(string))
 	if e != nil {
-		return e
+		return LLMResult{}, e
 	}
-	c := registry["candidate-envelope"]
-	write := DocumentWrite{ID: id, Kind: "candidate-envelope", Version: c.Version, Scope: "local", Payload: body, Head: &HeadWrite{ID: id, State: "candidate"}}
-	saved := SavedDocument{ID: id, Kind: write.Kind, Version: c.Version, SchemaSHA: c.SHA, SHA: contracts.Digest(body), Payload: body}
-	tx, e := beginWrite(ctx, s)
+	var clean map[string]any
+	if e = json.Unmarshal(raw, &clean); e != nil {
+		return LLMResult{}, e
+	}
+	taxonomyID, ok := settings["taxonomy_registry_asset_id"].(string)
+	if !ok {
+		return LLMResult{}, &provider.Failure{Code: "CONSTRAINT_CONFLICT"}
+	}
+	taxonomyBytes, e := s.Store.ReadAsset(ctx, taxonomyID)
 	if e != nil {
-		return e
+		return LLMResult{}, e
 	}
-	defer tx.Rollback(context.Background())
-	if e = insertDocument(ctx, tx, write, saved); e != nil {
-		return e
+	recipeBytes, e := s.Store.ReadAsset(ctx, settings["recipe_registry_asset_id"].(string))
+	if e != nil {
+		return LLMResult{}, e
 	}
-	return tx.Commit(ctx)
+	productionBytes, e := s.Store.ReadAsset(ctx, settings["production_registry_asset_id"].(string))
+	if e != nil {
+		return LLMResult{}, e
+	}
+	taxonomy, recipes, production, e := mutationSelection(blueprint, taxonomyBytes, recipeBytes, productionBytes)
+	if e != nil {
+		return LLMResult{}, e
+	}
+	input := map[string]any{"schema_version": "2.0.0", "blueprint": blueprint, "taxonomy_records_asset_id": taxonomyID, "taxonomy_records_sha256": settings["taxonomy_registry_sha256"], "allowed_source_record_ids": []any{}, "request_language": "en", "source_excerpts": []any{}, "taxonomy_context": taxonomy, "phase": "mutation", "canonical_script": clean, "canonical_script_sha256": p["canonical_sha256"], "mutation_recipes": recipes, "recipe_registry_sha256": settings["recipe_registry_sha256"], "production_recipes": production, "production_registry_sha256": settings["production_registry_sha256"]}
+	components := map[string]any{"blueprint": blueprint, "taxonomy": taxonomy, "public_context": blueprint["public_context"], "source_excerpt": nil, "canonical_script": clean, "recipes": map[string]any{"mutation_recipes": recipes, "production_recipes": production}}
+	var bundle lab.Bundle
+	bundleRaw, _ := json.Marshal(settings["prompt_bundle"])
+	if e = json.Unmarshal(bundleRaw, &bundle); e != nil {
+		return LLMResult{}, e
+	}
+	phase := "mutation"
+	result, e := s.InvokeLLM(ctx, LLMRequest{Operation: OperationRequest{Name: "mutation", Key: key, Path: "/prepare/mutation/model", Body: json.RawMessage(`{}`)}, Stage: "case_generation", Phase: &phase, Input: input, Components: components, Configuration: config, Bundle: bundle, Validate: func(raw []byte) error { _, e := mutationContent(raw, blueprint, clean, taxonomy); return e }}, client)
+	return result, e
 }

@@ -561,3 +561,12 @@ Completion record: audit/iteration-6-mutations-20261011/REPORT.md. The committed
 Current checkpoint: audit/iteration-6-verification-20261011/REPORT.md. Earlier iteration6 receipts remain historical observations of their own code; the new counterexamples invalidate their iteration-complete conclusion until these repairs are accepted. No paid credit or hosted call is authorized.
 
 Verification acceptance: be7b603e6a595b9276dd8f28b1e589b2e111c170 is the committed-clean repaired candidate. All264 selected cases (132positive/132negative), including44 iteration6 cases, passed in two actual clean command receipts. The interrupted earlier run has no final receipt and is not counted. Four actual local gpt-oss:20b dispatches/receipts/contexts match four MLflow spans/runs; no paid or hosted inference was used. The preview containers exited during an external runtime interruption and were restarted as the same existing containers/images/volumes; current API/web are healthy. GAPS.md SHA remains78f8cfa15fdc0215d92f6045d2f0f6e53b391030e543050ee1b09ed65776db65. See evidence/iteration6-verification/NATIVE-VERIFICATION.json and LOCAL-OBSERVATIONS.json.
+
+### Iteration 6 code review and repair — 2026-10-20
+
+- [ ] Repair demonstrated family coverage, automatic-empty-key, conflicting/narrowed exact-target selection and copied-event count defects; retain explicit zero controls and all supported acoustic intents.
+- [ ] Keep mutation layers cohesive: Server owns orchestration/context/dispatch, Storage owns SQL/result lifecycle, and pure selection/admission/manifest files own their respective transformations. Preserve one output admission and trusted reuse.
+- [ ] Add literal positive/negative regression sets and wire all new properties into the existing DAG, fixture sets, discovery and actual AI-surface inventory; correct the inconsistent acoustic test fixture's requested family.
+- [ ] Complete a committed-clean full iteration6 selection with affected preparation/provider/Lab cases, actual local model/native/context/MLflow reconciliation, language/specification/preservation checks; commit the repaired result and final review evidence.
+
+Current review record: audit/iteration-6-review-20261020/REPORT.md. Earlier44-case receipts remain valid observations of their own inputs but do not cover the new request/count counterexamples. No paid call or later iteration work is authorized by this review.

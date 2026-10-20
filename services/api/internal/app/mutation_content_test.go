@@ -188,6 +188,7 @@ func TestMutationReplayNegative(t *testing.T) {
 
 func acousticMutationFixture() (map[string]any, map[string]any, map[string]any, map[string]any) {
 	b, clean, c, tax := mutationFixture()
+	b["exercise_request"].(map[string]any)["category_families"] = []any{"pronunciation"}
 	c["utterances"] = clean["utterances"]
 	u := c["planned_units"].([]any)[0].(map[string]any)
 	u["primary_taxonomy_id"] = "pronunciation.segmental.consonant_voicing"
@@ -370,5 +371,154 @@ func TestMutationAcousticParametersNegative(t *testing.T) {
 		if e := admitMutation(t, b, clean, c, tax); e == nil {
 			t.Fatal("controller accepted without its required operands", controller)
 		}
+	}
+}
+
+func multipleFamilyMutationFixture() (map[string]any, map[string]any, map[string]any, map[string]any) {
+	b, clean, c, tax := mutationFixture()
+	request := b["exercise_request"].(map[string]any)
+	request["category_families"] = []any{"grammar", "lexis"}
+	request["mutation_count"] = float64(2)
+	canonical := "The team makes a decision."
+	surface := "The team does a decision."
+	clean["utterances"] = append(clean["utterances"].([]any), map[string]any{"id": "u2", "speaker_id": "s1", "canonical_text": canonical, "surface_text": canonical})
+	c["utterances"] = append(c["utterances"].([]any), map[string]any{"id": "u2", "speaker_id": "s1", "canonical_text": canonical, "surface_text": surface})
+	raw, _ := json.Marshal(c["planned_units"].([]any)[0])
+	var unit map[string]any
+	_ = json.Unmarshal(raw, &unit)
+	unit["id"] = "e2"
+	unit["primary_taxonomy_id"] = "lexis.collocation"
+	unit["accepted_taxonomy_ids"] = []any{"lexis.collocation"}
+	unit["domain"] = "lexis"
+	unit["utterance_ids"] = []any{"u2"}
+	unit["text_spans"] = []any{map[string]any{"utterance_id": "u2", "span": map[string]any{"start_cp": float64(9), "end_cp": float64(13), "exact_text": "does"}}}
+	unit["realization"].(map[string]any)["canonical_text"] = "makes"
+	unit["realization"].(map[string]any)["surface_text"] = "does"
+	unit["corrections"].([]any)[0].(map[string]any)["text"] = "makes"
+	unit["rationale"] = "Make a decision is the standard collocation."
+	c["planned_units"] = append(c["planned_units"].([]any), unit)
+	tax["entries"] = append(tax["entries"].([]any), map[string]any{"id": "lexis.collocation", "domain": "lexis"})
+	return b, clean, c, tax
+}
+func TestMutationFamilyCoveragePositive(t *testing.T) {
+	b, clean, c, tax := multipleFamilyMutationFixture()
+	if e := admitMutation(t, b, clean, c, tax); e != nil {
+		t.Fatal(e)
+	}
+}
+func TestMutationPronunciationFamilyPositive(t *testing.T) {
+	b, clean, c, tax := acousticMutationFixture()
+	b["exercise_request"].(map[string]any)["category_families"] = []any{"pronunciation"}
+	if e := admitMutation(t, b, clean, c, tax); e != nil {
+		t.Fatal(e)
+	}
+}
+func TestMutationMissingFamilyNegative(t *testing.T) {
+	b, clean, c, tax := mutationFixture()
+	b["exercise_request"].(map[string]any)["category_families"] = []any{"grammar", "lexis"}
+	b["exercise_request"].(map[string]any)["mutation_count"] = nil
+	if e := admitMutation(t, b, clean, c, tax); e == nil {
+		t.Fatal("Requested lexis family silently omitted")
+	}
+}
+func TestMutationAutomaticEmptyNegative(t *testing.T) {
+	b, clean, c, tax := mutationFixture()
+	b["exercise_request"].(map[string]any)["mutation_count"] = nil
+	c["utterances"] = clean["utterances"]
+	c["planned_units"] = []any{}
+	if e := admitMutation(t, b, clean, c, tax); e == nil {
+		t.Fatal("Automatic mutation count silently became zero")
+	}
+}
+func mutationSelectionFixture(t *testing.T, b map[string]any) (map[string]any, error) {
+	t.Helper()
+	a, _ := generationRegistry("error-taxonomy.v1.yaml")
+	r, _ := generationRegistry("mutation-recipes.v1.json")
+	p, _ := generationRegistry("acoustic-production.v1.json")
+	tax, _, _, e := mutationSelection(b, a, r, p)
+	return tax, e
+}
+func exactMutationTarget(id string) map[string]any {
+	return map[string]any{"taxonomy_id": id, "expected_judgment": "true_error", "min_count": float64(1), "max_count": float64(1)}
+}
+func TestMutationExactFamilySelectionPositive(t *testing.T) {
+	b, _, _, _ := mutationFixture()
+	b["targets"] = []any{exactMutationTarget("grammar.verbs.subject_verb_agreement")}
+	tax, e := mutationSelectionFixture(t, b)
+	if e != nil || len(tax["entries"].([]any)) <= 1 {
+		t.Fatal("Exact target erased explicitly requested family context", tax, e)
+	}
+}
+func TestMutationExactOnlySelectionPositive(t *testing.T) {
+	b, _, _, _ := mutationFixture()
+	b["exercise_request"].(map[string]any)["category_families"] = []any{}
+	b["targets"] = []any{exactMutationTarget("grammar.verbs.subject_verb_agreement")}
+	tax, e := mutationSelectionFixture(t, b)
+	if e != nil || len(tax["entries"].([]any)) != 1 {
+		t.Fatal(tax, e)
+	}
+}
+func TestMutationContradictorySelectionNegative(t *testing.T) {
+	b, _, _, _ := mutationFixture()
+	b["targets"] = []any{exactMutationTarget("lexis.collocation")}
+	if _, e := mutationSelectionFixture(t, b); e == nil {
+		t.Fatal("Exact lexis target silently erased requested grammar family")
+	}
+}
+func TestMutationUnknownTargetNegative(t *testing.T) {
+	b, _, _, _ := mutationFixture()
+	b["exercise_request"].(map[string]any)["category_families"] = []any{}
+	unknown := exactMutationTarget("unknown.category")
+	unknown["min_count"] = float64(0)
+	b["targets"] = []any{exactMutationTarget("grammar.verbs.subject_verb_agreement"), unknown}
+	if _, e := mutationSelectionFixture(t, b); e == nil {
+		t.Fatal("Partially unknown target selection silently dropped the unknown leaf")
+	}
+}
+func TestMutationDistinctEventsPositive(t *testing.T) {
+	b, clean, c, tax := multipleFamilyMutationFixture()
+	if e := admitMutation(t, b, clean, c, tax); e != nil {
+		t.Fatal(e)
+	}
+}
+func TestMutationZeroFamilyControlPositive(t *testing.T) {
+	b, clean, c, tax := mutationFixture()
+	b["exercise_request"].(map[string]any)["category_families"] = []any{"grammar", "lexis"}
+	b["exercise_request"].(map[string]any)["mutation_count"] = float64(0)
+	c["utterances"] = clean["utterances"]
+	u := c["planned_units"].([]any)[0].(map[string]any)
+	u["expected_judgment"] = "acceptable"
+	u["status_label"] = "decoy_non_error"
+	u["correction_eligible"] = false
+	u["corrections"] = []any{}
+	u["text_spans"].([]any)[0].(map[string]any)["span"] = map[string]any{"start_cp": float64(9), "end_cp": float64(14), "exact_text": "opens"}
+	if e := admitMutation(t, b, clean, c, tax); e != nil {
+		t.Fatal(e)
+	}
+}
+func copiedMutationUnit(c map[string]any) map[string]any {
+	raw, _ := json.Marshal(c["planned_units"].([]any)[0])
+	var u map[string]any
+	_ = json.Unmarshal(raw, &u)
+	u["id"] = "copied-unit"
+	c["planned_units"] = append(c["planned_units"].([]any), u)
+	return u
+}
+func TestMutationCopiedUnitNegative(t *testing.T) {
+	b, clean, c, tax := mutationFixture()
+	b["exercise_request"].(map[string]any)["mutation_count"] = float64(2)
+	copiedMutationUnit(c)
+	if e := admitMutation(t, b, clean, c, tax); e == nil {
+		t.Fatal("Copying an event with a new ID inflated the independent-event count")
+	}
+}
+func TestMutationCopiedOptionNegative(t *testing.T) {
+	b, clean, c, tax := mutationFixture()
+	b["exercise_request"].(map[string]any)["mutation_count"] = float64(2)
+	copy := copiedMutationUnit(c)
+	copy["corrections"].([]any)[0].(map[string]any)["id"] = "renamed-option"
+	copy["rationale"] = "Same agreement obligation, reworded."
+	if e := admitMutation(t, b, clean, c, tax); e == nil {
+		t.Fatal("Renaming a correction option created a second event")
 	}
 }

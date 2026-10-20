@@ -18,7 +18,19 @@ import (
 
 func nativeMutationFixture(t *testing.T, mode string) (*Server, CanonicalPreparationRequest, *http.Client, *int, map[string]any) {
 	t.Helper()
-	s, r, cleanClient, cleanCalls := prepareNativeFixture(t, "", 200)
+	configure := func(b map[string]any) {
+		r := b["exercise_request"].(map[string]any)
+		if mode == "missing-family" || mode == "zero" {
+			r["category_families"] = []any{"grammar", "lexis"}
+		}
+		if mode == "zero" {
+			r["mutation_count"] = 0
+		}
+		if mode == "copy-unit" {
+			r["mutation_count"] = 2
+		}
+	}
+	s, r, cleanClient, cleanCalls := prepareNativeFixtureRequest(t, "", 200, configure)
 	// This constructed model has no tokenizer. Its explicit byte-conservative
 	// budget must hold the complete selected records; no category is truncated.
 	config, rev, err := s.Store.Configuration(context.Background())
@@ -44,6 +56,13 @@ func nativeMutationFixture(t *testing.T, mode string) (*Server, CanonicalPrepara
 	r.Attempt = 2
 	_, _, candidate, _ := mutationFixture()
 	candidate["blueprint_id"] = r.BlueprintID
+	if mode == "zero" {
+		candidate["utterances"].([]any)[0].(map[string]any)["surface_text"] = "The café opens tomorrow."
+		candidate["planned_units"] = []any{}
+	}
+	if mode == "copy-unit" {
+		copiedMutationUnit(candidate)
+	}
 	calls := 0
 	target := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		calls++
@@ -455,5 +474,43 @@ func saveNativeMutationEvidence(t *testing.T, s *Server, p map[string]any) {
 				collect(v)
 			}
 		}
+	}
+}
+
+func TestNativeMutationAutomaticKeyPositive(t *testing.T) {
+	s, r, client, n, _ := nativeMutationFixture(t, "")
+	p, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)
+	if e != nil || *n != 1 || p["phase_states"].(map[string]any)["mutation"] != "complete" {
+		t.Fatal(p, e, *n)
+	}
+}
+func TestNativeMutationExplicitZeroPositive(t *testing.T) {
+	s, r, client, n, clean := nativeMutationFixture(t, "zero")
+	p, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)
+	if e != nil || *n != 1 || p["canonical_asset_id"] != clean["canonical_asset_id"] {
+		t.Fatal(p, e, *n)
+	}
+	raw, e := s.Store.ReadAsset(context.Background(), p["mutation_manifest_asset_id"].(string))
+	if e != nil {
+		t.Fatal(e)
+	}
+	var m map[string]any
+	_ = json.Unmarshal(raw, &m)
+	if len(m["planned_units"].([]any)) != 0 || len(m["edits"].([]any)) != 0 {
+		t.Fatal(m)
+	}
+}
+func TestNativeMutationMissingFamilyNegative(t *testing.T) {
+	s, r, client, n, clean := nativeMutationFixture(t, "missing-family")
+	p, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)
+	if e == nil || *n != 2 || p["phase_states"].(map[string]any)["mutation"] != "failed" || p["mutation_manifest_asset_id"] != nil || p["canonical_asset_id"] != clean["canonical_asset_id"] {
+		t.Fatal(p, e, *n)
+	}
+}
+func TestNativeMutationCopiedKeyNegative(t *testing.T) {
+	s, r, client, n, clean := nativeMutationFixture(t, "copy-unit")
+	p, e := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)
+	if e == nil || *n != 2 || p["candidate_id"] != nil || p["mutation_manifest_asset_id"] != nil || p["canonical_asset_id"] != clean["canonical_asset_id"] {
+		t.Fatal(p, e, *n)
 	}
 }
