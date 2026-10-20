@@ -35,7 +35,7 @@ The application SHALL recover uniquely supported Unicode/UTF16 source coordinate
 
 ### Requirement: I10-03 Separate correction and optional explanation
 
-The application SHALL assess supplied correction and explanation independently, preserve supported repair/detection when a reason is false or absent, and refuse borrowed component quotes or decisions inconsistent with the frozen assertion and target truth. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
+The application SHALL assess supplied correction and explanation independently, preserve supported repair/detection when a reason is false or absent, and attribute assertion judgments to their admitted source component and derive detection labels from actual assertion stance and matched target truth, preserving supported repair when a reason is misplaced. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
 
 #### Scenario: I10-03 packet 1
 
@@ -73,7 +73,7 @@ The application SHALL retain unknown optional reason findings without erasing su
 
 ### Requirement: I10-05 Category and novel correction interpretation
 
-The application SHALL resolve an omitted correction option only through uniquely identifying scoped proposition IDs, retain novel-correction uncertainty and unknown aliases while preserving supported detection, and refuse fabricated taxonomy or target identities. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
+The application SHALL resolve only explicitly declared local target references and uniquely identified omitted correction options, retain novel-correction uncertainty and unknown aliases while preserving supported detection, and refuse fabricated taxonomy or target identities. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
 
 #### Scenario: I10-05 packet 1
 
@@ -306,6 +306,20 @@ The application SHALL preserve a definite LLM rejection of a supplied correction
 - **THEN** its independently expected data, state, response or failure SHALL hold
 
 #### Scenario: I10-20 packet 2
+
+- **WHEN** the second distinct literal positive or negative packet executes through its real owner
+- **THEN** its independently expected data, state, response or failure SHALL hold
+
+### Requirement: I10-21 Opt-in complete-container projection
+
+The application SHALL complete only missing trailing JSON container punctuation around otherwise complete values for explicitly normalized interpretation calls, preserve raw provider output and substantive data, refuse to invent incomplete strings or values, and preserve the default standalone projection policy. Existing complete product scopes remain preserved; this requirement covers semantic interpretation; native grade arithmetic and final feedback retain their later implementation owners.
+
+#### Scenario: I10-21 packet 1
+
+- **WHEN** the first literal positive or negative packet executes through its real owner
+- **THEN** its independently expected data, state, response or failure SHALL hold
+
+#### Scenario: I10-21 packet 2
 
 - **WHEN** the second distinct literal positive or negative packet executes through its real owner
 - **THEN** its independently expected data, state, response or failure SHALL hold

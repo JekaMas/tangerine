@@ -106,7 +106,7 @@ func correctionRubricDetail(unit map[string]any) string {
 	raw, _ := json.Marshal(unit["corrections"])
 	return " Existing correction options and their scoped conditions: " + string(raw)
 }
-func normalizeComponent(answer string, j *SemanticComponent, source AnswerSpan, spans, otherSpans []AnswerSpan, unit map[string]any, explanation bool, allowedEvidence map[string]bool) error {
+func normalizeComponent(j *SemanticComponent, spans []AnswerSpan, unit map[string]any, explanation bool, allowedEvidence map[string]bool) error {
 	if j.Supplied != (len(spans) > 0) {
 		return interpretationInvalid("Supplied flags must match actual original correction/explanation spans, including declared attachments.")
 	}
@@ -163,44 +163,6 @@ func normalizeComponent(answer string, j *SemanticComponent, source AnswerSpan, 
 	unknown, bad := false, len(j.Violated) > 0 || explicitRejection
 	for i := range j.Additional {
 		a := &j.Additional[i]
-		if err := normalizeAnswerSpan(answer, &a.AnswerSpan); err != nil {
-			return err
-		}
-		contained := false
-		for _, s := range spans {
-			if containsAnswerSpan(s, a.AnswerSpan) {
-				contained = true
-				break
-			}
-		}
-		if !contained {
-			// Models sometimes quote the containing claim as context. Preserve
-			// its raw output, but anchor this judgment to the one whole component
-			// it contains. A quote crossing the other component cannot be narrowed.
-			if !containsAnswerSpan(source, a.AnswerSpan) {
-				return interpretationInvalid("A contextual assertion quote must stay inside its original source claim.")
-			}
-			var candidate *AnswerSpan
-			for _, s := range spans {
-				if containsAnswerSpan(a.AnswerSpan, s) {
-					if candidate != nil {
-						return interpretationInvalid("An assertion quote covering multiple source components needs an exact component location.")
-					}
-					copy := s
-					candidate = &copy
-				}
-			}
-			for _, other := range otherSpans {
-				if a.Start < other.End && other.Start < a.End {
-					candidate = nil
-					break
-				}
-			}
-			if candidate == nil {
-				return interpretationInvalid("An additional assertion must quote its actual component, without borrowing the other component's words.")
-			}
-			a.AnswerSpan = *candidate
-		}
 		unknown = unknown || a.Judgment == "unknown"
 		bad = bad || a.Judgment == "unsupported"
 	}
@@ -286,9 +248,18 @@ func normalizeMapping(answer string, claims CanonicalExtraction, key map[string]
 	for i := range out.Decisions {
 		d := &out.Decisions[i]
 		c := byClaim[d.Claim]
+		if d.Unit != nil && units[*d.Unit] == nil {
+			for _, reference := range mappingTargetReferences(key) {
+				if reference.LocalRef == *d.Unit {
+					id := reference.Unit
+					d.Unit = &id
+					break
+				}
+			}
+		}
 		unit := units[optionalID(d.Unit)]
 		if d.Unit != nil && unit == nil {
-			return out, issues, interpretationInvalid("A mapped target must exist in this frozen case.")
+			return out, issues, interpretationInvalid("The mapped unit_id must be an actual frozen target. Correct all decisions and component findings in this reply. " + mappingTargetHint(key, c))
 		}
 		// Classification can only credit what the listener supplied. An
 		// unsolicited model label is discarded, not a failed whole answer.
@@ -305,12 +276,12 @@ func normalizeMapping(answer string, claims CanonicalExtraction, key map[string]
 		for _, id := range claims.Conflicts {
 			conflict = conflict || id == c.ID
 		}
-		if conflict && d.Decision != "unresolved" {
-			return out, issues, interpretationInvalid("Competing interpretations of this identical source span remain unresolved; do not select a favorable interpretation.")
+		if conflict {
+			d.Decision = "unresolved"
 		}
 		nonassertive := !conflict && (!c.Active || c.Stance == "meta" || c.Stance == "question" || c.Stance == "retracted" || c.Group != c.ID)
-		if nonassertive && d.Decision != "ignore" {
-			return out, issues, interpretationInvalid("Questions, comments, retractions and attached fragments cannot become independent scored assertions.")
+		if nonassertive {
+			d.Decision = "ignore"
 		}
 		if !nonassertive && d.Decision == "ignore" {
 			return out, issues, interpretationInvalid("Retain an unresolved substantive assertion rather than silently ignoring it.")
@@ -334,8 +305,10 @@ func normalizeMapping(answer string, claims CanonicalExtraction, key map[string]
 			} else if c.Stance != "assert_error" {
 				return out, issues, interpretationInvalid("An off-key acceptance requires an identified target or explicit uncertainty.")
 			}
-			if d.Decision != want {
-				return out, issues, interpretationInvalid("Decision must agree with the actual assertion stance and the frozen target judgment.")
+			if unit != nil {
+				d.Decision = want
+			} else if d.Decision != want {
+				return out, issues, interpretationInvalid("An off-key assertion needs an explicit false-positive or unresolved judgment.")
 			}
 		}
 		scopedEvidence := map[string]bool{}
@@ -360,10 +333,13 @@ func normalizeMapping(answer string, claims CanonicalExtraction, key map[string]
 		if !subsetDistinct(d.Evidence, scopedEvidence) {
 			return out, issues, interpretationInvalid("Cited evidence must belong to this exact case and target unit.")
 		}
-		if err := normalizeComponent(answer, &d.Correction, c.Span, c.Corrections, c.Explanations, unit, false, scopedEvidence); err != nil {
+		if err := normalizeAssertionOwnership(answer, c, d); err != nil {
 			return out, issues, err
 		}
-		if err := normalizeComponent(answer, &d.Explanation, c.Span, c.Explanations, c.Corrections, unit, true, scopedEvidence); err != nil {
+		if err := normalizeComponent(&d.Correction, c.Corrections, unit, false, scopedEvidence); err != nil {
+			return out, issues, err
+		}
+		if err := normalizeComponent(&d.Explanation, c.Explanations, unit, true, scopedEvidence); err != nil {
 			return out, issues, err
 		}
 		if d.Duplicate != nil {

@@ -88,10 +88,11 @@ func TestInterpretationForbiddenDeterminesZeroPositive(t *testing.T) {
 }
 func TestInterpretationUnknownUnitNegative(t *testing.T) {
 	a, c, k, tax, m := interpretationMappingFixture()
-	unit := "another-case-unit"
-	m.Decisions[0].Unit = &unit
-	if _, _, e := admitMappingFixture(a, c, k, tax, m); e == nil {
-		t.Fatal("cross-case target accepted")
+	for _, unit := range []string{"another-case-unit", "u2"} {
+		m.Decisions[0].Unit = &unit
+		if _, _, e := admitMappingFixture(a, c, k, tax, m); e == nil {
+			t.Fatal("cross-case or undeclared local target accepted", unit)
+		}
 	}
 }
 func TestInterpretationInventedPropositionNegative(t *testing.T) {
@@ -111,8 +112,9 @@ func TestInterpretationMissingDecisionNegative(t *testing.T) {
 func TestInterpretationBorrowedAssertionNegative(t *testing.T) {
 	a, c, k, tax, m := interpretationMappingFixture()
 	m.Decisions[0].Correction.Additional = []ComponentAssertion{{AnswerSpan: AnswerSpan{17, 38, "every verb ends in s."}, Judgment: "unsupported", Reason: "Wrong rule"}}
-	if _, _, e := admitMappingFixture(a, c, k, tax, m); e == nil {
-		t.Fatal("rationale borrowed into correction")
+	got, _, e := admitMappingFixture(a, c, k, tax, m)
+	if e != nil || got.Decisions[0].Correction.Status != "accepted" || got.Decisions[0].Explanation.Status != "rejected" || len(got.Decisions[0].Correction.Additional) != 0 {
+		t.Fatal("a misplaced reason erased the supported correction", got, e)
 	}
 }
 func TestInterpretationInventedCategoryNegative(t *testing.T) {
@@ -127,8 +129,9 @@ func TestInterpretationInventedCategoryNegative(t *testing.T) {
 func TestInterpretationWrongStanceNegative(t *testing.T) {
 	a, c, k, tax, m := interpretationMappingFixture()
 	m.Decisions[0].Decision = "wrong_acceptance"
-	if _, _, e := admitMappingFixture(a, c, k, tax, m); e == nil {
-		t.Fatal("asserted error turned into acceptance")
+	got, _, e := admitMappingFixture(a, c, k, tax, m)
+	if e != nil || got.Decisions[0].Decision != "matched_error" || got.Decisions[0].Correction.Status != "accepted" {
+		t.Fatal("redundant model label overrode source stance and target truth", got, e)
 	}
 }
 func TestInterpretationAuditProsePositive(t *testing.T) {
@@ -222,6 +225,10 @@ func TestInterpretationControlFalseAssertionNegative(t *testing.T) {
 	}
 }
 func TestInterpretationQuestionIgnoreNegative(t *testing.T) {
+	mislabeled, _, err := stanceMappingFixture(t, "true_error", "question", "matched_error")
+	if err != nil || mislabeled.Decisions[0].Decision != "ignore" || len(mislabeled.Groups) != 0 {
+		t.Fatal("model label gave a question assertion credit", mislabeled, err)
+	}
 	m, issues, e := stanceMappingFixture(t, "true_error", "question", "ignore")
 	if e != nil || len(issues) != 0 || len(m.Groups) != 0 {
 		t.Fatal(m, issues, e)
@@ -275,10 +282,16 @@ func TestInterpretationNoOptionCreditNegative(t *testing.T) {
 }
 
 func TestInterpretationUniqueRubricPositive(t *testing.T) {
+	refs := mappingTargetReferences(map[string]any{"units": []any{map[string]any{"id": "u1"}, map[string]any{"id": "e2"}}})
+	if len(refs) != 2 || refs[0] != (MappingTargetReference{"u2", "u1"}) || refs[1] != (MappingTargetReference{"u3", "e2"}) {
+		t.Fatal("local references shadowed a real unit ID", refs)
+	}
 	a, c, k, tax, m := interpretationMappingFixture()
+	local := "u1"
+	m.Decisions[0].Unit = &local
 	m.Decisions[0].Correction.Option = nil
 	got, _, err := admitMappingFixture(a, c, k, tax, m)
-	if err != nil || optionalID(got.Decisions[0].Correction.Option) != "option1" || got.Decisions[0].Correction.Status != "accepted" {
+	if err != nil || optionalID(got.Decisions[0].Correction.Option) != "option1" || optionalID(got.Decisions[0].Unit) != "unit1" || got.Decisions[0].Correction.Status != "accepted" {
 		t.Fatal(got, err)
 	}
 }

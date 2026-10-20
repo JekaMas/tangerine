@@ -5,6 +5,7 @@ package app
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"strings"
 	"unicode"
 
@@ -190,7 +191,7 @@ func interpretationInput(record AttemptRecord, r InterpretationResources, c *Can
 		parts["public_context"] = r.Key["public_context"]
 		parts["mutation_key"] = r.Key
 		parts["evidence"] = r.Evidence
-		parts["extraction"] = map[string]any{"claims": c.Claims, "conflicts": c.Conflicts, "coverage": c.Extraction.Coverage, "relations": c.Extraction.Relations, "identity": "Use claims[].id as output claim_id; local_ref is only an extraction-local reference."}
+		parts["extraction"] = map[string]any{"claims": c.Claims, "conflicts": c.Conflicts, "coverage": c.Extraction.Coverage, "relations": c.Extraction.Relations, "identity": "Use claims[].id as output claim_id; claim local_ref is extraction-local. unit_id can use an exact frozen unit ID or one of the explicitly listed target_references, which is resolved to its canonical unit ID before saving.", "target_references": mappingTargetReferences(r.Key)}
 	}
 	return input, parts
 }
@@ -247,4 +248,35 @@ func mappingTaxonomyContext(r InterpretationResources, answer string) []any {
 		}
 	}
 	return out
+}
+
+func mappingTargetHint(key map[string]any, claim CanonicalClaim) string {
+	raw, _ := json.Marshal(map[string]any{"actual_frozen_units": key["units"], "target_references": mappingTargetReferences(key), "original_claim": claim})
+	return "Use these exact unit/option/proposition IDs and this source wording: " + string(raw) + ". Detection follows the source stance and target truth; judge the proposed repair and optional reason separately. Every supplied explanation needs its own source-quoted supported/unsupported/unknown assertion and contextual reason, including rubric-covered assertions; record its actually satisfied rationale IDs as well."
+}
+
+// Short references are explicit per-call data, never guesses for unknown IDs.
+type MappingTargetReference struct {
+	LocalRef string `json:"local_ref"`
+	Unit     string `json:"unit_id"`
+}
+
+func mappingTargetReferences(key map[string]any) []MappingTargetReference {
+	rows := key["units"].([]any)
+	occupied := map[string]bool{}
+	for _, value := range rows {
+		occupied[value.(map[string]any)["id"].(string)] = true
+	}
+	refs := []MappingTargetReference{}
+	next := 1
+	for _, value := range rows {
+		for occupied[fmt.Sprintf("u%d", next)] {
+			next++
+		}
+		ref := fmt.Sprintf("u%d", next)
+		refs = append(refs, MappingTargetReference{ref, value.(map[string]any)["id"].(string)})
+		occupied[ref] = true
+		next++
+	}
+	return refs
 }

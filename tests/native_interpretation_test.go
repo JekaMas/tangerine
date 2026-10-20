@@ -412,6 +412,22 @@ func TestNativeInterpretationFullRegistryPositive(t *testing.T) {
 	}
 	f.mu.Lock()
 	defer f.mu.Unlock()
+	declaredReference := false
+	for _, message := range f.wires[1]["input"].([]any) {
+		text, _ := message.(map[string]any)["content"].(string)
+		if strings.HasPrefix(text, "extraction: ") {
+			var frame map[string]any
+			requireListening(t, json.Unmarshal([]byte(strings.TrimPrefix(text, "extraction: ")), &frame))
+			refs, _ := frame["target_references"].([]any)
+			if len(refs) == 1 {
+				row := refs[0].(map[string]any)
+				declaredReference = row["local_ref"] == "u1" && row["unit_id"] == "e1"
+			}
+		}
+	}
+	if !declaredReference {
+		t.Fatal("target alias was not declared on the provider wire")
+	}
 	mappingPrompt, _ := f.wires[1]["instructions"].(string)
 	if !strings.Contains(mappingPrompt, "For EVERY supplied explanation") || !strings.Contains(mappingPrompt, "rubric overlap is not a judgment") {
 		t.Fatal("authored full-reason assessment is missing from the shipped provider input")

@@ -16,6 +16,9 @@ func projectVisible(text, kind string, includeRejected bool) ([]byte, error) {
 	return projectStageVisible(text, kind, includeRejected, nil)
 }
 func projectStageVisible(text, kind string, includeRejected bool, normalize func(any) any) ([]byte, error) {
+	if normalize != nil {
+		text = completeStageContainers(text)
+	}
 	registry, e := contracts.Registry()
 	if e != nil {
 		return nil, e

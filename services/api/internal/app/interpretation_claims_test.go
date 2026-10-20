@@ -118,8 +118,9 @@ func TestInterpretationConflictSelectionNegative(t *testing.T) {
 	answer, c, key, tax, m := interpretationMappingFixture()
 	c.Conflicts = []string{c.Claims[0].ID}
 	raw, _ := json.Marshal(m)
-	if _, _, e := normalizeMapping(answer, c, key, tax, nil, map[string]any{}, raw); e == nil {
-		t.Fatal("conflicted meaning scored as certain")
+	mapping, issues, e := normalizeMapping(answer, c, key, tax, nil, map[string]any{}, raw)
+	if e != nil || mapping.Decisions[0].Decision != "unresolved" || len(issues) == 0 || !issues[0].Blocks {
+		t.Fatal("conflicted meaning scored as certain", mapping, issues, e)
 	}
 }
 
