@@ -34,3 +34,11 @@ Static fixture accounting initially rejected the added properties because its ex
 - Evidence: native piece context/receipt/export remains the existing route. Five fresh local synthesis observations will accompany the required full I7 run; text/mutation upstream inputs remain constructed, not paid text inference. No new content/consistency revalidation, human approval or release gate was added.
 
 No additional in-scope defect or unresolved product decision was found in the traced contracts. Verification remains pending until the selected committed-clean runs and exact reconciliation complete.
+
+## Dependency harness finding and repair
+
+The first complete UI dependency trial passed52 iteration2 cases but failed iteration1.test_config_durable_positive. Its preceding damaged-file negative passed; the next startup read CONFIG_DAMAGED despite the Python cleanup having restored the file in place. The later startup and four isolated configure/corrupt/restore probes passed. Exact first-failure container bytes were not retained, so a VirtioFS visibility cause remains a hypothesis, not an established product defect. The initial isolated empty operator-file probe also returned an unreadable .env; the directory-mounted nonempty equivalent passed.
+
+Repair is limited to test-owned fault cleanup: atomically replace restored files, consistent with production configuration's atomic publication. Existing failure/success/bytes/permissions expectations remain intact. Five existing source/configuration fault cleanup sites share this helper; no launcher/configuration production code or new retry/check was added. The full launcher command will be rerun after this test-source/fixture change. All passing rows in the original exit1 launcher command remain excluded; the separate exit0 iteration2 command retains its52 observed passes.
+
+Full I7 acceptance already passed112/112 on committed-clean4d65a5c. The subsequent Python-only foundation fixture change does not affect its112 source/scenario/command/dependency fingerprints; they must be retained exactly.

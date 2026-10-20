@@ -38615,10 +38615,10 @@
       "negative": {
         "input": {
           "exact_native_test": "test_delivery_missing_source_negative",
-          "literal_executable_fixture": "def test_delivery_missing_source_negative(self):\n        p=self.extract/'services/web/package-lock.json';saved=p.read_bytes();p.unlink()\n        try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('SOURCE_INCOMPLETE',r.stdout)\n        finally:p.write_bytes(saved)"
+          "literal_executable_fixture": "def test_delivery_missing_source_negative(self):\n        p=self.extract/'services/web/package-lock.json';saved=p.read_bytes();p.unlink()\n        try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('SOURCE_INCOMPLETE',r.stdout)\n        finally:restore_fixture_file(p,saved)"
         },
         "expected": {
-          "assertion_source": "def test_delivery_missing_source_negative(self):\n        p=self.extract/'services/web/package-lock.json';saved=p.read_bytes();p.unlink()\n        try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('SOURCE_INCOMPLETE',r.stdout)\n        finally:p.write_bytes(saved)",
+          "assertion_source": "def test_delivery_missing_source_negative(self):\n        p=self.extract/'services/web/package-lock.json';saved=p.read_bytes();p.unlink()\n        try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('SOURCE_INCOMPLETE',r.stdout)\n        finally:restore_fixture_file(p,saved)",
           "independent_literal_expectations": "Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input."
         }
       }
@@ -38675,10 +38675,10 @@
       "negative": {
         "input": {
           "exact_native_test": "test_config_unknown_negative",
-          "literal_executable_fixture": "def test_config_unknown_negative(self):\n        p=self.extract/'.env';saved=p.read_bytes();p.write_text('UNKNOWN_OPERATOR=value\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_INVALID',r.stdout)\n        finally:p.write_bytes(saved)"
+          "literal_executable_fixture": "def test_config_unknown_negative(self):\n        p=self.extract/'.env';saved=p.read_bytes();p.write_text('UNKNOWN_OPERATOR=value\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_INVALID',r.stdout)\n        finally:restore_fixture_file(p,saved)"
         },
         "expected": {
-          "assertion_source": "def test_config_unknown_negative(self):\n        p=self.extract/'.env';saved=p.read_bytes();p.write_text('UNKNOWN_OPERATOR=value\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_INVALID',r.stdout)\n        finally:p.write_bytes(saved)",
+          "assertion_source": "def test_config_unknown_negative(self):\n        p=self.extract/'.env';saved=p.read_bytes();p.write_text('UNKNOWN_OPERATOR=value\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_INVALID',r.stdout)\n        finally:restore_fixture_file(p,saved)",
           "independent_literal_expectations": "Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input."
         }
       }
@@ -38705,10 +38705,10 @@
       "negative": {
         "input": {
           "exact_native_test": "test_config_damaged_negative",
-          "literal_executable_fixture": "def test_config_damaged_negative(self):\n        p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.write_text('damaged\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_DAMAGED',r.stdout);self.assertEqual(p.read_text(),'damaged\\n')\n        finally:p.write_bytes(saved)"
+          "literal_executable_fixture": "def test_config_damaged_negative(self):\n        p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.write_text('damaged\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_DAMAGED',r.stdout);self.assertEqual(p.read_text(),'damaged\\n')\n        finally:restore_fixture_file(p,saved)"
         },
         "expected": {
-          "assertion_source": "def test_config_damaged_negative(self):\n        p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.write_text('damaged\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_DAMAGED',r.stdout);self.assertEqual(p.read_text(),'damaged\\n')\n        finally:p.write_bytes(saved)",
+          "assertion_source": "def test_config_damaged_negative(self):\n        p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.write_text('damaged\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_DAMAGED',r.stdout);self.assertEqual(p.read_text(),'damaged\\n')\n        finally:restore_fixture_file(p,saved)",
           "independent_literal_expectations": "Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input."
         }
       }
@@ -38975,10 +38975,10 @@
       "negative": {
         "input": {
           "exact_native_test": "test_restart_missing_config_negative",
-          "literal_executable_fixture": "def test_restart_missing_config_negative(self):\n        p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.unlink()\n        try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_MISSING',r.stdout);self.assertFalse(p.exists())\n        finally:p.write_bytes(saved);p.chmod(0o600)"
+          "literal_executable_fixture": "def test_restart_missing_config_negative(self):\n        p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.unlink()\n        try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_MISSING',r.stdout);self.assertFalse(p.exists())\n        finally:restore_fixture_file(p,saved);p.chmod(0o600)"
         },
         "expected": {
-          "assertion_source": "def test_restart_missing_config_negative(self):\n        p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.unlink()\n        try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_MISSING',r.stdout);self.assertFalse(p.exists())\n        finally:p.write_bytes(saved);p.chmod(0o600)",
+          "assertion_source": "def test_restart_missing_config_negative(self):\n        p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.unlink()\n        try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_MISSING',r.stdout);self.assertFalse(p.exists())\n        finally:restore_fixture_file(p,saved);p.chmod(0o600)",
           "independent_literal_expectations": "Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input."
         }
       }
@@ -39035,10 +39035,10 @@
       "negative": {
         "input": {
           "exact_native_test": "test_operations_build_failure_negative",
-          "literal_executable_fixture": "def test_operations_build_failure_negative(self):\n        p=self.extract/'services/api/Dockerfile';saved=p.read_bytes();p.write_text('FROM debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587\\nRUN exit 17\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('BUILD_FAILED',r.stdout);self.assertEqual(self.http('/health/ready')[0],200)\n        finally:p.write_bytes(saved)"
+          "literal_executable_fixture": "def test_operations_build_failure_negative(self):\n        p=self.extract/'services/api/Dockerfile';saved=p.read_bytes();p.write_text('FROM debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587\\nRUN exit 17\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('BUILD_FAILED',r.stdout);self.assertEqual(self.http('/health/ready')[0],200)\n        finally:restore_fixture_file(p,saved)"
         },
         "expected": {
-          "assertion_source": "def test_operations_build_failure_negative(self):\n        p=self.extract/'services/api/Dockerfile';saved=p.read_bytes();p.write_text('FROM debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587\\nRUN exit 17\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('BUILD_FAILED',r.stdout);self.assertEqual(self.http('/health/ready')[0],200)\n        finally:p.write_bytes(saved)",
+          "assertion_source": "def test_operations_build_failure_negative(self):\n        p=self.extract/'services/api/Dockerfile';saved=p.read_bytes();p.write_text('FROM debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587\\nRUN exit 17\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('BUILD_FAILED',r.stdout);self.assertEqual(self.http('/health/ready')[0],200)\n        finally:restore_fixture_file(p,saved)",
           "independent_literal_expectations": "Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input."
         }
       }
@@ -138920,10 +138920,10 @@
       },
       "input": {
         "exact_native_test": "test_delivery_missing_source_negative",
-        "literal_executable_fixture": "def test_delivery_missing_source_negative(self):\n        p=self.extract/'services/web/package-lock.json';saved=p.read_bytes();p.unlink()\n        try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('SOURCE_INCOMPLETE',r.stdout)\n        finally:p.write_bytes(saved)"
+        "literal_executable_fixture": "def test_delivery_missing_source_negative(self):\n        p=self.extract/'services/web/package-lock.json';saved=p.read_bytes();p.unlink()\n        try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('SOURCE_INCOMPLETE',r.stdout)\n        finally:restore_fixture_file(p,saved)"
       },
       "expected": {
-        "assertion_source": "def test_delivery_missing_source_negative(self):\n        p=self.extract/'services/web/package-lock.json';saved=p.read_bytes();p.unlink()\n        try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('SOURCE_INCOMPLETE',r.stdout)\n        finally:p.write_bytes(saved)",
+        "assertion_source": "def test_delivery_missing_source_negative(self):\n        p=self.extract/'services/web/package-lock.json';saved=p.read_bytes();p.unlink()\n        try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('SOURCE_INCOMPLETE',r.stdout)\n        finally:restore_fixture_file(p,saved)",
         "independent_literal_expectations": "Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input."
       },
       "independent_oracle": "Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.",
@@ -139024,10 +139024,10 @@
       },
       "input": {
         "exact_native_test": "test_config_unknown_negative",
-        "literal_executable_fixture": "def test_config_unknown_negative(self):\n        p=self.extract/'.env';saved=p.read_bytes();p.write_text('UNKNOWN_OPERATOR=value\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_INVALID',r.stdout)\n        finally:p.write_bytes(saved)"
+        "literal_executable_fixture": "def test_config_unknown_negative(self):\n        p=self.extract/'.env';saved=p.read_bytes();p.write_text('UNKNOWN_OPERATOR=value\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_INVALID',r.stdout)\n        finally:restore_fixture_file(p,saved)"
       },
       "expected": {
-        "assertion_source": "def test_config_unknown_negative(self):\n        p=self.extract/'.env';saved=p.read_bytes();p.write_text('UNKNOWN_OPERATOR=value\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_INVALID',r.stdout)\n        finally:p.write_bytes(saved)",
+        "assertion_source": "def test_config_unknown_negative(self):\n        p=self.extract/'.env';saved=p.read_bytes();p.write_text('UNKNOWN_OPERATOR=value\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_INVALID',r.stdout)\n        finally:restore_fixture_file(p,saved)",
         "independent_literal_expectations": "Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input."
       },
       "independent_oracle": "Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.",
@@ -139050,10 +139050,10 @@
       },
       "input": {
         "exact_native_test": "test_config_damaged_negative",
-        "literal_executable_fixture": "def test_config_damaged_negative(self):\n        p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.write_text('damaged\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_DAMAGED',r.stdout);self.assertEqual(p.read_text(),'damaged\\n')\n        finally:p.write_bytes(saved)"
+        "literal_executable_fixture": "def test_config_damaged_negative(self):\n        p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.write_text('damaged\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_DAMAGED',r.stdout);self.assertEqual(p.read_text(),'damaged\\n')\n        finally:restore_fixture_file(p,saved)"
       },
       "expected": {
-        "assertion_source": "def test_config_damaged_negative(self):\n        p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.write_text('damaged\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_DAMAGED',r.stdout);self.assertEqual(p.read_text(),'damaged\\n')\n        finally:p.write_bytes(saved)",
+        "assertion_source": "def test_config_damaged_negative(self):\n        p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.write_text('damaged\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_DAMAGED',r.stdout);self.assertEqual(p.read_text(),'damaged\\n')\n        finally:restore_fixture_file(p,saved)",
         "independent_literal_expectations": "Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input."
       },
       "independent_oracle": "Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.",
@@ -139544,10 +139544,10 @@
       },
       "input": {
         "exact_native_test": "test_restart_missing_config_negative",
-        "literal_executable_fixture": "def test_restart_missing_config_negative(self):\n        p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.unlink()\n        try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_MISSING',r.stdout);self.assertFalse(p.exists())\n        finally:p.write_bytes(saved);p.chmod(0o600)"
+        "literal_executable_fixture": "def test_restart_missing_config_negative(self):\n        p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.unlink()\n        try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_MISSING',r.stdout);self.assertFalse(p.exists())\n        finally:restore_fixture_file(p,saved);p.chmod(0o600)"
       },
       "expected": {
-        "assertion_source": "def test_restart_missing_config_negative(self):\n        p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.unlink()\n        try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_MISSING',r.stdout);self.assertFalse(p.exists())\n        finally:p.write_bytes(saved);p.chmod(0o600)",
+        "assertion_source": "def test_restart_missing_config_negative(self):\n        p=self.extract/'data/config/runtime.env';saved=p.read_bytes();p.unlink()\n        try:r=self.launch('start');self.assertNotEqual(r.returncode,0);self.assertIn('CONFIG_MISSING',r.stdout);self.assertFalse(p.exists())\n        finally:restore_fixture_file(p,saved);p.chmod(0o600)",
         "independent_literal_expectations": "Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input."
       },
       "independent_oracle": "Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.",
@@ -139648,10 +139648,10 @@
       },
       "input": {
         "exact_native_test": "test_operations_build_failure_negative",
-        "literal_executable_fixture": "def test_operations_build_failure_negative(self):\n        p=self.extract/'services/api/Dockerfile';saved=p.read_bytes();p.write_text('FROM debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587\\nRUN exit 17\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('BUILD_FAILED',r.stdout);self.assertEqual(self.http('/health/ready')[0],200)\n        finally:p.write_bytes(saved)"
+        "literal_executable_fixture": "def test_operations_build_failure_negative(self):\n        p=self.extract/'services/api/Dockerfile';saved=p.read_bytes();p.write_text('FROM debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587\\nRUN exit 17\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('BUILD_FAILED',r.stdout);self.assertEqual(self.http('/health/ready')[0],200)\n        finally:restore_fixture_file(p,saved)"
       },
       "expected": {
-        "assertion_source": "def test_operations_build_failure_negative(self):\n        p=self.extract/'services/api/Dockerfile';saved=p.read_bytes();p.write_text('FROM debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587\\nRUN exit 17\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('BUILD_FAILED',r.stdout);self.assertEqual(self.http('/health/ready')[0],200)\n        finally:p.write_bytes(saved)",
+        "assertion_source": "def test_operations_build_failure_negative(self):\n        p=self.extract/'services/api/Dockerfile';saved=p.read_bytes();p.write_text('FROM debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587\\nRUN exit 17\\n')\n        try:r=self.launch('start',timeout=900);self.assertNotEqual(r.returncode,0);self.assertIn('BUILD_FAILED',r.stdout);self.assertEqual(self.http('/health/ready')[0],200)\n        finally:restore_fixture_file(p,saved)",
         "independent_literal_expectations": "Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input."
       },
       "independent_oracle": "Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.",
