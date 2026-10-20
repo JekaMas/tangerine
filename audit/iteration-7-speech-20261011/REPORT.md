@@ -1,5 +1,27 @@
 # Iteration7 — speech and accent generation
 
+## Accepted — 2026-10-20
+
+Iteration7 is complete for its 26 properties and 104 implemented literal cases. The full 104-case selection passed on committed, clean revision 8acd9ca; after correcting checkout-relative Python test routing, its affected 48 cases passed on committed, clean revision ea8b48a. The other 56 exact fingerprints remain valid. Final reconciliation on clean revision ea8b48a accepts all 580 implemented I1–I7 cases: 290 positive / 290 negative, 104 I7 plus 476 dependencies, no missing/stale case or failed-command contribution. Original receipts and counterexamples are unchanged.
+
+Accepted evidence is in openspec/changes/implement-teacher-error-trainer/evidence/iteration7-20261020/: FINAL-RECONCILIATION-20261020.json, LOCAL-OBSERVATIONS.json, SUPPORTING-TRIALS-20261020.json and original command receipts/logs. The reconciliation records each case's actual test, command exit, source/scenario/dependency fingerprint and clean capture candidate. Valid shared commands are retained from c6ce76b, 112a97b, 588003e and 8acd9ca; the final Python routing observation is ea8b48a. A failed aggregate contributes only separately successful commands with matching current inputs; failed readiness/Lab/browser commands contribute no accepted rows.
+
+Five final completed local synthesis calls (Kokoro US/GB, eSpeak, Qwen CustomVoice and saved Base conditioning) match five actual HTTP piece exchanges, native receipts, model-visible inputs/context snapshots, MLflow runs and stored spans. Six supporting calls from this resumed run also reconcile, including the dirty CPU experiment and the failed-UI trial; they remain outside final acceptance. Export adds zero inference. Actual audio/context/dispatch bytes and the native Chrome DOM observations remain in private data/iteration7/. Chrome observed saved playback, exactly one completed Refresh list request, real database/media failure and recovery, with no DOM/network substitution.
+
+All findings were repaired: unsupported registered-profile panic; speech source inventory creation/symbol mapping; obsolete inventory counts; PostgreSQL test-startup socket/TCP race; list errors overwritten by player errors; and Python test commands bound to an old worktree. The implementation also retains the single-admission/advisory, explicit voice/assessment-variety, actual tokenizer/decoder capture and durable piece-recovery repairs described below.
+
+Orchestration, SQL lifecycle, pure plan/audio transformations, transport, HTTP, assets, derived keys and evidence have separate owners. New speech output is admitted once; accepted model/voice/DB/asset data is trusted. Long text is preserved across ordered resumable pieces under the existing 270-second foreground operation. No queue, human approval, repeated saved-data audit or silent provider fallback was added.
+
+Structural checks pass: strict native OpenSpec, graph/discovery and 4,015 static assertions. Go race cases, vet/gofmt and the actual standard web build passed for their unchanged production inputs; Python/worker execution passed through the final checkout-relative adapter. Actual standard Linux ARM64 runtime images and source/build bindings are retained in RUNTIME-BINDINGS.json. The original 122 categories/recipes, 42 formulas and 11 source identities remain preserved. No paid/hosted inference, purchase, overage, host prerequisite installation or publication occurred.
+
+Proof boundaries: hosted adapters have controlled protocol coverage; actual account entitlement and perceived accent/intelligibility remain unestablished. Accent requests are not treated as mistakes or invented acoustic observations. Controlled acoustic mutations, listening/answering and subsequent scoring remain their later iterations. This is iteration7 acceptance, not full-product or release acceptance. The canonical unrelated GAPS.md edit and existing user data/volumes remain protected.
+
+The completion record changes only tasks/report/evidence after the accepted implementation candidates; it does not invalidate their observed behavior.
+
+Cleanup completed: all owned test/observer/build-transport containers and processes were removed; the existing Docker/Kind services, model assets and user volumes remain. A consistent local MLflow SQLite snapshot retains all eleven completed synthesis spans from this resumed run. Canonical pre-integration HEAD is f151b3d with only the protected GAPS.md edit (SHA78f8cfa15fdc0215d92f6045d2f0f6e53b391030e543050ee1b09ed65776db65).
+
+## Historical implementation checkpoints
+
 ## Current checkpoint — 2026-10-20
 
 Resumed the unfinished speech worktree, preserved it in aefba61 and merged verified main f151b3d in99547b0. The merge retains I6 full-family/count/repair/schema behavior and I7 speech settings hooks, all24 I6 properties and all21 existing I7 properties. Shared native fixtures now have independent request and settings callbacks; no old receipt is relabelled green. The earlier final Qwen CustomVoice/Base focused observations passed, but no old dirty aggregate is iteration acceptance.

@@ -1,0 +1,480 @@
+{
+  "cases": {
+    "I2-15.P1.S1.NEGATIVE": {
+      "evidence_fingerprint": "3a3c86c56936d76e123dd4a683cd8600ca53eb3dfddd8a05f364733021013af3",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api/**",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts/**"
+      ],
+      "observable": "{\"assertion_source\": \"func TestNativePoolCancelledWaiterNegative(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\ta := nativeReserve(t, s, nativeRequest())\\n\\tctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)\\n\\tdefer cancel()\\n\\tr := &nativeBlockedReader{entered: make(chan struct{}), release: make(chan struct{}), r: bytes.NewReader([]byte(\\\"review\\\"))}\\n\\tdone := make(chan error, 1)\\n\\tgo func() { _, e := s.UploadReader(ctx, a.ID, r); done <- e }()\\n\\t<-r.entered\\n\\twaiter, stop := context.WithTimeout(ctx, 100*time.Millisecond)\\n\\tdefer stop()\\n\\t_, e := s.UploadAsset(waiter, a.ID, []byte(\\\"review\\\"))\\n\\tif e == nil {\\n\\t\\tt.Fatal(\\\"cancelled waiter succeeded\\\")\\n\\t}\\n\\tclose(r.release)\\n\\tif e = <-done; e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tif _, e = s.UploadAsset(ctx, a.ID, []byte(\\\"review\\\")); e != nil {\\n\\t\\tt.Fatal(\\\"lock leaked\\\", e)\\n\\t}\\n}\", \"independent_literal_expectations\": \"Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.\"}",
+      "polarity": "negative",
+      "property_id": "I2-15.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-15 repair packet 1",
+      "scenario_fingerprint": "087fc7766e5368996fb1fc4a90ffd6b878723d149332c60a6cca234e6ba68282",
+      "setup": "Execute TestNativePoolCancelledWaiterNegative through the actual native owner. {\"exact_native_test\": \"TestNativePoolCancelledWaiterNegative\", \"literal_executable_fixture\": \"func TestNativePoolCancelledWaiterNegative(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\ta := nativeReserve(t, s, nativeRequest())\\n\\tctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)\\n\\tdefer cancel()\\n\\tr := &nativeBlockedReader{entered: make(chan struct{}), release: make(chan struct{}), r: bytes.NewReader([]byte(\\\"review\\\"))}\\n\\tdone := make(chan error, 1)\\n\\tgo func() { _, e := s.UploadReader(ctx, a.ID, r); done <- e }()\\n\\t<-r.entered\\n\\twaiter, stop := context.WithTimeout(ctx, 100*time.Millisecond)\\n\\tdefer stop()\\n\\t_, e := s.UploadAsset(waiter, a.ID, []byte(\\\"review\\\"))\\n\\tif e == nil {\\n\\t\\tt.Fatal(\\\"cancelled waiter succeeded\\\")\\n\\t}\\n\\tclose(r.release)\\n\\tif e = <-done; e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tif _, e = s.UploadAsset(ctx, a.ID, []byte(\\\"review\\\")); e != nil {\\n\\t\\tt.Fatal(\\\"lock leaked\\\", e)\\n\\t}\\n}\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "28944ab7fc36f6bf72ba4c529d940bdc567c7da4941dd2f4d32c7a7aef50e2dc",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativePoolCancelledWaiterNegative"
+    },
+    "I2-15.P1.S1.POSITIVE": {
+      "evidence_fingerprint": "1fb6bc3aa5ea89fbde88f896d639776a7164136eaf497fbfb3b9c3c601084417",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api/**",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts/**"
+      ],
+      "observable": "{\"assertion_source\": \"func TestNativePoolSameAssetPositive(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\ta := nativeReserve(t, s, nativeRequest())\\n\\tctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)\\n\\tdefer cancel()\\n\\treader := &nativeBlockedReader{entered: make(chan struct{}), release: make(chan struct{}), r: bytes.NewReader([]byte(\\\"review\\\"))}\\n\\twinner := make(chan error, 1)\\n\\tgo func() { _, e := s.UploadReader(ctx, a.ID, reader); winner <- e }()\\n\\t<-reader.entered\\n\\tresults := make(chan error, 9)\\n\\tfor i := 0; i < 9; i++ {\\n\\t\\tgo func() { _, e := s.UploadAsset(ctx, a.ID, []byte(\\\"review\\\")); results <- e }()\\n\\t}\\n\\tnativeOccupied(t, s)\\n\\tclose(reader.release)\\n\\tif e := <-winner; e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tfor i := 0; i < 9; i++ {\\n\\t\\tif e := <-results; e != nil {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t}\\n\\tif _, e := s.LinkAsset(ctx, a.ID, nil); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tb, e := s.ReadAsset(ctx, a.ID)\\n\\tif e != nil || !bytes.Equal(b, []byte(\\\"review\\\")) {\\n\\t\\tt.Fatal(\\\"wrong byte result\\\", e)\\n\\t}\\n}\", \"independent_literal_expectations\": \"Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.\"}",
+      "polarity": "positive",
+      "property_id": "I2-15.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-15 repair packet 1",
+      "scenario_fingerprint": "087fc7766e5368996fb1fc4a90ffd6b878723d149332c60a6cca234e6ba68282",
+      "setup": "Execute TestNativePoolSameAssetPositive through the actual native owner. {\"exact_native_test\": \"TestNativePoolSameAssetPositive\", \"literal_executable_fixture\": \"func TestNativePoolSameAssetPositive(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\ta := nativeReserve(t, s, nativeRequest())\\n\\tctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)\\n\\tdefer cancel()\\n\\treader := &nativeBlockedReader{entered: make(chan struct{}), release: make(chan struct{}), r: bytes.NewReader([]byte(\\\"review\\\"))}\\n\\twinner := make(chan error, 1)\\n\\tgo func() { _, e := s.UploadReader(ctx, a.ID, reader); winner <- e }()\\n\\t<-reader.entered\\n\\tresults := make(chan error, 9)\\n\\tfor i := 0; i < 9; i++ {\\n\\t\\tgo func() { _, e := s.UploadAsset(ctx, a.ID, []byte(\\\"review\\\")); results <- e }()\\n\\t}\\n\\tnativeOccupied(t, s)\\n\\tclose(reader.release)\\n\\tif e := <-winner; e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tfor i := 0; i < 9; i++ {\\n\\t\\tif e := <-results; e != nil {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t}\\n\\tif _, e := s.LinkAsset(ctx, a.ID, nil); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tb, e := s.ReadAsset(ctx, a.ID)\\n\\tif e != nil || !bytes.Equal(b, []byte(\\\"review\\\")) {\\n\\t\\tt.Fatal(\\\"wrong byte result\\\", e)\\n\\t}\\n}\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "28944ab7fc36f6bf72ba4c529d940bdc567c7da4941dd2f4d32c7a7aef50e2dc",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativePoolSameAssetPositive"
+    },
+    "I2-15.P1.S2.NEGATIVE": {
+      "evidence_fingerprint": "fed272e96ed0afeab2c19809d1b319bdcba158b034b7e8bf573fc695838ea966",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api/**",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts/**"
+      ],
+      "observable": "{\"assertion_source\": \"func TestNativePoolWrongBytesNegative(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\ta := nativeReserve(t, s, nativeRequest())\\n\\tctx := context.Background()\\n\\tvar wg sync.WaitGroup\\n\\tfor i := 0; i < 20; i++ {\\n\\t\\twg.Add(1)\\n\\t\\tgo func() {\\n\\t\\t\\tdefer wg.Done()\\n\\t\\t\\tif _, e := s.UploadAsset(ctx, a.ID, []byte(\\\"wrong!\\\")); e == nil {\\n\\t\\t\\t\\tt.Error(\\\"wrong bytes accepted\\\")\\n\\t\\t\\t}\\n\\t\\t}()\\n\\t}\\n\\twg.Wait()\\n\\tif _, e := s.Media.StatObject(ctx, s.Bucket, a.Key, minio.StatObjectOptions{}); minio.ToErrorResponse(e).Code != \\\"NoSuchKey\\\" {\\n\\t\\tt.Fatal(\\\"rejected upload created bytes\\\", e)\\n\\t}\\n\\tif _, e := s.UploadAsset(ctx, a.ID, []byte(\\\"review\\\")); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\", \"independent_literal_expectations\": \"Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.\"}",
+      "polarity": "negative",
+      "property_id": "I2-15.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-15 repair packet 2",
+      "scenario_fingerprint": "7e70803b58650b0d4ce74bf32a7a1d5c42fbd2097bc741f23f07865c8969cdcb",
+      "setup": "Execute TestNativePoolWrongBytesNegative through the actual native owner. {\"exact_native_test\": \"TestNativePoolWrongBytesNegative\", \"literal_executable_fixture\": \"func TestNativePoolWrongBytesNegative(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\ta := nativeReserve(t, s, nativeRequest())\\n\\tctx := context.Background()\\n\\tvar wg sync.WaitGroup\\n\\tfor i := 0; i < 20; i++ {\\n\\t\\twg.Add(1)\\n\\t\\tgo func() {\\n\\t\\t\\tdefer wg.Done()\\n\\t\\t\\tif _, e := s.UploadAsset(ctx, a.ID, []byte(\\\"wrong!\\\")); e == nil {\\n\\t\\t\\t\\tt.Error(\\\"wrong bytes accepted\\\")\\n\\t\\t\\t}\\n\\t\\t}()\\n\\t}\\n\\twg.Wait()\\n\\tif _, e := s.Media.StatObject(ctx, s.Bucket, a.Key, minio.StatObjectOptions{}); minio.ToErrorResponse(e).Code != \\\"NoSuchKey\\\" {\\n\\t\\tt.Fatal(\\\"rejected upload created bytes\\\", e)\\n\\t}\\n\\tif _, e := s.UploadAsset(ctx, a.ID, []byte(\\\"review\\\")); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "28944ab7fc36f6bf72ba4c529d940bdc567c7da4941dd2f4d32c7a7aef50e2dc",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativePoolWrongBytesNegative"
+    },
+    "I2-15.P1.S2.POSITIVE": {
+      "evidence_fingerprint": "a38a67977b00948b3989f8eed0aae6bfcd489f141ef72624de7b553bc6925969",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api/**",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts/**"
+      ],
+      "observable": "{\"assertion_source\": \"func TestNativePoolDistinctAssetsPositive(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\tctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)\\n\\tdefer cancel()\\n\\tas := make([]Asset, 20)\\n\\tfor i := range as {\\n\\t\\tas[i] = nativeReserve(t, s, nativeRequest())\\n\\t}\\n\\tresults := make(chan error, len(as))\\n\\tfor _, a := range as {\\n\\t\\tgo func(a Asset) { _, e := s.UploadAsset(ctx, a.ID, []byte(\\\"review\\\")); results <- e }(a)\\n\\t}\\n\\tfor range as {\\n\\t\\tif e := <-results; e != nil {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t}\\n\\tfor _, a := range as {\\n\\t\\tif _, e := s.LinkAsset(ctx, a.ID, nil); e != nil {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t\\tb, e := s.ReadAsset(ctx, a.ID)\\n\\t\\tif e != nil || string(b) != \\\"review\\\" {\\n\\t\\t\\tt.Fatal(\\\"distinct bytes\\\", e)\\n\\t\\t}\\n\\t}\\n}\", \"independent_literal_expectations\": \"Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.\"}",
+      "polarity": "positive",
+      "property_id": "I2-15.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-15 repair packet 2",
+      "scenario_fingerprint": "7e70803b58650b0d4ce74bf32a7a1d5c42fbd2097bc741f23f07865c8969cdcb",
+      "setup": "Execute TestNativePoolDistinctAssetsPositive through the actual native owner. {\"exact_native_test\": \"TestNativePoolDistinctAssetsPositive\", \"literal_executable_fixture\": \"func TestNativePoolDistinctAssetsPositive(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\tctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)\\n\\tdefer cancel()\\n\\tas := make([]Asset, 20)\\n\\tfor i := range as {\\n\\t\\tas[i] = nativeReserve(t, s, nativeRequest())\\n\\t}\\n\\tresults := make(chan error, len(as))\\n\\tfor _, a := range as {\\n\\t\\tgo func(a Asset) { _, e := s.UploadAsset(ctx, a.ID, []byte(\\\"review\\\")); results <- e }(a)\\n\\t}\\n\\tfor range as {\\n\\t\\tif e := <-results; e != nil {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t}\\n\\tfor _, a := range as {\\n\\t\\tif _, e := s.LinkAsset(ctx, a.ID, nil); e != nil {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t\\tb, e := s.ReadAsset(ctx, a.ID)\\n\\t\\tif e != nil || string(b) != \\\"review\\\" {\\n\\t\\t\\tt.Fatal(\\\"distinct bytes\\\", e)\\n\\t\\t}\\n\\t}\\n}\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "28944ab7fc36f6bf72ba4c529d940bdc567c7da4941dd2f4d32c7a7aef50e2dc",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativePoolDistinctAssetsPositive"
+    },
+    "I2-16.P1.S1.NEGATIVE": {
+      "evidence_fingerprint": "021199e695ba63a2ceaa83204d689d3299ebefae2dddbfe1a6b6fc4f63580205",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api/**",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts/**"
+      ],
+      "observable": "{\"assertion_source\": \"func TestNativeGraphParentRoleNegative(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\tctx := context.Background()\\n\\t_, _, c := nativeHead(t, s)\\n\\tfor _, relation := range []string{\\\"parent\\\", \\\"parent-evidence\\\"} {\\n\\t\\tw := nativeEvidence(uuid.NewString(), c, nil)\\n\\t\\tw = nativeEvidence(w.ID, c, []string{w.ID})\\n\\t\\tw.References = append(w.References, Reference{Pointer: \\\"/parent_evidence_ids/0\\\", ID: w.ID, Scope: c.ID, Kind: \\\"evidence\\\", SHA: nativeSHA(w.Payload), Relation: relation})\\n\\t\\tif _, e := s.WriteDocuments(ctx, []DocumentWrite{w}); !errors.Is(e, ErrReference) {\\n\\t\\t\\tt.Fatal(\\\"self parent\\\", relation, e)\\n\\t\\t}\\n\\t}\\n\\taID, bID := uuid.NewString(), uuid.NewString()\\n\\ta, b := nativeEvidence(aID, c, []string{bID}), nativeEvidence(bID, c, []string{aID})\\n\\ta.References = append(a.References, Reference{Pointer: \\\"/parent_evidence_ids/0\\\", ID: bID, Scope: c.ID, Kind: \\\"evidence\\\", SHA: nativeSHA(b.Payload), Relation: \\\"parent-evidence\\\"})\\n\\tb.References = append(b.References, Reference{Pointer: \\\"/parent_evidence_ids/0\\\", ID: aID, Scope: c.ID, Kind: \\\"evidence\\\", SHA: nativeSHA(a.Payload), Relation: \\\"parent-evidence\\\"})\\n\\tif _, e := s.WriteDocuments(ctx, []DocumentWrite{a, b}); !errors.Is(e, ErrReference) {\\n\\t\\tt.Fatal(\\\"two node cycle\\\", e)\\n\\t}\\n\\tvar count int\\n\\t_ = s.DB.QueryRow(ctx, \\\"SELECT count(*) FROM document WHERE id IN($1,$2)\\\", aID, bID).Scan(&count)\\n\\tif count != 0 {\\n\\t\\tt.Fatal(\\\"partial cycle commit\\\")\\n\\t}\\n}\", \"independent_literal_expectations\": \"Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.\"}",
+      "polarity": "negative",
+      "property_id": "I2-16.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-16 repair packet 1",
+      "scenario_fingerprint": "a1b6c5f50f1757b7a299d58bb87b2bd50ccfb4d63b662eb99994a280e2ba2550",
+      "setup": "Execute TestNativeGraphParentRoleNegative through the actual native owner. {\"exact_native_test\": \"TestNativeGraphParentRoleNegative\", \"literal_executable_fixture\": \"func TestNativeGraphParentRoleNegative(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\tctx := context.Background()\\n\\t_, _, c := nativeHead(t, s)\\n\\tfor _, relation := range []string{\\\"parent\\\", \\\"parent-evidence\\\"} {\\n\\t\\tw := nativeEvidence(uuid.NewString(), c, nil)\\n\\t\\tw = nativeEvidence(w.ID, c, []string{w.ID})\\n\\t\\tw.References = append(w.References, Reference{Pointer: \\\"/parent_evidence_ids/0\\\", ID: w.ID, Scope: c.ID, Kind: \\\"evidence\\\", SHA: nativeSHA(w.Payload), Relation: relation})\\n\\t\\tif _, e := s.WriteDocuments(ctx, []DocumentWrite{w}); !errors.Is(e, ErrReference) {\\n\\t\\t\\tt.Fatal(\\\"self parent\\\", relation, e)\\n\\t\\t}\\n\\t}\\n\\taID, bID := uuid.NewString(), uuid.NewString()\\n\\ta, b := nativeEvidence(aID, c, []string{bID}), nativeEvidence(bID, c, []string{aID})\\n\\ta.References = append(a.References, Reference{Pointer: \\\"/parent_evidence_ids/0\\\", ID: bID, Scope: c.ID, Kind: \\\"evidence\\\", SHA: nativeSHA(b.Payload), Relation: \\\"parent-evidence\\\"})\\n\\tb.References = append(b.References, Reference{Pointer: \\\"/parent_evidence_ids/0\\\", ID: aID, Scope: c.ID, Kind: \\\"evidence\\\", SHA: nativeSHA(a.Payload), Relation: \\\"parent-evidence\\\"})\\n\\tif _, e := s.WriteDocuments(ctx, []DocumentWrite{a, b}); !errors.Is(e, ErrReference) {\\n\\t\\tt.Fatal(\\\"two node cycle\\\", e)\\n\\t}\\n\\tvar count int\\n\\t_ = s.DB.QueryRow(ctx, \\\"SELECT count(*) FROM document WHERE id IN($1,$2)\\\", aID, bID).Scan(&count)\\n\\tif count != 0 {\\n\\t\\tt.Fatal(\\\"partial cycle commit\\\")\\n\\t}\\n}\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "28944ab7fc36f6bf72ba4c529d940bdc567c7da4941dd2f4d32c7a7aef50e2dc",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGraphParentRoleNegative"
+    },
+    "I2-16.P1.S1.POSITIVE": {
+      "evidence_fingerprint": "f49686d9cee2e616428b7d1f304d918e640c9c322024c11b66eb49f1b1a09f02",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api/**",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts/**"
+      ],
+      "observable": "{\"assertion_source\": \"func TestNativeGraphEvidenceAcyclicPositive(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\t_, _, c := nativeHead(t, s)\\n\\tparent := nativeEvidence(uuid.NewString(), c, nil)\\n\\tchild := nativeEvidence(uuid.NewString(), c, []string{parent.ID})\\n\\tchild.References = append(child.References, Reference{Pointer: \\\"/parent_evidence_ids/0\\\", ID: parent.ID, Scope: c.ID, Kind: \\\"evidence\\\", SHA: nativeSHA(parent.Payload), Relation: \\\"parent-evidence\\\"})\\n\\tif _, e := s.WriteDocuments(context.Background(), []DocumentWrite{child, parent}); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tfor _, id := range []string{parent.ID, child.ID} {\\n\\t\\tif _, e := s.ReadDocument(context.Background(), id); e != nil {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t}\\n}\", \"independent_literal_expectations\": \"Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.\"}",
+      "polarity": "positive",
+      "property_id": "I2-16.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-16 repair packet 1",
+      "scenario_fingerprint": "a1b6c5f50f1757b7a299d58bb87b2bd50ccfb4d63b662eb99994a280e2ba2550",
+      "setup": "Execute TestNativeGraphEvidenceAcyclicPositive through the actual native owner. {\"exact_native_test\": \"TestNativeGraphEvidenceAcyclicPositive\", \"literal_executable_fixture\": \"func TestNativeGraphEvidenceAcyclicPositive(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\t_, _, c := nativeHead(t, s)\\n\\tparent := nativeEvidence(uuid.NewString(), c, nil)\\n\\tchild := nativeEvidence(uuid.NewString(), c, []string{parent.ID})\\n\\tchild.References = append(child.References, Reference{Pointer: \\\"/parent_evidence_ids/0\\\", ID: parent.ID, Scope: c.ID, Kind: \\\"evidence\\\", SHA: nativeSHA(parent.Payload), Relation: \\\"parent-evidence\\\"})\\n\\tif _, e := s.WriteDocuments(context.Background(), []DocumentWrite{child, parent}); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tfor _, id := range []string{parent.ID, child.ID} {\\n\\t\\tif _, e := s.ReadDocument(context.Background(), id); e != nil {\\n\\t\\t\\tt.Fatal(e)\\n\\t\\t}\\n\\t}\\n}\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "28944ab7fc36f6bf72ba4c529d940bdc567c7da4941dd2f4d32c7a7aef50e2dc",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGraphEvidenceAcyclicPositive"
+    },
+    "I2-16.P1.S2.NEGATIVE": {
+      "evidence_fingerprint": "b71b501633900895932226ed9781a16ed486364af4fcd34246be0cd4b82c544d",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api/**",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts/**"
+      ],
+      "observable": "{\"assertion_source\": \"func TestNativeGraphLinkCycleNegative(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\thead, _, _ := nativeHead(t, s)\\n\\tzero := int64(0)\\n\\tr := nativeRequest()\\n\\tr.Owner = &HeadWrite{ID: head, Expected: &zero, State: \\\"draft\\\"}\\n\\ta := nativeReserve(t, s, r)\\n\\tctx := context.Background()\\n\\tif _, e := s.UploadAsset(ctx, a.ID, []byte(\\\"review\\\")); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tid := uuid.NewString()\\n\\tb := nativeCase(id, a.ID, id)\\n\\tw := DocumentWrite{ID: id, Kind: \\\"case-head\\\", Version: \\\"2.0.0\\\", Scope: id, Payload: b, Head: &HeadWrite{ID: head, Expected: &zero, State: \\\"draft\\\"}, References: []Reference{{Pointer: \\\"/candidate_id\\\", ID: a.ID, Scope: a.ID, Kind: \\\"asset-bytes\\\", SHA: a.SHA, Relation: \\\"candidate\\\"}, {Pointer: \\\"/parent_case_version_id\\\", ID: id, Scope: id, Kind: \\\"case-head\\\", SHA: nativeSHA(b), Relation: \\\"parent-evidence\\\"}}}\\n\\tif _, e := s.LinkAsset(ctx, a.ID, &w); !errors.Is(e, ErrReference) {\\n\\t\\tt.Fatal(\\\"cycle link\\\", e)\\n\\t}\\n\\tvar state string\\n\\tvar revision, count int\\n\\t_ = s.DB.QueryRow(ctx, \\\"SELECT state FROM asset_location WHERE asset_id=$1\\\", a.ID).Scan(&state)\\n\\t_ = s.DB.QueryRow(ctx, \\\"SELECT revision FROM entity_head WHERE id=$1\\\", head).Scan(&revision)\\n\\t_ = s.DB.QueryRow(ctx, \\\"SELECT count(*) FROM document WHERE id=$1\\\", id).Scan(&count)\\n\\tif state != \\\"bytes_verified\\\" || revision != 0 || count != 0 {\\n\\t\\tt.Fatalf(\\\"non-atomic rollback %s %d %d\\\", state, revision, count)\\n\\t}\\n\\tw.ID = \\\"bad-envelope\\\"\\n\\tif _, e := s.LinkAsset(ctx, a.ID, &w); e == nil {\\n\\t\\tt.Fatal(\\\"invalid envelope accepted\\\")\\n\\t}\\n\\townerless := nativeReserve(t, s, nativeRequest())\\n\\tif _, e := s.UploadAsset(ctx, ownerless.ID, []byte(\\\"review\\\")); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tnewID := uuid.NewString()\\n\\tvalidOwner := DocumentWrite{ID: newID, Kind: \\\"case-head\\\", Version: \\\"2.0.0\\\", Scope: newID, Payload: nativeCase(newID, ownerless.ID, \\\"\\\"), Head: &HeadWrite{ID: head, Expected: &zero, State: \\\"draft\\\"}, References: []Reference{{Pointer: \\\"/candidate_id\\\", ID: ownerless.ID, Scope: ownerless.ID, Kind: \\\"asset-bytes\\\", SHA: ownerless.SHA, Relation: \\\"candidate\\\"}}}\\n\\tif _, e := s.LinkAsset(ctx, ownerless.ID, &validOwner); !errors.Is(e, ErrReference) {\\n\\t\\tt.Fatal(\\\"owner acquired after reservation\\\", e)\\n\\t}\\n\\tvar ownerlessState, operationState string\\n\\tif e := s.DB.QueryRow(ctx, \\\"SELECT a.state,o.state FROM asset_location a JOIN operation o ON o.id=a.operation_id WHERE a.asset_id=$1\\\", ownerless.ID).Scan(&ownerlessState, &operationState); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tif ownerlessState != \\\"bytes_verified\\\" || operationState != \\\"reserved\\\" {\\n\\t\\tt.Fatal(\\\"ownerless rejection partially committed\\\", ownerlessState, operationState)\\n\\t}\\n\\n}\", \"independent_literal_expectations\": \"Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.\"}",
+      "polarity": "negative",
+      "property_id": "I2-16.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-16 repair packet 2",
+      "scenario_fingerprint": "91ad19028c2fe643371108b093c4a1d693406c860529a6e2df5557703d71a3b6",
+      "setup": "Execute TestNativeGraphLinkCycleNegative through the actual native owner. {\"exact_native_test\": \"TestNativeGraphLinkCycleNegative\", \"literal_executable_fixture\": \"func TestNativeGraphLinkCycleNegative(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\thead, _, _ := nativeHead(t, s)\\n\\tzero := int64(0)\\n\\tr := nativeRequest()\\n\\tr.Owner = &HeadWrite{ID: head, Expected: &zero, State: \\\"draft\\\"}\\n\\ta := nativeReserve(t, s, r)\\n\\tctx := context.Background()\\n\\tif _, e := s.UploadAsset(ctx, a.ID, []byte(\\\"review\\\")); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tid := uuid.NewString()\\n\\tb := nativeCase(id, a.ID, id)\\n\\tw := DocumentWrite{ID: id, Kind: \\\"case-head\\\", Version: \\\"2.0.0\\\", Scope: id, Payload: b, Head: &HeadWrite{ID: head, Expected: &zero, State: \\\"draft\\\"}, References: []Reference{{Pointer: \\\"/candidate_id\\\", ID: a.ID, Scope: a.ID, Kind: \\\"asset-bytes\\\", SHA: a.SHA, Relation: \\\"candidate\\\"}, {Pointer: \\\"/parent_case_version_id\\\", ID: id, Scope: id, Kind: \\\"case-head\\\", SHA: nativeSHA(b), Relation: \\\"parent-evidence\\\"}}}\\n\\tif _, e := s.LinkAsset(ctx, a.ID, &w); !errors.Is(e, ErrReference) {\\n\\t\\tt.Fatal(\\\"cycle link\\\", e)\\n\\t}\\n\\tvar state string\\n\\tvar revision, count int\\n\\t_ = s.DB.QueryRow(ctx, \\\"SELECT state FROM asset_location WHERE asset_id=$1\\\", a.ID).Scan(&state)\\n\\t_ = s.DB.QueryRow(ctx, \\\"SELECT revision FROM entity_head WHERE id=$1\\\", head).Scan(&revision)\\n\\t_ = s.DB.QueryRow(ctx, \\\"SELECT count(*) FROM document WHERE id=$1\\\", id).Scan(&count)\\n\\tif state != \\\"bytes_verified\\\" || revision != 0 || count != 0 {\\n\\t\\tt.Fatalf(\\\"non-atomic rollback %s %d %d\\\", state, revision, count)\\n\\t}\\n\\tw.ID = \\\"bad-envelope\\\"\\n\\tif _, e := s.LinkAsset(ctx, a.ID, &w); e == nil {\\n\\t\\tt.Fatal(\\\"invalid envelope accepted\\\")\\n\\t}\\n\\townerless := nativeReserve(t, s, nativeRequest())\\n\\tif _, e := s.UploadAsset(ctx, ownerless.ID, []byte(\\\"review\\\")); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tnewID := uuid.NewString()\\n\\tvalidOwner := DocumentWrite{ID: newID, Kind: \\\"case-head\\\", Version: \\\"2.0.0\\\", Scope: newID, Payload: nativeCase(newID, ownerless.ID, \\\"\\\"), Head: &HeadWrite{ID: head, Expected: &zero, State: \\\"draft\\\"}, References: []Reference{{Pointer: \\\"/candidate_id\\\", ID: ownerless.ID, Scope: ownerless.ID, Kind: \\\"asset-bytes\\\", SHA: ownerless.SHA, Relation: \\\"candidate\\\"}}}\\n\\tif _, e := s.LinkAsset(ctx, ownerless.ID, &validOwner); !errors.Is(e, ErrReference) {\\n\\t\\tt.Fatal(\\\"owner acquired after reservation\\\", e)\\n\\t}\\n\\tvar ownerlessState, operationState string\\n\\tif e := s.DB.QueryRow(ctx, \\\"SELECT a.state,o.state FROM asset_location a JOIN operation o ON o.id=a.operation_id WHERE a.asset_id=$1\\\", ownerless.ID).Scan(&ownerlessState, &operationState); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tif ownerlessState != \\\"bytes_verified\\\" || operationState != \\\"reserved\\\" {\\n\\t\\tt.Fatal(\\\"ownerless rejection partially committed\\\", ownerlessState, operationState)\\n\\t}\\n\\n}\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "28944ab7fc36f6bf72ba4c529d940bdc567c7da4941dd2f4d32c7a7aef50e2dc",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGraphLinkCycleNegative"
+    },
+    "I2-16.P1.S2.POSITIVE": {
+      "evidence_fingerprint": "5fac3b15a6423e56f1f3a35a338fe16fd0d340dcc343d01b915279af76e7ff9c",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api/**",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts/**"
+      ],
+      "observable": "{\"assertion_source\": \"func TestNativeGraphLinkAcyclicPositive(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\thead, old, c := nativeHead(t, s)\\n\\tzero := int64(0)\\n\\tr := nativeRequest()\\n\\tr.Owner = &HeadWrite{ID: head, Expected: &zero, State: \\\"draft\\\"}\\n\\ta := nativeReserve(t, s, r)\\n\\tctx := context.Background()\\n\\tif _, e := s.UploadAsset(ctx, a.ID, []byte(\\\"review\\\")); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tid := uuid.NewString()\\n\\tb := nativeCase(id, a.ID, old)\\n\\tc.Pointer = \\\"/parent_case_version_id\\\"\\n\\tc.Relation = \\\"parent-evidence\\\"\\n\\tw := DocumentWrite{ID: id, Kind: \\\"case-head\\\", Version: \\\"2.0.0\\\", Scope: id, Payload: b, Head: &HeadWrite{ID: head, Expected: &zero, State: \\\"draft\\\"}, References: []Reference{c, {Pointer: \\\"/candidate_id\\\", ID: a.ID, Scope: a.ID, Kind: \\\"asset-bytes\\\", SHA: a.SHA, Relation: \\\"candidate\\\"}}}\\n\\tif _, e := s.LinkAsset(ctx, a.ID, &w); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tvar revision int\\n\\t_ = s.DB.QueryRow(ctx, \\\"SELECT revision FROM entity_head WHERE id=$1\\\", head).Scan(&revision)\\n\\tif revision != 1 {\\n\\t\\tt.Fatal(revision)\\n\\t}\\n}\", \"independent_literal_expectations\": \"Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.\"}",
+      "polarity": "positive",
+      "property_id": "I2-16.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-16 repair packet 2",
+      "scenario_fingerprint": "91ad19028c2fe643371108b093c4a1d693406c860529a6e2df5557703d71a3b6",
+      "setup": "Execute TestNativeGraphLinkAcyclicPositive through the actual native owner. {\"exact_native_test\": \"TestNativeGraphLinkAcyclicPositive\", \"literal_executable_fixture\": \"func TestNativeGraphLinkAcyclicPositive(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\thead, old, c := nativeHead(t, s)\\n\\tzero := int64(0)\\n\\tr := nativeRequest()\\n\\tr.Owner = &HeadWrite{ID: head, Expected: &zero, State: \\\"draft\\\"}\\n\\ta := nativeReserve(t, s, r)\\n\\tctx := context.Background()\\n\\tif _, e := s.UploadAsset(ctx, a.ID, []byte(\\\"review\\\")); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tid := uuid.NewString()\\n\\tb := nativeCase(id, a.ID, old)\\n\\tc.Pointer = \\\"/parent_case_version_id\\\"\\n\\tc.Relation = \\\"parent-evidence\\\"\\n\\tw := DocumentWrite{ID: id, Kind: \\\"case-head\\\", Version: \\\"2.0.0\\\", Scope: id, Payload: b, Head: &HeadWrite{ID: head, Expected: &zero, State: \\\"draft\\\"}, References: []Reference{c, {Pointer: \\\"/candidate_id\\\", ID: a.ID, Scope: a.ID, Kind: \\\"asset-bytes\\\", SHA: a.SHA, Relation: \\\"candidate\\\"}}}\\n\\tif _, e := s.LinkAsset(ctx, a.ID, &w); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tvar revision int\\n\\t_ = s.DB.QueryRow(ctx, \\\"SELECT revision FROM entity_head WHERE id=$1\\\", head).Scan(&revision)\\n\\tif revision != 1 {\\n\\t\\tt.Fatal(revision)\\n\\t}\\n}\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "28944ab7fc36f6bf72ba4c529d940bdc567c7da4941dd2f4d32c7a7aef50e2dc",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeGraphLinkAcyclicPositive"
+    },
+    "I2-17.P1.S1.NEGATIVE": {
+      "evidence_fingerprint": "4c0c02bbd827b17fe773923141372f3d96f79fcb4a7a6bfc49bac2dc1345b20b",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api/**",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts/**"
+      ],
+      "observable": "{\"assertion_source\": \"func TestNativeRecoveryOldKeyNegative(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\tctx := context.Background()\\n\\tr := nativeRequest()\\n\\ta := nativeReserve(t, s, r)\\n\\tnativePart(t, s, a)\\n\\tif _, e := s.RecoverAsset(ctx, a.ID); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tnativeFailed(t, s, a)\\n\\told, e := s.ReserveAsset(ctx, r)\\n\\tif e != nil || old.ID != a.ID || old.State != \\\"orphaned\\\" {\\n\\t\\tt.Fatal(\\\"original idempotent failure\\\", e)\\n\\t}\\n\\tif _, e = s.UploadAsset(ctx, a.ID, []byte(\\\"review\\\")); !errors.Is(e, ErrUnavailable) {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tif _, e = s.LinkAsset(ctx, a.ID, nil); !errors.Is(e, ErrUnavailable) {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tif _, e = s.RetryAsset(ctx, a.ID, r); !errors.Is(e, ErrConflict) {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tnativeFailed(t, s, a)\\n}\", \"independent_literal_expectations\": \"Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.\"}",
+      "polarity": "negative",
+      "property_id": "I2-17.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-17 repair packet 1",
+      "scenario_fingerprint": "7b8f12f809f508cbc4f92e78e1d8773c0411d854af0d8b9981e0ed02183e99ea",
+      "setup": "Execute TestNativeRecoveryOldKeyNegative through the actual native owner. {\"exact_native_test\": \"TestNativeRecoveryOldKeyNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryOldKeyNegative(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\tctx := context.Background()\\n\\tr := nativeRequest()\\n\\ta := nativeReserve(t, s, r)\\n\\tnativePart(t, s, a)\\n\\tif _, e := s.RecoverAsset(ctx, a.ID); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tnativeFailed(t, s, a)\\n\\told, e := s.ReserveAsset(ctx, r)\\n\\tif e != nil || old.ID != a.ID || old.State != \\\"orphaned\\\" {\\n\\t\\tt.Fatal(\\\"original idempotent failure\\\", e)\\n\\t}\\n\\tif _, e = s.UploadAsset(ctx, a.ID, []byte(\\\"review\\\")); !errors.Is(e, ErrUnavailable) {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tif _, e = s.LinkAsset(ctx, a.ID, nil); !errors.Is(e, ErrUnavailable) {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tif _, e = s.RetryAsset(ctx, a.ID, r); !errors.Is(e, ErrConflict) {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tnativeFailed(t, s, a)\\n}\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "28944ab7fc36f6bf72ba4c529d940bdc567c7da4941dd2f4d32c7a7aef50e2dc",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeRecoveryOldKeyNegative"
+    },
+    "I2-17.P1.S1.POSITIVE": {
+      "evidence_fingerprint": "2b55049b9f13066e39569fd35739966e4f2e3f175f2c17276970615efac8ad54",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api/**",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts/**"
+      ],
+      "observable": "{\"assertion_source\": \"func TestNativeRecoveryCompletedPositive(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\tctx := context.Background()\\n\\ta := nativeReserve(t, s, nativeRequest())\\n\\tif _, e := s.Media.PutObject(ctx, s.Bucket, a.Key, bytes.NewReader([]byte(\\\"review\\\")), 6, minio.PutObjectOptions{DisableMultipart: true}); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\ta, e := s.RecoverAsset(ctx, a.ID)\\n\\tif e != nil || a.State != \\\"bytes_verified\\\" {\\n\\t\\tt.Fatal(a, e)\\n\\t}\\n\\tif _, e = s.LinkAsset(ctx, a.ID, nil); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tb, e := s.ReadAsset(ctx, a.ID)\\n\\tif e != nil || string(b) != \\\"review\\\" {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\", \"independent_literal_expectations\": \"Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.\"}",
+      "polarity": "positive",
+      "property_id": "I2-17.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-17 repair packet 1",
+      "scenario_fingerprint": "7b8f12f809f508cbc4f92e78e1d8773c0411d854af0d8b9981e0ed02183e99ea",
+      "setup": "Execute TestNativeRecoveryCompletedPositive through the actual native owner. {\"exact_native_test\": \"TestNativeRecoveryCompletedPositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryCompletedPositive(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\tctx := context.Background()\\n\\ta := nativeReserve(t, s, nativeRequest())\\n\\tif _, e := s.Media.PutObject(ctx, s.Bucket, a.Key, bytes.NewReader([]byte(\\\"review\\\")), 6, minio.PutObjectOptions{DisableMultipart: true}); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\ta, e := s.RecoverAsset(ctx, a.ID)\\n\\tif e != nil || a.State != \\\"bytes_verified\\\" {\\n\\t\\tt.Fatal(a, e)\\n\\t}\\n\\tif _, e = s.LinkAsset(ctx, a.ID, nil); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tb, e := s.ReadAsset(ctx, a.ID)\\n\\tif e != nil || string(b) != \\\"review\\\" {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "28944ab7fc36f6bf72ba4c529d940bdc567c7da4941dd2f4d32c7a7aef50e2dc",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeRecoveryCompletedPositive"
+    },
+    "I2-17.P1.S2.NEGATIVE": {
+      "evidence_fingerprint": "4b5fcf0b7fbd10677a9b6ec93e20423b2e43aac4117a4cc90804723db2bb615a",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api/**",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts/**"
+      ],
+      "observable": "{\"assertion_source\": \"func TestNativeRecoveryChangedIntentNegative(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\tctx := context.Background()\\n\\tr := nativeRequest()\\n\\ta := nativeReserve(t, s, r)\\n\\tnativePart(t, s, a)\\n\\tif _, e := s.RecoverAsset(ctx, a.ID); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tfor _, field := range []string{\\\"path\\\", \\\"body\\\", \\\"query\\\", \\\"sha\\\", \\\"size\\\", \\\"mime\\\", \\\"purpose\\\", \\\"revision\\\"} {\\n\\t\\tx := r\\n\\t\\tx.Operation.Key = uuid.NewString()\\n\\t\\tswitch field {\\n\\t\\tcase \\\"path\\\":\\n\\t\\t\\tx.Operation.Path = \\\"/other\\\"\\n\\t\\tcase \\\"body\\\":\\n\\t\\t\\tx.Operation.Body = json.RawMessage(`{\\\"intent\\\":\\\"changed\\\"}`)\\n\\t\\tcase \\\"query\\\":\\n\\t\\t\\tx.Operation.Query = json.RawMessage(`{\\\"q\\\":1}`)\\n\\t\\tcase \\\"sha\\\":\\n\\t\\t\\tx.SHA = nativeSHA([]byte(\\\"other!\\\"))\\n\\t\\tcase \\\"size\\\":\\n\\t\\t\\tx.Size = 7\\n\\t\\tcase \\\"mime\\\":\\n\\t\\t\\tx.MIME = \\\"audio/wav\\\"\\n\\t\\tcase \\\"purpose\\\":\\n\\t\\t\\tx.Purpose = \\\"provider_output\\\"\\n\\t\\tcase \\\"revision\\\":\\n\\t\\t\\tv := int64(1)\\n\\t\\t\\tx.Operation.Revision = &v\\n\\t\\t}\\n\\t\\tif _, e := s.RetryAsset(ctx, a.ID, x); !errors.Is(e, ErrConflict) {\\n\\t\\t\\tt.Fatal(field, e)\\n\\t\\t}\\n\\t\\tvar count int\\n\\t\\t_ = s.DB.QueryRow(ctx, \\\"SELECT count(*) FROM operation WHERE idempotency_key=$1\\\", x.Operation.Key).Scan(&count)\\n\\t\\tif count != 0 {\\n\\t\\t\\tt.Fatal(\\\"invalid retry side effect\\\")\\n\\t\\t}\\n\\t}\\n\\t// A retry key identifies one original immutable failure, even for equal intent.\\n\\tother := r\\n\\tother.Operation.Key = uuid.NewString()\\n\\toriginalB := nativeReserve(t, s, other)\\n\\tnativePart(t, s, originalB)\\n\\tif _, e := s.RecoverAsset(ctx, originalB.ID); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tretry := r\\n\\tretry.Operation.Key = uuid.NewString()\\n\\tretryA, e := s.RetryAsset(ctx, a.ID, retry)\\n\\tif e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tif _, e = s.RetryAsset(ctx, originalB.ID, retry); !errors.Is(e, ErrConflict) {\\n\\t\\tt.Fatal(\\\"retry key accepted for another failure\\\", e)\\n\\t}\\n\\tindependent := r\\n\\tindependent.Operation.Key = uuid.NewString()\\n\\tnormal := nativeReserve(t, s, independent)\\n\\tif _, e = s.RetryAsset(ctx, a.ID, independent); !errors.Is(e, ErrConflict) {\\n\\t\\tt.Fatal(\\\"independent reservation relabelled as retry\\\", e)\\n\\t}\\n\\tvar input string\\n\\t_, originalResult := nativeFailed(t, s, a)\\n\\tif e = s.DB.QueryRow(ctx, \\\"SELECT input_document_id FROM operation WHERE id=$1\\\", retryA.OperationID).Scan(&input); e != nil || input != originalResult {\\n\\t\\tt.Fatal(\\\"changed retry lineage\\\", e)\\n\\t}\\n\\tvar independentInput *string\\n\\tif e = s.DB.QueryRow(ctx, \\\"SELECT input_document_id FROM operation WHERE id=$1\\\", normal.OperationID).Scan(&independentInput); e != nil || independentInput != nil {\\n\\t\\tt.Fatal(\\\"independent operation changed\\\", e)\\n\\t}\\n\\n}\", \"independent_literal_expectations\": \"Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.\"}",
+      "polarity": "negative",
+      "property_id": "I2-17.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-17 repair packet 2",
+      "scenario_fingerprint": "bf30d3fa48bdab3ce6a76edcf8305f45c24868fd0c5b8abca4fdbdf2689ac262",
+      "setup": "Execute TestNativeRecoveryChangedIntentNegative through the actual native owner. {\"exact_native_test\": \"TestNativeRecoveryChangedIntentNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryChangedIntentNegative(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\tctx := context.Background()\\n\\tr := nativeRequest()\\n\\ta := nativeReserve(t, s, r)\\n\\tnativePart(t, s, a)\\n\\tif _, e := s.RecoverAsset(ctx, a.ID); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tfor _, field := range []string{\\\"path\\\", \\\"body\\\", \\\"query\\\", \\\"sha\\\", \\\"size\\\", \\\"mime\\\", \\\"purpose\\\", \\\"revision\\\"} {\\n\\t\\tx := r\\n\\t\\tx.Operation.Key = uuid.NewString()\\n\\t\\tswitch field {\\n\\t\\tcase \\\"path\\\":\\n\\t\\t\\tx.Operation.Path = \\\"/other\\\"\\n\\t\\tcase \\\"body\\\":\\n\\t\\t\\tx.Operation.Body = json.RawMessage(`{\\\"intent\\\":\\\"changed\\\"}`)\\n\\t\\tcase \\\"query\\\":\\n\\t\\t\\tx.Operation.Query = json.RawMessage(`{\\\"q\\\":1}`)\\n\\t\\tcase \\\"sha\\\":\\n\\t\\t\\tx.SHA = nativeSHA([]byte(\\\"other!\\\"))\\n\\t\\tcase \\\"size\\\":\\n\\t\\t\\tx.Size = 7\\n\\t\\tcase \\\"mime\\\":\\n\\t\\t\\tx.MIME = \\\"audio/wav\\\"\\n\\t\\tcase \\\"purpose\\\":\\n\\t\\t\\tx.Purpose = \\\"provider_output\\\"\\n\\t\\tcase \\\"revision\\\":\\n\\t\\t\\tv := int64(1)\\n\\t\\t\\tx.Operation.Revision = &v\\n\\t\\t}\\n\\t\\tif _, e := s.RetryAsset(ctx, a.ID, x); !errors.Is(e, ErrConflict) {\\n\\t\\t\\tt.Fatal(field, e)\\n\\t\\t}\\n\\t\\tvar count int\\n\\t\\t_ = s.DB.QueryRow(ctx, \\\"SELECT count(*) FROM operation WHERE idempotency_key=$1\\\", x.Operation.Key).Scan(&count)\\n\\t\\tif count != 0 {\\n\\t\\t\\tt.Fatal(\\\"invalid retry side effect\\\")\\n\\t\\t}\\n\\t}\\n\\t// A retry key identifies one original immutable failure, even for equal intent.\\n\\tother := r\\n\\tother.Operation.Key = uuid.NewString()\\n\\toriginalB := nativeReserve(t, s, other)\\n\\tnativePart(t, s, originalB)\\n\\tif _, e := s.RecoverAsset(ctx, originalB.ID); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tretry := r\\n\\tretry.Operation.Key = uuid.NewString()\\n\\tretryA, e := s.RetryAsset(ctx, a.ID, retry)\\n\\tif e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tif _, e = s.RetryAsset(ctx, originalB.ID, retry); !errors.Is(e, ErrConflict) {\\n\\t\\tt.Fatal(\\\"retry key accepted for another failure\\\", e)\\n\\t}\\n\\tindependent := r\\n\\tindependent.Operation.Key = uuid.NewString()\\n\\tnormal := nativeReserve(t, s, independent)\\n\\tif _, e = s.RetryAsset(ctx, a.ID, independent); !errors.Is(e, ErrConflict) {\\n\\t\\tt.Fatal(\\\"independent reservation relabelled as retry\\\", e)\\n\\t}\\n\\tvar input string\\n\\t_, originalResult := nativeFailed(t, s, a)\\n\\tif e = s.DB.QueryRow(ctx, \\\"SELECT input_document_id FROM operation WHERE id=$1\\\", retryA.OperationID).Scan(&input); e != nil || input != originalResult {\\n\\t\\tt.Fatal(\\\"changed retry lineage\\\", e)\\n\\t}\\n\\tvar independentInput *string\\n\\tif e = s.DB.QueryRow(ctx, \\\"SELECT input_document_id FROM operation WHERE id=$1\\\", normal.OperationID).Scan(&independentInput); e != nil || independentInput != nil {\\n\\t\\tt.Fatal(\\\"independent operation changed\\\", e)\\n\\t}\\n\\n}\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "28944ab7fc36f6bf72ba4c529d940bdc567c7da4941dd2f4d32c7a7aef50e2dc",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeRecoveryChangedIntentNegative"
+    },
+    "I2-17.P1.S2.POSITIVE": {
+      "evidence_fingerprint": "0d946bb18854d913afc8c85339ec1a0f3f657b42fc3b429854662c402a5ef1d6",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api/**",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts/**"
+      ],
+      "observable": "{\"assertion_source\": \"func TestNativeRecoveryRetryPositive(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\tctx := context.Background()\\n\\tr := nativeRequest()\\n\\ta := nativeReserve(t, s, r)\\n\\tupload := nativePart(t, s, a)\\n\\tif _, e := s.RecoverAsset(ctx, a.ID); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\terrorID, result := nativeFailed(t, s, a)\\n\\t// Reopen storage to demonstrate durable restart/readback rather than cached state.\\n\\tagain := nativeStore(t)\\n\\tif _, e := again.RecoverAsset(ctx, a.ID); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\terror2, result2 := nativeFailed(t, again, a)\\n\\tif errorID != error2 || result != result2 {\\n\\t\\tt.Fatal(\\\"rotated failure receipt\\\")\\n\\t}\\n\\tcore := minio.Core{Client: s.Media}\\n\\tif _, e := core.ListObjectParts(ctx, s.Bucket, a.Key, upload, 0, 10); minio.ToErrorResponse(e).Code != \\\"NoSuchUpload\\\" {\\n\\t\\tt.Fatal(\\\"partial upload survived exact abort\\\", e)\\n\\t}\\n\\tr.Operation.Key = uuid.NewString()\\n\\tnext, e := again.RetryAsset(ctx, a.ID, r)\\n\\tif e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\trepeated, e := again.RetryAsset(ctx, a.ID, r)\\n\\tif e != nil || repeated.ID != next.ID {\\n\\t\\tt.Fatal(\\\"retry idempotency\\\", e)\\n\\t}\\n\\tif next.ID == a.ID || next.OperationID == a.OperationID {\\n\\t\\tt.Fatal(\\\"reused failed operation\\\")\\n\\t}\\n\\tvar input string\\n\\tif e = again.DB.QueryRow(ctx, \\\"SELECT input_document_id FROM operation WHERE id=$1\\\", next.OperationID).Scan(&input); e != nil || input != result {\\n\\t\\tt.Fatal(\\\"retry lost frozen failure lineage\\\", e)\\n\\t}\\n\\tif _, e = again.UploadAsset(ctx, next.ID, []byte(\\\"review\\\")); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tif _, e = again.LinkAsset(ctx, next.ID, nil); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tnativeFailed(t, again, a)\\n}\", \"independent_literal_expectations\": \"Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.\"}",
+      "polarity": "positive",
+      "property_id": "I2-17.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-17 repair packet 2",
+      "scenario_fingerprint": "bf30d3fa48bdab3ce6a76edcf8305f45c24868fd0c5b8abca4fdbdf2689ac262",
+      "setup": "Execute TestNativeRecoveryRetryPositive through the actual native owner. {\"exact_native_test\": \"TestNativeRecoveryRetryPositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryRetryPositive(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\tctx := context.Background()\\n\\tr := nativeRequest()\\n\\ta := nativeReserve(t, s, r)\\n\\tupload := nativePart(t, s, a)\\n\\tif _, e := s.RecoverAsset(ctx, a.ID); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\terrorID, result := nativeFailed(t, s, a)\\n\\t// Reopen storage to demonstrate durable restart/readback rather than cached state.\\n\\tagain := nativeStore(t)\\n\\tif _, e := again.RecoverAsset(ctx, a.ID); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\terror2, result2 := nativeFailed(t, again, a)\\n\\tif errorID != error2 || result != result2 {\\n\\t\\tt.Fatal(\\\"rotated failure receipt\\\")\\n\\t}\\n\\tcore := minio.Core{Client: s.Media}\\n\\tif _, e := core.ListObjectParts(ctx, s.Bucket, a.Key, upload, 0, 10); minio.ToErrorResponse(e).Code != \\\"NoSuchUpload\\\" {\\n\\t\\tt.Fatal(\\\"partial upload survived exact abort\\\", e)\\n\\t}\\n\\tr.Operation.Key = uuid.NewString()\\n\\tnext, e := again.RetryAsset(ctx, a.ID, r)\\n\\tif e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\trepeated, e := again.RetryAsset(ctx, a.ID, r)\\n\\tif e != nil || repeated.ID != next.ID {\\n\\t\\tt.Fatal(\\\"retry idempotency\\\", e)\\n\\t}\\n\\tif next.ID == a.ID || next.OperationID == a.OperationID {\\n\\t\\tt.Fatal(\\\"reused failed operation\\\")\\n\\t}\\n\\tvar input string\\n\\tif e = again.DB.QueryRow(ctx, \\\"SELECT input_document_id FROM operation WHERE id=$1\\\", next.OperationID).Scan(&input); e != nil || input != result {\\n\\t\\tt.Fatal(\\\"retry lost frozen failure lineage\\\", e)\\n\\t}\\n\\tif _, e = again.UploadAsset(ctx, next.ID, []byte(\\\"review\\\")); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tif _, e = again.LinkAsset(ctx, next.ID, nil); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n\\tnativeFailed(t, again, a)\\n}\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "28944ab7fc36f6bf72ba4c529d940bdc567c7da4941dd2f4d32c7a7aef50e2dc",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeRecoveryRetryPositive"
+    },
+    "I2-18.P1.S1.NEGATIVE": {
+      "evidence_fingerprint": "2ed1371b00e4b13385af9231f3c2fcaf2ce9977044b7b635dc1188d479295a50",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api/**",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts/**"
+      ],
+      "observable": "{\"assertion_source\": \"func TestNativeDatabaseClosedNegative(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\ts.DB.Close()\\n\\tif e := s.CheckDatabase(context.Background()); e == nil {\\n\\t\\tt.Fatal(\\\"closed database reported reachable\\\")\\n\\t}\\n}\", \"independent_literal_expectations\": \"Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.\"}",
+      "polarity": "negative",
+      "property_id": "I2-18.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-18 repair packet 1",
+      "scenario_fingerprint": "52144ceedb76e4d810510353ebb273715211628cb71af394e8a6561f65c92ee4",
+      "setup": "Execute TestNativeDatabaseClosedNegative through the actual native owner. {\"exact_native_test\": \"TestNativeDatabaseClosedNegative\", \"literal_executable_fixture\": \"func TestNativeDatabaseClosedNegative(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\ts.DB.Close()\\n\\tif e := s.CheckDatabase(context.Background()); e == nil {\\n\\t\\tt.Fatal(\\\"closed database reported reachable\\\")\\n\\t}\\n}\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "28944ab7fc36f6bf72ba4c529d940bdc567c7da4941dd2f4d32c7a7aef50e2dc",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeDatabaseClosedNegative"
+    },
+    "I2-18.P1.S1.POSITIVE": {
+      "evidence_fingerprint": "35c454d8b151a425f687cfb58555690c724d3eb80d37f7ec79172d8ea1fe66ce",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api/**",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts/**"
+      ],
+      "observable": "{\"assertion_source\": \"func TestNativeDatabaseReachablePositive(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\tif e := s.CheckDatabase(context.Background()); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\", \"independent_literal_expectations\": \"Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.\"}",
+      "polarity": "positive",
+      "property_id": "I2-18.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-18 repair packet 1",
+      "scenario_fingerprint": "52144ceedb76e4d810510353ebb273715211628cb71af394e8a6561f65c92ee4",
+      "setup": "Execute TestNativeDatabaseReachablePositive through the actual native owner. {\"exact_native_test\": \"TestNativeDatabaseReachablePositive\", \"literal_executable_fixture\": \"func TestNativeDatabaseReachablePositive(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\tif e := s.CheckDatabase(context.Background()); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "28944ab7fc36f6bf72ba4c529d940bdc567c7da4941dd2f4d32c7a7aef50e2dc",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeDatabaseReachablePositive"
+    },
+    "I2-18.P1.S2.NEGATIVE": {
+      "evidence_fingerprint": "5c558d1a18420966572995ef11716754645b1e9fcc4640ea078d0e40f2858475",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api/**",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts/**"
+      ],
+      "observable": "{\"assertion_source\": \"func TestNativeDatabaseCancelledNegative(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\tctx, cancel := context.WithCancel(context.Background())\\n\\tcancel()\\n\\tif e := s.CheckDatabase(ctx); e == nil {\\n\\t\\tt.Fatal(\\\"cancelled readiness reported reachable\\\")\\n\\t}\\n}\", \"independent_literal_expectations\": \"Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.\"}",
+      "polarity": "negative",
+      "property_id": "I2-18.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-18 repair packet 2",
+      "scenario_fingerprint": "b30dbf78d80ac92d034dac0a2a6b00bf92194c4686a987061f82378b67f613ba",
+      "setup": "Execute TestNativeDatabaseCancelledNegative through the actual native owner. {\"exact_native_test\": \"TestNativeDatabaseCancelledNegative\", \"literal_executable_fixture\": \"func TestNativeDatabaseCancelledNegative(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\tctx, cancel := context.WithCancel(context.Background())\\n\\tcancel()\\n\\tif e := s.CheckDatabase(ctx); e == nil {\\n\\t\\tt.Fatal(\\\"cancelled readiness reported reachable\\\")\\n\\t}\\n}\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "28944ab7fc36f6bf72ba4c529d940bdc567c7da4941dd2f4d32c7a7aef50e2dc",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeDatabaseCancelledNegative"
+    },
+    "I2-18.P1.S2.POSITIVE": {
+      "evidence_fingerprint": "13ccaf71a648d2ef4d91143733f85ecf25d99bc49554837f6df27e558400f63a",
+      "green_expectation": "All independently specified bytes, database state and native object observations agree.",
+      "invalidation_dependencies": [
+        "services/api/**",
+        "deploy/local/minio.Dockerfile",
+        "deploy/local/probe.go",
+        "tests/native_storage_regression_test.go",
+        "tests/native-storage-regressions",
+        "specification/v2/contracts/**"
+      ],
+      "observable": "{\"assertion_source\": \"func TestNativeDatabaseReopenPositive(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\ts.DB.Close()\\n\\tagain := nativeStore(t)\\n\\tif e := again.CheckDatabase(context.Background()); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\", \"independent_literal_expectations\": \"Exact literal independently authored states, actual dependency errors and counters; accepted data is trusted, with one admission step for new input.\"}",
+      "polarity": "positive",
+      "property_id": "I2-18.P1",
+      "red_expectation": "Any false success, deadlock, accepted cycle, partial commit, lost failure lineage or wrong guard readiness fails.",
+      "scenario": "I2-18 repair packet 2",
+      "scenario_fingerprint": "b30dbf78d80ac92d034dac0a2a6b00bf92194c4686a987061f82378b67f613ba",
+      "setup": "Execute TestNativeDatabaseReopenPositive through the actual native owner. {\"exact_native_test\": \"TestNativeDatabaseReopenPositive\", \"literal_executable_fixture\": \"func TestNativeDatabaseReopenPositive(t *testing.T) {\\n\\ts := nativeStore(t)\\n\\ts.DB.Close()\\n\\tagain := nativeStore(t)\\n\\tif e := again.CheckDatabase(context.Background()); e != nil {\\n\\t\\tt.Fatal(e)\\n\\t}\\n}\"}",
+      "source_path": "tests/native_storage_regression_test.go",
+      "source_sha256": "28944ab7fc36f6bf72ba4c529d940bdc567c7da4941dd2f4d32c7a7aef50e2dc",
+      "status": "passed",
+      "test_id": "tangerine.local/api/internal/app::TestNativeDatabaseReopenPositive"
+    }
+  },
+  "change": "implement-teacher-error-trainer",
+  "commands": [
+    {
+      "argv": [
+        "./tests/native-storage-regressions",
+        "test",
+        "-json",
+        "-race",
+        "-count=1",
+        "./internal/app"
+      ],
+      "cwd": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010",
+      "duration_seconds": 44.07856079202611,
+      "exit_code": 0,
+      "id": "iteration2-repair-native",
+      "observed_tests": {
+        "tangerine.local/api/internal/app::TestNativeDatabaseCancelledNegative": "pass",
+        "tangerine.local/api/internal/app::TestNativeDatabaseClosedNegative": "pass",
+        "tangerine.local/api/internal/app::TestNativeDatabaseReachablePositive": "pass",
+        "tangerine.local/api/internal/app::TestNativeDatabaseReopenPositive": "pass",
+        "tangerine.local/api/internal/app::TestNativeGraphEvidenceAcyclicPositive": "pass",
+        "tangerine.local/api/internal/app::TestNativeGraphLinkAcyclicPositive": "pass",
+        "tangerine.local/api/internal/app::TestNativeGraphLinkCycleNegative": "pass",
+        "tangerine.local/api/internal/app::TestNativeGraphParentRoleNegative": "pass",
+        "tangerine.local/api/internal/app::TestNativePoolCancelledWaiterNegative": "pass",
+        "tangerine.local/api/internal/app::TestNativePoolDistinctAssetsPositive": "pass",
+        "tangerine.local/api/internal/app::TestNativePoolSameAssetPositive": "pass",
+        "tangerine.local/api/internal/app::TestNativePoolWrongBytesNegative": "pass",
+        "tangerine.local/api/internal/app::TestNativeRecoveryChangedIntentNegative": "pass",
+        "tangerine.local/api/internal/app::TestNativeRecoveryCompletedPositive": "pass",
+        "tangerine.local/api/internal/app::TestNativeRecoveryOldKeyNegative": "pass",
+        "tangerine.local/api/internal/app::TestNativeRecoveryRetryPositive": "pass"
+      },
+      "status": "exited",
+      "stderr": "#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 1.06kB 0.0s done\n#1 DONE 0.1s\n\n#2 [internal] load metadata for docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd\n#2 DONE 0.0s\n\n#3 [internal] load .dockerignore\n#3 transferring context: 163B done\n#3 DONE 0.0s\n\n#4 [build 1/7] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd\n#4 DONE 0.0s\n\n#5 [internal] load build context\n#5 transferring context: 2.27MB 0.0s done\n#5 DONE 0.0s\n\n#6 [build 6/7] RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /tangerine ./cmd/tangerine\n#6 CACHED\n\n#7 [build 2/7] WORKDIR /src\n#7 CACHED\n\n#8 [build 4/7] RUN go mod download\n#8 CACHED\n\n#9 [build 3/7] COPY services/api/go.mod services/api/go.sum ./\n#9 CACHED\n\n#10 [build 5/7] COPY services/api/ ./\n#10 CACHED\n\n#11 [build 7/7] RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -mod=readonly -trimpath -o /public-probe ./cmd/tangerine\n#11 CACHED\n\n#12 exporting to image\n#12 exporting layers done\n#12 writing image sha256:16b3dd67a3c362b2238f2fd55ba7d25644efe34f171acbbd1ec3ee3e2bfd4149 done\n#12 naming to docker.io/library/tangerine-regression-5b51948c3300-go done\n#12 DONE 0.0s\n\nView build details: docker-desktop://dashboard/build/default/default/w8yew6niftw5heoqwlem8i5mg\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from minio.Dockerfile\n#1 transferring dockerfile: 1.01kB done\n#1 DONE 0.0s\n\n#2 [internal] load metadata for docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd\n#2 DONE 0.0s\n\n#3 [internal] load metadata for docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587\n#3 DONE 12.2s\n\n#4 [stage-1 1/4] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587\n#4 DONE 0.0s\n\n#5 [build 1/7] FROM docker.io/library/golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd\n#5 DONE 0.0s\n\n#6 [build 2/7] ADD --checksum=sha256:71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6 https://codeload.github.com/minio/minio/tar.gz/7aac2a2c5b7c882e68c1ce017d8256be2feea27f /src.tar.gz\n#6 DONE 0.0s\n\n#7 [internal] load .dockerignore\n#7 transferring context: 163B done\n#7 DONE 0.0s\n\n#8 [internal] load build context\n#8 transferring context: 417B done\n#8 DONE 0.0s\n\n#9 [build 7/7] RUN CGO_ENABLED=0 go build -trimpath -o /probe /probe.go\n#9 CACHED\n\n#10 [build 4/7] WORKDIR /src\n#10 CACHED\n\n#11 [build 6/7] COPY deploy/local/probe.go /probe.go\n#11 CACHED\n\n#12 [build 5/7] RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /minio .\n#12 CACHED\n\n#13 [stage-1 2/4] COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt\n#13 CACHED\n\n#14 [build 3/7] RUN mkdir /src && tar -xzf /src.tar.gz --strip-components=1 -C /src\n#14 CACHED\n\n#15 [stage-1 3/4] COPY --from=build /minio /usr/local/bin/minio\n#15 CACHED\n\n#16 [build 2/7] ADD --checksum=sha256:71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6 https://codeload.github.com/minio/minio/tar.gz/7aac2a2c5b7c882e68c1ce017d8256be2feea27f /src.tar.gz\n#16 CACHED\n\n#17 [stage-1 4/4] COPY --from=build /probe /usr/local/bin/probe\n#17 CACHED\n\n#18 exporting to image\n#18 exporting layers done\n#18 writing image sha256:775f5bde398036fb9a64a87247346f01e25c2618cfd0560193849a9a84e9d8e1 done\n#18 naming to docker.io/library/tangerine-regression-5b51948c3300-minio done\n#18 DONE 0.0s\n\nView build details: docker-desktop://dashboard/build/default/default/yc7vdenpkxd9g2qnxnc34x2o6\nb019a67203330127dae2909237fb0c9bf0de381dbe5bbf9b8db48a6904bcbb47\n29ee2e8ecb4edf25fc0c37951ebbe8719b051f44f96f560cc089fe241ab3045f\nef029105a722f3e84e0bc6b8e16b11da578f7687f43bed5eeca552b075fa703f\ntangerine-regression-5b51948c3300-postgres\ntangerine-regression-5b51948c3300-media\ntangerine-regression-5b51948c3300\nUntagged: tangerine-regression-5b51948c3300-go:latest\nUntagged: tangerine-regression-5b51948c3300-minio:latest\n",
+      "stderr_artifact": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/data/iteration7/accepted-readiness-repair-20261020.json.iteration2-repair-native.stderr.log",
+      "stderr_truncated": false,
+      "stdout": "{\"Time\":\"2026-10-20T11:23:31.794925258Z\",\"Action\":\"start\",\"Package\":\"tangerine.local/api/internal/app\"}\n{\"Time\":\"2026-10-20T11:23:31.824154758Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolSameAssetPositive\"}\n{\"Time\":\"2026-10-20T11:23:31.824219633Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolSameAssetPositive\",\"Output\":\"=== RUN   TestNativePoolSameAssetPositive\\n\"}\n{\"Time\":\"2026-10-20T11:23:33.404005133Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolSameAssetPositive\",\"Output\":\"--- PASS: TestNativePoolSameAssetPositive (1.58s)\\n\"}\n{\"Time\":\"2026-10-20T11:23:33.404037175Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolSameAssetPositive\",\"Elapsed\":1.58}\n{\"Time\":\"2026-10-20T11:23:33.404072675Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolDistinctAssetsPositive\"}\n{\"Time\":\"2026-10-20T11:23:33.404074842Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolDistinctAssetsPositive\",\"Output\":\"=== RUN   TestNativePoolDistinctAssetsPositive\\n\"}\n{\"Time\":\"2026-10-20T11:23:33.63005005Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolDistinctAssetsPositive\",\"Output\":\"--- PASS: TestNativePoolDistinctAssetsPositive (0.23s)\\n\"}\n{\"Time\":\"2026-10-20T11:23:33.630078259Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolDistinctAssetsPositive\",\"Elapsed\":0.23}\n{\"Time\":\"2026-10-20T11:23:33.630084134Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolCancelledWaiterNegative\"}\n{\"Time\":\"2026-10-20T11:23:33.630085925Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolCancelledWaiterNegative\",\"Output\":\"=== RUN   TestNativePoolCancelledWaiterNegative\\n\"}\n{\"Time\":\"2026-10-20T11:23:33.765098759Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolCancelledWaiterNegative\",\"Output\":\"--- PASS: TestNativePoolCancelledWaiterNegative (0.13s)\\n\"}\n{\"Time\":\"2026-10-20T11:23:33.765126092Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolCancelledWaiterNegative\",\"Elapsed\":0.13}\n{\"Time\":\"2026-10-20T11:23:33.7651323Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolWrongBytesNegative\"}\n{\"Time\":\"2026-10-20T11:23:33.765134175Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolWrongBytesNegative\",\"Output\":\"=== RUN   TestNativePoolWrongBytesNegative\\n\"}\n{\"Time\":\"2026-10-20T11:23:33.853143967Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolWrongBytesNegative\",\"Output\":\"--- PASS: TestNativePoolWrongBytesNegative (0.09s)\\n\"}\n{\"Time\":\"2026-10-20T11:23:33.8537738Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativePoolWrongBytesNegative\",\"Elapsed\":0.09}\n{\"Time\":\"2026-10-20T11:23:33.853810342Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphEvidenceAcyclicPositive\"}\n{\"Time\":\"2026-10-20T11:23:33.853817634Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphEvidenceAcyclicPositive\",\"Output\":\"=== RUN   TestNativeGraphEvidenceAcyclicPositive\\n\"}\n{\"Time\":\"2026-10-20T11:23:33.883547009Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphEvidenceAcyclicPositive\",\"Output\":\"--- PASS: TestNativeGraphEvidenceAcyclicPositive (0.03s)\\n\"}\n{\"Time\":\"2026-10-20T11:23:33.883577425Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphEvidenceAcyclicPositive\",\"Elapsed\":0.03}\n{\"Time\":\"2026-10-20T11:23:33.883589425Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphLinkAcyclicPositive\"}\n{\"Time\":\"2026-10-20T11:23:33.883592384Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphLinkAcyclicPositive\",\"Output\":\"=== RUN   TestNativeGraphLinkAcyclicPositive\\n\"}\n{\"Time\":\"2026-10-20T11:23:33.934247759Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphLinkAcyclicPositive\",\"Output\":\"--- PASS: TestNativeGraphLinkAcyclicPositive (0.05s)\\n\"}\n{\"Time\":\"2026-10-20T11:23:33.934324092Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphLinkAcyclicPositive\",\"Elapsed\":0.05}\n{\"Time\":\"2026-10-20T11:23:33.934340884Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphParentRoleNegative\"}\n{\"Time\":\"2026-10-20T11:23:33.934346509Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphParentRoleNegative\",\"Output\":\"=== RUN   TestNativeGraphParentRoleNegative\\n\"}\n{\"Time\":\"2026-10-20T11:23:33.971842634Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphParentRoleNegative\",\"Output\":\"--- PASS: TestNativeGraphParentRoleNegative (0.04s)\\n\"}\n{\"Time\":\"2026-10-20T11:23:33.9718738Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphParentRoleNegative\",\"Elapsed\":0.04}\n{\"Time\":\"2026-10-20T11:23:33.971880467Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphLinkCycleNegative\"}\n{\"Time\":\"2026-10-20T11:23:33.971895842Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphLinkCycleNegative\",\"Output\":\"=== RUN   TestNativeGraphLinkCycleNegative\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.033633842Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphLinkCycleNegative\",\"Output\":\"--- PASS: TestNativeGraphLinkCycleNegative (0.06s)\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.033687175Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeGraphLinkCycleNegative\",\"Elapsed\":0.06}\n{\"Time\":\"2026-10-20T11:23:34.033710092Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryCompletedPositive\"}\n{\"Time\":\"2026-10-20T11:23:34.0337123Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryCompletedPositive\",\"Output\":\"=== RUN   TestNativeRecoveryCompletedPositive\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.071700092Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryCompletedPositive\",\"Output\":\"--- PASS: TestNativeRecoveryCompletedPositive (0.04s)\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.071736467Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryCompletedPositive\",\"Elapsed\":0.04}\n{\"Time\":\"2026-10-20T11:23:34.07174305Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryRetryPositive\"}\n{\"Time\":\"2026-10-20T11:23:34.0717453Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryRetryPositive\",\"Output\":\"=== RUN   TestNativeRecoveryRetryPositive\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.153870342Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryRetryPositive\",\"Output\":\"--- PASS: TestNativeRecoveryRetryPositive (0.08s)\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.153935301Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryRetryPositive\",\"Elapsed\":0.08}\n{\"Time\":\"2026-10-20T11:23:34.153946259Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryOldKeyNegative\"}\n{\"Time\":\"2026-10-20T11:23:34.153948759Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryOldKeyNegative\",\"Output\":\"=== RUN   TestNativeRecoveryOldKeyNegative\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.198869467Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryOldKeyNegative\",\"Output\":\"--- PASS: TestNativeRecoveryOldKeyNegative (0.04s)\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.198919051Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryOldKeyNegative\",\"Elapsed\":0.04}\n{\"Time\":\"2026-10-20T11:23:34.198940467Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryChangedIntentNegative\"}\n{\"Time\":\"2026-10-20T11:23:34.198942592Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryChangedIntentNegative\",\"Output\":\"=== RUN   TestNativeRecoveryChangedIntentNegative\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.273887051Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryChangedIntentNegative\",\"Output\":\"--- PASS: TestNativeRecoveryChangedIntentNegative (0.07s)\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.273945551Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeRecoveryChangedIntentNegative\",\"Elapsed\":0.07}\n{\"Time\":\"2026-10-20T11:23:34.273953092Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeDatabaseReachablePositive\"}\n{\"Time\":\"2026-10-20T11:23:34.273954759Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeDatabaseReachablePositive\",\"Output\":\"=== RUN   TestNativeDatabaseReachablePositive\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.288625842Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeDatabaseReachablePositive\",\"Output\":\"--- PASS: TestNativeDatabaseReachablePositive (0.01s)\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.288671301Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeDatabaseReachablePositive\",\"Elapsed\":0.01}\n{\"Time\":\"2026-10-20T11:23:34.288678009Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeDatabaseReopenPositive\"}\n{\"Time\":\"2026-10-20T11:23:34.288680176Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeDatabaseReopenPositive\",\"Output\":\"=== RUN   TestNativeDatabaseReopenPositive\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.302562509Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeDatabaseReopenPositive\",\"Output\":\"--- PASS: TestNativeDatabaseReopenPositive (0.01s)\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.302592426Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeDatabaseReopenPositive\",\"Elapsed\":0.01}\n{\"Time\":\"2026-10-20T11:23:34.302597092Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeDatabaseClosedNegative\"}\n{\"Time\":\"2026-10-20T11:23:34.302599092Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeDatabaseClosedNegative\",\"Output\":\"=== RUN   TestNativeDatabaseClosedNegative\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.302764301Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeDatabaseClosedNegative\",\"Output\":\"--- PASS: TestNativeDatabaseClosedNegative (0.00s)\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.302781051Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeDatabaseClosedNegative\",\"Elapsed\":0}\n{\"Time\":\"2026-10-20T11:23:34.302784634Z\",\"Action\":\"run\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeDatabaseCancelledNegative\"}\n{\"Time\":\"2026-10-20T11:23:34.302786176Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeDatabaseCancelledNegative\",\"Output\":\"=== RUN   TestNativeDatabaseCancelledNegative\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.303187259Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeDatabaseCancelledNegative\",\"Output\":\"--- PASS: TestNativeDatabaseCancelledNegative (0.00s)\\n\"}\n{\"Time\":\"2026-10-20T11:23:34.303195592Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Test\":\"TestNativeDatabaseCancelledNegative\",\"Elapsed\":0}\n{\"Time\":\"2026-10-20T11:23:34.303333884Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-10-20T11:23:35.313182343Z\",\"Action\":\"output\",\"Package\":\"tangerine.local/api/internal/app\",\"Output\":\"ok  \\ttangerine.local/api/internal/app\\t3.518s\\n\"}\n{\"Time\":\"2026-10-20T11:23:35.313236759Z\",\"Action\":\"pass\",\"Package\":\"tangerine.local/api/internal/app\",\"Elapsed\":3.518}\n",
+      "stdout_artifact": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration1_20261010/data/iteration7/accepted-readiness-repair-20261020.json.iteration2-repair-native.stdout.log",
+      "stdout_truncated": false
+    }
+  ],
+  "finished_at": "2026-10-20T11:23:38.700220+00:00",
+  "git": {
+    "dirty": false,
+    "head": "588003e1adfcc212b2fb3a611fb23c1861d17e71",
+    "status": "known"
+  },
+  "manifest": "openspec/changes/implement-teacher-error-trainer/verification.json",
+  "manifest_sha256": "e45547121256848fd4a6770a19dd98d282fb8ec4f6a30e52b533b63c3fb7a941",
+  "requested_selectors": {
+    "all": false,
+    "cases": [],
+    "changed_paths": [],
+    "commands": [
+      "iteration2-repair-native"
+    ],
+    "owners": [],
+    "properties": [],
+    "requirements": [],
+    "scenarios": [],
+    "tests": []
+  },
+  "schema_version": 2,
+  "selection": {
+    "cases": [
+      "I2-15.P1.S1.NEGATIVE",
+      "I2-15.P1.S1.POSITIVE",
+      "I2-15.P1.S2.NEGATIVE",
+      "I2-15.P1.S2.POSITIVE",
+      "I2-16.P1.S1.NEGATIVE",
+      "I2-16.P1.S1.POSITIVE",
+      "I2-16.P1.S2.NEGATIVE",
+      "I2-16.P1.S2.POSITIVE",
+      "I2-17.P1.S1.NEGATIVE",
+      "I2-17.P1.S1.POSITIVE",
+      "I2-17.P1.S2.NEGATIVE",
+      "I2-17.P1.S2.POSITIVE",
+      "I2-18.P1.S1.NEGATIVE",
+      "I2-18.P1.S1.POSITIVE",
+      "I2-18.P1.S2.NEGATIVE",
+      "I2-18.P1.S2.POSITIVE"
+    ],
+    "commands": [
+      "iteration2-repair-native"
+    ],
+    "properties": [
+      "I2-15.P1",
+      "I2-16.P1",
+      "I2-17.P1",
+      "I2-18.P1"
+    ],
+    "requirements": [
+      "I2-15",
+      "I2-16",
+      "I2-17",
+      "I2-18"
+    ]
+  },
+  "specifications": {
+    "I2-15": "2a30e43394e33306611e0b67c98dcd5ce2898f54ba82cce07065e352c050ecdb",
+    "I2-16": "1aab1a4c71b29173addd50192c74d4528a197f35252b48aabe823d55f7d32fe2",
+    "I2-17": "2728e9aaa4b0f7b54f6c1f4abc987b7a809b04be89191478e6a6ebe8289ec222",
+    "I2-18": "5da2dd4b451ede14fe8c9fec28097112b5eb2344e63718fce3542f780db89446"
+  },
+  "started_at": "2026-10-20T11:22:52.271362+00:00",
+  "status": "passed",
+  "substitution_gaps": []
+}

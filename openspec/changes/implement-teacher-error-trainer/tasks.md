@@ -577,10 +577,12 @@ Verification accepted: all316 selected DAG cases (158positive/158negative), incl
 
 ## Iteration 7 — speech and accent generation
 
-- [ ] Implement frozen local/configured hosted speech profiles, explicit offline model/voice setup and voice/accent bindings; retain included-only policy and no fallback.
-- [ ] Complete foreground ordered render pieces, interruption/recovery, immutable failed replay, sample-exact final WAV/key/case persistence and safe saved playback.
-- [ ] Keep orchestration, storage SQL, pure plan/audio transformations, HTTP, transport and evidence responsibilities separate; preserve one output admission and trusted saved reuse.
-- [ ] Exercise actual local Kokoro/eSpeak and Qwen saved voice paths with independent model-visible input/dispatch/native/MLflow evidence; keep hosted fixtures and acoustic unknowns explicit.
-- [ ] Complete positive/negative property sets, native UI playback/failure/recovery, affected dependency checks, structural/language/preservation verification and committed-clean full iteration acceptance; commit the result.
+- [x] Implement frozen local/configured hosted speech profiles, explicit offline model/voice setup and voice/accent bindings; retain included-only policy and no fallback.
+- [x] Complete foreground ordered render pieces, interruption/recovery, immutable failed replay, sample-exact final WAV/key/case persistence and safe saved playback.
+- [x] Keep orchestration, storage SQL, pure plan/audio transformations, HTTP, transport and evidence responsibilities separate; preserve one output admission and trusted saved reuse.
+- [x] Exercise actual local Kokoro/eSpeak and Qwen saved voice paths with independent model-visible input/dispatch/native/MLflow evidence; keep hosted fixtures and acoustic unknowns explicit.
+- [x] Complete positive/negative property sets, native UI playback/failure/recovery, affected dependency checks, structural/language/preservation verification and committed-clean full iteration acceptance; commit the result.
 
 Current record: audit/iteration-7-speech-20261011/REPORT.md. Existing preview/data and canonical unrelated GAPS.md remain protected. Controlled acoustic transforms, listening/answering and scoring remain their subsequent accepted iterations. No paid call, purchase, provider fallback or publication is authorized.
+
+Acceptance:104 I7 cases across 26 properties and the full 580-case implemented dependency closure reconcile as passed (290 positive / 290 negative), with no missing/stale row or failed-command contribution. The full I7 run passed on clean revision 8acd9ca; the final checkout-relative Python/worker 48 passed on clean revision ea8b48a, retaining the other 56 matching I7 observations. Shared valid commands retain their own clean candidates. Five final actual local synthesis calls match native HTTP/context/receipt and MLflow evidence; six supporting trials remain retained separately. Go race/vet/gofmt, standard web build, strict OpenSpec, graph/discovery and 4,015 static assertions passed for their recorded unchanged inputs. Evidence: evidence/iteration7-20261020/FINAL-RECONCILIATION-20261020.json and LOCAL-OBSERVATIONS.json. No paid/hosted inference, purchase, fallback, publication or later-iteration acceptance is claimed.
