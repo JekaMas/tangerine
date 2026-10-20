@@ -597,3 +597,16 @@ Acceptance:104 I7 cases across 26 properties and the full 580-case implemented d
 Current review: audit/iteration-7-verification-20261020/REPORT.md. Paid calls remain forbidden without individual approval.
 
 Verification accepted:112/112 I7 cases and588/588 unique I1–I7 dependency cases reconcile to exact current fingerprints, observed tests and exit0 commands on committed-clean candidates. Full I7 ran on4d65a5c; final foundation fixture repairs passed100 cases on4e935a8 while all112 I7 fingerprints remained unchanged. Five fresh local model calls reconcile to five native/context/MLflow spans; deterministic repairs have a separate zero-call Lab run. All failed/cancelled trials remain retained and rejected. No paid calls, source-data changes or later iteration acceptance. Final report: audit/iteration-7-verification-20261020/REPORT.md; evidence: evidence/iteration7-verification-20261020/.
+
+
+## Iteration 8 — controlled acoustic mutations (2026-10-20)
+
+Authority: actual user requests full apply, repair through green, separated code layers, review and commit. No paid inference is authorized. Canonical unrelated GAPS.md remains protected. Source anchors and finite scope are in audit/iteration-8-acoustic-20261020/PLAN.md.
+
+- [x] Resolve initial controlled profile/capabilities from requested acoustic categories and freeze settings before generation; preserve original registries.
+- [x] Compile saved typed edits into scoped word/phrase requests with actual Kokoro decoder alignment, paired reference/altered clips and immutable production-plan children.
+- [x] Implement separate native vowel duration, pitch/duration/gain, pause and VOT controllers with exact sample maps, explicit unresolved landmarks and no silent repair.
+- [x] Persist source/alignment/production plan before transform, retain intermediate/reference assets and receipts, resume through existing preparation CAS and finalize actual audio/key intervals.
+- [x] Wire meaningful measurements, capability/setup/readback and private render compatibility through existing owners; keep listener answer keys private.
+- [ ] Materialize literal positive/negative I8 tests and dependent DAG cases, qualify actual local controls/alignment and retain native context/model/MLflow evidence.
+- [ ] Review all I8 owners for contracts/layer responsibilities; repair findings, reconcile retained/invalidated evidence, run stable committed-clean I8 checks, record acceptance and commit.

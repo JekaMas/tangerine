@@ -32,7 +32,7 @@ func TestPreparationDefaultsPositive(t *testing.T) {
 	b := preparationBlueprint(t, 1)
 	req := b["exercise_request"].(map[string]any)
 	s := b["speakers"].([]any)[0].(map[string]any)
-	if req["topic"] != "A café visit ☕" || req["english_level"] != nil || b["format"] != "monologue" || b["provider_profile_id"] != "kokoro-local-en-v1" || s["voice_profile_id"] != "af_heart" || s["pace_wpm"] != 150 || s["l1"] != nil || b["duration_ms_max"] != nil {
+	if req["topic"] != "A café visit ☕" || req["english_level"] != nil || b["format"] != "monologue" || b["provider_profile_id"] != "kokoro-controlled-v1" || s["voice_profile_id"] != "af_heart" || s["pace_wpm"] != 150 || s["l1"] != nil || b["duration_ms_max"] != nil {
 		t.Fatal(b)
 	}
 }

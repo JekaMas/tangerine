@@ -210,7 +210,7 @@ func mutationContent(raw []byte, blueprint, clean, taxonomy map[string]any) (map
 				linked = true
 			}
 		}
-		if !linked || !mutationAcousticParameters(x) {
+		if !linked || !mutationAcousticParameters(x, acousticUnits[unitID]["primary_taxonomy_id"].(string)) {
 			return nil, &provider.OutputValidationError{Detail: "Acoustic edits must stay within a text span of their own unit and supply the selected controller's operands: phone_pair needs both IPA strings, vowel_duration a positive duration_ratio, pitch_duration an explicit pitch/duration/gain cue, pause_insert pause_ms and vot_edit vot_ms. Pitch fractions increase within [0,1]."}
 		}
 		coveredAcoustic[unitID] = true
@@ -247,7 +247,7 @@ func mutationScopedChanges(canonical, surface string, scopes [][2]int) bool {
 	return matched
 }
 
-func mutationAcousticParameters(edit map[string]any) bool {
+func mutationAcousticParameters(edit map[string]any, taxonomy ...string) bool {
 	p := edit["parameters"].(map[string]any)
 	if n, ok := p["duration_ratio"].(float64); ok && n <= 0 {
 		return false
@@ -267,7 +267,7 @@ func mutationAcousticParameters(edit map[string]any) bool {
 	case "vowel_duration":
 		return p["duration_ratio"] != nil
 	case "pitch_duration":
-		return len(points) > 0 || p["duration_ratio"] != nil || p["gain_db"] != nil
+		return len(points) > 0 || p["duration_ratio"] != nil || p["gain_db"] != nil || len(taxonomy) > 0 && taxonomy[0] == "pronunciation.suprasegmental.pitch_range"
 	case "pause_insert":
 		return p["pause_ms"] != nil
 	case "vot_edit":

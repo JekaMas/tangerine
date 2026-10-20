@@ -95,7 +95,7 @@ func nativeSpeechQualityResult(t *testing.T, status int, body string) (map[strin
 		t.Fatal("advisory measurement withheld complete audio", p, *calls)
 	}
 	progress := speechProgress(t, s, p)
-	raw, err := s.Store.ReadAsset(context.Background(), progress["sample_map_asset_id"].(string))
+	raw, err := s.Store.ReadAsset(context.Background(), progress["diagnostic_asset_id"].(string))
 	if err != nil {
 		t.Fatal(err)
 	}

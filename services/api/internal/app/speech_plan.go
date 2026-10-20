@@ -10,6 +10,9 @@ import (
 func speechProfile(settings map[string]any, registry []byte) (map[string]any, error) {
 	blueprint := settings["blueprint"].(map[string]any)
 	id := blueprint["provider_profile_id"].(string)
+	if frozen, ok := settings["speech_profile"].(map[string]any); ok && frozen["id"] == id {
+		return frozen, nil
+	}
 	if rows, ok := settings["configuration"].(map[string]any)["speech_profiles"].([]any); ok {
 		for _, v := range rows {
 			p := v.(map[string]any)
@@ -63,6 +66,28 @@ func compileSpeechPlan(preparation string, settings, candidate, profile map[stri
 			}
 		}
 	}
+	byTurn := map[string][]any{}
+	edits, _ := candidate["acoustic_edits"].([]any)
+	if len(edits) > 0 {
+		if e := requireAcousticProfile(profile); e != nil {
+			return nil, e
+		}
+		units := map[string]string{}
+		for _, v := range candidate["planned_units"].([]any) {
+			u := v.(map[string]any)
+			units[u["id"].(string)] = u["primary_taxonomy_id"].(string)
+		}
+		for _, v := range edits {
+			original := v.(map[string]any)
+			edit := map[string]any{}
+			for k, x := range original {
+				edit[k] = x
+			}
+			edit["taxonomy_id"] = units[edit["unit_id"].(string)]
+			id := edit["utterance_id"].(string)
+			byTurn[id] = append(byTurn[id], edit)
+		}
+	}
 	turns := []any{}
 	for _, value := range candidate["utterances"].([]any) {
 		u := value.(map[string]any)
@@ -79,13 +104,34 @@ func compileSpeechPlan(preparation string, settings, candidate, profile map[stri
 				break
 			}
 		}
-		turns = append(turns, map[string]any{"id": u["id"], "utterance_id": u["id"], "speaker_id": u["speaker_id"], "voice_id": voice, "locale": selectedLocale, "operations": []any{map[string]any{"kind": "text", "text": u["surface_text"]}}, "gap_after_ms": gap})
+		turn := map[string]any{"id": u["id"], "utterance_id": u["id"], "speaker_id": u["speaker_id"], "voice_id": voice, "locale": selectedLocale, "operations": []any{map[string]any{"kind": "text", "text": u["surface_text"]}}, "gap_after_ms": gap}
+		if ops := byTurn[u["id"].(string)]; len(ops) > 0 {
+			turn["acoustic_edits"] = ops
+			turn["target_wpm"] = sp["pace_wpm"]
+		}
+		turns = append(turns, turn)
 	}
-	if edits, ok := candidate["acoustic_edits"].([]any); ok && len(edits) > 0 {
-		return nil, &provider.Failure{Code: "ACOUSTIC_RENDER_REQUIRED"}
+
+	required := []any{"plain_text", "multi_turn"}
+	needed := map[string]bool{}
+	for _, value := range edits {
+		edit := value.(map[string]any)
+		switch edit["controller"] {
+		case "phone_pair":
+			needed["ipa"] = true
+		case "pause_insert":
+			needed["timed_pause"] = true
+		default:
+			needed["prosody"] = true
+		}
+	}
+	for _, capability := range []string{"ipa", "prosody", "timed_pause"} {
+		if needed[capability] {
+			required = append(required, capability)
+		}
 	}
 	caseID := uuid.NewSHA1(uuid.NameSpaceOID, []byte(preparation+":speech-case")).String()
-	plan := map[string]any{"schema_version": "2.0.0", "id": uuid.NewSHA1(uuid.NameSpaceOID, []byte(preparation+":speech-plan")).String(), "case_version_id": caseID, "blueprint_sha256": lab.Hash(blueprint), "provider_profile_id": profile["id"], "profile_sha256": lab.Hash(profile), "required_capabilities": []any{"plain_text", "multi_turn"}, "turns": turns, "audio_format": "riff_pcm_s16le_24000_mono"}
+	plan := map[string]any{"schema_version": "2.0.0", "id": uuid.NewSHA1(uuid.NameSpaceOID, []byte(preparation+":speech-plan")).String(), "case_version_id": caseID, "blueprint_sha256": lab.Hash(blueprint), "provider_profile_id": profile["id"], "profile_sha256": lab.Hash(profile), "required_capabilities": required, "turns": turns, "audio_format": "riff_pcm_s16le_24000_mono"}
 	plan["plan_sha256"] = speechPlanHash(plan)
 	return plan, nil
 }
@@ -103,7 +149,7 @@ func speechProfiles(configuration map[string]any) []map[string]any {
 func speechPlanHash(plan map[string]any) string {
 	content := map[string]any{}
 	for k, v := range plan {
-		if k != "id" && k != "schema_version" && k != "plan_sha256" {
+		if k != "id" && k != "schema_version" && k != "plan_sha256" && k != "production_plan_asset_id" {
 			content[k] = v
 		}
 	}

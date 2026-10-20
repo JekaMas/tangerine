@@ -295,6 +295,13 @@ func (s *Storage) checkpoint(ctx context.Context, p map[string]any, expected *in
 }
 
 func (s *Server) freezePreparation(ctx context.Context, b map[string]any, c map[string]any, bundle lab.Bundle, op Operation) (map[string]any, error) {
+	speechProfile, e := resolvedPreparationSpeechProfile(b, c)
+	if e != nil {
+		return nil, e
+	}
+	if e = requestedAcousticCapability(b, speechProfile); e != nil {
+		return nil, e
+	}
 	bindings, e := preparationBindings(c, bundle)
 	if e != nil {
 		return nil, e
@@ -313,14 +320,14 @@ func (s *Server) freezePreparation(ctx context.Context, b map[string]any, c map[
 	}
 	speech, recipes, production := assets["providers.v1.yaml"], assets["mutation-recipes.v1.json"], assets["acoustic-production.v1.json"]
 	req := b["exercise_request"]
-	settings := map[string]any{"schema_version": "2.0.0", "exercise_request": req, "blueprint": b, "configuration": c, "prompt_bundle": bundle, "generation_bindings": bindings, "speech_registry_asset_id": speech.ID, "speech_registry_sha256": speech.SHA, "recipe_registry_asset_id": recipes.ID, "recipe_registry_sha256": recipes.SHA, "production_registry_asset_id": production.ID, "production_registry_sha256": production.SHA, "source_record_ids": []any{}, "taxonomy_registry_asset_id": assets["error-taxonomy.v1.yaml"].ID, "taxonomy_registry_sha256": assets["error-taxonomy.v1.yaml"].SHA}
+	settings := map[string]any{"schema_version": "2.0.0", "exercise_request": req, "blueprint": b, "configuration": c, "prompt_bundle": bundle, "generation_bindings": bindings, "speech_profile": speechProfile, "speech_registry_asset_id": speech.ID, "speech_registry_sha256": speech.SHA, "recipe_registry_asset_id": recipes.ID, "recipe_registry_sha256": recipes.SHA, "production_registry_asset_id": production.ID, "production_registry_sha256": production.SHA, "source_record_ids": []any{}, "taxonomy_registry_asset_id": assets["error-taxonomy.v1.yaml"].ID, "taxonomy_registry_sha256": assets["error-taxonomy.v1.yaml"].SHA}
 	raw, _ := lab.Canonical(settings)
 	asset, e := s.Store.saveProviderBytes(ctx, raw, "provider_input")
 	if e != nil {
 		return nil, e
 	}
 	now := time.Now().UTC().Format(time.RFC3339Nano)
-	p := map[string]any{"schema_version": "2.0.0", "id": uuid.NewString(), "revision": float64(0), "original_operation_id": op.ID, "operation_ids": []any{op.ID}, "active_operation_id": op.ID, "settings_asset_id": asset.ID, "settings_sha256": asset.SHA, "phase_states": map[string]any{"canonical_text": "running", "mutation": "not_started", "render": "not_started"}, "created_at": now, "updated_at": now}
+	p := map[string]any{"schema_version": "2.0.0", "id": uuid.NewString(), "revision": float64(0), "original_operation_id": op.ID, "operation_ids": []any{op.ID}, "active_operation_id": op.ID, "settings_asset_id": asset.ID, "settings_sha256": asset.SHA, "selected_speech_profile": b["provider_profile_id"], "phase_states": map[string]any{"canonical_text": "running", "mutation": "not_started", "render": "not_started"}, "created_at": now, "updated_at": now}
 	for _, k := range []string{"canonical_asset_id", "canonical_sha256", "candidate_id", "mutated_asset_id", "mutation_manifest_asset_id", "render_plan_asset_id", "render_progress_asset_id", "audio_asset_id", "audio_sha256", "key_id", "last_failure"} {
 		p[k] = nil
 	}

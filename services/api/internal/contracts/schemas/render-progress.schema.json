@@ -156,6 +156,92 @@
               }
             ],
             "description": "Existing version-scoped identifier."
+          },
+          "acoustic_state": {
+            "type": "object",
+            "description": "Private incremental acoustic state, actual source/reference/plan/result asset lineage; absent on plain pieces.",
+            "properties": {
+              "native_asset_id": {
+                "type": "string"
+              },
+              "current_asset_id": {
+                "type": "string"
+              },
+              "active_production_plan_asset_id": {
+                "type": "string"
+              },
+              "next_step": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "completed_steps": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "production_plan_asset_id": {
+                      "type": "string"
+                    },
+                    "source_asset_id": {
+                      "type": "string"
+                    },
+                    "result_asset_id": {
+                      "type": "string"
+                    },
+                    "diagnostic_asset_id": {
+                      "type": "string"
+                    },
+                    "unit_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "production_plan_asset_id",
+                    "source_asset_id",
+                    "result_asset_id",
+                    "diagnostic_asset_id",
+                    "unit_id"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "paired_assets": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "description": "Private whole-phrase paired recordings by scoring unit."
+              }
+            },
+            "required": [
+              "native_asset_id",
+              "current_asset_id",
+              "next_step",
+              "completed_steps"
+            ],
+            "additionalProperties": false
+          },
+          "unit_intervals": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "start": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "end": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "start",
+                "end"
+              ],
+              "additionalProperties": false
+            },
+            "description": "Actual scoped intervals after transformations, in piece-local 24 kHz samples; no character proportions."
           }
         },
         "required": [
@@ -212,6 +298,10 @@
         }
       ],
       "description": "Private exact sample map, null until actual complete bytes exist."
+    },
+    "diagnostic_asset_id": {
+      "type": "string",
+      "description": "Private assembly quality/pace diagnostic separate from the strict sample-map asset."
     }
   },
   "required": [

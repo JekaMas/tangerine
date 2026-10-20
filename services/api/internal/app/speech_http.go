@@ -52,7 +52,16 @@ func speechSummary(p map[string]any) map[string]any {
 	if p == nil {
 		return nil
 	}
-	return map[string]any{"id": p["id"], "revision": p["revision"], "phase_states": p["phase_states"], "audio_available": p["phase_states"].(map[string]any)["render"] == "complete", "last_failure": p["last_failure"]}
+	summary := map[string]any{"id": p["id"], "revision": p["revision"], "phase_states": p["phase_states"], "audio_available": p["phase_states"].(map[string]any)["render"] == "complete", "last_failure": p["last_failure"]}
+	counter, _ := p["render_progress_summary"].(map[string]any)
+	if counter == nil {
+		counter = speechProgressSummary(nil)
+	}
+	summary["render_progress_summary"] = map[string]any{"complete_pieces": counter["complete_pieces"], "total_pieces": counter["total_pieces"], "first_unfinished_piece_id": counter["first_unfinished_piece"], "ready_to_assemble": counter["ready_to_assemble"]}
+	if profile, ok := p["selected_speech_profile"]; ok {
+		summary["speech_profile_id"] = profile
+	}
+	return summary
 }
 
 func speechPublicFailure(err error) (string, string) {
@@ -61,7 +70,7 @@ func speechPublicFailure(err error) (string, string) {
 	switch code {
 	case "PAID_USE_FORBIDDEN", "PROVIDER_QUOTA":
 		code = "LOCAL_BUDGET_EXCEEDED"
-	case "MODEL_SETUP_REQUIRED", "VOICE_SETUP_REQUIRED", "VOICE_UNAVAILABLE", "CAPABILITY_UNAVAILABLE", "ACOUSTIC_RENDER_REQUIRED", "MODEL_BINDING_MISMATCH":
+	case "MODEL_SETUP_REQUIRED", "VOICE_SETUP_REQUIRED", "VOICE_UNAVAILABLE", "CAPABILITY_UNAVAILABLE", "ACOUSTIC_RENDER_REQUIRED", "MODEL_BINDING_MISMATCH", "ALIGNMENT_UNAVAILABLE", "ACOUSTIC_NOT_MEASURABLE":
 		code = "CAPABILITY_UNQUALIFIED"
 	case "AUDIO_FORMAT_INVALID", "AUDIO_SILENT":
 		code = "PROVIDER_OUTPUT_INVALID"

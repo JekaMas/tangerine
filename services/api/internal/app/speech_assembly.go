@@ -25,17 +25,21 @@ func (s *Server) assembleSpeech(ctx context.Context, p, settings, frozen, progre
 		start := len(pcm) / 2
 		pcm = append(pcm, audio[44:]...)
 		end := len(pcm) / 2
-		sampleMap = append(sampleMap, map[string]any{"piece_id": piece["id"], "source_start": 0, "source_end": end - start, "final_start": start, "final_end": end, "kind": "copy"})
+		rows, e := s.acousticPieceRows(ctx, piece, start)
+		if e != nil {
+			return e
+		}
+		sampleMap = append(sampleMap, rows...)
 		gap := int(requests[i].(map[string]any)["gap_after_ms"].(float64)) * 24
 		pcm = append(pcm, make([]byte, gap*2)...)
 		if gap > 0 {
-			sampleMap = append(sampleMap, map[string]any{"piece_id": piece["id"], "source_start": end - start, "source_end": end - start, "final_start": end, "final_end": end + gap, "kind": "gap"})
+			sampleMap = append(sampleMap, sampleGap(piece["id"], end, gap))
 		}
 	}
 	plannedPauses := []any{}
 	for _, v := range sampleMap {
 		row := v.(map[string]any)
-		if row["kind"] == "gap" {
+		if row["kind"] == "gap" || row["kind"] == "pause" {
 			plannedPauses = append(plannedPauses, []any{row["final_start"], row["final_end"]})
 		}
 	}
@@ -53,9 +57,14 @@ func (s *Server) assembleSpeech(ctx context.Context, p, settings, frozen, progre
 	if e != nil {
 		return e
 	}
+	typedMap, e := s.acousticDocument(ctx, actualSampleMap(progress["render_plan_sha256"], asset.SHA, len(pcm)/2, sampleMap))
+	if e != nil {
+		return e
+	}
+	progress["diagnostic_asset_id"] = mapping.ID
 	progress["assembled_asset_id"] = asset.ID
 	progress["assembled_sha256"] = asset.SHA
-	progress["sample_map_asset_id"] = mapping.ID
+	progress["sample_map_asset_id"] = typedMap
 	if e = s.saveSpeechProgress(ctx, p, progress, operation); e != nil {
 		return e
 	}

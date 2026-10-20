@@ -28,6 +28,7 @@ func (s *Server) saveSpeechProgress(ctx context.Context, p, progress map[string]
 		return e
 	}
 	p["render_progress_asset_id"] = asset.ID
+	p["render_progress_summary"] = speechProgressSummary(progress)
 	rev := int64(p["revision"].(float64))
 	p["revision"] = float64(rev + 1)
 	p["updated_at"] = time.Now().UTC().Format(time.RFC3339Nano)

@@ -14,8 +14,12 @@ import (
 
 // The snapshot is native synthesis context, not an invented text-LLM prompt.
 // The existing receipt and Lab exporter own real model inputs/outputs/traces.
-func (s *Server) saveSpeechEvidence(ctx context.Context, op Operation, profile, configuration map[string]any, input, response Asset, start, end time.Time, status int, callErr error) (string, error) {
-	contextRaw, _ := lab.Canonical(map[string]any{"origin": "native_speech_transport", "operation_id": op.ID, "profile": profile, "wire_request_asset_id": input.ID, "wire_response_asset_id": response.ID, "input_sha256": input.SHA, "binding_sha256": lab.Hash(profile)})
+func (s *Server) saveSpeechEvidence(ctx context.Context, op Operation, profile, configuration map[string]any, input, response Asset, start, end time.Time, status int, callErr error, scopes ...map[string]any) (string, error) {
+	scope := map[string]any{}
+	if len(scopes) > 0 {
+		scope = scopes[0]
+	}
+	contextRaw, _ := lab.Canonical(map[string]any{"scope": scope, "origin": "native_speech_transport", "operation_id": op.ID, "profile": profile, "wire_request_asset_id": input.ID, "wire_response_asset_id": response.ID, "input_sha256": input.SHA, "binding_sha256": lab.Hash(profile)})
 	snapshot, e := s.Store.saveProviderBytes(ctx, contextRaw, "provider_input")
 	if e != nil {
 		return "", e

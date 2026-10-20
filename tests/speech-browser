@@ -33,7 +33,9 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
   args=['docker','run','--rm','--name',name+'-api','--network',name,'--network-alias','api','--env-file',str(config),'-e','TANGERINE_PREPARATION_TEST_EVIDENCE=/evidence','-e','TANGERINE_SPEECH_TEST_URL=http://speech:8090','-v',str(evidence)+':/evidence']
   for f in ['native_speech_test.go','native_mutation_test.go','native_preparation_test.go','speech_browser_fixture_test.go']:args+=['-v',str(r/'tests'/f)+':/src/internal/app/'+f+':ro']
   go=subprocess.Popen(args+['--entrypoint','go',name+'-go','test','-json','-race','-count=1','-run','^TestNativeSpeechBrowserFixture$','./internal/app'],cwd=r,env=env,stdout=(evidence/'native.jsonl').open('w'),stderr=(evidence/'native.stderr').open('w'))
-  for n in range(1200):
+  # Fixture setup must not terminate an otherwise valid270s foreground
+  # operation. This is a harness readiness budget, not a product latency waiver.
+  for n in range(3300):
    if (evidence/'browser-fixture.json').exists():break
    if go.poll() is not None:raise RuntimeError('actual preparation fixture failed')
    time.sleep(.1)
@@ -52,6 +54,8 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
    if browser.evaluate("document.querySelector('audio').currentTime > 0"):break
    time.sleep(.1)
   record('test_playback_positive',"document.querySelector('audio').currentTime > 0",True)
+  record('test_acoustic_progress_positive',"document.body.textContent.includes('1/1 audio pieces saved')",True)
+  record('test_acoustic_private_key_negative',"/mutation_manifest_asset_id|source_asset_id|key_id/.test(document.documentElement.outerHTML)",False)
   list_requests="performance.getEntriesByType('resource').filter(e=>e.name.includes('/api/v1/preparations?')).length"
   refresh_before=browser.evaluate(list_requests)
   browser.evaluate("document.querySelector('button').click(); true")
@@ -60,11 +64,20 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
    time.sleep(.1)
   refresh_after=browser.evaluate(list_requests);assert refresh_after==refresh_before+1
   browser.wait('Exercise '+fixture['preparation_id'][:8]);record('test_refresh_positive',"document.querySelectorAll('audio').length",1)
+  saved_profile=browser.evaluate("document.body.textContent.includes('Speech: kokoro-controlled-v1')")
+  browser.call('Page.navigate',{'url':'http://localhost:3000/settings'});browser.wait('Speech and speaker voices')
+  for n in range(100):
+   if browser.evaluate("document.querySelector('[aria-label=\"Speech profile\"]')&&!document.querySelector('[aria-label=\"Speech profile\"]').disabled"):break
+   time.sleep(.1)
+  browser.evaluate("const s=document.querySelector('[aria-label=\"Speech profile\"]');s.value='kokoro-controlled-v1';s.dispatchEvent(new Event('change',{bubbles:true}));true")
+  browser.wait('Settings saved.')
+  record('test_acoustic_profile_positive',"({saved_profile:"+json.dumps(saved_profile)+",selected_profile:document.querySelector('[aria-label=\"Speech profile\"]').value})",{'saved_profile':True,'selected_profile':'kokoro-controlled-v1'})
+  browser.call('Page.navigate',{'url':'http://localhost:3000/audio'});browser.wait('Exercise '+fixture['preparation_id'][:8])
   call(['docker','stop',name+'-postgres']);browser.evaluate("document.querySelector('button').click(); true");browser.wait('Saved preparations are unavailable');record('test_dependency_negative',"document.querySelector('[role=alert]').textContent",'Saved preparations are unavailable. Refresh to retry.');call(['docker','start',name+'-postgres']);time.sleep(1);browser.evaluate("document.querySelector('button').click(); true")
   for n in range(100):
    if browser.evaluate("document.querySelector('[role=alert]')===null"):break
    time.sleep(.1)
-  call(['docker','stop',name+'-media']);browser.evaluate("document.querySelector('button').click(); true");browser.evaluate("document.querySelector('audio').play().catch(()=>{}); true");browser.wait('Saved audio is temporarily unavailable');record('test_audio_failure_negative',"document.querySelector('[role=alert]').textContent",'Saved audio is temporarily unavailable. Refresh and retry playback; saved text and audio are retained.');call(['docker','start',name+'-media']);time.sleep(1);browser.evaluate("document.querySelector('button').click(); true");browser.evaluate("document.querySelector('audio').play(); true")
+  call(['docker','stop',name+'-media']);browser.evaluate("document.querySelector('button').click(); true");browser.evaluate("document.querySelector('audio').play().catch(()=>{}); true");browser.wait('Saved audio is temporarily unavailable');record('test_audio_failure_negative',"document.querySelector('[role=alert]').textContent",'Saved audio is temporarily unavailable. Refresh and retry playback; saved text and audio are retained.');record('test_acoustic_reference_negative',"[...document.querySelectorAll('audio')].some(a=>!a.src.includes('/preparations/')||!a.src.includes('/audio?'))",False);call(['docker','start',name+'-media']);time.sleep(1);browser.evaluate("document.querySelector('button').click(); true");browser.evaluate("document.querySelector('audio').play(); true")
   for n in range(100):
    if browser.evaluate("document.querySelector('audio').currentTime>0"):break
    time.sleep(.1)

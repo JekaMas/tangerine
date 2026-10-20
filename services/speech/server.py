@@ -24,15 +24,19 @@ class Handler(BaseHTTPRequestHandler):
    for name in MODELS:
     try:_,manifest=installed(name);rows.append({'profile_id':name,'status':'ready','revision':manifest['revision']})
     except ValueError:rows.append({'profile_id':name,'status':'setup_required'})
+   try:
+    import parselmouth
+    _,manifest=installed('kokoro-controlled-v1');rows.append({'profile_id':'kokoro-controlled-v1','status':'ready','revision':manifest['revision'],'praat_version':parselmouth.PRAAT_VERSION,'controllers':['phone_pair','vowel_duration','pitch_duration','pause_insert','vot_edit']})
+   except (ImportError,ValueError):rows.append({'profile_id':'kokoro-controlled-v1','status':'setup_required'})
    self.send(200,{'profiles':rows,'espeak_ng':bool(shutil.which('espeak-ng'))})
   else:self.send(404,{'error':'not_implemented'})
  def do_POST(self):
   if not self.authorized():self.send(403,{'error':'internal_access_required'});return
-  if self.path not in ('/internal/v1/piece','/internal/v1/plan','/internal/v1/quality'):self.send(404,{'error':'not_implemented'});return
+  if self.path not in ('/internal/v1/piece','/internal/v1/plan','/internal/v1/quality','/internal/v1/resolve','/internal/v1/transform'):self.send(404,{'error':'not_implemented'});return
   try:
    if self.headers.get('Content-Type')!='application/json':raise ValueError('INVALID_JSON')
    raw=self.rfile.read(int(self.headers.get('Content-Length','0')));packet=json.loads(raw)
-   if self.path in ('/internal/v1/plan','/internal/v1/quality'):packet['action']='plan' if self.path.endswith('/plan') else 'quality';raw=json.dumps(packet).encode()
+   if self.path!='/internal/v1/piece':packet['action']=self.path.rsplit('/',1)[1];raw=json.dumps(packet).encode()
    timeout=min(270,max(1,float(packet.get('timeout_seconds',260))))
    # A process belongs to the foreground request and is killed on its deadline.
    p=subprocess.Popen([sys.executable,'-B',os.path.join(os.path.dirname(__file__),'backends.py')],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True)

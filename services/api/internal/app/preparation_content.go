@@ -85,9 +85,13 @@ func expandBlueprint(raw []byte, configuration map[string]any) (map[string]any, 
 			return nil, e
 		}
 		voices := []any{}
+		lookupSpeech := speech
+		if speech == "kokoro-controlled-v1" {
+			lookupSpeech = "kokoro-local-en-v1"
+		}
 		for _, entry := range providers["profiles"].([]any) {
 			p := entry.(map[string]any)
-			if p["id"] == speech {
+			if p["id"] == lookupSpeech {
 				if vs, ok := p["voices"].(map[string]any); ok {
 					voices, _ = vs[locale].([]any)
 				}
@@ -126,6 +130,14 @@ func expandBlueprint(raw []byte, configuration map[string]any) (map[string]any, 
 		}
 		if len(input["speakers"].([]any)) != n {
 			return nil, ErrConflict
+		}
+	}
+	if acousticRequested(input) && input["provider_profile_id"] == "kokoro-local-en-v1" {
+		_, explicit := input["exercise_request"]
+		var original map[string]any
+		_ = json.Unmarshal(raw, &original)
+		if explicit && original["provider_profile_id"] == nil {
+			input["provider_profile_id"] = "kokoro-controlled-v1"
 		}
 	}
 	input["schema_version"] = "2.0.0"

@@ -32,6 +32,7 @@ func verifyOwnedDigest(kind string, b []byte) error {
 	if kind == "render-plan" {
 		delete(payload, "id")
 		delete(payload, "schema_version")
+		delete(payload, "production_plan_asset_id")
 	}
 	candidate, err := json.Marshal(payload)
 	if err != nil {

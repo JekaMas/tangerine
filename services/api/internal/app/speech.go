@@ -139,7 +139,11 @@ func (s *Server) renderSpeech(ctx context.Context, p, settings map[string]any, o
 		if e != nil {
 			return e
 		}
-		frozen = map[string]any{"plan": plan, "profile": profile, "pieces": prepared["pieces"], "model_context": prepared["model_context"]}
+		manifestBytes, e := s.Store.ReadAsset(ctx, p["mutation_manifest_asset_id"].(string))
+		if e != nil {
+			return e
+		}
+		frozen = map[string]any{"mutation_manifest_sha256": lab.Hash(json.RawMessage(manifestBytes)), "plan": plan, "profile": profile, "pieces": prepared["pieces"], "model_context": prepared["model_context"]}
 		raw, _ = lab.Canonical(frozen)
 		asset, e := s.Store.saveProviderBytes(ctx, raw, "canonical_json")
 		if e != nil {
@@ -167,7 +171,7 @@ func (s *Server) renderSpeech(ctx context.Context, p, settings map[string]any, o
 		for i, value := range requests {
 			request := value.(map[string]any)
 			pieceID := uuid.NewSHA1(uuid.NameSpaceOID, []byte(fmt.Sprintf("%s:%s:%d", p["id"], plan["plan_sha256"], i))).String()
-			pieces = append(pieces, map[string]any{"id": pieceID, "utterance_id": request["utterance_id"], "operation_indexes": []any{float64(0)}, "request_sha256": lab.Hash(request), "source_asset_id": nil, "asset_id": nil, "audio_sha256": nil, "sample_count": nil, "state": "pending", "receipt_ids": []any{}, "last_error_asset_id": nil})
+			pieces = append(pieces, map[string]any{"id": pieceID, "utterance_id": request["utterance_id"], "operation_indexes": []any{float64(0)}, "request_sha256": lab.Hash(map[string]any{"profile": profile, "render_plan_sha256": plan["plan_sha256"], "request": request}), "source_asset_id": nil, "asset_id": nil, "audio_sha256": nil, "sample_count": nil, "state": "pending", "receipt_ids": []any{}, "last_error_asset_id": nil})
 		}
 		progress = map[string]any{"schema_version": "2.0.0", "id": uuid.NewString(), "preparation_id": p["id"], "revision": float64(0), "render_plan_sha256": plan["plan_sha256"], "production_plan_asset_id": nil, "pieces": pieces, "assembled_asset_id": nil, "assembled_sha256": nil, "sample_map_asset_id": nil}
 	}
@@ -187,6 +191,20 @@ func (s *Server) renderSpeech(ctx context.Context, p, settings map[string]any, o
 		}
 		if e := ctx.Err(); e != nil {
 			return &provider.Failure{Code: "SPEECH_TIMEOUT"}
+		}
+		if turn := requests[i].(map[string]any); len(mutationAcousticEdits(turn)) > 0 {
+			piece["state"] = "running"
+			if e := s.saveSpeechProgress(ctx, p, progress, op.ID); e != nil {
+				return e
+			}
+			if e := s.renderAcousticPiece(ctx, p, settings, frozen, progress, piece, turn, op.ID, client); e != nil {
+				piece["state"] = "failed"
+				end, done := context.WithTimeout(context.WithoutCancel(ctx), 10*time.Second)
+				_ = s.saveSpeechProgress(end, p, progress, op.ID)
+				done()
+				return e
+			}
+			continue
 		}
 		piece["state"] = "running"
 		if e := s.saveSpeechProgress(ctx, p, progress, op.ID); e != nil {

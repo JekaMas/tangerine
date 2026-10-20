@@ -15,6 +15,7 @@ import (
 func projectSpeechKey(settings, candidate, plan, progress map[string]any, audioID, audioSHA, taxonomyVersion string) map[string]any {
 	blueprint := settings["blueprint"].(map[string]any)
 	intervals := map[string]map[string]any{}
+	acousticIntervals := map[string][]any{}
 	samples := 0
 	receipts := []any{}
 	for i, v := range progress["pieces"].([]any) {
@@ -30,6 +31,23 @@ func projectSpeechKey(settings, candidate, plan, progress map[string]any, audioI
 		}
 		samples = end + int(turn["gap_after_ms"].(float64))*24
 		receipts = append(receipts, piece["receipt_ids"].([]any)...)
+		seenAcoustic := map[string]bool{}
+		for _, v := range mutationAcousticEdits(turn) {
+			edit := v.(map[string]any)
+			id := edit["unit_id"].(string)
+			if seenAcoustic[id] {
+				continue
+			}
+			seenAcoustic[id] = true
+			a, b := start, end
+			if rows, ok := piece["unit_intervals"].(map[string]any); ok {
+				if row, ok := rows[id].(map[string]any); ok {
+					a = start + int(row["start"].(float64))
+					b = start + int(row["end"].(float64))
+				}
+			}
+			acousticIntervals[id] = append(acousticIntervals[id], map[string]any{"start_ms": a / 24, "end_ms": (b + 23) / 24})
+		}
 	}
 	speakers := []any{}
 	for _, v := range blueprint["speakers"].([]any) {
@@ -51,6 +69,9 @@ func projectSpeechKey(settings, candidate, plan, progress map[string]any, audioI
 		ranges := []any{}
 		for _, id := range accepted["utterance_ids"].([]any) {
 			ranges = append(ranges, intervals[id.(string)])
+		}
+		if actual := acousticIntervals[accepted["id"].(string)]; len(actual) > 0 {
+			ranges = actual
 		}
 		unit["audio_intervals"] = ranges
 		unit["context_evidence"] = []any{map[string]any{"source_id": "GENERATED-EXERCISE", "locator": "public_context", "evidence_hash": lab.Hash(blueprint["public_context"])}}

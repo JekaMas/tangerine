@@ -1,7 +1,9 @@
 """Frozen speech bindings; no fallback, runtime downloads, or paid dispatch."""
+import copy, types
 import contextlib, base64, hashlib, io, json, os, pathlib, subprocess, sys, time, urllib.error, urllib.parse, urllib.request, uuid, xml.etree.ElementTree as ET
 from audio import admit, normalize, wav_bytes, quality, measure
 from model_setup import installed
+from acoustic_runtime import controlled_plan,resolve_acoustic,transform_acoustic
 from inference_capture import observe_method
 
 CACHE={}
@@ -44,6 +46,7 @@ def transport(url,body,headers,timeout):
   raise ValueError('PROVIDER_QUOTA' if e.code==429 else 'PROVIDER_FAILED') from None
 
 def kokoro(profile,turn):
+ invocation_id=str(uuid.uuid4());invocation_started=time.time()
  root,manifest=installed('kokoro-local-en-v1')
  sys.path.insert(0,str(root/'g2p'));os.environ['HF_HUB_OFFLINE']='1';os.environ['TRANSFORMERS_OFFLINE']='1'
  from kokoro import KModel,KPipeline
@@ -67,12 +70,20 @@ def kokoro(profile,turn):
    results = pipe.generate_from_tokens(turn['compiled_phonemes'],voice=voice,speed=profile.get('voice_settings',{}).get('speed') or 1) if turn.get('compiled_phonemes') else pipe(op['text'],voice=voice,speed=profile.get('voice_settings',{}).get('speed') or 1)
    for result in results:
     if result.audio is None or not result.phonemes:raise ValueError('SYNTHESIS_FAILED')
-    frames.append(result.audio.numpy());tokens.append({'graphemes':result.graphemes,'phonemes':result.phonemes,'start_sample':offset,'sample_count':len(result.audio),'pred_dur':result.output.pred_dur.tolist()});offset+=len(result.audio)
+    from acoustic_alignment import words_from_tokens
+    projected=[types.SimpleNamespace(**t) for t in turn.get('g2p_tokens',[])]
+    if projected: KPipeline.join_timestamps(projected,result.output.pred_dur)
+    actual_ids=model_calls[-1]['args'][0]['values'][0]
+    frames.append(result.audio.numpy());tokens.append({'graphemes':result.graphemes or op['text'],'phonemes':result.phonemes,'start_sample':offset,'sample_count':len(result.audio),'pred_dur':result.output.pred_dur.tolist(),'token_ids':actual_ids,'word_tokens':words_from_tokens(projected or result.tokens,len(result.audio)),'timing_basis':'kokoro_decoder_600_samples_v1'});offset+=len(result.audio)
  if not frames:raise ValueError('SYNTHESIS_FAILED')
  samples=np.concatenate(frames)
  if not np.isfinite(samples).all():raise ValueError('AUDIO_FORMAT_INVALID')
  pcm=(np.clip(samples,-1,1)*32767).astype('<i2').tobytes()
- return wav_bytes(pcm),{'model_manifest':manifest,'decoder':tokens,'model_visible_calls':model_calls},None
+ audio=wav_bytes(pcm)
+ from acoustic_alignment import decoder_scopes
+ scopes=decoder_scopes(turn,tokens[0]) if turn.get('acoustic_token_scopes') and len(tokens)==1 else []
+ return audio,{'acoustic_scopes':scopes,'model_manifest':manifest,'decoder':tokens,'model_visible_calls':model_calls,
+               'inference_receipt':{'id':invocation_id,'provider':'local_kokoro','model':manifest['repo'],'voice_id':turn['voice_id'],'locale':turn['locale'],'started_at_unix':invocation_started,'finished_at_unix':time.time(),'input':turn,'audio_sha256':hashlib.sha256(audio).hexdigest(),'decoder_call_count':len(model_calls)}},None
 
 def espeak(profile,turn):
  pcm=bytearray();calls=[]
@@ -139,10 +150,26 @@ def render(profile,turn,timeout=260):
  permitted={v['id']:v for v in profile['voices']}
  if turn['voice_id'] not in permitted or permitted[turn['voice_id']]['locale']!=turn['locale']:raise ValueError('VOICE_UNAVAILABLE')
  start=time.time();provider=profile['provider'];receipt_id=str(uuid.uuid4())
- if provider=='local_kokoro':audio,native,raw=kokoro(profile,turn)
+ if provider=='local_kokoro':
+  audio,native,raw=kokoro(profile,turn)
+  for unit,variant in turn.get('phone_variants',{}).items():
+   altered=copy.deepcopy(turn);altered['compiled_phonemes']=variant['compiled_phonemes'];altered['acoustic_token_scopes']=variant['scopes'];altered.pop('g2p_tokens',None)
+   changed,changed_native,_=kokoro(profile,altered);admit(changed)
+   native.setdefault('paired_mutations',{})[unit]={'audio_base64':base64.b64encode(changed).decode(),'audio_sha256':hashlib.sha256(changed).hexdigest(),'native':changed_native}
+
  elif provider=='local_espeak_ng':audio,native,raw=espeak(profile,turn)
  elif provider=='local_qwen3_tts':audio,native,raw=qwen(profile,turn)
- else:audio,native,raw=hosted(profile,turn,timeout)
+ else:
+  source_turn=copy.deepcopy(turn)
+  pair=next((e for e in turn.get('acoustic_edits',[]) if e['controller']=='phone_pair'),None)
+  if pair:
+   source_turn['operations']=[{'kind':'phoneme','text':turn['operations'][0]['text'],'ipa':pair['parameters']['reference_ipa']}]
+  audio,native,raw=hosted(profile,source_turn,timeout)
+  if pair:
+   altered=copy.deepcopy(source_turn);altered['operations'][0]['ipa']=pair['parameters']['mutated_ipa']
+   changed,changed_native,changed_raw=hosted(profile,altered,timeout);admit(changed)
+   native['paired_mutation']={'audio_base64':base64.b64encode(changed).decode(),'audio_sha256':hashlib.sha256(changed).hexdigest(),'native':changed_native,'raw_response_base64':base64.b64encode(changed_raw).decode()}
+
  pcm=admit(audio)
  warnings=measure(pcm)
  return {'audio_base64':base64.b64encode(audio).decode(),'sample_count':len(pcm)//2,'quality':warnings,'receipt':{'id':receipt_id,'provider':provider,'model':native['model_manifest']['repo'] if 'model_manifest' in native else native.get('version'),'requested_model':profile.get('model'),'voice_id':turn['voice_id'],'locale':turn['locale'],'requested_accent':permitted[turn['voice_id']].get('accent_description'),'observed_accent':None,'billing_mode':profile['billing_mode'],'duration_ms':int((time.time()-start)*1000),'input':{'profile':profile,'turn':turn},'native':native,'raw_response_base64':base64.b64encode(raw).decode() if raw else None,'audio_sha256':hashlib.sha256(audio).hexdigest()}}
@@ -150,6 +177,9 @@ def render(profile,turn,timeout=260):
 
 def plan(profile,render_plan):
  billing(profile)
+ if any(t.get('acoustic_edits') for t in render_plan['turns']):
+  return controlled_plan(profile,render_plan,plan)
+
  pieces=[];context={}
  if profile['provider']=='local_kokoro':
   root,manifest=installed('kokoro-local-en-v1');context=manifest
@@ -171,7 +201,7 @@ def plan(profile,render_plan):
    pipe=pipes[code];_,tokens=pipe.g2p(text)
    for graphemes,phones,tokens in pipe.en_tokenize(tokens):
     if not phones or len(phones)>510:raise ValueError('INPUT_CAPACITY_EXCEEDED')
-    chunks.append((graphemes,phones))
+    chunks.append((graphemes,phones,[{'text':t.text,'phonemes':t.phonemes,'whitespace':t.whitespace} for t in tokens]))
   else:
    # Short Qwen pieces allow durable progress within the foreground deadline.
    # This is a preferred split, not a new input limit: a longer word is kept.
@@ -183,13 +213,19 @@ def plan(profile,render_plan):
     if end<0:
      if len(rest)>2000:raise ValueError('INPUT_CAPACITY_EXCEEDED')
      break
-    chunks.append((rest[:end],None));rest=rest[end:]
-   if rest:chunks.append((rest,None))
+    chunks.append((rest[:end],None,[]));rest=rest[end:]
+   if rest:chunks.append((rest,None,[]))
   if not chunks:raise ValueError('SYNTHESIS_FAILED')
-  for index,(surface,phones) in enumerate(chunks):
+  position=0
+  for index,(surface,phones,g2p_tokens) in enumerate(chunks):
+   if profile['provider']=='local_kokoro':
+    found=text.find(surface,position)
+    if found<0:raise ValueError('ALIGNMENT_UNAVAILABLE')
+    end=len(text) if index==len(chunks)-1 else found+len(surface)
+    surface=text[position:end];position=end
    piece=dict(turn);piece['operations']=[{'kind':'text','text':surface}]
    piece['gap_after_ms']=turn['gap_after_ms'] if index==len(chunks)-1 else 0
-   if phones:piece['compiled_phonemes']=phones
+   if phones:piece['compiled_phonemes']=phones;piece['g2p_tokens']=g2p_tokens
    piece['accent_description']=selected.get('accent_description')
    pieces.append(piece)
  return {'pieces':pieces,'model_context':context}
@@ -199,10 +235,12 @@ if __name__=='__main__':
   packet=json.load(sys.stdin)
   with contextlib.redirect_stdout(sys.stderr):
    if packet.get('action')=='plan':result=plan(packet['profile'],packet['plan'])
+   elif packet.get('action')=='resolve':result=resolve_acoustic(packet)
+   elif packet.get('action')=='transform':result=transform_acoustic(packet)
    elif packet.get('action')=='quality':result=measure(base64.b64decode(packet['pcm_base64']),packet['planned_pause_intervals'])
    else:result=render(packet['profile'],packet['turn'],packet.get('timeout_seconds',260))
   print(json.dumps(result))
  except Exception as e:
   # Raw library/provider exceptions may contain credentials or private text.
-  code=str(e) if isinstance(e,ValueError) and str(e) in {'PAID_USE_FORBIDDEN','PROVIDER_QUOTA','PROVIDER_FAILED','MISSING_CREDENTIALS','CAPABILITY_UNAVAILABLE','VOICE_UNAVAILABLE','VOICE_SETUP_REQUIRED','MODEL_SETUP_REQUIRED','INPUT_CAPACITY_EXCEEDED','AUDIO_FORMAT_INVALID','AUDIO_SILENT','SYNTHESIS_FAILED'} else 'SYNTHESIS_FAILED'
-  print(json.dumps({'error':code}));sys.exit(1)
+  code=str(e) if isinstance(e,ValueError) and str(e) in {'PAID_USE_FORBIDDEN','PROVIDER_QUOTA','PROVIDER_FAILED','MISSING_CREDENTIALS','CAPABILITY_UNAVAILABLE','VOICE_UNAVAILABLE','VOICE_SETUP_REQUIRED','MODEL_SETUP_REQUIRED','INPUT_CAPACITY_EXCEEDED','AUDIO_FORMAT_INVALID','AUDIO_SILENT','SYNTHESIS_FAILED','CONSTRAINT_CONFLICT','ALIGNMENT_UNAVAILABLE','ACOUSTIC_NOT_MEASURABLE'} else 'SYNTHESIS_FAILED'
+  print(json.dumps({'error':code,'reason':getattr(e,'reason',None),'observations':getattr(e,'observations',None)}));sys.exit(1)
