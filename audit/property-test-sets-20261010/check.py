@@ -70,7 +70,7 @@ for r in recipes:
  edit=r['codepoint_edit']
  if edit:
   text=r['canonical_example'];start=edit['start_cp'];end=edit['end_cp'];ck(r['taxonomy_id']+'.exact.slice',text[start:end]==edit['exact_text']);ck(r['taxonomy_id']+'.exact.replay',text[:start]+edit['replacement']+text[end:]==r['surface_example'])
-ck('all122.recipe.identities',len(recipes)==122);ck('all448.original.and22.iteration3.and35.iteration4.and12.iteration5.and20.iteration6.property.sets',len(s['properties'])==537 and sum(x['property_id'].startswith('I3-') for x in s['properties'])==22 and sum(x['property_id'].startswith('I4-') for x in s['properties'])==35 and sum(x['property_id'].startswith('I5-') for x in s['properties'])==12 and sum(x['property_id'].startswith('I6-') for x in s['properties'])==20)
+ck('all122.recipe.identities',len(recipes)==122);ck('all448.original.and22.iteration3.and35.iteration4.and12.iteration5.and21.iteration6.property.sets',len(s['properties'])==538 and sum(x['property_id'].startswith('I3-') for x in s['properties'])==22 and sum(x['property_id'].startswith('I4-') for x in s['properties'])==35 and sum(x['property_id'].startswith('I5-') for x in s['properties'])==12 and sum(x['property_id'].startswith('I6-') for x in s['properties'])==21)
 for pol in ['POSITIVE','NEGATIVE']:
  b=next(x for x in f['case_bindings'] if x['case_id']=='V6-SES-01.P1.S2.'+pol);ck('named.empty.answer.'+pol,b['input']['answer']=='' and b['expected']['TP']==0 and b['expected']['primary']=='0/1')
 ck('no.unregistered.old.secondary.leaf','grammar.verbs.verb_form' not in json.dumps(f))

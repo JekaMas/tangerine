@@ -101,9 +101,17 @@ func prepareNativeFixtureRequest(t *testing.T, response string, status int, conf
 			return
 		}
 		if defect != "" {
-			keyword := map[string]string{"canonical-units": "planned_units", "canonical-speaker": "blueprint speakers", "canonical-surface": "canonical_text"}[defect]
-			if n == 2 && (!strings.Contains(string(wire), "validation_detail") || !strings.Contains(string(wire), keyword)) {
-				t.Error("canonical repair lacks owning validation reason", keyword)
+			keyword := map[string]string{"canonical-units": "canonical_text", "canonical-speaker": "blueprint speakers", "canonical-surface": "canonical_text"}[defect]
+			if n == 2 {
+				var frame struct{ Input []struct{ Content string } }
+				_ = json.Unmarshal(wire, &frame)
+				var diagnostic struct {
+					Detail string `json:"validation_detail"`
+				}
+				_ = json.Unmarshal([]byte(frame.Input[len(frame.Input)-1].Content), &diagnostic)
+				if !strings.Contains(diagnostic.Detail, keyword) {
+					t.Error("canonical repair lacks owning validation reason", keyword, diagnostic.Detail)
+				}
 			}
 			if n == 1 || !repairOnce {
 				base, _ := json.Marshal(candidate)
@@ -113,6 +121,9 @@ func prepareNativeFixtureRequest(t *testing.T, response string, status int, conf
 				case "canonical-units":
 					_, _, mutation, _ := mutationFixture()
 					invalid["planned_units"] = mutation["planned_units"]
+					u := invalid["planned_units"].([]any)[0].(map[string]any)
+					u["explanation_eligible"] = false
+					delete(u["corrections"].([]any)[0].(map[string]any), "canonical")
 				case "canonical-speaker":
 					invalid["utterances"].([]any)[0].(map[string]any)["speaker_id"] = "not-requested"
 				case "canonical-surface":

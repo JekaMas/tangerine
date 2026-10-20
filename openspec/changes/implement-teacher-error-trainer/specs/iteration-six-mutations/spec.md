@@ -279,3 +279,17 @@ The provider SHALL retain the original trusted instructions and complete initial
 
 - **WHEN** the second distinct literal positive or negative packet is executed
 - **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+### Requirement: I6-21 One admission reports independently available repair issues together
+
+An already structurally rejected generation reply SHALL include independently known final-surface or clean-phase diagnostics in the same existing repair payload. Safe whole-turn scope hints SHALL derive only from actual supplied surface text. Rejected partial projections SHALL never be admitted, exposed through the public projection API or persisted as a completed key; unknown types SHALL not produce guessed hints. Healthy schema-valid replies retain their single semantic admission. Exact constructed fixtures and independent expected states are retained in audit/iteration-6-review-20261020/CASES.json. These tests SHALL NOT establish hosted account admission, actual LLM linguistic quality or future mutation/audio/scoring completion.
+
+#### Scenario: I6-21 packet 1
+
+- **WHEN** the first literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold
+
+#### Scenario: I6-21 packet 2
+
+- **WHEN** the second distinct literal positive or negative packet is executed
+- **THEN** its independently declared state, byte, error or dispatch expectation SHALL hold

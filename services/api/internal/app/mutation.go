@@ -203,6 +203,6 @@ func (s *Server) invokeMutation(ctx context.Context, p, settings map[string]any,
 		return LLMResult{}, e
 	}
 	phase := "mutation"
-	result, e := s.InvokeLLM(ctx, LLMRequest{Timeout: preparationTimeout(settings, "mutation"), Operation: OperationRequest{Name: "mutation", Key: key, Path: "/prepare/mutation/model", Body: json.RawMessage(`{}`)}, Stage: "case_generation", Phase: &phase, Input: input, Components: components, Configuration: config, Bundle: bundle, Validate: func(raw []byte) error { _, e := mutationContent(raw, blueprint, clean, taxonomy); return e }}, client)
+	result, e := s.InvokeLLM(ctx, LLMRequest{DiagnoseInvalid: mutationLocatorDiagnostic, Timeout: preparationTimeout(settings, "mutation"), Operation: OperationRequest{Name: "mutation", Key: key, Path: "/prepare/mutation/model", Body: json.RawMessage(`{}`)}, Stage: "case_generation", Phase: &phase, Input: input, Components: components, Configuration: config, Bundle: bundle, Validate: func(raw []byte) error { _, e := mutationContent(raw, blueprint, clean, taxonomy); return e }}, client)
 	return result, e
 }

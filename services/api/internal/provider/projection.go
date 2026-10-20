@@ -8,7 +8,11 @@ import (
 
 // ProjectVisible never manufactures substantive fields. Raw visible output stays
 // in the receipt; only additive fields are removed from the arithmetic projection.
-func ProjectVisible(text, kind string) ([]byte, error) {
+func ProjectVisible(text, kind string) ([]byte, error) { return projectVisible(text, kind, false) }
+
+// A rejected projection is available only to an opt-in diagnostic callback. It
+// never becomes an admitted result; the public projection API keeps nil on error.
+func projectVisible(text, kind string, includeRejected bool) ([]byte, error) {
 	registry, e := contracts.Registry()
 	if e != nil {
 		return nil, e
@@ -20,6 +24,7 @@ func ProjectVisible(text, kind string) ([]byte, error) {
 	var schema map[string]any
 	_ = json.Unmarshal(contract.Bytes, &schema)
 	candidates := [][]byte{}
+	var rejected []byte
 	var validationError error
 	validationScore := -1
 	recordError := func(score int, err error) {
@@ -61,6 +66,9 @@ func ProjectVisible(text, kind string) ([]byte, error) {
 				}
 			}
 			if _, e = contracts.Canonical(raw); e != nil {
+				if score >= validationScore {
+					rejected = nil
+				}
 				recordError(score, e)
 				continue
 			}
@@ -69,17 +77,24 @@ func ProjectVisible(text, kind string) ([]byte, error) {
 				continue
 			}
 			value = projectValue(value, schema, registry)
-			b, _ := json.Marshal(value)
-			_, b, e = contracts.Validate(kind, contract.Version, b)
+			projected, _ := json.Marshal(value)
+			_, b, validationErr := contracts.Validate(kind, contract.Version, projected)
+			e = validationErr
 			if e == nil {
 				candidates = append(candidates, b)
 			} else {
+				if score >= validationScore {
+					rejected = projected
+				}
 				recordError(score, e)
 			}
 		}
 	}
 	if len(candidates) == 0 {
 		if validationError != nil {
+			if includeRejected {
+				return rejected, &OutputValidationError{Detail: validationError.Error()}
+			}
 			return nil, &OutputValidationError{Detail: validationError.Error()}
 		}
 		return nil, fail("PROVIDER_OUTPUT_INVALID")

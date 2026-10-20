@@ -16,15 +16,16 @@ import (
 )
 
 type LLMRequest struct {
-	Timeout       time.Duration
-	Operation     OperationRequest
-	Stage         string
-	Phase         *string
-	Input         map[string]any
-	Components    map[string]any
-	Configuration map[string]any
-	Bundle        lab.Bundle
-	Validate      func([]byte) error
+	Timeout         time.Duration
+	Operation       OperationRequest
+	Stage           string
+	Phase           *string
+	Input           map[string]any
+	Components      map[string]any
+	Configuration   map[string]any
+	Bundle          lab.Bundle
+	DiagnoseInvalid func([]byte) string
+	Validate        func([]byte) error
 }
 type LLMResult struct {
 	Output         json.RawMessage `json:"output"`
@@ -176,7 +177,7 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 	inputUsage := map[int]int{}
 	trace := traceID(16)
 	requestAssets := map[int]Asset{}
-	er := provider.ExecuteRequest{Profile: p, Instructions: instructions, Input: input, OutputKind: strings.TrimSuffix(binding.OutputSchema, ".schema.json"), Timeout: timeout, Validate: request.Validate}
+	er := provider.ExecuteRequest{Profile: p, Instructions: instructions, Input: input, OutputKind: strings.TrimSuffix(binding.OutputSchema, ".schema.json"), Timeout: timeout, Validate: request.Validate, DiagnoseInvalid: request.DiagnoseInvalid}
 	// JSON-schema capability is opt-in for profiles with tested provider support;
 	// plain JSON still receives the same complete output contract in instructions.
 	er.Before = func(ctx context.Context, a provider.Attempt) error {
