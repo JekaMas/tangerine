@@ -720,3 +720,5 @@ Iteration 11 verification supersedes its earlier acceptance: all seven finding g
 - [ ] I12.15 Normalize source-confirmed empty case-only decisions and non-duplicate metadata, preserve substantive/uncertain data, expose faithful before/after/repair references, retain observed MLX failures and qualify the complete source/model binding without relaxing grades, outcomes or timeouts.
 
 - [ ] I12.16 Repair the observed copied false explanation judgment and incomplete rationale replacement in the managed adjudication instructions; preserve complete corrections, required rationale propositions, native grades and timeouts, observe the direct contrast and complete committed-clean acceptance.
+
+- [ ] I12.17 Normalize the observed unambiguous flattened correction and source-confirmed omitted presence flag at the single model-output admission; preserve canonical fields, judgments and ambiguous data, add literal positive/negative regressions and complete native/local/DAG clean acceptance.

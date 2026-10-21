@@ -127,6 +127,11 @@ The application SHALL admit every real base-unit/control judgment and complete s
 - **WHEN** its declared supported or violating literal source/state/transport case reaches the actual production owner
 - **THEN** the independent expected state, source identity, arithmetic, modality, history and forbidden effects SHALL hold
 
+#### Scenario: I12-03 packet 7
+
+- **WHEN** its declared supported or violating literal source/state/transport case reaches the actual production owner
+- **THEN** the independent expected state, source identity, arithmetic, modality, history and forbidden effects SHALL hold
+
 ### Requirement: I12-04 Complete same-audio key and rationale repair
 
 The application SHALL materialize complete corrections/rationale propositions and total same/added/removed/split/merge correspondence with stable server IDs, registered categories/domains, fixed severity weights and unchanged heard audio; preserve real retained populations, checkpoint accepted proposals and conditionally map the same saved answer before atomic selection, without inventing injected history or acoustic observations.

@@ -583,3 +583,49 @@ func TestReviewCaseEmptyNegative(t *testing.T) {
 		t.Fatal("case-only learner accepted")
 	}
 }
+
+func TestReviewComponentShapePositive(t *testing.T) {
+	extraction := &CanonicalExtraction{Claims: []CanonicalClaim{{ID: "c1", Corrections: []AnswerSpan{{4, 9, "opens"}}}}}
+	correction := map[string]any{"option_id": "r1", "status": "accepted", "satisfied_proposition_ids": []any{"p1"}, "violated_proposition_ids": []any{}, "support_evidence_ids": []any{}, "unresolved_reason": nil}
+	row := map[string]any{"claim_id": "c1", "decision": "matched_error", "unit_id": "e1", "explanation": semanticEmpty()}
+	// JSON input has a separately nested explanation and flattened correction.
+	row["explanation"] = map[string]any{"supplied": false, "option_id": nil, "status": "not_supplied", "satisfied_proposition_ids": []any{}, "violated_proposition_ids": []any{}, "support_evidence_ids": []any{}, "unresolved_reason": nil, "additional_assertions": []any{}}
+	for k, v := range correction {
+		row[k] = v
+	}
+	out := normalizeReviewShape(map[string]any{"decisions": []any{row}}, extraction, false).(map[string]any)
+	got := out["decisions"].(map[string]any)["decisions"].([]any)[0].(map[string]any)
+	want := reviewClone(correction)
+	want["supplied"] = true
+	want["additional_assertions"] = []any{}
+	if !reflect.DeepEqual(got["correction"], want) || got["status"] != nil || got["option_id"] != nil {
+		t.Fatal("flattened correction was changed or not projected", got)
+	}
+	// The subsequent observed repair already had correction nested, but omitted
+	// supplied. Its value is an exact source fact, not a semantic model decision.
+	delete(got["correction"].(map[string]any), "supplied")
+	_ = normalizeReviewShape(out, extraction, false)
+	if got["correction"].(map[string]any)["supplied"] != true || got["explanation"].(map[string]any)["supplied"] != false {
+		t.Fatal("source presence was not retained independently", got)
+	}
+}
+func TestReviewComponentShapeNegative(t *testing.T) {
+	extraction := &CanonicalExtraction{Claims: []CanonicalClaim{{ID: "c1", Corrections: []AnswerSpan{{4, 9, "opens"}}}}}
+	for _, row := range []map[string]any{
+		{"claim_id": "unknown", "status": "accepted", "option_id": "r1", "explanation": map[string]any{}},
+		{"claim_id": "c1", "status": "accepted", "option_id": "r1"},
+		{"claim_id": "c1", "status": "accepted", "option_id": "r1", "correction": nil, "explanation": map[string]any{}},
+	} {
+		before := reviewClone(row)
+		_ = normalizeReviewShape(map[string]any{"decisions": []any{row}}, extraction, false)
+		if !reflect.DeepEqual(row["correction"], before["correction"]) || row["status"] != "accepted" || row["option_id"] != "r1" {
+			t.Fatal("ambiguous or unknown correction was fabricated", row)
+		}
+	}
+	component := map[string]any{"supplied": false, "status": "rejected", "unknown_semantics": "retain", "additional_assertions": []any{"retain actual assertions"}}
+	row := map[string]any{"claim_id": "c1", "correction": component, "status": "accepted", "option_id": "conflicting"}
+	_ = normalizeReviewShape(map[string]any{"decisions": []any{row}}, extraction, false)
+	if component["supplied"] != false || component["status"] != "rejected" || component["unknown_semantics"] != "retain" || !reflect.DeepEqual(component["additional_assertions"], []any{"retain actual assertions"}) || row["option_id"] != "conflicting" {
+		t.Fatal("explicit component or unknown substantive data was overwritten", row)
+	}
+}

@@ -14,6 +14,12 @@ func normalizeReviewShape(value any, extraction *CanonicalExtraction, noAnswer b
 	if !ok {
 		return value
 	}
+	claims := map[string]CanonicalClaim{}
+	if extraction != nil {
+		for _, claim := range extraction.Claims {
+			claims[claim.ID] = claim
+		}
+	}
 	if root["schema_version"] == nil {
 		root["schema_version"] = "2.0.0"
 	}
@@ -69,6 +75,10 @@ func normalizeReviewShape(value any, extraction *CanonicalExtraction, noAnswer b
 		if rows, ok := decisions["decisions"].([]any); ok {
 			for _, value := range rows {
 				if row, ok := value.(map[string]any); ok {
+					id, _ := row["claim_id"].(string)
+					if claim, known := claims[id]; known {
+						normalizeReviewComponents(row, claim)
+					}
 					if decision, ok := row["decision"].(string); ok && decision != "duplicate" {
 						if _, exists := row["duplicate_of_claim_id"]; !exists {
 							row["duplicate_of_claim_id"] = nil
@@ -95,6 +105,37 @@ func normalizeReviewShape(value any, extraction *CanonicalExtraction, noAnswer b
 	}
 	return root
 }
+func normalizeReviewComponents(row map[string]any, claim CanonicalClaim) {
+	// Some replies flatten the correction beside a separately nested explanation.
+	// Move only that unambiguous shape; do not replace an explicit component.
+	if _, exists := row["correction"]; !exists && len(claim.Corrections) > 0 {
+		_, option := row["option_id"]
+		_, status := row["status"].(string)
+		if option && status && row["explanation"] != nil {
+			correction := map[string]any{}
+			for _, field := range []string{"supplied", "option_id", "satisfied_proposition_ids", "violated_proposition_ids", "satisfied_propositions", "violated_propositions", "status", "support_evidence_ids", "unresolved_reason", "additional_assertions"} {
+				if value, exists := row[field]; exists {
+					correction[field] = value
+					delete(row, field)
+				}
+			}
+			row["correction"] = correction
+		}
+	}
+	for name, spans := range map[string][]AnswerSpan{"correction": claim.Corrections, "explanation": claim.Explanations} {
+		if component, ok := row[name].(map[string]any); ok {
+			if _, exists := component["supplied"]; !exists {
+				component["supplied"] = len(spans) > 0
+			}
+			if name == "correction" {
+				if _, exists := component["additional_assertions"]; !exists {
+					component["additional_assertions"] = []any{}
+				}
+			}
+		}
+	}
+}
+
 func admitReview(raw []byte, r ReviewRun, f ReviewFrozen) (map[string]any, error) {
 	var out map[string]any
 	if e := json.Unmarshal(raw, &out); e != nil {
