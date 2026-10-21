@@ -44,15 +44,21 @@ func observeLocalReview(t *testing.T, purpose, mode, statement, expected, refere
 	}
 	_, _, e = f.s.Store.PutConfiguration(ctx, mustJSON(c), uuid.NewString(), rev)
 	requireListening(t, e)
-	if mode == "rationale-key" {
+	{
+		// Independently authored contextual rubric: the valid-key cases explicitly
+		// concern this present-simple schedule, not every English tense or verb.
 		doc, err := f.s.Store.ReadDocument(ctx, f.id)
 		requireListening(t, err)
 		var key map[string]any
 		requireListening(t, json.Unmarshal(doc.Payload, &key))
 		u := key["units"].([]any)[0].(map[string]any)
-		u["rationale"] = "Every English verb always ends in s."
+		rule := "For this present-simple schedule, the third-person singular subject café takes the finite verb opens."
+		if mode == "rationale-key" {
+			rule = "Every English verb always ends in s."
+		}
+		u["rationale"] = rule
 		for _, v := range u["rationale_required_propositions"].([]any) {
-			v.(map[string]any)["description"] = "Every English verb always ends in s."
+			v.(map[string]any)["description"] = rule
 		}
 		key["case_version_id"] = uuid.NewString()
 		content := map[string]any{}
@@ -65,7 +71,7 @@ func observeLocalReview(t *testing.T, purpose, mode, statement, expected, refere
 		tx, err := beginWrite(ctx, f.s.Store)
 		requireListening(t, err)
 		defer tx.Rollback(ctx)
-		f.id, err = f.s.Store.publishListeningCase(ctx, tx, source, map[string]any{"detection": true, "correction": true, "classification": false, "explanation": false}, "Constructed rationale defect", "monologue")
+		f.id, err = f.s.Store.publishListeningCase(ctx, tx, source, map[string]any{"detection": true, "correction": true, "classification": false, "explanation": false}, "Independent contextual agreement case", "monologue")
 		requireListening(t, err)
 		requireListening(t, tx.Commit(ctx))
 		f.sha = key["case_sha256"].(string)
@@ -154,6 +160,42 @@ func observeLocalReview(t *testing.T, purpose, mode, statement, expected, refere
 	requireListening(t, os.WriteFile(filepath.Join(dir, "output.json"), mustJSON(output), 0600))
 	if r.Status != "complete" || expected != "supported_or_insufficient" && r.Resolution != expected || expected == "supported_or_insufficient" && r.Resolution != "supported" && r.Resolution != "insufficient_evidence" {
 		t.Fatalf("expected %s, actual %s", expected, r.Resolution)
+	}
+	// Independent authored counterexamples: an accepted repair must change the
+	// defective propositions, and the literal false quote must be unsupported.
+	// Correct numeric grades alone cannot establish correct feedback/key content.
+	if mode == "rationale-key" {
+		proposal := output["key_repair"].(map[string]any)
+		for _, value := range proposal["proposed_units"].([]any) {
+			u := value.(map[string]any)
+			props := u["rationale_required_propositions"].([]any)
+			if len(props) == 0 {
+				t.Fatal("repaired rationale has no actual required proposition")
+			}
+			for _, v := range props {
+				if strings.EqualFold(strings.TrimSpace(v.(map[string]any)["description"].(string)), "Every English verb always ends in s.") {
+					t.Fatal("key repair retained the exact false rationale proposition")
+				}
+			}
+		}
+	}
+	if mode == "false-reason" {
+		unsupported := false
+		for _, value := range output["decisions"].(map[string]any)["decisions"].([]any) {
+			explanation := value.(map[string]any)["explanation"].(map[string]any)
+			for _, assertion := range explanation["additional_assertions"].([]any) {
+				a := assertion.(map[string]any)
+				if strings.Contains(a["exact_text"].(string), "every English verb always ends in s") {
+					if a["judgment"] != "unsupported" {
+						t.Fatal("false universal explanation assertion is not unsupported", a)
+					}
+					unsupported = true
+				}
+			}
+		}
+		if !unsupported {
+			t.Fatal("missing source-quoted unsupported universal explanation")
+		}
 	}
 	if strings.TrimSpace(output["reason"].(string)) == "" {
 		t.Fatal("missing actual contextual explanation")

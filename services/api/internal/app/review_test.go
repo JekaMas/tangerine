@@ -407,3 +407,57 @@ func TestReviewDecoderNegative(t *testing.T) {
 		}
 	}
 }
+
+func TestReviewMetadataPositive(t *testing.T) {
+	k, p, _ := reviewKeyFixture(t)
+	unit := p["proposed_units"].([]any)[0].(map[string]any)
+	before := reviewClone(unit)
+	for _, field := range []string{"source", "context_evidence", "audio_intervals", "verification", "evidence_ids", "difficulty_evidence_ref"} {
+		unit[field] = k["units"].([]any)[0].(map[string]any)[field]
+	}
+	delete(p, "reason")
+	out := normalizeReviewShape(map[string]any{"resolution": "key_defect", "reason": "The supplied rationale needs clarification.", "key_repair": p}, nil).(map[string]any)
+	got := out["key_repair"].(map[string]any)
+	if got["reason"] != "The supplied rationale needs clarification." || !reflect.DeepEqual(got["proposed_units"].([]any)[0], before) {
+		t.Fatal(got)
+	}
+}
+func TestReviewMetadataNegative(t *testing.T) {
+	_, p, _ := reviewKeyFixture(t)
+	u := p["proposed_units"].([]any)[0].(map[string]any)
+	u["unknown_semantic_override"] = "unsupported"
+	out := normalizeReviewShape(map[string]any{"resolution": "key_defect", "reason": "Actual root reason.", "key_repair": p}, nil).(map[string]any)
+	if out["key_repair"].(map[string]any)["proposed_units"].([]any)[0].(map[string]any)["unknown_semantic_override"] != "unsupported" {
+		t.Fatal("unknown substantive data silently discarded")
+	}
+}
+func TestReviewContextEvidencePositive(t *testing.T) {
+	r, f, o := reviewOutputFixture(t)
+	u := f.Key["units"].([]any)[0].(map[string]any)
+	u["realization"].(map[string]any)["mode"] = "textual"
+	u["context_evidence"] = []any{map[string]any{"evidence_hash": strings.Repeat("a", 64)}}
+	j := o["unit_judgments"].([]any)[0].(map[string]any)
+	j["confirmation"] = "supported"
+	j["evidence_ids"] = []any{strings.Repeat("a", 64)}
+	if _, e := admitReview(reviewBytes(o), r, f); e != nil {
+		t.Fatal(e)
+	}
+}
+func TestReviewContextEvidenceNegative(t *testing.T) {
+	for _, mode := range []string{"textual", "phonemic"} {
+		r, f, o := reviewOutputFixture(t)
+		u := f.Key["units"].([]any)[0].(map[string]any)
+		u["realization"].(map[string]any)["mode"] = mode
+		u["context_evidence"] = []any{map[string]any{"evidence_hash": strings.Repeat("a", 64)}}
+		id := strings.Repeat("a", 64)
+		if mode == "textual" {
+			id = strings.Repeat("b", 64)
+		}
+		j := o["unit_judgments"].([]any)[0].(map[string]any)
+		j["confirmation"] = "supported"
+		j["evidence_ids"] = []any{id}
+		if _, e := admitReview(reviewBytes(o), r, f); e == nil {
+			t.Fatal("unknown or acoustic context reference accepted", mode)
+		}
+	}
+}

@@ -20,6 +20,22 @@ func normalizeReviewShape(value any, extraction *CanonicalExtraction) any {
 	if root["resolution"] != "key_defect" && root["key_repair"] == nil {
 		root["key_repair"] = nil
 	}
+	if repair, ok := root["key_repair"].(map[string]any); ok {
+		if reason, _ := repair["reason"].(string); strings.TrimSpace(reason) == "" {
+			repair["reason"] = root["reason"]
+		}
+		if units, ok := repair["proposed_units"].([]any); ok {
+			for _, value := range units {
+				if unit, ok := value.(map[string]any); ok {
+					// These are projected from the actual saved key/audio, never
+					// controlled by a copied model envelope. Raw output is retained.
+					for _, field := range []string{"audio_intervals", "context_evidence", "source", "verification", "evidence_ids", "difficulty_evidence_ref"} {
+						delete(unit, field)
+					}
+				}
+			}
+		}
+	}
 	if rows, ok := root["decisions"].([]any); ok {
 		root["decisions"] = map[string]any{"schema_version": "1.0.0", "decisions": rows}
 	}
@@ -59,9 +75,22 @@ func admitReview(raw []byte, r ReviewRun, f ReviewFrozen) (map[string]any, error
 			return nil, reviewInvalid("Judge each actual base unit exactly once using registered taxonomy IDs.")
 		}
 		seen[id] = true
+		textual := u["realization"].(map[string]any)["mode"] == "textual" || u["realization"].(map[string]any)["mode"] == "text"
+		contextEvidence := map[string]bool{}
+		if textual {
+			if records, ok := u["context_evidence"].([]any); ok {
+				for _, value := range records {
+					if record, ok := value.(map[string]any); ok {
+						if hash, ok := record["evidence_hash"].(string); ok && hash != "" {
+							contextEvidence[hash] = true
+						}
+					}
+				}
+			}
+		}
 		for _, id := range j["evidence_ids"].([]any) {
-			if !evidence[id.(string)] {
-				return nil, reviewInvalid("Use actual supplied evidence IDs only.")
+			if !evidence[id.(string)] && !contextEvidence[id.(string)] {
+				return nil, reviewInvalid("Use supplied evidence IDs, or this textual unit's actual embedded context evidence_hash; text is not an acoustic observation.")
 			}
 		}
 		if u["realization"].(map[string]any)["mode"] != "textual" && u["realization"].(map[string]any)["mode"] != "text" && j["confirmation"] == "supported" && len(j["evidence_ids"].([]any)) == 0 {

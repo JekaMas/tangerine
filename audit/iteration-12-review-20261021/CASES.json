@@ -21,22 +21,22 @@
       "polarity": "positive",
       "scenario": "I12-01 packet 1",
       "fixture_id": "iteration12-I12-01-P1-S1",
-      "test_id": "tangerine.local/api/internal/app::TestReviewDecoderPositive",
+      "test_id": "tangerine.local/api/internal/app::TestReviewMetadataPositive",
       "mode": "declared_behavior",
-      "action": "Execute TestReviewDecoderPositive through services/api/internal/app/review_input.go",
+      "action": "Execute TestReviewMetadataPositive through services/api/internal/app/review_input.go",
       "initial_state": {
         "origin": "Independent authored literal fixture",
         "setup": "Each polarity uses the exact initial source/state in its executable fixture body and shared fixture library."
       },
       "input": {
-        "exact_test": "TestReviewDecoderPositive",
-        "literal_executable_fixture": "func TestReviewDecoderPositive(t *testing.T) {\n\tp := provider.Profile{Provider: \"local_responses\", ResponseFormat: \"json_object\"}\n\tf, e := inferenceOutputFormat(p, json.RawMessage(`{\"unusable\": \"full grammar\"}`))\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tgot := f.(map[string]any)\n\tif got[\"type\"] != \"json_schema\" || string(got[\"schema\"].(json.RawMessage)) != `{\"type\":\"object\"}` {\n\t\tt.Fatal(got)\n\t}\n\tp.Provider = \"openai\"\n\tf, e = inferenceOutputFormat(p, nil)\n\tif e != nil || !reflect.DeepEqual(f, map[string]any{\"type\": \"json_object\"}) {\n\t\tt.Fatal(f, e)\n\t}\n\tp.ResponseFormat = \"text\"\n\tp.StructuredOutput = true\n\tif f, e = inferenceOutputFormat(p, nil); e != nil || f != nil {\n\t\tt.Fatal(\"explicit plain mode lost\", f, e)\n\t}\n}\n",
+        "exact_test": "TestReviewMetadataPositive",
+        "literal_executable_fixture": "func TestReviewMetadataPositive(t *testing.T) {\n\tk, p, _ := reviewKeyFixture(t)\n\tunit := p[\"proposed_units\"].([]any)[0].(map[string]any)\n\tbefore := reviewClone(unit)\n\tfor _, field := range []string{\"source\", \"context_evidence\", \"audio_intervals\", \"verification\", \"evidence_ids\", \"difficulty_evidence_ref\"} {\n\t\tunit[field] = k[\"units\"].([]any)[0].(map[string]any)[field]\n\t}\n\tdelete(p, \"reason\")\n\tout := normalizeReviewShape(map[string]any{\"resolution\": \"key_defect\", \"reason\": \"The supplied rationale needs clarification.\", \"key_repair\": p}, nil).(map[string]any)\n\tgot := out[\"key_repair\"].(map[string]any)\n\tif got[\"reason\"] != \"The supplied rationale needs clarification.\" || !reflect.DeepEqual(got[\"proposed_units\"].([]any)[0], before) {\n\t\tt.Fatal(got)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestReviewDecoderPositive(t *testing.T) {\n\tp := provider.Profile{Provider: \"local_responses\", ResponseFormat: \"json_object\"}\n\tf, e := inferenceOutputFormat(p, json.RawMessage(`{\"unusable\": \"full grammar\"}`))\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tgot := f.(map[string]any)\n\tif got[\"type\"] != \"json_schema\" || string(got[\"schema\"].(json.RawMessage)) != `{\"type\":\"object\"}` {\n\t\tt.Fatal(got)\n\t}\n\tp.Provider = \"openai\"\n\tf, e = inferenceOutputFormat(p, nil)\n\tif e != nil || !reflect.DeepEqual(f, map[string]any{\"type\": \"json_object\"}) {\n\t\tt.Fatal(f, e)\n\t}\n\tp.ResponseFormat = \"text\"\n\tp.StructuredOutput = true\n\tif f, e = inferenceOutputFormat(p, nil); e != nil || f != nil {\n\t\tt.Fatal(\"explicit plain mode lost\", f, e)\n\t}\n}\n",
+        "independent_literal_assertions": "func TestReviewMetadataPositive(t *testing.T) {\n\tk, p, _ := reviewKeyFixture(t)\n\tunit := p[\"proposed_units\"].([]any)[0].(map[string]any)\n\tbefore := reviewClone(unit)\n\tfor _, field := range []string{\"source\", \"context_evidence\", \"audio_intervals\", \"verification\", \"evidence_ids\", \"difficulty_evidence_ref\"} {\n\t\tunit[field] = k[\"units\"].([]any)[0].(map[string]any)[field]\n\t}\n\tdelete(p, \"reason\")\n\tout := normalizeReviewShape(map[string]any{\"resolution\": \"key_defect\", \"reason\": \"The supplied rationale needs clarification.\", \"key_repair\": p}, nil).(map[string]any)\n\tgot := out[\"key_repair\"].(map[string]any)\n\tif got[\"reason\"] != \"The supplied rationale needs clarification.\" || !reflect.DeepEqual(got[\"proposed_units\"].([]any)[0], before) {\n\t\tt.Fatal(got)\n\t}\n}\n",
         "oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy."
       },
       "independent_oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy.",
@@ -48,22 +48,22 @@
       "polarity": "negative",
       "scenario": "I12-01 packet 1",
       "fixture_id": "iteration12-I12-01-P1-S1",
-      "test_id": "tangerine.local/api/internal/app::TestReviewDecoderNegative",
+      "test_id": "tangerine.local/api/internal/app::TestReviewMetadataNegative",
       "mode": "declared_behavior",
-      "action": "Execute TestReviewDecoderNegative through services/api/internal/app/review_input.go",
+      "action": "Execute TestReviewMetadataNegative through services/api/internal/app/review_input.go",
       "initial_state": {
         "origin": "Independent authored literal fixture",
         "setup": "Each polarity uses the exact initial source/state in its executable fixture body and shared fixture library."
       },
       "input": {
-        "exact_test": "TestReviewDecoderNegative",
-        "literal_executable_fixture": "func TestReviewDecoderNegative(t *testing.T) {\n\tfor _, p := range []provider.Profile{{Provider: \"openai_chatgpt\", ResponseFormat: \"json_object\"}, {Provider: \"local_responses\", ResponseFormat: \"made-up-mode\"}} {\n\t\tif f, e := inferenceOutputFormat(p, nil); e == nil || f != nil {\n\t\t\tt.Fatal(\"unsupported decoder accepted\", f, e)\n\t\t}\n\t}\n}\n",
+        "exact_test": "TestReviewMetadataNegative",
+        "literal_executable_fixture": "func TestReviewMetadataNegative(t *testing.T) {\n\t_, p, _ := reviewKeyFixture(t)\n\tu := p[\"proposed_units\"].([]any)[0].(map[string]any)\n\tu[\"unknown_semantic_override\"] = \"unsupported\"\n\tout := normalizeReviewShape(map[string]any{\"resolution\": \"key_defect\", \"reason\": \"Actual root reason.\", \"key_repair\": p}, nil).(map[string]any)\n\tif out[\"key_repair\"].(map[string]any)[\"proposed_units\"].([]any)[0].(map[string]any)[\"unknown_semantic_override\"] != \"unsupported\" {\n\t\tt.Fatal(\"unknown substantive data silently discarded\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestReviewDecoderNegative(t *testing.T) {\n\tfor _, p := range []provider.Profile{{Provider: \"openai_chatgpt\", ResponseFormat: \"json_object\"}, {Provider: \"local_responses\", ResponseFormat: \"made-up-mode\"}} {\n\t\tif f, e := inferenceOutputFormat(p, nil); e == nil || f != nil {\n\t\t\tt.Fatal(\"unsupported decoder accepted\", f, e)\n\t\t}\n\t}\n}\n",
+        "independent_literal_assertions": "func TestReviewMetadataNegative(t *testing.T) {\n\t_, p, _ := reviewKeyFixture(t)\n\tu := p[\"proposed_units\"].([]any)[0].(map[string]any)\n\tu[\"unknown_semantic_override\"] = \"unsupported\"\n\tout := normalizeReviewShape(map[string]any{\"resolution\": \"key_defect\", \"reason\": \"Actual root reason.\", \"key_repair\": p}, nil).(map[string]any)\n\tif out[\"key_repair\"].(map[string]any)[\"proposed_units\"].([]any)[0].(map[string]any)[\"unknown_semantic_override\"] != \"unsupported\" {\n\t\tt.Fatal(\"unknown substantive data silently discarded\")\n\t}\n}\n",
         "oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy."
       },
       "independent_oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy.",
@@ -75,22 +75,49 @@
       "polarity": "positive",
       "scenario": "I12-01 packet 2",
       "fixture_id": "iteration12-I12-01-P1-S2",
-      "test_id": "tangerine.local/api/internal/app::TestReviewSupportedPositive",
+      "test_id": "tangerine.local/api/internal/app::TestReviewDecoderPositive",
       "mode": "declared_behavior",
-      "action": "Execute TestReviewSupportedPositive through services/api/internal/app/review_input.go",
+      "action": "Execute TestReviewDecoderPositive through services/api/internal/app/review_input.go",
       "initial_state": {
         "origin": "Independent authored literal fixture",
         "setup": "Each polarity uses the exact initial source/state in its executable fixture body and shared fixture library."
       },
       "input": {
-        "exact_test": "TestReviewSupportedPositive",
-        "literal_executable_fixture": "func TestReviewSupportedPositive(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\tif _, e := admitReview(reviewBytes(o), r, f); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "exact_test": "TestReviewDecoderPositive",
+        "literal_executable_fixture": "func TestReviewDecoderPositive(t *testing.T) {\n\tp := provider.Profile{Provider: \"local_responses\", ResponseFormat: \"json_object\"}\n\tf, e := inferenceOutputFormat(p, json.RawMessage(`{\"unusable\": \"full grammar\"}`))\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tgot := f.(map[string]any)\n\tif got[\"type\"] != \"json_schema\" || string(got[\"schema\"].(json.RawMessage)) != `{\"type\":\"object\"}` {\n\t\tt.Fatal(got)\n\t}\n\tp.Provider = \"openai\"\n\tf, e = inferenceOutputFormat(p, nil)\n\tif e != nil || !reflect.DeepEqual(f, map[string]any{\"type\": \"json_object\"}) {\n\t\tt.Fatal(f, e)\n\t}\n\tp.ResponseFormat = \"text\"\n\tp.StructuredOutput = true\n\tif f, e = inferenceOutputFormat(p, nil); e != nil || f != nil {\n\t\tt.Fatal(\"explicit plain mode lost\", f, e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestReviewSupportedPositive(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\tif _, e := admitReview(reviewBytes(o), r, f); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "independent_literal_assertions": "func TestReviewDecoderPositive(t *testing.T) {\n\tp := provider.Profile{Provider: \"local_responses\", ResponseFormat: \"json_object\"}\n\tf, e := inferenceOutputFormat(p, json.RawMessage(`{\"unusable\": \"full grammar\"}`))\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tgot := f.(map[string]any)\n\tif got[\"type\"] != \"json_schema\" || string(got[\"schema\"].(json.RawMessage)) != `{\"type\":\"object\"}` {\n\t\tt.Fatal(got)\n\t}\n\tp.Provider = \"openai\"\n\tf, e = inferenceOutputFormat(p, nil)\n\tif e != nil || !reflect.DeepEqual(f, map[string]any{\"type\": \"json_object\"}) {\n\t\tt.Fatal(f, e)\n\t}\n\tp.ResponseFormat = \"text\"\n\tp.StructuredOutput = true\n\tif f, e = inferenceOutputFormat(p, nil); e != nil || f != nil {\n\t\tt.Fatal(\"explicit plain mode lost\", f, e)\n\t}\n}\n",
+        "oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy."
+      },
+      "independent_oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I12-01.P1.S2.NEGATIVE",
+      "property_id": "I12-01.P1",
+      "polarity": "negative",
+      "scenario": "I12-01 packet 2",
+      "fixture_id": "iteration12-I12-01-P1-S2",
+      "test_id": "tangerine.local/api/internal/app::TestReviewDecoderNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestReviewDecoderNegative through services/api/internal/app/review_input.go",
+      "initial_state": {
+        "origin": "Independent authored literal fixture",
+        "setup": "Each polarity uses the exact initial source/state in its executable fixture body and shared fixture library."
+      },
+      "input": {
+        "exact_test": "TestReviewDecoderNegative",
+        "literal_executable_fixture": "func TestReviewDecoderNegative(t *testing.T) {\n\tfor _, p := range []provider.Profile{{Provider: \"openai_chatgpt\", ResponseFormat: \"json_object\"}, {Provider: \"local_responses\", ResponseFormat: \"made-up-mode\"}} {\n\t\tif f, e := inferenceOutputFormat(p, nil); e == nil || f != nil {\n\t\t\tt.Fatal(\"unsupported decoder accepted\", f, e)\n\t\t}\n\t}\n}\n\n",
+        "fixture_source_path": "services/api/internal/app/review_test.go",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
+        "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestReviewDecoderNegative(t *testing.T) {\n\tfor _, p := range []provider.Profile{{Provider: \"openai_chatgpt\", ResponseFormat: \"json_object\"}, {Provider: \"local_responses\", ResponseFormat: \"made-up-mode\"}} {\n\t\tif f, e := inferenceOutputFormat(p, nil); e == nil || f != nil {\n\t\t\tt.Fatal(\"unsupported decoder accepted\", f, e)\n\t\t}\n\t}\n}\n\n",
         "oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy."
       },
       "independent_oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy.",
@@ -102,22 +129,22 @@
       "polarity": "positive",
       "scenario": "I12-01 packet 3",
       "fixture_id": "iteration12-I12-01-P1-S3",
-      "test_id": "tangerine.local/api/internal/app::TestReviewCaseInputPositive",
+      "test_id": "tangerine.local/api/internal/app::TestReviewSupportedPositive",
       "mode": "declared_behavior",
-      "action": "Execute TestReviewCaseInputPositive through services/api/internal/app/review_input.go",
+      "action": "Execute TestReviewSupportedPositive through services/api/internal/app/review_input.go",
       "initial_state": {
         "origin": "Independent authored literal fixture",
         "setup": "Each polarity uses the exact initial source/state in its executable fixture body and shared fixture library."
       },
       "input": {
-        "exact_test": "TestReviewCaseInputPositive",
-        "literal_executable_fixture": "func TestReviewCaseInputPositive(t *testing.T) {\n\tr, f, _ := reviewOutputFixture(t)\n\tentry := map[string]any{\"id\": \"grammar.verbs.subject_verb_agreement\", \"label\": \"Agreement\", \"definition\": \"Subject and verb agreement.\"}\n\tother := map[string]any{\"id\": \"grammar.articles.usage\", \"label\": \"Articles\", \"definition\": \"Article usage.\"}\n\tf.Taxonomy = map[string]any{\"taxonomy_sha256\": strings.Repeat(\"a\", 64), \"entries\": []any{entry, other}}\n\tf.Resources.Taxonomy = []any{entry, other}\n\tinput, parts := reviewInput(r, f)\n\tif len(input[\"taxonomy_context\"].(map[string]any)[\"entries\"].([]any)) != 1 || len(parts[\"taxonomy\"].(map[string]any)[\"registered_catalog\"].([]any)) != 2 {\n\t\tt.Fatal(\"lost selected rules or full catalogue\", input, parts)\n\t}\n\tif input[\"purpose\"] != \"case_review\" || input[\"candidate\"] == nil || input[\"answer\"] != nil || input[\"extraction\"] != nil || input[\"prior_decisions\"] != nil || parts[\"canonical_script\"] == nil {\n\t\tt.Fatal(input)\n\t}\n}\n",
+        "exact_test": "TestReviewSupportedPositive",
+        "literal_executable_fixture": "func TestReviewSupportedPositive(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\tif _, e := admitReview(reviewBytes(o), r, f); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestReviewCaseInputPositive(t *testing.T) {\n\tr, f, _ := reviewOutputFixture(t)\n\tentry := map[string]any{\"id\": \"grammar.verbs.subject_verb_agreement\", \"label\": \"Agreement\", \"definition\": \"Subject and verb agreement.\"}\n\tother := map[string]any{\"id\": \"grammar.articles.usage\", \"label\": \"Articles\", \"definition\": \"Article usage.\"}\n\tf.Taxonomy = map[string]any{\"taxonomy_sha256\": strings.Repeat(\"a\", 64), \"entries\": []any{entry, other}}\n\tf.Resources.Taxonomy = []any{entry, other}\n\tinput, parts := reviewInput(r, f)\n\tif len(input[\"taxonomy_context\"].(map[string]any)[\"entries\"].([]any)) != 1 || len(parts[\"taxonomy\"].(map[string]any)[\"registered_catalog\"].([]any)) != 2 {\n\t\tt.Fatal(\"lost selected rules or full catalogue\", input, parts)\n\t}\n\tif input[\"purpose\"] != \"case_review\" || input[\"candidate\"] == nil || input[\"answer\"] != nil || input[\"extraction\"] != nil || input[\"prior_decisions\"] != nil || parts[\"canonical_script\"] == nil {\n\t\tt.Fatal(input)\n\t}\n}\n",
+        "independent_literal_assertions": "func TestReviewSupportedPositive(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\tif _, e := admitReview(reviewBytes(o), r, f); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy."
       },
       "independent_oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy.",
@@ -129,22 +156,22 @@
       "polarity": "positive",
       "scenario": "I12-01 packet 4",
       "fixture_id": "iteration12-I12-01-P1-S4",
-      "test_id": "tangerine.local/api/internal/app::TestReviewUnknownAcousticPositive",
+      "test_id": "tangerine.local/api/internal/app::TestReviewCaseInputPositive",
       "mode": "declared_behavior",
-      "action": "Execute TestReviewUnknownAcousticPositive through services/api/internal/app/review_input.go",
+      "action": "Execute TestReviewCaseInputPositive through services/api/internal/app/review_input.go",
       "initial_state": {
         "origin": "Independent authored literal fixture",
         "setup": "Each polarity uses the exact initial source/state in its executable fixture body and shared fixture library."
       },
       "input": {
-        "exact_test": "TestReviewUnknownAcousticPositive",
-        "literal_executable_fixture": "func TestReviewUnknownAcousticPositive(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\tf.Key[\"units\"].([]any)[0].(map[string]any)[\"realization\"].(map[string]any)[\"mode\"] = \"phonemic\"\n\to[\"unit_judgments\"].([]any)[0].(map[string]any)[\"confirmation\"] = \"unknown\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "exact_test": "TestReviewCaseInputPositive",
+        "literal_executable_fixture": "func TestReviewCaseInputPositive(t *testing.T) {\n\tr, f, _ := reviewOutputFixture(t)\n\tentry := map[string]any{\"id\": \"grammar.verbs.subject_verb_agreement\", \"label\": \"Agreement\", \"definition\": \"Subject and verb agreement.\"}\n\tother := map[string]any{\"id\": \"grammar.articles.usage\", \"label\": \"Articles\", \"definition\": \"Article usage.\"}\n\tf.Taxonomy = map[string]any{\"taxonomy_sha256\": strings.Repeat(\"a\", 64), \"entries\": []any{entry, other}}\n\tf.Resources.Taxonomy = []any{entry, other}\n\tinput, parts := reviewInput(r, f)\n\tif len(input[\"taxonomy_context\"].(map[string]any)[\"entries\"].([]any)) != 1 || len(parts[\"taxonomy\"].(map[string]any)[\"registered_catalog\"].([]any)) != 2 {\n\t\tt.Fatal(\"lost selected rules or full catalogue\", input, parts)\n\t}\n\tif input[\"purpose\"] != \"case_review\" || input[\"candidate\"] == nil || input[\"answer\"] != nil || input[\"extraction\"] != nil || input[\"prior_decisions\"] != nil || parts[\"canonical_script\"] == nil {\n\t\tt.Fatal(input)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestReviewUnknownAcousticPositive(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\tf.Key[\"units\"].([]any)[0].(map[string]any)[\"realization\"].(map[string]any)[\"mode\"] = \"phonemic\"\n\to[\"unit_judgments\"].([]any)[0].(map[string]any)[\"confirmation\"] = \"unknown\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "independent_literal_assertions": "func TestReviewCaseInputPositive(t *testing.T) {\n\tr, f, _ := reviewOutputFixture(t)\n\tentry := map[string]any{\"id\": \"grammar.verbs.subject_verb_agreement\", \"label\": \"Agreement\", \"definition\": \"Subject and verb agreement.\"}\n\tother := map[string]any{\"id\": \"grammar.articles.usage\", \"label\": \"Articles\", \"definition\": \"Article usage.\"}\n\tf.Taxonomy = map[string]any{\"taxonomy_sha256\": strings.Repeat(\"a\", 64), \"entries\": []any{entry, other}}\n\tf.Resources.Taxonomy = []any{entry, other}\n\tinput, parts := reviewInput(r, f)\n\tif len(input[\"taxonomy_context\"].(map[string]any)[\"entries\"].([]any)) != 1 || len(parts[\"taxonomy\"].(map[string]any)[\"registered_catalog\"].([]any)) != 2 {\n\t\tt.Fatal(\"lost selected rules or full catalogue\", input, parts)\n\t}\n\tif input[\"purpose\"] != \"case_review\" || input[\"candidate\"] == nil || input[\"answer\"] != nil || input[\"extraction\"] != nil || input[\"prior_decisions\"] != nil || parts[\"canonical_script\"] == nil {\n\t\tt.Fatal(input)\n\t}\n}\n",
         "oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy."
       },
       "independent_oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy.",
@@ -156,6 +183,33 @@
       "polarity": "positive",
       "scenario": "I12-01 packet 5",
       "fixture_id": "iteration12-I12-01-P1-S5",
+      "test_id": "tangerine.local/api/internal/app::TestReviewUnknownAcousticPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestReviewUnknownAcousticPositive through services/api/internal/app/review_input.go",
+      "initial_state": {
+        "origin": "Independent authored literal fixture",
+        "setup": "Each polarity uses the exact initial source/state in its executable fixture body and shared fixture library."
+      },
+      "input": {
+        "exact_test": "TestReviewUnknownAcousticPositive",
+        "literal_executable_fixture": "func TestReviewUnknownAcousticPositive(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\tf.Key[\"units\"].([]any)[0].(map[string]any)[\"realization\"].(map[string]any)[\"mode\"] = \"phonemic\"\n\to[\"unit_judgments\"].([]any)[0].(map[string]any)[\"confirmation\"] = \"unknown\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/review_test.go",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
+        "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestReviewUnknownAcousticPositive(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\tf.Key[\"units\"].([]any)[0].(map[string]any)[\"realization\"].(map[string]any)[\"mode\"] = \"phonemic\"\n\to[\"unit_judgments\"].([]any)[0].(map[string]any)[\"confirmation\"] = \"unknown\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy."
+      },
+      "independent_oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I12-01.P1.S6.POSITIVE",
+      "property_id": "I12-01.P1",
+      "polarity": "positive",
+      "scenario": "I12-01 packet 6",
+      "fixture_id": "iteration12-I12-01-P1-S6",
       "test_id": "tangerine.local/api/internal/app::TestNativeReviewCasePositive",
       "mode": "declared_behavior",
       "action": "Execute TestNativeReviewCasePositive through services/api/internal/app/review_input.go",
@@ -178,11 +232,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I12-01.P1.S6.POSITIVE",
+      "case_id": "I12-01.P1.S7.POSITIVE",
       "property_id": "I12-01.P1",
       "polarity": "positive",
-      "scenario": "I12-01 packet 6",
-      "fixture_id": "iteration12-I12-01-P1-S6",
+      "scenario": "I12-01 packet 7",
+      "fixture_id": "iteration12-I12-01-P1-S7",
       "test_id": "tangerine.local/api/internal/app::TestNativeReviewCaseDisputePositive",
       "mode": "declared_behavior",
       "action": "Execute TestNativeReviewCaseDisputePositive through services/api/internal/app/review_input.go",
@@ -205,11 +259,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I12-01.P1.S7.POSITIVE",
+      "case_id": "I12-01.P1.S8.POSITIVE",
       "property_id": "I12-01.P1",
       "polarity": "positive",
-      "scenario": "I12-01 packet 7",
-      "fixture_id": "iteration12-I12-01-P1-S7",
+      "scenario": "I12-01 packet 8",
+      "fixture_id": "iteration12-I12-01-P1-S8",
       "test_id": "tangerine.local/api/internal/app::TestReviewDecisionContainerPositive",
       "mode": "declared_behavior",
       "action": "Execute TestReviewDecisionContainerPositive through services/api/internal/app/review_input.go",
@@ -221,7 +275,7 @@
         "exact_test": "TestReviewDecisionContainerPositive",
         "literal_executable_fixture": "func TestReviewDecisionContainerPositive(t *testing.T) {\n\trow := map[string]any{\"claim_id\": \"actual-claim\", \"decision\": \"ignore\"}\n\tfor _, value := range []any{[]any{row}, row, map[string]any{\"decisions\": []any{row}}} {\n\t\tout := normalizeReviewShape(map[string]any{\"resolution\": \"supported\", \"decisions\": value}, nil).(map[string]any)\n\t\td := out[\"decisions\"].(map[string]any)\n\t\tif d[\"schema_version\"] != \"1.0.0\" || d[\"decisions\"].([]any)[0].(map[string]any)[\"claim_id\"] != \"actual-claim\" {\n\t\t\tt.Fatal(out)\n\t\t}\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -232,11 +286,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I12-01.P1.S8.POSITIVE",
+      "case_id": "I12-01.P1.S9.POSITIVE",
       "property_id": "I12-01.P1",
       "polarity": "positive",
-      "scenario": "I12-01 packet 8",
-      "fixture_id": "iteration12-I12-01-P1-S8",
+      "scenario": "I12-01 packet 9",
+      "fixture_id": "iteration12-I12-01-P1-S9",
       "test_id": "tangerine.local/api/internal/app::TestNativeReviewRightsRecoveryPositive",
       "mode": "declared_behavior",
       "action": "Execute TestNativeReviewRightsRecoveryPositive through services/api/internal/app/review_input.go",
@@ -259,11 +313,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I12-01.P1.S9.POSITIVE",
+      "case_id": "I12-01.P1.S10.POSITIVE",
       "property_id": "I12-01.P1",
       "polarity": "positive",
-      "scenario": "I12-01 packet 9",
-      "fixture_id": "iteration12-I12-01-P1-S9",
+      "scenario": "I12-01 packet 10",
+      "fixture_id": "iteration12-I12-01-P1-S10",
       "test_id": "tangerine.local/api/internal/app::TestNativeReviewManifestPositive",
       "mode": "declared_behavior",
       "action": "Execute TestNativeReviewManifestPositive through services/api/internal/app/review_input.go",
@@ -286,11 +340,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I12-01.P1.S2.NEGATIVE",
+      "case_id": "I12-01.P1.S3.NEGATIVE",
       "property_id": "I12-01.P1",
       "polarity": "negative",
-      "scenario": "I12-01 packet 2",
-      "fixture_id": "iteration12-I12-01-P1-S2",
+      "scenario": "I12-01 packet 3",
+      "fixture_id": "iteration12-I12-01-P1-S3",
       "test_id": "tangerine.local/api/internal/app::TestReviewCaseMappingNegative",
       "mode": "declared_behavior",
       "action": "Execute TestReviewCaseMappingNegative through services/api/internal/app/review_input.go",
@@ -302,38 +356,11 @@
         "exact_test": "TestReviewCaseMappingNegative",
         "literal_executable_fixture": "func TestReviewCaseMappingNegative(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\to[\"resolution\"] = \"mapping_defect\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e == nil {\n\t\tt.Fatal(\"case-only mapping fabricated\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
         "independent_literal_assertions": "func TestReviewCaseMappingNegative(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\to[\"resolution\"] = \"mapping_defect\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e == nil {\n\t\tt.Fatal(\"case-only mapping fabricated\")\n\t}\n}\n",
-        "oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy."
-      },
-      "independent_oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy.",
-      "observation_state": "not_run"
-    },
-    {
-      "case_id": "I12-01.P1.S3.NEGATIVE",
-      "property_id": "I12-01.P1",
-      "polarity": "negative",
-      "scenario": "I12-01 packet 3",
-      "fixture_id": "iteration12-I12-01-P1-S3",
-      "test_id": "tangerine.local/api/internal/app::TestReviewInventedAcousticNegative",
-      "mode": "declared_behavior",
-      "action": "Execute TestReviewInventedAcousticNegative through services/api/internal/app/review_input.go",
-      "initial_state": {
-        "origin": "Independent authored literal fixture",
-        "setup": "Each polarity uses the exact initial source/state in its executable fixture body and shared fixture library."
-      },
-      "input": {
-        "exact_test": "TestReviewInventedAcousticNegative",
-        "literal_executable_fixture": "func TestReviewInventedAcousticNegative(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\tf.Key[\"units\"].([]any)[0].(map[string]any)[\"realization\"].(map[string]any)[\"mode\"] = \"phonemic\"\n\to[\"unit_judgments\"].([]any)[0].(map[string]any)[\"confirmation\"] = \"supported\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e == nil {\n\t\tt.Fatal(\"unobserved acoustic fact accepted\")\n\t}\n}\n",
-        "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
-        "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
-      },
-      "expected": {
-        "independent_literal_assertions": "func TestReviewInventedAcousticNegative(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\tf.Key[\"units\"].([]any)[0].(map[string]any)[\"realization\"].(map[string]any)[\"mode\"] = \"phonemic\"\n\to[\"unit_judgments\"].([]any)[0].(map[string]any)[\"confirmation\"] = \"supported\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e == nil {\n\t\tt.Fatal(\"unobserved acoustic fact accepted\")\n\t}\n}\n",
         "oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy."
       },
       "independent_oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy.",
@@ -345,22 +372,22 @@
       "polarity": "negative",
       "scenario": "I12-01 packet 4",
       "fixture_id": "iteration12-I12-01-P1-S4",
-      "test_id": "tangerine.local/api/internal/app::TestReviewMissingUnitNegative",
+      "test_id": "tangerine.local/api/internal/app::TestReviewInventedAcousticNegative",
       "mode": "declared_behavior",
-      "action": "Execute TestReviewMissingUnitNegative through services/api/internal/app/review_input.go",
+      "action": "Execute TestReviewInventedAcousticNegative through services/api/internal/app/review_input.go",
       "initial_state": {
         "origin": "Independent authored literal fixture",
         "setup": "Each polarity uses the exact initial source/state in its executable fixture body and shared fixture library."
       },
       "input": {
-        "exact_test": "TestReviewMissingUnitNegative",
-        "literal_executable_fixture": "func TestReviewMissingUnitNegative(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\to[\"unit_judgments\"] = []any{}\n\tif _, e := admitReview(reviewBytes(o), r, f); e == nil {\n\t\tt.Fatal(\"planned control/error omitted\")\n\t}\n}\n",
+        "exact_test": "TestReviewInventedAcousticNegative",
+        "literal_executable_fixture": "func TestReviewInventedAcousticNegative(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\tf.Key[\"units\"].([]any)[0].(map[string]any)[\"realization\"].(map[string]any)[\"mode\"] = \"phonemic\"\n\to[\"unit_judgments\"].([]any)[0].(map[string]any)[\"confirmation\"] = \"supported\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e == nil {\n\t\tt.Fatal(\"unobserved acoustic fact accepted\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestReviewMissingUnitNegative(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\to[\"unit_judgments\"] = []any{}\n\tif _, e := admitReview(reviewBytes(o), r, f); e == nil {\n\t\tt.Fatal(\"planned control/error omitted\")\n\t}\n}\n",
+        "independent_literal_assertions": "func TestReviewInventedAcousticNegative(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\tf.Key[\"units\"].([]any)[0].(map[string]any)[\"realization\"].(map[string]any)[\"mode\"] = \"phonemic\"\n\to[\"unit_judgments\"].([]any)[0].(map[string]any)[\"confirmation\"] = \"supported\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e == nil {\n\t\tt.Fatal(\"unobserved acoustic fact accepted\")\n\t}\n}\n",
         "oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy."
       },
       "independent_oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy.",
@@ -372,22 +399,22 @@
       "polarity": "negative",
       "scenario": "I12-01 packet 5",
       "fixture_id": "iteration12-I12-01-P1-S5",
-      "test_id": "tangerine.local/api/internal/app::TestReviewUnknownCategoryNegative",
+      "test_id": "tangerine.local/api/internal/app::TestReviewMissingUnitNegative",
       "mode": "declared_behavior",
-      "action": "Execute TestReviewUnknownCategoryNegative through services/api/internal/app/review_input.go",
+      "action": "Execute TestReviewMissingUnitNegative through services/api/internal/app/review_input.go",
       "initial_state": {
         "origin": "Independent authored literal fixture",
         "setup": "Each polarity uses the exact initial source/state in its executable fixture body and shared fixture library."
       },
       "input": {
-        "exact_test": "TestReviewUnknownCategoryNegative",
-        "literal_executable_fixture": "func TestReviewUnknownCategoryNegative(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tp[\"proposed_units\"].([]any)[0].(map[string]any)[\"primary_taxonomy_id\"] = \"invented.category\"\n\tif admitKeyRepair(k, p, tax) == nil {\n\t\tt.Fatal(\"new category invented\")\n\t}\n}\n",
+        "exact_test": "TestReviewMissingUnitNegative",
+        "literal_executable_fixture": "func TestReviewMissingUnitNegative(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\to[\"unit_judgments\"] = []any{}\n\tif _, e := admitReview(reviewBytes(o), r, f); e == nil {\n\t\tt.Fatal(\"planned control/error omitted\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestReviewUnknownCategoryNegative(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tp[\"proposed_units\"].([]any)[0].(map[string]any)[\"primary_taxonomy_id\"] = \"invented.category\"\n\tif admitKeyRepair(k, p, tax) == nil {\n\t\tt.Fatal(\"new category invented\")\n\t}\n}\n",
+        "independent_literal_assertions": "func TestReviewMissingUnitNegative(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\to[\"unit_judgments\"] = []any{}\n\tif _, e := admitReview(reviewBytes(o), r, f); e == nil {\n\t\tt.Fatal(\"planned control/error omitted\")\n\t}\n}\n",
         "oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy."
       },
       "independent_oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy.",
@@ -399,6 +426,33 @@
       "polarity": "negative",
       "scenario": "I12-01 packet 6",
       "fixture_id": "iteration12-I12-01-P1-S6",
+      "test_id": "tangerine.local/api/internal/app::TestReviewUnknownCategoryNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestReviewUnknownCategoryNegative through services/api/internal/app/review_input.go",
+      "initial_state": {
+        "origin": "Independent authored literal fixture",
+        "setup": "Each polarity uses the exact initial source/state in its executable fixture body and shared fixture library."
+      },
+      "input": {
+        "exact_test": "TestReviewUnknownCategoryNegative",
+        "literal_executable_fixture": "func TestReviewUnknownCategoryNegative(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tp[\"proposed_units\"].([]any)[0].(map[string]any)[\"primary_taxonomy_id\"] = \"invented.category\"\n\tif admitKeyRepair(k, p, tax) == nil {\n\t\tt.Fatal(\"new category invented\")\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/review_test.go",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
+        "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestReviewUnknownCategoryNegative(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tp[\"proposed_units\"].([]any)[0].(map[string]any)[\"primary_taxonomy_id\"] = \"invented.category\"\n\tif admitKeyRepair(k, p, tax) == nil {\n\t\tt.Fatal(\"new category invented\")\n\t}\n}\n",
+        "oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy."
+      },
+      "independent_oracle": "The application SHALL freeze the complete selected case/candidate, original text and mutation key, actual relevant taxonomy rules, full category catalogue and evidence, configurable stage model and modality for an explicit optional review or case-only dispute, without a human reviewer, fabricated blind exposure, direct-hearing claim or ordinary-use gate. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I12-01.P1.S7.NEGATIVE",
+      "property_id": "I12-01.P1",
+      "polarity": "negative",
+      "scenario": "I12-01 packet 7",
+      "fixture_id": "iteration12-I12-01-P1-S7",
       "test_id": "tangerine.local/api/internal/app::TestNativeReviewMissingAnswerNegative",
       "mode": "declared_behavior",
       "action": "Execute TestNativeReviewMissingAnswerNegative through services/api/internal/app/review_input.go",
@@ -421,11 +475,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I12-01.P1.S7.NEGATIVE",
+      "case_id": "I12-01.P1.S8.NEGATIVE",
       "property_id": "I12-01.P1",
       "polarity": "negative",
-      "scenario": "I12-01 packet 7",
-      "fixture_id": "iteration12-I12-01-P1-S7",
+      "scenario": "I12-01 packet 8",
+      "fixture_id": "iteration12-I12-01-P1-S8",
       "test_id": "tangerine.local/api/internal/app::TestReviewMissingDecisionMeaningNegative",
       "mode": "declared_behavior",
       "action": "Execute TestReviewMissingDecisionMeaningNegative through services/api/internal/app/review_input.go",
@@ -437,7 +491,7 @@
         "exact_test": "TestReviewMissingDecisionMeaningNegative",
         "literal_executable_fixture": "func TestReviewMissingDecisionMeaningNegative(t *testing.T) {\n\tout := normalizeReviewShape(map[string]any{\"resolution\": \"mapping_defect\", \"decisions\": nil}, nil).(map[string]any)\n\tif out[\"decisions\"] != nil {\n\t\tt.Fatal(\"invented semantic decision\")\n\t}\n}\n\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -448,11 +502,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I12-01.P1.S8.NEGATIVE",
+      "case_id": "I12-01.P1.S9.NEGATIVE",
       "property_id": "I12-01.P1",
       "polarity": "negative",
-      "scenario": "I12-01 packet 8",
-      "fixture_id": "iteration12-I12-01-P1-S8",
+      "scenario": "I12-01 packet 9",
+      "fixture_id": "iteration12-I12-01-P1-S9",
       "test_id": "tangerine.local/api/internal/app::TestNativeReviewRightsNegative",
       "mode": "declared_behavior",
       "action": "Execute TestNativeReviewRightsNegative through services/api/internal/app/review_input.go",
@@ -475,11 +529,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I12-01.P1.S9.NEGATIVE",
+      "case_id": "I12-01.P1.S10.NEGATIVE",
       "property_id": "I12-01.P1",
       "polarity": "negative",
-      "scenario": "I12-01 packet 9",
-      "fixture_id": "iteration12-I12-01-P1-S9",
+      "scenario": "I12-01 packet 10",
+      "fixture_id": "iteration12-I12-01-P1-S10",
       "test_id": "tangerine.local/api/internal/app::TestNativeReviewForeignManifestNegative",
       "mode": "declared_behavior",
       "action": "Execute TestNativeReviewForeignManifestNegative through services/api/internal/app/review_input.go",
@@ -777,22 +831,49 @@
       "polarity": "positive",
       "scenario": "I12-03 packet 1",
       "fixture_id": "iteration12-I12-03-P1-S1",
-      "test_id": "tangerine.local/api/internal/app::TestReviewInsufficientPositive",
+      "test_id": "tangerine.local/api/internal/app::TestReviewContextEvidencePositive",
       "mode": "declared_behavior",
-      "action": "Execute TestReviewInsufficientPositive through services/api/internal/app/review_output.go",
+      "action": "Execute TestReviewContextEvidencePositive through services/api/internal/app/review_output.go",
       "initial_state": {
         "origin": "Independent authored literal fixture",
         "setup": "Each polarity uses the exact initial source/state in its executable fixture body and shared fixture library."
       },
       "input": {
-        "exact_test": "TestReviewInsufficientPositive",
-        "literal_executable_fixture": "func TestReviewInsufficientPositive(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\to[\"resolution\"] = \"insufficient_evidence\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "exact_test": "TestReviewContextEvidencePositive",
+        "literal_executable_fixture": "func TestReviewContextEvidencePositive(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\tu := f.Key[\"units\"].([]any)[0].(map[string]any)\n\tu[\"realization\"].(map[string]any)[\"mode\"] = \"textual\"\n\tu[\"context_evidence\"] = []any{map[string]any{\"evidence_hash\": strings.Repeat(\"a\", 64)}}\n\tj := o[\"unit_judgments\"].([]any)[0].(map[string]any)\n\tj[\"confirmation\"] = \"supported\"\n\tj[\"evidence_ids\"] = []any{strings.Repeat(\"a\", 64)}\n\tif _, e := admitReview(reviewBytes(o), r, f); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestReviewInsufficientPositive(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\to[\"resolution\"] = \"insufficient_evidence\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "independent_literal_assertions": "func TestReviewContextEvidencePositive(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\tu := f.Key[\"units\"].([]any)[0].(map[string]any)\n\tu[\"realization\"].(map[string]any)[\"mode\"] = \"textual\"\n\tu[\"context_evidence\"] = []any{map[string]any{\"evidence_hash\": strings.Repeat(\"a\", 64)}}\n\tj := o[\"unit_judgments\"].([]any)[0].(map[string]any)\n\tj[\"confirmation\"] = \"supported\"\n\tj[\"evidence_ids\"] = []any{strings.Repeat(\"a\", 64)}\n\tif _, e := admitReview(reviewBytes(o), r, f); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "oracle": "The application SHALL admit every real base-unit/control judgment and complete supported mapping revision once; use the saved answer and exact native arithmetic, normalize a known unmet required rubric ID only when a source-quoted rejected assertion already supports it, preserve unknown references and independent optional explanations, and retain the original result on refusal, malformed output or insufficient evidence. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy."
+      },
+      "independent_oracle": "The application SHALL admit every real base-unit/control judgment and complete supported mapping revision once; use the saved answer and exact native arithmetic, normalize a known unmet required rubric ID only when a source-quoted rejected assertion already supports it, preserve unknown references and independent optional explanations, and retain the original result on refusal, malformed output or insufficient evidence. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I12-03.P1.S1.NEGATIVE",
+      "property_id": "I12-03.P1",
+      "polarity": "negative",
+      "scenario": "I12-03 packet 1",
+      "fixture_id": "iteration12-I12-03-P1-S1",
+      "test_id": "tangerine.local/api/internal/app::TestReviewContextEvidenceNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestReviewContextEvidenceNegative through services/api/internal/app/review_output.go",
+      "initial_state": {
+        "origin": "Independent authored literal fixture",
+        "setup": "Each polarity uses the exact initial source/state in its executable fixture body and shared fixture library."
+      },
+      "input": {
+        "exact_test": "TestReviewContextEvidenceNegative",
+        "literal_executable_fixture": "func TestReviewContextEvidenceNegative(t *testing.T) {\n\tfor _, mode := range []string{\"textual\", \"phonemic\"} {\n\t\tr, f, o := reviewOutputFixture(t)\n\t\tu := f.Key[\"units\"].([]any)[0].(map[string]any)\n\t\tu[\"realization\"].(map[string]any)[\"mode\"] = mode\n\t\tu[\"context_evidence\"] = []any{map[string]any{\"evidence_hash\": strings.Repeat(\"a\", 64)}}\n\t\tid := strings.Repeat(\"a\", 64)\n\t\tif mode == \"textual\" {\n\t\t\tid = strings.Repeat(\"b\", 64)\n\t\t}\n\t\tj := o[\"unit_judgments\"].([]any)[0].(map[string]any)\n\t\tj[\"confirmation\"] = \"supported\"\n\t\tj[\"evidence_ids\"] = []any{id}\n\t\tif _, e := admitReview(reviewBytes(o), r, f); e == nil {\n\t\t\tt.Fatal(\"unknown or acoustic context reference accepted\", mode)\n\t\t}\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/review_test.go",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
+        "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestReviewContextEvidenceNegative(t *testing.T) {\n\tfor _, mode := range []string{\"textual\", \"phonemic\"} {\n\t\tr, f, o := reviewOutputFixture(t)\n\t\tu := f.Key[\"units\"].([]any)[0].(map[string]any)\n\t\tu[\"realization\"].(map[string]any)[\"mode\"] = mode\n\t\tu[\"context_evidence\"] = []any{map[string]any{\"evidence_hash\": strings.Repeat(\"a\", 64)}}\n\t\tid := strings.Repeat(\"a\", 64)\n\t\tif mode == \"textual\" {\n\t\t\tid = strings.Repeat(\"b\", 64)\n\t\t}\n\t\tj := o[\"unit_judgments\"].([]any)[0].(map[string]any)\n\t\tj[\"confirmation\"] = \"supported\"\n\t\tj[\"evidence_ids\"] = []any{id}\n\t\tif _, e := admitReview(reviewBytes(o), r, f); e == nil {\n\t\t\tt.Fatal(\"unknown or acoustic context reference accepted\", mode)\n\t\t}\n\t}\n}\n",
         "oracle": "The application SHALL admit every real base-unit/control judgment and complete supported mapping revision once; use the saved answer and exact native arithmetic, normalize a known unmet required rubric ID only when a source-quoted rejected assertion already supports it, preserve unknown references and independent optional explanations, and retain the original result on refusal, malformed output or insufficient evidence. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy."
       },
       "independent_oracle": "The application SHALL admit every real base-unit/control judgment and complete supported mapping revision once; use the saved answer and exact native arithmetic, normalize a known unmet required rubric ID only when a source-quoted rejected assertion already supports it, preserve unknown references and independent optional explanations, and retain the original result on refusal, malformed output or insufficient evidence. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy.",
@@ -804,6 +885,33 @@
       "polarity": "positive",
       "scenario": "I12-03 packet 2",
       "fixture_id": "iteration12-I12-03-P1-S2",
+      "test_id": "tangerine.local/api/internal/app::TestReviewInsufficientPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestReviewInsufficientPositive through services/api/internal/app/review_output.go",
+      "initial_state": {
+        "origin": "Independent authored literal fixture",
+        "setup": "Each polarity uses the exact initial source/state in its executable fixture body and shared fixture library."
+      },
+      "input": {
+        "exact_test": "TestReviewInsufficientPositive",
+        "literal_executable_fixture": "func TestReviewInsufficientPositive(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\to[\"resolution\"] = \"insufficient_evidence\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/review_test.go",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
+        "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestReviewInsufficientPositive(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\to[\"resolution\"] = \"insufficient_evidence\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "oracle": "The application SHALL admit every real base-unit/control judgment and complete supported mapping revision once; use the saved answer and exact native arithmetic, normalize a known unmet required rubric ID only when a source-quoted rejected assertion already supports it, preserve unknown references and independent optional explanations, and retain the original result on refusal, malformed output or insufficient evidence. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy."
+      },
+      "independent_oracle": "The application SHALL admit every real base-unit/control judgment and complete supported mapping revision once; use the saved answer and exact native arithmetic, normalize a known unmet required rubric ID only when a source-quoted rejected assertion already supports it, preserve unknown references and independent optional explanations, and retain the original result on refusal, malformed output or insufficient evidence. Exact literal inputs/assertions and shared source fixtures are retained; protocol fixtures do not prove model accuracy.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I12-03.P1.S3.POSITIVE",
+      "property_id": "I12-03.P1",
+      "polarity": "positive",
+      "scenario": "I12-03 packet 3",
+      "fixture_id": "iteration12-I12-03-P1-S3",
       "test_id": "tangerine.local/api/internal/app::TestNativeReviewMappingPositive",
       "mode": "declared_behavior",
       "action": "Execute TestNativeReviewMappingPositive through services/api/internal/app/review_output.go",
@@ -826,11 +934,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I12-03.P1.S3.POSITIVE",
+      "case_id": "I12-03.P1.S4.POSITIVE",
       "property_id": "I12-03.P1",
       "polarity": "positive",
-      "scenario": "I12-03 packet 3",
-      "fixture_id": "iteration12-I12-03-P1-S3",
+      "scenario": "I12-03 packet 4",
+      "fixture_id": "iteration12-I12-03-P1-S4",
       "test_id": "tangerine.local/api/internal/app::TestNativeReviewReasonPositive",
       "mode": "declared_behavior",
       "action": "Execute TestNativeReviewReasonPositive through services/api/internal/app/review_output.go",
@@ -853,11 +961,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I12-03.P1.S4.POSITIVE",
+      "case_id": "I12-03.P1.S5.POSITIVE",
       "property_id": "I12-03.P1",
       "polarity": "positive",
-      "scenario": "I12-03 packet 4",
-      "fixture_id": "iteration12-I12-03-P1-S4",
+      "scenario": "I12-03 packet 5",
+      "fixture_id": "iteration12-I12-03-P1-S5",
       "test_id": "tangerine.local/api/internal/app::TestReviewRubricReferencePositive",
       "mode": "declared_behavior",
       "action": "Execute TestReviewRubricReferencePositive through services/api/internal/app/review_output.go",
@@ -869,7 +977,7 @@
         "exact_test": "TestReviewRubricReferencePositive",
         "literal_executable_fixture": "func TestReviewRubricReferencePositive(t *testing.T) {\n\tfor _, name := range []string{\"correction\", \"explanation\"} {\n\t\tkey, decisions, c, _ := reviewRubricReferenceFixture(t, name)\n\t\tbefore := reviewClone(c)\n\t\tnormalizeReviewRubricReferences(decisions, key)\n\t\tbefore[\"violated_proposition_ids\"] = []any{}\n\t\tif !reflect.DeepEqual(c, before) {\n\t\t\tt.Fatal(\"rejection/source meaning changed\", name, c)\n\t\t}\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -880,11 +988,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I12-03.P1.S5.POSITIVE",
+      "case_id": "I12-03.P1.S6.POSITIVE",
       "property_id": "I12-03.P1",
       "polarity": "positive",
-      "scenario": "I12-03 packet 5",
-      "fixture_id": "iteration12-I12-03-P1-S5",
+      "scenario": "I12-03 packet 6",
+      "fixture_id": "iteration12-I12-03-P1-S6",
       "test_id": "tangerine.local/api/internal/app::TestNativeReviewRequiredReferencePositive",
       "mode": "declared_behavior",
       "action": "Execute TestNativeReviewRequiredReferencePositive through services/api/internal/app/review_output.go",
@@ -907,11 +1015,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I12-03.P1.S1.NEGATIVE",
+      "case_id": "I12-03.P1.S2.NEGATIVE",
       "property_id": "I12-03.P1",
       "polarity": "negative",
-      "scenario": "I12-03 packet 1",
-      "fixture_id": "iteration12-I12-03-P1-S1",
+      "scenario": "I12-03 packet 2",
+      "fixture_id": "iteration12-I12-03-P1-S2",
       "test_id": "tangerine.local/api/internal/app::TestNativeReviewInsufficientNegative",
       "mode": "declared_behavior",
       "action": "Execute TestNativeReviewInsufficientNegative through services/api/internal/app/review_output.go",
@@ -934,11 +1042,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I12-03.P1.S2.NEGATIVE",
+      "case_id": "I12-03.P1.S3.NEGATIVE",
       "property_id": "I12-03.P1",
       "polarity": "negative",
-      "scenario": "I12-03 packet 2",
-      "fixture_id": "iteration12-I12-03-P1-S2",
+      "scenario": "I12-03 packet 3",
+      "fixture_id": "iteration12-I12-03-P1-S3",
       "test_id": "tangerine.local/api/internal/app::TestNativeReviewMissingUnitNegative",
       "mode": "declared_behavior",
       "action": "Execute TestNativeReviewMissingUnitNegative through services/api/internal/app/review_output.go",
@@ -961,11 +1069,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I12-03.P1.S3.NEGATIVE",
+      "case_id": "I12-03.P1.S4.NEGATIVE",
       "property_id": "I12-03.P1",
       "polarity": "negative",
-      "scenario": "I12-03 packet 3",
-      "fixture_id": "iteration12-I12-03-P1-S3",
+      "scenario": "I12-03 packet 4",
+      "fixture_id": "iteration12-I12-03-P1-S4",
       "test_id": "tangerine.local/api/internal/app::TestNativeReviewFailureNegative",
       "mode": "declared_behavior",
       "action": "Execute TestNativeReviewFailureNegative through services/api/internal/app/review_output.go",
@@ -988,11 +1096,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I12-03.P1.S4.NEGATIVE",
+      "case_id": "I12-03.P1.S5.NEGATIVE",
       "property_id": "I12-03.P1",
       "polarity": "negative",
-      "scenario": "I12-03 packet 4",
-      "fixture_id": "iteration12-I12-03-P1-S4",
+      "scenario": "I12-03 packet 5",
+      "fixture_id": "iteration12-I12-03-P1-S5",
       "test_id": "tangerine.local/api/internal/app::TestReviewRubricReferenceNegative",
       "mode": "declared_behavior",
       "action": "Execute TestReviewRubricReferenceNegative through services/api/internal/app/review_output.go",
@@ -1004,7 +1112,7 @@
         "exact_test": "TestReviewRubricReferenceNegative",
         "literal_executable_fixture": "func TestReviewRubricReferenceNegative(t *testing.T) {\n\tfor _, mode := range []string{\"unknown\", \"no_assertion\", \"accepted\", \"wrong_option\", \"actually_forbidden\"} {\n\t\tkey, decisions, c, id := reviewRubricReferenceFixture(t, \"correction\")\n\t\tswitch mode {\n\t\tcase \"unknown\":\n\t\t\tc[\"violated_proposition_ids\"] = []any{\"unknown-rubric-id\"}\n\t\tcase \"no_assertion\":\n\t\t\tc[\"additional_assertions\"] = []any{}\n\t\tcase \"accepted\":\n\t\t\tc[\"status\"] = \"accepted\"\n\t\tcase \"wrong_option\":\n\t\t\tc[\"option_id\"] = \"different-option\"\n\t\tcase \"actually_forbidden\":\n\t\t\tkey[\"units\"].([]any)[0].(map[string]any)[\"corrections\"].([]any)[0].(map[string]any)[\"forbidden_propositions\"] = []any{map[string]any{\"id\": id, \"description\": \"Actual forbidden proposition.\"}}\n\t\t}\n\t\tbefore := reviewClone(c)\n\t\tnormalizeReviewRubricReferences(decisions, key)\n\t\tif !reflect.DeepEqual(c, before) {\n\t\t\tt.Fatal(\"ambiguous/unknown source reference was hidden\", mode, c)\n\t\t}\n\t}\n}\n\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1015,11 +1123,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I12-03.P1.S5.NEGATIVE",
+      "case_id": "I12-03.P1.S6.NEGATIVE",
       "property_id": "I12-03.P1",
       "polarity": "negative",
-      "scenario": "I12-03 packet 5",
-      "fixture_id": "iteration12-I12-03-P1-S5",
+      "scenario": "I12-03 packet 6",
+      "fixture_id": "iteration12-I12-03-P1-S6",
       "test_id": "tangerine.local/api/internal/app::TestNativeReviewForeignRubricNegative",
       "mode": "declared_behavior",
       "action": "Execute TestNativeReviewForeignRubricNegative through services/api/internal/app/review_output.go",
@@ -1058,7 +1166,7 @@
         "exact_test": "TestReviewKeySamePositive",
         "literal_executable_fixture": "func TestReviewKeySamePositive(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tif e := admitKeyRepair(k, p, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1085,7 +1193,7 @@
         "exact_test": "TestReviewKeyProjectionPositive",
         "literal_executable_fixture": "func TestReviewKeyProjectionPositive(t *testing.T) {\n\tk, p, _ := reviewKeyFixture(t)\n\tbefore := reviewClone(k)\n\tn := 0\n\tprojected, e := projectReviewKey(k, p, \"review\", func() string { n++; return []string{\"case2\", \"rationale2\", \"correspondence2\"}[n-1] })\n\tif e != nil || projected.Key[\"case_version_id\"] != \"case2\" || !reflect.DeepEqual(k, before) || !reflect.DeepEqual(k[\"audio\"], projected.Key[\"audio\"]) || !reflect.DeepEqual(k[\"utterances\"], projected.Key[\"utterances\"]) {\n\t\tt.Fatal(projected, e)\n\t}\n\tif projected.Correspondence[\"old_case_version_id\"] != \"case1\" || projected.Correspondence[\"new_case_version_id\"] != \"case2\" {\n\t\tt.Fatal(projected)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1112,7 +1220,7 @@
         "exact_test": "TestReviewKeyAddedPositive",
         "literal_executable_fixture": "func TestReviewKeyAddedPositive(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tu := reviewClone(p[\"proposed_units\"].([]any)[0])\n\tu[\"id\"] = \"new:u2\"\n\tp[\"proposed_units\"] = append(p[\"proposed_units\"].([]any), u)\n\tp[\"correspondence_relations\"] = append(p[\"correspondence_relations\"].([]any), map[string]any{\"old_unit_ids\": []any{}, \"new_unit_ids\": []any{\"new:u2\"}, \"kind\": \"added\", \"reason\": \"Discovered event.\"})\n\tif e := admitKeyRepair(k, p, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1139,7 +1247,7 @@
         "exact_test": "TestReviewKeyRemovedPositive",
         "literal_executable_fixture": "func TestReviewKeyRemovedPositive(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tr := p[\"correspondence_relations\"].([]any)[0].(map[string]any)\n\tr[\"kind\"] = \"removed\"\n\tr[\"new_unit_ids\"] = []any{}\n\tp[\"proposed_units\"] = []any{}\n\tif e := admitKeyRepair(k, p, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1166,7 +1274,7 @@
         "exact_test": "TestReviewKeyPopulationPositive",
         "literal_executable_fixture": "func TestReviewKeyPopulationPositive(t *testing.T) {\n\tk, p, _ := reviewKeyFixture(t)\n\tu := k[\"units\"].([]any)[0].(map[string]any)\n\tu[\"difficulty\"] = \"hard\"\n\tu[\"difficulty_evidence_ref\"] = \"actual-population\"\n\tp[\"proposed_units\"].([]any)[0].(map[string]any)[\"rationale\"] = \"An improved optional explanation.\"\n\tx, e := projectReviewKey(k, p, \"review\", allocateReviewID)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tv := x.Key[\"units\"].([]any)[0].(map[string]any)\n\tif v[\"difficulty\"] != \"hard\" || v[\"difficulty_evidence_ref\"] != \"actual-population\" {\n\t\tt.Fatal(v)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1193,7 +1301,7 @@
         "exact_test": "TestReviewSplitPositive",
         "literal_executable_fixture": "func TestReviewSplitPositive(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tfirst := p[\"proposed_units\"].([]any)[0].(map[string]any)\n\tsecond := reviewClone(first)\n\tsecond[\"id\"] = \"new:second\"\n\tp[\"proposed_units\"] = append(p[\"proposed_units\"].([]any), second)\n\tp[\"affected_components\"] = []any{\"key\", \"detection\"}\n\tp[\"correspondence_relations\"] = []any{map[string]any{\"old_unit_ids\": []any{first[\"id\"]}, \"new_unit_ids\": []any{first[\"id\"], \"new:second\"}, \"kind\": \"split\", \"reason\": \"Two separately scored obligations.\"}}\n\tif e := admitKeyRepair(k, p, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1220,7 +1328,7 @@
         "exact_test": "TestReviewAbsentNullPositive",
         "literal_executable_fixture": "func TestReviewAbsentNullPositive(t *testing.T) {\n\tvalue := normalizeReviewShape(map[string]any{\"resolution\": \"supported\"}, nil).(map[string]any)\n\tif v, ok := value[\"key_repair\"]; !ok || v != nil {\n\t\tt.Fatal(value)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1247,7 +1355,7 @@
         "exact_test": "TestReviewSourcePositive",
         "literal_executable_fixture": "func TestReviewSourcePositive(t *testing.T) {\n\tk, p, _ := reviewKeyFixture(t)\n\tsource := k[\"units\"].([]any)[0].(map[string]any)[\"source\"].(map[string]any)\n\tsource[\"source_id\"] = \"CONSTRUCTED-NATIVE-SOURCE\"\n\tsource[\"source_record_id\"] = \"record-42\"\n\tsource[\"rights_approval_id\"] = \"retained-permission\"\n\tsource[\"licence_evidence_hash\"] = strings.Repeat(\"e\", 64)\n\tu := reviewClone(p[\"proposed_units\"].([]any)[0])\n\tu[\"id\"] = \"new:event\"\n\tp[\"proposed_units\"] = append(p[\"proposed_units\"].([]any), u)\n\tout, e := projectReviewKey(k, p, \"review\", allocateReviewID)\n\tif e != nil || !reflect.DeepEqual(out.Key[\"units\"].([]any)[1].(map[string]any)[\"source\"], source) {\n\t\tt.Fatal(\"native source/terms lost\", out, e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1274,7 +1382,7 @@
         "exact_test": "TestReviewRepairDomainPositive",
         "literal_executable_fixture": "func TestReviewRepairDomainPositive(t *testing.T) {\n\tr, f, o := reviewRepairPolicyFixture(t)\n\tif _, e := admitReview(reviewBytes(o), r, f); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1301,7 +1409,7 @@
         "exact_test": "TestReviewRepairSecondaryPositive",
         "literal_executable_fixture": "func TestReviewRepairSecondaryPositive(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tu := p[\"proposed_units\"].([]any)[0].(map[string]any)\n\tu[\"secondary_taxonomy_ids\"] = []any{u[\"primary_taxonomy_id\"]}\n\tif e := admitKeyRepair(k, p, tax); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1328,7 +1436,7 @@
         "exact_test": "TestReviewRepairWeightPositive",
         "literal_executable_fixture": "func TestReviewRepairWeightPositive(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tu := p[\"proposed_units\"].([]any)[0].(map[string]any)\n\tfor _, v := range []struct {\n\t\tname   string\n\t\tweight float64\n\t}{{\"minor\", 1}, {\"moderate\", 2}, {\"major\", 3}, {\"communication_breakdown\", 4}} {\n\t\tu[\"severity\"] = v.name\n\t\tu[\"weight\"] = v.weight\n\t\tif e := admitKeyRepair(k, p, tax); e != nil {\n\t\t\tt.Fatal(v, e)\n\t\t}\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1436,7 +1544,7 @@
         "exact_test": "TestReviewKeyHashNegative",
         "literal_executable_fixture": "func TestReviewKeyHashNegative(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tp[\"base_case_sha256\"] = strings.Repeat(\"b\", 64)\n\tif admitKeyRepair(k, p, tax) == nil {\n\t\tt.Fatal(\"wrong frozen key accepted\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1463,7 +1571,7 @@
         "exact_test": "TestReviewKeyAudioNegative",
         "literal_executable_fixture": "func TestReviewKeyAudioNegative(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tp[\"audio_sha256\"] = strings.Repeat(\"b\", 64)\n\tif admitKeyRepair(k, p, tax) == nil {\n\t\tt.Fatal(\"different audio accepted\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1490,7 +1598,7 @@
         "exact_test": "TestReviewKeyMissingRelationNegative",
         "literal_executable_fixture": "func TestReviewKeyMissingRelationNegative(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tp[\"correspondence_relations\"] = []any{}\n\tif admitKeyRepair(k, p, tax) == nil {\n\t\tt.Fatal(\"unexplained omission accepted\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1517,7 +1625,7 @@
         "exact_test": "TestReviewKeyDuplicateRelationNegative",
         "literal_executable_fixture": "func TestReviewKeyDuplicateRelationNegative(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tp[\"correspondence_relations\"] = append(p[\"correspondence_relations\"].([]any), p[\"correspondence_relations\"].([]any)[0])\n\tif admitKeyRepair(k, p, tax) == nil {\n\t\tt.Fatal(\"old/new event counted twice\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1544,7 +1652,7 @@
         "exact_test": "TestReviewKeyRelationShapeNegative",
         "literal_executable_fixture": "func TestReviewKeyRelationShapeNegative(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tp[\"correspondence_relations\"].([]any)[0].(map[string]any)[\"kind\"] = \"split\"\n\tif admitKeyRepair(k, p, tax) == nil {\n\t\tt.Fatal(\"one-to-one split accepted\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1571,7 +1679,7 @@
         "exact_test": "TestReviewKeyScopeNegative",
         "literal_executable_fixture": "func TestReviewKeyScopeNegative(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tu := p[\"proposed_units\"].([]any)[0].(map[string]any)\n\tu[\"text_spans\"].([]any)[0].(map[string]any)[\"span\"].(map[string]any)[\"exact_text\"] = \"invented recording\"\n\tif admitKeyRepair(k, p, tax) == nil {\n\t\tt.Fatal(\"rewritten recording accepted\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1598,7 +1706,7 @@
         "exact_test": "TestReviewPartialRepairNegative",
         "literal_executable_fixture": "func TestReviewPartialRepairNegative(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\to[\"resolution\"] = \"key_defect\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e == nil {\n\t\tt.Fatal(\"free-form reason became a key\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1625,7 +1733,7 @@
         "exact_test": "TestReviewSourceNegative",
         "literal_executable_fixture": "func TestReviewSourceNegative(t *testing.T) {\n\tk, p, _ := reviewKeyFixture(t)\n\tu := reviewClone(p[\"proposed_units\"].([]any)[0])\n\tu[\"id\"] = \"new:event\"\n\tu[\"source\"] = map[string]any{\"source_id\": \"invented-permission\"}\n\tp[\"proposed_units\"] = append(p[\"proposed_units\"].([]any), u)\n\tout, e := projectReviewKey(k, p, \"review\", allocateReviewID)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tif out.Key[\"units\"].([]any)[1].(map[string]any)[\"source\"].(map[string]any)[\"source_id\"] == \"invented-permission\" {\n\t\tt.Fatal(\"proposal fabricated source authority\")\n\t}\n}\n\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1652,7 +1760,7 @@
         "exact_test": "TestReviewRepairDomainNegative",
         "literal_executable_fixture": "func TestReviewRepairDomainNegative(t *testing.T) {\n\tr, f, o := reviewRepairPolicyFixture(t)\n\to[\"key_repair\"].(map[string]any)[\"proposed_units\"].([]any)[0].(map[string]any)[\"domain\"] = \"lexical\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e == nil {\n\t\tt.Fatal(\"grammar event was admitted into lexical scoring\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1679,7 +1787,7 @@
         "exact_test": "TestReviewRepairSecondaryNegative",
         "literal_executable_fixture": "func TestReviewRepairSecondaryNegative(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tp[\"proposed_units\"].([]any)[0].(map[string]any)[\"secondary_taxonomy_ids\"] = []any{\"not.registered\"}\n\tif admitKeyRepair(k, p, tax) == nil {\n\t\tt.Fatal(\"unregistered secondary category admitted\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1706,7 +1814,7 @@
         "exact_test": "TestReviewRepairWeightNegative",
         "literal_executable_fixture": "func TestReviewRepairWeightNegative(t *testing.T) {\n\tk, p, tax := reviewKeyFixture(t)\n\tp[\"proposed_units\"].([]any)[0].(map[string]any)[\"weight\"] = float64(999)\n\tif admitKeyRepair(k, p, tax) == nil {\n\t\tt.Fatal(\"model supplied arbitrary severity weight admitted\")\n\t}\n}\n\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -1814,7 +1922,7 @@
         "exact_test": "TestReviewProjectionNoSecretsPositive",
         "literal_executable_fixture": "func TestReviewProjectionNoSecretsPositive(t *testing.T) {\n\tr := ReviewRun{ID: \"r1\", Frozen: \"private-config\", Stages: []InterpretationStage{{Result: LLMResult{BindingID: \"private-binding\"}}}}\n\tv := reviewView(r, nil)\n\tif strings.Contains(string(reviewBytes(v)), \"private-\") {\n\t\tt.Fatal(v)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -2003,7 +2111,7 @@
         "exact_test": "TestReviewUnpublishedRevisionNegative",
         "literal_executable_fixture": "func TestReviewUnpublishedRevisionNegative(t *testing.T) {\n\tv := reviewView(ReviewRun{Status: \"failed\", NewCase: \"unpublished-key\", NewResult: \"unpublished-result\"}, nil)\n\tif v[\"new_case_version_id\"] != \"\" || v[\"new_result_id\"] != \"\" {\n\t\tt.Fatal(v)\n\t}\n}\n\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -2570,7 +2678,7 @@
         "exact_test": "TestLocalReviewCasePositive",
         "literal_executable_fixture": "func TestLocalReviewCasePositive(t *testing.T) {\n\tobserveLocalReview(t, \"case_review\", \"supported\", \"\", \"supported\", \"The singular cafe requires opens; the textual key is sound. Do not invent measured sound or a human reviewer.\")\n}\n",
         "fixture_source_path": "tests/native_local_review_test.go",
-        "fixture_source_sha256": "637c18bb8c96acbb3d403594ebfb986ac0070d079761d95d4c8dcfe0168647cf",
+        "fixture_source_sha256": "0f1c0e074600e2135f367356ce39203fc1ac269eec7048f0626a257d1127492f",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#tests/native_local_review_test.go"
       },
       "expected": {
@@ -2597,7 +2705,7 @@
         "exact_test": "TestLocalReviewSoundDisputeNegative",
         "literal_executable_fixture": "func TestLocalReviewSoundDisputeNegative(t *testing.T) {\n\tobserveLocalReview(t, \"dispute\", \"supported\", \"I think a sound in this recording is wrong. There are no acoustic observations in the supplied data; please state what can actually be concluded.\", \"supported_or_insufficient\", \"No measured sound is supplied. Preserve supported text-based agreement and the saved answer; do not invent auditory confirmation.\")\n}\n",
         "fixture_source_path": "tests/native_local_review_test.go",
-        "fixture_source_sha256": "637c18bb8c96acbb3d403594ebfb986ac0070d079761d95d4c8dcfe0168647cf",
+        "fixture_source_sha256": "0f1c0e074600e2135f367356ce39203fc1ac269eec7048f0626a257d1127492f",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#tests/native_local_review_test.go"
       },
       "expected": {
@@ -2624,7 +2732,7 @@
         "exact_test": "TestLocalReviewMappingPositive",
         "literal_executable_fixture": "func TestLocalReviewMappingPositive(t *testing.T) {\n\tobserveLocalReview(t, \"dispute\", \"mapping\", \"My proposed opens correction is correct for the singular cafe. Please reconsider the rejected correction.\", \"mapping_defect\", \"Accept the actual opens repair; correct the initial mistaken rejection and restore primary100 on the same answer/key/audio.\")\n}\n",
         "fixture_source_path": "tests/native_local_review_test.go",
-        "fixture_source_sha256": "637c18bb8c96acbb3d403594ebfb986ac0070d079761d95d4c8dcfe0168647cf",
+        "fixture_source_sha256": "0f1c0e074600e2135f367356ce39203fc1ac269eec7048f0626a257d1127492f",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#tests/native_local_review_test.go"
       },
       "expected": {
@@ -2651,7 +2759,7 @@
         "exact_test": "TestLocalReviewWrongDisputeNegative",
         "literal_executable_fixture": "func TestLocalReviewWrongDisputeNegative(t *testing.T) {\n\tobserveLocalReview(t, \"dispute\", \"supported\", \"The correct answer should be opening instead of opens.\", \"supported\", \"Reject the proposed opening claim in context; keep the valid opens repair and original100 result.\")\n}\n",
         "fixture_source_path": "tests/native_local_review_test.go",
-        "fixture_source_sha256": "637c18bb8c96acbb3d403594ebfb986ac0070d079761d95d4c8dcfe0168647cf",
+        "fixture_source_sha256": "0f1c0e074600e2135f367356ce39203fc1ac269eec7048f0626a257d1127492f",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#tests/native_local_review_test.go"
       },
       "expected": {
@@ -2678,7 +2786,7 @@
         "exact_test": "TestLocalReviewKeyPositive",
         "literal_executable_fixture": "func TestLocalReviewKeyPositive(t *testing.T) {\n\tobserveLocalReview(t, \"dispute\", \"rationale-key\", \"The saved key rationale says every English verb always ends in s. Repair that incorrect rule while preserving the valid opens correction and detection.\", \"key_defect\", \"Repair only the overbroad rationale/rubric in a complete same-audio successor, with exact correspondence and independently preserved primary100.\")\n}\n",
         "fixture_source_path": "tests/native_local_review_test.go",
-        "fixture_source_sha256": "637c18bb8c96acbb3d403594ebfb986ac0070d079761d95d4c8dcfe0168647cf",
+        "fixture_source_sha256": "0f1c0e074600e2135f367356ce39203fc1ac269eec7048f0626a257d1127492f",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#tests/native_local_review_test.go"
       },
       "expected": {
@@ -2705,7 +2813,7 @@
         "exact_test": "TestLocalReviewFalseReasonNegative",
         "literal_executable_fixture": "func TestLocalReviewFalseReasonNegative(t *testing.T) {\n\tobserveLocalReview(t, \"dispute\", \"false-reason\", \"I think my rule that every English verb always ends in s should receive full explanation credit.\", \"mapping_defect\", \"The actual listener supplied a false universal rule. Reject it with optional0 while keeping the valid opens correction and primary100.\")\n}\n",
         "fixture_source_path": "tests/native_local_review_test.go",
-        "fixture_source_sha256": "637c18bb8c96acbb3d403594ebfb986ac0070d079761d95d4c8dcfe0168647cf",
+        "fixture_source_sha256": "0f1c0e074600e2135f367356ce39203fc1ac269eec7048f0626a257d1127492f",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#tests/native_local_review_test.go"
       },
       "expected": {
@@ -2759,7 +2867,7 @@
         "exact_test": "TestReviewInventedAcousticNegative",
         "literal_executable_fixture": "func TestReviewInventedAcousticNegative(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\tf.Key[\"units\"].([]any)[0].(map[string]any)[\"realization\"].(map[string]any)[\"mode\"] = \"phonemic\"\n\to[\"unit_judgments\"].([]any)[0].(map[string]any)[\"confirmation\"] = \"supported\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e == nil {\n\t\tt.Fatal(\"unobserved acoustic fact accepted\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -3137,7 +3245,7 @@
         "exact_test": "TestReviewPartialRepairNegative",
         "literal_executable_fixture": "func TestReviewPartialRepairNegative(t *testing.T) {\n\tr, f, o := reviewOutputFixture(t)\n\to[\"resolution\"] = \"key_defect\"\n\tif _, e := admitReview(reviewBytes(o), r, f); e == nil {\n\t\tt.Fatal(\"free-form reason became a key\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/review_test.go",
-        "fixture_source_sha256": "3a55a4b34c448abd7297632bce41caf26fba3b17f9e08f3d6fff68607821dc3b",
+        "fixture_source_sha256": "9b4c60446178a76515ca3c1512b6ef73cc5bb481a0eedbb159d681c24a739fde",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/review_test.go"
       },
       "expected": {
@@ -3434,7 +3542,7 @@
         "exact_test": "TestLocalReviewFalseReasonNegative",
         "literal_executable_fixture": "func TestLocalReviewFalseReasonNegative(t *testing.T) {\n\tobserveLocalReview(t, \"dispute\", \"false-reason\", \"I think my rule that every English verb always ends in s should receive full explanation credit.\", \"mapping_defect\", \"The actual listener supplied a false universal rule. Reject it with optional0 while keeping the valid opens correction and primary100.\")\n}\n",
         "fixture_source_path": "tests/native_local_review_test.go",
-        "fixture_source_sha256": "637c18bb8c96acbb3d403594ebfb986ac0070d079761d95d4c8dcfe0168647cf",
+        "fixture_source_sha256": "0f1c0e074600e2135f367356ce39203fc1ac269eec7048f0626a257d1127492f",
         "shared_fixture_library": "audit/iteration-12-review-20261021/FIXTURE-LIBRARY.json#tests/native_local_review_test.go"
       },
       "expected": {
