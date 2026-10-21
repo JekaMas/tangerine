@@ -813,3 +813,5 @@ Resume: audit/iteration-16-release-20261021/PROGRESS.md.
 - [ ] I16.R17 Preserve known generated-source permissions when optional reconsideration adds a real mistake in another utterance or an empty prior key. Keep unknown/mixed corpus sources pending; materialize literal red/green and actual new-turn publication/scoring without changing audio or native grades.
 
 - [ ] I16.R18 Remove overstrict auditory auxiliary-finding/wrapper gates and derive an omitted display caption only from the supplied reason: keep complete raw output, project only requested unit/feature pairs and retain native unknowns for missing targets. Test exact requested+auxiliary and unrelated-only examples; actual qualification requires a genuine requested finding, not a native placeholder.
+
+- [ ] I16.R19 Observe saved-attempt history itself during a real owned database outage, retained links/error, Refresh recovery and reopening the unchanged saved draft; retain full-page pictures/video and add exact paired DAG cases without rerunning the unchanged listening scenarios.

@@ -35,7 +35,7 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
   else:raise AssertionError('native fixture timeout')
   fixture=json.loads((evidence/'fixture.json').read_text())
   running=call(['docker','inspect','-f','{{.State.Running}}','tangerine-i1-web-1'],False)
-  if running.returncode==0 and running.stdout.strip()=='true':call(['docker','stop','tangerine-i1-web-1']);preview=True
+  if running.returncode==0 and running.stdout.strip()=='true':raise AssertionError('Existing preview owns port3000; preserve it and select an available owned test endpoint.')
   call(['docker','run','-d','--name',name+'-web','--network',name,'--env-file',str(config),'-p','127.0.0.1:3000:3000',env['TANGERINE_LISTENING_TEST_WEB_IMAGE']])
   browser=Browser(Path(tmp)/'chrome','http://localhost:3000/');browser.wait('Listen and answer');observed={}
   def click(text):
@@ -54,38 +54,51 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
   def type_answer(text):
    browser.evaluate("document.querySelector('textarea').focus();true");browser.call('Input.insertText',{'text':text});wait_value("document.querySelector('textarea').value",text)
   click('Listen and answer');browser.wait('Your answer');wait_value("document.querySelector('textarea').disabled",False)
-  browser.evaluate("document.querySelector('audio').play();true");wait_value("document.querySelector('audio').currentTime>0",True)
-  record('test_listening_positive',"document.querySelector('audio').currentTime>0",True)
-  record('test_private_negative',"/canonical_text|surface_text|planned_units|mutation_count|source_key_id|The café open tomorrow/.test(document.documentElement.outerHTML)",False)
-  text='  The verb needs agreement.\nОшибка: goes. 🟠  '
-  type_answer(text);browser.evaluate("const s=document.querySelector('select');s.value='ru';s.dispatchEvent(new Event('change',{bubbles:true}));true");click('Save draft');browser.wait('Draft saved.');url=browser.evaluate('location.href');browser.call('Page.navigate',{'url':url});browser.wait('Your answer')
-  record('test_draft_positive',"({answer:document.querySelector('textarea').value,language:document.querySelector('select').value})",{'answer':text,'language':'ru'})
-  # A real second HTTP writer creates the conflicting revision; no application state mutation.
-  browser.evaluate("fetch('/api/v1/attempts/'+new URLSearchParams(location.search).get('attempt')+'/answer',{method:'PUT',headers:{'Content-Type':'application/json','Idempotency-Key':crypto.randomUUID(),'If-Match':'\"1\"'},body:JSON.stringify({answer_text:'Other window',requested_language:'en'})}).then(r=>r.status)")
-  click('Save draft');browser.wait('The saved draft changed.');wait_value("document.querySelector('textarea').value",text);click('Refresh saved state');browser.wait('Saved state refreshed.');record('test_conflict_negative',"document.querySelector('textarea').value",text);click('Save draft');browser.wait('Draft saved.')
-  # DB interruption must retain entered input and recover using the same action/key.
-  call(['docker','stop',name+'-postgres']);click('Save draft');browser.wait('Your answer could not be saved.');record('test_database_recovery_negative',"document.querySelector('textarea').value",text);call(['docker','start',name+'-postgres']);ready('postgres');click('Save draft');browser.wait('Draft saved.')
-  call(['docker','stop',name+'-media']);click('Refresh saved state');browser.wait('Saved audio is temporarily unavailable.');record('test_audio_recovery_negative',"document.querySelector('textarea').value",text);click('Save draft');browser.wait('Draft saved.');call(['docker','start',name+'-media']);ready('media');click('Refresh saved state');browser.wait('Saved state refreshed.');browser.evaluate("document.querySelector('audio').play();true");wait_value("document.querySelector('audio').currentTime>0",True)
-  click('Submit answer');browser.wait('Answer submitted and saved.');record('test_submit_positive',"({answer:document.querySelector('textarea').value,disabled:document.querySelector('textarea').disabled})",{'answer':text,'disabled':True})
-  screenshot=browser.call('Page.captureScreenshot');(evidence/'submitted.png').write_bytes(base64.b64decode(screenshot['data']))
-  browser.call('Page.navigate',{'url':'http://localhost:3000/attempts'});browser.wait('Open saved answer');click('Open saved answer');browser.wait('Your answer');record('test_history_positive',"document.querySelector('textarea').value",text)
-  browser.call('Page.navigate',{'url':'http://localhost:3000/'});browser.wait('Listen and answer');click('Listen and answer');browser.wait('Your answer');wait_value("document.querySelector('textarea').disabled",False);click('Submit answer');browser.wait('Answer submitted and saved.');record('test_empty_positive',"({answer:document.querySelector('textarea').value,disabled:document.querySelector('textarea').disabled})",{'answer':'','disabled':True})
-  # A concurrent submission is a real second HTTP writer, never a DOM/state substitution.
-  browser.call('Page.navigate',{'url':'http://localhost:3000/'});browser.wait('Listen and answer');click('Listen and answer');browser.wait('Your answer');wait_value("document.querySelector('textarea').disabled",False)
-  local='Unsubmitted local text 🟠';frozen='Submitted in another window. Ошибка.'
-  type_answer(local);browser.evaluate("const locale=document.querySelector('select');locale.value='ru';locale.dispatchEvent(new Event('change',{bubbles:true}));true")
-  status=browser.evaluate("fetch('/api/v1/attempts/'+new URLSearchParams(location.search).get('attempt')+':submit',{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':crypto.randomUUID(),'If-Match':'\"0\"'},body:JSON.stringify({answer_text:"+json.dumps(frozen)+",requested_language:'en'})}).then(r=>r.status)")
-  assert status==503,status
-  click('Save draft');browser.wait('The saved draft changed.');click('Refresh saved state');browser.wait('Answer submitted and saved.')
-  record('test_remote_submission_positive',"({answer:document.querySelector('[aria-label=\"Your answer\"]').value,disabled:document.querySelector('[aria-label=\"Your answer\"]').disabled,language:document.querySelector('select').value})",{'answer':frozen,'disabled':True,'language':'en'})
-  click('Refresh saved state');browser.wait('Saved state refreshed.')
-  record('test_unsent_recovery_negative',"({answer:document.querySelector('[aria-label=\"Unsubmitted local text\"]')?.value,languageRetained:document.querySelector('[aria-label=\"Unsubmitted response recovery\"]')?.textContent.includes('(ru)')})",{'answer':local,'languageRetained':True})
-  # Reopening shows the real immutable submitted answer, never the unsubmitted buffer.
-  remote_url=browser.evaluate('location.href');browser.call('Page.navigate',{'url':remote_url});browser.wait('Answer submitted and saved.');wait_value("document.querySelector('[aria-label=\"Your answer\"]').value",frozen)
-  # Fold the history readback observation into the submission scenario, retaining ten distinct DAG tests.
-  observed['test_submit_positive']['history_readback']=observed.pop('test_history_positive')
+  focus=env.get('TANGERINE_LISTENING_TEST_FOCUS')
+  if focus=='attempts':
+   type_answer('Use opens.');click('Save draft');browser.wait('Draft saved.')
+   attempt=browser.evaluate("new URLSearchParams(location.search).get('attempt')")
+   link='a[href="/listen?attempt='+attempt+'"]';present='document.querySelector('+json.dumps(link)+')!==null'
+   browser.call('Page.navigate',{'url':'http://localhost:3000/attempts'});browser.wait('Saved attempts');browser.wait('Open saved answer');wait_value(present,True);browser.capture(evidence,'attempts-history')
+   call(['docker','stop',name+'-postgres']);click('Refresh');browser.wait('Saved attempts are unavailable.')
+   record('test_attempts_failure_negative',"({error:document.querySelector('[role=alert]')?.textContent.includes('Saved attempts are unavailable.'),savedLink:"+present+'})',{'error':True,'savedLink':True})
+   call(['docker','start',name+'-postgres']);ready('postgres');click('Refresh')
+   wait_value("document.querySelector('[role=alert]')===null&&!document.querySelector('button').disabled",True);wait_value(present,True);browser.capture(evidence,'attempts-recovered')
+   click('Open saved answer');browser.wait('Your answer')
+   record('test_attempts_recovery_positive',"({sameAttempt:new URLSearchParams(location.search).get('attempt')==="+json.dumps(attempt)+",answer:document.querySelector('textarea').value})",{'sameAttempt':True,'answer':'Use opens.'})
+  else:
+   browser.evaluate("document.querySelector('audio').play();true");wait_value("document.querySelector('audio').currentTime>0",True)
+   record('test_listening_positive',"document.querySelector('audio').currentTime>0",True)
+   record('test_private_negative',"/canonical_text|surface_text|planned_units|mutation_count|source_key_id|The café open tomorrow/.test(document.documentElement.outerHTML)",False)
+   text='  The verb needs agreement.\nОшибка: goes. 🟠  '
+   type_answer(text);browser.evaluate("const s=document.querySelector('select');s.value='ru';s.dispatchEvent(new Event('change',{bubbles:true}));true");click('Save draft');browser.wait('Draft saved.');url=browser.evaluate('location.href');browser.call('Page.navigate',{'url':url});browser.wait('Your answer')
+   record('test_draft_positive',"({answer:document.querySelector('textarea').value,language:document.querySelector('select').value})",{'answer':text,'language':'ru'})
+   # A real second HTTP writer creates the conflicting revision; no application state mutation.
+   browser.evaluate("fetch('/api/v1/attempts/'+new URLSearchParams(location.search).get('attempt')+'/answer',{method:'PUT',headers:{'Content-Type':'application/json','Idempotency-Key':crypto.randomUUID(),'If-Match':'\"1\"'},body:JSON.stringify({answer_text:'Other window',requested_language:'en'})}).then(r=>r.status)")
+   click('Save draft');browser.wait('The saved draft changed.');wait_value("document.querySelector('textarea').value",text);click('Refresh saved state');browser.wait('Saved state refreshed.');record('test_conflict_negative',"document.querySelector('textarea').value",text);click('Save draft');browser.wait('Draft saved.')
+   # DB interruption must retain entered input and recover using the same action/key.
+   call(['docker','stop',name+'-postgres']);click('Save draft');browser.wait('Your answer could not be saved.');record('test_database_recovery_negative',"document.querySelector('textarea').value",text);call(['docker','start',name+'-postgres']);ready('postgres');click('Save draft');browser.wait('Draft saved.')
+   call(['docker','stop',name+'-media']);click('Refresh saved state');browser.wait('Saved audio is temporarily unavailable.');record('test_audio_recovery_negative',"document.querySelector('textarea').value",text);click('Save draft');browser.wait('Draft saved.');call(['docker','start',name+'-media']);ready('media');click('Refresh saved state');browser.wait('Saved state refreshed.');browser.evaluate("document.querySelector('audio').play();true");wait_value("document.querySelector('audio').currentTime>0",True)
+   click('Submit answer');browser.wait('Answer submitted and saved.');record('test_submit_positive',"({answer:document.querySelector('textarea').value,disabled:document.querySelector('textarea').disabled})",{'answer':text,'disabled':True})
+   screenshot=browser.call('Page.captureScreenshot');(evidence/'submitted.png').write_bytes(base64.b64decode(screenshot['data']))
+   browser.call('Page.navigate',{'url':'http://localhost:3000/attempts'});browser.wait('Open saved answer');click('Open saved answer');browser.wait('Your answer');record('test_history_positive',"document.querySelector('textarea').value",text)
+   browser.call('Page.navigate',{'url':'http://localhost:3000/'});browser.wait('Listen and answer');click('Listen and answer');browser.wait('Your answer');wait_value("document.querySelector('textarea').disabled",False);click('Submit answer');browser.wait('Answer submitted and saved.');record('test_empty_positive',"({answer:document.querySelector('textarea').value,disabled:document.querySelector('textarea').disabled})",{'answer':'','disabled':True})
+   # A concurrent submission is a real second HTTP writer, never a DOM/state substitution.
+   browser.call('Page.navigate',{'url':'http://localhost:3000/'});browser.wait('Listen and answer');click('Listen and answer');browser.wait('Your answer');wait_value("document.querySelector('textarea').disabled",False)
+   local='Unsubmitted local text 🟠';frozen='Submitted in another window. Ошибка.'
+   type_answer(local);browser.evaluate("const locale=document.querySelector('select');locale.value='ru';locale.dispatchEvent(new Event('change',{bubbles:true}));true")
+   status=browser.evaluate("fetch('/api/v1/attempts/'+new URLSearchParams(location.search).get('attempt')+':submit',{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':crypto.randomUUID(),'If-Match':'\"0\"'},body:JSON.stringify({answer_text:"+json.dumps(frozen)+",requested_language:'en'})}).then(r=>r.status)")
+   assert status==503,status
+   click('Save draft');browser.wait('The saved draft changed.');click('Refresh saved state');browser.wait('Answer submitted and saved.')
+   record('test_remote_submission_positive',"({answer:document.querySelector('[aria-label=\"Your answer\"]').value,disabled:document.querySelector('[aria-label=\"Your answer\"]').disabled,language:document.querySelector('select').value})",{'answer':frozen,'disabled':True,'language':'en'})
+   click('Refresh saved state');browser.wait('Saved state refreshed.')
+   record('test_unsent_recovery_negative',"({answer:document.querySelector('[aria-label=\"Unsubmitted local text\"]')?.value,languageRetained:document.querySelector('[aria-label=\"Unsubmitted response recovery\"]')?.textContent.includes('(ru)')})",{'answer':local,'languageRetained':True})
+   # Reopening shows the real immutable submitted answer, never the unsubmitted buffer.
+   remote_url=browser.evaluate('location.href');browser.call('Page.navigate',{'url':remote_url});browser.wait('Answer submitted and saved.');wait_value("document.querySelector('[aria-label=\"Your answer\"]').value",frozen)
+   # Fold the history readback observation into the submission scenario, retaining ten distinct DAG tests.
+   observed['test_submit_positive']['history_readback']=observed.pop('test_history_positive')
   (evidence/'done').write_text('done');assert go.wait(timeout=30)==0
-  (evidence/'observations.json').write_text(json.dumps({'values':observed,'fixture':fixture,'driver':browser.driver_version,'network_substitution':False,'database_recovered':True,'media_recovered':True},indent=2))
+  (evidence/'observations.json').write_text(json.dumps({'values':observed,'fixture':fixture,'driver':browser.driver_version,'network_substitution':False,'database_recovered':True,'media_recovered':focus!='attempts'},indent=2))
  finally:
   if browser:
    try:(evidence/'final-dom.html').write_text(browser.evaluate('document.documentElement.outerHTML'))

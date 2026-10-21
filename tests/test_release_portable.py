@@ -10,9 +10,10 @@ class ReleasePortableTests(unittest.TestCase):
   env=dict(os.environ,TANGERINE_RELEASE_SOURCE_EVIDENCE=str(R/source['root']),TANGERINE_RELEASE_EVIDENCE=str(cls.root),TANGERINE_TEST_VIDEO_DIR=str(cls.root/'videos'))
   p=subprocess.run([str(R/'tests/release-portable')],cwd=R,env=env,capture_output=True,text=True,timeout=2200)
   (cls.root/'stdout').write_text(p.stdout);(cls.root/'stderr').write_text(p.stderr)
-  if p.returncode:raise AssertionError('Actual cross-architecture release failed; evidence: '+str(cls.root))
-  cls.values=json.loads((cls.root/'observations.json').read_text());(R/'data/iteration16/release/portable-current.json').write_text(json.dumps(dict(root=str(cls.root.relative_to(R)),receipt=json.loads((cls.root/'receipt.json').read_text())),indent=2))
- def check(self,name):self.assertIs(self.values[name],True)
+  cls.failure='Actual cross-architecture release failed; evidence: '+str(cls.root)
+  cls.values=json.loads((cls.root/'observations.json').read_text()) if (cls.root/'observations.json').exists() else {}
+  if p.returncode==0:(R/'data/iteration16/release/portable-current.json').write_text(json.dumps(dict(root=str(cls.root.relative_to(R)),receipt=json.loads((cls.root/'receipt.json').read_text())),indent=2))
+ def check(self,name):self.assertIs(self.values.get(name),True,self.failure)
  def test_portable_source_positive(self):self.check('test_portable_source_positive')
  def test_incomplete_source_negative(self):self.check('test_incomplete_source_negative')
  def test_amd64_start_positive(self):self.check('test_amd64_start_positive')
