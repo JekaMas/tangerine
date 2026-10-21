@@ -1,7 +1,11 @@
 package provider
 
 import (
+	"bytes"
 	"encoding/json"
+	"errors"
+	"io"
+	"reflect"
 	"strings"
 )
 
@@ -51,4 +55,67 @@ func completeStageContainers(text string) string {
 		return text
 	}
 	return completed
+}
+
+// Normalize identical repeated model fields at the existing admission. Keep
+// conflicting values ambiguous; never choose a favorable assertion or rewrite it.
+func stageJSON(raw []byte) ([]byte, error) {
+	d := json.NewDecoder(bytes.NewReader(raw))
+	d.UseNumber()
+	var read func() (any, error)
+	read = func() (any, error) {
+		token, e := d.Token()
+		if e != nil {
+			return nil, e
+		}
+		switch token {
+		case json.Delim('{'):
+			out := map[string]any{}
+			for d.More() {
+				key, e := d.Token()
+				if e != nil {
+					return nil, e
+				}
+				name, ok := key.(string)
+				if !ok {
+					return nil, errors.New("invalid model object key")
+				}
+				value, e := read()
+				if e != nil {
+					return nil, e
+				}
+				if previous, exists := out[name]; exists && !reflect.DeepEqual(previous, value) {
+					return nil, errors.New("conflicting repeated model field")
+				}
+				out[name] = value
+			}
+			if _, e = d.Token(); e != nil {
+				return nil, e
+			}
+			return out, nil
+		case json.Delim('['):
+			out := []any{}
+			for d.More() {
+				value, e := read()
+				if e != nil {
+					return nil, e
+				}
+				out = append(out, value)
+			}
+			if _, e = d.Token(); e != nil {
+				return nil, e
+			}
+			return out, nil
+		default:
+			return token, nil
+		}
+	}
+	value, e := read()
+	if e != nil {
+		return nil, e
+	}
+	if _, e = d.Token(); e != io.EOF {
+		return nil, errors.New("invalid trailing model content")
+	}
+	return json.Marshal(value)
 }

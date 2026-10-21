@@ -108,9 +108,10 @@ func observeLocalScoring(t *testing.T, answer, mode, grade string, subject strin
 	if score["composite"].(map[string]any)["display"] != grade || envelope["feedback_status"] != "complete" {
 		t.Fatalf("expected grade%s and actual local feedback; status%v", grade, envelope["feedback_status"])
 	}
-	found := false
+	found, practice := false, false
 	for _, v := range envelope["feedback"].(map[string]any)["items"].([]any) {
 		item := v.(map[string]any)
+		practice = practice || (item["kind"] == "recommendation" && strings.TrimSpace(item["text"].(string)) != "")
 		// Combined comments may cover a finding, correction and reason. The
 		// oracle is the actual source subject, not a presentation label.
 		if strings.TrimSpace(item["text"].(string)) != "" && ((subject == "missed" && item["kind"] == "missed" && len(item["unit_ids"].([]any)) > 0) || (subject == "false_positive" && item["kind"] == "false_positive" && len(item["decision_ids"].([]any)) > 0) || (subject != "missed" && subject != "false_positive" && (item["kind"] == "detected" || item["kind"] == "correction" || item["kind"] == "explanation") && len(item["decision_ids"].([]any)) > 0 && len(item["unit_ids"].([]any)) > 0)) {
@@ -131,6 +132,9 @@ func observeLocalScoring(t *testing.T, answer, mode, grade string, subject strin
 	}
 	if mode == "scoring-false-reason" && score["optional_explanation"].(map[string]any)["display"] != "0.0" {
 		t.Fatal("false reason changed primary or gained reason credit")
+	}
+	if !practice {
+		t.Fatal("requested actionable practice recommendation is absent")
 	}
 	if !found {
 		t.Fatal("missing independently expected feedback subject", subject)

@@ -71,7 +71,12 @@ func projectStageVisible(text, kind string, includeRejected bool, normalize func
 					score++
 				}
 			}
-			if _, e = contracts.Canonical(raw); e != nil {
+			if normalize != nil {
+				raw, e = stageJSON(raw)
+			} else {
+				_, e = contracts.Canonical(raw)
+			}
+			if e != nil {
 				if score >= validationScore {
 					rejected = nil
 				}

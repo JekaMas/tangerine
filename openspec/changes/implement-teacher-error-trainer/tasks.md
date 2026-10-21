@@ -685,4 +685,6 @@ Iteration11 accepted on e906cb3883b63cd72dc179079f441c75d00c1ec2:122/122owned ca
 
 - [ ] I11.V1 Preserve frozen policy and domain uncertainty when pooling raw events; test compatible legacy/current populations and reject mixing distinct policies.
 - [ ] I11.V2 Cover unmapped false positives and permit source-bound combined false-positive/component comments without duplicated cards.
+- [ ] I11.V4 Make the existing practice recommendation requirement explicit for zero-TP answers and verify actual local output (I11-10).
+- [ ] I11.V5 Normalize identical repeated model fields at the single stage admission, preserve conflicting-value ambiguity and exercise native positive/negative cases (I11-08).
 - [ ] I11.V3 Finish full code/contract review, register paired cases, reconcile valid prior receipts, complete committed-clean iteration acceptance and commit.

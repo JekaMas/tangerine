@@ -89,7 +89,14 @@ func scoringFixture(t *testing.T, bad bool) *scoringNative {
 		}
 
 		out := map[string]any{"schema_version": "2.0.0", "language": input["requested_language"], "items": items}
-		_ = json.NewEncoder(w).Encode(map[string]any{"id": "constructed-feedback", "object": "response", "status": "completed", "output": []any{map[string]any{"type": "message", "content": []any{map[string]any{"type": "output_text", "text": string(mustJSON(out))}}}}})
+		payload := string(mustJSON(out))
+		if f.currentMode() == "feedback-identical-field" {
+			payload = strings.Replace(payload, `"issue_ids":[]`, `"issue_ids":[],"issue_ids":[]`, 1)
+		}
+		if f.currentMode() == "feedback-conflicting-field" {
+			payload = strings.Replace(payload, `"text":"The listener found the agreement mistake."`, `"text":"The listener did not find the mistake.","text":"The listener found the agreement mistake."`, 1)
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{"id": "constructed-feedback", "object": "response", "status": "completed", "output": []any{map[string]any{"type": "message", "content": []any{map[string]any{"type": "output_text", "text": payload}}}}})
 	}))
 	t.Cleanup(f.feedback.Close)
 	ctx := context.Background()
@@ -493,3 +500,24 @@ func nativeOffkeyScoring(t *testing.T, omitted bool) {
 }
 func TestNativeScoringOffkeyPositive(t *testing.T)        { nativeOffkeyScoring(t, false) }
 func TestNativeScoringOffkeyMissingNegative(t *testing.T) { nativeOffkeyScoring(t, true) }
+
+func TestNativeScoringIdenticalFieldPositive(t *testing.T) {
+	f := scoringFixture(t, false)
+	f.mode.Store("feedback-identical-field")
+	state, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	result := f.envelope(t, state)
+	if result["feedback_status"] != "complete" || result["score"].(map[string]any)["composite"].(map[string]any)["display"] != "100.0" {
+		t.Fatal(result)
+	}
+}
+func TestNativeScoringConflictingFieldNegative(t *testing.T) {
+	f := scoringFixture(t, false)
+	f.mode.Store("feedback-conflicting-field")
+	state, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	result := f.envelope(t, state)
+	if result["feedback_status"] != "unavailable" || result["score"].(map[string]any)["composite"].(map[string]any)["display"] != "100.0" {
+		t.Fatal("ambiguous model assertion accepted or score lost", result)
+	}
+}

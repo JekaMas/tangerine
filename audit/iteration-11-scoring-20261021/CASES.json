@@ -2603,7 +2603,7 @@
         "exact_native_test": "TestNativeScoringCompletePositive",
         "literal_executable_fixture": "func TestNativeScoringCompletePositive(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tv := f.envelope(t, state)\n\tscore := v[\"score\"].(map[string]any)\n\tif v[\"status\"] != \"complete\" || v[\"feedback_status\"] != \"complete\" || score[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" || f.feedbackCalls.Load() != 1 {\n\t\tt.Fatal(v)\n\t}\n\tr, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tif r.Attempt[\"state\"] != \"completed\" || r.Context[\"result_id\"] != v[\"result_id\"] {\n\t\tt.Fatal(r)\n\t}\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringCompletePositive(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tv := f.envelope(t, state)\n\tscore := v[\"score\"].(map[string]any)\n\tif v[\"status\"] != \"complete\" || v[\"feedback_status\"] != \"complete\" || score[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" || f.feedbackCalls.Load() != 1 {\n\t\tt.Fatal(v)\n\t}\n\tr, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tif r.Attempt[\"state\"] != \"completed\" || r.Context[\"result_id\"] != v[\"result_id\"] {\n\t\tt.Fatal(r)\n\t}\n}\n",
@@ -2629,7 +2629,7 @@
         "exact_native_test": "TestNativeScoringRetryPositive",
         "literal_executable_fixture": "func TestNativeScoringRetryPositive(t *testing.T) {\n\tf := scoringFixture(t, true)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tbefore := f.envelope(t, state)\n\tscore := string(mustJSON(before[\"score\"]))\n\tf.bad.Store(false)\n\tstate, e = f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tafter := f.envelope(t, state)\n\tif string(mustJSON(after[\"score\"])) != score || after[\"feedback_status\"] != \"complete\" || f.extracts.Load() != 1 || f.maps.Load() != 1 || len(after[\"result_revision_ids\"].([]any)) != 2 {\n\t\tt.Fatal(after)\n\t}\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringRetryPositive(t *testing.T) {\n\tf := scoringFixture(t, true)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tbefore := f.envelope(t, state)\n\tscore := string(mustJSON(before[\"score\"]))\n\tf.bad.Store(false)\n\tstate, e = f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tafter := f.envelope(t, state)\n\tif string(mustJSON(after[\"score\"])) != score || after[\"feedback_status\"] != \"complete\" || f.extracts.Load() != 1 || f.maps.Load() != 1 || len(after[\"result_revision_ids\"].([]any)) != 2 {\n\t\tt.Fatal(after)\n\t}\n}\n",
@@ -2655,7 +2655,7 @@
         "exact_native_test": "TestNativeScoringFeedbackFailureNegative",
         "literal_executable_fixture": "func TestNativeScoringFeedbackFailureNegative(t *testing.T) {\n\tf := scoringFixture(t, true)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tv := f.envelope(t, state)\n\tif v[\"feedback_status\"] != \"unavailable\" || v[\"retry_operation\"] != \"retry_feedback\" || v[\"score\"].(map[string]any)[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" {\n\t\tt.Fatal(v)\n\t}\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringFeedbackFailureNegative(t *testing.T) {\n\tf := scoringFixture(t, true)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tv := f.envelope(t, state)\n\tif v[\"feedback_status\"] != \"unavailable\" || v[\"retry_operation\"] != \"retry_feedback\" || v[\"score\"].(map[string]any)[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" {\n\t\tt.Fatal(v)\n\t}\n}\n",
@@ -2681,7 +2681,7 @@
         "exact_native_test": "TestNativeScoringReadNoCallNegative",
         "literal_executable_fixture": "func TestNativeScoringReadNoCallNegative(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tbefore := f.calls.Load()\n\tfor i := 0; i < 3; i++ {\n\t\t_ = f.envelope(t, state)\n\t}\n\tif f.calls.Load() != before || f.feedbackCalls.Load() != 1 {\n\t\tt.Fatal(\"read dispatched\")\n\t}\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringReadNoCallNegative(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tbefore := f.calls.Load()\n\tfor i := 0; i < 3; i++ {\n\t\t_ = f.envelope(t, state)\n\t}\n\tif f.calls.Load() != before || f.feedbackCalls.Load() != 1 {\n\t\tt.Fatal(\"read dispatched\")\n\t}\n}\n",
@@ -2707,7 +2707,7 @@
         "exact_native_test": "TestNativeScoringRestartPositive",
         "literal_executable_fixture": "func TestNativeScoringRestartPositive(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tbefore := f.envelope(t, state)\n\tpool, e := pgxpool.New(context.Background(), f.s.Store.DB.Config().ConnString())\n\trequireListening(t, e)\n\tdefer pool.Close()\n\tf.s = NewServer(&Storage{DB: pool, Media: f.s.Store.Media, Bucket: f.s.Store.Bucket}, f.s.Origin, \"\")\n\tsaved, e := f.s.Store.interpretationState(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tafter := f.envelope(t, *saved)\n\tif string(mustJSON(before)) != string(mustJSON(after)) {\n\t\tt.Fatal(\"restart changed result\")\n\t}\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringRestartPositive(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tbefore := f.envelope(t, state)\n\tpool, e := pgxpool.New(context.Background(), f.s.Store.DB.Config().ConnString())\n\trequireListening(t, e)\n\tdefer pool.Close()\n\tf.s = NewServer(&Storage{DB: pool, Media: f.s.Store.Media, Bucket: f.s.Store.Bucket}, f.s.Origin, \"\")\n\tsaved, e := f.s.Store.interpretationState(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tafter := f.envelope(t, *saved)\n\tif string(mustJSON(before)) != string(mustJSON(after)) {\n\t\tt.Fatal(\"restart changed result\")\n\t}\n}\n",
@@ -2733,7 +2733,7 @@
         "exact_native_test": "TestNativeScoringReplayNegative",
         "literal_executable_fixture": "func TestNativeScoringReplayNegative(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tkey := uuid.NewString()\n\tstate, e := f.interpret(t, key)\n\trequireListening(t, e)\n\tbefore := f.envelope(t, state)\n\trecord, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tnext, e := f.s.InterpretAttempt(context.Background(), f.attempt, key, 1, record.Attempt[\"answer_utf8_sha256\"].(string), record.Attempt[\"configuration_sha256\"].(string), f.model.Client())\n\trequireListening(t, e)\n\tif *next.Result != *state.Result || f.feedbackCalls.Load() != 1 || before[\"result_id\"] != *next.Result {\n\t\tt.Fatal(next)\n\t}\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringReplayNegative(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tkey := uuid.NewString()\n\tstate, e := f.interpret(t, key)\n\trequireListening(t, e)\n\tbefore := f.envelope(t, state)\n\trecord, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tnext, e := f.s.InterpretAttempt(context.Background(), f.attempt, key, 1, record.Attempt[\"answer_utf8_sha256\"].(string), record.Attempt[\"configuration_sha256\"].(string), f.model.Client())\n\trequireListening(t, e)\n\tif *next.Result != *state.Result || f.feedbackCalls.Load() != 1 || before[\"result_id\"] != *next.Result {\n\t\tt.Fatal(next)\n\t}\n}\n",
@@ -2759,7 +2759,7 @@
         "exact_native_test": "TestNativeScoringContextPositive",
         "literal_executable_fixture": "func TestNativeScoringContextPositive(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tv := f.envelope(t, state)\n\tx := f.inputs[0]\n\tif x[\"score_result\"].(map[string]any)[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" || x[\"ground_truth\"] == nil || x[\"extraction\"] == nil || x[\"result_id\"] == nil || v[\"feedback\"].(map[string]any)[\"receipt_id\"] == nil {\n\t\tt.Fatal(x)\n\t}\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringContextPositive(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tv := f.envelope(t, state)\n\tx := f.inputs[0]\n\tif x[\"score_result\"].(map[string]any)[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" || x[\"ground_truth\"] == nil || x[\"extraction\"] == nil || x[\"result_id\"] == nil || v[\"feedback\"].(map[string]any)[\"receipt_id\"] == nil {\n\t\tt.Fatal(x)\n\t}\n}\n",
@@ -2785,7 +2785,7 @@
         "exact_native_test": "TestNativeScoringUnknownReferenceNegative",
         "literal_executable_fixture": "func TestNativeScoringUnknownReferenceNegative(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tr, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tresources, e := f.s.Store.interpretationResources(context.Background(), r)\n\trequireListening(t, e)\n\t_, e = admitFeedback(mustJSON(map[string]any{\"language\": \"en\", \"items\": []any{map[string]any{\"unit_ids\": []any{\"fake\"}, \"decision_ids\": []any{}, \"issue_ids\": []any{}, \"rationale_ids\": []any{}}}}), r, resources, SemanticMapping{}, map[string]any{\"issues\": []any{}})\n\tif e == nil {\n\t\tt.Fatal(\"invented unit admitted\")\n\t}\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringUnknownReferenceNegative(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tr, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tresources, e := f.s.Store.interpretationResources(context.Background(), r)\n\trequireListening(t, e)\n\t_, e = admitFeedback(mustJSON(map[string]any{\"language\": \"en\", \"items\": []any{map[string]any{\"unit_ids\": []any{\"fake\"}, \"decision_ids\": []any{}, \"issue_ids\": []any{}, \"rationale_ids\": []any{}}}}), r, resources, SemanticMapping{}, map[string]any{\"issues\": []any{}})\n\tif e == nil {\n\t\tt.Fatal(\"invented unit admitted\")\n\t}\n}\n",
@@ -2811,7 +2811,7 @@
         "exact_native_test": "TestNativeScoringBeforeFeedbackPositive",
         "literal_executable_fixture": "func TestNativeScoringBeforeFeedbackPositive(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tf.mode.Store(\"feedback-blocked\")\n\tdone := make(chan error, 1)\n\tgo func() { _, e := f.interpret(t, uuid.NewString()); done <- e }()\n\tselect {\n\tcase <-f.entered:\n\tcase e := <-done:\n\t\tt.Fatal(e)\n\tcase <-time.After(30 * time.Second):\n\t\tt.Fatal(\"feedback boundary not reached\")\n\t}\n\tsaved, e := f.s.Store.interpretationState(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tif saved.Result == nil {\n\t\tclose(f.release)\n\t\tt.Fatal(\"score not durable before feedback\")\n\t}\n\tresult, e := f.s.Store.readScoringResult(context.Background(), *saved.Result)\n\trequireListening(t, e)\n\tif result[\"score\"].(map[string]any)[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" {\n\t\tclose(f.release)\n\t\tt.Fatal(\"incorrect early score\")\n\t}\n\tclose(f.release)\n\trequireListening(t, <-done)\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringBeforeFeedbackPositive(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tf.mode.Store(\"feedback-blocked\")\n\tdone := make(chan error, 1)\n\tgo func() { _, e := f.interpret(t, uuid.NewString()); done <- e }()\n\tselect {\n\tcase <-f.entered:\n\tcase e := <-done:\n\t\tt.Fatal(e)\n\tcase <-time.After(30 * time.Second):\n\t\tt.Fatal(\"feedback boundary not reached\")\n\t}\n\tsaved, e := f.s.Store.interpretationState(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tif saved.Result == nil {\n\t\tclose(f.release)\n\t\tt.Fatal(\"score not durable before feedback\")\n\t}\n\tresult, e := f.s.Store.readScoringResult(context.Background(), *saved.Result)\n\trequireListening(t, e)\n\tif result[\"score\"].(map[string]any)[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" {\n\t\tclose(f.release)\n\t\tt.Fatal(\"incorrect early score\")\n\t}\n\tclose(f.release)\n\trequireListening(t, <-done)\n}\n",
@@ -2837,7 +2837,7 @@
         "exact_native_test": "TestNativeScoringNoScoreNegative",
         "literal_executable_fixture": "func TestNativeScoringNoScoreNegative(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tr, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tbody := string(mustJSON(map[string]any{\"answer_sha256\": r.Attempt[\"answer_utf8_sha256\"], \"configuration_sha256\": r.Attempt[\"configuration_sha256\"]}))\n\tw := f.request(\"POST\", \"/api/v1/attempts/\"+f.attempt+\":retry-feedback\", body, uuid.NewString(), \"1\")\n\tif w.Code != 409 || f.calls.Load() != 0 || f.feedbackCalls.Load() != 0 {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringNoScoreNegative(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tr, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tbody := string(mustJSON(map[string]any{\"answer_sha256\": r.Attempt[\"answer_utf8_sha256\"], \"configuration_sha256\": r.Attempt[\"configuration_sha256\"]}))\n\tw := f.request(\"POST\", \"/api/v1/attempts/\"+f.attempt+\":retry-feedback\", body, uuid.NewString(), \"1\")\n\tif w.Code != 409 || f.calls.Load() != 0 || f.feedbackCalls.Load() != 0 {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n}\n",
@@ -2863,7 +2863,7 @@
         "exact_native_test": "TestNativeScoringHTTPFeedbackPositive",
         "literal_executable_fixture": "func TestNativeScoringHTTPFeedbackPositive(t *testing.T) {\n\tf := scoringFixture(t, true)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tv := f.envelope(t, state)\n\tr, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tbody := string(mustJSON(map[string]any{\"answer_sha256\": r.Attempt[\"answer_utf8_sha256\"], \"configuration_sha256\": r.Attempt[\"configuration_sha256\"]}))\n\tf.bad.Store(false)\n\tw := f.request(\"POST\", \"/api/v1/attempts/\"+f.attempt+\":retry-feedback\", body, uuid.NewString(), fmt.Sprint(r.Attempt[\"revision\"]))\n\tif w.Code != 200 {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n\tvar after map[string]any\n\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &after))\n\tif string(mustJSON(after[\"score\"])) != string(mustJSON(v[\"score\"])) || after[\"feedback_status\"] != \"complete\" || f.extracts.Load() != 1 || f.maps.Load() != 1 {\n\t\tt.Fatal(\"feedback retry regraded\")\n\t}\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringHTTPFeedbackPositive(t *testing.T) {\n\tf := scoringFixture(t, true)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tv := f.envelope(t, state)\n\tr, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tbody := string(mustJSON(map[string]any{\"answer_sha256\": r.Attempt[\"answer_utf8_sha256\"], \"configuration_sha256\": r.Attempt[\"configuration_sha256\"]}))\n\tf.bad.Store(false)\n\tw := f.request(\"POST\", \"/api/v1/attempts/\"+f.attempt+\":retry-feedback\", body, uuid.NewString(), fmt.Sprint(r.Attempt[\"revision\"]))\n\tif w.Code != 200 {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n\tvar after map[string]any\n\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &after))\n\tif string(mustJSON(after[\"score\"])) != string(mustJSON(v[\"score\"])) || after[\"feedback_status\"] != \"complete\" || f.extracts.Load() != 1 || f.maps.Load() != 1 {\n\t\tt.Fatal(\"feedback retry regraded\")\n\t}\n}\n",
@@ -2889,7 +2889,7 @@
         "exact_native_test": "TestNativeScoringLateNegative",
         "literal_executable_fixture": "func TestNativeScoringLateNegative(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tf.mode.Store(\"feedback-blocked\")\n\tdone := make(chan error, 1)\n\tgo func() { _, e := f.interpret(t, uuid.NewString()); done <- e }()\n\tselect {\n\tcase <-f.entered:\n\tcase e := <-done:\n\t\tt.Fatal(e)\n\tcase <-time.After(30 * time.Second):\n\t\tt.Fatal(\"feedback boundary\")\n\t}\n\tsaved, e := f.s.Store.interpretationState(context.Background(), f.attempt)\n\trequireListening(t, e)\n\toriginal := *saved.Result\n\t_, e = f.s.Store.DB.Exec(context.Background(), \"UPDATE interpretation_checkpoint SET deadline_at=clock_timestamp()-interval '1 second' WHERE attempt_id=$1\", f.attempt)\n\trequireListening(t, e)\n\tclose(f.release)\n\te = <-done\n\tif !errors.Is(e, ErrEvaluationLease) {\n\t\tt.Fatal(e)\n\t}\n\tr, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tif r.Context[\"result_id\"] != original || r.Attempt[\"answer_text\"] != \"Use opens.\" || r.Attempt[\"feedback_status\"] == \"complete\" {\n\t\tt.Fatalf(\"late feedback: result=%v expected=%s answer=%q feedback_status=%v\", r.Context[\"result_id\"], original, r.Attempt[\"answer_text\"], r.Attempt[\"feedback_status\"])\n\t}\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringLateNegative(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tf.mode.Store(\"feedback-blocked\")\n\tdone := make(chan error, 1)\n\tgo func() { _, e := f.interpret(t, uuid.NewString()); done <- e }()\n\tselect {\n\tcase <-f.entered:\n\tcase e := <-done:\n\t\tt.Fatal(e)\n\tcase <-time.After(30 * time.Second):\n\t\tt.Fatal(\"feedback boundary\")\n\t}\n\tsaved, e := f.s.Store.interpretationState(context.Background(), f.attempt)\n\trequireListening(t, e)\n\toriginal := *saved.Result\n\t_, e = f.s.Store.DB.Exec(context.Background(), \"UPDATE interpretation_checkpoint SET deadline_at=clock_timestamp()-interval '1 second' WHERE attempt_id=$1\", f.attempt)\n\trequireListening(t, e)\n\tclose(f.release)\n\te = <-done\n\tif !errors.Is(e, ErrEvaluationLease) {\n\t\tt.Fatal(e)\n\t}\n\tr, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tif r.Context[\"result_id\"] != original || r.Attempt[\"answer_text\"] != \"Use opens.\" || r.Attempt[\"feedback_status\"] == \"complete\" {\n\t\tt.Fatalf(\"late feedback: result=%v expected=%s answer=%q feedback_status=%v\", r.Context[\"result_id\"], original, r.Attempt[\"answer_text\"], r.Attempt[\"feedback_status\"])\n\t}\n}\n",
@@ -2915,7 +2915,7 @@
         "exact_native_test": "TestNativeScoringReferencesPositive",
         "literal_executable_fixture": "func TestNativeScoringReferencesPositive(t *testing.T) {\n\tf := scoringFixture(t, true)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tv := f.envelope(t, state)\n\titems := v[\"score\"].(map[string]any)[\"items\"].([]any)\n\tref := items[0].(map[string]any)[\"reference\"].(map[string]any)\n\tif len(ref[\"target_texts\"].([]any)) == 0 || len(ref[\"repairs\"].([]any)) == 0 || len(ref[\"audio_intervals\"].([]any)) == 0 || v[\"interpretation\"] == nil {\n\t\tt.Fatal(\"saved result lost key/source detail\")\n\t}\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringReferencesPositive(t *testing.T) {\n\tf := scoringFixture(t, true)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tv := f.envelope(t, state)\n\titems := v[\"score\"].(map[string]any)[\"items\"].([]any)\n\tref := items[0].(map[string]any)[\"reference\"].(map[string]any)\n\tif len(ref[\"target_texts\"].([]any)) == 0 || len(ref[\"repairs\"].([]any)) == 0 || len(ref[\"audio_intervals\"].([]any)) == 0 || v[\"interpretation\"] == nil {\n\t\tt.Fatal(\"saved result lost key/source detail\")\n\t}\n}\n",
@@ -2941,7 +2941,7 @@
         "exact_native_test": "TestNativeScoringReadNoMediaNegative",
         "literal_executable_fixture": "func TestNativeScoringReadNoMediaNegative(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tf.s.Store.Media = nil\n\tv := f.envelope(t, state)\n\tif v[\"score\"] == nil || v[\"interpretation\"] == nil || f.feedbackCalls.Load() != 1 {\n\t\tt.Fatal(\"numeric result depends on media or fresh inference\")\n\t}\n}\nfunc unavailableScoringAudit(t *testing.T) *scoringNative {\n\tf := scoringFixture(t, true)\n\tctx := context.Background()\n\tc, rev, e := f.s.Store.Configuration(ctx)\n\trequireListening(t, e)\n\tprofile := map[string]any{}\n\tfor k, v := range c[\"llm_profiles\"].([]any)[0].(map[string]any) {\n\t\tprofile[k] = v\n\t}\n\tprofile[\"id\"] = \"unavailable-audit\"\n\tprofile[\"roles\"] = []any{\"mapping_audit\"}\n\tprofile[\"model\"] = \"unselected\"\n\tc[\"llm_profiles\"] = append(c[\"llm_profiles\"].([]any), profile)\n\tc[\"mapping_audit_enabled\"] = true\n\tc[\"stage_profiles\"].(map[string]any)[\"mapping_audit\"] = \"unavailable-audit\"\n\tfor _, k := range []string{\"workspace_id\", \"configuration_sha256\", \"provider_access_policy\"} {\n\t\tdelete(c, k)\n\t}\n\t_, _, e = f.s.Store.PutConfiguration(ctx, mustJSON(c), uuid.NewString(), rev)\n\trequireListening(t, e)\n\tf.attempt = f.start(t)\n\t_, _, e = f.s.Store.WriteAnswer(ctx, f.attempt, uuid.NewString(), 0, answerPacket(\"Use opens.\", \"en\"), true)\n\trequireListening(t, e)\n\treturn f\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringReadNoMediaNegative(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tf.s.Store.Media = nil\n\tv := f.envelope(t, state)\n\tif v[\"score\"] == nil || v[\"interpretation\"] == nil || f.feedbackCalls.Load() != 1 {\n\t\tt.Fatal(\"numeric result depends on media or fresh inference\")\n\t}\n}\nfunc unavailableScoringAudit(t *testing.T) *scoringNative {\n\tf := scoringFixture(t, true)\n\tctx := context.Background()\n\tc, rev, e := f.s.Store.Configuration(ctx)\n\trequireListening(t, e)\n\tprofile := map[string]any{}\n\tfor k, v := range c[\"llm_profiles\"].([]any)[0].(map[string]any) {\n\t\tprofile[k] = v\n\t}\n\tprofile[\"id\"] = \"unavailable-audit\"\n\tprofile[\"roles\"] = []any{\"mapping_audit\"}\n\tprofile[\"model\"] = \"unselected\"\n\tc[\"llm_profiles\"] = append(c[\"llm_profiles\"].([]any), profile)\n\tc[\"mapping_audit_enabled\"] = true\n\tc[\"stage_profiles\"].(map[string]any)[\"mapping_audit\"] = \"unavailable-audit\"\n\tfor _, k := range []string{\"workspace_id\", \"configuration_sha256\", \"provider_access_policy\"} {\n\t\tdelete(c, k)\n\t}\n\t_, _, e = f.s.Store.PutConfiguration(ctx, mustJSON(c), uuid.NewString(), rev)\n\trequireListening(t, e)\n\tf.attempt = f.start(t)\n\t_, _, e = f.s.Store.WriteAnswer(ctx, f.attempt, uuid.NewString(), 0, answerPacket(\"Use opens.\", \"en\"), true)\n\trequireListening(t, e)\n\treturn f\n}\n",
@@ -2967,7 +2967,7 @@
         "exact_native_test": "TestNativeScoringAuditStatusPositive",
         "literal_executable_fixture": "func TestNativeScoringAuditStatusPositive(t *testing.T) {\n\tf := unavailableScoringAudit(t)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tv := f.envelope(t, state)\n\tif v[\"status\"] != \"complete\" || len(v[\"issues\"].([]any)) != 0 || v[\"interpretation\"].(map[string]any)[\"audit_status\"] != \"failed\" {\n\t\tt.Fatal(\"optional diagnostic became score uncertainty\")\n\t}\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringAuditStatusPositive(t *testing.T) {\n\tf := unavailableScoringAudit(t)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tv := f.envelope(t, state)\n\tif v[\"status\"] != \"complete\" || len(v[\"issues\"].([]any)) != 0 || v[\"interpretation\"].(map[string]any)[\"audit_status\"] != \"failed\" {\n\t\tt.Fatal(\"optional diagnostic became score uncertainty\")\n\t}\n}\n",
@@ -2993,7 +2993,7 @@
         "exact_native_test": "TestNativeScoringFeedbackOnlyNegative",
         "literal_executable_fixture": "func TestNativeScoringFeedbackOnlyNegative(t *testing.T) {\n\tf := unavailableScoringAudit(t)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tbefore := f.envelope(t, state)\n\tf.bad.Store(false)\n\tr, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tbody := string(mustJSON(map[string]any{\"answer_sha256\": r.Attempt[\"answer_utf8_sha256\"], \"configuration_sha256\": r.Attempt[\"configuration_sha256\"]}))\n\tw := f.request(\"POST\", \"/api/v1/attempts/\"+f.attempt+\":retry-feedback\", body, uuid.NewString(), fmt.Sprint(r.Attempt[\"revision\"]))\n\tif w.Code != 200 {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n\tsaved, e := f.s.Store.interpretationState(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tstages := []InterpretationStage{}\n\trequireListening(t, f.s.Store.readInterpretationJSON(context.Background(), saved.Stages, &stages))\n\taudits := 0\n\tfor _, s := range stages {\n\t\tif s.Stage == \"mapping_audit\" {\n\t\t\taudits++\n\t\t}\n\t}\n\tvar after map[string]any\n\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &after))\n\tif audits != 1 || f.extracts.Load() != 1 || f.maps.Load() != 1 || string(mustJSON(before[\"score\"])) != string(mustJSON(after[\"score\"])) || after[\"feedback_status\"] != \"complete\" {\n\t\tt.Fatal(\"feedback-only retry repeated a semantic/audit stage\")\n\t}\n}\nfunc nativeScoredReason(t *testing.T, mode, answer string) map[string]any {\n\tf := scoringFixture(t, false)\n\tf.mode.Store(mode)\n\tf.attempt = f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), f.attempt, uuid.NewString(), 0, answerPacket(answer, \"en\"), true)\n\trequireListening(t, e)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\treturn f.envelope(t, state)\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringFeedbackOnlyNegative(t *testing.T) {\n\tf := unavailableScoringAudit(t)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tbefore := f.envelope(t, state)\n\tf.bad.Store(false)\n\tr, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tbody := string(mustJSON(map[string]any{\"answer_sha256\": r.Attempt[\"answer_utf8_sha256\"], \"configuration_sha256\": r.Attempt[\"configuration_sha256\"]}))\n\tw := f.request(\"POST\", \"/api/v1/attempts/\"+f.attempt+\":retry-feedback\", body, uuid.NewString(), fmt.Sprint(r.Attempt[\"revision\"]))\n\tif w.Code != 200 {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n\tsaved, e := f.s.Store.interpretationState(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tstages := []InterpretationStage{}\n\trequireListening(t, f.s.Store.readInterpretationJSON(context.Background(), saved.Stages, &stages))\n\taudits := 0\n\tfor _, s := range stages {\n\t\tif s.Stage == \"mapping_audit\" {\n\t\t\taudits++\n\t\t}\n\t}\n\tvar after map[string]any\n\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &after))\n\tif audits != 1 || f.extracts.Load() != 1 || f.maps.Load() != 1 || string(mustJSON(before[\"score\"])) != string(mustJSON(after[\"score\"])) || after[\"feedback_status\"] != \"complete\" {\n\t\tt.Fatal(\"feedback-only retry repeated a semantic/audit stage\")\n\t}\n}\nfunc nativeScoredReason(t *testing.T, mode, answer string) map[string]any {\n\tf := scoringFixture(t, false)\n\tf.mode.Store(mode)\n\tf.attempt = f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), f.attempt, uuid.NewString(), 0, answerPacket(answer, \"en\"), true)\n\trequireListening(t, e)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\treturn f.envelope(t, state)\n}\n",
@@ -3019,7 +3019,7 @@
         "exact_native_test": "TestNativeScoringExplanationPositive",
         "literal_executable_fixture": "func TestNativeScoringExplanationPositive(t *testing.T) {\n\tv := nativeScoredReason(t, \"rubric-repair\", \"Use opens because the cafe is singular.\")\n\ts := v[\"score\"].(map[string]any)\n\tif s[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" || s[\"optional_explanation\"].(map[string]any)[\"display\"] != \"100.0\" || v[\"feedback_status\"] != \"complete\" {\n\t\tt.Fatal(\"supported reason missing from independent score\")\n\t}\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringExplanationPositive(t *testing.T) {\n\tv := nativeScoredReason(t, \"rubric-repair\", \"Use opens because the cafe is singular.\")\n\ts := v[\"score\"].(map[string]any)\n\tif s[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" || s[\"optional_explanation\"].(map[string]any)[\"display\"] != \"100.0\" || v[\"feedback_status\"] != \"complete\" {\n\t\tt.Fatal(\"supported reason missing from independent score\")\n\t}\n}\n",
@@ -3045,7 +3045,7 @@
         "exact_native_test": "TestNativeScoringFalseReasonNegative",
         "literal_executable_fixture": "func TestNativeScoringFalseReasonNegative(t *testing.T) {\n\tv := nativeScoredReason(t, \"scoring-false-reason\", \"Use opens because every English verb always ends in s.\")\n\ts := v[\"score\"].(map[string]any)\n\tif s[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" || s[\"optional_explanation\"].(map[string]any)[\"display\"] != \"0.0\" || v[\"feedback_status\"] != \"complete\" {\n\t\tt.Fatal(\"false reason altered valid correction or feedback\")\n\t}\n}\nfunc installScoringWriteFault(t *testing.T, f *scoringNative) {\n\tt.Helper()\n\t_, e := f.s.Store.DB.Exec(context.Background(), `CREATE FUNCTION reject_feedback_result() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN IF NEW.kind='result-envelope' AND NEW.payload->>'feedback_status'='complete' THEN RAISE EXCEPTION 'test-owned feedback write failure'; END IF; RETURN NEW; END $$`)\n\trequireListening(t, e)\n\t_, e = f.s.Store.DB.Exec(context.Background(), `CREATE TRIGGER reject_feedback_result BEFORE INSERT ON document FOR EACH ROW EXECUTE FUNCTION reject_feedback_result()`)\n\trequireListening(t, e)\n}\nfunc scoringWriteFault(t *testing.T) (*scoringNative, map[string]any) {\n\tf := scoringFixture(t, false)\n\tf.attempt = f.start(t)\n\tinstallScoringWriteFault(t, f)\n\tw := f.request(\"POST\", \"/api/v1/attempts/\"+f.attempt+\":submit\", string(answerPacket(\"Use opens.\", \"en\")), uuid.NewString(), \"0\")\n\tif w.Code != 503 {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n\tvar v map[string]any\n\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &v))\n\treturn f, v\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringFalseReasonNegative(t *testing.T) {\n\tv := nativeScoredReason(t, \"scoring-false-reason\", \"Use opens because every English verb always ends in s.\")\n\ts := v[\"score\"].(map[string]any)\n\tif s[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" || s[\"optional_explanation\"].(map[string]any)[\"display\"] != \"0.0\" || v[\"feedback_status\"] != \"complete\" {\n\t\tt.Fatal(\"false reason altered valid correction or feedback\")\n\t}\n}\nfunc installScoringWriteFault(t *testing.T, f *scoringNative) {\n\tt.Helper()\n\t_, e := f.s.Store.DB.Exec(context.Background(), `CREATE FUNCTION reject_feedback_result() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN IF NEW.kind='result-envelope' AND NEW.payload->>'feedback_status'='complete' THEN RAISE EXCEPTION 'test-owned feedback write failure'; END IF; RETURN NEW; END $$`)\n\trequireListening(t, e)\n\t_, e = f.s.Store.DB.Exec(context.Background(), `CREATE TRIGGER reject_feedback_result BEFORE INSERT ON document FOR EACH ROW EXECUTE FUNCTION reject_feedback_result()`)\n\trequireListening(t, e)\n}\nfunc scoringWriteFault(t *testing.T) (*scoringNative, map[string]any) {\n\tf := scoringFixture(t, false)\n\tf.attempt = f.start(t)\n\tinstallScoringWriteFault(t, f)\n\tw := f.request(\"POST\", \"/api/v1/attempts/\"+f.attempt+\":submit\", string(answerPacket(\"Use opens.\", \"en\")), uuid.NewString(), \"0\")\n\tif w.Code != 503 {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n\tvar v map[string]any\n\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &v))\n\treturn f, v\n}\n",
@@ -3071,7 +3071,7 @@
         "exact_native_test": "TestNativeScoringWriteRecoveryPositive",
         "literal_executable_fixture": "func TestNativeScoringWriteRecoveryPositive(t *testing.T) {\n\tf, before := scoringWriteFault(t)\n\t_, e := f.s.Store.DB.Exec(context.Background(), \"DROP TRIGGER reject_feedback_result ON document\")\n\trequireListening(t, e)\n\tr, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tbody := string(mustJSON(map[string]any{\"answer_sha256\": r.Attempt[\"answer_utf8_sha256\"], \"configuration_sha256\": r.Attempt[\"configuration_sha256\"]}))\n\tw := f.request(\"POST\", \"/api/v1/attempts/\"+f.attempt+\":retry-feedback\", body, uuid.NewString(), fmt.Sprint(r.Attempt[\"revision\"]))\n\tif w.Code != 200 {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n\tvar after map[string]any\n\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &after))\n\tif string(mustJSON(before[\"score\"])) != string(mustJSON(after[\"score\"])) || after[\"feedback_status\"] != \"complete\" || f.extracts.Load() != 1 || f.maps.Load() != 1 {\n\t\tt.Fatal(\"write recovery changed primary semantics\")\n\t}\n}\n\nfunc nativeOffkeyScoring(t *testing.T, omitted bool) {\n\tf := scoringFixture(t, false)\n\tmode, answer := \"scoring-offkey-correction\", \"Use coffee.\"\n\tif omitted {\n\t\tmode, answer = \"scoring-offkey-omitted\", \"The word cafe is incorrect.\"\n\t}\n\tf.mode.Store(mode)\n\tf.attempt = f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), f.attempt, uuid.NewString(), 0, answerPacket(answer, \"en\"), true)\n\trequireListening(t, e)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tresult := f.envelope(t, state)\n\tscore := result[\"score\"].(map[string]any)\n\tcounts := score[\"counts\"].(map[string]any)\n\tif score[\"composite\"].(map[string]any)[\"display\"] != \"0.0\" || counts[\"fp\"] != float64(1) || counts[\"fn\"] != float64(1) {\n\t\tt.Fatal(score)\n\t}\n\tif omitted {\n\t\tif result[\"feedback_status\"] != \"unavailable\" {\n\t\t\tt.Fatal(\"missing false-positive comment accepted\", result)\n\t\t}\n\t} else {\n\t\tif result[\"feedback_status\"] != \"complete\" {\n\t\t\tt.Fatal(\"combined off-key feedback rejected\", result)\n\t\t}\n\t}\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringWriteRecoveryPositive(t *testing.T) {\n\tf, before := scoringWriteFault(t)\n\t_, e := f.s.Store.DB.Exec(context.Background(), \"DROP TRIGGER reject_feedback_result ON document\")\n\trequireListening(t, e)\n\tr, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tbody := string(mustJSON(map[string]any{\"answer_sha256\": r.Attempt[\"answer_utf8_sha256\"], \"configuration_sha256\": r.Attempt[\"configuration_sha256\"]}))\n\tw := f.request(\"POST\", \"/api/v1/attempts/\"+f.attempt+\":retry-feedback\", body, uuid.NewString(), fmt.Sprint(r.Attempt[\"revision\"]))\n\tif w.Code != 200 {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n\tvar after map[string]any\n\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &after))\n\tif string(mustJSON(before[\"score\"])) != string(mustJSON(after[\"score\"])) || after[\"feedback_status\"] != \"complete\" || f.extracts.Load() != 1 || f.maps.Load() != 1 {\n\t\tt.Fatal(\"write recovery changed primary semantics\")\n\t}\n}\n\nfunc nativeOffkeyScoring(t *testing.T, omitted bool) {\n\tf := scoringFixture(t, false)\n\tmode, answer := \"scoring-offkey-correction\", \"Use coffee.\"\n\tif omitted {\n\t\tmode, answer = \"scoring-offkey-omitted\", \"The word cafe is incorrect.\"\n\t}\n\tf.mode.Store(mode)\n\tf.attempt = f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), f.attempt, uuid.NewString(), 0, answerPacket(answer, \"en\"), true)\n\trequireListening(t, e)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tresult := f.envelope(t, state)\n\tscore := result[\"score\"].(map[string]any)\n\tcounts := score[\"counts\"].(map[string]any)\n\tif score[\"composite\"].(map[string]any)[\"display\"] != \"0.0\" || counts[\"fp\"] != float64(1) || counts[\"fn\"] != float64(1) {\n\t\tt.Fatal(score)\n\t}\n\tif omitted {\n\t\tif result[\"feedback_status\"] != \"unavailable\" {\n\t\t\tt.Fatal(\"missing false-positive comment accepted\", result)\n\t\t}\n\t} else {\n\t\tif result[\"feedback_status\"] != \"complete\" {\n\t\t\tt.Fatal(\"combined off-key feedback rejected\", result)\n\t\t}\n\t}\n}\n",
@@ -3097,7 +3097,7 @@
         "exact_native_test": "TestNativeScoringWriteFailureNegative",
         "literal_executable_fixture": "func TestNativeScoringWriteFailureNegative(t *testing.T) {\n\tf, v := scoringWriteFault(t)\n\tr, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tif r.Attempt[\"answer_text\"] != \"Use opens.\" || v[\"score\"].(map[string]any)[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" || v[\"feedback_status\"] != \"not_started\" {\n\t\tt.Fatal(\"post-score failure lost the submission/score\")\n\t}\n}\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9"
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
       },
       "expected": {
         "independent_literal_assertions": "func TestNativeScoringWriteFailureNegative(t *testing.T) {\n\tf, v := scoringWriteFault(t)\n\tr, e := f.s.Store.Attempt(context.Background(), f.attempt)\n\trequireListening(t, e)\n\tif r.Attempt[\"answer_text\"] != \"Use opens.\" || v[\"score\"].(map[string]any)[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" || v[\"feedback_status\"] != \"not_started\" {\n\t\tt.Fatal(\"post-score failure lost the submission/score\")\n\t}\n}\n",
@@ -3123,7 +3123,7 @@
         "exact_native_test": "TestNativeScoringOffkeyPositive",
         "literal_executable_fixture": "func TestNativeScoringOffkeyPositive(t *testing.T)        { nativeOffkeyScoring(t, false) }\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9",
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545",
         "shared_literal_fixture": "func nativeOffkeyScoring(t *testing.T, omitted bool) {\n\tf := scoringFixture(t, false)\n\tmode, answer := \"scoring-offkey-correction\", \"Use coffee.\"\n\tif omitted {\n\t\tmode, answer = \"scoring-offkey-omitted\", \"The word cafe is incorrect.\"\n\t}\n\tf.mode.Store(mode)\n\tf.attempt = f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), f.attempt, uuid.NewString(), 0, answerPacket(answer, \"en\"), true)\n\trequireListening(t, e)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tresult := f.envelope(t, state)\n\tscore := result[\"score\"].(map[string]any)\n\tcounts := score[\"counts\"].(map[string]any)\n\tif score[\"composite\"].(map[string]any)[\"display\"] != \"0.0\" || counts[\"fp\"] != float64(1) || counts[\"fn\"] != float64(1) {\n\t\tt.Fatal(score)\n\t}\n\tif omitted {\n\t\tif result[\"feedback_status\"] != \"unavailable\" {\n\t\t\tt.Fatal(\"missing false-positive comment accepted\", result)\n\t\t}\n\t} else {\n\t\tif result[\"feedback_status\"] != \"complete\" {\n\t\t\tt.Fatal(\"combined off-key feedback rejected\", result)\n\t\t}\n\t}\n}\n"
       },
       "expected": {
@@ -3149,15 +3149,67 @@
       },
       "input": {
         "exact_native_test": "TestNativeScoringOffkeyMissingNegative",
-        "literal_executable_fixture": "func TestNativeScoringOffkeyMissingNegative(t *testing.T) { nativeOffkeyScoring(t, true) }\n",
+        "literal_executable_fixture": "func TestNativeScoringOffkeyMissingNegative(t *testing.T) { nativeOffkeyScoring(t, true) }\n\n",
         "fixture_source_path": "tests/native_scoring_test.go",
-        "fixture_source_sha256": "d3c9fbc1c8f64a62c48f8902aef613a7ae3f2d7fc30b43be0209bf83bbef58c9",
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545",
         "shared_literal_fixture": "func nativeOffkeyScoring(t *testing.T, omitted bool) {\n\tf := scoringFixture(t, false)\n\tmode, answer := \"scoring-offkey-correction\", \"Use coffee.\"\n\tif omitted {\n\t\tmode, answer = \"scoring-offkey-omitted\", \"The word cafe is incorrect.\"\n\t}\n\tf.mode.Store(mode)\n\tf.attempt = f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), f.attempt, uuid.NewString(), 0, answerPacket(answer, \"en\"), true)\n\trequireListening(t, e)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tresult := f.envelope(t, state)\n\tscore := result[\"score\"].(map[string]any)\n\tcounts := score[\"counts\"].(map[string]any)\n\tif score[\"composite\"].(map[string]any)[\"display\"] != \"0.0\" || counts[\"fp\"] != float64(1) || counts[\"fn\"] != float64(1) {\n\t\tt.Fatal(score)\n\t}\n\tif omitted {\n\t\tif result[\"feedback_status\"] != \"unavailable\" {\n\t\t\tt.Fatal(\"missing false-positive comment accepted\", result)\n\t\t}\n\t} else {\n\t\tif result[\"feedback_status\"] != \"complete\" {\n\t\t\tt.Fatal(\"combined off-key feedback rejected\", result)\n\t\t}\n\t}\n}\n"
       },
       "expected": {
-        "independent_literal_assertions": "func TestNativeScoringOffkeyMissingNegative(t *testing.T) { nativeOffkeyScoring(t, true) }\n",
+        "independent_literal_assertions": "func TestNativeScoringOffkeyMissingNegative(t *testing.T) { nativeOffkeyScoring(t, true) }\n\n",
         "oracle": "The application SHALL save numeric results before configurable feedback, retain immutable source/configuration/score through feedback failure, retry only commentary, reopen/replay without model calls and refuse invented feedback references. Independent literal counts/fractions, source judgments and lifecycle expectations are in the executable fixture; transport substitutes do not establish general linguistic accuracy.",
         "independent_shared_assertions": "func nativeOffkeyScoring(t *testing.T, omitted bool) {\n\tf := scoringFixture(t, false)\n\tmode, answer := \"scoring-offkey-correction\", \"Use coffee.\"\n\tif omitted {\n\t\tmode, answer = \"scoring-offkey-omitted\", \"The word cafe is incorrect.\"\n\t}\n\tf.mode.Store(mode)\n\tf.attempt = f.start(t)\n\t_, _, e := f.s.Store.WriteAnswer(context.Background(), f.attempt, uuid.NewString(), 0, answerPacket(answer, \"en\"), true)\n\trequireListening(t, e)\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tresult := f.envelope(t, state)\n\tscore := result[\"score\"].(map[string]any)\n\tcounts := score[\"counts\"].(map[string]any)\n\tif score[\"composite\"].(map[string]any)[\"display\"] != \"0.0\" || counts[\"fp\"] != float64(1) || counts[\"fn\"] != float64(1) {\n\t\tt.Fatal(score)\n\t}\n\tif omitted {\n\t\tif result[\"feedback_status\"] != \"unavailable\" {\n\t\t\tt.Fatal(\"missing false-positive comment accepted\", result)\n\t\t}\n\t} else {\n\t\tif result[\"feedback_status\"] != \"complete\" {\n\t\t\tt.Fatal(\"combined off-key feedback rejected\", result)\n\t\t}\n\t}\n}\n"
+      },
+      "independent_oracle": "The application SHALL save numeric results before configurable feedback, retain immutable source/configuration/score through feedback failure, retry only commentary, reopen/replay without model calls and refuse invented feedback references. Independent literal counts/fractions, source judgments and lifecycle expectations are in the executable fixture; transport substitutes do not establish general linguistic accuracy.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I11-08.P1.S12.POSITIVE",
+      "property_id": "I11-08.P1",
+      "polarity": "positive",
+      "scenario": "I11-08 packet 12",
+      "fixture_id": "iteration11-I11-08-packet12",
+      "test_id": "tangerine.local/api/internal/app::TestNativeScoringIdenticalFieldPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeScoringIdenticalFieldPositive through services/api/internal/app/scoring_pipeline.go",
+      "initial_state": {
+        "origin": "Independent literal fixture with actual native owners",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeScoringIdenticalFieldPositive",
+        "literal_executable_fixture": "func TestNativeScoringIdenticalFieldPositive(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tf.mode.Store(\"feedback-identical-field\")\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tresult := f.envelope(t, state)\n\tif result[\"feedback_status\"] != \"complete\" || result[\"score\"].(map[string]any)[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" {\n\t\tt.Fatal(result)\n\t}\n}\n",
+        "fixture_source_path": "tests/native_scoring_test.go",
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeScoringIdenticalFieldPositive(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tf.mode.Store(\"feedback-identical-field\")\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tresult := f.envelope(t, state)\n\tif result[\"feedback_status\"] != \"complete\" || result[\"score\"].(map[string]any)[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" {\n\t\tt.Fatal(result)\n\t}\n}\n",
+        "oracle": "The application SHALL save numeric results before configurable feedback, retain immutable source/configuration/score through feedback failure, retry only commentary, reopen/replay without model calls and refuse invented feedback references. Independent literal counts/fractions, source judgments and lifecycle expectations are in the executable fixture; transport substitutes do not establish general linguistic accuracy."
+      },
+      "independent_oracle": "The application SHALL save numeric results before configurable feedback, retain immutable source/configuration/score through feedback failure, retry only commentary, reopen/replay without model calls and refuse invented feedback references. Independent literal counts/fractions, source judgments and lifecycle expectations are in the executable fixture; transport substitutes do not establish general linguistic accuracy.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I11-08.P1.S12.NEGATIVE",
+      "property_id": "I11-08.P1",
+      "polarity": "negative",
+      "scenario": "I11-08 packet 12",
+      "fixture_id": "iteration11-I11-08-packet12",
+      "test_id": "tangerine.local/api/internal/app::TestNativeScoringConflictingFieldNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeScoringConflictingFieldNegative through services/api/internal/app/scoring_pipeline.go",
+      "initial_state": {
+        "origin": "Independent literal fixture with actual native owners",
+        "isolated_database_media": true
+      },
+      "input": {
+        "exact_native_test": "TestNativeScoringConflictingFieldNegative",
+        "literal_executable_fixture": "func TestNativeScoringConflictingFieldNegative(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tf.mode.Store(\"feedback-conflicting-field\")\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tresult := f.envelope(t, state)\n\tif result[\"feedback_status\"] != \"unavailable\" || result[\"score\"].(map[string]any)[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" {\n\t\tt.Fatal(\"ambiguous model assertion accepted or score lost\", result)\n\t}\n}\n",
+        "fixture_source_path": "tests/native_scoring_test.go",
+        "fixture_source_sha256": "b6a2913936345fd72fb57e68aaa98504e8df3de0cb63f3e970972862a4055545"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeScoringConflictingFieldNegative(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tf.mode.Store(\"feedback-conflicting-field\")\n\tstate, e := f.interpret(t, uuid.NewString())\n\trequireListening(t, e)\n\tresult := f.envelope(t, state)\n\tif result[\"feedback_status\"] != \"unavailable\" || result[\"score\"].(map[string]any)[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" {\n\t\tt.Fatal(\"ambiguous model assertion accepted or score lost\", result)\n\t}\n}\n",
+        "oracle": "The application SHALL save numeric results before configurable feedback, retain immutable source/configuration/score through feedback failure, retry only commentary, reopen/replay without model calls and refuse invented feedback references. Independent literal counts/fractions, source judgments and lifecycle expectations are in the executable fixture; transport substitutes do not establish general linguistic accuracy."
       },
       "independent_oracle": "The application SHALL save numeric results before configurable feedback, retain immutable source/configuration/score through feedback failure, retry only commentary, reopen/replay without model calls and refuse invented feedback references. Independent literal counts/fractions, source judgments and lifecycle expectations are in the executable fixture; transport substitutes do not establish general linguistic accuracy.",
       "observation_state": "not_run"
@@ -3335,7 +3387,7 @@
         "exact_native_test": "TestLocalScoringRepairPositive",
         "literal_executable_fixture": "func TestLocalScoringRepairPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens.\", \"good\", \"100.0\", \"correction\", \"en\")\n}\n",
         "fixture_source_path": "tests/native_local_scoring_test.go",
-        "fixture_source_sha256": "0461e40eccbea032030703897dfa92212eaa890a7aed9e3cc04a9636d5b80c08"
+        "fixture_source_sha256": "fbf0e4cc6a6912535dd8c9e1c51438da55db540a9e9bb8b1e06fb3196e2ec60d"
       },
       "expected": {
         "independent_literal_assertions": "func TestLocalScoringRepairPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens.\", \"good\", \"100.0\", \"correction\", \"en\")\n}\n",
@@ -3361,7 +3413,7 @@
         "exact_native_test": "TestLocalScoringReasonPositive",
         "literal_executable_fixture": "func TestLocalScoringReasonPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens because the cafe is singular.\", \"rubric-repair\", \"100.0\", \"explanation\", \"en\")\n}\n",
         "fixture_source_path": "tests/native_local_scoring_test.go",
-        "fixture_source_sha256": "0461e40eccbea032030703897dfa92212eaa890a7aed9e3cc04a9636d5b80c08"
+        "fixture_source_sha256": "fbf0e4cc6a6912535dd8c9e1c51438da55db540a9e9bb8b1e06fb3196e2ec60d"
       },
       "expected": {
         "independent_literal_assertions": "func TestLocalScoringReasonPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens because the cafe is singular.\", \"rubric-repair\", \"100.0\", \"explanation\", \"en\")\n}\n",
@@ -3387,7 +3439,7 @@
         "exact_native_test": "TestLocalScoringWrongRepairNegative",
         "literal_executable_fixture": "func TestLocalScoringWrongRepairNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opening.\", \"scoring-wrong\", \"60.0\", \"correction\", \"en\")\n}\n",
         "fixture_source_path": "tests/native_local_scoring_test.go",
-        "fixture_source_sha256": "0461e40eccbea032030703897dfa92212eaa890a7aed9e3cc04a9636d5b80c08"
+        "fixture_source_sha256": "fbf0e4cc6a6912535dd8c9e1c51438da55db540a9e9bb8b1e06fb3196e2ec60d"
       },
       "expected": {
         "independent_literal_assertions": "func TestLocalScoringWrongRepairNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opening.\", \"scoring-wrong\", \"60.0\", \"correction\", \"en\")\n}\n",
@@ -3413,7 +3465,7 @@
         "exact_native_test": "TestLocalScoringMissNegative",
         "literal_executable_fixture": "func TestLocalScoringMissNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"\", \"good\", \"0.0\", \"missed\", \"en\")\n}\n\n",
         "fixture_source_path": "tests/native_local_scoring_test.go",
-        "fixture_source_sha256": "0461e40eccbea032030703897dfa92212eaa890a7aed9e3cc04a9636d5b80c08"
+        "fixture_source_sha256": "fbf0e4cc6a6912535dd8c9e1c51438da55db540a9e9bb8b1e06fb3196e2ec60d"
       },
       "expected": {
         "independent_literal_assertions": "func TestLocalScoringMissNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"\", \"good\", \"0.0\", \"missed\", \"en\")\n}\n\n",
@@ -3439,7 +3491,7 @@
         "exact_native_test": "TestLocalScoringRussianPositive",
         "literal_executable_fixture": "func TestLocalScoringRussianPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens.\", \"good\", \"100.0\", \"correction\", \"ru\")\n}\n",
         "fixture_source_path": "tests/native_local_scoring_test.go",
-        "fixture_source_sha256": "0461e40eccbea032030703897dfa92212eaa890a7aed9e3cc04a9636d5b80c08"
+        "fixture_source_sha256": "fbf0e4cc6a6912535dd8c9e1c51438da55db540a9e9bb8b1e06fb3196e2ec60d"
       },
       "expected": {
         "independent_literal_assertions": "func TestLocalScoringRussianPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens.\", \"good\", \"100.0\", \"correction\", \"ru\")\n}\n",
@@ -3465,7 +3517,7 @@
         "exact_native_test": "TestLocalScoringFalseReasonNegative",
         "literal_executable_fixture": "func TestLocalScoringFalseReasonNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens because every English verb always ends in s.\", \"scoring-false-reason\", \"100.0\", \"explanation\", \"en\")\n}\n\n",
         "fixture_source_path": "tests/native_local_scoring_test.go",
-        "fixture_source_sha256": "0461e40eccbea032030703897dfa92212eaa890a7aed9e3cc04a9636d5b80c08"
+        "fixture_source_sha256": "fbf0e4cc6a6912535dd8c9e1c51438da55db540a9e9bb8b1e06fb3196e2ec60d"
       },
       "expected": {
         "independent_literal_assertions": "func TestLocalScoringFalseReasonNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"Use opens because every English verb always ends in s.\", \"scoring-false-reason\", \"100.0\", \"explanation\", \"en\")\n}\n\n",
@@ -3491,7 +3543,7 @@
         "exact_native_test": "TestLocalScoringOffkeyPositive",
         "literal_executable_fixture": "func TestLocalScoringOffkeyPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"The word cafe is incorrect.\", \"scoring-offkey\", \"0.0\", \"false_positive\", \"en\")\n}\n",
         "fixture_source_path": "tests/native_local_scoring_test.go",
-        "fixture_source_sha256": "0461e40eccbea032030703897dfa92212eaa890a7aed9e3cc04a9636d5b80c08"
+        "fixture_source_sha256": "fbf0e4cc6a6912535dd8c9e1c51438da55db540a9e9bb8b1e06fb3196e2ec60d"
       },
       "expected": {
         "independent_literal_assertions": "func TestLocalScoringOffkeyPositive(t *testing.T) {\n\tobserveLocalScoring(t, \"The word cafe is incorrect.\", \"scoring-offkey\", \"0.0\", \"false_positive\", \"en\")\n}\n",
@@ -3517,7 +3569,7 @@
         "exact_native_test": "TestLocalScoringOffkeyCorrectionNegative",
         "literal_executable_fixture": "func TestLocalScoringOffkeyCorrectionNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"Use coffee.\", \"scoring-offkey-correction\", \"0.0\", \"false_positive\", \"en\")\n}\n",
         "fixture_source_path": "tests/native_local_scoring_test.go",
-        "fixture_source_sha256": "0461e40eccbea032030703897dfa92212eaa890a7aed9e3cc04a9636d5b80c08"
+        "fixture_source_sha256": "fbf0e4cc6a6912535dd8c9e1c51438da55db540a9e9bb8b1e06fb3196e2ec60d"
       },
       "expected": {
         "independent_literal_assertions": "func TestLocalScoringOffkeyCorrectionNegative(t *testing.T) {\n\tobserveLocalScoring(t, \"Use coffee.\", \"scoring-offkey-correction\", \"0.0\", \"false_positive\", \"en\")\n}\n",
