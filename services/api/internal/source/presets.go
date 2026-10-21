@@ -109,8 +109,8 @@ func NativeRecord(id, release, member, table string, ordinal int, row Row) Mappe
 				text, _ = v["text"].(string)
 				labels = "native_pedagogical_edits"
 				raw["annotations"] = v["edits"]
-				if id, ok := v["id"].(string); ok {
-					groups = append(groups, StableID("native-essay", id))
+				if essayID, ok := v["id"].(string); ok {
+					groups = append(groups, StableID("native-essay", id, essayID))
 				}
 				if l1, ok := v["l1"].(string); ok {
 					record["l1"] = l1

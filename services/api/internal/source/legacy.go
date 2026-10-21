@@ -62,7 +62,7 @@ func LegacyRecord(id, release, member, table string, ordinal int, row Row, bindi
 		m.Value["corpus_record"] = record
 		m.Status = "mapped"
 	}
-	if row["invalid"] == true {
+	if row["invalid"] == true || row["ambiguous_keys"] == true {
 		m.Status = "quarantined"
 		m.Issues = append(m.Issues, Issue{member, "native_invalid", "Native format row failed its parser admission"})
 	}

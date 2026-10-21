@@ -43,3 +43,9 @@ Other confirmed repairs: workbook unknown native fields preserved with one parse
 ## Stable implementation checkpoint
 
 239source-import case edges/130physical tests materialized; final selection additionally includes two inherited review-source projection regressions. Static396/property-set4904/strict OpenSpec/DAG/discovery and repaired Go vet/gofmt pass. Full implementation commit and clean whole-selection receipt are next. Projection batches now use one atomic database transaction per64rows rather than individual transactions; dedicated rollback/recovery cases pass. Admission retries preserve immutable bindings/notices and accepted connector revisions; native regressions pass. No new model inference or paid call.
+
+## First clean selection and focused repair
+
+Committed implementation696b5d1; whole selection241cases completed:226passed,15browser command_failed. Full FCE100343rows and W&I253423rows passed. Four isolated native counterexamples then proved TextGrid UTF16 double decode, legacy duplicate-key promotion, cross-dataset essay-group collision and misclassified storage I/O failure. Their minimal fixes and ten new pure/native regression cases pass dirty focused observations. Browser new-intake oracle corrected10→4; no product state was fabricated.
+
+Current complete selection251logicalcases/142physical tests. Focused clean closure52case edges; retain199unchanged passed clean observations with explicit semantic bounds. No full-bank rerun or broader LLM/provider rerun is justified by these bounded changes. New report/retention script and final clean proof remain before acceptance. Canonical GAPS and original registries remain untouched.

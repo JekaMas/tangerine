@@ -265,7 +265,12 @@ func Walk(ctx context.Context, member string, r io.Reader, o Options, emit Emit)
 		if e != nil {
 			return e
 		}
-		n, e := Parse(member, b, o)
+		var n Native
+		if o.Format == "textgrid" {
+			n, e = parseTextGrid(member, string(b))
+		} else {
+			n, e = Parse(member, b, o)
+		}
 		if e != nil {
 			return e
 		}

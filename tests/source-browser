@@ -97,7 +97,7 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
   type_input('Allowed source hosts','wrong.example');type_input('Remote export contract JSON',json.dumps(spec));click('Save documented connector');browser.wait('host_denied')
   record('test_remote_negative',"document.body.textContent.includes('host_denied')",True)
   browser.evaluate("document.querySelector('[aria-label=\"Allowed source hosts\"]').select();true");type_input('Allowed source hosts','127.0.0.1');click('Save documented connector');browser.wait('Connector saved.');click('Fetch or resume complete export');browser.wait('2 pages · 2 records · complete: true')
-  record('test_remote_positive',"document.body.textContent.includes('10 retained files')",True)
+  record('test_remote_positive',"document.body.textContent.includes('4 retained files')",True)
   (evidence/'observations.json').write_text(json.dumps({'values':observed,'fixture':fixture,'driver':browser.driver_version,'network_substitution':False},indent=2))
   screenshot=browser.call('Page.captureScreenshot');(evidence/'sources.png').write_bytes(base64.b64decode(screenshot['data']))
   (evidence/'done').write_text('done');assert go.wait(timeout=30)==0

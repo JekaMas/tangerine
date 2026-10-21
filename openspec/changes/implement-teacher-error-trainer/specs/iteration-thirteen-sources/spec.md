@@ -73,6 +73,11 @@ The application SHALL parse every declared native format into complete ordered n
 - **WHEN** the declared literal supported or violating source/state case reaches the actual production owner
 - **THEN** its independent native values, source scope, exact counts, preserved bytes, persisted state and forbidden effects SHALL hold
 
+#### Scenario: I13-02 packet 10
+
+- **WHEN** the declared literal supported or violating source/state case reaches the actual production owner
+- **THEN** its independent native values, source scope, exact counts, preserved bytes, persisted state and forbidden effects SHALL hold
+
 ### Requirement: I13-03 Exact mapping and conversion
 
 The application SHALL execute the selected admitted source/release/manifest-bound program using stable source rows, same-typed exact joins, complete many projections, documented null rules, exact decimals and codepoint/token/sample conversions; retain unmapped rows and prohibit inferred native semantics.
@@ -118,6 +123,11 @@ The application SHALL execute the selected admitted source/release/manifest-boun
 - **THEN** its independent native values, source scope, exact counts, preserved bytes, persisted state and forbidden effects SHALL hold
 
 #### Scenario: I13-03 packet 9
+
+- **WHEN** the declared literal supported or violating source/state case reaches the actual production owner
+- **THEN** its independent native values, source scope, exact counts, preserved bytes, persisted state and forbidden effects SHALL hold
+
+#### Scenario: I13-03 packet 10
 
 - **WHEN** the declared literal supported or violating source/state case reaches the actual production owner
 - **THEN** its independent native values, source scope, exact counts, preserved bytes, persisted state and forbidden effects SHALL hold
@@ -177,6 +187,16 @@ The application SHALL support all eleven separately named full-source identities
 - **THEN** its independent native values, source scope, exact counts, preserved bytes, persisted state and forbidden effects SHALL hold
 
 #### Scenario: I13-04 packet 11
+
+- **WHEN** the declared literal supported or violating source/state case reaches the actual production owner
+- **THEN** its independent native values, source scope, exact counts, preserved bytes, persisted state and forbidden effects SHALL hold
+
+#### Scenario: I13-04 packet 12
+
+- **WHEN** the declared literal supported or violating source/state case reaches the actual production owner
+- **THEN** its independent native values, source scope, exact counts, preserved bytes, persisted state and forbidden effects SHALL hold
+
+#### Scenario: I13-04 packet 13
 
 - **WHEN** the declared literal supported or violating source/state case reaches the actual production owner
 - **THEN** its independent native values, source scope, exact counts, preserved bytes, persisted state and forbidden effects SHALL hold
@@ -251,6 +271,11 @@ The application SHALL persist immutable release/binding/raw/corpus/report assets
 - **THEN** its independent native values, source scope, exact counts, preserved bytes, persisted state and forbidden effects SHALL hold
 
 #### Scenario: I13-05 packet 14
+
+- **WHEN** the declared literal supported or violating source/state case reaches the actual production owner
+- **THEN** its independent native values, source scope, exact counts, preserved bytes, persisted state and forbidden effects SHALL hold
+
+#### Scenario: I13-05 packet 15
 
 - **WHEN** the declared literal supported or violating source/state case reaches the actual production owner
 - **THEN** its independent native values, source scope, exact counts, preserved bytes, persisted state and forbidden effects SHALL hold

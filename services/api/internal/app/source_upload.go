@@ -152,13 +152,17 @@ func (s *Storage) IntakeArchive(ctx context.Context, name, kind string, r io.Rea
 	return files, e
 }
 
-func (s *Storage) sourceFileReader(ctx context.Context, releaseID, name string) (io.ReadCloser, error) {
+func (s *Storage) sourceFileReader(ctx context.Context, releaseID, name string) (*sourceInputReader, error) {
 	var key string
 	e := s.DB.QueryRow(ctx, "SELECT a.storage_key FROM source_member m JOIN source_file f ON f.id=m.file_id JOIN asset_location a ON a.asset_id=f.asset_id WHERE m.release_id=$1 AND m.relative_path=$2", releaseID, name).Scan(&key)
 	if e != nil {
 		return nil, e
 	}
-	return s.Media.GetObject(ctx, s.Bucket, key, minio.GetObjectOptions{})
+	reader, e := s.Media.GetObject(ctx, s.Bucket, key, minio.GetObjectOptions{})
+	if e != nil {
+		return nil, e
+	}
+	return &sourceInputReader{ReadCloser: reader}, nil
 }
 func (s *Storage) sourceMembers(ctx context.Context, release string) ([]source.Member, error) {
 	rows, e := s.DB.Query(ctx, "SELECT m.relative_path,f.sha256,f.byte_count,m.component,m.partition,f.asset_id,f.media_metadata FROM source_member m JOIN source_file f ON f.id=m.file_id WHERE m.release_id=$1 ORDER BY m.relative_path COLLATE \"C\"", release)
@@ -204,4 +208,19 @@ func sourceError(e error) string {
 		return i.Code
 	}
 	return fmt.Sprintf("source_unavailable")
+}
+
+// Report actual storage I/O separately from parser findings. This observes the
+// attempted read; it adds no availability probe, hash audit or stored-data gate.
+type sourceInputReader struct {
+	io.ReadCloser
+	failure error
+}
+
+func (r *sourceInputReader) Read(b []byte) (int, error) {
+	n, e := r.ReadCloser.Read(b)
+	if e != nil && e != io.EOF {
+		r.failure = e
+	}
+	return n, e
 }

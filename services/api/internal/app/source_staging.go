@@ -78,8 +78,11 @@ func (s *Storage) stageSource(ctx context.Context, run *SourceRun, members []sou
 			if writeErr != nil {
 				return writeErr
 			}
-			if e == nil {
-				e = closeErr
+			if r.failure != nil {
+				return r.failure
+			}
+			if closeErr != nil {
+				return closeErr
 			}
 			if e != nil {
 				if ctx.Err() != nil {

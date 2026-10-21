@@ -768,7 +768,7 @@
       "case_id": "I13-02.P1.S10.POSITIVE",
       "property_id": "I13-02.P1",
       "polarity": "positive",
-      "scenario": "I13-02 packet 1",
+      "scenario": "I13-02 packet 10",
       "fixture_id": "iteration13-I13-02-P1-S10",
       "test_id": "tangerine.local/api/internal/source::TestSourceEncodingPositive",
       "mode": "declared_behavior",
@@ -813,6 +813,60 @@
       },
       "expected": {
         "independent_literal_assertions": "func TestSourceEncodingNegative(t *testing.T) {\n\tfor _, c := range []struct {\n\t\tenc string\n\t\tb   []byte\n\t}{{\"utf-8\", []byte{'x', 0xff}}, {\"utf-16le\", []byte{1}}, {\"utf-16be\", []byte{0xd8, 0}}, {\"utf-16le\", []byte{0, 0xdc}}} {\n\t\te := Walk(context.Background(), \"bad.csv\", bytes.NewReader(c.b), Options{Format: \"csv\", Encoding: c.enc}, func(_ string, _ Row) error { return nil })\n\t\tif e == nil {\n\t\t\tt.Fatalf(\"invalid native encoding accepted%v\", c)\n\t\t}\n\t}\n}\n",
+        "oracle": "The application SHALL parse every declared native format into complete ordered native rows, retaining unknown fields, exact numbers, duplicate columns, XML mixed content/namespaces, XLSX formulas/cached values/hidden sheets, M2 annotators/noops/offsets, TextGrid tiers and Kaldi locators without evaluation. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity."
+      },
+      "independent_oracle": "The application SHALL parse every declared native format into complete ordered native rows, retaining unknown fields, exact numbers, duplicate columns, XML mixed content/namespaces, XLSX formulas/cached values/hidden sheets, M2 annotators/noops/offsets, TextGrid tiers and Kaldi locators without evaluation. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I13-02.P1.S11.POSITIVE",
+      "property_id": "I13-02.P1",
+      "polarity": "positive",
+      "scenario": "I13-02 packet 1",
+      "fixture_id": "iteration13-I13-02-P1-S11",
+      "test_id": "tangerine.local/api/internal/source::TestSourceTextGridEncodingPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestSourceTextGridEncodingPositive through services/api/internal/source/formats.go",
+      "initial_state": {
+        "origin": "Exactly labelled native fixture or previously acquired complete public package; as stated in the executable body and fixture library",
+        "setup": "The exact executable body and shared fixture library define source bytes, prerequisite states and independently expected outcomes."
+      },
+      "input": {
+        "exact_test": "TestSourceTextGridEncodingPositive",
+        "literal_executable_fixture": "func TestSourceTextGridEncodingPositive(t *testing.T) {\n\tfor _, encoding := range []string{\"utf-16le\", \"utf-16be\"} {\n\t\trows := []Row{}\n\t\te := Walk(context.Background(), \"annotation/a.TextGrid\", bytes.NewReader(sourceUTF16Grid(gridLong, encoding)), Options{Format: \"textgrid\", Encoding: encoding}, func(_ string, row Row) error { rows = append(rows, row); return nil })\n\t\tif e != nil {\n\t\t\tt.Fatal(e)\n\t\t}\n\t\tequal(t, 1, len(rows))\n\t\tequal(t, \"T,D,s\", rows[0][\"label\"])\n\t\tequal(t, \"0.1250\", rows[0][\"start_seconds\"])\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/source/textgrid_encoding_test.go",
+        "fixture_source_sha256": "4005a8391e9220eaff4030326eb84e7945de822710971354800681742759adda",
+        "shared_fixture_library": "audit/iteration-13-source-imports-20261021/FIXTURE-LIBRARY.json#services/api/internal/source/textgrid_encoding_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestSourceTextGridEncodingPositive(t *testing.T) {\n\tfor _, encoding := range []string{\"utf-16le\", \"utf-16be\"} {\n\t\trows := []Row{}\n\t\te := Walk(context.Background(), \"annotation/a.TextGrid\", bytes.NewReader(sourceUTF16Grid(gridLong, encoding)), Options{Format: \"textgrid\", Encoding: encoding}, func(_ string, row Row) error { rows = append(rows, row); return nil })\n\t\tif e != nil {\n\t\t\tt.Fatal(e)\n\t\t}\n\t\tequal(t, 1, len(rows))\n\t\tequal(t, \"T,D,s\", rows[0][\"label\"])\n\t\tequal(t, \"0.1250\", rows[0][\"start_seconds\"])\n\t}\n}\n",
+        "oracle": "The application SHALL parse every declared native format into complete ordered native rows, retaining unknown fields, exact numbers, duplicate columns, XML mixed content/namespaces, XLSX formulas/cached values/hidden sheets, M2 annotators/noops/offsets, TextGrid tiers and Kaldi locators without evaluation. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity."
+      },
+      "independent_oracle": "The application SHALL parse every declared native format into complete ordered native rows, retaining unknown fields, exact numbers, duplicate columns, XML mixed content/namespaces, XLSX formulas/cached values/hidden sheets, M2 annotators/noops/offsets, TextGrid tiers and Kaldi locators without evaluation. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I13-02.P1.S10.NEGATIVE",
+      "property_id": "I13-02.P1",
+      "polarity": "negative",
+      "scenario": "I13-02 packet 10",
+      "fixture_id": "iteration13-I13-02-P1-S10",
+      "test_id": "tangerine.local/api/internal/source::TestSourceTextGridEncodingNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestSourceTextGridEncodingNegative through services/api/internal/source/formats.go",
+      "initial_state": {
+        "origin": "Exactly labelled native fixture or previously acquired complete public package; as stated in the executable body and fixture library",
+        "setup": "The exact executable body and shared fixture library define source bytes, prerequisite states and independently expected outcomes."
+      },
+      "input": {
+        "exact_test": "TestSourceTextGridEncodingNegative",
+        "literal_executable_fixture": "func TestSourceTextGridEncodingNegative(t *testing.T) {\n\te := Walk(context.Background(), \"bad.TextGrid\", bytes.NewReader([]byte{0xff, 0xfe, 1}), Options{Format: \"textgrid\", Encoding: \"utf-16le\"}, func(_ string, _ Row) error { return nil })\n\tif e == nil {\n\t\tt.Fatal(\"truncated encoded TextGrid silently accepted\")\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/source/textgrid_encoding_test.go",
+        "fixture_source_sha256": "4005a8391e9220eaff4030326eb84e7945de822710971354800681742759adda",
+        "shared_fixture_library": "audit/iteration-13-source-imports-20261021/FIXTURE-LIBRARY.json#services/api/internal/source/textgrid_encoding_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestSourceTextGridEncodingNegative(t *testing.T) {\n\te := Walk(context.Background(), \"bad.TextGrid\", bytes.NewReader([]byte{0xff, 0xfe, 1}), Options{Format: \"textgrid\", Encoding: \"utf-16le\"}, func(_ string, _ Row) error { return nil })\n\tif e == nil {\n\t\tt.Fatal(\"truncated encoded TextGrid silently accepted\")\n\t}\n}\n",
         "oracle": "The application SHALL parse every declared native format into complete ordered native rows, retaining unknown fields, exact numbers, duplicate columns, XML mixed content/namespaces, XLSX formulas/cached values/hidden sheets, M2 annotators/noops/offsets, TextGrid tiers and Kaldi locators without evaluation. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity."
       },
       "independent_oracle": "The application SHALL parse every declared native format into complete ordered native rows, retaining unknown fields, exact numbers, duplicate columns, XML mixed content/namespaces, XLSX formulas/cached values/hidden sheets, M2 annotators/noops/offsets, TextGrid tiers and Kaldi locators without evaluation. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity.",
@@ -878,6 +932,60 @@
       "polarity": "positive",
       "scenario": "I13-03 packet 2",
       "fixture_id": "iteration13-I13-03-P1-S2",
+      "test_id": "tangerine.local/api/internal/source::TestSourceMappingAmbiguousPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestSourceMappingAmbiguousPositive through services/api/internal/source/mapping.go",
+      "initial_state": {
+        "origin": "Exactly labelled native fixture or previously acquired complete public package; as stated in the executable body and fixture library",
+        "setup": "The exact executable body and shared fixture library define source bytes, prerequisite states and independently expected outcomes."
+      },
+      "input": {
+        "exact_test": "TestSourceMappingAmbiguousPositive",
+        "literal_executable_fixture": "func TestSourceMappingAmbiguousPositive(t *testing.T) {\n\tm := sourceBindingAmbiguity(t, `{\"response\":\"One explicit native value\"}`)\n\tequal(t, \"mapped\", m.Status)\n}\n",
+        "fixture_source_path": "services/api/internal/source/legacy_ambiguity_test.go",
+        "fixture_source_sha256": "395396b5abad906b5ccdec2e5d0648d5dbf3889f85094bcd2199e31189f2decd",
+        "shared_fixture_library": "audit/iteration-13-source-imports-20261021/FIXTURE-LIBRARY.json#services/api/internal/source/legacy_ambiguity_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestSourceMappingAmbiguousPositive(t *testing.T) {\n\tm := sourceBindingAmbiguity(t, `{\"response\":\"One explicit native value\"}`)\n\tequal(t, \"mapped\", m.Status)\n}\n",
+        "oracle": "The application SHALL execute the selected admitted source/release/manifest-bound program using stable source rows, same-typed exact joins, complete many projections, documented null rules, exact decimals and codepoint/token/sample conversions; retain unmapped rows and prohibit inferred native semantics. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity."
+      },
+      "independent_oracle": "The application SHALL execute the selected admitted source/release/manifest-bound program using stable source rows, same-typed exact joins, complete many projections, documented null rules, exact decimals and codepoint/token/sample conversions; retain unmapped rows and prohibit inferred native semantics. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I13-03.P1.S2.NEGATIVE",
+      "property_id": "I13-03.P1",
+      "polarity": "negative",
+      "scenario": "I13-03 packet 2",
+      "fixture_id": "iteration13-I13-03-P1-S2",
+      "test_id": "tangerine.local/api/internal/source::TestSourceMappingAmbiguousNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestSourceMappingAmbiguousNegative through services/api/internal/source/mapping.go",
+      "initial_state": {
+        "origin": "Exactly labelled native fixture or previously acquired complete public package; as stated in the executable body and fixture library",
+        "setup": "The exact executable body and shared fixture library define source bytes, prerequisite states and independently expected outcomes."
+      },
+      "input": {
+        "exact_test": "TestSourceMappingAmbiguousNegative",
+        "literal_executable_fixture": "func TestSourceMappingAmbiguousNegative(t *testing.T) {\n\tm := sourceBindingAmbiguity(t, `{\"response\":\"Original value\",\"response\":\"Conflicting value\"}`)\n\tequal(t, \"quarantined\", m.Status)\n\tequal(t, true, m.Raw[\"ambiguous_keys\"])\n}\n",
+        "fixture_source_path": "services/api/internal/source/legacy_ambiguity_test.go",
+        "fixture_source_sha256": "395396b5abad906b5ccdec2e5d0648d5dbf3889f85094bcd2199e31189f2decd",
+        "shared_fixture_library": "audit/iteration-13-source-imports-20261021/FIXTURE-LIBRARY.json#services/api/internal/source/legacy_ambiguity_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestSourceMappingAmbiguousNegative(t *testing.T) {\n\tm := sourceBindingAmbiguity(t, `{\"response\":\"Original value\",\"response\":\"Conflicting value\"}`)\n\tequal(t, \"quarantined\", m.Status)\n\tequal(t, true, m.Raw[\"ambiguous_keys\"])\n}\n",
+        "oracle": "The application SHALL execute the selected admitted source/release/manifest-bound program using stable source rows, same-typed exact joins, complete many projections, documented null rules, exact decimals and codepoint/token/sample conversions; retain unmapped rows and prohibit inferred native semantics. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity."
+      },
+      "independent_oracle": "The application SHALL execute the selected admitted source/release/manifest-bound program using stable source rows, same-typed exact joins, complete many projections, documented null rules, exact decimals and codepoint/token/sample conversions; retain unmapped rows and prohibit inferred native semantics. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I13-03.P1.S3.POSITIVE",
+      "property_id": "I13-03.P1",
+      "polarity": "positive",
+      "scenario": "I13-03 packet 3",
+      "fixture_id": "iteration13-I13-03-P1-S3",
       "test_id": "tangerine.local/api/internal/source::TestSourceSpanPositive",
       "mode": "declared_behavior",
       "action": "Execute TestSourceSpanPositive through services/api/internal/source/mapping.go",
@@ -900,11 +1008,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-03.P1.S2.NEGATIVE",
+      "case_id": "I13-03.P1.S3.NEGATIVE",
       "property_id": "I13-03.P1",
       "polarity": "negative",
-      "scenario": "I13-03 packet 2",
-      "fixture_id": "iteration13-I13-03-P1-S2",
+      "scenario": "I13-03 packet 3",
+      "fixture_id": "iteration13-I13-03-P1-S3",
       "test_id": "tangerine.local/api/internal/source::TestSourceSpanNegative",
       "mode": "declared_behavior",
       "action": "Execute TestSourceSpanNegative through services/api/internal/source/mapping.go",
@@ -927,11 +1035,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-03.P1.S3.POSITIVE",
+      "case_id": "I13-03.P1.S4.POSITIVE",
       "property_id": "I13-03.P1",
       "polarity": "positive",
-      "scenario": "I13-03 packet 3",
-      "fixture_id": "iteration13-I13-03-P1-S3",
+      "scenario": "I13-03 packet 4",
+      "fixture_id": "iteration13-I13-03-P1-S4",
       "test_id": "tangerine.local/api/internal/source::TestSourceIdentityPositive",
       "mode": "declared_behavior",
       "action": "Execute TestSourceIdentityPositive through services/api/internal/source/mapping.go",
@@ -954,11 +1062,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-03.P1.S3.NEGATIVE",
+      "case_id": "I13-03.P1.S4.NEGATIVE",
       "property_id": "I13-03.P1",
       "polarity": "negative",
-      "scenario": "I13-03 packet 3",
-      "fixture_id": "iteration13-I13-03-P1-S3",
+      "scenario": "I13-03 packet 4",
+      "fixture_id": "iteration13-I13-03-P1-S4",
       "test_id": "tangerine.local/api/internal/source::TestSourceIdentityNegative",
       "mode": "declared_behavior",
       "action": "Execute TestSourceIdentityNegative through services/api/internal/source/mapping.go",
@@ -981,11 +1089,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-03.P1.S4.POSITIVE",
+      "case_id": "I13-03.P1.S5.POSITIVE",
       "property_id": "I13-03.P1",
       "polarity": "positive",
-      "scenario": "I13-03 packet 4",
-      "fixture_id": "iteration13-I13-03-P1-S4",
+      "scenario": "I13-03 packet 5",
+      "fixture_id": "iteration13-I13-03-P1-S5",
       "test_id": "tangerine.local/api/internal/source::TestSourceDecimalSyntaxPositive",
       "mode": "declared_behavior",
       "action": "Execute TestSourceDecimalSyntaxPositive through services/api/internal/source/mapping.go",
@@ -1008,11 +1116,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-03.P1.S4.NEGATIVE",
+      "case_id": "I13-03.P1.S5.NEGATIVE",
       "property_id": "I13-03.P1",
       "polarity": "negative",
-      "scenario": "I13-03 packet 4",
-      "fixture_id": "iteration13-I13-03-P1-S4",
+      "scenario": "I13-03 packet 5",
+      "fixture_id": "iteration13-I13-03-P1-S5",
       "test_id": "tangerine.local/api/internal/source::TestSourceDecimalSyntaxNegative",
       "mode": "declared_behavior",
       "action": "Execute TestSourceDecimalSyntaxNegative through services/api/internal/source/mapping.go",
@@ -1035,11 +1143,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-03.P1.S5.POSITIVE",
+      "case_id": "I13-03.P1.S6.POSITIVE",
       "property_id": "I13-03.P1",
       "polarity": "positive",
-      "scenario": "I13-03 packet 5",
-      "fixture_id": "iteration13-I13-03-P1-S5",
+      "scenario": "I13-03 packet 6",
+      "fixture_id": "iteration13-I13-03-P1-S6",
       "test_id": "tangerine.local/api/internal/source::TestSourceLearnerGroupPositive",
       "mode": "declared_behavior",
       "action": "Execute TestSourceLearnerGroupPositive through services/api/internal/source/mapping.go",
@@ -1062,11 +1170,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-03.P1.S5.NEGATIVE",
+      "case_id": "I13-03.P1.S6.NEGATIVE",
       "property_id": "I13-03.P1",
       "polarity": "negative",
-      "scenario": "I13-03 packet 5",
-      "fixture_id": "iteration13-I13-03-P1-S5",
+      "scenario": "I13-03 packet 6",
+      "fixture_id": "iteration13-I13-03-P1-S6",
       "test_id": "tangerine.local/api/internal/source::TestSourceLearnerGroupNegative",
       "mode": "declared_behavior",
       "action": "Execute TestSourceLearnerGroupNegative through services/api/internal/source/mapping.go",
@@ -1089,11 +1197,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-03.P1.S6.POSITIVE",
+      "case_id": "I13-03.P1.S7.POSITIVE",
       "property_id": "I13-03.P1",
       "polarity": "positive",
-      "scenario": "I13-03 packet 6",
-      "fixture_id": "iteration13-I13-03-P1-S6",
+      "scenario": "I13-03 packet 7",
+      "fixture_id": "iteration13-I13-03-P1-S7",
       "test_id": "tangerine.local/api/internal/app::TestSourceParserDispositionPositive",
       "mode": "declared_behavior",
       "action": "Execute TestSourceParserDispositionPositive through services/api/internal/source/mapping.go",
@@ -1116,11 +1224,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-03.P1.S6.NEGATIVE",
+      "case_id": "I13-03.P1.S7.NEGATIVE",
       "property_id": "I13-03.P1",
       "polarity": "negative",
-      "scenario": "I13-03 packet 6",
-      "fixture_id": "iteration13-I13-03-P1-S6",
+      "scenario": "I13-03 packet 7",
+      "fixture_id": "iteration13-I13-03-P1-S7",
       "test_id": "tangerine.local/api/internal/app::TestSourceParserDispositionNegative",
       "mode": "declared_behavior",
       "action": "Execute TestSourceParserDispositionNegative through services/api/internal/source/mapping.go",
@@ -1143,11 +1251,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-03.P1.S7.POSITIVE",
+      "case_id": "I13-03.P1.S8.POSITIVE",
       "property_id": "I13-03.P1",
       "polarity": "positive",
-      "scenario": "I13-03 packet 7",
-      "fixture_id": "iteration13-I13-03-P1-S7",
+      "scenario": "I13-03 packet 8",
+      "fixture_id": "iteration13-I13-03-P1-S8",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingPositive",
       "mode": "declared_behavior",
       "action": "Execute TestNativeSourceMappingPositive through services/api/internal/source/mapping.go",
@@ -1170,11 +1278,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-03.P1.S7.NEGATIVE",
+      "case_id": "I13-03.P1.S8.NEGATIVE",
       "property_id": "I13-03.P1",
       "polarity": "negative",
-      "scenario": "I13-03 packet 7",
-      "fixture_id": "iteration13-I13-03-P1-S7",
+      "scenario": "I13-03 packet 8",
+      "fixture_id": "iteration13-I13-03-P1-S8",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingNegative",
       "mode": "declared_behavior",
       "action": "Execute TestNativeSourceMappingNegative through services/api/internal/source/mapping.go",
@@ -1197,11 +1305,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-03.P1.S8.POSITIVE",
+      "case_id": "I13-03.P1.S9.POSITIVE",
       "property_id": "I13-03.P1",
       "polarity": "positive",
-      "scenario": "I13-03 packet 8",
-      "fixture_id": "iteration13-I13-03-P1-S8",
+      "scenario": "I13-03 packet 9",
+      "fixture_id": "iteration13-I13-03-P1-S9",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopePositive",
       "mode": "declared_behavior",
       "action": "Execute TestNativeSourcePrivateScopePositive through services/api/internal/source/mapping.go",
@@ -1224,11 +1332,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-03.P1.S8.NEGATIVE",
+      "case_id": "I13-03.P1.S9.NEGATIVE",
       "property_id": "I13-03.P1",
       "polarity": "negative",
-      "scenario": "I13-03 packet 8",
-      "fixture_id": "iteration13-I13-03-P1-S8",
+      "scenario": "I13-03 packet 9",
+      "fixture_id": "iteration13-I13-03-P1-S9",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopeNegative",
       "mode": "declared_behavior",
       "action": "Execute TestNativeSourcePrivateScopeNegative through services/api/internal/source/mapping.go",
@@ -1251,11 +1359,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-03.P1.S9.POSITIVE",
+      "case_id": "I13-03.P1.S10.POSITIVE",
       "property_id": "I13-03.P1",
       "polarity": "positive",
-      "scenario": "I13-03 packet 9",
-      "fixture_id": "iteration13-I13-03-P1-S9",
+      "scenario": "I13-03 packet 10",
+      "fixture_id": "iteration13-I13-03-P1-S10",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourceEfcamdatPositive",
       "mode": "declared_behavior",
       "action": "Execute TestNativeSourceEfcamdatPositive through services/api/internal/source/mapping.go",
@@ -1278,11 +1386,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-03.P1.S9.NEGATIVE",
+      "case_id": "I13-03.P1.S10.NEGATIVE",
       "property_id": "I13-03.P1",
       "polarity": "negative",
-      "scenario": "I13-03 packet 9",
-      "fixture_id": "iteration13-I13-03-P1-S9",
+      "scenario": "I13-03 packet 10",
+      "fixture_id": "iteration13-I13-03-P1-S10",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourceEfcamdatNegative",
       "mode": "declared_behavior",
       "action": "Execute TestNativeSourceEfcamdatNegative through services/api/internal/source/mapping.go",
@@ -1418,6 +1526,60 @@
       "polarity": "positive",
       "scenario": "I13-04 packet 3",
       "fixture_id": "iteration13-I13-04-P1-S3",
+      "test_id": "tangerine.local/api/internal/source::TestSourcePublicEssayGroupPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestSourcePublicEssayGroupPositive through services/api/internal/source/presets.go",
+      "initial_state": {
+        "origin": "Exactly labelled native fixture or previously acquired complete public package; as stated in the executable body and fixture library",
+        "setup": "The exact executable body and shared fixture library define source bytes, prerequisite states and independently expected outcomes."
+      },
+      "input": {
+        "exact_test": "TestSourcePublicEssayGroupPositive",
+        "literal_executable_fixture": "func TestSourcePublicEssayGroupPositive(t *testing.T) {\n\tequal(t, sourceEssayGroup(\"FCE-2.1\", \"release-one\"), sourceEssayGroup(\"FCE-2.1\", \"release-two\"))\n}\n",
+        "fixture_source_path": "services/api/internal/source/essay_group_test.go",
+        "fixture_source_sha256": "6629a61e0a9fb837b2358ff217caf1685b197062c18dfa0b59481db0532d2b0e",
+        "shared_fixture_library": "audit/iteration-13-source-imports-20261021/FIXTURE-LIBRARY.json#services/api/internal/source/essay_group_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestSourcePublicEssayGroupPositive(t *testing.T) {\n\tequal(t, sourceEssayGroup(\"FCE-2.1\", \"release-one\"), sourceEssayGroup(\"FCE-2.1\", \"release-two\"))\n}\n",
+        "oracle": "The application SHALL support all eleven separately named full-source identities and native public presets plus actual private dictionary mappings; preserve every native component, label/annotation origin, unknown identities, overlap groups and absence states, with raw and normalized completeness reported independently. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity."
+      },
+      "independent_oracle": "The application SHALL support all eleven separately named full-source identities and native public presets plus actual private dictionary mappings; preserve every native component, label/annotation origin, unknown identities, overlap groups and absence states, with raw and normalized completeness reported independently. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I13-04.P1.S3.NEGATIVE",
+      "property_id": "I13-04.P1",
+      "polarity": "negative",
+      "scenario": "I13-04 packet 3",
+      "fixture_id": "iteration13-I13-04-P1-S3",
+      "test_id": "tangerine.local/api/internal/source::TestSourcePublicEssayGroupNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestSourcePublicEssayGroupNegative through services/api/internal/source/presets.go",
+      "initial_state": {
+        "origin": "Exactly labelled native fixture or previously acquired complete public package; as stated in the executable body and fixture library",
+        "setup": "The exact executable body and shared fixture library define source bytes, prerequisite states and independently expected outcomes."
+      },
+      "input": {
+        "exact_test": "TestSourcePublicEssayGroupNegative",
+        "literal_executable_fixture": "func TestSourcePublicEssayGroupNegative(t *testing.T) {\n\tif sourceEssayGroup(\"FCE-2.1\", \"release-one\") == sourceEssayGroup(\"WILOCNESS-2.1\", \"release-one\") {\n\t\tt.Fatal(\"unrelated dataset-local essay IDs merged into one genuine source group\")\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/source/essay_group_test.go",
+        "fixture_source_sha256": "6629a61e0a9fb837b2358ff217caf1685b197062c18dfa0b59481db0532d2b0e",
+        "shared_fixture_library": "audit/iteration-13-source-imports-20261021/FIXTURE-LIBRARY.json#services/api/internal/source/essay_group_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestSourcePublicEssayGroupNegative(t *testing.T) {\n\tif sourceEssayGroup(\"FCE-2.1\", \"release-one\") == sourceEssayGroup(\"WILOCNESS-2.1\", \"release-one\") {\n\t\tt.Fatal(\"unrelated dataset-local essay IDs merged into one genuine source group\")\n\t}\n}\n",
+        "oracle": "The application SHALL support all eleven separately named full-source identities and native public presets plus actual private dictionary mappings; preserve every native component, label/annotation origin, unknown identities, overlap groups and absence states, with raw and normalized completeness reported independently. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity."
+      },
+      "independent_oracle": "The application SHALL support all eleven separately named full-source identities and native public presets plus actual private dictionary mappings; preserve every native component, label/annotation origin, unknown identities, overlap groups and absence states, with raw and normalized completeness reported independently. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I13-04.P1.S4.POSITIVE",
+      "property_id": "I13-04.P1",
+      "polarity": "positive",
+      "scenario": "I13-04 packet 4",
+      "fixture_id": "iteration13-I13-04-P1-S4",
       "test_id": "tangerine.local/api/internal/source::TestSourceCompletenessPositive",
       "mode": "declared_behavior",
       "action": "Execute TestSourceCompletenessPositive through services/api/internal/source/presets.go",
@@ -1440,11 +1602,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S3.NEGATIVE",
+      "case_id": "I13-04.P1.S4.NEGATIVE",
       "property_id": "I13-04.P1",
       "polarity": "negative",
-      "scenario": "I13-04 packet 3",
-      "fixture_id": "iteration13-I13-04-P1-S3",
+      "scenario": "I13-04 packet 4",
+      "fixture_id": "iteration13-I13-04-P1-S4",
       "test_id": "tangerine.local/api/internal/source::TestSourceCompletenessNegative",
       "mode": "declared_behavior",
       "action": "Execute TestSourceCompletenessNegative through services/api/internal/source/presets.go",
@@ -1467,11 +1629,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S4.POSITIVE",
+      "case_id": "I13-04.P1.S5.POSITIVE",
       "property_id": "I13-04.P1",
       "polarity": "positive",
-      "scenario": "I13-04 packet 4",
-      "fixture_id": "iteration13-I13-04-P1-S4",
+      "scenario": "I13-04 packet 5",
+      "fixture_id": "iteration13-I13-04-P1-S5",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourceSourcesPositive",
       "mode": "declared_behavior",
       "action": "Execute TestNativeSourceSourcesPositive through services/api/internal/source/presets.go",
@@ -1494,11 +1656,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S4.NEGATIVE",
+      "case_id": "I13-04.P1.S5.NEGATIVE",
       "property_id": "I13-04.P1",
       "polarity": "negative",
-      "scenario": "I13-04 packet 4",
-      "fixture_id": "iteration13-I13-04-P1-S4",
+      "scenario": "I13-04 packet 5",
+      "fixture_id": "iteration13-I13-04-P1-S5",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourceSourcesNegative",
       "mode": "declared_behavior",
       "action": "Execute TestNativeSourceSourcesNegative through services/api/internal/source/presets.go",
@@ -1521,11 +1683,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S5.NEGATIVE",
+      "case_id": "I13-04.P1.S6.NEGATIVE",
       "property_id": "I13-04.P1",
       "polarity": "negative",
-      "scenario": "I13-04 packet 5",
-      "fixture_id": "iteration13-I13-04-P1-S5",
+      "scenario": "I13-04 packet 6",
+      "fixture_id": "iteration13-I13-04-P1-S6",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourceFullScopeNegative",
       "mode": "declared_behavior",
       "action": "Execute TestNativeSourceFullScopeNegative through services/api/internal/source/presets.go",
@@ -1548,11 +1710,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S5.POSITIVE",
+      "case_id": "I13-04.P1.S6.POSITIVE",
       "property_id": "I13-04.P1",
       "polarity": "positive",
-      "scenario": "I13-04 packet 5",
-      "fixture_id": "iteration13-I13-04-P1-S5",
+      "scenario": "I13-04 packet 6",
+      "fixture_id": "iteration13-I13-04-P1-S6",
       "test_id": "tangerine.local/api/internal/app::TestSourceGoldIdentityPositive",
       "mode": "declared_behavior",
       "action": "Execute TestSourceGoldIdentityPositive through services/api/internal/source/presets.go",
@@ -1575,11 +1737,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S6.NEGATIVE",
+      "case_id": "I13-04.P1.S7.NEGATIVE",
       "property_id": "I13-04.P1",
       "polarity": "negative",
-      "scenario": "I13-04 packet 6",
-      "fixture_id": "iteration13-I13-04-P1-S6",
+      "scenario": "I13-04 packet 7",
+      "fixture_id": "iteration13-I13-04-P1-S7",
       "test_id": "tangerine.local/api/internal/app::TestSourceGoldIdentityNegative",
       "mode": "declared_behavior",
       "action": "Execute TestSourceGoldIdentityNegative through services/api/internal/source/presets.go",
@@ -1602,11 +1764,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S6.POSITIVE",
+      "case_id": "I13-04.P1.S7.POSITIVE",
       "property_id": "I13-04.P1",
       "polarity": "positive",
-      "scenario": "I13-04 packet 6",
-      "fixture_id": "iteration13-I13-04-P1-S6",
+      "scenario": "I13-04 packet 7",
+      "fixture_id": "iteration13-I13-04-P1-S7",
       "test_id": "tangerine.local/api/internal/app::TestSourceGoldAdmissionPositive",
       "mode": "declared_behavior",
       "action": "Execute TestSourceGoldAdmissionPositive through services/api/internal/source/presets.go",
@@ -1629,11 +1791,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S7.NEGATIVE",
+      "case_id": "I13-04.P1.S8.NEGATIVE",
       "property_id": "I13-04.P1",
       "polarity": "negative",
-      "scenario": "I13-04 packet 7",
-      "fixture_id": "iteration13-I13-04-P1-S7",
+      "scenario": "I13-04 packet 8",
+      "fixture_id": "iteration13-I13-04-P1-S8",
       "test_id": "tangerine.local/api/internal/app::TestSourceGoldAdmissionNegative",
       "mode": "declared_behavior",
       "action": "Execute TestSourceGoldAdmissionNegative through services/api/internal/source/presets.go",
@@ -1656,11 +1818,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S7.POSITIVE",
+      "case_id": "I13-04.P1.S8.POSITIVE",
       "property_id": "I13-04.P1",
       "polarity": "positive",
-      "scenario": "I13-04 packet 7",
-      "fixture_id": "iteration13-I13-04-P1-S7",
+      "scenario": "I13-04 packet 8",
+      "fixture_id": "iteration13-I13-04-P1-S8",
       "test_id": "tangerine.local/api/internal/app::TestSourceAcousticBoundsPositive",
       "mode": "declared_behavior",
       "action": "Execute TestSourceAcousticBoundsPositive through services/api/internal/source/presets.go",
@@ -1683,11 +1845,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S8.NEGATIVE",
+      "case_id": "I13-04.P1.S9.NEGATIVE",
       "property_id": "I13-04.P1",
       "polarity": "negative",
-      "scenario": "I13-04 packet 8",
-      "fixture_id": "iteration13-I13-04-P1-S8",
+      "scenario": "I13-04 packet 9",
+      "fixture_id": "iteration13-I13-04-P1-S9",
       "test_id": "tangerine.local/api/internal/app::TestSourceAcousticBoundsNegative",
       "mode": "declared_behavior",
       "action": "Execute TestSourceAcousticBoundsNegative through services/api/internal/source/presets.go",
@@ -1710,11 +1872,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S8.POSITIVE",
+      "case_id": "I13-04.P1.S9.POSITIVE",
       "property_id": "I13-04.P1",
       "polarity": "positive",
-      "scenario": "I13-04 packet 8",
-      "fixture_id": "iteration13-I13-04-P1-S8",
+      "scenario": "I13-04 packet 9",
+      "fixture_id": "iteration13-I13-04-P1-S9",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourceSpeechPositive",
       "mode": "declared_behavior",
       "action": "Execute TestNativeSourceSpeechPositive through services/api/internal/source/presets.go",
@@ -1737,11 +1899,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S9.NEGATIVE",
+      "case_id": "I13-04.P1.S10.NEGATIVE",
       "property_id": "I13-04.P1",
       "polarity": "negative",
-      "scenario": "I13-04 packet 9",
-      "fixture_id": "iteration13-I13-04-P1-S9",
+      "scenario": "I13-04 packet 10",
+      "fixture_id": "iteration13-I13-04-P1-S10",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourceSpeechNegative",
       "mode": "declared_behavior",
       "action": "Execute TestNativeSourceSpeechNegative through services/api/internal/source/presets.go",
@@ -1764,11 +1926,65 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S9.POSITIVE",
+      "case_id": "I13-04.P1.S10.POSITIVE",
       "property_id": "I13-04.P1",
       "polarity": "positive",
-      "scenario": "I13-04 packet 9",
-      "fixture_id": "iteration13-I13-04-P1-S9",
+      "scenario": "I13-04 packet 10",
+      "fixture_id": "iteration13-I13-04-P1-S10",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceEssayGroupPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeSourceEssayGroupPositive through services/api/internal/source/presets.go",
+      "initial_state": {
+        "origin": "Exactly labelled native fixture or previously acquired complete public package; as stated in the executable body and fixture library",
+        "setup": "The exact executable body and shared fixture library define source bytes, prerequisite states and independently expected outcomes."
+      },
+      "input": {
+        "exact_test": "TestNativeSourceEssayGroupPositive",
+        "literal_executable_fixture": "func TestNativeSourceEssayGroupPositive(t *testing.T) {\n\tsourceAssert(t, sourceStoredEssayGroup(t, \"FCE-2.1\"), sourceStoredEssayGroup(t, \"FCE-2.1\"))\n}\n",
+        "fixture_source_path": "tests/native_source_repair_test.go",
+        "fixture_source_sha256": "99b784659a0ef1754f8c98cbf254e7cb2b6a6d13d29e6cc4165f8e0803547902",
+        "shared_fixture_library": "audit/iteration-13-source-imports-20261021/FIXTURE-LIBRARY.json#tests/native_source_repair_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeSourceEssayGroupPositive(t *testing.T) {\n\tsourceAssert(t, sourceStoredEssayGroup(t, \"FCE-2.1\"), sourceStoredEssayGroup(t, \"FCE-2.1\"))\n}\n",
+        "oracle": "The application SHALL support all eleven separately named full-source identities and native public presets plus actual private dictionary mappings; preserve every native component, label/annotation origin, unknown identities, overlap groups and absence states, with raw and normalized completeness reported independently. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity."
+      },
+      "independent_oracle": "The application SHALL support all eleven separately named full-source identities and native public presets plus actual private dictionary mappings; preserve every native component, label/annotation origin, unknown identities, overlap groups and absence states, with raw and normalized completeness reported independently. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I13-04.P1.S11.NEGATIVE",
+      "property_id": "I13-04.P1",
+      "polarity": "negative",
+      "scenario": "I13-04 packet 11",
+      "fixture_id": "iteration13-I13-04-P1-S11",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceEssayGroupNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeSourceEssayGroupNegative through services/api/internal/source/presets.go",
+      "initial_state": {
+        "origin": "Exactly labelled native fixture or previously acquired complete public package; as stated in the executable body and fixture library",
+        "setup": "The exact executable body and shared fixture library define source bytes, prerequisite states and independently expected outcomes."
+      },
+      "input": {
+        "exact_test": "TestNativeSourceEssayGroupNegative",
+        "literal_executable_fixture": "func TestNativeSourceEssayGroupNegative(t *testing.T) {\n\tif sourceStoredEssayGroup(t, \"FCE-2.1\") == sourceStoredEssayGroup(t, \"WILOCNESS-2.1\") {\n\t\tt.Fatal(\"persisted unrelated source groups merged\")\n\t}\n}\n",
+        "fixture_source_path": "tests/native_source_repair_test.go",
+        "fixture_source_sha256": "99b784659a0ef1754f8c98cbf254e7cb2b6a6d13d29e6cc4165f8e0803547902",
+        "shared_fixture_library": "audit/iteration-13-source-imports-20261021/FIXTURE-LIBRARY.json#tests/native_source_repair_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeSourceEssayGroupNegative(t *testing.T) {\n\tif sourceStoredEssayGroup(t, \"FCE-2.1\") == sourceStoredEssayGroup(t, \"WILOCNESS-2.1\") {\n\t\tt.Fatal(\"persisted unrelated source groups merged\")\n\t}\n}\n",
+        "oracle": "The application SHALL support all eleven separately named full-source identities and native public presets plus actual private dictionary mappings; preserve every native component, label/annotation origin, unknown identities, overlap groups and absence states, with raw and normalized completeness reported independently. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity."
+      },
+      "independent_oracle": "The application SHALL support all eleven separately named full-source identities and native public presets plus actual private dictionary mappings; preserve every native component, label/annotation origin, unknown identities, overlap groups and absence states, with raw and normalized completeness reported independently. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I13-04.P1.S11.POSITIVE",
+      "property_id": "I13-04.P1",
+      "polarity": "positive",
+      "scenario": "I13-04 packet 11",
+      "fixture_id": "iteration13-I13-04-P1-S11",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourceGoldPositive",
       "mode": "declared_behavior",
       "action": "Execute TestNativeSourceGoldPositive through services/api/internal/source/presets.go",
@@ -1791,11 +2007,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S10.NEGATIVE",
+      "case_id": "I13-04.P1.S12.NEGATIVE",
       "property_id": "I13-04.P1",
       "polarity": "negative",
-      "scenario": "I13-04 packet 10",
-      "fixture_id": "iteration13-I13-04-P1-S10",
+      "scenario": "I13-04 packet 12",
+      "fixture_id": "iteration13-I13-04-P1-S12",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourceGoldNegative",
       "mode": "declared_behavior",
       "action": "Execute TestNativeSourceGoldNegative through services/api/internal/source/presets.go",
@@ -1818,11 +2034,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S10.POSITIVE",
+      "case_id": "I13-04.P1.S12.POSITIVE",
       "property_id": "I13-04.P1",
       "polarity": "positive",
-      "scenario": "I13-04 packet 10",
-      "fixture_id": "iteration13-I13-04-P1-S10",
+      "scenario": "I13-04 packet 12",
+      "fixture_id": "iteration13-I13-04-P1-S12",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourceCountsPositive",
       "mode": "declared_behavior",
       "action": "Execute TestNativeSourceCountsPositive through services/api/internal/source/presets.go",
@@ -1845,11 +2061,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S11.NEGATIVE",
+      "case_id": "I13-04.P1.S13.NEGATIVE",
       "property_id": "I13-04.P1",
       "polarity": "negative",
-      "scenario": "I13-04 packet 11",
-      "fixture_id": "iteration13-I13-04-P1-S11",
+      "scenario": "I13-04 packet 13",
+      "fixture_id": "iteration13-I13-04-P1-S13",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourceCountsNegative",
       "mode": "declared_behavior",
       "action": "Execute TestNativeSourceCountsNegative through services/api/internal/source/presets.go",
@@ -1872,11 +2088,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S11.POSITIVE",
+      "case_id": "I13-04.P1.S13.POSITIVE",
       "property_id": "I13-04.P1",
       "polarity": "positive",
-      "scenario": "I13-04 packet 11",
-      "fixture_id": "iteration13-I13-04-P1-S11",
+      "scenario": "I13-04 packet 13",
+      "fixture_id": "iteration13-I13-04-P1-S13",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourceFullFCEPositive",
       "mode": "declared_behavior",
       "action": "Execute TestNativeSourceFullFCEPositive through services/api/internal/source/presets.go",
@@ -1899,11 +2115,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-04.P1.S12.POSITIVE",
+      "case_id": "I13-04.P1.S14.POSITIVE",
       "property_id": "I13-04.P1",
       "polarity": "positive",
       "scenario": "I13-04 packet 1",
-      "fixture_id": "iteration13-I13-04-P1-S12",
+      "fixture_id": "iteration13-I13-04-P1-S14",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourceFullWIPositive",
       "mode": "declared_behavior",
       "action": "Execute TestNativeSourceFullWIPositive through services/api/internal/source/presets.go",
@@ -2628,11 +2844,65 @@
       "observation_state": "not_run"
     },
     {
+      "case_id": "I13-05.P1.S15.NEGATIVE",
+      "property_id": "I13-05.P1",
+      "polarity": "negative",
+      "scenario": "I13-05 packet 15",
+      "fixture_id": "iteration13-I13-05-P1-S15",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceReadFailureNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeSourceReadFailureNegative through services/api/internal/app/source_import.go",
+      "initial_state": {
+        "origin": "Exactly labelled native fixture or previously acquired complete public package; as stated in the executable body and fixture library",
+        "setup": "The exact executable body and shared fixture library define source bytes, prerequisite states and independently expected outcomes."
+      },
+      "input": {
+        "exact_test": "TestNativeSourceReadFailureNegative",
+        "literal_executable_fixture": "func TestNativeSourceReadFailureNegative(t *testing.T) {\n\tf := sourceFixture(t)\n\tf.bea(t)\n\tvar key string\n\tsourceRequire(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT storage_key FROM asset_location WHERE asset_id=$1\", f.files[2].AssetID).Scan(&key))\n\toriginal := []byte(\"S caf\u00e9 go home\\nA 1 2|||R:VERB:SVA|||goes|||REQUIRED|||-NONE-|||0\\n\\n\")\n\tdefer func() {\n\t\t_, e := f.s.Store.Media.PutObject(context.Background(), f.s.Store.Bucket, key, bytes.NewReader(original), int64(len(original)), minio.PutObjectOptions{})\n\t\tif e != nil {\n\t\t\tt.Error(e)\n\t\t}\n\t}()\n\tsourceRequire(t, f.s.Store.Media.RemoveObject(context.Background(), f.s.Store.Bucket, key, minio.RemoveObjectOptions{}))\n\tr, e := f.s.Store.createSourceImport(context.Background(), f.release.ID, \"native\", nil)\n\tsourceRequire(t, e)\n\tfailed, e := f.s.Store.RunSourceImport(context.Background(), r.Report.ID, uuid.NewString(), 0)\n\tif e == nil {\n\t\tt.Fatalf(\"missing stored bytes became native parsing success/state%s: %+v\", failed.Report.State, failed.Report.Issues)\n\t}\n\tsourceAssert(t, \"failed\", failed.Report.State)\n\tfor _, issue := range failed.Report.Issues {\n\t\tif issue.Code == \"parse_failed\" {\n\t\t\tt.Fatal(\"storage failure permanently classified as malformed native input\")\n\t\t}\n\t}\n}\n\n",
+        "fixture_source_path": "tests/native_source_repair_test.go",
+        "fixture_source_sha256": "99b784659a0ef1754f8c98cbf254e7cb2b6a6d13d29e6cc4165f8e0803547902",
+        "shared_fixture_library": "audit/iteration-13-source-imports-20261021/FIXTURE-LIBRARY.json#tests/native_source_repair_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeSourceReadFailureNegative(t *testing.T) {\n\tf := sourceFixture(t)\n\tf.bea(t)\n\tvar key string\n\tsourceRequire(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT storage_key FROM asset_location WHERE asset_id=$1\", f.files[2].AssetID).Scan(&key))\n\toriginal := []byte(\"S caf\u00e9 go home\\nA 1 2|||R:VERB:SVA|||goes|||REQUIRED|||-NONE-|||0\\n\\n\")\n\tdefer func() {\n\t\t_, e := f.s.Store.Media.PutObject(context.Background(), f.s.Store.Bucket, key, bytes.NewReader(original), int64(len(original)), minio.PutObjectOptions{})\n\t\tif e != nil {\n\t\t\tt.Error(e)\n\t\t}\n\t}()\n\tsourceRequire(t, f.s.Store.Media.RemoveObject(context.Background(), f.s.Store.Bucket, key, minio.RemoveObjectOptions{}))\n\tr, e := f.s.Store.createSourceImport(context.Background(), f.release.ID, \"native\", nil)\n\tsourceRequire(t, e)\n\tfailed, e := f.s.Store.RunSourceImport(context.Background(), r.Report.ID, uuid.NewString(), 0)\n\tif e == nil {\n\t\tt.Fatalf(\"missing stored bytes became native parsing success/state%s: %+v\", failed.Report.State, failed.Report.Issues)\n\t}\n\tsourceAssert(t, \"failed\", failed.Report.State)\n\tfor _, issue := range failed.Report.Issues {\n\t\tif issue.Code == \"parse_failed\" {\n\t\t\tt.Fatal(\"storage failure permanently classified as malformed native input\")\n\t\t}\n\t}\n}\n\n",
+        "oracle": "The application SHALL persist immutable release/binding/raw/corpus/report assets and foreground checkpoints through real PostgreSQL/private media, with deterministic preview, explicit resume/retry/cancel and completed replay, late/concurrent writer rejection, exact bounded issue/paged-record readback and no revalidation of accepted stored data. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity."
+      },
+      "independent_oracle": "The application SHALL persist immutable release/binding/raw/corpus/report assets and foreground checkpoints through real PostgreSQL/private media, with deterministic preview, explicit resume/retry/cancel and completed replay, late/concurrent writer rejection, exact bounded issue/paged-record readback and no revalidation of accepted stored data. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity.",
+      "observation_state": "not_run"
+    },
+    {
       "case_id": "I13-05.P1.S13.POSITIVE",
       "property_id": "I13-05.P1",
       "polarity": "positive",
       "scenario": "I13-05 packet 13",
       "fixture_id": "iteration13-I13-05-P1-S13",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceReadFailurePositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeSourceReadFailurePositive through services/api/internal/app/source_import.go",
+      "initial_state": {
+        "origin": "Exactly labelled native fixture or previously acquired complete public package; as stated in the executable body and fixture library",
+        "setup": "The exact executable body and shared fixture library define source bytes, prerequisite states and independently expected outcomes."
+      },
+      "input": {
+        "exact_test": "TestNativeSourceReadFailurePositive",
+        "literal_executable_fixture": "func TestNativeSourceReadFailurePositive(t *testing.T) {\n\tf := sourceFixture(t)\n\tf.bea(t)\n\tvar key string\n\tsourceRequire(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT storage_key FROM asset_location WHERE asset_id=$1\", f.files[2].AssetID).Scan(&key))\n\toriginal := []byte(\"S caf\u00e9 go home\\nA 1 2|||R:VERB:SVA|||goes|||REQUIRED|||-NONE-|||0\\n\\n\")\n\tsourceRequire(t, f.s.Store.Media.RemoveObject(context.Background(), f.s.Store.Bucket, key, minio.RemoveObjectOptions{}))\n\tr, e := f.s.Store.createSourceImport(context.Background(), f.release.ID, \"native\", nil)\n\tsourceRequire(t, e)\n\t_, e = f.s.Store.RunSourceImport(context.Background(), r.Report.ID, uuid.NewString(), 0)\n\tif e == nil {\n\t\tt.Fatal(\"expected actual missing-byte failure\")\n\t}\n\t_, e = f.s.Store.Media.PutObject(context.Background(), f.s.Store.Bucket, key, bytes.NewReader(original), int64(len(original)), minio.PutObjectOptions{})\n\tsourceRequire(t, e)\n\tfresh, e := f.s.Store.SourceImport(context.Background(), r.Report.ID)\n\tsourceRequire(t, e)\n\trecovered, e := f.s.Store.RunSourceImport(context.Background(), r.Report.ID, uuid.NewString(), fresh.Revision)\n\tsourceRequire(t, e)\n\tsourceAssert(t, \"complete\", recovered.Report.State)\n\tsourceAssert(t, true, recovered.Report.Normalized)\n\tsourceAssert(t, \"6\", recovered.Report.Observed)\n}\n",
+        "fixture_source_path": "tests/native_source_repair_test.go",
+        "fixture_source_sha256": "99b784659a0ef1754f8c98cbf254e7cb2b6a6d13d29e6cc4165f8e0803547902",
+        "shared_fixture_library": "audit/iteration-13-source-imports-20261021/FIXTURE-LIBRARY.json#tests/native_source_repair_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeSourceReadFailurePositive(t *testing.T) {\n\tf := sourceFixture(t)\n\tf.bea(t)\n\tvar key string\n\tsourceRequire(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT storage_key FROM asset_location WHERE asset_id=$1\", f.files[2].AssetID).Scan(&key))\n\toriginal := []byte(\"S caf\u00e9 go home\\nA 1 2|||R:VERB:SVA|||goes|||REQUIRED|||-NONE-|||0\\n\\n\")\n\tsourceRequire(t, f.s.Store.Media.RemoveObject(context.Background(), f.s.Store.Bucket, key, minio.RemoveObjectOptions{}))\n\tr, e := f.s.Store.createSourceImport(context.Background(), f.release.ID, \"native\", nil)\n\tsourceRequire(t, e)\n\t_, e = f.s.Store.RunSourceImport(context.Background(), r.Report.ID, uuid.NewString(), 0)\n\tif e == nil {\n\t\tt.Fatal(\"expected actual missing-byte failure\")\n\t}\n\t_, e = f.s.Store.Media.PutObject(context.Background(), f.s.Store.Bucket, key, bytes.NewReader(original), int64(len(original)), minio.PutObjectOptions{})\n\tsourceRequire(t, e)\n\tfresh, e := f.s.Store.SourceImport(context.Background(), r.Report.ID)\n\tsourceRequire(t, e)\n\trecovered, e := f.s.Store.RunSourceImport(context.Background(), r.Report.ID, uuid.NewString(), fresh.Revision)\n\tsourceRequire(t, e)\n\tsourceAssert(t, \"complete\", recovered.Report.State)\n\tsourceAssert(t, true, recovered.Report.Normalized)\n\tsourceAssert(t, \"6\", recovered.Report.Observed)\n}\n",
+        "oracle": "The application SHALL persist immutable release/binding/raw/corpus/report assets and foreground checkpoints through real PostgreSQL/private media, with deterministic preview, explicit resume/retry/cancel and completed replay, late/concurrent writer rejection, exact bounded issue/paged-record readback and no revalidation of accepted stored data. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity."
+      },
+      "independent_oracle": "The application SHALL persist immutable release/binding/raw/corpus/report assets and foreground checkpoints through real PostgreSQL/private media, with deterministic preview, explicit resume/retry/cancel and completed replay, late/concurrent writer rejection, exact bounded issue/paged-record readback and no revalidation of accepted stored data. Actual source terms and missing populations remain explicit; constructed cases do not certify unseen private releases or linguistic validity.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I13-05.P1.S14.POSITIVE",
+      "property_id": "I13-05.P1",
+      "polarity": "positive",
+      "scenario": "I13-05 packet 14",
+      "fixture_id": "iteration13-I13-05-P1-S14",
       "test_id": "tangerine.local/api/internal/app::TestSourceProgressPositive",
       "mode": "declared_behavior",
       "action": "Execute TestSourceProgressPositive through services/api/internal/app/source_import.go",
@@ -2655,11 +2925,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-05.P1.S15.NEGATIVE",
+      "case_id": "I13-05.P1.S16.NEGATIVE",
       "property_id": "I13-05.P1",
       "polarity": "negative",
       "scenario": "I13-05 packet 1",
-      "fixture_id": "iteration13-I13-05-P1-S15",
+      "fixture_id": "iteration13-I13-05-P1-S16",
       "test_id": "tangerine.local/api/internal/app::TestSourceProgressNegative",
       "mode": "declared_behavior",
       "action": "Execute TestSourceProgressNegative through services/api/internal/app/source_import.go",
@@ -2682,11 +2952,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-05.P1.S14.POSITIVE",
+      "case_id": "I13-05.P1.S15.POSITIVE",
       "property_id": "I13-05.P1",
       "polarity": "positive",
-      "scenario": "I13-05 packet 14",
-      "fixture_id": "iteration13-I13-05-P1-S14",
+      "scenario": "I13-05 packet 15",
+      "fixture_id": "iteration13-I13-05-P1-S15",
       "test_id": "tangerine.local/api/internal/app::TestSourceCorpusPositive",
       "mode": "declared_behavior",
       "action": "Execute TestSourceCorpusPositive through services/api/internal/app/source_import.go",
@@ -2709,11 +2979,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I13-05.P1.S16.NEGATIVE",
+      "case_id": "I13-05.P1.S17.NEGATIVE",
       "property_id": "I13-05.P1",
       "polarity": "negative",
       "scenario": "I13-05 packet 2",
-      "fixture_id": "iteration13-I13-05-P1-S16",
+      "fixture_id": "iteration13-I13-05-P1-S17",
       "test_id": "tangerine.local/api/internal/app::TestSourceCorpusNegative",
       "mode": "declared_behavior",
       "action": "Execute TestSourceCorpusNegative through services/api/internal/app/source_import.go",
@@ -3472,7 +3742,7 @@
       "fixture_id": "iteration13-I13-08-P1-S1",
       "test_id": "tangerine.local/api/internal/source::TestAcquiredSourceBEAPositive",
       "mode": "declared_behavior",
-      "action": "Execute TestAcquiredSourceBEAPositive through services/api/internal/source/native_test.go",
+      "action": "Execute TestAcquiredSourceBEAPositive through services/api/internal/source/stream.go",
       "initial_state": {
         "origin": "Exactly labelled native fixture or previously acquired complete public package; as stated in the executable body and fixture library",
         "setup": "The exact executable body and shared fixture library define source bytes, prerequisite states and independently expected outcomes."
@@ -3499,7 +3769,7 @@
       "fixture_id": "iteration13-I13-08-P1-S2",
       "test_id": "tangerine.local/api/internal/source::TestAcquiredSourceSpeechPositive",
       "mode": "declared_behavior",
-      "action": "Execute TestAcquiredSourceSpeechPositive through services/api/internal/source/native_test.go",
+      "action": "Execute TestAcquiredSourceSpeechPositive through services/api/internal/source/stream.go",
       "initial_state": {
         "origin": "Exactly labelled native fixture or previously acquired complete public package; as stated in the executable body and fixture library",
         "setup": "The exact executable body and shared fixture library define source bytes, prerequisite states and independently expected outcomes."
@@ -3526,7 +3796,7 @@
       "fixture_id": "iteration13-I13-08-P1-S3",
       "test_id": "tangerine.local/api/internal/source::TestAcquiredSourceL2Positive",
       "mode": "declared_behavior",
-      "action": "Execute TestAcquiredSourceL2Positive through services/api/internal/source/native_test.go",
+      "action": "Execute TestAcquiredSourceL2Positive through services/api/internal/source/stream.go",
       "initial_state": {
         "origin": "Exactly labelled native fixture or previously acquired complete public package; as stated in the executable body and fixture library",
         "setup": "The exact executable body and shared fixture library define source bytes, prerequisite states and independently expected outcomes."
@@ -3553,7 +3823,7 @@
       "fixture_id": "iteration13-I13-08-P1-S1",
       "test_id": "tangerine.local/api/internal/source::TestAcquiredSourceNegative",
       "mode": "declared_behavior",
-      "action": "Execute TestAcquiredSourceNegative through services/api/internal/source/native_test.go",
+      "action": "Execute TestAcquiredSourceNegative through services/api/internal/source/stream.go",
       "initial_state": {
         "origin": "Exactly labelled native fixture or previously acquired complete public package; as stated in the executable body and fixture library",
         "setup": "The exact executable body and shared fixture library define source bytes, prerequisite states and independently expected outcomes."
@@ -3580,7 +3850,7 @@
       "fixture_id": "iteration13-I13-08-P1-S2",
       "test_id": "tangerine.local/api/internal/app::TestNativeSourceFullScopeNegative",
       "mode": "declared_behavior",
-      "action": "Execute TestNativeSourceFullScopeNegative through services/api/internal/source/native_test.go",
+      "action": "Execute TestNativeSourceFullScopeNegative through services/api/internal/source/stream.go",
       "initial_state": {
         "origin": "Exactly labelled native fixture or previously acquired complete public package; as stated in the executable body and fixture library",
         "setup": "The exact executable body and shared fixture library define source bytes, prerequisite states and independently expected outcomes."
@@ -3607,7 +3877,7 @@
       "fixture_id": "iteration13-I13-08-P1-S3",
       "test_id": "tangerine.local/api/internal/source::TestSourceCompletenessNegative",
       "mode": "declared_behavior",
-      "action": "Execute TestSourceCompletenessNegative through services/api/internal/source/native_test.go",
+      "action": "Execute TestSourceCompletenessNegative through services/api/internal/source/stream.go",
       "initial_state": {
         "origin": "Exactly labelled native fixture or previously acquired complete public package; as stated in the executable body and fixture library",
         "setup": "The exact executable body and shared fixture library define source bytes, prerequisite states and independently expected outcomes."
