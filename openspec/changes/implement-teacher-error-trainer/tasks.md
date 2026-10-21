@@ -683,10 +683,12 @@ Iteration11 accepted on e906cb3883b63cd72dc179079f441c75d00c1ec2:122/122owned ca
 
 ## Iteration11 verification repair (2026-10-21)
 
-- [ ] I11.V1 Preserve frozen policy and domain uncertainty when pooling raw events; test compatible legacy/current populations and reject mixing distinct policies.
-- [ ] I11.V2 Cover unmapped false positives and permit source-bound combined false-positive/component comments without duplicated cards.
-- [ ] I11.V4 Make the existing practice recommendation requirement explicit for zero-TP answers and verify actual local output (I11-10).
-- [ ] I11.V5 Normalize identical repeated model fields at the single stage admission, preserve conflicting-value ambiguity and exercise native positive/negative cases (I11-08).
-- [ ] I11.V6 Forward stage-specific guidance for empty visible output through the existing single repair; verify recovery and persistent failure without losing scores (I11-08).
-- [ ] I11.V7 Preserve answer-versus-recording roles in feedback, retain independent semantic references and compare actual comments against those source facts (I11-10).
-- [ ] I11.V3 Finish full code/contract review, register paired cases, reconcile valid prior receipts, complete committed-clean iteration acceptance and commit.
+- [x] I11.V1 Preserve frozen policy and domain uncertainty when pooling raw events; test compatible legacy/current populations and reject mixing distinct policies.
+- [x] I11.V2 Cover unmapped false positives and permit source-bound combined false-positive/component comments without duplicated cards.
+- [x] I11.V4 Make the existing practice recommendation requirement explicit for zero-TP answers and verify actual local output (I11-10).
+- [x] I11.V5 Normalize identical repeated model fields at the single stage admission, preserve conflicting-value ambiguity and exercise native positive/negative cases (I11-08).
+- [x] I11.V6 Forward stage-specific guidance for empty visible output through the existing single repair; verify recovery and persistent failure without losing scores (I11-08).
+- [x] I11.V7 Preserve answer-versus-recording roles in feedback, retain independent semantic references and compare actual comments against those source facts (I11-10).
+- [x] I11.V3 Finish full code/contract review, register paired cases, reconcile valid prior receipts, complete committed-clean iteration acceptance and commit.
+
+Iteration 11 verification supersedes its earlier acceptance: all seven finding groups are repaired on committed-clean source `010a4d5b217059e5eb676f329b7e1726e2d3c39c`. All 138 owned cases, 112 interpretation dependencies and four invalidated provider cases passed `--require-clean`; 68 unchanged provider passes retain their original clean `2b74329` receipts and matching current dependencies. Total: 322/322 (161 positive, 161 negative), with zero failures, skips or missing observations. Eight actual local feedback cases reconcile 10 dispatches, native receipts, contexts and MLflow spans across eight operations, plus literal independent source comparison. All 372 artifact and 4,647 property assertions, strict OpenSpec, DAG/discovery, retained valid pinned Go vet/gofmt and the unchanged locked web build pass. The original 122 categories/recipes, 42 formulas, 11 source scopes, migrations and unrelated canonical GAPS.md are preserved. See audit/iteration-11-verification-20261021/REPORT.md and ACCEPTANCE.json. Earlier failed/superseded observations remain retained; known I8.R1–R3 remain separate. No paid/hosted call, purchase, install, delegation, publication or archive.

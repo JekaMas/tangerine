@@ -1,5 +1,9 @@
 # Iteration11 verification
 
+**Complete:** final source `010a4d5b217059e5eb676f329b7e1726e2d3c39c` passes all 138 owned cases and affected dependencies. The reconciled 322/322 selection has 161 positive and 161 negative cases, with zero failures, skips or missing observations; 68 valid original provider passes are retained. Eight actual local feedback cases reconcile 10 dispatches, native receipts, contexts and MLflow spans across eight operations. Independent source comparison supports all eight outputs. The full report and per-case acceptance are recorded alongside this file. All seven verification tasks are complete. No in-scope finding remains. The five owned temporary Lab observers were removed after export/readback; host evidence remains under ignored data. Original definitions and protected GAPS remain unchanged. The acceptance commit records documentation/task completion only; canonical integration uses a fast-forward preserving GAPS.
+
+The chronological observations below are retained as history; failed and superseded candidates are not final acceptance.
+
 Review source b1b29191a5a20962629e1aa61349160476324776 in the existing clean iteration11 worktree. Canonical main has only the protected GAPS.md edit. Earlier122owned/112dependent clean passes remain valid for their registered expectations; counterexamples extend coverage rather than relabel those receipts.
 
 Review anchors: pure internal/scoring/pool.go (policy and domain uncertainty); app/scoring_feedback.go (unmapped source finding coverage and combined component commentary). No numeric formula, corpus, mutation recipe, migration or product scope change is required. Actual input/output admission remains once; saved DB data is trusted. No new service, human review, repeated audit or paid call.
