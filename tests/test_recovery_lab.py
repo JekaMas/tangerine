@@ -19,7 +19,7 @@ from mlflow import MlflowClient
 root=pathlib.Path('/lab');source=pathlib.Path('/native/control-native.json');packet=json.loads(source.read_text())
 mlflow.set_tracking_uri('sqlite:////lab/mlflow.db');client=MlflowClient();experiment=client.create_experiment('Tangerine iteration15 deterministic recovery',artifact_location='file:///lab/artifacts')
 with mlflow.start_run(experiment_id=experiment,tags={'tangerine.proof':'deterministic_control_only','tangerine.source_revision':json.loads(pathlib.Path('/native/receipt.json').read_text())['source_revision'],'tangerine.model_observation':'constructed upstream; no real inference'}) as run:
- mlflow.log_metrics({'actual_llm_inference_calls':0,'constructed_dispatches':packet['independent_fixture_dispatches'],'native_receipts':packet['native_receipts'],'native_snapshots':packet['native_snapshots']});mlflow.log_artifact(str(source));run_id=run.info.run_id
+ mlflow.log_metrics({'actual_llm_inference_calls':0,'constructed_dispatches':packet['independent_fixture_dispatches'],'native_receipts':packet['native_receipts'],'native_snapshots':packet['native_snapshots'],'native_speech_receipts':packet['native_speech_receipts'],'constructed_speech_dispatches':packet['independent_speech_dispatches']});mlflow.log_artifact(str(source));run_id=run.info.run_id
 with tempfile.TemporaryDirectory() as folder:
  downloaded=pathlib.Path(client.download_artifacts(run_id,'control-native.json',folder));same=downloaded.read_bytes()==source.read_bytes()
 actual=client.get_run(run_id);missing=False
@@ -34,5 +34,5 @@ result={'status':'observed','mlflow_version':mlflow.__version__,'run_id':run_id,
   if p.returncode:raise AssertionError('Actual MLflow record failed: '+str(cls.path))
   cls.result=json.loads((cls.path/'result.json').read_text());(R/'data/iteration15/receipts/lab-current.json').write_text(json.dumps({'result':str((cls.path/'result.json').relative_to(R)),'source_revision':head},indent=2))
  def test_export_positive(self):self.assertTrue(self.result['artifact_exact']);self.assertEqual(self.result['run_status'],'FINISHED')
- def test_control_correspondence_positive(self):self.assertEqual(self.result['metrics'],{'actual_llm_inference_calls':0,'constructed_dispatches':2,'native_receipts':2,'native_snapshots':2})
+ def test_control_correspondence_positive(self):self.assertEqual(self.result['metrics'],{'actual_llm_inference_calls':0,'constructed_dispatches':2,'native_receipts':2,'native_snapshots':2,'native_speech_receipts':1,'constructed_speech_dispatches':1})
  def test_missing_copy_negative(self):self.assertTrue(self.result['missing_artifact_rejected'])

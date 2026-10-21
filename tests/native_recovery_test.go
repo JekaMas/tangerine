@@ -440,24 +440,30 @@ func saveRecoveryControl(t *testing.T, s *Server) {
 	rows, e := s.Store.DB.Query(context.Background(), "SELECT id,kind,payload FROM document WHERE kind IN('provider-receipt','llm-context-snapshot') ORDER BY id")
 	requireListening(t, e)
 	documents := []any{}
-	receipts, snapshots := 0, 0
+	receipts, snapshots, speechReceipts := 0, 0, 0
 	for rows.Next() {
 		var id, kind string
 		var raw []byte
 		requireListening(t, rows.Scan(&id, &kind, &raw))
 		documents = append(documents, map[string]any{"id": id, "kind": kind, "payload": json.RawMessage(raw)})
 		if kind == "provider-receipt" {
-			receipts++
+			var payload map[string]any
+			requireListening(t, json.Unmarshal(raw, &payload))
+			if payload["stage"] == "case_generation" {
+				receipts++
+			} else {
+				speechReceipts++
+			}
 		} else {
 			snapshots++
 		}
 	}
 	rows.Close()
 	requireListening(t, rows.Err())
-	if receipts != 2 || snapshots != 2 {
-		t.Fatal("native/independent fixture dispatch mismatch", receipts, snapshots)
+	if receipts != 2 || snapshots != 2 || speechReceipts != 1 {
+		t.Fatal("native/independent fixture dispatch mismatch", receipts, snapshots, speechReceipts)
 	}
-	requireListening(t, os.WriteFile(filepath.Join(root, "control-native.json"), mustJSON(map[string]any{"origin": "constructed model transport; genuine native owners", "independent_fixture_dispatches": 2, "native_receipts": receipts, "native_snapshots": snapshots, "actual_llm_inference_calls": 0, "documents": documents, "proof": "Deterministic coordination/context capture only. Unchanged model quality evidence is retained separately."}), 0600))
+	requireListening(t, os.WriteFile(filepath.Join(root, "control-native.json"), mustJSON(map[string]any{"origin": "constructed model transport; genuine native owners", "independent_fixture_dispatches": 2, "native_receipts": receipts, "native_snapshots": snapshots, "native_speech_receipts": speechReceipts, "independent_speech_dispatches": 1, "actual_llm_inference_calls": 0, "documents": documents, "proof": "Deterministic coordination/context capture only. Unchanged model quality evidence is retained separately."}), 0600))
 }
 
 func TestNativeRecoveryCanonicalResumeReplayPositive(t *testing.T) {

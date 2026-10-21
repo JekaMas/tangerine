@@ -1,12 +1,12 @@
 {
   "change": "implement-teacher-error-trainer",
   "manifest": "openspec/changes/implement-teacher-error-trainer/verification.json",
-  "manifest_sha256": "6566d2705ebe69e1592a7e2520cffc7c1dac0d0c46749cd0ce64491c698a8ed8",
+  "manifest_sha256": "f52ad7fbd3a28daaba1285c286b59b27283e371e9df89357f20bbd1b18cb911e",
   "nodes": {
     "cases": {
       "I15-01.P1.S1.NEGATIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "fbf22829c8d8ef9a901647ef63a19897c329948f33df15b2a5a3fefcfd6f0df4",
+        "current_evidence_fingerprint": "ec13b2643448974593be8a0da222ec79d490639aedc2dbcd6654a1a9a6840914",
         "distinct_reason": "Exact TestNativeRecoveryMalformedNegative covers I15-01 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-01.P1.S1.NEGATIVE",
@@ -59,9 +59,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-01 supported recovery",
         "scenario_fingerprint": "cc151a6fb13e9765304340e44a51d6ac58244be827d2552f705e7dbb8fea4605",
-        "setup": "Execute TestNativeRecoveryMalformedNegative through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryMalformedNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryMalformedNegative(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tfor _, body := range []any{map[string]any{}, map[string]any{\\\"generation_attempt\\\": -1}} {\\n\\t\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", uuid.NewString(), body)\\n\\t\\tif w.Code == 200 || calls.Load() != 0 {\\n\\t\\t\\tt.Fatal(w.Code, calls.Load())\\n\\t\\t}\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryMalformedNegative through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryMalformedNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryMalformedNegative(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tfor _, body := range []any{map[string]any{}, map[string]any{\\\"generation_attempt\\\": -1}} {\\n\\t\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", uuid.NewString(), body)\\n\\t\\tif w.Code == 200 || calls.Load() != 0 {\\n\\t\\t\\tt.Fatal(w.Code, calls.Load())\\n\\t\\t}\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -73,8 +73,8 @@
         "test_id": "tangerine.local/api/internal/app::TestNativeRecoveryMalformedNegative"
       },
       "I15-01.P1.S1.POSITIVE": {
-        "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "79ba0343bd787e013b6c565afee911f474d096ca511806a3a1f1e2c4f7630285",
+        "command_id": "iteration15-1-capture",
+        "current_evidence_fingerprint": "824f07d0bd0a388fa7e6cc8059de3a5fabb2f67c9c43a8ef5c1b16a18db170da",
         "distinct_reason": "Exact TestNativeRecoveryGeneratePositive covers I15-01 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-01.P1.S1.POSITIVE",
@@ -127,9 +127,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-01 supported recovery",
         "scenario_fingerprint": "cc151a6fb13e9765304340e44a51d6ac58244be827d2552f705e7dbb8fea4605",
-        "setup": "Execute TestNativeRecoveryGeneratePositive through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryGeneratePositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryGeneratePositive(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tspeech := qualitySpeechTarget(t, s, false)\\n\\tkey := uuid.NewString()\\n\\trequest := recoveryRequest(t, s)\\n\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", key, request)\\n\\tif w.Code != 200 || calls.Load() != 2 || speech.Load() != 1 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), calls.Load(), speech.Load())\\n\\t}\\n\\tvar p map[string]any\\n\\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &p))\\n\\tif p[\\\"audio_available\\\"] != true || p[\\\"settings_asset_id\\\"] != nil || p[\\\"key_id\\\"] != nil {\\n\\t\\tt.Fatal(p)\\n\\t}\\n\\tw = recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", key, request)\\n\\tif w.Code != 200 || calls.Load() != 2 || speech.Load() != 1 {\\n\\t\\tt.Fatal(\\\"replay dispatched\\\", w.Code, w.Body.String(), calls.Load(), speech.Load())\\n\\t}\\n\\tsaveRecoveryControl(t, s)\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryGeneratePositive through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryGeneratePositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryGeneratePositive(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tspeech := qualitySpeechTarget(t, s, false)\\n\\tkey := uuid.NewString()\\n\\trequest := recoveryRequest(t, s)\\n\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", key, request)\\n\\tif w.Code != 200 || calls.Load() != 2 || speech.Load() != 1 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), calls.Load(), speech.Load())\\n\\t}\\n\\tvar p map[string]any\\n\\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &p))\\n\\tif p[\\\"audio_available\\\"] != true || p[\\\"settings_asset_id\\\"] != nil || p[\\\"key_id\\\"] != nil {\\n\\t\\tt.Fatal(p)\\n\\t}\\n\\tw = recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", key, request)\\n\\tif w.Code != 200 || calls.Load() != 2 || speech.Load() != 1 {\\n\\t\\tt.Fatal(\\\"replay dispatched\\\", w.Code, w.Body.String(), calls.Load(), speech.Load())\\n\\t}\\n\\tsaveRecoveryControl(t, s)\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -142,7 +142,7 @@
       },
       "I15-01.P1.S2.NEGATIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "f7a5706f4e40adb6fa65f52a6ec8274d58688c39d1738bcbb0118fe7a54fa8ab",
+        "current_evidence_fingerprint": "a5c650680679e5b9f8775a9984e4e7e2c5256d92a549f9188a92e6c634211e1e",
         "distinct_reason": "Exact TestNativeRecoveryMutationFailureNegative covers I15-01 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-01.P1.S2.NEGATIVE",
@@ -195,9 +195,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-01 rejected or interrupted action",
         "scenario_fingerprint": "ffd25998af6835f49c97887a0e96ef95b3e83ea351ddb5d233f9244b2036ba19",
-        "setup": "Execute TestNativeRecoveryMutationFailureNegative through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryMutationFailureNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryMutationFailureNegative(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, true)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tspeech := qualitySpeechTarget(t, s, false)\\n\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", uuid.NewString(), recoveryRequest(t, s))\\n\\tif w.Code == 200 || calls.Load() != 3 || speech.Load() != 0 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), calls.Load(), speech.Load())\\n\\t}\\n\\trows, e := s.Store.Preparations(context.Background(), 50, \\\"\\\")\\n\\trequireListening(t, e)\\n\\tp := rows[\\\"items\\\"].([]map[string]any)[0]\\n\\tif p[\\\"phase_states\\\"].(map[string]any)[\\\"canonical_text\\\"] != \\\"complete\\\" || p[\\\"canonical_asset_id\\\"] == nil {\\n\\t\\tt.Fatal(\\\"source lost\\\", p)\\n\\t}\\n}\\n\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryMutationFailureNegative through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryMutationFailureNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryMutationFailureNegative(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, true)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tspeech := qualitySpeechTarget(t, s, false)\\n\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", uuid.NewString(), recoveryRequest(t, s))\\n\\tif w.Code == 200 || calls.Load() != 3 || speech.Load() != 0 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), calls.Load(), speech.Load())\\n\\t}\\n\\trows, e := s.Store.Preparations(context.Background(), 50, \\\"\\\")\\n\\trequireListening(t, e)\\n\\tp := rows[\\\"items\\\"].([]map[string]any)[0]\\n\\tif p[\\\"phase_states\\\"].(map[string]any)[\\\"canonical_text\\\"] != \\\"complete\\\" || p[\\\"canonical_asset_id\\\"] == nil {\\n\\t\\tt.Fatal(\\\"source lost\\\", p)\\n\\t}\\n}\\n\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -210,7 +210,7 @@
       },
       "I15-01.P1.S2.POSITIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "f0f72a832e9bdbab74eb9807e615a2a430da8145af5d92890651e7f8782b356d",
+        "current_evidence_fingerprint": "709ea0d70d66ca8f8daf518b81648ea74f16d091e750fc76e06624f076d8b095",
         "distinct_reason": "Exact TestNativeRecoveryResumePositive covers I15-01 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-01.P1.S2.POSITIVE",
@@ -263,9 +263,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-01 rejected or interrupted action",
         "scenario_fingerprint": "ffd25998af6835f49c97887a0e96ef95b3e83ea351ddb5d233f9244b2036ba19",
-        "setup": "Execute TestNativeRecoveryResumePositive through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryResumePositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryResumePositive(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tfailed := qualitySpeechTarget(t, s, true)\\n\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", uuid.NewString(), recoveryRequest(t, s))\\n\\tif w.Code == 200 || calls.Load() != 2 || failed.Load() != 1 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), calls.Load(), failed.Load())\\n\\t}\\n\\tvar response map[string]any\\n\\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &response))\\n\\tp := response[\\\"preparation\\\"].(map[string]any)\\n\\tid := p[\\\"id\\\"].(string)\\n\\tc, rev, e := s.Store.Configuration(context.Background())\\n\\trequireListening(t, e)\\n\\tc[\\\"speech_profile\\\"] = \\\"azure-standard-en-v1\\\"\\n\\tfor _, k := range []string{\\\"workspace_id\\\", \\\"configuration_sha256\\\", \\\"provider_access_policy\\\"} {\\n\\t\\tdelete(c, k)\\n\\t}\\n\\t_, _, e = s.Store.PutConfiguration(context.Background(), mustJSON(c), uuid.NewString(), rev)\\n\\trequireListening(t, e)\\n\\tspeech := qualitySpeechTarget(t, s, false)\\n\\tresumeKey := uuid.NewString()\\n\\tw = recoveryHTTP(t, s, \\\"/api/v1/preparations/\\\"+id+\\\":resume\\\", resumeKey, map[string]any{})\\n\\tif w.Code != 200 || calls.Load() != 2 || speech.Load() != 1 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), calls.Load(), speech.Load())\\n\\t}\\n\\tfirstResult := w.Body.String()\\n\\tw = recoveryHTTP(t, s, \\\"/api/v1/preparations/\\\"+id+\\\":resume\\\", resumeKey, map[string]any{})\\n\\tif w.Code != 200 || w.Body.String() != firstResult || calls.Load() != 2 || speech.Load() != 1 {\\n\\t\\tt.Fatal(\\\"Resume replay changed the action\\\", w.Code, w.Body.String(), firstResult)\\n\\t}\\n\\n\\tsaved, e := s.Store.Preparation(context.Background(), id)\\n\\trequireListening(t, e)\\n\\tif saved[\\\"selected_speech_profile\\\"] != \\\"kokoro-local-en-v1\\\" {\\n\\t\\tt.Fatal(\\\"settings replaced\\\", saved)\\n\\t}\\n\\trows, e := s.Store.Preparations(context.Background(), 50, \\\"\\\")\\n\\trequireListening(t, e)\\n\\tif len(rows[\\\"items\\\"].([]map[string]any)) != 1 || calls.Load() != 2 {\\n\\t\\tt.Fatal(\\\"readback called provider\\\")\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryResumePositive through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryResumePositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryResumePositive(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tfailed := qualitySpeechTarget(t, s, true)\\n\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", uuid.NewString(), recoveryRequest(t, s))\\n\\tif w.Code == 200 || calls.Load() != 2 || failed.Load() != 1 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), calls.Load(), failed.Load())\\n\\t}\\n\\tvar response map[string]any\\n\\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &response))\\n\\tp := response[\\\"preparation\\\"].(map[string]any)\\n\\tid := p[\\\"id\\\"].(string)\\n\\tc, rev, e := s.Store.Configuration(context.Background())\\n\\trequireListening(t, e)\\n\\tc[\\\"speech_profile\\\"] = \\\"azure-standard-en-v1\\\"\\n\\tfor _, k := range []string{\\\"workspace_id\\\", \\\"configuration_sha256\\\", \\\"provider_access_policy\\\"} {\\n\\t\\tdelete(c, k)\\n\\t}\\n\\t_, _, e = s.Store.PutConfiguration(context.Background(), mustJSON(c), uuid.NewString(), rev)\\n\\trequireListening(t, e)\\n\\tspeech := qualitySpeechTarget(t, s, false)\\n\\tresumeKey := uuid.NewString()\\n\\tw = recoveryHTTP(t, s, \\\"/api/v1/preparations/\\\"+id+\\\":resume\\\", resumeKey, map[string]any{})\\n\\tif w.Code != 200 || calls.Load() != 2 || speech.Load() != 1 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), calls.Load(), speech.Load())\\n\\t}\\n\\tfirstResult := w.Body.String()\\n\\tw = recoveryHTTP(t, s, \\\"/api/v1/preparations/\\\"+id+\\\":resume\\\", resumeKey, map[string]any{})\\n\\tif w.Code != 200 || w.Body.String() != firstResult || calls.Load() != 2 || speech.Load() != 1 {\\n\\t\\tt.Fatal(\\\"Resume replay changed the action\\\", w.Code, w.Body.String(), firstResult)\\n\\t}\\n\\n\\tsaved, e := s.Store.Preparation(context.Background(), id)\\n\\trequireListening(t, e)\\n\\tif saved[\\\"selected_speech_profile\\\"] != \\\"kokoro-local-en-v1\\\" {\\n\\t\\tt.Fatal(\\\"settings replaced\\\", saved)\\n\\t}\\n\\trows, e := s.Store.Preparations(context.Background(), 50, \\\"\\\")\\n\\trequireListening(t, e)\\n\\tif len(rows[\\\"items\\\"].([]map[string]any)) != 1 || calls.Load() != 2 {\\n\\t\\tt.Fatal(\\\"readback called provider\\\")\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -278,7 +278,7 @@
       },
       "I15-01.P1.S3.NEGATIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "d2fad5de31f67c568cfd00c554e55aabae1978a062f7df0aa11196ac44b7f3a6",
+        "current_evidence_fingerprint": "f544461d78263206c2e5de510c2dde1b2e63c384dbf8f62ec0dfbfe4490e24c6",
         "distinct_reason": "Exact TestNativeRecoveryConcurrentReplayNegative covers I15-01 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-01.P1.S3.NEGATIVE",
@@ -331,9 +331,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-01 supported recovery",
         "scenario_fingerprint": "cc151a6fb13e9765304340e44a51d6ac58244be827d2552f705e7dbb8fea4605",
-        "setup": "Execute TestNativeRecoveryConcurrentReplayNegative through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryConcurrentReplayNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryConcurrentReplayNegative(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tqualitySpeechTarget(t, s, false)\\n\\toriginal, _ := url.Parse(s.SpeechURL)\\n\\tproxy := httputil.NewSingleHostReverseProxy(original)\\n\\tentered, release := make(chan struct{}), make(chan struct{})\\n\\ttarget := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\\n\\t\\tif r.URL.Path == \\\"/internal/v1/piece\\\" {\\n\\t\\t\\tclose(entered)\\n\\t\\t\\t<-release\\n\\t\\t}\\n\\t\\tproxy.ServeHTTP(w, r)\\n\\t}))\\n\\tdefer target.Close()\\n\\ts.SpeechURL = target.URL\\n\\tkey := uuid.NewString()\\n\\trequest := recoveryRequest(t, s)\\n\\tdone := make(chan *httptest.ResponseRecorder, 1)\\n\\tgo func() { done <- recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", key, request) }()\\n\\t<-entered\\n\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", key, request)\\n\\tclose(release)\\n\\tfirst := <-done\\n\\tif w.Code != 409 || !strings.Contains(w.Body.String(), \\\"LEASE_ACTIVE\\\") || first.Code != 200 || calls.Load() != 2 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), first.Code, first.Body.String(), calls.Load())\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryConcurrentReplayNegative through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryConcurrentReplayNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryConcurrentReplayNegative(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tqualitySpeechTarget(t, s, false)\\n\\toriginal, _ := url.Parse(s.SpeechURL)\\n\\tproxy := httputil.NewSingleHostReverseProxy(original)\\n\\tentered, release := make(chan struct{}), make(chan struct{})\\n\\ttarget := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\\n\\t\\tif r.URL.Path == \\\"/internal/v1/piece\\\" {\\n\\t\\t\\tclose(entered)\\n\\t\\t\\t<-release\\n\\t\\t}\\n\\t\\tproxy.ServeHTTP(w, r)\\n\\t}))\\n\\tdefer target.Close()\\n\\ts.SpeechURL = target.URL\\n\\tkey := uuid.NewString()\\n\\trequest := recoveryRequest(t, s)\\n\\tdone := make(chan *httptest.ResponseRecorder, 1)\\n\\tgo func() { done <- recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", key, request) }()\\n\\t<-entered\\n\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", key, request)\\n\\tclose(release)\\n\\tfirst := <-done\\n\\tif w.Code != 409 || !strings.Contains(w.Body.String(), \\\"LEASE_ACTIVE\\\") || first.Code != 200 || calls.Load() != 2 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), first.Code, first.Body.String(), calls.Load())\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -346,7 +346,7 @@
       },
       "I15-02.P1.S1.NEGATIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "c1d7b0a85e72a9bf03c330cd228a4c9bd187290a4b487ea3105fb4bc2ca4ae1a",
+        "current_evidence_fingerprint": "401e3253123235928e0189f395436bf53b14abd859d0c8f33ce351e35c72d740",
         "distinct_reason": "Exact TestNativeRecoveryUnknownNegative covers I15-02 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-02.P1.S1.NEGATIVE",
@@ -399,9 +399,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-02 supported recovery",
         "scenario_fingerprint": "65bf3c180040fa8e76ea54595c515780ebd38f6a4ca766463b9c3c3a9e15ff34",
-        "setup": "Execute TestNativeRecoveryUnknownNegative through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryUnknownNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryUnknownNegative(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tw := recoveryHTTP(t, s, \\\"/api/v1/preparations/\\\"+uuid.NewString()+\\\":resume\\\", uuid.NewString(), map[string]any{})\\n\\tif w.Code != 404 || calls.Load() != 0 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), calls.Load())\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryUnknownNegative through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryUnknownNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryUnknownNegative(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tw := recoveryHTTP(t, s, \\\"/api/v1/preparations/\\\"+uuid.NewString()+\\\":resume\\\", uuid.NewString(), map[string]any{})\\n\\tif w.Code != 404 || calls.Load() != 0 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), calls.Load())\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -414,7 +414,7 @@
       },
       "I15-02.P1.S1.POSITIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "c83424b600f8c7718dafd790cfb4908bd4d90b416e6500c4fb5cf85127fa5a47",
+        "current_evidence_fingerprint": "17fa773edd5714bba2dfd97048b6221daa9f648784bf86394178cb747d3d3618",
         "distinct_reason": "Exact TestNativeRecoveryResumePositive covers I15-02 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-02.P1.S1.POSITIVE",
@@ -467,9 +467,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-02 supported recovery",
         "scenario_fingerprint": "65bf3c180040fa8e76ea54595c515780ebd38f6a4ca766463b9c3c3a9e15ff34",
-        "setup": "Execute TestNativeRecoveryResumePositive through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryResumePositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryResumePositive(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tfailed := qualitySpeechTarget(t, s, true)\\n\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", uuid.NewString(), recoveryRequest(t, s))\\n\\tif w.Code == 200 || calls.Load() != 2 || failed.Load() != 1 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), calls.Load(), failed.Load())\\n\\t}\\n\\tvar response map[string]any\\n\\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &response))\\n\\tp := response[\\\"preparation\\\"].(map[string]any)\\n\\tid := p[\\\"id\\\"].(string)\\n\\tc, rev, e := s.Store.Configuration(context.Background())\\n\\trequireListening(t, e)\\n\\tc[\\\"speech_profile\\\"] = \\\"azure-standard-en-v1\\\"\\n\\tfor _, k := range []string{\\\"workspace_id\\\", \\\"configuration_sha256\\\", \\\"provider_access_policy\\\"} {\\n\\t\\tdelete(c, k)\\n\\t}\\n\\t_, _, e = s.Store.PutConfiguration(context.Background(), mustJSON(c), uuid.NewString(), rev)\\n\\trequireListening(t, e)\\n\\tspeech := qualitySpeechTarget(t, s, false)\\n\\tresumeKey := uuid.NewString()\\n\\tw = recoveryHTTP(t, s, \\\"/api/v1/preparations/\\\"+id+\\\":resume\\\", resumeKey, map[string]any{})\\n\\tif w.Code != 200 || calls.Load() != 2 || speech.Load() != 1 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), calls.Load(), speech.Load())\\n\\t}\\n\\tfirstResult := w.Body.String()\\n\\tw = recoveryHTTP(t, s, \\\"/api/v1/preparations/\\\"+id+\\\":resume\\\", resumeKey, map[string]any{})\\n\\tif w.Code != 200 || w.Body.String() != firstResult || calls.Load() != 2 || speech.Load() != 1 {\\n\\t\\tt.Fatal(\\\"Resume replay changed the action\\\", w.Code, w.Body.String(), firstResult)\\n\\t}\\n\\n\\tsaved, e := s.Store.Preparation(context.Background(), id)\\n\\trequireListening(t, e)\\n\\tif saved[\\\"selected_speech_profile\\\"] != \\\"kokoro-local-en-v1\\\" {\\n\\t\\tt.Fatal(\\\"settings replaced\\\", saved)\\n\\t}\\n\\trows, e := s.Store.Preparations(context.Background(), 50, \\\"\\\")\\n\\trequireListening(t, e)\\n\\tif len(rows[\\\"items\\\"].([]map[string]any)) != 1 || calls.Load() != 2 {\\n\\t\\tt.Fatal(\\\"readback called provider\\\")\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryResumePositive through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryResumePositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryResumePositive(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tfailed := qualitySpeechTarget(t, s, true)\\n\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", uuid.NewString(), recoveryRequest(t, s))\\n\\tif w.Code == 200 || calls.Load() != 2 || failed.Load() != 1 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), calls.Load(), failed.Load())\\n\\t}\\n\\tvar response map[string]any\\n\\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &response))\\n\\tp := response[\\\"preparation\\\"].(map[string]any)\\n\\tid := p[\\\"id\\\"].(string)\\n\\tc, rev, e := s.Store.Configuration(context.Background())\\n\\trequireListening(t, e)\\n\\tc[\\\"speech_profile\\\"] = \\\"azure-standard-en-v1\\\"\\n\\tfor _, k := range []string{\\\"workspace_id\\\", \\\"configuration_sha256\\\", \\\"provider_access_policy\\\"} {\\n\\t\\tdelete(c, k)\\n\\t}\\n\\t_, _, e = s.Store.PutConfiguration(context.Background(), mustJSON(c), uuid.NewString(), rev)\\n\\trequireListening(t, e)\\n\\tspeech := qualitySpeechTarget(t, s, false)\\n\\tresumeKey := uuid.NewString()\\n\\tw = recoveryHTTP(t, s, \\\"/api/v1/preparations/\\\"+id+\\\":resume\\\", resumeKey, map[string]any{})\\n\\tif w.Code != 200 || calls.Load() != 2 || speech.Load() != 1 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), calls.Load(), speech.Load())\\n\\t}\\n\\tfirstResult := w.Body.String()\\n\\tw = recoveryHTTP(t, s, \\\"/api/v1/preparations/\\\"+id+\\\":resume\\\", resumeKey, map[string]any{})\\n\\tif w.Code != 200 || w.Body.String() != firstResult || calls.Load() != 2 || speech.Load() != 1 {\\n\\t\\tt.Fatal(\\\"Resume replay changed the action\\\", w.Code, w.Body.String(), firstResult)\\n\\t}\\n\\n\\tsaved, e := s.Store.Preparation(context.Background(), id)\\n\\trequireListening(t, e)\\n\\tif saved[\\\"selected_speech_profile\\\"] != \\\"kokoro-local-en-v1\\\" {\\n\\t\\tt.Fatal(\\\"settings replaced\\\", saved)\\n\\t}\\n\\trows, e := s.Store.Preparations(context.Background(), 50, \\\"\\\")\\n\\trequireListening(t, e)\\n\\tif len(rows[\\\"items\\\"].([]map[string]any)) != 1 || calls.Load() != 2 {\\n\\t\\tt.Fatal(\\\"readback called provider\\\")\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -482,7 +482,7 @@
       },
       "I15-02.P1.S2.NEGATIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "a92ed2edd5f163332b807cdca92ed0637a663687027159c4c04874d8958da800",
+        "current_evidence_fingerprint": "166664d234d32a848acb60fc9a898b0242692537a1e1b9f1d63de4a50e31cad8",
         "distinct_reason": "Exact TestNativeRecoveryCancelNegative covers I15-02 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-02.P1.S2.NEGATIVE",
@@ -535,9 +535,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-02 rejected or interrupted action",
         "scenario_fingerprint": "bf1a6740a5f20339fae6ddd18bfb0896bb48d2d903da112058600104e9df8533",
-        "setup": "Execute TestNativeRecoveryCancelNegative through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryCancelNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryCancelNegative(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tqualitySpeechTarget(t, s, false)\\n\\tentered := make(chan struct{})\\n\\trelease := make(chan struct{})\\n\\ttarget := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\\n\\t\\tif r.URL.Path == \\\"/internal/v1/piece\\\" {\\n\\t\\t\\tclose(entered)\\n\\t\\t\\tselect {\\n\\t\\t\\tcase <-r.Context().Done():\\n\\t\\t\\tcase <-release:\\n\\t\\t\\t}\\n\\t\\t\\treturn\\n\\t\\t}\\n\\t\\tvar input map[string]any\\n\\t\\t_ = json.NewDecoder(r.Body).Decode(&input)\\n\\t\\tif r.URL.Path == \\\"/internal/v1/plan\\\" {\\n\\t\\t\\t_ = json.NewEncoder(w).Encode(map[string]any{\\\"pieces\\\": input[\\\"plan\\\"].(map[string]any)[\\\"turns\\\"], \\\"model_context\\\": map[string]any{\\\"origin\\\": \\\"constructed\\\"}})\\n\\t\\t}\\n\\t}))\\n\\tdefer target.Close()\\n\\ts.SpeechURL = target.URL\\n\\trequest := recoveryRequest(t, s)\\n\\tctx, cancel := context.WithCancel(context.Background())\\n\\treq := httptest.NewRequest(\\\"POST\\\", \\\"/api/v1/candidates:generate\\\", strings.NewReader(string(mustJSON(request)))).WithContext(ctx)\\n\\tfor k, v := range map[string]string{\\\"Authorization\\\": \\\"Bearer \\\" + s.token, \\\"Origin\\\": s.Origin, \\\"Content-Type\\\": \\\"application/json\\\", \\\"Idempotency-Key\\\": uuid.NewString()} {\\n\\t\\treq.Header.Set(k, v)\\n\\t}\\n\\tw := httptest.NewRecorder()\\n\\tdone := make(chan struct{})\\n\\tgo func() { s.Handler().ServeHTTP(w, req); close(done) }()\\n\\t<-entered\\n\\trows0, pe := s.Store.Preparations(context.Background(), 50, \\\"\\\")\\n\\trequireListening(t, pe)\\n\\tpreparing := rows0[\\\"items\\\"].([]map[string]any)[0]\\n\\tplan, pe := s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{preparing[\\\"id\\\"].(string)}})\\n\\trequireListening(t, pe)\\n\\tif len(plan.Blocked) == 0 {\\n\\t\\tt.Fatal(\\\"active preparation deletion was not blocked\\\")\\n\\t}\\n\\tcancel()\\n\\t<-done\\n\\tclose(release)\\n\\tif w.Code == 200 || calls.Load() != 2 {\\n\\t\\tt.Fatal(w.Code, calls.Load())\\n\\t}\\n\\trows, e := s.Store.Preparations(context.Background(), 50, \\\"\\\")\\n\\trequireListening(t, e)\\n\\tp := rows[\\\"items\\\"].([]map[string]any)[0]\\n\\tstates := p[\\\"phase_states\\\"].(map[string]any)\\n\\tif states[\\\"canonical_text\\\"] != \\\"complete\\\" || states[\\\"mutation\\\"] != \\\"complete\\\" || states[\\\"render\\\"] == \\\"complete\\\" {\\n\\t\\tt.Fatal(states)\\n\\t}\\n\\tspeech := qualitySpeechTarget(t, s, false)\\n\\tfresh := NewServer(s.Store, s.Origin, s.SpeechURL)\\n\\tfresh.token = s.token\\n\\tw = recoveryHTTP(t, fresh, \\\"/api/v1/preparations/\\\"+p[\\\"id\\\"].(string)+\\\":resume\\\", uuid.NewString(), map[string]any{})\\n\\tif w.Code != 200 || calls.Load() != 2 || speech.Load() != 1 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), calls.Load(), speech.Load())\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryCancelNegative through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryCancelNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryCancelNegative(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tqualitySpeechTarget(t, s, false)\\n\\tentered := make(chan struct{})\\n\\trelease := make(chan struct{})\\n\\ttarget := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\\n\\t\\tif r.URL.Path == \\\"/internal/v1/piece\\\" {\\n\\t\\t\\tclose(entered)\\n\\t\\t\\tselect {\\n\\t\\t\\tcase <-r.Context().Done():\\n\\t\\t\\tcase <-release:\\n\\t\\t\\t}\\n\\t\\t\\treturn\\n\\t\\t}\\n\\t\\tvar input map[string]any\\n\\t\\t_ = json.NewDecoder(r.Body).Decode(&input)\\n\\t\\tif r.URL.Path == \\\"/internal/v1/plan\\\" {\\n\\t\\t\\t_ = json.NewEncoder(w).Encode(map[string]any{\\\"pieces\\\": input[\\\"plan\\\"].(map[string]any)[\\\"turns\\\"], \\\"model_context\\\": map[string]any{\\\"origin\\\": \\\"constructed\\\"}})\\n\\t\\t}\\n\\t}))\\n\\tdefer target.Close()\\n\\ts.SpeechURL = target.URL\\n\\trequest := recoveryRequest(t, s)\\n\\tctx, cancel := context.WithCancel(context.Background())\\n\\treq := httptest.NewRequest(\\\"POST\\\", \\\"/api/v1/candidates:generate\\\", strings.NewReader(string(mustJSON(request)))).WithContext(ctx)\\n\\tfor k, v := range map[string]string{\\\"Authorization\\\": \\\"Bearer \\\" + s.token, \\\"Origin\\\": s.Origin, \\\"Content-Type\\\": \\\"application/json\\\", \\\"Idempotency-Key\\\": uuid.NewString()} {\\n\\t\\treq.Header.Set(k, v)\\n\\t}\\n\\tw := httptest.NewRecorder()\\n\\tdone := make(chan struct{})\\n\\tgo func() { s.Handler().ServeHTTP(w, req); close(done) }()\\n\\t<-entered\\n\\trows0, pe := s.Store.Preparations(context.Background(), 50, \\\"\\\")\\n\\trequireListening(t, pe)\\n\\tpreparing := rows0[\\\"items\\\"].([]map[string]any)[0]\\n\\tplan, pe := s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{preparing[\\\"id\\\"].(string)}})\\n\\trequireListening(t, pe)\\n\\tif len(plan.Blocked) == 0 {\\n\\t\\tt.Fatal(\\\"active preparation deletion was not blocked\\\")\\n\\t}\\n\\tcancel()\\n\\t<-done\\n\\tclose(release)\\n\\tif w.Code == 200 || calls.Load() != 2 {\\n\\t\\tt.Fatal(w.Code, calls.Load())\\n\\t}\\n\\trows, e := s.Store.Preparations(context.Background(), 50, \\\"\\\")\\n\\trequireListening(t, e)\\n\\tp := rows[\\\"items\\\"].([]map[string]any)[0]\\n\\tstates := p[\\\"phase_states\\\"].(map[string]any)\\n\\tif states[\\\"canonical_text\\\"] != \\\"complete\\\" || states[\\\"mutation\\\"] != \\\"complete\\\" || states[\\\"render\\\"] == \\\"complete\\\" {\\n\\t\\tt.Fatal(states)\\n\\t}\\n\\tspeech := qualitySpeechTarget(t, s, false)\\n\\tfresh := NewServer(s.Store, s.Origin, s.SpeechURL)\\n\\tfresh.token = s.token\\n\\tw = recoveryHTTP(t, fresh, \\\"/api/v1/preparations/\\\"+p[\\\"id\\\"].(string)+\\\":resume\\\", uuid.NewString(), map[string]any{})\\n\\tif w.Code != 200 || calls.Load() != 2 || speech.Load() != 1 {\\n\\t\\tt.Fatal(w.Code, w.Body.String(), calls.Load(), speech.Load())\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -550,7 +550,7 @@
       },
       "I15-02.P1.S2.POSITIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "6c7e236ec29d1cb6a639af1105d78369245a488143fdbe8dc1b4beb8422ef3b5",
+        "current_evidence_fingerprint": "bee2d49ea15e257ce157ae68898aae6432cfdb756e8e3d0a5ee83b71c0b25be7",
         "distinct_reason": "Exact TestNativeRecoveryCanonicalResumeReplayPositive covers I15-02 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-02.P1.S2.POSITIVE",
@@ -603,9 +603,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-02 rejected or interrupted action",
         "scenario_fingerprint": "bf1a6740a5f20339fae6ddd18bfb0896bb48d2d903da112058600104e9df8533",
-        "setup": "Execute TestNativeRecoveryCanonicalResumeReplayPositive through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryCanonicalResumeReplayPositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryCanonicalResumeReplayPositive(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tspeech := qualitySpeechTarget(t, s, false)\\n\\tc, rev, e := s.Store.Configuration(context.Background())\\n\\trequireListening(t, e)\\n\\tprofile := c[\\\"llm_profiles\\\"].([]any)[0].(map[string]any)\\n\\tendpoint, _ := url.Parse(profile[\\\"endpoint\\\"].(string))\\n\\tproxy := httputil.NewSingleHostReverseProxy(endpoint)\\n\\tvar dispatches atomic.Int32\\n\\ttarget := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\\n\\t\\tif dispatches.Add(1) <= 2 {\\n\\t\\t\\tw.WriteHeader(503)\\n\\t\\t\\t_, _ = w.Write([]byte(`{\\\"error\\\":{\\\"code\\\":\\\"constructed_unavailable\\\"}}`))\\n\\t\\t\\treturn\\n\\t\\t}\\n\\t\\tproxy.ServeHTTP(w, r)\\n\\t}))\\n\\tdefer target.Close()\\n\\tprofile[\\\"endpoint\\\"] = target.URL + \\\"/v1/responses\\\"\\n\\tfor _, k := range []string{\\\"workspace_id\\\", \\\"configuration_sha256\\\", \\\"provider_access_policy\\\"} {\\n\\t\\tdelete(c, k)\\n\\t}\\n\\t_, _, e = s.Store.PutConfiguration(context.Background(), mustJSON(c), uuid.NewString(), rev)\\n\\trequireListening(t, e)\\n\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", uuid.NewString(), recoveryRequest(t, s))\\n\\tif w.Code == 200 {\\n\\t\\tt.Fatal(\\\"failure hidden\\\")\\n\\t}\\n\\tvar result map[string]any\\n\\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &result))\\n\\tid := result[\\\"preparation\\\"].(map[string]any)[\\\"id\\\"].(string)\\n\\tkey := uuid.NewString()\\n\\tw = recoveryHTTP(t, s, \\\"/api/v1/preparations/\\\"+id+\\\":resume\\\", key, map[string]any{})\\n\\tif w.Code != 200 {\\n\\t\\tt.Fatal(w.Code, w.Body.String())\\n\\t}\\n\\tfirst := w.Body.String()\\n\\tw = recoveryHTTP(t, s, \\\"/api/v1/preparations/\\\"+id+\\\":resume\\\", key, map[string]any{})\\n\\tif w.Code != 200 || w.Body.String() != first || dispatches.Load() != 4 || calls.Load() != 2 || speech.Load() != 1 {\\n\\t\\tt.Fatal(\\\"canonical Resume replay\\\", w.Code, w.Body.String(), dispatches.Load(), calls.Load(), speech.Load())\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryCanonicalResumeReplayPositive through services/api/internal/app/generation_http.go {\"exact_test\": \"TestNativeRecoveryCanonicalResumeReplayPositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryCanonicalResumeReplayPositive(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tspeech := qualitySpeechTarget(t, s, false)\\n\\tc, rev, e := s.Store.Configuration(context.Background())\\n\\trequireListening(t, e)\\n\\tprofile := c[\\\"llm_profiles\\\"].([]any)[0].(map[string]any)\\n\\tendpoint, _ := url.Parse(profile[\\\"endpoint\\\"].(string))\\n\\tproxy := httputil.NewSingleHostReverseProxy(endpoint)\\n\\tvar dispatches atomic.Int32\\n\\ttarget := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\\n\\t\\tif dispatches.Add(1) <= 2 {\\n\\t\\t\\tw.WriteHeader(503)\\n\\t\\t\\t_, _ = w.Write([]byte(`{\\\"error\\\":{\\\"code\\\":\\\"constructed_unavailable\\\"}}`))\\n\\t\\t\\treturn\\n\\t\\t}\\n\\t\\tproxy.ServeHTTP(w, r)\\n\\t}))\\n\\tdefer target.Close()\\n\\tprofile[\\\"endpoint\\\"] = target.URL + \\\"/v1/responses\\\"\\n\\tfor _, k := range []string{\\\"workspace_id\\\", \\\"configuration_sha256\\\", \\\"provider_access_policy\\\"} {\\n\\t\\tdelete(c, k)\\n\\t}\\n\\t_, _, e = s.Store.PutConfiguration(context.Background(), mustJSON(c), uuid.NewString(), rev)\\n\\trequireListening(t, e)\\n\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", uuid.NewString(), recoveryRequest(t, s))\\n\\tif w.Code == 200 {\\n\\t\\tt.Fatal(\\\"failure hidden\\\")\\n\\t}\\n\\tvar result map[string]any\\n\\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &result))\\n\\tid := result[\\\"preparation\\\"].(map[string]any)[\\\"id\\\"].(string)\\n\\tkey := uuid.NewString()\\n\\tw = recoveryHTTP(t, s, \\\"/api/v1/preparations/\\\"+id+\\\":resume\\\", key, map[string]any{})\\n\\tif w.Code != 200 {\\n\\t\\tt.Fatal(w.Code, w.Body.String())\\n\\t}\\n\\tfirst := w.Body.String()\\n\\tw = recoveryHTTP(t, s, \\\"/api/v1/preparations/\\\"+id+\\\":resume\\\", key, map[string]any{})\\n\\tif w.Code != 200 || w.Body.String() != first || dispatches.Load() != 4 || calls.Load() != 2 || speech.Load() != 1 {\\n\\t\\tt.Fatal(\\\"canonical Resume replay\\\", w.Code, w.Body.String(), dispatches.Load(), calls.Load(), speech.Load())\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -618,7 +618,7 @@
       },
       "I15-02.P1.S3.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "835628516f6195effc6bf816a1b2f8da32f2d5404c8297f2afaf02f83aa83da9",
+        "current_evidence_fingerprint": "9461847a705bbcfd74310e8c0832f365a9d5c08779be5fc6622b59e95657c185",
         "distinct_reason": "Exact test_restart_positive covers I15-02 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-02.P1.S3.POSITIVE",
@@ -693,7 +693,7 @@
       },
       "I15-02.P1.S4.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "42491559f51240920a4b9fcdf83ed6c70b67c7de1a5e75d1729fc1725a8e2532",
+        "current_evidence_fingerprint": "bb5524d61396b03c7c37ecda9f6cb1a46266a3fb01436da1d8ff23e85ad03f78",
         "distinct_reason": "Exact test_restored_draft_positive covers I15-02 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-02.P1.S4.POSITIVE",
@@ -768,7 +768,7 @@
       },
       "I15-03.P1.S1.NEGATIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "a1fc865083671e57d873fbe1b1ab4e1f5d552c1156182e5a3dd10f969828b658",
+        "current_evidence_fingerprint": "2c4cb4263f85a9e55f2639e91bd6f6a727fd70c121e5e5f544c1857ea8fd1ffe",
         "distinct_reason": "Exact test_private_backup_negative covers I15-03 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-03.P1.S1.NEGATIVE",
@@ -927,7 +927,7 @@
       },
       "I15-03.P1.S2.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "964a11e2290b0fd1a65d8145e46954f416c8f1ade199f66ee7b1f2a21b10ceb4",
+        "current_evidence_fingerprint": "a575d111d431e8fb44e46632037633e13ee3397aaf8f4d1aa89ec07b73d42aaa",
         "distinct_reason": "Exact test_backup_positive covers I15-03 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-03.P1.S2.POSITIVE",
@@ -1002,7 +1002,7 @@
       },
       "I15-03.P1.S3.NEGATIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "524740dae61fcaffeadb47b0f61629aacface3e9591d7fd623f6c1c9c8c4b011",
+        "current_evidence_fingerprint": "bb572849d7a0947cc08f2ea1b10af1d0504021e3da3b9e8670fa9e66df9644c1",
         "distinct_reason": "Exact test_backup_collision_negative covers I15-03 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-03.P1.S3.NEGATIVE",
@@ -1329,7 +1329,7 @@
       },
       "I15-04.P1.S2.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "c2fc0d64571ced2941ea169c612dfda52ef1f6895b72b67e2c39c9d9c7d6f1f2",
+        "current_evidence_fingerprint": "a2d2038ef751b0282d014b3a9ff329bd0eca53a9b28cf7eea36dc62010b5ef15",
         "distinct_reason": "Exact test_fresh_restore_positive covers I15-04 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-04.P1.S2.POSITIVE",
@@ -1446,7 +1446,7 @@
       },
       "I15-04.P1.S3.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "968146a0f5ce96ec77b8c94fb6953036f87ede44234349b2bdf2597e7f049451",
+        "current_evidence_fingerprint": "50f0a0158adefb226f16a78a308b41703d234586320845afc3019ec2c3e2e0af",
         "distinct_reason": "Exact test_restored_audio_positive covers I15-04 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-04.P1.S3.POSITIVE",
@@ -1647,7 +1647,7 @@
       },
       "I15-04.P1.S7.NEGATIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "d7107c57de0ba6072f01a3a6f445b31f781c476b92c0cf2f4458e9cec40983ed",
+        "current_evidence_fingerprint": "7a0a9948ff24cf56847d88313079dc2f4de2ec1fc03912ea4cd442fade450c1e",
         "distinct_reason": "Exact test_corrupt_restore_negative covers I15-04 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-04.P1.S7.NEGATIVE",
@@ -1722,7 +1722,7 @@
       },
       "I15-04.P1.S8.NEGATIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "87e566e839d8d43884a0206542cb0f0ca6cbebf56d979ce0d7210fc9f4da29d5",
+        "current_evidence_fingerprint": "d622aee88b4d97b323c12145c85700503f80a53de5bef56a481efa648a68dbdb",
         "distinct_reason": "Exact test_existing_target_negative covers I15-04 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-04.P1.S8.NEGATIVE",
@@ -1797,7 +1797,7 @@
       },
       "I15-05.P1.S1.NEGATIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "54d182796397c45561faffcc8de3425d3a41ae8432d2e906b25ce58675db8f24",
+        "current_evidence_fingerprint": "09ee16428bfc3c839bade476c5b0efeb06bc54dcfdb713180fb7d500eb6990fb",
         "distinct_reason": "Exact test_failed_switch_negative covers I15-05 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-05.P1.S1.NEGATIVE",
@@ -1872,7 +1872,7 @@
       },
       "I15-05.P1.S1.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "9d7494b57befadaebf2bb4cf7e4eb3ca792a6713f893858b42c8757aececf9d0",
+        "current_evidence_fingerprint": "7f3153a6d677d609c1a45d39bb3a48c0e94ec0a3b4f2b8f828b60237e9668639",
         "distinct_reason": "Exact test_switch_positive covers I15-05 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-05.P1.S1.POSITIVE",
@@ -1947,7 +1947,7 @@
       },
       "I15-05.P1.S2.NEGATIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "76ab490ed044a0cb93b80643fe056b28f78932a19b5397b0a86a09a7dee4ee44",
+        "current_evidence_fingerprint": "f217f3afd4a6f6e87d5bdf48f02a07dddb69d23362fa010baede7e5fa2a1db29",
         "distinct_reason": "Exact test_original_retained_negative covers I15-05 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-05.P1.S2.NEGATIVE",
@@ -2022,7 +2022,7 @@
       },
       "I15-05.P1.S2.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "f55864957712291cbf10b8750412d8c2097f245b0f7f4afbf6287c680d4f607e",
+        "current_evidence_fingerprint": "04f42584d632907906268ca7f2f90b1b0e4501110c770106a937c5419ab84ab5",
         "distinct_reason": "Exact test_switch_back_positive covers I15-05 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-05.P1.S2.POSITIVE",
@@ -2265,7 +2265,7 @@
       },
       "I15-06.P1.S1.NEGATIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "6a122f25f470d208cad54d166d898063c750d5007c4b0b94a44193bc05b46f8b",
+        "current_evidence_fingerprint": "80509422f6de3077969b1a492f098867a195b67c6c08bedcd18eee753ab2b155",
         "distinct_reason": "Exact TestNativeRecoveryDeletionConfirmationNegative covers I15-06 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-06.P1.S1.NEGATIVE",
@@ -2318,9 +2318,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-06 supported recovery",
         "scenario_fingerprint": "b3e50e76b42436e17c22a7afc3da4d2b61e2109527cdbc98f4b9b0f103a01df9",
-        "setup": "Execute TestNativeRecoveryDeletionConfirmationNegative through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryDeletionConfirmationNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryDeletionConfirmationNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\tp, e := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{id}})\\n\\trequireListening(t, e)\\n\\tif _, e = f.s.Store.ApplyDeletion(context.Background(), p.ID, strings.Repeat(\\\"0\\\", 64)); e == nil {\\n\\t\\tt.Fatal(\\\"wrong confirmation admitted\\\")\\n\\t}\\n\\tvar n int\\n\\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM entity_head WHERE id=$1\\\", id).Scan(&n))\\n\\tif n != 1 {\\n\\t\\tt.Fatal(\\\"unconfirmed erasure\\\")\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryDeletionConfirmationNegative through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryDeletionConfirmationNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryDeletionConfirmationNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\tp, e := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{id}})\\n\\trequireListening(t, e)\\n\\tif _, e = f.s.Store.ApplyDeletion(context.Background(), p.ID, strings.Repeat(\\\"0\\\", 64)); e == nil {\\n\\t\\tt.Fatal(\\\"wrong confirmation admitted\\\")\\n\\t}\\n\\tvar n int\\n\\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM entity_head WHERE id=$1\\\", id).Scan(&n))\\n\\tif n != 1 {\\n\\t\\tt.Fatal(\\\"unconfirmed erasure\\\")\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -2333,7 +2333,7 @@
       },
       "I15-06.P1.S1.POSITIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "24923905b95d2c115b171349cc3d6e6710238658ba230e973e7f33e47454da97",
+        "current_evidence_fingerprint": "de82d59c992108a8c630f15cdcdf4385c71016ed5ad0d734c0ae4357e8727238",
         "distinct_reason": "Exact TestNativeRecoveryDeletionPositive covers I15-06 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-06.P1.S1.POSITIVE",
@@ -2386,9 +2386,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-06 supported recovery",
         "scenario_fingerprint": "b3e50e76b42436e17c22a7afc3da4d2b61e2109527cdbc98f4b9b0f103a01df9",
-        "setup": "Execute TestNativeRecoveryDeletionPositive through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryDeletionPositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryDeletionPositive(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\tplan, e := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{id}})\\n\\trequireListening(t, e)\\n\\tif len(plan.Documents) == 0 || len(plan.Blocked) != 0 {\\n\\t\\tt.Fatal(plan)\\n\\t}\\n\\tresult, e := f.s.Store.ApplyDeletion(context.Background(), plan.ID, plan.Digest)\\n\\trequireListening(t, e)\\n\\tif result.State != \\\"erased\\\" {\\n\\t\\tt.Fatal(result)\\n\\t}\\n\\tvar n int\\n\\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM entity_head WHERE id=$1\\\", id).Scan(&n))\\n\\tif n != 0 {\\n\\t\\tt.Fatal(\\\"attempt remains\\\")\\n\\t}\\n\\t_, e = f.s.Store.ReadAsset(context.Background(), recoveryAudioID(t, f))\\n\\trequireListening(t, e)\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryDeletionPositive through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryDeletionPositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryDeletionPositive(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\tplan, e := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{id}})\\n\\trequireListening(t, e)\\n\\tif len(plan.Documents) == 0 || len(plan.Blocked) != 0 {\\n\\t\\tt.Fatal(plan)\\n\\t}\\n\\tresult, e := f.s.Store.ApplyDeletion(context.Background(), plan.ID, plan.Digest)\\n\\trequireListening(t, e)\\n\\tif result.State != \\\"erased\\\" {\\n\\t\\tt.Fatal(result)\\n\\t}\\n\\tvar n int\\n\\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM entity_head WHERE id=$1\\\", id).Scan(&n))\\n\\tif n != 0 {\\n\\t\\tt.Fatal(\\\"attempt remains\\\")\\n\\t}\\n\\t_, e = f.s.Store.ReadAsset(context.Background(), recoveryAudioID(t, f))\\n\\trequireListening(t, e)\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -2401,7 +2401,7 @@
       },
       "I15-06.P1.S10.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "7c5332add29ed8a2e41531f67a1458da1ccd7dba85dd7d4b1b94b9f5adcb1fb3",
+        "current_evidence_fingerprint": "051575754eddda1d6f7bc66fd1540bad4fa5da2023ab049dab18130e7c6658d6",
         "distinct_reason": "Exact test_lab_purge_positive covers I15-06 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-06.P1.S10.POSITIVE",
@@ -2518,7 +2518,7 @@
       },
       "I15-06.P1.S2.NEGATIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "ff0f11f5f5de0a164f86f92a01d6ba9e6104c7b2364c603f18abc036926d4394",
+        "current_evidence_fingerprint": "b536f08a5dbc8d51278e57fad93953ca8861a7fdf9e2c82ee77cc027039bb462",
         "distinct_reason": "Exact TestNativeRecoveryReferencedMediaNegative covers I15-06 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-06.P1.S2.NEGATIVE",
@@ -2571,9 +2571,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-06 rejected or interrupted action",
         "scenario_fingerprint": "c4b595681d48a4a72ea97a0b22db8f2b0a64bfe4de1a5c3dde3e734aee7fda41",
-        "setup": "Execute TestNativeRecoveryReferencedMediaNegative through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryReferencedMediaNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryReferencedMediaNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tp, e := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{recoveryAudioID(t, f)}})\\n\\trequireListening(t, e)\\n\\tif len(p.Blocked) == 0 {\\n\\t\\tt.Fatal(\\\"referenced audio not blocked\\\", p)\\n\\t}\\n\\tif _, e = f.s.Store.ApplyDeletion(context.Background(), p.ID, p.Digest); e == nil {\\n\\t\\tt.Fatal(\\\"referenced audio removed\\\")\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryReferencedMediaNegative through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryReferencedMediaNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryReferencedMediaNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tp, e := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{recoveryAudioID(t, f)}})\\n\\trequireListening(t, e)\\n\\tif len(p.Blocked) == 0 {\\n\\t\\tt.Fatal(\\\"referenced audio not blocked\\\", p)\\n\\t}\\n\\tif _, e = f.s.Store.ApplyDeletion(context.Background(), p.ID, p.Digest); e == nil {\\n\\t\\tt.Fatal(\\\"referenced audio removed\\\")\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -2586,7 +2586,7 @@
       },
       "I15-06.P1.S2.POSITIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "74eccf55451ca0e252f4c602e1f2b626a2222855b346be51afb796d86c2fe207",
+        "current_evidence_fingerprint": "74d522864b0b513a31aac1a9ce8afc2630b2588a4e38f75827696fb6c08750bd",
         "distinct_reason": "Exact TestNativeRecoveryScoredDeletionPositive covers I15-06 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-06.P1.S2.POSITIVE",
@@ -2639,9 +2639,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-06 rejected or interrupted action",
         "scenario_fingerprint": "c4b595681d48a4a72ea97a0b22db8f2b0a64bfe4de1a5c3dde3e734aee7fda41",
-        "setup": "Execute TestNativeRecoveryScoredDeletionPositive through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryScoredDeletionPositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryScoredDeletionPositive(t *testing.T) {\\n\\tf := scoringFixture(t, false)\\n\\t_, e := f.interpret(t, uuid.NewString())\\n\\trequireListening(t, e)\\n\\tp, e := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{f.attempt}})\\n\\trequireListening(t, e)\\n\\tif len(p.Blocked) > 0 {\\n\\t\\tt.Fatal(p)\\n\\t}\\n\\t_, e = f.s.Store.ApplyDeletion(context.Background(), p.ID, p.Digest)\\n\\trequireListening(t, e)\\n\\tvar n int\\n\\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM document WHERE payload->>'attempt_id'=$1\\\", f.attempt).Scan(&n))\\n\\tif n != 0 {\\n\\t\\tt.Fatal(\\\"answer/result remains\\\", n)\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryScoredDeletionPositive through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryScoredDeletionPositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryScoredDeletionPositive(t *testing.T) {\\n\\tf := scoringFixture(t, false)\\n\\t_, e := f.interpret(t, uuid.NewString())\\n\\trequireListening(t, e)\\n\\tp, e := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{f.attempt}})\\n\\trequireListening(t, e)\\n\\tif len(p.Blocked) > 0 {\\n\\t\\tt.Fatal(p)\\n\\t}\\n\\t_, e = f.s.Store.ApplyDeletion(context.Background(), p.ID, p.Digest)\\n\\trequireListening(t, e)\\n\\tvar n int\\n\\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM document WHERE payload->>'attempt_id'=$1\\\", f.attempt).Scan(&n))\\n\\tif n != 0 {\\n\\t\\tt.Fatal(\\\"answer/result remains\\\", n)\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -2654,7 +2654,7 @@
       },
       "I15-06.P1.S3.NEGATIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "25df6c439a702d40625057f9ed38bf766e001b5a54a3b8d421e514e36a507258",
+        "current_evidence_fingerprint": "dbf510399674d34514c5bf9f6408aacd8bfe975a7e4ec256434c2b6e8177b51b",
         "distinct_reason": "Exact TestNativeRecoveryChangedPlanNegative covers I15-06 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-06.P1.S3.NEGATIVE",
@@ -2707,9 +2707,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-06 supported recovery",
         "scenario_fingerprint": "b3e50e76b42436e17c22a7afc3da4d2b61e2109527cdbc98f4b9b0f103a01df9",
-        "setup": "Execute TestNativeRecoveryChangedPlanNegative through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryChangedPlanNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryChangedPlanNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\tp, e := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{id}})\\n\\trequireListening(t, e)\\n\\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\\\"Retained new draft.\\\", \\\"en\\\"), false)\\n\\trequireListening(t, e)\\n\\tif _, e = f.s.Store.ApplyDeletion(context.Background(), p.ID, p.Digest); e == nil {\\n\\t\\tt.Fatal(\\\"changed preview applied\\\")\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryChangedPlanNegative through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryChangedPlanNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryChangedPlanNegative(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tid := f.start(t)\\n\\tp, e := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{id}})\\n\\trequireListening(t, e)\\n\\t_, _, e = f.s.Store.WriteAnswer(context.Background(), id, uuid.NewString(), 0, answerPacket(\\\"Retained new draft.\\\", \\\"en\\\"), false)\\n\\trequireListening(t, e)\\n\\tif _, e = f.s.Store.ApplyDeletion(context.Background(), p.ID, p.Digest); e == nil {\\n\\t\\tt.Fatal(\\\"changed preview applied\\\")\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -2722,7 +2722,7 @@
       },
       "I15-06.P1.S3.POSITIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "63611001c3f4e0696bd5c7379869bc529ac98bd964c72ff90de60e2395a91605",
+        "current_evidence_fingerprint": "1df40396b8fc840a245cc940cf5188a4c1d6b3a99965ca786c25e50d87927dd8",
         "distinct_reason": "Exact TestNativeRecoveryCaseDeletionPositive covers I15-06 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-06.P1.S3.POSITIVE",
@@ -2775,9 +2775,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-06 supported recovery",
         "scenario_fingerprint": "b3e50e76b42436e17c22a7afc3da4d2b61e2109527cdbc98f4b9b0f103a01df9",
-        "setup": "Execute TestNativeRecoveryCaseDeletionPositive through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryCaseDeletionPositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryCaseDeletionPositive(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tattempt := f.start(t)\\n\\tp, e := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{f.id}})\\n\\trequireListening(t, e)\\n\\tif len(p.Blocked) > 0 || !containsString(p.Heads, attempt) {\\n\\t\\tt.Fatal(p)\\n\\t}\\n\\t_, e = f.s.Store.ApplyDeletion(context.Background(), p.ID, p.Digest)\\n\\trequireListening(t, e)\\n\\tvar n int\\n\\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM listening_case WHERE case_version_id=$1\\\", f.id).Scan(&n))\\n\\tif n != 0 {\\n\\t\\tt.Fatal(\\\"case remains\\\")\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryCaseDeletionPositive through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryCaseDeletionPositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryCaseDeletionPositive(t *testing.T) {\\n\\tf := listeningCase(t)\\n\\tattempt := f.start(t)\\n\\tp, e := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{f.id}})\\n\\trequireListening(t, e)\\n\\tif len(p.Blocked) > 0 || !containsString(p.Heads, attempt) {\\n\\t\\tt.Fatal(p)\\n\\t}\\n\\t_, e = f.s.Store.ApplyDeletion(context.Background(), p.ID, p.Digest)\\n\\trequireListening(t, e)\\n\\tvar n int\\n\\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM listening_case WHERE case_version_id=$1\\\", f.id).Scan(&n))\\n\\tif n != 0 {\\n\\t\\tt.Fatal(\\\"case remains\\\")\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -2790,7 +2790,7 @@
       },
       "I15-06.P1.S4.NEGATIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "2f3688fa325695eea8ccd5b24932481eeba6e670e963f7d4c55d67aa9788c469",
+        "current_evidence_fingerprint": "e970197e90e8d55f39d0440d4f306020a750b5a6adbe14217134648980083da8",
         "distinct_reason": "Exact test_cleanup_unconfirmed_negative covers I15-06 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-06.P1.S4.NEGATIVE",
@@ -2865,7 +2865,7 @@
       },
       "I15-06.P1.S4.POSITIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "873d1e7b4d051be11f410f683e4fe42506e920b3ad97a92d647bbc437dd91e92",
+        "current_evidence_fingerprint": "5d65f43ac7b602448acb1e26e1acdd76a505086d23a409f876301d96f029bf1c",
         "distinct_reason": "Exact TestNativeRecoveryPrivateBytesDeletionPositive covers I15-06 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-06.P1.S4.POSITIVE",
@@ -2918,9 +2918,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-06 rejected or interrupted action",
         "scenario_fingerprint": "c4b595681d48a4a72ea97a0b22db8f2b0a64bfe4de1a5c3dde3e734aee7fda41",
-        "setup": "Execute TestNativeRecoveryPrivateBytesDeletionPositive through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryPrivateBytesDeletionPositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryPrivateBytesDeletionPositive(t *testing.T) {\\n\\tf := scoringFixture(t, false)\\n\\tf.attempt = f.start(t)\\n\\tmarker := \\\"PRIVATE-ERASE-\\\" + uuid.NewString()\\n\\t_, _, e := f.s.Store.WriteAnswer(context.Background(), f.attempt, uuid.NewString(), 0, answerPacket(\\\"Use opens. \\\"+marker, \\\"en\\\"), true)\\n\\trequireListening(t, e)\\n\\t_, e = f.interpret(t, uuid.NewString())\\n\\trequireListening(t, e)\\n\\tkeys := []string{}\\n\\tfor object := range f.s.Store.Media.ListObjects(context.Background(), f.s.Store.Bucket, minio.ListObjectsOptions{Recursive: true}) {\\n\\t\\tif object.Err != nil {\\n\\t\\t\\tt.Fatal(object.Err)\\n\\t\\t}\\n\\t\\tr, e := f.s.Store.Media.GetObject(context.Background(), f.s.Store.Bucket, object.Key, minio.GetObjectOptions{})\\n\\t\\trequireListening(t, e)\\n\\t\\tbody, e := io.ReadAll(r)\\n\\t\\tr.Close()\\n\\t\\trequireListening(t, e)\\n\\t\\tif strings.Contains(string(body), marker) {\\n\\t\\t\\tkeys = append(keys, object.Key)\\n\\t\\t}\\n\\t}\\n\\tif len(keys) < 3 {\\n\\t\\tt.Fatal(\\\"missing independent private-body observations\\\", len(keys))\\n\\t}\\n\\tp, e := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{f.attempt}})\\n\\trequireListening(t, e)\\n\\t_, e = f.s.Store.ApplyDeletion(context.Background(), p.ID, p.Digest)\\n\\trequireListening(t, e)\\n\\tfor _, key := range keys {\\n\\t\\t_, e = f.s.Store.Media.StatObject(context.Background(), f.s.Store.Bucket, key, minio.StatObjectOptions{})\\n\\t\\tif e == nil {\\n\\t\\t\\tt.Fatalf(\\\"private copied answer remains in %s; plan=%+v\\\", key, p)\\n\\t\\t}\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryPrivateBytesDeletionPositive through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryPrivateBytesDeletionPositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryPrivateBytesDeletionPositive(t *testing.T) {\\n\\tf := scoringFixture(t, false)\\n\\tf.attempt = f.start(t)\\n\\tmarker := \\\"PRIVATE-ERASE-\\\" + uuid.NewString()\\n\\t_, _, e := f.s.Store.WriteAnswer(context.Background(), f.attempt, uuid.NewString(), 0, answerPacket(\\\"Use opens. \\\"+marker, \\\"en\\\"), true)\\n\\trequireListening(t, e)\\n\\t_, e = f.interpret(t, uuid.NewString())\\n\\trequireListening(t, e)\\n\\tkeys := []string{}\\n\\tfor object := range f.s.Store.Media.ListObjects(context.Background(), f.s.Store.Bucket, minio.ListObjectsOptions{Recursive: true}) {\\n\\t\\tif object.Err != nil {\\n\\t\\t\\tt.Fatal(object.Err)\\n\\t\\t}\\n\\t\\tr, e := f.s.Store.Media.GetObject(context.Background(), f.s.Store.Bucket, object.Key, minio.GetObjectOptions{})\\n\\t\\trequireListening(t, e)\\n\\t\\tbody, e := io.ReadAll(r)\\n\\t\\tr.Close()\\n\\t\\trequireListening(t, e)\\n\\t\\tif strings.Contains(string(body), marker) {\\n\\t\\t\\tkeys = append(keys, object.Key)\\n\\t\\t}\\n\\t}\\n\\tif len(keys) < 3 {\\n\\t\\tt.Fatal(\\\"missing independent private-body observations\\\", len(keys))\\n\\t}\\n\\tp, e := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{f.attempt}})\\n\\trequireListening(t, e)\\n\\t_, e = f.s.Store.ApplyDeletion(context.Background(), p.ID, p.Digest)\\n\\trequireListening(t, e)\\n\\tfor _, key := range keys {\\n\\t\\t_, e = f.s.Store.Media.StatObject(context.Background(), f.s.Store.Bucket, key, minio.StatObjectOptions{})\\n\\t\\tif e == nil {\\n\\t\\t\\tt.Fatalf(\\\"private copied answer remains in %s; plan=%+v\\\", key, p)\\n\\t\\t}\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -2933,7 +2933,7 @@
       },
       "I15-06.P1.S5.NEGATIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "b26b85be061065d6eb8e750245eed125cbfb1b36d1f2991448c77e3b90a8bb66",
+        "current_evidence_fingerprint": "2e5c26d01f53a2c27f059fc5d5c92265acf995182e039432ac7b167f96b6b9ad",
         "distinct_reason": "Exact test_cleanup_unknown_negative covers I15-06 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-06.P1.S5.NEGATIVE",
@@ -3008,7 +3008,7 @@
       },
       "I15-06.P1.S5.POSITIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "710cc13eb69c741c3490c0b26b52f1b8edd3c32e5f0d8488e10c8c17e4f3a9b5",
+        "current_evidence_fingerprint": "e093bc83ab9b3e6b72fc0768a28a0d363eaa1a332ee798438c72c9dbc82c35f4",
         "distinct_reason": "Exact TestNativeRecoveryGeneratedDeletionPositive covers I15-06 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-06.P1.S5.POSITIVE",
@@ -3061,9 +3061,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-06 supported recovery",
         "scenario_fingerprint": "b3e50e76b42436e17c22a7afc3da4d2b61e2109527cdbc98f4b9b0f103a01df9",
-        "setup": "Execute TestNativeRecoveryGeneratedDeletionPositive through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryGeneratedDeletionPositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryGeneratedDeletionPositive(t *testing.T) {\\n\\ts, _ := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tqualitySpeechTarget(t, s, false)\\n\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", uuid.NewString(), recoveryRequest(t, s))\\n\\tif w.Code != 200 {\\n\\t\\tt.Fatal(w.Code, w.Body.String())\\n\\t}\\n\\tvar response map[string]any\\n\\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &response))\\n\\tprep, e := s.Store.Preparation(context.Background(), response[\\\"id\\\"].(string))\\n\\trequireListening(t, e)\\n\\tvar published string\\n\\trequireListening(t, s.Store.DB.QueryRow(context.Background(), \\\"SELECT case_version_id FROM listening_case WHERE source_key_id=$1\\\", prep[\\\"key_id\\\"]).Scan(&published))\\n\\tp, e := s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{published}})\\n\\trequireListening(t, e)\\n\\tif len(p.Blocked) > 0 || !containsString(p.Documents, prep[\\\"key_id\\\"].(string)) || !containsString(p.Heads, prep[\\\"id\\\"].(string)) {\\n\\t\\tt.Fatal(\\\"preparation/key outside deletion plan\\\", p)\\n\\t}\\n\\t_, e = s.Store.ApplyDeletion(context.Background(), p.ID, p.Digest)\\n\\trequireListening(t, e)\\n\\tvar n int\\n\\trequireListening(t, s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM document WHERE id=$1 OR payload->>'id'=$2\\\", prep[\\\"key_id\\\"], prep[\\\"id\\\"]).Scan(&n))\\n\\tif n != 0 {\\n\\t\\tt.Fatal(\\\"generated key/text history remains\\\")\\n\\t}\\n}\\n\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryGeneratedDeletionPositive through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryGeneratedDeletionPositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryGeneratedDeletionPositive(t *testing.T) {\\n\\ts, _ := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tqualitySpeechTarget(t, s, false)\\n\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", uuid.NewString(), recoveryRequest(t, s))\\n\\tif w.Code != 200 {\\n\\t\\tt.Fatal(w.Code, w.Body.String())\\n\\t}\\n\\tvar response map[string]any\\n\\trequireListening(t, json.Unmarshal(w.Body.Bytes(), &response))\\n\\tprep, e := s.Store.Preparation(context.Background(), response[\\\"id\\\"].(string))\\n\\trequireListening(t, e)\\n\\tvar published string\\n\\trequireListening(t, s.Store.DB.QueryRow(context.Background(), \\\"SELECT case_version_id FROM listening_case WHERE source_key_id=$1\\\", prep[\\\"key_id\\\"]).Scan(&published))\\n\\tp, e := s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{published}})\\n\\trequireListening(t, e)\\n\\tif len(p.Blocked) > 0 || !containsString(p.Documents, prep[\\\"key_id\\\"].(string)) || !containsString(p.Heads, prep[\\\"id\\\"].(string)) {\\n\\t\\tt.Fatal(\\\"preparation/key outside deletion plan\\\", p)\\n\\t}\\n\\t_, e = s.Store.ApplyDeletion(context.Background(), p.ID, p.Digest)\\n\\trequireListening(t, e)\\n\\tvar n int\\n\\trequireListening(t, s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM document WHERE id=$1 OR payload->>'id'=$2\\\", prep[\\\"key_id\\\"], prep[\\\"id\\\"]).Scan(&n))\\n\\tif n != 0 {\\n\\t\\tt.Fatal(\\\"generated key/text history remains\\\")\\n\\t}\\n}\\n\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -3076,7 +3076,7 @@
       },
       "I15-06.P1.S6.NEGATIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "0d615f98d6cc014671395d4e078537bddbd97242c81aaa7d279a8960b46794c1",
+        "current_evidence_fingerprint": "7b33402261b6427e3232151232502aaa191168bd7d7fa47abaaf8713567d9e12",
         "distinct_reason": "Exact test_lab_purge_unconfirmed_negative covers I15-06 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-06.P1.S6.NEGATIVE",
@@ -3151,7 +3151,7 @@
       },
       "I15-06.P1.S6.POSITIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "c8c7669a6b74707badf6fd4760373699863e1d15005f80e874a032bfca4a0982",
+        "current_evidence_fingerprint": "48aa28e27fed1eb394819d9a5aec3ffc711d962fa4a1f19a1f2da9502346f415",
         "distinct_reason": "Exact TestNativeRecoverySourceDeletionPositive covers I15-06 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-06.P1.S6.POSITIVE",
@@ -3204,9 +3204,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-06 rejected or interrupted action",
         "scenario_fingerprint": "c4b595681d48a4a72ea97a0b22db8f2b0a64bfe4de1a5c3dde3e734aee7fda41",
-        "setup": "Execute TestNativeRecoverySourceDeletionPositive through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoverySourceDeletionPositive\", \"literal_executable_fixture\": \"func TestNativeRecoverySourceDeletionPositive(t *testing.T) {\\n\\tf := sourceFixture(t)\\n\\tf.bea(t)\\n\\trun := f.run(t, \\\"native\\\", nil)\\n\\tp, e := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{f.release.ID}})\\n\\trequireListening(t, e)\\n\\tif len(p.Blocked) > 0 || len(p.Source.Files) != 5 || !containsString(p.Source.Imports, run.Report.ID) {\\n\\t\\tt.Fatal(p)\\n\\t}\\n\\t_, e = f.s.Store.ApplyDeletion(context.Background(), p.ID, p.Digest)\\n\\trequireListening(t, e)\\n\\tvar n int\\n\\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM source_row WHERE import_id=$1\\\", run.Report.ID).Scan(&n))\\n\\tif n != 0 {\\n\\t\\tt.Fatal(\\\"source records remain\\\")\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoverySourceDeletionPositive through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoverySourceDeletionPositive\", \"literal_executable_fixture\": \"func TestNativeRecoverySourceDeletionPositive(t *testing.T) {\\n\\tf := sourceFixture(t)\\n\\tf.bea(t)\\n\\trun := f.run(t, \\\"native\\\", nil)\\n\\tp, e := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{f.release.ID}})\\n\\trequireListening(t, e)\\n\\tif len(p.Blocked) > 0 || len(p.Source.Files) != 5 || !containsString(p.Source.Imports, run.Report.ID) {\\n\\t\\tt.Fatal(p)\\n\\t}\\n\\t_, e = f.s.Store.ApplyDeletion(context.Background(), p.ID, p.Digest)\\n\\trequireListening(t, e)\\n\\tvar n int\\n\\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \\\"SELECT count(*) FROM source_row WHERE import_id=$1\\\", run.Report.ID).Scan(&n))\\n\\tif n != 0 {\\n\\t\\tt.Fatal(\\\"source records remain\\\")\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -3261,7 +3261,7 @@
       },
       "I15-06.P1.S7.POSITIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "b973a551bbb7ee2630d2603ee901950e8b69bd36ffad2cab12ac28eee69357a3",
+        "current_evidence_fingerprint": "dceaf4d1c2caa35ae853885ee00ca80f1402717ce1bb14872b5ddcfaa5a1ea85",
         "distinct_reason": "Exact TestNativeRecoveryCleanupPreviewPositive covers I15-06 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-06.P1.S7.POSITIVE",
@@ -3314,9 +3314,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-06 supported recovery",
         "scenario_fingerprint": "b3e50e76b42436e17c22a7afc3da4d2b61e2109527cdbc98f4b9b0f103a01df9",
-        "setup": "Execute TestNativeRecoveryCleanupPreviewPositive through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryCleanupPreviewPositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryCleanupPreviewPositive(t *testing.T) {\\n\\ts := listeningNative(t)\\n\\tp, e := s.PlanDeletion(context.Background(), DeletionSelection{Orphans: true})\\n\\trequireListening(t, e)\\n\\tif p.State != \\\"preview\\\" || len(p.Documents) != 0 || len(p.Assets) != 0 {\\n\\t\\tt.Fatal(p)\\n\\t}\\n}\\n\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryCleanupPreviewPositive through services/api/internal/app/deletion.go {\"exact_test\": \"TestNativeRecoveryCleanupPreviewPositive\", \"literal_executable_fixture\": \"func TestNativeRecoveryCleanupPreviewPositive(t *testing.T) {\\n\\ts := listeningNative(t)\\n\\tp, e := s.PlanDeletion(context.Background(), DeletionSelection{Orphans: true})\\n\\trequireListening(t, e)\\n\\tif p.State != \\\"preview\\\" || len(p.Documents) != 0 || len(p.Assets) != 0 {\\n\\t\\tt.Fatal(p)\\n\\t}\\n}\\n\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -3329,7 +3329,7 @@
       },
       "I15-06.P1.S8.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "e160e3a91c73c02210475529cae380a4c93958554da5fb1cd321212e7ebdbdfb",
+        "current_evidence_fingerprint": "86e4a736c7e166b5505356744d48096c0000a05fdfe23ba6d94b3d29dbb16857",
         "distinct_reason": "Exact test_cleanup_preview_positive covers I15-06 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-06.P1.S8.POSITIVE",
@@ -3404,7 +3404,7 @@
       },
       "I15-06.P1.S9.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "f7a985695fd1cb420b9bad1116f1d2abf8d73159e8ed4c5f69035df797335245",
+        "current_evidence_fingerprint": "2988d8f45f988414ccf13d137f73ec027dabfbfa51097a367f29f3e5d58e711f",
         "distinct_reason": "Exact test_cleanup_apply_positive covers I15-06 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-06.P1.S9.POSITIVE",
@@ -3479,7 +3479,7 @@
       },
       "I15-07.P1.S1.NEGATIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "29c3797a183e0be5d5c0eb31ba628147ef223c48e34e389c691e6f3b8e6b0f51",
+        "current_evidence_fingerprint": "62392c0759c1e0bc6c6e8755bf7db96374cf3d2f8d5d5a9563a4480a0a38e974",
         "distinct_reason": "Exact test_dependency_failure_negative covers I15-07 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-07.P1.S1.NEGATIVE",
@@ -3554,7 +3554,7 @@
       },
       "I15-07.P1.S1.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "f249cc41c00dd64b936350e2a2d57d281c442bec1b9cd3f83fd1aa25d43ddacb",
+        "current_evidence_fingerprint": "b16cff2e0535a4f048923e8e3d45e22b91572d8bd0cfddcfc291c4b7126bac7c",
         "distinct_reason": "Exact test_navigation_positive covers I15-07 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-07.P1.S1.POSITIVE",
@@ -3629,7 +3629,7 @@
       },
       "I15-07.P1.S2.NEGATIVE": {
         "command_id": "iteration15-1-native",
-        "current_evidence_fingerprint": "25a02e6183c15b37fa2dae731fb3b5136ec3ec79686e978c6940b6d5b4bd6f5c",
+        "current_evidence_fingerprint": "5a773975c45648e713d88c2fc0b29025aeef2464d2a058c6a7b9b5a5fba47503",
         "distinct_reason": "Exact TestNativeRecoveryMalformedNegative covers I15-07 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-07.P1.S2.NEGATIVE",
@@ -3682,9 +3682,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-07 rejected or interrupted action",
         "scenario_fingerprint": "c97ec1950a39441e76092d14dbaa2066f72fdd68603537945488f9860e65ac61",
-        "setup": "Execute TestNativeRecoveryMalformedNegative through services/web/app/prepare/page.js {\"exact_test\": \"TestNativeRecoveryMalformedNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryMalformedNegative(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tfor _, body := range []any{map[string]any{}, map[string]any{\\\"generation_attempt\\\": -1}} {\\n\\t\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", uuid.NewString(), body)\\n\\t\\tif w.Code == 200 || calls.Load() != 0 {\\n\\t\\t\\tt.Fatal(w.Code, calls.Load())\\n\\t\\t}\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55\"}",
+        "setup": "Execute TestNativeRecoveryMalformedNegative through services/web/app/prepare/page.js {\"exact_test\": \"TestNativeRecoveryMalformedNegative\", \"literal_executable_fixture\": \"func TestNativeRecoveryMalformedNegative(t *testing.T) {\\n\\ts, calls := qualityGenerationServer(t, false)\\n\\ts.token = \\\"recovery-token\\\"\\n\\tfor _, body := range []any{map[string]any{}, map[string]any{\\\"generation_attempt\\\": -1}} {\\n\\t\\tw := recoveryHTTP(t, s, \\\"/api/v1/candidates:generate\\\", uuid.NewString(), body)\\n\\t\\tif w.Code == 200 || calls.Load() != 0 {\\n\\t\\t\\tt.Fatal(w.Code, calls.Load())\\n\\t\\t}\\n\\t}\\n}\\n\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/native_recovery_test.go\", \"source_path\": \"tests/native_recovery_test.go\", \"source_sha256\": \"cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b\"}",
         "source_path": "tests/native_recovery_test.go",
-        "source_sha256": "8536efb32d1099caf4b28b40ba9bf86e3a31af1a5cd8cf0785b2bfb951328f55",
+        "source_sha256": "cffa453f2e8d406253e3a0f073b2e11bdd643eda76c8daf7f5d7467053005a2b",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -3697,7 +3697,7 @@
       },
       "I15-07.P1.S2.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "b9b04b80423ce5d2011b3d6ebd22523dc7f31974a128eaec7b5d3fa5c67b030d",
+        "current_evidence_fingerprint": "b55b5870a2267d4baab482001db3f88c7b2836b987afe9e5bb6174730188574d",
         "distinct_reason": "Exact test_recovery_instructions_positive covers I15-07 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-07.P1.S2.POSITIVE",
@@ -3772,7 +3772,7 @@
       },
       "I15-07.P1.S3.NEGATIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "5a21923d86769ff518ad05d22a0a0f1691c5deac4c0e21d01c8bbe4bc85d07b7",
+        "current_evidence_fingerprint": "27994e40c723815ca7f775980621eabd320ccab243e93003db349da44709053d",
         "distinct_reason": "Exact test_no_maintenance_inference_negative covers I15-07 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-07.P1.S3.NEGATIVE",
@@ -3847,7 +3847,7 @@
       },
       "I15-07.P1.S3.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "ea8f11a26abe332edec137327715d2c0437a5449b9a7db640ab77828f7907030",
+        "current_evidence_fingerprint": "d0ab9e248700148d6d6ac5062a84528ce13832818a958e43ecdb4713e8e55d38",
         "distinct_reason": "Exact test_saved_answer_positive covers I15-07 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-07.P1.S3.POSITIVE",
@@ -3922,7 +3922,7 @@
       },
       "I15-07.P1.S4.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "d7edda2011231680b52b21e0fb88d90da52284d722914431bc025dfe6864fd2c",
+        "current_evidence_fingerprint": "ef023a47d897cae459f77d5dfa076934c451937d2c54fc51dbfe2248f7436937",
         "distinct_reason": "Exact test_dependency_recovery_positive covers I15-07 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-07.P1.S4.POSITIVE",
@@ -3997,7 +3997,7 @@
       },
       "I15-08.P1.S1.NEGATIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "12f9465ca948742ac6f9ba7ec6ca2dc6be18dc88a4a99ee19a548a22742f755b",
+        "current_evidence_fingerprint": "58f88e9780c371c26b87fc587bafe4149f7c467b4c33d467a13096b19d092d4c",
         "distinct_reason": "Exact test_dependency_failure_negative covers I15-08 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-08.P1.S1.NEGATIVE",
@@ -4072,7 +4072,7 @@
       },
       "I15-08.P1.S1.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "bd419fd9c39b97c24af2832b8e25e0cd12f7d5846782995c5f2542ea98ec445d",
+        "current_evidence_fingerprint": "051af8161ec3d6919b236b731d8992552d28ff68bcefab4c58f639e7812c500d",
         "distinct_reason": "Exact test_backup_positive covers I15-08 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-08.P1.S1.POSITIVE",
@@ -4147,7 +4147,7 @@
       },
       "I15-08.P1.S2.NEGATIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "6114a017e836632c677d360cdd5283f742f79e8208e4c3ff6504afb4a9a0eb8a",
+        "current_evidence_fingerprint": "1cd48b63c19ef2d4c9d609836d782b740795adb4bfee933e8e5c314445a92963",
         "distinct_reason": "Exact test_corrupt_restore_negative covers I15-08 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-08.P1.S2.NEGATIVE",
@@ -4222,7 +4222,7 @@
       },
       "I15-08.P1.S2.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "08e49390a2510a8b6614456f64371eb1fa271f804222c549c9547f77941f9b78",
+        "current_evidence_fingerprint": "7daa58f5474af0eb85dd01e84aecb2941afddc0f6d77c14882e6c1945018660d",
         "distinct_reason": "Exact test_fresh_restore_positive covers I15-08 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-08.P1.S2.POSITIVE",
@@ -4297,7 +4297,7 @@
       },
       "I15-08.P1.S3.NEGATIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "4a8170b27a18c5229650cb9abc1da8187042f01dbd92903911bee2a5dd6023aa",
+        "current_evidence_fingerprint": "2476e1464b9e9842665d7a53a3c4c39258ef8342cba14c87b7b485897618f2e2",
         "distinct_reason": "Exact test_existing_target_negative covers I15-08 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-08.P1.S3.NEGATIVE",
@@ -4372,7 +4372,7 @@
       },
       "I15-08.P1.S3.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "0551c8cdfe7bef696d3962a3198d5f08a9ceace7791ec9c3d5a0a03f1005f0e4",
+        "current_evidence_fingerprint": "d8e604a8868126c4a761e63cad4b548ba1719ffbc0cfab655a6f2e1bb10847ce",
         "distinct_reason": "Exact test_generate_positive covers I15-08 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-08.P1.S3.POSITIVE",
@@ -4447,7 +4447,7 @@
       },
       "I15-08.P1.S4.NEGATIVE": {
         "command_id": "iteration15-3-lab",
-        "current_evidence_fingerprint": "19494d4acab835e1580abe5755325450e916c829dc49c4ffb9e9e6a0a939ade6",
+        "current_evidence_fingerprint": "8f28f8673b9ccb195c2fbf4fc9e04b348c521814f616644091eaa22501c4d96c",
         "distinct_reason": "Exact test_missing_copy_negative covers I15-08 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-08.P1.S4.NEGATIVE",
@@ -4507,9 +4507,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-08 rejected or interrupted action",
         "scenario_fingerprint": "21ff0eae2d9a6acad71d7172541064f450820ad79d0f11b133d36b622830e03f",
-        "setup": "Execute test_missing_copy_negative through tests/recovery-workspace {\"exact_test\": \"test_missing_copy_negative\", \"literal_executable_fixture\": \"def test_missing_copy_negative(self):self.assertTrue(self.result['missing_artifact_rejected'])\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/test_recovery_lab.py\", \"source_path\": \"tests/test_recovery_lab.py\", \"source_sha256\": \"7b80bd72804a74c879d62b77c0ff34963c5d6da28ff9d15d1d73bbce033197a3\"}",
+        "setup": "Execute test_missing_copy_negative through tests/recovery-workspace {\"exact_test\": \"test_missing_copy_negative\", \"literal_executable_fixture\": \"def test_missing_copy_negative(self):self.assertTrue(self.result['missing_artifact_rejected'])\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/test_recovery_lab.py\", \"source_path\": \"tests/test_recovery_lab.py\", \"source_sha256\": \"83fa5b05188394990da904c88c3f4b6a341b76e36a62ec5ba88841828c814526\"}",
         "source_path": "tests/test_recovery_lab.py",
-        "source_sha256": "7b80bd72804a74c879d62b77c0ff34963c5d6da28ff9d15d1d73bbce033197a3",
+        "source_sha256": "83fa5b05188394990da904c88c3f4b6a341b76e36a62ec5ba88841828c814526",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -4522,7 +4522,7 @@
       },
       "I15-08.P1.S4.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "76e0b4edf7b05dcb0c83da02c7f80cdf13b60b00d1240f93314b9383595e59c4",
+        "current_evidence_fingerprint": "2a9c018bc17758cff2c64ed63bbafa11dce5a48a253f7199bd577f252ba49c36",
         "distinct_reason": "Exact test_restored_draft_positive covers I15-08 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-08.P1.S4.POSITIVE",
@@ -4597,7 +4597,7 @@
       },
       "I15-08.P1.S5.POSITIVE": {
         "command_id": "iteration15-2-workspace",
-        "current_evidence_fingerprint": "49274f46b3ed05510063fba31020baec95a804ee7497d26523735bf8b4a3d29e",
+        "current_evidence_fingerprint": "31f6f25349256ebd6581d3a1acbd0cdc580efa6542c33765fab2286a38f96933",
         "distinct_reason": "Exact test_restored_audio_positive covers I15-08 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-08.P1.S5.POSITIVE",
@@ -4672,7 +4672,7 @@
       },
       "I15-08.P1.S6.POSITIVE": {
         "command_id": "iteration15-3-lab",
-        "current_evidence_fingerprint": "30b08bc967e6b0c8b501393d41b5c62c169774efa6fe736baa56eec1258a14d0",
+        "current_evidence_fingerprint": "be90408671b61f76280615e6f42b04e9d3e25a35d4d6b7c2c9e47aec89c8b843",
         "distinct_reason": "Exact test_export_positive covers I15-08 rejected or interrupted action with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-08.P1.S6.POSITIVE",
@@ -4732,9 +4732,9 @@
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-08 rejected or interrupted action",
         "scenario_fingerprint": "21ff0eae2d9a6acad71d7172541064f450820ad79d0f11b133d36b622830e03f",
-        "setup": "Execute test_export_positive through tests/recovery-workspace {\"exact_test\": \"test_export_positive\", \"literal_executable_fixture\": \"def test_export_positive(self):self.assertTrue(self.result['artifact_exact']);self.assertEqual(self.result['run_status'],'FINISHED')\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/test_recovery_lab.py\", \"source_path\": \"tests/test_recovery_lab.py\", \"source_sha256\": \"7b80bd72804a74c879d62b77c0ff34963c5d6da28ff9d15d1d73bbce033197a3\"}",
+        "setup": "Execute test_export_positive through tests/recovery-workspace {\"exact_test\": \"test_export_positive\", \"literal_executable_fixture\": \"def test_export_positive(self):self.assertTrue(self.result['artifact_exact']);self.assertEqual(self.result['run_status'],'FINISHED')\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/test_recovery_lab.py\", \"source_path\": \"tests/test_recovery_lab.py\", \"source_sha256\": \"83fa5b05188394990da904c88c3f4b6a341b76e36a62ec5ba88841828c814526\"}",
         "source_path": "tests/test_recovery_lab.py",
-        "source_sha256": "7b80bd72804a74c879d62b77c0ff34963c5d6da28ff9d15d1d73bbce033197a3",
+        "source_sha256": "83fa5b05188394990da904c88c3f4b6a341b76e36a62ec5ba88841828c814526",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -4747,7 +4747,7 @@
       },
       "I15-08.P1.S7.POSITIVE": {
         "command_id": "iteration15-3-lab",
-        "current_evidence_fingerprint": "dfb27b872e26ef9609ac4f89b3a2b11e6ed1c96772ae908e8be5d9ccfea4806d",
+        "current_evidence_fingerprint": "db217ecb4171ee52bec40833a441ba81ea0047d68a27a3bf7e13bccb52881fe4",
         "distinct_reason": "Exact test_control_correspondence_positive covers I15-08 supported recovery with independently asserted state and forbidden side effects.",
         "green_expectation": "All exact independent expected observations pass.",
         "id": "I15-08.P1.S7.POSITIVE",
@@ -4801,15 +4801,15 @@
           "deploy/local/minio.Dockerfile"
         ],
         "latest_observed_status": "not_loaded",
-        "observable": "{\"independent_literal_assertions\": \"def test_control_correspondence_positive(self):self.assertEqual(self.result['metrics'],{'actual_llm_inference_calls':0,'constructed_dispatches':2,'native_receipts':2,'native_snapshots':2})\", \"oracle\": \"Independent literal assertions in named test and complete shared fixture library. observe positive and negative native/browser restart, backup, restore, switch, persistence and recovery scenarios with independent literal expectations and explicit substitution boundaries. Constructed model/speech inputs prove coordination, not inference quality or hosted eligibility.\"}",
+        "observable": "{\"independent_literal_assertions\": \"def test_control_correspondence_positive(self):self.assertEqual(self.result['metrics'],{'actual_llm_inference_calls':0,'constructed_dispatches':2,'native_receipts':2,'native_snapshots':2,'native_speech_receipts':1,'constructed_speech_dispatches':1})\", \"oracle\": \"Independent literal assertions in named test and complete shared fixture library. observe positive and negative native/browser restart, backup, restore, switch, persistence and recovery scenarios with independent literal expectations and explicit substitution boundaries. Constructed model/speech inputs prove coordination, not inference quality or hosted eligibility.\"}",
         "polarity": "positive",
         "property_id": "I15-08.P1",
         "red_expectation": "Any missing, wrong or forbidden native observation fails.",
         "scenario": "I15-08 supported recovery",
         "scenario_fingerprint": "e15410f4fd1da08f518795038c9a6bdd3433772a2f861d7ee3dd9ec69d3ae114",
-        "setup": "Execute test_control_correspondence_positive through tests/recovery-workspace {\"exact_test\": \"test_control_correspondence_positive\", \"literal_executable_fixture\": \"def test_control_correspondence_positive(self):self.assertEqual(self.result['metrics'],{'actual_llm_inference_calls':0,'constructed_dispatches':2,'native_receipts':2,'native_snapshots':2})\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/test_recovery_lab.py\", \"source_path\": \"tests/test_recovery_lab.py\", \"source_sha256\": \"7b80bd72804a74c879d62b77c0ff34963c5d6da28ff9d15d1d73bbce033197a3\"}",
+        "setup": "Execute test_control_correspondence_positive through tests/recovery-workspace {\"exact_test\": \"test_control_correspondence_positive\", \"literal_executable_fixture\": \"def test_control_correspondence_positive(self):self.assertEqual(self.result['metrics'],{'actual_llm_inference_calls':0,'constructed_dispatches':2,'native_receipts':2,'native_snapshots':2,'native_speech_receipts':1,'constructed_speech_dispatches':1})\", \"shared_fixture_library\": \"audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#tests/test_recovery_lab.py\", \"source_path\": \"tests/test_recovery_lab.py\", \"source_sha256\": \"83fa5b05188394990da904c88c3f4b6a341b76e36a62ec5ba88841828c814526\"}",
         "source_path": "tests/test_recovery_lab.py",
-        "source_sha256": "7b80bd72804a74c879d62b77c0ff34963c5d6da28ff9d15d1d73bbce033197a3",
+        "source_sha256": "83fa5b05188394990da904c88c3f4b6a341b76e36a62ec5ba88841828c814526",
         "state": "implemented",
         "substitution": {
           "classification": "EXTERNAL_BOUNDARY",
@@ -4838,6 +4838,26 @@
           "DOCKER_HOST": "unix:///Users/jekamas/Library/Containers/com.docker.docker/Data/docker.raw.sock"
         },
         "id": "iteration15-0-go",
+        "runner": "go-test-json",
+        "timeout_seconds": 500
+      },
+      "iteration15-1-capture": {
+        "argv": [
+          "./tests/recovery-native",
+          "test",
+          "-json",
+          "-race",
+          "-count=1",
+          "-run",
+          "^TestNativeRecoveryGeneratePositive$",
+          "./internal/app"
+        ],
+        "authority": "local",
+        "cwd": ".",
+        "env": {
+          "DOCKER_HOST": "unix:///Users/jekamas/Library/Containers/com.docker.docker/Data/docker.raw.sock"
+        },
+        "id": "iteration15-1-capture",
         "runner": "go-test-json",
         "timeout_seconds": 500
       },
@@ -5168,6 +5188,7 @@
     ],
     "commands": [
       "iteration15-0-go",
+      "iteration15-1-capture",
       "iteration15-1-native",
       "iteration15-2-workspace",
       "iteration15-3-lab"
