@@ -55,6 +55,22 @@ func scoringFixture(t *testing.T, bad bool) *scoringNative {
 			w.WriteHeader(500)
 			return
 		}
+		if strings.HasPrefix(f.currentMode(), "feedback-empty-") {
+			guided := false
+			for _, message := range wire["input"].([]any) {
+				content, _ := message.(map[string]any)["content"].(string)
+				var repair map[string]any
+				if json.Unmarshal([]byte(content), &repair) == nil {
+					detail, _ := repair["validation_detail"].(string)
+					guided = guided || strings.TrimSpace(detail) != ""
+				}
+			}
+			if f.currentMode() == "feedback-empty-always" || f.feedbackCalls.Load() == 1 || !guided {
+				_ = json.NewEncoder(w).Encode(map[string]any{"id": "constructed-empty-feedback", "status": "completed", "output": []any{map[string]any{"type": "message", "content": []any{map[string]any{"type": "output_text", "text": ""}}}}})
+				return
+			}
+		}
+
 		key := input["ground_truth"].(map[string]any)
 		unit := key["units"].([]any)[0].(map[string]any)["id"].(string)
 		item := func(kind, text string, ds []any) map[string]any {
@@ -519,5 +535,26 @@ func TestNativeScoringConflictingFieldNegative(t *testing.T) {
 	result := f.envelope(t, state)
 	if result["feedback_status"] != "unavailable" || result["score"].(map[string]any)["composite"].(map[string]any)["display"] != "100.0" {
 		t.Fatal("ambiguous model assertion accepted or score lost", result)
+	}
+}
+
+func TestNativeScoringEmptyRepairPositive(t *testing.T) {
+	f := scoringFixture(t, false)
+	f.mode.Store("feedback-empty-first")
+	state, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	result := f.envelope(t, state)
+	if result["feedback_status"] != "complete" || f.feedbackCalls.Load() != 2 || result["score"].(map[string]any)["composite"].(map[string]any)["display"] != "100.0" {
+		t.Fatal("missing stage-specific repair guidance", result, f.feedbackCalls.Load())
+	}
+}
+func TestNativeScoringEmptyOutputNegative(t *testing.T) {
+	f := scoringFixture(t, false)
+	f.mode.Store("feedback-empty-always")
+	state, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	result := f.envelope(t, state)
+	if result["feedback_status"] != "unavailable" || f.feedbackCalls.Load() != 2 || result["score"].(map[string]any)["composite"].(map[string]any)["display"] != "100.0" {
+		t.Fatal("blank feedback invented or repair unbounded", result, f.feedbackCalls.Load())
 	}
 }

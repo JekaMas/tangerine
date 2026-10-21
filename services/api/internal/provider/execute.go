@@ -74,11 +74,15 @@ func Execute(ctx context.Context, client *http.Client, r ExecuteRequest, credent
 				a.Projection, e = projectStageVisible(a.Response.Visible, r.OutputKind, false, r.NormalizeProjection)
 			} else {
 				a.Projection, e = projectStageVisible(a.Response.Visible, r.OutputKind, true, r.NormalizeProjection)
-				if e != nil && len(a.Projection) > 0 {
+				if e != nil {
 					if detail := r.DiagnoseInvalid(a.Projection); detail != "" {
 						var invalid *OutputValidationError
 						if errors.As(e, &invalid) {
 							e = &OutputValidationError{Detail: invalid.Detail + "\n" + detail}
+						} else if code, _ := SafeError(e); code == "PROVIDER_OUTPUT_INVALID" {
+							// An empty reply has no candidate, but still needs
+							// the stage's actual task guidance in its one repair.
+							e = &OutputValidationError{Detail: detail}
 						}
 					}
 				}

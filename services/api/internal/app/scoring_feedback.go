@@ -151,7 +151,7 @@ func (s *Server) scoringFeedback(ctx context.Context, lease InterpretationLease,
 		return nil, stage, context.DeadlineExceeded
 	}
 	var out map[string]any
-	diagnostic := "Return concise source-bound factual comments covering the findings, supplied repairs and optional reasons. Related assessments may share one comment. Include a kind=recommendation item with a concrete practice step and labelled new example, including when findings consist only of misses or false positives."
+	diagnostic := "Return one complete final JSON feedback response with nonempty factual items covering the findings, supplied repairs and optional reasons. Related assessments may share one comment. Include a kind=recommendation item with a concrete practice step and labelled new example, including when findings consist only of misses or false positives."
 	result, e := s.InvokeLLM(ctx, LLMRequest{NormalizeProjection: func(v any) any {
 		return normalizeFeedbackShape(v, lease.Snapshot.Context["requested_language"].(string))
 	}, DiagnoseInvalid: func([]byte) string { return diagnostic }, FrozenProfile: &p, TransportRetry: retry, Timeout: cap, Stage: "feedback", Operation: OperationRequest{Name: "feedback", Key: interpretationCallKey(lease.Operation, "feedback"), Path: "/api/v1/attempts/" + lease.Attempt + "/feedback", Body: json.RawMessage(`{}`)}, Input: input, Components: parts, Configuration: lease.Snapshot.Context["configuration"].(map[string]any), Bundle: interpretationBundle(lease.Snapshot), Validate: func(raw []byte) error {
