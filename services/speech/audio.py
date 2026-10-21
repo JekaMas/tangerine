@@ -78,7 +78,7 @@ def measure(pcm,planned=()):
  summary=process.stderr.decode(errors='replace').rsplit('Summary:',1)[-1];integrated=re.search(r'I:\s*([-+0-9.]+) LUFS',summary);peak=re.search(r'Peak:\s*([-+0-9.]+) dBFS',summary)
  try:version=subprocess.run(['ffmpeg','-version'],capture_output=True,timeout=5,check=False).stdout.decode(errors='replace')
  except (OSError,subprocess.TimeoutExpired):version=None
- result.update(integrated_lufs=float(integrated[1]) if integrated and process.returncode==0 else None,true_peak_dbtp=float(peak[1]) if peak and process.returncode==0 else None,loudness_state='measured' if integrated and peak and process.returncode==0 else 'not_measurable',method={'id':'ffmpeg-ebur128-v1','command':command,'version_and_build':version})
+ result.update(integrated_lufs=float(integrated[1]) if integrated and process.returncode==0 else None,true_peak_dbtp=float(peak[1]) if peak and process.returncode==0 else None,loudness_state='measured' if integrated and peak and process.returncode==0 else 'not_measurable',method={'id':'ffmpeg-ebur128-v1','command':command,'version_and_build':version,'stderr':process.stderr.decode(errors='replace'),'exit_code':process.returncode})
  if result['integrated_lufs'] is None:result['warnings'].append('loudness_not_measurable')
  elif not -20<=result['integrated_lufs']<=-16:result['warnings'].append('loudness_outside_target')
  if result['true_peak_dbtp'] is not None and result['true_peak_dbtp']>-1:result['warnings'].append('true_peak_outside_target')

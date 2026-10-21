@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Storage) freezeReview(ctx context.Context, run ReviewRun) (ReviewFrozen, error) {
-	f := ReviewFrozen{Manifest: nil}
+	f := ReviewFrozen{Manifest: nil, Measurements: []any{}}
 	doc, e := s.ReadDocument(ctx, run.Case)
 	if e != nil {
 		return f, e
@@ -141,6 +141,10 @@ func (s *Storage) freezeReview(ctx context.Context, run ReviewRun) (ReviewFrozen
 	if e != nil {
 		return f, e
 	}
+	f.Measurements, e = s.reviewMeasurements(ctx, f.Key["case_version_id"].(string))
+	if e != nil {
+		return f, e
+	}
 	// Store the actual authored manifest, when present; imports honestly use null.
 	var manifest *string
 	e = s.DB.QueryRow(ctx, `WITH RECURSIVE ancestors(id) AS (SELECT $1::text UNION SELECT c.old_case_version_id::text FROM reviewed_case_successor c JOIN ancestors a ON c.new_case_version_id=a.id) SELECT d.payload->>'mutation_manifest_asset_id' FROM entity_head h JOIN document d ON d.id=h.document_id WHERE h.kind='preparation-state' AND d.payload->>'key_id' IN (SELECT id FROM ancestors UNION SELECT source_key_id::text FROM listening_case l JOIN ancestors a ON a.id=l.case_version_id) LIMIT 1`, run.Case).Scan(&manifest)
@@ -202,7 +206,10 @@ func reviewInput(run ReviewRun, f ReviewFrozen) (map[string]any, map[string]any)
 		modality = "text_with_speech_evidence"
 	}
 	taxonomy := reviewTaxonomy(run, f)
-	input := map[string]any{"schema_version": "2.0.0", "purpose": run.Purpose, "public_context": f.Key["public_context"], "candidate": nil, "ground_truth": f.Key, "answer": nil, "extraction": nil, "prior_decisions": nil, "dispute_statement": nil, "measurements": []any{}, "evidence": f.Resources.Evidence, "taxonomy_context": taxonomy, "input_modality": modality, "mutation_manifest": f.Manifest}
+	input := map[string]any{"schema_version": "2.0.0", "purpose": run.Purpose, "public_context": f.Key["public_context"], "candidate": nil, "ground_truth": f.Key, "answer": nil, "extraction": nil, "prior_decisions": nil, "dispute_statement": nil, "measurements": f.Measurements, "evidence": f.Resources.Evidence, "taxonomy_context": taxonomy, "input_modality": modality, "mutation_manifest": f.Manifest}
+	if f.Measurements == nil {
+		input["measurements"] = []any{}
+	}
 	if run.Purpose == "case_review" {
 		input["candidate"] = reviewCandidate(f.Key)
 	} else if run.Attempt != "" {
@@ -217,6 +224,9 @@ func reviewInput(run ReviewRun, f ReviewFrozen) (map[string]any, map[string]any)
 		input["dispute_statement"] = run.Statement
 	}
 	parts := map[string]any{"candidate": input["candidate"], "canonical_script": f.Key["utterances"], "public_context": f.Key["public_context"], "taxonomy": map[string]any{"selected_rules": "Use taxonomy_context in Complete stage input for exact relevant rules.", "registered_catalog": mappingTaxonomyContext(f.Resources, run.Statement)}, "mutation_key": map[string]any{"case_version_id": f.Key["case_version_id"], "unit_repair_reference": reviewRepairReference(f.Key), "complete_key_location": "The complete ground_truth and authored mutation_manifest in Complete stage input retain all correction/rationale obligations, original sources and mutation history."}, "evidence": f.Resources.Evidence, "answer": input["answer"], "extraction": input["extraction"], "prior_decisions": input["prior_decisions"], "dispute_statement": input["dispute_statement"]}
+	if len(f.Measurements) > 0 {
+		parts["evidence"] = map[string]any{"native_evidence": f.Resources.Evidence, "audio_measurements": f.Measurements, "meaning": "Saved method reports only. Model findings are inferences; this review receives reports, not audio. Unavailable measurements remain unknown."}
+	}
 	if run.Attempt == "" && run.Purpose == "dispute" {
 		for _, part := range []string{"answer", "extraction", "prior_decisions"} {
 			parts[part] = map[string]any{"applicable": false, "reason": "This is a case-only dispute; no listener answer or answer judgments exist."}

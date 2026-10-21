@@ -41,7 +41,7 @@ def controlled_plan(profile,render_plan,text_plan):
 
 
 def resolve_acoustic(packet):
- from acoustic_alignment import resolve
+ from acoustic_alignment import resolve,matching_scope
  from acoustic_controls import resolve_parameters
  audio=base64.b64decode(packet['audio_base64']);turn=packet['turn'];native=packet['native']
  steps=resolve(turn,native,(len(audio)-44)//2,packet['piece_id'])
@@ -52,7 +52,7 @@ def resolve_acoustic(packet):
   if step['controller']=='vot_edit':
    from acoustic_controls import vot_landmarks,samples,Unmeasurable
    from acoustic_alignment import phone_interval
-   decoder=next((x for x in native.get('acoustic_scopes',[]) if x['unit_id']==step['unit_id']),native.get('decoder',[{}])[0]);phones=decoder.get('phonemes','');token=next((i for i,c in enumerate(phones) if c not in 'ˈˌ '),None)
+   decoder=matching_scope(native.get('acoustic_scopes',[]),step['unit_id'],step.get('surface_scope')) or native.get('decoder',[{}])[0];phones=decoder.get('phonemes','');token=next((i for i,c in enumerate(phones) if c not in 'ˈˌ '),None)
    if token is None or phones[token]!='p':raise Unmeasurable('initial_p_alignment_unavailable')
    stop=phone_interval(decoder,token,token+1,(len(audio)-44)//2)
    a,b=value['source_interval']['start'],value['source_interval']['end']
@@ -65,28 +65,29 @@ def resolve_acoustic(packet):
 
 def transform_acoustic(packet):
  from acoustic_controls import transform
- from acoustic_alignment import project_native,retain_pauses,mapped_point
+ from acoustic_alignment import project_native,retain_pauses,mapped_point,matching_scope,scope_key
  native=packet.get('native',{});step=packet['step'];paired=None;replacement=None;crop=None
  if step['controller']=='phone_pair':
   pairs=native.get('paired_mutations',{})
-  paired=pairs.get(step['unit_id'],native.get('paired_mutation'))
+  key=scope_key(step['unit_id'],step['surface_scope']) if step.get('surface_scope') is not None else step['unit_id']
+  paired=pairs.get(key,pairs.get(step['unit_id'],native.get('paired_mutation')))
   if paired is None:raise ValueError('ALIGNMENT_UNAVAILABLE')
   replacement=base64.b64decode(packet.get('replacement_base64') or paired['audio_base64'])
-  scope=next((x for x in paired['native'].get('acoustic_scopes',[]) if x['unit_id']==step['unit_id']),None)
+  scope=matching_scope(paired['native'].get('acoustic_scopes',[]),step['unit_id'],step.get('surface_scope'))
   if scope:crop={'start':scope['start'],'end':scope['end']}
  result=transform(base64.b64decode(packet['audio_base64']),step,replacement,crop)
  result['native']=project_native(native,result['clock_mapping'],result['sample_count'])
  if step['controller']=='pause_insert':
   for scope in result['native'].get('acoustic_scopes',[]):
-   if scope['unit_id']==step['unit_id']:scope['start']=min(scope['start'],step['source_interval']['start'])
+   if scope is matching_scope(result['native'].get('acoustic_scopes',[]),step['unit_id'],step.get('surface_scope')):scope['start']=min(scope['start'],step['source_interval']['start'])
  if paired and crop:
-  source_scope=next(x for x in paired['native']['acoustic_scopes'] if x['unit_id']==step['unit_id'])
-  original_scope=next(x for x in native['acoustic_scopes'] if x['unit_id']==step['unit_id'])
+  source_scope=matching_scope(paired['native']['acoustic_scopes'],step['unit_id'],step.get('surface_scope'))
+  original_scope=matching_scope(native['acoustic_scopes'],step['unit_id'],step.get('surface_scope'))
   offset=step['source_interval']['start']-crop['start']
   for target_scope in result['native']['acoustic_scopes']:
-   original=next(x for x in native['acoustic_scopes'] if x['unit_id']==target_scope['unit_id'])
+   original=matching_scope(native['acoustic_scopes'],target_scope['unit_id'],target_scope.get('surface_scope'))
    if (original['start'],original['end'])!=(original_scope['start'],original_scope['end']):continue
-   paired_scope=next(x for x in paired['native']['acoustic_scopes'] if x['unit_id']==target_scope['unit_id'])
+   paired_scope=matching_scope(paired['native']['acoustic_scopes'],target_scope['unit_id'],target_scope.get('surface_scope'))
    target_scope['phonemes']=paired_scope['phonemes']
    target_scope['phone_intervals']=[{'start':x['start']+offset,'end':x['end']+offset} for x in paired_scope['phone_intervals']]
 

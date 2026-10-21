@@ -738,3 +738,56 @@ func TestNativeAcousticFailedChildNegative(t *testing.T) {
 		t.Fatal("failed child was accepted as completed output", p, e)
 	}
 }
+
+func TestNativeReleaseRepeatedScopePositive(t *testing.T) {
+	s, p := nativeAcousticFixtureCandidate(t, "vot_edit", func(c map[string]any) {
+		unit := c["planned_units"].([]any)[0].(map[string]any)
+		unit["primary_taxonomy_id"] = "fluency.pause_location"
+		unit["accepted_taxonomy_ids"] = []any{"fluency.pause_location"}
+		unit["domain"] = "fluency"
+		unit["corrections"].([]any)[0].(map[string]any)["kind"] = "fluency"
+		r := unit["realization"].(map[string]any)
+		r["mode"] = "temporal_fluency"
+		r["planned_pause_ms"] = float64(200)
+		spans := unit["text_spans"].([]any)
+		second := map[string]any{}
+		for k, v := range spans[0].(map[string]any) {
+			second[k] = v
+		}
+		second["span"] = map[string]any{"start_cp": float64(7), "end_cp": float64(12), "exact_text": "ready"}
+		unit["text_spans"] = append(spans, second)
+		first := c["acoustic_edits"].([]any)[0].(map[string]any)
+		first["controller"] = "pause_insert"
+		par := first["parameters"].(map[string]any)
+		par["phone_start"] = nil
+		par["phone_end"] = nil
+		par["vot_ms"] = nil
+		par["pause_ms"] = float64(200)
+		another := map[string]any{}
+		for k, v := range first {
+			another[k] = v
+		}
+		another["scope"] = map[string]any{"start": float64(7), "end": float64(12)}
+		c["acoustic_edits"] = []any{first, another}
+	})
+	p, e := s.RenderPreparation(context.Background(), p["id"].(string), uuid.NewString(), 1, nil)
+	if e != nil {
+		t.Fatal(e, p)
+	}
+	doc, e := s.Store.ReadDocument(context.Background(), p["key_id"].(string))
+	if e != nil {
+		t.Fatal(e)
+	}
+	var key map[string]any
+	if e = json.Unmarshal(doc.Payload, &key); e != nil {
+		t.Fatal(e)
+	}
+	ranges := key["units"].([]any)[0].(map[string]any)["audio_intervals"].([]any)
+	if len(ranges) != 2 {
+		t.Fatal("native key lost a separate audible target", ranges)
+	}
+	first, second := ranges[0].(map[string]any), ranges[1].(map[string]any)
+	if first["start_ms"].(float64) >= second["start_ms"].(float64) || first["end_ms"].(float64) > second["start_ms"].(float64) {
+		t.Fatal("distinct source scopes collapsed or reordered", ranges)
+	}
+}

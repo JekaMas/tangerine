@@ -772,3 +772,34 @@ Iteration15 verification repair (current user request):
 Resume: audit/iteration-15-recovery-20261021/VERIFICATION-PROGRESS.md.
 
 Iteration15 verification accepted: audit/iteration-15-recovery-20261021/VERIFY-REPORT.md and VERIFY-ACCEPTANCE.json.83/83case edges,74physical tests,8properties,42positive/41negative. Five defect groups repaired;61affected edges passed clean63329a1, final14native ownership edges passed cleandd64bca,69valid prior edges retained with bounded per-case provenance.423static/5161property assertions, strict OpenSpec/DAG/discovery, final pinned Go vet/gofmt and original122/42/11scope/prompts/migrations preservation pass. No remaining I15 finding or decision. Original failed and successful receipts remain. Only I15 is accepted; earlier unfinished iteration acceptance and release qualification remain unchanged.
+
+## Iteration 16 — Full release acceptance and complete frontend evidence
+
+- [ ] I16.01 Reconcile the full accepted release scope, canonical task history, exact DAG selection and retained valid observations without weakening features or fabricating source/provider evidence.
+- [ ] I16.02 Repair and verify acoustic findings I8.R1-R3 through their native owners with independent regressions and the complete affected closure.
+- [ ] I16.03 Complete optional review/dispute acceptance against strengthened literal/native/actual local-model/context/MLflow expectations; resolve every remaining finding.
+- [ ] I16.04 Exercise all11main frontend routes and complete success/failure/recovery paths; retain independently asserted screenshots, actual browser video and exact generated/playback audio.
+- [ ] I16.05 Observe the real installed-local LLM clean text to mutations/key to actual synthesis to answer to LLM findings/comments and native score/recommendation cycle plus optional review/dispute, with native/context/Lab evidence and no paid fallback.
+- [ ] I16.06 Verify complete source ZIP/clone startup without Git/workflow metadata and actual arm64/amd64 builds/runs/restart/backup/restore, clear dependency failures and preserved private data.
+- [ ] I16.07 Review responsibilities and all release findings, run invalidated language/specification/preservation checks, reconcile every required case and perform committed-clean full acceptance.
+- [ ] I16.08 Commit final release acceptance and a self-contained local evidence index; no external publication or archive without authorization.
+
+Resume: audit/iteration-16-release-20261021/PROGRESS.md.
+
+- [ ] I16.R4 Implement the missing READY-04/BUILD-04 independent ASR/auditory diagnostic owners, persistence, optional review context and current-screen controls; qualify positive/negative native and actual local-model behavior without promoting intent/model inference to native truth.
+- [ ] I16.R5 Repair the release architecture observer's obsolete foundation-project/env binding; select the actual owned Compose project and observe both real architectures without touching the canonical preview.
+- [ ] I16.R6 Persist actual admitted clean/mutated word counts and show them in saved preparation/audio summaries, preserving absent legacy values and approximate-length semantics.
+
+- [ ] I16.R7 Supply the missing release NOTICE and concrete third-party source/model notices, include them in the extracted-source delivery and qualify source completeness without changing upstream terms.
+
+- [ ] I16.R8 Derive unambiguous textual quote coordinates natively at new-output admission and clarify positive mutation-count precedence, preserving raw replies and refusing absent/repeated/acoustic guesses; qualify native and actual local generation.
+
+- [ ] I16.R9 Preserve exact auditory target associations/descriptions/reasons/inferred IPA through saved measurements, optional review and UI. Mixed-target clips retain all relevant features; omitted model findings remain explicit native unknowns without an extra call or fabricated model finding. Qualify positive/negative projection and native/UI persistence.
+
+- [ ] I16.R10 Reduce the mutation model context to every selected operative recipe/production rule while preserving all full frozen registry records, category identities and actual model-visible capture. Keep corpus/benchmark metadata and illustrations out of ordinary mutation inference; qualify exact positive/negative preservation, affected native mutation behavior and actual generation.
+
+- [ ] I16.R11 Expose the saved audio digest as safe Library metadata for bound listening cases so case-only review/diagnostics work without an attempt. Keep unavailable legacy digests absent and private key data excluded; observe actual case-only measurement in Chrome.
+
+- [ ] I16.R12 Preserve the host-native maintenance helper built by source startup; do not overwrite the API image through a second default-Linux Compose build. Observe actual ZIP startup→backup→restore→switch on this Mac and both container architectures.
+
+- [ ] I16.R13 Accept exact saved textual-unit attachment names already supplied in the review key as textual provenance, without requiring another model formatting repair. Preserve rejection of invented/unseen/acoustic references and direct-hearing boundaries; verify native and actual review/key repair with unchanged supported scores.

@@ -258,6 +258,53 @@
           "landmarks": {
             "type": "object",
             "description": "Actual native release/onset/F0/pulse proposal frozen before VOT transformation; private measurement, never requested or perceived VOT."
+          },
+          "duration_regions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "description": "Half-open sample interval on the saved 24kHz piece; end exceeds start.",
+              "properties": {
+                "start": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Nonnegative exact integer."
+                },
+                "end": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "Nonnegative exact integer."
+                }
+              },
+              "required": [
+                "start",
+                "end"
+              ],
+              "additionalProperties": false
+            },
+            "description": "Decoder-derived speech regions for source-rate control; intervening accepted PCM is copied unchanged."
+          },
+          "surface_scope": {
+            "type": "object",
+            "description": "Exact admitted surface code-point scope, distinguishing repeated locations in the same unit.",
+            "properties": {
+              "start": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Nonnegative exact integer."
+              },
+              "end": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Nonnegative exact integer."
+              }
+            },
+            "required": [
+              "start",
+              "end"
+            ],
+            "additionalProperties": false
           }
         },
         "required": [

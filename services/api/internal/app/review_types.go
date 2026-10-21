@@ -43,6 +43,7 @@ type ReviewRun struct {
 	Stages         []InterpretationStage `json:"stages"`
 }
 type ReviewFrozen struct {
+	Measurements    []any                   `json:"measurements"`
 	OriginalKey     map[string]any          `json:"original_key"`
 	Correspondences []any                   `json:"unit_correspondences"`
 	Taxonomy        map[string]any          `json:"taxonomy_context"`

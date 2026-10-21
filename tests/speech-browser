@@ -48,12 +48,15 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
   def record(test,expression,expected):
    value=browser.evaluate(expression)
    if value!=expected:raise AssertionError((test,value,expected))
-   observed.append(test);values[test]=value;(evidence/(test+'.html')).write_text(browser.evaluate('document.documentElement.outerHTML'))
+   observed.append(test);values[test]=value;browser.capture(evidence,test)
   browser.evaluate("document.querySelector('audio').play(); true")
   for n in range(100):
    if browser.evaluate("document.querySelector('audio').currentTime > 0"):break
    time.sleep(.1)
   record('test_playback_positive',"document.querySelector('audio').currentTime > 0",True)
+  played=browser.evaluate("(async()=>{const r=await fetch(document.querySelector('audio').src);return {status:r.status,bytes:Array.from(new Uint8Array(await r.arrayBuffer()))}})()")
+  assert played['status']==200 and bytes(played['bytes'])[:4]==b'RIFF'
+  (evidence/'played.wav').write_bytes(bytes(played['bytes']))
   record('test_acoustic_progress_positive',"document.body.textContent.includes('1/1 audio pieces saved')",True)
   record('test_acoustic_private_key_negative',"/mutation_manifest_asset_id|source_asset_id|key_id/.test(document.documentElement.outerHTML)",False)
   list_requests="performance.getEntriesByType('resource').filter(e=>e.name.includes('/api/v1/preparations?')).length"

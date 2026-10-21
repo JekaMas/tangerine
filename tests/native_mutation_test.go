@@ -90,8 +90,11 @@ func nativeMutationFixture(t *testing.T, mode string) (*Server, CanonicalPrepara
 		if mode == "token-small" {
 			profile["context_budget_tokens"] = float64(20000)
 		}
-		if mode == "token-unknown" {
+		if mode == "token-unknown" || mode == "token-unknown-fit" {
 			profile["model"] = "unmapped-local-fixture"
+			if mode == "token-unknown" {
+				profile["context_budget_tokens"] = float64(50000)
+			}
 		}
 	}
 	for _, k := range []string{"workspace_id", "configuration_sha256", "provider_access_policy"} {
@@ -118,6 +121,17 @@ func nativeMutationFixture(t *testing.T, mode string) (*Server, CanonicalPrepara
 	}
 	if mode == "copy-unit" {
 		copiedMutationUnit(candidate)
+	}
+	if mode == "unique-locator" {
+		span := candidate["planned_units"].([]any)[0].(map[string]any)["text_spans"].([]any)[0].(map[string]any)["span"].(map[string]any)
+		span["start_cp"], span["end_cp"] = float64(10), float64(14)
+	}
+	if mode == "shape-defaults" {
+		u := candidate["planned_units"].([]any)[0].(map[string]any)
+		delete(u, "rationale_forbidden_propositions")
+		delete(u, "rationale")
+		delete(u, "utterance_ids")
+		delete(u["corrections"].([]any)[0].(map[string]any), "canonical")
 	}
 	expectedModel := profile["model"]
 	calls := 0

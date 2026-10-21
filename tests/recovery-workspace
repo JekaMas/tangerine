@@ -15,7 +15,9 @@ def call(args,check=True,stdin=None,environment=None,timeout=600):
 def compose(*args,project=name):
  runtime=work/'data/config/runtime.env' if project==name else work/'data/config/restores'/project/'runtime.env'
  return ['docker','compose','--project-name',project,'--env-file',str(work/'.env'),'--env-file',str(runtime),'-f',str(work/'deploy/local/compose.yaml'),*args]
-def record(k,value):obs[k]=value;assert value is True,k;(E/'observations.json').write_text(json.dumps(obs,indent=2))
+def record(k,value):
+ obs[k]=value;assert value is True,k;(E/'observations.json').write_text(json.dumps(obs,indent=2))
+ if browser is not None:browser.capture(E,k)
 def wait(fn):
  for _ in range(800):
   if fn():return
@@ -53,7 +55,7 @@ with tempfile.TemporaryDirectory(prefix=name,dir=E) as tmp:
   def click(text):browser.evaluate("[...document.querySelectorAll('button,a')].find(e=>e.textContent==="+json.dumps(text)+").click();true")
   def typein(label,text):browser.evaluate("document.querySelector('[aria-label="+json.dumps(label)+"]').focus();true");browser.call('Input.insertText',{'text':text})
   record('test_navigation_positive',browser.evaluate("[...document.querySelectorAll('a')].some(a=>a.pathname==='/prepare')&&[...document.querySelectorAll('a')].some(a=>a.pathname==='/recovery')"))
-  navigate('/prepare','Prepare an exercise');typein('Topic','Café opening');typein('Mistake categories','grammar');click('Generate exercise');browser.wait('Exercise saved.');record('test_generate_positive',browser.evaluate("document.body.textContent.includes('Audio: complete')"))
+  navigate('/prepare','Prepare an exercise');typein('Topic','Café opening');typein('Mistake categories','grammar');click('Generate exercise');browser.wait('Exercise saved.');wait(lambda:browser.evaluate("document.body.textContent.includes('Audio: complete')"));record('test_generate_positive',True)
   before=call(['docker','exec',name+'-fixture','true']).returncode
   navigate('/listen?attempt='+data['attempt'],'Your answer');record('test_saved_answer_positive',browser.evaluate("document.querySelector('textarea').value")==data['answer'])
   navigate('/recovery','Recovery and local data');record('test_recovery_instructions_positive',browser.evaluate("document.body.textContent.includes('backup my-backup.tar.gz')&&document.body.textContent.includes('switch tangerine-restored')"))

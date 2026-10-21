@@ -171,7 +171,15 @@ func (s *Server) renderAcousticPiece(ctx context.Context, p, settings, frozen, p
 		}
 		request := map[string]any{"audio_base64": base64.StdEncoding.EncodeToString(audio), "step": step, "native": native, "production_plan_asset_id": productionID, "piece_id": piece["id"]}
 		if step["controller"] == "phone_pair" {
-			raw, e := s.Store.ReadAsset(ctx, state["paired_assets"].(map[string]any)[step["unit_id"].(string)].(string))
+			pairs := state["paired_assets"].(map[string]any)
+			target := step["unit_id"].(string)
+			if scope, ok := step["surface_scope"].(map[string]any); ok {
+				scoped := fmt.Sprintf("%s:%v:%v", target, scope["start"], scope["end"])
+				if pairs[scoped] != nil {
+					target = scoped
+				}
+			}
+			raw, e := s.Store.ReadAsset(ctx, pairs[target].(string))
 			if e != nil {
 				return e
 			}
@@ -207,7 +215,9 @@ func (s *Server) renderAcousticPiece(ctx context.Context, p, settings, frozen, p
 			rows, _ := n["acoustic_scopes"].([]any)
 			for _, v := range rows {
 				r := v.(map[string]any)
-				intervals[r["unit_id"].(string)] = map[string]any{"start": r["start"], "end": r["end"]}
+				id := r["unit_id"].(string)
+				prior, _ := intervals[id].([]any)
+				intervals[id] = append(prior, map[string]any{"start": r["start"], "end": r["end"]})
 			}
 			piece["unit_intervals"] = intervals
 		}

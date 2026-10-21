@@ -7,6 +7,9 @@ MODELS = {
  'qwen-base-v1': ('Qwen/Qwen3-TTS-12Hz-0.6B-Base', '5d83992436eae1d760afd27aff78a71d676296fc'),
  'qwen-design-v1': ('Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign', '5ecdb67327fd37bb2e042aab12ff7391903235d3'),
  'qwen-custom-v1': ('Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice', '85e237c12c027371202489a0ec509ded67b5e4b5'),
+ 'faster-whisper-local-en-v1': ('Systran/faster-whisper-small', '536b0662742c02347bc0e980a01041f333bce120'),
+ 'qwen25-omni-audio-v1': ('Qwen/Qwen2.5-Omni-7B', 'ae9e1690543ffd5c0221dc27f79834d0294cba00'),
+ 'qwen25-omni-3b-audio-v1': ('Qwen/Qwen2.5-Omni-3B', 'f75b40e3da2003cdd6e1829b1f420ca70797c34e'),
 }
 VOICES = ('af_heart', 'am_adam', 'bf_emma', 'bm_george')
 
@@ -20,6 +23,7 @@ def download(url,dest,expected=None):
  with urllib.request.urlopen(request,timeout=300) as response:
   if offset and response.status!=206:offset=0
   if offset and not response.headers.get('Content-Range','').startswith(f'bytes {offset}-'):raise ValueError('MODEL_DOWNLOAD_INVALID')
+  length=response.headers.get('Content-Length');expected_size=offset+int(length) if length else None
   sha=hashlib.sha256();size=offset
   # Partial network bytes have never been admitted. Hash their complete new
   # acquisition once; accepted model/manifest bytes are never re-audited.
@@ -28,6 +32,7 @@ def download(url,dest,expected=None):
     while chunk:=prior.read(1024*1024):sha.update(chunk)
   with partial.open('ab' if offset else 'wb') as out:
    while chunk:=response.read(1024*1024):out.write(chunk);sha.update(chunk);size+=len(chunk)
+ if expected_size is not None and size!=expected_size:raise ValueError('MODEL_DOWNLOAD_INCOMPLETE')
  if not size or (expected and sha.hexdigest()!=expected):partial.unlink(missing_ok=True);raise ValueError('MODEL_DOWNLOAD_INVALID')
  os.replace(partial,dest)
  return {'path':str(dest.name),'sha256':sha.hexdigest(),'size':size,'url':url}
@@ -46,7 +51,7 @@ def setup(profile):
   if len(weights) != 1: raise ValueError('MODEL_FORMAT_UNAVAILABLE')
   names = ['config.json', 'README.md', 'VOICES.md', *weights, *(f'voices/{v}.pt' for v in VOICES)]
  else:
-  names = [n for n in siblings if n.endswith(('.json','.txt','.safetensors','.md')) and not n.startswith('.')]
+  names = [n for n in siblings if (n.endswith(('.json','.txt','.safetensors','.md')) or n in ('LICENSE','LICENSE.txt') or profile=='faster-whisper-local-en-v1' and n=='model.bin') and not n.startswith('.')]
  files = []
  for name in names:
   dest = root/name

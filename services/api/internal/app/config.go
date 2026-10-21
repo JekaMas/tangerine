@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-var operatorKeys = map[string]bool{"DEEPSEEK_API_KEY": true, "OPENAI_API_KEY": true, "AZURE_SPEECH_KEY": true, "AZURE_SPEECH_REGION": true, "ELEVENLABS_API_KEY": true}
+var operatorKeys = map[string]bool{"DEEPSEEK_API_KEY": true, "OPENAI_API_KEY": true, "AZURE_SPEECH_KEY": true, "AZURE_SPEECH_REGION": true, "ELEVENLABS_API_KEY": true, "GEMINI_API_KEY": true}
 var runtimeKeys = []string{"POSTGRES_PASSWORD", "MINIO_ROOT_USER", "MINIO_ROOT_PASSWORD", "API_INTERNAL_TOKEN", "SPEECH_INTERNAL_TOKEN"}
 
 // ConfigureLocal validates operator input, then creates durable internal credentials.

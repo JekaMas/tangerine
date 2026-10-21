@@ -26,6 +26,14 @@ def phone_interval(decoder, start, end, sample_count):
     return a, b
 
 
+def matching_scope(scopes, unit, surface=None):
+    return next((r for r in scopes if r['unit_id']==unit and (surface is None or r.get('surface_scope') is None or r['surface_scope']==surface)),None)
+
+
+def scope_key(unit, surface):
+    return f"{unit}:{surface['start']}:{surface['end']}"
+
+
 def resolve(turn, native, sample_count, source_piece_id):
     """Compile only against the accepted generated clip and its real timing."""
     steps = []
@@ -33,7 +41,7 @@ def resolve(turn, native, sample_count, source_piece_id):
     for ordinal, edit in enumerate(turn.get('acoustic_edits', [])):
         p = copy.deepcopy(edit['parameters'])
         start, end = p.get('phone_start'), p.get('phone_end')
-        scope=next((x for x in native.get('acoustic_scopes',[]) if x['unit_id']==edit['unit_id']),None)
+        scope=matching_scope(native.get('acoustic_scopes',[]),edit['unit_id'],edit['scope'])
         if scope is not None:
             if start is not None and edit['controller']!='phone_pair':
                 a,b=phone_interval(scope,start,end if end is not None else start+1,sample_count)
@@ -45,7 +53,7 @@ def resolve(turn, native, sample_count, source_piece_id):
         else:a,b=0,sample_count
         step_id = str(uuid.uuid5(uuid.NAMESPACE_OID, source_piece_id + ':' + str(ordinal)))
         steps.append({'id': step_id, 'unit_id': edit['unit_id'], 'controller': edit['controller'],
-                      'source_piece_id': source_piece_id, 'source_interval': {'start': a, 'end': b},
+                      'source_piece_id': source_piece_id, 'surface_scope': edit['scope'], 'source_interval': {'start': a, 'end': b},
                       'parameters': p, 'reference_piece_id': source_piece_id if edit['controller'] == 'phone_pair' else None,
                       'taxonomy_id': edit.get('taxonomy_id')})
     return steps
@@ -160,7 +168,9 @@ def compile_scopes(piece,edits,offset,vocabulary):
     for (a,b),group in groups.items():
         first=len(''.join((t['phonemes'] or '')+(' ' if t['whitespace'] else '') for t in tokens[:a]))
         count=len(sequence(tokens[a:b]))
-        for e in group:scopes.append({'unit_id':e['unit_id'],'phone_start':first,'phone_end':first+count})
+        for e in group:
+            if matching_scope(scopes,e['unit_id'],e['scope']) is None:scopes.append({'unit_id':e['unit_id'],'surface_scope':e['scope'],'phone_start':first,'phone_end':first+count})
+    scopes.sort(key=lambda row:(row['phone_start'],row['phone_end'],row['unit_id']))
     # Combine non-overlapping differences within a complete target sequence.
     # All units in the same target receive the final combined target, so a later
     # pair cannot silently erase a previous phone mutation in that scope.
@@ -178,7 +188,7 @@ def compile_scopes(piece,edits,offset,vocabulary):
         if any(b>c for (a,b,_),(c,d,_) in zip(ordered,ordered[1:])):raise ValueError('CONSTRAINT_CONFLICT')
         changed=reference
         for a,b,value in reversed(ordered):changed=changed[:a]+value+changed[b:]
-        scope=next(x for x in scopes if x['unit_id']==pairs[0]['unit_id']);a,b=scope['phone_start'],scope['phone_end']
+        scope=matching_scope(scopes,pairs[0]['unit_id'],pairs[0]['scope']);a,b=scope['phone_start'],scope['phone_end']
         delta=len(changed)-(b-a)
         projected=[]
         for row in scopes:
@@ -186,7 +196,9 @@ def compile_scopes(piece,edits,offset,vocabulary):
             if x==a and y==b:y+=delta
             elif x>=b:x+=delta;y+=delta
             projected.append({**row,'phone_start':x,'phone_end':y})
-        for e in pairs:variants[e['unit_id']]={'compiled_phonemes':piece['compiled_phonemes'][:a]+changed+piece['compiled_phonemes'][b:], 'scopes':projected}
+        for e in pairs:
+            key=scope_key(e['unit_id'],e['scope']) if sum(x['unit_id']==e['unit_id'] for x in scopes)>1 else e['unit_id']
+            variants[key]={'compiled_phonemes':piece['compiled_phonemes'][:a]+changed+piece['compiled_phonemes'][b:], 'scopes':projected}
     for phones in [piece['compiled_phonemes']]+[v['compiled_phonemes'] for v in variants.values()]:
         if len(phones)>510:raise ValueError('INPUT_CAPACITY_EXCEEDED')
         if any(c not in vocabulary for c in phones):raise ValueError('CAPABILITY_UNAVAILABLE')
@@ -205,7 +217,7 @@ def decoder_scopes(turn,decoder):
             d=decoder['pred_dur'];d=d[0] if d and isinstance(d[0],list) else d
             x=min(n,600*(max(0,d[0]-3)+sum(d[1:1+i])));y=min(n,600*(max(0,d[0]-3)+sum(d[1:2+i])))
             intervals.append({'start':x,'end':y})
-        scopes.append({'unit_id':row['unit_id'],'start':start,'end':end,'phonemes':decoder['phonemes'][a:b],'phone_intervals':intervals})
+        scopes.append({'unit_id':row['unit_id'],'surface_scope':row.get('surface_scope'),'start':start,'end':end,'phonemes':decoder['phonemes'][a:b],'phone_intervals':intervals})
     return scopes
 
 

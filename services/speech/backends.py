@@ -241,11 +241,14 @@ if __name__=='__main__':
    elif packet.get('action')=='resolve':result=resolve_acoustic(packet)
    elif packet.get('action')=='transform':result=transform_acoustic(packet)
    elif packet.get('action')=='quality':result=measure(base64.b64decode(packet['pcm_base64']),packet['planned_pause_intervals'])
+   elif packet.get('action') in ('measure','measure-plan'):
+    from diagnostic_runtime import execute,plan as diagnostic_plan
+    result=execute(packet) if packet['action']=='measure' else diagnostic_plan(packet)
    else:result=render(packet['profile'],packet['turn'],packet.get('timeout_seconds',260))
   print(json.dumps(result))
  except Exception as e:
   # Raw library/provider exceptions may contain credentials or private text.
-  code=str(e) if isinstance(e,ValueError) and str(e) in {'PAID_USE_FORBIDDEN','PROVIDER_QUOTA','PROVIDER_FAILED','MISSING_CREDENTIALS','CAPABILITY_UNAVAILABLE','VOICE_UNAVAILABLE','VOICE_SETUP_REQUIRED','MODEL_SETUP_REQUIRED','INPUT_CAPACITY_EXCEEDED','AUDIO_FORMAT_INVALID','AUDIO_SILENT','SYNTHESIS_FAILED','CONSTRAINT_CONFLICT','ALIGNMENT_UNAVAILABLE','ACOUSTIC_NOT_MEASURABLE'} else 'SYNTHESIS_FAILED'
+  code=str(e) if isinstance(e,ValueError) and str(e) in {'PAID_USE_FORBIDDEN','PROVIDER_QUOTA','PROVIDER_FAILED','MISSING_CREDENTIALS','CAPABILITY_UNAVAILABLE','VOICE_UNAVAILABLE','VOICE_SETUP_REQUIRED','MODEL_SETUP_REQUIRED','MODEL_BINDING_MISMATCH','DIAGNOSTIC_OUTPUT_INVALID','INVALID_AUDIO_INTERVAL','INPUT_CAPACITY_EXCEEDED','AUDIO_FORMAT_INVALID','AUDIO_SILENT','SYNTHESIS_FAILED','CONSTRAINT_CONFLICT','ALIGNMENT_UNAVAILABLE','ACOUSTIC_NOT_MEASURABLE'} else 'DIAGNOSTIC_FAILED' if packet.get('action')=='measure' else 'SYNTHESIS_FAILED'
   failure={'error':code}
   if getattr(e,'reason',None) is not None:failure.update(reason=e.reason,observations=e.observations)
   print(json.dumps(failure));sys.exit(1)

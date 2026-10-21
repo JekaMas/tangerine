@@ -1,0 +1,131 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Tangerine optional audio diagnostics",
+    "version": "2.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/api/v1/audio-diagnostics/defaults": {
+      "get": {
+        "operationId": "audio_diagnostic_defaults",
+        "description": "Read built-in selections/setup commands only; no asset writes or inference.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Saved response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "audio-diagnostic-defaults.schema.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cases/{id}/measurements": {
+      "get": {
+        "operationId": "list_audio_diagnostics",
+        "description": "Read saved immutable runs/reports for the exact case, UUID keyset after cursor and20 rows; no inference.",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "in": "path"
+          },
+          {
+            "name": "after",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Saved response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "audio-diagnostic-list.schema.json"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "speech_measure",
+        "description": "Explicit optional foreground method execution over the actual saved audio; idempotency replays stored results, including failed results. Errors retain reports/receipts, never alter scores.",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "in": "path"
+          },
+          {
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Saved response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "audio-diagnostic-view.schema.json"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or mismatching case request"
+          },
+          "404": {
+            "description": "Missing case"
+          },
+          "409": {
+            "description": "Stale audio identity, active request or idempotency conflict"
+          },
+          "422": {
+            "description": "Unavailable method/profile/source rights or failed diagnostic; saved original data remains"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "measure-request.schema.json"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -987,7 +987,7 @@
     {
       "kind": "audio-measurement",
       "schema": "contracts/audio-measurement.schema.json",
-      "sha256": "5484d6323105ffbb3511ced65383a3dcf1dc0392cc914eb0e338d2ee92607099",
+      "sha256": "bb4616552356fe79d4448d14902c8cc630c33ad78ff0893cc31faedb082b1bc9",
       "schema_version": null,
       "persistent_domain_record": true,
       "storage": "document.payload",
@@ -1089,6 +1089,22 @@
           "rule_sha256": "9ac38a141f36846b6a444b50b93da96ad996a132b3d23e68aa23f28e13eef65d"
         },
         {
+          "name": "target_unit_id",
+          "pointer": "/properties/target_unit_id",
+          "required_in_parent": false,
+          "description": "Exact case-scoped target for an auditory finding or explicit model-omitted unknown. Native/ASR aggregate rows omit it.",
+          "schema_reference": null,
+          "rule_sha256": "fb3647954c350e4edf3c360df9d60fd75a75e786d1188ca6c578538e46194506"
+        },
+        {
+          "name": "auditory_finding",
+          "pointer": "/properties/auditory_finding",
+          "required_in_parent": false,
+          "description": "Exact actually supplied model finding, including description/reason and inferred IPA. Omitted native unknowns never manufacture this field.",
+          "schema_reference": null,
+          "rule_sha256": "2d17ca291b59b13439d5c1eacb8a476111f285020697450385c946ccea646fb3"
+        },
+        {
           "name": "start",
           "pointer": "/properties/interval/properties/start",
           "required_in_parent": true,
@@ -1111,6 +1127,78 @@
           "description": "The sample clock in Hz as an integer.",
           "schema_reference": null,
           "rule_sha256": "65046d4374dbbc193f21efefd011f9967b36cb4122548137b51d24b4cc3924c1"
+        },
+        {
+          "name": "unit_id",
+          "pointer": "/properties/auditory_finding/properties/unit_id",
+          "required_in_parent": true,
+          "description": "Existing version-scoped identifier.",
+          "schema_reference": null,
+          "rule_sha256": "7cb944148fffb469a5c472b8405051999ef0c83178c872cf4476992845dc97b2"
+        },
+        {
+          "name": "feature",
+          "pointer": "/properties/auditory_finding/properties/feature",
+          "required_in_parent": true,
+          "description": "Exact saved value.",
+          "schema_reference": null,
+          "rule_sha256": "79a5853c340184e5fa1e2aeb2fb56963d265773cb92864dc54703b995b76dea7"
+        },
+        {
+          "name": "status",
+          "pointer": "/properties/auditory_finding/properties/status",
+          "required_in_parent": true,
+          "description": "Exactly one declared value.",
+          "schema_reference": null,
+          "rule_sha256": "c924ae05978ebd3dc80d8580d680c651591b71cea670c841f95191dc50877d9d"
+        },
+        {
+          "name": "description",
+          "pointer": "/properties/auditory_finding/properties/description",
+          "required_in_parent": true,
+          "description": "Exact saved value.",
+          "schema_reference": null,
+          "rule_sha256": "79a5853c340184e5fa1e2aeb2fb56963d265773cb92864dc54703b995b76dea7"
+        },
+        {
+          "name": "clip_interval",
+          "pointer": "/properties/auditory_finding/properties/clip_interval",
+          "required_in_parent": true,
+          "description": "Half-open sample interval on the saved 24kHz piece; end exceeds start.",
+          "schema_reference": null,
+          "rule_sha256": "09a6be6a2a19e76b491183ac94fe09ad2636ff2b5abbcf80a35ae13c749ac8c8"
+        },
+        {
+          "name": "proposed_ipa",
+          "pointer": "/properties/auditory_finding/properties/proposed_ipa",
+          "required_in_parent": true,
+          "description": "Exact saved value.",
+          "schema_reference": null,
+          "rule_sha256": "551428c8db96cef4f4e1303d5e4e7e74bbf2e93b902cdacbda2d23a6c6ab105c"
+        },
+        {
+          "name": "reason",
+          "pointer": "/properties/auditory_finding/properties/reason",
+          "required_in_parent": true,
+          "description": "Exact saved value.",
+          "schema_reference": null,
+          "rule_sha256": "79a5853c340184e5fa1e2aeb2fb56963d265773cb92864dc54703b995b76dea7"
+        },
+        {
+          "name": "start",
+          "pointer": "/properties/auditory_finding/properties/clip_interval/anyOf/0/properties/start",
+          "required_in_parent": true,
+          "description": "Nonnegative exact integer.",
+          "schema_reference": null,
+          "rule_sha256": "faabe07f81b651d78bfc3dd57b332805ba23029958fae655499a9eca69bd3176"
+        },
+        {
+          "name": "end",
+          "pointer": "/properties/auditory_finding/properties/clip_interval/anyOf/0/properties/end",
+          "required_in_parent": true,
+          "description": "Nonnegative exact integer.",
+          "schema_reference": null,
+          "rule_sha256": "1d2bd60541effd82cc1c3bdc9d4bbf32b0214cf0ea5454bffdcbdb665e241b82"
         }
       ]
     },
@@ -9141,7 +9229,7 @@
     {
       "kind": "generation-input",
       "schema": "contracts/generation-input.schema.json",
-      "sha256": "e9efc6a242976c8ae7ba08c7ba7e7acdc4a09f4d3b2d9d9618d111e5150ec4cb",
+      "sha256": "b71269d5f80a2a24408c02177ba7bd97e3538c5a5da52f22e7ebd42f1fcb0bef",
       "schema_version": "2.0.0",
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -9240,7 +9328,7 @@
           "required_in_parent": true,
           "description": "Selected owned recipe records; empty before mutation.",
           "schema_reference": null,
-          "rule_sha256": "04742f4baf40847dd28bce218b9a360e487ee85e3195365a8f4dd008f141baaa"
+          "rule_sha256": "2bd88b2bb5cf7f2ba2d0e9067d826de622a03b09c07eb271886cf3bcf28f952d"
         },
         {
           "name": "recipe_registry_sha256",
@@ -11139,7 +11227,7 @@
     {
       "kind": "library-item",
       "schema": "contracts/library-item.schema.json",
-      "sha256": "828753b6e36dafee9ee53ab56f3ff0753d87f6bd50eac2c275850146a7bbec4c",
+      "sha256": "41b2a457cb749ce2c5e57f768637b51df32f106297d2ff1f504a62dc54591960",
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -11207,6 +11295,14 @@
           "description": "Immutable playable case selection digest; present for bound listening cases. No transcript or target data.",
           "schema_reference": null,
           "rule_sha256": "f2f4380a27f1a056b637ae8a30266a4a544ca68df3e4f6dd23ea9e3457a54b72"
+        },
+        {
+          "name": "audio_sha256",
+          "pointer": "/properties/audio_sha256",
+          "required_in_parent": false,
+          "description": "Saved playable recording digest for explicit case-only review/measurement selection. No transcript, unit, target count or category. Omitted when no listening binding exists.",
+          "schema_reference": null,
+          "rule_sha256": "841fadff4c09e66473d3b4344abd7448dccb3387bcb9ce2b794411b66775d09a"
         }
       ]
     },
@@ -27424,7 +27520,7 @@
       "schema_version": "2.0.0",
       "persistent_domain_record": true,
       "storage": "document.payload with entity_head revision and linked private assets",
-      "sha256": "52b000c3b4cff7b0ce2e2c123f7604de554b86997594131ec3917ff1def12cd8",
+      "sha256": "6c97025dcfeede7854823c5bfb79894ea7a01056dd73a3f84633083ef75fdc4b",
       "fields": [
         {
           "name": "schema_version",
@@ -27617,6 +27713,22 @@
           "description": null,
           "schema_reference": null,
           "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "canonical_word_count",
+          "pointer": "/properties/canonical_word_count",
+          "required_in_parent": false,
+          "description": "Actual count retained at successful canonical admission; absent on old/not-yet-completed records.",
+          "schema_reference": null,
+          "rule_sha256": "6443c084b9028dcbf93caeeceacf342f9155f1e8bb7975b86457a253472deea6"
+        },
+        {
+          "name": "surface_word_count",
+          "pointer": "/properties/surface_word_count",
+          "required_in_parent": false,
+          "description": "Actual count retained from the admitted mutation manifest, never an exact-length acceptance gate.",
+          "schema_reference": null,
+          "rule_sha256": "d859b1ec08da2efae754342f33ee42d3b81dc7554b57ec76500a2222f1dd4d6c"
         },
         {
           "name": "canonical_text",
@@ -28360,7 +28472,7 @@
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
-      "sha256": "aa57d9ec314496edffbcc5484244228e7f1420eb93b17df3b66f12039ddcec87",
+      "sha256": "93d4c5ba6916a9369ee0cba6181afaa4199193e59a4a6907f6029238b7a3d962",
       "fields": [
         {
           "name": "schema_version",
@@ -28416,7 +28528,7 @@
           "required_in_parent": true,
           "description": "Ordered complete values.",
           "schema_reference": null,
-          "rule_sha256": "462e307802ce904f112ba841a097197932074f3c04f0adffb7dfcc6fa9e00726"
+          "rule_sha256": "4b94a8c16afdf3086807db80f45ca34c9f77d6bdf1a144bc44754e501f9a0fb0"
         },
         {
           "name": "id",
@@ -28481,6 +28593,22 @@
           "description": "Actual native release/onset/F0/pulse proposal frozen before VOT transformation; private measurement, never requested or perceived VOT.",
           "schema_reference": null,
           "rule_sha256": "b85c89df03ae7d3e8f87ae02e047736bdcff26b15e807a3939eb57ec6965a725"
+        },
+        {
+          "name": "duration_regions",
+          "pointer": "/properties/steps/items/properties/duration_regions",
+          "required_in_parent": false,
+          "description": "Decoder-derived speech regions for source-rate control; intervening accepted PCM is copied unchanged.",
+          "schema_reference": null,
+          "rule_sha256": "ae357f0f5bffa1d07525cfe561dbfe36c425e19b67c6900866657b41c37bf0ab"
+        },
+        {
+          "name": "surface_scope",
+          "pointer": "/properties/steps/items/properties/surface_scope",
+          "required_in_parent": false,
+          "description": "Exact admitted surface code-point scope, distinguishing repeated locations in the same unit.",
+          "schema_reference": null,
+          "rule_sha256": "4cfc11fef8b8ded686ec7d775aa37b968b1839951f209ade34a3547f5feaa4db"
         },
         {
           "name": "start",
@@ -28601,6 +28729,38 @@
           "description": "Offset above 100Hz; explicit target, not measurement.",
           "schema_reference": null,
           "rule_sha256": "dd8b7764aad164c32dab10cb4401898792868916c5ae991cef7de4ba5cba440a"
+        },
+        {
+          "name": "start",
+          "pointer": "/properties/steps/items/properties/duration_regions/items/properties/start",
+          "required_in_parent": true,
+          "description": "Nonnegative exact integer.",
+          "schema_reference": null,
+          "rule_sha256": "faabe07f81b651d78bfc3dd57b332805ba23029958fae655499a9eca69bd3176"
+        },
+        {
+          "name": "end",
+          "pointer": "/properties/steps/items/properties/duration_regions/items/properties/end",
+          "required_in_parent": true,
+          "description": "Nonnegative exact integer.",
+          "schema_reference": null,
+          "rule_sha256": "1d2bd60541effd82cc1c3bdc9d4bbf32b0214cf0ea5454bffdcbdb665e241b82"
+        },
+        {
+          "name": "start",
+          "pointer": "/properties/steps/items/properties/surface_scope/properties/start",
+          "required_in_parent": true,
+          "description": "Nonnegative exact integer.",
+          "schema_reference": null,
+          "rule_sha256": "faabe07f81b651d78bfc3dd57b332805ba23029958fae655499a9eca69bd3176"
+        },
+        {
+          "name": "end",
+          "pointer": "/properties/steps/items/properties/surface_scope/properties/end",
+          "required_in_parent": true,
+          "description": "Nonnegative exact integer.",
+          "schema_reference": null,
+          "rule_sha256": "1d2bd60541effd82cc1c3bdc9d4bbf32b0214cf0ea5454bffdcbdb665e241b82"
         }
       ]
     },
@@ -28862,7 +29022,7 @@
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
-      "sha256": "63c68027138fdac08783900b7569ad2b0eee7e8cfae477786cd7acef785ecf2e",
+      "sha256": "4867920452234de6099e6aaa5bb1d5c7f844be8446a2b78c7611ab9690c60506",
       "fields": [
         {
           "name": "schema_version",
@@ -28934,7 +29094,7 @@
           "required_in_parent": true,
           "description": "Nonnegative exact integer.",
           "schema_reference": null,
-          "rule_sha256": "1d2bd60541effd82cc1c3bdc9d4bbf32b0214cf0ea5454bffdcbdb665e241b82"
+          "rule_sha256": "d083e56b5fdcb47e3d51aa91a65bb5eb6a4982c0435ebdb8fc781c2e4828d085"
         },
         {
           "name": "max_output_tokens",
@@ -28968,7 +29128,7 @@
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
-      "sha256": "4ba755ef390b167f9c0912527fa2c6dfd72921ab5afc36ab94d1c70865d4049d",
+      "sha256": "f7259c4dda6efb377959a23098a3f0e88ea9f6f5fb7142a0b401bb6586977128",
       "fields": [
         {
           "name": "schema_version",
@@ -29024,7 +29184,7 @@
           "required_in_parent": true,
           "description": "Ordered complete values.",
           "schema_reference": null,
-          "rule_sha256": "a9bb8127531014bf2c4824a3b31013fe65588aeca2c7dc0e25c1505f909d48c9"
+          "rule_sha256": "4e7cf12b9835f07a631d1e898783aae01d815066a3a4be3da4ac2b667e32adc6"
         },
         {
           "name": "assembled_asset_id",
@@ -29158,9 +29318,9 @@
           "name": "unit_intervals",
           "pointer": "/properties/pieces/items/properties/unit_intervals",
           "required_in_parent": false,
-          "description": "Actual scoped intervals after transformations, in piece-local 24 kHz samples; no character proportions.",
+          "description": "Actual scoped intervals in source order per unit, in piece-local24kHz samples; legacy single intervals remain readable. No character proportions.",
           "schema_reference": null,
-          "rule_sha256": "82764f073bb2a6106dd920316d699b9e2ef55834bcf25921a9725e60ce42ff1c"
+          "rule_sha256": "507a54268b9c6d1e7efcf7d1dda76a14645f8843b66d08f5187094e7d3496eea"
         },
         {
           "name": "native_asset_id",
@@ -29252,7 +29412,7 @@
         },
         {
           "name": "start",
-          "pointer": "/properties/pieces/items/properties/unit_intervals/additionalProperties/properties/start",
+          "pointer": "/properties/pieces/items/properties/unit_intervals/additionalProperties/anyOf/0/properties/start",
           "required_in_parent": true,
           "description": null,
           "schema_reference": null,
@@ -29260,7 +29420,23 @@
         },
         {
           "name": "end",
-          "pointer": "/properties/pieces/items/properties/unit_intervals/additionalProperties/properties/end",
+          "pointer": "/properties/pieces/items/properties/unit_intervals/additionalProperties/anyOf/0/properties/end",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "be5ac72348ac0f643845bd6d067291b863394c92680a17cba91f49f5e165e46c"
+        },
+        {
+          "name": "start",
+          "pointer": "/properties/pieces/items/properties/unit_intervals/additionalProperties/anyOf/1/items/properties/start",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "686f40289f17bc2d6be905d9268764859f8b4cc81d29306a4bc83ff1a337caae"
+        },
+        {
+          "name": "end",
+          "pointer": "/properties/pieces/items/properties/unit_intervals/additionalProperties/anyOf/1/items/properties/end",
           "required_in_parent": true,
           "description": null,
           "schema_reference": null,
@@ -30248,7 +30424,7 @@
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
-      "sha256": "22e2e312e1a21b5a05f18566a8d3c25dc96f4ac01eb76911bed92f31d430fb60",
+      "sha256": "7329905d464d29dd1b386127202cef65392bed75d5e1a83c0b38245dd2609462",
       "fields": [
         {
           "name": "id",
@@ -30313,6 +30489,22 @@
           "description": null,
           "schema_reference": null,
           "rule_sha256": "3a2da2d6cca0a0fb0efc052d3ad2e3a2dd1408c1d9166bdef4ab22f23c3f1d9a"
+        },
+        {
+          "name": "canonical_word_count",
+          "pointer": "/properties/canonical_word_count",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": "preparation-state.schema.json#/properties/canonical_word_count",
+          "rule_sha256": "c661d166311db56f54918268eea3561f18a1ea9ac9d767306db9fec5c76015f4"
+        },
+        {
+          "name": "surface_word_count",
+          "pointer": "/properties/surface_word_count",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": "preparation-state.schema.json#/properties/surface_word_count",
+          "rule_sha256": "c5627adb340a4b5bc05d2bab0aceb92d3460638bc42df3570115062fb330c822"
         },
         {
           "name": "complete_pieces",
@@ -31071,6 +31263,280 @@
           "description": null,
           "schema_reference": null,
           "rule_sha256": "2bc7825d922e6db89d507d832aa4cc3f3c38b01166311bef13d87151c8c67763"
+        }
+      ]
+    },
+    {
+      "kind": "audio-diagnostic-defaults",
+      "schema": "contracts/audio-diagnostic-defaults.schema.json",
+      "schema_version": null,
+      "persistent_domain_record": false,
+      "storage": "derived DTO or actual operation input/output receipt",
+      "sha256": "c1727461d22a41f45e900c0d108c0b1b3ee988d1d6791fc814fc102f57a54048",
+      "fields": [
+        {
+          "name": "profiles",
+          "pointer": "/properties/profiles",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "6d3fa0d2be6a7f8cc37e65c18f9a7ccf7c2a2068c9d13d78faad94976e22cc36"
+        },
+        {
+          "name": "model_setup",
+          "pointer": "/properties/model_setup",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "24539293c3ea69c37040818367b74b47910b3d1057755953e6aa0a5493aa388c"
+        },
+        {
+          "name": "prompt_sha256",
+          "pointer": "/properties/prompt_sha256",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "2bc7825d922e6db89d507d832aa4cc3f3c38b01166311bef13d87151c8c67763"
+        }
+      ]
+    },
+    {
+      "kind": "audio-diagnostic-list",
+      "schema": "contracts/audio-diagnostic-list.schema.json",
+      "schema_version": null,
+      "persistent_domain_record": false,
+      "storage": "derived DTO or actual operation input/output receipt",
+      "sha256": "239f315d0078cd6376185101aef724ccc7a0339e90b68055b3096ff3e8968fa8",
+      "fields": [
+        {
+          "name": "items",
+          "pointer": "/properties/items",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "0f9597ff7c23fa26538fc0c7edf67eb01f072f540b7417e47a3a69de84cabde8"
+        },
+        {
+          "name": "next_cursor",
+          "pointer": "/properties/next_cursor",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c2b63c68c5d2da6d5b9d03a8ff6e93a0aa4b1e597f11943d8735338dfb76d9cd"
+        }
+      ]
+    },
+    {
+      "kind": "audio-diagnostic-packet",
+      "schema": "contracts/audio-diagnostic-packet.schema.json",
+      "schema_version": null,
+      "persistent_domain_record": false,
+      "storage": "derived DTO or actual operation input/output receipt",
+      "sha256": "8ada33730b6aefc9ce9852ce4f37ad586342ddda51d2a802aa050c2894533749",
+      "fields": [
+        {
+          "name": "method_id",
+          "pointer": "/properties/method_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c06b1db7bbf387cce09d7b3bf423febdde334462ba83c9b959a64627a4f14fc3"
+        },
+        {
+          "name": "audio_base64",
+          "pointer": "/properties/audio_base64",
+          "required_in_parent": true,
+          "description": "Actual admitted 24kHz PCM WAV bytes encoded for private transport.",
+          "schema_reference": null,
+          "rule_sha256": "45d000b3c2fe051b15aa804f99f7ec720695b8c3484c5dd06705b94436eae0f8"
+        },
+        {
+          "name": "audio_sha256",
+          "pointer": "/properties/audio_sha256",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "reference_text",
+          "pointer": "/properties/reference_text",
+          "required_in_parent": false,
+          "description": "Compared after independent transcription; never passed to recognizer.",
+          "schema_reference": null,
+          "rule_sha256": "bf928c9cba22e462960fd13d1a2fbdaaf31a8ceb014f5f5577bd463234f79f18"
+        },
+        {
+          "name": "profile",
+          "pointer": "/properties/profile",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0"
+        },
+        {
+          "name": "prompt",
+          "pointer": "/properties/prompt",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "input",
+          "pointer": "/properties/input",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": "audio-judge-input.schema.json",
+          "rule_sha256": "acb741cf9eac757bfbe086f88b25139dd48ac4c8fd8472ed1507c71292cd2055"
+        },
+        {
+          "name": "reference_audio_base64",
+          "pointer": "/properties/reference_audio_base64",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+        },
+        {
+          "name": "timeout_seconds",
+          "pointer": "/properties/timeout_seconds",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "64bfc0034c4961c159d6fe5677cf4c19310d81499b7b32fd90fc1f92af9e3eea"
+        }
+      ]
+    },
+    {
+      "kind": "audio-diagnostic-run",
+      "schema": "contracts/audio-diagnostic-run.schema.json",
+      "schema_version": null,
+      "persistent_domain_record": false,
+      "storage": "derived DTO or actual operation input/output receipt",
+      "sha256": "108905a7010abd0e8c32c95b6973ca9506e734b46619b17fc6c7ebe5cdc7cb6f",
+      "fields": [
+        {
+          "name": "schema_version",
+          "pointer": "/properties/schema_version",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "85a2d8aa93ae1cc535108ec2ee447f40f68925db0cd97bb3dc7c597388c444c6"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c51e0a9b62f9658aa2f71f14feb42a7f67c1c6bf2ce2e2fb2d373bda4f994af1"
+        },
+        {
+          "name": "case_version_id",
+          "pointer": "/properties/case_version_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c51e0a9b62f9658aa2f71f14feb42a7f67c1c6bf2ce2e2fb2d373bda4f994af1"
+        },
+        {
+          "name": "operation_id",
+          "pointer": "/properties/operation_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c51e0a9b62f9658aa2f71f14feb42a7f67c1c6bf2ce2e2fb2d373bda4f994af1"
+        },
+        {
+          "name": "status",
+          "pointer": "/properties/status",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "4ef54c1f1a7998ef6cc940ca000f7cd6f5079ba24e6bbe0e667b13ac2861eff6"
+        },
+        {
+          "name": "method_ids",
+          "pointer": "/properties/method_ids",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "5cfaba694793185be83555a6178ed03647ac76b2e2c68346d1e91aeb9c8fc9fa"
+        },
+        {
+          "name": "input_asset_id",
+          "pointer": "/properties/input_asset_id",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "c51e0a9b62f9658aa2f71f14feb42a7f67c1c6bf2ce2e2fb2d373bda4f994af1"
+        },
+        {
+          "name": "output_asset_ids",
+          "pointer": "/properties/output_asset_ids",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "5cfaba694793185be83555a6178ed03647ac76b2e2c68346d1e91aeb9c8fc9fa"
+        },
+        {
+          "name": "receipt_ids",
+          "pointer": "/properties/receipt_ids",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "5cfaba694793185be83555a6178ed03647ac76b2e2c68346d1e91aeb9c8fc9fa"
+        },
+        {
+          "name": "measurement_ids",
+          "pointer": "/properties/measurement_ids",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "5cfaba694793185be83555a6178ed03647ac76b2e2c68346d1e91aeb9c8fc9fa"
+        },
+        {
+          "name": "failure_code",
+          "pointer": "/properties/failure_code",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "174e29b899b9ef9154a4d74f2c92ab3c556781ce17e916f91e14d80521818844"
+        },
+        {
+          "name": "support_asset_ids",
+          "pointer": "/properties/support_asset_ids",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "5cfaba694793185be83555a6178ed03647ac76b2e2c68346d1e91aeb9c8fc9fa"
+        }
+      ]
+    },
+    {
+      "kind": "audio-diagnostic-view",
+      "schema": "contracts/audio-diagnostic-view.schema.json",
+      "schema_version": null,
+      "persistent_domain_record": false,
+      "storage": "derived DTO or actual operation input/output receipt",
+      "sha256": "67ef9cd5ab136c53796c8c03abff911594db38e87b79641985e0428215cf9751",
+      "fields": [
+        {
+          "name": "run",
+          "pointer": "/properties/run",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": "audio-diagnostic-run.schema.json",
+          "rule_sha256": "7dd65fdce694af3baced09f77478e8f41bf51dbebf253a5f14d29affa46fa81b"
+        },
+        {
+          "name": "measurements",
+          "pointer": "/properties/measurements",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "8ea96cb3e2dfa590dd66d553832dcd8c356ed5a149ad53c7b6efcc1d08c96e71"
         }
       ]
     }

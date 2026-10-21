@@ -17,8 +17,10 @@ async function proxy(request, context) {
   const review = (request.method==='GET' && /^v1\/reviews\/[a-f0-9-]{36}$/.test(target)) || (request.method==='POST' && /^v1\/reviews\/[a-f0-9-]{36}:(?:run|reconsider)$/.test(target));
   const sourceRoute = ((request.method==='GET' && /^v1\/(?:source-releases\/[a-f0-9-]{36}|imports\/[a-f0-9-]{36}(?:\/(?:progress|records|issues))?|sources\/assets\/[a-f0-9-]{36}\/bytes)$/.test(target)) || (request.method==='POST' && /^v1\/(?:source-releases\/[a-f0-9-]{36}:(?:preview|import)|imports\/[a-f0-9-]{36}:cancel|permissions\/[a-f0-9-]{36}:revoke|connectors\/[a-f0-9-]{36}:fetch)$/.test(target)) || (request.method==='PUT' && /^v1\/connectors\/[a-f0-9-]{36}$/.test(target)));
   const qualityRoute = /^(v1\/lab\/(?:experiments(?:\/[a-f0-9-]{36}(?::(?:run|resume|cancel))?)?|defaults|assets\/[A-Za-z0-9_.:-]+)|v1\/reports\/empirical(?:\/[a-f0-9-]{36})?)$/.test(target) && ['GET','POST'].includes(request.method);
-  if (!ALLOWED.has(`${request.method} ${target}`) && !modelBytes && !audio && !render && !attempt && !review && !sourceRoute && !qualityRoute && !deletion) return failure(404, 'not_implemented');
+  const diagnosticRoute = (request.method==='GET'&&target==='v1/audio-diagnostics/defaults') || (['GET','POST'].includes(request.method)&&/^v1\/cases\/[a-f0-9-]{36}\/measurements$/.test(target));
+  if (!ALLOWED.has(`${request.method} ${target}`) && !modelBytes && !audio && !render && !attempt && !review && !sourceRoute && !qualityRoute && !deletion && !diagnosticRoute) return failure(404, 'not_implemented');
   const query = new URLSearchParams();
+  if(diagnosticRoute&&request.method==='GET'){const after=new URL(request.url).searchParams.get('after');if(after)query.set('after',after);}
   if(target==='v1/source-files'){const requested=new URL(request.url).searchParams;for(const name of ['name','archive'])if(requested.has(name))query.set(name,requested.get(name));}
   if(sourceRoute && (target.endsWith('/records')||target.endsWith('/issues'))){const requested=new URL(request.url).searchParams;for(const name of ['cursor','limit'])if(requested.has(name))query.set(name,requested.get(name));}
   if(target==='v1/reviews'){const requested=new URL(request.url).searchParams;for(const name of ['case_version_id','attempt_id','cursor'])if(requested.has(name))query.set(name,requested.get(name));}

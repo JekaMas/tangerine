@@ -42,6 +42,12 @@ def resolve_parameters(step, audio, words=None, gap_samples=0, target_wpm=None):
         # never claim independent ASR or auditory review from these projections.
         p['duration_ratio']=duration_ratio_for_rate(lexical,target_wpm)
         step['source_interval']={'start':lexical[0]['start_sample'],'end':lexical[-1]['end_sample']}
+        merged=[]
+        for w in sorted(lexical,key=lambda r:r['start_sample']):
+            a,b=w['start_sample'],w['end_sample']
+            if merged and a<=merged[-1]['end']:merged[-1]['end']=max(b,merged[-1]['end'])
+            else:merged.append({'start':a,'end':b})
+        step['duration_regions']=merged
     step.pop('taxonomy_id', None)
     return step, observation
 
@@ -85,6 +91,44 @@ def praat_transform(values, parameters):
 
 
 
+def resynthesize_regions(source, regions, parameters, start, end):
+    """Change timed speech while retaining intervening PCM and its exact clock."""
+    chunks=[];clock=[];rows=[];cursor=start;output=start
+    for region in regions:
+        a,b=region['start'],region['end']
+        if a>cursor:
+            chunks.append(source[cursor:a]);clock.append(dict(source_start=cursor,source_end=a,final_start=output,final_end=output+a-cursor));rows.append((cursor,a,output,output+a-cursor,'copy'));output+=a-cursor
+        changed=praat_transform(source[a:b],parameters);chunks.append(changed)
+        clock.append(dict(source_start=a,source_end=b,final_start=output,final_end=output+len(changed)));rows.append((a,b,output,output+len(changed),'duration'));output+=len(changed);cursor=b
+    if cursor<end:
+        chunks.append(source[cursor:end]);clock.append(dict(source_start=cursor,source_end=end,final_start=output,final_end=output+end-cursor));rows.append((cursor,end,output,output+end-cursor,'copy'));output+=end-cursor
+    clock=[dict(source_start=0,source_end=start,final_start=0,final_end=start)]+clock+[dict(source_start=end,source_end=len(source),final_start=output,final_end=output+len(source)-end)]
+    return np.concatenate(chunks),clock,rows
+
+
+def crossfade_rows(rows, start, end, changed_size, fade, digest, transform_id):
+    """Split every affected correspondence row around the actual two-source mix."""
+    def clip(row,a,b):
+        scale=(row['source_end']-row['source_start'])/(row['final_end']-row['final_start'])
+        return {**row,'source_start':row['source_start']+round((a-row['final_start'])*scale),'source_end':row['source_start']+round((b-row['final_start'])*scale),'final_start':a,'final_end':b}
+    out=[]
+    for row in rows:
+        remaining=[row]
+        for a,b,old in [(start,start+fade,start),(start+changed_size-fade,start+changed_size,end-fade)]:
+            next_rows=[]
+            for part in remaining:
+                x,y=max(a,part['final_start']),min(b,part['final_end'])
+                if x>=y:next_rows.append(part);continue
+                if part['final_start']<x:next_rows.append(clip(part,part['final_start'],x))
+                if y<part['final_end']:next_rows.append(clip(part,y,part['final_end']))
+                mixed={**clip(part,x,y),'kind':'splice','transform_id':transform_id,'crossfade_group_id':transform_id+':'+str(a)}
+                original={**mixed,'source_audio_sha256':digest,'source_start':old+x-a,'source_end':old+y-a}
+                out.extend([original,mixed])
+            remaining=next_rows
+        out.extend(remaining)
+    return sorted(out,key=lambda r:(r['final_start'],r['final_end']))
+
+
 def aspiration(values, count):
     if count == 0: return np.empty(0)
     if len(values) == 0: raise Unmeasurable('no_aspiration_samples')
@@ -104,13 +148,15 @@ def transform(audio, step, replacement=None, replacement_interval=None):
     source = samples(audio); a, b = step['source_interval']['start'], step['source_interval']['end']
     if not 0 <= a < b <= len(source): raise ValueError('ALIGNMENT_UNAVAILABLE')
     p, kind = step['parameters'], step['controller']; target = source[a:b]
-    before = features(target); landmarks = None; warnings = []; fade = 0
+    before = features(target); landmarks = None; warnings = []; fade = 0; clock = None; timed_rows = None
     if kind == 'phone_pair':
         if replacement is None: raise ValueError('CONSTRAINT_CONFLICT')
         crop_start=(replacement_interval or {}).get('start',0)
         changed = samples(replacement)[crop_start:(replacement_interval or {}).get('end')]
     elif kind in ('vowel_duration', 'pitch_duration'):
-        changed = praat_transform(target, p)
+        if step.get('duration_regions'):
+            changed,clock,timed_rows=resynthesize_regions(source,step['duration_regions'],p,a,b)
+        else:changed = praat_transform(target, p)
     elif kind == 'pause_insert':
         # Fade adjoining samples first; inserted zeros stay exactly zero.
         n = min(120, a // 2, (len(source) - a) // 2) if p["pause_ms"] else 0
@@ -128,18 +174,22 @@ def transform(audio, step, replacement=None, replacement_interval=None):
         x, y = landmarks['burst_end_sample'], landmarks['voicing_onset_sample']
         changed = np.concatenate([target[:x], aspiration(target[x:y], p['vot_ms'] * 24), target[y:]])
         warnings.append('release_boundary_not_faded')
+        n=p['vot_ms']*24
+        clock=[dict(source_start=0,source_end=a+x,final_start=0,final_end=a+x),dict(source_start=a+x,source_end=a+y,final_start=a+x,final_end=a+x+n),dict(source_start=a+y,source_end=len(source),final_start=a+x+n,final_end=len(source)-(y-x)+n)]
+        timed_rows=[(0,a+x,0,a+x,'copy'),(a+x,a+y,a+x,a+x+n,'duration'),(a+y,len(source),a+x+n,len(source)-(y-x)+n,'copy')]
     else: raise ValueError('CAPABILITY_UNAVAILABLE')
     if kind != 'pause_insert':
         if p.get('gain_db') is not None: changed = changed * 10 ** (p['gain_db'] / 20)
         # Blend only inside the declared changed interval. Outside stays exact.
         fade = 0 if kind == 'vot_edit' else min(120, len(changed) // 2, len(target) // 2)
+        if step.get('duration_regions'):fade=min(fade,(timed_rows[0][3]-timed_rows[0][2])//2,(timed_rows[-1][3]-timed_rows[-1][2])//2)
         if fade:
             theta = np.linspace(0, np.pi / 2, fade)
             changed[:fade] = target[:fade] * np.cos(theta) + changed[:fade] * np.sin(theta)
             changed[-fade:] = changed[-fade:] * np.cos(theta) + target[-fade:] * np.sin(theta)
         result = np.concatenate([source[:a], changed, source[b:]])
-        rows = [(0, a, 0, a, 'copy'), (a, b, a, a + len(changed), 'duration' if kind == 'vowel_duration' or p.get('duration_ratio') else 'splice'),
-                (b, len(source), a + len(changed), len(result), 'copy')]
+        rows = timed_rows if timed_rows is not None else [(0, a, 0, a, 'copy'), (a, b, a, a + len(changed), 'duration' if kind == 'vowel_duration' or p.get('duration_ratio') else 'splice'), (b, len(source), a + len(changed), len(result), 'copy')]
+        if step.get('duration_regions'):rows=[(0,a,0,a,'copy')]+rows+[(b,len(source),a+len(changed),len(result),'copy')]
     if np.max(np.abs(result)) >= 1: warnings.append('clipping')
     output = encode(result)
     admit(output)
@@ -153,24 +203,10 @@ def transform(audio, step, replacement=None, replacement_interval=None):
         for row in mappings:
             if row['kind']=='splice' and row['final_start']==a and row['final_end']==a+len(changed):
                 row['source_audio_sha256']=replacement_digest;row['source_start']=crop_start;row['source_end']=crop_start+len(changed)
-    # Explicit two-source overlap provenance for boundary crossfades. The main
-    # transformed row covers the range; split it around those overlap ranges.
     if fade:
-        row = mappings[1 if a else 0]; base = dict(row)
-        left, right = row['final_start'], row['final_end']; mappings.remove(row)
-        for start, end in ((left, left + fade), (right - fade, right)):
-            group = transform_id + ':' + str(start)
-            source_scale=(base['source_end']-base['source_start'])/(right-left)
-            altered = {**base, 'source_start':base['source_start']+round((start-left)*source_scale),
-                       'source_end':base['source_start']+round((end-left)*source_scale),
-                       'final_start': start, 'final_end': end, 'kind': 'splice', 'crossfade_group_id': group}
-            oldstart = a if start == left else b - fade
-            original = {**altered, 'source_audio_sha256':digest,'source_start': oldstart, 'source_end': oldstart + fade}
-            mappings.extend([original, altered])
-        if right - left > 2 * fade: mappings.append({**base, 'source_start':base['source_start']+round(fade*(base['source_end']-base['source_start'])/(right-left)),'source_end':base['source_end']-round(fade*(base['source_end']-base['source_start'])/(right-left)), 'final_start': left + fade, 'final_end': right - fade})
-        mappings.sort(key=lambda r: (r['final_start'], r['final_end']))
+        mappings=crossfade_rows(mappings,a,b,len(changed),fade,digest,transform_id)
     return {'audio_base64': base64.b64encode(output).decode(), 'sample_count': len(result),
-            'sample_rows': mappings, 'clock_mapping':
+            'sample_rows': mappings, 'clock_mapping': clock if clock is not None else
                 ([{'source_start':0,'source_end':a,'final_start':0,'final_end':a},
                   {'source_start':a,'source_end':len(source),'final_start':a+len(changed),'final_end':len(result)}] if kind=='pause_insert' else
                  [{'source_start':0,'source_end':a,'final_start':0,'final_end':a},

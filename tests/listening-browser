@@ -50,7 +50,7 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
     time.sleep(.1)
    raise AssertionError((expression,value,expected))
   def record(test,expression,expected):
-   value=wait_value(expression,expected);observed[test]=value;(evidence/(test+'.html')).write_text(browser.evaluate('document.documentElement.outerHTML'))
+   value=wait_value(expression,expected);observed[test]=value;browser.capture(evidence,test)
   def type_answer(text):
    browser.evaluate("document.querySelector('textarea').focus();true");browser.call('Input.insertText',{'text':text});wait_value("document.querySelector('textarea').value",text)
   click('Listen and answer');browser.wait('Your answer');wait_value("document.querySelector('textarea').disabled",False)

@@ -6909,7 +6909,7 @@ paths:
       security:
         - InternalServiceKey: []
       servers:
-        - url: http://speech:8000
+        - url: http://speech:8090
           description: Private Compose network only; no host publication.
   /internal/v1/measure:
     post:
@@ -7032,11 +7032,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: measure-request.schema.json
+              $ref: audio-diagnostic-packet.schema.json
       security:
         - InternalServiceKey: []
       servers:
-        - url: http://speech:8000
+        - url: http://speech:8090
           description: Private Compose network only; no host publication.
   /api/v1/preparations:
     get:
@@ -7334,3 +7334,6 @@ components:
       in: header
       name: X-Tangerine-Service-Key
       description: Automatically initialized private API-to-speech credential. Never a human login.
+
+# Current explicit optional runtime routes and complete response DTOs are in
+# audio-diagnostics-runtime.openapi.yaml (alongside review-runtime.openapi.yaml).

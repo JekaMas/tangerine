@@ -39,14 +39,22 @@ func projectSpeechKey(settings, candidate, plan, progress map[string]any, audioI
 				continue
 			}
 			seenAcoustic[id] = true
-			a, b := start, end
+			actual := []any{map[string]any{"start": float64(0), "end": piece["sample_count"]}}
 			if rows, ok := piece["unit_intervals"].(map[string]any); ok {
-				if row, ok := rows[id].(map[string]any); ok {
-					a = start + int(row["start"].(float64))
-					b = start + int(row["end"].(float64))
+				// Accepted old single-scope progress remains readable. Newly
+				// rendered units retain each actual scope in source order.
+				switch row := rows[id].(type) {
+				case map[string]any:
+					actual = []any{row}
+				case []any:
+					actual = row
 				}
 			}
-			acousticIntervals[id] = append(acousticIntervals[id], map[string]any{"start_ms": a / 24, "end_ms": (b + 23) / 24})
+			for _, value := range actual {
+				row := value.(map[string]any)
+				a, b := start+int(row["start"].(float64)), start+int(row["end"].(float64))
+				acousticIntervals[id] = append(acousticIntervals[id], map[string]any{"start_ms": a / 24, "end_ms": (b + 23) / 24})
+			}
 		}
 	}
 	speakers := []any{}

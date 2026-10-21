@@ -15,7 +15,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | attempt-summary | schema hash | derived DTO or actual operation input/output receipt | 6 |
 | attempt-view | schema hash | derived DTO or actual operation input/output receipt | 11 |
 | attempt | 2.0.0 | document.payload | 25 |
-| audio-measurement | schema hash | document.payload | 15 |
+| audio-measurement | schema hash | document.payload | 26 |
 | auxiliary-results | 2.0.0 | document.payload | 139 |
 | backup-manifest | 2.0.0 | document.payload | 11 |
 | backup-request | schema hash | derived DTO or actual operation input/output receipt | 1 |
@@ -67,7 +67,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | judgment-issue | 2.0.0 | document.payload | 9 |
 | key-disclosure | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | key-write | schema hash | document.payload | 3 |
-| library-item | schema hash | derived DTO or actual operation input/output receipt | 8 |
+| library-item | schema hash | derived DTO or actual operation input/output receipt | 9 |
 | linguistic-audit-input | 2.0.0 | derived DTO or actual operation input/output receipt | 8 |
 | linguistic-audit | 2.0.0 | document.payload | 16 |
 | llm-profile | schema hash | Derived projection/configuration member; not an independent evidence document | 26 |
@@ -152,7 +152,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | key-repair-proposal | 2.0.0 | LLM canonical payload stored with review/judgment and private raw receipt assets | 6 |
 | preparation-settings | 2.0.0 | immutable private settings asset linked from preparation document | 16 |
-| preparation-state | 2.0.0 | document.payload with entity_head revision and linked private assets | 31 |
+| preparation-state | 2.0.0 | document.payload with entity_head revision and linked private assets | 33 |
 | provider-access-policy | 2.0.0 | configuration or transient operation DTO; never model/callback secret evidence | 4 |
 
 | provider-callback-query | 2.0.0 | configuration or transient operation DTO; never model/callback secret evidence | 6 |
@@ -167,7 +167,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | acoustic-edit | schema hash | derived DTO or actual operation input/output receipt | 20 |
 
-| acoustic-production-plan | schema hash | derived DTO or actual operation input/output receipt | 30 |
+| acoustic-production-plan | schema hash | derived DTO or actual operation input/output receipt | 36 |
 
 | audio-judge-input | schema hash | derived DTO or actual operation input/output receipt | 17 |
 
@@ -175,7 +175,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | audio-judge-profile | schema hash | derived DTO or actual operation input/output receipt | 12 |
 
-| render-progress | schema hash | derived DTO or actual operation input/output receipt | 37 |
+| render-progress | schema hash | derived DTO or actual operation input/output receipt | 39 |
 
 | source-mapping-program | schema hash | derived DTO or actual operation input/output receipt | 47 |
 
@@ -191,7 +191,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | preparation-render-request | schema hash | derived DTO or actual operation input/output receipt | 2 |
 
-| preparation-summary | schema hash | derived DTO or actual operation input/output receipt | 12 |
+| preparation-summary | schema hash | derived DTO or actual operation input/output receipt | 14 |
 
 | feedback-score | schema hash | derived DTO or actual operation input/output receipt | 40 |
 
@@ -210,3 +210,13 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | llm-quality-judge-policy | schema hash | derived DTO or actual operation input/output receipt | 0 |
 
 | delete-apply-request | schema hash | derived DTO or actual operation input/output receipt | 1 |
+
+| audio-diagnostic-defaults | schema hash | derived DTO or actual operation input/output receipt | 3 |
+
+| audio-diagnostic-list | schema hash | derived DTO or actual operation input/output receipt | 2 |
+
+| audio-diagnostic-packet | schema hash | derived DTO or actual operation input/output receipt | 9 |
+
+| audio-diagnostic-run | schema hash | derived DTO or actual operation input/output receipt | 12 |
+
+| audio-diagnostic-view | schema hash | derived DTO or actual operation input/output receipt | 2 |

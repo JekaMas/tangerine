@@ -3,6 +3,9 @@ import math
 import numpy as np
 RATE=24000
 
+def pitch_ac(sound):
+    return sound.to_pitch_ac(time_step=.01,pitch_floor=60,pitch_ceiling=500,max_number_of_candidates=15,very_accurate=True,silence_threshold=.03,voicing_threshold=.45,octave_cost=.01,octave_jump_cost=.35,voiced_unvoiced_cost=.14)
+
 class Unmeasurable(ValueError):
     def __init__(self,reason,observations=None):
         super().__init__("ACOUSTIC_NOT_MEASURABLE");self.reason=reason;self.observations=observations or {}
@@ -12,7 +15,7 @@ def features(values):
     if len(values)==0:return {"state":"not_measurable","reason":"empty_interval","median_f0_hz":None,"voiced_frames":0,"pitch_points":[],"formant_medians_hz":[None]*3,"sample_count":0,"praat_version":parselmouth.PRAAT_VERSION}
     sound = parselmouth.Sound(values, RATE)
     try:
-        pitch = sound.to_pitch_ac(time_step=.01, pitch_floor=60, pitch_ceiling=500)
+        pitch = pitch_ac(sound)
         f0 = pitch.selected_array['frequency']; voiced = f0[f0 > 0]
         points = [{'fraction': float(t / sound.duration), 'semitones': float(12 * np.log2(f / 100))}
                   for t, f in zip(pitch.xs(), f0) if f > 0]
@@ -43,7 +46,7 @@ def vot_landmarks(values, search_interval=None):
     from parselmouth.praat import call
     sound = parselmouth.Sound(values, RATE)
     try:
-        pitch = sound.to_pitch_ac(time_step=.01, pitch_floor=60, pitch_ceiling=500)
+        pitch = pitch_ac(sound)
         f0 = pitch.selected_array['frequency']; times = pitch.xs()
         pulses = call([sound, pitch], 'To PointProcess (cc)')
         pulse_times = [call(pulses, 'Get time from index', n) for n in range(1, call(pulses, 'Get number of points') + 1)]
@@ -64,15 +67,23 @@ def vot_landmarks(values, search_interval=None):
         if search_interval is not None:lo,hi=max(lo,search_interval[0]),min(hi,search_interval[1])
         if lo>=hi:raise Unmeasurable('no_aligned_release_interval')
         burst = lo + int(np.argmax(np.abs(values[lo:hi])))
+        # A steady vowel has cyclic energy rises too. A release needs an actual
+        # transient above the following periodic edge envelope, allowing the
+        # two-PCM-LSB uncertainty of a first difference.
         burst_end = burst + 120
         selected_f0 = f0[f0 > 0]
         period = RATE / float(np.median(selected_f0))
+        periodic=values[onset:min(len(values),onset+round(3*period))]
+        transient_edge=float(np.max(np.abs(np.diff(values[lo:hi])))) if hi-lo>1 else 0
+        periodic_edge=float(np.max(np.abs(np.diff(periodic)))) if len(periodic)>1 else 0
+        if transient_edge<=periodic_edge+2/32768:raise Unmeasurable('no_release_transient_above_periodic_signal')
         if not burst < burst_end < onset or onset - burst_end < period:
             raise Unmeasurable('insufficient_aspiration_interval', {'burst_sample': burst, 'burst_end_sample': burst_end, 'voicing_onset_sample': onset})
         return {'burst_sample': burst, 'burst_end_sample': burst_end, 'voicing_onset_sample': onset,
                 'measured_vot_ms': (onset - burst) / 24, 'period_samples': period,
                 'pulse_times_seconds': pulse_times, 'f0_times_seconds': times.tolist(), 'f0_hz': f0.tolist(),
-                'method': 'release_energy_10ms_periodic_f0_pulses_v1'}
+                'transient_edge_amplitude':transient_edge,'periodic_edge_amplitude':periodic_edge,
+                'method': 'release_energy_10ms_periodic_f0_pulses_v2'}
     except parselmouth.PraatError as e:
         raise Unmeasurable('vot_praat_unavailable') from e
 

@@ -291,6 +291,15 @@ func validateProjection(w DocumentWrite, b []byte) error {
 	return nil
 }
 func externalID(kind, key string) bool {
+	if kind == "audio-measurement" && (key == "method_id" || key == "target_unit_id" || key == "unit_id") {
+		// Method metadata and case-scoped unit names are not global document
+		// IDs. The diagnostic input selected them from its saved case; the
+		// containing run supplies that durable case association.
+		return true
+	}
+	if kind == "audio-diagnostic-run" && (key == "operation_id" || key == "method_ids") {
+		return true
+	}
 	if (kind == "playback-event" || kind == "play-event-request") && key == "page_instance_id" {
 		return true
 	} // Browser-instance metadata, not a domain object.

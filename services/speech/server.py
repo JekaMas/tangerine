@@ -32,12 +32,15 @@ class Handler(BaseHTTPRequestHandler):
   else:self.send(404,{'error':'not_implemented'})
  def do_POST(self):
   if not self.authorized():self.send(403,{'error':'internal_access_required'});return
-  if self.path not in ('/internal/v1/piece','/internal/v1/plan','/internal/v1/quality','/internal/v1/resolve','/internal/v1/transform'):self.send(404,{'error':'not_implemented'});return
+  if self.path not in ('/internal/v1/piece','/internal/v1/plan','/internal/v1/quality','/internal/v1/resolve','/internal/v1/transform','/internal/v1/measure','/internal/v1/measure-plan'):self.send(404,{'error':'not_implemented'});return
   try:
    if self.headers.get('Content-Type')!='application/json':raise ValueError('INVALID_JSON')
    raw=self.rfile.read(int(self.headers.get('Content-Length','0')));packet=json.loads(raw)
    if self.path!='/internal/v1/piece':packet['action']=self.path.rsplit('/',1)[1];raw=json.dumps(packet).encode()
    timeout=min(270,max(1,float(packet.get('timeout_seconds',260))))
+   if self.path in ('/internal/v1/measure','/internal/v1/measure-plan'):
+    from diagnostic_server import serve
+    serve(self,raw,timeout);return
    # A process belongs to the foreground request and is killed on its deadline.
    p=subprocess.Popen([sys.executable,'-B',os.path.join(os.path.dirname(__file__),'backends.py')],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True)
    completed=queue.Queue()

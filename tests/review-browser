@@ -15,7 +15,7 @@ def call(args,check=True):
 browser=None;go=None;preview=False
 with tempfile.TemporaryDirectory(prefix=name) as tmp:
  config=Path(tmp)/'runtime.env';password=secrets.token_hex(24)
- config.write_text(f'POSTGRES_DB=tangerine\nPOSTGRES_USER=tangerine\nPOSTGRES_PASSWORD={password}\nDATABASE_URL=postgres://tangerine:{password}@postgres:5432/tangerine?sslmode=disable\nMINIO_ROOT_USER=native-regression\nMINIO_ROOT_PASSWORD={password}\nMINIO_ENDPOINT=minio:9000\nMINIO_ACCESS_KEY=native-regression\nMINIO_SECRET_KEY={password}\nMINIO_BUCKET=regressions\nAPI_INTERNAL_TOKEN=listening-owned-token\nAPI_INTERNAL_URL=http://api:8080\n');config.chmod(0o600)
+ config.write_text(f'POSTGRES_DB=tangerine\nPOSTGRES_USER=tangerine\nPOSTGRES_PASSWORD={password}\nDATABASE_URL=postgres://tangerine:{password}@postgres:5432/tangerine?sslmode=disable\nMINIO_ROOT_USER=native-regression\nMINIO_ROOT_PASSWORD={password}\nMINIO_ENDPOINT=minio:9000\nMINIO_ACCESS_KEY=native-regression\nMINIO_SECRET_KEY={password}\nMINIO_BUCKET=regressions\nAPI_INTERNAL_TOKEN=listening-owned-token\nAPI_INTERNAL_URL=http://api:8080\nTANGERINE_SPEECH_TEST_URL=http://speech:8090\n');config.chmod(0o600)
  def ready(kind):
   for _ in range(60):
    probe=['pg_isready','-h','127.0.0.1','-U','tangerine','-d','tangerine'] if kind=='postgres' else ['/usr/local/bin/probe','http://127.0.0.1:9000/minio/health/ready']
@@ -25,6 +25,7 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
  try:
   call(['docker','build','--target','build','-t',name+'-go','-f','services/api/Dockerfile','.']);call(['docker','build','-t',name+'-media','-f','deploy/local/minio.Dockerfile','.']);call(['docker','network','create',name])
   for kind,image in [('postgres','postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826'),('media',name+'-media')]:call(['docker','run','-d','--name',name+'-'+kind,'--network',name,'--network-alias','postgres' if kind=='postgres' else 'minio','--env-file',str(config),image]);ready(kind)
+  call(['docker','run','-d','--name',name+'-speech','--network',name,'--network-alias','speech','-e','SPEECH_INTERNAL_TOKEN=actual-local-speech-test','-v',str(r/'services/speech')+':/app:ro',env.get('TANGERINE_RELEASE_SPEECH_RUNTIME_IMAGE','sha256:906700d3eda940912899001feb08a3b1b0df3fa3d6c8f8a3ae6e0c5bb96256e9')])
   args=['docker','run','--rm','--name',name+'-api','--network',name,'--network-alias','api','--env-file',str(config),'-e','TANGERINE_INTERPRETATION_EVIDENCE=/evidence','-v',str(evidence)+':/evidence']
   for source in ['native_listening_test.go','native_interpretation_test.go','native_scoring_test.go','native_review_test.go','review_browser_fixture_test.go']:args+=['-v',str(r/'tests'/source)+':/src/internal/app/'+source+':ro']
   go=subprocess.Popen(args+['--entrypoint','go',name+'-go','test','-json','-race','-count=1','-run','^TestNativeReviewBrowserFixture$','./internal/app'],cwd=r,env=env,stdout=(evidence/'native.jsonl').open('w'),stderr=(evidence/'native.stderr').open('w'))
@@ -55,13 +56,20 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
     time.sleep(.1)
    raise AssertionError((expression,value,expected))
   def record(test,expression,expected):
-   value=wait_value(expression,expected);observed[test]=value;(evidence/(test+'.html')).write_text(browser.evaluate('document.documentElement.outerHTML'))
+   value=wait_value(expression,expected);observed[test]=value;browser.capture(evidence,test)
   def type_answer(text):
    browser.evaluate("document.querySelector('textarea').focus();true");browser.call('Input.insertText',{'text':text});wait_value("document.querySelector('textarea').value",text)
   def new_answer():
    browser.call('Page.navigate',{'url':'http://localhost:3000/'});browser.wait('Listen and answer');click('Listen and answer');browser.wait('Your answer');wait_value("document.querySelector('textarea').disabled",False)
   case_id=fixture['case_id'];attempt_id=fixture['attempt_id']
   browser.call('Page.navigate',{'url':'http://localhost:3000/reviews?case='+case_id});browser.wait('Review case')
+  browser.wait('Clearly audible target feature.')
+  record('test_auditory_metadata_positive',"document.querySelector('[aria-label=\"Audio measurements\"]').textContent.includes('Constructed auditory metadata fixture.')&&document.querySelector('[aria-label=\"Audio measurements\"]').textContent.includes('Inferred IPA: pɛn')&&document.querySelector('[aria-label=\"Audio measurements\"]').textContent.includes('Target ')",True)
+  browser.call('Page.reload');browser.wait('Review case');browser.wait('Clearly audible target feature.')
+  record('test_auditory_metadata_persistence_positive',"document.querySelector('[aria-label=\"Audio measurements\"]').textContent.includes('Clearly audible target feature.')",True)
+  wait_value("document.querySelector('[aria-label=\"Audio measurements\"] button').disabled",False)
+  click('Measure saved audio');browser.wait('complete · ffmpeg-ebur128-v1')
+  record('test_case_measurement_positive',"document.querySelector('[aria-label=\"Audio measurements\"]').textContent.includes('integrated_lufs:')&&document.querySelector('[aria-label=\"Audio measurements\"]').textContent.includes('Clearly audible target feature.')",True)
   sql='"'+fixture['schema']+'"'
   call(['docker','exec',name+'-postgres','psql','-X','-U','tangerine','-d','tangerine','-v','ON_ERROR_STOP=1','-c',"SET search_path TO "+sql+"; UPDATE exercise_catalog SET availability='rights_restricted' WHERE id='"+case_id+"';"])
   click('Review case');browser.wait('Source terms restrict processing of this case.')
@@ -99,6 +107,27 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
   click('Retry or resume saved review');browser.wait('A corrected key version uses the same recording.')
   record('test_recovery_positive',"({complete:document.querySelector('[aria-label=\"Review findings\"]').textContent.includes('complete · key defect'),primary:document.querySelector('[aria-label=\"Primary score\"]').textContent})",{'complete':True,'primary':'Primary score: 100.0 / 100'})
   record('test_privacy_negative',"/frozen_asset_id|context_snapshot_id|credential_ref|wire_request|mapping_asset_id/.test(document.documentElement.outerHTML)",False)
+  browser.call('Page.navigate',{'url':'http://localhost:3000/reviews?attempt='+attempt_id});browser.wait('Optional audio measurements')
+  wait_value("document.querySelector('[aria-label=\"Audio measurements\"] button').disabled",False)
+  click('Measure saved audio');browser.wait('complete · ffmpeg-ebur128-v1')
+  record('test_measurement_positive',"({saved:document.querySelector('[aria-label=\"Audio measurements\"]').textContent.includes('integrated_lufs:'),peak:document.querySelector('[aria-label=\"Audio measurements\"]').textContent.includes('true_peak_dbtp:'),primary:document.querySelector('[aria-label=\"Primary score\"]').textContent})",{'saved':True,'peak':True,'primary':'Primary score: 100.0 / 100'})
+  browser.call('Page.reload');browser.wait('complete · ffmpeg-ebur128-v1')
+  record('test_measurement_persistence_positive',"document.querySelector('[aria-label=\"Audio measurements\"]').textContent.includes('integrated_lufs:')",True)
+  browser.call('UI.select',{'selector':'[aria-label="Audio measurement method"]','value':'qwen25-omni-audio-v1'})
+  click('Measure saved audio');browser.wait('Diagnostic unavailable. Saved audio, answers and scores are retained.')
+  record('test_measurement_unselected_negative',"({failed:document.querySelector('[aria-label=\"Audio measurements\"]').textContent.includes('CAPABILITY_UNAVAILABLE'),saved:document.querySelector('[aria-label=\"Audio measurements\"]').textContent.includes('integrated_lufs:'),primary:document.querySelector('[aria-label=\"Primary score\"]').textContent})",{'failed':True,'saved':True,'primary':'Primary score: 100.0 / 100'})
+  call(['docker','stop',name+'-postgres']);click('Refresh diagnostics');browser.wait('Saved diagnostics are unavailable. Refresh to retry.')
+  record('test_measurement_read_failure_negative',"document.querySelector('[aria-label=\"Audio measurements\"]').textContent.includes('Saved diagnostics are unavailable. Refresh to retry.')",True)
+  call(['docker','start',name+'-postgres']);ready('postgres');wait_value("fetch('/api/v1/health',{cache:'no-store'}).then(r=>r.status)",200);click('Refresh diagnostics');browser.wait('complete · ffmpeg-ebur128-v1')
+  record('test_measurement_read_recovery_positive',"document.querySelector('[aria-label=\"Audio measurements\"] [role=alert]')===null",True)
+  browser.call('Page.navigate',{'url':'http://localhost:3000/settings'});browser.wait('Optional audio diagnostics')
+  wait_value("document.querySelector('[aria-label=\"Audio diagnostic profile\"]').disabled",False)
+  browser.call('UI.select',{'selector':'[aria-label="Audio diagnostic profile"]','value':'qwen-omni-3b'});browser.wait('Settings saved.')
+  record('test_diagnostic_profile_positive',"({profile:document.querySelector('[aria-label=\"Audio diagnostic profile\"]').value,terms:document.body.textContent.includes('separate non-commercial research terms')})",{'profile':'qwen-omni-3b','terms':True})
+  browser.call('Page.reload');browser.wait('Optional audio diagnostics');wait_value("document.querySelector('[aria-label=\"Audio diagnostic profile\"]').value",'qwen-omni-3b')
+  record('test_diagnostic_profile_persistence_positive',"document.querySelector('[aria-label=\"Audio diagnostic profile\"]').value",'qwen-omni-3b')
+  browser.call('UI.select',{'selector':'[aria-label="Audio diagnostic profile"]','value':''});browser.wait('Settings saved.')
+  record('test_diagnostic_disable_negative',"document.querySelector('[aria-label=\"Audio diagnostic profile\"]').value",'')
   screenshot=browser.call('Page.captureScreenshot');(evidence/'review.png').write_bytes(base64.b64decode(screenshot['data']))
   (evidence/'done').write_text('done');assert go.wait(timeout=30)==0
   (evidence/'observations.json').write_text(json.dumps({'values':observed,'fixture':fixture,'driver':browser.driver_version,'network_substitution':False,'database_recovered':True},indent=2))
@@ -107,7 +136,7 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
    try:(evidence/'final-dom.html').write_text(browser.evaluate('document.documentElement.outerHTML'))
    finally:browser.close()
   (evidence/'done').write_text('done')
-  for kind in ['web','api','postgres','media']:call(['docker','rm','-f','-v',name+'-'+kind],False)
+  for kind in ['web','api','postgres','media','speech']:call(['docker','rm','-f','-v',name+'-'+kind],False)
   if go:
    try:go.wait(timeout=10)
    except subprocess.TimeoutExpired:go.terminate();go.wait()

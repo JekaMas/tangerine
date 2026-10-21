@@ -52,7 +52,7 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
     time.sleep(.1)
    raise AssertionError((expression,value,expected))
   def record(name,expression,expected):
-   observed[name]=wait_value(expression,expected);(evidence/(name+'.html')).write_text(browser.evaluate('document.documentElement.outerHTML'))
+   observed[name]=wait_value(expression,expected);browser.capture(evidence,name)
   def type_input(label,value):
    browser.evaluate("document.querySelector('[aria-label="+json.dumps(label)+"]').focus();true")
    browser.call('Input.insertText',{'text':value})

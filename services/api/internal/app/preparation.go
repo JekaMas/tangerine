@@ -176,6 +176,9 @@ func (s *Storage) checkpoint(ctx context.Context, p map[string]any, expected *in
 	if p["phase_states"].(map[string]any)["render"] != "not_started" {
 		phase = "render"
 	}
+	if complete && phase == "canonical_text" && len(canonicalWords) > 0 {
+		p["canonical_word_count"] = wordCount
+	}
 	raw, e := lab.Canonical(p)
 	if e != nil {
 		return e

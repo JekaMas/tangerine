@@ -1,0 +1,32 @@
+{
+  "description": "Current local runtime projection of speech_measure and saved readbacks; no application accounts or mandatory diagnostic gate.",
+  "operations": [
+    {
+      "id": "audio_diagnostic_defaults",
+      "method": "GET",
+      "path": "/api/v1/audio-diagnostics/defaults",
+      "request": null,
+      "response": "audio-diagnostic-defaults",
+      "success": 200,
+      "effect": "Read built-in selections/setup commands only; no asset writes or inference."
+    },
+    {
+      "id": "list_audio_diagnostics",
+      "method": "GET",
+      "path": "/api/v1/cases/{id}/measurements",
+      "request": null,
+      "response": "audio-diagnostic-list",
+      "success": 200,
+      "effect": "Read saved immutable runs/reports for the exact case, UUID keyset after cursor and20 rows; no inference."
+    },
+    {
+      "id": "speech_measure",
+      "method": "POST",
+      "path": "/api/v1/cases/{id}/measurements",
+      "request": "measure-request",
+      "response": "audio-diagnostic-view",
+      "success": 200,
+      "effect": "Explicit optional foreground method execution over the actual saved audio; idempotency replays stored results, including failed results. Errors retain reports/receipts, never alter scores."
+    }
+  ]
+}

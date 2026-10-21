@@ -1,0 +1,99 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "case_version_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "operation_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "status": {
+      "enum": [
+        "complete",
+        "failed"
+      ]
+    },
+    "method_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      }
+    },
+    "input_asset_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "output_asset_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      }
+    },
+    "receipt_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      }
+    },
+    "measurement_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      }
+    },
+    "failure_code": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "support_asset_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "case_version_id",
+    "operation_id",
+    "status",
+    "method_ids",
+    "input_asset_id",
+    "output_asset_ids",
+    "receipt_ids",
+    "measurement_ids",
+    "failure_code",
+    "support_asset_ids"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/audio-diagnostic-run.schema.json",
+  "title": "audio-diagnostic-run",
+  "description": "Immutable explicit diagnostic result; failures and partial observations retain real evidence without altering a saved score."
+}

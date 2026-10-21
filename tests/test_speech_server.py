@@ -19,7 +19,7 @@ class SpeechServer(unittest.TestCase):
   return {'timeout_seconds':1,'profile':{'id':'qwen-custom-v1','adapter_version':'qwen-custom-v1','provider':'local_qwen3_tts','model':'Qwen3-TTS-12Hz-0.6B-CustomVoice','billing_mode':'local','voices':[{'id':'Ryan','locale':'en-US'}]},'turn':{'voice_id':'Ryan','locale':'en-US','operations':[{'kind':'text','text':'The café open tomorrow.'}]}}
  def test_ready_positive(self):self.assertEqual(self.request('/health/ready'),(200,{'status':'ready'}))
  def test_models_positive(self):
-  status,data=self.request('/internal/v1/models');self.assertEqual(status,200);self.assertEqual(len(data['profiles']),5);self.assertTrue(data['espeak_ng']);controlled=next(p for p in data['profiles'] if p['profile_id']=='kokoro-controlled-v1');self.assertEqual(controlled['status'],'ready');self.assertEqual(controlled['praat_version'],'6.1.38')
+  status,data=self.request('/internal/v1/models');self.assertEqual(status,200);self.assertEqual({p['profile_id'] for p in data['profiles']},{'kokoro-local-en-v1','kokoro-controlled-v1','qwen-base-v1','qwen-design-v1','qwen-custom-v1','faster-whisper-local-en-v1','qwen25-omni-audio-v1','qwen25-omni-3b-audio-v1'});self.assertTrue(data['espeak_ng']);controlled=next(p for p in data['profiles'] if p['profile_id']=='kokoro-controlled-v1');self.assertEqual(controlled['status'],'ready');self.assertEqual(controlled['praat_version'],'6.1.38')
  def test_unauthorized_negative(self):self.assertEqual(self.request('/internal/v1/models',token='wrong'),(403,{'error':'internal_access_required'}))
  def test_malformed_negative(self):self.assertEqual(self.request('/internal/v1/plan',{}),(422,{'error':'SYNTHESIS_FAILED'}))
  def watch(self):

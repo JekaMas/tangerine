@@ -35,3 +35,5 @@ Copied local Lab data can outlive native deletion. Native erasure reports that d
 ## Evidence boundaries
 
 Literal native responses and PCM test coordination, storage, restore and browser behavior; they do not establish linguistic/acoustic model quality. Reuse unchanged accepted stage evidence. The unchanged cached speech runtime may be reused only with an observed source/image binding; a cached run is not a fresh dependency rebuild or an architecture matrix. Release-wide platform qualification and earlier unresolved I8/I12 findings remain separate.
+
+Source startup builds the API image once with HOST_OS/HOST_ARCH from the actual Docker client for the host-native maintenance/probe executable, while its service executable targets the Linux container platform. Build the remaining minio/speech/web services separately. A second default-argument Compose API build must not replace the host executable with a Linux binary; backup/restore/switch subsequently extract the retained host helper from the current API image. Restored namespaces tag that same compatible source-built image.

@@ -61,6 +61,9 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /health/ready", s.ready)
 	mux.HandleFunc("GET /api/v1/health", s.ready)
 	mux.HandleFunc("GET /api/v1/library", s.library)
+	mux.HandleFunc("GET /api/v1/audio-diagnostics/defaults", func(w http.ResponseWriter, r *http.Request) { writeJSON(w, 200, audioDiagnosticDefaults()) })
+	mux.HandleFunc("GET /api/v1/cases/{id}/measurements", s.audioDiagnosticList)
+	mux.HandleFunc("POST /api/v1/cases/{id}/measurements", s.audioDiagnosticCreate)
 	mux.HandleFunc("POST /api/v1/deletions", s.deletionCreate)
 	mux.HandleFunc("POST /api/v1/deletions/{action}", s.deletionApply)
 	mux.HandleFunc("GET /api/v1/lab/experiments", s.qualityList)
@@ -226,10 +229,11 @@ type LibraryItem struct {
 	Difficulty    string  `json:"difficulty"`
 	Availability  string  `json:"availability"`
 	CaseSHA256    *string `json:"case_sha256,omitempty"`
+	AudioSHA256   *string `json:"audio_sha256,omitempty"`
 }
 
 func (s *Server) library(w http.ResponseWriter, r *http.Request) {
-	rows, err := s.Store.DB.Query(r.Context(), `SELECT c.id::text,c.title,c.public_context,c.duration_ms,c.format,c.difficulty,c.availability,l.case_sha256 FROM exercise_catalog c LEFT JOIN listening_case l ON l.case_version_id=c.id::text WHERE public_context IS NOT NULL AND duration_ms IS NOT NULL AND format IS NOT NULL AND difficulty IS NOT NULL AND availability IN ('published','retired','quarantined','rights_restricted') ORDER BY published_at DESC,c.id`)
+	rows, err := s.Store.DB.Query(r.Context(), `SELECT c.id::text,c.title,c.public_context,c.duration_ms,c.format,c.difficulty,c.availability,l.case_sha256,l.audio_sha256 FROM exercise_catalog c LEFT JOIN listening_case l ON l.case_version_id=c.id::text WHERE public_context IS NOT NULL AND duration_ms IS NOT NULL AND format IS NOT NULL AND difficulty IS NOT NULL AND availability IN ('published','retired','quarantined','rights_restricted') ORDER BY published_at DESC,c.id`)
 	if err != nil {
 		writeJSON(w, 503, map[string]string{"error": "storage_unavailable"})
 		return
@@ -238,7 +242,7 @@ func (s *Server) library(w http.ResponseWriter, r *http.Request) {
 	items := make([]LibraryItem, 0)
 	for rows.Next() {
 		var x LibraryItem
-		if rows.Scan(&x.ID, &x.Title, &x.PublicContext, &x.DurationMS, &x.Format, &x.Difficulty, &x.Availability, &x.CaseSHA256) != nil {
+		if rows.Scan(&x.ID, &x.Title, &x.PublicContext, &x.DurationMS, &x.Format, &x.Difficulty, &x.Availability, &x.CaseSHA256, &x.AudioSHA256) != nil {
 			writeJSON(w, 503, map[string]string{"error": "storage_unavailable"})
 			return
 		}

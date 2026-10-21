@@ -51,9 +51,6 @@ func (s *Storage) PutConfiguration(ctx context.Context, raw []byte, key string, 
 	}
 	var c map[string]any
 	_ = json.Unmarshal(raw, &c)
-	if e = validateProfileSelection(c); e != nil {
-		return nil, 0, e
-	}
 	tx, e := beginWrite(ctx, s)
 	if e != nil {
 		return nil, 0, e
@@ -98,6 +95,20 @@ func (s *Storage) PutConfiguration(ctx context.Context, raw []byte, key string, 
 	if len(previous) > 0 {
 		_ = json.Unmarshal(previous, &old)
 	}
+	for _, field := range []string{"speech_profile", "local_speech_profile", "speech_profiles", "audio_diagnostic_profile"} {
+		if _, supplied := c[field]; !supplied {
+			if value, present := old[field]; present {
+				c[field] = value
+			}
+		}
+	}
+	if e = validateProfileSelection(c); e != nil {
+		return nil, 0, e
+	}
+	diagnosticRefs, e := s.resolveDiagnosticPrompt(ctx, c)
+	if e != nil {
+		return nil, 0, e
+	}
 	// Billing exclusion is not editable through an ordinary settings request.
 	c["provider_access_policy"] = DefaultConfiguration()["provider_access_policy"]
 	if policy, ok := old["provider_access_policy"]; ok {
@@ -118,6 +129,7 @@ func (s *Storage) PutConfiguration(ctx context.Context, raw []byte, key string, 
 		}
 		w.References = []Reference{{Pointer: "/active_prompt_bundle_id", ID: id, Scope: "local", Kind: "prompt-bundle", SHA: sha, Relation: "active-prompt-bundle"}}
 	}
+	w.References = append(w.References, diagnosticRefs...)
 	saved, e := validateDocument(w)
 	if e != nil {
 		return nil, 0, e

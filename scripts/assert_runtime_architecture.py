@@ -3,17 +3,16 @@ import argparse
 import json
 import subprocess
 
-from backup import COMPOSE
-
 
 def inspect(project, expected):
-    if project not in {'tangerine', 'tangerine-amd64'} or expected not in {'amd64', 'arm64'}:
-        raise ValueError('Select the exact local foundation project and supported architecture.')
+    if not project or expected not in {'amd64', 'arm64'}:
+        raise ValueError('Select the actual Compose project and supported architecture.')
     results = []
     for service in ['postgres', 'minio', 'speech', 'api', 'web']:
-        container = subprocess.check_output(COMPOSE + ['--project-name', project, 'ps', '-q', service], text=True, timeout=15).strip()
-        if not container:
-            raise ValueError('A required runtime container is absent.')
+        containers = subprocess.check_output(['docker','ps','-q','--filter','label=com.docker.compose.project='+project,'--filter','label=com.docker.compose.service='+service], text=True, timeout=15).split()
+        if len(containers) != 1:
+            raise ValueError('Select one actual running container per required service.')
+        container = containers[0]
         image = subprocess.check_output(['docker', 'inspect', '--format', '{{.Image}}', container], text=True, timeout=15).strip()
         raw = subprocess.check_output(['docker', 'image', 'inspect', '--format', '{{json .Architecture}}', image], text=True, timeout=15)
         arch = json.loads(raw)

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "$id": "https://tangerine.invalid/schemas/audio-diagnostic-defaults.schema.json",
+  "title": "audio-diagnostic-defaults",
+  "properties": {
+    "profiles": {
+      "type": "array",
+      "items": {
+        "$ref": "audio-judge-profile.schema.json"
+      }
+    },
+    "model_setup": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "prompt_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "profiles",
+    "model_setup",
+    "prompt_sha256"
+  ]
+}

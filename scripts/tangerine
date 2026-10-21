@@ -55,7 +55,9 @@ case "${1:-start}" in
   docker cp "$probe_container:/usr/local/bin/public-probe" "$probe" || fail 'BUILD_FAILED: could not extract the public readiness probe.'
   docker rm "$probe_container" >/dev/null
   chmod 700 "$probe"
-  compose build || fail 'BUILD_FAILED: service build failed. Check the build error above; existing data is retained.'
+  # API was already built with the host-native maintenance/probe target above.
+  # Rebuilding it through Compose's default Linux args replaces that helper.
+  compose build minio speech web || fail 'BUILD_FAILED: service build failed. Check the build error above; existing data is retained.'
   compose up -d --wait --wait-timeout 180 || fail 'START_FAILED: check port 3000 availability and run scripts/tangerine logs. Existing data is retained.'
   # Docker builds the host-native probe; no host runtime or curl is required.
   if ! API_INTERNAL_TOKEN=$(sed -n 's/^API_INTERNAL_TOKEN=//p' "$RUNTIME_FILE") "$probe" public-healthcheck; then

@@ -61,6 +61,11 @@ func speechSummary(p map[string]any) map[string]any {
 	if profile, ok := p["selected_speech_profile"]; ok {
 		summary["speech_profile_id"] = profile
 	}
+	for _, field := range []string{"canonical_word_count", "surface_word_count"} {
+		if value, present := p[field]; present {
+			summary[field] = value
+		}
+	}
 	return summary
 }
 

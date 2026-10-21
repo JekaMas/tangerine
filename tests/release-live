@@ -1,0 +1,165 @@
+#!/usr/bin/env python3
+"""Actual extracted-source/local-model/browser release observation; never hosted AI.
+
+The test-only network bridge carries the installed Ollama's actual responses.
+All application, DB/media, model, synthesis, UI and lifecycle owners remain real.
+"""
+from pathlib import Path
+import base64,hashlib,json,os,shutil,socket,subprocess,sys,tempfile,time,uuid,zipfile
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from browser_probe import Browser
+from importlib.util import module_from_spec,spec_from_file_location
+R=Path(__file__).resolve().parents[1];E=Path(os.environ['TANGERINE_RELEASE_EVIDENCE']).resolve();E.mkdir(parents=True,exist_ok=True)
+os.environ.setdefault('TANGERINE_LAB_IMAGE','tangerine-mlflow-upstream:3.17.0')
+arch=sys.argv[1] if len(sys.argv)>1 else 'arm64';assert arch in ['arm64','amd64']
+name='tangerine-i16-'+arch+'-'+uuid.uuid4().hex[:8];restored=name+'-restored';env=dict(os.environ,COMPOSE_PROJECT_NAME=name,DOCKER_DEFAULT_PLATFORM='linux/'+arch);browser=None;preview=False;obs={};work=None
+log=(E/'commands.log').open('a')
+def call(args,check=True,stdin=None,timeout=1000):
+ p=subprocess.run(args,cwd=work or R,env=env,input=stdin,capture_output=True,timeout=timeout)
+ log.write(p.stdout.decode(errors='replace')+p.stderr.decode(errors='replace'));log.flush()
+ if check and p.returncode:raise AssertionError('Actual release action failed: '+str(args[:3])+'; commands.log retains details')
+ return p
+def compose(*args,project=name):
+ runtime=work/'data/config/runtime.env' if project==name else work/'data/config/restores'/project/'runtime.env'
+ return ['docker','compose','--project-name',project,'--env-file',str(work/'.env'),'--env-file',str(runtime),'-f',str(work/'deploy/local/compose.yaml'),*args]
+def record(key,value):
+ obs[key]=value;(E/'observations.json').write_text(json.dumps(obs,indent=2));assert value is True,key
+ if browser:browser.capture(E,key)
+def wait(expression,expected=True,seconds=300):
+ deadline=time.monotonic()+seconds
+ while time.monotonic()<deadline:
+  value=browser.evaluate(expression)
+  if value==expected:return value
+  time.sleep(.2)
+ raise AssertionError((expression,value,expected))
+def sql(query):return call(compose('exec','-T','postgres','psql','-X','-At','-U','tangerine','-d','tangerine','-v','ON_ERROR_STOP=1','-c',query)).stdout.decode().strip()
+def request(path,method='GET',body=None):
+ return browser.evaluate("fetch('/api/v1/"+path+"',{method:"+json.dumps(method)+",headers:{'Content-Type':'application/json','Idempotency-Key':crypto.randomUUID()},"+("body:"+json.dumps(json.dumps(body))+"," if body is not None else '')+"cache:'no-store'}).then(async r=>({status:r.status,body:await r.json()}))")
+def navigate(path,text):browser.call('Page.navigate',{'url':'http://localhost:3000'+path});browser.wait(text)
+def click(text):browser.call('UI.click',{'selector':'button:text-is('+json.dumps(text)+')'})
+def fill(label,text):browser.call('UI.fill',{'selector':'[aria-label='+json.dumps(label)+']','value':text})
+def packet_evidence():
+ rows=json.loads(sql("SELECT coalesce(json_agg(payload ORDER BY id),'[]'::json) FROM document WHERE kind='provider-receipt'"));(E/'provider-receipts.json').write_text(json.dumps(rows,indent=2))
+ for row in rows:
+  raw=call(compose('run','--rm','--no-deps','-T','api','lab'),stdin=json.dumps({'action':'diagnostic-read','id':row['operation_id']}).encode()).stdout
+  (E/('diagnostic-'+row['operation_id']+'.json')).write_bytes(raw)
+ return rows
+with tempfile.TemporaryDirectory(prefix=name,dir=E) as temp:
+ temp=Path(temp);work=temp/'tangerine';work.mkdir();archive=E/('source-'+arch+'.zip')
+ with zipfile.ZipFile(archive,'w',compression=zipfile.ZIP_DEFLATED) as z:
+  for dirname in ['services','deploy','scripts','specification/v2']:
+   for p in (R/dirname).rglob('*'):
+    if p.is_file() and not any(part in ['node_modules','.next','__pycache__'] for part in p.parts):z.write(p,str(p.relative_to(R)))
+  for namefile in ['LICENSE','NOTICE','THIRD_PARTY_NOTICES.md','README.md','.env.example','.dockerignore']:
+   if (R/namefile).is_file():z.write(R/namefile,namefile)
+ with zipfile.ZipFile(archive) as z:z.extractall(work)
+ record('test_source_without_workflow_positive',not any((work/p).exists() for p in ['.git','.agents','openspec']) and (work/'LICENSE').read_bytes()==(R/'LICENSE').read_bytes())
+ try:
+  running=call(['docker','inspect','-f','{{.State.Running}}','tangerine-i1-web-1'],False)
+  if running.returncode==0 and running.stdout.strip()==b'true':call(['docker','stop','tangerine-i1-web-1']);preview=True
+  call(['sh','scripts/tangerine','start'],timeout=1800);record('test_source_start_positive',True)
+  probe_spec=spec_from_file_location('release_arch_probe',R/'scripts/assert_runtime_architecture.py');probe=module_from_spec(probe_spec);probe_spec.loader.exec_module(probe)
+  rows=probe.inspect(name,arch);(E/'architecture.json').write_text(json.dumps(rows,indent=2));record('test_architecture_positive',len(rows)==5 and {r['architecture'] for r in rows}=={arch})
+  try:probe.inspect(name,'amd64' if arch=='arm64' else 'arm64')
+  except ValueError as error:record('test_architecture_negative','architecture mismatch' in str(error))
+  else:raise AssertionError('wrong architecture accepted')
+  call(['docker','network','connect','--alias','llm-local',name+'_private','tangerine-i16-network'])
+  # Explicit setup copies accepted cached model data into this owned runtime;
+  # ordinary inference itself stays offline and never modifies the source cache.
+  speech_image=name+'-speech:local'
+  call(['docker','run','--rm','--platform','linux/'+arch,'-v',name+'_speech-models:/models','-v',str(R/'data/iteration7/models/kokoro-local-en-v1')+':/seed:ro','--entrypoint','python',speech_image,'-c',"import shutil;shutil.copytree('/seed','/models/kokoro-local-en-v1',dirs_exist_ok=True)"])
+  browser=Browser(temp/'chrome','http://localhost:3000/');browser.wait('Exercise library');browser.wait('No exercises yet');record('test_library_positive',browser.evaluate("document.body.textContent.includes('No exercises')||document.body.textContent.includes('No saved')"))
+  navigate('/settings','Model profiles and stages')
+  setup=request('configuration')['body']['configuration'];base=setup['llm_profiles'][0]
+  generated={**base,**json.loads((R/'audit/iteration-11-scoring-20261021/LOCAL-PROFILE.json').read_text()),'id':'release-local-generation','endpoint':'http://llm-local:8088/v1/responses','roles':['case_generation'],'max_output_tokens':8000,'temperature':0.7}
+  judge={**base,**json.loads((R/'audit/iteration-11-scoring-20261021/LOCAL-PROFILE.json').read_text()),'id':'release-local-judge','endpoint':'http://llm-local:8088/v1/responses'}
+  review={**base,**json.loads((R/'audit/iteration-12-review-20261021/LOCAL-PROFILE.json').read_text()),'id':'release-local-review','endpoint':'http://llm-local:8088/v1/responses'}
+  setup.update(llm_profiles=[generated,judge,review],llm_profile=judge['id'],stage_profiles={role:(generated['id'] if role=='case_generation' else review['id'] if role in ['case_review','adjudication'] else judge['id']) for role in setup['stage_profiles']},llm_lab_capture_content=True,llm_lab_trace_enabled=True,speech_profile='kokoro-local-en-v1')
+  for key in ['workspace_id','configuration_sha256','provider_access_policy']:setup.pop(key,None)
+  browser.call('UI.click',{'selector':'summary:text-is("Advanced configuration")'});fill('Advanced LLM configuration',json.dumps(setup));click('Save configuration');browser.wait('Settings saved.');record('test_local_settings_positive',True)
+  navigate('/prepare','Prepare an exercise');fill('Topic','Two café owners discuss tomorrow’s opening hours and welcome their neighbours.');fill('Approximate words','60');fill('Speakers','2');fill('Mistake categories','grammar')
+  browser.call('UI.click',{'selector':'summary:text-is("Advanced blueprint and speaker voices")'});fill('Advanced blueprint',json.dumps({'exercise_request':{'mutation_count':1},'speakers':[{'id':'s1','voice_profile_id':'af_heart','learner_cefr':'B1','l1':None,'requested_accent':'American English','pace_wpm':150,'pace_tolerance_fraction':.1},{'id':'s2','voice_profile_id':'bf_emma','learner_cefr':'B1','l1':None,'requested_accent':'British English','pace_wpm':150,'pace_tolerance_fraction':.1}]}));click('Generate exercise')
+  # One explicitly observed recovery is a separate declared user action, never
+  # a hidden best-of model retry. Retain its failed history and frozen baseline.
+  resumed=False;saved_clean=None
+  deadline=time.monotonic()+320
+  while time.monotonic()<deadline:
+   if browser.evaluate("document.body.textContent.includes('Exercise saved.')"):break
+   error=browser.evaluate("document.querySelector('[role=alert]')?.textContent")
+   if error:
+    if resumed:raise AssertionError('Actual generation failed after the single explicit Resume: '+error)
+    # Follow the UI's explicit Refresh-before-Resume instruction. A client
+    # timeout can precede the server's durable failed checkpoint/finalizer.
+    settled=time.monotonic()+30
+    while True:
+     state=request('preparations')['body']['items'];assert len(state)==1
+     if state[0]['phase_states']['mutation']!='running':break
+     if time.monotonic()>=settled:raise AssertionError('Saved mutation did not settle after its foreground deadline')
+     time.sleep(.2)
+    saved_clean=state[0].get('canonical_word_count');assert state[0]['phase_states']['canonical_text']=='complete'
+    (E/'generation-failure.json').write_text(json.dumps(dict(error=error,saved=state[0]),indent=2));record('test_generation_saved_failure_negative',True)
+    resumed=True;click('Refresh');wait("!document.querySelector('[role=alert]')");click('Resume exercise');deadline=time.monotonic()+320
+   time.sleep(.2)
+  else:raise AssertionError('Actual generation did not complete within its declared action budget')
+  if resumed:
+   saved=request('preparations')['body']['items'][0];record('test_generation_resume_positive',saved['canonical_word_count']==saved_clean and saved['phase_states']['mutation']=='complete')
+  wait("document.body.textContent.includes('Audio: complete')");record('test_generation_positive',True);record('test_word_counts_positive',browser.evaluate("document.body.textContent.includes('Clean text:')&&document.body.textContent.includes('With mutations:')"))
+  library=request('library')['body'];assert len(library)==1;case=library[0];key=json.loads(sql("SELECT payload FROM document WHERE id='"+case['id']+"'"));(E/'ground-truth.json').write_text(json.dumps(key,indent=2));units=[u for u in key['units'] if u['expected_judgment']=='true_error'];assert len(units)==1
+  u=units[0];realization=u['realization'];correction=u['corrections'][0]['text'];target=u['text_spans'][0]['span']['exact_text'];answer="Replace "+json.dumps(target,ensure_ascii=False)+" with "+json.dumps(correction,ensure_ascii=False)+"."
+  navigate('/','Exercise library');browser.call('UI.click',{'selector':'a:text-is("Listen and answer")'});browser.wait('Your answer');wait("document.querySelector('textarea').disabled",False)
+  attempt=browser.evaluate("new URL(location.href).searchParams.get('attempt')");assert attempt
+  wait("document.querySelector('audio').readyState>=2");browser.evaluate("document.querySelector('audio').play().then(()=>true)");time.sleep(1);browser.evaluate("document.querySelector('audio').pause();true")
+  audio=browser.evaluate("fetch(document.querySelector('audio').src).then(async r=>({status:r.status,sha:(r.headers.get('etag')||'').replaceAll('\"',''),bytes:[...new Uint8Array(await r.arrayBuffer())]}))");(E/'played.wav').write_bytes(bytes(audio['bytes']));record('test_actual_audio_positive',audio['status']==200 and audio['sha']==key['audio']['sha256'] and len(audio['bytes'])>4800)
+  record('test_key_hidden_negative',not browser.evaluate("document.documentElement.outerHTML.includes('rationale_required_propositions')||document.documentElement.outerHTML.includes('mutation_manifest_asset_id')"))
+  fill('Your answer',answer);click('Save draft');wait("document.body.textContent.includes('Draft saved')");browser.call('Page.reload');browser.wait('Your answer');wait("document.querySelector('textarea').value",answer);record('test_draft_persistence_positive',True)
+  click('Submit answer');wait("document.body.textContent.includes('Primary score:')||Boolean(document.querySelector('[role=alert]'))",seconds=320);record('test_interpretation_positive',browser.evaluate("document.body.textContent.includes('Answer interpretation ready.')&&document.body.textContent.includes('Correction: accepted')"));record('test_primary_score_positive',browser.evaluate("document.querySelector('[aria-label=\"Primary score\"]').textContent")=='Primary score: 100.0 / 100');record('test_optional_explanation_negative',browser.evaluate("document.body.textContent.includes('not provided (optional)')"))
+  (E/'session.json').write_text(json.dumps(dict(attempt_id=attempt,answer=answer,case_id=case['id'],audio_sha256=audio['sha']),indent=2))
+  result=request('attempts/'+attempt+'/results')['body'];(E/'result.json').write_text(json.dumps(result,indent=2));record('test_recommendations_positive','feedback' in result or 'recommendations' in result)
+  checkpoint=json.loads(call(['sh','scripts/tangerine','backup','main-flow.tar.gz'],timeout=1200).stdout);assert checkpoint['status']=='complete';shutil.copy2(work/'data/backups/main-flow.tar.gz',E/'main-flow.tar.gz')
+  navigate('/reviews?attempt='+attempt,'Optional LLM review');click('Reconsider answer');wait("document.querySelector('[aria-label=\"Review findings\"]')?.textContent.includes('complete')",seconds=320);record('test_review_positive',browser.evaluate("document.querySelector('[aria-label=\"Primary score\"]').textContent")=='Primary score: 100.0 / 100')
+  fill('Dispute statement','Please check my correction against the original text and the injected mutation. I did not provide an explanation.');click('Submit dispute');wait("document.querySelector('[aria-label=\"Review findings\"]')?.textContent.includes('Statement: Please check my correction')&&document.querySelector('[aria-label=\"Review findings\"]')?.textContent.includes('complete')&&![...document.querySelectorAll('button')].find(b=>b.textContent==='Submit dispute')?.disabled",seconds=320);record('test_dispute_positive',True)
+  receipts=packet_evidence();record('test_actual_receipts_positive',len(receipts)>=6 and all(r['cost_micro_usd'] is None for r in receipts))
+  # Actual local MLflow export/readback is development evidence, not a gate in
+  # the product's exercise flow. It makes no model/provider request.
+  with socket.socket() as listener:listener.bind(('127.0.0.1',0));env['TANGERINE_LAB_PORT']=str(listener.getsockname()[1])
+  call(['sh','scripts/tangerine','lab','--port',env['TANGERINE_LAB_PORT']],timeout=500)
+  exports=[]
+  for row in receipts:
+   packet=(E/('diagnostic-'+row['operation_id']+'.json')).read_bytes()
+   exported=json.loads(call(compose('exec','-T','llm-lab','python','/tangerine/lab.py','sync'),stdin=packet).stdout)
+   verified=json.loads(call(compose('exec','-T','llm-lab','python','/tangerine/lab.py','verify'),stdin=json.dumps(exported).encode()).stdout)
+   assert verified['status']=='observed' and verified['provider_calls']==0 and not verified['discrepancies']
+   exports.append(dict(operation=row['operation_id'],exported=exported,verified=verified))
+  (E/'mlflow-readback.json').write_text(json.dumps(exports,indent=2));record('test_actual_lab_positive',len(exports)==len(receipts))
+  # No inference during saved readback and lifecycle work.
+  calls_before=len(receipts);browser.close();browser=None;call(compose('stop','web','api','speech'));call(compose('up','-d','--wait','--wait-timeout','180','web'))
+  browser=Browser(temp/'restarted','http://localhost:3000/listen?attempt='+attempt);browser.wait('Your answer');wait("document.querySelector('textarea').value",answer);record('test_restart_positive',True)
+  browser.close();browser=None;backup=json.loads(call(['sh','scripts/tangerine','backup','release.tar.gz'],timeout=1200).stdout);record('test_backup_positive',backup['status']=='complete' and backup['secrets_included'] is False)
+  archived=work/'data/backups/release.tar.gz';shutil.copy2(archived,E/'release-backup.tar.gz');restored_receipt=json.loads(call(['sh','scripts/tangerine','restore',str(archived),restored],timeout=1200).stdout);record('test_restore_positive',restored_receipt['status']=='restored' and restored_receipt['selected'] is False)
+  record('test_existing_restore_negative',call(['sh','scripts/tangerine','restore',str(archived),restored],check=False,timeout=1200).returncode!=0)
+  call(['sh','scripts/tangerine','switch',restored],timeout=1200);browser=Browser(temp/'restored','http://localhost:3000/listen?attempt='+attempt);browser.wait('Your answer');wait("document.querySelector('textarea').value",answer)
+  read_audio=browser.evaluate("fetch(document.querySelector('audio').src).then(async r=>[...new Uint8Array(await r.arrayBuffer())])");record('test_restored_media_positive',bytes(read_audio)==bytes(audio['bytes']));record('test_restored_score_positive',browser.evaluate("document.querySelector('[aria-label=\"Primary score\"]').textContent")=='Primary score: 100.0 / 100')
+  count=json.loads(call(compose('exec','-T','postgres','psql','-X','-At','-U','tangerine','-d','tangerine','-c',"SELECT count(*) FROM document WHERE kind='provider-receipt'",project=restored)).stdout);record('test_maintenance_no_inference_negative',count==calls_before)
+  (E/'receipt.json').write_text(json.dumps({'status':'passed','architecture':arch,'source_zip':str(archive),'models':[generated['model'],judge['model'],'hexgrad/Kokoro-82M'],'billing_mode':'local','fixture_response':False,'observations':obs,'project':name,'restored':restored},indent=2))
+ finally:
+  # Retain native/provider evidence before any disposable DB/media cleanup,
+  # including interrupted/failed actual model calls and UI state.
+  if browser:
+   try:browser.capture(E,'final-observation')
+   except Exception as error:(E/'capture-error.txt').write_text(type(error).__name__)
+  if (work/'data/config/runtime.env').exists():
+   try:
+    packet_evidence()
+    native=call(compose('exec','-T','postgres','psql','-X','-At','-U','tangerine','-d','tangerine','-c',"SELECT coalesce(json_agg(payload ORDER BY id),'[]'::json) FROM document WHERE kind='preparation-state'"),False)
+    (E/'final-preparations.json').write_bytes(native.stdout)
+    dump=call(compose('exec','-T','postgres','pg_dump','-U','tangerine','-d','tangerine','--format=custom'),False)
+    if dump.returncode==0:(E/'native-observation.dump').write_bytes(dump.stdout)
+   except Exception as error:(E/'native-capture-error.txt').write_text(type(error).__name__)
+  if browser:
+   try:(E/'final-dom.html').write_text(browser.evaluate('document.documentElement.outerHTML'))
+   finally:browser.close()
+  call(['docker','network','disconnect',name+'_private','tangerine-i16-network'],False)
+  for project in [restored,name]:
+   if (work/'data/config/restores'/project/'runtime.env').exists() or (project==name and (work/'data/config/runtime.env').exists()):call(compose('down','--volumes','--remove-orphans',project=project),False)
+   for suffix in ['api','minio','speech','web']:call(['docker','image','rm',project+'-'+suffix+':local'],False)
+  if preview:call(['docker','start','tangerine-i1-web-1'],False)

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "$id": "https://tangerine.invalid/schemas/audio-diagnostic-packet.schema.json",
+  "title": "audio-diagnostic-packet",
+  "properties": {
+    "method_id": {
+      "type": "string",
+      "enum": [
+        "ffmpeg-ebur128-v1",
+        "praat-ac-v1",
+        "faster-whisper-local-en-v1",
+        "qwen25-omni-audio-v1",
+        "gemini-audio-v1"
+      ]
+    },
+    "audio_base64": {
+      "type": "string",
+      "description": "Actual admitted 24kHz PCM WAV bytes encoded for private transport."
+    },
+    "audio_sha256": {
+      "type": "string"
+    },
+    "reference_text": {
+      "type": "string",
+      "description": "Compared after independent transcription; never passed to recognizer."
+    },
+    "profile": {
+      "type": "object"
+    },
+    "prompt": {
+      "type": "string"
+    },
+    "input": {
+      "$ref": "audio-judge-input.schema.json"
+    },
+    "reference_audio_base64": {
+      "type": "string"
+    },
+    "timeout_seconds": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    }
+  },
+  "required": [
+    "method_id",
+    "audio_base64"
+  ]
+}

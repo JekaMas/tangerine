@@ -156,6 +156,9 @@ func (s *Server) finishMutation(ctx context.Context, p, settings map[string]any,
 	words := 0
 	if manifest != nil {
 		words = manifest["canonical_word_count"].(int)
+		if callErr == nil {
+			p["canonical_word_count"], p["surface_word_count"] = words, manifest["surface_word_count"]
+		}
 	}
 	if e := s.Store.checkpoint(end, p, &rev, op.ID, callErr == nil, words); e != nil {
 		return p, e
@@ -195,6 +198,7 @@ func (s *Server) invokeMutation(ctx context.Context, p, settings map[string]any,
 	if e != nil {
 		return LLMResult{}, e
 	}
+	recipes, production = mutationContextRecipes(recipes, production)
 	input := map[string]any{"schema_version": "2.0.0", "blueprint": blueprint, "taxonomy_records_asset_id": taxonomyID, "taxonomy_records_sha256": settings["taxonomy_registry_sha256"], "allowed_source_record_ids": []any{}, "request_language": "en", "source_excerpts": []any{}, "taxonomy_context": taxonomy, "phase": "mutation", "canonical_script": clean, "canonical_script_sha256": p["canonical_sha256"], "mutation_recipes": recipes, "recipe_registry_sha256": settings["recipe_registry_sha256"], "production_recipes": production, "production_registry_sha256": settings["production_registry_sha256"]}
 	components := map[string]any{"blueprint": blueprint, "taxonomy": taxonomy, "public_context": blueprint["public_context"], "source_excerpt": nil, "canonical_script": clean, "recipes": map[string]any{"mutation_recipes": recipes, "production_recipes": production}}
 	var bundle lab.Bundle
@@ -203,6 +207,6 @@ func (s *Server) invokeMutation(ctx context.Context, p, settings map[string]any,
 		return LLMResult{}, e
 	}
 	phase := "mutation"
-	result, e := s.InvokeLLM(ctx, LLMRequest{DiagnoseInvalid: mutationLocatorDiagnostic, Timeout: preparationTimeout(settings, "mutation"), Operation: OperationRequest{Name: "mutation", Key: key, Path: "/prepare/mutation/model", Body: json.RawMessage(`{}`)}, Stage: "case_generation", Phase: &phase, Input: input, Components: components, Configuration: config, Bundle: bundle, Validate: func(raw []byte) error { _, e := mutationContent(raw, blueprint, clean, taxonomy); return e }}, client)
+	result, e := s.InvokeLLM(ctx, LLMRequest{NormalizeProjection: normalizeMutationOutput, DiagnoseInvalid: mutationLocatorDiagnostic, Timeout: preparationTimeout(settings, "mutation"), Operation: OperationRequest{Name: "mutation", Key: key, Path: "/prepare/mutation/model", Body: json.RawMessage(`{}`)}, Stage: "case_generation", Phase: &phase, Input: input, Components: components, Configuration: config, Bundle: bundle, Validate: func(raw []byte) error { _, e := mutationContent(raw, blueprint, clean, taxonomy); return e }}, client)
 	return result, e
 }

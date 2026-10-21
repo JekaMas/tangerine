@@ -2,6 +2,7 @@
 import {useEffect,useRef,useState} from 'react';
 import Results from '../listen/Results';
 import ReconsiderSelected from './ReconsiderSelected';
+import Measurements from './Measurements';
 
 export default function Reviews(){
  const [scope,setScope]=useState(null),[rows,setRows]=useState([]),[selected,setSelected]=useState(null),[statement,setStatement]=useState(''),[result,setResult]=useState(null),[current,setCurrent]=useState(null),[caseItem,setCaseItem]=useState(null),[busy,setBusy]=useState(false),[error,setError]=useState(''),[cursor,setCursor]=useState('');
@@ -45,6 +46,7 @@ export default function Reviews(){
    </section>}
    <h2>Review history</h2>{rows.map(row=><p key={row.id}><button disabled={busy} onClick={()=>select(row.id)}>{row.purpose.replaceAll('_',' ')} · {row.status} · {row.created_at}</button></p>)}{cursor&&<button disabled={busy} onClick={()=>refresh(scope,cursor)}>More reviews</button>}
   </section>
+  {((scope?.case&&caseItem)||(scope?.attempt&&current?.score))&&<Measurements key={scope.attempt?current.score.case_version_id:scope.case} caseID={scope.attempt?current.score.case_version_id:scope.case} attemptID={scope.attempt} audioSHA={scope.attempt?null:caseItem.audio_sha256}/>}
   {scope?.attempt&&current&&<section className="card"><h2>Result history</h2><button disabled={busy} onClick={()=>resultVersion(current.result_id)}>Current result</button>{current.result_revision_ids?.map((id,i)=><button key={id} disabled={busy} onClick={()=>resultVersion(id)}>{i===0?'Original result':'Earlier result '+(i+1)}</button>)}<Results results={result} busy={true} retry={()=>{}}/><a href={'/listen?attempt='+scope.attempt}>Return to listening and results</a></section>}
  </main>;
 }

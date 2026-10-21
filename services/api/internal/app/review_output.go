@@ -165,6 +165,16 @@ func admitReview(raw []byte, r ReviewRun, f ReviewFrozen) (map[string]any, error
 		textual := u["realization"].(map[string]any)["mode"] == "textual" || u["realization"].(map[string]any)["mode"] == "text"
 		contextEvidence := map[string]bool{}
 		if textual {
+			// These exact attachment names are already part of the saved unit
+			// the model received. Accept them as textual provenance; this does
+			// not turn the text reviewer into a listener or a native observer.
+			if ids, ok := u["evidence_ids"].([]any); ok {
+				for _, value := range ids {
+					if id, ok := value.(string); ok {
+						contextEvidence[id] = true
+					}
+				}
+			}
 			if records, ok := u["context_evidence"].([]any); ok {
 				for _, value := range records {
 					if record, ok := value.(map[string]any); ok {

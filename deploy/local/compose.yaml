@@ -88,6 +88,7 @@ services:
       ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}
       AZURE_SPEECH_KEY: ${AZURE_SPEECH_KEY:-}
       AZURE_SPEECH_REGION: ${AZURE_SPEECH_REGION:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
     volumes: [speech-models:/models]
     healthcheck:
       test: [CMD, python, -c, "import os,urllib.request; r=urllib.request.Request('http://127.0.0.1:8090/health/ready',headers={'Authorization':'Bearer '+os.environ['SPEECH_INTERNAL_TOKEN']}); urllib.request.urlopen(r,timeout=6)"]
