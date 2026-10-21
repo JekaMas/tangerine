@@ -577,3 +577,22 @@ func TestLabDatasetStageNegative(t *testing.T) {
 	d["stage"] = "feedback"
 	no(t, ValidateDataset(sealed(d, "dataset_sha256")))
 }
+
+func TestLabTraceDevelopmentPositive(t *testing.T) {
+	s := span()
+	s.Attributes["tangerine.development_run_id"] = "77777777-7777-4777-8777-777777777777"
+	b, e := OTLP(s)
+	must(t, e)
+	if !bytes.Contains(b, []byte("tangerine.development_run_id")) || !bytes.Contains(b, []byte("77777777-7777-4777-8777-777777777777")) {
+		t.Fatal("development correspondence was dropped")
+	}
+}
+func TestLabTraceDevelopmentSecretNegative(t *testing.T) {
+	s := span()
+	s.Attributes["tangerine.development_run_id"] = "77777777-7777-4777-8777-777777777777"
+	s.Attributes["Authorization"] = "private-canary"
+	b, e := OTLP(s)
+	if e == nil || len(b) != 0 {
+		t.Fatal("secret attribute bypassed single trace admission")
+	}
+}

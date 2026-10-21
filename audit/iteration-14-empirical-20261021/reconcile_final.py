@@ -5,7 +5,7 @@ R=Path(__file__).resolve().parents[2];A=Path(__file__).resolve().parent;sys.path
 rt=dag.rt;load=lambda p:json.loads(p.read_text());plan=load(A/'FINAL-SELECTION.json');g=rt.EvidenceGraph(R,'implement-teacher-error-trainer');sources=[]
 for name in plan['source_receipts']:
  receipt=load(R/name);assert not receipt['git']['dirty'];old=json.loads(subprocess.check_output(['git','show',receipt['git']['head']+':openspec/changes/implement-teacher-error-trainer/verification.json'],cwd=R));sources.append((name,receipt,{x['id']:x for x in old['cases']}))
-allowed={'services/api/internal/app/experiment.go','services/api/internal/app/experiment_storage.go','services/api/internal/app/experiment_scorer.go','services/api/internal/app/experiment_judge_projection.go','services/api/internal/experiment/metrics.go'};changed=set(subprocess.check_output(['git','diff','--name-only','2594009','--','services/api'],cwd=R,text=True).splitlines());assert not {p for p in changed if not p.endswith('_test.go') and p not in allowed}
+allowed={'services/api/internal/lab/trace.go','services/api/internal/app/experiment.go','services/api/internal/app/experiment_storage.go','services/api/internal/app/experiment_scorer.go','services/api/internal/app/experiment_judge_projection.go','services/api/internal/experiment/metrics.go'};changed=set(subprocess.check_output(['git','diff','--name-only','2594009','--','services/api'],cwd=R,text=True).splitlines());assert not {p for p in changed if not p.endswith('_test.go') and p not in allowed}
 records=[]
 for cid in plan['retained_case_ids']:
  c=g.cases[cid];current=json.loads(c['observable']);found=None

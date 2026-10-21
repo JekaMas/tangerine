@@ -1,11 +1,11 @@
 """Materialize literal I14 execution plans into the existing canonical DAG."""
 from pathlib import Path
-import ast,collections,hashlib,json,re,sys
+import ast,collections,hashlib,json,re,sys,subprocess
 R=Path(__file__).resolve().parents[2];A=Path(__file__).resolve().parent;C=R/'openspec/changes/implement-teacher-error-trainer';V=R/'specification/v2'
 sys.path.insert(0,str(R/'.agents/workflow/scripts'));from requirement_tests import parse_delta_specs
 load=lambda p:json.loads(p.read_text());save=lambda p,d:p.write_text(json.dumps(d,indent=2)+'\n');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 g=load(C/'verification.json');fixtures=load(V/'domain/verification-fixtures.v1.json');sets=load(V/'domain/property-test-sets.v1.json');inventory=load(C/'property-inventory.json');discovery=load(C/'discovery.json');plan=load(A/'PLAN.json')
-files=['services/api/internal/empirical/report_test.go','services/api/internal/experiment/metrics_test.go','services/api/internal/app/experiment_contract_test.go','tests/native_quality_test.go','tests/native_quality_pipeline_test.go','tests/native_quality_local_test.go','tests/test_quality_browser.py','tests/test_quality_lab.py'];names={};bodies={};classes={};library={}
+files=['services/api/internal/lab/lab_test.go','services/api/internal/empirical/report_test.go','services/api/internal/experiment/metrics_test.go','services/api/internal/app/experiment_contract_test.go','tests/native_quality_test.go','tests/native_quality_pipeline_test.go','tests/native_quality_local_test.go','tests/test_quality_browser.py','tests/test_quality_lab.py'];names={};bodies={};classes={};library={}
 for path in files:
  text=(R/path).read_text();library[path]=dict(source_path=path,source_sha256=sha(R/path),origin='Constructed independent assertions; actual local model and actual MLflow are explicitly labelled.',fixture_source=text)
  if path.endswith('.py'):
@@ -32,7 +32,7 @@ groups={
 'I14-07':['TestQualityJSONPathPositive','TestQualityJSONPathNegative','TestQualityFalsePositiveNegative','TestQualityDuplicateClaimPositive']+match('TestQualityJudge')+['TestQualityIndependentComponentsPositive','TestQualityDisclosurePositive','TestQualityWrappedEvidencePositive','TestQualityWrongMappingNegative','TestQualityAuditLeakNegative','TestQualityAbsentWrappedEvidenceNegative','TestQualityUnsupportedNegative'],
 'I14-08':['TestQualityControlDetectionPositive','TestQualityUnalignedAssertionNegative','TestExperimentComparisonPositive','TestExperimentPairsPositive','TestExperimentRepeatComparisonPositive','TestNativeQualityPopulationPositive','TestExperimentComparisonNegative','TestExperimentAlignmentNegative','TestExperimentCompletionComparisonNegative','TestExperimentMixedBasisNegative'],
 'I14-09':[n for n,p in names.items() if p=='tests/test_quality_browser.py'],
-'I14-10':['TestNativeQualityLocalPositive','TestNativeQualityLocalNegative','test_correspondence_positive','test_export_recovery_positive','test_unavailable_negative','test_missing_copy_negative','TestNativeQualityExportPositive','TestNativeQualityExportNegative'],
+'I14-10':['TestLabTraceDevelopmentPositive','TestLabTraceDevelopmentSecretNegative','TestNativeQualityLocalPositive','TestNativeQualityLocalNegative','test_correspondence_positive','test_export_recovery_positive','test_unavailable_negative','test_missing_copy_negative','TestNativeQualityExportPositive','TestNativeQualityExportNegative'],
 }
 # Test names in separate Python suites do not overlap.
 assert all(n in names for ns in groups.values() for n in ns)
@@ -47,7 +47,7 @@ base=['services/api/internal/empirical/**','services/api/internal/experiment/**'
 def bind(cid,pid,scenario,pol,name,owner,oracle,case=None):
  src=names[name];body=bodies[name];python=src.endswith('.py');local=src=='tests/native_quality_local_test.go';native=src.startswith('tests/native_quality') and not local
  command='iteration14-2-browser' if src=='tests/test_quality_browser.py' else 'iteration14-4-lab' if python else 'iteration14-3-local' if local else 'iteration14-1-native' if native else 'iteration14-0-go'
- pkg='empirical' if '/empirical/' in src else 'experiment' if '/experiment/' in src else 'app';tid='unittest::'+Path(src).stem+'.'+classes[name]+'.'+name if python else 'tangerine.local/api/internal/'+pkg+'::'+name;tids.append(tid)
+ pkg='lab' if '/lab/' in src else 'empirical' if '/empirical/' in src else 'experiment' if '/experiment/' in src else 'app';tid='unittest::'+Path(src).stem+'.'+classes[name]+'.'+name if python else 'tangerine.local/api/internal/'+pkg+'::'+name;tids.append(tid)
  fixture_id='iteration14-'+cid.replace('.','-');inp=dict(exact_test=name,literal_executable_fixture=body,fixture_source_path=src,fixture_source_sha256=sha(R/src),shared_fixture_library='audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#'+src)
  expected=dict(independent_literal_assertions=body,oracle=oracle);initial=dict(origin='Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.',setup='Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs.')
  bp=dict(case_id=cid,property_id=pid,polarity=pol,scenario=scenario,fixture_id=fixture_id,test_id=tid,mode='declared_behavior',action='Execute '+name+' through '+owner,initial_state=initial,input=inp,expected=expected,independent_oracle=oracle,observation_state='not_run');plans.append(bp)
@@ -81,6 +81,18 @@ for rid,tests in aliases.items():
   if row['property_id']==pid:row.update(positive_cases=[c['id'] for c in cases if c['polarity']=='positive'],negative_cases=[c['id'] for c in cases if c['polarity']=='negative'],positive_distinct_packets=sum(c['polarity']=='positive' for c in cases),negative_distinct_packets=sum(c['polarity']=='negative' for c in cases),runtime_set_observation='not_run')
 env=dict(DOCKER_HOST='unix:///Users/jekamas/Library/Containers/com.docker.docker/Data/docker.raw.sock');binding=load(A/'RUNTIME-BINDINGS.json')
 g['commands'] += [dict(id='iteration14-0-go',runner='go-test-json',argv=['./tests/go-docker','test','-json','-race','-count=1','-run','^Test(Empirical|Experiment|Quality)','./internal/empirical','./internal/experiment','./internal/app'],cwd='.',env=env,timeout_seconds=600,authority='local'),dict(id='iteration14-1-native',runner='go-test-json',argv=['./tests/quality-native','test','-json','-race','-count=1','./internal/app'],cwd='.',env=env,timeout_seconds=1200,authority='local'),dict(id='iteration14-2-browser',runner='python-unittest',argv=['python3','-B','-m','unittest','discover','-s','tests','-p','test_quality_browser.py','-v'],cwd='.',env={**env,'TANGERINE_INTERPRETATION_TEST_WEB_IMAGE':binding['web_image']},timeout_seconds=900,authority='local'),dict(id='iteration14-3-local',runner='go-test-json',argv=['./tests/quality-local','test'],cwd='.',env=env,timeout_seconds=1000,authority='local'),dict(id='iteration14-4-lab',runner='python-unittest',argv=['python3','-B','-m','unittest','discover','-s','tests','-p','test_quality_lab.py','-v'],cwd='.',env=env,timeout_seconds=500,authority='local')]
+# Appending dedicated trace regressions leaves every previous literal/helper byte
+# intact. Reconcile the graph's physical-file identity explicitly; old execution
+# receipts retain their original hashes and are not rewritten.
+trace_path='services/api/internal/lab/lab_test.go'
+prior_trace=subprocess.check_output(['git','show','5894f68:'+trace_path],cwd=R)
+assert (R/trace_path).read_bytes().startswith(prior_trace)
+trace_rows=[]
+for case in g['cases']:
+ if case.get('source_path')==trace_path:
+  if case.get('source_sha256')!=sha(R/trace_path):trace_rows.append(dict(case_id=case['id'],previous_sha256=case.get('source_sha256'),current_sha256=sha(R/trace_path),reason='Only dedicated new test functions appended; original test/helper bytes preserved exactly. Retain original green observations.'))
+  case['source_sha256']=sha(R/trace_path)
+if trace_rows:save(A/'TRACE-SOURCE-RETENTION.json',trace_rows)
 pending=next(x for x in g['commands'] if x['id']=='pending');pending['expected_markers']=list(dict.fromkeys(c['test_id'] for c in g['cases'] if c['command_id']=='pending'))
 valid={c['test_id'] for c in g['cases']};newids={c['id']:c for c in g['cases']};oldg=load(C/'verification.json');rebound={c['test_id']:newids[c['id']]['test_id'] for c in oldg['cases'] if c['id'] in newids and not c['id'].startswith('I14-') and c['test_id']!=newids[c['id']]['test_id']}
 for review in discovery['reviews']:review['test_ids']=list(dict.fromkeys(rebound.get(n,n) for n in review['test_ids'] if rebound.get(n,n) in valid))

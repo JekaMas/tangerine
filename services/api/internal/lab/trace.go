@@ -57,7 +57,7 @@ func OTLP(s TraceSpan) ([]byte, error) {
 	p = append(p, fixed(7, uint64(s.Start.UnixNano()))...)
 	p = append(p, fixed(8, uint64(s.End.UnixNano()))...)
 	allowed := map[string]bool{}
-	for _, k := range []string{"tangerine.operation_id", "stage", "phase", "receipt_id", "context_snapshot_id", "bundle_sha256", "binding_sha256", "input_sha256", "case_sha256", "audio_sha256", "answer_sha256", "cache_hit", "attempt_kind", "attempt_index", "requested_model", "returned_model", "error", "duration_ms", "input_tokens", "output_tokens", "reported_cost"} {
+	for _, k := range []string{"tangerine.operation_id", "tangerine.development_run_id", "stage", "phase", "receipt_id", "context_snapshot_id", "bundle_sha256", "binding_sha256", "input_sha256", "case_sha256", "audio_sha256", "answer_sha256", "cache_hit", "attempt_kind", "attempt_index", "requested_model", "returned_model", "error", "duration_ms", "input_tokens", "output_tokens", "reported_cost"} {
 		allowed[k] = true
 	}
 	keys := []string{}
