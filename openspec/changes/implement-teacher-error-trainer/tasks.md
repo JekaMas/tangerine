@@ -729,5 +729,7 @@ Iteration 11 verification supersedes its earlier acceptance: all seven finding g
 - [x] I13.2 Implement lossless safe file/archive intake and all documented native formats, retaining unknown fields, clocks, native annotations, scripts/formulas as inert data and explicit quarantine dispositions.
 - [x] I13.3 Implement deterministic documented mapping programs, joins, conversions and source presets; preserve raw-only unknown semantics and full component/record reconciliation.
 - [x] I13.4 Implement durable release/binding/permission/connector/preview/import/readback owners with checkpoint/retry/cancel/replay and source-bound usage, plus the local Source UI.
-- [ ] I13.5 Observe literal positive/negative pure/native/browser cases and actual acquired complete public data; repair in-scope findings without fabricating private-release conformance.
-- [ ] I13.6 Reconcile affected dependency evidence, stable checks and code review; commit implementation, run the whole iteration on a clean committed tree, and record acceptance only after green.
+- [x] I13.5 Observe literal positive/negative pure/native/browser cases and actual acquired complete public data; repair in-scope findings without fabricating private-release conformance.
+- [x] I13.6 Reconcile affected dependency evidence, stable checks and code review; commit implementation, run the whole iteration on a clean committed tree, and record acceptance only after green.
+
+Iteration13 acceptance: audit/iteration-13-source-imports-20261021/REPORT.md and ACCEPTANCE.json;251case edges reconciled,52fresh clean and199bounded retained passes. I12/I8 and later iterations retain their existing status.
