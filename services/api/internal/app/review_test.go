@@ -267,3 +267,112 @@ func TestReviewSourceNegative(t *testing.T) {
 		t.Fatal("proposal fabricated source authority")
 	}
 }
+
+func reviewRepairPolicyFixture(t *testing.T) (ReviewRun, ReviewFrozen, map[string]any) {
+	r, f, out := reviewOutputFixture(t)
+	_, p, _ := reviewKeyFixture(t)
+	p["base_case_sha256"] = f.Key["case_sha256"]
+	p["proposed_units"] = reviewCandidate(f.Key)["planned_units"]
+	out["resolution"] = "key_defect"
+	out["key_repair"] = p
+	unit := f.Key["units"].([]any)[0].(map[string]any)
+	f.Resources.Taxonomy = []any{map[string]any{"id": unit["primary_taxonomy_id"], "reporting_domain": "grammar"}}
+	return r, f, out
+}
+func TestReviewRepairDomainPositive(t *testing.T) {
+	r, f, o := reviewRepairPolicyFixture(t)
+	if _, e := admitReview(reviewBytes(o), r, f); e != nil {
+		t.Fatal(e)
+	}
+}
+func TestReviewRepairDomainNegative(t *testing.T) {
+	r, f, o := reviewRepairPolicyFixture(t)
+	o["key_repair"].(map[string]any)["proposed_units"].([]any)[0].(map[string]any)["domain"] = "lexical"
+	if _, e := admitReview(reviewBytes(o), r, f); e == nil {
+		t.Fatal("grammar event was admitted into lexical scoring")
+	}
+}
+func TestReviewRepairSecondaryPositive(t *testing.T) {
+	k, p, tax := reviewKeyFixture(t)
+	u := p["proposed_units"].([]any)[0].(map[string]any)
+	u["secondary_taxonomy_ids"] = []any{u["primary_taxonomy_id"]}
+	if e := admitKeyRepair(k, p, tax); e != nil {
+		t.Fatal(e)
+	}
+}
+func TestReviewRepairSecondaryNegative(t *testing.T) {
+	k, p, tax := reviewKeyFixture(t)
+	p["proposed_units"].([]any)[0].(map[string]any)["secondary_taxonomy_ids"] = []any{"not.registered"}
+	if admitKeyRepair(k, p, tax) == nil {
+		t.Fatal("unregistered secondary category admitted")
+	}
+}
+func TestReviewRepairWeightPositive(t *testing.T) {
+	k, p, tax := reviewKeyFixture(t)
+	u := p["proposed_units"].([]any)[0].(map[string]any)
+	for _, v := range []struct {
+		name   string
+		weight float64
+	}{{"minor", 1}, {"moderate", 2}, {"major", 3}, {"communication_breakdown", 4}} {
+		u["severity"] = v.name
+		u["weight"] = v.weight
+		if e := admitKeyRepair(k, p, tax); e != nil {
+			t.Fatal(v, e)
+		}
+	}
+}
+func TestReviewRepairWeightNegative(t *testing.T) {
+	k, p, tax := reviewKeyFixture(t)
+	p["proposed_units"].([]any)[0].(map[string]any)["weight"] = float64(999)
+	if admitKeyRepair(k, p, tax) == nil {
+		t.Fatal("model supplied arbitrary severity weight admitted")
+	}
+}
+
+func reviewRubricReferenceFixture(t *testing.T, name string) (map[string]any, map[string]any, map[string]any, string) {
+	k, _, _ := reviewKeyFixture(t)
+	unit := k["units"].([]any)[0].(map[string]any)
+	id := unit["rationale_required_propositions"].([]any)[0].(map[string]any)["id"].(string)
+	var option any
+	if name == "correction" {
+		o := unit["corrections"].([]any)[0].(map[string]any)
+		option = o["id"]
+		id = o["required_propositions"].([]any)[0].(map[string]any)["id"].(string)
+	}
+	c := reviewClone(map[string]any{"status": "rejected", "option_id": option, "violated_proposition_ids": []any{id}, "additional_assertions": []any{map[string]any{"start_cp": 4, "end_cp": 11, "exact_text": "opening", "judgment": "unsupported", "reason": "Literal proposed content is unsupported in this context."}}})
+	d := map[string]any{"unit_id": unit["id"], name: c}
+	return k, map[string]any{"decisions": []any{d}}, c, id
+}
+func TestReviewRubricReferencePositive(t *testing.T) {
+	for _, name := range []string{"correction", "explanation"} {
+		key, decisions, c, _ := reviewRubricReferenceFixture(t, name)
+		before := reviewClone(c)
+		normalizeReviewRubricReferences(decisions, key)
+		before["violated_proposition_ids"] = []any{}
+		if !reflect.DeepEqual(c, before) {
+			t.Fatal("rejection/source meaning changed", name, c)
+		}
+	}
+}
+func TestReviewRubricReferenceNegative(t *testing.T) {
+	for _, mode := range []string{"unknown", "no_assertion", "accepted", "wrong_option", "actually_forbidden"} {
+		key, decisions, c, id := reviewRubricReferenceFixture(t, "correction")
+		switch mode {
+		case "unknown":
+			c["violated_proposition_ids"] = []any{"unknown-rubric-id"}
+		case "no_assertion":
+			c["additional_assertions"] = []any{}
+		case "accepted":
+			c["status"] = "accepted"
+		case "wrong_option":
+			c["option_id"] = "different-option"
+		case "actually_forbidden":
+			key["units"].([]any)[0].(map[string]any)["corrections"].([]any)[0].(map[string]any)["forbidden_propositions"] = []any{map[string]any{"id": id, "description": "Actual forbidden proposition."}}
+		}
+		before := reviewClone(c)
+		normalizeReviewRubricReferences(decisions, key)
+		if !reflect.DeepEqual(c, before) {
+			t.Fatal("ambiguous/unknown source reference was hidden", mode, c)
+		}
+	}
+}

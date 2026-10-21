@@ -85,6 +85,17 @@ func admitReview(raw []byte, r ReviewRun, f ReviewFrozen) (map[string]any, error
 		if e := admitKeyRepair(f.Key, out["key_repair"].(map[string]any), f.Resources.TaxonomyIDs); e != nil {
 			return nil, e
 		}
+		domains := map[string]any{}
+		for _, v := range f.Resources.Taxonomy {
+			row := v.(map[string]any)
+			domains[row["id"].(string)] = row["reporting_domain"]
+		}
+		for _, v := range out["key_repair"].(map[string]any)["proposed_units"].([]any) {
+			unit := v.(map[string]any)
+			if domains[unit["primary_taxonomy_id"].(string)] != unit["domain"] {
+				return nil, reviewInvalid("A repaired unit must use its registered primary category's scoring domain.")
+			}
+		}
 	} else if out["key_repair"] != nil {
 		return nil, reviewInvalid("Only key_defect can replace the key.")
 	}
@@ -97,6 +108,7 @@ func admitReview(raw []byte, r ReviewRun, f ReviewFrozen) (map[string]any, error
 			key = reviewClone(key)
 			key["units"] = out["key_repair"].(map[string]any)["proposed_units"]
 		}
+		normalizeReviewRubricReferences(out["decisions"].(map[string]any), key)
 		b, _ := json.Marshal(out["decisions"])
 		m, issues, e := normalizeMapping(f.Record.Attempt["answer_text"].(string), f.Extraction, key, f.Resources.TaxonomyIDs, f.Resources.Evidence, f.Record.Attempt["task_components"].(map[string]any), b)
 		if e != nil {
@@ -105,4 +117,63 @@ func admitReview(raw []byte, r ReviewRun, f ReviewFrozen) (map[string]any, error
 		out["admitted_mapping"] = map[string]any{"mapping": m, "issues": issues}
 	}
 	return out, nil
+}
+
+// An explicit source-quoted rejection can list its unmet required condition in
+// the forbidden-ID field. Normalize that reference only; never invent a judgment
+// or remove an unknown ID. The mapper still admits the actual source assertions.
+func normalizeReviewRubricReferences(decisions, key map[string]any) {
+	units := map[string]map[string]any{}
+	for _, v := range key["units"].([]any) {
+		u := v.(map[string]any)
+		units[u["id"].(string)] = u
+	}
+	for _, v := range decisions["decisions"].([]any) {
+		d := v.(map[string]any)
+		id, _ := d["unit_id"].(string)
+		unit := units[id]
+		if unit == nil {
+			continue
+		}
+		for _, name := range []string{"correction", "explanation"} {
+			component, ok := d[name].(map[string]any)
+			if !ok || component["status"] != "rejected" {
+				continue
+			}
+			unsupported := false
+			for _, v := range component["additional_assertions"].([]any) {
+				a := v.(map[string]any)
+				unsupported = unsupported || a["judgment"] == "unsupported" && a["exact_text"] != ""
+			}
+			if !unsupported {
+				continue
+			}
+			required, forbidden := unit["rationale_required_propositions"], unit["rationale_forbidden_propositions"]
+			if name == "correction" {
+				required, forbidden = []any{}, []any{}
+				for _, v := range unit["corrections"].([]any) {
+					option := v.(map[string]any)
+					if option["id"] == component["option_id"] {
+						required, forbidden = option["required_propositions"], option["forbidden_propositions"]
+						break
+					}
+				}
+			}
+			unmet, prohibited := map[string]bool{}, map[string]bool{}
+			for _, v := range required.([]any) {
+				unmet[v.(map[string]any)["id"].(string)] = true
+			}
+			for _, v := range forbidden.([]any) {
+				prohibited[v.(map[string]any)["id"].(string)] = true
+			}
+			retained := []any{}
+			for _, v := range component["violated_proposition_ids"].([]any) {
+				id := v.(string)
+				if !unmet[id] || prohibited[id] {
+					retained = append(retained, id)
+				}
+			}
+			component["violated_proposition_ids"] = retained
+		}
+	}
 }

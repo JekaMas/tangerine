@@ -702,3 +702,7 @@ Iteration 11 verification supersedes its earlier acceptance: all seven finding g
 - [ ] I12.5 Expose optional review, dispute/retry and original/revised result history in the local UI/API, including failure/recovery.
 - [ ] I12.6 Materialize paired literal, native, concurrency/recovery/browser and actual local-model/Lab cases; wire the complete iteration into the DAG/discovery.
 - [ ] I12.7 Self-review/repair in scope, complete stable language/specification/preservation checks, commit, pass the entire iteration --require-clean and commit acceptance.
+
+- [ ] I12.8 Repair the reproduced new-key admission defects for registered primary domain, secondary category IDs and fixed severity weights; retain one admission only, add paired literal regressions and supersede the pre-repair117-case receipt.
+
+- [ ] I12.9 Repair the observed misplaced required-rubric reference while preserving explicit semantic/source judgments; reject ambiguous/unknown references and reconcile both conditional protocol paths separately from actual local inference.

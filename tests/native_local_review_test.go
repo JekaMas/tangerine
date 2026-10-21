@@ -142,7 +142,9 @@ func observeLocalReview(t *testing.T, purpose, mode, statement, expected, refere
 		_ = json.NewEncoder(dispatch).Encode(event)
 		return response, err
 	})}
+	controlledBefore := f.remaps.Load()
 	r, e = f.s.RunReview(ctx, r.ID, uuid.NewString(), r.Revision, client)
+	requireListening(t, os.WriteFile(filepath.Join(dir, "protocol-counts.json"), mustJSON(map[string]any{"controlled_mapper_http_requests": f.remaps.Load() - controlledBefore, "origin": "Independent receiver-side constructed protocol counter; not actual model inference."}), 0600))
 	requireListening(t, os.WriteFile(filepath.Join(dir, "state.json"), mustJSON(r), 0600))
 	if e != nil {
 		t.Fatalf("actual local review failed: %v; state at %s", e, dir)

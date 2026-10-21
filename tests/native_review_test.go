@@ -176,7 +176,7 @@ func reviewFixture(t *testing.T, mode string) *reviewNative {
 				value["resolution"] = "insufficient_evidence"
 				value["reason"] = "The supplied observations cannot resolve the disputed sound."
 			}
-			if mode == "mapping" || mode == "reason" {
+			if mode == "mapping" || mode == "reason" || strings.HasPrefix(mode, "reason-reference") {
 				value["resolution"] = "mapping_defect"
 				var prior SemanticMapping
 				_ = json.Unmarshal(mustJSON(input["prior_decisions"]), &prior)
@@ -197,6 +197,17 @@ func reviewFixture(t *testing.T, mode string) *reviewNative {
 					for _, v := range u["rationale_required_propositions"].([]any) {
 						d.Explanation.Satisfied = append(d.Explanation.Satisfied, v.(map[string]any)["id"].(string))
 					}
+				}
+				if strings.HasPrefix(mode, "reason-reference") {
+					answer := []rune(input["answer"].(string))
+					span := AnswerSpan{Start: 10, End: len(answer), Text: string(answer[10:])}
+					d.Explanation.Status = "rejected"
+					d.Explanation.Satisfied = []string{}
+					d.Explanation.Violated = []string{u["rationale_required_propositions"].([]any)[0].(map[string]any)["id"].(string)}
+					if mode == "reason-reference-unknown" {
+						d.Explanation.Violated = []string{"not-a-rubric-id"}
+					}
+					d.Explanation.Additional = []ComponentAssertion{{AnswerSpan: span, Judgment: "unsupported", Reason: "The unrestricted rule is false; singular-subject agreement still requires opens."}}
 				}
 				value["decisions"] = map[string]any{"schema_version": "1.0.0", "decisions": []SemanticDecision{d}}
 			}
@@ -249,6 +260,10 @@ func reviewFixture(t *testing.T, mode string) *reviewNative {
 	}
 	for _, k := range []string{"workspace_id", "configuration_sha256", "provider_access_policy"} {
 		delete(c, k)
+	}
+	if mode == "key" || mode == "conditional-failure" {
+		c["llm_lab_capture_content"] = true
+		c["llm_lab_trace_enabled"] = true
 	}
 	_, _, e = f.s.Store.PutConfiguration(ctx, mustJSON(c), uuid.NewString(), rev)
 	requireListening(t, e)
@@ -380,6 +395,7 @@ func TestNativeReviewConditionalMappingPositive(t *testing.T) {
 	if r.NewResult == "" || f.reviewCalls.Load() != 1 || f.remaps.Load() != 2 {
 		t.Fatal(r, f.remaps.Load())
 	}
+	reviewProtocolPacket(t, f, r)
 }
 func TestNativeReviewConditionalFailureNegative(t *testing.T) {
 	f := reviewFixture(t, "conditional-failure")
@@ -401,6 +417,7 @@ func TestNativeReviewConditionalFailureNegative(t *testing.T) {
 	if r.Projection != saved || f.reviewCalls.Load() != 1 || r.NewResult == "" {
 		t.Fatal(r)
 	}
+	reviewProtocolPacket(t, f, r)
 }
 func TestNativeReviewReasonPositive(t *testing.T) {
 	f := reviewFixture(t, "reason")
@@ -1116,5 +1133,58 @@ func TestNativeReviewForeignManifestNegative(t *testing.T) {
 	requireListening(t, f.s.Store.readInterpretationJSON(context.Background(), r.Frozen, &frozen))
 	if frozen.Manifest != nil {
 		t.Fatal("unrelated preparation borrowed", frozen.Manifest)
+	}
+}
+
+func reviewReasonReference(t *testing.T, mode string) (*reviewNative, ReviewRun) {
+	f := reviewFixture(t, "supported")
+	f.mode.Store("scoring-false-reason")
+	f.attempt = f.start(t)
+	_, _, e := f.s.Store.WriteAnswer(context.Background(), f.attempt, uuid.NewString(), 0, answerPacket("Use opens because every English verb always ends in s.", "en"), true)
+	requireListening(t, e)
+	_, e = f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	f.reviewMode.Store(mode)
+	return f, f.create(t, "answer_reconsideration")
+}
+func TestNativeReviewRequiredReferencePositive(t *testing.T) {
+	f, r := reviewReasonReference(t, "reason-reference")
+	r, e := f.run(t, r)
+	requireListening(t, e)
+	value, e := f.s.Store.readScoringResult(context.Background(), r.NewResult)
+	requireListening(t, e)
+	score := value["score"].(map[string]any)
+	if score["composite"].(map[string]any)["display"] != "100.0" || score["optional_explanation"].(map[string]any)["display"] != "0.0" || f.reviewCalls.Load() != 1 {
+		t.Fatal("semantic rejection/source/primary changed or extra model call", value, f.reviewCalls.Load())
+	}
+}
+func TestNativeReviewForeignRubricNegative(t *testing.T) {
+	f, r := reviewReasonReference(t, "reason-reference-unknown")
+	before := r.BaseResult
+	r, e := f.run(t, r)
+	if e == nil || r.Status != "failed" || f.reviewCalls.Load() != 2 {
+		t.Fatal("unknown reference accepted or repair not bounded", r, e)
+	}
+	record, e := f.s.Store.Attempt(context.Background(), f.attempt)
+	requireListening(t, e)
+	if record.Context["result_id"] != before {
+		t.Fatal("invalid reference changed original score")
+	}
+}
+
+// Retain the two owned conditional paths for Lab export without labelling
+// their constructed remote protocol as actual linguistic-model inference.
+func reviewProtocolPacket(t *testing.T, f *reviewNative, r ReviewRun) {
+	t.Helper()
+	dir := filepath.Join("/evidence", t.Name())
+	requireListening(t, os.MkdirAll(dir, 0700))
+	requireListening(t, os.WriteFile(filepath.Join(dir, "protocol-counts.json"), mustJSON(map[string]any{"test": t.Name(), "actual_model_inference": false, "adjudication_requests": f.reviewCalls.Load(), "mapper_requests": f.remaps.Load() - 1, "stages": r.Stages}), 0600))
+	for _, stage := range r.Stages {
+		if stage.Diagnostic == nil {
+			t.Fatal("missing native context/receipt packet")
+		}
+		raw, e := f.s.Store.ReadAsset(context.Background(), *stage.Diagnostic)
+		requireListening(t, e)
+		requireListening(t, os.WriteFile(filepath.Join(dir, "diagnostic-"+*stage.Diagnostic+".json"), raw, 0600))
 	}
 }

@@ -32,9 +32,14 @@ func admitKeyRepair(key, p map[string]any, tax map[string]bool) error {
 			return reviewInvalid("Use distinct unit IDs and actual registered categories.")
 		}
 		next[id] = true
-		for _, cat := range u["accepted_taxonomy_ids"].([]any) {
-			if !tax[cat.(string)] {
-				return reviewInvalid("Accepted categories must be registered.")
+		if map[string]float64{"minor": 1, "moderate": 2, "major": 3, "communication_breakdown": 4}[u["severity"].(string)] != u["weight"] {
+			return reviewInvalid("Use the fixed severity weights: minor=1, moderate=2, major=3, communication_breakdown=4.")
+		}
+		for _, field := range []string{"accepted_taxonomy_ids", "secondary_taxonomy_ids"} {
+			for _, cat := range u[field].([]any) {
+				if !tax[cat.(string)] {
+					return reviewInvalid("Accepted and secondary categories must be registered.")
+				}
 			}
 		}
 		for _, id := range u["utterance_ids"].([]any) {
