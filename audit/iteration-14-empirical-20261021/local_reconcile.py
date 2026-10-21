@@ -26,8 +26,12 @@ def main():
  for export in [result]+result['native_exports']:
   verified=sdk('verify',export);assert verified['status']=='observed' and verified['provider_calls']==0 and not verified['discrepancies'];exports.append(verified)
  assert collections.Counter((r[0],r[1],r[2]) for r in native)==collections.Counter((r['request_sha256'],r['response_sha256'],r['status']) for r in dispatch)
- assert len(contexts)==len(native)==len(bindings)==len(dispatch) and len(dispatch)>=4 and {v[3]['stage'] for v in native}=={'blind_claim_extraction','linguistic_audit'}
+ assert len(contexts)==len(native)==len(dispatch) and len(dispatch)>=4 and {v[3]['stage'] for v in native}=={'blind_claim_extraction','linguistic_audit'}
  assert collections.Counter(stage for stage in {v[3]['operation_id']:v[3]['stage'] for v in native}.values())=={'blind_claim_extraction':2,'linguistic_audit':2}
+ binding_hashes={b['binding_sha256'] for b in bindings};context_by_id={c['id']:c for c in contexts}
+ assert len(bindings)==4 and len(binding_hashes)==4
+ for _,_,_,r in native:
+  c=context_by_id[r['context_snapshot_id']];assert r['binding_sha256'] in binding_hashes and c['binding_sha256']==r['binding_sha256'] and c['receipt_id']==r['id']
  assert len(result['native_exports'])==4 and all(t['state']=='exported' for e in result['native_exports'] for t in e['trace_exports'])
  metrics_code="import json;from mlflow import MlflowClient;c=MlflowClient();r=c.get_run(__import__('sys').argv[1]);print(json.dumps({'metrics':r.data.metrics,'params':r.data.params,'tags':r.data.tags}))"
  p=subprocess.run(command[:5]+['-c',metrics_code,result['run']],capture_output=True,text=True,timeout=30,check=True);metrics=json.loads(p.stdout);assert metrics['metrics']['variant0/llm_lab.completion_rate']==1 and metrics['metrics']['variant1/llm_lab.completion_rate']==1

@@ -35,17 +35,7 @@ func qualityDeterministicEvidence(c QualityCase, p QualityExperiment, input, exp
 		}
 		if actual != nil {
 			qualityMappingEvidence(ref, actual, e)
-			e.Aligned = true
-			var mapping SemanticMapping
-			_ = json.Unmarshal(sourceBytes(actual), &mapping)
-			e.Detected = []string{}
-			seen := map[string]bool{}
-			for _, d := range mapping.Decisions {
-				if d.Decision == "matched_error" && d.Unit != nil && !seen[*d.Unit] {
-					seen[*d.Unit] = true
-					e.Detected = append(e.Detected, *d.Unit)
-				}
-			}
+			qualityDetectionEvents(actual, e)
 		}
 	}
 	// Expected scalar values are references, never copied into observed values.
@@ -290,5 +280,28 @@ func qualityRequestMutationEvidence(request, candidate map[string]any, e *experi
 			found = domains["pronunciation.segmental"] || domains["pronunciation.suprasegmental"]
 		}
 		predicate(found)
+	}
+}
+
+// Stable key-unit IDs include assertions against controls. An off-key assertion
+// without declared correspondence cannot yield a perfect empty-set repeat score.
+func qualityDetectionEvents(actual map[string]any, e *experiment.Evidence) {
+	var mapping SemanticMapping
+	_ = json.Unmarshal(sourceBytes(actual), &mapping)
+	e.Aligned = true
+	e.Detected = []string{}
+	seen := map[string]bool{}
+	for _, d := range mapping.Decisions {
+		if d.Duplicate != nil || d.Decision != "matched_error" && d.Decision != "false_positive" {
+			continue
+		}
+		if d.Unit == nil {
+			e.Aligned = false
+			continue
+		}
+		if !seen[*d.Unit] {
+			seen[*d.Unit] = true
+			e.Detected = append(e.Detected, *d.Unit)
+		}
 	}
 }

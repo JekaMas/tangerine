@@ -239,3 +239,22 @@ func TestQualityDuplicateClaimPositive(t *testing.T) {
 		t.Fatal("duplicate counted again", e)
 	}
 }
+
+func TestQualityControlDetectionPositive(t *testing.T) {
+	e := experiment.Evidence{}
+	qualityDetectionEvents(map[string]any{"decisions": []any{map[string]any{"claim_id": "c1", "unit_id": "control", "decision": "false_positive"}, map[string]any{"claim_id": "c2", "unit_id": "control", "decision": "false_positive", "duplicate_of_claim_id": "c1"}}}, &e)
+	if !e.Aligned || len(e.Detected) != 1 || e.Detected[0] != "control" {
+		t.Fatal(e)
+	}
+}
+func TestQualityUnalignedAssertionNegative(t *testing.T) {
+	e := experiment.Evidence{}
+	qualityDetectionEvents(map[string]any{"decisions": []any{map[string]any{"claim_id": "off-key", "unit_id": nil, "decision": "false_positive"}}}, &e)
+	if e.Aligned {
+		t.Fatal("invented correspondence", e)
+	}
+	pairs := experiment.RepetitionEvidence([]experiment.Detection{{Case: "c", Variant: "v", Repetition: 1, Complete: true, Aligned: e.Aligned, Events: e.Detected}, {Case: "c", Variant: "v", Repetition: 2, Complete: true, Aligned: e.Aligned, Events: e.Detected}})
+	if pairs.Missing["llm_lab.repeat_detection_jaccard"] != "event_correspondence_unavailable" {
+		t.Fatal("off-key assertions became perfect empty repeats", pairs)
+	}
+}

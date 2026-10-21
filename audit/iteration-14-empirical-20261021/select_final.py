@@ -1,0 +1,15 @@
+"""Select only final evidence/correspondence repairs; keep real local greens."""
+from pathlib import Path
+import json
+R=Path(__file__).resolve().parents[2];A=Path(__file__).resolve().parent;p=R/'openspec/changes/implement-teacher-error-trainer/verification.json';g=json.loads(p.read_text());scope={x['case_id'] for x in json.loads((A/'CASES.json').read_text())['plans']}
+new={'TestQualityControlDetectionPositive','TestQualityUnalignedAssertionNegative'};fresh=[];retained=[]
+for c in g['cases']:
+ if c['id'] not in scope:continue
+ if c['test_id'].split('::')[-1] in new:c['command_id']='iteration14-final-go';fresh.append(c['id'])
+ elif c['test_id'].split('::')[-1] in {'TestNativeQualityReleasePositive','TestNativeQualityStaleReleaseNegative'}:c['command_id']='iteration14-final-native';fresh.append(c['id'])
+ elif c['test_id'].endswith(('.test_correspondence_positive','.test_export_recovery_positive')):c['command_id']='iteration14-final-lab';fresh.append(c['id'])
+ else:retained.append(c['id'])
+env=dict(DOCKER_HOST='unix:///Users/jekamas/Library/Containers/com.docker.docker/Data/docker.raw.sock')
+g['commands'] += [dict(id='iteration14-final-native',runner='go-test-json',argv=['./tests/quality-native','test','-json','-race','-count=1','-run','^TestNativeQuality(ReleasePositive|StaleReleaseNegative)$','./internal/app'],cwd='.',env=env,timeout_seconds=1200,authority='local'),dict(id='iteration14-final-go',runner='go-test-json',argv=['./tests/go-docker','test','-json','-race','-count=1','-run','^TestQuality(ControlDetectionPositive|UnalignedAssertionNegative)$','./internal/app'],cwd='.',env=env,timeout_seconds=600,authority='local'),dict(id='iteration14-final-lab',runner='python-unittest',argv=['python3','-B','-m','unittest','discover','-s','tests','-p','test_quality_lab.py','-k','positive','-v'],cwd='.',env=env,timeout_seconds=500,authority='local')]
+p.write_text(json.dumps(g,indent=2)+'\n');out=dict(source_receipts=['data/iteration14/acceptance-repair-clean-fb8f8f6.json','data/iteration14/acceptance-clean-2594009.json'],fresh_case_ids=fresh,retained_case_ids=retained,proof_boundary='Identical retained literal inputs/assertions and exercised production paths keep original clean observations. Final repairs change diagnostic event correspondence and artifact/SDK inspection only; actual local extraction/judge outputs and contexts remain valid without inference repetition.',semantic_changes=['Move conditional lease-release SQL from the controller into its storage owner without changing the query/budget; exercise actual owner/stale-owner rows','Match every dispatch/receipt/context to the actually shared frozen effective binding across repair attempts','Assert offline failure followed by explicit copy-only recovery on the same packet','Preserve control assertions in repeat event sets; off-key assertions without fixed correspondence give unavailable repeat agreement'])
+(A/'FINAL-SELECTION.json').write_text(json.dumps(out,indent=2)+'\n');print(dict(fresh=len(fresh),retained=len(retained),total=len(scope)))

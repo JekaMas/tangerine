@@ -128,3 +128,8 @@ func qualityTime() *string { s := time.Now().UTC().Format(time.RFC3339Nano); ret
 func qualityKey(id string, row int, stage string) string {
 	return interpretationCallKey(id, stage+":"+uuid.NewSHA1(uuid.NameSpaceOID, sourceBytes(row)).String())
 }
+
+func (s *Storage) releaseQualityBatch(ctx context.Context, id, operation string) error {
+	_, err := s.DB.Exec(ctx, "UPDATE quality_experiment SET active_operation_id=NULL,lease_until=NULL WHERE id=$1 AND active_operation_id=$2", id, operation)
+	return err
+}

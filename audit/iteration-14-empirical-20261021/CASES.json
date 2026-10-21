@@ -107,7 +107,7 @@
         "exact_test": "TestNativeEmpiricalSourcePositive",
         "literal_executable_fixture": "func TestNativeEmpiricalSourcePositive(t *testing.T) {\n\tf := sourceFixture(t)\n\tf.bea(t)\n\trun := f.run(t, \"native\", nil)\n\tvalue, e := f.s.Store.CreateEmpiricalReport(context.Background(), EmpiricalSubmission{Title: \"Constructed native sentence view\", Input: empirical.Input{Population: empirical.Population{Origin: \"native\", Modality: \"writing\"}}, Source: &EmpiricalSource{Import: run.Report.ID, Member: \"fce/train.m2\", Table: \"sentences\", Annotator: \"0\"}})\n\trequireListening(t, e)\n\treport := value[\"report\"].(empirical.Report)\n\tif report.SourceAnnotated != 1 || report.MappingIncomplete != 1 || report.Annotated != 0 || report.Unmapped != 1 || len(report.NativeFrequencies) != 1 {\n\t\tt.Fatal(report)\n\t}\n\tn := report.NativeFrequencies[0]\n\tif n.ID != \"R:VERB:SVA\" || n.Events != 1 || n.Prevalence.Exact.Numerator != \"1\" || n.Prevalence.Exact.Denominator != \"1\" || n.Density.Exact.Numerator != \"1000\" || n.Density.Exact.Denominator != \"3\" {\n\t\tt.Fatal(n)\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -134,7 +134,7 @@
         "exact_test": "TestNativeEmpiricalDefaultAnnotatorPositive",
         "literal_executable_fixture": "func TestNativeEmpiricalDefaultAnnotatorPositive(t *testing.T) {\n\tf := sourceFixture(t)\n\tf.bea(t)\n\trun := f.run(t, \"native\", nil)\n\tvalue, e := f.s.Store.CreateEmpiricalReport(context.Background(), EmpiricalSubmission{Title: \"Default native annotation selection\", Source: &EmpiricalSource{Import: run.Report.ID, Member: \"fce/train.m2\", Table: \"sentences\"}})\n\trequireListening(t, e)\n\tr := value[\"report\"].(empirical.Report)\n\tif r.SourceAnnotated != 1 || r.Unmapped != 1 || r.Population.Annotator != \"lowest_integer_per_sentence\" {\n\t\tt.Fatal(r)\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -242,7 +242,7 @@
         "exact_test": "TestNativeEmpiricalAnnotatorNegative",
         "literal_executable_fixture": "func TestNativeEmpiricalAnnotatorNegative(t *testing.T) {\n\tf := sourceFixture(t)\n\tf.bea(t)\n\trun := f.run(t, \"native\", nil)\n\tvalue, e := f.s.Store.CreateEmpiricalReport(context.Background(), EmpiricalSubmission{Title: \"Absent selected annotations\", Source: &EmpiricalSource{Import: run.Report.ID, Member: \"fce/train.m2\", Table: \"sentences\", Annotator: \"99\"}})\n\trequireListening(t, e)\n\treport := value[\"report\"].(empirical.Report)\n\tif report.Annotated != 0 || report.SourceAnnotated != 0 {\n\t\tt.Fatal(\"absent annotator became annotation\", report)\n\t}\n\tfor _, l := range report.Leaves {\n\t\tif l.Prevalence.Exact != nil {\n\t\t\tt.Fatal(l)\n\t\t}\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -269,7 +269,7 @@
         "exact_test": "TestNativeEmpiricalViewNegative",
         "literal_executable_fixture": "func TestNativeEmpiricalViewNegative(t *testing.T) {\n\tf := sourceFixture(t)\n\tf.bea(t)\n\trun := f.run(t, \"native\", nil)\n\t_, e := f.s.Store.CreateEmpiricalReport(context.Background(), EmpiricalSubmission{Title: \"Typo must not become measured empty view\", Source: &EmpiricalSource{Import: run.Report.ID, Member: \"fce/typo.m2\", Table: \"sentences\", Annotator: \"0\"}})\n\tif e == nil {\n\t\tt.Fatal(\"unknown native view accepted\")\n\t}\n}\n\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -377,7 +377,7 @@
         "exact_test": "TestNativeEmpiricalMappedPositive",
         "literal_executable_fixture": "func TestNativeEmpiricalMappedPositive(t *testing.T) {\n\tf := sourceFixture(t)\n\tf.bea(t)\n\trun := f.run(t, \"native\", nil)\n\tevent := fmt.Sprintf(\"%s/fce/train.m2/0/0\", run.Report.ID)\n\tvalue, e := f.s.Store.CreateEmpiricalReport(context.Background(), EmpiricalSubmission{Title: \"Constructed localized mapping\", Input: empirical.Input{Population: empirical.Population{Origin: \"native\", Crosswalk: \"constructed-context-v1\", Modality: \"writing\"}}, Source: &EmpiricalSource{Import: run.Report.ID, Member: \"fce/train.m2\", Table: \"sentences\", Annotator: \"0\", AnnotatedLeaves: []string{\"grammar.verbs.subject_verb_agreement\"}, LeafByEvent: map[string]string{event: \"grammar.verbs.subject_verb_agreement\"}}})\n\trequireListening(t, e)\n\treport := value[\"report\"].(empirical.Report)\n\tif report.Annotated != 1 || report.MappingIncomplete != 0 || report.Events != 1 || report.Population.Origin != \"operator_localized_mapping\" {\n\t\tt.Fatal(report)\n\t}\n\tfor _, l := range report.Leaves {\n\t\tif l.ID == \"grammar.verbs.subject_verb_agreement\" && l.Prevalence.Numerator != \"1\" {\n\t\t\tt.Fatal(l)\n\t\t}\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -566,7 +566,7 @@
         "exact_test": "TestNativeQualityAnswerPositive",
         "literal_executable_fixture": "func TestNativeQualityAnswerPositive(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tr := qualityAnswerSubmission(t, f.nativeInterpretation)\n\tp, e := f.s.Store.AdmitExperiment(context.Background(), r)\n\trequireListening(t, e)\n\tp, e = f.s.RunQualityExperiment(context.Background(), p.ID, false, nil)\n\trequireListening(t, e)\n\tif p.Status != \"completed\" || len(p.Rows[0].Receipts) != 3 {\n\t\tt.Fatalf(\"%s %+v\", p.Status, p.Rows[0])\n\t}\n\traw, e := f.s.Store.ReadAsset(context.Background(), *p.Rows[0].Output)\n\trequireListening(t, e)\n\tvar packet map[string]any\n\trequireListening(t, json.Unmarshal(raw, &packet))\n\tscore := packet[\"native_score\"].(map[string]any)\n\tif score[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" {\n\t\tt.Fatal(score)\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -647,7 +647,7 @@
         "exact_test": "TestNativeQualityAnswerFailureNegative",
         "literal_executable_fixture": "func TestNativeQualityAnswerFailureNegative(t *testing.T) {\n\tf := scoringFixture(t, true)\n\tr := qualityAnswerSubmission(t, f.nativeInterpretation)\n\tp, e := f.s.Store.AdmitExperiment(context.Background(), r)\n\trequireListening(t, e)\n\tp, e = f.s.RunQualityExperiment(context.Background(), p.ID, false, nil)\n\trequireListening(t, e)\n\tif p.Status != \"partial\" || p.Rows[0].Status != \"failed\" || p.Rows[0].Output == nil {\n\t\tt.Fatal(p)\n\t}\n\traw, e := f.s.Store.ReadAsset(context.Background(), *p.Rows[0].Output)\n\trequireListening(t, e)\n\tvar packet map[string]any\n\trequireListening(t, json.Unmarshal(raw, &packet))\n\tif packet[\"native_score\"] == nil {\n\t\tt.Fatal(\"lost supported native grade\")\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -674,7 +674,7 @@
         "exact_test": "TestNativeEmpiricalMissingNegative",
         "literal_executable_fixture": "func TestNativeEmpiricalMissingNegative(t *testing.T) {\n\ts := listeningNative(t)\n\tr, e := s.CreateEmpiricalReport(context.Background(), EmpiricalSubmission{Title: \"No observations\", Input: empirical.Input{Population: empirical.Population{Release: \"missing-original\", View: \"none\", Window: \"utterance\", Origin: \"unknown\"}, Windows: []empirical.Window{}}})\n\trequireListening(t, e)\n\treport := r[\"report\"].(empirical.Report)\n\tfor _, l := range report.Leaves {\n\t\tif l.Prevalence.Exact != nil {\n\t\t\tt.Fatal(\"invented source coverage\", l)\n\t\t}\n\t}\n}\n\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -701,7 +701,7 @@
         "exact_test": "TestQualityFractionalScorePositive",
         "literal_executable_fixture": "func TestQualityFractionalScorePositive(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityScoreError(map[string]any{\"expected_metric_values\": []any{map[string]any{\"metric_id\": \"composite\", \"numerator\": \"0\", \"denominator\": \"1\", \"value\": nil}}}, map[string]any{\"composite\": map[string]any{\"exact_value_0_100\": map[string]any{\"numerator\": \"1\", \"denominator\": \"3\"}}}, &e)\n\tif e.Stats[\"paired_reference_scores\"] != \"1\" {\n\t\tt.Fatal(\"one score became three references\", e)\n\t}\n\tms, err := experiment.Calculate([]experiment.Evidence{e})\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tfor _, m := range ms {\n\t\tif m.ID == \"llm_lab.score_mae_pp\" && (*m.Numerator != \"1\" || *m.Denominator != \"3\" || m.Stats[\"paired_reference_scores\"] != \"1\") {\n\t\t\tt.Fatal(m)\n\t\t}\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -728,7 +728,7 @@
         "exact_test": "TestQualityMissingReferenceNegative",
         "literal_executable_fixture": "func TestQualityMissingReferenceNegative(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityScoreError(map[string]any{}, map[string]any{\"composite\": map[string]any{\"exact_value_0_100\": map[string]any{\"numerator\": \"1\", \"denominator\": \"3\"}}}, &e)\n\tif _, ok := e.Stats[\"paired_reference_scores\"]; ok {\n\t\tt.Fatal(\"invented paired reference\", e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2078,7 +2078,7 @@
         "exact_test": "TestQualityRequestMeasurementsPositive",
         "literal_executable_fixture": "func TestQualityRequestMeasurementsPositive(t *testing.T) {\n\t_, _, candidate, _ := mutationFixture()\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityGenerationEvidence(map[string]any{\"text_length_words\": float64(50), \"speaker_count\": float64(1), \"mutation_count\": float64(1), \"category_families\": []any{\"grammar\"}}, candidate, map[string]any{\"surface_word_count\": float64(4), \"canonical_word_count\": float64(4)}, &e)\n\tif e.Stats[\"applicable_request_predicates\"] != \"3\" || e.Stats[\"satisfied_applicable_request_predicates\"] != \"3\" || e.Stats[\"surface_word_absolute_deviation\"] != \"46\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2105,7 +2105,7 @@
         "exact_test": "TestQualityRequestMeasurementsNegative",
         "literal_executable_fixture": "func TestQualityRequestMeasurementsNegative(t *testing.T) {\n\t_, _, candidate, _ := mutationFixture()\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityGenerationEvidence(map[string]any{\"text_length_words\": float64(50), \"speaker_count\": float64(2), \"mutation_count\": float64(2), \"category_families\": []any{\"lexis\"}}, candidate, map[string]any{\"surface_word_count\": float64(4)}, &e)\n\tif e.Stats[\"applicable_request_predicates\"] != \"3\" || e.Stats[\"satisfied_applicable_request_predicates\"] != \"0\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2132,7 +2132,7 @@
         "exact_test": "TestQualityPreservationPositive",
         "literal_executable_fixture": "func TestQualityPreservationPositive(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityDeterministicEvidence(QualityCase{}, QualityExperiment{Scope: \"generation_pipeline\"}, nil, nil, nil, map[string]any{\"initial_canonical_sha256\": \"saved\", \"canonical_sha256\": \"saved\"}, &e)\n\tif e.Stats[\"completed_mutation_outputs\"] != \"1\" || e.Stats[\"mutation_outputs_with_exact_saved_canonical\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2159,7 +2159,7 @@
         "exact_test": "TestQualityPreservationNegative",
         "literal_executable_fixture": "func TestQualityPreservationNegative(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityDeterministicEvidence(QualityCase{}, QualityExperiment{Scope: \"generation_pipeline\"}, nil, nil, nil, map[string]any{\"initial_canonical_sha256\": \"saved\", \"canonical_sha256\": \"changed\"}, &e)\n\tif e.Stats[\"mutation_outputs_with_exact_saved_canonical\"] != \"0\" {\n\t\tt.Fatal(e)\n\t}\n}\n\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2186,7 +2186,7 @@
         "exact_test": "TestNativeQualityFrozenPositive",
         "literal_executable_fixture": "func TestNativeQualityFrozenPositive(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tp := admitQuality(t, f, 2, 2, 2)\n\tif len(p.Rows) != 8 {\n\t\tt.Fatal(p)\n\t}\n\tbefore, _, e := f.s.Store.Configuration(context.Background())\n\trequireListening(t, e)\n\tp, e = f.s.RunQualityExperiment(context.Background(), p.ID, false, f.model.Client())\n\trequireListening(t, e)\n\tif p.Status != \"completed\" || f.calls.Load() != 8 {\n\t\tt.Fatal(p.Status, f.calls.Load())\n\t}\n\tfor _, r := range p.Rows {\n\t\tif r.Status != \"complete\" || len(r.Receipts) != 1 || r.Output == nil || len(r.Metrics) != 22 {\n\t\t\tt.Fatal(r)\n\t\t}\n\t}\n\tafter, _, e := f.s.Store.Configuration(context.Background())\n\trequireListening(t, e)\n\tif lab.Hash(before) != lab.Hash(after) {\n\t\tt.Fatal(\"experiment changed Settings\")\n\t}\n\tif len(p.Aggregates) != 44 || p.Comparison == nil {\n\t\tt.Fatal(p)\n\t}\n\tp, e = f.s.RunQualityExperiment(context.Background(), p.ID, false, f.model.Client())\n\trequireListening(t, e)\n\tif f.calls.Load() != 8 {\n\t\tt.Fatal(\"read/replay dispatched\")\n\t}\n\t_ = os.WriteFile(\"/evidence/quality-positive.json\", mustJSON(p), 0600)\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -2213,7 +2213,7 @@
         "exact_test": "TestNativeQualityStagePositive",
         "literal_executable_fixture": "func TestNativeQualityStagePositive(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tp := admitQuality(t, f, 1, 1, 1)\n\tfrozen, e := f.s.Store.frozenExperiment(context.Background(), p.ID)\n\trequireListening(t, e)\n\trow := p.Rows[0]\n\top, e := f.s.Store.qualityRowOperation(context.Background(), p.ID, 0)\n\trequireListening(t, e)\n\tctx := qualityContext(context.Background(), frozen.Variants[row.Variant])\n\tctx = context.WithValue(ctx, qualityOperationContextKey{}, op)\n\t_, result, e := f.s.executeQualityRow(ctx, p, frozen, row, op, f.model.Client())\n\tif e != nil {\n\t\tt.Fatalf(\"native stage failed before/after %d calls: %T %v\", f.calls.Load(), e, e)\n\t}\n\tif len(result.ReceiptIDs) != 1 {\n\t\tt.Fatal(result)\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -2294,7 +2294,7 @@
         "exact_test": "TestNativeQualityAnswerPositive",
         "literal_executable_fixture": "func TestNativeQualityAnswerPositive(t *testing.T) {\n\tf := scoringFixture(t, false)\n\tr := qualityAnswerSubmission(t, f.nativeInterpretation)\n\tp, e := f.s.Store.AdmitExperiment(context.Background(), r)\n\trequireListening(t, e)\n\tp, e = f.s.RunQualityExperiment(context.Background(), p.ID, false, nil)\n\trequireListening(t, e)\n\tif p.Status != \"completed\" || len(p.Rows[0].Receipts) != 3 {\n\t\tt.Fatalf(\"%s %+v\", p.Status, p.Rows[0])\n\t}\n\traw, e := f.s.Store.ReadAsset(context.Background(), *p.Rows[0].Output)\n\trequireListening(t, e)\n\tvar packet map[string]any\n\trequireListening(t, json.Unmarshal(raw, &packet))\n\tscore := packet[\"native_score\"].(map[string]any)\n\tif score[\"composite\"].(map[string]any)[\"display\"] != \"100.0\" {\n\t\tt.Fatal(score)\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -2321,7 +2321,7 @@
         "exact_test": "TestNativeQualitySettingsPositive",
         "literal_executable_fixture": "func TestNativeQualitySettingsPositive(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tctx := context.Background()\n\tp := admitQuality(t, f, 1, 1, 1)\n\tc, rev, e := f.s.Store.Configuration(ctx)\n\trequireListening(t, e)\n\tc[\"llm_profiles\"].([]any)[0].(map[string]any)[\"endpoint\"] = \"http://127.0.0.1:9/v1/responses\"\n\tfor _, k := range []string{\"workspace_id\", \"configuration_sha256\", \"provider_access_policy\"} {\n\t\tdelete(c, k)\n\t}\n\t_, _, e = f.s.Store.PutConfiguration(ctx, mustJSON(c), uuid.NewString(), rev)\n\trequireListening(t, e)\n\tp, e = f.s.RunQualityExperiment(ctx, p.ID, false, f.model.Client())\n\trequireListening(t, e)\n\tif p.Status != \"completed\" || f.calls.Load() != 1 {\n\t\tt.Fatal(\"resume used current settings\", p, f.calls.Load())\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -2348,7 +2348,7 @@
         "exact_test": "TestNativeQualityDigestNegative",
         "literal_executable_fixture": "func TestNativeQualityDigestNegative(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tr := qualitySubmission(t, f, 1, 1, 1)\n\tr.Experiment.DatasetSHA = fmt.Sprintf(\"%064d\", 0)\n\tif _, e := f.s.Store.AdmitExperiment(context.Background(), r); e == nil {\n\t\tt.Fatal(\"admitted mismatched dataset\")\n\t}\n\tif f.calls.Load() != 0 {\n\t\tt.Fatal(\"admission dispatched\")\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -2375,7 +2375,7 @@
         "exact_test": "TestNativeQualityTaxonomyNegative",
         "literal_executable_fixture": "func TestNativeQualityTaxonomyNegative(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tr := qualitySubmission(t, f, 1, 1, 1)\n\tvar d QualityDataset\n\trequireListening(t, json.Unmarshal(r.Assets[\"dataset\"], &d))\n\td.Cases[0].Taxonomy = []string{\"invented.leaf\"}\n\tvar m map[string]any\n\trequireListening(t, json.Unmarshal(mustJSON(d), &m))\n\tdelete(m, \"dataset_sha256\")\n\td.SHA = lab.Hash(m)\n\tr.Assets[\"dataset\"] = mustJSON(d)\n\tr.Experiment.DatasetSHA = d.SHA\n\tif _, e := f.s.Store.AdmitExperiment(context.Background(), r); e == nil {\n\t\tt.Fatal(\"unknown coverage leaf admitted\")\n\t}\n\tif f.calls.Load() != 0 {\n\t\tt.Fatal(\"intake dispatched\")\n\t}\n}\n\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -2456,7 +2456,7 @@
         "exact_test": "TestNativeQualityAnswerFailureNegative",
         "literal_executable_fixture": "func TestNativeQualityAnswerFailureNegative(t *testing.T) {\n\tf := scoringFixture(t, true)\n\tr := qualityAnswerSubmission(t, f.nativeInterpretation)\n\tp, e := f.s.Store.AdmitExperiment(context.Background(), r)\n\trequireListening(t, e)\n\tp, e = f.s.RunQualityExperiment(context.Background(), p.ID, false, nil)\n\trequireListening(t, e)\n\tif p.Status != \"partial\" || p.Rows[0].Status != \"failed\" || p.Rows[0].Output == nil {\n\t\tt.Fatal(p)\n\t}\n\traw, e := f.s.Store.ReadAsset(context.Background(), *p.Rows[0].Output)\n\trequireListening(t, e)\n\tvar packet map[string]any\n\trequireListening(t, json.Unmarshal(raw, &packet))\n\tif packet[\"native_score\"] == nil {\n\t\tt.Fatal(\"lost supported native grade\")\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -2472,76 +2472,22 @@
       "polarity": "positive",
       "scenario": "I14-06 packet 1",
       "fixture_id": "iteration14-I14-06-P1-S1-POSITIVE",
-      "test_id": "tangerine.local/api/internal/app::TestNativeQualityResumePositive",
+      "test_id": "tangerine.local/api/internal/app::TestNativeQualityReleasePositive",
       "mode": "declared_behavior",
-      "action": "Execute TestNativeQualityResumePositive through services/api/internal/app/experiment_storage.go",
+      "action": "Execute TestNativeQualityReleasePositive through services/api/internal/app/experiment_storage.go",
       "initial_state": {
         "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
         "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
       },
       "input": {
-        "exact_test": "TestNativeQualityResumePositive",
-        "literal_executable_fixture": "func TestNativeQualityResumePositive(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tp := admitQuality(t, f, 2, 1, 1)\n\t_, e := f.s.Store.DB.Exec(context.Background(), \"UPDATE quality_experiment SET cancel_requested=true,payload=jsonb_set(payload,'{status}','\\\"cancelled\\\"') WHERE id=$1\", p.ID)\n\trequireListening(t, e)\n\tp, e = f.s.RunQualityExperiment(context.Background(), p.ID, true, f.model.Client())\n\trequireListening(t, e)\n\tif p.Status != \"completed\" || f.calls.Load() != 2 {\n\t\tt.Fatal(p.Status, f.calls.Load())\n\t}\n\tvar events int\n\te = f.s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM quality_experiment_event WHERE experiment_id=$1\", p.ID).Scan(&events)\n\trequireListening(t, e)\n\tif events < 4 {\n\t\tt.Fatal(\"missing durable transitions\", events)\n\t}\n}\n",
+        "exact_test": "TestNativeQualityReleasePositive",
+        "literal_executable_fixture": "func TestNativeQualityReleasePositive(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tctx := context.Background()\n\tp := admitQuality(t, f, 1, 1, 1)\n\towner, e := f.s.Store.claimQualityBatch(ctx, p.ID, false)\n\trequireListening(t, e)\n\trequireListening(t, f.s.Store.releaseQualityBatch(ctx, p.ID, owner))\n\tnext, e := f.s.Store.claimQualityBatch(ctx, p.ID, true)\n\trequireListening(t, e)\n\tif next == owner || f.calls.Load() != 0 {\n\t\tt.Fatal(\"release did not allow explicit new ownership\", next)\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestNativeQualityResumePositive(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tp := admitQuality(t, f, 2, 1, 1)\n\t_, e := f.s.Store.DB.Exec(context.Background(), \"UPDATE quality_experiment SET cancel_requested=true,payload=jsonb_set(payload,'{status}','\\\"cancelled\\\"') WHERE id=$1\", p.ID)\n\trequireListening(t, e)\n\tp, e = f.s.RunQualityExperiment(context.Background(), p.ID, true, f.model.Client())\n\trequireListening(t, e)\n\tif p.Status != \"completed\" || f.calls.Load() != 2 {\n\t\tt.Fatal(p.Status, f.calls.Load())\n\t}\n\tvar events int\n\te = f.s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM quality_experiment_event WHERE experiment_id=$1\", p.ID).Scan(&events)\n\trequireListening(t, e)\n\tif events < 4 {\n\t\tt.Fatal(\"missing durable transitions\", events)\n\t}\n}\n",
-        "oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
-      },
-      "independent_oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
-      "observation_state": "not_run"
-    },
-    {
-      "case_id": "I14-06.P1.S2.POSITIVE",
-      "property_id": "I14-06.P1",
-      "polarity": "positive",
-      "scenario": "I14-06 packet 2",
-      "fixture_id": "iteration14-I14-06-P1-S2-POSITIVE",
-      "test_id": "tangerine.local/api/internal/app::TestNativeQualityCheckpointPositive",
-      "mode": "declared_behavior",
-      "action": "Execute TestNativeQualityCheckpointPositive through services/api/internal/app/experiment_storage.go",
-      "initial_state": {
-        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
-        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
-      },
-      "input": {
-        "exact_test": "TestNativeQualityCheckpointPositive",
-        "literal_executable_fixture": "func TestNativeQualityCheckpointPositive(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tctx := context.Background()\n\tp := admitQuality(t, f, 1, 1, 1)\n\tfrozen, e := f.s.Store.frozenExperiment(ctx, p.ID)\n\trequireListening(t, e)\n\toperation, e := f.s.Store.qualityRowOperation(ctx, p.ID, 0)\n\trequireListening(t, e)\n\twork := qualityContext(ctx, frozen.Variants[p.Rows[0].Variant])\n\twork = context.WithValue(work, qualityOperationContextKey{}, operation)\n\t_, _, e = f.s.executeQualityRow(work, p, frozen, p.Rows[0], operation, f.model.Client())\n\trequireListening(t, e)\n\tif f.calls.Load() != 1 {\n\t\tt.Fatal(f.calls.Load())\n\t}\n\t// A stopped controller never saved the row after its native child completed.\n\tp, e = f.s.RunQualityExperiment(ctx, p.ID, true, f.model.Client())\n\trequireListening(t, e)\n\tif p.Status != \"completed\" || f.calls.Load() != 1 || len(p.Rows[0].Receipts) != 1 {\n\t\tt.Fatal(\"recovery duplicated accepted native call\", p, f.calls.Load())\n\t}\n}\n",
-        "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
-        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
-      },
-      "expected": {
-        "independent_literal_assertions": "func TestNativeQualityCheckpointPositive(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tctx := context.Background()\n\tp := admitQuality(t, f, 1, 1, 1)\n\tfrozen, e := f.s.Store.frozenExperiment(ctx, p.ID)\n\trequireListening(t, e)\n\toperation, e := f.s.Store.qualityRowOperation(ctx, p.ID, 0)\n\trequireListening(t, e)\n\twork := qualityContext(ctx, frozen.Variants[p.Rows[0].Variant])\n\twork = context.WithValue(work, qualityOperationContextKey{}, operation)\n\t_, _, e = f.s.executeQualityRow(work, p, frozen, p.Rows[0], operation, f.model.Client())\n\trequireListening(t, e)\n\tif f.calls.Load() != 1 {\n\t\tt.Fatal(f.calls.Load())\n\t}\n\t// A stopped controller never saved the row after its native child completed.\n\tp, e = f.s.RunQualityExperiment(ctx, p.ID, true, f.model.Client())\n\trequireListening(t, e)\n\tif p.Status != \"completed\" || f.calls.Load() != 1 || len(p.Rows[0].Receipts) != 1 {\n\t\tt.Fatal(\"recovery duplicated accepted native call\", p, f.calls.Load())\n\t}\n}\n",
-        "oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
-      },
-      "independent_oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
-      "observation_state": "not_run"
-    },
-    {
-      "case_id": "I14-06.P1.S3.POSITIVE",
-      "property_id": "I14-06.P1",
-      "polarity": "positive",
-      "scenario": "I14-06 packet 1",
-      "fixture_id": "iteration14-I14-06-P1-S3-POSITIVE",
-      "test_id": "tangerine.local/api/internal/app::TestQualityNativeBudgetPositive",
-      "mode": "declared_behavior",
-      "action": "Execute TestQualityNativeBudgetPositive through services/api/internal/app/experiment_storage.go",
-      "initial_state": {
-        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
-        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
-      },
-      "input": {
-        "exact_test": "TestQualityNativeBudgetPositive",
-        "literal_executable_fixture": "func TestQualityNativeBudgetPositive(t *testing.T) {\n\ts := new(Storage)\n\troot := context.Background()\n\tfirst, cancel, e := s.qualityOwnerContext(root)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tdeadline, ok := first.Deadline()\n\tif !ok || time.Until(deadline) > 270*time.Second || time.Until(deadline) < 269*time.Second {\n\t\tt.Fatal(\"native operation budget lost\")\n\t}\n\tcancel()\n\tsecond, done, e := s.qualityOwnerContext(root)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tdefer done()\n\tif first.Err() == nil || second.Err() != nil {\n\t\tt.Fatal(\"one completed operation cancelled its independent successor\")\n\t}\n}\n",
-        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
-        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
-      },
-      "expected": {
-        "independent_literal_assertions": "func TestQualityNativeBudgetPositive(t *testing.T) {\n\ts := new(Storage)\n\troot := context.Background()\n\tfirst, cancel, e := s.qualityOwnerContext(root)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tdeadline, ok := first.Deadline()\n\tif !ok || time.Until(deadline) > 270*time.Second || time.Until(deadline) < 269*time.Second {\n\t\tt.Fatal(\"native operation budget lost\")\n\t}\n\tcancel()\n\tsecond, done, e := s.qualityOwnerContext(root)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tdefer done()\n\tif first.Err() == nil || second.Err() != nil {\n\t\tt.Fatal(\"one completed operation cancelled its independent successor\")\n\t}\n}\n",
+        "independent_literal_assertions": "func TestNativeQualityReleasePositive(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tctx := context.Background()\n\tp := admitQuality(t, f, 1, 1, 1)\n\towner, e := f.s.Store.claimQualityBatch(ctx, p.ID, false)\n\trequireListening(t, e)\n\trequireListening(t, f.s.Store.releaseQualityBatch(ctx, p.ID, owner))\n\tnext, e := f.s.Store.claimQualityBatch(ctx, p.ID, true)\n\trequireListening(t, e)\n\tif next == owner || f.calls.Load() != 0 {\n\t\tt.Fatal(\"release did not allow explicit new ownership\", next)\n\t}\n}\n",
         "oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
@@ -2553,22 +2499,103 @@
       "polarity": "negative",
       "scenario": "I14-06 packet 1",
       "fixture_id": "iteration14-I14-06-P1-S1-NEGATIVE",
-      "test_id": "tangerine.local/api/internal/app::TestNativeQualityCancellationNegative",
+      "test_id": "tangerine.local/api/internal/app::TestNativeQualityStaleReleaseNegative",
       "mode": "declared_behavior",
-      "action": "Execute TestNativeQualityCancellationNegative through services/api/internal/app/experiment_storage.go",
+      "action": "Execute TestNativeQualityStaleReleaseNegative through services/api/internal/app/experiment_storage.go",
       "initial_state": {
         "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
         "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
       },
       "input": {
-        "exact_test": "TestNativeQualityCancellationNegative",
-        "literal_executable_fixture": "func TestNativeQualityCancellationNegative(t *testing.T) {\n\tf := interpretationNative(t, \"blocked\")\n\tp := admitQuality(t, f, 2, 1, 1)\n\tdone := make(chan QualityExperiment, 1)\n\terrs := make(chan error, 1)\n\tgo func() {\n\t\tr, e := f.s.RunQualityExperiment(context.Background(), p.ID, false, f.model.Client())\n\t\tdone <- r\n\t\terrs <- e\n\t}()\n\tselect {\n\tcase <-f.entered:\n\tcase <-time.After(15 * time.Second):\n\t\tt.Fatal(\"model not reached\")\n\t}\n\te := f.s.Store.CancelQualityExperiment(context.Background(), p.ID)\n\trequireListening(t, e)\n\tclose(f.release)\n\tvar result QualityExperiment\n\tselect {\n\tcase result = <-done:\n\tcase <-time.After(15 * time.Second):\n\t\tt.Fatal(\"cancel did not finish\")\n\t}\n\trequireListening(t, <-errs)\n\tif result.Status != \"cancelled\" || result.Rows[1].Status != \"not_run\" {\n\t\tt.Fatal(result)\n\t}\n\tif f.calls.Load() > 1 {\n\t\tt.Fatal(\"unstarted dispatched\", f.calls.Load())\n\t}\n}\n",
+        "exact_test": "TestNativeQualityStaleReleaseNegative",
+        "literal_executable_fixture": "func TestNativeQualityStaleReleaseNegative(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tctx := context.Background()\n\tp := admitQuality(t, f, 1, 1, 1)\n\towner, e := f.s.Store.claimQualityBatch(ctx, p.ID, false)\n\trequireListening(t, e)\n\trequireListening(t, f.s.Store.releaseQualityBatch(ctx, p.ID, uuid.NewString()))\n\tvar active string\n\trequireListening(t, f.s.Store.DB.QueryRow(ctx, \"SELECT active_operation_id FROM quality_experiment WHERE id=$1\", p.ID).Scan(&active))\n\tif active != owner || f.calls.Load() != 0 {\n\t\tt.Fatal(\"stale controller released another owner\", active)\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestNativeQualityCancellationNegative(t *testing.T) {\n\tf := interpretationNative(t, \"blocked\")\n\tp := admitQuality(t, f, 2, 1, 1)\n\tdone := make(chan QualityExperiment, 1)\n\terrs := make(chan error, 1)\n\tgo func() {\n\t\tr, e := f.s.RunQualityExperiment(context.Background(), p.ID, false, f.model.Client())\n\t\tdone <- r\n\t\terrs <- e\n\t}()\n\tselect {\n\tcase <-f.entered:\n\tcase <-time.After(15 * time.Second):\n\t\tt.Fatal(\"model not reached\")\n\t}\n\te := f.s.Store.CancelQualityExperiment(context.Background(), p.ID)\n\trequireListening(t, e)\n\tclose(f.release)\n\tvar result QualityExperiment\n\tselect {\n\tcase result = <-done:\n\tcase <-time.After(15 * time.Second):\n\t\tt.Fatal(\"cancel did not finish\")\n\t}\n\trequireListening(t, <-errs)\n\tif result.Status != \"cancelled\" || result.Rows[1].Status != \"not_run\" {\n\t\tt.Fatal(result)\n\t}\n\tif f.calls.Load() > 1 {\n\t\tt.Fatal(\"unstarted dispatched\", f.calls.Load())\n\t}\n}\n",
+        "independent_literal_assertions": "func TestNativeQualityStaleReleaseNegative(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tctx := context.Background()\n\tp := admitQuality(t, f, 1, 1, 1)\n\towner, e := f.s.Store.claimQualityBatch(ctx, p.ID, false)\n\trequireListening(t, e)\n\trequireListening(t, f.s.Store.releaseQualityBatch(ctx, p.ID, uuid.NewString()))\n\tvar active string\n\trequireListening(t, f.s.Store.DB.QueryRow(ctx, \"SELECT active_operation_id FROM quality_experiment WHERE id=$1\", p.ID).Scan(&active))\n\tif active != owner || f.calls.Load() != 0 {\n\t\tt.Fatal(\"stale controller released another owner\", active)\n\t}\n}\n",
+        "oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
+      },
+      "independent_oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I14-06.P1.S2.POSITIVE",
+      "property_id": "I14-06.P1",
+      "polarity": "positive",
+      "scenario": "I14-06 packet 2",
+      "fixture_id": "iteration14-I14-06-P1-S2-POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeQualityResumePositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeQualityResumePositive through services/api/internal/app/experiment_storage.go",
+      "initial_state": {
+        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
+        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
+      },
+      "input": {
+        "exact_test": "TestNativeQualityResumePositive",
+        "literal_executable_fixture": "func TestNativeQualityResumePositive(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tp := admitQuality(t, f, 2, 1, 1)\n\t_, e := f.s.Store.DB.Exec(context.Background(), \"UPDATE quality_experiment SET cancel_requested=true,payload=jsonb_set(payload,'{status}','\\\"cancelled\\\"') WHERE id=$1\", p.ID)\n\trequireListening(t, e)\n\tp, e = f.s.RunQualityExperiment(context.Background(), p.ID, true, f.model.Client())\n\trequireListening(t, e)\n\tif p.Status != \"completed\" || f.calls.Load() != 2 {\n\t\tt.Fatal(p.Status, f.calls.Load())\n\t}\n\tvar events int\n\te = f.s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM quality_experiment_event WHERE experiment_id=$1\", p.ID).Scan(&events)\n\trequireListening(t, e)\n\tif events < 4 {\n\t\tt.Fatal(\"missing durable transitions\", events)\n\t}\n}\n",
+        "fixture_source_path": "tests/native_quality_test.go",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
+        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeQualityResumePositive(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tp := admitQuality(t, f, 2, 1, 1)\n\t_, e := f.s.Store.DB.Exec(context.Background(), \"UPDATE quality_experiment SET cancel_requested=true,payload=jsonb_set(payload,'{status}','\\\"cancelled\\\"') WHERE id=$1\", p.ID)\n\trequireListening(t, e)\n\tp, e = f.s.RunQualityExperiment(context.Background(), p.ID, true, f.model.Client())\n\trequireListening(t, e)\n\tif p.Status != \"completed\" || f.calls.Load() != 2 {\n\t\tt.Fatal(p.Status, f.calls.Load())\n\t}\n\tvar events int\n\te = f.s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM quality_experiment_event WHERE experiment_id=$1\", p.ID).Scan(&events)\n\trequireListening(t, e)\n\tif events < 4 {\n\t\tt.Fatal(\"missing durable transitions\", events)\n\t}\n}\n",
+        "oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
+      },
+      "independent_oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I14-06.P1.S3.POSITIVE",
+      "property_id": "I14-06.P1",
+      "polarity": "positive",
+      "scenario": "I14-06 packet 1",
+      "fixture_id": "iteration14-I14-06-P1-S3-POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeQualityCheckpointPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeQualityCheckpointPositive through services/api/internal/app/experiment_storage.go",
+      "initial_state": {
+        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
+        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
+      },
+      "input": {
+        "exact_test": "TestNativeQualityCheckpointPositive",
+        "literal_executable_fixture": "func TestNativeQualityCheckpointPositive(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tctx := context.Background()\n\tp := admitQuality(t, f, 1, 1, 1)\n\tfrozen, e := f.s.Store.frozenExperiment(ctx, p.ID)\n\trequireListening(t, e)\n\toperation, e := f.s.Store.qualityRowOperation(ctx, p.ID, 0)\n\trequireListening(t, e)\n\twork := qualityContext(ctx, frozen.Variants[p.Rows[0].Variant])\n\twork = context.WithValue(work, qualityOperationContextKey{}, operation)\n\t_, _, e = f.s.executeQualityRow(work, p, frozen, p.Rows[0], operation, f.model.Client())\n\trequireListening(t, e)\n\tif f.calls.Load() != 1 {\n\t\tt.Fatal(f.calls.Load())\n\t}\n\t// A stopped controller never saved the row after its native child completed.\n\tp, e = f.s.RunQualityExperiment(ctx, p.ID, true, f.model.Client())\n\trequireListening(t, e)\n\tif p.Status != \"completed\" || f.calls.Load() != 1 || len(p.Rows[0].Receipts) != 1 {\n\t\tt.Fatal(\"recovery duplicated accepted native call\", p, f.calls.Load())\n\t}\n}\n\n",
+        "fixture_source_path": "tests/native_quality_test.go",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
+        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeQualityCheckpointPositive(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tctx := context.Background()\n\tp := admitQuality(t, f, 1, 1, 1)\n\tfrozen, e := f.s.Store.frozenExperiment(ctx, p.ID)\n\trequireListening(t, e)\n\toperation, e := f.s.Store.qualityRowOperation(ctx, p.ID, 0)\n\trequireListening(t, e)\n\twork := qualityContext(ctx, frozen.Variants[p.Rows[0].Variant])\n\twork = context.WithValue(work, qualityOperationContextKey{}, operation)\n\t_, _, e = f.s.executeQualityRow(work, p, frozen, p.Rows[0], operation, f.model.Client())\n\trequireListening(t, e)\n\tif f.calls.Load() != 1 {\n\t\tt.Fatal(f.calls.Load())\n\t}\n\t// A stopped controller never saved the row after its native child completed.\n\tp, e = f.s.RunQualityExperiment(ctx, p.ID, true, f.model.Client())\n\trequireListening(t, e)\n\tif p.Status != \"completed\" || f.calls.Load() != 1 || len(p.Rows[0].Receipts) != 1 {\n\t\tt.Fatal(\"recovery duplicated accepted native call\", p, f.calls.Load())\n\t}\n}\n\n",
+        "oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
+      },
+      "independent_oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I14-06.P1.S4.POSITIVE",
+      "property_id": "I14-06.P1",
+      "polarity": "positive",
+      "scenario": "I14-06 packet 2",
+      "fixture_id": "iteration14-I14-06-P1-S4-POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestQualityNativeBudgetPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestQualityNativeBudgetPositive through services/api/internal/app/experiment_storage.go",
+      "initial_state": {
+        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
+        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
+      },
+      "input": {
+        "exact_test": "TestQualityNativeBudgetPositive",
+        "literal_executable_fixture": "func TestQualityNativeBudgetPositive(t *testing.T) {\n\ts := new(Storage)\n\troot := context.Background()\n\tfirst, cancel, e := s.qualityOwnerContext(root)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tdeadline, ok := first.Deadline()\n\tif !ok || time.Until(deadline) > 270*time.Second || time.Until(deadline) < 269*time.Second {\n\t\tt.Fatal(\"native operation budget lost\")\n\t}\n\tcancel()\n\tsecond, done, e := s.qualityOwnerContext(root)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tdefer done()\n\tif first.Err() == nil || second.Err() != nil {\n\t\tt.Fatal(\"one completed operation cancelled its independent successor\")\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
+        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestQualityNativeBudgetPositive(t *testing.T) {\n\ts := new(Storage)\n\troot := context.Background()\n\tfirst, cancel, e := s.qualityOwnerContext(root)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tdeadline, ok := first.Deadline()\n\tif !ok || time.Until(deadline) > 270*time.Second || time.Until(deadline) < 269*time.Second {\n\t\tt.Fatal(\"native operation budget lost\")\n\t}\n\tcancel()\n\tsecond, done, e := s.qualityOwnerContext(root)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tdefer done()\n\tif first.Err() == nil || second.Err() != nil {\n\t\tt.Fatal(\"one completed operation cancelled its independent successor\")\n\t}\n}\n",
         "oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
@@ -2580,22 +2607,22 @@
       "polarity": "negative",
       "scenario": "I14-06 packet 2",
       "fixture_id": "iteration14-I14-06-P1-S2-NEGATIVE",
-      "test_id": "tangerine.local/api/internal/app::TestNativeQualityConcurrentNegative",
+      "test_id": "tangerine.local/api/internal/app::TestNativeQualityCancellationNegative",
       "mode": "declared_behavior",
-      "action": "Execute TestNativeQualityConcurrentNegative through services/api/internal/app/experiment_storage.go",
+      "action": "Execute TestNativeQualityCancellationNegative through services/api/internal/app/experiment_storage.go",
       "initial_state": {
         "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
         "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
       },
       "input": {
-        "exact_test": "TestNativeQualityConcurrentNegative",
-        "literal_executable_fixture": "func TestNativeQualityConcurrentNegative(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tp := admitQuality(t, f, 1, 1, 1)\n\towner, e := f.s.Store.claimQualityBatch(context.Background(), p.ID, false)\n\trequireListening(t, e)\n\tif _, e = f.s.RunQualityExperiment(context.Background(), p.ID, true, f.model.Client()); e == nil {\n\t\tt.Fatal(\"second batch acquired\")\n\t}\n\tif f.calls.Load() != 0 {\n\t\tt.Fatal(\"concurrent call dispatched\")\n\t}\n\t_, e = f.s.Store.DB.Exec(context.Background(), \"UPDATE quality_experiment SET lease_until=clock_timestamp()-interval '1 second' WHERE id=$1\", p.ID)\n\trequireListening(t, e)\n\tnewOwner, e := f.s.Store.claimQualityBatch(context.Background(), p.ID, true)\n\trequireListening(t, e)\n\tif owner == newOwner {\n\t\tt.Fatal(\"stale owner reused\")\n\t}\n\tif e = f.s.Store.saveQualityProgress(context.Background(), p, owner, true); e == nil {\n\t\tt.Fatal(\"stale write accepted\")\n\t}\n}\n",
+        "exact_test": "TestNativeQualityCancellationNegative",
+        "literal_executable_fixture": "func TestNativeQualityCancellationNegative(t *testing.T) {\n\tf := interpretationNative(t, \"blocked\")\n\tp := admitQuality(t, f, 2, 1, 1)\n\tdone := make(chan QualityExperiment, 1)\n\terrs := make(chan error, 1)\n\tgo func() {\n\t\tr, e := f.s.RunQualityExperiment(context.Background(), p.ID, false, f.model.Client())\n\t\tdone <- r\n\t\terrs <- e\n\t}()\n\tselect {\n\tcase <-f.entered:\n\tcase <-time.After(15 * time.Second):\n\t\tt.Fatal(\"model not reached\")\n\t}\n\te := f.s.Store.CancelQualityExperiment(context.Background(), p.ID)\n\trequireListening(t, e)\n\tclose(f.release)\n\tvar result QualityExperiment\n\tselect {\n\tcase result = <-done:\n\tcase <-time.After(15 * time.Second):\n\t\tt.Fatal(\"cancel did not finish\")\n\t}\n\trequireListening(t, <-errs)\n\tif result.Status != \"cancelled\" || result.Rows[1].Status != \"not_run\" {\n\t\tt.Fatal(result)\n\t}\n\tif f.calls.Load() > 1 {\n\t\tt.Fatal(\"unstarted dispatched\", f.calls.Load())\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestNativeQualityConcurrentNegative(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tp := admitQuality(t, f, 1, 1, 1)\n\towner, e := f.s.Store.claimQualityBatch(context.Background(), p.ID, false)\n\trequireListening(t, e)\n\tif _, e = f.s.RunQualityExperiment(context.Background(), p.ID, true, f.model.Client()); e == nil {\n\t\tt.Fatal(\"second batch acquired\")\n\t}\n\tif f.calls.Load() != 0 {\n\t\tt.Fatal(\"concurrent call dispatched\")\n\t}\n\t_, e = f.s.Store.DB.Exec(context.Background(), \"UPDATE quality_experiment SET lease_until=clock_timestamp()-interval '1 second' WHERE id=$1\", p.ID)\n\trequireListening(t, e)\n\tnewOwner, e := f.s.Store.claimQualityBatch(context.Background(), p.ID, true)\n\trequireListening(t, e)\n\tif owner == newOwner {\n\t\tt.Fatal(\"stale owner reused\")\n\t}\n\tif e = f.s.Store.saveQualityProgress(context.Background(), p, owner, true); e == nil {\n\t\tt.Fatal(\"stale write accepted\")\n\t}\n}\n",
+        "independent_literal_assertions": "func TestNativeQualityCancellationNegative(t *testing.T) {\n\tf := interpretationNative(t, \"blocked\")\n\tp := admitQuality(t, f, 2, 1, 1)\n\tdone := make(chan QualityExperiment, 1)\n\terrs := make(chan error, 1)\n\tgo func() {\n\t\tr, e := f.s.RunQualityExperiment(context.Background(), p.ID, false, f.model.Client())\n\t\tdone <- r\n\t\terrs <- e\n\t}()\n\tselect {\n\tcase <-f.entered:\n\tcase <-time.After(15 * time.Second):\n\t\tt.Fatal(\"model not reached\")\n\t}\n\te := f.s.Store.CancelQualityExperiment(context.Background(), p.ID)\n\trequireListening(t, e)\n\tclose(f.release)\n\tvar result QualityExperiment\n\tselect {\n\tcase result = <-done:\n\tcase <-time.After(15 * time.Second):\n\t\tt.Fatal(\"cancel did not finish\")\n\t}\n\trequireListening(t, <-errs)\n\tif result.Status != \"cancelled\" || result.Rows[1].Status != \"not_run\" {\n\t\tt.Fatal(result)\n\t}\n\tif f.calls.Load() > 1 {\n\t\tt.Fatal(\"unstarted dispatched\", f.calls.Load())\n\t}\n}\n",
         "oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
@@ -2607,6 +2634,33 @@
       "polarity": "negative",
       "scenario": "I14-06 packet 1",
       "fixture_id": "iteration14-I14-06-P1-S3-NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeQualityConcurrentNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeQualityConcurrentNegative through services/api/internal/app/experiment_storage.go",
+      "initial_state": {
+        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
+        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
+      },
+      "input": {
+        "exact_test": "TestNativeQualityConcurrentNegative",
+        "literal_executable_fixture": "func TestNativeQualityConcurrentNegative(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tp := admitQuality(t, f, 1, 1, 1)\n\towner, e := f.s.Store.claimQualityBatch(context.Background(), p.ID, false)\n\trequireListening(t, e)\n\tif _, e = f.s.RunQualityExperiment(context.Background(), p.ID, true, f.model.Client()); e == nil {\n\t\tt.Fatal(\"second batch acquired\")\n\t}\n\tif f.calls.Load() != 0 {\n\t\tt.Fatal(\"concurrent call dispatched\")\n\t}\n\t_, e = f.s.Store.DB.Exec(context.Background(), \"UPDATE quality_experiment SET lease_until=clock_timestamp()-interval '1 second' WHERE id=$1\", p.ID)\n\trequireListening(t, e)\n\tnewOwner, e := f.s.Store.claimQualityBatch(context.Background(), p.ID, true)\n\trequireListening(t, e)\n\tif owner == newOwner {\n\t\tt.Fatal(\"stale owner reused\")\n\t}\n\tif e = f.s.Store.saveQualityProgress(context.Background(), p, owner, true); e == nil {\n\t\tt.Fatal(\"stale write accepted\")\n\t}\n}\n",
+        "fixture_source_path": "tests/native_quality_test.go",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
+        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeQualityConcurrentNegative(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tp := admitQuality(t, f, 1, 1, 1)\n\towner, e := f.s.Store.claimQualityBatch(context.Background(), p.ID, false)\n\trequireListening(t, e)\n\tif _, e = f.s.RunQualityExperiment(context.Background(), p.ID, true, f.model.Client()); e == nil {\n\t\tt.Fatal(\"second batch acquired\")\n\t}\n\tif f.calls.Load() != 0 {\n\t\tt.Fatal(\"concurrent call dispatched\")\n\t}\n\t_, e = f.s.Store.DB.Exec(context.Background(), \"UPDATE quality_experiment SET lease_until=clock_timestamp()-interval '1 second' WHERE id=$1\", p.ID)\n\trequireListening(t, e)\n\tnewOwner, e := f.s.Store.claimQualityBatch(context.Background(), p.ID, true)\n\trequireListening(t, e)\n\tif owner == newOwner {\n\t\tt.Fatal(\"stale owner reused\")\n\t}\n\tif e = f.s.Store.saveQualityProgress(context.Background(), p, owner, true); e == nil {\n\t\tt.Fatal(\"stale write accepted\")\n\t}\n}\n",
+        "oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
+      },
+      "independent_oracle": "allocate every case\u00d7variant\u00d7repetition tuple, checkpoint actual operations/output/receipt links, preserve failure/cancellation/unstarted states, resume only explicitly with frozen inputs and prevent duplicate concurrent row ownership. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I14-06.P1.S4.NEGATIVE",
+      "property_id": "I14-06.P1",
+      "polarity": "negative",
+      "scenario": "I14-06 packet 2",
+      "fixture_id": "iteration14-I14-06-P1-S4-NEGATIVE",
       "test_id": "tangerine.local/api/internal/app::TestQualityNativeBudgetCancellationNegative",
       "mode": "declared_behavior",
       "action": "Execute TestQualityNativeBudgetCancellationNegative through services/api/internal/app/experiment_storage.go",
@@ -2618,7 +2672,7 @@
         "exact_test": "TestQualityNativeBudgetCancellationNegative",
         "literal_executable_fixture": "func TestQualityNativeBudgetCancellationNegative(t *testing.T) {\n\ts := new(Storage)\n\troot, cancel := context.WithCancel(context.Background())\n\tcancel()\n\toperation, done, e := s.qualityOwnerContext(root)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tdefer done()\n\tif operation.Err() == nil {\n\t\tt.Fatal(\"cancelled batch allowed work\")\n\t}\n}\n\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2645,7 +2699,7 @@
         "exact_test": "TestQualityJSONPathPositive",
         "literal_executable_fixture": "func TestQualityJSONPathPositive(t *testing.T) {\n\tv := map[string]any{\"verdicts\": []any{map[string]any{\"evidence\": []any{map[string]any{\"asset_id\": \"candidate\", \"pointer\": \"$.clauses[0].claim_span\"}}}}}\n\tbody := map[string]any{\"clauses\": []any{map[string]any{\"claim_span\": \"Use opens.\"}}}\n\tgot := normalizeQualityJudge(v, map[string]any{\"candidate\": body}).(map[string]any)\n\tref := got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)\n\tif ref[\"pointer\"] != \"/clauses/0/claim_span\" {\n\t\tt.Fatal(ref)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2672,7 +2726,7 @@
         "exact_test": "TestQualityJSONPathNegative",
         "literal_executable_fixture": "func TestQualityJSONPathNegative(t *testing.T) {\n\tfor _, path := range []string{\"$.clauses[*].claim_span\", \"$.clauses[0].absent\", \"$.clauses[?(@.id)]\"} {\n\t\tv := map[string]any{\"verdicts\": []any{map[string]any{\"evidence\": []any{map[string]any{\"asset_id\": \"candidate\", \"pointer\": path}}}}}\n\t\tgot := normalizeQualityJudge(v, map[string]any{\"candidate\": map[string]any{\"clauses\": []any{}}}).(map[string]any)\n\t\tref := got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)\n\t\tif ref[\"pointer\"] != path {\n\t\t\tt.Fatal(\"invented/evaluated absent path\", ref)\n\t\t}\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2699,7 +2753,7 @@
         "exact_test": "TestQualityFalsePositiveNegative",
         "literal_executable_fixture": "func TestQualityFalsePositiveNegative(t *testing.T) {\n\tvar got map[string]any\n\t_ = json.Unmarshal(sourceBytes(SemanticMapping{Decisions: []SemanticDecision{{Claim: \"unsupported\", Decision: \"false_positive\"}, {Claim: \"control\", Unit: ptrQualityTest(\"clean\"), Decision: \"false_positive\"}}}), &got)\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(map[string]any{}, got, &e)\n\tif e.Stats[\"FP\"] != \"2\" || e.Stats[\"TP\"] != \"0\" {\n\t\tt.Fatal(\"unsupported claims vanished\", e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2724,13 +2778,13 @@
       },
       "input": {
         "exact_test": "TestQualityDuplicateClaimPositive",
-        "literal_executable_fixture": "func TestQualityDuplicateClaimPositive(t *testing.T) {\n\tvar got map[string]any\n\t_ = json.Unmarshal(sourceBytes(SemanticMapping{Decisions: []SemanticDecision{{Claim: \"unsupported\", Decision: \"false_positive\"}, {Claim: \"repeat\", Duplicate: ptrQualityTest(\"unsupported\"), Decision: \"false_positive\"}}}), &got)\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(map[string]any{}, got, &e)\n\tif e.Stats[\"FP\"] != \"1\" {\n\t\tt.Fatal(\"duplicate counted again\", e)\n\t}\n}\n",
+        "literal_executable_fixture": "func TestQualityDuplicateClaimPositive(t *testing.T) {\n\tvar got map[string]any\n\t_ = json.Unmarshal(sourceBytes(SemanticMapping{Decisions: []SemanticDecision{{Claim: \"unsupported\", Decision: \"false_positive\"}, {Claim: \"repeat\", Duplicate: ptrQualityTest(\"unsupported\"), Decision: \"false_positive\"}}}), &got)\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(map[string]any{}, got, &e)\n\tif e.Stats[\"FP\"] != \"1\" {\n\t\tt.Fatal(\"duplicate counted again\", e)\n\t}\n}\n\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestQualityDuplicateClaimPositive(t *testing.T) {\n\tvar got map[string]any\n\t_ = json.Unmarshal(sourceBytes(SemanticMapping{Decisions: []SemanticDecision{{Claim: \"unsupported\", Decision: \"false_positive\"}, {Claim: \"repeat\", Duplicate: ptrQualityTest(\"unsupported\"), Decision: \"false_positive\"}}}), &got)\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(map[string]any{}, got, &e)\n\tif e.Stats[\"FP\"] != \"1\" {\n\t\tt.Fatal(\"duplicate counted again\", e)\n\t}\n}\n",
+        "independent_literal_assertions": "func TestQualityDuplicateClaimPositive(t *testing.T) {\n\tvar got map[string]any\n\t_ = json.Unmarshal(sourceBytes(SemanticMapping{Decisions: []SemanticDecision{{Claim: \"unsupported\", Decision: \"false_positive\"}, {Claim: \"repeat\", Duplicate: ptrQualityTest(\"unsupported\"), Decision: \"false_positive\"}}}), &got)\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(map[string]any{}, got, &e)\n\tif e.Stats[\"FP\"] != \"1\" {\n\t\tt.Fatal(\"duplicate counted again\", e)\n\t}\n}\n\n",
         "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
@@ -2753,7 +2807,7 @@
         "exact_test": "TestQualityJudgeSupportedPositive",
         "literal_executable_fixture": "func TestQualityJudgeSupportedPositive(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[{\"proposition_id\":\"p\",\"verdict\":\"supported\",\"reason\":\"Source-supported\",\"evidence\":[{\"asset_id\":\"candidate\",\"pointer\":\"/correction\"}],\"missing_reason\":null}]}`)\n\te := validateQualityJudge(raw, qualityPropositions(), map[string]any{\"candidate\": map[string]any{\"correction\": \"opens\"}})\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2780,7 +2834,7 @@
         "exact_test": "TestQualityJudgeUnknownPositive",
         "literal_executable_fixture": "func TestQualityJudgeUnknownPositive(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[{\"proposition_id\":\"p\",\"verdict\":\"unknown\",\"reason\":\"Audio absent\",\"evidence\":[],\"missing_reason\":\"No recording\"}]}`)\n\tif e := validateQualityJudge(raw, qualityPropositions(), nil); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2807,7 +2861,7 @@
         "exact_test": "TestQualityJudgePointerNegative",
         "literal_executable_fixture": "func TestQualityJudgePointerNegative(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[{\"proposition_id\":\"p\",\"verdict\":\"supported\",\"reason\":\"claim\",\"evidence\":[{\"asset_id\":\"candidate\",\"pointer\":\"/absent\"}],\"missing_reason\":null}]}`)\n\tif e := validateQualityJudge(raw, qualityPropositions(), map[string]any{\"candidate\": map[string]any{\"correction\": \"opens\"}}); e == nil {\n\t\tt.Fatal(\"invented evidence\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2834,7 +2888,7 @@
         "exact_test": "TestQualityJudgeMissingNegative",
         "literal_executable_fixture": "func TestQualityJudgeMissingNegative(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[]}`)\n\tif e := validateQualityJudge(raw, qualityPropositions(), nil); e == nil {\n\t\tt.Fatal(\"missing verdict\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2861,7 +2915,7 @@
         "exact_test": "TestQualityJudgeNoNumericNegative",
         "literal_executable_fixture": "func TestQualityJudgeNoNumericNegative(t *testing.T) {\n\tif _, _, e := validateQualityOutput([]byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[],\"score\":100}`)); e == nil {\n\t\tt.Fatal(\"model numeric grade accepted\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2888,7 +2942,7 @@
         "exact_test": "TestQualityJudgeSelfConsistencyPositive",
         "literal_executable_fixture": "func TestQualityJudgeSelfConsistencyPositive(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\texpected := map[string]any{\"semantic_propositions\": []any{map[string]any{\"id\": \"p\", \"scope\": \"feedback\", \"expected\": \"supported\"}}}\n\tjudgment := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"supported\"}}}\n\tqualityJudgeEvidence(QualityCase{Basis: \"self_consistency\"}, expected, judgment, &e)\n\tif e.Basis[\"llm_lab.feedback_grounding_rate\"] != \"self_consistency\" || e.Stats[\"supported_factual_items_or_correctly_labelled_practice\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2915,7 +2969,7 @@
         "exact_test": "TestQualityIndependentComponentsPositive",
         "literal_executable_fixture": "func TestQualityIndependentComponentsPositive(t *testing.T) {\n\treference := SemanticMapping{Decisions: []SemanticDecision{{Claim: \"c\", Unit: ptrQualityTest(\"u\"), Decision: \"matched_error\", Category: ptrQualityTest(\"grammar.verbs.subject_verb_agreement\"), Correction: SemanticComponent{Supplied: true, Satisfied: []string{\"correct\"}}, Explanation: SemanticComponent{Supplied: true, Violated: []string{\"reason\"}}}}}\n\tactual := reference\n\tvar ref, got map[string]any\n\t_ = json.Unmarshal(sourceBytes(reference), &ref)\n\t_ = json.Unmarshal(sourceBytes(actual), &got)\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(ref, got, &e)\n\tif e.Stats[\"TP\"] != \"1\" || e.Stats[\"correct_applicable_repair_propositions\"] != \"1\" || e.Stats[\"correct_applicable_explanation_propositions\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2942,7 +2996,7 @@
         "exact_test": "TestQualityDisclosurePositive",
         "literal_executable_fixture": "func TestQualityDisclosurePositive(t *testing.T) {\n\tinput := map[string]any{\"answer_text\": \"Use opens.\", \"ground_truth\": \"hidden\", \"prior_decisions\": \"hidden\", \"scoring_result\": 100}\n\tparts := qualityStageComponents(\"blind_claim_extraction\", input)\n\tif len(parts) != 2 || parts[\"answer\"] != \"Use opens.\" {\n\t\tt.Fatal(parts)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2969,7 +3023,7 @@
         "exact_test": "TestQualityWrappedEvidencePositive",
         "literal_executable_fixture": "func TestQualityWrappedEvidencePositive(t *testing.T) {\n\tvalue := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"supported\", \"evidence\": []any{map[string]any{\"asset_id\": \"input\", \"pointer\": \"/body/answer_text\"}}}}}\n\tgot := normalizeQualityJudge(value, map[string]any{\"input\": map[string]any{\"answer_text\": \"Use opens.\"}}).(map[string]any)\n\tpointer := got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)[\"pointer\"]\n\tif pointer != \"/answer_text\" {\n\t\tt.Fatal(pointer)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2996,7 +3050,7 @@
         "exact_test": "TestQualityWrongMappingNegative",
         "literal_executable_fixture": "func TestQualityWrongMappingNegative(t *testing.T) {\n\tref := map[string]any{\"decisions\": []any{map[string]any{\"unit_id\": \"real\", \"decision\": \"matched_error\"}}}\n\tgot := map[string]any{\"decisions\": []any{map[string]any{\"unit_id\": \"invented\", \"decision\": \"matched_error\"}}}\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(ref, got, &e)\n\tif e.Stats[\"TP\"] != \"0\" || e.Stats[\"FP\"] != \"1\" || e.Stats[\"FN\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -3023,7 +3077,7 @@
         "exact_test": "TestQualityAuditLeakNegative",
         "literal_executable_fixture": "func TestQualityAuditLeakNegative(t *testing.T) {\n\tparts := qualityStageComponents(\"mapping_audit\", map[string]any{\"prior_decisions\": []string{\"first-map\"}, \"extraction\": \"saved\", \"ground_truth\": \"key\"})\n\tif _, ok := parts[\"prior_decisions\"]; ok {\n\t\tt.Fatal(\"audit sees first-map decisions\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -3050,7 +3104,7 @@
         "exact_test": "TestQualityAbsentWrappedEvidenceNegative",
         "literal_executable_fixture": "func TestQualityAbsentWrappedEvidenceNegative(t *testing.T) {\n\tvalue := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"supported\", \"evidence\": []any{map[string]any{\"asset_id\": \"input\", \"pointer\": \"/body/absent\"}}}}}\n\tgot := normalizeQualityJudge(value, map[string]any{\"input\": map[string]any{\"answer_text\": \"Use opens.\"}}).(map[string]any)\n\tif got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)[\"pointer\"] != \"/body/absent\" {\n\t\tt.Fatal(\"invented a target\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -3077,7 +3131,7 @@
         "exact_test": "TestQualityUnsupportedNegative",
         "literal_executable_fixture": "func TestQualityUnsupportedNegative(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\texpected := map[string]any{\"semantic_propositions\": []any{map[string]any{\"id\": \"p\", \"scope\": \"feedback\", \"expected\": \"unsupported\"}}}\n\tjudgment := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"unsupported\"}}}\n\tqualityJudgeEvidence(QualityCase{Basis: \"authored_assertion\"}, expected, judgment, &e)\n\tif e.Stats[\"supported_factual_items_or_correctly_labelled_practice\"] != \"0\" || e.Stats[\"applicable_feedback_items\"] != \"1\" {\n\t\tt.Fatal(\"unsupported claim became grounded\", e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -3093,6 +3147,60 @@
       "polarity": "positive",
       "scenario": "I14-08 packet 1",
       "fixture_id": "iteration14-I14-08-P1-S1-POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestQualityControlDetectionPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestQualityControlDetectionPositive through services/api/internal/experiment/compare.go",
+      "initial_state": {
+        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
+        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
+      },
+      "input": {
+        "exact_test": "TestQualityControlDetectionPositive",
+        "literal_executable_fixture": "func TestQualityControlDetectionPositive(t *testing.T) {\n\te := experiment.Evidence{}\n\tqualityDetectionEvents(map[string]any{\"decisions\": []any{map[string]any{\"claim_id\": \"c1\", \"unit_id\": \"control\", \"decision\": \"false_positive\"}, map[string]any{\"claim_id\": \"c2\", \"unit_id\": \"control\", \"decision\": \"false_positive\", \"duplicate_of_claim_id\": \"c1\"}}}, &e)\n\tif !e.Aligned || len(e.Detected) != 1 || e.Detected[0] != \"control\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
+        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestQualityControlDetectionPositive(t *testing.T) {\n\te := experiment.Evidence{}\n\tqualityDetectionEvents(map[string]any{\"decisions\": []any{map[string]any{\"claim_id\": \"c1\", \"unit_id\": \"control\", \"decision\": \"false_positive\"}, map[string]any{\"claim_id\": \"c2\", \"unit_id\": \"control\", \"decision\": \"false_positive\", \"duplicate_of_claim_id\": \"c1\"}}}, &e)\n\tif !e.Aligned || len(e.Detected) != 1 || e.Detected[0] != \"control\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "oracle": "compare only common applicable completed tuples under the same frozen reference/scorer/scope, pool before differences, retain excluded rows/full denominators and all122leaf missing/control coverage without an auto-promotion threshold. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
+      },
+      "independent_oracle": "compare only common applicable completed tuples under the same frozen reference/scorer/scope, pool before differences, retain excluded rows/full denominators and all122leaf missing/control coverage without an auto-promotion threshold. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I14-08.P1.S1.NEGATIVE",
+      "property_id": "I14-08.P1",
+      "polarity": "negative",
+      "scenario": "I14-08 packet 1",
+      "fixture_id": "iteration14-I14-08-P1-S1-NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestQualityUnalignedAssertionNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestQualityUnalignedAssertionNegative through services/api/internal/experiment/compare.go",
+      "initial_state": {
+        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
+        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
+      },
+      "input": {
+        "exact_test": "TestQualityUnalignedAssertionNegative",
+        "literal_executable_fixture": "func TestQualityUnalignedAssertionNegative(t *testing.T) {\n\te := experiment.Evidence{}\n\tqualityDetectionEvents(map[string]any{\"decisions\": []any{map[string]any{\"claim_id\": \"off-key\", \"unit_id\": nil, \"decision\": \"false_positive\"}}}, &e)\n\tif e.Aligned {\n\t\tt.Fatal(\"invented correspondence\", e)\n\t}\n\tpairs := experiment.RepetitionEvidence([]experiment.Detection{{Case: \"c\", Variant: \"v\", Repetition: 1, Complete: true, Aligned: e.Aligned, Events: e.Detected}, {Case: \"c\", Variant: \"v\", Repetition: 2, Complete: true, Aligned: e.Aligned, Events: e.Detected}})\n\tif pairs.Missing[\"llm_lab.repeat_detection_jaccard\"] != \"event_correspondence_unavailable\" {\n\t\tt.Fatal(\"off-key assertions became perfect empty repeats\", pairs)\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
+        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestQualityUnalignedAssertionNegative(t *testing.T) {\n\te := experiment.Evidence{}\n\tqualityDetectionEvents(map[string]any{\"decisions\": []any{map[string]any{\"claim_id\": \"off-key\", \"unit_id\": nil, \"decision\": \"false_positive\"}}}, &e)\n\tif e.Aligned {\n\t\tt.Fatal(\"invented correspondence\", e)\n\t}\n\tpairs := experiment.RepetitionEvidence([]experiment.Detection{{Case: \"c\", Variant: \"v\", Repetition: 1, Complete: true, Aligned: e.Aligned, Events: e.Detected}, {Case: \"c\", Variant: \"v\", Repetition: 2, Complete: true, Aligned: e.Aligned, Events: e.Detected}})\n\tif pairs.Missing[\"llm_lab.repeat_detection_jaccard\"] != \"event_correspondence_unavailable\" {\n\t\tt.Fatal(\"off-key assertions became perfect empty repeats\", pairs)\n\t}\n}\n",
+        "oracle": "compare only common applicable completed tuples under the same frozen reference/scorer/scope, pool before differences, retain excluded rows/full denominators and all122leaf missing/control coverage without an auto-promotion threshold. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
+      },
+      "independent_oracle": "compare only common applicable completed tuples under the same frozen reference/scorer/scope, pool before differences, retain excluded rows/full denominators and all122leaf missing/control coverage without an auto-promotion threshold. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I14-08.P1.S2.POSITIVE",
+      "property_id": "I14-08.P1",
+      "polarity": "positive",
+      "scenario": "I14-08 packet 2",
+      "fixture_id": "iteration14-I14-08-P1-S2-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentComparisonPositive",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentComparisonPositive through services/api/internal/experiment/compare.go",
@@ -3115,11 +3223,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-08.P1.S2.POSITIVE",
+      "case_id": "I14-08.P1.S3.POSITIVE",
       "property_id": "I14-08.P1",
       "polarity": "positive",
-      "scenario": "I14-08 packet 2",
-      "fixture_id": "iteration14-I14-08-P1-S2-POSITIVE",
+      "scenario": "I14-08 packet 1",
+      "fixture_id": "iteration14-I14-08-P1-S3-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentPairsPositive",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentPairsPositive through services/api/internal/experiment/compare.go",
@@ -3142,11 +3250,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-08.P1.S3.POSITIVE",
+      "case_id": "I14-08.P1.S4.POSITIVE",
       "property_id": "I14-08.P1",
       "polarity": "positive",
-      "scenario": "I14-08 packet 1",
-      "fixture_id": "iteration14-I14-08-P1-S3-POSITIVE",
+      "scenario": "I14-08 packet 2",
+      "fixture_id": "iteration14-I14-08-P1-S4-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentRepeatComparisonPositive",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentRepeatComparisonPositive through services/api/internal/experiment/compare.go",
@@ -3169,11 +3277,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-08.P1.S4.POSITIVE",
+      "case_id": "I14-08.P1.S5.POSITIVE",
       "property_id": "I14-08.P1",
       "polarity": "positive",
-      "scenario": "I14-08 packet 2",
-      "fixture_id": "iteration14-I14-08-P1-S4-POSITIVE",
+      "scenario": "I14-08 packet 1",
+      "fixture_id": "iteration14-I14-08-P1-S5-POSITIVE",
       "test_id": "tangerine.local/api/internal/app::TestNativeQualityPopulationPositive",
       "mode": "declared_behavior",
       "action": "Execute TestNativeQualityPopulationPositive through services/api/internal/experiment/compare.go",
@@ -3185,7 +3293,7 @@
         "exact_test": "TestNativeQualityPopulationPositive",
         "literal_executable_fixture": "func TestNativeQualityPopulationPositive(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tp := admitQuality(t, f, 2, 2, 1)\n\tpacket, e := f.s.Store.QualityDiagnostic(context.Background(), p.ID)\n\trequireListening(t, e)\n\tif len(packet[\"artifacts\"].([]any)) != 2 {\n\t\tt.Fatal(packet)\n\t}\n\tfrozen, e := f.s.Store.frozenExperiment(context.Background(), p.ID)\n\trequireListening(t, e)\n\tcoverage := qualityCoverage(p, frozen.Dataset)\n\tif len(coverage) != 122 {\n\t\tt.Fatal(len(coverage))\n\t}\n\tfor _, r := range coverage {\n\t\tif r[\"completed_rows\"] != 0 {\n\t\t\tt.Fatal(\"planned became observed\")\n\t\t}\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -3196,11 +3304,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-08.P1.S1.NEGATIVE",
+      "case_id": "I14-08.P1.S2.NEGATIVE",
       "property_id": "I14-08.P1",
       "polarity": "negative",
-      "scenario": "I14-08 packet 1",
-      "fixture_id": "iteration14-I14-08-P1-S1-NEGATIVE",
+      "scenario": "I14-08 packet 2",
+      "fixture_id": "iteration14-I14-08-P1-S2-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentComparisonNegative",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentComparisonNegative through services/api/internal/experiment/compare.go",
@@ -3223,11 +3331,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-08.P1.S2.NEGATIVE",
+      "case_id": "I14-08.P1.S3.NEGATIVE",
       "property_id": "I14-08.P1",
       "polarity": "negative",
-      "scenario": "I14-08 packet 2",
-      "fixture_id": "iteration14-I14-08-P1-S2-NEGATIVE",
+      "scenario": "I14-08 packet 1",
+      "fixture_id": "iteration14-I14-08-P1-S3-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentAlignmentNegative",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentAlignmentNegative through services/api/internal/experiment/compare.go",
@@ -3250,11 +3358,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-08.P1.S3.NEGATIVE",
+      "case_id": "I14-08.P1.S4.NEGATIVE",
       "property_id": "I14-08.P1",
       "polarity": "negative",
-      "scenario": "I14-08 packet 1",
-      "fixture_id": "iteration14-I14-08-P1-S3-NEGATIVE",
+      "scenario": "I14-08 packet 2",
+      "fixture_id": "iteration14-I14-08-P1-S4-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentCompletionComparisonNegative",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentCompletionComparisonNegative through services/api/internal/experiment/compare.go",
@@ -3277,11 +3385,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-08.P1.S4.NEGATIVE",
+      "case_id": "I14-08.P1.S5.NEGATIVE",
       "property_id": "I14-08.P1",
       "polarity": "negative",
-      "scenario": "I14-08 packet 2",
-      "fixture_id": "iteration14-I14-08-P1-S4-NEGATIVE",
+      "scenario": "I14-08 packet 1",
+      "fixture_id": "iteration14-I14-08-P1-S5-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMixedBasisNegative",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMixedBasisNegative through services/api/internal/experiment/compare.go",
@@ -3671,7 +3779,7 @@
         "exact_test": "test_correspondence_positive",
         "literal_executable_fixture": "def test_correspondence_positive(self):\n  p=subprocess.run(['python3','-B',str(R/'audit/iteration-14-empirical-20261021/local_reconcile.py'),str(self.root.relative_to(R))],env={**os.environ,'TANGERINE_QUALITY_LAB_CONTAINER':self.binding['lab_container']},cwd=R,capture_output=True,text=True,timeout=180)\n  self.assertEqual(p.returncode,0,p.stderr);value=json.loads(p.stdout);self.assertGreaterEqual(value['actual_dispatches'],4);self.assertEqual((value['native_receipts'],value['context_snapshots'],value['span_count']),(value['actual_dispatches'],)*3);self.assertEqual(value['independent_verdict_packets'],2)",
         "fixture_source_path": "tests/test_quality_lab.py",
-        "fixture_source_sha256": "d9b6aefd0da04a71f3b9f84a7ea47e845164953e4efe4aecc6431bac01764abf",
+        "fixture_source_sha256": "a18ba42cd0e7477fb2fd6601070a92de8696e80b8f82ba71844056ea8d00db0f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/test_quality_lab.py"
       },
       "expected": {
@@ -3696,13 +3804,13 @@
       },
       "input": {
         "exact_test": "test_export_recovery_positive",
-        "literal_executable_fixture": "def test_export_recovery_positive(self):\n  before=(self.root/'actual-local/dispatch-observations.jsonl').read_bytes();first=self.sdk('quality-sync',self.packet);self.assertEqual(first.returncode,0,first.stderr);a=json.loads(first.stdout);second=self.sdk('quality-sync',self.packet);self.assertEqual(second.returncode,0,second.stderr);b=json.loads(second.stdout);self.assertEqual(a['run'],b['run']);self.assertEqual([v['run'] for v in a['native_exports']],[v['run'] for v in b['native_exports']]);self.assertEqual(a['provider_calls'],0);self.assertEqual((self.root/'actual-local/dispatch-observations.jsonl').read_bytes(),before)",
+        "literal_executable_fixture": "def test_export_recovery_positive(self):\n  before=(self.root/'actual-local/dispatch-observations.jsonl').read_bytes();failed=self.sdk('quality-sync',self.packet,True);self.assertNotEqual(failed.returncode,0);self.assertEqual((self.root/'actual-local/dispatch-observations.jsonl').read_bytes(),before);first=self.sdk('quality-sync',self.packet);self.assertEqual(first.returncode,0,first.stderr);a=json.loads(first.stdout);second=self.sdk('quality-sync',self.packet);self.assertEqual(second.returncode,0,second.stderr);b=json.loads(second.stdout);self.assertEqual(a['run'],b['run']);self.assertEqual([v['run'] for v in a['native_exports']],[v['run'] for v in b['native_exports']]);self.assertEqual(a['provider_calls'],0);self.assertEqual((self.root/'actual-local/dispatch-observations.jsonl').read_bytes(),before)",
         "fixture_source_path": "tests/test_quality_lab.py",
-        "fixture_source_sha256": "d9b6aefd0da04a71f3b9f84a7ea47e845164953e4efe4aecc6431bac01764abf",
+        "fixture_source_sha256": "a18ba42cd0e7477fb2fd6601070a92de8696e80b8f82ba71844056ea8d00db0f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/test_quality_lab.py"
       },
       "expected": {
-        "independent_literal_assertions": "def test_export_recovery_positive(self):\n  before=(self.root/'actual-local/dispatch-observations.jsonl').read_bytes();first=self.sdk('quality-sync',self.packet);self.assertEqual(first.returncode,0,first.stderr);a=json.loads(first.stdout);second=self.sdk('quality-sync',self.packet);self.assertEqual(second.returncode,0,second.stderr);b=json.loads(second.stdout);self.assertEqual(a['run'],b['run']);self.assertEqual([v['run'] for v in a['native_exports']],[v['run'] for v in b['native_exports']]);self.assertEqual(a['provider_calls'],0);self.assertEqual((self.root/'actual-local/dispatch-observations.jsonl').read_bytes(),before)",
+        "independent_literal_assertions": "def test_export_recovery_positive(self):\n  before=(self.root/'actual-local/dispatch-observations.jsonl').read_bytes();failed=self.sdk('quality-sync',self.packet,True);self.assertNotEqual(failed.returncode,0);self.assertEqual((self.root/'actual-local/dispatch-observations.jsonl').read_bytes(),before);first=self.sdk('quality-sync',self.packet);self.assertEqual(first.returncode,0,first.stderr);a=json.loads(first.stdout);second=self.sdk('quality-sync',self.packet);self.assertEqual(second.returncode,0,second.stderr);b=json.loads(second.stdout);self.assertEqual(a['run'],b['run']);self.assertEqual([v['run'] for v in a['native_exports']],[v['run'] for v in b['native_exports']]);self.assertEqual(a['provider_calls'],0);self.assertEqual((self.root/'actual-local/dispatch-observations.jsonl').read_bytes(),before)",
         "oracle": "retain native results when MLflow fails, explicitly sync immutable sanitized artifacts/metrics without inference and observe selected actual local-model positive/negative experiments with independent dispatch/native/context/MLflow correspondence; never claim hosted/paid or all-leaf quality from fixtures. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "retain native results when MLflow fails, explicitly sync immutable sanitized artifacts/metrics without inference and observe selected actual local-model positive/negative experiments with independent dispatch/native/context/MLflow correspondence; never claim hosted/paid or all-leaf quality from fixtures. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
@@ -3725,7 +3833,7 @@
         "exact_test": "test_unavailable_negative",
         "literal_executable_fixture": "def test_unavailable_negative(self):\n  original=(self.root/'actual-local/dispatch-observations.jsonl').read_bytes();p=self.sdk('quality-sync',self.packet,True);self.assertNotEqual(p.returncode,0);self.assertIn('native data retained',p.stderr);self.assertEqual((self.root/'actual-local/dispatch-observations.jsonl').read_bytes(),original)",
         "fixture_source_path": "tests/test_quality_lab.py",
-        "fixture_source_sha256": "d9b6aefd0da04a71f3b9f84a7ea47e845164953e4efe4aecc6431bac01764abf",
+        "fixture_source_sha256": "a18ba42cd0e7477fb2fd6601070a92de8696e80b8f82ba71844056ea8d00db0f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/test_quality_lab.py"
       },
       "expected": {
@@ -3752,7 +3860,7 @@
         "exact_test": "test_missing_copy_negative",
         "literal_executable_fixture": "def test_missing_copy_negative(self):\n  p=self.sdk('verify',{'artifacts':[{'run':'missing-native-copy','artifact':'native/absent.json','sha256':'0'*64}]});self.assertNotEqual(p.returncode,0);value=json.loads(p.stdout);self.assertEqual(value['status'],'incomplete');self.assertEqual(value['provider_calls'],0);self.assertEqual(value['discrepancies'],['missing Lab artifact native/absent.json'])",
         "fixture_source_path": "tests/test_quality_lab.py",
-        "fixture_source_sha256": "d9b6aefd0da04a71f3b9f84a7ea47e845164953e4efe4aecc6431bac01764abf",
+        "fixture_source_sha256": "a18ba42cd0e7477fb2fd6601070a92de8696e80b8f82ba71844056ea8d00db0f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/test_quality_lab.py"
       },
       "expected": {
@@ -3779,7 +3887,7 @@
         "exact_test": "TestNativeQualityExportPositive",
         "literal_executable_fixture": "func TestNativeQualityExportPositive(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tctx := context.Background()\n\tp := admitQuality(t, f, 1, 1, 1)\n\tp, e := f.s.RunQualityExperiment(ctx, p.ID, false, f.model.Client())\n\trequireListening(t, e)\n\tpacket, e := f.s.Store.QualityDiagnostic(ctx, p.ID)\n\trequireListening(t, e)\n\tbefore := lab.Hash(packet)\n\tcalls := f.calls.Load()\n\treceipt := QualityExportReceipt{Experiment: p.ID, Run: \"constructed-sdk-ack\", Rows: p.Rows, Artifacts: []json.RawMessage{json.RawMessage(`{\"verified\":true}`)}}\n\trequireListening(t, f.s.Store.AcknowledgeQualityExport(ctx, receipt))\n\tread, e := f.s.Store.QualityExperiment(ctx, p.ID)\n\trequireListening(t, e)\n\tif read.Rows[0].Export != \"exported\" {\n\t\tt.Fatal(read.Rows)\n\t}\n\tagain, e := f.s.Store.QualityDiagnostic(ctx, p.ID)\n\trequireListening(t, e)\n\tif lab.Hash(again) != before || f.calls.Load() != calls {\n\t\tt.Fatal(\"export acknowledgment changed immutable packet or dispatched\")\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -3806,7 +3914,7 @@
         "exact_test": "TestNativeQualityExportNegative",
         "literal_executable_fixture": "func TestNativeQualityExportNegative(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tctx := context.Background()\n\tp := admitQuality(t, f, 1, 1, 1)\n\tif e := f.s.Store.AcknowledgeQualityExport(ctx, QualityExportReceipt{Experiment: p.ID, Run: \"not-copied\", Rows: p.Rows, ProviderCalls: 1, Artifacts: []json.RawMessage{json.RawMessage(`{}`)}}); e == nil {\n\t\tt.Fatal(\"inference receipt accepted as copy-only acknowledgment\")\n\t}\n\tp, e := f.s.Store.QualityExperiment(ctx, p.ID)\n\trequireListening(t, e)\n\tif p.Rows[0].Export == \"exported\" || f.calls.Load() != 0 {\n\t\tt.Fatal(p)\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -3833,7 +3941,7 @@
         "exact_test": "TestNativeQualityFrozenPositive",
         "literal_executable_fixture": "func TestNativeQualityFrozenPositive(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tp := admitQuality(t, f, 2, 2, 2)\n\tif len(p.Rows) != 8 {\n\t\tt.Fatal(p)\n\t}\n\tbefore, _, e := f.s.Store.Configuration(context.Background())\n\trequireListening(t, e)\n\tp, e = f.s.RunQualityExperiment(context.Background(), p.ID, false, f.model.Client())\n\trequireListening(t, e)\n\tif p.Status != \"completed\" || f.calls.Load() != 8 {\n\t\tt.Fatal(p.Status, f.calls.Load())\n\t}\n\tfor _, r := range p.Rows {\n\t\tif r.Status != \"complete\" || len(r.Receipts) != 1 || r.Output == nil || len(r.Metrics) != 22 {\n\t\t\tt.Fatal(r)\n\t\t}\n\t}\n\tafter, _, e := f.s.Store.Configuration(context.Background())\n\trequireListening(t, e)\n\tif lab.Hash(before) != lab.Hash(after) {\n\t\tt.Fatal(\"experiment changed Settings\")\n\t}\n\tif len(p.Aggregates) != 44 || p.Comparison == nil {\n\t\tt.Fatal(p)\n\t}\n\tp, e = f.s.RunQualityExperiment(context.Background(), p.ID, false, f.model.Client())\n\trequireListening(t, e)\n\tif f.calls.Load() != 8 {\n\t\tt.Fatal(\"read/replay dispatched\")\n\t}\n\t_ = os.WriteFile(\"/evidence/quality-positive.json\", mustJSON(p), 0600)\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -3860,7 +3968,7 @@
         "exact_test": "TestNativeQualityDigestNegative",
         "literal_executable_fixture": "func TestNativeQualityDigestNegative(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tr := qualitySubmission(t, f, 1, 1, 1)\n\tr.Experiment.DatasetSHA = fmt.Sprintf(\"%064d\", 0)\n\tif _, e := f.s.Store.AdmitExperiment(context.Background(), r); e == nil {\n\t\tt.Fatal(\"admitted mismatched dataset\")\n\t}\n\tif f.calls.Load() != 0 {\n\t\tt.Fatal(\"admission dispatched\")\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -3887,7 +3995,7 @@
         "exact_test": "TestNativeQualityResumePositive",
         "literal_executable_fixture": "func TestNativeQualityResumePositive(t *testing.T) {\n\tf := interpretationNative(t, \"good\")\n\tp := admitQuality(t, f, 2, 1, 1)\n\t_, e := f.s.Store.DB.Exec(context.Background(), \"UPDATE quality_experiment SET cancel_requested=true,payload=jsonb_set(payload,'{status}','\\\"cancelled\\\"') WHERE id=$1\", p.ID)\n\trequireListening(t, e)\n\tp, e = f.s.RunQualityExperiment(context.Background(), p.ID, true, f.model.Client())\n\trequireListening(t, e)\n\tif p.Status != \"completed\" || f.calls.Load() != 2 {\n\t\tt.Fatal(p.Status, f.calls.Load())\n\t}\n\tvar events int\n\te = f.s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM quality_experiment_event WHERE experiment_id=$1\", p.ID).Scan(&events)\n\trequireListening(t, e)\n\tif events < 4 {\n\t\tt.Fatal(\"missing durable transitions\", events)\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -3914,7 +4022,7 @@
         "exact_test": "TestNativeQualityFailureNegative",
         "literal_executable_fixture": "func TestNativeQualityFailureNegative(t *testing.T) {\n\tf := interpretationNative(t, \"bad-extraction\")\n\tp := admitQuality(t, f, 2, 1, 1)\n\tp, e := f.s.RunQualityExperiment(context.Background(), p.ID, false, f.model.Client())\n\trequireListening(t, e)\n\tif p.Status != \"partial\" || len(p.Rows) != 2 {\n\t\tt.Fatal(p)\n\t}\n\tfor _, r := range p.Rows {\n\t\tif r.Status != \"failed\" || r.Error == nil || r.Output == nil || len(r.Receipts) != 2 {\n\t\t\tt.Fatal(r)\n\t\t}\n\t}\n\tif p.Aggregates[0].Metric.Numerator == nil || *p.Aggregates[0].Metric.Numerator != \"0\" || *p.Aggregates[0].Metric.Denominator != \"2\" {\n\t\tt.Fatal(p.Aggregates[0])\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -3941,7 +4049,7 @@
         "exact_test": "TestQualityUnsupportedNegative",
         "literal_executable_fixture": "func TestQualityUnsupportedNegative(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\texpected := map[string]any{\"semantic_propositions\": []any{map[string]any{\"id\": \"p\", \"scope\": \"feedback\", \"expected\": \"unsupported\"}}}\n\tjudgment := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"unsupported\"}}}\n\tqualityJudgeEvidence(QualityCase{Basis: \"authored_assertion\"}, expected, judgment, &e)\n\tif e.Stats[\"supported_factual_items_or_correctly_labelled_practice\"] != \"0\" || e.Stats[\"applicable_feedback_items\"] != \"1\" {\n\t\tt.Fatal(\"unsupported claim became grounded\", e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -4211,7 +4319,7 @@
         "exact_test": "TestNativeEmpiricalSourcePositive",
         "literal_executable_fixture": "func TestNativeEmpiricalSourcePositive(t *testing.T) {\n\tf := sourceFixture(t)\n\tf.bea(t)\n\trun := f.run(t, \"native\", nil)\n\tvalue, e := f.s.Store.CreateEmpiricalReport(context.Background(), EmpiricalSubmission{Title: \"Constructed native sentence view\", Input: empirical.Input{Population: empirical.Population{Origin: \"native\", Modality: \"writing\"}}, Source: &EmpiricalSource{Import: run.Report.ID, Member: \"fce/train.m2\", Table: \"sentences\", Annotator: \"0\"}})\n\trequireListening(t, e)\n\treport := value[\"report\"].(empirical.Report)\n\tif report.SourceAnnotated != 1 || report.MappingIncomplete != 1 || report.Annotated != 0 || report.Unmapped != 1 || len(report.NativeFrequencies) != 1 {\n\t\tt.Fatal(report)\n\t}\n\tn := report.NativeFrequencies[0]\n\tif n.ID != \"R:VERB:SVA\" || n.Events != 1 || n.Prevalence.Exact.Numerator != \"1\" || n.Prevalence.Exact.Denominator != \"1\" || n.Density.Exact.Numerator != \"1000\" || n.Density.Exact.Denominator != \"3\" {\n\t\tt.Fatal(n)\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -4238,7 +4346,7 @@
         "exact_test": "TestNativeEmpiricalAnnotatorNegative",
         "literal_executable_fixture": "func TestNativeEmpiricalAnnotatorNegative(t *testing.T) {\n\tf := sourceFixture(t)\n\tf.bea(t)\n\trun := f.run(t, \"native\", nil)\n\tvalue, e := f.s.Store.CreateEmpiricalReport(context.Background(), EmpiricalSubmission{Title: \"Absent selected annotations\", Source: &EmpiricalSource{Import: run.Report.ID, Member: \"fce/train.m2\", Table: \"sentences\", Annotator: \"99\"}})\n\trequireListening(t, e)\n\treport := value[\"report\"].(empirical.Report)\n\tif report.Annotated != 0 || report.SourceAnnotated != 0 {\n\t\tt.Fatal(\"absent annotator became annotation\", report)\n\t}\n\tfor _, l := range report.Leaves {\n\t\tif l.Prevalence.Exact != nil {\n\t\t\tt.Fatal(l)\n\t\t}\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -4265,7 +4373,7 @@
         "exact_test": "TestNativeEmpiricalMappedPositive",
         "literal_executable_fixture": "func TestNativeEmpiricalMappedPositive(t *testing.T) {\n\tf := sourceFixture(t)\n\tf.bea(t)\n\trun := f.run(t, \"native\", nil)\n\tevent := fmt.Sprintf(\"%s/fce/train.m2/0/0\", run.Report.ID)\n\tvalue, e := f.s.Store.CreateEmpiricalReport(context.Background(), EmpiricalSubmission{Title: \"Constructed localized mapping\", Input: empirical.Input{Population: empirical.Population{Origin: \"native\", Crosswalk: \"constructed-context-v1\", Modality: \"writing\"}}, Source: &EmpiricalSource{Import: run.Report.ID, Member: \"fce/train.m2\", Table: \"sentences\", Annotator: \"0\", AnnotatedLeaves: []string{\"grammar.verbs.subject_verb_agreement\"}, LeafByEvent: map[string]string{event: \"grammar.verbs.subject_verb_agreement\"}}})\n\trequireListening(t, e)\n\treport := value[\"report\"].(empirical.Report)\n\tif report.Annotated != 1 || report.MappingIncomplete != 0 || report.Events != 1 || report.Population.Origin != \"operator_localized_mapping\" {\n\t\tt.Fatal(report)\n\t}\n\tfor _, l := range report.Leaves {\n\t\tif l.ID == \"grammar.verbs.subject_verb_agreement\" && l.Prevalence.Numerator != \"1\" {\n\t\t\tt.Fatal(l)\n\t\t}\n\t}\n}\n",
         "fixture_source_path": "tests/native_quality_test.go",
-        "fixture_source_sha256": "f3e3956f2b232d359f7c2207753e79409bd8c4422e9a5e9926bb2c82a0355c1c",
+        "fixture_source_sha256": "d62e994dfd335f385d69dc47f1a78bd5658df945388d266aafc68fece57264fb",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/native_quality_test.go"
       },
       "expected": {
@@ -4481,7 +4589,7 @@
         "exact_test": "test_correspondence_positive",
         "literal_executable_fixture": "def test_correspondence_positive(self):\n  p=subprocess.run(['python3','-B',str(R/'audit/iteration-14-empirical-20261021/local_reconcile.py'),str(self.root.relative_to(R))],env={**os.environ,'TANGERINE_QUALITY_LAB_CONTAINER':self.binding['lab_container']},cwd=R,capture_output=True,text=True,timeout=180)\n  self.assertEqual(p.returncode,0,p.stderr);value=json.loads(p.stdout);self.assertGreaterEqual(value['actual_dispatches'],4);self.assertEqual((value['native_receipts'],value['context_snapshots'],value['span_count']),(value['actual_dispatches'],)*3);self.assertEqual(value['independent_verdict_packets'],2)",
         "fixture_source_path": "tests/test_quality_lab.py",
-        "fixture_source_sha256": "d9b6aefd0da04a71f3b9f84a7ea47e845164953e4efe4aecc6431bac01764abf",
+        "fixture_source_sha256": "a18ba42cd0e7477fb2fd6601070a92de8696e80b8f82ba71844056ea8d00db0f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/test_quality_lab.py"
       },
       "expected": {
@@ -4508,7 +4616,7 @@
         "exact_test": "TestQualityAbsentWrappedEvidenceNegative",
         "literal_executable_fixture": "func TestQualityAbsentWrappedEvidenceNegative(t *testing.T) {\n\tvalue := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"supported\", \"evidence\": []any{map[string]any{\"asset_id\": \"input\", \"pointer\": \"/body/absent\"}}}}}\n\tgot := normalizeQualityJudge(value, map[string]any{\"input\": map[string]any{\"answer_text\": \"Use opens.\"}}).(map[string]any)\n\tif got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)[\"pointer\"] != \"/body/absent\" {\n\t\tt.Fatal(\"invented a target\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -4535,7 +4643,7 @@
         "exact_test": "TestQualityJudgeNoNumericNegative",
         "literal_executable_fixture": "func TestQualityJudgeNoNumericNegative(t *testing.T) {\n\tif _, _, e := validateQualityOutput([]byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[],\"score\":100}`)); e == nil {\n\t\tt.Fatal(\"model numeric grade accepted\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "fixture_source_sha256": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {

@@ -32,7 +32,7 @@ func (s *Server) RunQualityExperiment(ctx context.Context, id string, resume boo
 	defer func() {
 		end, done := context.WithTimeout(context.WithoutCancel(ctx), 5*time.Second)
 		defer done()
-		_, _ = s.Store.DB.Exec(end, "UPDATE quality_experiment SET active_operation_id=NULL,lease_until=NULL WHERE id=$1 AND active_operation_id=$2", id, batch)
+		_ = s.Store.releaseQualityBatch(end, id, batch)
 	}()
 	frozen, err := s.Store.frozenExperiment(ctx, id)
 	if err != nil {

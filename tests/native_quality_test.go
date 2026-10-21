@@ -496,3 +496,30 @@ func TestNativeQualityCheckpointPositive(t *testing.T) {
 		t.Fatal("recovery duplicated accepted native call", p, f.calls.Load())
 	}
 }
+
+func TestNativeQualityReleasePositive(t *testing.T) {
+	f := interpretationNative(t, "good")
+	ctx := context.Background()
+	p := admitQuality(t, f, 1, 1, 1)
+	owner, e := f.s.Store.claimQualityBatch(ctx, p.ID, false)
+	requireListening(t, e)
+	requireListening(t, f.s.Store.releaseQualityBatch(ctx, p.ID, owner))
+	next, e := f.s.Store.claimQualityBatch(ctx, p.ID, true)
+	requireListening(t, e)
+	if next == owner || f.calls.Load() != 0 {
+		t.Fatal("release did not allow explicit new ownership", next)
+	}
+}
+func TestNativeQualityStaleReleaseNegative(t *testing.T) {
+	f := interpretationNative(t, "good")
+	ctx := context.Background()
+	p := admitQuality(t, f, 1, 1, 1)
+	owner, e := f.s.Store.claimQualityBatch(ctx, p.ID, false)
+	requireListening(t, e)
+	requireListening(t, f.s.Store.releaseQualityBatch(ctx, p.ID, uuid.NewString()))
+	var active string
+	requireListening(t, f.s.Store.DB.QueryRow(ctx, "SELECT active_operation_id FROM quality_experiment WHERE id=$1", p.ID).Scan(&active))
+	if active != owner || f.calls.Load() != 0 {
+		t.Fatal("stale controller released another owner", active)
+	}
+}
