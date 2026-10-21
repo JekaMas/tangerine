@@ -78,6 +78,9 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 			if answer != "Use opens." {
 				span = nil
 			}
+			if f.currentMode() == "scoring-offkey-correction" {
+				span = &AnswerSpan{4, 10, "coffee"}
+			}
 			if f.currentMode() == "scoring-wrong" {
 				span = &AnswerSpan{4, 11, "opening"}
 			}
@@ -191,6 +194,17 @@ func interpretationNative(t *testing.T, mode string) *nativeInterpretation {
 				decision.Explanation.Status = "unresolved"
 				decision.Explanation.Additional[0].Judgment = "unknown"
 				decision.Explanation.Additional[0].Reason = "Constructed supplied uncertainty, not absent wording."
+			}
+			if strings.HasPrefix(f.currentMode(), "scoring-offkey") {
+				decision.Unit = nil
+				decision.Decision = "false_positive"
+				decision.Correction = semanticEmpty()
+				decision.Note = "Cafe is an acceptable noun in the heard sentence; this assertion does not identify its agreement error."
+				if f.currentMode() == "scoring-offkey-correction" {
+					decision.Correction.Supplied = true
+					decision.Correction.Status = "rejected"
+					decision.Correction.Additional = []ComponentAssertion{{AnswerSpan: AnswerSpan{4, 10, "coffee"}, Judgment: "unsupported", Reason: "Replacing cafe with coffee is unnecessary and changes meaning."}}
+				}
 			}
 			output = SemanticMapping{Version: "1.0.0", Decisions: []SemanticDecision{decision}}
 			if strings.HasPrefix(f.currentMode(), "attachment-") {

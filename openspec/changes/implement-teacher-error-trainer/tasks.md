@@ -680,3 +680,9 @@ Iteration10 verification accepted:116/116owned cases across21properties passed -
 - [x] I11.5 Pass the complete committed-clean iteration selection, record acceptance and commit; preserve canonical unrelated GAPS.md.
 
 Iteration11 accepted on e906cb3883b63cd72dc179079f441c75d00c1ec2:122/122owned cases across10properties and112/112affected interpretation dependencies passed --require-clean (234total;117positive/117negative). Six actual local feedback experiments reconcile11dispatches/native receipts/contexts/MLflow spans across6operations, including bounded repair attempts.372artifact/4615property assertions, strict OpenSpec, DAG/discovery, stable pinned Go vet/gofmt, retained unchanged locked web image and original preservation pass. ACCEPTANCE.json and REPORT.md under audit/iteration-11-scoring-20261021 retain every case and proof boundary; former119/120candidate remains failed/exported. No in-scope finding remains. No paid/hosted call, install, delegation, publication or archive. I8.R1–R3 remain separate; canonical GAPS.md is preserved.
+
+## Iteration11 verification repair (2026-10-21)
+
+- [ ] I11.V1 Preserve frozen policy and domain uncertainty when pooling raw events; test compatible legacy/current populations and reject mixing distinct policies.
+- [ ] I11.V2 Cover unmapped false positives and permit source-bound combined false-positive/component comments without duplicated cards.
+- [ ] I11.V3 Finish full code/contract review, register paired cases, reconcile valid prior receipts, complete committed-clean iteration acceptance and commit.

@@ -78,6 +78,16 @@ func scoringFixture(t *testing.T, bad bool) *scoringNative {
 			}
 		}
 
+		if strings.HasPrefix(f.currentMode(), "scoring-offkey") {
+			items = []any{item("missed", "The actual agreement mistake remains: open should be opens.", []any{}), item("recommendation", "New practice: The shop opens at nine.", []any{})}
+			items[1].(map[string]any)["grounding_status"] = "practice_recommendation"
+			if f.currentMode() != "scoring-offkey-omitted" {
+				finding := item("false_positive", "Cafe is acceptable. Your proposed replacement is unnecessary and does not repair the agreement error.", ids)
+				finding["unit_ids"] = []any{}
+				items = append(items, finding)
+			}
+		}
+
 		out := map[string]any{"schema_version": "2.0.0", "language": input["requested_language"], "items": items}
 		_ = json.NewEncoder(w).Encode(map[string]any{"id": "constructed-feedback", "object": "response", "status": "completed", "output": []any{map[string]any{"type": "message", "content": []any{map[string]any{"type": "output_text", "text": string(mustJSON(out))}}}}})
 	}))
@@ -452,3 +462,34 @@ func TestNativeScoringWriteRecoveryPositive(t *testing.T) {
 		t.Fatal("write recovery changed primary semantics")
 	}
 }
+
+func nativeOffkeyScoring(t *testing.T, omitted bool) {
+	f := scoringFixture(t, false)
+	mode, answer := "scoring-offkey-correction", "Use coffee."
+	if omitted {
+		mode, answer = "scoring-offkey-omitted", "The word cafe is incorrect."
+	}
+	f.mode.Store(mode)
+	f.attempt = f.start(t)
+	_, _, e := f.s.Store.WriteAnswer(context.Background(), f.attempt, uuid.NewString(), 0, answerPacket(answer, "en"), true)
+	requireListening(t, e)
+	state, e := f.interpret(t, uuid.NewString())
+	requireListening(t, e)
+	result := f.envelope(t, state)
+	score := result["score"].(map[string]any)
+	counts := score["counts"].(map[string]any)
+	if score["composite"].(map[string]any)["display"] != "0.0" || counts["fp"] != float64(1) || counts["fn"] != float64(1) {
+		t.Fatal(score)
+	}
+	if omitted {
+		if result["feedback_status"] != "unavailable" {
+			t.Fatal("missing false-positive comment accepted", result)
+		}
+	} else {
+		if result["feedback_status"] != "complete" {
+			t.Fatal("combined off-key feedback rejected", result)
+		}
+	}
+}
+func TestNativeScoringOffkeyPositive(t *testing.T)        { nativeOffkeyScoring(t, false) }
+func TestNativeScoringOffkeyMissingNegative(t *testing.T) { nativeOffkeyScoring(t, true) }

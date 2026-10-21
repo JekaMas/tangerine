@@ -1,0 +1,7 @@
+# Evidence selection and semantic invalidation
+
+The prior committed-clean122owned and112dependency receipts remain actual observations of their original cases. This review adds four pooling, two feedback-admission, two native feedback and two actual local feedback regressions. Six literal counterexamples failed before repair; their raw events remain in data/iteration11/verify-red.jsonl.
+
+The changed owners are pure pool.go (frozen cohort policy and domain uncertainty) and scoring_feedback.go (off-key claim coverage and combined component comment admission). These invalidate their current numeric/native/browser/local dependent observations. The semantic interpreter fixture adds named off-key modes, and local observation fixtures add two new independent expectations. The existing two arithmetic pooling fixtures now explicitly set the same frozen policy on both inputs, as the admitted input contract requires; their exact expected fractions did not change. Their intermediate fixture failures remain retained.
+
+The full expanded I11 set must pass on a clean committed candidate. Query current fingerprints against prior dependency receipts and rerun only stale cases; valid unchanged passes keep the original receipt. Prompt bytes, extraction/mapping production owners, web source/image, contracts and migrations are unchanged. Final lint follows the stable batch; the locked web build remains valid. Registration and index reconciliation occur once after the assertion batch stabilizes. Documentation/commit changes do not themselves invalidate behavior.

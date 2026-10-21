@@ -83,7 +83,8 @@ func admitFeedback(raw []byte, record AttemptRecord, r InterpretationResources, 
 			// A source-bound factual comment may discuss the finding, repair
 			// and optional reason together. Item labels are presentation hints.
 			combined := actual == "detected" || actual == "correction" || actual == "explanation"
-			if actual != kind && !((kind == "detected" || kind == "component") && combined) {
+			component := actual != "recommendation" && actual != "missed"
+			if actual != kind && !(kind == "detected" && combined || kind == "component" && component) {
 				continue
 			}
 			for _, ref := range item[field].([]any) {
@@ -108,6 +109,13 @@ func admitFeedback(raw []byte, record AttemptRecord, r InterpretationResources, 
 		needsPractice = true
 		if id != "" && !covered(kind, "unit_ids", id) {
 			return nil, fmt.Errorf("include %s feedback for unit %s", kind, id)
+		}
+		if id == "" {
+			for _, claim := range item["decision_ids"].([]any) {
+				if !covered(kind, "decision_ids", claim.(string)) {
+					return nil, fmt.Errorf("include %s feedback for claim %s", kind, claim)
+				}
+			}
 		}
 	}
 	for _, g := range m.Groups {

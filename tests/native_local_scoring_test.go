@@ -113,7 +113,7 @@ func observeLocalScoring(t *testing.T, answer, mode, grade string, subject strin
 		item := v.(map[string]any)
 		// Combined comments may cover a finding, correction and reason. The
 		// oracle is the actual source subject, not a presentation label.
-		if strings.TrimSpace(item["text"].(string)) != "" && ((subject == "missed" && item["kind"] == "missed" && len(item["unit_ids"].([]any)) > 0) || (subject != "missed" && (item["kind"] == "detected" || item["kind"] == "correction" || item["kind"] == "explanation") && len(item["decision_ids"].([]any)) > 0 && len(item["unit_ids"].([]any)) > 0)) {
+		if strings.TrimSpace(item["text"].(string)) != "" && ((subject == "missed" && item["kind"] == "missed" && len(item["unit_ids"].([]any)) > 0) || (subject == "false_positive" && item["kind"] == "false_positive" && len(item["decision_ids"].([]any)) > 0) || (subject != "missed" && subject != "false_positive" && (item["kind"] == "detected" || item["kind"] == "correction" || item["kind"] == "explanation") && len(item["decision_ids"].([]any)) > 0 && len(item["unit_ids"].([]any)) > 0)) {
 			found = true
 		}
 	}
@@ -155,4 +155,11 @@ func TestLocalScoringRussianPositive(t *testing.T) {
 }
 func TestLocalScoringFalseReasonNegative(t *testing.T) {
 	observeLocalScoring(t, "Use opens because every English verb always ends in s.", "scoring-false-reason", "100.0", "explanation", "en")
+}
+
+func TestLocalScoringOffkeyPositive(t *testing.T) {
+	observeLocalScoring(t, "The word cafe is incorrect.", "scoring-offkey", "0.0", "false_positive", "en")
+}
+func TestLocalScoringOffkeyCorrectionNegative(t *testing.T) {
+	observeLocalScoring(t, "Use coffee.", "scoring-offkey-correction", "0.0", "false_positive", "en")
 }

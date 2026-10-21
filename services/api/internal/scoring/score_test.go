@@ -721,7 +721,7 @@ func TestScoringAuxiliaryAbsentNegative(t *testing.T) {
 }
 func TestScoringMicroPositive(t *testing.T) {
 	x := authored()
-	y := Input{Units: x.Units[:1], Decisions: x.Decisions[:1]}
+	y := Input{Policy: x.Policy, Units: x.Units[:1], Decisions: x.Decisions[:1]}
 	y.Decisions[0].Correction = fraction(1, 1)
 	r, e := Micro([]Input{x, y}, map[string]bool{"detection": true})
 	if e != nil {
@@ -734,7 +734,7 @@ func TestScoringMicroPositive(t *testing.T) {
 }
 func TestScoringMicroNoMeanNegative(t *testing.T) {
 	x := authored()
-	y := Input{Units: x.Units[:1], Decisions: x.Decisions[:1]}
+	y := Input{Policy: x.Policy, Units: x.Units[:1], Decisions: x.Decisions[:1]}
 	r, e := Micro([]Input{x, y}, map[string]bool{"detection": true})
 	if e != nil {
 		t.Fatal(e)
@@ -817,5 +817,53 @@ func TestScoringFalseReasonNegative(t *testing.T) {
 	}
 	if *r.Composite.Display != "100.0" || *r.Explanation.Display != "0.0" {
 		t.Fatal("false reason cancelled a valid repair", r.Composite, r.Explanation)
+	}
+}
+
+func TestScoringMicroPolicyPositive(t *testing.T) {
+	x := authored()
+	x.Policy = "1.0.0"
+	x.Enabled["explanation"] = true
+	r, e := Micro([]Input{x}, x.Enabled)
+	if e != nil {
+		t.Fatal(e)
+	}
+	// 45*(4/7)+15*(3/5)+30*(1/2)+10*(1/3)=1114/21.
+	if r.Policy != "1.0.0" || *r.Composite.Exact != (Exact{"1114", "21"}) || *r.Composite.Display != "53.0" {
+		t.Fatal("lost frozen legacy calculation", r.Policy, r.Composite)
+	}
+}
+func TestScoringMicroMixedPolicyNegative(t *testing.T) {
+	x, y := authored(), authored()
+	y.Policy = "1.0.0"
+	if _, e := Micro([]Input{x, y}, x.Enabled); e == nil {
+		t.Fatal("different scoring policies silently blended")
+	}
+}
+func TestScoringMicroDomainPositive(t *testing.T) {
+	x := authored()
+	x.DomainUnresolved = map[string]map[string]bool{"grammar": {"classification": true}}
+	r, e := Micro([]Input{x}, x.Enabled)
+	if e != nil {
+		t.Fatal(e)
+	}
+	for _, d := range r.Domains {
+		if d.Domain == "grammar" && d.Metrics["classification.hierarchical_recall"].Status != "review_required" {
+			t.Fatal("pooled domain lost its uncertainty", d)
+		}
+	}
+}
+func TestScoringMicroDomainUncertaintyNegative(t *testing.T) {
+	x := authored()
+	x.Unresolved = map[string]bool{"classification": true}
+	x.DomainUnresolved = map[string]map[string]bool{"grammar": {"classification": true}}
+	r, e := Micro([]Input{x}, x.Enabled)
+	if e != nil {
+		t.Fatal(e)
+	}
+	for _, d := range r.Domains {
+		if d.Domain == "lexis" && d.Metrics["classification.coverage"].Status == "review_required" {
+			t.Fatal("unrelated domain falsely uncertain", d)
+		}
 	}
 }

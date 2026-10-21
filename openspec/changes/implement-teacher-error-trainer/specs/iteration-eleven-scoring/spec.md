@@ -191,6 +191,16 @@ The application SHALL use reduced exact rationals and half-up one-decimal displa
 - **WHEN** the named literal positive or negative fixture executes through its declared production owner
 - **THEN** every independently expected arithmetic, state, feedback, privacy or recovery observation SHALL hold
 
+#### Scenario: I11-04 packet 3
+
+- **WHEN** the named literal positive or negative fixture executes through its declared production owner
+- **THEN** every independently expected arithmetic, state, feedback, privacy or recovery observation SHALL hold
+
+#### Scenario: I11-04 packet 4
+
+- **WHEN** the named literal positive or negative fixture executes through its declared production owner
+- **THEN** every independently expected arithmetic, state, feedback, privacy or recovery observation SHALL hold
+
 ### Requirement: I11-05 Auxiliary observations and explicit absence
 
 The application SHALL preserve all15auxiliary identities, use only supplied observed populations, actual paired marginals and unit-cost WER, and report absent or unobservable listening-mode traits without invented performance.
@@ -253,6 +263,11 @@ The application SHALL complete only harmless missing feedback envelope metadata 
 - **WHEN** the named literal positive or negative fixture executes through its declared production owner
 - **THEN** every independently expected arithmetic, state, feedback, privacy or recovery observation SHALL hold
 
+#### Scenario: I11-07 packet 5
+
+- **WHEN** the named literal positive or negative fixture executes through its declared production owner
+- **THEN** every independently expected arithmetic, state, feedback, privacy or recovery observation SHALL hold
+
 ### Requirement: I11-08 Durable result and feedback-only retry
 
 The application SHALL save numeric results before configurable feedback, retain immutable source/configuration/score through feedback failure, retry only commentary, reopen/replay without model calls and refuse invented feedback references.
@@ -307,6 +322,11 @@ The application SHALL save numeric results before configurable feedback, retain 
 - **WHEN** the named literal positive or negative fixture executes through its declared production owner
 - **THEN** every independently expected arithmetic, state, feedback, privacy or recovery observation SHALL hold
 
+#### Scenario: I11-08 packet 11
+
+- **WHEN** the named literal positive or negative fixture executes through its declared production owner
+- **THEN** every independently expected arithmetic, state, feedback, privacy or recovery observation SHALL hold
+
 ### Requirement: I11-09 Browser scores and recommendations
 
 The application SHALL display authoritative score, independent optional explanation, recording findings and generated practice, recover feedback without regrading and omit private provider records.
@@ -341,6 +361,11 @@ The application SHALL exercise actual local feedback inference on independent po
 - **THEN** every independently expected arithmetic, state, feedback, privacy or recovery observation SHALL hold
 
 #### Scenario: I11-10 packet 3
+
+- **WHEN** the named literal positive or negative fixture executes through its declared production owner
+- **THEN** every independently expected arithmetic, state, feedback, privacy or recovery observation SHALL hold
+
+#### Scenario: I11-10 packet 4
 
 - **WHEN** the named literal positive or negative fixture executes through its declared production owner
 - **THEN** every independently expected arithmetic, state, feedback, privacy or recovery observation SHALL hold

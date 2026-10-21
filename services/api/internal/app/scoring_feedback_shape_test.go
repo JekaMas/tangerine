@@ -79,3 +79,29 @@ func TestScoringMissingFactualCommentNegative(t *testing.T) {
 		t.Fatal("practice alone covered no factual finding")
 	}
 }
+
+func offkeyFeedbackFixture() (map[string]any, AttemptRecord, InterpretationResources, SemanticMapping, map[string]any) {
+	root, record, resources, mapping, result := combinedFeedbackFixture()
+	resources.Key["units"] = []any{}
+	finding := root["items"].([]any)[0].(map[string]any)
+	finding["kind"] = "false_positive"
+	finding["unit_ids"] = []any{}
+	finding["text"] = "The claimed mistake is not present. Your proposed change is unnecessary; the heard form is acceptable."
+	mapping.Groups[0].Explanation.Supplied = false
+	result["score"].(map[string]any)["items"] = []any{map[string]any{"kind": "false_positive", "unit_id": "", "decision_ids": []any{"c1"}}}
+	return root, record, resources, mapping, result
+}
+func TestScoringOffkeyCombinedPositive(t *testing.T) {
+	root, record, resources, mapping, result := offkeyFeedbackFixture()
+	if _, e := admitFeedback(mustScoringJSON(root), record, resources, mapping, result); e != nil {
+		t.Fatal(e)
+	}
+}
+func TestScoringOffkeyMissingNegative(t *testing.T) {
+	root, record, resources, mapping, result := offkeyFeedbackFixture()
+	mapping.Groups = nil // Pure detection assertion with no repair or reason.
+	root["items"] = root["items"].([]any)[1:]
+	if _, e := admitFeedback(mustScoringJSON(root), record, resources, mapping, result); e == nil {
+		t.Fatal("unmapped false positive omitted from feedback")
+	}
+}
