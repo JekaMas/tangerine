@@ -38,3 +38,5 @@ class RecoveryWorkspaceTests(unittest.TestCase):
  def test_lab_purge_unconfirmed_negative(self):self.check('test_lab_purge_unconfirmed_negative')
  def test_lab_purge_positive(self):self.check('test_lab_purge_positive')
  def test_no_maintenance_inference_negative(self):self.check('test_no_maintenance_inference_negative')
+
+ def test_selected_lab_native_positive(self):self.check('test_selected_lab_native_positive')

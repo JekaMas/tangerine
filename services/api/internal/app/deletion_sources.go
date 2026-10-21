@@ -80,6 +80,9 @@ func sourceErasure(ctx context.Context, tx pgx.Tx, ids []string) (SourceErasure,
 			rows.Close()
 			return p, e
 		}
+		if exp.Comparison != nil {
+			p.AssetIDs = append(p.AssetIDs, *exp.Comparison)
+		}
 		for _, row := range exp.Rows {
 			if row.Output != nil {
 				p.AssetIDs = append(p.AssetIDs, *row.Output)

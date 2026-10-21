@@ -509,3 +509,67 @@ func TestNativeRecoveryCanonicalResumeReplayPositive(t *testing.T) {
 		t.Fatal("canonical Resume replay", w.Code, w.Body.String(), dispatches.Load(), calls.Load(), speech.Load())
 	}
 }
+
+func TestNativeRecoveryExpiredDeletionPositive(t *testing.T) {
+	f := listeningCase(t)
+	id := f.start(t)
+	op, e := f.s.Store.ReserveOperation(context.Background(), OperationRequest{Name: "expired_recovery", Key: uuid.NewString(), Path: "/test", Body: mustJSON(map[string]any{"attempt_id": id})})
+	requireListening(t, e)
+	_, e = f.s.Store.DB.Exec(context.Background(), "UPDATE operation SET subject_id=$2,state='running',started_at=clock_timestamp()-interval '271 seconds' WHERE id=$1", op.ID, id)
+	requireListening(t, e)
+	p, e := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{id}})
+	requireListening(t, e)
+	if len(p.Blocked) > 0 {
+		t.Fatal("expired operation permanently blocks cleanup", p)
+	}
+	_, e = f.s.Store.ApplyDeletion(context.Background(), p.ID, p.Digest)
+	requireListening(t, e)
+	var n int
+	requireListening(t, f.s.Store.DB.QueryRow(context.Background(), "SELECT count(*) FROM operation WHERE id=$1", op.ID).Scan(&n))
+	if n != 0 {
+		t.Fatal("expired operation retained", n)
+	}
+}
+func TestNativeRecoveryExperimentDeletionPositive(t *testing.T) {
+	s, calls := qualityGenerationServer(t, false)
+	p, e := s.Store.AdmitExperiment(context.Background(), qualitySimpleSubmission(t, s, "generation_pipeline", qualityGenerationRequest()))
+	requireListening(t, e)
+	p, e = s.RunQualityExperiment(context.Background(), p.ID, false, nil)
+	requireListening(t, e)
+	if p.Status != "completed" || calls.Load() != 2 || len(p.Rows[0].Receipts) != 2 || p.Comparison == nil {
+		t.Fatal("fixture incomplete", p)
+	}
+	plan, e := s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{p.ID}})
+	requireListening(t, e)
+	for _, id := range p.Rows[0].Receipts {
+		if !containsString(plan.Documents, id) {
+			t.Error("experiment receipt omitted", id)
+		}
+	}
+	if !containsString(plan.Assets, *p.Comparison) {
+		t.Error("comparison artifact omitted", *p.Comparison)
+	}
+	if t.Failed() {
+		t.FailNow()
+	}
+	_, e = s.Store.ApplyDeletion(context.Background(), plan.ID, plan.Digest)
+	requireListening(t, e)
+	for _, id := range p.Rows[0].Receipts {
+		var n int
+		requireListening(t, s.Store.DB.QueryRow(context.Background(), "SELECT count(*) FROM document WHERE id=$1", id).Scan(&n))
+		if n != 0 {
+			t.Fatal("receipt retained", id)
+		}
+	}
+	if _, e = s.Store.ReadAsset(context.Background(), *p.Comparison); e == nil {
+		t.Fatal("comparison bytes retained")
+	}
+	var remaining int
+	requireListening(t, s.Store.DB.QueryRow(context.Background(), "SELECT count(*) FROM quality_call WHERE receipt_id=ANY($1)", p.Rows[0].Receipts).Scan(&remaining))
+	if remaining != 0 {
+		t.Fatal("experiment call index retained", remaining)
+	}
+	if calls.Load() != 2 {
+		t.Fatal("deletion invoked provider", calls.Load())
+	}
+}

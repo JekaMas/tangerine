@@ -92,21 +92,22 @@ func (c Controller) Backup(ctx context.Context, name string) (result map[string]
 	if e != nil {
 		return nil, e
 	}
+	// A failed stop can already have stopped some services. Install recovery
+	// before stopping and use a fresh context even when the caller cancels.
+	defer func() {
+		if resumeErr := c.restart(active); resumeErr != nil {
+			if result != nil {
+				err = errors.New("BACKUP_SAVED_RESTART_REQUIRED: snapshot saved; run scripts/tangerine start to recover services")
+			} else {
+				err = errors.New("WORKSPACE_RECOVERY_REQUIRED: backup failed and services could not restart; run scripts/tangerine start. Saved data is retained")
+			}
+		}
+	}()
 	if len(active) > 0 {
 		if e = run(c.compose(ctx, append([]string{"stop"}, active...)...)); e != nil {
 			return nil, e
 		}
 	}
-	// Restore only services that were running, including on interrupted export.
-	defer func() {
-		if len(active) > 0 {
-			end, cancel := context.WithTimeout(context.Background(), 90*time.Second)
-			defer cancel()
-			if resumeErr := run(c.compose(end, append([]string{"start"}, active...)...)); resumeErr != nil && err == nil {
-				err = errors.New("BACKUP_SAVED_RESTART_REQUIRED: snapshot saved; run scripts/tangerine start to recover services")
-			}
-		}
-	}()
 	cmd := c.compose(ctx, c.snapshotArgs(ctx, false)...)
 	cmd.Stdout = file
 	cmd.Stderr = io.Discard
@@ -201,7 +202,7 @@ func (c Controller) Restore(ctx context.Context, archive, target string) (map[st
 	result["selected"] = false
 	return result, nil
 }
-func (c Controller) Switch(ctx context.Context, target string) (map[string]any, error) {
+func (c Controller) Switch(ctx context.Context, target string) (result map[string]any, err error) {
 	if !projectPattern.MatchString(target) {
 		return nil, errors.New("WORKSPACE_INVALID")
 	}
@@ -225,23 +226,28 @@ func (c Controller) Switch(ctx context.Context, target string) (map[string]any, 
 	if e != nil {
 		return nil, e
 	}
+	next := Controller{Root: c.Root, Project: target, Runtime: runtime}
+	selected, attempted := false, false
+	defer func() {
+		if !selected {
+			if attempted {
+				end, cancel := context.WithTimeout(context.Background(), 90*time.Second)
+				defer cancel()
+				if stopErr := run(next.compose(end, "stop", "web", "api", "speech")); stopErr != nil {
+					err = errors.New("WORKSPACE_RECOVERY_REQUIRED: failed target could not stop; stop it and run scripts/tangerine start for the previous workspace. Saved data is retained")
+				}
+			}
+			if resumeErr := c.restart(active); resumeErr != nil {
+				err = errors.New("WORKSPACE_RECOVERY_REQUIRED: previous services could not restart; run scripts/tangerine start. Saved data is retained")
+			}
+		}
+	}()
 	if len(active) > 0 {
 		if e = run(c.compose(ctx, append([]string{"stop"}, active...)...)); e != nil {
 			return nil, e
 		}
 	}
-	next := Controller{Root: c.Root, Project: target, Runtime: runtime}
-	selected := false
-	defer func() {
-		if !selected {
-			end, cancel := context.WithTimeout(context.Background(), 90*time.Second)
-			defer cancel()
-			_ = run(next.compose(end, "stop", "web", "api", "speech"))
-			if len(active) > 0 {
-				_ = run(c.compose(end, append([]string{"start"}, active...)...))
-			}
-		}
-	}()
+	attempted = true
 	if e = run(next.compose(ctx, "up", "-d", "--wait", "--wait-timeout", "180", "web")); e != nil {
 		return nil, errors.New("WORKSPACE_SWITCH_FAILED: previous workspace retained and restarted")
 	}
@@ -256,6 +262,17 @@ func (c Controller) Switch(ctx context.Context, target string) (map[string]any, 
 	selected = true
 	return map[string]any{"status": "selected", "project": target, "previous_project": c.Project, "previous_volumes": "retained", "inference_calls": 0}, nil
 }
+
+// restart owns service recovery only; archive/storage owners never call Docker.
+func (c Controller) restart(active []string) error {
+	if len(active) == 0 {
+		return nil
+	}
+	end, cancel := context.WithTimeout(context.Background(), 90*time.Second)
+	defer cancel()
+	return run(c.compose(end, append([]string{"start"}, active...)...))
+}
+
 func Command(ctx context.Context, root, project, runtime string, args []string, out io.Writer) error {
 	c := Controller{root, project, runtime}
 	lock, e := os.OpenFile(filepath.Join(root, "data/config/.maintenance-lock"), os.O_CREATE|os.O_RDWR, 0600)

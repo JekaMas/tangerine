@@ -11,16 +11,7 @@ major=${version%%.*}; tail=${version#*.}; minor=${tail%%.*}
 case "$major:$minor" in *[!0-9:]*|'') fail 'COMPOSE_REQUIRED: cannot determine Compose version.';; esac
 [ "$major" -gt 2 ] || { [ "$major" -eq 2 ] && [ "$minor" -ge 20 ]; } || fail 'COMPOSE_REQUIRED: upgrade Docker Compose to v2.20 or newer.'
 docker info >/dev/null 2>&1 || fail 'DOCKER_UNAVAILABLE: start Docker and retry. Existing data is retained.'
-PROJECT=${COMPOSE_PROJECT_NAME:-}
-if [ -z "$PROJECT" ] && [ -f "$ROOT/data/config/active-project" ]; then PROJECT=$(cat "$ROOT/data/config/active-project"); fi
-PROJECT=${PROJECT:-tangerine}
-case "$PROJECT" in ''|*[!a-z0-9_-]*) fail 'CONFIG_INVALID: COMPOSE_PROJECT_NAME must contain lowercase letters, digits, underscore or dash.';; esac
-export COMPOSE_PROJECT_NAME="$PROJECT"
-RUNTIME_FILE="$ROOT/data/config/runtime.env"
-if [ -f "$ROOT/data/config/restores/$PROJECT/runtime.env" ]; then RUNTIME_FILE="$ROOT/data/config/restores/$PROJECT/runtime.env"; fi
-export TANGERINE_ROOT="$ROOT" TANGERINE_RUNTIME_FILE="$RUNTIME_FILE"
-# Provider/infrastructure values come only from this installation, never the caller shell.
-unset DATABASE_URL POSTGRES_PASSWORD MINIO_ROOT_USER MINIO_ROOT_PASSWORD API_INTERNAL_TOKEN SPEECH_INTERNAL_TOKEN DEEPSEEK_API_KEY OPENAI_API_KEY AZURE_SPEECH_KEY AZURE_SPEECH_REGION ELEVENLABS_API_KEY
+. "$ROOT/scripts/workspace-env"
 compose() { docker compose --env-file "$ROOT/.env" --env-file "$RUNTIME_FILE" -f "$ROOT/deploy/local/compose.yaml" "$@"; }
 case "${1:-start}" in
  backup|restore|switch|purge-lab)

@@ -4,7 +4,8 @@ umask 077
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$ROOT"
 fail() { printf '%s\n' "$1" >&2; exit 1; }
-[ -f .env ] && [ -f data/config/runtime.env ] || fail 'LAB_NOT_INITIALIZED: run scripts/tangerine start first.'
+. "$ROOT/scripts/workspace-env"
+[ -f .env ] && [ -f "$RUNTIME_FILE" ] || fail 'LAB_NOT_INITIALIZED: run scripts/tangerine start first.'
 port_file="$ROOT/data/config/lab-port"
 if [ -z "${TANGERINE_LAB_PORT:-}" ] && [ -f "$port_file" ]; then TANGERINE_LAB_PORT=$(cat "$port_file");fi
 TANGERINE_LAB_PORT=${TANGERINE_LAB_PORT:-5000}
@@ -12,7 +13,7 @@ if [ "${1:-}" = --port ]; then [ "$#" -ge 2 ] || fail 'LAB_PORT_REQUIRED: lab --
 case "$TANGERINE_LAB_PORT" in ''|*[!0-9]*) fail 'LAB_PORT_INVALID: select a numeric local port.';; esac
 [ "$TANGERINE_LAB_PORT" -ge 1024 ] && [ "$TANGERINE_LAB_PORT" -le 65535 ] || fail 'LAB_PORT_INVALID: select a port from 1024 through 65535.'
 export TANGERINE_LAB_PORT
-compose() { docker compose --env-file "$ROOT/.env" --env-file "$ROOT/data/config/runtime.env" -f "$ROOT/deploy/local/compose.yaml" --profile llm-lab "$@"; }
+compose() { docker compose --env-file "$ROOT/.env" --env-file "$RUNTIME_FILE" -f "$ROOT/deploy/local/compose.yaml" --profile llm-lab "$@"; }
 sdk() { compose exec -T llm-lab python /tangerine/lab.py "$@"; }
 native() { compose run --rm --no-deps -T api lab; }
 quality() { compose run --rm --no-deps -T api quality; }

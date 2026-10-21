@@ -33,6 +33,15 @@ func (s *Storage) deletionPlan(ctx context.Context, tx pgx.Tx, input DeletionSel
 		}
 		roots[id] = true
 	}
+	// Receipts are experiment-owned native evidence; the existing graph expansion
+	// follows their operations, bindings, contexts and private diagnostic copies.
+	receipts, e := erasureStrings(ctx, tx, `SELECT jsonb_array_elements_text(r.value->'receipt_ids') FROM quality_experiment q CROSS JOIN LATERAL jsonb_array_elements(q.payload->'rows') AS r(value) WHERE q.id=ANY($1) ORDER BY 1`, p.Source.Experiments)
+	if e != nil {
+		return p, e
+	}
+	for _, id := range receipts {
+		roots[id] = true
+	}
 	if input.Orphans {
 		rows, e := tx.Query(ctx, `SELECT asset_id FROM asset_location a WHERE a.state='orphaned' AND reserved_at<clock_timestamp()-interval '30 days' AND NOT EXISTS(SELECT 1 FROM object_reference r WHERE r.target_id=a.asset_id)`)
 		if e != nil {
@@ -127,7 +136,7 @@ func (s *Storage) deletionPlan(ctx context.Context, tx pgx.Tx, input DeletionSel
 		if e = rows.Err(); e != nil {
 			return p, e
 		}
-		rows, e = tx.Query(ctx, `SELECT id,input_document_id,result_document_id,error_document_id FROM operation WHERE subject_id=ANY($1) OR id=ANY($1) OR idempotency_key IN(SELECT idempotency_key FROM operation WHERE id=ANY($1)) OR (operation_name='lab-diagnostic' AND idempotency_key::text=ANY($1))`, sortedKeys(roots))
+		rows, e = tx.Query(ctx, `SELECT id,input_document_id,result_document_id,error_document_id FROM operation WHERE subject_id=ANY($1) OR id=ANY($1) OR id IN(SELECT row_operation_id FROM quality_call WHERE receipt_id=ANY($1)) OR idempotency_key IN(SELECT idempotency_key FROM operation WHERE id=ANY($1)) OR (operation_name='lab-diagnostic' AND idempotency_key::text=ANY($1))`, sortedKeys(roots))
 		if e != nil {
 			return p, e
 		}
@@ -224,7 +233,7 @@ func (s *Storage) deletionPlan(ctx context.Context, tx pgx.Tx, input DeletionSel
 		}
 	}
 	var active bool
-	e = tx.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM operation WHERE state='running' AND (id=ANY($1) OR subject_id=ANY($2))) OR EXISTS(SELECT 1 FROM evaluation_lease WHERE attempt_id=ANY($2) AND expires_at>clock_timestamp())`, sortedKeys(operations), ids).Scan(&active)
+	e = tx.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM operation WHERE state='running' AND started_at>clock_timestamp()-interval '270 seconds' AND (id=ANY($1) OR subject_id=ANY($2))) OR EXISTS(SELECT 1 FROM evaluation_lease WHERE attempt_id=ANY($2) AND expires_at>clock_timestamp())`, sortedKeys(operations), ids).Scan(&active)
 	if e != nil {
 		return p, e
 	}

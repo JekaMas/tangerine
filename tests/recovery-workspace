@@ -76,6 +76,11 @@ with tempfile.TemporaryDirectory(prefix=name,dir=E) as tmp:
   record('test_backup_collision_negative',native('backup','complete.tar.gz',check=False).returncode!=0 and archive.read_bytes()==raw)
   call(['docker','network','connect','--alias','fixture','--alias','llm-local',restored+'_private',name+'-fixture'])
   native('switch',restored);record('test_switch_positive',(work/'data/config/active-project').read_text().strip()==restored)
+  # Native Lab readback must use restored PostgreSQL credentials, even though the
+  # original runtime is still present with different credentials. No model call.
+  selected_env={k:v for k,v in env.items() if k!='COMPOSE_PROJECT_NAME'}
+  lab=call(['sh','scripts/tangerine','lab','active'],environment=selected_env)
+  record('test_selected_lab_native_positive',lab.returncode==0 and json.loads(lab.stdout) is not None)
   browser=Browser(Path(tmp)/'chrome-restored','http://localhost:3000/listen?attempt='+data['attempt']);browser.wait('Your answer');record('test_restored_draft_positive',browser.evaluate("document.querySelector('textarea').value")==data['answer'])
   # Independent literal PCM readback through the actual private proxy.
   audio=browser.evaluate("fetch('/api/v1/attempts/"+data['attempt']+"/audio').then(async r=>({status:r.status,sha:r.headers.get('x-tangerine-audio-sha256'),bytes:[...new Uint8Array(await r.arrayBuffer())]}))")

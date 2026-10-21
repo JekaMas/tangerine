@@ -26,8 +26,9 @@ printf '%s\n' "$*" >> "$TANGERINE_FAKE_TRACE"
 case "$*" in
  *'volume inspect'*) [ "$TANGERINE_FAKE_MODE" = existing-volume ] && exit 0; exit 1;;
  *'ps --status running --services'*) printf 'web\napi\nspeech\n';;
+ *'stop web api speech'*) [ "$TANGERINE_FAKE_MODE" = partial-stop ] || [ "$TANGERINE_FAKE_MODE" = partial-stop-restart-failure ] && exit 1;;
  *'snapshot-create'*) printf 'literal native archive bytes';;
- *'start web api speech'*) [ "$TANGERINE_FAKE_MODE" = restart-failure ] && exit 1;;
+ *'start web api speech'*) [ "$TANGERINE_FAKE_MODE" = restart-failure ] || [ "$TANGERINE_FAKE_MODE" = partial-stop-restart-failure ] && exit 1;;
  *'up -d --wait'*) [ "$TANGERINE_FAKE_MODE" = target-failure ] && exit 1;;
 esac
 exit 0
@@ -166,5 +167,57 @@ func TestLocalRecoveryPurgeConfirmationNegative(t *testing.T) {
 	}
 	if _, e := os.Stat(filepath.Join(c.Root, "trace")); !os.IsNotExist(e) {
 		t.Fatal("unconfirmed command reached Docker")
+	}
+}
+
+func TestLocalRecoveryPartialStopNegative(t *testing.T) {
+	for _, action := range []string{"backup", "switch"} {
+		t.Run(action, func(t *testing.T) {
+			c := localFixture(t, "partial-stop")
+			targetFixture(t, c)
+			var e error
+			if action == "backup" {
+				_, e = c.Backup(context.Background(), "saved.tar.gz")
+			} else {
+				_, e = c.Switch(context.Background(), "restored")
+			}
+			if e == nil {
+				t.Fatal("partial stop accepted")
+			}
+			trace, _ := os.ReadFile(filepath.Join(c.Root, "trace"))
+			if !strings.Contains(string(trace), "start web api speech") {
+				t.Fatal("partially stopped workspace was not recovered", string(trace))
+			}
+			if strings.Contains(string(trace), "snapshot-create") || strings.Contains(string(trace), "up -d --wait") {
+				t.Fatal("continued after failed stop", string(trace))
+			}
+			if _, e = os.Stat(filepath.Join(c.Root, "data/backups/saved.tar.gz")); !os.IsNotExist(e) {
+				t.Fatal("published incomplete backup", e)
+			}
+			if _, e = os.Stat(filepath.Join(c.Root, "data/config/active-project")); !os.IsNotExist(e) {
+				t.Fatal("selected failed workspace", e)
+			}
+		})
+	}
+}
+
+func TestLocalRecoveryRecoveryFailureNegative(t *testing.T) {
+	for _, action := range []string{"backup", "switch"} {
+		t.Run(action, func(t *testing.T) {
+			c := localFixture(t, "partial-stop-restart-failure")
+			targetFixture(t, c)
+			var e error
+			if action == "backup" {
+				_, e = c.Backup(context.Background(), "saved.tar.gz")
+			} else {
+				_, e = c.Switch(context.Background(), "restored")
+			}
+			if e == nil || !strings.Contains(e.Error(), "WORKSPACE_RECOVERY_REQUIRED") {
+				t.Fatal("failed restart was misreported", e)
+			}
+			if _, e = os.Stat(filepath.Join(c.Root, "data/config/active-project")); !os.IsNotExist(e) {
+				t.Fatal("failed selection published", e)
+			}
+		})
 	}
 }
