@@ -44,6 +44,11 @@ The application SHALL freeze the complete selected case/candidate, original text
 - **WHEN** its declared supported or violating literal source/state/transport case reaches the actual production owner
 - **THEN** the independent expected state, source identity, arithmetic, modality, history and forbidden effects SHALL hold
 
+#### Scenario: I12-01 packet 9
+
+- **WHEN** its declared supported or violating literal source/state/transport case reaches the actual production owner
+- **THEN** the independent expected state, source identity, arithmetic, modality, history and forbidden effects SHALL hold
+
 ### Requirement: I12-02 Foreground persistence retry and ownership
 
 The application SHALL retain immutable foreground events and frozen resources, accepted semantic/projection/mapping checkpoints and actual failures; permit explicit restart/retry with bounded automatic calls, reject concurrent or late publication and replay completed work without new inference.

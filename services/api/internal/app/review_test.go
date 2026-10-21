@@ -1,8 +1,10 @@
 package app
 
 import (
+	"encoding/json"
 	"reflect"
 	"strings"
+	"tangerine.local/api/internal/provider"
 	"testing"
 )
 
@@ -373,6 +375,35 @@ func TestReviewRubricReferenceNegative(t *testing.T) {
 		normalizeReviewRubricReferences(decisions, key)
 		if !reflect.DeepEqual(c, before) {
 			t.Fatal("ambiguous/unknown source reference was hidden", mode, c)
+		}
+	}
+}
+
+func TestReviewDecoderPositive(t *testing.T) {
+	p := provider.Profile{Provider: "local_responses", ResponseFormat: "json_object"}
+	f, e := inferenceOutputFormat(p, json.RawMessage(`{"unusable": "full grammar"}`))
+	if e != nil {
+		t.Fatal(e)
+	}
+	got := f.(map[string]any)
+	if got["type"] != "json_schema" || string(got["schema"].(json.RawMessage)) != `{"type":"object"}` {
+		t.Fatal(got)
+	}
+	p.Provider = "openai"
+	f, e = inferenceOutputFormat(p, nil)
+	if e != nil || !reflect.DeepEqual(f, map[string]any{"type": "json_object"}) {
+		t.Fatal(f, e)
+	}
+	p.ResponseFormat = "text"
+	p.StructuredOutput = true
+	if f, e = inferenceOutputFormat(p, nil); e != nil || f != nil {
+		t.Fatal("explicit plain mode lost", f, e)
+	}
+}
+func TestReviewDecoderNegative(t *testing.T) {
+	for _, p := range []provider.Profile{{Provider: "openai_chatgpt", ResponseFormat: "json_object"}, {Provider: "local_responses", ResponseFormat: "made-up-mode"}} {
+		if f, e := inferenceOutputFormat(p, nil); e == nil || f != nil {
+			t.Fatal("unsupported decoder accepted", f, e)
 		}
 	}
 }

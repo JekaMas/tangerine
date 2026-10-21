@@ -706,3 +706,7 @@ Iteration 11 verification supersedes its earlier acceptance: all seven finding g
 - [ ] I12.8 Repair the reproduced new-key admission defects for registered primary domain, secondary category IDs and fixed severity weights; retain one admission only, add paired literal regressions and supersede the pre-repair117-case receipt.
 
 - [ ] I12.9 Repair the observed misplaced required-rubric reference while preserving explicit semantic/source judgments; reject ambiguous/unknown references and reconcile both conditional protocol paths separately from actual local inference.
+
+- [ ] I12.10 Correct the observed assessment-versus-key defect classification in the managed adjudication prompt, preserve the literal expected outcomes, observe the key/mapping contrast and complete the full clean iteration again.
+
+- [ ] I12.11 Repair the observed plain-JSON syntax failure with explicit syntax-only local decoding, freeze the selected decoder in the effective binding, preserve full one-time semantic admission and observe positive/negative decoder and actual dispute cases.

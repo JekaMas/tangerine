@@ -232,6 +232,15 @@
       "type": "boolean",
       "description": "Explicit opt-in to observed provider JSON-schema decoding support; omitted/false preserves plain output. Same-profile capability fallback does not change the task or billing route.",
       "default": false
+    },
+    "response_format": {
+      "type": "string",
+      "enum": [
+        "text",
+        "json_object",
+        "json_schema"
+      ],
+      "description": "Optional explicit decoder mode; wins over legacy structured_output. text is unrestricted; json_object constrains syntax only, with full stage admission unchanged. local_responses uses a minimal object schema because its Responses shim ignores json_object. Unsupported plan-format requests fail without fallback."
     }
   },
   "required": [

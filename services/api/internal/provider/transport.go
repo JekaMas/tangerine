@@ -17,6 +17,7 @@ import (
 
 type Profile struct {
 	StructuredOutput bool     `json:"structured_output,omitempty"`
+	ResponseFormat   string   `json:"response_format,omitempty"`
 	ID               string   `json:"id"`
 	Provider         string   `json:"provider"`
 	Model            string   `json:"model"`

@@ -56,11 +56,32 @@ func mutationInputCovers(part lab.Part, input map[string]any) bool {
 
 // Decoding is an explicit profile choice, separate from the single admission.
 func inferenceOutputFormat(p provider.Profile, schema json.RawMessage) (any, error) {
-	if !p.StructuredOutput {
-		return nil, nil
+	mode := p.ResponseFormat
+	if mode == "" {
+		if p.StructuredOutput {
+			mode = "json_schema"
+		} else {
+			mode = "text"
+		}
 	}
-	if p.Provider == "openai_chatgpt" {
+	switch mode {
+	case "text":
+		return nil, nil
+	case "json_object", "json_schema":
+		if p.Provider == "openai_chatgpt" {
+			return nil, &provider.Failure{Code: "CONSTRAINT_CONFLICT"}
+		}
+	default:
 		return nil, &provider.Failure{Code: "CONSTRAINT_CONFLICT"}
+	}
+	if mode == "json_object" {
+		// Ollama Responses accepts schema format, not OpenAI's json_object type.
+		// This grammar constrains JSON syntax only. The complete stage contract is
+		// still supplied in context and admitted once by the application.
+		if p.Provider != "local_responses" {
+			return map[string]any{"type": "json_object"}, nil
+		}
+		schema = json.RawMessage(`{"type":"object"}`)
 	}
 	return map[string]any{"type": "json_schema", "name": "tangerine_output", "strict": true, "schema": schema}, nil
 }
