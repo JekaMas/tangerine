@@ -134,7 +134,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | llm-experiment | 2.0.0 | document.payload with linked private assets | 87 |
 
-| llm-quality-case | 2.0.0 | document.payload with linked private assets | 28 |
+| llm-quality-case | 2.0.0 | document.payload with linked private assets | 30 |
 
 | prompt-bundle | 2.0.0 | document.payload with linked private assets | 35 |
 
@@ -202,3 +202,9 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | review-selection-result | schema hash | derived DTO or actual operation input/output receipt | 3 |
 
 | review-view | schema hash | derived DTO or actual operation input/output receipt | 20 |
+
+| llm-quality-answer-input | schema hash | derived DTO or actual operation input/output receipt | 0 |
+
+| llm-quality-expectations | schema hash | derived DTO or actual operation input/output receipt | 0 |
+
+| llm-quality-judge-policy | schema hash | derived DTO or actual operation input/output receipt | 0 |

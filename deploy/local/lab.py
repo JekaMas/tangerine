@@ -73,6 +73,7 @@ def sync(packet):
    for doc in payload['documents']:
     if doc['kind']!='provider-receipt':continue
     r=doc['payload'];attrs={'tangerine.operation_id':r['operation_id'],'stage':r['stage'],'receipt_id':r['id'],'context_snapshot_id':r['context_snapshot_id'],'binding_sha256':r['binding_sha256'],'input_sha256':r['input_sha256'],'attempt_index':str(r['transport_attempt'])}
+    if packet.get('development_run_id'):attrs['tangerine.development_run_id']=packet['development_run_id']
     trace={'Trace':r['trace_id'],'Span':r['span_id'],'Name':'tangerine.provider.'+r['stage'],'Start':r['started_at'],'End':r['finished_at'],'Attributes':attrs,'Error':r['outcome']!='complete'}
     row={'trace_id':r['trace_id'],'span_id':r['span_id'],'receipt_id':r['id'],'experiment_id':eid.experiment_id,'state':'unexported'}
     try:
@@ -84,6 +85,34 @@ def sync(packet):
     trace_exports.append(row)
  client.set_terminated(run)
  return {'run':run,'artifacts':artifacts,'provider_calls':0,'trace_exports':trace_exports}
+
+def quality_sync(packet):
+ result=sync(packet)
+ result["native_exports"]=[]
+ for p in packet.get("provider_packets",[]):
+  p={**p,'development_run_id':packet.get('development_run_id')}
+  exported=sync(p);client.set_tag(exported['run'],'tangerine.quality_experiment_id',packet['experiment']['id'])
+  if packet.get('development_run_id'):client.set_tag(exported['run'],'tangerine.development_run_id',packet['development_run_id'])
+  result['native_exports'].append(exported)
+ if packet.get('development_run_id'):client.set_tag(result['run'],'tangerine.development_run_id',packet['development_run_id'])
+ result["experiment_id"]=packet["experiment"]["id"]
+ result["rows"]=packet["experiment"]["rows"]
+ from fractions import Fraction
+ experiment=packet['experiment']
+ for i,variant in enumerate(experiment['variants']):
+  prefix='variant'+str(i)
+  client.log_param(result['run'],prefix+'.id',variant['id'])
+  client.log_param(result['run'],prefix+'.bundle',variant['bundle_sha256'])
+  client.log_param(result['run'],prefix+'.profile',variant['profile_id'])
+  for item in experiment['aggregates']:
+   metric=item['metric']
+   if item['variant_id']!=variant['id'] or metric['status']!='observed':continue
+   if metric['numerator'] is not None and metric['denominator'] is not None:
+    value=Fraction(metric['numerator'])/Fraction(metric['denominator'])
+   elif metric['value'] is not None:value=Fraction(metric['value'])
+   else:continue
+   client.log_metric(result['run'],prefix+'/'+metric['metric_id'],float(value))
+ return result
 
 def verify(packet):
  errors=[]
@@ -160,6 +189,11 @@ def inventory(revision):
     for kind,path in [('stage_prompt','prompts/'+b['prompt_id']+'.txt'),('wire_schema_projection','contracts/'+b['output_schema'])]:
      full='specification/v2/'+path;sha=dependency(full,'/tangerine/spec/'+path,'trusted '+kind)
      fragments.append({'kind':kind,'path_or_asset':full,'sha256':sha,'state':'observed'})
+  if surface['id']=='lab.semantic_judge':
+   fragments=[]
+   for kind,path in [('stage_prompt','prompts/lab-judge-v1.txt'),('wire_schema_projection','contracts/llm-quality-judge-output.schema.json'),('judge_rubric','contracts/llm-experiment.schema.json')]:
+    full='specification/v2/'+path;sha=dependency(full,'/tangerine/spec/'+path,'dedicated diagnostic '+kind)
+    fragments.append({'kind':kind,'path_or_asset':full,'sha256':sha,'state':'observed'})
   state=surface['implementation_state'];owners=surface.get('owner_paths',[surface['owner_root']])
   if state=='implemented':
    for owner in owners:
@@ -207,6 +241,18 @@ def main():
  elif action=='diagnostic-packet':result={'action':'diagnostic-save','payload':json.load(sys.stdin)}
  elif action=='diagnostic-read-packet':result={'action':'diagnostic-read','id':json.load(sys.stdin)['id']}
  elif action=='activation-packet':result={'action':'activate','bundle':json.load(sys.stdin),'configuration':configuration()}
+ elif action=='quality-sync':
+  with contextlib.redirect_stdout(sys.stderr):result=quality_sync(json.load(sys.stdin))
+ elif action=='quality-admit-packet':
+  submission=json.load(sys.stdin);submission['development']=len(sys.argv)>2 and sys.argv[2]=='development'
+  if len(sys.argv)>3:submission['development_run_id']=json.loads(sys.argv[3])
+  result={'action':'admit','submission':submission}
+ elif action=='development-id':result=str(uuid.UUID(json.load(sys.stdin)['id']))
+ elif action=='quality-eval-packet':result={'action':'eval','id':json.load(sys.stdin)['id']}
+ elif action=='quality-export-packet':result={'action':'export','id':json.load(sys.stdin)['id']}
+ elif action=='quality-ack-packet':result={'action':'export-ack','export_receipt':json.load(sys.stdin)}
+ elif action=='quality-read-packet':result={'action':'read','id':sys.argv[2]}
+ elif action=='quality-resume-packet':result={'action':'eval','id':sys.argv[2],'resume':True}
  elif action=='sync':
   with contextlib.redirect_stdout(sys.stderr):result=sync(json.load(sys.stdin))
  elif action=='verify':result=verify(json.load(sys.stdin))
@@ -217,6 +263,7 @@ def main():
   result={'consistent_sqlite_snapshot':target,'provider_calls':0}
  else:raise ValueError('unknown Lab SDK action')
  print(json.dumps(result,ensure_ascii=False))
+ if action=='verify' and result['status']!='observed':sys.exit(1)
 if __name__=='__main__':
  try:
   # SDK diagnostics belong on stderr; stdout is a machine-readable protocol.

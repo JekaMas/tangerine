@@ -28,6 +28,9 @@ func DefaultConfiguration() map[string]any {
 	return c
 }
 func (s *Storage) Configuration(ctx context.Context) (map[string]any, int64, error) {
+	if b, ok := frozenQuality(ctx); ok {
+		return b.Configuration, -1, nil
+	}
 	var raw []byte
 	var rev int64
 	e := s.DB.QueryRow(ctx, "SELECT d.payload,h.revision FROM entity_head h JOIN document d ON d.id=h.document_id WHERE h.id='local-configuration' AND h.kind='configuration'").Scan(&raw, &rev)

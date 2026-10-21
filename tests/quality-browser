@@ -1,0 +1,96 @@
+#!/usr/bin/env python3
+"""Real Chrome/Next.js/API/PostgreSQL/MinIO listening observations; no UI doubles."""
+from pathlib import Path
+import base64,json,os,secrets,subprocess,sys,tempfile,time,uuid
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from browser_probe import Browser
+r=Path(__file__).resolve().parents[1];name='tangerine-quality-browser-'+uuid.uuid4().hex[:8];env=dict(os.environ)
+evidence=Path(env['TANGERINE_QUALITY_EVIDENCE']);evidence.mkdir(parents=True,exist_ok=True)
+def call(args,check=True):
+ p=subprocess.run(args,cwd=r,env=env,capture_output=True,text=True,timeout=180)
+ if p.stdout:print(p.stdout,file=sys.stderr,end='')
+ if p.stderr:print(p.stderr,file=sys.stderr,end='')
+ if check and p.returncode:raise RuntimeError('owned browser setup command failed')
+ return p
+browser=None;go=None;preview=False
+with tempfile.TemporaryDirectory(prefix=name) as tmp:
+ config=Path(tmp)/'runtime.env';password=secrets.token_hex(24)
+ config.write_text(f'POSTGRES_DB=tangerine\nPOSTGRES_USER=tangerine\nPOSTGRES_PASSWORD={password}\nDATABASE_URL=postgres://tangerine:{password}@postgres:5432/tangerine?sslmode=disable\nMINIO_ROOT_USER=native-regression\nMINIO_ROOT_PASSWORD={password}\nMINIO_ENDPOINT=minio:9000\nMINIO_ACCESS_KEY=native-regression\nMINIO_SECRET_KEY={password}\nMINIO_BUCKET=regressions\nAPI_INTERNAL_TOKEN=source-owned-token\nAPI_INTERNAL_URL=http://api:8080\n');config.chmod(0o600)
+ def ready(kind):
+  for _ in range(60):
+   probe=['pg_isready','-h','127.0.0.1','-U','tangerine','-d','tangerine'] if kind=='postgres' else ['/usr/local/bin/probe','http://127.0.0.1:9000/minio/health/ready']
+   if call(['docker','exec',name+'-'+kind,*probe],False).returncode==0:return
+   time.sleep(.1)
+  raise AssertionError('owned dependency did not recover')
+ try:
+  call(['docker','build','--target','build','-t',name+'-go','-f','services/api/Dockerfile','.']);call(['docker','build','-t',name+'-media','-f','deploy/local/minio.Dockerfile','.']);call(['docker','network','create',name])
+  for kind,image in [('postgres','postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826'),('media',name+'-media')]:call(['docker','run','-d','--name',name+'-'+kind,'--network',name,'--network-alias','postgres' if kind=='postgres' else 'minio','--env-file',str(config),image]);ready(kind)
+  args=['docker','run','--rm','--name',name+'-api','--network',name,'--network-alias','api','--env-file',str(config),'-e','TANGERINE_QUALITY_EVIDENCE=/evidence','-v',str(evidence)+':/evidence']
+  for source in ['native_listening_test.go','native_interpretation_test.go','native_scoring_test.go','native_preparation_test.go','native_mutation_test.go','native_speech_test.go','native_source_test.go','native_quality_test.go','native_quality_pipeline_test.go','quality_browser_fixture_test.go']:args+=['-v',str(r/'tests'/source)+':/src/internal/app/'+source+':ro']
+  go=subprocess.Popen(args+['--entrypoint','go',name+'-go','test','-json','-race','-count=1','-run','^TestNativeQualityBrowserFixture$','./internal/app'],cwd=r,env=env,stdout=(evidence/'native.jsonl').open('w'),stderr=(evidence/'native.stderr').open('w'))
+  for _ in range(1200):
+   if (evidence/'fixture.json').exists():break
+   if go.poll() is not None:raise AssertionError('native publication fixture failed')
+   time.sleep(.1)
+  else:raise AssertionError('native fixture timeout')
+  fixture=json.loads((evidence/'fixture.json').read_text())
+  running=call(['docker','inspect','-f','{{.State.Running}}','tangerine-i1-web-1'],False)
+  if running.returncode==0 and running.stdout.strip()=='true':call(['docker','stop','tangerine-i1-web-1']);preview=True
+  call(['docker','run','-d','--name',name+'-web','--network',name,'--env-file',str(config),'-p','127.0.0.1:3000:3000',env['TANGERINE_INTERPRETATION_TEST_WEB_IMAGE']])
+  browser=Browser(Path(tmp)/'chrome','http://localhost:3000/reports');browser.wait('Reports and quality experiments');observed={}
+  def click(text):
+   selector="[...document.querySelectorAll('button,a')].find(e=>e.textContent==="+json.dumps(text)+")"
+   for _ in range(300):
+    if browser.evaluate(selector+"?.disabled===false"):break
+    time.sleep(.1)
+   else:raise AssertionError('Button unavailable: '+text)
+   browser.evaluate(selector+'.click();true')
+  def wait_value(expression,expected):
+   for _ in range(300):
+    value=browser.evaluate(expression)
+    if value==expected:return value
+    time.sleep(.1)
+   raise AssertionError((expression,value,expected))
+  def record(name,expression,expected):
+   observed[name]=wait_value(expression,expected);(evidence/(name+'.html')).write_text(browser.evaluate('document.documentElement.outerHTML'))
+  def type_input(label,value):
+   browser.evaluate("document.querySelector('[aria-label="+json.dumps(label)+"]').focus();true")
+   browser.call('Input.insertText',{'text':value})
+  browser.wait=lambda text: wait_value('document.body.textContent.includes('+json.dumps(text)+')',True)
+  record('test_empty_positive',"document.body.textContent.includes('No saved empirical reports.')&&document.body.textContent.includes('No saved quality experiments.')",True)
+  report=dict(title='Constructed browser population',input=dict(population=dict(release='constructed-browser-release',view='one',window='sentence',label_origin='authored_assertion'),windows=[dict(id='w1',fully_annotated=True,native_tokens=3,events=[dict(id='e1',native_label='R:VERB:SVA',leaf_id='grammar.verbs.subject_verb_agreement',secondary_ids=[],control=False,excluded_reason='')],opportunities={})]),attempts=[])
+  type_input('Report definition',json.dumps(report));click('Calculate report');browser.wait('Constructed browser population')
+  record('test_report_positive',"document.body.textContent.includes('1 annotated windows; 0 unannotated.')",True)
+  record('test_missing_negative',"document.body.textContent.includes('N/A: correct_opportunity_annotations_absent')&&document.body.textContent.includes('Difficulty: unrated (0 eligible answers).')",True)
+  type_input('Experiment definition',json.dumps(fixture['experiment']));click('Save frozen experiment');browser.wait('0/1 completed')
+  record('test_plan_positive',"document.body.textContent.includes('not_run')",True)
+  record('test_no_fake_execution_negative',"document.body.textContent.includes('No saved quality experiments.')",False)
+  click('Run experiment');browser.wait('completed · 1/1 completed')
+  record('test_run_positive',"document.body.textContent.includes('llm_lab.completion_rate')&&document.body.textContent.includes('1/1')",True)
+  record('test_audio_unknown_negative',"document.body.textContent.includes('N/A: no_relevant_actual_audio_observation')",True)
+  browser.call('Page.navigate',{'url':'http://localhost:3000/reports'});browser.wait('completed · 1/1 completed')
+  record('test_reload_positive',"document.body.textContent.includes('Constructed browser population')",True)
+  sql='"'+fixture['schema']+'"'
+  call(['docker','exec',name+'-postgres','psql','-X','-U','tangerine','-d','tangerine','-v','ON_ERROR_STOP=1','-c','SET search_path TO '+sql+'; ALTER TABLE empirical_report RENAME TO empirical_report_offline;'])
+  click('Refresh');browser.wait('Saved inputs and observations are retained.')
+  record('test_failure_negative',"document.querySelector('[role=alert]')!==null",True)
+  call(['docker','exec',name+'-postgres','psql','-X','-U','tangerine','-d','tangerine','-v','ON_ERROR_STOP=1','-c','SET search_path TO '+sql+'; ALTER TABLE empirical_report_offline RENAME TO empirical_report;'])
+  click('Refresh');record('test_recovery_positive',"document.querySelector('[role=alert]')===null&&document.body.textContent.includes('Constructed browser population')",True)
+  browser.evaluate("document.querySelector('[aria-label=\"Report definition\"]').select();true");type_input('Report definition','{broken');click('Calculate report');browser.wait('Saved inputs and observations are retained.')
+  record('test_bad_input_negative',"document.querySelector('[role=alert]')!==null&&document.body.textContent.includes('Constructed browser population')",True)
+  (evidence/'observations.json').write_text(json.dumps({'values':observed,'fixture':fixture,'driver':browser.driver_version,'network_substitution':False},indent=2))
+  screenshot=browser.call('Page.captureScreenshot');(evidence/'reports.png').write_bytes(base64.b64decode(screenshot['data']))
+  (evidence/'done').write_text('done');assert go.wait(timeout=30)==0
+
+ finally:
+  if browser:
+   try:(evidence/'final-dom.html').write_text(browser.evaluate('document.documentElement.outerHTML'))
+   finally:browser.close()
+  (evidence/'done').write_text('done')
+  for kind in ['web','api','postgres','media']:call(['docker','rm','-f','-v',name+'-'+kind],False)
+  if go:
+   try:go.wait(timeout=10)
+   except subprocess.TimeoutExpired:go.terminate();go.wait()
+  call(['docker','network','rm',name],False)
+  for kind in ['go','media']:call(['docker','image','rm',name+'-'+kind],False)
+  if preview:call(['docker','start','tangerine-i1-web-1'])

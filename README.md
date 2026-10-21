@@ -23,13 +23,13 @@ sh scripts/tangerine start
 
 `stop` retains the database, private media and configuration. `logs` redacts known secret values. Startup errors identify missing Docker/Compose, unavailable Docker, incomplete source, damaged configuration, failed builds or failed service startup. For `START_FAILED`, check whether port 3000 is occupied and inspect `logs`. Fix the reported cause and retry; the launcher does not delete your data.
 
-`.env` is created from [.env.example](.env.example). Provider keys are optional during startup and stay out of browser assets and build layers. Use plain `KEY=value` entries from the template. Provider sign-in, included-only usage controls and supported operation choices are specified in [service setup](specification/v2/docs/service-setup-guide.md) and [provider access](specification/v2/docs/provider-access.md); those operations are implemented in later iterations.
+`.env` is created from [.env.example](.env.example). Provider keys are optional during startup and stay out of browser assets and build layers. Use plain `KEY=value` entries from the template. Provider sign-in, included-only usage controls and supported operation choices are specified in [service setup](specification/v2/docs/service-setup-guide.md) and [provider access](specification/v2/docs/provider-access.md); actual usable services still depend on your configured included/free/local entitlement.
 
 ## Current implementation
 
-Iteration 1 implements the download/build/start/stop/status/logs foundation, automatic durable configuration, real dependency health and no-login empty Library. Database-backed public Library projections are implemented without exposing transcripts or answer keys. Speech readiness checks the actual FFmpeg/ffprobe binaries; it does not claim synthesis capability.
+The application implements local settings/provider bindings, persisted clean text and mutation keys, speech preparation, listening/answer persistence, LLM interpretation, exact scoring and recommendations. Source imports retain native records, projections, missingness and their original rights. Optional /reports adds source-scoped empirical reports and serial frozen LLM experiments with all22diagnostic dimensions, exact paired comparisons and explicit cancellation/resume. See [report and experiment usage](specification/v2/docs/empirical-experiment-runtime.md).
 
-The full product remains the on-demand flow: requested LLM clean text → LLM mutations and saved answer key → generated stored audio → listener's free-text response → LLM answer checking, exact scores and recommendations. Iteration 2 adds the shared typed domain store: immutable complete documents and frozen references, revision heads, idempotent operations, private asset reserve/upload/readback/link and interruption recovery. Existing foundation data is backed up and verified before the additive storage migration. Generation, synthesis, grading, their domain action integration, imports and full user backup/restore remain subsequent engineering iterations, not working controls in this foundation. No provider inference or generated-audio acceptance is claimed here.
+Verification is scoped to each iteration's observed cases; selected local-model tests do not certify every category or hosted provider. The canonical task list retains incomplete earlier optional review/acoustic verification and later operations work. No full-product or external entitlement claim follows from this implementation.
 
 ## Optional LLM development Lab
 
@@ -49,7 +49,7 @@ The launcher remembers the selected port. Open its printed loopback URL to edit 
 
 `lab sync packet.json` retains a native diagnostic before exporting a sanitized copy. An interrupted export can be retried by the packet's operation UUID with `lab sync <uuid>` without inference. `lab verify development-run.json` checks the published development-run contract against private native assets and actual MLflow downloads; mismatches return non-success. Content capture is off by default. `lab snapshot /lab/backup.db` creates a consistent registry database snapshot inside the retained Lab volume; artifact files also need to be retained for a complete Lab backup.
 
-Provider adapters and end-to-end AI experiments remain later iterations. A deterministic tooling run has zero model calls and an N/A inference ratio, with an explicit reason and real diagnostic artifacts. See [Lab contracts](specification/v2/docs/llm-lab.md) and [iteration 3 evidence](audit/iteration-3-llm-lab-20261010/REPORT.md).
+Frozen experiments now run through the same native provider/preparation/answer owners. Use `lab eval experiment.json`, `lab experiment-read <id>`, `lab experiment-resume <id>` and `lab experiment-sync <id>`; the runtime guide describes portable inputs and exact proof boundaries. A deterministic tooling run has zero model calls and an N/A inference ratio, with an explicit reason and real diagnostic artifacts. See [Lab contracts](specification/v2/docs/llm-lab.md) and [iteration 3 evidence](audit/iteration-3-llm-lab-20261010/REPORT.md).
 
 ## Specification and evidence
 

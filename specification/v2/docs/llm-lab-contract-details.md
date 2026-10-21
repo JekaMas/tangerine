@@ -43,3 +43,5 @@ For authored review/adjudication, capture the exact saved mutation_manifest in t
 Current provider-access.md, speech-service-selection.md and empirical-data-needs.md complete the included-only setup, speech-control distinctions and exact data-to-consumer ledger. Actual account admission/model/voice/hardware/semantic observations remain unperformed. Provider tokens and callback material never enter Lab context or verification fixtures.
 
 Audio-judge profiles and typed audio-judge input/output under full-build-contract.md are separate diagnostic method bindings. Lab freezes their actual prompt/model/processor/audio bytes and native measurements; it never treats mutation intent or judge agreement as independently measured acoustic truth.
+
+The iteration14 native adapter, exact report fields, private routes, portable aliases, interruption semantics and export acknowledgments are specified in empirical-experiment-runtime.md. Completion comparison includes failed/unstarted common planned tuples; other metric comparisons retain the applicable completed restriction above.

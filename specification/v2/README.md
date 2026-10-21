@@ -39,3 +39,5 @@ Setup instructions: [which services are needed and what each does](docs/service-
 Complete production extensions and source/export/auditory/resume contracts: docs/full-build-contract.md; corresponding typed schemas and domain/acoustic-production.v1.json. These are specification artifacts, not implemented behavior.
 
 Complete distinct per-property positive/negative sets and DAG case identities: [property-test-sets.v1.json](domain/property-test-sets.v1.json); exact input/expected/oracle packets remain in verification-fixtures.v1.json. Current test-design audit: audit/property-test-sets-20261010/REPORT.md.
+
+Implemented optional empirical/quality tooling: [runtime and operator contract](docs/empirical-experiment-runtime.md).

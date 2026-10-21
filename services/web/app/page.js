@@ -15,7 +15,7 @@ export default function Page() {
   }
   useEffect(() => { refresh(); }, []);
   return <main>
-    <header><a className="brand" href="/" aria-label="Tangerine home"><span className="mark">t</span>Tangerine</a><a href="/audio">Saved audio</a><a href="/attempts">Saved attempts</a><a href="/sources">Sources</a><a href="/settings">Settings</a><span className="local">Local workspace</span></header>
+    <header><a className="brand" href="/" aria-label="Tangerine home"><span className="mark">t</span>Tangerine</a><a href="/audio">Saved audio</a><a href="/attempts">Saved attempts</a><a href="/reports">Reports</a> · <a href="/sources">Sources</a><a href="/settings">Settings</a><span className="local">Local workspace</span></header>
     <section className="intro"><p className="eyebrow">Teacher Error Trainer</p><h1>Listen closely.<br/>Notice what matters.</h1><p>Practice identifying learner errors, checking corrections and explaining your reasoning.</p></section>
     <section className="card"><div className="row"><h2>Exercise library</h2><button className="secondary" disabled={busy} onClick={refresh}>{busy ? 'Loading…' : 'Refresh'}</button></div>
       {error ? <p role="alert" className="error">{error}</p> : busy ? <p role="status">Loading your Library…</p> : exercises?.length === 0 ?

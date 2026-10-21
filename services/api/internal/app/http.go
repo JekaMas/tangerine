@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"sync"
 	"tangerine.local/api/internal/provider"
 	"time"
 )
@@ -17,13 +18,14 @@ const OverallDeadline = 270 * time.Second
 const ReleaseID = "0.1.0-foundation"
 
 type Server struct {
-	Store       *Storage
-	Origin      string
-	SpeechURL   string
-	client      *http.Client
-	token       string
-	speechToken string
-	Providers   *provider.Manager
+	qualityCancels sync.Map
+	Store          *Storage
+	Origin         string
+	SpeechURL      string
+	client         *http.Client
+	token          string
+	speechToken    string
+	Providers      *provider.Manager
 }
 
 func NewServer(store *Storage, origin, speechURL string) *Server {
@@ -59,6 +61,15 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /health/ready", s.ready)
 	mux.HandleFunc("GET /api/v1/health", s.ready)
 	mux.HandleFunc("GET /api/v1/library", s.library)
+	mux.HandleFunc("GET /api/v1/lab/experiments", s.qualityList)
+	mux.HandleFunc("POST /api/v1/lab/experiments", s.qualityCreate)
+	mux.HandleFunc("GET /api/v1/lab/experiments/{id}", s.qualityGet)
+	mux.HandleFunc("POST /api/v1/lab/experiments/{action}", s.qualityAction)
+	mux.HandleFunc("GET /api/v1/lab/defaults", s.qualityDefaults)
+	mux.HandleFunc("GET /api/v1/lab/assets/{id}", s.qualityAsset)
+	mux.HandleFunc("GET /api/v1/reports/empirical", s.empiricalList)
+	mux.HandleFunc("POST /api/v1/reports/empirical", s.empiricalCreate)
+	mux.HandleFunc("GET /api/v1/reports/empirical/{id}", s.empiricalGet)
 	mux.HandleFunc("GET /api/v1/sources", s.sourcesGet)
 	mux.HandleFunc("PUT /api/v1/connectors/{id}", s.sourceConnectorPut)
 	mux.HandleFunc("POST /api/v1/connectors/{action}", s.sourceConnectorFetch)

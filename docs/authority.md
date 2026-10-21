@@ -75,3 +75,7 @@ The user now invokes openspec-apply-change for iteration2: domain storage and as
 The actual user explicitly requests openspec-apply-change iteration13 All source-import features. Implement the complete source-import vertical with the existing full-source contracts, all11separate identities, lossless private-export interpreter, native public formats, actual rights/completeness reporting and positive/negative DAG evidence. Preserve the on-demand core flow's independence. No paid credits, install, account action, new outreach or external publication is authorized by this request. Missing original private bytes cannot be fabricated; engineering implementation and source-acquisition observations remain distinct.
 
 The user subsequently explicitly requested openspec-verify-change iteration13 with repairs until green, separated code layers/single responsibilities and commit. This authorizes the scoped code/spec/test repair and local commits; it grants no paid-credit or external-publication approval.
+
+## Iteration14 implementation authority (2026-10-21)
+
+The actual user requests openspec-apply-change iteration14 Empirical reports and quality experiments. Implement the scoped source/attempt reports, all22diagnostics, native serial Lab experiments, UI/helpers, local-model/Lab evidence, repairs and local commits. Keep all122categories,42formulas and11sources. No hosted/paid call, credit use, install, account action or publication is authorized. Preserve canonical unrelated GAPS.md and existing data.

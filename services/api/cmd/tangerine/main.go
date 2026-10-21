@@ -62,6 +62,10 @@ func run() error {
 	}
 	defer store.DB.Close()
 	switch mode {
+	case "quality":
+		batchCtx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+		defer stop()
+		return app.NewServer(store, os.Getenv("APP_ORIGIN"), os.Getenv("SPEECH_URL")).QualityCommand(batchCtx, os.Stdin, os.Stdout)
 	case "prepare":
 		return app.NewServer(store, os.Getenv("APP_ORIGIN"), os.Getenv("SPEECH_URL")).PreparationCommand(ctx, os.Stdin, os.Stdout)
 	case "provider":

@@ -55,6 +55,9 @@ func (s *Server) saveSpeechEvidence(ctx context.Context, op Operation, profile, 
 	if e != nil {
 		return "", e
 	}
+	if e = s.Store.linkQualityCall(ctx, id, "speech", status != 0, callErr == nil); e != nil {
+		return "", e
+	}
 	requestBytes, e := s.Store.ReadAsset(ctx, input.ID)
 	if e != nil {
 		return "", e

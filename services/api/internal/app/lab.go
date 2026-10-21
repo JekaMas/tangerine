@@ -93,6 +93,9 @@ func (s *Storage) LabCommand(ctx context.Context, input io.Reader, output io.Wri
 	return json.NewEncoder(output).Encode(result)
 }
 func (s *Storage) ActiveLabBundle(ctx context.Context) (lab.Bundle, error) {
+	if b, ok := frozenQuality(ctx); ok {
+		return b.Bundle, nil
+	}
 	var config []byte
 	err := s.DB.QueryRow(ctx, "SELECT d.payload FROM entity_head h JOIN document d ON d.id=h.document_id WHERE h.id='local-configuration' AND h.kind='configuration'").Scan(&config)
 	if errors.Is(err, pgx.ErrNoRows) {

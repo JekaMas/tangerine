@@ -15,6 +15,14 @@ export TANGERINE_LAB_PORT
 compose() { docker compose --env-file "$ROOT/.env" --env-file "$ROOT/data/config/runtime.env" -f "$ROOT/deploy/local/compose.yaml" --profile llm-lab "$@"; }
 sdk() { compose exec -T llm-lab python /tangerine/lab.py "$@"; }
 native() { compose run --rm --no-deps -T api lab; }
+quality() { compose run --rm --no-deps -T api quality; }
+quality_sync() {
+ ack="$ROOT/data/config/.quality-export-$$"
+ sdk quality-sync > "$ack" || { rm -f "$ack";return 1; }
+ sdk quality-ack-packet < "$ack" | quality >&2 || { rm -f "$ack";return 1; }
+ cat "$ack"
+ rm -f "$ack"
+}
 case "${1:-start}" in
  start)
   cid=$(docker create "${COMPOSE_PROJECT_NAME:-tangerine}-api:local") || fail 'LAB_BUILD_REQUIRED: run scripts/tangerine start first.'
@@ -60,6 +68,25 @@ case "${1:-start}" in
   elif [ "$builtins" = false ] && [ -n "$selection" ]; then sdk export-command --selection selected --out "$output" < "$selection" > "$tmp"
   else fail 'LAB_INPUT_REQUIRED: choose exactly one of --builtins or --selection.';fi
   chmod 600 "$tmp";mv "$tmp" "$output";printf '%s\n' "Saved complete immutable bundle: $output";;
+ eval)
+  [ "$#" -eq 2 ] || [ "$#" -eq 4 ] || fail 'LAB_INPUT_REQUIRED: lab eval <experiment-file> [--development <development-run-file>]'
+  development=ordinary;development_id=
+  if [ "$#" -eq 4 ];then [ "$3" = --development ] || fail 'LAB_INPUT_REQUIRED: --development <development-run-file>';development=development;development_id=$(sdk development-id < "$4");fi
+  tmp="$ROOT/data/config/.quality-$$";trap 'rm -f "$tmp" "$tmp.result"' 0
+  if [ -n "$development_id" ];then sdk quality-admit-packet "$development" "$development_id" < "$2" | quality > "$tmp";else sdk quality-admit-packet "$development" < "$2" | quality > "$tmp";fi
+  sdk quality-eval-packet < "$tmp" | quality > "$tmp.result"
+  sdk quality-export-packet < "$tmp.result" | quality | quality_sync >&2 || printf '%s\n' 'LAB_EXPORT_PENDING: native results retained; use lab experiment-sync <id>.' >&2
+  if [ "$#" -eq 4 ];then sdk development-packet < "$4" | native | sdk development-verify >&2;fi
+  cat "$tmp.result";;
+ experiment-read)
+  [ "$#" -eq 2 ] || fail 'LAB_INPUT_REQUIRED: lab experiment-read <id>'
+  sdk quality-read-packet "$2" | quality;;
+ experiment-resume)
+  [ "$#" -eq 2 ] || fail 'LAB_INPUT_REQUIRED: lab experiment-resume <id>'
+  sdk quality-resume-packet "$2" | quality;;
+ experiment-sync)
+  [ "$#" -eq 2 ] || fail 'LAB_INPUT_REQUIRED: lab experiment-sync <id>'
+  sdk quality-read-packet "$2" | quality | sdk quality-export-packet | quality | quality_sync;;
  activate)
   [ "$#" -eq 2 ] || fail 'LAB_INPUT_REQUIRED: lab activate <bundle-file>'
   sdk activation-packet < "$2" | native;;

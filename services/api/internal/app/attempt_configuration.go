@@ -28,6 +28,10 @@ func configurationInTransaction(ctx context.Context, tx pgx.Tx) (map[string]any,
 			return nil, bundle, nil, e
 		}
 	}
+	if frozen, ok := frozenQuality(ctx); ok {
+		c = frozen.Configuration
+		bundle = frozen.Bundle
+	}
 	// Configuration/profile-role references were admitted by PutConfiguration.
 	// Select trusted snapshots here rather than repeat its whole-profile validation.
 	profilesRaw, _ := json.Marshal(c["llm_profiles"])

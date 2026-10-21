@@ -1,0 +1,208 @@
+{
+  "version": "1.0.0",
+  "authority": "docs/llm-lab.md",
+  "arithmetic": "Exact native integers/decimals/ratios; MLflow floats are diagnostic displays. No hidden rounding before aggregation.",
+  "zero_denominator": "N/A with reason",
+  "unknown": "Unknown observations are not zero; retain known subtotals and applicability/exclusion counts.",
+  "paired_comparison": "candidate-baseline on identical applicable completed case/expectation/repetition identities; also show full planned completion/error counts. Mean paired delta uses n paired samples; latency quantile delta compares named quantiles, not mean of per-row quantiles.",
+  "metrics": [
+    {
+      "id": "llm_lab.completion_rate",
+      "formula": "completed / planned",
+      "population": "All planned case/variant/repetition executions, including failed/cancelled/not_run; complete means selected scope finished.",
+      "unit": "ratio",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "pool_unreduced_named_formula_sufficient_statistics_then_compute_ratio"
+    },
+    {
+      "id": "llm_lab.first_response_projection_rate",
+      "formula": "projected_first_delivered_reply / logical_calls_with_delivered_reply",
+      "population": "First actually delivered reply per logical stage call; harmless wrapper normalization allowed, semantic repair excluded. Transport-only failures shown in completion/failure counts.",
+      "unit": "ratio",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "pool_unreduced_named_formula_sufficient_statistics_then_compute_ratio"
+    },
+    {
+      "id": "llm_lab.repair_rate",
+      "formula": "logical_calls_with_semantic_repair / initiated_logical_calls",
+      "population": "All initiated logical stage calls; report fallback/transport retries separately in trace.",
+      "unit": "ratio",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "pool_unreduced_named_formula_sufficient_statistics_then_compute_ratio"
+    },
+    {
+      "id": "llm_lab.canonical_preservation_rate",
+      "formula": "mutation_outputs_with_exact_saved_canonical / completed_mutation_outputs",
+      "population": "Mutation-stage comparisons against the same saved canonical input.",
+      "unit": "ratio",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "pool_unreduced_named_formula_sufficient_statistics_then_compute_ratio"
+    },
+    {
+      "id": "llm_lab.mutation_list_consistency_rate",
+      "formula": "mutations_with_consistent_span_category_repair_and_surface / applicable_declared_mutations",
+      "population": "Declared events judged against exact canonical/surface transformation; semantic judgments preserve basis/receipt, unknowns excluded with count. Extra actual defects reported separately.",
+      "unit": "ratio",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "pool_unreduced_named_formula_sufficient_statistics_then_compute_ratio"
+    },
+    {
+      "id": "llm_lab.request_fulfillment_rate",
+      "formula": "satisfied_applicable_request_predicates / applicable_request_predicates",
+      "population": "Topic/coherent level as labelled semantic predicates; exact speaker participation and requested categories/counts. Approximate word length is reported as observed deviation, never exact-equality predicate.",
+      "unit": "ratio",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "pool_unreduced_named_formula_sufficient_statistics_then_compute_ratio"
+    },
+    {
+      "id": "llm_lab.word_length_relative_deviation",
+      "formula": "abs(actual_words - requested_words) / requested_words",
+      "population": "Actual counted text excluding speaker labels; separate canonical/surface statistics. Positive word target.",
+      "unit": "ratio",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "equal_weight_mean_applicable_rows_surface_text_for_word_deviation"
+    },
+    {
+      "id": "llm_lab.detection_precision",
+      "formula": "TP / (TP + FP)",
+      "population": "Frozen expected event correspondence per quality-case; duplicate claims merge under existing native mapping rules. TP=expected error events detected; FP=unsupported error assertions, including false correction of controls.",
+      "unit": "ratio",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "pool_unreduced_named_formula_sufficient_statistics_then_compute_ratio"
+    },
+    {
+      "id": "llm_lab.detection_recall",
+      "formula": "TP / (TP + FN)",
+      "population": "Same frozen expected population; FN=expected error events missed.",
+      "unit": "ratio",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "pool_unreduced_named_formula_sufficient_statistics_then_compute_ratio"
+    },
+    {
+      "id": "llm_lab.detection_f1",
+      "formula": "2 * TP / (2 * TP + FP + FN)",
+      "population": "Same reference event population; no zero-denominator perfection.",
+      "unit": "ratio",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "pool_raw_TP_FP_FN_then_recompute_F1"
+    },
+    {
+      "id": "llm_lab.category_accuracy",
+      "formula": "correct_reference_category_decisions / applicable_reference_category_decisions",
+      "population": "Expected accepted primary/alternative IDs for localized mapped events; secondary labels never add detection events.",
+      "unit": "ratio",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "pool_unreduced_named_formula_sufficient_statistics_then_compute_ratio"
+    },
+    {
+      "id": "llm_lab.repair_accuracy",
+      "formula": "correct_applicable_repair_propositions / applicable_reference_repair_propositions",
+      "population": "Existing context-supported valid repair and native credit propositions; no string equality requirement.",
+      "unit": "ratio",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "pool_unreduced_named_formula_sufficient_statistics_then_compute_ratio"
+    },
+    {
+      "id": "llm_lab.explanation_accuracy",
+      "formula": "correct_applicable_explanation_propositions / applicable_reference_explanation_propositions",
+      "population": "Existing required/forbidden rationale propositions and actual expected basis.",
+      "unit": "ratio",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "pool_unreduced_named_formula_sufficient_statistics_then_compute_ratio"
+    },
+    {
+      "id": "llm_lab.score_mae_pp",
+      "formula": "sum(abs(predicted_percent - reference_percent)) / paired_reference_scores",
+      "population": "Applicable paired backend scores with frozen same policy/key/reference, computed from original native fractions; unknown references excluded explicitly.",
+      "unit": "percentage_points",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "equal_weight_mean_applicable_rows_surface_text_for_word_deviation"
+    },
+    {
+      "id": "llm_lab.feedback_grounding_rate",
+      "formula": "supported_factual_items_or_correctly_labelled_practice / applicable_feedback_items",
+      "population": "Frozen mutation key/actual scoring findings and semantic rubric. LLM judgment labelled llm_judged, not independent empirical truth.",
+      "unit": "ratio",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "pool_unreduced_named_formula_sufficient_statistics_then_compute_ratio"
+    },
+    {
+      "id": "llm_lab.audio_target_confirmation_rate",
+      "formula": "actually_supported_target_realizations / targets_with_relevant_actual_observation",
+      "population": "Relevant native/measured/audio-capable observations of rendered targets; text-only judgments and requested IPA are excluded with reason.",
+      "unit": "ratio",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "pool_unreduced_named_formula_sufficient_statistics_then_compute_ratio"
+    },
+    {
+      "id": "llm_lab.latency_p50_ms",
+      "formula": "sorted_observed_duration_ms[ceil(0.50*n)-1]",
+      "population": "n actual completed or failed call durations; report n and failures, cache hits excluded.",
+      "unit": "milliseconds",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "concatenate_actual_attempt_samples_then_nearest_rank"
+    },
+    {
+      "id": "llm_lab.latency_p95_ms",
+      "formula": "sorted_observed_duration_ms[ceil(0.95*n)-1]",
+      "population": "Same observed latency population, nearest-rank quantile.",
+      "unit": "milliseconds",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "concatenate_actual_attempt_samples_then_nearest_rank"
+    },
+    {
+      "id": "llm_lab.reported_tokens_total",
+      "formula": "sum(reported_input_tokens + reported_output_tokens)",
+      "population": "All actual attempt receipts; input includes cached tokens, do not add cached again. Reasoning included according to documented provider usage, never twice. Any required unknown component yields null total with known subtotal.",
+      "unit": "tokens",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "sum_actual_receipts_unknown_total_with_known_subtotal"
+    },
+    {
+      "id": "llm_lab.cost_total_usd",
+      "formula": "sum(actual_cost_micro_usd) / 1000000",
+      "population": "All real attempt costs under saved pricing/basis; any unknown cost yields null total with known subtotal. Cache inspections are not new calls.",
+      "unit": "USD",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "sum_actual_receipts_unknown_total_with_known_subtotal"
+    },
+    {
+      "id": "llm_lab.repeat_detection_jaccard",
+      "formula": "mean(size(A intersection B) / size(A union B))",
+      "population": "All unordered completed repetition pairs for same case/variant over normalized detected event sets. Both empty sets have similarity1; no pairs gives N/A. Preserve pair/sample denominator.",
+      "unit": "ratio",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "mean_all_unordered_aligned_completed_repetition_pairs_per_case_variant"
+    },
+    {
+      "id": "llm_lab.leaf_macro_recall",
+      "formula": "sum(observed_leaf_recall) / observed_applicable_leaves",
+      "population": "Equal-weight mean over reference-error leaves with actual positive error denominator. Report per-leaf counts and excluded/missing leaves across all122; controls reported separately.",
+      "unit": "ratio",
+      "missing": "No applicable observations or denominator is zero.",
+      "scope": "diagnostic_only_not_a_replacement_for_42_original_equations",
+      "aggregation": "pool_per_leaf_TP_FN_then_equal_weight_applicable_leaf_recalls"
+    }
+  ]
+}

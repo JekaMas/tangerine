@@ -289,6 +289,9 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 		if _, e = s.Store.WriteDocuments(ctx, []DocumentWrite{rw, sw}); e != nil {
 			return e
 		}
+		if e = s.Store.linkQualityCall(ctx, receiptID, a.Kind, len(a.Response.Raw) > 0, len(a.Projection) > 0); e != nil {
+			return e
+		}
 		result.ReceiptIDs = append(result.ReceiptIDs, receiptID)
 		result.ContextIDs = append(result.ContextIDs, snapshotID)
 		if p.Auth == "chatgpt_plan_oauth" && a.Err != nil {
