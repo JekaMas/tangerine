@@ -124,3 +124,7 @@ Iteration5 action replay selects the immutable result document saved for that ac
 ## Iteration11 numeric results and recommendations
 
 The current runtime mapping and responsibility split are specified in specification/v2/docs/scoring-runtime.md. Pure scoring owns raw statistics and exact arithmetic; source interpretation stays separate. Save the immutable numeric result before optional feedback; publish only through the existing lease/CAS owner. Explicit feedback retry reuses that score, frozen configuration/key and semantic stages. No repeated stored-data revalidation, object-graph duplication, new queue or human gate. All122categories/recipes,42formula identities and11source scopes remain.
+
+## Iteration15 recovery and complete usability
+
+The active runtime contract is specification/v2/docs/recovery-and-usability-runtime.md. Generation coordinates existing frozen stage owners; recovery archive encoding, storage snapshots, Docker lifecycle and explicit native erasure have separate owners. No new service, queue, human gate, archive chain or repeated stored-data qualification. Backups/restores use the existing Docker-only source-built helper. Every positive/negative behavior remains independently observed; prior unfinished acceptance is preserved.

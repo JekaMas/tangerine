@@ -1,6 +1,6 @@
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-const ALLOWED = new Set(['GET v1/sources', 'POST v1/source-files', 'POST v1/source-releases', 'POST v1/source-formats', 'POST v1/permissions', 'GET v1/library', 'GET v1/reviews', 'POST v1/reviews', 'GET v1/attempts', 'POST v1/attempts', 'GET v1/health', 'GET v1/provider-connections', 'POST v1/provider-connections:action', 'GET v1/configuration', 'GET v1/preparations', 'PUT v1/configuration']);
+const ALLOWED = new Set(['GET v1/sources', 'POST v1/source-files', 'POST v1/source-releases', 'POST v1/source-formats', 'POST v1/permissions', 'GET v1/library', 'POST v1/blueprints', 'POST v1/deletions', 'POST v1/candidates:generate', 'GET v1/reviews', 'POST v1/reviews', 'GET v1/attempts', 'POST v1/attempts', 'GET v1/health', 'GET v1/provider-connections', 'POST v1/provider-connections:action', 'GET v1/configuration', 'GET v1/preparations', 'PUT v1/configuration']);
 function failure(status, error) { return Response.json({ error }, { status, headers: { 'Cache-Control': 'no-store' } }); }
 async function proxy(request, context) {
   const { path } = await context.params;
@@ -11,12 +11,13 @@ async function proxy(request, context) {
       (request.headers.get('origin') !== `http://${host}` || request.headers.get('sec-fetch-site') === 'cross-site')) return failure(403, 'origin_denied');
   const modelBytes = request.method === 'GET' && /^v1\/prepare\/assets\/[a-f0-9-]{36}\/bytes$/.test(target);
   const audio = request.method === 'GET' && /^v1\/preparations\/[a-f0-9-]{36}\/audio$/.test(target);
-  const render = request.method === 'POST' && /^v1\/preparations\/[a-f0-9-]{36}:render$/.test(target);
+  const render = request.method === 'POST' && /^v1\/preparations\/[a-f0-9-]{36}:(?:render|resume)$/.test(target);
   const attempt = /^(v1\/attempts\/[a-f0-9-]{36})(?::(?:submit|retry|retry-feedback)|\/(?:answer|audio|playback|results))?$/.test(target) && ((request.method === 'GET' && !target.endsWith('/answer') && !target.endsWith('/playback') && !target.endsWith(':submit') && !target.endsWith(':retry') && !target.endsWith(':retry-feedback')) || (request.method === 'PUT' && target.endsWith('/answer')) || (request.method === 'POST' && (target.endsWith(':submit') || target.endsWith(':retry') || target.endsWith(':retry-feedback') || target.endsWith('/playback'))));
+  const deletion=request.method==='POST'&&/^v1\/deletions\/[a-f0-9-]{36}:apply$/.test(target);
   const review = (request.method==='GET' && /^v1\/reviews\/[a-f0-9-]{36}$/.test(target)) || (request.method==='POST' && /^v1\/reviews\/[a-f0-9-]{36}:(?:run|reconsider)$/.test(target));
   const sourceRoute = ((request.method==='GET' && /^v1\/(?:source-releases\/[a-f0-9-]{36}|imports\/[a-f0-9-]{36}(?:\/(?:progress|records|issues))?|sources\/assets\/[a-f0-9-]{36}\/bytes)$/.test(target)) || (request.method==='POST' && /^v1\/(?:source-releases\/[a-f0-9-]{36}:(?:preview|import)|imports\/[a-f0-9-]{36}:cancel|permissions\/[a-f0-9-]{36}:revoke|connectors\/[a-f0-9-]{36}:fetch)$/.test(target)) || (request.method==='PUT' && /^v1\/connectors\/[a-f0-9-]{36}$/.test(target)));
   const qualityRoute = /^(v1\/lab\/(?:experiments(?:\/[a-f0-9-]{36}(?::(?:run|resume|cancel))?)?|defaults|assets\/[A-Za-z0-9_.:-]+)|v1\/reports\/empirical(?:\/[a-f0-9-]{36})?)$/.test(target) && ['GET','POST'].includes(request.method);
-  if (!ALLOWED.has(`${request.method} ${target}`) && !modelBytes && !audio && !render && !attempt && !review && !sourceRoute && !qualityRoute) return failure(404, 'not_implemented');
+  if (!ALLOWED.has(`${request.method} ${target}`) && !modelBytes && !audio && !render && !attempt && !review && !sourceRoute && !qualityRoute && !deletion) return failure(404, 'not_implemented');
   const query = new URLSearchParams();
   if(target==='v1/source-files'){const requested=new URL(request.url).searchParams;for(const name of ['name','archive'])if(requested.has(name))query.set(name,requested.get(name));}
   if(sourceRoute && (target.endsWith('/records')||target.endsWith('/issues'))){const requested=new URL(request.url).searchParams;for(const name of ['cursor','limit'])if(requested.has(name))query.set(name,requested.get(name));}

@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+"""Real extracted-source Docker/Chrome backup, restore, switch and recovery."""
+from pathlib import Path
+import base64,hashlib,json,os,shutil,subprocess,sys,tarfile,tempfile,time,uuid
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from browser_probe import Browser
+R=Path(__file__).resolve().parents[1];E=Path(os.environ['TANGERINE_RECOVERY_EVIDENCE']);E.mkdir(parents=True,exist_ok=True)
+name='tangerine-i15-'+uuid.uuid4().hex[:8];restored=name+'-restored';bad=name+'-bad';env=dict(os.environ,COMPOSE_PROJECT_NAME=name);obs={};browser=None;fixture=None;preview=False
+log=(E/'commands.log').open('a')
+def call(args,check=True,stdin=None,environment=None,timeout=600):
+ p=subprocess.run(args,cwd=work,env=environment or env,input=stdin,capture_output=True,timeout=timeout)
+ log.write(p.stdout.decode(errors='replace')+p.stderr.decode(errors='replace'));log.flush()
+ if check and p.returncode:raise AssertionError('Native action failed: '+str(args[:3])+'; private commands.log contains details')
+ return p
+def compose(*args,project=name):
+ runtime=work/'data/config/runtime.env' if project==name else work/'data/config/restores'/project/'runtime.env'
+ return ['docker','compose','--project-name',project,'--env-file',str(work/'.env'),'--env-file',str(runtime),'-f',str(work/'deploy/local/compose.yaml'),*args]
+def record(k,value):obs[k]=value;assert value is True,k;(E/'observations.json').write_text(json.dumps(obs,indent=2))
+def wait(fn):
+ for _ in range(800):
+  if fn():return
+  if fixture and fixture.poll() is not None:raise AssertionError('Constructed upstream fixture stopped')
+  time.sleep(.1)
+ raise AssertionError('Observation timed out')
+def native(cmd,*args,check=True,selected=name):
+ return call(['sh','scripts/tangerine',cmd,*args],check,environment={**env,'COMPOSE_PROJECT_NAME':selected})
+with tempfile.TemporaryDirectory(prefix=name,dir=E) as tmp:
+ work=Path(tmp)/'tangerine';work.mkdir()
+ for item in ['services','deploy','scripts']:shutil.copytree(R/item,work/item,ignore=shutil.ignore_patterns('__pycache__','node_modules','.next'))
+ for item in ['.env.example','.dockerignore','LICENSE']:shutil.copyfile(R/item,work/item)
+ shutil.copyfile(work/'.env.example',work/'.env');(work/'data/config').mkdir(parents=True)
+ config=work/'data/config/runtime.env';fixture_env=work/'data/config/fixture.env'
+ host_os=call(['docker','version','--format','{{.Client.Os}}']).stdout.decode().strip();host_arch=call(['docker','version','--format','{{.Client.Arch}}']).stdout.decode().strip()
+ # Test-only upstream binding. No production owner or browser response is replaced.
+ composefile=work/'deploy/local/compose.yaml';composefile.write_text(composefile.read_text().replace('SPEECH_URL: http://speech:8090','SPEECH_URL: http://fixture:8091'))
+ try:
+  call(['docker','build','--build-arg','HOST_OS='+host_os,'--build-arg','HOST_ARCH='+host_arch,'-f','services/api/Dockerfile','-t',name+'-api:local','.'])
+  call(['docker','build','--target','build','-f','services/api/Dockerfile','-t',name+'-go:local','.'])
+  call(['docker','run','--rm','--user',str(os.getuid())+':'+str(os.getgid()),'-v',str(work/'.env')+':/operator.env:ro','-v',str(config.parent)+':/runtime','-e','TANGERINE_OPERATOR_FILE=/operator.env','-e','TANGERINE_RUNTIME_DIR=/runtime',name+'-api:local','configure'])
+  call(['docker','tag',env['TANGERINE_RECOVERY_SPEECH_IMAGE'],name+'-speech:local']);call(compose('build','minio','web'));call(compose('up','-d','--wait','postgres','minio'));call(compose('run','--rm','-T','api','initialize'))
+  credentials=dict(line.split('=',1) for line in config.read_text().splitlines());fixture_env.write_text(config.read_text()+'DATABASE_URL=postgres://tangerine:'+credentials['POSTGRES_PASSWORD']+'@postgres:5432/tangerine?sslmode=disable\nMINIO_ENDPOINT=minio:9000\nMINIO_ACCESS_KEY='+credentials['MINIO_ROOT_USER']+'\nMINIO_SECRET_KEY='+credentials['MINIO_ROOT_PASSWORD']+'\nMINIO_BUCKET=tangerine-audio\n');fixture_env.chmod(0o600)
+  args=['docker','run','--rm','--name',name+'-fixture','--network',name+'_private','--network-alias','fixture','--network-alias','llm-local','--env-file',str(fixture_env),'-e','TANGERINE_RECOVERY_EVIDENCE=/evidence','-v',str(E)+':/evidence']
+  for file in ['native_listening_test.go','native_interpretation_test.go','native_scoring_test.go','native_preparation_test.go','native_mutation_test.go','native_speech_test.go','native_source_test.go','native_quality_test.go','native_quality_pipeline_test.go','recovery_workspace_fixture_test.go']:args+=['-v',str(R/'tests'/file)+':/src/internal/app/'+file+':ro']
+  fixture=subprocess.Popen(args+['--entrypoint','go',name+'-go:local','test','-json','-race','-count=1','-run','^TestRecoveryWorkspaceFixture$','./internal/app'],env=env,stdout=(E/'fixture.jsonl').open('w'),stderr=(E/'fixture.stderr').open('w'))
+  wait(lambda:(E/'fixture.json').exists());data=json.loads((E/'fixture.json').read_text())
+  running=call(['docker','inspect','-f','{{.State.Running}}','tangerine-i1-web-1'],False)
+  if running.returncode==0 and running.stdout.strip()==b'true':call(['docker','stop','tangerine-i1-web-1']);preview=True
+  call(compose('up','-d','--wait','--wait-timeout','180','web'))
+  call(['docker','volume','create','--label','com.docker.compose.project='+name,'--label','com.docker.compose.volume=lab-data',name+'_lab-data'])
+  call(['docker','run','--rm','--user','0','-v',name+'_speech-models:/models','-v',name+'_lab-data:/lab','--entrypoint','python',name+'-speech:local','-c',"from pathlib import Path;import sqlite3;Path('/models/fixture-cache.bin').write_bytes(b'constructed cached bytes');c=sqlite3.connect('/lab/fixture.db');c.execute('create table fixture(value text)');c.execute(\"insert into fixture values('literal persisted row')\");c.commit();c.close()"])
+  browser=Browser(Path(tmp)/'chrome','http://localhost:3000/');browser.wait('Exercise library')
+  def navigate(path,text):browser.call('Page.navigate',{'url':'http://localhost:3000'+path});browser.wait(text)
+  def click(text):browser.evaluate("[...document.querySelectorAll('button,a')].find(e=>e.textContent==="+json.dumps(text)+").click();true")
+  def typein(label,text):browser.evaluate("document.querySelector('[aria-label="+json.dumps(label)+"]').focus();true");browser.call('Input.insertText',{'text':text})
+  record('test_navigation_positive',browser.evaluate("[...document.querySelectorAll('a')].some(a=>a.pathname==='/prepare')&&[...document.querySelectorAll('a')].some(a=>a.pathname==='/recovery')"))
+  navigate('/prepare','Prepare an exercise');typein('Topic','Café opening');typein('Mistake categories','grammar');click('Generate exercise');browser.wait('Exercise saved.');record('test_generate_positive',browser.evaluate("document.body.textContent.includes('Audio: complete')"))
+  before=call(['docker','exec',name+'-fixture','true']).returncode
+  navigate('/listen?attempt='+data['attempt'],'Your answer');record('test_saved_answer_positive',browser.evaluate("document.querySelector('textarea').value")==data['answer'])
+  navigate('/recovery','Recovery and local data');record('test_recovery_instructions_positive',browser.evaluate("document.body.textContent.includes('backup my-backup.tar.gz')&&document.body.textContent.includes('switch tangerine-restored')"))
+  navigate('/prepare','Prepare an exercise');typein('Topic','Retain this request');call(compose('stop','postgres'));click('Refresh');browser.wait('Saved preparations are unavailable.');record('test_dependency_failure_negative',browser.evaluate("document.querySelector('[aria-label=Topic]').value==='Retain this request'&&document.querySelector('[role=alert]')!==null"));call(compose('start','postgres'));time.sleep(1);click('Refresh');wait(lambda:browser.evaluate("document.body.textContent.includes('Audio: complete')"));record('test_dependency_recovery_positive',True)
+  # Preview/apply a separate disposable draft through the genuine local UI.
+  draft=browser.evaluate("fetch('/api/v1/attempts',{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':crypto.randomUUID()},body:JSON.stringify({case_version_id:"+json.dumps(data['case'])+",case_sha256:"+json.dumps(data['sha'])+",requested_language:'en'})}).then(r=>r.json())")
+  navigate('/cleanup','Cleanup and deletion');typein('Deletion subjects',draft['attempt_id']);click('Preview deletion');browser.wait('Deletion preview');record('test_cleanup_preview_positive',browser.evaluate("document.body.textContent.includes('preview ·')"))
+  record('test_cleanup_unconfirmed_negative',browser.evaluate("[...document.querySelectorAll('button')].find(x=>x.textContent==='Apply deletion').disabled"));browser.evaluate("document.querySelector('[aria-label=\"Confirm deletion\"]').click();true");click('Apply deletion');browser.wait('erased ·');record('test_cleanup_apply_positive',True)
+  navigate('/cleanup','Cleanup and deletion');typein('Deletion subjects','missing-local-subject');click('Preview deletion');browser.wait('Blocked:');record('test_cleanup_unknown_negative',browser.evaluate("!([...document.querySelectorAll('button')].some(x=>x.textContent==='Apply deletion'))"))
+  # A normal stop/start retains the exact draft, original audio and settings.
+  browser.close();browser=None;call(compose('stop','web','api','speech'));call(compose('up','-d','--wait','--wait-timeout','180','web'));record('test_restart_positive',True)
+  backup=json.loads(native('backup','complete.tar.gz').stdout);archive=work/'data/backups/complete.tar.gz';record('test_backup_positive',backup['status']=='complete' and archive.exists() and backup['secrets_included'] is False)
+  with tarfile.open(archive,'r:gz') as stream:
+   members=stream.getmembers();manifest=json.load(stream.extractfile('manifest.json'));db=stream.extractfile('database.dump').read();media={m.name:stream.extractfile(m).read() for m in members if m.name.startswith('media/')};record('test_private_backup_negative',not any('credential' in m.name or m.name.endswith('.env') for m in members) and manifest['secrets_included'] is False)
+   for f in manifest['files']:assert hashlib.sha256(stream.extractfile(f['path']).read()).hexdigest()==f['sha256']
+  # A corrupted archive fails only its fresh target; the original remains usable.
+  broken=work/'data/backups/broken.tar.gz';raw=archive.read_bytes();broken.write_bytes(raw[:len(raw)//2]);p=native('restore',str(broken),bad,check=False);record('test_corrupt_restore_negative',p.returncode!=0 and not (work/'data/config/active-project').exists())
+  p=json.loads(native('restore',str(archive),restored).stdout);record('test_fresh_restore_positive',p['status']=='restored' and p['selected'] is False and p['provider_credentials']=='not_restored_reconnect_or_supply_keys' and p['models_restored'] and p['lab_restored'])
+  p=native('restore',str(archive),restored,check=False);record('test_existing_target_negative',p.returncode!=0)
+  record('test_backup_collision_negative',native('backup','complete.tar.gz',check=False).returncode!=0 and archive.read_bytes()==raw)
+  call(['docker','network','connect','--alias','fixture','--alias','llm-local',restored+'_private',name+'-fixture'])
+  native('switch',restored);record('test_switch_positive',(work/'data/config/active-project').read_text().strip()==restored)
+  browser=Browser(Path(tmp)/'chrome-restored','http://localhost:3000/listen?attempt='+data['attempt']);browser.wait('Your answer');record('test_restored_draft_positive',browser.evaluate("document.querySelector('textarea').value")==data['answer'])
+  # Independent literal PCM readback through the actual private proxy.
+  audio=browser.evaluate("fetch('/api/v1/attempts/"+data['attempt']+"/audio').then(async r=>({status:r.status,sha:r.headers.get('x-tangerine-audio-sha256'),bytes:[...new Uint8Array(await r.arrayBuffer())]}))")
+  record('test_restored_audio_positive',audio['status']==200 and len(audio['bytes'])==data['audio_bytes'] and hashlib.sha256(bytes(audio['bytes'])).hexdigest()==data['audio_sha'])
+  p=native('switch',name+'-absent',check=False,selected=restored);record('test_failed_switch_negative',p.returncode!=0 and (work/'data/config/active-project').read_text().strip()==restored)
+  native('switch',name,selected=restored);record('test_switch_back_positive',(work/'data/config/active-project').read_text().strip()==name)
+  record('test_original_retained_negative',bool(call(['docker','volume','ls','-q','--filter','label=com.docker.compose.project='+name]).stdout.strip()))
+  no={**env,'CONFIRM_DELETE_LOCAL_LAB':'no'};record('test_lab_purge_unconfirmed_negative',call(['sh','scripts/tangerine','purge-lab'],False,environment=no).returncode!=0)
+  copies=work/'data/config/lab-native';copies.mkdir(parents=True,exist_ok=True);(copies/'private-copy.json').write_text('constructed private copy')
+  yes={**env,'CONFIRM_DELETE_LOCAL_LAB':'yes'};p=call(['sh','scripts/tangerine','purge-lab'],environment=yes);record('test_lab_purge_positive',json.loads(p.stdout)['status']=='lab_erased' and not copies.exists() and call(['docker','volume','inspect',name+'_lab-data'],False).returncode!=0)
+  screenshot=browser.call('Page.captureScreenshot');(E/'recovery.png').write_bytes(base64.b64decode(screenshot['data']))
+  browser.close();browser=None
+  (E/'done').write_text('done');assert fixture.wait(timeout=30)==0
+  record('test_no_maintenance_inference_negative',json.loads((E/'dispatch-count.json').read_text())['calls']==2)
+  (E/'receipt.json').write_text(json.dumps({'status':'passed','observations':obs,'fixture':data,'origin':'Constructed upstream model/speech and PCM only; actual extracted-source launcher/native storage/Chrome/recovery. No provider-quality or architecture-matrix claim.','project':name},indent=2))
+ finally:
+  if browser:
+   try:(E/'final-dom.html').write_text(browser.evaluate('document.documentElement.outerHTML'))
+   finally:browser.close()
+  (E/'done').write_text('done')
+  if fixture and fixture.poll() is None:call(['docker','rm','-f',name+'-fixture'],False);fixture.wait(timeout=30)
+  for project in [bad,restored,name]:
+   if (work/'data/config/restores'/project/'runtime.env').exists() or project==name:call(compose('down','--volumes','--remove-orphans',project=project),False)
+   for suffix in ['api','minio','speech','web','go']:call(['docker','image','rm',project+'-'+suffix+':local'],False)
+  if preview:call(['docker','start','tangerine-i1-web-1'],False)

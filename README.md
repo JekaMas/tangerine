@@ -60,3 +60,21 @@ The canonical implementation task list is [OpenSpec tasks](openspec/changes/impl
 Historical login/manual-setup instructions and backup scripts predate the current local-workspace contracts. They are retained in Git history and audit records; current deployment uses the helper above. Backup/restore implementation and complete architecture qualification remain visible in the full task list.
 
 Scoring and recommendations use the model/profile frozen when an attempt starts. Native code calculates exact scores and saves them before requesting comments. Corrections and optional explanations are scored independently. Results include found/missed targets, permitted repairs and audio intervals. If comments are unavailable, use **Retry comments and recommendations**; it reuses the saved answer and score. Reopening results does not call a model. Configure an included/free/local feedback profile in Settings; paid-credit fallback remains forbidden.
+
+## Recovery and complete local use
+
+Open **Prepare** from the Library, enter topic/speakers/approximate words and select **Generate exercise**. Generation saves clean text, mutations/key and audio in order. Failed/interrupted requests appear under saved preparations; **Resume exercise** reuses their frozen settings. Open **Saved attempts** for drafts, submitted answers and immutable result history. Reading saved data makes no provider call.
+
+From the extracted source directory:
+
+```sh
+sh scripts/tangerine backup my-backup.tar.gz
+sh scripts/tangerine restore data/backups/my-backup.tar.gz tangerine-restored
+sh scripts/tangerine switch tangerine-restored
+# Return to the original default installation (custom names also supported):
+sh scripts/tangerine switch tangerine
+```
+
+Backup includes private database/media/source/evidence, installed speech cache and optional Lab files; keep it private. Keys, provider sign-in credentials and runtime secrets are excluded. Restore creates fresh volumes/internal credentials and reports reconnect requirements. Switch retains previous volumes; failures preserve the selected workspace. **Recovery** shows exact commands and service status. **Cleanup** previews explicit data deletion and shared-object retention. Optional copied Lab data is erased only through the separately confirmed entire-Lab purge described there. External backup copies remain your responsibility.
+
+Paid credits, overage and billed provider calls are forbidden without personal approval for each case. Included/free/local access never silently falls back to billing.

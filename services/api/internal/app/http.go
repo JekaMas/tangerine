@@ -61,6 +61,8 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /health/ready", s.ready)
 	mux.HandleFunc("GET /api/v1/health", s.ready)
 	mux.HandleFunc("GET /api/v1/library", s.library)
+	mux.HandleFunc("POST /api/v1/deletions", s.deletionCreate)
+	mux.HandleFunc("POST /api/v1/deletions/{action}", s.deletionApply)
 	mux.HandleFunc("GET /api/v1/lab/experiments", s.qualityList)
 	mux.HandleFunc("POST /api/v1/lab/experiments", s.qualityCreate)
 	mux.HandleFunc("GET /api/v1/lab/experiments/{id}", s.qualityGet)
@@ -117,7 +119,13 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/v1/attempts/{id}/audio", s.attemptAudio)
 	mux.HandleFunc("GET /api/v1/attempts/{id}/results", s.attemptResults)
 	mux.HandleFunc("GET /api/v1/preparations", s.preparationList)
+	mux.HandleFunc("POST /api/v1/candidates:generate", s.generateExercise)
 	mux.HandleFunc("POST /api/v1/preparations/{action}", func(w http.ResponseWriter, r *http.Request) {
+		if id, ok := strings.CutSuffix(r.PathValue("action"), ":resume"); ok {
+			r.SetPathValue("id", id)
+			s.resumeExercise(w, r)
+			return
+		}
 		id, ok := strings.CutSuffix(r.PathValue("action"), ":render")
 		if !ok {
 			preparationHTTPError(w, 404, "NOT_FOUND")

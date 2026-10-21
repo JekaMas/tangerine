@@ -12,6 +12,7 @@ import (
 
 	"tangerine.local/api/internal/app"
 	"tangerine.local/api/internal/lab"
+	"tangerine.local/api/internal/localctl"
 )
 
 func run() error {
@@ -24,6 +25,11 @@ func run() error {
 			return fmt.Errorf("LAB_PORT_INVALID")
 		}
 		return app.CheckLabPublic(context.Background(), os.Args[2], mode == "lab-portcheck")
+	}
+	if mode == "local-maintenance" {
+		ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+		defer stop()
+		return localctl.Command(ctx, os.Getenv("TANGERINE_ROOT"), os.Getenv("COMPOSE_PROJECT_NAME"), os.Getenv("TANGERINE_RUNTIME_FILE"), os.Args[2:], os.Stdout)
 	}
 	if mode == "lab-json" {
 		return lab.Command(os.Stdin, os.Stdout)
@@ -62,6 +68,16 @@ func run() error {
 	}
 	defer store.DB.Close()
 	switch mode {
+	case "maintenance-lab-purged":
+		return store.RecordLabPurge(ctx)
+	case "snapshot-create":
+		snapshotCtx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+		defer stop()
+		return store.Snapshot(snapshotCtx, os.Stdout)
+	case "snapshot-restore":
+		snapshotCtx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+		defer stop()
+		return store.RestoreSnapshot(snapshotCtx, os.Stdin, os.Stdout)
 	case "quality":
 		batchCtx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 		defer stop()
@@ -112,10 +128,19 @@ func run() error {
 	return nil
 }
 
+func modeErrorIsUnsafe(message string) bool {
+	for _, prefix := range []string{"BACKUP_", "RESTORE_", "WORKSPACE_", "LOCAL_MAINTENANCE_", "MAINTENANCE_USAGE"} {
+		if strings.HasPrefix(message, prefix) {
+			return false
+		}
+	}
+	return true
+}
+
 func main() {
 	if err := run(); err != nil {
 		message := err.Error()
-		if !strings.Contains(message, "CONFIG_") && !strings.Contains(message, "MIGRATION_FAILED") && !strings.Contains(message, "MEDIA_INIT_FAILED") {
+		if !strings.Contains(message, "CONFIG_") && !strings.Contains(message, "MIGRATION_FAILED") && !strings.Contains(message, "MEDIA_INIT_FAILED") && modeErrorIsUnsafe(message) {
 			message = "OPERATION_FAILED: check local prerequisites and configuration"
 		}
 		fmt.Fprintln(os.Stderr, message)

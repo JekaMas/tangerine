@@ -11,20 +11,35 @@ major=${version%%.*}; tail=${version#*.}; minor=${tail%%.*}
 case "$major:$minor" in *[!0-9:]*|'') fail 'COMPOSE_REQUIRED: cannot determine Compose version.';; esac
 [ "$major" -gt 2 ] || { [ "$major" -eq 2 ] && [ "$minor" -ge 20 ]; } || fail 'COMPOSE_REQUIRED: upgrade Docker Compose to v2.20 or newer.'
 docker info >/dev/null 2>&1 || fail 'DOCKER_UNAVAILABLE: start Docker and retry. Existing data is retained.'
-PROJECT=${COMPOSE_PROJECT_NAME:-tangerine}
+PROJECT=${COMPOSE_PROJECT_NAME:-}
+if [ -z "$PROJECT" ] && [ -f "$ROOT/data/config/active-project" ]; then PROJECT=$(cat "$ROOT/data/config/active-project"); fi
+PROJECT=${PROJECT:-tangerine}
 case "$PROJECT" in ''|*[!a-z0-9_-]*) fail 'CONFIG_INVALID: COMPOSE_PROJECT_NAME must contain lowercase letters, digits, underscore or dash.';; esac
 export COMPOSE_PROJECT_NAME="$PROJECT"
+RUNTIME_FILE="$ROOT/data/config/runtime.env"
+if [ -f "$ROOT/data/config/restores/$PROJECT/runtime.env" ]; then RUNTIME_FILE="$ROOT/data/config/restores/$PROJECT/runtime.env"; fi
+export TANGERINE_ROOT="$ROOT" TANGERINE_RUNTIME_FILE="$RUNTIME_FILE"
 # Provider/infrastructure values come only from this installation, never the caller shell.
 unset DATABASE_URL POSTGRES_PASSWORD MINIO_ROOT_USER MINIO_ROOT_PASSWORD API_INTERNAL_TOKEN SPEECH_INTERNAL_TOKEN DEEPSEEK_API_KEY OPENAI_API_KEY AZURE_SPEECH_KEY AZURE_SPEECH_REGION ELEVENLABS_API_KEY
-compose() { docker compose --env-file "$ROOT/.env" --env-file "$ROOT/data/config/runtime.env" -f "$ROOT/deploy/local/compose.yaml" "$@"; }
+compose() { docker compose --env-file "$ROOT/.env" --env-file "$RUNTIME_FILE" -f "$ROOT/deploy/local/compose.yaml" "$@"; }
 case "${1:-start}" in
+ backup|restore|switch|purge-lab)
+  [ -f .env ] && [ -f "$RUNTIME_FILE" ] || fail "NOT_INITIALIZED: run scripts/tangerine start first."
+  helper="$ROOT/data/config/.maintenance-$$"
+  helper_container=$(docker create "$PROJECT-api:local") || fail "BUILD_FAILED: start Tangerine first."
+  trap 'docker rm "$helper_container" >/dev/null 2>&1 || :; rm -f "$helper"' 0
+  docker cp "$helper_container:/usr/local/bin/public-probe" "$helper" || fail "BUILD_FAILED: could not extract maintenance helper."
+  docker rm "$helper_container" >/dev/null
+  chmod 700 "$helper"
+  "$helper" local-maintenance "$@"
+  ;;
  voice-setup)
-  [ -f .env ] && [ -f data/config/runtime.env ] || fail "NOT_INITIALIZED: run scripts/tangerine start first."
+  [ -f .env ] && [ -f "$RUNTIME_FILE" ] || fail "NOT_INITIALIZED: run scripts/tangerine start first."
   compose run --rm --no-deps --user 0 -T speech python -B voice_setup.py || fail "VOICE_SETUP_FAILED: saved setup inputs are retained; retry explicitly."
   ;;
  model-setup)
   shift
-  [ -f .env ] && [ -f data/config/runtime.env ] || fail "NOT_INITIALIZED: run scripts/tangerine start first."
+  [ -f .env ] && [ -f "$RUNTIME_FILE" ] || fail "NOT_INITIALIZED: run scripts/tangerine start first."
   compose build speech || fail "BUILD_FAILED: speech runtime build failed."
   compose run --rm --no-deps --user 0 -T speech python -B model_setup.py "$@" || fail "MODEL_SETUP_FAILED: see the named profile error above; accepted assets are retained."
   ;;
@@ -35,14 +50,14 @@ case "${1:-start}" in
   done
   [ -f .env ] || cp .env.example .env
   chmod 600 .env
-  if [ ! -f data/config/runtime.env ] && [ -n "$(docker volume ls -q --filter "label=com.docker.compose.project=$PROJECT")" ]; then
+  if [ ! -f "$RUNTIME_FILE" ] && [ -n "$(docker volume ls -q --filter "label=com.docker.compose.project=$PROJECT")" ]; then
    fail 'CONFIG_MISSING: restore data/config/runtime.env for the existing volumes; credentials will not be regenerated.'
   fi
   host_os=$(docker version --format '{{.Client.Os}}')
   host_arch=$(docker version --format '{{.Client.Arch}}')
   docker build --build-arg "HOST_OS=$host_os" --build-arg "HOST_ARCH=$host_arch" -f services/api/Dockerfile -t "$PROJECT-api:local" . || fail 'BUILD_FAILED: API build failed. Check Docker network/disk and the build error above; existing data is retained.'
-  mkdir -p data/config
-  docker run --rm --user "$(id -u):$(id -g)" -v "$ROOT/.env:/operator.env:ro" -v "$ROOT/data/config:/runtime" -e TANGERINE_OPERATOR_FILE=/operator.env -e TANGERINE_RUNTIME_DIR=/runtime "$PROJECT-api:local" configure || fail 'CONFIG_INVALID: correct .env or restore durable credentials; existing data is retained.'
+  mkdir -p "$(dirname "$RUNTIME_FILE")"
+  docker run --rm --user "$(id -u):$(id -g)" -v "$ROOT/.env:/operator.env:ro" -v "$(dirname "$RUNTIME_FILE"):/runtime" -e TANGERINE_OPERATOR_FILE=/operator.env -e TANGERINE_RUNTIME_DIR=/runtime "$PROJECT-api:local" configure || fail 'CONFIG_INVALID: correct .env or restore durable credentials; existing data is retained.'
   probe="$ROOT/data/config/.public-probe-$$"
   probe_container=$(docker create "$PROJECT-api:local") || fail 'BUILD_FAILED: could not extract the public readiness probe.'
   trap 'docker rm "$probe_container" >/dev/null 2>&1 || :; rm -f "$probe"' 0
@@ -52,7 +67,7 @@ case "${1:-start}" in
   compose build || fail 'BUILD_FAILED: service build failed. Check the build error above; existing data is retained.'
   compose up -d --wait --wait-timeout 180 || fail 'START_FAILED: check port 3000 availability and run scripts/tangerine logs. Existing data is retained.'
   # Docker builds the host-native probe; no host runtime or curl is required.
-  if ! API_INTERNAL_TOKEN=$(sed -n 's/^API_INTERNAL_TOKEN=//p' "$ROOT/data/config/runtime.env") "$probe" public-healthcheck; then
+  if ! API_INTERNAL_TOKEN=$(sed -n 's/^API_INTERNAL_TOKEN=//p' "$RUNTIME_FILE") "$probe" public-healthcheck; then
    # A failed host-port publication must be retried by a new web container.
    compose stop web >/dev/null 2>&1 || :
    compose rm -f web >/dev/null 2>&1 || :
@@ -61,7 +76,7 @@ case "${1:-start}" in
   printf '%s\n' 'Tangerine is ready at http://localhost:3000 (no sign-in).'
   ;;
  stop|status|logs)
-  [ -f data/config/runtime.env ] && [ -f .env ] || fail 'NOT_INITIALIZED: run scripts/tangerine start, or restore the runtime configuration.'
+  [ -f "$RUNTIME_FILE" ] && [ -f .env ] || fail 'NOT_INITIALIZED: run scripts/tangerine start, or restore the runtime configuration.'
   case "$1" in
    stop) compose down; printf '%s\n' 'Stopped. Database, media and durable configuration are retained.';;
    status) compose ps --all;;
@@ -70,9 +85,9 @@ case "${1:-start}" in
     trap 'rm -f "$capture"' 0
     log_status=0
     compose logs --no-color > "$capture" 2>&1 || log_status=$?
-    docker run --rm -i --env-file "$ROOT/.env" --env-file "$ROOT/data/config/runtime.env" "$PROJECT-api:local" redact < "$capture"
+    docker run --rm -i --env-file "$ROOT/.env" --env-file "$RUNTIME_FILE" "$PROJECT-api:local" redact < "$capture"
     exit "$log_status";;
   esac
   ;;
- *) fail 'UNKNOWN_COMMAND: use start, stop, status, logs, model-setup, voice-setup or lab. Backup/restore belongs to its required later iteration.';;
+ *) fail 'UNKNOWN_COMMAND: use start, stop, status, logs, backup, restore, switch, purge-lab, model-setup, voice-setup or lab.';;
 esac

@@ -3,162 +3,152 @@
   "$id": "https://tangerine.invalid/schemas/deletion-request.schema.json",
   "title": "deletion-request",
   "type": "object",
-  "description": "A deletion plan that overrides future use while preserving permitted tombstones.",
+  "description": "Exact private deletion preview/result with identifier-only membership. Confirmation guards destructive changes, not accepted content. Copied Lab and byte cleanup stay explicit.",
   "properties": {
-    "schema_version": {
-      "const": "2.0.0",
-      "description": "The local contract version."
-    },
     "id": {
-      "type": "string",
-      "description": "The explicit deletion or revocation request.",
-      "maxLength": 128,
-      "minLength": 1,
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      "type": "string"
     },
-    "subjects": {
-      "type": "array",
-      "description": "Every selected subject.",
-      "items": {
-        "type": "object",
-        "description": "An explicitly typed reference.",
-        "properties": {
-          "kind": {
-            "type": "string",
-            "description": "The kind of the referenced object.",
-            "enum": [
-              "case",
-              "unit",
-              "utterance",
-              "attempt",
-              "asset",
-              "claim",
-              "review",
-              "record",
-              "release",
-              "configuration"
-            ]
-          },
-          "id": {
-            "type": "string",
-            "description": "The identifier in the declared kind.",
-            "maxLength": 128,
-            "minLength": 1,
-            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
-          },
-          "version_id": {
-            "anyOf": [
-              {
-                "type": "string",
-                "description": "The exact version when the object is versioned.",
-                "maxLength": 128,
-                "minLength": 1,
-                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "The exact version when the object is versioned."
+    "selection": {
+      "type": "object",
+      "properties": {
+        "subject_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
           }
         },
-        "required": [
-          "kind",
-          "id",
-          "version_id"
-        ],
-        "additionalProperties": false
+        "orphan_cleanup": {
+          "type": "boolean"
+        }
       },
-      "minItems": 1,
-      "maxItems": 100000
+      "required": [
+        "subject_ids",
+        "orphan_cleanup"
+      ],
+      "additionalProperties": false
     },
-    "reason": {
-      "type": "string",
-      "description": "The actual basis.",
-      "enum": [
-        "operator_delete",
-        "consent_withdrawal",
-        "license_revocation",
-        "retention_cleanup"
-      ]
+    "documents": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "storage_keys": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "heads": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "releases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "imports": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "asset_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reports": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "experiments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "releases",
+        "imports",
+        "files",
+        "asset_ids",
+        "reports",
+        "experiments"
+      ],
+      "additionalProperties": false
+    },
+    "blocked": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "confirmation_sha256": {
       "type": "string",
-      "description": "The exact confirmed deletion plan.",
-      "maxLength": 64,
-      "minLength": 64,
       "pattern": "^[a-f0-9]{64}$"
     },
     "state": {
       "type": "string",
-      "description": "The erasure state.",
       "enum": [
-        "requested",
+        "preview",
         "blocked_active_reference",
-        "restricted",
-        "erasing",
-        "erased"
+        "native_erased",
+        "erased",
+        "native_erased_media_cleanup_pending"
       ]
     },
-    "retain_hashes": {
-      "type": "boolean",
-      "description": "Whether the documented rights basis permits retaining hashes."
-    },
-    "affected_result_ids": {
-      "type": "array",
-      "description": "Results that must show restricted evidence.",
-      "items": {
-        "type": "string",
-        "description": "An existing identifier.",
-        "maxLength": 128,
-        "minLength": 1,
-        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
-      },
-      "minItems": 0,
-      "maxItems": 100000,
-      "uniqueItems": true
-    },
-    "revocation_epoch": {
-      "type": "integer",
-      "description": "The new workspace restriction epoch.",
-      "minimum": 0,
-      "maximum": 2147483647
-    },
-    "created_at": {
+    "lab_cleanup": {
       "type": "string",
-      "description": "The request time.",
-      "maxLength": 35,
-      "minLength": 20,
-      "format": "date-time"
-    },
-    "completed_at": {
-      "anyOf": [
-        {
-          "type": "string",
-          "description": "The actual erasure completion time.",
-          "maxLength": 35,
-          "minLength": 20,
-          "format": "date-time"
-        },
-        {
-          "type": "null"
-        }
-      ],
-      "description": "The actual erasure completion time."
+      "enum": [
+        "not_requested",
+        "pending_explicit_local_lab_cleanup",
+        "erased"
+      ]
     }
   },
   "required": [
-    "schema_version",
     "id",
-    "subjects",
-    "reason",
+    "selection",
+    "documents",
+    "assets",
+    "storage_keys",
+    "operations",
+    "heads",
+    "source",
+    "blocked",
     "confirmation_sha256",
     "state",
-    "retain_hashes",
-    "affected_result_ids",
-    "revocation_epoch",
-    "created_at",
-    "completed_at"
+    "lab_cleanup"
   ],
   "additionalProperties": false
 }

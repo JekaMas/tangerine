@@ -3,216 +3,68 @@
   "$id": "https://tangerine.invalid/schemas/backup-manifest.schema.json",
   "title": "backup-manifest",
   "type": "object",
-  "description": "A consistent full local backup manifest.",
+  "description": "Complete native archive2. Hash new bytes once while creating; admit supplied archive once on fresh restore. No chain/epoch/schema-source duplication.",
   "properties": {
-    "schema_version": {
-      "const": "2.0.0",
-      "description": "The local contract version."
+    "format": {
+      "const": 2
     },
     "id": {
-      "type": "string",
-      "description": "The backup identity.",
-      "maxLength": 128,
-      "minLength": 1,
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
-    },
-    "workspace_id": {
-      "const": "local",
-      "description": "The single local workspace."
+      "type": "string"
     },
     "created_at": {
       "type": "string",
-      "description": "The frozen snapshot time.",
-      "maxLength": 35,
-      "minLength": 20,
       "format": "date-time"
     },
-    "schema_migration_sha256": {
-      "type": "string",
-      "description": "The migration chain digest.",
-      "maxLength": 64,
-      "minLength": 64,
-      "pattern": "^[a-f0-9]{64}$"
-    },
-    "revocation_epoch": {
-      "type": "integer",
-      "description": "The permission/deletion epoch.",
-      "minimum": 0,
-      "maximum": 2147483647
-    },
-    "database_asset": {
-      "type": "object",
-      "description": "One file in a real acquired release.",
-      "properties": {
-        "relative_path": {
-          "type": "string",
-          "description": "A canonical relative POSIX path without traversal.",
-          "maxLength": 2000,
-          "minLength": 1
-        },
-        "sha256": {
-          "type": "string",
-          "description": "The actual complete file digest.",
-          "maxLength": 64,
-          "minLength": 64,
-          "pattern": "^[a-f0-9]{64}$"
-        },
-        "bytes": {
-          "type": "string",
-          "description": "The actual byte count.",
-          "maxLength": 4096,
-          "minLength": 1,
-          "pattern": "^(0|[1-9][0-9]*)$"
-        },
-        "component": {
-          "type": "string",
-          "description": "The prescribed component kind.",
-          "maxLength": 128,
-          "minLength": 1,
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
-        },
-        "partition": {
-          "anyOf": [
-            {
-              "type": "string",
-              "description": "The original partition label.",
-              "maxLength": 200,
-              "minLength": 0
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "The original partition label."
-        },
-        "required": {
-          "type": "boolean",
-          "description": "Whether the release contract requires this file."
-        }
-      },
-      "required": [
-        "relative_path",
-        "sha256",
-        "bytes",
-        "component",
-        "partition",
-        "required"
-      ],
-      "additionalProperties": false
-    },
-    "assets": {
+    "migrations": {
       "type": "array",
-      "description": "Every retained domain/media/evidence asset.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "files": {
+      "type": "array",
       "items": {
         "type": "object",
-        "description": "One file in a real acquired release.",
         "properties": {
-          "relative_path": {
-            "type": "string",
-            "description": "A canonical relative POSIX path without traversal.",
-            "maxLength": 2000,
-            "minLength": 1
+          "path": {
+            "type": "string"
           },
           "sha256": {
             "type": "string",
-            "description": "The actual complete file digest.",
-            "maxLength": 64,
-            "minLength": 64,
             "pattern": "^[a-f0-9]{64}$"
           },
           "bytes": {
-            "type": "string",
-            "description": "The actual byte count.",
-            "maxLength": 4096,
-            "minLength": 1,
-            "pattern": "^(0|[1-9][0-9]*)$"
-          },
-          "component": {
-            "type": "string",
-            "description": "The prescribed component kind.",
-            "maxLength": 128,
-            "minLength": 1,
-            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
-          },
-          "partition": {
-            "anyOf": [
-              {
-                "type": "string",
-                "description": "The original partition label.",
-                "maxLength": 200,
-                "minLength": 0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "The original partition label."
-          },
-          "required": {
-            "type": "boolean",
-            "description": "Whether the release contract requires this file."
+            "type": "integer",
+            "minimum": 0
           }
         },
         "required": [
-          "relative_path",
+          "path",
           "sha256",
-          "bytes",
-          "component",
-          "partition",
-          "required"
+          "bytes"
         ],
         "additionalProperties": false
-      },
-      "minItems": 0,
-      "maxItems": 1000000
-    },
-    "record_count": {
-      "type": "string",
-      "description": "The actual durable record count.",
-      "maxLength": 4096,
-      "minLength": 1,
-      "pattern": "^(0|[1-9][0-9]*)$"
-    },
-    "audit_tail_sha256": {
-      "type": "string",
-      "description": "The included audit chain tail.",
-      "maxLength": 64,
-      "minLength": 64,
-      "pattern": "^[a-f0-9]{64}$"
+      }
     },
     "secrets_included": {
-      "const": false,
-      "description": "Secrets require a separate secure backup."
+      "const": false
     },
-    "manifest_sha256": {
-      "type": "string",
-      "description": "The canonical backup manifest digest.",
-      "maxLength": 64,
-      "minLength": 64,
-      "pattern": "^[a-f0-9]{64}$"
+    "models_included": {
+      "type": "boolean"
     },
-    "contract_vector_sha256": {
-      "type": "string",
-      "description": "Digest of the exact specification contract/schema/prompt/profile vector. No software release manifest is required.",
-      "maxLength": 64,
-      "minLength": 64,
-      "pattern": "^[a-f0-9]{64}$"
+    "lab_included": {
+      "type": "boolean"
     }
   },
   "required": [
-    "schema_version",
+    "format",
     "id",
-    "workspace_id",
     "created_at",
-    "schema_migration_sha256",
-    "contract_vector_sha256",
-    "revocation_epoch",
-    "database_asset",
-    "assets",
-    "record_count",
-    "audit_tail_sha256",
+    "migrations",
+    "files",
     "secrets_included",
-    "manifest_sha256"
+    "models_included",
+    "lab_included"
   ],
   "additionalProperties": false
 }

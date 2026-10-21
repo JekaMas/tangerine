@@ -41,3 +41,5 @@ Complete production extensions and source/export/auditory/resume contracts: docs
 Complete distinct per-property positive/negative sets and DAG case identities: [property-test-sets.v1.json](domain/property-test-sets.v1.json); exact input/expected/oracle packets remain in verification-fixtures.v1.json. Current test-design audit: audit/property-test-sets-20261010/REPORT.md.
 
 Implemented optional empirical/quality tooling: [runtime and operator contract](docs/empirical-experiment-runtime.md).
+
+Iteration15 runtime: [Recovery and complete usability](docs/recovery-and-usability-runtime.md) owns the concrete local Generate/Resume, archive2/helper restore/switch and explicit erasure contracts. It supersedes obsolete prototype archive-chain and revocation-epoch fields; historical source documents remain unchanged.

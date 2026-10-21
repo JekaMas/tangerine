@@ -3,34 +3,18 @@
   "$id": "https://tangerine.invalid/schemas/restore-request.schema.json",
   "title": "restore-request",
   "type": "object",
-  "description": "Restore into a fresh namespace. Never silently merge.",
+  "description": "Explicit host helper restore to a fresh project; no destructive merge or repeated hash envelope.",
   "properties": {
-    "backup_asset_id": {
-      "type": "string",
-      "description": "The actual uploaded backup.",
-      "maxLength": 128,
-      "minLength": 1,
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    "archive_path": {
+      "type": "string"
     },
-    "manifest_sha256": {
-      "type": "string",
-      "description": "Its exact manifest.",
-      "maxLength": 64,
-      "minLength": 64,
-      "pattern": "^[a-f0-9]{64}$"
-    },
-    "confirmation_plan_sha256": {
-      "type": "string",
-      "description": "The exact reviewed restore plan.",
-      "maxLength": 64,
-      "minLength": 64,
-      "pattern": "^[a-f0-9]{64}$"
+    "target_project": {
+      "type": "string"
     }
   },
   "required": [
-    "backup_asset_id",
-    "manifest_sha256",
-    "confirmation_plan_sha256"
+    "archive_path",
+    "target_project"
   ],
   "additionalProperties": false
 }

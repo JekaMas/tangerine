@@ -484,6 +484,7 @@ operations:
     activity: maintenance
     revision: false
   - id: backup
+    transport: local_helper
     method: POST
     path: /api/v1/backups
     request: backup-request
@@ -493,6 +494,7 @@ operations:
     activity: maintenance
     revision: false
   - id: restore
+    transport: local_helper
     method: POST
     path: /api/v1/restores
     request: restore-request
@@ -513,7 +515,7 @@ operations:
   - id: delete_apply
     method: POST
     path: /api/v1/deletions/{id}:apply
-    request: maintenance-request
+    request: delete-apply-request
     response: operation-result
     success: 200
     effect: Require plan digest and explicit confirmation; retain only permitted tombstones.

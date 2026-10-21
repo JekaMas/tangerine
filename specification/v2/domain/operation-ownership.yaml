@@ -1003,6 +1003,7 @@ operations:
         the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: backup
+    transport: local_helper
     request_schema: backup-request
     response_schema: backup-manifest
     server_assigns_envelope: true
@@ -1012,13 +1013,13 @@ operations:
     effect: Quiesce writes and create a full consistent snapshot.
     request_fields:
       - destination_name
-      - confirmation_plan_sha256
     server_fields: []
     imported_source_fields:
       - All native original fields remain in raw-record/source assets, outside
         the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: restore
+    transport: local_helper
     request_schema: restore-request
     response_schema: operation-result
     server_assigns_envelope: true
@@ -1027,9 +1028,8 @@ operations:
     revision_precondition: false
     effect: Restore to fresh volumes, reapply revocations, verify before switch.
     request_fields:
-      - backup_asset_id
-      - manifest_sha256
-      - confirmation_plan_sha256
+      - archive_path
+      - target_project
     server_fields: []
     imported_source_fields:
       - All native original fields remain in raw-record/source assets, outside
@@ -1044,34 +1044,35 @@ operations:
     revision_precondition: false
     effect: Create exact rights-aware plan without deleting yet.
     request_fields:
-      - schema_version
-      - subjects
-      - reason
-      - retain_hashes
+      - subject_ids
+      - orphan_cleanup
     server_fields:
       - id
-      - created_at
+      - selection
+      - documents
+      - assets
+      - storage_keys
+      - operations
+      - heads
+      - source
+      - blocked
       - confirmation_sha256
       - state
-      - affected_result_ids
-      - revocation_epoch
-      - completed_at
+      - lab_cleanup
     imported_source_fields:
       - All native original fields remain in raw-record/source assets, outside
         the creation envelope.
     request_projection: exact content DTO; server fields are not required in client body
   - id: delete_apply
-    request_schema: maintenance-request
+    request_schema: delete-apply-request
     response_schema: operation-result
     server_assigns_envelope: true
     state_guard_reference: docs/lifecycle.md
     idempotency: true
-    revision_precondition: true
+    revision_precondition: false
     effect: Require plan digest and explicit confirmation; retain only permitted
       tombstones.
     request_fields:
-      - action
-      - subject_ids
       - confirmed_plan_sha256
     server_fields: []
     imported_source_fields:
