@@ -170,7 +170,7 @@ func TestReviewMissingUnitNegative(t *testing.T) {
 	}
 }
 func TestReviewAbsentNullPositive(t *testing.T) {
-	value := normalizeReviewShape(map[string]any{"resolution": "supported"}, nil).(map[string]any)
+	value := normalizeReviewShape(map[string]any{"resolution": "supported"}, nil, false).(map[string]any)
 	if v, ok := value["key_repair"]; !ok || v != nil {
 		t.Fatal(value)
 	}
@@ -226,7 +226,7 @@ func TestReviewSplitPositive(t *testing.T) {
 func TestReviewDecisionContainerPositive(t *testing.T) {
 	row := map[string]any{"claim_id": "actual-claim", "decision": "ignore"}
 	for _, value := range []any{[]any{row}, row, map[string]any{"decisions": []any{row}}} {
-		out := normalizeReviewShape(map[string]any{"resolution": "supported", "decisions": value}, nil).(map[string]any)
+		out := normalizeReviewShape(map[string]any{"resolution": "supported", "decisions": value}, nil, false).(map[string]any)
 		d := out["decisions"].(map[string]any)
 		if d["schema_version"] != "1.0.0" || d["decisions"].([]any)[0].(map[string]any)["claim_id"] != "actual-claim" {
 			t.Fatal(out)
@@ -234,7 +234,7 @@ func TestReviewDecisionContainerPositive(t *testing.T) {
 	}
 }
 func TestReviewMissingDecisionMeaningNegative(t *testing.T) {
-	out := normalizeReviewShape(map[string]any{"resolution": "mapping_defect", "decisions": nil}, nil).(map[string]any)
+	out := normalizeReviewShape(map[string]any{"resolution": "mapping_defect", "decisions": nil}, nil, false).(map[string]any)
 	if out["decisions"] != nil {
 		t.Fatal("invented semantic decision")
 	}
@@ -417,12 +417,16 @@ func TestReviewMetadataPositive(t *testing.T) {
 	}
 	delete(p, "reason")
 	component := map[string]any{"status": "accepted", "satisfied_propositions": []any{"p1"}, "violated_propositions": []any{}}
-	out := normalizeReviewShape(map[string]any{"resolution": "key_defect", "reason": "The supplied rationale needs clarification.", "key_repair": p, "decisions": map[string]any{"decisions": []any{map[string]any{"correction": component}}}}, nil).(map[string]any)
+	out := normalizeReviewShape(map[string]any{"resolution": "key_defect", "reason": "The supplied rationale needs clarification.", "key_repair": p, "decisions": map[string]any{"decisions": []any{map[string]any{"decision": "matched_error", "correction": component}}}}, nil, false).(map[string]any)
 	if !reflect.DeepEqual(component["satisfied_proposition_ids"], []any{"p1"}) || component["satisfied_propositions"] != nil || component["violated_propositions"] != nil {
 		t.Fatal(component)
 	}
 	if value, ok := component["unresolved_reason"]; !ok || value != nil {
 		t.Fatal("known non-unresolved status gained ambiguity", component)
+	}
+	decision := out["decisions"].(map[string]any)["decisions"].([]any)[0].(map[string]any)
+	if value, ok := decision["duplicate_of_claim_id"]; !ok || value != nil {
+		t.Fatal("non-duplicate metadata was not normalized", decision)
 	}
 	got := out["key_repair"].(map[string]any)
 	if got["reason"] != "The supplied rationale needs clarification." || !reflect.DeepEqual(got["proposed_units"].([]any)[0], before) {
@@ -430,18 +434,23 @@ func TestReviewMetadataPositive(t *testing.T) {
 	}
 }
 func TestReviewMetadataNegative(t *testing.T) {
+	duplicate := map[string]any{"decision": "duplicate"}
+	_ = normalizeReviewShape(map[string]any{"decisions": []any{duplicate}}, nil, false)
+	if _, ok := duplicate["duplicate_of_claim_id"]; ok {
+		t.Fatal("a duplicate target was invented")
+	}
 	_, p, _ := reviewKeyFixture(t)
 	u := p["proposed_units"].([]any)[0].(map[string]any)
 	u["unknown_semantic_override"] = "unsupported"
 	component := map[string]any{"status": "unresolved", "satisfied_proposition_ids": []any{"known"}, "satisfied_propositions": []any{"conflicting"}}
-	_ = normalizeReviewShape(map[string]any{"decisions": map[string]any{"decisions": []any{map[string]any{"explanation": component}}}}, nil)
+	_ = normalizeReviewShape(map[string]any{"decisions": map[string]any{"decisions": []any{map[string]any{"explanation": component}}}}, nil, false)
 	if !reflect.DeepEqual(component["satisfied_proposition_ids"], []any{"known"}) || component["satisfied_propositions"] == nil {
 		t.Fatal("canonical judgment clobbered", component)
 	}
 	if _, ok := component["unresolved_reason"]; ok {
 		t.Fatal("missing uncertainty reason fabricated")
 	}
-	out := normalizeReviewShape(map[string]any{"resolution": "key_defect", "reason": "Actual root reason.", "key_repair": p}, nil).(map[string]any)
+	out := normalizeReviewShape(map[string]any{"resolution": "key_defect", "reason": "Actual root reason.", "key_repair": p}, nil, false).(map[string]any)
 	if out["key_repair"].(map[string]any)["proposed_units"].([]any)[0].(map[string]any)["unknown_semantic_override"] != "unsupported" {
 		t.Fatal("unknown substantive data silently discarded")
 	}
@@ -498,6 +507,10 @@ func TestReviewSourceRolesPositive(t *testing.T) {
 	if input["answer"] != "Use opens." || input["dispute_statement"] != "Prefer opening." || !reflect.DeepEqual(f.Record.Attempt, before) {
 		t.Fatal(input)
 	}
+	keyview := parts["mutation_key"].(map[string]any)["unit_repair_reference"].([]any)[0].(map[string]any)
+	if keyview["correct_text_before_mutation"] != "opens" || keyview["presented_text_after_mutation"] != "open" || keyview["approved_repair_options"].([]any)[0].(map[string]any)["valid_corrected_text"] != "opens" {
+		t.Fatal("before/after repair roles changed", keyview)
+	}
 	view := parts["prior_decisions"].(map[string]any)
 	if view["decisions"] != nil || view["assessment_location"] == nil {
 		t.Fatal("duplicated unlabelled previous grading", view)
@@ -521,7 +534,52 @@ func TestReviewSourceRolesNegative(t *testing.T) {
 	f.Resources.Taxonomy = []any{entry}
 	f.Mapping.Decisions = []SemanticDecision{{Claim: "not-a-listener", Note: "A grader explanation exists."}}
 	input, parts := reviewInput(r, f)
+	keyview := parts["mutation_key"].(map[string]any)["unit_repair_reference"].([]any)[0].(map[string]any)
+	if keyview["observed_pronunciation"] != nil {
+		t.Fatal("unmeasured pronunciation invented", keyview)
+	}
 	if input["answer"] != nil || input["extraction"] != nil || input["prior_decisions"] != nil || parts["prior_decisions"] != nil {
 		t.Fatal("case-only review acquired a fabricated learner", input, parts)
+	}
+}
+
+func TestReviewCaseEmptyPositive(t *testing.T) {
+	r, f, o := reviewOutputFixture(t)
+	delete(o, "decisions")
+	out := normalizeReviewShape(o, nil, true).(map[string]any)
+	if _, present := out["decisions"]; !present {
+		t.Fatal("source-confirmed missing case decisions were not normalized")
+	}
+	if _, err := admitReview(reviewBytes(out), r, f); err != nil {
+		t.Fatal(err)
+	}
+	for _, empty := range []any{nil, []any{}, map[string]any{}, map[string]any{"schema_version": "1.0.0", "decisions": []any{}}, map[string]any{"schema_version": "1.0.0", "decisions": nil}} {
+		r, f, o := reviewOutputFixture(t)
+		o["decisions"] = empty
+		out := normalizeReviewShape(o, nil, true).(map[string]any)
+		if out["decisions"] != nil {
+			t.Fatal("empty case-only envelope became a learner assessment", out)
+		}
+		if _, e := admitReview(reviewBytes(out), r, f); e != nil {
+			t.Fatal(e)
+		}
+	}
+}
+func TestReviewCaseEmptyNegative(t *testing.T) {
+	_, _, extra := reviewOutputFixture(t)
+	extra["decisions"] = map[string]any{"decisions": []any{}, "invented_claims": []any{"unheard learner"}}
+	preserved := normalizeReviewShape(extra, nil, true).(map[string]any)
+	if preserved["decisions"] == nil {
+		t.Fatal("unknown substantive data discarded inside an empty-row wrapper")
+	}
+
+	r, f, o := reviewOutputFixture(t)
+	o["decisions"] = []any{map[string]any{"claim_id": "invented", "decision": "matched_error", "correction": semanticEmpty(), "explanation": semanticEmpty()}}
+	out := normalizeReviewShape(o, nil, true).(map[string]any)
+	if out["decisions"] == nil {
+		t.Fatal("fabricated substantive answer silently dropped")
+	}
+	if _, e := admitReview(reviewBytes(out), r, f); e == nil {
+		t.Fatal("case-only learner accepted")
 	}
 }

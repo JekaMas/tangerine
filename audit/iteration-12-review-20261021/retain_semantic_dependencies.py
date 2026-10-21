@@ -19,7 +19,7 @@ for x,y in zip(prior,current):
 assert set(changed)=={'adjudication-v1','case-review-v1'}
 # All selected non-review production owners and native contracts remain byte-identical. The only changed Go owner is the isolated review admission; its changed tests are covered by the new full I12 gate.
 for path in subprocess.check_output(['git','ls-files','services/api','services/web','services/speech'],text=True).splitlines():
- if path in [builtin,'services/api/internal/app/review_output.go','services/api/internal/app/review_input.go','services/api/internal/app/review_test.go']:continue
+ if path in [builtin,'services/api/internal/app/review_output.go','services/api/internal/app/review.go','services/api/internal/app/review_input.go','services/api/internal/app/review_test.go']:continue
  assert Path(path).read_bytes()==subprocess.check_output(['git','show',anchor+':'+path]),path
 sources=[(plan['fresh_case_ids'],'data/iteration12/dependencies-e6a2bd4.json','unchanged selected interpretation/scoring stages'),(plan['provider_case_ids'],'data/iteration12/provider-e6a2bd4.json','unchanged provider/schema owners and assertions'),(plan['retained_case_ids'],plan['retained_receipt'],'unchanged pure numeric owner')]
 records=[]

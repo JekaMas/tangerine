@@ -9,7 +9,7 @@ import (
 )
 
 func reviewInvalid(text string) error { return &provider.OutputValidationError{Detail: text} }
-func normalizeReviewShape(value any, extraction *CanonicalExtraction) any {
+func normalizeReviewShape(value any, extraction *CanonicalExtraction, noAnswer bool) any {
 	root, ok := value.(map[string]any)
 	if !ok {
 		return value
@@ -36,6 +36,27 @@ func normalizeReviewShape(value any, extraction *CanonicalExtraction) any {
 			}
 		}
 	}
+	if noAnswer {
+		switch decisions := root["decisions"].(type) {
+		case nil:
+			root["decisions"] = nil
+		case []any:
+			if len(decisions) == 0 {
+				root["decisions"] = nil
+			}
+		case map[string]any:
+			rows, array := decisions["decisions"].([]any)
+			empty := decisions["decisions"] == nil || array && len(rows) == 0
+			for field := range decisions {
+				if field != "schema_version" && field != "decisions" {
+					empty = false
+				}
+			}
+			if empty {
+				root["decisions"] = nil
+			}
+		}
+	}
 	if rows, ok := root["decisions"].([]any); ok {
 		root["decisions"] = map[string]any{"schema_version": "1.0.0", "decisions": rows}
 	}
@@ -48,6 +69,11 @@ func normalizeReviewShape(value any, extraction *CanonicalExtraction) any {
 		if rows, ok := decisions["decisions"].([]any); ok {
 			for _, value := range rows {
 				if row, ok := value.(map[string]any); ok {
+					if decision, ok := row["decision"].(string); ok && decision != "duplicate" {
+						if _, exists := row["duplicate_of_claim_id"]; !exists {
+							row["duplicate_of_claim_id"] = nil
+						}
+					}
 					for _, field := range []string{"correction", "explanation"} {
 						if component, ok := row[field].(map[string]any); ok {
 							for _, stem := range []string{"satisfied", "violated"} {

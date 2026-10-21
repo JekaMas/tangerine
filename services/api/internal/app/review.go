@@ -172,7 +172,7 @@ func (s *Server) RunReview(ctx context.Context, id, key string, revision int64, 
 		if r.Purpose == "case_review" {
 			stage = "case_review"
 		}
-		_, e = invoke(stage, f.Profile, input, parts, func(v any) any { return normalizeReviewShape(v, &f.Extraction) }, func(raw []byte) error { var err error; out, err = admitReview(raw, r, f); return err })
+		_, e = invoke(stage, f.Profile, input, parts, func(v any) any { return normalizeReviewShape(v, &f.Extraction, r.Attempt == "") }, func(raw []byte) error { var err error; out, err = admitReview(raw, r, f); return err })
 		if e != nil {
 			return fail(e)
 		}

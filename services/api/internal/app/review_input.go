@@ -179,6 +179,23 @@ func reviewCandidate(key map[string]any) map[string]any {
 	}
 	return map[string]any{"schema_version": "1.0.0", "blueprint_id": key["case_version_id"], "status": "candidate", "failure_reason": nil, "utterances": turns, "planned_units": units}
 }
+
+// A compact literal view makes before/after and allowed repairs explicit;
+// full key/rules/source data remain unchanged in the typed stage input.
+func reviewRepairReference(key map[string]any) []any {
+	out := []any{}
+	for _, value := range key["units"].([]any) {
+		unit := value.(map[string]any)
+		realization := unit["realization"].(map[string]any)
+		repairs := []any{}
+		for _, value := range unit["corrections"].([]any) {
+			option := value.(map[string]any)
+			repairs = append(repairs, map[string]any{"option_id": option["id"], "kind": option["kind"], "valid_corrected_text": option["text"], "approved_alternative_texts": option["approved_text_alternatives"], "correct_pronunciation": option["ipa"]})
+		}
+		out = append(out, map[string]any{"unit_id": unit["id"], "mode": realization["mode"], "correct_text_before_mutation": realization["canonical_text"], "presented_text_after_mutation": realization["surface_text"], "correct_pronunciation": realization["canonical_ipa"], "planned_mutated_pronunciation": realization["intended_ipa"], "observed_pronunciation": realization["observed_ipa"], "approved_repair_options": repairs, "current_key_rationale": unit["rationale"], "current_rationale_required_propositions": unit["rationale_required_propositions"], "current_rationale_forbidden_propositions": unit["rationale_forbidden_propositions"]})
+	}
+	return out
+}
 func reviewInput(run ReviewRun, f ReviewFrozen) (map[string]any, map[string]any) {
 	modality := "text"
 	if len(f.Resources.Evidence) > 0 {
@@ -199,7 +216,7 @@ func reviewInput(run ReviewRun, f ReviewFrozen) (map[string]any, map[string]any)
 	if run.Purpose == "dispute" {
 		input["dispute_statement"] = run.Statement
 	}
-	parts := map[string]any{"candidate": input["candidate"], "canonical_script": f.Key["utterances"], "public_context": f.Key["public_context"], "taxonomy": map[string]any{"selected_rules": "Use taxonomy_context in Complete stage input for exact relevant rules.", "registered_catalog": mappingTaxonomyContext(f.Resources, run.Statement)}, "mutation_key": "Use the complete ground_truth and authored mutation_manifest in Complete stage input; these are the authoritative key and actual mutation history.", "evidence": f.Resources.Evidence, "answer": input["answer"], "extraction": input["extraction"], "prior_decisions": input["prior_decisions"], "dispute_statement": input["dispute_statement"]}
+	parts := map[string]any{"candidate": input["candidate"], "canonical_script": f.Key["utterances"], "public_context": f.Key["public_context"], "taxonomy": map[string]any{"selected_rules": "Use taxonomy_context in Complete stage input for exact relevant rules.", "registered_catalog": mappingTaxonomyContext(f.Resources, run.Statement)}, "mutation_key": map[string]any{"case_version_id": f.Key["case_version_id"], "unit_repair_reference": reviewRepairReference(f.Key), "complete_key_location": "The complete ground_truth and authored mutation_manifest in Complete stage input retain all correction/rationale obligations, original sources and mutation history."}, "evidence": f.Resources.Evidence, "answer": input["answer"], "extraction": input["extraction"], "prior_decisions": input["prior_decisions"], "dispute_statement": input["dispute_statement"]}
 	if run.Attempt == "" && run.Purpose == "dispute" {
 		for _, part := range []string{"answer", "extraction", "prior_decisions"} {
 			parts[part] = map[string]any{"applicable": false, "reason": "This is a case-only dispute; no listener answer or answer judgments exist."}
