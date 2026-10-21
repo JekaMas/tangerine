@@ -2,9 +2,6 @@ package app
 
 import (
 	"context"
-	"errors"
-	"github.com/jackc/pgx/v5"
-	"tangerine.local/api/internal/provider"
 )
 
 // GenerateExercise coordinates existing durable owners; it owns no transport,
@@ -18,21 +15,11 @@ func (s *Server) GenerateExercise(ctx context.Context, input CanonicalPreparatio
 		p, e = s.PrepareMutation(ctx, input, interpretationCallKey(key, "mutation"), nil)
 	}
 	if e == nil {
-		var previous, state string
-		replayErr := s.Store.DB.QueryRow(ctx, "SELECT id,state FROM operation WHERE operation_name='speech_render' AND idempotency_key=$1", interpretationCallKey(key, "render")).Scan(&previous, &state)
-		if replayErr == nil {
-			if state != "complete" && state != "failed" {
-				return p, &provider.Failure{Code: "LEASE_ACTIVE"}
-			}
-			p, e = s.Store.speechActionResult(ctx, previous)
-			if e == nil && p["last_failure"] != nil {
-				e = &provider.Failure{Code: p["last_failure"].(map[string]any)["code"].(string)}
-			}
-			return p, e
+		replay, exists, replayErr := s.Store.generationRenderReplay(ctx, key)
+		if exists {
+			return replay, replayErr
 		}
-		if !errors.Is(replayErr, pgx.ErrNoRows) {
-			return p, replayErr
-		}
+
 		count, ce := s.Store.speechAttemptCount(ctx, p["id"].(string))
 		e = ce
 		if e == nil {

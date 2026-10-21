@@ -25,3 +25,14 @@ Complete native implementation and source/spec review are recorded in SELF-REVIE
 All18 earlier extracted-source recovery scenarios passed at data/iteration15/workspace/run-08fb99f953 (constructed upstreams, actual API/Next/Chrome/DB/MinIO/helper). Extended cleanup/Lab-purge scenarios still require the final full selection. Exact unique-answer private-byte erasure, generated key/preparation removal, source deletion and cancellation/concurrent replay regressions passed through native owners. All preliminary /tmp receipts are copied to ignored data/iteration15/preliminary. Case source/fixture changes invalidate the final selection; it will be observed once on the committed-clean stable source. No I15 task is checked complete before that result.
 
 Next: commit implementation, execute the complete selected I15 DAG with --require-clean; repair only affected failed cases, retain valid committed-clean observations, reconcile the full selection; record the actual local MLflow deterministic artifact with zero real LLM calls; commit acceptance. Earlier I8/I12 acceptance remains open.
+
+
+## Final replay repair and pre-acceptance source
+
+Implementation commit10fd84a remains an implementation checkpoint, not acceptance. Self-review identified same-key Resume counters drifting after canonical/render recovery. generation_storage.go now selects that action's saved canonical checkpoint and original operation position. Both native replay cases passed. The first canonical-failure fixture assumed no existing transport retry; corrected it to exhaust the existing two same-profile transport attempts. No retry policy or expected recovery outcome was weakened. Old failure receipt remains in data/iteration15/preliminary.
+
+Stable selected scope is74edges,8properties,65physical tests (37positive/37negative edges), including actual local MLflow SDK deterministic-artifact correspondence/missing-copy checks. Zero genuine LLM calls are required for the deterministic changes; native constructed upstream calls are separately counted and labelled. Existing prompt/model/scoring semantics and their original actual evidence remain unchanged.
+
+The new generation storage/HTTP inputs invalidated the earlier Go lint gate; the replay-source vet/gofmt run passed and both receipts remain. Static423assertions and updated5152property assertions pass. JetBrains read-only ide_project_status on the exact I15 path returned project_not_found/no .idea directory, with only an unrelated project available; no index was borrowed or created.
+
+Next: commit stable repair and execute all74I15edges on a committed-clean source. Final tasks/acceptance remain unchecked until actual complete success.

@@ -3,7 +3,7 @@
   "command": "DOCKER_HOST=<existing Docker Desktop engine> tests/go-docker check",
   "toolchain": "Go1.26.5 pinned Docker",
   "scope": "go vet ./... and gofmt across the production Go module",
-  "receipt_prefix": "data/iteration15/preliminary/tangerine-i15-lint",
+  "receipt_prefix": "data/iteration15/preliminary/tangerine-i15-lint-replay",
   "reuse_reason": "No production Go code or lint input changed afterward; later test-fixture/specification/evidence updates do not invalidate vet/gofmt.",
   "source_sha256": {
     "services/api/internal/app/listening_publication.go": "065a2eea6c85fb463bfb69cef58290ed997e6051e0acd57e85d8d536eb7a6af7",
@@ -13,7 +13,7 @@
     "services/api/internal/app/provider_connections.go": "78d43666c7917234127282250275a1ea2996932cd189d0b09d5b7a1b6ea79c1e",
     "services/api/internal/app/interpretation_shape_test.go": "feb2787dd1a5dba3d2d653749a9b4f99f529c0fa57a97dd1efbdcbc2d353d1a0",
     "services/api/internal/app/domain.go": "94ac87873efe32225e1ec553e18bcad6b40ef7577abb4f5ccbb89d207926f080",
-    "services/api/internal/app/generation.go": "b2ca3b05ef9b0e52544344bec5c3bd70f88660dc5818a3da2d1ece64e9bdc75a",
+    "services/api/internal/app/generation.go": "8a6959a4e634836830c333521adbdb74e0dbface85e86b8c8425676af27f910e",
     "services/api/internal/app/attempt_history.go": "654327e9c6f33b57064ee4d024d0f28f143da10c339d6ab528a115761f0c4a52",
     "services/api/internal/app/experiment_contract_test.go": "1ca235a65d681e3aec85c51249a62e72c0fcaaedf5a9aab4997c5d8dca31034f",
     "services/api/internal/app/config.go": "7c7a8a68fda25b396d0e5b9eaec80a33d2787b90f780259afe0a7e961cffad37",
@@ -114,7 +114,7 @@
     "services/api/internal/app/experiment.go": "2f030ca1b4161955038ee402bacdcca1ff4983946574885a567af83e84f36c7f",
     "services/api/internal/app/experiment_http.go": "7fa649711a41d57e771f4d31910210bc0424c923f44c70f51848f1b1162c2860",
     "services/api/internal/app/interpretation.go": "0d19205f6c10341d3e95e42d2aa80d1309dca009f625572e6bbdd9faf8d4cc1b",
-    "services/api/internal/app/generation_http.go": "77889bf9c05493b4ca801a97ea98a470b70dfe25cf6b4f03424348eeacdfa9d9",
+    "services/api/internal/app/generation_http.go": "4e1e1c9194c44286ddb5015d08c2f08b70a5b766f7f5a7368238d11cbc6ac0f0",
     "services/api/internal/app/deletion_sources.go": "33fa6c3cfd133da65ebf7a45741a77c04168a9b1a88bef4805b7395deb1730e3",
     "services/api/internal/app/mutation_content_test.go": "bd5d07aba3eec9da418a58d51326609ad4bf17c7dc6c62cfd5b32753591c1675",
     "services/api/internal/app/experiment_export_ack.go": "b30c42176f8cdea62ac46bb0c80da3acaf3128dce3b3f177dfd8655a5b0a67ed",
@@ -125,6 +125,7 @@
     "services/api/internal/app/mutation_storage.go": "ca9ba282e33fd4e58c6da01f438fdfa64d893073644efdfdd53ef029fb095865",
     "services/api/internal/app/source_import.go": "ce23a79d11a5bf753d02a39d4f965e0fa6d888d52519274d0d4c1d37c14567fa",
     "services/api/internal/app/empirical_reports.go": "c92ae46b3e800f45deab77d684596f41e651e62b2a86bffe54b2f754ead22f45",
+    "services/api/internal/app/generation_storage.go": "1fc6c37fb444a8daf81b81b54c02f7091684131c27a3573089925dc3e1113beb",
     "services/api/internal/app/source_mapping_storage.go": "7fda8a760f0caffc3eab84f628ada852efb4318e7f40c4a8a9513c4015480859",
     "services/api/internal/app/config_test.go": "f14ee0beff3fe668e3c43e29a655fa4809abac496e76c9b85c79fcd5945b25f3",
     "services/api/internal/app/source_registry.go": "2a26e90d30f55a03eea4f0863cecade5cf529aad45253d0c093ef0a67cdbc10e",
@@ -219,5 +220,6 @@
     "services/api/internal/localctl/recovery.go": "6937ddc3e2b4e488e8cee7cdb1ddb618150384c6e30c0247fff2b7597f8c853a",
     "services/api/internal/localctl/recovery_test.go": "bc409ceb5ee6ab27ae870e4cac6f3cb426ed0edf275d3ab8fa914ba0bdf25a68",
     "services/api/cmd/tangerine/main.go": "7fc97a694eed30235ddfadfc32d7915115632c9d3eb73f59bc746e7257a28f06"
-  }
+  },
+  "invalidation": "Generation HTTP/core now select action-scoped Resume checkpoints and separate storage readback; reran stable vet/gofmt for those changed production Go inputs."
 }

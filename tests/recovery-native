@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Native Go acceptance with an owned disposable PostgreSQL/MinIO stack, no ports."""
 from pathlib import Path
-import os,secrets,subprocess,sys,tempfile,time,uuid
+import os,secrets,subprocess,sys,tempfile,time,uuid,json
 r=Path(__file__).resolve().parents[1];name='tangerine-recovery-'+uuid.uuid4().hex[:12];env={**os.environ}
 def call(args,check=True):
  p=subprocess.run(args,cwd=r,env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=900)
@@ -29,6 +29,8 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
   args=['docker','run','--rm','--network',name,'--env-file',str(config),'-e','TANGERINE_RECOVERY_CAPTURE=/evidence','-v',str(evidence)+':/evidence','-v',str(r/'tests/native_listening_test.go')+':/src/internal/app/native_listening_test.go:ro','-v',str(r/'tests/native_interpretation_test.go')+':/src/internal/app/native_interpretation_test.go:ro','-v',str(r/'tests/recovery_workspace_fixture_test.go')+':/src/internal/app/recovery_workspace_fixture_test.go:ro','-v',str(r/'tests/native_recovery_test.go')+':/src/internal/app/native_recovery_test.go:ro','-v',str(r/'tests/native_quality_test.go')+':/src/internal/app/native_quality_test.go:ro','-v',str(r/'tests/native_quality_pipeline_test.go')+':/src/internal/app/native_quality_pipeline_test.go:ro','-v',str(r/'tests/native_scoring_test.go')+':/src/internal/app/native_scoring_test.go:ro','-v',str(r/'tests/native_preparation_test.go')+':/src/internal/app/native_preparation_test.go:ro','-v',str(r/'tests/native_mutation_test.go')+':/src/internal/app/native_mutation_test.go:ro','-v',str(r/'tests/native_speech_test.go')+':/src/internal/app/native_speech_test.go:ro','-v',str(r/'tests/native_source_test.go')+':/src/internal/app/native_source_test.go:ro','--entrypoint','go',name+'-go',*go_args]
   p=subprocess.run(args,cwd=r,env=env,timeout=1200)
   status=p.returncode
+  pointer=r/'data/iteration15/receipts/native-current.json';pointer.parent.mkdir(parents=True,exist_ok=True)
+  pointer.write_text(json.dumps({'exit_code':status,'source_revision':subprocess.check_output(['git','rev-parse','HEAD'],cwd=r,text=True).strip(),'control_artifact':str((evidence/'control-native.json').relative_to(r)),'proof':'Controlled upstreams; actual native coordination/receipt/snapshot owners'},indent=2))
  finally:
   for kind in ['postgres','media']:call(['docker','rm','-f','-v',name+'-'+kind],check=False)
   call(['docker','network','rm',name],check=False)

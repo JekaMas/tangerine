@@ -15,6 +15,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync/atomic"
 	"testing"
 )
 
@@ -79,10 +80,17 @@ func TestNativeRecoveryResumePositive(t *testing.T) {
 	_, _, e = s.Store.PutConfiguration(context.Background(), mustJSON(c), uuid.NewString(), rev)
 	requireListening(t, e)
 	speech := qualitySpeechTarget(t, s, false)
-	w = recoveryHTTP(t, s, "/api/v1/preparations/"+id+":resume", uuid.NewString(), map[string]any{})
+	resumeKey := uuid.NewString()
+	w = recoveryHTTP(t, s, "/api/v1/preparations/"+id+":resume", resumeKey, map[string]any{})
 	if w.Code != 200 || calls.Load() != 2 || speech.Load() != 1 {
 		t.Fatal(w.Code, w.Body.String(), calls.Load(), speech.Load())
 	}
+	firstResult := w.Body.String()
+	w = recoveryHTTP(t, s, "/api/v1/preparations/"+id+":resume", resumeKey, map[string]any{})
+	if w.Code != 200 || w.Body.String() != firstResult || calls.Load() != 2 || speech.Load() != 1 {
+		t.Fatal("Resume replay changed the action", w.Code, w.Body.String(), firstResult)
+	}
+
 	saved, e := s.Store.Preparation(context.Background(), id)
 	requireListening(t, e)
 	if saved["selected_speech_profile"] != "kokoro-local-en-v1" {
@@ -450,4 +458,48 @@ func saveRecoveryControl(t *testing.T, s *Server) {
 		t.Fatal("native/independent fixture dispatch mismatch", receipts, snapshots)
 	}
 	requireListening(t, os.WriteFile(filepath.Join(root, "control-native.json"), mustJSON(map[string]any{"origin": "constructed model transport; genuine native owners", "independent_fixture_dispatches": 2, "native_receipts": receipts, "native_snapshots": snapshots, "actual_llm_inference_calls": 0, "documents": documents, "proof": "Deterministic coordination/context capture only. Unchanged model quality evidence is retained separately."}), 0600))
+}
+
+func TestNativeRecoveryCanonicalResumeReplayPositive(t *testing.T) {
+	s, calls := qualityGenerationServer(t, false)
+	s.token = "recovery-token"
+	speech := qualitySpeechTarget(t, s, false)
+	c, rev, e := s.Store.Configuration(context.Background())
+	requireListening(t, e)
+	profile := c["llm_profiles"].([]any)[0].(map[string]any)
+	endpoint, _ := url.Parse(profile["endpoint"].(string))
+	proxy := httputil.NewSingleHostReverseProxy(endpoint)
+	var dispatches atomic.Int32
+	target := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if dispatches.Add(1) <= 2 {
+			w.WriteHeader(503)
+			_, _ = w.Write([]byte(`{"error":{"code":"constructed_unavailable"}}`))
+			return
+		}
+		proxy.ServeHTTP(w, r)
+	}))
+	defer target.Close()
+	profile["endpoint"] = target.URL + "/v1/responses"
+	for _, k := range []string{"workspace_id", "configuration_sha256", "provider_access_policy"} {
+		delete(c, k)
+	}
+	_, _, e = s.Store.PutConfiguration(context.Background(), mustJSON(c), uuid.NewString(), rev)
+	requireListening(t, e)
+	w := recoveryHTTP(t, s, "/api/v1/candidates:generate", uuid.NewString(), recoveryRequest(t, s))
+	if w.Code == 200 {
+		t.Fatal("failure hidden")
+	}
+	var result map[string]any
+	requireListening(t, json.Unmarshal(w.Body.Bytes(), &result))
+	id := result["preparation"].(map[string]any)["id"].(string)
+	key := uuid.NewString()
+	w = recoveryHTTP(t, s, "/api/v1/preparations/"+id+":resume", key, map[string]any{})
+	if w.Code != 200 {
+		t.Fatal(w.Code, w.Body.String())
+	}
+	first := w.Body.String()
+	w = recoveryHTTP(t, s, "/api/v1/preparations/"+id+":resume", key, map[string]any{})
+	if w.Code != 200 || w.Body.String() != first || dispatches.Load() != 4 || calls.Load() != 2 || speech.Load() != 1 {
+		t.Fatal("canonical Resume replay", w.Code, w.Body.String(), dispatches.Load(), calls.Load(), speech.Load())
+	}
 }

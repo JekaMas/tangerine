@@ -33,7 +33,7 @@ func (s *Server) resumeExercise(w http.ResponseWriter, r *http.Request) {
 		preparationHTTPError(w, 400, "SCHEMA_INVALID")
 		return
 	}
-	p, e := s.Store.Preparation(r.Context(), r.PathValue("id"))
+	p, attempt, e := s.Store.resumePreparation(r.Context(), r.PathValue("id"), key)
 	if e != nil {
 		s.generationResponse(w, nil, e)
 		return
@@ -46,7 +46,7 @@ func (s *Server) resumeExercise(w http.ResponseWriter, r *http.Request) {
 	var frozen map[string]any
 	_ = json.Unmarshal(raw, &frozen)
 	id := p["id"].(string)
-	input := CanonicalPreparationRequest{BlueprintID: frozen["blueprint"].(map[string]any)["id"].(string), ConfigurationSHA: frozen["configuration"].(map[string]any)["configuration_sha256"].(string), Sources: []string{}, Attempt: len(p["operation_ids"].([]any)) + 1, PreparationID: &id}
+	input := CanonicalPreparationRequest{BlueprintID: frozen["blueprint"].(map[string]any)["id"].(string), ConfigurationSHA: frozen["configuration"].(map[string]any)["configuration_sha256"].(string), Sources: []string{}, Attempt: attempt, PreparationID: &id}
 	p, e = s.GenerateExercise(r.Context(), input, key)
 	s.generationResponse(w, p, e)
 }

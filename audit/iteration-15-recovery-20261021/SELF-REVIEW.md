@@ -20,6 +20,8 @@ Scope: exact accepted base30e2bd1 -> this implementation, existing local flow/pe
 6. Model cache restore restores the speech user's ownership. Provider credentials and obsolete authentication records are excluded; missing credentials are reported without inference.
 7. Obsolete chain/epoch/duplicate-schema archive requirements were removed from active backup/restore/deletion DTOs, with matching embedded contracts and field/persistence indexes. Plan membership guards remain for destructive concurrency.
 
+8. Repeating Resume after canonical or render recovery originally rebuilt counters from the latest head. Resume now reads that action’s saved canonical checkpoint and original list position, preserving the original request without a new storage layer. Both recovery/replay paths pass; all SQL readback is owned by Storage.
+
 ## Test evidence and repair limits
 
 Literal constructed model/speech responses and PCM exercise real storage/HTTP/lifecycle/browser owners. They do not establish model linguistics, accents or paid/hosted allowance. The unchanged actual stage/model evidence remains valid in its original selected scope. This increment changes deterministic orchestration and maintenance, not any trusted prompt/model input recipe or scoring semantics. The selected local MLflow artifact records deterministic evidence and zero actual LLM inference; controlled endpoint dispatches are separately labelled and never promoted into real model observations.
