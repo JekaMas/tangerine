@@ -90,7 +90,7 @@ func run() error {
 	if err = app.ValidateOrigin(origin); err != nil {
 		return err
 	}
-	server := &http.Server{Addr: ":8080", Handler: app.NewServer(store, origin, os.Getenv("SPEECH_URL")).Handler(), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 10 * time.Second, WriteTimeout: app.OverallDeadline, IdleTimeout: 60 * time.Second, MaxHeaderBytes: 16 * 1024}
+	server := &http.Server{Addr: ":8080", Handler: app.NewServer(store, origin, os.Getenv("SPEECH_URL")).Handler(), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: app.OverallDeadline, WriteTimeout: app.OverallDeadline, IdleTimeout: 60 * time.Second, MaxHeaderBytes: 16 * 1024}
 	shutdownCtx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 	finished := make(chan error, 1)

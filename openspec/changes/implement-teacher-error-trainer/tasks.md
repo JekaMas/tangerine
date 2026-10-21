@@ -722,3 +722,12 @@ Iteration 11 verification supersedes its earlier acceptance: all seven finding g
 - [ ] I12.16 Repair the observed copied false explanation judgment and incomplete rationale replacement in the managed adjudication instructions; preserve complete corrections, required rationale propositions, native grades and timeouts, observe the direct contrast and complete committed-clean acceptance.
 
 - [ ] I12.17 Normalize the observed unambiguous flattened correction and source-confirmed omitted presence flag at the single model-output admission; preserve canonical fields, judgments and ambiguous data, add literal positive/negative regressions and complete native/local/DAG clean acceptance.
+
+## Iteration 13 — All source-import features (2026-10-21)
+
+- [x] I13.1 Wire source-import contract properties and exact positive/negative cases to the DAG before semantic implementation; preserve all11source identities and separate actual acquisition from importer behavior.
+- [x] I13.2 Implement lossless safe file/archive intake and all documented native formats, retaining unknown fields, clocks, native annotations, scripts/formulas as inert data and explicit quarantine dispositions.
+- [x] I13.3 Implement deterministic documented mapping programs, joins, conversions and source presets; preserve raw-only unknown semantics and full component/record reconciliation.
+- [x] I13.4 Implement durable release/binding/permission/connector/preview/import/readback owners with checkpoint/retry/cancel/replay and source-bound usage, plus the local Source UI.
+- [ ] I13.5 Observe literal positive/negative pure/native/browser cases and actual acquired complete public data; repair in-scope findings without fabricating private-release conformance.
+- [ ] I13.6 Reconcile affected dependency evidence, stable checks and code review; commit implementation, run the whole iteration on a clean committed tree, and record acceptance only after green.

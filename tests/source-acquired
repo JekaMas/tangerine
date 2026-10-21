@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+project_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+image="tangerine-source-acquired-$$:local"
+trap 'docker image rm "$image" >/dev/null 2>&1 || :' EXIT
+corpus_root=${TANGERINE_CORPUS_DATA:-/Users/jekamas/projects/0xatelerix/tangerine/data/corpora}
+docker build --target build -t "$image" -f "$project_root/services/api/Dockerfile" "$project_root" >&2
+if [ "${1:-}" != test ]; then
+ selector=${1:-^TestAcquiredSource}
+ set -- test -json -race -count=1 -timeout=12m -run "$selector" ./internal/source
+fi
+docker run --rm -e TANGERINE_CORPUS_DATA=/corpora -v "$corpus_root:/corpora:ro" -v "$project_root/tests/native_source_data_test.go:/src/internal/source/native_source_data_test.go:ro" --entrypoint go "$image" "$@"

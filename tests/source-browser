@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+"""Real Chrome/Next.js/API/PostgreSQL/MinIO listening observations; no UI doubles."""
+from pathlib import Path
+import base64,json,os,secrets,subprocess,sys,tempfile,time,uuid
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from browser_probe import Browser
+r=Path(__file__).resolve().parents[1];name='tangerine-source-browser-'+uuid.uuid4().hex[:8];env=dict(os.environ)
+evidence=Path(env['TANGERINE_SOURCE_EVIDENCE']);evidence.mkdir(parents=True,exist_ok=True)
+def call(args,check=True):
+ p=subprocess.run(args,cwd=r,env=env,capture_output=True,text=True,timeout=180)
+ if p.stdout:print(p.stdout,file=sys.stderr,end='')
+ if p.stderr:print(p.stderr,file=sys.stderr,end='')
+ if check and p.returncode:raise RuntimeError('owned browser setup command failed')
+ return p
+browser=None;go=None;preview=False
+with tempfile.TemporaryDirectory(prefix=name) as tmp:
+ config=Path(tmp)/'runtime.env';password=secrets.token_hex(24)
+ config.write_text(f'POSTGRES_DB=tangerine\nPOSTGRES_USER=tangerine\nPOSTGRES_PASSWORD={password}\nDATABASE_URL=postgres://tangerine:{password}@postgres:5432/tangerine?sslmode=disable\nMINIO_ROOT_USER=native-regression\nMINIO_ROOT_PASSWORD={password}\nMINIO_ENDPOINT=minio:9000\nMINIO_ACCESS_KEY=native-regression\nMINIO_SECRET_KEY={password}\nMINIO_BUCKET=regressions\nAPI_INTERNAL_TOKEN=source-owned-token\nAPI_INTERNAL_URL=http://api:8080\n');config.chmod(0o600)
+ def ready(kind):
+  for _ in range(60):
+   probe=['pg_isready','-h','127.0.0.1','-U','tangerine','-d','tangerine'] if kind=='postgres' else ['/usr/local/bin/probe','http://127.0.0.1:9000/minio/health/ready']
+   if call(['docker','exec',name+'-'+kind,*probe],False).returncode==0:return
+   time.sleep(.1)
+  raise AssertionError('owned dependency did not recover')
+ try:
+  call(['docker','build','--target','build','-t',name+'-go','-f','services/api/Dockerfile','.']);call(['docker','build','-t',name+'-media','-f','deploy/local/minio.Dockerfile','.']);call(['docker','network','create',name])
+  for kind,image in [('postgres','postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826'),('media',name+'-media')]:call(['docker','run','-d','--name',name+'-'+kind,'--network',name,'--network-alias','postgres' if kind=='postgres' else 'minio','--env-file',str(config),image]);ready(kind)
+  args=['docker','run','--rm','--name',name+'-api','--network',name,'--network-alias','api','--env-file',str(config),'-e','TANGERINE_SOURCE_EVIDENCE=/evidence','-v',str(evidence)+':/evidence']
+  for source in ['native_source_test.go','source_browser_fixture_test.go']:args+=['-v',str(r/'tests'/source)+':/src/internal/app/'+source+':ro']
+  go=subprocess.Popen(args+['--entrypoint','go',name+'-go','test','-json','-race','-count=1','-run','^TestNativeSourceBrowserFixture$','./internal/app'],cwd=r,env=env,stdout=(evidence/'native.jsonl').open('w'),stderr=(evidence/'native.stderr').open('w'))
+  for _ in range(1200):
+   if (evidence/'fixture.json').exists():break
+   if go.poll() is not None:raise AssertionError('native publication fixture failed')
+   time.sleep(.1)
+  else:raise AssertionError('native fixture timeout')
+  fixture=json.loads((evidence/'fixture.json').read_text())
+  running=call(['docker','inspect','-f','{{.State.Running}}','tangerine-i1-web-1'],False)
+  if running.returncode==0 and running.stdout.strip()=='true':call(['docker','stop','tangerine-i1-web-1']);preview=True
+  call(['docker','run','-d','--name',name+'-web','--network',name,'--env-file',str(config),'-p','127.0.0.1:3000:3000',env['TANGERINE_INTERPRETATION_TEST_WEB_IMAGE']])
+  import zipfile
+  good=Path(tmp)/'source.zip';bad=Path(tmp)/'unsafe.zip'
+  with zipfile.ZipFile(bad,'w') as z:z.writestr('../escape','inert')
+  with zipfile.ZipFile(good,'w') as z:
+   z.writestr('fce/readme.txt','Constructed browser import fixture. Not an actual full native corpus.')
+   z.writestr('fce/licence.txt','Constructed local-analysis-only source notice.')
+   for part in ['train','dev','test']:z.writestr('fce/'+part+'.m2','S café go home'+(' <script>globalThis.NEVER_EXECUTED=true</script>' if part=='dev' else '')+'\nA 1 2|||R:VERB:SVA|||goes|||REQUIRED|||-NONE-|||0\n\n')
+  browser=Browser(Path(tmp)/'chrome','http://localhost:3000/sources');browser.wait('Import a source release');observed={}
+  def click(text):
+   selector="[...document.querySelectorAll('button,a')].find(e=>e.textContent==="+json.dumps(text)+")"
+   for _ in range(300):
+    if browser.evaluate(selector+"?.disabled===false"):break
+    time.sleep(.1)
+   else:raise AssertionError('Button unavailable: '+text)
+   browser.evaluate(selector+'.click();true')
+  def wait_value(expression,expected):
+   for _ in range(300):
+    value=browser.evaluate(expression)
+    if value==expected:return value
+    time.sleep(.1)
+   raise AssertionError((expression,value,expected))
+  def record(name,expression,expected):
+   observed[name]=wait_value(expression,expected);(evidence/(name+'.html')).write_text(browser.evaluate('document.documentElement.outerHTML'))
+  def type_input(label,value):
+   browser.evaluate("document.querySelector('[aria-label="+json.dumps(label)+"]').focus();true")
+   browser.call('Input.insertText',{'text':value})
+  def select(label,value):
+   browser.evaluate("(()=>{const e=document.querySelector('[aria-label="+json.dumps(label)+"]');e.value="+json.dumps(value)+";e.dispatchEvent(new Event('change',{bubbles:true}));return true})()")
+  def upload(path):
+   root=browser.call('DOM.getDocument')['root']['nodeId'];node=browser.call('DOM.querySelector',{'nodeId':root,'selector':'input[aria-label="Archive"]'})['nodeId'];browser.call('DOM.setFileInputFiles',{'nodeId':node,'files':[str(path)]})
+  browser.wait=lambda text: wait_value('document.body.textContent.includes('+json.dumps(text)+')',True)
+  record('test_cards_positive',"document.querySelectorAll('[aria-label=\"Source status\"] > li').length",11)
+  record('test_missing_negative',"[...document.querySelectorAll('[aria-label=\"Source status\"] > li')].every(e=>e.textContent.includes('not acquired'))",True)
+  upload(bad);browser.wait('unsafe_path');record('test_unsafe_negative',"document.body.textContent.includes('0 retained files')",True)
+  select('Source','FCE-2.1');type_input('Release version','constructed-browser-v1');type_input('Actual origin','constructed://native-browser')
+  upload(good);browser.wait('6 retained files');click('Save release manifest');browser.wait('Saved release:')
+  click('Preview complete release');browser.wait('Observed: 6 · accepted: 6 · quarantined: 0 · rejected: 0 · raw only: 0')
+  record('test_preview_positive',"document.querySelector('[aria-label=\"Import report\"]').textContent.includes('Raw complete: true · normalized complete: true')",True)
+  record('test_preview_negative',"[...document.querySelectorAll('[aria-label=\"Source status\"] > li')].find(e=>e.textContent.includes('FCE-2.1')).textContent.includes('ready to import')",True)
+  click('Import or resume saved release');browser.wait('Observed: 6 · accepted: 6')
+  record('test_import_positive',"document.querySelector('[aria-label=\"Import report\"]').textContent.includes('complete ·')",True)
+  record('test_scope_negative',"[...document.querySelectorAll('[aria-label=\"Source status\"] > li')].find(e=>e.textContent.includes('FCE-2.1')).textContent.includes('incomplete')",True)
+  browser.evaluate("[...document.querySelectorAll('details')].find(e=>e.querySelector('summary')?.textContent.includes('sentences')).open=true;true")
+  record('test_rows_positive',"document.querySelector('[aria-label=\"Import report\"]').textContent.includes('café go home')",True)
+  browser.call('Page.navigate',{'url':'http://localhost:3000/sources'});browser.wait('Observed: 6 · accepted: 6')
+  record('test_restart_positive',"document.querySelector('[aria-label=\"Import report\"]').textContent.includes('Raw complete: true · normalized complete: true')",True)
+  sql='"'+fixture['schema']+'"'
+  call(['docker','exec',name+'-postgres','psql','-X','-U','tangerine','-d','tangerine','-v','ON_ERROR_STOP=1','-c','SET search_path TO '+sql+'; ALTER TABLE source_release RENAME TO source_release_offline;'])
+  click('Refresh sources');browser.wait('Uploaded files and saved progress are retained.')
+  record('test_failure_negative',"document.querySelector('[role=alert]')!==null",True)
+  call(['docker','exec',name+'-postgres','psql','-X','-U','tangerine','-d','tangerine','-v','ON_ERROR_STOP=1','-c','SET search_path TO '+sql+'; ALTER TABLE source_release_offline RENAME TO source_release;'])
+  click('Refresh sources');record('test_recovery_positive',"document.querySelector('[role=alert]')===null&&document.querySelectorAll('[aria-label=\"Source status\"] > li').length===11",True)
+  select('Semantic conversion','raw-only');click('Preview complete release');browser.wait('raw only: 6')
+  record('test_unbound_negative',"document.querySelector('[aria-label=\"Import report\"]').textContent.includes('normalized complete: false')",True)
+  record('test_no_execution_negative',"typeof globalThis.NEVER_EXECUTED",'undefined')
+  browser.evaluate("[...document.querySelectorAll('details')].find(e=>e.querySelector('summary')?.textContent==='Documented remote source export').open=true;true")
+  spec=dict(endpoint=fixture['remote_endpoint'],method='GET',headers={},query={},body={},cursor_field='cursor',cursor_location='query',initial_cursor=None,records_pointer='/items',next_cursor_pointer='/next',end_pointer='/done',end_value=True,empty_page_is_end=False,total_pointer='/total',auth_header='',auth_prefix='',dataset_version='constructed-browser-export-v1',count_unit='records',record_identity_pointer='/id')
+  type_input('Allowed source hosts','wrong.example');type_input('Remote export contract JSON',json.dumps(spec));click('Save documented connector');browser.wait('host_denied')
+  record('test_remote_negative',"document.body.textContent.includes('host_denied')",True)
+  browser.evaluate("document.querySelector('[aria-label=\"Allowed source hosts\"]').select();true");type_input('Allowed source hosts','127.0.0.1');click('Save documented connector');browser.wait('Connector saved.');click('Fetch or resume complete export');browser.wait('2 pages · 2 records · complete: true')
+  record('test_remote_positive',"document.body.textContent.includes('10 retained files')",True)
+  (evidence/'observations.json').write_text(json.dumps({'values':observed,'fixture':fixture,'driver':browser.driver_version,'network_substitution':False},indent=2))
+  screenshot=browser.call('Page.captureScreenshot');(evidence/'sources.png').write_bytes(base64.b64decode(screenshot['data']))
+  (evidence/'done').write_text('done');assert go.wait(timeout=30)==0
+
+ finally:
+  if browser:
+   try:(evidence/'final-dom.html').write_text(browser.evaluate('document.documentElement.outerHTML'))
+   finally:browser.close()
+  (evidence/'done').write_text('done')
+  for kind in ['web','api','postgres','media']:call(['docker','rm','-f','-v',name+'-'+kind],False)
+  if go:
+   try:go.wait(timeout=10)
+   except subprocess.TimeoutExpired:go.terminate();go.wait()
+  call(['docker','network','rm',name],False)
+  for kind in ['go','media']:call(['docker','image','rm',name+'-'+kind],False)
+  if preview:call(['docker','start','tangerine-i1-web-1'])

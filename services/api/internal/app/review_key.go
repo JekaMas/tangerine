@@ -244,5 +244,5 @@ func reviewUnitSource(key, unit map[string]any) map[string]any {
 			}
 		}
 	}
-	return map[string]any{"source_id": key["audio"].(map[string]any)["source_profile_id"], "source_record_id": nil, "rights_approval_id": nil, "uses": []any{"local_analysis", "derivative_exercises"}, "status": "approved", "licence_evidence_hash": nil}
+	return map[string]any{"source_id": key["audio"].(map[string]any)["source_profile_id"], "source_record_id": nil, "rights_approval_id": nil, "uses": []any{}, "status": "pending", "licence_evidence_hash": nil}
 }

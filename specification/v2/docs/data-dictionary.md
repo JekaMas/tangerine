@@ -34,7 +34,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | configuration-view | schema hash | derived DTO or actual operation input/output receipt | 31 |
 | configuration | 2.0.0 | document.payload | 54 |
 | connector-configuration | 2.0.0 | document.payload | 12 |
-| connector-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 10 |
+| connector-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 30 |
 | corpus-record | 1.0.0 | document.payload | 26 |
 | create-dispute-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 8 |
 | create-person-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 8 |
@@ -55,7 +55,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | feedback-input | 2.0.0 | derived DTO or actual operation input/output receipt | 10 |
 | feedback-output | 2.0.0 | derived DTO or actual operation input/output receipt | 11 |
 | feedback | 2.0.0 | document.payload | 13 |
-| format-binding-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 13 |
+| format-binding-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 15 |
 | generation-input | 2.0.0 | derived DTO or actual operation input/output receipt | 29 |
 | generation-request | schema hash | derived DTO or actual operation input/output receipt | 5 |
 | grant-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 15 |
@@ -107,8 +107,8 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | score-result | 2.0.0 | document.payload | 483 |
 | scoring-input | schema hash | derived DTO or actual operation input/output receipt | 29 |
 | source-format-binding | 2.0.0 | document.payload | 20 |
-| source-release-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 20 |
-| source-release | 2.0.0 | document.payload | 26 |
+| source-release-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 26 |
+| source-release | 2.0.0 | document.payload | 32 |
 | source-status | schema hash | document.payload | 10 |
 | speech-render-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 62 |
 | speech-render-result | schema hash | document.payload | 15 |

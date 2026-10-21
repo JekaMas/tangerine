@@ -221,6 +221,58 @@
       },
       "minItems": 0,
       "maxItems": 500
+    },
+    "scope_kind": {
+      "type": "string",
+      "enum": [
+        "full_named_release",
+        "partial_export",
+        "analysis_companion",
+        "mirror"
+      ],
+      "description": "Actual selected export scope. An absent historic value means partial_export; raw completeness never proves original full-release acquisition."
+    },
+    "component_expectations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "component": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "member_globs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "expected": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reconciliation_reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "component",
+          "member_globs",
+          "expected",
+          "reconciliation_reason"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Actual documented expected file populations and explanations; not invented private source counts."
     }
   },
   "required": [
