@@ -45,6 +45,26 @@ func normalizeReviewShape(value any, extraction *CanonicalExtraction) any {
 		} else if decisions["decisions"] != nil && decisions["schema_version"] == nil {
 			decisions["schema_version"] = "1.0.0"
 		}
+		if rows, ok := decisions["decisions"].([]any); ok {
+			for _, value := range rows {
+				if row, ok := value.(map[string]any); ok {
+					for _, field := range []string{"correction", "explanation"} {
+						if component, ok := row[field].(map[string]any); ok {
+							for _, stem := range []string{"satisfied", "violated"} {
+								canonical, alias := stem+"_proposition_ids", stem+"_propositions"
+								if _, exists := component[canonical]; !exists && component[alias] != nil {
+									component[canonical] = component[alias]
+									delete(component, alias)
+								}
+							}
+							if _, exists := component["unresolved_reason"]; !exists && component["status"] != "unresolved" {
+								component["unresolved_reason"] = nil
+							}
+						}
+					}
+				}
+			}
+		}
 		root["decisions"] = normalizeInterpretationShape(decisions, extraction)
 	}
 	return root

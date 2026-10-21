@@ -416,7 +416,14 @@ func TestReviewMetadataPositive(t *testing.T) {
 		unit[field] = k["units"].([]any)[0].(map[string]any)[field]
 	}
 	delete(p, "reason")
-	out := normalizeReviewShape(map[string]any{"resolution": "key_defect", "reason": "The supplied rationale needs clarification.", "key_repair": p}, nil).(map[string]any)
+	component := map[string]any{"status": "accepted", "satisfied_propositions": []any{"p1"}, "violated_propositions": []any{}}
+	out := normalizeReviewShape(map[string]any{"resolution": "key_defect", "reason": "The supplied rationale needs clarification.", "key_repair": p, "decisions": map[string]any{"decisions": []any{map[string]any{"correction": component}}}}, nil).(map[string]any)
+	if !reflect.DeepEqual(component["satisfied_proposition_ids"], []any{"p1"}) || component["satisfied_propositions"] != nil || component["violated_propositions"] != nil {
+		t.Fatal(component)
+	}
+	if value, ok := component["unresolved_reason"]; !ok || value != nil {
+		t.Fatal("known non-unresolved status gained ambiguity", component)
+	}
 	got := out["key_repair"].(map[string]any)
 	if got["reason"] != "The supplied rationale needs clarification." || !reflect.DeepEqual(got["proposed_units"].([]any)[0], before) {
 		t.Fatal(got)
@@ -426,6 +433,14 @@ func TestReviewMetadataNegative(t *testing.T) {
 	_, p, _ := reviewKeyFixture(t)
 	u := p["proposed_units"].([]any)[0].(map[string]any)
 	u["unknown_semantic_override"] = "unsupported"
+	component := map[string]any{"status": "unresolved", "satisfied_proposition_ids": []any{"known"}, "satisfied_propositions": []any{"conflicting"}}
+	_ = normalizeReviewShape(map[string]any{"decisions": map[string]any{"decisions": []any{map[string]any{"explanation": component}}}}, nil)
+	if !reflect.DeepEqual(component["satisfied_proposition_ids"], []any{"known"}) || component["satisfied_propositions"] == nil {
+		t.Fatal("canonical judgment clobbered", component)
+	}
+	if _, ok := component["unresolved_reason"]; ok {
+		t.Fatal("missing uncertainty reason fabricated")
+	}
 	out := normalizeReviewShape(map[string]any{"resolution": "key_defect", "reason": "Actual root reason.", "key_repair": p}, nil).(map[string]any)
 	if out["key_repair"].(map[string]any)["proposed_units"].([]any)[0].(map[string]any)["unknown_semantic_override"] != "unsupported" {
 		t.Fatal("unknown substantive data silently discarded")
@@ -459,5 +474,54 @@ func TestReviewContextEvidenceNegative(t *testing.T) {
 		if _, e := admitReview(reviewBytes(o), r, f); e == nil {
 			t.Fatal("unknown or acoustic context reference accepted", mode)
 		}
+	}
+}
+
+func TestReviewSourceRolesPositive(t *testing.T) {
+	r, f, _ := reviewOutputFixture(t)
+	entry := map[string]any{"id": "grammar.verbs.subject_verb_agreement", "label": "Agreement", "definition": "Subject and verb agreement."}
+	f.Taxonomy = map[string]any{"taxonomy_sha256": strings.Repeat("a", 64), "entries": []any{entry}}
+	f.Resources.Taxonomy = []any{entry}
+	r.Purpose = "dispute"
+	r.Attempt = "a1"
+	r.Statement = "Prefer opening."
+	f.Record.Attempt = map[string]any{"answer_text": "Use opens."}
+	correction := semanticEmpty()
+	correction.Supplied = true
+	correction.Status = "accepted"
+	claim := CanonicalClaim{ExtractedClause: ExtractedClause{Span: AnswerSpan{0, 10, "Use opens."}}, ID: "c1", Group: "c1", Active: true, Corrections: []AnswerSpan{{4, 9, "opens"}}, Explanations: []AnswerSpan{}}
+	f.Extraction.Claims = []CanonicalClaim{claim}
+	f.Mapping.Decisions = []SemanticDecision{{Claim: "c1", Correction: correction, Explanation: semanticEmpty(), Note: "Singular agreement applies."}}
+	f.Mapping.Groups = []SemanticGroup{{Representative: "c1", Members: []string{"c1"}, Correction: correction, Explanation: semanticEmpty()}}
+	before := reviewClone(f.Record.Attempt)
+	input, parts := reviewInput(r, f)
+	if input["answer"] != "Use opens." || input["dispute_statement"] != "Prefer opening." || !reflect.DeepEqual(f.Record.Attempt, before) {
+		t.Fatal(input)
+	}
+	view := parts["prior_decisions"].(map[string]any)
+	if view["decisions"] != nil || view["assessment_location"] == nil {
+		t.Fatal("duplicated unlabelled previous grading", view)
+	}
+	if !reflect.DeepEqual(input["prior_decisions"].(map[string]any)["decisions"], f.Mapping.Decisions) {
+		t.Fatal("original assessment was lost")
+	}
+	item := view["listener_answer_assessments"].([]any)[0].(map[string]any)
+	if item["prior_assessor_note"] != "Singular agreement applies." || item["contextual_note"] != nil {
+		t.Fatal(item)
+	}
+	reason := item["explanation"].(map[string]any)
+	if reason["supplied"] != false || len(reason["source_texts"].([]string)) != 0 {
+		t.Fatal("grader note became a listener explanation", reason)
+	}
+}
+func TestReviewSourceRolesNegative(t *testing.T) {
+	r, f, _ := reviewOutputFixture(t)
+	entry := map[string]any{"id": "grammar.verbs.subject_verb_agreement", "label": "Agreement", "definition": "Subject and verb agreement."}
+	f.Taxonomy = map[string]any{"taxonomy_sha256": strings.Repeat("a", 64), "entries": []any{entry}}
+	f.Resources.Taxonomy = []any{entry}
+	f.Mapping.Decisions = []SemanticDecision{{Claim: "not-a-listener", Note: "A grader explanation exists."}}
+	input, parts := reviewInput(r, f)
+	if input["answer"] != nil || input["extraction"] != nil || input["prior_decisions"] != nil || parts["prior_decisions"] != nil {
+		t.Fatal("case-only review acquired a fabricated learner", input, parts)
 	}
 }

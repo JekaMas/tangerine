@@ -206,7 +206,13 @@ func reviewInput(run ReviewRun, f ReviewFrozen) (map[string]any, map[string]any)
 		}
 	}
 	if run.Attempt != "" {
-		parts["prior_decisions"] = map[string]any{"decisions": input["prior_decisions"], "listener_answer_assessments": listenerFeedbackAssessments(f.Extraction, f.Mapping)}
+		views := listenerFeedbackAssessments(f.Extraction, f.Mapping)
+		for _, value := range views {
+			view := value.(map[string]any)
+			view["prior_assessor_note"] = view["contextual_note"]
+			delete(view, "contextual_note")
+		}
+		parts["prior_decisions"] = map[string]any{"assessment_location": "The complete original machine assessment is prior_decisions in Complete stage input. It is not listener wording.", "component_presence": "Only original answer/extraction spans determine supplied components. not_supplied means omitted, not rejected.", "listener_answer_assessments": views}
 	}
 	if run.TargetCase != "" {
 		parts["prior_decisions"] = map[string]any{"prior_decisions": parts["prior_decisions"], "original_ground_truth": f.OriginalKey, "unit_correspondences": f.Correspondences}

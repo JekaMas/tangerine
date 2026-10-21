@@ -714,3 +714,5 @@ Iteration 11 verification supersedes its earlier acceptance: all seven finding g
 - [ ] I12.12 Repair the observed retained false key proposition and contradictory supported assertion in optional explanation feedback; strengthen independent actual-model expectations for both written artifacts, preserve exact primary/optional scores and verify full clean acceptance again.
 
 - [ ] I12.13 Repair demonstrated model interoperability without weakening meaning: project copied server-owned unit metadata and the supplied root reason, recognize actual textual context-evidence hashes without creating acoustic proof, keep unknown substantive fields/references for admission, add positive/negative cases and observe the actual fixed dispute artifacts.
+
+- [ ] I12.14 Repair observed modality/source-role confusion and lossless evaluator aliases: textual review without an acoustic gate, no fabricated learner explanations or prior rejections, complete retained source context, canonical precedence and actual model verification; preserve every expected grade/resolution.
