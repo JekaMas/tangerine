@@ -24,6 +24,7 @@ type scoringNative struct {
 	feedbackCalls atomic.Int32
 	bad           atomic.Bool
 	inputs        []map[string]any
+	sourceViews   []any
 }
 
 func scoringFixture(t *testing.T, bad bool) *scoringNative {
@@ -44,13 +45,18 @@ func scoringFixture(t *testing.T, bad bool) *scoringNative {
 		var wire map[string]any
 		_ = json.Unmarshal(b, &wire)
 		var input map[string]any
+		var sourceView map[string]any
 		for _, x := range wire["input"].([]any) {
 			s := x.(map[string]any)["content"].(string)
+			if strings.HasPrefix(s, "prior_decisions: ") {
+				_ = json.Unmarshal([]byte(strings.TrimPrefix(s, "prior_decisions: ")), &sourceView)
+			}
 			if strings.HasPrefix(s, "Complete stage input: ") {
 				_ = json.Unmarshal([]byte(strings.TrimPrefix(s, "Complete stage input: ")), &input)
 			}
 		}
 		f.inputs = append(f.inputs, input)
+		f.sourceViews = append(f.sourceViews, sourceView["listener_answer_assessments"])
 		if f.bad.Load() || f.currentMode() == "feedback-failure" {
 			w.WriteHeader(500)
 			return
@@ -511,6 +517,11 @@ func nativeOffkeyScoring(t *testing.T, omitted bool) {
 	} else {
 		if result["feedback_status"] != "complete" {
 			t.Fatal("combined off-key feedback rejected", result)
+		}
+		row := f.sourceViews[0].([]any)[0].(map[string]any)
+		correction := row["correction"].(map[string]any)
+		if row["listener_reports"].([]any)[0] != "Use coffee." || correction["source_texts"].([]any)[0] != "coffee" || correction["status"] != "rejected" {
+			t.Fatal("actual feedback wire lost proposal roles", row)
 		}
 	}
 }

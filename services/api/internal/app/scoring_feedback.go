@@ -11,6 +11,35 @@ import (
 	"time"
 )
 
+// Project already admitted source text beside its consolidated judgment. The
+// model should not have to infer whether a quoted command came from the audio.
+func listenerFeedbackAssessments(c CanonicalExtraction, m SemanticMapping) []any {
+	claims := map[string]CanonicalClaim{}
+	for _, claim := range c.Claims {
+		claims[claim.ID] = claim
+	}
+	notes := map[string]string{}
+	for _, decision := range m.Decisions {
+		notes[decision.Claim] = decision.Note
+	}
+	out := []any{}
+	for _, group := range m.Groups {
+		reports := []string{}
+		corrections, explanations := []AnswerSpan{}, []AnswerSpan{}
+		for _, id := range group.Members {
+			claim, ok := claims[id]
+			if !ok || !claim.Active || claim.Group != claim.ID {
+				continue
+			}
+			reports = append(reports, claim.Span.Text)
+			corrections = append(corrections, claim.Corrections...)
+			explanations = append(explanations, claim.Explanations...)
+		}
+		out = append(out, map[string]any{"claim_id": group.Representative, "recording_unit_id": group.Unit, "listener_reports": reports, "correction": publicSemanticComponent(group.Correction, corrections), "explanation": publicSemanticComponent(group.Explanation, explanations), "contextual_note": notes[group.Representative]})
+	}
+	return out
+}
+
 func scoringFeedbackInput(record AttemptRecord, r InterpretationResources, c CanonicalExtraction, m SemanticMapping, envelope map[string]any) (map[string]any, map[string]any) {
 	score := envelope["score"].(map[string]any)
 	summary := map[string]any{}
@@ -20,7 +49,7 @@ func scoringFeedbackInput(record AttemptRecord, r InterpretationResources, c Can
 	input := map[string]any{"schema_version": "2.0.0", "attempt_id": record.Attempt["attempt_id"], "result_id": envelope["result_id"], "requested_language": record.Context["requested_language"], "decisions": map[string]any{"schema_version": "1.0.0", "decisions": m.Decisions}, "ground_truth": r.Key, "rationales": r.Rationales, "issues": envelope["issues"], "score_result": summary, "extraction": c.Extraction}
 	// Native matrices remain in the immutable result. This declared feedback DTO
 	// includes all facts needed for comments, without asking an LLM to re-score.
-	parts := map[string]any{"taxonomy": mappingTaxonomyContext(r, ""), "public_context": r.Key["public_context"], "mutation_key": "Use the complete ground_truth in Complete stage input, including actual repair/rationale propositions.", "answer": record.Attempt["answer_text"], "prior_decisions": map[string]any{"groups": m.Groups, "claims": c.Claims}, "scoring_result": "Use the native score_result facts in Complete stage input. Full numerical matrices remain stored under result_id; no recalculation or numeric commentary is requested."}
+	parts := map[string]any{"taxonomy": mappingTaxonomyContext(r, ""), "public_context": r.Key["public_context"], "mutation_key": "Use the complete ground_truth in Complete stage input, including actual repair/rationale propositions.", "answer": record.Attempt["answer_text"], "prior_decisions": map[string]any{"groups": m.Groups, "claims": c.Claims, "listener_answer_assessments": listenerFeedbackAssessments(c, m)}, "scoring_result": "Use the native score_result facts in Complete stage input. Full numerical matrices remain stored under result_id; no recalculation or numeric commentary is requested."}
 	return input, parts
 }
 func admitFeedback(raw []byte, record AttemptRecord, r InterpretationResources, m SemanticMapping, envelope map[string]any) (map[string]any, error) {

@@ -20,7 +20,7 @@ import (
 type scoringTrip func(*http.Request) (*http.Response, error)
 
 func (f scoringTrip) RoundTrip(r *http.Request) (*http.Response, error) { return f(r) }
-func observeLocalScoring(t *testing.T, answer, mode, grade string, subject string, locale string) {
+func observeLocalScoring(t *testing.T, answer, mode, grade string, subject string, locale string, semanticReference ...string) {
 	f := scoringFixture(t, false)
 	f.mode.Store(mode)
 	ctx := context.Background()
@@ -139,31 +139,31 @@ func observeLocalScoring(t *testing.T, answer, mode, grade string, subject strin
 	if !found {
 		t.Fatal("missing independently expected feedback subject", subject)
 	}
-	requireListening(t, os.WriteFile(filepath.Join(dir, "expectation.json"), mustJSON(map[string]any{"answer": answer, "grade": grade, "feedback_subject": subject, "semantic_fixture": "authored cafe agreement and supplied correction/reason", "actual_model_stage": "feedback"}), 0600))
+	requireListening(t, os.WriteFile(filepath.Join(dir, "expectation.json"), mustJSON(map[string]any{"answer": answer, "grade": grade, "feedback_subject": subject, "semantic_fixture": "authored cafe agreement and supplied correction/reason", "actual_model_stage": "feedback", "semantic_reference": semanticReference}), 0600))
 }
 func TestLocalScoringRepairPositive(t *testing.T) {
-	observeLocalScoring(t, "Use opens.", "good", "100.0", "correction", "en")
+	observeLocalScoring(t, "Use opens.", "good", "100.0", "correction", "en", "The proposed opens repair is correct; no optional reason is required; practice targets singular present agreement.")
 }
 func TestLocalScoringReasonPositive(t *testing.T) {
-	observeLocalScoring(t, "Use opens because the cafe is singular.", "rubric-repair", "100.0", "explanation", "en")
+	observeLocalScoring(t, "Use opens because the cafe is singular.", "rubric-repair", "100.0", "explanation", "en", "The proposed opens repair and supplied singular-subject reason are supported independently.")
 }
 func TestLocalScoringWrongRepairNegative(t *testing.T) {
-	observeLocalScoring(t, "Use opening.", "scoring-wrong", "60.0", "correction", "en")
+	observeLocalScoring(t, "Use opening.", "scoring-wrong", "60.0", "correction", "en", "Opening does not repair the finite present verb; the valid repair is opens. Do not judge only whether the written instruction is grammatical.")
 }
 func TestLocalScoringMissNegative(t *testing.T) {
-	observeLocalScoring(t, "", "good", "0.0", "missed", "en")
+	observeLocalScoring(t, "", "good", "0.0", "missed", "en", "The listener missed the actual agreement mistake; explain opens and recommend practice without inventing a listener assertion.")
 }
 
 func TestLocalScoringRussianPositive(t *testing.T) {
-	observeLocalScoring(t, "Use opens.", "good", "100.0", "correction", "ru")
+	observeLocalScoring(t, "Use opens.", "good", "100.0", "correction", "ru", "Russian comments explain the accepted opens repair and targeted practice; omission of a reason has no penalty.")
 }
 func TestLocalScoringFalseReasonNegative(t *testing.T) {
-	observeLocalScoring(t, "Use opens because every English verb always ends in s.", "scoring-false-reason", "100.0", "explanation", "en")
+	observeLocalScoring(t, "Use opens because every English verb always ends in s.", "scoring-false-reason", "100.0", "explanation", "en", "Preserve the valid opens repair; reject the universal every-verb-s rule and explain its actual third-person present scope.")
 }
 
 func TestLocalScoringOffkeyPositive(t *testing.T) {
-	observeLocalScoring(t, "The word cafe is incorrect.", "scoring-offkey", "0.0", "false_positive", "en")
+	observeLocalScoring(t, "The word cafe is incorrect.", "scoring-offkey", "0.0", "false_positive", "en", "Cafe is an acceptable recorded noun. Its alleged defect is a false positive; the real missed mistake is open/opens agreement.")
 }
 func TestLocalScoringOffkeyCorrectionNegative(t *testing.T) {
-	observeLocalScoring(t, "Use coffee.", "scoring-offkey-correction", "0.0", "false_positive", "en")
+	observeLocalScoring(t, "Use coffee.", "scoring-offkey-correction", "0.0", "false_positive", "en", "Replacing the recorded cafe with coffee is unnecessary, changes meaning and does not fix open/opens. Evaluate this proposed change, not the grammaticality of the written command Use coffee.")
 }

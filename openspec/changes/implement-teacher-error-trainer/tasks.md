@@ -688,4 +688,5 @@ Iteration11 accepted on e906cb3883b63cd72dc179079f441c75d00c1ec2:122/122owned ca
 - [ ] I11.V4 Make the existing practice recommendation requirement explicit for zero-TP answers and verify actual local output (I11-10).
 - [ ] I11.V5 Normalize identical repeated model fields at the single stage admission, preserve conflicting-value ambiguity and exercise native positive/negative cases (I11-08).
 - [ ] I11.V6 Forward stage-specific guidance for empty visible output through the existing single repair; verify recovery and persistent failure without losing scores (I11-08).
+- [ ] I11.V7 Preserve answer-versus-recording roles in feedback, retain independent semantic references and compare actual comments against those source facts (I11-10).
 - [ ] I11.V3 Finish full code/contract review, register paired cases, reconcile valid prior receipts, complete committed-clean iteration acceptance and commit.

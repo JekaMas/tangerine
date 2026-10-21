@@ -105,3 +105,29 @@ func TestScoringOffkeyMissingNegative(t *testing.T) {
 		t.Fatal("unmapped false positive omitted from feedback")
 	}
 }
+
+func TestScoringFeedbackProposalPositive(t *testing.T) {
+	claim := CanonicalClaim{ID: "c1", Group: "c1", Active: true, ExtractedClause: ExtractedClause{Span: AnswerSpan{0, 11, "Use coffee."}}, Corrections: []AnswerSpan{{4, 10, "coffee"}}}
+	component := semanticEmpty()
+	component.Supplied = true
+	component.Status = "rejected"
+	component.Additional = []ComponentAssertion{{AnswerSpan: AnswerSpan{4, 10, "coffee"}, Judgment: "unsupported", Reason: "Replacing cafe with coffee changes meaning and misses agreement."}}
+	mapping := SemanticMapping{Groups: []SemanticGroup{{Representative: "c1", Members: []string{"c1"}, Correction: component, Explanation: semanticEmpty()}}}
+	row := listenerFeedbackAssessments(CanonicalExtraction{Claims: []CanonicalClaim{claim}}, mapping)[0].(map[string]any)
+	correction := row["correction"].(map[string]any)
+	if row["listener_reports"].([]string)[0] != "Use coffee." || correction["source_texts"].([]string)[0] != "coffee" || correction["status"] != "rejected" || correction["additional_assertions"].([]ComponentAssertion)[0].Judgment != "unsupported" || row["recording_unit_id"].(*string) != nil {
+		t.Fatal(row)
+	}
+}
+func TestScoringFeedbackWithdrawnNegative(t *testing.T) {
+	active := CanonicalClaim{ID: "c1", Group: "c1", Active: true, ExtractedClause: ExtractedClause{Span: AnswerSpan{0, 11, "Use coffee."}}, Corrections: []AnswerSpan{{4, 10, "coffee"}}}
+	withdrawn := CanonicalClaim{ID: "c2", Group: "c2", Active: false, Corrections: []AnswerSpan{{12, 17, "opens"}}}
+	component := semanticEmpty()
+	component.Supplied = true
+	component.Status = "rejected"
+	m := SemanticMapping{Groups: []SemanticGroup{{Representative: "c1", Members: []string{"c1", "c2"}, Correction: component, Explanation: semanticEmpty()}}}
+	row := listenerFeedbackAssessments(CanonicalExtraction{Claims: []CanonicalClaim{active, withdrawn}}, m)[0].(map[string]any)
+	if texts := row["correction"].(map[string]any)["source_texts"].([]string); len(texts) != 1 || texts[0] != "coffee" {
+		t.Fatal("withdrawn repair leaked into model context", texts)
+	}
+}
