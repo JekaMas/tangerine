@@ -767,6 +767,8 @@ Iteration14 verify acceptance: audit/iteration-14-empirical-20261021/REPORT.md a
 Iteration15 verification repair (current user request):
 - [x] I15.V1 Verify and repair partial-stop recovery for backup/switch, with independent failure/recovery observations.
 - [x] I15.V2 Verify Lab uses the selected workspace runtime after explicit switch, including actual native readback.
-- [ ] I15.V3 Verify complete experiment erasure and expired foreground cleanup, preserving live/shared dependencies.
-- [ ] I15.V4 Full scope CR/SRP, required preservation, affected committed-clean case closure, evidence reconciliation and commit.
+- [x] I15.V3 Verify complete experiment erasure and expired foreground cleanup, preserving live/shared dependencies.
+- [x] I15.V4 Full scope CR/SRP, required preservation, affected committed-clean case closure, evidence reconciliation and commit.
 Resume: audit/iteration-15-recovery-20261021/VERIFICATION-PROGRESS.md.
+
+Iteration15 verification accepted: audit/iteration-15-recovery-20261021/VERIFY-REPORT.md and VERIFY-ACCEPTANCE.json.83/83case edges,74physical tests,8properties,42positive/41negative. Five defect groups repaired;61affected edges passed clean63329a1, final14native ownership edges passed cleandd64bca,69valid prior edges retained with bounded per-case provenance.423static/5161property assertions, strict OpenSpec/DAG/discovery, final pinned Go vet/gofmt and original122/42/11scope/prompts/migrations preservation pass. No remaining I15 finding or decision. Original failed and successful receipts remain. Only I15 is accepted; earlier unfinished iteration acceptance and release qualification remain unchanged.

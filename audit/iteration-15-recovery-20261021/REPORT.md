@@ -1,3 +1,5 @@
+> Subsequent full verification repaired five additional defect groups and expanded acceptance to83edges. Current outcome: [VERIFY-REPORT.md](VERIFY-REPORT.md) and [VERIFY-ACCEPTANCE.json](VERIFY-ACCEPTANCE.json). The original apply report below retains its historical boundary.
+
 # Iteration15 accepted — Recovery and complete usability
 
 Iteration15 is implemented and its complete selected property scope is verified green. The original failed complete run remains unchanged; acceptance joins70valid committed-clean passes with4directly affected committed-clean repair passes, following the required reuse rule.
