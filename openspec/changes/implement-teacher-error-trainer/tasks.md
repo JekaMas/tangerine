@@ -28,8 +28,8 @@
 ## 4. Author, reviewers, publication and disputes
 
 - [ ] 4.1 Implement author preparation and real synthetic audio from original RenderPlan; verify valid/invalid constraints and retained target errors.
-- [ ] 4.2 Implement blind review UI and two genuinely independent qualified people, including phonetics competence for acoustic cases; verify blind-view key omission and same-person rejection without reviewer accounts.
-- [ ] 4.3 Preserve disagreement and third adjudication, and enforce immutable publication and new-version approval invalidation; verify full browser paths.
+- [ ] 4.2 Implement optional configurable LLM case review with actual modality/receipts, truthful key exposure and retained native source-import blind/person metadata; no human reviewer or qualification prerequisite.
+- [ ] 4.3 Preserve machine disagreement and explicit LLM adjudication, immutable key/result versions and full local browser review/recovery paths; ordinary publication requires no review gate.
 - [ ] 4.4 Implement dispute evidence and append-only result versions with real local adjudication evidence; verify previous-result readback and rejection paths.
 
 ## 5. Real provider integration
@@ -692,3 +692,13 @@ Iteration11 accepted on e906cb3883b63cd72dc179079f441c75d00c1ec2:122/122owned ca
 - [x] I11.V3 Finish full code/contract review, register paired cases, reconcile valid prior receipts, complete committed-clean iteration acceptance and commit.
 
 Iteration 11 verification supersedes its earlier acceptance: all seven finding groups are repaired on committed-clean source `010a4d5b217059e5eb676f329b7e1726e2d3c39c`. All 138 owned cases, 112 interpretation dependencies and four invalidated provider cases passed `--require-clean`; 68 unchanged provider passes retain their original clean `2b74329` receipts and matching current dependencies. Total: 322/322 (161 positive, 161 negative), with zero failures, skips or missing observations. Eight actual local feedback cases reconcile 10 dispatches, native receipts, contexts and MLflow spans across eight operations, plus literal independent source comparison. All 372 artifact and 4,647 property assertions, strict OpenSpec, DAG/discovery, retained valid pinned Go vet/gofmt and the unchanged locked web build pass. The original 122 categories/recipes, 42 formulas, 11 source scopes, migrations and unrelated canonical GAPS.md are preserved. See audit/iteration-11-verification-20261021/REPORT.md and ACCEPTANCE.json. Earlier failed/superseded observations remain retained; known I8.R1–R3 remain separate. No paid/hosted call, purchase, install, delegation, publication or archive.
+
+## Iteration 12 — Optional LLM review and disputes (2026-10-21)
+
+- [ ] I12.1 Implement optional case review with frozen configurable LLM inputs, actual modality/evidence and stored machine findings; no ordinary-use gate.
+- [ ] I12.2 Persist exact disputes/reconsideration, foreground ownership, accepted stage checkpoints and explicit retry; preserve original answer/result and all actual receipts.
+- [ ] I12.3 Admit complete supported/mapping/key/insufficient findings, preserve independent correction/explanation semantics and reuse exact native arithmetic.
+- [ ] I12.4 Materialize complete same-audio key/rationale/correspondence successors and conditional remapping; append selected result versions atomically without bulk regrading or obsolete writes.
+- [ ] I12.5 Expose optional review, dispute/retry and original/revised result history in the local UI/API, including failure/recovery.
+- [ ] I12.6 Materialize paired literal, native, concurrency/recovery/browser and actual local-model/Lab cases; wire the complete iteration into the DAG/discovery.
+- [ ] I12.7 Self-review/repair in scope, complete stable language/specification/preservation checks, commit, pass the entire iteration --require-clean and commit acceptance.

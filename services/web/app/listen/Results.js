@@ -10,6 +10,7 @@ export default function Results({results, busy, retry}) {
   if (!score) return null;
   return <section aria-label="Scores and practice">
     <h3>Results</h3>
+    <p><a href={'/reviews?attempt='+results.attempt_id}>Optional reconsideration, disputes and result history</a></p>
     <p aria-label="Primary score">Primary score: {score.composite.display != null ? score.composite.display + ' / 100' :
       score.status === 'review_required' ? 'uncertain' : 'not applicable'}</p>
     <Metric name="Optional explanation" value={score.optional_explanation}/>

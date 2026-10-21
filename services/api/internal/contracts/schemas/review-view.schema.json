@@ -1,0 +1,105 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "case_version_id": {
+      "type": "string"
+    },
+    "attempt_id": {
+      "type": "string"
+    },
+    "base_result_id": {
+      "type": "string"
+    },
+    "statement": {
+      "type": "string"
+    },
+    "resolution": {
+      "type": "string"
+    },
+    "failure_code": {
+      "type": "string"
+    },
+    "new_result_id": {
+      "type": "string"
+    },
+    "new_case_version_id": {
+      "type": "string"
+    },
+    "unit_correspondence_id": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "input_modality": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "status": {
+      "enum": [
+        "ready",
+        "running",
+        "complete",
+        "failed"
+      ]
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "origin": {
+      "const": "llm"
+    },
+    "person_id": {
+      "type": "null"
+    },
+    "qualification_ids": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "findings": {
+      "anyOf": [
+        {
+          "$ref": "llm-review-output.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "purpose",
+    "case_version_id",
+    "attempt_id",
+    "base_result_id",
+    "statement",
+    "resolution",
+    "failure_code",
+    "new_result_id",
+    "new_case_version_id",
+    "unit_correspondence_id",
+    "created_at",
+    "input_modality",
+    "schema_version",
+    "status",
+    "revision",
+    "origin",
+    "person_id",
+    "qualification_ids",
+    "findings"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/review-view.schema.json",
+  "title": "review-view"
+}

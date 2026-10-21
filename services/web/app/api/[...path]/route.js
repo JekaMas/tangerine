@@ -1,6 +1,6 @@
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-const ALLOWED = new Set(['GET v1/library', 'GET v1/attempts', 'POST v1/attempts', 'GET v1/health', 'GET v1/provider-connections', 'POST v1/provider-connections:action', 'GET v1/configuration', 'GET v1/preparations', 'PUT v1/configuration']);
+const ALLOWED = new Set(['GET v1/library', 'GET v1/reviews', 'POST v1/reviews', 'GET v1/attempts', 'POST v1/attempts', 'GET v1/health', 'GET v1/provider-connections', 'POST v1/provider-connections:action', 'GET v1/configuration', 'GET v1/preparations', 'PUT v1/configuration']);
 function failure(status, error) { return Response.json({ error }, { status, headers: { 'Cache-Control': 'no-store' } }); }
 async function proxy(request, context) {
   const { path } = await context.params;
@@ -13,9 +13,13 @@ async function proxy(request, context) {
   const audio = request.method === 'GET' && /^v1\/preparations\/[a-f0-9-]{36}\/audio$/.test(target);
   const render = request.method === 'POST' && /^v1\/preparations\/[a-f0-9-]{36}:render$/.test(target);
   const attempt = /^(v1\/attempts\/[a-f0-9-]{36})(?::(?:submit|retry|retry-feedback)|\/(?:answer|audio|playback|results))?$/.test(target) && ((request.method === 'GET' && !target.endsWith('/answer') && !target.endsWith('/playback') && !target.endsWith(':submit') && !target.endsWith(':retry') && !target.endsWith(':retry-feedback')) || (request.method === 'PUT' && target.endsWith('/answer')) || (request.method === 'POST' && (target.endsWith(':submit') || target.endsWith(':retry') || target.endsWith(':retry-feedback') || target.endsWith('/playback'))));
-  if (!ALLOWED.has(`${request.method} ${target}`) && !modelBytes && !audio && !render && !attempt) return failure(404, 'not_implemented');
+  const review = (request.method==='GET' && /^v1\/reviews\/[a-f0-9-]{36}$/.test(target)) || (request.method==='POST' && /^v1\/reviews\/[a-f0-9-]{36}:(?:run|reconsider)$/.test(target));
+  if (!ALLOWED.has(`${request.method} ${target}`) && !modelBytes && !audio && !render && !attempt && !review) return failure(404, 'not_implemented');
   const query = new URLSearchParams();
-  if (target === 'v1/attempts') { const requested = new URL(request.url).searchParams;for(const name of ['limit','cursor'])if(requested.has(name))query.set(name,requested.get(name)); }
+  if(target==='v1/reviews'){const requested=new URL(request.url).searchParams;for(const name of ['case_version_id','attempt_id','cursor'])if(requested.has(name))query.set(name,requested.get(name));}
+  if(attempt&&target.endsWith('/results')){const id=new URL(request.url).searchParams.get('result_id');if(id!==null)query.set('result_id',id);}
+
+  if (target === 'v1/attempts') { const requested = new URL(request.url).searchParams;for(const name of ['limit','cursor','case_version_id'])if(requested.has(name))query.set(name,requested.get(name)); }
   if (target === 'v1/preparations') {
     query.set('view', 'public');
     const requested = new URL(request.url).searchParams;

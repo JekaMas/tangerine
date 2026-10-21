@@ -11,6 +11,12 @@ import (
 
 // History uses original database creation time plus ID; answer updates cannot reorder it.
 func (s *Storage) AttemptHistory(ctx context.Context, limit int, cursor string) ([]any, string, error) {
+	return s.AttemptHistoryForCase(ctx, limit, cursor, "")
+}
+
+// Optional review selection follows the currently selected result key while
+// keeping the original heard case and answer immutable in the returned row.
+func (s *Storage) AttemptHistoryForCase(ctx context.Context, limit int, cursor, selectedCase string) ([]any, string, error) {
 	if limit < 1 || limit > 100 {
 		return nil, "", ErrInput
 	}
@@ -32,7 +38,7 @@ func (s *Storage) AttemptHistory(ctx context.Context, limit int, cursor string) 
 			return nil, "", ErrInput
 		}
 	}
-	rows, e := s.DB.Query(ctx, `SELECT d.payload,c.result_id,to_char(original.created_at AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') FROM entity_head h JOIN document d ON d.id=h.document_id JOIN attempt_context c ON c.attempt_id=h.id JOIN document original ON original.id=h.id WHERE h.kind='attempt' AND ($1='' OR (original.created_at,h.id)<(nullif($1,'')::timestamptz,$2)) ORDER BY original.created_at DESC,h.id DESC LIMIT $3`, at, id, limit+1)
+	rows, e := s.DB.Query(ctx, `SELECT d.payload,c.result_id,to_char(original.created_at AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') FROM entity_head h JOIN document d ON d.id=h.document_id JOIN attempt_context c ON c.attempt_id=h.id JOIN document original ON original.id=h.id LEFT JOIN document result ON result.id=c.result_id WHERE h.kind='attempt' AND ($4='' OR coalesce(result.payload#>>'{score,case_version_id}',d.payload->>'case_version_id')=$4) AND ($1='' OR (original.created_at,h.id)<(nullif($1,'')::timestamptz,$2)) ORDER BY original.created_at DESC,h.id DESC LIMIT $3`, at, id, limit+1, selectedCase)
 	if e != nil {
 		return nil, "", e
 	}

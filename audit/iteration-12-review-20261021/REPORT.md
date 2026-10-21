@@ -1,0 +1,9 @@
+# Iteration 12 — Optional LLM review and disputes
+
+Implementation is complete; committed-clean acceptance is pending. The feature is optional and does not gate generation, listening or ordinary scoring. It provides explicit case review, saved-answer reconsideration, exact disputes, durable retry/resume, supported mapping/key repairs and immutable original/current result history. Only explicitly selected historical answers are reconsidered.
+
+The final selection contains117logical cases over13properties, backed by88physical tests:28pure Go,40native PostgreSQL/MinIO,14real browser and6actual local-model cases. The six original review/dispute requirement identities are preserved and rebound to implemented cases. The first113-case dirty selection and direct later regressions passed; they are not the final acceptance record.
+
+[SELF-REVIEW.md](SELF-REVIEW.md) records repaired findings and layer ownership. [DEPENDENCY-PLAN.json](DEPENDENCY-PLAN.json) selects164affected application cases and preserves78unchanged numerical passes. [PRESERVATION.json](PRESERVATION.json) records unchanged original data/migrations and protected canonical GAPS.md. Current runtime contracts are specification/v2/docs/review-runtime.md, domain/review-runtime-operations.yaml and contracts/review-runtime.openapi.yaml.
+
+All actual inference is the existing local Ollama gpt-oss:20b. Controlled external protocol responses prove orchestration, storage and UI behavior; actual model observations separately cover review/adjudication semantics and exact native score retention. Failed variants remain retained/exported, and no hosted entitlement, universal linguistic quality, independent human review, full-corpus acceptance or acoustic realization is claimed. No paid/hosted provider call or installation occurred. Known I8.R1–R3 and later release work remain separate.

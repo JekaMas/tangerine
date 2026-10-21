@@ -1,0 +1,55 @@
+{
+  "description": "Normative current internal runtime projection for optional LLM review/disputes. review-runtime.md maps original logical operations and retained native source DTOs.",
+  "operations": [
+    {
+      "id": "create_optional_review",
+      "method": "POST",
+      "path": "/api/v1/reviews",
+      "request": "review-request",
+      "response": "review-view",
+      "success": 201,
+      "effect": "Freeze explicit case review, answer reconsideration or exact dispute; do not dispatch.",
+      "revision": false
+    },
+    {
+      "id": "list_optional_reviews",
+      "method": "GET",
+      "path": "/api/v1/reviews",
+      "request": null,
+      "response": "review-list",
+      "success": 200,
+      "effect": "Read up to50 saved summaries, filtered by case_version_id/attempt_id; X-Tangerine-Next-Cursor is the next saved ID.",
+      "revision": false
+    },
+    {
+      "id": "read_optional_review",
+      "method": "GET",
+      "path": "/api/v1/reviews/{id}",
+      "request": null,
+      "response": "review-view",
+      "success": 200,
+      "effect": "Read saved actual findings and immutable selected versions; never dispatch.",
+      "revision": false
+    },
+    {
+      "id": "run_optional_review",
+      "method": "POST",
+      "path": "/api/v1/reviews/{id}:run",
+      "request": null,
+      "response": "review-view",
+      "success": 200,
+      "effect": "Explicit synchronous Run/Resume; retain failed state with503, original result and admitted checkpoints.",
+      "revision": true
+    },
+    {
+      "id": "reconsider_selected_answers",
+      "method": "POST",
+      "path": "/api/v1/reviews/{id}:reconsider",
+      "request": "reconsider-request",
+      "response": "review-selection-result",
+      "success": 200,
+      "effect": "Explicit same-audio selected attempts only; partial failed selection503 resumes unfinished children.",
+      "revision": false
+    }
+  ]
+}

@@ -1,0 +1,229 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Tangerine optional review runtime",
+    "version": "2.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/api/v1/reviews": {
+      "post": {
+        "operationId": "create_optional_review",
+        "description": "Freeze explicit case review, answer reconsideration or exact dispute; do not dispatch.",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Freeze explicit case review, answer reconsideration or exact dispute; do not dispatch.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "review-view.schema.json"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "review-request.schema.json"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "list_optional_reviews",
+        "description": "Read up to50 saved summaries, filtered by case_version_id/attempt_id; X-Tangerine-Next-Cursor is the next saved ID.",
+        "parameters": [
+          {
+            "name": "case_version_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "attempt_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Read up to50 saved summaries, filtered by case_version_id/attempt_id; X-Tangerine-Next-Cursor is the next saved ID.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "review-list.schema.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reviews/{id}": {
+      "get": {
+        "operationId": "read_optional_review",
+        "description": "Read saved actual findings and immutable selected versions; never dispatch.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Read saved actual findings and immutable selected versions; never dispatch.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "review-view.schema.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reviews/{id}:run": {
+      "post": {
+        "operationId": "run_optional_review",
+        "description": "Explicit synchronous Run/Resume; retain failed state with503, original result and admitted checkpoints.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Explicit synchronous Run/Resume; retain failed state with503, original result and admitted checkpoints.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "review-view.schema.json"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Saved failed review or incomplete selected-answer action; explicit retry retains original authoritative data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "review-view.schema.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reviews/{id}:reconsider": {
+      "post": {
+        "operationId": "reconsider_selected_answers",
+        "description": "Explicit same-audio selected attempts only; partial failed selection503 resumes unfinished children.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Explicit same-audio selected attempts only; partial failed selection503 resumes unfinished children.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "review-selection-result.schema.json"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Saved failed review or incomplete selected-answer action; explicit retry retains original authoritative data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "review-selection-result.schema.json"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "reconsider-request.schema.json"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

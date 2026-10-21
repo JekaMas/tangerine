@@ -153,7 +153,7 @@ func (s *Server) attemptList(w http.ResponseWriter, r *http.Request) {
 		}
 		limit = n
 	}
-	rows, next, e := s.Store.AttemptHistory(r.Context(), limit, r.URL.Query().Get("cursor"))
+	rows, next, e := s.Store.AttemptHistoryForCase(r.Context(), limit, r.URL.Query().Get("cursor"), r.URL.Query().Get("case_version_id"))
 	if e != nil {
 		attemptHTTPError(w, e)
 		return
@@ -180,6 +180,23 @@ func (s *Server) attemptResults(w http.ResponseWriter, r *http.Request) {
 	if e != nil {
 		attemptHTTPError(w, e)
 		return
+	}
+	if selected := r.URL.Query().Get("result_id"); selected != "" {
+		allowed := envelope["result_id"] == selected
+		if history, ok := envelope["result_revision_ids"].([]any); ok {
+			for _, id := range history {
+				allowed = allowed || id == selected
+			}
+		}
+		if !allowed {
+			attemptHTTPError(w, ErrReference)
+			return
+		}
+		envelope, e = s.Store.readScoringResult(r.Context(), selected)
+		if e != nil {
+			attemptHTTPError(w, e)
+			return
+		}
 	}
 	writeJSON(w, 200, envelope)
 }

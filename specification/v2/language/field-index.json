@@ -1,6 +1,6 @@
 {
-  "schema_count": 158,
-  "field_count": 3611,
+  "schema_count": 162,
+  "field_count": 3653,
   "fields": [
     {
       "schema": "accept-candidate-request.schema.json",
@@ -6876,7 +6876,7 @@
       "required_in_parent": true,
       "description": "The actual dispute text.",
       "schema_reference": null,
-      "rule_sha256": "8f0f955e610fbecacbc95fd69fbf3fabbe7cc5b1963820739fd448f20ecf3907"
+      "rule_sha256": "15a1a4546564789938d1cc471ac27978d3828d16c64973250abc1cb3555694be"
     },
     {
       "schema": "dispute.schema.json",
@@ -6976,6 +6976,33 @@
       "description": "Actual input modality; transcript-only models never claim direct hearing.",
       "schema_reference": null,
       "rule_sha256": "e568a5f1607b95013f746da3814aa4a5440b0a2696ba1897da9156a445226037"
+    },
+    {
+      "schema": "dispute.schema.json",
+      "name": "purpose",
+      "pointer": "/properties/purpose",
+      "required_in_parent": false,
+      "description": "Explicit current operation; absent on a legacy imported user dispute.",
+      "schema_reference": null,
+      "rule_sha256": "41a35e4d3bc3f7c9469c17a0d640237f669cb4c71c8a11f7266790f90d417a6f"
+    },
+    {
+      "schema": "dispute.schema.json",
+      "name": "purpose",
+      "pointer": "/allOf/0/if/anyOf/1/properties/purpose",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "7ec8e30c52aadab22af763b53cdc9731d433450d4e8cdb5d522cb4caccf2e24c"
+    },
+    {
+      "schema": "dispute.schema.json",
+      "name": "statement",
+      "pointer": "/allOf/0/then/properties/statement",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "502815f69d986c630fd43197854dad92cb1e71938a6e4b8e60414c2f79f1f84e"
     },
     {
       "schema": "effective-binding.schema.json",
@@ -15910,18 +15937,18 @@
       "name": "blind_annotation_id",
       "pointer": "/properties/blind_annotation_id",
       "required_in_parent": true,
-      "description": "The preceding frozen blind submission.",
+      "description": "Actual optional blind/disclosure record; null when the explicitly key-exposed LLM review did not perform a blind diagnostic.",
       "schema_reference": null,
-      "rule_sha256": "b4a87fcfd7fa8b72bbd68404dcfa1ba5f3cf42360658103ac42d151594589872"
+      "rule_sha256": "b7598948c4c5102f0602fe4f69db68adaf39bec01d9863c9e4891812cf8ad4a8"
     },
     {
       "schema": "review-decision.schema.json",
       "name": "disclosure_id",
       "pointer": "/properties/disclosure_id",
       "required_in_parent": true,
-      "description": "The actual key-disclosure event.",
+      "description": "Actual optional blind/disclosure record; null when the explicitly key-exposed LLM review did not perform a blind diagnostic.",
       "schema_reference": null,
-      "rule_sha256": "b304bb511b6bb943253ab628a85d46ea63086d868bbbd4f05022db4efbe66f95"
+      "rule_sha256": "06208e5b1b1dc9af76bb9c4bbb1e24f923f4345e21ef93fb50eaf78d14762d74"
     },
     {
       "schema": "review-decision.schema.json",
@@ -16089,28 +16116,28 @@
       "schema": "review-decision.schema.json",
       "name": "origin",
       "pointer": "/allOf/0/if/properties/origin",
-      "required_in_parent": true,
-      "description": null,
-      "schema_reference": null,
-      "rule_sha256": "ce2e93d8f76fec21365c91a4763e9b8a31bd4faa0817f4d4f343e8c2f80cf29e"
-    },
-    {
-      "schema": "review-decision.schema.json",
-      "name": "person_id",
-      "pointer": "/allOf/0/then/properties/person_id",
       "required_in_parent": false,
       "description": null,
       "schema_reference": null,
-      "rule_sha256": "5fcfb3a76360a2de847194bde7be4c48c6d3996b29cf85b088732c8eed1d7e70"
+      "rule_sha256": "1872380640c7b92054b41b467c1fa4945e4ea2caa097d979bd1215b8dfd28305"
     },
     {
       "schema": "review-decision.schema.json",
-      "name": "provider_receipt_ids",
-      "pointer": "/allOf/0/then/properties/provider_receipt_ids",
+      "name": "blind_annotation_id",
+      "pointer": "/allOf/0/then/properties/blind_annotation_id",
       "required_in_parent": false,
       "description": null,
       "schema_reference": null,
-      "rule_sha256": "a266681ad891d579e5dc01c7c6003450a8ee440cefd7763bcaa68c9d7cff111c"
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "review-decision.schema.json",
+      "name": "disclosure_id",
+      "pointer": "/allOf/0/then/properties/disclosure_id",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
     },
     {
       "schema": "score-result.schema.json",
@@ -32500,6 +32527,357 @@
       "description": null,
       "schema_reference": null,
       "rule_sha256": "f0765dbf409c74f001806c446f2cf171d8c46b5b15779d54423dde921a4b0670"
+    },
+    {
+      "schema": "review-request.schema.json",
+      "name": "schema_version",
+      "pointer": "/properties/schema_version",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "85a2d8aa93ae1cc535108ec2ee447f40f68925db0cd97bb3dc7c597388c444c6"
+    },
+    {
+      "schema": "review-request.schema.json",
+      "name": "purpose",
+      "pointer": "/properties/purpose",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "1a35002e2fe330198f3a17c94da92a966ebd43aee73575c3db2775712b8f548e"
+    },
+    {
+      "schema": "review-request.schema.json",
+      "name": "case_version_id",
+      "pointer": "/properties/case_version_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "4cd0b4f653d64777df264faff1f08e1f1318915656c11642d852f60e9bf17f64"
+    },
+    {
+      "schema": "review-request.schema.json",
+      "name": "audio_sha256",
+      "pointer": "/properties/audio_sha256",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "2bc7825d922e6db89d507d832aa4cc3f3c38b01166311bef13d87151c8c67763"
+    },
+    {
+      "schema": "review-request.schema.json",
+      "name": "attempt_id",
+      "pointer": "/properties/attempt_id",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "bad97e5e1f0540c5511141c07fe4110a95206c9074f596b1de9997e1eee477eb"
+    },
+    {
+      "schema": "review-request.schema.json",
+      "name": "result_id",
+      "pointer": "/properties/result_id",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "bad97e5e1f0540c5511141c07fe4110a95206c9074f596b1de9997e1eee477eb"
+    },
+    {
+      "schema": "review-request.schema.json",
+      "name": "statement",
+      "pointer": "/properties/statement",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "a90f46d413a1fab6bb26c9e5d44adfe878959c3ec1be9bbc7ebe17f897a30ca7"
+    },
+    {
+      "schema": "review-request.schema.json",
+      "name": "claim_ids",
+      "pointer": "/properties/claim_ids",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "c22608a842a7fe0b47a2fb0846027b02d6392a5d7b6aeeba4af046a5ce0359cd"
+    },
+    {
+      "schema": "review-request.schema.json",
+      "name": "unit_ids",
+      "pointer": "/properties/unit_ids",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "c22608a842a7fe0b47a2fb0846027b02d6392a5d7b6aeeba4af046a5ce0359cd"
+    },
+    {
+      "schema": "review-request.schema.json",
+      "name": "evidence_ids",
+      "pointer": "/properties/evidence_ids",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "c22608a842a7fe0b47a2fb0846027b02d6392a5d7b6aeeba4af046a5ce0359cd"
+    },
+    {
+      "schema": "review-request.schema.json",
+      "name": "target_case_version_id",
+      "pointer": "/properties/target_case_version_id",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "4cd0b4f653d64777df264faff1f08e1f1318915656c11642d852f60e9bf17f64"
+    },
+    {
+      "schema": "review-request.schema.json",
+      "name": "purpose",
+      "pointer": "/allOf/0/if/properties/purpose",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "477cc32ee3c7f3fae420d596cbd4f241e0e29e982d323a99b24871ee630ccb6c"
+    },
+    {
+      "schema": "review-request.schema.json",
+      "name": "attempt_id",
+      "pointer": "/allOf/0/then/properties/attempt_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "review-request.schema.json",
+      "name": "result_id",
+      "pointer": "/allOf/0/then/properties/result_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "review-request.schema.json",
+      "name": "purpose",
+      "pointer": "/allOf/1/if/properties/purpose",
+      "required_in_parent": false,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "7ec8e30c52aadab22af763b53cdc9731d433450d4e8cdb5d522cb4caccf2e24c"
+    },
+    {
+      "schema": "review-request.schema.json",
+      "name": "statement",
+      "pointer": "/allOf/1/then/properties/statement",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "502815f69d986c630fd43197854dad92cb1e71938a6e4b8e60414c2f79f1f84e"
+    },
+    {
+      "schema": "review-selection-result.schema.json",
+      "name": "schema_version",
+      "pointer": "/properties/schema_version",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "85a2d8aa93ae1cc535108ec2ee447f40f68925db0cd97bb3dc7c597388c444c6"
+    },
+    {
+      "schema": "review-selection-result.schema.json",
+      "name": "complete",
+      "pointer": "/properties/complete",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "7cb541e84f226754a46c21c79f131fa2898354e1242456e6fd1c162bce319553"
+    },
+    {
+      "schema": "review-selection-result.schema.json",
+      "name": "reviews",
+      "pointer": "/properties/reviews",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "facc377f3a84ed78909276f76ffa34f7ac91fdfc78aa650bf8b303e1a8fc7cbc"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "id",
+      "pointer": "/properties/id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "purpose",
+      "pointer": "/properties/purpose",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "case_version_id",
+      "pointer": "/properties/case_version_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "attempt_id",
+      "pointer": "/properties/attempt_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "base_result_id",
+      "pointer": "/properties/base_result_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "statement",
+      "pointer": "/properties/statement",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "resolution",
+      "pointer": "/properties/resolution",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "failure_code",
+      "pointer": "/properties/failure_code",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "new_result_id",
+      "pointer": "/properties/new_result_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "new_case_version_id",
+      "pointer": "/properties/new_case_version_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "unit_correspondence_id",
+      "pointer": "/properties/unit_correspondence_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "created_at",
+      "pointer": "/properties/created_at",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "input_modality",
+      "pointer": "/properties/input_modality",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "schema_version",
+      "pointer": "/properties/schema_version",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "85a2d8aa93ae1cc535108ec2ee447f40f68925db0cd97bb3dc7c597388c444c6"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "status",
+      "pointer": "/properties/status",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "6d640f39c72ff63fbde02c71f577c95064ef841306ab7b30d2fa4e87271e899e"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "revision",
+      "pointer": "/properties/revision",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "686f40289f17bc2d6be905d9268764859f8b4cc81d29306a4bc83ff1a337caae"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "origin",
+      "pointer": "/properties/origin",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "ce2e93d8f76fec21365c91a4763e9b8a31bd4faa0817f4d4f343e8c2f80cf29e"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "person_id",
+      "pointer": "/properties/person_id",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "bcde375ebd4cbacf651311181173836b169d5a360c6ac158c6a2cdaf49be3f61"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "qualification_ids",
+      "pointer": "/properties/qualification_ids",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "59d1f8bc7d158593f4cf6039aa5447bae253f5b3d3a683e68a7f48dc80e9da7f"
+    },
+    {
+      "schema": "review-view.schema.json",
+      "name": "findings",
+      "pointer": "/properties/findings",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "c33b4e056ed353721b2aab13856ec030480125cfd3fa71f2deffee703bcc0fbe"
     }
   ]
 }

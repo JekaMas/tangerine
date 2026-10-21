@@ -20,7 +20,7 @@ export default function Page() {
     <section className="card"><div className="row"><h2>Exercise library</h2><button className="secondary" disabled={busy} onClick={refresh}>{busy ? 'Loading…' : 'Refresh'}</button></div>
       {error ? <p role="alert" className="error">{error}</p> : busy ? <p role="status">Loading your Library…</p> : exercises?.length === 0 ?
         <div className="empty"><span aria-hidden="true">◎</span><h3>No exercises yet</h3><p>Your workspace is ready. Saved exercises will appear here.</p></div> :
-        <ul>{exercises?.map(item => <li key={item.id}><h3>{item.title}</h3><p>{item.public_context}</p><p>{item.format} · {item.difficulty} · {item.availability}</p>{item.availability==='published'&&item.case_sha256&&<a href={'/listen?case='+item.id+'&sha='+item.case_sha256}>Listen and answer</a>}</li>)}</ul>}
+        <ul>{exercises?.map(item => <li key={item.id}><h3>{item.title}</h3><p>{item.public_context}</p><p>{item.format} · {item.difficulty} · {item.availability}</p>{item.availability==='published'&&item.case_sha256&&<a href={'/listen?case='+item.id+'&sha='+item.case_sha256}>Listen and answer</a>}{item.case_sha256&&<> · <a href={'/reviews?case='+item.id}>Optional LLM review</a></>}</li>)}</ul>}
     </section>
     <footer>Generated audio · Written observations · Targeted feedback</footer>
   </main>;

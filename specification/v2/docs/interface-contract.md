@@ -1,6 +1,6 @@
 # Internal local interface
 
-The full operation inventory remains domain/operations.yaml with exact method/path/request/response references in contracts/openapi.yaml. These are internal UI/service interfaces, not a user-managed public API. One local workspace has no accounts, roles or complex authentication.
+The original logical operation inventory remains domain/operations.yaml with source/import method/path/request/response references in contracts/openapi.yaml. The implemented optional-review runtime uses the normative compact projection in domain/review-runtime-operations.yaml and contracts/review-runtime.openapi.yaml; review-runtime.md maps every original review/dispute concept to this shared foreground carrier. The runtime overlay takes precedence for these actions. These are internal UI/service interfaces, not a user-managed public API. One local workspace has no accounts, roles or complex authentication.
 
 The main preparation action accepts contracts/exercise-request.schema.json through blueprint-write.exercise_request. The server expands speaker/word-length/optional-level/category defaults into the existing blueprint; the UI orchestrates existing generate/render/listen/submit/result operations. No new public API or separate review action is required.
 
@@ -16,7 +16,7 @@ Lists use stable creation-sequence/objectID keyset pagination, default50/max100.
 
 ## Review and disclosure
 
-start_review triggers case_review through the configured LLM. get_review returns blind-review-view for imported/diagnostic observations. blind_submit/review_disclose/review_decide remain internal processing operations that store machine observations/disclosure/decision; no human person or qualification is requested. create_person/qualification/get_person retain imported native metadata only, without a review UI prerequisite. teacher_gold accepts native imported labels or LLM labels with explicit origin. resolve_dispute/adjudicate/reconsider use the LLM and append versions.
+Optional review creation freezes inputs; explicit Run dispatches the configured case_review/adjudication LLM. Read/list never dispatch. Case review, answer reconsideration and disputes share the review carrier and immutable machine findings. Its exact current methods/DTOs are in the review runtime overlay. Original blind-annotation/disclosure/decision schemas retain actual native source or independent diagnostic records; they are not extra human workflow or mandatory HTTP steps. Correspondence and adjudication records are generated inside accepted review publication. Selected-answer reconsideration uses the completed review's exact correspondence. Original person/qualification/teacher-gold data remain imported metadata, never a review UI prerequisite.
 
 Before answer submission, teacher DTOs exclude the key, transcript and planned-event count. After submission teacher-key/teacher-rationale expose the full approved pedagogical content, excluding raw provider records, secret values, private native persons and source personal metadata. Settings show key presence only. Preparation views are separate from teacher projections.
 

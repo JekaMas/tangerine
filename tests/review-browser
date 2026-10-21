@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+"""Real Chrome/Next.js/API/PostgreSQL/MinIO listening observations; no UI doubles."""
+from pathlib import Path
+import base64,json,os,secrets,subprocess,sys,tempfile,time,uuid
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from browser_probe import Browser
+r=Path(__file__).resolve().parents[1];name='tangerine-review-browser-'+uuid.uuid4().hex[:8];env=dict(os.environ)
+evidence=Path(env['TANGERINE_INTERPRETATION_EVIDENCE']);evidence.mkdir(parents=True,exist_ok=True)
+def call(args,check=True):
+ p=subprocess.run(args,cwd=r,env=env,capture_output=True,text=True,timeout=180)
+ if p.stdout:print(p.stdout,file=sys.stderr,end='')
+ if p.stderr:print(p.stderr,file=sys.stderr,end='')
+ if check and p.returncode:raise RuntimeError('owned browser setup command failed')
+ return p
+browser=None;go=None;preview=False
+with tempfile.TemporaryDirectory(prefix=name) as tmp:
+ config=Path(tmp)/'runtime.env';password=secrets.token_hex(24)
+ config.write_text(f'POSTGRES_DB=tangerine\nPOSTGRES_USER=tangerine\nPOSTGRES_PASSWORD={password}\nDATABASE_URL=postgres://tangerine:{password}@postgres:5432/tangerine?sslmode=disable\nMINIO_ROOT_USER=native-regression\nMINIO_ROOT_PASSWORD={password}\nMINIO_ENDPOINT=minio:9000\nMINIO_ACCESS_KEY=native-regression\nMINIO_SECRET_KEY={password}\nMINIO_BUCKET=regressions\nAPI_INTERNAL_TOKEN=listening-owned-token\nAPI_INTERNAL_URL=http://api:8080\n');config.chmod(0o600)
+ def ready(kind):
+  for _ in range(60):
+   probe=['pg_isready','-h','127.0.0.1','-U','tangerine','-d','tangerine'] if kind=='postgres' else ['/usr/local/bin/probe','http://127.0.0.1:9000/minio/health/ready']
+   if call(['docker','exec',name+'-'+kind,*probe],False).returncode==0:return
+   time.sleep(.1)
+  raise AssertionError('owned dependency did not recover')
+ try:
+  call(['docker','build','--target','build','-t',name+'-go','-f','services/api/Dockerfile','.']);call(['docker','build','-t',name+'-media','-f','deploy/local/minio.Dockerfile','.']);call(['docker','network','create',name])
+  for kind,image in [('postgres','postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826'),('media',name+'-media')]:call(['docker','run','-d','--name',name+'-'+kind,'--network',name,'--network-alias','postgres' if kind=='postgres' else 'minio','--env-file',str(config),image]);ready(kind)
+  args=['docker','run','--rm','--name',name+'-api','--network',name,'--network-alias','api','--env-file',str(config),'-e','TANGERINE_INTERPRETATION_EVIDENCE=/evidence','-v',str(evidence)+':/evidence']
+  for source in ['native_listening_test.go','native_interpretation_test.go','native_scoring_test.go','native_review_test.go','review_browser_fixture_test.go']:args+=['-v',str(r/'tests'/source)+':/src/internal/app/'+source+':ro']
+  go=subprocess.Popen(args+['--entrypoint','go',name+'-go','test','-json','-race','-count=1','-run','^TestNativeReviewBrowserFixture$','./internal/app'],cwd=r,env=env,stdout=(evidence/'native.jsonl').open('w'),stderr=(evidence/'native.stderr').open('w'))
+  for _ in range(1200):
+   if (evidence/'fixture.json').exists():break
+   if go.poll() is not None:raise AssertionError('native publication fixture failed')
+   time.sleep(.1)
+  else:raise AssertionError('native fixture timeout')
+  fixture=json.loads((evidence/'fixture.json').read_text())
+  running=call(['docker','inspect','-f','{{.State.Running}}','tangerine-i1-web-1'],False)
+  if running.returncode==0 and running.stdout.strip()=='true':call(['docker','stop','tangerine-i1-web-1']);preview=True
+  call(['docker','run','-d','--name',name+'-web','--network',name,'--env-file',str(config),'-p','127.0.0.1:3000:3000',env['TANGERINE_INTERPRETATION_TEST_WEB_IMAGE']])
+  browser=Browser(Path(tmp)/'chrome','http://localhost:3000/');browser.wait('Listen and answer');observed={}
+  def click(text):
+   selector="[...document.querySelectorAll('button,a')].find(e=>e.textContent==="+json.dumps(text)+")"
+   link=browser.evaluate("(()=>{const e="+selector+";return e?.tagName==='A'?e.href:null})()")
+   if not link:
+    for _ in range(200):
+     if browser.evaluate(selector+"?.disabled===false"):break
+     time.sleep(.1)
+    else:raise AssertionError("Button stayed unavailable: "+text)
+   if link:browser.call('Page.navigate',{'url':link})
+   else:browser.evaluate(selector+".click();true")
+  def wait_value(expression,expected):
+   for _ in range(150):
+    value=browser.evaluate(expression)
+    if value==expected:return value
+    time.sleep(.1)
+   raise AssertionError((expression,value,expected))
+  def record(test,expression,expected):
+   value=wait_value(expression,expected);observed[test]=value;(evidence/(test+'.html')).write_text(browser.evaluate('document.documentElement.outerHTML'))
+  def type_answer(text):
+   browser.evaluate("document.querySelector('textarea').focus();true");browser.call('Input.insertText',{'text':text});wait_value("document.querySelector('textarea').value",text)
+  def new_answer():
+   browser.call('Page.navigate',{'url':'http://localhost:3000/'});browser.wait('Listen and answer');click('Listen and answer');browser.wait('Your answer');wait_value("document.querySelector('textarea').disabled",False)
+  case_id=fixture['case_id'];attempt_id=fixture['attempt_id']
+  browser.call('Page.navigate',{'url':'http://localhost:3000/reviews?case='+case_id});browser.wait('Review case')
+  sql='"'+fixture['schema']+'"'
+  call(['docker','exec',name+'-postgres','psql','-X','-U','tangerine','-d','tangerine','-v','ON_ERROR_STOP=1','-c',"SET search_path TO "+sql+"; UPDATE exercise_catalog SET availability='rights_restricted' WHERE id='"+case_id+"';"])
+  click('Review case');browser.wait('Source terms restrict processing of this case.')
+  record('test_rights_negative',"document.body.textContent.includes('Source terms restrict processing of this case.')",True)
+  call(['docker','exec',name+'-postgres','psql','-X','-U','tangerine','-d','tangerine','-v','ON_ERROR_STOP=1','-c',"SET search_path TO "+sql+"; UPDATE exercise_catalog SET availability='published' WHERE id='"+case_id+"';"])
+  click('Retry or resume saved review');browser.wait('The saved agreement key is supported by the unchanged text.')
+  record('test_rights_recovery_positive',"document.querySelector('[aria-label=\"Review findings\"]').textContent.includes('complete · supported')",True)
+  record('test_case_positive',"document.querySelector('[aria-label=\"Review findings\"]').textContent.includes('complete · supported')",True)
+  record('test_modality_negative',"document.querySelector('[aria-label=\"Review findings\"]').textContent.includes('Text review; the LLM did not hear the recording.')",True)
+  browser.call('Page.navigate',{'url':'http://localhost:3000/reviews?attempt='+attempt_id});browser.wait('Submit dispute')
+  statement='Please check café agreement. Keep my exact statement.'
+  browser.evaluate("document.querySelector('[aria-label=\"Dispute statement\"]').focus();true");browser.call('Input.insertText',{'text':statement});click('Submit dispute');browser.wait('The saved agreement key is supported by the unchanged text.')
+  record('test_dispute_positive',"({statement:document.querySelector('textarea').value,primary:document.querySelector('[aria-label=\"Primary score\"]').textContent})",{'statement':statement,'primary':'Primary score: 100.0 / 100'})
+  (evidence/'review-mode').write_text('failure');click('Reconsider answer');browser.wait('Retry or resume saved review')
+  record('test_failure_negative',"({failed:document.querySelector('[aria-label=\"Review findings\"]').textContent.includes('failed'),statement:document.querySelector('textarea').value,primary:document.querySelector('[aria-label=\"Primary score\"]').textContent})",{'failed':True,'statement':statement,'primary':'Primary score: 100.0 / 100'})
+  (evidence/'review-mode').write_text('supported');click('Retry or resume saved review');browser.wait('The saved agreement key is supported by the unchanged text.')
+  record('test_retry_positive',"document.querySelector('[aria-label=\"Review findings\"]').textContent.includes('complete · supported')",True)
+  (evidence/'review-mode').write_text('key-with-decisions');click('Submit dispute');browser.wait('A corrected key version uses the same recording.')
+  record('test_key_positive',"({key:document.body.textContent.includes('A corrected key version uses the same recording.'),primary:document.querySelector('[aria-label=\"Primary score\"]').textContent})",{'key':True,'primary':'Primary score: 100.0 / 100'})
+  wait_value("document.querySelectorAll('[aria-label=\"Selected answer reconsideration\"] input[type=checkbox]').length",1)
+  browser.evaluate("document.querySelector('[aria-label=\"Selected answer reconsideration\"] input[type=checkbox]').click();true")
+  (evidence/'review-mode').write_text('failure');click('Reconsider selected answers');browser.wait('Selected reconsideration stopped.')
+  record('test_selection_failure_negative',"({failed:document.querySelector('[aria-label=\"Selected answer reconsideration\"]').textContent.includes('Selected reconsideration stopped.'),primary:document.querySelector('[aria-label=\"Primary score\"]').textContent})",{'failed':True,'primary':'Primary score: 100.0 / 100'})
+  (evidence/'review-mode').write_text('supported');click('Reconsider selected answers')
+  record('test_selection_positive',"document.querySelector('[aria-label=\"Selected answer reconsideration\"]').textContent.includes('complete ·')",True)
+  (evidence/'review-mode').write_text('key-with-decisions')
+  click('Original result');browser.wait('Primary score: 100.0 / 100')
+  record('test_history_negative',"document.querySelector('[aria-label=\"Primary score\"]').textContent",'Primary score: 100.0 / 100');click('Current result')
+  schema=fixture['schema'];sql='"'+schema+'"'
+  fault="SET search_path TO "+sql+"; CREATE FUNCTION reject_review_result() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN IF NEW.kind='result-envelope' THEN RAISE EXCEPTION 'test-owned review publication failure'; END IF; RETURN NEW; END $$; CREATE TRIGGER reject_review_result BEFORE INSERT ON document FOR EACH ROW EXECUTE FUNCTION reject_review_result();"
+  call(['docker','exec',name+'-postgres','psql','-X','-U','tangerine','-d','tangerine','-v','ON_ERROR_STOP=1','-c',fault])
+  click('Submit dispute');browser.wait('Retry or resume saved review')
+  record('test_atomic_negative',"({failed:document.querySelector('[aria-label=\"Review findings\"]').textContent.includes('failed'),primary:document.querySelector('[aria-label=\"Primary score\"]').textContent})",{'failed':True,'primary':'Primary score: 100.0 / 100'})
+  call(['docker','exec',name+'-postgres','psql','-X','-U','tangerine','-d','tangerine','-v','ON_ERROR_STOP=1','-c','SET search_path TO '+sql+'; DROP TRIGGER reject_review_result ON document;'])
+  click('Retry or resume saved review');browser.wait('A corrected key version uses the same recording.')
+  record('test_recovery_positive',"({complete:document.querySelector('[aria-label=\"Review findings\"]').textContent.includes('complete · key defect'),primary:document.querySelector('[aria-label=\"Primary score\"]').textContent})",{'complete':True,'primary':'Primary score: 100.0 / 100'})
+  record('test_privacy_negative',"/frozen_asset_id|context_snapshot_id|credential_ref|wire_request|mapping_asset_id/.test(document.documentElement.outerHTML)",False)
+  screenshot=browser.call('Page.captureScreenshot');(evidence/'review.png').write_bytes(base64.b64decode(screenshot['data']))
+  (evidence/'done').write_text('done');assert go.wait(timeout=30)==0
+  (evidence/'observations.json').write_text(json.dumps({'values':observed,'fixture':fixture,'driver':browser.driver_version,'network_substitution':False,'database_recovered':True},indent=2))
+ finally:
+  if browser:
+   try:(evidence/'final-dom.html').write_text(browser.evaluate('document.documentElement.outerHTML'))
+   finally:browser.close()
+  (evidence/'done').write_text('done')
+  for kind in ['web','api','postgres','media']:call(['docker','rm','-f','-v',name+'-'+kind],False)
+  if go:
+   try:go.wait(timeout=10)
+   except subprocess.TimeoutExpired:go.terminate();go.wait()
+  call(['docker','network','rm',name],False)
+  for kind in ['go','media']:call(['docker','image','rm',name+'-'+kind],False)
+  if preview:call(['docker','start','tangerine-i1-web-1'])

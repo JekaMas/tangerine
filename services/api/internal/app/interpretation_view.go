@@ -21,6 +21,9 @@ func publicSemanticComponent(j SemanticComponent, spans []AnswerSpan) map[string
 }
 func (s *Storage) interpretationEnvelope(ctx context.Context, record AttemptRecord, state *InterpretationState) (map[string]any, error) {
 	envelope := savedResult(record.Attempt)
+	if selected, ok := record.Context["result_id"].(string); ok && selected != "" {
+		return s.readScoringResult(ctx, selected)
+	}
 	if state != nil && state.Result != nil {
 		return s.readScoringResult(ctx, *state.Result)
 	}

@@ -110,7 +110,7 @@
       "type": "string",
       "description": "The actual dispute text.",
       "maxLength": 20000,
-      "minLength": 1
+      "minLength": 0
     },
     "resolution": {
       "anyOf": [
@@ -244,6 +244,14 @@
         "native_annotation"
       ],
       "description": "Actual input modality; transcript-only models never claim direct hearing."
+    },
+    "purpose": {
+      "enum": [
+        "case_review",
+        "answer_reconsideration",
+        "dispute"
+      ],
+      "description": "Explicit current operation; absent on a legacy imported user dispute."
     }
   },
   "required": [
@@ -269,5 +277,34 @@
     "provider_receipt_ids",
     "input_modality"
   ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "anyOf": [
+          {
+            "not": {
+              "required": [
+                "purpose"
+              ]
+            }
+          },
+          {
+            "properties": {
+              "purpose": {
+                "const": "dispute"
+              }
+            }
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "statement": {
+            "minLength": 1
+          }
+        }
+      }
+    }
+  ]
 }

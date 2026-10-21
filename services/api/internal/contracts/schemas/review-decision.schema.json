@@ -24,18 +24,34 @@
       "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
     },
     "blind_annotation_id": {
-      "type": "string",
-      "description": "The preceding frozen blind submission.",
-      "maxLength": 128,
-      "minLength": 1,
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The preceding frozen blind submission.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Actual optional blind/disclosure record; null when the explicitly key-exposed LLM review did not perform a blind diagnostic."
     },
     "disclosure_id": {
-      "type": "string",
-      "description": "The actual key-disclosure event.",
-      "maxLength": 128,
-      "minLength": 1,
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The actual key-disclosure event.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Actual optional blind/disclosure record; null when the explicitly key-exposed LLM review did not perform a blind diagnostic."
     },
     "case_version_id": {
       "type": "string",
@@ -252,20 +268,17 @@
       "if": {
         "properties": {
           "origin": {
-            "const": "llm"
+            "const": "source_import"
           }
-        },
-        "required": [
-          "origin"
-        ]
+        }
       },
       "then": {
         "properties": {
-          "person_id": {
-            "const": null
+          "blind_annotation_id": {
+            "type": "string"
           },
-          "provider_receipt_ids": {
-            "minItems": 1
+          "disclosure_id": {
+            "type": "string"
           }
         }
       }

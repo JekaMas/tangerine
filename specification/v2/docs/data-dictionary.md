@@ -43,7 +43,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | difficulty-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 6 |
 | difficulty-study | 2.0.0 | document.payload | 14 |
 | disclosure-record | 2.0.0 | document.payload | 8 |
-| dispute | 2.0.0 | document.payload | 21 |
+| dispute | 2.0.0 | document.payload | 24 |
 | effective-binding | 2.0.0 | document.payload | 36 |
 | error-opportunity | schema hash | document.payload | 11 |
 | error-response | schema hash | derived DTO or actual operation input/output receipt | 8 |
@@ -194,3 +194,11 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | preparation-summary | schema hash | derived DTO or actual operation input/output receipt | 12 |
 
 | feedback-score | schema hash | derived DTO or actual operation input/output receipt | 40 |
+
+| review-request | schema hash | derived DTO or actual operation input/output receipt | 16 |
+
+| review-list | schema hash | derived DTO or actual operation input/output receipt | 0 |
+
+| review-selection-result | schema hash | derived DTO or actual operation input/output receipt | 3 |
+
+| review-view | schema hash | derived DTO or actual operation input/output receipt | 20 |

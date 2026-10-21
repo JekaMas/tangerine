@@ -2182,6 +2182,12 @@ paths:
       tags:
         - teacher
       parameters:
+        - name: case_version_id
+          in: query
+          required: false
+          description: Optional review selection by current result key; original heard case remains in each summary.
+          schema:
+            type: string
         - name: limit
           in: query
           required: false
@@ -2199,38 +2205,17 @@ paths:
       responses:
         "200":
           description: List local attempt identities and safe state summaries.
+          headers:
+            X-Tangerine-Next-Cursor:
+              description: Last creation-time/objectID key for the next page; empty at completion.
+              schema:
+                type: string
           content:
             application/json:
               schema:
-                type: object
-                description: One stable keyset page.
-                properties:
-                  items:
-                    type: array
-                    description: Page items.
-                    items:
-                      $ref: attempt-summary.schema.json
-                    minItems: 0
-                    maxItems: 100
-                  next_cursor:
-                    anyOf:
-                      - type: string
-                        description: Opaque signed continuation.
-                        maxLength: 2048
-                        minLength: 1
-                      - type: "null"
-                    description: Opaque signed continuation.
-                  snapshot_revision:
-                    type: string
-                    description: Stable page snapshot revision.
-                    maxLength: 4096
-                    minLength: 1
-                    pattern: ^(0|[1-9][0-9]*)$
-                required:
-                  - items
-                  - next_cursor
-                  - snapshot_revision
-                additionalProperties: false
+                type: array
+                items:
+                  $ref: attempt-summary.schema.json
         "400":
           description: Malformed request
           content:
@@ -2862,6 +2847,12 @@ paths:
             type: string
             maxLength: 128
             pattern: ^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$
+        - name: result_id
+          in: query
+          required: false
+          description: Explicit current or retained immutable result for this attempt only.
+          schema:
+            type: string
       responses:
         "200":
           description: Read completed or explicitly provisional result without starting calls.
