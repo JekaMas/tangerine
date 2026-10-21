@@ -204,6 +204,16 @@ func Calculate(rows []Evidence) ([]Metric, error) {
 						nkey, dkey = "absolute_score_error_pp", "paired_reference_scores"
 					}
 					n, ok := get(row.Stats, nkey)
+					if name == "score_mae_pp" {
+						if num, found := get(row.Stats, "absolute_score_error_pp_numerator"); found {
+							den, has := get(row.Stats, "absolute_score_error_pp_denominator")
+							if !has || den.Sign() == 0 {
+								return nil, fmt.Errorf("invalid exact score-error denominator")
+							}
+							n = num.Quo(num, den)
+							ok = true
+						}
+					}
 					d, has := get(row.Stats, dkey)
 					if !ok || !has || d.Sign() == 0 {
 						m.Excluded++
@@ -215,6 +225,11 @@ func Calculate(rows []Evidence) ([]Metric, error) {
 				if m.References > 0 {
 					m = fractionMetric(m, new(big.Rat).Quo(sum, big.NewRat(int64(m.References), 1)))
 					m.Stats["applicable_rows"] = fmt.Sprint(m.References)
+					if name == "score_mae_pp" {
+						m.Stats["absolute_score_error_pp_numerator"] = sum.Num().String()
+						m.Stats["absolute_score_error_pp_denominator"] = sum.Denom().String()
+						m.Stats["paired_reference_scores"] = fmt.Sprint(m.References)
+					}
 				}
 			case "latency_p50_ms", "latency_p95_ms":
 				for _, row := range evidence {

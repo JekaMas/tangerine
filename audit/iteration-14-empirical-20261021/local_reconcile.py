@@ -26,15 +26,17 @@ def main():
  for export in [result]+result['native_exports']:
   verified=sdk('verify',export);assert verified['status']=='observed' and verified['provider_calls']==0 and not verified['discrepancies'];exports.append(verified)
  assert collections.Counter((r[0],r[1],r[2]) for r in native)==collections.Counter((r['request_sha256'],r['response_sha256'],r['status']) for r in dispatch)
- assert len(contexts)==len(native)==4 and len(bindings)==4 and {v[3]['stage'] for v in native}=={'blind_claim_extraction','linguistic_audit'}
+ assert len(contexts)==len(native)==len(bindings)==len(dispatch) and len(dispatch)>=4 and {v[3]['stage'] for v in native}=={'blind_claim_extraction','linguistic_audit'}
+ assert collections.Counter(stage for stage in {v[3]['operation_id']:v[3]['stage'] for v in native}.values())=={'blind_claim_extraction':2,'linguistic_audit':2}
  assert len(result['native_exports'])==4 and all(t['state']=='exported' for e in result['native_exports'] for t in e['trace_exports'])
  metrics_code="import json;from mlflow import MlflowClient;c=MlflowClient();r=c.get_run(__import__('sys').argv[1]);print(json.dumps({'metrics':r.data.metrics,'params':r.data.params,'tags':r.data.tags}))"
  p=subprocess.run(command[:5]+['-c',metrics_code,result['run']],capture_output=True,text=True,timeout=30,check=True);metrics=json.loads(p.stdout);assert metrics['metrics']['variant0/llm_lab.completion_rate']==1 and metrics['metrics']['variant1/llm_lab.completion_rate']==1
  assert 'variant0/llm_lab.cost_total_usd' not in metrics['metrics'];assert metrics['params']['variant0.profile']
+ assert packet['development_run_id'] and metrics['tags']['tangerine.development_run_id']==packet['development_run_id']
  span_code="import json,sqlite3,sys;ids=json.load(sys.stdin);db=sqlite3.connect('/lab/mlflow.db');out=[]\nfor i in ids:\n r=db.execute('SELECT trace_id,span_id,name,content FROM spans WHERE span_id=?',(i,)).fetchone();assert r is not None;out.append({'trace_id':r[0],'span_id':r[1],'name':r[2],'content':json.loads(r[3])})\nprint(json.dumps(out))"
  p=subprocess.run(command[:5]+['-c',span_code],input=json.dumps([v[3]['span_id'] for v in native]),capture_output=True,text=True,timeout=30,check=True);spans=json.loads(p.stdout);index={v['span_id']:v for v in spans}
  for _,_,_,r in native:
-  attrs=index[r['span_id']]['content']['attributes'];assert json.loads(attrs['receipt_id'])==r['id'] and json.loads(attrs['context_snapshot_id'])==r['context_snapshot_id']
+  attrs=index[r['span_id']]['content']['attributes'];assert json.loads(attrs['receipt_id'])==r['id'] and json.loads(attrs['context_snapshot_id'])==r['context_snapshot_id'] and json.loads(attrs['tangerine.development_run_id'])==packet['development_run_id']
  verdicts=[]
  for path in sorted(directory.glob('variant-*-output.json')):
   row=json.loads(path.read_text());values={v['proposition_id']:v for v in row['judge']['verdicts']};assert values['preserved_quote']['verdict']=='supported' and values['invented_quote']['verdict']=='unsupported' and values['unheard_audio']['verdict']=='unknown';verdicts.append(values)

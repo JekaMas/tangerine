@@ -178,3 +178,64 @@ func TestQualityPreservationNegative(t *testing.T) {
 		t.Fatal(e)
 	}
 }
+
+func TestQualityJSONPathPositive(t *testing.T) {
+	v := map[string]any{"verdicts": []any{map[string]any{"evidence": []any{map[string]any{"asset_id": "candidate", "pointer": "$.clauses[0].claim_span"}}}}}
+	body := map[string]any{"clauses": []any{map[string]any{"claim_span": "Use opens."}}}
+	got := normalizeQualityJudge(v, map[string]any{"candidate": body}).(map[string]any)
+	ref := got["verdicts"].([]any)[0].(map[string]any)["evidence"].([]any)[0].(map[string]any)
+	if ref["pointer"] != "/clauses/0/claim_span" {
+		t.Fatal(ref)
+	}
+}
+func TestQualityJSONPathNegative(t *testing.T) {
+	for _, path := range []string{"$.clauses[*].claim_span", "$.clauses[0].absent", "$.clauses[?(@.id)]"} {
+		v := map[string]any{"verdicts": []any{map[string]any{"evidence": []any{map[string]any{"asset_id": "candidate", "pointer": path}}}}}
+		got := normalizeQualityJudge(v, map[string]any{"candidate": map[string]any{"clauses": []any{}}}).(map[string]any)
+		ref := got["verdicts"].([]any)[0].(map[string]any)["evidence"].([]any)[0].(map[string]any)
+		if ref["pointer"] != path {
+			t.Fatal("invented/evaluated absent path", ref)
+		}
+	}
+}
+func TestQualityFractionalScorePositive(t *testing.T) {
+	e := experiment.Evidence{Stats: map[string]string{}}
+	qualityScoreError(map[string]any{"expected_metric_values": []any{map[string]any{"metric_id": "composite", "numerator": "0", "denominator": "1", "value": nil}}}, map[string]any{"composite": map[string]any{"exact_value_0_100": map[string]any{"numerator": "1", "denominator": "3"}}}, &e)
+	if e.Stats["paired_reference_scores"] != "1" {
+		t.Fatal("one score became three references", e)
+	}
+	ms, err := experiment.Calculate([]experiment.Evidence{e})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, m := range ms {
+		if m.ID == "llm_lab.score_mae_pp" && (*m.Numerator != "1" || *m.Denominator != "3" || m.Stats["paired_reference_scores"] != "1") {
+			t.Fatal(m)
+		}
+	}
+}
+func TestQualityMissingReferenceNegative(t *testing.T) {
+	e := experiment.Evidence{Stats: map[string]string{}}
+	qualityScoreError(map[string]any{}, map[string]any{"composite": map[string]any{"exact_value_0_100": map[string]any{"numerator": "1", "denominator": "3"}}}, &e)
+	if _, ok := e.Stats["paired_reference_scores"]; ok {
+		t.Fatal("invented paired reference", e)
+	}
+}
+func TestQualityFalsePositiveNegative(t *testing.T) {
+	var got map[string]any
+	_ = json.Unmarshal(sourceBytes(SemanticMapping{Decisions: []SemanticDecision{{Claim: "unsupported", Decision: "false_positive"}, {Claim: "control", Unit: ptrQualityTest("clean"), Decision: "false_positive"}}}), &got)
+	e := experiment.Evidence{Stats: map[string]string{}}
+	qualityMappingEvidence(map[string]any{}, got, &e)
+	if e.Stats["FP"] != "2" || e.Stats["TP"] != "0" {
+		t.Fatal("unsupported claims vanished", e)
+	}
+}
+func TestQualityDuplicateClaimPositive(t *testing.T) {
+	var got map[string]any
+	_ = json.Unmarshal(sourceBytes(SemanticMapping{Decisions: []SemanticDecision{{Claim: "unsupported", Decision: "false_positive"}, {Claim: "repeat", Duplicate: ptrQualityTest("unsupported"), Decision: "false_positive"}}}), &got)
+	e := experiment.Evidence{Stats: map[string]string{}}
+	qualityMappingEvidence(map[string]any{}, got, &e)
+	if e.Stats["FP"] != "1" {
+		t.Fatal("duplicate counted again", e)
+	}
+}

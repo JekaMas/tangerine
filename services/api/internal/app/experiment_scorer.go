@@ -91,6 +91,13 @@ func qualityMappingEvidence(reference, actual map[string]any, e *experiment.Evid
 		}
 	}
 	tp, fp, fn := 0, 0, 0
+	falseClaims := map[string]bool{}
+	for _, d := range got.Decisions {
+		if d.Decision == "false_positive" && d.Duplicate == nil && !falseClaims[d.Claim] {
+			falseClaims[d.Claim] = true
+			fp++
+		}
+	}
 	for unit, w := range expected {
 		g, ok := predicted[unit]
 		if !ok {
@@ -195,8 +202,9 @@ func qualityScoreError(expected, score map[string]any, e *experiment.Evidence) {
 		if diff.Sign() < 0 {
 			diff.Neg(diff)
 		}
-		e.Stats["absolute_score_error_pp"] = diff.Num().String()
-		e.Stats["paired_reference_scores"] = diff.Denom().String()
+		e.Stats["absolute_score_error_pp_numerator"] = diff.Num().String()
+		e.Stats["absolute_score_error_pp_denominator"] = diff.Denom().String()
+		e.Stats["paired_reference_scores"] = "1"
 	}
 }
 

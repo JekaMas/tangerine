@@ -690,6 +690,60 @@
       "polarity": "positive",
       "scenario": "I14-04 packet 1",
       "fixture_id": "iteration14-I14-04-P1-S1-POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestQualityFractionalScorePositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestQualityFractionalScorePositive through services/api/internal/experiment/metrics.go",
+      "initial_state": {
+        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
+        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
+      },
+      "input": {
+        "exact_test": "TestQualityFractionalScorePositive",
+        "literal_executable_fixture": "func TestQualityFractionalScorePositive(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityScoreError(map[string]any{\"expected_metric_values\": []any{map[string]any{\"metric_id\": \"composite\", \"numerator\": \"0\", \"denominator\": \"1\", \"value\": nil}}}, map[string]any{\"composite\": map[string]any{\"exact_value_0_100\": map[string]any{\"numerator\": \"1\", \"denominator\": \"3\"}}}, &e)\n\tif e.Stats[\"paired_reference_scores\"] != \"1\" {\n\t\tt.Fatal(\"one score became three references\", e)\n\t}\n\tms, err := experiment.Calculate([]experiment.Evidence{e})\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tfor _, m := range ms {\n\t\tif m.ID == \"llm_lab.score_mae_pp\" && (*m.Numerator != \"1\" || *m.Denominator != \"3\" || m.Stats[\"paired_reference_scores\"] != \"1\") {\n\t\t\tt.Fatal(m)\n\t\t}\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestQualityFractionalScorePositive(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityScoreError(map[string]any{\"expected_metric_values\": []any{map[string]any{\"metric_id\": \"composite\", \"numerator\": \"0\", \"denominator\": \"1\", \"value\": nil}}}, map[string]any{\"composite\": map[string]any{\"exact_value_0_100\": map[string]any{\"numerator\": \"1\", \"denominator\": \"3\"}}}, &e)\n\tif e.Stats[\"paired_reference_scores\"] != \"1\" {\n\t\tt.Fatal(\"one score became three references\", e)\n\t}\n\tms, err := experiment.Calculate([]experiment.Evidence{e})\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tfor _, m := range ms {\n\t\tif m.ID == \"llm_lab.score_mae_pp\" && (*m.Numerator != \"1\" || *m.Denominator != \"3\" || m.Stats[\"paired_reference_scores\"] != \"1\") {\n\t\t\tt.Fatal(m)\n\t\t}\n\t}\n}\n",
+        "oracle": "compute all22registered diagnostic dimensions from actual sufficient statistics/samples, pool raw counts, retain unknown totals/known subtotals and failed-call durations, and never replace the original42grading equations. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
+      },
+      "independent_oracle": "compute all22registered diagnostic dimensions from actual sufficient statistics/samples, pool raw counts, retain unknown totals/known subtotals and failed-call durations, and never replace the original42grading equations. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I14-04.P1.S1.NEGATIVE",
+      "property_id": "I14-04.P1",
+      "polarity": "negative",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S1-NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestQualityMissingReferenceNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestQualityMissingReferenceNegative through services/api/internal/experiment/metrics.go",
+      "initial_state": {
+        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
+        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
+      },
+      "input": {
+        "exact_test": "TestQualityMissingReferenceNegative",
+        "literal_executable_fixture": "func TestQualityMissingReferenceNegative(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityScoreError(map[string]any{}, map[string]any{\"composite\": map[string]any{\"exact_value_0_100\": map[string]any{\"numerator\": \"1\", \"denominator\": \"3\"}}}, &e)\n\tif _, ok := e.Stats[\"paired_reference_scores\"]; ok {\n\t\tt.Fatal(\"invented paired reference\", e)\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestQualityMissingReferenceNegative(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityScoreError(map[string]any{}, map[string]any{\"composite\": map[string]any{\"exact_value_0_100\": map[string]any{\"numerator\": \"1\", \"denominator\": \"3\"}}}, &e)\n\tif _, ok := e.Stats[\"paired_reference_scores\"]; ok {\n\t\tt.Fatal(\"invented paired reference\", e)\n\t}\n}\n",
+        "oracle": "compute all22registered diagnostic dimensions from actual sufficient statistics/samples, pool raw counts, retain unknown totals/known subtotals and failed-call durations, and never replace the original42grading equations. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
+      },
+      "independent_oracle": "compute all22registered diagnostic dimensions from actual sufficient statistics/samples, pool raw counts, retain unknown totals/known subtotals and failed-call durations, and never replace the original42grading equations. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I14-04.P1.S2.POSITIVE",
+      "property_id": "I14-04.P1",
+      "polarity": "positive",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S2-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.completion_rate",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.completion_rate through services/api/internal/experiment/metrics.go",
@@ -712,11 +766,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S2.POSITIVE",
+      "case_id": "I14-04.P1.S3.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S2-POSITIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S3-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.first_response_projection_rate",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.first_response_projection_rate through services/api/internal/experiment/metrics.go",
@@ -739,11 +793,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S3.POSITIVE",
+      "case_id": "I14-04.P1.S4.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S3-POSITIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S4-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.repair_rate",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.repair_rate through services/api/internal/experiment/metrics.go",
@@ -766,11 +820,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S4.POSITIVE",
+      "case_id": "I14-04.P1.S5.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S4-POSITIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S5-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.canonical_preservation_rate",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.canonical_preservation_rate through services/api/internal/experiment/metrics.go",
@@ -793,11 +847,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S5.POSITIVE",
+      "case_id": "I14-04.P1.S6.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S5-POSITIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S6-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.mutation_list_consistency_rate",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.mutation_list_consistency_rate through services/api/internal/experiment/metrics.go",
@@ -820,11 +874,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S6.POSITIVE",
+      "case_id": "I14-04.P1.S7.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S6-POSITIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S7-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.request_fulfillment_rate",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.request_fulfillment_rate through services/api/internal/experiment/metrics.go",
@@ -847,11 +901,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S7.POSITIVE",
+      "case_id": "I14-04.P1.S8.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S7-POSITIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S8-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.word_length_relative_deviation",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.word_length_relative_deviation through services/api/internal/experiment/metrics.go",
@@ -874,11 +928,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S8.POSITIVE",
+      "case_id": "I14-04.P1.S9.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S8-POSITIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S9-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.detection_precision",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.detection_precision through services/api/internal/experiment/metrics.go",
@@ -901,11 +955,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S9.POSITIVE",
+      "case_id": "I14-04.P1.S10.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S9-POSITIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S10-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.detection_recall",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.detection_recall through services/api/internal/experiment/metrics.go",
@@ -928,11 +982,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S10.POSITIVE",
+      "case_id": "I14-04.P1.S11.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S10-POSITIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S11-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.detection_f1",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.detection_f1 through services/api/internal/experiment/metrics.go",
@@ -955,11 +1009,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S11.POSITIVE",
+      "case_id": "I14-04.P1.S12.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S11-POSITIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S12-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.category_accuracy",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.category_accuracy through services/api/internal/experiment/metrics.go",
@@ -982,11 +1036,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S12.POSITIVE",
+      "case_id": "I14-04.P1.S13.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S12-POSITIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S13-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.repair_accuracy",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.repair_accuracy through services/api/internal/experiment/metrics.go",
@@ -1009,11 +1063,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S13.POSITIVE",
+      "case_id": "I14-04.P1.S14.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S13-POSITIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S14-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.explanation_accuracy",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.explanation_accuracy through services/api/internal/experiment/metrics.go",
@@ -1036,11 +1090,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S14.POSITIVE",
+      "case_id": "I14-04.P1.S15.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S14-POSITIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S15-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.score_mae_pp",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.score_mae_pp through services/api/internal/experiment/metrics.go",
@@ -1063,11 +1117,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S15.POSITIVE",
+      "case_id": "I14-04.P1.S16.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S15-POSITIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S16-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.feedback_grounding_rate",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.feedback_grounding_rate through services/api/internal/experiment/metrics.go",
@@ -1090,11 +1144,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S16.POSITIVE",
+      "case_id": "I14-04.P1.S17.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S16-POSITIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S17-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.audio_target_confirmation_rate",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.audio_target_confirmation_rate through services/api/internal/experiment/metrics.go",
@@ -1117,11 +1171,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S17.POSITIVE",
+      "case_id": "I14-04.P1.S18.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S17-POSITIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S18-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.latency_p50_ms",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.latency_p50_ms through services/api/internal/experiment/metrics.go",
@@ -1144,11 +1198,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S18.POSITIVE",
+      "case_id": "I14-04.P1.S19.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S18-POSITIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S19-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.latency_p95_ms",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.latency_p95_ms through services/api/internal/experiment/metrics.go",
@@ -1171,11 +1225,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S19.POSITIVE",
+      "case_id": "I14-04.P1.S20.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S19-POSITIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S20-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.reported_tokens_total",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.reported_tokens_total through services/api/internal/experiment/metrics.go",
@@ -1198,11 +1252,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S20.POSITIVE",
+      "case_id": "I14-04.P1.S21.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S20-POSITIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S21-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.cost_total_usd",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.cost_total_usd through services/api/internal/experiment/metrics.go",
@@ -1225,11 +1279,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S21.POSITIVE",
+      "case_id": "I14-04.P1.S22.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S21-POSITIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S22-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.repeat_detection_jaccard",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.repeat_detection_jaccard through services/api/internal/experiment/metrics.go",
@@ -1252,11 +1306,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S22.POSITIVE",
+      "case_id": "I14-04.P1.S23.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S22-POSITIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S23-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricPositive/llm_lab.leaf_macro_recall",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricPositive/llm_lab.leaf_macro_recall through services/api/internal/experiment/metrics.go",
@@ -1279,11 +1333,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S1.NEGATIVE",
+      "case_id": "I14-04.P1.S2.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S1-NEGATIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S2-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.completion_rate",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.completion_rate through services/api/internal/experiment/metrics.go",
@@ -1306,11 +1360,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S2.NEGATIVE",
+      "case_id": "I14-04.P1.S3.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S2-NEGATIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S3-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.first_response_projection_rate",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.first_response_projection_rate through services/api/internal/experiment/metrics.go",
@@ -1333,11 +1387,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S3.NEGATIVE",
+      "case_id": "I14-04.P1.S4.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S3-NEGATIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S4-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.repair_rate",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.repair_rate through services/api/internal/experiment/metrics.go",
@@ -1360,11 +1414,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S4.NEGATIVE",
+      "case_id": "I14-04.P1.S5.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S4-NEGATIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S5-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.canonical_preservation_rate",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.canonical_preservation_rate through services/api/internal/experiment/metrics.go",
@@ -1387,11 +1441,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S5.NEGATIVE",
+      "case_id": "I14-04.P1.S6.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S5-NEGATIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S6-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.mutation_list_consistency_rate",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.mutation_list_consistency_rate through services/api/internal/experiment/metrics.go",
@@ -1414,11 +1468,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S6.NEGATIVE",
+      "case_id": "I14-04.P1.S7.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S6-NEGATIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S7-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.request_fulfillment_rate",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.request_fulfillment_rate through services/api/internal/experiment/metrics.go",
@@ -1441,11 +1495,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S7.NEGATIVE",
+      "case_id": "I14-04.P1.S8.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S7-NEGATIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S8-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.word_length_relative_deviation",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.word_length_relative_deviation through services/api/internal/experiment/metrics.go",
@@ -1468,11 +1522,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S8.NEGATIVE",
+      "case_id": "I14-04.P1.S9.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S8-NEGATIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S9-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.detection_precision",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.detection_precision through services/api/internal/experiment/metrics.go",
@@ -1495,11 +1549,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S9.NEGATIVE",
+      "case_id": "I14-04.P1.S10.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S9-NEGATIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S10-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.detection_recall",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.detection_recall through services/api/internal/experiment/metrics.go",
@@ -1522,11 +1576,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S10.NEGATIVE",
+      "case_id": "I14-04.P1.S11.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S10-NEGATIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S11-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.detection_f1",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.detection_f1 through services/api/internal/experiment/metrics.go",
@@ -1549,11 +1603,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S11.NEGATIVE",
+      "case_id": "I14-04.P1.S12.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S11-NEGATIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S12-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.category_accuracy",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.category_accuracy through services/api/internal/experiment/metrics.go",
@@ -1576,11 +1630,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S12.NEGATIVE",
+      "case_id": "I14-04.P1.S13.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S12-NEGATIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S13-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.repair_accuracy",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.repair_accuracy through services/api/internal/experiment/metrics.go",
@@ -1603,11 +1657,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S13.NEGATIVE",
+      "case_id": "I14-04.P1.S14.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S13-NEGATIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S14-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.explanation_accuracy",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.explanation_accuracy through services/api/internal/experiment/metrics.go",
@@ -1630,11 +1684,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S14.NEGATIVE",
+      "case_id": "I14-04.P1.S15.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S14-NEGATIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S15-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.score_mae_pp",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.score_mae_pp through services/api/internal/experiment/metrics.go",
@@ -1657,11 +1711,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S15.NEGATIVE",
+      "case_id": "I14-04.P1.S16.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S15-NEGATIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S16-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.feedback_grounding_rate",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.feedback_grounding_rate through services/api/internal/experiment/metrics.go",
@@ -1684,11 +1738,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S16.NEGATIVE",
+      "case_id": "I14-04.P1.S17.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S16-NEGATIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S17-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.audio_target_confirmation_rate",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.audio_target_confirmation_rate through services/api/internal/experiment/metrics.go",
@@ -1711,11 +1765,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S17.NEGATIVE",
+      "case_id": "I14-04.P1.S18.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S17-NEGATIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S18-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.latency_p50_ms",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.latency_p50_ms through services/api/internal/experiment/metrics.go",
@@ -1738,11 +1792,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S18.NEGATIVE",
+      "case_id": "I14-04.P1.S19.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S18-NEGATIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S19-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.latency_p95_ms",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.latency_p95_ms through services/api/internal/experiment/metrics.go",
@@ -1765,11 +1819,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S19.NEGATIVE",
+      "case_id": "I14-04.P1.S20.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S19-NEGATIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S20-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.reported_tokens_total",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.reported_tokens_total through services/api/internal/experiment/metrics.go",
@@ -1792,11 +1846,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S20.NEGATIVE",
+      "case_id": "I14-04.P1.S21.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S20-NEGATIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S21-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.cost_total_usd",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.cost_total_usd through services/api/internal/experiment/metrics.go",
@@ -1819,11 +1873,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S21.NEGATIVE",
+      "case_id": "I14-04.P1.S22.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S21-NEGATIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S22-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.repeat_detection_jaccard",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.repeat_detection_jaccard through services/api/internal/experiment/metrics.go",
@@ -1846,11 +1900,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S22.NEGATIVE",
+      "case_id": "I14-04.P1.S23.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S22-NEGATIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S23-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMetricNegative/llm_lab.leaf_macro_recall",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMetricNegative/llm_lab.leaf_macro_recall through services/api/internal/experiment/metrics.go",
@@ -1873,11 +1927,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S23.POSITIVE",
+      "case_id": "I14-04.P1.S24.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S23-POSITIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S24-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentRawPoolingPositive",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentRawPoolingPositive through services/api/internal/experiment/metrics.go",
@@ -1900,11 +1954,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S24.POSITIVE",
+      "case_id": "I14-04.P1.S25.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S24-POSITIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S25-POSITIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMeanPositive",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMeanPositive through services/api/internal/experiment/metrics.go",
@@ -1927,11 +1981,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S23.NEGATIVE",
+      "case_id": "I14-04.P1.S24.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S23-NEGATIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S24-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentUnknownUsageNegative",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentUnknownUsageNegative through services/api/internal/experiment/metrics.go",
@@ -1954,11 +2008,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S24.NEGATIVE",
+      "case_id": "I14-04.P1.S25.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S24-NEGATIVE",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S25-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentDurationNegative",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentDurationNegative through services/api/internal/experiment/metrics.go",
@@ -1981,11 +2035,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S25.NEGATIVE",
+      "case_id": "I14-04.P1.S26.NEGATIVE",
       "property_id": "I14-04.P1",
       "polarity": "negative",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S25-NEGATIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S26-NEGATIVE",
       "test_id": "tangerine.local/api/internal/experiment::TestExperimentMixedBasisNegative",
       "mode": "declared_behavior",
       "action": "Execute TestExperimentMixedBasisNegative through services/api/internal/experiment/metrics.go",
@@ -2008,11 +2062,11 @@
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-04.P1.S25.POSITIVE",
+      "case_id": "I14-04.P1.S26.POSITIVE",
       "property_id": "I14-04.P1",
       "polarity": "positive",
-      "scenario": "I14-04 packet 1",
-      "fixture_id": "iteration14-I14-04-P1-S25-POSITIVE",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S26-POSITIVE",
       "test_id": "tangerine.local/api/internal/app::TestQualityRequestMeasurementsPositive",
       "mode": "declared_behavior",
       "action": "Execute TestQualityRequestMeasurementsPositive through services/api/internal/experiment/metrics.go",
@@ -2024,65 +2078,11 @@
         "exact_test": "TestQualityRequestMeasurementsPositive",
         "literal_executable_fixture": "func TestQualityRequestMeasurementsPositive(t *testing.T) {\n\t_, _, candidate, _ := mutationFixture()\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityGenerationEvidence(map[string]any{\"text_length_words\": float64(50), \"speaker_count\": float64(1), \"mutation_count\": float64(1), \"category_families\": []any{\"grammar\"}}, candidate, map[string]any{\"surface_word_count\": float64(4), \"canonical_word_count\": float64(4)}, &e)\n\tif e.Stats[\"applicable_request_predicates\"] != \"3\" || e.Stats[\"satisfied_applicable_request_predicates\"] != \"3\" || e.Stats[\"surface_word_absolute_deviation\"] != \"46\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
         "independent_literal_assertions": "func TestQualityRequestMeasurementsPositive(t *testing.T) {\n\t_, _, candidate, _ := mutationFixture()\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityGenerationEvidence(map[string]any{\"text_length_words\": float64(50), \"speaker_count\": float64(1), \"mutation_count\": float64(1), \"category_families\": []any{\"grammar\"}}, candidate, map[string]any{\"surface_word_count\": float64(4), \"canonical_word_count\": float64(4)}, &e)\n\tif e.Stats[\"applicable_request_predicates\"] != \"3\" || e.Stats[\"satisfied_applicable_request_predicates\"] != \"3\" || e.Stats[\"surface_word_absolute_deviation\"] != \"46\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
-        "oracle": "compute all22registered diagnostic dimensions from actual sufficient statistics/samples, pool raw counts, retain unknown totals/known subtotals and failed-call durations, and never replace the original42grading equations. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
-      },
-      "independent_oracle": "compute all22registered diagnostic dimensions from actual sufficient statistics/samples, pool raw counts, retain unknown totals/known subtotals and failed-call durations, and never replace the original42grading equations. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
-      "observation_state": "not_run"
-    },
-    {
-      "case_id": "I14-04.P1.S26.NEGATIVE",
-      "property_id": "I14-04.P1",
-      "polarity": "negative",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S26-NEGATIVE",
-      "test_id": "tangerine.local/api/internal/app::TestQualityRequestMeasurementsNegative",
-      "mode": "declared_behavior",
-      "action": "Execute TestQualityRequestMeasurementsNegative through services/api/internal/experiment/metrics.go",
-      "initial_state": {
-        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
-        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
-      },
-      "input": {
-        "exact_test": "TestQualityRequestMeasurementsNegative",
-        "literal_executable_fixture": "func TestQualityRequestMeasurementsNegative(t *testing.T) {\n\t_, _, candidate, _ := mutationFixture()\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityGenerationEvidence(map[string]any{\"text_length_words\": float64(50), \"speaker_count\": float64(2), \"mutation_count\": float64(2), \"category_families\": []any{\"lexis\"}}, candidate, map[string]any{\"surface_word_count\": float64(4)}, &e)\n\tif e.Stats[\"applicable_request_predicates\"] != \"3\" || e.Stats[\"satisfied_applicable_request_predicates\"] != \"0\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
-        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
-        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
-      },
-      "expected": {
-        "independent_literal_assertions": "func TestQualityRequestMeasurementsNegative(t *testing.T) {\n\t_, _, candidate, _ := mutationFixture()\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityGenerationEvidence(map[string]any{\"text_length_words\": float64(50), \"speaker_count\": float64(2), \"mutation_count\": float64(2), \"category_families\": []any{\"lexis\"}}, candidate, map[string]any{\"surface_word_count\": float64(4)}, &e)\n\tif e.Stats[\"applicable_request_predicates\"] != \"3\" || e.Stats[\"satisfied_applicable_request_predicates\"] != \"0\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
-        "oracle": "compute all22registered diagnostic dimensions from actual sufficient statistics/samples, pool raw counts, retain unknown totals/known subtotals and failed-call durations, and never replace the original42grading equations. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
-      },
-      "independent_oracle": "compute all22registered diagnostic dimensions from actual sufficient statistics/samples, pool raw counts, retain unknown totals/known subtotals and failed-call durations, and never replace the original42grading equations. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
-      "observation_state": "not_run"
-    },
-    {
-      "case_id": "I14-04.P1.S26.POSITIVE",
-      "property_id": "I14-04.P1",
-      "polarity": "positive",
-      "scenario": "I14-04 packet 2",
-      "fixture_id": "iteration14-I14-04-P1-S26-POSITIVE",
-      "test_id": "tangerine.local/api/internal/app::TestQualityPreservationPositive",
-      "mode": "declared_behavior",
-      "action": "Execute TestQualityPreservationPositive through services/api/internal/experiment/metrics.go",
-      "initial_state": {
-        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
-        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
-      },
-      "input": {
-        "exact_test": "TestQualityPreservationPositive",
-        "literal_executable_fixture": "func TestQualityPreservationPositive(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityDeterministicEvidence(QualityCase{}, QualityExperiment{Scope: \"generation_pipeline\"}, nil, nil, nil, map[string]any{\"initial_canonical_sha256\": \"saved\", \"canonical_sha256\": \"saved\"}, &e)\n\tif e.Stats[\"completed_mutation_outputs\"] != \"1\" || e.Stats[\"mutation_outputs_with_exact_saved_canonical\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
-        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
-        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
-      },
-      "expected": {
-        "independent_literal_assertions": "func TestQualityPreservationPositive(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityDeterministicEvidence(QualityCase{}, QualityExperiment{Scope: \"generation_pipeline\"}, nil, nil, nil, map[string]any{\"initial_canonical_sha256\": \"saved\", \"canonical_sha256\": \"saved\"}, &e)\n\tif e.Stats[\"completed_mutation_outputs\"] != \"1\" || e.Stats[\"mutation_outputs_with_exact_saved_canonical\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "oracle": "compute all22registered diagnostic dimensions from actual sufficient statistics/samples, pool raw counts, retain unknown totals/known subtotals and failed-call durations, and never replace the original42grading equations. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "compute all22registered diagnostic dimensions from actual sufficient statistics/samples, pool raw counts, retain unknown totals/known subtotals and failed-call durations, and never replace the original42grading equations. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
@@ -2094,6 +2094,60 @@
       "polarity": "negative",
       "scenario": "I14-04 packet 1",
       "fixture_id": "iteration14-I14-04-P1-S27-NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestQualityRequestMeasurementsNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestQualityRequestMeasurementsNegative through services/api/internal/experiment/metrics.go",
+      "initial_state": {
+        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
+        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
+      },
+      "input": {
+        "exact_test": "TestQualityRequestMeasurementsNegative",
+        "literal_executable_fixture": "func TestQualityRequestMeasurementsNegative(t *testing.T) {\n\t_, _, candidate, _ := mutationFixture()\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityGenerationEvidence(map[string]any{\"text_length_words\": float64(50), \"speaker_count\": float64(2), \"mutation_count\": float64(2), \"category_families\": []any{\"lexis\"}}, candidate, map[string]any{\"surface_word_count\": float64(4)}, &e)\n\tif e.Stats[\"applicable_request_predicates\"] != \"3\" || e.Stats[\"satisfied_applicable_request_predicates\"] != \"0\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestQualityRequestMeasurementsNegative(t *testing.T) {\n\t_, _, candidate, _ := mutationFixture()\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityGenerationEvidence(map[string]any{\"text_length_words\": float64(50), \"speaker_count\": float64(2), \"mutation_count\": float64(2), \"category_families\": []any{\"lexis\"}}, candidate, map[string]any{\"surface_word_count\": float64(4)}, &e)\n\tif e.Stats[\"applicable_request_predicates\"] != \"3\" || e.Stats[\"satisfied_applicable_request_predicates\"] != \"0\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "oracle": "compute all22registered diagnostic dimensions from actual sufficient statistics/samples, pool raw counts, retain unknown totals/known subtotals and failed-call durations, and never replace the original42grading equations. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
+      },
+      "independent_oracle": "compute all22registered diagnostic dimensions from actual sufficient statistics/samples, pool raw counts, retain unknown totals/known subtotals and failed-call durations, and never replace the original42grading equations. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I14-04.P1.S27.POSITIVE",
+      "property_id": "I14-04.P1",
+      "polarity": "positive",
+      "scenario": "I14-04 packet 1",
+      "fixture_id": "iteration14-I14-04-P1-S27-POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestQualityPreservationPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestQualityPreservationPositive through services/api/internal/experiment/metrics.go",
+      "initial_state": {
+        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
+        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
+      },
+      "input": {
+        "exact_test": "TestQualityPreservationPositive",
+        "literal_executable_fixture": "func TestQualityPreservationPositive(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityDeterministicEvidence(QualityCase{}, QualityExperiment{Scope: \"generation_pipeline\"}, nil, nil, nil, map[string]any{\"initial_canonical_sha256\": \"saved\", \"canonical_sha256\": \"saved\"}, &e)\n\tif e.Stats[\"completed_mutation_outputs\"] != \"1\" || e.Stats[\"mutation_outputs_with_exact_saved_canonical\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestQualityPreservationPositive(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityDeterministicEvidence(QualityCase{}, QualityExperiment{Scope: \"generation_pipeline\"}, nil, nil, nil, map[string]any{\"initial_canonical_sha256\": \"saved\", \"canonical_sha256\": \"saved\"}, &e)\n\tif e.Stats[\"completed_mutation_outputs\"] != \"1\" || e.Stats[\"mutation_outputs_with_exact_saved_canonical\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "oracle": "compute all22registered diagnostic dimensions from actual sufficient statistics/samples, pool raw counts, retain unknown totals/known subtotals and failed-call durations, and never replace the original42grading equations. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
+      },
+      "independent_oracle": "compute all22registered diagnostic dimensions from actual sufficient statistics/samples, pool raw counts, retain unknown totals/known subtotals and failed-call durations, and never replace the original42grading equations. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I14-04.P1.S28.NEGATIVE",
+      "property_id": "I14-04.P1",
+      "polarity": "negative",
+      "scenario": "I14-04 packet 2",
+      "fixture_id": "iteration14-I14-04-P1-S28-NEGATIVE",
       "test_id": "tangerine.local/api/internal/app::TestQualityPreservationNegative",
       "mode": "declared_behavior",
       "action": "Execute TestQualityPreservationNegative through services/api/internal/experiment/metrics.go",
@@ -2103,13 +2157,13 @@
       },
       "input": {
         "exact_test": "TestQualityPreservationNegative",
-        "literal_executable_fixture": "func TestQualityPreservationNegative(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityDeterministicEvidence(QualityCase{}, QualityExperiment{Scope: \"generation_pipeline\"}, nil, nil, nil, map[string]any{\"initial_canonical_sha256\": \"saved\", \"canonical_sha256\": \"changed\"}, &e)\n\tif e.Stats[\"mutation_outputs_with_exact_saved_canonical\"] != \"0\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "literal_executable_fixture": "func TestQualityPreservationNegative(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityDeterministicEvidence(QualityCase{}, QualityExperiment{Scope: \"generation_pipeline\"}, nil, nil, nil, map[string]any{\"initial_canonical_sha256\": \"saved\", \"canonical_sha256\": \"changed\"}, &e)\n\tif e.Stats[\"mutation_outputs_with_exact_saved_canonical\"] != \"0\" {\n\t\tt.Fatal(e)\n\t}\n}\n\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestQualityPreservationNegative(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityDeterministicEvidence(QualityCase{}, QualityExperiment{Scope: \"generation_pipeline\"}, nil, nil, nil, map[string]any{\"initial_canonical_sha256\": \"saved\", \"canonical_sha256\": \"changed\"}, &e)\n\tif e.Stats[\"mutation_outputs_with_exact_saved_canonical\"] != \"0\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "independent_literal_assertions": "func TestQualityPreservationNegative(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityDeterministicEvidence(QualityCase{}, QualityExperiment{Scope: \"generation_pipeline\"}, nil, nil, nil, map[string]any{\"initial_canonical_sha256\": \"saved\", \"canonical_sha256\": \"changed\"}, &e)\n\tif e.Stats[\"mutation_outputs_with_exact_saved_canonical\"] != \"0\" {\n\t\tt.Fatal(e)\n\t}\n}\n\n",
         "oracle": "compute all22registered diagnostic dimensions from actual sufficient statistics/samples, pool raw counts, retain unknown totals/known subtotals and failed-call durations, and never replace the original42grading equations. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "compute all22registered diagnostic dimensions from actual sufficient statistics/samples, pool raw counts, retain unknown totals/known subtotals and failed-call durations, and never replace the original42grading equations. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
@@ -2483,7 +2537,7 @@
         "exact_test": "TestQualityNativeBudgetPositive",
         "literal_executable_fixture": "func TestQualityNativeBudgetPositive(t *testing.T) {\n\ts := new(Storage)\n\troot := context.Background()\n\tfirst, cancel, e := s.qualityOwnerContext(root)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tdeadline, ok := first.Deadline()\n\tif !ok || time.Until(deadline) > 270*time.Second || time.Until(deadline) < 269*time.Second {\n\t\tt.Fatal(\"native operation budget lost\")\n\t}\n\tcancel()\n\tsecond, done, e := s.qualityOwnerContext(root)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tdefer done()\n\tif first.Err() == nil || second.Err() != nil {\n\t\tt.Fatal(\"one completed operation cancelled its independent successor\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2564,7 +2618,7 @@
         "exact_test": "TestQualityNativeBudgetCancellationNegative",
         "literal_executable_fixture": "func TestQualityNativeBudgetCancellationNegative(t *testing.T) {\n\ts := new(Storage)\n\troot, cancel := context.WithCancel(context.Background())\n\tcancel()\n\toperation, done, e := s.qualityOwnerContext(root)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tdefer done()\n\tif operation.Err() == nil {\n\t\tt.Fatal(\"cancelled batch allowed work\")\n\t}\n}\n\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -2580,49 +2634,22 @@
       "polarity": "positive",
       "scenario": "I14-07 packet 1",
       "fixture_id": "iteration14-I14-07-P1-S1-POSITIVE",
-      "test_id": "tangerine.local/api/internal/app::TestQualityJudgeSupportedPositive",
+      "test_id": "tangerine.local/api/internal/app::TestQualityJSONPathPositive",
       "mode": "declared_behavior",
-      "action": "Execute TestQualityJudgeSupportedPositive through services/api/internal/app/experiment_judge.go",
+      "action": "Execute TestQualityJSONPathPositive through services/api/internal/app/experiment_judge.go",
       "initial_state": {
         "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
         "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
       },
       "input": {
-        "exact_test": "TestQualityJudgeSupportedPositive",
-        "literal_executable_fixture": "func TestQualityJudgeSupportedPositive(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[{\"proposition_id\":\"p\",\"verdict\":\"supported\",\"reason\":\"Source-supported\",\"evidence\":[{\"asset_id\":\"candidate\",\"pointer\":\"/correction\"}],\"missing_reason\":null}]}`)\n\te := validateQualityJudge(raw, qualityPropositions(), map[string]any{\"candidate\": map[string]any{\"correction\": \"opens\"}})\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "exact_test": "TestQualityJSONPathPositive",
+        "literal_executable_fixture": "func TestQualityJSONPathPositive(t *testing.T) {\n\tv := map[string]any{\"verdicts\": []any{map[string]any{\"evidence\": []any{map[string]any{\"asset_id\": \"candidate\", \"pointer\": \"$.clauses[0].claim_span\"}}}}}\n\tbody := map[string]any{\"clauses\": []any{map[string]any{\"claim_span\": \"Use opens.\"}}}\n\tgot := normalizeQualityJudge(v, map[string]any{\"candidate\": body}).(map[string]any)\n\tref := got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)\n\tif ref[\"pointer\"] != \"/clauses/0/claim_span\" {\n\t\tt.Fatal(ref)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestQualityJudgeSupportedPositive(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[{\"proposition_id\":\"p\",\"verdict\":\"supported\",\"reason\":\"Source-supported\",\"evidence\":[{\"asset_id\":\"candidate\",\"pointer\":\"/correction\"}],\"missing_reason\":null}]}`)\n\te := validateQualityJudge(raw, qualityPropositions(), map[string]any{\"candidate\": map[string]any{\"correction\": \"opens\"}})\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
-        "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
-      },
-      "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
-      "observation_state": "not_run"
-    },
-    {
-      "case_id": "I14-07.P1.S2.POSITIVE",
-      "property_id": "I14-07.P1",
-      "polarity": "positive",
-      "scenario": "I14-07 packet 2",
-      "fixture_id": "iteration14-I14-07-P1-S2-POSITIVE",
-      "test_id": "tangerine.local/api/internal/app::TestQualityJudgeUnknownPositive",
-      "mode": "declared_behavior",
-      "action": "Execute TestQualityJudgeUnknownPositive through services/api/internal/app/experiment_judge.go",
-      "initial_state": {
-        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
-        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
-      },
-      "input": {
-        "exact_test": "TestQualityJudgeUnknownPositive",
-        "literal_executable_fixture": "func TestQualityJudgeUnknownPositive(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[{\"proposition_id\":\"p\",\"verdict\":\"unknown\",\"reason\":\"Audio absent\",\"evidence\":[],\"missing_reason\":\"No recording\"}]}`)\n\tif e := validateQualityJudge(raw, qualityPropositions(), nil); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
-        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
-        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
-      },
-      "expected": {
-        "independent_literal_assertions": "func TestQualityJudgeUnknownPositive(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[{\"proposition_id\":\"p\",\"verdict\":\"unknown\",\"reason\":\"Audio absent\",\"evidence\":[],\"missing_reason\":\"No recording\"}]}`)\n\tif e := validateQualityJudge(raw, qualityPropositions(), nil); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "independent_literal_assertions": "func TestQualityJSONPathPositive(t *testing.T) {\n\tv := map[string]any{\"verdicts\": []any{map[string]any{\"evidence\": []any{map[string]any{\"asset_id\": \"candidate\", \"pointer\": \"$.clauses[0].claim_span\"}}}}}\n\tbody := map[string]any{\"clauses\": []any{map[string]any{\"claim_span\": \"Use opens.\"}}}\n\tgot := normalizeQualityJudge(v, map[string]any{\"candidate\": body}).(map[string]any)\n\tref := got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)\n\tif ref[\"pointer\"] != \"/clauses/0/claim_span\" {\n\t\tt.Fatal(ref)\n\t}\n}\n",
         "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
@@ -2634,22 +2661,22 @@
       "polarity": "negative",
       "scenario": "I14-07 packet 1",
       "fixture_id": "iteration14-I14-07-P1-S1-NEGATIVE",
-      "test_id": "tangerine.local/api/internal/app::TestQualityJudgePointerNegative",
+      "test_id": "tangerine.local/api/internal/app::TestQualityJSONPathNegative",
       "mode": "declared_behavior",
-      "action": "Execute TestQualityJudgePointerNegative through services/api/internal/app/experiment_judge.go",
+      "action": "Execute TestQualityJSONPathNegative through services/api/internal/app/experiment_judge.go",
       "initial_state": {
         "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
         "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
       },
       "input": {
-        "exact_test": "TestQualityJudgePointerNegative",
-        "literal_executable_fixture": "func TestQualityJudgePointerNegative(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[{\"proposition_id\":\"p\",\"verdict\":\"supported\",\"reason\":\"claim\",\"evidence\":[{\"asset_id\":\"candidate\",\"pointer\":\"/absent\"}],\"missing_reason\":null}]}`)\n\tif e := validateQualityJudge(raw, qualityPropositions(), map[string]any{\"candidate\": map[string]any{\"correction\": \"opens\"}}); e == nil {\n\t\tt.Fatal(\"invented evidence\")\n\t}\n}\n",
+        "exact_test": "TestQualityJSONPathNegative",
+        "literal_executable_fixture": "func TestQualityJSONPathNegative(t *testing.T) {\n\tfor _, path := range []string{\"$.clauses[*].claim_span\", \"$.clauses[0].absent\", \"$.clauses[?(@.id)]\"} {\n\t\tv := map[string]any{\"verdicts\": []any{map[string]any{\"evidence\": []any{map[string]any{\"asset_id\": \"candidate\", \"pointer\": path}}}}}\n\t\tgot := normalizeQualityJudge(v, map[string]any{\"candidate\": map[string]any{\"clauses\": []any{}}}).(map[string]any)\n\t\tref := got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)\n\t\tif ref[\"pointer\"] != path {\n\t\t\tt.Fatal(\"invented/evaluated absent path\", ref)\n\t\t}\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestQualityJudgePointerNegative(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[{\"proposition_id\":\"p\",\"verdict\":\"supported\",\"reason\":\"claim\",\"evidence\":[{\"asset_id\":\"candidate\",\"pointer\":\"/absent\"}],\"missing_reason\":null}]}`)\n\tif e := validateQualityJudge(raw, qualityPropositions(), map[string]any{\"candidate\": map[string]any{\"correction\": \"opens\"}}); e == nil {\n\t\tt.Fatal(\"invented evidence\")\n\t}\n}\n",
+        "independent_literal_assertions": "func TestQualityJSONPathNegative(t *testing.T) {\n\tfor _, path := range []string{\"$.clauses[*].claim_span\", \"$.clauses[0].absent\", \"$.clauses[?(@.id)]\"} {\n\t\tv := map[string]any{\"verdicts\": []any{map[string]any{\"evidence\": []any{map[string]any{\"asset_id\": \"candidate\", \"pointer\": path}}}}}\n\t\tgot := normalizeQualityJudge(v, map[string]any{\"candidate\": map[string]any{\"clauses\": []any{}}}).(map[string]any)\n\t\tref := got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)\n\t\tif ref[\"pointer\"] != path {\n\t\t\tt.Fatal(\"invented/evaluated absent path\", ref)\n\t\t}\n\t}\n}\n",
         "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
@@ -2661,49 +2688,49 @@
       "polarity": "negative",
       "scenario": "I14-07 packet 2",
       "fixture_id": "iteration14-I14-07-P1-S2-NEGATIVE",
-      "test_id": "tangerine.local/api/internal/app::TestQualityJudgeMissingNegative",
+      "test_id": "tangerine.local/api/internal/app::TestQualityFalsePositiveNegative",
       "mode": "declared_behavior",
-      "action": "Execute TestQualityJudgeMissingNegative through services/api/internal/app/experiment_judge.go",
+      "action": "Execute TestQualityFalsePositiveNegative through services/api/internal/app/experiment_judge.go",
       "initial_state": {
         "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
         "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
       },
       "input": {
-        "exact_test": "TestQualityJudgeMissingNegative",
-        "literal_executable_fixture": "func TestQualityJudgeMissingNegative(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[]}`)\n\tif e := validateQualityJudge(raw, qualityPropositions(), nil); e == nil {\n\t\tt.Fatal(\"missing verdict\")\n\t}\n}\n",
+        "exact_test": "TestQualityFalsePositiveNegative",
+        "literal_executable_fixture": "func TestQualityFalsePositiveNegative(t *testing.T) {\n\tvar got map[string]any\n\t_ = json.Unmarshal(sourceBytes(SemanticMapping{Decisions: []SemanticDecision{{Claim: \"unsupported\", Decision: \"false_positive\"}, {Claim: \"control\", Unit: ptrQualityTest(\"clean\"), Decision: \"false_positive\"}}}), &got)\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(map[string]any{}, got, &e)\n\tif e.Stats[\"FP\"] != \"2\" || e.Stats[\"TP\"] != \"0\" {\n\t\tt.Fatal(\"unsupported claims vanished\", e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestQualityJudgeMissingNegative(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[]}`)\n\tif e := validateQualityJudge(raw, qualityPropositions(), nil); e == nil {\n\t\tt.Fatal(\"missing verdict\")\n\t}\n}\n",
+        "independent_literal_assertions": "func TestQualityFalsePositiveNegative(t *testing.T) {\n\tvar got map[string]any\n\t_ = json.Unmarshal(sourceBytes(SemanticMapping{Decisions: []SemanticDecision{{Claim: \"unsupported\", Decision: \"false_positive\"}, {Claim: \"control\", Unit: ptrQualityTest(\"clean\"), Decision: \"false_positive\"}}}), &got)\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(map[string]any{}, got, &e)\n\tif e.Stats[\"FP\"] != \"2\" || e.Stats[\"TP\"] != \"0\" {\n\t\tt.Fatal(\"unsupported claims vanished\", e)\n\t}\n}\n",
         "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-07.P1.S3.NEGATIVE",
+      "case_id": "I14-07.P1.S2.POSITIVE",
       "property_id": "I14-07.P1",
-      "polarity": "negative",
-      "scenario": "I14-07 packet 1",
-      "fixture_id": "iteration14-I14-07-P1-S3-NEGATIVE",
-      "test_id": "tangerine.local/api/internal/app::TestQualityJudgeNoNumericNegative",
+      "polarity": "positive",
+      "scenario": "I14-07 packet 2",
+      "fixture_id": "iteration14-I14-07-P1-S2-POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestQualityDuplicateClaimPositive",
       "mode": "declared_behavior",
-      "action": "Execute TestQualityJudgeNoNumericNegative through services/api/internal/app/experiment_judge.go",
+      "action": "Execute TestQualityDuplicateClaimPositive through services/api/internal/app/experiment_judge.go",
       "initial_state": {
         "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
         "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
       },
       "input": {
-        "exact_test": "TestQualityJudgeNoNumericNegative",
-        "literal_executable_fixture": "func TestQualityJudgeNoNumericNegative(t *testing.T) {\n\tif _, _, e := validateQualityOutput([]byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[],\"score\":100}`)); e == nil {\n\t\tt.Fatal(\"model numeric grade accepted\")\n\t}\n}\n",
+        "exact_test": "TestQualityDuplicateClaimPositive",
+        "literal_executable_fixture": "func TestQualityDuplicateClaimPositive(t *testing.T) {\n\tvar got map[string]any\n\t_ = json.Unmarshal(sourceBytes(SemanticMapping{Decisions: []SemanticDecision{{Claim: \"unsupported\", Decision: \"false_positive\"}, {Claim: \"repeat\", Duplicate: ptrQualityTest(\"unsupported\"), Decision: \"false_positive\"}}}), &got)\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(map[string]any{}, got, &e)\n\tif e.Stats[\"FP\"] != \"1\" {\n\t\tt.Fatal(\"duplicate counted again\", e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestQualityJudgeNoNumericNegative(t *testing.T) {\n\tif _, _, e := validateQualityOutput([]byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[],\"score\":100}`)); e == nil {\n\t\tt.Fatal(\"model numeric grade accepted\")\n\t}\n}\n",
+        "independent_literal_assertions": "func TestQualityDuplicateClaimPositive(t *testing.T) {\n\tvar got map[string]any\n\t_ = json.Unmarshal(sourceBytes(SemanticMapping{Decisions: []SemanticDecision{{Claim: \"unsupported\", Decision: \"false_positive\"}, {Claim: \"repeat\", Duplicate: ptrQualityTest(\"unsupported\"), Decision: \"false_positive\"}}}), &got)\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(map[string]any{}, got, &e)\n\tif e.Stats[\"FP\"] != \"1\" {\n\t\tt.Fatal(\"duplicate counted again\", e)\n\t}\n}\n",
         "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
@@ -2715,22 +2742,22 @@
       "polarity": "positive",
       "scenario": "I14-07 packet 1",
       "fixture_id": "iteration14-I14-07-P1-S3-POSITIVE",
-      "test_id": "tangerine.local/api/internal/app::TestQualityJudgeSelfConsistencyPositive",
+      "test_id": "tangerine.local/api/internal/app::TestQualityJudgeSupportedPositive",
       "mode": "declared_behavior",
-      "action": "Execute TestQualityJudgeSelfConsistencyPositive through services/api/internal/app/experiment_judge.go",
+      "action": "Execute TestQualityJudgeSupportedPositive through services/api/internal/app/experiment_judge.go",
       "initial_state": {
         "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
         "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
       },
       "input": {
-        "exact_test": "TestQualityJudgeSelfConsistencyPositive",
-        "literal_executable_fixture": "func TestQualityJudgeSelfConsistencyPositive(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\texpected := map[string]any{\"semantic_propositions\": []any{map[string]any{\"id\": \"p\", \"scope\": \"feedback\", \"expected\": \"supported\"}}}\n\tjudgment := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"supported\"}}}\n\tqualityJudgeEvidence(QualityCase{Basis: \"self_consistency\"}, expected, judgment, &e)\n\tif e.Basis[\"llm_lab.feedback_grounding_rate\"] != \"self_consistency\" || e.Stats[\"supported_factual_items_or_correctly_labelled_practice\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "exact_test": "TestQualityJudgeSupportedPositive",
+        "literal_executable_fixture": "func TestQualityJudgeSupportedPositive(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[{\"proposition_id\":\"p\",\"verdict\":\"supported\",\"reason\":\"Source-supported\",\"evidence\":[{\"asset_id\":\"candidate\",\"pointer\":\"/correction\"}],\"missing_reason\":null}]}`)\n\te := validateQualityJudge(raw, qualityPropositions(), map[string]any{\"candidate\": map[string]any{\"correction\": \"opens\"}})\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestQualityJudgeSelfConsistencyPositive(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\texpected := map[string]any{\"semantic_propositions\": []any{map[string]any{\"id\": \"p\", \"scope\": \"feedback\", \"expected\": \"supported\"}}}\n\tjudgment := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"supported\"}}}\n\tqualityJudgeEvidence(QualityCase{Basis: \"self_consistency\"}, expected, judgment, &e)\n\tif e.Basis[\"llm_lab.feedback_grounding_rate\"] != \"self_consistency\" || e.Stats[\"supported_factual_items_or_correctly_labelled_practice\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "independent_literal_assertions": "func TestQualityJudgeSupportedPositive(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[{\"proposition_id\":\"p\",\"verdict\":\"supported\",\"reason\":\"Source-supported\",\"evidence\":[{\"asset_id\":\"candidate\",\"pointer\":\"/correction\"}],\"missing_reason\":null}]}`)\n\te := validateQualityJudge(raw, qualityPropositions(), map[string]any{\"candidate\": map[string]any{\"correction\": \"opens\"}})\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
@@ -2742,76 +2769,49 @@
       "polarity": "positive",
       "scenario": "I14-07 packet 2",
       "fixture_id": "iteration14-I14-07-P1-S4-POSITIVE",
-      "test_id": "tangerine.local/api/internal/app::TestQualityIndependentComponentsPositive",
+      "test_id": "tangerine.local/api/internal/app::TestQualityJudgeUnknownPositive",
       "mode": "declared_behavior",
-      "action": "Execute TestQualityIndependentComponentsPositive through services/api/internal/app/experiment_judge.go",
+      "action": "Execute TestQualityJudgeUnknownPositive through services/api/internal/app/experiment_judge.go",
       "initial_state": {
         "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
         "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
       },
       "input": {
-        "exact_test": "TestQualityIndependentComponentsPositive",
-        "literal_executable_fixture": "func TestQualityIndependentComponentsPositive(t *testing.T) {\n\treference := SemanticMapping{Decisions: []SemanticDecision{{Claim: \"c\", Unit: ptrQualityTest(\"u\"), Decision: \"matched_error\", Category: ptrQualityTest(\"grammar.verbs.subject_verb_agreement\"), Correction: SemanticComponent{Supplied: true, Satisfied: []string{\"correct\"}}, Explanation: SemanticComponent{Supplied: true, Violated: []string{\"reason\"}}}}}\n\tactual := reference\n\tvar ref, got map[string]any\n\t_ = json.Unmarshal(sourceBytes(reference), &ref)\n\t_ = json.Unmarshal(sourceBytes(actual), &got)\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(ref, got, &e)\n\tif e.Stats[\"TP\"] != \"1\" || e.Stats[\"correct_applicable_repair_propositions\"] != \"1\" || e.Stats[\"correct_applicable_explanation_propositions\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "exact_test": "TestQualityJudgeUnknownPositive",
+        "literal_executable_fixture": "func TestQualityJudgeUnknownPositive(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[{\"proposition_id\":\"p\",\"verdict\":\"unknown\",\"reason\":\"Audio absent\",\"evidence\":[],\"missing_reason\":\"No recording\"}]}`)\n\tif e := validateQualityJudge(raw, qualityPropositions(), nil); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestQualityIndependentComponentsPositive(t *testing.T) {\n\treference := SemanticMapping{Decisions: []SemanticDecision{{Claim: \"c\", Unit: ptrQualityTest(\"u\"), Decision: \"matched_error\", Category: ptrQualityTest(\"grammar.verbs.subject_verb_agreement\"), Correction: SemanticComponent{Supplied: true, Satisfied: []string{\"correct\"}}, Explanation: SemanticComponent{Supplied: true, Violated: []string{\"reason\"}}}}}\n\tactual := reference\n\tvar ref, got map[string]any\n\t_ = json.Unmarshal(sourceBytes(reference), &ref)\n\t_ = json.Unmarshal(sourceBytes(actual), &got)\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(ref, got, &e)\n\tif e.Stats[\"TP\"] != \"1\" || e.Stats[\"correct_applicable_repair_propositions\"] != \"1\" || e.Stats[\"correct_applicable_explanation_propositions\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "independent_literal_assertions": "func TestQualityJudgeUnknownPositive(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[{\"proposition_id\":\"p\",\"verdict\":\"unknown\",\"reason\":\"Audio absent\",\"evidence\":[],\"missing_reason\":\"No recording\"}]}`)\n\tif e := validateQualityJudge(raw, qualityPropositions(), nil); e != nil {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
       "observation_state": "not_run"
     },
     {
-      "case_id": "I14-07.P1.S5.POSITIVE",
+      "case_id": "I14-07.P1.S3.NEGATIVE",
       "property_id": "I14-07.P1",
-      "polarity": "positive",
+      "polarity": "negative",
       "scenario": "I14-07 packet 1",
-      "fixture_id": "iteration14-I14-07-P1-S5-POSITIVE",
-      "test_id": "tangerine.local/api/internal/app::TestQualityDisclosurePositive",
+      "fixture_id": "iteration14-I14-07-P1-S3-NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestQualityJudgePointerNegative",
       "mode": "declared_behavior",
-      "action": "Execute TestQualityDisclosurePositive through services/api/internal/app/experiment_judge.go",
+      "action": "Execute TestQualityJudgePointerNegative through services/api/internal/app/experiment_judge.go",
       "initial_state": {
         "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
         "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
       },
       "input": {
-        "exact_test": "TestQualityDisclosurePositive",
-        "literal_executable_fixture": "func TestQualityDisclosurePositive(t *testing.T) {\n\tinput := map[string]any{\"answer_text\": \"Use opens.\", \"ground_truth\": \"hidden\", \"prior_decisions\": \"hidden\", \"scoring_result\": 100}\n\tparts := qualityStageComponents(\"blind_claim_extraction\", input)\n\tif len(parts) != 2 || parts[\"answer\"] != \"Use opens.\" {\n\t\tt.Fatal(parts)\n\t}\n}\n",
+        "exact_test": "TestQualityJudgePointerNegative",
+        "literal_executable_fixture": "func TestQualityJudgePointerNegative(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[{\"proposition_id\":\"p\",\"verdict\":\"supported\",\"reason\":\"claim\",\"evidence\":[{\"asset_id\":\"candidate\",\"pointer\":\"/absent\"}],\"missing_reason\":null}]}`)\n\tif e := validateQualityJudge(raw, qualityPropositions(), map[string]any{\"candidate\": map[string]any{\"correction\": \"opens\"}}); e == nil {\n\t\tt.Fatal(\"invented evidence\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestQualityDisclosurePositive(t *testing.T) {\n\tinput := map[string]any{\"answer_text\": \"Use opens.\", \"ground_truth\": \"hidden\", \"prior_decisions\": \"hidden\", \"scoring_result\": 100}\n\tparts := qualityStageComponents(\"blind_claim_extraction\", input)\n\tif len(parts) != 2 || parts[\"answer\"] != \"Use opens.\" {\n\t\tt.Fatal(parts)\n\t}\n}\n",
-        "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
-      },
-      "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
-      "observation_state": "not_run"
-    },
-    {
-      "case_id": "I14-07.P1.S6.POSITIVE",
-      "property_id": "I14-07.P1",
-      "polarity": "positive",
-      "scenario": "I14-07 packet 2",
-      "fixture_id": "iteration14-I14-07-P1-S6-POSITIVE",
-      "test_id": "tangerine.local/api/internal/app::TestQualityWrappedEvidencePositive",
-      "mode": "declared_behavior",
-      "action": "Execute TestQualityWrappedEvidencePositive through services/api/internal/app/experiment_judge.go",
-      "initial_state": {
-        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
-        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
-      },
-      "input": {
-        "exact_test": "TestQualityWrappedEvidencePositive",
-        "literal_executable_fixture": "func TestQualityWrappedEvidencePositive(t *testing.T) {\n\tvalue := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"supported\", \"evidence\": []any{map[string]any{\"asset_id\": \"input\", \"pointer\": \"/body/answer_text\"}}}}}\n\tgot := normalizeQualityJudge(value, map[string]any{\"input\": map[string]any{\"answer_text\": \"Use opens.\"}}).(map[string]any)\n\tpointer := got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)[\"pointer\"]\n\tif pointer != \"/answer_text\" {\n\t\tt.Fatal(pointer)\n\t}\n}\n",
-        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
-        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
-      },
-      "expected": {
-        "independent_literal_assertions": "func TestQualityWrappedEvidencePositive(t *testing.T) {\n\tvalue := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"supported\", \"evidence\": []any{map[string]any{\"asset_id\": \"input\", \"pointer\": \"/body/answer_text\"}}}}}\n\tgot := normalizeQualityJudge(value, map[string]any{\"input\": map[string]any{\"answer_text\": \"Use opens.\"}}).(map[string]any)\n\tpointer := got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)[\"pointer\"]\n\tif pointer != \"/answer_text\" {\n\t\tt.Fatal(pointer)\n\t}\n}\n",
+        "independent_literal_assertions": "func TestQualityJudgePointerNegative(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[{\"proposition_id\":\"p\",\"verdict\":\"supported\",\"reason\":\"claim\",\"evidence\":[{\"asset_id\":\"candidate\",\"pointer\":\"/absent\"}],\"missing_reason\":null}]}`)\n\tif e := validateQualityJudge(raw, qualityPropositions(), map[string]any{\"candidate\": map[string]any{\"correction\": \"opens\"}}); e == nil {\n\t\tt.Fatal(\"invented evidence\")\n\t}\n}\n",
         "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
@@ -2823,22 +2823,22 @@
       "polarity": "negative",
       "scenario": "I14-07 packet 2",
       "fixture_id": "iteration14-I14-07-P1-S4-NEGATIVE",
-      "test_id": "tangerine.local/api/internal/app::TestQualityWrongMappingNegative",
+      "test_id": "tangerine.local/api/internal/app::TestQualityJudgeMissingNegative",
       "mode": "declared_behavior",
-      "action": "Execute TestQualityWrongMappingNegative through services/api/internal/app/experiment_judge.go",
+      "action": "Execute TestQualityJudgeMissingNegative through services/api/internal/app/experiment_judge.go",
       "initial_state": {
         "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
         "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
       },
       "input": {
-        "exact_test": "TestQualityWrongMappingNegative",
-        "literal_executable_fixture": "func TestQualityWrongMappingNegative(t *testing.T) {\n\tref := map[string]any{\"decisions\": []any{map[string]any{\"unit_id\": \"real\", \"decision\": \"matched_error\"}}}\n\tgot := map[string]any{\"decisions\": []any{map[string]any{\"unit_id\": \"invented\", \"decision\": \"matched_error\"}}}\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(ref, got, &e)\n\tif e.Stats[\"TP\"] != \"0\" || e.Stats[\"FP\"] != \"1\" || e.Stats[\"FN\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "exact_test": "TestQualityJudgeMissingNegative",
+        "literal_executable_fixture": "func TestQualityJudgeMissingNegative(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[]}`)\n\tif e := validateQualityJudge(raw, qualityPropositions(), nil); e == nil {\n\t\tt.Fatal(\"missing verdict\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestQualityWrongMappingNegative(t *testing.T) {\n\tref := map[string]any{\"decisions\": []any{map[string]any{\"unit_id\": \"real\", \"decision\": \"matched_error\"}}}\n\tgot := map[string]any{\"decisions\": []any{map[string]any{\"unit_id\": \"invented\", \"decision\": \"matched_error\"}}}\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(ref, got, &e)\n\tif e.Stats[\"TP\"] != \"0\" || e.Stats[\"FP\"] != \"1\" || e.Stats[\"FN\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "independent_literal_assertions": "func TestQualityJudgeMissingNegative(t *testing.T) {\n\traw := []byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[]}`)\n\tif e := validateQualityJudge(raw, qualityPropositions(), nil); e == nil {\n\t\tt.Fatal(\"missing verdict\")\n\t}\n}\n",
         "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
@@ -2850,22 +2850,130 @@
       "polarity": "negative",
       "scenario": "I14-07 packet 1",
       "fixture_id": "iteration14-I14-07-P1-S5-NEGATIVE",
-      "test_id": "tangerine.local/api/internal/app::TestQualityAuditLeakNegative",
+      "test_id": "tangerine.local/api/internal/app::TestQualityJudgeNoNumericNegative",
       "mode": "declared_behavior",
-      "action": "Execute TestQualityAuditLeakNegative through services/api/internal/app/experiment_judge.go",
+      "action": "Execute TestQualityJudgeNoNumericNegative through services/api/internal/app/experiment_judge.go",
       "initial_state": {
         "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
         "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
       },
       "input": {
-        "exact_test": "TestQualityAuditLeakNegative",
-        "literal_executable_fixture": "func TestQualityAuditLeakNegative(t *testing.T) {\n\tparts := qualityStageComponents(\"mapping_audit\", map[string]any{\"prior_decisions\": []string{\"first-map\"}, \"extraction\": \"saved\", \"ground_truth\": \"key\"})\n\tif _, ok := parts[\"prior_decisions\"]; ok {\n\t\tt.Fatal(\"audit sees first-map decisions\")\n\t}\n}\n",
+        "exact_test": "TestQualityJudgeNoNumericNegative",
+        "literal_executable_fixture": "func TestQualityJudgeNoNumericNegative(t *testing.T) {\n\tif _, _, e := validateQualityOutput([]byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[],\"score\":100}`)); e == nil {\n\t\tt.Fatal(\"model numeric grade accepted\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestQualityAuditLeakNegative(t *testing.T) {\n\tparts := qualityStageComponents(\"mapping_audit\", map[string]any{\"prior_decisions\": []string{\"first-map\"}, \"extraction\": \"saved\", \"ground_truth\": \"key\"})\n\tif _, ok := parts[\"prior_decisions\"]; ok {\n\t\tt.Fatal(\"audit sees first-map decisions\")\n\t}\n}\n",
+        "independent_literal_assertions": "func TestQualityJudgeNoNumericNegative(t *testing.T) {\n\tif _, _, e := validateQualityOutput([]byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[],\"score\":100}`)); e == nil {\n\t\tt.Fatal(\"model numeric grade accepted\")\n\t}\n}\n",
+        "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
+      },
+      "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I14-07.P1.S5.POSITIVE",
+      "property_id": "I14-07.P1",
+      "polarity": "positive",
+      "scenario": "I14-07 packet 1",
+      "fixture_id": "iteration14-I14-07-P1-S5-POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestQualityJudgeSelfConsistencyPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestQualityJudgeSelfConsistencyPositive through services/api/internal/app/experiment_judge.go",
+      "initial_state": {
+        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
+        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
+      },
+      "input": {
+        "exact_test": "TestQualityJudgeSelfConsistencyPositive",
+        "literal_executable_fixture": "func TestQualityJudgeSelfConsistencyPositive(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\texpected := map[string]any{\"semantic_propositions\": []any{map[string]any{\"id\": \"p\", \"scope\": \"feedback\", \"expected\": \"supported\"}}}\n\tjudgment := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"supported\"}}}\n\tqualityJudgeEvidence(QualityCase{Basis: \"self_consistency\"}, expected, judgment, &e)\n\tif e.Basis[\"llm_lab.feedback_grounding_rate\"] != \"self_consistency\" || e.Stats[\"supported_factual_items_or_correctly_labelled_practice\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestQualityJudgeSelfConsistencyPositive(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\texpected := map[string]any{\"semantic_propositions\": []any{map[string]any{\"id\": \"p\", \"scope\": \"feedback\", \"expected\": \"supported\"}}}\n\tjudgment := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"supported\"}}}\n\tqualityJudgeEvidence(QualityCase{Basis: \"self_consistency\"}, expected, judgment, &e)\n\tif e.Basis[\"llm_lab.feedback_grounding_rate\"] != \"self_consistency\" || e.Stats[\"supported_factual_items_or_correctly_labelled_practice\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
+      },
+      "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I14-07.P1.S6.POSITIVE",
+      "property_id": "I14-07.P1",
+      "polarity": "positive",
+      "scenario": "I14-07 packet 2",
+      "fixture_id": "iteration14-I14-07-P1-S6-POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestQualityIndependentComponentsPositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestQualityIndependentComponentsPositive through services/api/internal/app/experiment_judge.go",
+      "initial_state": {
+        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
+        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
+      },
+      "input": {
+        "exact_test": "TestQualityIndependentComponentsPositive",
+        "literal_executable_fixture": "func TestQualityIndependentComponentsPositive(t *testing.T) {\n\treference := SemanticMapping{Decisions: []SemanticDecision{{Claim: \"c\", Unit: ptrQualityTest(\"u\"), Decision: \"matched_error\", Category: ptrQualityTest(\"grammar.verbs.subject_verb_agreement\"), Correction: SemanticComponent{Supplied: true, Satisfied: []string{\"correct\"}}, Explanation: SemanticComponent{Supplied: true, Violated: []string{\"reason\"}}}}}\n\tactual := reference\n\tvar ref, got map[string]any\n\t_ = json.Unmarshal(sourceBytes(reference), &ref)\n\t_ = json.Unmarshal(sourceBytes(actual), &got)\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(ref, got, &e)\n\tif e.Stats[\"TP\"] != \"1\" || e.Stats[\"correct_applicable_repair_propositions\"] != \"1\" || e.Stats[\"correct_applicable_explanation_propositions\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestQualityIndependentComponentsPositive(t *testing.T) {\n\treference := SemanticMapping{Decisions: []SemanticDecision{{Claim: \"c\", Unit: ptrQualityTest(\"u\"), Decision: \"matched_error\", Category: ptrQualityTest(\"grammar.verbs.subject_verb_agreement\"), Correction: SemanticComponent{Supplied: true, Satisfied: []string{\"correct\"}}, Explanation: SemanticComponent{Supplied: true, Violated: []string{\"reason\"}}}}}\n\tactual := reference\n\tvar ref, got map[string]any\n\t_ = json.Unmarshal(sourceBytes(reference), &ref)\n\t_ = json.Unmarshal(sourceBytes(actual), &got)\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(ref, got, &e)\n\tif e.Stats[\"TP\"] != \"1\" || e.Stats[\"correct_applicable_repair_propositions\"] != \"1\" || e.Stats[\"correct_applicable_explanation_propositions\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
+        "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
+      },
+      "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I14-07.P1.S7.POSITIVE",
+      "property_id": "I14-07.P1",
+      "polarity": "positive",
+      "scenario": "I14-07 packet 1",
+      "fixture_id": "iteration14-I14-07-P1-S7-POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestQualityDisclosurePositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestQualityDisclosurePositive through services/api/internal/app/experiment_judge.go",
+      "initial_state": {
+        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
+        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
+      },
+      "input": {
+        "exact_test": "TestQualityDisclosurePositive",
+        "literal_executable_fixture": "func TestQualityDisclosurePositive(t *testing.T) {\n\tinput := map[string]any{\"answer_text\": \"Use opens.\", \"ground_truth\": \"hidden\", \"prior_decisions\": \"hidden\", \"scoring_result\": 100}\n\tparts := qualityStageComponents(\"blind_claim_extraction\", input)\n\tif len(parts) != 2 || parts[\"answer\"] != \"Use opens.\" {\n\t\tt.Fatal(parts)\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestQualityDisclosurePositive(t *testing.T) {\n\tinput := map[string]any{\"answer_text\": \"Use opens.\", \"ground_truth\": \"hidden\", \"prior_decisions\": \"hidden\", \"scoring_result\": 100}\n\tparts := qualityStageComponents(\"blind_claim_extraction\", input)\n\tif len(parts) != 2 || parts[\"answer\"] != \"Use opens.\" {\n\t\tt.Fatal(parts)\n\t}\n}\n",
+        "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
+      },
+      "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I14-07.P1.S8.POSITIVE",
+      "property_id": "I14-07.P1",
+      "polarity": "positive",
+      "scenario": "I14-07 packet 2",
+      "fixture_id": "iteration14-I14-07-P1-S8-POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestQualityWrappedEvidencePositive",
+      "mode": "declared_behavior",
+      "action": "Execute TestQualityWrappedEvidencePositive through services/api/internal/app/experiment_judge.go",
+      "initial_state": {
+        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
+        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
+      },
+      "input": {
+        "exact_test": "TestQualityWrappedEvidencePositive",
+        "literal_executable_fixture": "func TestQualityWrappedEvidencePositive(t *testing.T) {\n\tvalue := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"supported\", \"evidence\": []any{map[string]any{\"asset_id\": \"input\", \"pointer\": \"/body/answer_text\"}}}}}\n\tgot := normalizeQualityJudge(value, map[string]any{\"input\": map[string]any{\"answer_text\": \"Use opens.\"}}).(map[string]any)\n\tpointer := got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)[\"pointer\"]\n\tif pointer != \"/answer_text\" {\n\t\tt.Fatal(pointer)\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestQualityWrappedEvidencePositive(t *testing.T) {\n\tvalue := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"supported\", \"evidence\": []any{map[string]any{\"asset_id\": \"input\", \"pointer\": \"/body/answer_text\"}}}}}\n\tgot := normalizeQualityJudge(value, map[string]any{\"input\": map[string]any{\"answer_text\": \"Use opens.\"}}).(map[string]any)\n\tpointer := got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)[\"pointer\"]\n\tif pointer != \"/answer_text\" {\n\t\tt.Fatal(pointer)\n\t}\n}\n",
         "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
@@ -2877,22 +2985,22 @@
       "polarity": "negative",
       "scenario": "I14-07 packet 2",
       "fixture_id": "iteration14-I14-07-P1-S6-NEGATIVE",
-      "test_id": "tangerine.local/api/internal/app::TestQualityAbsentWrappedEvidenceNegative",
+      "test_id": "tangerine.local/api/internal/app::TestQualityWrongMappingNegative",
       "mode": "declared_behavior",
-      "action": "Execute TestQualityAbsentWrappedEvidenceNegative through services/api/internal/app/experiment_judge.go",
+      "action": "Execute TestQualityWrongMappingNegative through services/api/internal/app/experiment_judge.go",
       "initial_state": {
         "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
         "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
       },
       "input": {
-        "exact_test": "TestQualityAbsentWrappedEvidenceNegative",
-        "literal_executable_fixture": "func TestQualityAbsentWrappedEvidenceNegative(t *testing.T) {\n\tvalue := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"supported\", \"evidence\": []any{map[string]any{\"asset_id\": \"input\", \"pointer\": \"/body/absent\"}}}}}\n\tgot := normalizeQualityJudge(value, map[string]any{\"input\": map[string]any{\"answer_text\": \"Use opens.\"}}).(map[string]any)\n\tif got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)[\"pointer\"] != \"/body/absent\" {\n\t\tt.Fatal(\"invented a target\")\n\t}\n}\n",
+        "exact_test": "TestQualityWrongMappingNegative",
+        "literal_executable_fixture": "func TestQualityWrongMappingNegative(t *testing.T) {\n\tref := map[string]any{\"decisions\": []any{map[string]any{\"unit_id\": \"real\", \"decision\": \"matched_error\"}}}\n\tgot := map[string]any{\"decisions\": []any{map[string]any{\"unit_id\": \"invented\", \"decision\": \"matched_error\"}}}\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(ref, got, &e)\n\tif e.Stats[\"TP\"] != \"0\" || e.Stats[\"FP\"] != \"1\" || e.Stats[\"FN\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestQualityAbsentWrappedEvidenceNegative(t *testing.T) {\n\tvalue := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"supported\", \"evidence\": []any{map[string]any{\"asset_id\": \"input\", \"pointer\": \"/body/absent\"}}}}}\n\tgot := normalizeQualityJudge(value, map[string]any{\"input\": map[string]any{\"answer_text\": \"Use opens.\"}}).(map[string]any)\n\tif got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)[\"pointer\"] != \"/body/absent\" {\n\t\tt.Fatal(\"invented a target\")\n\t}\n}\n",
+        "independent_literal_assertions": "func TestQualityWrongMappingNegative(t *testing.T) {\n\tref := map[string]any{\"decisions\": []any{map[string]any{\"unit_id\": \"real\", \"decision\": \"matched_error\"}}}\n\tgot := map[string]any{\"decisions\": []any{map[string]any{\"unit_id\": \"invented\", \"decision\": \"matched_error\"}}}\n\te := experiment.Evidence{Stats: map[string]string{}}\n\tqualityMappingEvidence(ref, got, &e)\n\tif e.Stats[\"TP\"] != \"0\" || e.Stats[\"FP\"] != \"1\" || e.Stats[\"FN\"] != \"1\" {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
@@ -2904,6 +3012,60 @@
       "polarity": "negative",
       "scenario": "I14-07 packet 1",
       "fixture_id": "iteration14-I14-07-P1-S7-NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestQualityAuditLeakNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestQualityAuditLeakNegative through services/api/internal/app/experiment_judge.go",
+      "initial_state": {
+        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
+        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
+      },
+      "input": {
+        "exact_test": "TestQualityAuditLeakNegative",
+        "literal_executable_fixture": "func TestQualityAuditLeakNegative(t *testing.T) {\n\tparts := qualityStageComponents(\"mapping_audit\", map[string]any{\"prior_decisions\": []string{\"first-map\"}, \"extraction\": \"saved\", \"ground_truth\": \"key\"})\n\tif _, ok := parts[\"prior_decisions\"]; ok {\n\t\tt.Fatal(\"audit sees first-map decisions\")\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestQualityAuditLeakNegative(t *testing.T) {\n\tparts := qualityStageComponents(\"mapping_audit\", map[string]any{\"prior_decisions\": []string{\"first-map\"}, \"extraction\": \"saved\", \"ground_truth\": \"key\"})\n\tif _, ok := parts[\"prior_decisions\"]; ok {\n\t\tt.Fatal(\"audit sees first-map decisions\")\n\t}\n}\n",
+        "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
+      },
+      "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I14-07.P1.S8.NEGATIVE",
+      "property_id": "I14-07.P1",
+      "polarity": "negative",
+      "scenario": "I14-07 packet 2",
+      "fixture_id": "iteration14-I14-07-P1-S8-NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestQualityAbsentWrappedEvidenceNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestQualityAbsentWrappedEvidenceNegative through services/api/internal/app/experiment_judge.go",
+      "initial_state": {
+        "origin": "Exactly labelled constructed native fixture, installed local model, actual local MLflow or actual browser as named in the executable source.",
+        "setup": "Literal executable body and complete shared fixture library define inputs, prerequisite state and independently expected outputs."
+      },
+      "input": {
+        "exact_test": "TestQualityAbsentWrappedEvidenceNegative",
+        "literal_executable_fixture": "func TestQualityAbsentWrappedEvidenceNegative(t *testing.T) {\n\tvalue := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"supported\", \"evidence\": []any{map[string]any{\"asset_id\": \"input\", \"pointer\": \"/body/absent\"}}}}}\n\tgot := normalizeQualityJudge(value, map[string]any{\"input\": map[string]any{\"answer_text\": \"Use opens.\"}}).(map[string]any)\n\tif got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)[\"pointer\"] != \"/body/absent\" {\n\t\tt.Fatal(\"invented a target\")\n\t}\n}\n",
+        "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
+        "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestQualityAbsentWrappedEvidenceNegative(t *testing.T) {\n\tvalue := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"supported\", \"evidence\": []any{map[string]any{\"asset_id\": \"input\", \"pointer\": \"/body/absent\"}}}}}\n\tgot := normalizeQualityJudge(value, map[string]any{\"input\": map[string]any{\"answer_text\": \"Use opens.\"}}).(map[string]any)\n\tif got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)[\"pointer\"] != \"/body/absent\" {\n\t\tt.Fatal(\"invented a target\")\n\t}\n}\n",
+        "oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
+      },
+      "independent_oracle": "keep independent authored/native/reference expectations hidden from candidates, evaluate exact mappings and native scores separately from configurable diagnostic supported/unsupported/unknown judges, retain judge input/output/binding/receipt and distinguish self-consistency. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I14-07.P1.S9.NEGATIVE",
+      "property_id": "I14-07.P1",
+      "polarity": "negative",
+      "scenario": "I14-07 packet 1",
+      "fixture_id": "iteration14-I14-07-P1-S9-NEGATIVE",
       "test_id": "tangerine.local/api/internal/app::TestQualityUnsupportedNegative",
       "mode": "declared_behavior",
       "action": "Execute TestQualityUnsupportedNegative through services/api/internal/app/experiment_judge.go",
@@ -2915,7 +3077,7 @@
         "exact_test": "TestQualityUnsupportedNegative",
         "literal_executable_fixture": "func TestQualityUnsupportedNegative(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\texpected := map[string]any{\"semantic_propositions\": []any{map[string]any{\"id\": \"p\", \"scope\": \"feedback\", \"expected\": \"unsupported\"}}}\n\tjudgment := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"unsupported\"}}}\n\tqualityJudgeEvidence(QualityCase{Basis: \"authored_assertion\"}, expected, judgment, &e)\n\tif e.Stats[\"supported_factual_items_or_correctly_labelled_practice\"] != \"0\" || e.Stats[\"applicable_feedback_items\"] != \"1\" {\n\t\tt.Fatal(\"unsupported claim became grounded\", e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -3507,13 +3669,13 @@
       },
       "input": {
         "exact_test": "test_correspondence_positive",
-        "literal_executable_fixture": "def test_correspondence_positive(self):\n  p=subprocess.run(['python3','-B',str(R/'audit/iteration-14-empirical-20261021/local_reconcile.py'),str(self.root.relative_to(R))],env={**os.environ,'TANGERINE_QUALITY_LAB_CONTAINER':self.binding['lab_container']},cwd=R,capture_output=True,text=True,timeout=180)\n  self.assertEqual(p.returncode,0,p.stderr);value=json.loads(p.stdout);self.assertEqual((value['actual_dispatches'],value['native_receipts'],value['context_snapshots'],value['span_count']),(4,4,4,4));self.assertEqual(value['independent_verdict_packets'],2)",
+        "literal_executable_fixture": "def test_correspondence_positive(self):\n  p=subprocess.run(['python3','-B',str(R/'audit/iteration-14-empirical-20261021/local_reconcile.py'),str(self.root.relative_to(R))],env={**os.environ,'TANGERINE_QUALITY_LAB_CONTAINER':self.binding['lab_container']},cwd=R,capture_output=True,text=True,timeout=180)\n  self.assertEqual(p.returncode,0,p.stderr);value=json.loads(p.stdout);self.assertGreaterEqual(value['actual_dispatches'],4);self.assertEqual((value['native_receipts'],value['context_snapshots'],value['span_count']),(value['actual_dispatches'],)*3);self.assertEqual(value['independent_verdict_packets'],2)",
         "fixture_source_path": "tests/test_quality_lab.py",
-        "fixture_source_sha256": "a9570bc0dbc88cbf995f9a34817c3e9caf1a16a34f038571b60da1cbc09d62a5",
+        "fixture_source_sha256": "d9b6aefd0da04a71f3b9f84a7ea47e845164953e4efe4aecc6431bac01764abf",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/test_quality_lab.py"
       },
       "expected": {
-        "independent_literal_assertions": "def test_correspondence_positive(self):\n  p=subprocess.run(['python3','-B',str(R/'audit/iteration-14-empirical-20261021/local_reconcile.py'),str(self.root.relative_to(R))],env={**os.environ,'TANGERINE_QUALITY_LAB_CONTAINER':self.binding['lab_container']},cwd=R,capture_output=True,text=True,timeout=180)\n  self.assertEqual(p.returncode,0,p.stderr);value=json.loads(p.stdout);self.assertEqual((value['actual_dispatches'],value['native_receipts'],value['context_snapshots'],value['span_count']),(4,4,4,4));self.assertEqual(value['independent_verdict_packets'],2)",
+        "independent_literal_assertions": "def test_correspondence_positive(self):\n  p=subprocess.run(['python3','-B',str(R/'audit/iteration-14-empirical-20261021/local_reconcile.py'),str(self.root.relative_to(R))],env={**os.environ,'TANGERINE_QUALITY_LAB_CONTAINER':self.binding['lab_container']},cwd=R,capture_output=True,text=True,timeout=180)\n  self.assertEqual(p.returncode,0,p.stderr);value=json.loads(p.stdout);self.assertGreaterEqual(value['actual_dispatches'],4);self.assertEqual((value['native_receipts'],value['context_snapshots'],value['span_count']),(value['actual_dispatches'],)*3);self.assertEqual(value['independent_verdict_packets'],2)",
         "oracle": "retain native results when MLflow fails, explicitly sync immutable sanitized artifacts/metrics without inference and observe selected actual local-model positive/negative experiments with independent dispatch/native/context/MLflow correspondence; never claim hosted/paid or all-leaf quality from fixtures. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture."
       },
       "independent_oracle": "retain native results when MLflow fails, explicitly sync immutable sanitized artifacts/metrics without inference and observe selected actual local-model positive/negative experiments with independent dispatch/native/context/MLflow correspondence; never claim hosted/paid or all-leaf quality from fixtures. Independent actual expectations and explicit origin/missingness; no broader inference from a finite fixture.",
@@ -3536,7 +3698,7 @@
         "exact_test": "test_export_recovery_positive",
         "literal_executable_fixture": "def test_export_recovery_positive(self):\n  before=(self.root/'actual-local/dispatch-observations.jsonl').read_bytes();first=self.sdk('quality-sync',self.packet);self.assertEqual(first.returncode,0,first.stderr);a=json.loads(first.stdout);second=self.sdk('quality-sync',self.packet);self.assertEqual(second.returncode,0,second.stderr);b=json.loads(second.stdout);self.assertEqual(a['run'],b['run']);self.assertEqual([v['run'] for v in a['native_exports']],[v['run'] for v in b['native_exports']]);self.assertEqual(a['provider_calls'],0);self.assertEqual((self.root/'actual-local/dispatch-observations.jsonl').read_bytes(),before)",
         "fixture_source_path": "tests/test_quality_lab.py",
-        "fixture_source_sha256": "a9570bc0dbc88cbf995f9a34817c3e9caf1a16a34f038571b60da1cbc09d62a5",
+        "fixture_source_sha256": "d9b6aefd0da04a71f3b9f84a7ea47e845164953e4efe4aecc6431bac01764abf",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/test_quality_lab.py"
       },
       "expected": {
@@ -3563,7 +3725,7 @@
         "exact_test": "test_unavailable_negative",
         "literal_executable_fixture": "def test_unavailable_negative(self):\n  original=(self.root/'actual-local/dispatch-observations.jsonl').read_bytes();p=self.sdk('quality-sync',self.packet,True);self.assertNotEqual(p.returncode,0);self.assertIn('native data retained',p.stderr);self.assertEqual((self.root/'actual-local/dispatch-observations.jsonl').read_bytes(),original)",
         "fixture_source_path": "tests/test_quality_lab.py",
-        "fixture_source_sha256": "a9570bc0dbc88cbf995f9a34817c3e9caf1a16a34f038571b60da1cbc09d62a5",
+        "fixture_source_sha256": "d9b6aefd0da04a71f3b9f84a7ea47e845164953e4efe4aecc6431bac01764abf",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/test_quality_lab.py"
       },
       "expected": {
@@ -3590,7 +3752,7 @@
         "exact_test": "test_missing_copy_negative",
         "literal_executable_fixture": "def test_missing_copy_negative(self):\n  p=self.sdk('verify',{'artifacts':[{'run':'missing-native-copy','artifact':'native/absent.json','sha256':'0'*64}]});self.assertNotEqual(p.returncode,0);value=json.loads(p.stdout);self.assertEqual(value['status'],'incomplete');self.assertEqual(value['provider_calls'],0);self.assertEqual(value['discrepancies'],['missing Lab artifact native/absent.json'])",
         "fixture_source_path": "tests/test_quality_lab.py",
-        "fixture_source_sha256": "a9570bc0dbc88cbf995f9a34817c3e9caf1a16a34f038571b60da1cbc09d62a5",
+        "fixture_source_sha256": "d9b6aefd0da04a71f3b9f84a7ea47e845164953e4efe4aecc6431bac01764abf",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/test_quality_lab.py"
       },
       "expected": {
@@ -3779,7 +3941,7 @@
         "exact_test": "TestQualityUnsupportedNegative",
         "literal_executable_fixture": "func TestQualityUnsupportedNegative(t *testing.T) {\n\te := experiment.Evidence{Stats: map[string]string{}}\n\texpected := map[string]any{\"semantic_propositions\": []any{map[string]any{\"id\": \"p\", \"scope\": \"feedback\", \"expected\": \"unsupported\"}}}\n\tjudgment := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"unsupported\"}}}\n\tqualityJudgeEvidence(QualityCase{Basis: \"authored_assertion\"}, expected, judgment, &e)\n\tif e.Stats[\"supported_factual_items_or_correctly_labelled_practice\"] != \"0\" || e.Stats[\"applicable_feedback_items\"] != \"1\" {\n\t\tt.Fatal(\"unsupported claim became grounded\", e)\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -4317,13 +4479,13 @@
       },
       "input": {
         "exact_test": "test_correspondence_positive",
-        "literal_executable_fixture": "def test_correspondence_positive(self):\n  p=subprocess.run(['python3','-B',str(R/'audit/iteration-14-empirical-20261021/local_reconcile.py'),str(self.root.relative_to(R))],env={**os.environ,'TANGERINE_QUALITY_LAB_CONTAINER':self.binding['lab_container']},cwd=R,capture_output=True,text=True,timeout=180)\n  self.assertEqual(p.returncode,0,p.stderr);value=json.loads(p.stdout);self.assertEqual((value['actual_dispatches'],value['native_receipts'],value['context_snapshots'],value['span_count']),(4,4,4,4));self.assertEqual(value['independent_verdict_packets'],2)",
+        "literal_executable_fixture": "def test_correspondence_positive(self):\n  p=subprocess.run(['python3','-B',str(R/'audit/iteration-14-empirical-20261021/local_reconcile.py'),str(self.root.relative_to(R))],env={**os.environ,'TANGERINE_QUALITY_LAB_CONTAINER':self.binding['lab_container']},cwd=R,capture_output=True,text=True,timeout=180)\n  self.assertEqual(p.returncode,0,p.stderr);value=json.loads(p.stdout);self.assertGreaterEqual(value['actual_dispatches'],4);self.assertEqual((value['native_receipts'],value['context_snapshots'],value['span_count']),(value['actual_dispatches'],)*3);self.assertEqual(value['independent_verdict_packets'],2)",
         "fixture_source_path": "tests/test_quality_lab.py",
-        "fixture_source_sha256": "a9570bc0dbc88cbf995f9a34817c3e9caf1a16a34f038571b60da1cbc09d62a5",
+        "fixture_source_sha256": "d9b6aefd0da04a71f3b9f84a7ea47e845164953e4efe4aecc6431bac01764abf",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#tests/test_quality_lab.py"
       },
       "expected": {
-        "independent_literal_assertions": "def test_correspondence_positive(self):\n  p=subprocess.run(['python3','-B',str(R/'audit/iteration-14-empirical-20261021/local_reconcile.py'),str(self.root.relative_to(R))],env={**os.environ,'TANGERINE_QUALITY_LAB_CONTAINER':self.binding['lab_container']},cwd=R,capture_output=True,text=True,timeout=180)\n  self.assertEqual(p.returncode,0,p.stderr);value=json.loads(p.stdout);self.assertEqual((value['actual_dispatches'],value['native_receipts'],value['context_snapshots'],value['span_count']),(4,4,4,4));self.assertEqual(value['independent_verdict_packets'],2)",
+        "independent_literal_assertions": "def test_correspondence_positive(self):\n  p=subprocess.run(['python3','-B',str(R/'audit/iteration-14-empirical-20261021/local_reconcile.py'),str(self.root.relative_to(R))],env={**os.environ,'TANGERINE_QUALITY_LAB_CONTAINER':self.binding['lab_container']},cwd=R,capture_output=True,text=True,timeout=180)\n  self.assertEqual(p.returncode,0,p.stderr);value=json.loads(p.stdout);self.assertGreaterEqual(value['actual_dispatches'],4);self.assertEqual((value['native_receipts'],value['context_snapshots'],value['span_count']),(value['actual_dispatches'],)*3);self.assertEqual(value['independent_verdict_packets'],2)",
         "oracle": "Withheld authored packet expectations, exact native arithmetic and actual modality evidence. Selected finite reference/experiment observations; no unseen corpus/participant qualification."
       },
       "independent_oracle": "Withheld authored packet expectations, exact native arithmetic and actual modality evidence. Selected finite reference/experiment observations; no unseen corpus/participant qualification.",
@@ -4346,7 +4508,7 @@
         "exact_test": "TestQualityAbsentWrappedEvidenceNegative",
         "literal_executable_fixture": "func TestQualityAbsentWrappedEvidenceNegative(t *testing.T) {\n\tvalue := map[string]any{\"verdicts\": []any{map[string]any{\"proposition_id\": \"p\", \"verdict\": \"supported\", \"evidence\": []any{map[string]any{\"asset_id\": \"input\", \"pointer\": \"/body/absent\"}}}}}\n\tgot := normalizeQualityJudge(value, map[string]any{\"input\": map[string]any{\"answer_text\": \"Use opens.\"}}).(map[string]any)\n\tif got[\"verdicts\"].([]any)[0].(map[string]any)[\"evidence\"].([]any)[0].(map[string]any)[\"pointer\"] != \"/body/absent\" {\n\t\tt.Fatal(\"invented a target\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {
@@ -4373,7 +4535,7 @@
         "exact_test": "TestQualityJudgeNoNumericNegative",
         "literal_executable_fixture": "func TestQualityJudgeNoNumericNegative(t *testing.T) {\n\tif _, _, e := validateQualityOutput([]byte(`{\"schema_version\":\"2.0.0\",\"verdicts\":[],\"score\":100}`)); e == nil {\n\t\tt.Fatal(\"model numeric grade accepted\")\n\t}\n}\n",
         "fixture_source_path": "services/api/internal/app/experiment_contract_test.go",
-        "fixture_source_sha256": "6aa3148d8186a9bfcc45fd7659ac873d3a087e0c8bd5c139a639f173c3a08e7d",
+        "fixture_source_sha256": "0d0e20e7103bbe010b3aa3ec92b7a42fcf46d0cdc04de337c85b85de1a581c42",
         "shared_fixture_library": "audit/iteration-14-empirical-20261021/FIXTURE-LIBRARY.json#services/api/internal/app/experiment_contract_test.go"
       },
       "expected": {

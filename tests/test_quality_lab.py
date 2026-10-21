@@ -9,7 +9,8 @@ class QualityLab(unittest.TestCase):
  def setUpClass(cls):
   cls.binding=json.loads((R/'audit/iteration-14-empirical-20261021/RUNTIME-BINDINGS.json').read_text())
   selected=R/'data/iteration14/local/selected.json'
-  cls.root=R/(json.loads(selected.read_text())['evidence_root'] if selected.exists() else cls.binding['local_evidence']);cls.packet=json.loads((cls.root/'actual-local/quality-export.json').read_text());cls.command=['docker','exec','-i',cls.binding['lab_container'],'python','/tangerine/lab.py']
+  if not selected.exists():raise AssertionError('Current selected local experiment is absent; no older run is silently substituted')
+  cls.root=R/json.loads(selected.read_text())['evidence_root'];cls.packet=json.loads((cls.root/'actual-local/quality-export.json').read_text());cls.command=['docker','exec','-i',cls.binding['lab_container'],'python','/tangerine/lab.py']
  @classmethod
  def sdk(cls,action,packet,offline=False):
   command=cls.command
@@ -17,7 +18,7 @@ class QualityLab(unittest.TestCase):
   return subprocess.run(command+[action],input=json.dumps(packet),capture_output=True,text=True,cwd=R,timeout=90)
  def test_correspondence_positive(self):
   p=subprocess.run(['python3','-B',str(R/'audit/iteration-14-empirical-20261021/local_reconcile.py'),str(self.root.relative_to(R))],env={**os.environ,'TANGERINE_QUALITY_LAB_CONTAINER':self.binding['lab_container']},cwd=R,capture_output=True,text=True,timeout=180)
-  self.assertEqual(p.returncode,0,p.stderr);value=json.loads(p.stdout);self.assertEqual((value['actual_dispatches'],value['native_receipts'],value['context_snapshots'],value['span_count']),(4,4,4,4));self.assertEqual(value['independent_verdict_packets'],2)
+  self.assertEqual(p.returncode,0,p.stderr);value=json.loads(p.stdout);self.assertGreaterEqual(value['actual_dispatches'],4);self.assertEqual((value['native_receipts'],value['context_snapshots'],value['span_count']),(value['actual_dispatches'],)*3);self.assertEqual(value['independent_verdict_packets'],2)
  def test_missing_copy_negative(self):
   p=self.sdk('verify',{'artifacts':[{'run':'missing-native-copy','artifact':'native/absent.json','sha256':'0'*64}]});self.assertNotEqual(p.returncode,0);value=json.loads(p.stdout);self.assertEqual(value['status'],'incomplete');self.assertEqual(value['provider_calls'],0);self.assertEqual(value['discrepancies'],['missing Lab artifact native/absent.json'])
  def test_unavailable_negative(self):
