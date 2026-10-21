@@ -125,15 +125,12 @@ func diagnosticIntent(f diagnosticFrozen, interval map[string]any) map[string]an
 			r[k] = nil
 		}
 		prosody, _ := r["prosody"].([]any)
-		if len(prosody) == 0 && !seen["speech_realization"] {
-			seen["speech_realization"] = true
-			features = append(features, "speech_realization")
-		}
 		for _, v := range prosody {
 			pr := v.(map[string]any)
 			pr["observation"] = nil
 			pr["evidence_ids"] = []any{}
-			feature := pr["feature"].(string)
+		}
+		for _, feature := range diagnosticUnitFeatures(p, f.Manifest) {
 			if !seen[feature] {
 				seen[feature] = true
 				features = append(features, feature)
@@ -160,4 +157,34 @@ func diagnosticIntent(f diagnosticFrozen, interval map[string]any) map[string]an
 		}
 	}
 	return map[string]any{"schema_version": "2.0.0", "case_version_id": f.Key["case_version_id"], "audio_sha256": f.Key["audio"].(map[string]any)["sha256"], "source_interval": interval, "canonical_text": f.Canonical, "surface_text": f.Surface, "units": ids, "features": features, "planned_units": selected, "acoustic_edits": edits, "reference_clip_asset_id": nil, "task_target": f.Key["public_context"]}
+}
+
+// Requested features come from the actual unit/controlled plan, never a model
+// label alias. Temporal controls need not appear in the prosody sub-list.
+func diagnosticUnitFeatures(unit, manifest map[string]any) []string {
+	features := []string{}
+	seen := map[string]bool{}
+	add := func(feature string) {
+		if !seen[feature] {
+			seen[feature] = true
+			features = append(features, feature)
+		}
+	}
+	if rows, ok := unit["realization"].(map[string]any)["prosody"].([]any); ok {
+		for _, value := range rows {
+			add(value.(map[string]any)["feature"].(string))
+		}
+	}
+	if rows, ok := manifest["acoustic_edits"].([]any); ok {
+		for _, value := range rows {
+			row := value.(map[string]any)
+			if row["unit_id"] == unit["id"] {
+				add(row["controller"].(string))
+			}
+		}
+	}
+	if len(features) == 0 {
+		features = append(features, "speech_realization")
+	}
+	return features
 }

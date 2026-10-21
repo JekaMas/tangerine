@@ -92,7 +92,7 @@ func reviewFixture(t *testing.T, mode string) *reviewNative {
 	t.Helper()
 	f := &reviewNative{scoringNative: scoringFixture(t, false), block: make(chan struct{}), arrived: make(chan struct{})}
 	f.reviewMode.Store(mode)
-	if mode == "omitted" {
+	if strings.HasPrefix(mode, "omitted") {
 		f.installOmitted(t)
 	}
 	f.reviewModel = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -211,7 +211,7 @@ func reviewFixture(t *testing.T, mode string) *reviewNative {
 				}
 				value["decisions"] = map[string]any{"schema_version": "1.0.0", "decisions": []SemanticDecision{d}}
 			}
-			if strings.HasPrefix(mode, "key") || mode == "conditional-failure" || mode == "omitted" {
+			if strings.HasPrefix(mode, "key") || mode == "conditional-failure" || strings.HasPrefix(mode, "omitted") {
 				value["resolution"] = "key_defect"
 				candidate := reviewCandidate(key)
 				units := candidate["planned_units"].([]any)
@@ -222,12 +222,17 @@ func reviewFixture(t *testing.T, mode string) *reviewNative {
 					relations = append(relations, map[string]any{"old_unit_ids": []any{id}, "new_unit_ids": []any{id}, "kind": "same", "reason": "The same heard agreement event."})
 				}
 				value["key_repair"] = map[string]any{"base_case_sha256": key["case_sha256"], "audio_sha256": key["audio"].(map[string]any)["sha256"], "affected_components": []any{"explanation"}, "proposed_units": units, "correspondence_relations": relations, "reason": "Clarify the versioned rationale."}
-				if mode == "omitted" {
+				if strings.HasPrefix(mode, "omitted") {
 					var packet map[string]any
 					_ = json.Unmarshal([]byte(omittedReviewPacket), &packet)
 					proposal := reviewClone(packet["proposal"])
 					proposal["base_case_sha256"] = key["case_sha256"]
 					proposal["audio_sha256"] = key["audio"].(map[string]any)["sha256"]
+					if mode == "omitted-cross-turn" {
+						second := proposal["proposed_units"].([]any)[1].(map[string]any)
+						second["utterance_ids"] = []any{"t2"}
+						second["text_spans"] = []any{map[string]any{"utterance_id": "t2", "span": map[string]any{"start_cp": 5, "end_cp": 7, "exact_text": "is"}}}
+					}
 					value["key_repair"] = proposal
 				}
 				if mode == "key-with-decisions" {
@@ -251,7 +256,7 @@ func reviewFixture(t *testing.T, mode string) *reviewNative {
 	profile["model"] = "constructed-review"
 	profile["roles"] = []any{"case_review", "adjudication", "claim_mapping"}
 	c["llm_profiles"] = append(c["llm_profiles"].([]any), profile)
-	if mode == "omitted" {
+	if strings.HasPrefix(mode, "omitted") {
 		c["stage_profiles"].(map[string]any)["blind_claim_extraction"] = "constructed-review"
 		profile["roles"] = append(profile["roles"].([]any), "blind_claim_extraction")
 	}
@@ -269,7 +274,7 @@ func reviewFixture(t *testing.T, mode string) *reviewNative {
 	requireListening(t, e)
 	f.attempt = f.start(t)
 	answer := "Use opens."
-	if mode == "omitted" {
+	if strings.HasPrefix(mode, "omitted") {
 		answer = "work -> works; is -> are"
 	}
 	if mode == "reason" {
@@ -526,6 +531,19 @@ func (f *reviewNative) installOmitted(t *testing.T) {
 	turn["id"] = "t1"
 	turn["canonical_text"] = packet["canonical"]
 	turn["surface_text"] = packet["surface"]
+	if f.modeReview() == "omitted-cross-turn" {
+		turn["canonical_text"], turn["surface_text"] = "She works here.", "She work here."
+		second := reviewClone(turn)
+		second["id"] = "t2"
+		second["canonical_text"], second["surface_text"] = "They are ready.", "They is ready."
+		middle := float64(int(key["audio"].(map[string]any)["duration_ms"].(float64)) / 2)
+		turn["audio_interval"] = map[string]any{"start_ms": 0, "end_ms": middle}
+		u["audio_intervals"] = []any{turn["audio_interval"]}
+		second["audio_interval"] = map[string]any{"start_ms": middle, "end_ms": key["audio"].(map[string]any)["duration_ms"]}
+		key["utterances"] = []any{turn, second}
+		key["audio"].(map[string]any)["source_profile_id"] = "GENERATED-EXERCISE"
+		u["source"] = map[string]any{"source_id": "GENERATED-EXERCISE", "source_record_id": nil, "rights_approval_id": nil, "uses": []any{"local_analysis", "derivative_exercises"}, "status": "approved", "licence_evidence_hash": nil}
+	}
 	key["public_context"] = "A present-tense workplace description."
 	key["case_version_id"] = uuid.NewString()
 	content := map[string]any{}
@@ -1186,5 +1204,31 @@ func reviewProtocolPacket(t *testing.T, f *reviewNative, r ReviewRun) {
 		raw, e := f.s.Store.ReadAsset(context.Background(), *stage.Diagnostic)
 		requireListening(t, e)
 		requireListening(t, os.WriteFile(filepath.Join(dir, "diagnostic-"+*stage.Diagnostic+".json"), raw, 0600))
+	}
+}
+
+func TestNativeReleaseReviewNewTurnPositive(t *testing.T) {
+	f := reviewFixture(t, "omitted-cross-turn")
+	r := f.create(t, "dispute")
+	r, err := f.run(t, r)
+	requireListening(t, err)
+	result, err := f.s.Store.readScoringResult(context.Background(), r.NewResult)
+	requireListening(t, err)
+	if result["score"].(map[string]any)["composite"].(map[string]any)["display"] != "100.0" || r.AudioSHA != f.audioSHA {
+		t.Fatal(result, r)
+	}
+	doc, err := f.s.Store.ReadDocument(context.Background(), r.NewCase)
+	requireListening(t, err)
+	var key map[string]any
+	requireListening(t, json.Unmarshal(doc.Payload, &key))
+	if len(key["units"].([]any)) != 2 {
+		t.Fatal(key)
+	}
+	for _, value := range key["units"].([]any) {
+		u := value.(map[string]any)
+		source := u["source"].(map[string]any)
+		if source["source_id"] != "GENERATED-EXERCISE" || source["status"] != "approved" {
+			t.Fatal(u)
+		}
 	}
 }

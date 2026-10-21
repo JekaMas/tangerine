@@ -22,6 +22,16 @@ def serve(handler,raw,timeout):
   finally:
    if child.poll() is None:os.killpg(child.pid,signal.SIGKILL)
    thread.join(timeout=5)
-  if capture.exists():result['model_visible_context']=json.loads(capture.read_text())
-  else:result['model_visible_context']=None
+  if status!=200:result['process_exit_code']=child.returncode
+  # A returned wire already contains the exact actual calls/tensors. Read the
+  # checkpoint only when the child could not return it, avoiding duplicate
+  # multi-megabyte arrays in the synchronous evidence finalizer.
+  wire=result.get('wire')
+  if isinstance(wire,dict):context=wire
+  elif capture.exists():context=json.loads(capture.read_text());result['model_visible_context']=context
+  else:context=None;result['model_visible_context']=None
+  tokens=capture.with_suffix('.tokens.json')
+  if tokens.exists():
+   if context is None:context={};result['model_visible_context']=context
+   context['generation_progress']=json.loads(tokens.read_text())
   handler.send(status,result)

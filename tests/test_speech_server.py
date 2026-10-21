@@ -22,6 +22,17 @@ class SpeechServer(unittest.TestCase):
   status,data=self.request('/internal/v1/models');self.assertEqual(status,200);self.assertEqual({p['profile_id'] for p in data['profiles']},{'kokoro-local-en-v1','kokoro-controlled-v1','qwen-base-v1','qwen-design-v1','qwen-custom-v1','faster-whisper-local-en-v1','qwen25-omni-audio-v1','qwen25-omni-3b-audio-v1'});self.assertTrue(data['espeak_ng']);controlled=next(p for p in data['profiles'] if p['profile_id']=='kokoro-controlled-v1');self.assertEqual(controlled['status'],'ready');self.assertEqual(controlled['praat_version'],'6.1.38')
  def test_unauthorized_negative(self):self.assertEqual(self.request('/internal/v1/models',token='wrong'),(403,{'error':'internal_access_required'}))
  def test_malformed_negative(self):self.assertEqual(self.request('/internal/v1/plan',{}),(422,{'error':'SYNTHESIS_FAILED'}))
+ def diagnostic_packet(self,method):
+  import math,struct,base64
+  from audio import wav_bytes
+  audio=wav_bytes(b''.join(struct.pack('<h',int(6000*math.sin(2*math.pi*180*i/24000))) for i in range(24000)))
+  return dict(method_id=method,audio_base64=base64.b64encode(audio).decode(),audio_sha256='a'*64,timeout_seconds=10)
+ def test_diagnostic_worker_success_positive(self):
+  status,data=self.request('/internal/v1/measure',self.diagnostic_packet('ffmpeg-ebur128-v1'))
+  self.assertEqual(status,200);self.assertEqual([r['feature'] for r in data['measurements']],['integrated_lufs','true_peak_dbtp']);self.assertEqual(data['receipt']['inference_calls'],0)
+ def test_diagnostic_worker_exit_negative(self):
+  status,data=self.request('/internal/v1/measure',self.diagnostic_packet('invented-method'))
+  self.assertEqual(status,422);self.assertEqual(data['error'],'CAPABILITY_UNAVAILABLE');self.assertEqual(data['process_exit_code'],1);self.assertEqual(data['failure_type'],'ValueError');self.assertIsNone(data['model_visible_context'])
  def watch(self):
   processes=[];native=server.subprocess.Popen
   def observe(*args,**kwargs):

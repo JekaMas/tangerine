@@ -44,8 +44,6 @@ def execute(packet):
  if packet.get('reference_audio_base64'):clips.append(base64.b64decode(packet['reference_audio_base64']))
  result=auditory(packet['profile'],packet['prompt'],packet['input'],clips,packet.get('timeout_seconds',260),checkpoint)
  if result.get('error'):return result
- selected=set(packet['input']['units']);features=set(packet['input']['features'])
- if any(r.get('unit_id') not in selected or r.get('feature') not in features for r in result['output']['findings']):result['error']='DIAGNOSTIC_OUTPUT_INVALID';return result
  result['measurements']=complete_judge_measurements(result['output'],packet['input'],method)
  result['receipt']=dict(model=packet['profile']['model'],started_at_unix=started,finished_at_unix=time.time(),inference_calls=1)
  return result

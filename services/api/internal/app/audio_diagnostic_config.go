@@ -15,6 +15,11 @@ func audioDiagnosticDefaults() map[string]any {
 	profiles := []any{}
 	for _, row := range [][4]string{{"qwen-omni-7b", "local_qwen25_omni", "Qwen/Qwen2.5-Omni-7B", "ae9e1690543ffd5c0221dc27f79834d0294cba00"}, {"qwen-omni-3b", "local_qwen25_omni", "Qwen/Qwen2.5-Omni-3B", "f75b40e3da2003cdd6e1829b1f420ca70797c34e"}, {"gemini-audio", "gemini_interactions", "gemini-3.8-flash", ""}} {
 		p := map[string]any{"schema_version": "2.0.0", "id": row[0], "provider": row[1], "model": row[2], "revision": row[3], "credential_ref": nil, "billing_mode": "local", "device": "cpu", "max_clip_seconds": 10, "max_output_tokens": 512, "prompt_asset_id": "builtin-audio-judge-v1", "prompt_sha256": contracts.Digest(audioJudgePrompt)}
+		if row[0] == "qwen-omni-3b" {
+			p["compute_type"] = "int8_dynamic"
+			p["quantization_engine"] = "qnnpack"
+			p["repetition_penalty"] = 1.1
+		}
 		if row[1] == "gemini_interactions" {
 			p["revision"], p["credential_ref"], p["billing_mode"], p["device"] = nil, "GEMINI_API_KEY", "free_tier", "provider"
 		}

@@ -250,5 +250,6 @@ if __name__=='__main__':
   # Raw library/provider exceptions may contain credentials or private text.
   code=str(e) if isinstance(e,ValueError) and str(e) in {'PAID_USE_FORBIDDEN','PROVIDER_QUOTA','PROVIDER_FAILED','MISSING_CREDENTIALS','CAPABILITY_UNAVAILABLE','VOICE_UNAVAILABLE','VOICE_SETUP_REQUIRED','MODEL_SETUP_REQUIRED','MODEL_BINDING_MISMATCH','DIAGNOSTIC_OUTPUT_INVALID','INVALID_AUDIO_INTERVAL','INPUT_CAPACITY_EXCEEDED','AUDIO_FORMAT_INVALID','AUDIO_SILENT','SYNTHESIS_FAILED','CONSTRAINT_CONFLICT','ALIGNMENT_UNAVAILABLE','ACOUSTIC_NOT_MEASURABLE'} else 'DIAGNOSTIC_FAILED' if packet.get('action')=='measure' else 'SYNTHESIS_FAILED'
   failure={'error':code}
+  if packet.get('action')=='measure':failure['failure_type']=type(e).__name__
   if getattr(e,'reason',None) is not None:failure.update(reason=e.reason,observations=e.observations)
   print(json.dumps(failure));sys.exit(1)

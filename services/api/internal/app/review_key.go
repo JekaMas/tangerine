@@ -244,5 +244,22 @@ func reviewUnitSource(key, unit map[string]any) map[string]any {
 			}
 		}
 	}
+	// Independently generated recordings keep their own source across turns,
+	// including a newly found event where the old key had no scoring unit.
+	if key["audio"].(map[string]any)["source_profile_id"] == "GENERATED-EXERCISE" {
+		generated := true
+		for _, value := range key["units"].([]any) {
+			if value.(map[string]any)["source"].(map[string]any)["source_id"] != "GENERATED-EXERCISE" {
+				generated = false
+				break
+			}
+		}
+		if generated {
+			if len(key["units"].([]any)) > 0 {
+				return reviewClone(key["units"].([]any)[0].(map[string]any)["source"])
+			}
+			return map[string]any{"source_id": "GENERATED-EXERCISE", "source_record_id": nil, "rights_approval_id": nil, "uses": []any{"local_analysis", "derivative_exercises"}, "status": "approved", "licence_evidence_hash": nil}
+		}
+	}
 	return map[string]any{"source_id": key["audio"].(map[string]any)["source_profile_id"], "source_record_id": nil, "rights_approval_id": nil, "uses": []any{}, "status": "pending", "licence_evidence_hash": nil}
 }

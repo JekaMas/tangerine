@@ -29,7 +29,7 @@ sh scripts/tangerine start
 
 The application implements local settings/provider bindings, persisted clean text and mutation keys, speech preparation, listening/answer persistence, LLM interpretation, exact scoring and recommendations. Source imports retain native records, projections, missingness and their original rights. Optional /reports adds source-scoped empirical reports and serial frozen LLM experiments with all22diagnostic dimensions, exact paired comparisons and explicit cancellation/resume. See [report and experiment usage](specification/v2/docs/empirical-experiment-runtime.md).
 
-Verification is scoped to each iteration's observed cases; selected local-model tests do not certify every category or hosted provider. The canonical task list retains incomplete earlier optional review/acoustic verification and later operations work. No full-product or external entitlement claim follows from this implementation.
+The implementation also includes optional LLM reconsideration/disputes, controlled acoustic mutations, independent transcription/audio diagnostics, complete private backup/fresh restore/switch and reference-aware cleanup. Acceptance records identify the actual exercised configurations, retained observations and remaining external-data/hosted-entitlement boundaries; finite local tests do not certify every possible generated example. See [release evidence](audit/iteration-16-release-20261021/REPORT.md).
 
 ## Optional LLM development Lab
 
@@ -57,7 +57,7 @@ The active [full specification](specification/v2/README.md) preserves all 122 ta
 
 The canonical implementation task list is [OpenSpec tasks](openspec/changes/implement-teacher-error-trainer/tasks.md). [Iteration 1 evidence](audit/iteration-1-local-foundation-20261010/REPORT.md) and [iteration 2 evidence](audit/iteration-2-domain-storage-20261010/REPORT.md) separate actual native observations from later full-product obligations. Structural OpenSpec/DAG checks are not runtime acceptance. Development follows the pinned [workflow](docs/development/OPENSPEC_WORKFLOW.md).
 
-Historical login/manual-setup instructions and backup scripts predate the current local-workspace contracts. They are retained in Git history and audit records; current deployment uses the helper above. Backup/restore implementation and complete architecture qualification remain visible in the full task list.
+Historical login/manual-setup instructions and backup scripts predate the current local-workspace contracts. They are retained in Git history and audit records; current deployment uses the helper above. The full task list and release evidence record source startup, backup/restore and actual architecture qualification separately.
 
 Scoring and recommendations use the model/profile frozen when an attempt starts. Native code calculates exact scores and saves them before requesting comments. Corrections and optional explanations are scored independently. Results include found/missed targets, permitted repairs and audio intervals. If comments are unavailable, use **Retry comments and recommendations**; it reuses the saved answer and score. Reopening results does not call a model. Configure an included/free/local feedback profile in Settings; paid-credit fallback remains forbidden.
 
@@ -78,3 +78,5 @@ sh scripts/tangerine switch tangerine
 Backup includes private database/media/source/evidence, installed speech cache and optional Lab files; keep it private. Keys, provider sign-in credentials and runtime secrets are excluded. Restore creates fresh volumes/internal credentials and reports reconnect requirements. Switch retains previous volumes; failures preserve the selected workspace. **Recovery** shows exact commands and service status. **Cleanup** previews explicit data deletion and shared-object retention. Optional copied Lab data is erased only through the separately confirmed entire-Lab purge described there. External backup copies remain your responsibility.
 
 Paid credits, overage and billed provider calls are forbidden without personal approval for each case. Included/free/local access never silently falls back to billing.
+
+Optional diagnostics are selected in Settings and run explicitly from Reviews. Local transcription uses `sh scripts/tangerine model-setup faster-whisper-local-en-v1`; the smaller audio-comparison profile uses `sh scripts/tangerine model-setup qwen25-omni-3b-audio-v1`. Model setup is explicit and separate from startup. The3B checkpoint has non-commercial research terms and substantial local memory/CPU requirements. Its observations are advisory model findings, not calibrated native pronunciation scores; uncertainty or diagnostic failure preserves saved audio, answers and primary scores.

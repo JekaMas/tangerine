@@ -58,11 +58,20 @@ def judge_measurements(output,sha,method,version,interval,evidence):
   rows.append(dict(id=str(uuid.uuid4()),audio_sha256=sha,method_id=method,method_version=version,feature=finding['feature'],interval=dict(start=interval['start']+span['start'],end=interval['start']+span['end'],sample_rate_hz=24000),status='observed' if status in ['supported','contradicted'] else 'not_measurable' if status=='uncertain' else 'not_applicable',numeric_value=None,categorical_value='model_'+status if status in ['supported','contradicted'] else None,unit='category',evidence_asset_ids=list(evidence),reason=None if status in ['supported','contradicted'] else finding['reason'],target_unit_id=finding['unit_id'],auditory_finding=finding))
  return rows
 
+def unit_features(unit,request):
+ features=[p['feature'] for p in unit['realization']['prosody']]
+ features.extend(e['controller'] for e in request.get('acoustic_edits',[]) if e['unit_id']==unit['id'])
+ return list(dict.fromkeys(features)) or ['speech_realization']
+
 def complete_judge_measurements(output,request,method):
- rows=judge_measurements(output,request['audio_sha256'],method,'auditory-v1',request['source_interval'],[])
- reported={(f['unit_id'],f['feature']) for f in output['findings']}
+ # Project requested pairs only; auxiliary model commentary stays in raw output
+ # rather than invalidating the requested observations or gaining a target.
+ requested={(u['id'],p) for u in request['planned_units'] for p in unit_features(u,request)}
+ applicable=[f for f in output['findings'] if (f.get('unit_id'),f.get('feature')) in requested]
+ rows=judge_measurements({'findings':applicable},request['audio_sha256'],method,'auditory-v1',request['source_interval'],[])
+ reported={(f['unit_id'],f['feature']) for f in applicable}
  for unit in request['planned_units']:
-  features=[p['feature'] for p in unit['realization']['prosody']] or ['speech_realization']
+  features=unit_features(unit,request)
   for feature in dict.fromkeys(features):
    if (unit['id'],feature) in reported:continue
    missing=dict(unit_id=unit['id'],feature=feature,status='uncertain',clip_interval=None,proposed_ipa=None,description='The model supplied no finding for this target.',reason='model_omitted_target')

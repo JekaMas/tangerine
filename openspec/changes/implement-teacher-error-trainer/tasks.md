@@ -803,3 +803,13 @@ Resume: audit/iteration-16-release-20261021/PROGRESS.md.
 - [ ] I16.R12 Preserve the host-native maintenance helper built by source startup; do not overwrite the API image through a second default-Linux Compose build. Observe actual ZIP startup→backup→restore→switch on this Mac and both container architectures.
 
 - [ ] I16.R13 Accept exact saved textual-unit attachment names already supplied in the review key as textual provenance, without requiring another model formatting repair. Preserve rejection of invented/unseen/acoustic references and direct-hearing boundaries; verify native and actual review/key repair with unchanged supported scores.
+
+- [ ] I16.R14 Pass the already decoded mono audio samples directly into the Qwen processor, avoiding the unnecessary general media helper and its undeclared audioread import; observe actual two-input local hearing, native raw/context artifacts and Lab readback.
+
+- [ ] I16.R15 Wait for the actually restarted services to be healthy before maintenance recovery returns. Preserve saved backup on restart failure and switch rollback behavior; observe the real source backup/browser continuation plus positive/negative controller cases.
+
+- [ ] I16.R16 Make the source-build MinIO download honor ordinary Docker client build proxies by fetching inside the source build with the same pinned revision and one checksum admission; observe cold amd64/arm64 builds with the actual test transport, preserving default-network failure evidence and no global network changes.
+
+- [ ] I16.R17 Preserve known generated-source permissions when optional reconsideration adds a real mistake in another utterance or an empty prior key. Keep unknown/mixed corpus sources pending; materialize literal red/green and actual new-turn publication/scoring without changing audio or native grades.
+
+- [ ] I16.R18 Remove overstrict auditory auxiliary-finding/wrapper gates and derive an omitted display caption only from the supplied reason: keep complete raw output, project only requested unit/feature pairs and retain native unknowns for missing targets. Test exact requested+auxiliary and unrelated-only examples; actual qualification requires a genuine requested finding, not a native placeholder.

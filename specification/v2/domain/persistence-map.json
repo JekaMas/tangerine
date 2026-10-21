@@ -29022,7 +29022,7 @@
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
-      "sha256": "4867920452234de6099e6aaa5bb1d5c7f844be8446a2b78c7611ab9690c60506",
+      "sha256": "ff957806546abef555296d57d2464e1e425f5723452dabeb2cf15a3490c7821a",
       "fields": [
         {
           "name": "schema_version",
@@ -29119,6 +29119,78 @@
           "description": "SHA-256 of actual immutable bytes or JCS payload as declared.",
           "schema_reference": null,
           "rule_sha256": "a7deb7ab49f0e9626426fcda7a0f71a0e1d47a4c5b367790c674a879b4236c7d"
+        },
+        {
+          "name": "compute_type",
+          "pointer": "/properties/compute_type",
+          "required_in_parent": false,
+          "description": "Explicit local inference representation. Omission preserves legacy float32. Dynamic int8 quantizes Linear weights on CPU; other layers remain float32. Captured in the frozen binding and actual context.",
+          "schema_reference": null,
+          "rule_sha256": "d62336118caea0891a04f6b5bd6686128b09ea8e1542939e021117367263a08f"
+        },
+        {
+          "name": "quantization_engine",
+          "pointer": "/properties/quantization_engine",
+          "required_in_parent": false,
+          "description": "Explicit CPU int8 kernel binding. Omission keeps the selected PyTorch runtime default; never silently switch an unsupported engine.",
+          "schema_reference": null,
+          "rule_sha256": "63d2e54b4d1beaa69dde8f7ebe26a75e175bed4c03bab29b479cbee03a89f2e8"
+        },
+        {
+          "name": "repetition_penalty",
+          "pointer": "/properties/repetition_penalty",
+          "required_in_parent": false,
+          "description": "Explicit local decoder repetition penalty. Legacy omission uses1.0; the built-in3B CPU binding uses1.1. Actual generate parameters are captured.",
+          "schema_reference": null,
+          "rule_sha256": "cec4484905e37e9b32c20f4dc3a274cfa0125cc70b4f79c0124cc2f76213dd32"
+        },
+        {
+          "name": "compute_type",
+          "pointer": "/allOf/0/if/properties/compute_type",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "1109a3df1c098b1e223884c86cc372cc247ebe3dd393c02ddbae2242bd498fd2"
+        },
+        {
+          "name": "provider",
+          "pointer": "/allOf/0/then/properties/provider",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "0214283d7ce5a9ef4dd56ff07dab9ac2900fadc252631fba9f5b101d184a04b4"
+        },
+        {
+          "name": "device",
+          "pointer": "/allOf/0/then/properties/device",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "622f53471c87064a47636db84adf7142925888e25cd118be3787a7cc2f869131"
+        },
+        {
+          "name": "compute_type",
+          "pointer": "/allOf/1/then/properties/compute_type",
+          "required_in_parent": true,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "1109a3df1c098b1e223884c86cc372cc247ebe3dd393c02ddbae2242bd498fd2"
+        },
+        {
+          "name": "provider",
+          "pointer": "/allOf/1/then/properties/provider",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "0214283d7ce5a9ef4dd56ff07dab9ac2900fadc252631fba9f5b101d184a04b4"
+        },
+        {
+          "name": "device",
+          "pointer": "/allOf/1/then/properties/device",
+          "required_in_parent": false,
+          "description": null,
+          "schema_reference": null,
+          "rule_sha256": "622f53471c87064a47636db84adf7142925888e25cd118be3787a7cc2f869131"
         }
       ]
     },

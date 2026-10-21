@@ -28,7 +28,7 @@ case "$*" in
  *'ps --status running --services'*) printf 'web\napi\nspeech\n';;
  *'stop web api speech'*) [ "$TANGERINE_FAKE_MODE" = partial-stop ] || [ "$TANGERINE_FAKE_MODE" = partial-stop-restart-failure ] && exit 1;;
  *'snapshot-create'*) printf 'literal native archive bytes';;
- *'start web api speech'*) [ "$TANGERINE_FAKE_MODE" = restart-failure ] || [ "$TANGERINE_FAKE_MODE" = partial-stop-restart-failure ] && exit 1;;
+ *'start --wait --wait-timeout 180 web api speech'*) [ "$TANGERINE_FAKE_MODE" = restart-failure ] || [ "$TANGERINE_FAKE_MODE" = partial-stop-restart-failure ] && exit 1;;
  *'up -d --wait'*) [ "$TANGERINE_FAKE_MODE" = target-failure ] && exit 1;;
 esac
 exit 0
@@ -62,7 +62,7 @@ func TestLocalRecoveryBackupPositive(t *testing.T) {
 		t.Fatal(p, e)
 	}
 	trace, _ := os.ReadFile(filepath.Join(c.Root, "trace"))
-	if !strings.Contains(string(trace), "stop web api speech") || !strings.Contains(string(trace), "start web api speech") {
+	if !strings.Contains(string(trace), "stop web api speech") || !strings.Contains(string(trace), "start --wait --wait-timeout 180 web api speech") {
 		t.Fatal(string(trace))
 	}
 }
@@ -113,7 +113,7 @@ func TestLocalRecoverySwitchRollbackNegative(t *testing.T) {
 				t.Fatal("failed target selected")
 			}
 			trace, _ := os.ReadFile(filepath.Join(c.Root, "trace"))
-			if !strings.Contains(string(trace), "stop web api speech") || !strings.Contains(string(trace), "start web api speech") {
+			if !strings.Contains(string(trace), "stop web api speech") || !strings.Contains(string(trace), "start --wait --wait-timeout 180 web api speech") {
 				t.Fatal("previous workspace was not recovered", string(trace))
 			}
 		})
@@ -185,7 +185,7 @@ func TestLocalRecoveryPartialStopNegative(t *testing.T) {
 				t.Fatal("partial stop accepted")
 			}
 			trace, _ := os.ReadFile(filepath.Join(c.Root, "trace"))
-			if !strings.Contains(string(trace), "start web api speech") {
+			if !strings.Contains(string(trace), "start --wait --wait-timeout 180 web api speech") {
 				t.Fatal("partially stopped workspace was not recovered", string(trace))
 			}
 			if strings.Contains(string(trace), "snapshot-create") || strings.Contains(string(trace), "up -d --wait") {

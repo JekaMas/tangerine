@@ -1,6 +1,6 @@
 FROM golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd AS build
 ENV GOTOOLCHAIN=local GOWORK=off
-ADD --checksum=sha256:71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6 https://codeload.github.com/minio/minio/tar.gz/7aac2a2c5b7c882e68c1ce017d8256be2feea27f /src.tar.gz
+RUN curl --fail --location --output /src.tar.gz https://codeload.github.com/minio/minio/tar.gz/7aac2a2c5b7c882e68c1ce017d8256be2feea27f && echo '71794c2df26aad0cc99e8421c58b7aa2dd55969f979b0e7d1e931042e9fabcd6  /src.tar.gz' | sha256sum --check -
 RUN mkdir /src && tar -xzf /src.tar.gz --strip-components=1 -C /src
 WORKDIR /src
 RUN CGO_ENABLED=0 go build -mod=readonly -trimpath -o /minio .

@@ -510,8 +510,18 @@ func TestNativeDiagnosticActualAuditoryPositive(t *testing.T) {
 	var result map[string]any
 	requireListening(t, json.Unmarshal(raw, &result))
 	wire := result["wire"].(map[string]any)
-	if len(result["output"].(map[string]any)["findings"].([]any)) == 0 {
+	actualFindings := 0
+	for _, row := range rows {
+		if row["auditory_finding"] != nil {
+			actualFindings++
+		}
+	}
+	if actualFindings == 0 {
 		t.Fatal("no actual model finding; native unknowns do not qualify inference", result)
+	}
+	parameters := wire["parameters"].(map[string]any)
+	if parameters["compute_type"] != "int8_dynamic" || parameters["quantization_engine"] != "qnnpack" || parameters["repetition_penalty"] != 1.1 || parameters["quantized_linear_modules"].(float64) <= 0 {
+		t.Fatal("Selected CPU int8 inference was not realized", parameters)
 	}
 	if wire["provider"] != "local_qwen25_omni" || len(wire["model_visible_calls"].([]any)) == 0 || len(wire["input_audio"].([]any)) != 2 {
 		t.Fatal("missing actual target/reference/model call", wire)

@@ -8,7 +8,7 @@ is the installed loopback Ollama, with an explicit local-model allowlist.
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 from pathlib import Path
 import hashlib,json,os,queue,select,socket,sys,threading,time,uuid
-PUBLIC={'pypi.org','files.pythonhosted.org','download.pytorch.org','download-r2.pytorch.org','download.pytorch.com','huggingface.co','github.com','objects.githubusercontent.com','release-assets.githubusercontent.com'}
+PUBLIC={'codeload.github.com','proxy.golang.org','sum.golang.org','storage.googleapis.com','pypi.org','files.pythonhosted.org','download.pytorch.org','download-r2.pytorch.org','download.pytorch.com','huggingface.co','github.com','objects.githubusercontent.com','release-assets.githubusercontent.com'}
 MODELS={'gpt-oss:20b','tangerine-qwen35-9b-i6-20261020'}
 JOBS=queue.Queue()
 

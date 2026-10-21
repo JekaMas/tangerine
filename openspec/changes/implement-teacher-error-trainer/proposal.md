@@ -1,6 +1,6 @@
 # Full local Teacher Error Trainer
 
-The current objective is the full Tangerine local open-source product specified in specification/v2/README.md. This increment revises specifications only. User decisions in docs/authority.md supersede inherited package instructions and human peer review procedures.
+The current objective is the full Tangerine local open-source product specified in specification/v2/README.md. The current user-authorized increment is iteration16: complete local release acceptance and full frontend picture/video/audio evidence after the implemented iterations. Earlier research-only statements below describe those dated increments, not the current implementation scope. User decisions in docs/authority.md supersede inherited package instructions and human peer review procedures.
 
 The GitHub source ZIP/clone includes every application build input and a simple Compose helper. One local workspace offers preparation, the library, listening/answering, results, configurable LLM case review and adjudication, source import, benchmarks and recovery. No account, complex public API, human peer reviewer, qualification signature or full-corpus certification is required for ordinary use.
 

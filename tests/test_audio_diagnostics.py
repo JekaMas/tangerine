@@ -52,4 +52,15 @@ class AudioDiagnosticTests(unittest.TestCase):
   rows=complete_judge_measurements(output,request,'qwen25-omni-audio-v1')
   self.assertEqual([(r['target_unit_id'],r['feature']) for r in rows],[('u1','speech_realization'),('u2','lexical_stress')]);self.assertEqual(output,{'findings':[]})
   self.assertTrue(all(r['status']=='not_measurable' and r['numeric_value'] is None and r['categorical_value'] is None and r['reason']=='model_omitted_target' and 'auditory_finding' not in r for r in rows))
+ def test_judge_extra_findings_positive(self):
+  requested=dict(unit_id='e1',feature='pause_insert',status='supported',description='Intrusive pause before opens.',reason='Audible pause.',clip_interval=None,proposed_ipa=None)
+  auxiliary=dict(unit_id='e1',feature='phoneme',status='not_applicable',description='None.',reason='Not applicable.',clip_interval=None,proposed_ipa=None)
+  output=dict(findings=[requested,auxiliary]);request=dict(audio_sha256='a'*64,source_interval=dict(start=0,end=96000),planned_units=[dict(id='e1',realization=dict(prosody=[]))],acoustic_edits=[dict(unit_id='e1',controller='pause_insert')])
+  rows=complete_judge_measurements(output,request,'qwen25-omni-audio-v1')
+  self.assertEqual(len(rows),1);self.assertEqual(rows[0]['auditory_finding'],requested);self.assertEqual(rows[0]['target_unit_id'],'e1');self.assertEqual(rows[0]['categorical_value'],'model_supported');self.assertEqual(output['findings'],[requested,auxiliary])
+ def test_judge_unrequested_only_negative(self):
+  auxiliary=dict(unit_id='other',feature='pause_insert',status='supported',description='Another target.',reason='Unrequested.',clip_interval=None,proposed_ipa=None)
+  output=dict(findings=[auxiliary]);request=dict(audio_sha256='a'*64,source_interval=dict(start=0,end=96000),planned_units=[dict(id='e1',realization=dict(prosody=[dict(feature='pause_insert')]))])
+  rows=complete_judge_measurements(output,request,'qwen25-omni-audio-v1')
+  self.assertEqual(len(rows),1);self.assertEqual((rows[0]['target_unit_id'],rows[0]['feature'],rows[0]['status'],rows[0]['reason']),('e1','pause_insert','not_measurable','model_omitted_target'));self.assertIsNone(rows[0]['categorical_value']);self.assertNotIn('auditory_finding',rows[0]);self.assertEqual(output,dict(findings=[auxiliary]))
 if __name__=='__main__':unittest.main()

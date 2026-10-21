@@ -40,3 +40,30 @@ def observe_method(owner, name, events, capture_result=True):
         yield
     finally:
         setattr(owner, name, original)
+
+class DiagnosticTokenCapture:
+    """Actual generated IDs survive timeout/termination without another inference."""
+    def __init__(self, path):
+        from pathlib import Path
+        self.path = Path(path) if path else None
+        self.prompt = None
+        self.tokens = []
+
+    def save(self, complete):
+        if self.path:
+            import json
+            temporary = self.path.with_suffix('.tmp')
+            temporary.write_text(json.dumps({'method': 'generate', 'prompt_token_ids': self.prompt,
+                                             'output_token_ids': self.tokens, 'complete': complete}))
+            temporary.replace(self.path)
+
+    def put(self, value):
+        ids = value.detach().cpu().reshape(-1).tolist()
+        if self.prompt is None:
+            self.prompt = ids
+        else:
+            self.tokens.extend(ids)
+        self.save(False)
+
+    def end(self):
+        self.save(True)

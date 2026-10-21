@@ -4,8 +4,9 @@ from unittest.mock import patch
 sys.path.insert(0,str(pathlib.Path(__file__).resolve().parents[1]/'services/speech'))
 from audio import wav_bytes
 import diagnostic_runtime as runtime
-from diagnostic_models import decode_findings,derivative
+from diagnostic_models import decode_findings,derivative,processor_audio_options,auditory_conversation
 import model_setup
+from inference_capture import DiagnosticTokenCapture
 class DiagnosticRuntimeTests(unittest.TestCase):
  def audio(self):
   import math,struct
@@ -36,6 +37,45 @@ class DiagnosticRuntimeTests(unittest.TestCase):
   def recognize(audio,capture):received.append(audio);return dict(hypothesis='The café open at ten.',library_version='fixture',model_manifest={'repo':'constructed-recognizer'})
   with patch.object(runtime,'recognize',recognize):r=runtime.execute(p)
   self.assertEqual(received,[self.audio()]);self.assertEqual(r['native']['comparison']['exact_ratio'],{'numerator':'2','denominator':'5'});self.assertEqual(r['measurements'][0]['numeric_value'],'0.4');self.assertEqual(r['native']['hypothesis'],'The café open at ten.')
+ def test_processor_padding_complete_positive(self):
+  target=[0]*16000;reference=[0]*8000
+  self.assertEqual(processor_audio_options([target,reference],160),dict(max_length=16000,truncation=False))
+  self.assertEqual((len(target),len(reference)),(16000,8000))
+ def test_processor_partial_frame_not_truncated_negative(self):
+  target=[0]*16000+[1,2,3];reference=[0]*8000
+  self.assertEqual(processor_audio_options([target,reference],160),dict(max_length=16160,truncation=False))
+  self.assertEqual(target[-3:],[1,2,3]);self.assertEqual(len(target),16003)
+ def test_generation_token_capture_positive(self):
+  import torch
+  with tempfile.TemporaryDirectory() as directory:
+   path=pathlib.Path(directory)/'tokens.json';capture=DiagnosticTokenCapture(path)
+   capture.put(torch.tensor([[10,20,30]]));capture.put(torch.tensor([41]));capture.put(torch.tensor([42]));capture.end()
+   self.assertEqual(json.loads(path.read_text()),dict(method='generate',prompt_token_ids=[10,20,30],output_token_ids=[41,42],complete=True))
+ def test_interrupted_token_capture_negative(self):
+  import torch
+  with tempfile.TemporaryDirectory() as directory:
+   path=pathlib.Path(directory)/'tokens.json';capture=DiagnosticTokenCapture(path)
+   capture.put(torch.tensor([[10,20]]));capture.put(torch.tensor([71]))
+   self.assertEqual(json.loads(path.read_text()),dict(method='generate',prompt_token_ids=[10,20],output_token_ids=[71],complete=False))
+ def test_judge_single_finding_positive(self):
+  row=dict(unit_id='e1',feature='pause_insert',status='contradicted',description='The pause differs.',reason='The actual model reports a contrast.',proposed_ipa=None)
+  actual=decode_findings(json.dumps(row));self.assertEqual(actual['findings'],[{**row,'clip_interval':None}]);self.assertEqual(actual['summary'],row['reason']);self.assertEqual(actual['findings'][0]['status'],'contradicted')
+ def test_judge_unrelated_object_negative(self):
+  with self.assertRaisesRegex(ValueError,'DIAGNOSTIC_OUTPUT_INVALID'):decode_findings('{"message":"An unrelated object is not a finding."}')
+ def test_auditory_task_after_audio_positive(self):
+  prompt='Compare target and reference.';content='{"targets":["e1"]}'
+  result=auditory_conversation(prompt,content,['target.wav','reference.wav'])
+  self.assertEqual(result,[dict(role='user',content=[dict(type='text',text=content),dict(type='text',text='Target audio'),dict(type='audio',audio='target.wav'),dict(type='text',text='Reference audio'),dict(type='audio',audio='reference.wav'),dict(type='text',text=prompt)])])
+ def test_auditory_no_reference_negative(self):
+  result=auditory_conversation('Judge only actual audio.','{}',['target.wav'])
+  self.assertEqual([p['audio'] for p in result[0]['content'] if p['type']=='audio'],['target.wav']);self.assertEqual(result[0]['content'][-1],dict(type='text',text='Judge only actual audio.'));self.assertNotIn('Reference audio',str(result))
+ def test_judge_array_reason_positive(self):
+  first=dict(unit_id='e1',feature='pause_insert',status='supported',reason='Intrusive pause removed in reference.')
+  second=dict(unit_id='e1',feature='pause_insert',status='not_applicable',reason='No pause in target.')
+  out=decode_findings('```json\n'+json.dumps([first,second])+'\n```')
+  self.assertEqual(out['findings'],[{**first,'description':first['reason'],'clip_interval':None,'proposed_ipa':None},{**second,'description':second['reason'],'clip_interval':None,'proposed_ipa':None}]);self.assertEqual([r['status'] for r in out['findings']],['supported','not_applicable'])
+ def test_judge_array_transcription_negative(self):
+  with self.assertRaisesRegex(ValueError,'DIAGNOSTIC_OUTPUT_INVALID'):decode_findings('["The café opens tomorrow."]')
  def test_download_incomplete_negative(self):
   class Response:
    status=200;headers={'Content-Length':'6'}

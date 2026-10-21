@@ -173,7 +173,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | audio-judge-output | schema hash | derived DTO or actual operation input/output receipt | 12 |
 
-| audio-judge-profile | schema hash | derived DTO or actual operation input/output receipt | 12 |
+| audio-judge-profile | schema hash | derived DTO or actual operation input/output receipt | 21 |
 
 | render-progress | schema hash | derived DTO or actual operation input/output receipt | 39 |
 

@@ -467,13 +467,13 @@
       },
       "input": {
         "exact_test": "TestLocalRecoveryBackupPositive",
-        "literal_executable_fixture": "func TestLocalRecoveryBackupPositive(t *testing.T) {\n\tc := localFixture(t, \"good\")\n\tp, e := c.Backup(context.Background(), \"saved.tar.gz\")\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tb, e := os.ReadFile(filepath.Join(c.Root, \"data/backups/saved.tar.gz\"))\n\tif e != nil || string(b) != \"literal native archive bytes\" || p[\"status\"] != \"complete\" {\n\t\tt.Fatal(p, e)\n\t}\n\ttrace, _ := os.ReadFile(filepath.Join(c.Root, \"trace\"))\n\tif !strings.Contains(string(trace), \"stop web api speech\") || !strings.Contains(string(trace), \"start web api speech\") {\n\t\tt.Fatal(string(trace))\n\t}\n}\n",
+        "literal_executable_fixture": "func TestLocalRecoveryBackupPositive(t *testing.T) {\n\tc := localFixture(t, \"good\")\n\tp, e := c.Backup(context.Background(), \"saved.tar.gz\")\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tb, e := os.ReadFile(filepath.Join(c.Root, \"data/backups/saved.tar.gz\"))\n\tif e != nil || string(b) != \"literal native archive bytes\" || p[\"status\"] != \"complete\" {\n\t\tt.Fatal(p, e)\n\t}\n\ttrace, _ := os.ReadFile(filepath.Join(c.Root, \"trace\"))\n\tif !strings.Contains(string(trace), \"stop web api speech\") || !strings.Contains(string(trace), \"start --wait --wait-timeout 180 web api speech\") {\n\t\tt.Fatal(string(trace))\n\t}\n}\n",
         "source_path": "services/api/internal/localctl/recovery_test.go",
-        "source_sha256": "cb66e40b53513023b2a2ca8952ae83f093e5f875e12493be4a2d0d5019988021",
+        "source_sha256": "64c846d47e16d95e8eead5ec1c04ec7d537ffff273b41624337b453aa21181c9",
         "shared_fixture_library": "audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#services/api/internal/localctl/recovery_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestLocalRecoveryBackupPositive(t *testing.T) {\n\tc := localFixture(t, \"good\")\n\tp, e := c.Backup(context.Background(), \"saved.tar.gz\")\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tb, e := os.ReadFile(filepath.Join(c.Root, \"data/backups/saved.tar.gz\"))\n\tif e != nil || string(b) != \"literal native archive bytes\" || p[\"status\"] != \"complete\" {\n\t\tt.Fatal(p, e)\n\t}\n\ttrace, _ := os.ReadFile(filepath.Join(c.Root, \"trace\"))\n\tif !strings.Contains(string(trace), \"stop web api speech\") || !strings.Contains(string(trace), \"start web api speech\") {\n\t\tt.Fatal(string(trace))\n\t}\n}\n",
+        "independent_literal_assertions": "func TestLocalRecoveryBackupPositive(t *testing.T) {\n\tc := localFixture(t, \"good\")\n\tp, e := c.Backup(context.Background(), \"saved.tar.gz\")\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tb, e := os.ReadFile(filepath.Join(c.Root, \"data/backups/saved.tar.gz\"))\n\tif e != nil || string(b) != \"literal native archive bytes\" || p[\"status\"] != \"complete\" {\n\t\tt.Fatal(p, e)\n\t}\n\ttrace, _ := os.ReadFile(filepath.Join(c.Root, \"trace\"))\n\tif !strings.Contains(string(trace), \"stop web api speech\") || !strings.Contains(string(trace), \"start --wait --wait-timeout 180 web api speech\") {\n\t\tt.Fatal(string(trace))\n\t}\n}\n",
         "oracle": "Independent literal assertions in named test and complete shared fixture library. quiesce actual writers and export the complete native database/private media/source/evidence/model/optional-Lab snapshot with actual file inventory; exclude credentials and publish only a complete archive. Constructed model/speech inputs prove coordination, not inference quality or hosted eligibility."
       },
       "independent_oracle": "Independent literal assertions in named test and complete shared fixture library. quiesce actual writers and export the complete native database/private media/source/evidence/model/optional-Lab snapshot with actual file inventory; exclude credentials and publish only a complete archive. Constructed model/speech inputs prove coordination, not inference quality or hosted eligibility.",
@@ -496,7 +496,7 @@
         "exact_test": "TestLocalRecoveryBackupRestartNegative",
         "literal_executable_fixture": "func TestLocalRecoveryBackupRestartNegative(t *testing.T) {\n\tc := localFixture(t, \"restart-failure\")\n\t_, e := c.Backup(context.Background(), \"saved.tar.gz\")\n\tif e == nil || !strings.Contains(e.Error(), \"BACKUP_SAVED_RESTART_REQUIRED\") {\n\t\tt.Fatal(e)\n\t}\n\tif _, e = os.Stat(filepath.Join(c.Root, \"data/backups/saved.tar.gz\")); e != nil {\n\t\tt.Fatal(\"saved backup lost\", e)\n\t}\n}\n",
         "source_path": "services/api/internal/localctl/recovery_test.go",
-        "source_sha256": "cb66e40b53513023b2a2ca8952ae83f093e5f875e12493be4a2d0d5019988021",
+        "source_sha256": "64c846d47e16d95e8eead5ec1c04ec7d537ffff273b41624337b453aa21181c9",
         "shared_fixture_library": "audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#services/api/internal/localctl/recovery_test.go"
       },
       "expected": {
@@ -523,7 +523,7 @@
         "exact_test": "TestLocalRecoveryBackupCollisionNegative",
         "literal_executable_fixture": "func TestLocalRecoveryBackupCollisionNegative(t *testing.T) {\n\tc := localFixture(t, \"good\")\n\t_, e := c.Backup(context.Background(), \"saved.tar.gz\")\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\t_, e = c.Backup(context.Background(), \"saved.tar.gz\")\n\tif e == nil || !strings.Contains(e.Error(), \"BACKUP_EXISTS\") {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "source_path": "services/api/internal/localctl/recovery_test.go",
-        "source_sha256": "cb66e40b53513023b2a2ca8952ae83f093e5f875e12493be4a2d0d5019988021",
+        "source_sha256": "64c846d47e16d95e8eead5ec1c04ec7d537ffff273b41624337b453aa21181c9",
         "shared_fixture_library": "audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#services/api/internal/localctl/recovery_test.go"
       },
       "expected": {
@@ -548,13 +548,13 @@
       },
       "input": {
         "exact_test": "TestLocalRecoveryPartialStopNegative",
-        "literal_executable_fixture": "func TestLocalRecoveryPartialStopNegative(t *testing.T) {\n\tfor _, action := range []string{\"backup\", \"switch\"} {\n\t\tt.Run(action, func(t *testing.T) {\n\t\t\tc := localFixture(t, \"partial-stop\")\n\t\t\ttargetFixture(t, c)\n\t\t\tvar e error\n\t\t\tif action == \"backup\" {\n\t\t\t\t_, e = c.Backup(context.Background(), \"saved.tar.gz\")\n\t\t\t} else {\n\t\t\t\t_, e = c.Switch(context.Background(), \"restored\")\n\t\t\t}\n\t\t\tif e == nil {\n\t\t\t\tt.Fatal(\"partial stop accepted\")\n\t\t\t}\n\t\t\ttrace, _ := os.ReadFile(filepath.Join(c.Root, \"trace\"))\n\t\t\tif !strings.Contains(string(trace), \"start web api speech\") {\n\t\t\t\tt.Fatal(\"partially stopped workspace was not recovered\", string(trace))\n\t\t\t}\n\t\t\tif strings.Contains(string(trace), \"snapshot-create\") || strings.Contains(string(trace), \"up -d --wait\") {\n\t\t\t\tt.Fatal(\"continued after failed stop\", string(trace))\n\t\t\t}\n\t\t\tif _, e = os.Stat(filepath.Join(c.Root, \"data/backups/saved.tar.gz\")); !os.IsNotExist(e) {\n\t\t\t\tt.Fatal(\"published incomplete backup\", e)\n\t\t\t}\n\t\t\tif _, e = os.Stat(filepath.Join(c.Root, \"data/config/active-project\")); !os.IsNotExist(e) {\n\t\t\t\tt.Fatal(\"selected failed workspace\", e)\n\t\t\t}\n\t\t})\n\t}\n}\n\n",
+        "literal_executable_fixture": "func TestLocalRecoveryPartialStopNegative(t *testing.T) {\n\tfor _, action := range []string{\"backup\", \"switch\"} {\n\t\tt.Run(action, func(t *testing.T) {\n\t\t\tc := localFixture(t, \"partial-stop\")\n\t\t\ttargetFixture(t, c)\n\t\t\tvar e error\n\t\t\tif action == \"backup\" {\n\t\t\t\t_, e = c.Backup(context.Background(), \"saved.tar.gz\")\n\t\t\t} else {\n\t\t\t\t_, e = c.Switch(context.Background(), \"restored\")\n\t\t\t}\n\t\t\tif e == nil {\n\t\t\t\tt.Fatal(\"partial stop accepted\")\n\t\t\t}\n\t\t\ttrace, _ := os.ReadFile(filepath.Join(c.Root, \"trace\"))\n\t\t\tif !strings.Contains(string(trace), \"start --wait --wait-timeout 180 web api speech\") {\n\t\t\t\tt.Fatal(\"partially stopped workspace was not recovered\", string(trace))\n\t\t\t}\n\t\t\tif strings.Contains(string(trace), \"snapshot-create\") || strings.Contains(string(trace), \"up -d --wait\") {\n\t\t\t\tt.Fatal(\"continued after failed stop\", string(trace))\n\t\t\t}\n\t\t\tif _, e = os.Stat(filepath.Join(c.Root, \"data/backups/saved.tar.gz\")); !os.IsNotExist(e) {\n\t\t\t\tt.Fatal(\"published incomplete backup\", e)\n\t\t\t}\n\t\t\tif _, e = os.Stat(filepath.Join(c.Root, \"data/config/active-project\")); !os.IsNotExist(e) {\n\t\t\t\tt.Fatal(\"selected failed workspace\", e)\n\t\t\t}\n\t\t})\n\t}\n}\n\n",
         "source_path": "services/api/internal/localctl/recovery_test.go",
-        "source_sha256": "cb66e40b53513023b2a2ca8952ae83f093e5f875e12493be4a2d0d5019988021",
+        "source_sha256": "64c846d47e16d95e8eead5ec1c04ec7d537ffff273b41624337b453aa21181c9",
         "shared_fixture_library": "audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#services/api/internal/localctl/recovery_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestLocalRecoveryPartialStopNegative(t *testing.T) {\n\tfor _, action := range []string{\"backup\", \"switch\"} {\n\t\tt.Run(action, func(t *testing.T) {\n\t\t\tc := localFixture(t, \"partial-stop\")\n\t\t\ttargetFixture(t, c)\n\t\t\tvar e error\n\t\t\tif action == \"backup\" {\n\t\t\t\t_, e = c.Backup(context.Background(), \"saved.tar.gz\")\n\t\t\t} else {\n\t\t\t\t_, e = c.Switch(context.Background(), \"restored\")\n\t\t\t}\n\t\t\tif e == nil {\n\t\t\t\tt.Fatal(\"partial stop accepted\")\n\t\t\t}\n\t\t\ttrace, _ := os.ReadFile(filepath.Join(c.Root, \"trace\"))\n\t\t\tif !strings.Contains(string(trace), \"start web api speech\") {\n\t\t\t\tt.Fatal(\"partially stopped workspace was not recovered\", string(trace))\n\t\t\t}\n\t\t\tif strings.Contains(string(trace), \"snapshot-create\") || strings.Contains(string(trace), \"up -d --wait\") {\n\t\t\t\tt.Fatal(\"continued after failed stop\", string(trace))\n\t\t\t}\n\t\t\tif _, e = os.Stat(filepath.Join(c.Root, \"data/backups/saved.tar.gz\")); !os.IsNotExist(e) {\n\t\t\t\tt.Fatal(\"published incomplete backup\", e)\n\t\t\t}\n\t\t\tif _, e = os.Stat(filepath.Join(c.Root, \"data/config/active-project\")); !os.IsNotExist(e) {\n\t\t\t\tt.Fatal(\"selected failed workspace\", e)\n\t\t\t}\n\t\t})\n\t}\n}\n\n",
+        "independent_literal_assertions": "func TestLocalRecoveryPartialStopNegative(t *testing.T) {\n\tfor _, action := range []string{\"backup\", \"switch\"} {\n\t\tt.Run(action, func(t *testing.T) {\n\t\t\tc := localFixture(t, \"partial-stop\")\n\t\t\ttargetFixture(t, c)\n\t\t\tvar e error\n\t\t\tif action == \"backup\" {\n\t\t\t\t_, e = c.Backup(context.Background(), \"saved.tar.gz\")\n\t\t\t} else {\n\t\t\t\t_, e = c.Switch(context.Background(), \"restored\")\n\t\t\t}\n\t\t\tif e == nil {\n\t\t\t\tt.Fatal(\"partial stop accepted\")\n\t\t\t}\n\t\t\ttrace, _ := os.ReadFile(filepath.Join(c.Root, \"trace\"))\n\t\t\tif !strings.Contains(string(trace), \"start --wait --wait-timeout 180 web api speech\") {\n\t\t\t\tt.Fatal(\"partially stopped workspace was not recovered\", string(trace))\n\t\t\t}\n\t\t\tif strings.Contains(string(trace), \"snapshot-create\") || strings.Contains(string(trace), \"up -d --wait\") {\n\t\t\t\tt.Fatal(\"continued after failed stop\", string(trace))\n\t\t\t}\n\t\t\tif _, e = os.Stat(filepath.Join(c.Root, \"data/backups/saved.tar.gz\")); !os.IsNotExist(e) {\n\t\t\t\tt.Fatal(\"published incomplete backup\", e)\n\t\t\t}\n\t\t\tif _, e = os.Stat(filepath.Join(c.Root, \"data/config/active-project\")); !os.IsNotExist(e) {\n\t\t\t\tt.Fatal(\"selected failed workspace\", e)\n\t\t\t}\n\t\t})\n\t}\n}\n\n",
         "oracle": "Independent literal assertions in named test and complete shared fixture library. quiesce actual writers and export the complete native database/private media/source/evidence/model/optional-Lab snapshot with actual file inventory; exclude credentials and publish only a complete archive. Constructed model/speech inputs prove coordination, not inference quality or hosted eligibility."
       },
       "independent_oracle": "Independent literal assertions in named test and complete shared fixture library. quiesce actual writers and export the complete native database/private media/source/evidence/model/optional-Lab snapshot with actual file inventory; exclude credentials and publish only a complete archive. Constructed model/speech inputs prove coordination, not inference quality or hosted eligibility.",
@@ -577,7 +577,7 @@
         "exact_test": "TestLocalRecoveryRecoveryFailureNegative",
         "literal_executable_fixture": "func TestLocalRecoveryRecoveryFailureNegative(t *testing.T) {\n\tfor _, action := range []string{\"backup\", \"switch\"} {\n\t\tt.Run(action, func(t *testing.T) {\n\t\t\tc := localFixture(t, \"partial-stop-restart-failure\")\n\t\t\ttargetFixture(t, c)\n\t\t\tvar e error\n\t\t\tif action == \"backup\" {\n\t\t\t\t_, e = c.Backup(context.Background(), \"saved.tar.gz\")\n\t\t\t} else {\n\t\t\t\t_, e = c.Switch(context.Background(), \"restored\")\n\t\t\t}\n\t\t\tif e == nil || !strings.Contains(e.Error(), \"WORKSPACE_RECOVERY_REQUIRED\") {\n\t\t\t\tt.Fatal(\"failed restart was misreported\", e)\n\t\t\t}\n\t\t\tif _, e = os.Stat(filepath.Join(c.Root, \"data/config/active-project\")); !os.IsNotExist(e) {\n\t\t\t\tt.Fatal(\"failed selection published\", e)\n\t\t\t}\n\t\t})\n\t}\n}\n",
         "source_path": "services/api/internal/localctl/recovery_test.go",
-        "source_sha256": "cb66e40b53513023b2a2ca8952ae83f093e5f875e12493be4a2d0d5019988021",
+        "source_sha256": "64c846d47e16d95e8eead5ec1c04ec7d537ffff273b41624337b453aa21181c9",
         "shared_fixture_library": "audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#services/api/internal/localctl/recovery_test.go"
       },
       "expected": {
@@ -1009,7 +1009,7 @@
         "exact_test": "TestLocalRecoveryExplicitSwitchPositive",
         "literal_executable_fixture": "func TestLocalRecoveryExplicitSwitchPositive(t *testing.T) {\n\tc := localFixture(t, \"good\")\n\ttargetFixture(t, c)\n\tp, e := c.Switch(context.Background(), \"restored\")\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tb, _ := os.ReadFile(filepath.Join(c.Root, \"data/config/active-project\"))\n\tif string(b) != \"restored\\n\" || p[\"previous_volumes\"] != \"retained\" {\n\t\tt.Fatal(p, string(b))\n\t}\n}\n",
         "source_path": "services/api/internal/localctl/recovery_test.go",
-        "source_sha256": "cb66e40b53513023b2a2ca8952ae83f093e5f875e12493be4a2d0d5019988021",
+        "source_sha256": "64c846d47e16d95e8eead5ec1c04ec7d537ffff273b41624337b453aa21181c9",
         "shared_fixture_library": "audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#services/api/internal/localctl/recovery_test.go"
       },
       "expected": {
@@ -1034,13 +1034,13 @@
       },
       "input": {
         "exact_test": "TestLocalRecoverySwitchRollbackNegative",
-        "literal_executable_fixture": "func TestLocalRecoverySwitchRollbackNegative(t *testing.T) {\n\tfor _, mode := range []string{\"target-failure\", \"marker-failure\"} {\n\t\tt.Run(mode, func(t *testing.T) {\n\t\t\tc := localFixture(t, mode)\n\t\t\ttargetFixture(t, c)\n\t\t\tif mode == \"marker-failure\" {\n\t\t\t\tif e := os.Mkdir(filepath.Join(c.Root, \"data/config/active-project\"), 0700); e != nil {\n\t\t\t\t\tt.Fatal(e)\n\t\t\t\t}\n\t\t\t}\n\t\t\tif _, e := c.Switch(context.Background(), \"restored\"); e == nil {\n\t\t\t\tt.Fatal(\"failed target selected\")\n\t\t\t}\n\t\t\ttrace, _ := os.ReadFile(filepath.Join(c.Root, \"trace\"))\n\t\t\tif !strings.Contains(string(trace), \"stop web api speech\") || !strings.Contains(string(trace), \"start web api speech\") {\n\t\t\t\tt.Fatal(\"previous workspace was not recovered\", string(trace))\n\t\t\t}\n\t\t})\n\t}\n}\n",
+        "literal_executable_fixture": "func TestLocalRecoverySwitchRollbackNegative(t *testing.T) {\n\tfor _, mode := range []string{\"target-failure\", \"marker-failure\"} {\n\t\tt.Run(mode, func(t *testing.T) {\n\t\t\tc := localFixture(t, mode)\n\t\t\ttargetFixture(t, c)\n\t\t\tif mode == \"marker-failure\" {\n\t\t\t\tif e := os.Mkdir(filepath.Join(c.Root, \"data/config/active-project\"), 0700); e != nil {\n\t\t\t\t\tt.Fatal(e)\n\t\t\t\t}\n\t\t\t}\n\t\t\tif _, e := c.Switch(context.Background(), \"restored\"); e == nil {\n\t\t\t\tt.Fatal(\"failed target selected\")\n\t\t\t}\n\t\t\ttrace, _ := os.ReadFile(filepath.Join(c.Root, \"trace\"))\n\t\t\tif !strings.Contains(string(trace), \"stop web api speech\") || !strings.Contains(string(trace), \"start --wait --wait-timeout 180 web api speech\") {\n\t\t\t\tt.Fatal(\"previous workspace was not recovered\", string(trace))\n\t\t\t}\n\t\t})\n\t}\n}\n",
         "source_path": "services/api/internal/localctl/recovery_test.go",
-        "source_sha256": "cb66e40b53513023b2a2ca8952ae83f093e5f875e12493be4a2d0d5019988021",
+        "source_sha256": "64c846d47e16d95e8eead5ec1c04ec7d537ffff273b41624337b453aa21181c9",
         "shared_fixture_library": "audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#services/api/internal/localctl/recovery_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestLocalRecoverySwitchRollbackNegative(t *testing.T) {\n\tfor _, mode := range []string{\"target-failure\", \"marker-failure\"} {\n\t\tt.Run(mode, func(t *testing.T) {\n\t\t\tc := localFixture(t, mode)\n\t\t\ttargetFixture(t, c)\n\t\t\tif mode == \"marker-failure\" {\n\t\t\t\tif e := os.Mkdir(filepath.Join(c.Root, \"data/config/active-project\"), 0700); e != nil {\n\t\t\t\t\tt.Fatal(e)\n\t\t\t\t}\n\t\t\t}\n\t\t\tif _, e := c.Switch(context.Background(), \"restored\"); e == nil {\n\t\t\t\tt.Fatal(\"failed target selected\")\n\t\t\t}\n\t\t\ttrace, _ := os.ReadFile(filepath.Join(c.Root, \"trace\"))\n\t\t\tif !strings.Contains(string(trace), \"stop web api speech\") || !strings.Contains(string(trace), \"start web api speech\") {\n\t\t\t\tt.Fatal(\"previous workspace was not recovered\", string(trace))\n\t\t\t}\n\t\t})\n\t}\n}\n",
+        "independent_literal_assertions": "func TestLocalRecoverySwitchRollbackNegative(t *testing.T) {\n\tfor _, mode := range []string{\"target-failure\", \"marker-failure\"} {\n\t\tt.Run(mode, func(t *testing.T) {\n\t\t\tc := localFixture(t, mode)\n\t\t\ttargetFixture(t, c)\n\t\t\tif mode == \"marker-failure\" {\n\t\t\t\tif e := os.Mkdir(filepath.Join(c.Root, \"data/config/active-project\"), 0700); e != nil {\n\t\t\t\t\tt.Fatal(e)\n\t\t\t\t}\n\t\t\t}\n\t\t\tif _, e := c.Switch(context.Background(), \"restored\"); e == nil {\n\t\t\t\tt.Fatal(\"failed target selected\")\n\t\t\t}\n\t\t\ttrace, _ := os.ReadFile(filepath.Join(c.Root, \"trace\"))\n\t\t\tif !strings.Contains(string(trace), \"stop web api speech\") || !strings.Contains(string(trace), \"start --wait --wait-timeout 180 web api speech\") {\n\t\t\t\tt.Fatal(\"previous workspace was not recovered\", string(trace))\n\t\t\t}\n\t\t})\n\t}\n}\n",
         "oracle": "Independent literal assertions in named test and complete shared fixture library. switch only explicitly to a ready restored workspace, retain the previous workspace, recover it on switch failure and remember the actual selected project. Constructed model/speech inputs prove coordination, not inference quality or hosted eligibility."
       },
       "independent_oracle": "Independent literal assertions in named test and complete shared fixture library. switch only explicitly to a ready restored workspace, retain the previous workspace, recover it on switch failure and remember the actual selected project. Constructed model/speech inputs prove coordination, not inference quality or hosted eligibility.",
@@ -1063,7 +1063,7 @@
         "exact_test": "TestLocalRecoveryExistingVolumeNegative",
         "literal_executable_fixture": "func TestLocalRecoveryExistingVolumeNegative(t *testing.T) {\n\tc := localFixture(t, \"existing-volume\")\n\t_, e := c.Restore(context.Background(), \"missing.tar.gz\", \"restored\")\n\tif e == nil || !strings.Contains(e.Error(), \"RESTORE_TARGET_EXISTS\") {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "source_path": "services/api/internal/localctl/recovery_test.go",
-        "source_sha256": "cb66e40b53513023b2a2ca8952ae83f093e5f875e12493be4a2d0d5019988021",
+        "source_sha256": "64c846d47e16d95e8eead5ec1c04ec7d537ffff273b41624337b453aa21181c9",
         "shared_fixture_library": "audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#services/api/internal/localctl/recovery_test.go"
       },
       "expected": {
@@ -1090,7 +1090,7 @@
         "exact_test": "TestLocalRecoveryBusyNegative",
         "literal_executable_fixture": "func TestLocalRecoveryBusyNegative(t *testing.T) {\n\tc := localFixture(t, \"good\")\n\tf, e := os.OpenFile(filepath.Join(c.Root, \"data/config/.maintenance-lock\"), os.O_CREATE|os.O_RDWR, 0600)\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tdefer f.Close()\n\tif e = syscall.Flock(int(f.Fd()), syscall.LOCK_EX); e != nil {\n\t\tt.Fatal(e)\n\t}\n\te = Command(context.Background(), c.Root, c.Project, c.Runtime, []string{\"backup\", \"test.tar.gz\"}, os.Stdout)\n\tif e == nil || !strings.Contains(e.Error(), \"WORKSPACE_BUSY\") {\n\t\tt.Fatal(e)\n\t}\n}\n",
         "source_path": "services/api/internal/localctl/recovery_test.go",
-        "source_sha256": "cb66e40b53513023b2a2ca8952ae83f093e5f875e12493be4a2d0d5019988021",
+        "source_sha256": "64c846d47e16d95e8eead5ec1c04ec7d537ffff273b41624337b453aa21181c9",
         "shared_fixture_library": "audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#services/api/internal/localctl/recovery_test.go"
       },
       "expected": {
@@ -1657,7 +1657,7 @@
         "exact_test": "TestLocalRecoveryPurgePositive",
         "literal_executable_fixture": "func TestLocalRecoveryPurgePositive(t *testing.T) {\n\tc := localFixture(t, \"good\")\n\tt.Setenv(\"CONFIRM_DELETE_LOCAL_LAB\", \"yes\")\n\tdir := filepath.Join(c.Root, \"data/config/lab-native\")\n\tif e := os.Mkdir(dir, 0700); e != nil {\n\t\tt.Fatal(e)\n\t}\n\tif e := os.WriteFile(filepath.Join(dir, \"copied-body\"), []byte(\"constructed private body\"), 0600); e != nil {\n\t\tt.Fatal(e)\n\t}\n\t_, e := c.PurgeLab(context.Background())\n\tif e != nil {\n\t\tt.Fatal(e)\n\t}\n\tif _, e = os.Stat(dir); !os.IsNotExist(e) {\n\t\tt.Fatal(\"copied body remains\", e)\n\t}\n}\n",
         "source_path": "services/api/internal/localctl/recovery_test.go",
-        "source_sha256": "cb66e40b53513023b2a2ca8952ae83f093e5f875e12493be4a2d0d5019988021",
+        "source_sha256": "64c846d47e16d95e8eead5ec1c04ec7d537ffff273b41624337b453aa21181c9",
         "shared_fixture_library": "audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#services/api/internal/localctl/recovery_test.go"
       },
       "expected": {
@@ -1684,7 +1684,7 @@
         "exact_test": "TestLocalRecoveryPurgeConfirmationNegative",
         "literal_executable_fixture": "func TestLocalRecoveryPurgeConfirmationNegative(t *testing.T) {\n\tc := localFixture(t, \"good\")\n\tt.Setenv(\"CONFIRM_DELETE_LOCAL_LAB\", \"\")\n\tif _, e := c.PurgeLab(context.Background()); e == nil {\n\t\tt.Fatal(\"unconfirmed erasure\")\n\t}\n\tif _, e := os.Stat(filepath.Join(c.Root, \"trace\")); !os.IsNotExist(e) {\n\t\tt.Fatal(\"unconfirmed command reached Docker\")\n\t}\n}\n\n",
         "source_path": "services/api/internal/localctl/recovery_test.go",
-        "source_sha256": "cb66e40b53513023b2a2ca8952ae83f093e5f875e12493be4a2d0d5019988021",
+        "source_sha256": "64c846d47e16d95e8eead5ec1c04ec7d537ffff273b41624337b453aa21181c9",
         "shared_fixture_library": "audit/iteration-15-recovery-20261021/FIXTURE-LIBRARY.json#services/api/internal/localctl/recovery_test.go"
       },
       "expected": {

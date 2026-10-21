@@ -231,7 +231,7 @@ func (c Controller) Switch(ctx context.Context, target string) (result map[strin
 	defer func() {
 		if !selected {
 			if attempted {
-				end, cancel := context.WithTimeout(context.Background(), 90*time.Second)
+				end, cancel := context.WithTimeout(context.Background(), 180*time.Second)
 				defer cancel()
 				if stopErr := run(next.compose(end, "stop", "web", "api", "speech")); stopErr != nil {
 					err = errors.New("WORKSPACE_RECOVERY_REQUIRED: failed target could not stop; stop it and run scripts/tangerine start for the previous workspace. Saved data is retained")
@@ -268,9 +268,9 @@ func (c Controller) restart(active []string) error {
 	if len(active) == 0 {
 		return nil
 	}
-	end, cancel := context.WithTimeout(context.Background(), 90*time.Second)
+	end, cancel := context.WithTimeout(context.Background(), 180*time.Second)
 	defer cancel()
-	return run(c.compose(end, append([]string{"start"}, active...)...))
+	return run(c.compose(end, append([]string{"start", "--wait", "--wait-timeout", "180"}, active...)...))
 }
 
 func Command(ctx context.Context, root, project, runtime string, args []string, out io.Writer) error {

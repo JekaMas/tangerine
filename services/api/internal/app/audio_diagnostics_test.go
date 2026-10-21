@@ -2,6 +2,7 @@ package app
 
 import (
 	"encoding/json"
+	"tangerine.local/api/internal/contracts"
 	"testing"
 )
 
@@ -142,5 +143,61 @@ func TestAudioDiagnosticForeignIdentifierNegative(t *testing.T) {
 	}
 	if externalID("candidate-envelope", "unit_id") {
 		t.Fatal("Unrelated owner exemption")
+	}
+}
+
+func TestAudioDiagnosticComputeBindingsPositive(t *testing.T) {
+	p := audioDiagnosticDefaults()["profiles"].([]any)[1].(map[string]any)
+	if p["compute_type"] != "int8_dynamic" || p["device"] != "cpu" || p["quantization_engine"] != "qnnpack" || p["repetition_penalty"] != 1.1 {
+		t.Fatal(p)
+	}
+	if _, _, err := contracts.Validate("audio-judge-profile", "2.0.0", sourceBytes(p)); err != nil {
+		t.Fatal(err)
+	}
+	delete(p, "compute_type") // legacy omission still means float32, never a silent quantization switch.
+	delete(p, "quantization_engine")
+	delete(p, "repetition_penalty")
+	if _, _, err := contracts.Validate("audio-judge-profile", "2.0.0", sourceBytes(p)); err != nil {
+		t.Fatal(err)
+	}
+}
+func TestAudioDiagnosticComputeBindingNegative(t *testing.T) {
+	for _, mode := range []string{"invented", "cuda", "unknown-engine", "penalty"} {
+		p := audioDiagnosticDefaults()["profiles"].([]any)[1].(map[string]any)
+		if mode == "penalty" {
+			p["repetition_penalty"] = 0
+		} else if mode == "unknown-engine" {
+			p["quantization_engine"] = "invented"
+		} else if mode == "cuda" {
+			p["device"] = "cuda"
+		} else {
+			p["compute_type"] = mode
+		}
+		if _, _, err := contracts.Validate("audio-judge-profile", "2.0.0", sourceBytes(p)); err == nil {
+			t.Fatal("Unsupported new binding admitted", p)
+		}
+	}
+}
+
+func TestAudioDiagnosticControlledTargetPositive(t *testing.T) {
+	f := diagnosticIntentFixture(t)
+	unit := f.Key["units"].([]any)[0].(map[string]any)
+	f.Manifest = map[string]any{"acoustic_edits": []any{map[string]any{"unit_id": unit["id"], "controller": "pause_insert"}}}
+	out := diagnosticIntent(f, map[string]any{"start": float64(0), "end": float64(2400)})
+	features := out["features"].([]any)
+	if len(features) != 1 || features[0] != "pause_insert" {
+		t.Fatal(out)
+	}
+	if len(out["acoustic_edits"].([]any)) != 1 {
+		t.Fatal(out)
+	}
+}
+func TestAudioDiagnosticForeignControlNegative(t *testing.T) {
+	f := diagnosticIntentFixture(t)
+	f.Manifest = map[string]any{"acoustic_edits": []any{map[string]any{"unit_id": "foreign", "controller": "pause_insert"}}}
+	out := diagnosticIntent(f, map[string]any{"start": float64(0), "end": float64(2400)})
+	features := out["features"].([]any)
+	if len(features) != 1 || features[0] != "speech_realization" || len(out["acoustic_edits"].([]any)) != 0 {
+		t.Fatal(out)
 	}
 }

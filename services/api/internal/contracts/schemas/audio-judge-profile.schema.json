@@ -92,6 +92,29 @@
       "type": "string",
       "pattern": "^[a-f0-9]{64}$",
       "description": "SHA-256 of actual immutable bytes or JCS payload as declared."
+    },
+    "compute_type": {
+      "type": "string",
+      "enum": [
+        "float32",
+        "int8_dynamic"
+      ],
+      "description": "Explicit local inference representation. Omission preserves legacy float32. Dynamic int8 quantizes Linear weights on CPU; other layers remain float32. Captured in the frozen binding and actual context."
+    },
+    "quantization_engine": {
+      "type": "string",
+      "enum": [
+        "qnnpack",
+        "onednn",
+        "x86",
+        "fbgemm"
+      ],
+      "description": "Explicit CPU int8 kernel binding. Omission keeps the selected PyTorch runtime default; never silently switch an unsupported engine."
+    },
+    "repetition_penalty": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Explicit local decoder repetition penalty. Legacy omission uses1.0; the built-in3B CPU binding uses1.1. Actual generate parameters are captured."
     }
   },
   "required": [
@@ -108,5 +131,52 @@
     "prompt_asset_id",
     "prompt_sha256"
   ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "compute_type"
+        ],
+        "properties": {
+          "compute_type": {
+            "const": "int8_dynamic"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provider": {
+            "const": "local_qwen25_omni"
+          },
+          "device": {
+            "const": "cpu"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "quantization_engine"
+        ]
+      },
+      "then": {
+        "required": [
+          "compute_type"
+        ],
+        "properties": {
+          "compute_type": {
+            "const": "int8_dynamic"
+          },
+          "provider": {
+            "const": "local_qwen25_omni"
+          },
+          "device": {
+            "const": "cpu"
+          }
+        }
+      }
+    }
+  ]
 }
