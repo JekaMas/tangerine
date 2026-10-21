@@ -20,3 +20,11 @@ Invalidation: localctl backup/switch behavior and used command fixture changed; 
 Stable repair scope:82edges/73physical tests/8properties (42positive,40negative).61affected/newedges will execute once on the committed-clean repair;21unchanged archive/generation/deterministic-Lab edges retain their exact earlier clean receipts. verify_reconcile.py checks the complete membership, actual fresh statuses/fingerprints, original retained assertions/commands and bounded runtime diff.
 
 423static and5160property/fixture assertions pass. Strict OpenSpec, current DAG/discovery pass. Pinned Go1.26.5 vet/gofmt completed once after stable Go edits; original scope/prompts/migrations and canonical GAPS preservation pass. Structural receipts are not behavior claims. Fresh acceptance is next.
+
+## Cross-feature retained experiment reference
+
+The first complete repaired closure passed61/61edges on clean63329a1, joining21unchanged accepted edges for82/82. Actual extracted-source/Chrome run-b4827df41f passed27scenarios, including post-switch native Lab readback and exact draft/audio. Screenshot visually inspected. Original join retained as VERIFY-ACCEPTANCE-63329a1.json.
+
+A final native counterexample confirmed that separately selecting a recorded receipt or comparison asset omitted the retained experiment reference from preview. Red: data/iteration15/verify-reference-red.jsonl. Storage now blocks retained experiment receipts and frozen/comparison/row-output/export assets. Explicit whole-experiment erasure still works. This is an existing business ownership guard, not content/schema/hash revalidation.
+
+Changed semantic input: deletion_plan.go retained-experiment membership plus its new negative regression. Rerun the native deletion/shared/active/stale closure; preserve the successful actual workspace, lifecycle, CLI and unchanged stage/archive/Lab observations. Workspace fixture contains no quality_experiment records, so the added reference guard has no applicable inputs there; its asserted DOM/launcher/backup/restore/switch behavior and commands remain unchanged. Go source changed after the earlier stable language receipt, so the final Go gate is invalidated and will run once after this final repair.

@@ -765,8 +765,8 @@ Iteration14 verify acceptance: audit/iteration-14-empirical-20261021/REPORT.md a
 - [x] I15.09 Complete full scope self-review, preservation, stable checks, local implementation commit, committed-clean full iteration acceptance and final acceptance commit.
 
 Iteration15 verification repair (current user request):
-- [ ] I15.V1 Verify and repair partial-stop recovery for backup/switch, with independent failure/recovery observations.
-- [ ] I15.V2 Verify Lab uses the selected workspace runtime after explicit switch, including actual native readback.
+- [x] I15.V1 Verify and repair partial-stop recovery for backup/switch, with independent failure/recovery observations.
+- [x] I15.V2 Verify Lab uses the selected workspace runtime after explicit switch, including actual native readback.
 - [ ] I15.V3 Verify complete experiment erasure and expired foreground cleanup, preserving live/shared dependencies.
 - [ ] I15.V4 Full scope CR/SRP, required preservation, affected committed-clean case closure, evidence reconciliation and commit.
 Resume: audit/iteration-15-recovery-20261021/VERIFICATION-PROGRESS.md.

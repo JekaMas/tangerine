@@ -164,6 +164,15 @@ func (s *Storage) deletionPlan(ctx context.Context, tx pgx.Tx, input DeletionSel
 			return p, e
 		}
 	}
+	// Retained experiments still own their recorded receipts. Reject implicit
+	// erasure rather than leaving their frozen results with missing evidence.
+	retainedExperiments, e := erasureStrings(ctx, tx, `SELECT q.id FROM quality_experiment q WHERE NOT(q.id=ANY($1)) AND EXISTS(SELECT 1 FROM jsonb_array_elements(q.payload->'rows') AS r(value) CROSS JOIN LATERAL jsonb_array_elements_text(r.value->'receipt_ids') AS receipt(id) WHERE receipt.id=ANY($2)) ORDER BY q.id`, p.Source.Experiments, sortedKeys(documents))
+	if e != nil {
+		return p, e
+	}
+	for _, id := range retainedExperiments {
+		p.Blocked = append(p.Blocked, "retained_experiment:"+id)
+	}
 	ids := sortedKeys(roots)
 	rows, e := tx.Query(ctx, `SELECT id FROM entity_head WHERE document_id=ANY($1) OR id=ANY($2)`, sortedKeys(documents), ids)
 	if e != nil {
@@ -202,7 +211,7 @@ func (s *Storage) deletionPlan(ctx context.Context, tx pgx.Tx, input DeletionSel
 	}
 	for id, key := range keyByID {
 		var shared bool
-		e = tx.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM object_reference r JOIN document d ON d.id=r.source_document_id WHERE r.target_id=$1 AND NOT(r.source_document_id=ANY($2)) AND d.kind<>'asset') OR EXISTS(SELECT 1 FROM listening_case WHERE audio_asset_id=$1 AND NOT(case_version_id=ANY($2))) OR EXISTS(SELECT 1 FROM source_file WHERE asset_id=$1 AND NOT(id=ANY($3))) OR EXISTS(SELECT 1 FROM empirical_report WHERE (asset_id=$1 OR input_asset_id=$1) AND NOT(id=ANY($4))) OR EXISTS(SELECT 1 FROM quality_experiment WHERE frozen_asset_id=$1 AND NOT(id=ANY($5)))`, id, sortedKeys(documents), p.Source.Files, p.Source.Reports, p.Source.Experiments).Scan(&shared)
+		e = tx.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM object_reference r JOIN document d ON d.id=r.source_document_id WHERE r.target_id=$1 AND NOT(r.source_document_id=ANY($2)) AND d.kind<>'asset') OR EXISTS(SELECT 1 FROM listening_case WHERE audio_asset_id=$1 AND NOT(case_version_id=ANY($2))) OR EXISTS(SELECT 1 FROM source_file WHERE asset_id=$1 AND NOT(id=ANY($3))) OR EXISTS(SELECT 1 FROM empirical_report WHERE (asset_id=$1 OR input_asset_id=$1) AND NOT(id=ANY($4))) OR EXISTS(SELECT 1 FROM quality_experiment q WHERE NOT(q.id=ANY($5)) AND (q.frozen_asset_id=$1 OR q.payload->>'comparison_asset_id'=$1 OR EXISTS(SELECT 1 FROM jsonb_array_elements(q.payload->'rows') AS r(value) WHERE r.value->>'output_asset_id'=$1))) OR EXISTS(SELECT 1 FROM quality_export WHERE asset_id=$1 AND NOT(experiment_id=ANY($5)))`, id, sortedKeys(documents), p.Source.Files, p.Source.Reports, p.Source.Experiments).Scan(&shared)
 		if e != nil {
 			return p, e
 		}

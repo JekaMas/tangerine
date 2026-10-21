@@ -573,3 +573,33 @@ func TestNativeRecoveryExperimentDeletionPositive(t *testing.T) {
 		t.Fatal("deletion invoked provider", calls.Load())
 	}
 }
+
+func TestNativeRecoveryExperimentReferenceNegative(t *testing.T) {
+	s, calls := qualityGenerationServer(t, false)
+	p, e := s.Store.AdmitExperiment(context.Background(), qualitySimpleSubmission(t, s, "generation_pipeline", qualityGenerationRequest()))
+	requireListening(t, e)
+	p, e = s.RunQualityExperiment(context.Background(), p.ID, false, nil)
+	requireListening(t, e)
+	if p.Status != "completed" || calls.Load() != 2 || p.Comparison == nil {
+		t.Fatal("fixture incomplete", p)
+	}
+	for _, id := range []string{p.Rows[0].Receipts[0], *p.Comparison} {
+		plan, e := s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{id}})
+		requireListening(t, e)
+		if len(plan.Blocked) == 0 {
+			t.Error("retained experiment reference was not protected", id)
+			continue
+		}
+		if _, e = s.Store.ApplyDeletion(context.Background(), plan.ID, plan.Digest); e != ErrRevision {
+			t.Error("wrong retained-reference rejection", id, e)
+		}
+	}
+	retained, e := s.Store.QualityExperiment(context.Background(), p.ID)
+	requireListening(t, e)
+	if retained.Status != "completed" || calls.Load() != 2 {
+		t.Fatal("retained experiment changed", retained)
+	}
+	if _, e = s.Store.ReadAsset(context.Background(), *p.Comparison); e != nil {
+		t.Fatal("comparison lost", e)
+	}
+}
