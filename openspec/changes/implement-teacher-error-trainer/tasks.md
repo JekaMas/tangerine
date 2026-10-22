@@ -635,9 +635,9 @@ Iteration9 completion:48/48 current cases across12properties (24positive/24negat
 
 These remain outside the current iteration9 implementation and prevent an iteration8-wide green claim:
 
-- [ ] I8.R1 Preserve internal silence when applying source-derived WPM controls; the independent120WPM fixture currently produces100WPM.
-- [ ] I8.R2 Project VOT edits with their actual piecewise clock before subsequent phone-targeted controls; the copied vowel begins at600samples but projects to2220.
-- [ ] I8.R3 Preserve multiple surface scopes/answer-key intervals belonging to one unit; pan/ready targets currently both resolve to ready.
+- [x] I8.R1 Preserve internal silence when applying source-derived WPM controls; the independent120WPM fixture currently produces100WPM.
+- [x] I8.R2 Project VOT edits with their actual piecewise clock before subsequent phone-targeted controls; the copied vowel begins at600samples but projects to2220.
+- [x] I8.R3 Preserve multiple surface scopes/answer-key intervals belonging to one unit; pan/ready targets currently both resolve to ready.
 
 Exact source anchors and executable counterexamples remain in the existing ignored `data/iteration8-verify-20261020/REVIEW.md` on the working checkout. Original iteration8 receipts retain their registered-case boundaries only.
 
@@ -695,33 +695,33 @@ Iteration 11 verification supersedes its earlier acceptance: all seven finding g
 
 ## Iteration 12 — Optional LLM review and disputes (2026-10-21)
 
-- [ ] I12.1 Implement optional case review with frozen configurable LLM inputs, actual modality/evidence and stored machine findings; no ordinary-use gate.
-- [ ] I12.2 Persist exact disputes/reconsideration, foreground ownership, accepted stage checkpoints and explicit retry; preserve original answer/result and all actual receipts.
-- [ ] I12.3 Admit complete supported/mapping/key/insufficient findings, preserve independent correction/explanation semantics and reuse exact native arithmetic.
-- [ ] I12.4 Materialize complete same-audio key/rationale/correspondence successors and conditional remapping; append selected result versions atomically without bulk regrading or obsolete writes.
-- [ ] I12.5 Expose optional review, dispute/retry and original/revised result history in the local UI/API, including failure/recovery.
-- [ ] I12.6 Materialize paired literal, native, concurrency/recovery/browser and actual local-model/Lab cases; wire the complete iteration into the DAG/discovery.
-- [ ] I12.7 Self-review/repair in scope, complete stable language/specification/preservation checks, commit, pass the entire iteration --require-clean and commit acceptance.
+- [x] I12.1 Implement optional case review with frozen configurable LLM inputs, actual modality/evidence and stored machine findings; no ordinary-use gate.
+- [x] I12.2 Persist exact disputes/reconsideration, foreground ownership, accepted stage checkpoints and explicit retry; preserve original answer/result and all actual receipts.
+- [x] I12.3 Admit complete supported/mapping/key/insufficient findings, preserve independent correction/explanation semantics and reuse exact native arithmetic.
+- [x] I12.4 Materialize complete same-audio key/rationale/correspondence successors and conditional remapping; append selected result versions atomically without bulk regrading or obsolete writes.
+- [x] I12.5 Expose optional review, dispute/retry and original/revised result history in the local UI/API, including failure/recovery.
+- [x] I12.6 Materialize paired literal, native, concurrency/recovery/browser and actual local-model/Lab cases; wire the complete iteration into the DAG/discovery.
+- [x] I12.7 Self-review/repair in scope, complete stable language/specification/preservation checks, commit, pass the entire iteration --require-clean and commit acceptance.
 
-- [ ] I12.8 Repair the reproduced new-key admission defects for registered primary domain, secondary category IDs and fixed severity weights; retain one admission only, add paired literal regressions and supersede the pre-repair117-case receipt.
+- [x] I12.8 Repair the reproduced new-key admission defects for registered primary domain, secondary category IDs and fixed severity weights; retain one admission only, add paired literal regressions and supersede the pre-repair117-case receipt.
 
-- [ ] I12.9 Repair the observed misplaced required-rubric reference while preserving explicit semantic/source judgments; reject ambiguous/unknown references and reconcile both conditional protocol paths separately from actual local inference.
+- [x] I12.9 Repair the observed misplaced required-rubric reference while preserving explicit semantic/source judgments; reject ambiguous/unknown references and reconcile both conditional protocol paths separately from actual local inference.
 
-- [ ] I12.10 Correct the observed assessment-versus-key defect classification in the managed adjudication prompt, preserve the literal expected outcomes, observe the key/mapping contrast and complete the full clean iteration again.
+- [x] I12.10 Correct the observed assessment-versus-key defect classification in the managed adjudication prompt, preserve the literal expected outcomes, observe the key/mapping contrast and complete the full clean iteration again.
 
-- [ ] I12.11 Repair the observed plain-JSON syntax failure with explicit syntax-only local decoding, freeze the selected decoder in the effective binding, preserve full one-time semantic admission and observe positive/negative decoder and actual dispute cases.
+- [x] I12.11 Repair the observed plain-JSON syntax failure with explicit syntax-only local decoding, freeze the selected decoder in the effective binding, preserve full one-time semantic admission and observe positive/negative decoder and actual dispute cases.
 
-- [ ] I12.12 Repair the observed retained false key proposition and contradictory supported assertion in optional explanation feedback; strengthen independent actual-model expectations for both written artifacts, preserve exact primary/optional scores and verify full clean acceptance again.
+- [x] I12.12 Repair the observed retained false key proposition and contradictory supported assertion in optional explanation feedback; strengthen independent actual-model expectations for both written artifacts, preserve exact primary/optional scores and verify full clean acceptance again.
 
-- [ ] I12.13 Repair demonstrated model interoperability without weakening meaning: project copied server-owned unit metadata and the supplied root reason, recognize actual textual context-evidence hashes without creating acoustic proof, keep unknown substantive fields/references for admission, add positive/negative cases and observe the actual fixed dispute artifacts.
+- [x] I12.13 Repair demonstrated model interoperability without weakening meaning: project copied server-owned unit metadata and the supplied root reason, recognize actual textual context-evidence hashes without creating acoustic proof, keep unknown substantive fields/references for admission, add positive/negative cases and observe the actual fixed dispute artifacts.
 
-- [ ] I12.14 Repair observed modality/source-role confusion and lossless evaluator aliases: textual review without an acoustic gate, no fabricated learner explanations or prior rejections, complete retained source context, canonical precedence and actual model verification; preserve every expected grade/resolution.
+- [x] I12.14 Repair observed modality/source-role confusion and lossless evaluator aliases: textual review without an acoustic gate, no fabricated learner explanations or prior rejections, complete retained source context, canonical precedence and actual model verification; preserve every expected grade/resolution.
 
-- [ ] I12.15 Normalize source-confirmed empty case-only decisions and non-duplicate metadata, preserve substantive/uncertain data, expose faithful before/after/repair references, retain observed MLX failures and qualify the complete source/model binding without relaxing grades, outcomes or timeouts.
+- [x] I12.15 Normalize source-confirmed empty case-only decisions and non-duplicate metadata, preserve substantive/uncertain data, expose faithful before/after/repair references, retain observed MLX failures and qualify the complete source/model binding without relaxing grades, outcomes or timeouts.
 
-- [ ] I12.16 Repair the observed copied false explanation judgment and incomplete rationale replacement in the managed adjudication instructions; preserve complete corrections, required rationale propositions, native grades and timeouts, observe the direct contrast and complete committed-clean acceptance.
+- [x] I12.16 Repair the observed copied false explanation judgment and incomplete rationale replacement in the managed adjudication instructions; preserve complete corrections, required rationale propositions, native grades and timeouts, observe the direct contrast and complete committed-clean acceptance.
 
-- [ ] I12.17 Normalize the observed unambiguous flattened correction and source-confirmed omitted presence flag at the single model-output admission; preserve canonical fields, judgments and ambiguous data, add literal positive/negative regressions and complete native/local/DAG clean acceptance.
+- [x] I12.17 Normalize the observed unambiguous flattened correction and source-confirmed omitted presence flag at the single model-output admission; preserve canonical fields, judgments and ambiguous data, add literal positive/negative regressions and complete native/local/DAG clean acceptance.
 
 ## Iteration 13 — All source-import features (2026-10-21)
 
@@ -775,11 +775,11 @@ Iteration15 verification accepted: audit/iteration-15-recovery-20261021/VERIFY-R
 
 ## Iteration 16 — Full release acceptance and complete frontend evidence
 
-- [ ] I16.01 Reconcile the full accepted release scope, canonical task history, exact DAG selection and retained valid observations without weakening features or fabricating source/provider evidence.
-- [ ] I16.02 Repair and verify acoustic findings I8.R1-R3 through their native owners with independent regressions and the complete affected closure.
-- [ ] I16.03 Complete optional review/dispute acceptance against strengthened literal/native/actual local-model/context/MLflow expectations; resolve every remaining finding.
-- [ ] I16.04 Exercise all11main frontend routes and complete success/failure/recovery paths; retain independently asserted screenshots, actual browser video and exact generated/playback audio.
-- [ ] I16.05 Observe the real installed-local LLM clean text to mutations/key to actual synthesis to answer to LLM findings/comments and native score/recommendation cycle plus optional review/dispute, with native/context/Lab evidence and no paid fallback.
+- [x] I16.01 Reconcile the full accepted release scope, canonical task history, exact DAG selection and retained valid observations without weakening features or fabricating source/provider evidence.
+- [x] I16.02 Repair and verify acoustic findings I8.R1-R3 through their native owners with independent regressions and the complete affected closure.
+- [x] I16.03 Complete optional review/dispute acceptance against strengthened literal/native/actual local-model/context/MLflow expectations; resolve every remaining finding.
+- [x] I16.04 Exercise all11main frontend routes and complete success/failure/recovery paths; retain independently asserted screenshots, actual browser video and exact generated/playback audio.
+- [x] I16.05 Observe the real installed-local LLM clean text to mutations/key to actual synthesis to answer to LLM findings/comments and native score/recommendation cycle plus optional review/dispute, with native/context/Lab evidence and no paid fallback.
 - [ ] I16.06 Verify complete source ZIP/clone startup without Git/workflow metadata and actual arm64/amd64 builds/runs/restart/backup/restore, clear dependency failures and preserved private data.
 - [ ] I16.07 Review responsibilities and all release findings, run invalidated language/specification/preservation checks, reconcile every required case and perform committed-clean full acceptance.
 - [ ] I16.08 Commit final release acceptance and a self-contained local evidence index; no external publication or archive without authorization.
@@ -788,34 +788,43 @@ Resume: audit/iteration-16-release-20261021/PROGRESS.md.
 
 - [ ] I16.R4 Implement the missing READY-04/BUILD-04 independent ASR/auditory diagnostic owners, persistence, optional review context and current-screen controls; qualify positive/negative native and actual local-model behavior without promoting intent/model inference to native truth.
 - [ ] I16.R5 Repair the release architecture observer's obsolete foundation-project/env binding; select the actual owned Compose project and observe both real architectures without touching the canonical preview.
-- [ ] I16.R6 Persist actual admitted clean/mutated word counts and show them in saved preparation/audio summaries, preserving absent legacy values and approximate-length semantics.
+- [x] I16.R6 Persist actual admitted clean/mutated word counts and show them in saved preparation/audio summaries, preserving absent legacy values and approximate-length semantics.
 
-- [ ] I16.R7 Supply the missing release NOTICE and concrete third-party source/model notices, include them in the extracted-source delivery and qualify source completeness without changing upstream terms.
+- [x] I16.R7 Supply the missing release NOTICE and concrete third-party source/model notices, include them in the extracted-source delivery and qualify source completeness without changing upstream terms.
 
-- [ ] I16.R8 Derive unambiguous textual quote coordinates natively at new-output admission and clarify positive mutation-count precedence, preserving raw replies and refusing absent/repeated/acoustic guesses; qualify native and actual local generation.
+- [x] I16.R8 Derive unambiguous textual quote coordinates natively at new-output admission and clarify positive mutation-count precedence, preserving raw replies and refusing absent/repeated/acoustic guesses; qualify native and actual local generation.
 
-- [ ] I16.R9 Preserve exact auditory target associations/descriptions/reasons/inferred IPA through saved measurements, optional review and UI. Mixed-target clips retain all relevant features; omitted model findings remain explicit native unknowns without an extra call or fabricated model finding. Qualify positive/negative projection and native/UI persistence.
+- [x] I16.R9 Preserve exact auditory target associations/descriptions/reasons/inferred IPA through saved measurements, optional review and UI. Mixed-target clips retain all relevant features; omitted model findings remain explicit native unknowns without an extra call or fabricated model finding. Qualify positive/negative projection and native/UI persistence.
 
-- [ ] I16.R10 Reduce the mutation model context to every selected operative recipe/production rule while preserving all full frozen registry records, category identities and actual model-visible capture. Keep corpus/benchmark metadata and illustrations out of ordinary mutation inference; qualify exact positive/negative preservation, affected native mutation behavior and actual generation.
+- [x] I16.R10 Reduce the mutation model context to every selected operative recipe/production rule while preserving all full frozen registry records, category identities and actual model-visible capture. Keep corpus/benchmark metadata and illustrations out of ordinary mutation inference; qualify exact positive/negative preservation, affected native mutation behavior and actual generation.
 
-- [ ] I16.R11 Expose the saved audio digest as safe Library metadata for bound listening cases so case-only review/diagnostics work without an attempt. Keep unavailable legacy digests absent and private key data excluded; observe actual case-only measurement in Chrome.
+- [x] I16.R11 Expose the saved audio digest as safe Library metadata for bound listening cases so case-only review/diagnostics work without an attempt. Keep unavailable legacy digests absent and private key data excluded; observe actual case-only measurement in Chrome.
 
 - [ ] I16.R12 Preserve the host-native maintenance helper built by source startup; do not overwrite the API image through a second default-Linux Compose build. Observe actual ZIP startup→backup→restore→switch on this Mac and both container architectures.
 
-- [ ] I16.R13 Accept exact saved textual-unit attachment names already supplied in the review key as textual provenance, without requiring another model formatting repair. Preserve rejection of invented/unseen/acoustic references and direct-hearing boundaries; verify native and actual review/key repair with unchanged supported scores.
+- [x] I16.R13 Accept exact saved textual-unit attachment names already supplied in the review key as textual provenance, without requiring another model formatting repair. Preserve rejection of invented/unseen/acoustic references and direct-hearing boundaries; verify native and actual review/key repair with unchanged supported scores.
 
-- [ ] I16.R14 Pass the already decoded mono audio samples directly into the Qwen processor, avoiding the unnecessary general media helper and its undeclared audioread import; observe actual two-input local hearing, native raw/context artifacts and Lab readback.
+- [x] I16.R14 Pass the already decoded mono audio samples directly into the Qwen processor, avoiding the unnecessary general media helper and its undeclared audioread import; observe actual two-input local hearing, native raw/context artifacts and Lab readback.
 
-- [ ] I16.R15 Wait for the actually restarted services to be healthy before maintenance recovery returns. Preserve saved backup on restart failure and switch rollback behavior; observe the real source backup/browser continuation plus positive/negative controller cases.
+- [x] I16.R15 Wait for the actually restarted services to be healthy before maintenance recovery returns. Preserve saved backup on restart failure and switch rollback behavior; observe the real source backup/browser continuation plus positive/negative controller cases.
 
-- [ ] I16.R16 Make the source-build MinIO download honor ordinary Docker client build proxies by fetching inside the source build with the same pinned revision and one checksum admission; observe cold amd64/arm64 builds with the actual test transport, preserving default-network failure evidence and no global network changes.
+- [x] I16.R16 Make the source-build MinIO download honor ordinary Docker client build proxies by fetching inside the source build with the same pinned revision and one checksum admission; observe cold amd64/arm64 builds with the actual test transport, preserving default-network failure evidence and no global network changes.
 
-- [ ] I16.R17 Preserve known generated-source permissions when optional reconsideration adds a real mistake in another utterance or an empty prior key. Keep unknown/mixed corpus sources pending; materialize literal red/green and actual new-turn publication/scoring without changing audio or native grades.
+- [x] I16.R17 Preserve known generated-source permissions when optional reconsideration adds a real mistake in another utterance or an empty prior key. Keep unknown/mixed corpus sources pending; materialize literal red/green and actual new-turn publication/scoring without changing audio or native grades.
 
-- [ ] I16.R18 Remove overstrict auditory auxiliary-finding/wrapper gates and derive an omitted display caption only from the supplied reason: keep complete raw output, project only requested unit/feature pairs and retain native unknowns for missing targets. Test exact requested+auxiliary and unrelated-only examples; actual qualification requires a genuine requested finding, not a native placeholder.
+- [x] I16.R18 Remove overstrict auditory auxiliary-finding/wrapper gates and derive an omitted display caption only from the supplied reason: keep complete raw output, project only requested unit/feature pairs and retain native unknowns for missing targets. Test exact requested+auxiliary and unrelated-only examples; actual qualification requires a genuine requested finding, not a native placeholder.
 
-- [ ] I16.R19 Observe saved-attempt history itself during a real owned database outage, retained links/error, Refresh recovery and reopening the unchanged saved draft; retain full-page pictures/video and add exact paired DAG cases without rerunning the unchanged listening scenarios.
+- [x] I16.R19 Observe saved-attempt history itself during a real owned database outage, retained links/error, Refresh recovery and reopening the unchanged saved draft; retain full-page pictures/video and add exact paired DAG cases without rerunning the unchanged listening scenarios.
 
 - [ ] I16.R20 Separate completed auditory transport from actual contrast quality. Clarify target/reference and text-offset/sample-time context, retain the earlier contradictory/out-of-clock response as failed quality evidence, and require actual generated pause-present/no-pause contrasts with independently expected verdicts, raw context and Lab evidence. No runtime score/publication gate or winner selection is added.
 
-- [ ] I16.R21 Preserve additional model annotations in the declared auditory response and saved finding, retaining them as inference data without native numerical grades. Keep model-local annotation IDs outside the native reference graph; verify real admission/transaction/readback, rejected ambiguous status and rejected promotion into native links; keep the separate failed acoustic-quality oracle unchanged.
+- [x] I16.R21 Preserve additional model annotations in the declared auditory response and saved finding, retaining them as inference data without native numerical grades. Keep model-local annotation IDs outside the native reference graph; verify real admission/transaction/readback, rejected ambiguous status and rejected promotion into native links; keep the separate failed acoustic-quality oracle unchanged.
+
+
+Iteration16 reconciliation on clean code82bbea4dfcc6e352395e4e6e5c41cb2a57ac1a53 is **incomplete, not accepted**:349/361selected DAG edges,309/321physical tests,8properties. Twelve remain: eleven actual amd64startup/synthesis/restore/restart observations blocked by Docker Desktop's registry proxy, and the actual auditory negative which falsely reports a2000ms pause in clean audio. Required Docker repair/restart and alternate unbilled audio-model resource decisions remain pending. No paid/hosted application call, purchase, global network change, canonical preview/data change, publication or archive occurred.
+
+I8.R1–R3 are now repaired with72Python/6Go literal passes and native real-service closure; I12.1–I12.17 close against their original clean139/139ancestor and six actual local-model contrasts plus current narrow-owner bridge evidence (I12-RETENTION.md), rather than a new whole rerun. Historical text above describing those findings as open retains its original scope/time. I16.R12 stays open for its unobserved amd64portion, although Mac/arm64startup/backup/restore/switch is observed. I16.R4/R20stay open for actual contrast quality; passing transport, persistence, native DSP, ASRand Lab export do not imply correct hearing. I16.06–.08/R5cannot close without the remaining actual architecture observations and full reconciliation.
+
+Current clean source ZIP starts all five arm64services; unchanged Settings/wrong-architecture cases retain their original clean receipts. All11main routes have actual browser evidence:115final suite passes plus two new Attempts outage/recovery tests, genuine local main flow and review/dispute,142pictures,22silent videos and15exact WAVs. Full-page media and evidence boundaries are indexed in audit/iteration-16-release-20261021/EVIDENCE.md and MEDIA.json. The Library picture is the actual empty state; subsequent populated navigation is in the main-flow recording. All14selected successful/failed diagnostic packets pass native/context/MLflow readback with zero export inference.
+
+Stable447static/5530structural property assertions, strict OpenSpec, DAG/discovery and pinned Go vet/gofmt pass; this is not3976observed runtime edges. The full graph retains1895original blocked and14planned edges with their optional/superseded/data-dependent boundaries. All122categories/recipes,42formulas,11source identities and existing migrations remain preserved. Full source/quality/entitlement acquisition claims remain scoped in ORIGINAL-SCOPE.md. Final report and immutable original observation pointers: audit/iteration-16-release-20261021/REPORT.md and RECONCILIATION.json. tasks.md remains the sole task list.

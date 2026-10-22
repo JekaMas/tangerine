@@ -4,7 +4,7 @@ Actual local browser/runtime/model artifacts; individual constructed/actual boun
 
 | Screen | Route | Picture | Evidence boundary |
 |---|---|---|---|
-| Library | / | [Open picture](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/current-arm64-0f7e207300/test_current_arm64_source_positive.png) | Actual source startup; populated actual-model restore when available. |
+| Library | / | [Open picture](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-4a793cab0e/test_library_positive.png) | Actual empty Library before generation; populated Listen-and-answer navigation is captured in the actual main-flow video. |
 | Prepare | /prepare | [Open picture](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-4a793cab0e/test_generation_positive.png) | Actual installed local LLM clean→mutations/key with one explicitly saved Resume. |
 | Saved audio | /audio | [Open picture](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration7/browser/run-16fdff2d1dc5/test_playback_positive.png) | Actual native Kokoro/control/storage; text-key upstream is constructed. |
 | Listen/results | /listen | [Open picture](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-4a793cab0e/test_primary_score_positive.png) | Actual local LLM interpretation/native100/comments; optional explanation absent. |
@@ -56,7 +56,7 @@ Actual browser recordings (silent; exact WAVs above):
 - [page@c532ea82635a34f6c6efe573f420ac00.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-88ea846dd0/videos/page@c532ea82635a34f6c6efe573f420ac00.webm) — 2.12 seconds.
 - [page@7c5a31e1e83f759ebd0631b7a3160635.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-88ea846dd0/videos/page@7c5a31e1e83f759ebd0631b7a3160635.webm) — 14.08 seconds.
 - [page@61a6a26a2ab4c4c27843b75b2e3d3a3a.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-88ea846dd0/videos/page@61a6a26a2ab4c4c27843b75b2e3d3a3a.webm) — 240.0 seconds.
-- [page@2535be852c92af8dc2f997cab38658e2.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/current-arm64-0f7e207300/videos/page@2535be852c92af8dc2f997cab38658e2.webm) — 4.88 seconds.
+- [page@209e0bb1cd30b84af69f930396b42722.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/current-arm64-eae99f1828/videos/page@209e0bb1cd30b84af69f930396b42722.webm) — 1.76 seconds.
 - [page@1e86a1bce465337aa38176620377c7c1.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/current-arm64-77829a7670/videos/page@1e86a1bce465337aa38176620377c7c1.webm) — 4.56 seconds.
 
 All 142 pictures and native metadata are indexed in [MEDIA.json](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/audit/iteration-16-release-20261021/MEDIA.json).
