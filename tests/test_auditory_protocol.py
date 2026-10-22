@@ -13,7 +13,8 @@ class AuditoryProtocolTests(unittest.TestCase):
   response=Response(body);response.status=status
   class Opener:
    def open(self,request,timeout):received.append(request);return response
-  with patch.dict(models.os.environ,{'GEMINI_API_KEY':'test-owned-canary'}),patch.object(models.urllib.request,'build_opener',return_value=Opener()):
+  self.handlers=[]
+  with patch.dict(models.os.environ,{'GEMINI_API_KEY':'test-owned-canary'}),patch.object(models.urllib.request,'build_opener',side_effect=lambda *handlers:self.handlers.extend(handlers) or Opener()):
    result=models.auditory(self.profile(),'Trusted prompt',{'units':['u1'],'features':['speech_realization']},[b'actual-fixture-audio',b'reference-fixture-audio'],capture=capture.append)
   return result,received,capture
  def test_completed_request_positive(self):
@@ -30,4 +31,13 @@ class AuditoryProtocolTests(unittest.TestCase):
  def test_missing_key_negative(self):
   with patch.dict(models.os.environ,{},clear=True),patch.object(models.urllib.request,'build_opener') as network,self.assertRaisesRegex(ValueError,'MISSING_CREDENTIALS'):models.auditory(self.profile(),'prompt',{},[b'audio'])
   network.assert_not_called()
+ def test_configured_proxy_positive(self):
+  with patch.object(models.urllib.request,'getproxies',return_value={'https':'http://test-owned-proxy.invalid:3128'}):
+   result,received,capture=self.invoke(json.dumps(self.result()).encode())
+  handler=next(h for h in self.handlers if isinstance(h,models.urllib.request.ProxyHandler))
+  self.assertEqual(handler.proxies,{'https':'http://test-owned-proxy.invalid:3128'});self.assertEqual(len(received),1);self.assertEqual(result['output']['findings'][0]['status'],'uncertain');self.assertNotIn('test-owned-proxy.invalid',json.dumps(capture))
+ def test_redirect_credential_negative(self):
+  _,received,_=self.invoke(json.dumps(self.result()).encode())
+  handler=next(h for h in self.handlers if isinstance(h,models.urllib.request.HTTPRedirectHandler))
+  self.assertIsNone(handler.redirect_request(received[0],None,302,'Redirected',{},'https://unapproved.example/receive-key'))
 if __name__=='__main__':unittest.main()

@@ -15,9 +15,9 @@ for path in sorted((R/'data/iteration16').iterdir()):
  for identity,status in events.items():
   identity=identity.replace('unittest::tests.','unittest::')
   eligible=True
-  if identity in ['tangerine.local/api/internal/app::TestNativeDiagnosticActualAuditoryPositive','tangerine.local/api/internal/app::TestNativeDiagnosticActualAuditoryContrastNegative']:eligible=path.name.startswith('auditory-native-quality-sdpa')
+  if identity in ['tangerine.local/api/internal/app::TestNativeDiagnosticActualAuditoryPositive','tangerine.local/api/internal/app::TestNativeDiagnosticActualAuditoryContrastNegative']:eligible=path.name.startswith(('auditory-native-quality-sdpa','auditory-native-gemini-'))
   if identity.startswith('unittest::test_release_diagnostic_lab.ReleaseDiagnosticLabTests.'):eligible=path.name.startswith(('diagnostic-quality-lab','diagnostic-lab-'))
-  if identity.startswith('unittest::test_custom_audio_profile_browser.CustomAudioProfileTests.'):eligible=path.name.startswith('verify-custom-final-')
+  if identity.startswith('unittest::test_custom_audio_profile_browser.CustomAudioProfileTests.'):eligible=path.name.startswith(('verify-custom-final-','auditory-native-gemini-'))
   if identity=='unittest::test_release_current_source.CurrentSourceTests.test_current_arm64_source_positive':eligible=path.name.startswith('current-startup-model-annotations-')
   if identity in ['tangerine.local/api/internal/app::TestNativeDiagnosticExtraAnnotationPositive','tangerine.local/api/internal/app::TestNativeDiagnosticAmbiguousJudgmentNegative']:eligible=path.name.startswith('annotation-reference-green')
   if status in ['pass','fail']:observations[identity].append(dict(status=status,path=str(path.relative_to(R)),mtime=path.stat().st_mtime,eligible_for_current_contract=eligible))

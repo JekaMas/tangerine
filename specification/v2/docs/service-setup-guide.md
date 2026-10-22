@@ -2,7 +2,7 @@
 
 Start with **your existing ChatGPT Pro account for text and answer checking, plus local Kokoro for speech**. This covers the ordinary listening-exercise flow with one LLM connection and one local speech backend. No additional paid subscription or corpus download is needed.
 
-This guide describes the specified product setup. Tangerine's revised launcher, ChatGPT connection and complete exercise flow are not implemented yet. The historical foundation instructions in the repository README are separate; this guide does not claim that future Settings actions already work.
+Tangerine implements the launcher, provider configuration and exercise flow. The release observations include an actual local Ollama LLM, Kokoro synthesis, listening, answer interpretation, scoring, recommendations and optional review. A hosted account's actual entitlement/model availability remains a separate connection observation; the adapter's presence does not establish that entitlement.
 
 ## Services in the ordinary flow
 
@@ -28,7 +28,8 @@ ChatGPT-plan access handles text processing. It is not the speech-export backend
 | **Azure Speech F0** | Optional standard SSML pronunciation, stress/prosody and pauses | Microsoft/Azure account with an actual F0 Speech resource, AZURE_SPEECH_KEY and AZURE_SPEECH_REGION/endpoint. | Alternative for controlled acoustic mutations. S0 is separately billed and excluded by the current policy. |
 | **Qwen3-TTS locally** | Optional described accents/styles and reusable synthetic speaker voices | No provider account or API key; explicit local model setup and sufficient hardware. | Richer local speech alternative. Hardware performance and exact acoustic realization require observation. |
 | **DeepSeek** | Alternative LLM for the same text stages | Existing profile and server-side DEEPSEEK_API_KEY. The key's presence does not prove an included API allowance. | Keep the existing fast profile. Official token billing is excluded under the current policy unless a documented eligible non-purchased allowance is established. |
-| **Ollama locally** | Optional local LLM for the same text stages | No cloud account; configured local runner and downloaded local model. | Local alternative if the machine supports it. Quality/latency remain to be measured. |
+| **Ollama locally** | Local LLM for the same text stages | No cloud account; configured local runner and downloaded local model. | The release main-flow observations use installed gpt-oss:20b. Other models/hardware retain their own quality/latency observations. |
+| **Gemini Free** | Optional audio-capable diagnostic judge for stored generated recordings and their acoustic intent | Gemini authorization key from AI Studio, stored server-side as GEMINI_API_KEY in ignored configuration; use a project with no linked billing account and an available free model. | Explicit gemini-audio-v1 selection, independent of ordinary text grading and TTS. It sends the actual target/reference WAVs and returns advisory findings; native scores stay unchanged. |
 
 Choose one configured LLM and one speech backend for a new exercise. Freeze those settings with the preparation. Changing a selection affects new work; it does not silently replace a provider in a saved checkpoint or running request. If limits are reached, retain completed text/key/audio/answers and retry after reset or explicitly select another eligible backend.
 
@@ -53,13 +54,21 @@ Database/media/internal service credentials are generated and kept privately by 
 When the specified launcher and provider adapter are implemented:
 
 1. Download the GitHub source ZIP or clone, ensure Docker is running, and follow the launcher setup in [local delivery](local-delivery.md). Supply keys only for selected key-based adapters; ChatGPT-plan sign-in uses OAuth instead.
-2. Start Tangerine and open the local UI. In Settings choose **Continue with ChatGPT** and authorize Tangerine using the existing Pro account. Choose a model actually returned for that connection.
+2. Start Tangerine and open the local UI. In Settings select the configured local LLM, or choose **Continue with ChatGPT** for an eligible existing account. Choose a model actually available through that connection.
 3. In [ChatGPT Usage settings](https://chatgpt.com/settings/usage), select Tangerine and disable purchased-credit use after plan limits. Automatic reload off alone is insufficient. Record the external-setting confirmation once.
 4. Select **local Kokoro** and perform the explicit model setup. The specified helper action is `sh scripts/tangerine model-setup`; ordinary startup performs no model download or inference.
 5. Enter a topic, speaker count and word length. Generate the clean text, mutations and audio on demand; listen, answer and receive LLM comments plus exact scores.
 6. Add ElevenLabs Free, Azure F0 or Qwen only when a requested voice/acoustic capability needs it. Keep the local default available; no silent switch or paid upgrade occurs.
 
-Current setup observations are in the [full readiness audit](../../../audit/full-development-readiness-20261009/REPORT.md): existing Pro verified; Tangerine OAuth not performed because its adapter is unimplemented; ElevenLabs Free registration completed, with actual Free allowance read back. Account creation does not establish synthesis or answer-checking quality.
+The [earlier readiness audit](../../../audit/full-development-readiness-20261009/REPORT.md) records account observations at that date, not the current implementation state. Current local main-flow, source startup and provider qualification boundaries are recorded in the [iteration16 verification report](../../../audit/iteration-16-verification-20261022/REPORT.md). Account creation alone does not establish synthesis, answer-checking or auditory accuracy.
+
+## Optional Gemini audio diagnostics setup
+
+1. Sign in to AI Studio using the selected account and complete its applicable terms. If a new Cloud project is needed, complete the separate Cloud onboarding and create it without starting a trial, adding a payment method or linking billing. Import that project in AI Studio.
+2. Check the project's Cloud Billing linked-account page once: it must report no billing account for this operator's free-only route. Create a Gemini authorization key in AI Studio; new authorization keys are restricted to the Gemini API by default ([official key documentation](https://ai.google.dev/gemini-api/docs/api-key)). Keep the credential only in ignored server-side configuration, never the browser UI, Git, ordinary backup or Lab artifacts.
+3. Inspect that project's actual Rate Limit page, including unused models. Select a model with available free quota; marketing limits or another project's allowance are not an entitlement. The2026-10-22 admission observed gemini-3.8-flash at5RPM,250KTPM and20RPD. These are dated observations, not hard-coded product limits.
+4. Select the audio-judge profile in Settings with billing_mode=free_tier and credential_ref=GEMINI_API_KEY. Start an explicit saved-case measurement/review action when desired. Existing configurations remain frozen; no automatic provider switch occurs. HTTP quota/provider failures stay explicit and never enable billing or overage.
+5. On networks requiring a proxy, the Gemini speech adapter honors the normal configured HTTP/HTTPS proxy environment, with end-to-end TLS verification and redirects disabled. The test transport does not decrypt Google traffic or enforce billing itself; the unbilled provider project supplies that spending boundary. Ordinary use adds no proxy service or repeated billing audit.
 
 ## Optional data and diagnostics
 

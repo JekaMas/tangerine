@@ -4331,7 +4331,11 @@
       "unittest::test_release_images.ReleaseImageTests.test_matching_cache_positive",
       "unittest::test_release_images.ReleaseImageTests.test_failed_pull_negative",
       "unittest::test_release_images.ReleaseImageTests.test_remove_failure_negative",
-      "unittest::test_release_portable.ReleasePortableTests.test_original_cache_restore_positive"
+      "unittest::test_release_portable.ReleasePortableTests.test_original_cache_restore_positive",
+      "unittest::test_auditory_protocol.AuditoryProtocolTests.test_configured_proxy_positive",
+      "unittest::test_auditory_protocol.AuditoryProtocolTests.test_redirect_credential_negative",
+      "unittest::test_release_network.BridgeFramingTests.test_authorized_gemini_tunnel_positive",
+      "unittest::test_release_network.BridgeFramingTests.test_unapproved_host_or_port_negative"
     ]
   },
   "reviews": [
@@ -20431,6 +20435,63 @@
       ],
       "disposition": "current_change",
       "rationale": "User-authorized registry repair. Tests alone own cache switching; application keeps official pinned images and its existing launcher."
+    },
+    {
+      "id": "iteration16-gemini-proxy",
+      "question": "Can the authorized unbilled Gemini binding use configured TLS transport without redirects or another provider?",
+      "property_ids": [
+        "I16-03.P1",
+        "I16-06.P1"
+      ],
+      "test_ids": [
+        "unittest::test_auditory_protocol.AuditoryProtocolTests.test_configured_proxy_positive",
+        "unittest::test_auditory_protocol.AuditoryProtocolTests.test_redirect_credential_negative",
+        "unittest::test_release_network.BridgeFramingTests.test_authorized_gemini_tunnel_positive",
+        "unittest::test_release_network.BridgeFramingTests.test_unapproved_host_or_port_negative"
+      ],
+      "searches": [
+        {
+          "kind": "exact",
+          "status": "completed",
+          "query": "Actual Gemini first-call network timeout, ignored HTTPS proxy, release TLS allowlist and current setup-guide status",
+          "outcome": "Honor standard proxy environment in the existing HTTP owner; allow only approved Google TLS in the test bridge. Retain TLS/no-redirect/free-tier behavior and update stale implementation wording.",
+          "results": [
+            {
+              "path": "services/speech/diagnostic_models.py",
+              "classification": "change_candidate",
+              "reason": "Explicit ProxyHandler({}) bypasses configured proxies."
+            },
+            {
+              "path": "tests/release_network.py",
+              "classification": "change_candidate",
+              "reason": "Existing test-only allowlist excludes newly authorized Google destination."
+            },
+            {
+              "path": "specification/v2/docs/service-setup-guide.md",
+              "classification": "change_candidate",
+              "reason": "Historical unimplemented wording contradicts observed current local flow."
+            }
+          ]
+        },
+        {
+          "kind": "semantic",
+          "status": "unavailable",
+          "query": "Exact known Gemini HTTP and release transport owners",
+          "reason": "No matching semantic/IDE index is available for this checkout; actual failure and exact symbols identify the owners.",
+          "outcome": "No semantic/index evidence claimed.",
+          "results": []
+        },
+        {
+          "kind": "jetbrains-index",
+          "status": "unavailable",
+          "query": "Exact known Gemini HTTP and release transport owners",
+          "reason": "No matching semantic/IDE index is available for this checkout; actual failure and exact symbols identify the owners.",
+          "outcome": "No semantic/index evidence claimed.",
+          "results": []
+        }
+      ],
+      "disposition": "current_change",
+      "rationale": "Existing user-authorized Gemini Free qualification; no new product, billing, proxy service or runtime audit."
     }
   ]
 }

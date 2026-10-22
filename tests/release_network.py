@@ -2,13 +2,14 @@
 
 Host can reach Docker's published loopback ports while Docker currently cannot
 reach host/public addresses. Host agents open outbound tunnels to this private
-container. Public dependency TLS remains end to end. The only inference target
-is the installed loopback Ollama, with an explicit local-model allowlist.
+container. Public TLS remains end to end. Inference destinations are the
+allowlisted installed Ollama models and the explicitly authorized Gemini host.
+Gemini billing is enforced by the admitted unbilled project, not this TLS tunnel.
 """
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 from pathlib import Path
 import hashlib,json,os,queue,select,socket,sys,threading,time,uuid
-PUBLIC={'codeload.github.com','proxy.golang.org','sum.golang.org','storage.googleapis.com','pypi.org','files.pythonhosted.org','download.pytorch.org','download-r2.pytorch.org','download.pytorch.com','huggingface.co','github.com','objects.githubusercontent.com','release-assets.githubusercontent.com'}
+PUBLIC={'codeload.github.com','proxy.golang.org','sum.golang.org','storage.googleapis.com','pypi.org','files.pythonhosted.org','download.pytorch.org','download-r2.pytorch.org','download.pytorch.com','huggingface.co','github.com','objects.githubusercontent.com','release-assets.githubusercontent.com','generativelanguage.googleapis.com'}
 MODELS={'gpt-oss:20b','tangerine-qwen35-9b-i6-20261020'}
 JOBS=queue.Queue()
 
@@ -96,7 +97,7 @@ def agent(port,directory):
    except (OSError,ValueError,StopIteration):time.sleep(.2)
  workers=[threading.Thread(target=work,daemon=True) for _ in range(12)]
  for worker in workers:worker.start()
- print(json.dumps({'status':'ready','workers':len(workers),'paid_routes':False}),flush=True)
+ print(json.dumps({'status':'ready','workers':len(workers),'hosted_tls_billing':'admitted_unbilled_project_not_bridge'}),flush=True)
  for worker in workers:worker.join()
 
 if __name__=='__main__':

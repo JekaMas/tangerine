@@ -138,7 +138,7 @@ def auditory(profile,prompt,input,clips,timeout=260,capture=lambda value:None):
   capture(dict(provider='gemini_interactions',profile=profile,request=request))
   class NoRedirect(urllib.request.HTTPRedirectHandler):
    def redirect_request(self,*args,**kwargs):return None
-  opener=urllib.request.build_opener(urllib.request.ProxyHandler({}),NoRedirect())
+  opener=urllib.request.build_opener(urllib.request.ProxyHandler(),NoRedirect())
   try:
    with opener.open(req,timeout=timeout) as response:status=response.status;response_raw=response.read()
   except urllib.error.HTTPError as error:status=error.code;response_raw=error.read()

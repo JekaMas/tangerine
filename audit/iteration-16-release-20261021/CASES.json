@@ -1198,7 +1198,7 @@
         "exact_test": "test_completed_request_positive",
         "literal_executable_fixture": "def test_completed_request_positive(self):\n  result,received,capture=self.invoke(json.dumps(self.result()).encode());self.assertEqual(len(received),1);request=received[0];self.assertEqual(request.full_url,'https://generativelanguage.googleapis.com/v1beta/interactions');body=json.loads(request.data);self.assertEqual({k:body[k] for k in ['store','stream','background','tools']},dict(store=False,stream=False,background=False,tools=[]));self.assertEqual(body['generation_config'],dict(max_output_tokens=512));self.assertEqual(result['output']['findings'][0]['status'],'uncertain');self.assertEqual(capture[-1]['http_status'],200);self.assertNotIn('test-owned-canary',json.dumps(capture))",
         "source_path": "tests/test_auditory_protocol.py",
-        "source_sha256": "f41a5aaa6ba061b0a4851bb38fe19b68e59826756996844d6cbb563020af9d20",
+        "source_sha256": "9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py"
       },
       "expected": {
@@ -1225,7 +1225,7 @@
         "exact_test": "test_incomplete_status_negative",
         "literal_executable_fixture": "def test_incomplete_status_negative(self):\n  result,received,capture=self.invoke(json.dumps(self.result('in_progress')).encode());self.assertEqual(result['error'],'DIAGNOSTIC_PROVIDER_FAILED');self.assertEqual(result['wire']['response']['status'],'in_progress');self.assertEqual(len(received),1)",
         "source_path": "tests/test_auditory_protocol.py",
-        "source_sha256": "f41a5aaa6ba061b0a4851bb38fe19b68e59826756996844d6cbb563020af9d20",
+        "source_sha256": "9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py"
       },
       "expected": {
@@ -1252,7 +1252,7 @@
         "exact_test": "test_non_json_response_negative",
         "literal_executable_fixture": "def test_non_json_response_negative(self):\n  result,_,capture=self.invoke(b'upstream unavailable',503);self.assertEqual(result['error'],'DIAGNOSTIC_PROVIDER_FAILED');self.assertEqual(result['wire']['response_text'],'upstream unavailable');self.assertEqual(capture[-1]['http_status'],503)",
         "source_path": "tests/test_auditory_protocol.py",
-        "source_sha256": "f41a5aaa6ba061b0a4851bb38fe19b68e59826756996844d6cbb563020af9d20",
+        "source_sha256": "9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py"
       },
       "expected": {
@@ -1279,7 +1279,7 @@
         "exact_test": "test_invalid_model_text_retained_negative",
         "literal_executable_fixture": "def test_invalid_model_text_retained_negative(self):\n  body=self.result();body['steps'][0]['content'][0]['text']='No structured findings were supplied.';result,_,capture=self.invoke(json.dumps(body).encode());self.assertEqual(result['error'],'DIAGNOSTIC_OUTPUT_INVALID');self.assertEqual(capture[-1]['response'],body);self.assertEqual(result['wire']['response'],body)",
         "source_path": "tests/test_auditory_protocol.py",
-        "source_sha256": "f41a5aaa6ba061b0a4851bb38fe19b68e59826756996844d6cbb563020af9d20",
+        "source_sha256": "9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py"
       },
       "expected": {
@@ -1306,7 +1306,7 @@
         "exact_test": "test_paid_before_transport_negative",
         "literal_executable_fixture": "def test_paid_before_transport_negative(self):\n  with patch.object(models.urllib.request,'build_opener') as network,self.assertRaisesRegex(ValueError,'PAID_USE_FORBIDDEN'):models.auditory(self.profile('metered'),'prompt',{},[b'audio'])\n  network.assert_not_called()",
         "source_path": "tests/test_auditory_protocol.py",
-        "source_sha256": "f41a5aaa6ba061b0a4851bb38fe19b68e59826756996844d6cbb563020af9d20",
+        "source_sha256": "9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py"
       },
       "expected": {
@@ -1333,7 +1333,7 @@
         "exact_test": "test_missing_key_negative",
         "literal_executable_fixture": "def test_missing_key_negative(self):\n  with patch.dict(models.os.environ,{},clear=True),patch.object(models.urllib.request,'build_opener') as network,self.assertRaisesRegex(ValueError,'MISSING_CREDENTIALS'):models.auditory(self.profile(),'prompt',{},[b'audio'])\n  network.assert_not_called()",
         "source_path": "tests/test_auditory_protocol.py",
-        "source_sha256": "f41a5aaa6ba061b0a4851bb38fe19b68e59826756996844d6cbb563020af9d20",
+        "source_sha256": "9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py"
       },
       "expected": {
@@ -7192,7 +7192,7 @@
         "exact_test": "test_large_request_prefix_positive",
         "literal_executable_fixture": "def test_large_request_prefix_positive(self):\n  # Independent literal payload includes non-ASCII UTF-8 and binary header edges.\n  body=('The caf\u00e9 opens tomorrow. '*12000).encode();request=b'POST /v1/responses HTTP/1.1\\r\\nContent-Length: '+str(len(body)).encode()+b'\\r\\n\\r\\n'+body\n  meta={'kind':'local_model','host':'127.0.0.1','port':11434,'prefix_length':len(request)}\n  actual,raw=self.read(self.frame(meta,request));self.assertEqual(actual,meta);self.assertEqual(raw,request)",
         "source_path": "tests/test_release_network.py",
-        "source_sha256": "b27d5322be2c56c632fc2a44afbccd605d94785ac46f9bea9159418e2e12faa4",
+        "source_sha256": "4fd25f5ca830e390e3accacb782206b69e7ef52bd4669185373ba848872ac2ba",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_release_network.py"
       },
       "expected": {
@@ -7219,7 +7219,7 @@
         "exact_test": "test_dependency_initial_tls_positive",
         "literal_executable_fixture": "def test_dependency_initial_tls_positive(self):\n  # CONNECT has no prefix; any bytes already after the framing stay intact.\n  expected=b'\\x16\\x03\\x01\\x00\\x04TLS!';meta={'kind':'dependency','prefix_length':0}\n  actual,raw=self.read(self.frame(meta,expected));self.assertEqual(actual,meta);self.assertEqual(raw,expected)",
         "source_path": "tests/test_release_network.py",
-        "source_sha256": "b27d5322be2c56c632fc2a44afbccd605d94785ac46f9bea9159418e2e12faa4",
+        "source_sha256": "4fd25f5ca830e390e3accacb782206b69e7ef52bd4669185373ba848872ac2ba",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_release_network.py"
       },
       "expected": {
@@ -7246,7 +7246,7 @@
         "exact_test": "test_incomplete_prefix_negative",
         "literal_executable_fixture": "def test_incomplete_prefix_negative(self):\n  with self.assertRaisesRegex(OSError,'bridge prefix incomplete'):self.read(self.frame({'prefix_length':99},b'only-five'))",
         "source_path": "tests/test_release_network.py",
-        "source_sha256": "b27d5322be2c56c632fc2a44afbccd605d94785ac46f9bea9159418e2e12faa4",
+        "source_sha256": "4fd25f5ca830e390e3accacb782206b69e7ef52bd4669185373ba848872ac2ba",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_release_network.py"
       },
       "expected": {
@@ -7273,7 +7273,7 @@
         "exact_test": "test_closed_header_negative",
         "literal_executable_fixture": "def test_closed_header_negative(self):\n  with self.assertRaisesRegex(OSError,'bridge closed'):self.read(b'HTTP/1.1 101')",
         "source_path": "tests/test_release_network.py",
-        "source_sha256": "b27d5322be2c56c632fc2a44afbccd605d94785ac46f9bea9159418e2e12faa4",
+        "source_sha256": "4fd25f5ca830e390e3accacb782206b69e7ef52bd4669185373ba848872ac2ba",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_release_network.py"
       },
       "expected": {
@@ -7300,7 +7300,7 @@
         "exact_test": "test_no_job_negative",
         "literal_executable_fixture": "def test_no_job_negative(self):\n  self.assertEqual(self.read(b'HTTP/1.1 204 No Content\\r\\nContent-Length: 0\\r\\n\\r\\n'),(None,b''))",
         "source_path": "tests/test_release_network.py",
-        "source_sha256": "b27d5322be2c56c632fc2a44afbccd605d94785ac46f9bea9159418e2e12faa4",
+        "source_sha256": "4fd25f5ca830e390e3accacb782206b69e7ef52bd4669185373ba848872ac2ba",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_release_network.py"
       },
       "expected": {
@@ -8866,7 +8866,7 @@
         "exact_test": "test_current_source_positive",
         "literal_executable_fixture": "def test_current_source_positive(self):\n  images=json.loads((self.root/'architecture.json').read_text())\n  self.assertEqual(len(images),5);self.assertEqual({row['architecture'] for row in images},{'arm64'})\n  self.assertEqual(self.receipt['model_calls'],0);self.assertTrue(Path(self.receipt['source_archive']).is_file())",
         "source_path": "tests/test_custom_audio_profile_browser.py",
-        "source_sha256": "8ce9fc1b0eec59fe9dc289f68584ac398cd4ffc0390b8f4cbdbc6f354e115f59",
+        "source_sha256": "a50dae2a850739e953d00e77925b25ba5bd5bd9bac322504f3dacec582a90f3d",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_custom_audio_profile_browser.py"
       },
       "expected": {
@@ -8920,7 +8920,7 @@
         "exact_test": "test_current_source_positive",
         "literal_executable_fixture": "def test_current_source_positive(self):\n  images=json.loads((self.root/'architecture.json').read_text())\n  self.assertEqual(len(images),5);self.assertEqual({row['architecture'] for row in images},{'arm64'})\n  self.assertEqual(self.receipt['model_calls'],0);self.assertTrue(Path(self.receipt['source_archive']).is_file())",
         "source_path": "tests/test_custom_audio_profile_browser.py",
-        "source_sha256": "8ce9fc1b0eec59fe9dc289f68584ac398cd4ffc0390b8f4cbdbc6f354e115f59",
+        "source_sha256": "a50dae2a850739e953d00e77925b25ba5bd5bd9bac322504f3dacec582a90f3d",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_custom_audio_profile_browser.py"
       },
       "expected": {
@@ -9784,7 +9784,7 @@
         "exact_test": "test_custom_profile_positive",
         "literal_executable_fixture": "def test_custom_profile_positive(self):\n  self.assertEqual(self.values['test_custom_profile_positive'],dict(setup_commands=['scripts/tangerine model-setup qwen25-omni-3b-audio-v1'],saved_profile='custom-local-audio-judge',displayed_profile='custom-local-audio-judge',label='Qwen/Qwen2.5-Omni-3B \u00b7 local \u00b7 saved custom profile'))\n  self.assertEqual(self.receipt['model_calls'],0)",
         "source_path": "tests/test_custom_audio_profile_browser.py",
-        "source_sha256": "8ce9fc1b0eec59fe9dc289f68584ac398cd4ffc0390b8f4cbdbc6f354e115f59",
+        "source_sha256": "a50dae2a850739e953d00e77925b25ba5bd5bd9bac322504f3dacec582a90f3d",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_custom_audio_profile_browser.py"
       },
       "expected": {
@@ -9811,7 +9811,7 @@
         "exact_test": "test_saved_binding_positive",
         "literal_executable_fixture": "def test_saved_binding_positive(self):\n  self.assertEqual(self.values['test_saved_binding_positive'],dict(setup_commands=['scripts/tangerine model-setup qwen25-omni-audio-v1'],saved_model='Qwen/Qwen2.5-Omni-7B',displayed_profile='qwen-omni-3b',label='Qwen/Qwen2.5-Omni-7B \u00b7 local'))\n  self.assertEqual(self.receipt['model_calls'],0)",
         "source_path": "tests/test_custom_audio_profile_browser.py",
-        "source_sha256": "8ce9fc1b0eec59fe9dc289f68584ac398cd4ffc0390b8f4cbdbc6f354e115f59",
+        "source_sha256": "a50dae2a850739e953d00e77925b25ba5bd5bd9bac322504f3dacec582a90f3d",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_custom_audio_profile_browser.py"
       },
       "expected": {
@@ -9838,7 +9838,7 @@
         "exact_test": "test_custom_profile_disable_negative",
         "literal_executable_fixture": "def test_custom_profile_disable_negative(self):\n  self.assertEqual(self.values['test_custom_profile_disable_negative'],dict(saved_profile=None,displayed_profile='',llm_profiles_preserved=True))\n  self.assertEqual(self.receipt['model_calls'],0)",
         "source_path": "tests/test_custom_audio_profile_browser.py",
-        "source_sha256": "8ce9fc1b0eec59fe9dc289f68584ac398cd4ffc0390b8f4cbdbc6f354e115f59",
+        "source_sha256": "a50dae2a850739e953d00e77925b25ba5bd5bd9bac322504f3dacec582a90f3d",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_custom_audio_profile_browser.py"
       },
       "expected": {
@@ -9981,6 +9981,114 @@
         "oracle": "Independent literal assertions in named executable test plus complete shared fixture source. Build and run the real service stack on arm64 and amd64, reject a wrong expected architecture, and observe stored database/media persistence and complete private backup/fresh restore."
       },
       "independent_oracle": "Independent literal assertions in named executable test plus complete shared fixture source. Build and run the real service stack on arm64 and amd64, reject a wrong expected architecture, and observe stored database/media persistence and complete private backup/fresh restore.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I16-03.P1.S49.POSITIVE",
+      "property_id": "I16-03.P1",
+      "polarity": "positive",
+      "scenario": "I16-03 Explicit saved-audio diagnostics",
+      "fixture_id": "iteration16-I16-03-P1-S49-POSITIVE",
+      "test_id": "unittest::test_auditory_protocol.AuditoryProtocolTests.test_configured_proxy_positive",
+      "mode": "declared_behavior",
+      "action": "Observe test_configured_proxy_positive through the actual proxy/tunnel owner with constructed transport only",
+      "initial_state": {
+        "origin": "Constructed transport/control boundary with literal expected proxy, redirect and destination behavior; no actual provider or billing claim.",
+        "setup": "Complete exact fixture prerequisites/values are in the named source and shared helper library."
+      },
+      "input": {
+        "exact_test": "test_configured_proxy_positive",
+        "literal_executable_fixture": "def test_configured_proxy_positive(self):\n  with patch.object(models.urllib.request,'getproxies',return_value={'https':'http://test-owned-proxy.invalid:3128'}):\n   result,received,capture=self.invoke(json.dumps(self.result()).encode())\n  handler=next(h for h in self.handlers if isinstance(h,models.urllib.request.ProxyHandler))\n  self.assertEqual(handler.proxies,{'https':'http://test-owned-proxy.invalid:3128'});self.assertEqual(len(received),1);self.assertEqual(result['output']['findings'][0]['status'],'uncertain');self.assertNotIn('test-owned-proxy.invalid',json.dumps(capture))",
+        "source_path": "tests/test_auditory_protocol.py",
+        "source_sha256": "9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7",
+        "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py"
+      },
+      "expected": {
+        "independent_literal_assertions": "def test_configured_proxy_positive(self):\n  with patch.object(models.urllib.request,'getproxies',return_value={'https':'http://test-owned-proxy.invalid:3128'}):\n   result,received,capture=self.invoke(json.dumps(self.result()).encode())\n  handler=next(h for h in self.handlers if isinstance(h,models.urllib.request.ProxyHandler))\n  self.assertEqual(handler.proxies,{'https':'http://test-owned-proxy.invalid:3128'});self.assertEqual(len(received),1);self.assertEqual(result['output']['findings'][0]['status'],'uncertain');self.assertNotIn('test-owned-proxy.invalid',json.dumps(capture))",
+        "oracle": "Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores."
+      },
+      "independent_oracle": "Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I16-03.P1.S56.NEGATIVE",
+      "property_id": "I16-03.P1",
+      "polarity": "negative",
+      "scenario": "I16-03 Explicit saved-audio diagnostics",
+      "fixture_id": "iteration16-I16-03-P1-S56-NEGATIVE",
+      "test_id": "unittest::test_auditory_protocol.AuditoryProtocolTests.test_redirect_credential_negative",
+      "mode": "declared_behavior",
+      "action": "Observe test_redirect_credential_negative through the actual proxy/tunnel owner with constructed transport only",
+      "initial_state": {
+        "origin": "Constructed transport/control boundary with literal expected proxy, redirect and destination behavior; no actual provider or billing claim.",
+        "setup": "Complete exact fixture prerequisites/values are in the named source and shared helper library."
+      },
+      "input": {
+        "exact_test": "test_redirect_credential_negative",
+        "literal_executable_fixture": "def test_redirect_credential_negative(self):\n  _,received,_=self.invoke(json.dumps(self.result()).encode())\n  handler=next(h for h in self.handlers if isinstance(h,models.urllib.request.HTTPRedirectHandler))\n  self.assertIsNone(handler.redirect_request(received[0],None,302,'Redirected',{},'https://unapproved.example/receive-key'))",
+        "source_path": "tests/test_auditory_protocol.py",
+        "source_sha256": "9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7",
+        "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py"
+      },
+      "expected": {
+        "independent_literal_assertions": "def test_redirect_credential_negative(self):\n  _,received,_=self.invoke(json.dumps(self.result()).encode())\n  handler=next(h for h in self.handlers if isinstance(h,models.urllib.request.HTTPRedirectHandler))\n  self.assertIsNone(handler.redirect_request(received[0],None,302,'Redirected',{},'https://unapproved.example/receive-key'))",
+        "oracle": "Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores."
+      },
+      "independent_oracle": "Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I16-06.P1.S11.POSITIVE",
+      "property_id": "I16-06.P1",
+      "polarity": "positive",
+      "scenario": "I16-06 Extracted Apache source startup",
+      "fixture_id": "iteration16-I16-06-P1-S11-POSITIVE",
+      "test_id": "unittest::test_release_network.BridgeFramingTests.test_authorized_gemini_tunnel_positive",
+      "mode": "declared_behavior",
+      "action": "Observe test_authorized_gemini_tunnel_positive through the actual proxy/tunnel owner with constructed transport only",
+      "initial_state": {
+        "origin": "Constructed transport/control boundary with literal expected proxy, redirect and destination behavior; no actual provider or billing claim.",
+        "setup": "Complete exact fixture prerequisites/values are in the named source and shared helper library."
+      },
+      "input": {
+        "exact_test": "test_authorized_gemini_tunnel_positive",
+        "literal_executable_fixture": "def test_authorized_gemini_tunnel_positive(self):\n  self.assertEqual(self.connect('generativelanguage.googleapis.com:443'),[('tunnel',{'host':'generativelanguage.googleapis.com','port':443,'kind':'dependency'})])",
+        "source_path": "tests/test_release_network.py",
+        "source_sha256": "4fd25f5ca830e390e3accacb782206b69e7ef52bd4669185373ba848872ac2ba",
+        "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_release_network.py"
+      },
+      "expected": {
+        "independent_literal_assertions": "def test_authorized_gemini_tunnel_positive(self):\n  self.assertEqual(self.connect('generativelanguage.googleapis.com:443'),[('tunnel',{'host':'generativelanguage.googleapis.com','port':443,'kind':'dependency'})])",
+        "oracle": "Independent literal assertions in named executable test plus complete shared fixture source. Download/run source without Git or workflow metadata, using Docker as the only host runtime prerequisite, retain Apache2/third-party terms and provide actionable missing dependency errors."
+      },
+      "independent_oracle": "Independent literal assertions in named executable test plus complete shared fixture source. Download/run source without Git or workflow metadata, using Docker as the only host runtime prerequisite, retain Apache2/third-party terms and provide actionable missing dependency errors.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I16-06.P1.S11.NEGATIVE",
+      "property_id": "I16-06.P1",
+      "polarity": "negative",
+      "scenario": "I16-06 Extracted Apache source startup",
+      "fixture_id": "iteration16-I16-06-P1-S11-NEGATIVE",
+      "test_id": "unittest::test_release_network.BridgeFramingTests.test_unapproved_host_or_port_negative",
+      "mode": "declared_behavior",
+      "action": "Observe test_unapproved_host_or_port_negative through the actual proxy/tunnel owner with constructed transport only",
+      "initial_state": {
+        "origin": "Constructed transport/control boundary with literal expected proxy, redirect and destination behavior; no actual provider or billing claim.",
+        "setup": "Complete exact fixture prerequisites/values are in the named source and shared helper library."
+      },
+      "input": {
+        "exact_test": "test_unapproved_host_or_port_negative",
+        "literal_executable_fixture": "def test_unapproved_host_or_port_negative(self):\n  self.assertEqual(self.connect('api.openai.com:443'),[('rejected',403)])\n  self.assertEqual(self.connect('generativelanguage.googleapis.com:80'),[('rejected',403)])",
+        "source_path": "tests/test_release_network.py",
+        "source_sha256": "4fd25f5ca830e390e3accacb782206b69e7ef52bd4669185373ba848872ac2ba",
+        "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_release_network.py"
+      },
+      "expected": {
+        "independent_literal_assertions": "def test_unapproved_host_or_port_negative(self):\n  self.assertEqual(self.connect('api.openai.com:443'),[('rejected',403)])\n  self.assertEqual(self.connect('generativelanguage.googleapis.com:80'),[('rejected',403)])",
+        "oracle": "Independent literal assertions in named executable test plus complete shared fixture source. Download/run source without Git or workflow metadata, using Docker as the only host runtime prerequisite, retain Apache2/third-party terms and provide actionable missing dependency errors."
+      },
+      "independent_oracle": "Independent literal assertions in named executable test plus complete shared fixture source. Download/run source without Git or workflow metadata, using Docker as the only host runtime prerequisite, retain Apache2/third-party terms and provide actionable missing dependency errors.",
       "observation_state": "not_run"
     }
   ]

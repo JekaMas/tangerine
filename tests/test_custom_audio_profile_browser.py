@@ -6,7 +6,8 @@ class CustomAudioProfileTests(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
   cls.root=R/'data/iteration16/custom-audio-profile'/('run-'+uuid.uuid4().hex[:10]);cls.root.mkdir(parents=True)
-  env=dict(os.environ,TANGERINE_RELEASE_EVIDENCE=str(cls.root),TANGERINE_RELEASE_SOURCE_FOCUS='custom-audio-profile')
+  env=dict(os.environ,TANGERINE_RELEASE_EVIDENCE=str(cls.root))
+  env.setdefault('TANGERINE_RELEASE_SOURCE_FOCUS','custom-audio-profile')
   env.setdefault('TANGERINE_TEST_VIDEO_DIR',str(cls.root/'videos'))
   p=subprocess.run([str(R/'tests/release-current-source')],cwd=R,env=env,capture_output=True,text=True,timeout=1800)
   (cls.root/'stdout').write_text(p.stdout);(cls.root/'stderr').write_text(p.stderr)

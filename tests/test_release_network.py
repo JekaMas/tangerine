@@ -1,6 +1,6 @@
 """Exact bytes through the test-owned local-model/dependency bridge framing."""
 import json,socket,threading,unittest
-from release_network import read_job
+from release_network import Bridge,read_job
 
 class BridgeFramingTests(unittest.TestCase):
  def frame(self,metadata,payload):
@@ -29,5 +29,15 @@ class BridgeFramingTests(unittest.TestCase):
   with self.assertRaisesRegex(OSError,'bridge closed'):self.read(b'HTTP/1.1 101')
  def test_no_job_negative(self):
   self.assertEqual(self.read(b'HTTP/1.1 204 No Content\r\nContent-Length: 0\r\n\r\n'),(None,b''))
+ def connect(self,path):
+  handler=Bridge.__new__(Bridge);handler.path=path;events=[]
+  handler.send_error=lambda code:events.append(('rejected',code))
+  handler.transfer=lambda target:events.append(('tunnel',target))
+  handler.do_CONNECT();return events
+ def test_authorized_gemini_tunnel_positive(self):
+  self.assertEqual(self.connect('generativelanguage.googleapis.com:443'),[('tunnel',{'host':'generativelanguage.googleapis.com','port':443,'kind':'dependency'})])
+ def test_unapproved_host_or_port_negative(self):
+  self.assertEqual(self.connect('api.openai.com:443'),[('rejected',403)])
+  self.assertEqual(self.connect('generativelanguage.googleapis.com:80'),[('rejected',403)])
 
 if __name__=='__main__':unittest.main()
