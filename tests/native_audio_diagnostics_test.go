@@ -489,7 +489,7 @@ func diagnosticAnnotationFixture(t *testing.T, status string) (listeningFixture,
 	t.Helper()
 	f := listeningCase(t)
 	target := f.key["units"].([]any)[0].(map[string]any)["id"]
-	finding := map[string]any{"unit_id": target, "feature": "speech_realization", "status": status, "description": "Constructed target description.", "reason": "Constructed advisory explanation.", "clip_interval": nil, "proposed_ipa": nil, "model_annotation": "Uncalibrated model commentary."}
+	finding := map[string]any{"unit_id": target, "feature": "speech_realization", "status": status, "description": "Constructed target description.", "reason": "Constructed advisory explanation.", "clip_interval": nil, "proposed_ipa": nil, "model_annotation": map[string]any{"note": "Uncalibrated model commentary.", "source_asset_id": "model-local-annotation", "native_score": 99}}
 	output, err := f.s.Store.saveProviderBytes(context.Background(), sourceBytes(finding), "provider_output")
 	requireListening(t, err)
 	row := map[string]any{"id": uuid.NewString(), "audio_sha256": f.audioSHA, "method_id": "qwen25-omni-audio-v1", "method_version": "constructed-annotation-v1", "feature": "speech_realization", "interval": map[string]any{"start": 0, "end": 24000, "sample_rate_hz": 24000}, "status": "observed", "numeric_value": nil, "categorical_value": "model_supported", "unit": "category", "evidence_asset_ids": []any{output.ID}, "reason": nil, "target_unit_id": target, "auditory_finding": finding}
@@ -515,8 +515,14 @@ func TestNativeDiagnosticExtraAnnotationPositive(t *testing.T) {
 	}
 	var saved map[string]any
 	requireListening(t, json.Unmarshal(rows[0].(json.RawMessage), &saved))
-	if saved["numeric_value"] != nil || saved["auditory_finding"].(map[string]any)["model_annotation"] != "Uncalibrated model commentary." {
+	annotation := saved["auditory_finding"].(map[string]any)["model_annotation"].(map[string]any)
+	if saved["numeric_value"] != nil || annotation["source_asset_id"] != "model-local-annotation" || annotation["native_score"] != float64(99) {
 		t.Fatal("Annotation was lost or became a native score", saved)
+	}
+	var links int
+	requireListening(t, f.s.Store.DB.QueryRow(ctx, "SELECT count(*) FROM object_reference WHERE source_document_id=$1 AND source_pointer LIKE '/auditory_finding/%'", row["id"]).Scan(&links))
+	if links != 0 {
+		t.Fatal("Model-local IDs became native resource links", links)
 	}
 	out := map[string]any{"schema_version": "2.0.0", "findings": []any{row["auditory_finding"]}, "summary": "Constructed advisory output.", "model_annotation": "Uncalibrated root commentary."}
 	_, _, err = contracts.Validate("audio-judge-output", "2.0.0", sourceBytes(out))
@@ -533,6 +539,16 @@ func TestNativeDiagnosticAmbiguousJudgmentNegative(t *testing.T) {
 	requireListening(t, f.s.Store.DB.QueryRow(context.Background(), "SELECT count(*) FROM document WHERE id=$1", row["id"]).Scan(&count))
 	if count != 0 {
 		t.Fatal("Rejected measurement was published", count)
+	}
+}
+
+func TestNativeDiagnosticModelReferenceNegative(t *testing.T) {
+	f, row, output := diagnosticAnnotationFixture(t, "supported")
+	row["auditory_finding"].(map[string]any)["model_annotation"].(map[string]any)["source_asset_id"] = output.ID
+	refs := map[string]string{"/evidence_asset_ids/0": output.ID, "/auditory_finding/model_annotation/source_asset_id": output.ID}
+	_, _, err := f.s.Store.diagnosticDocument(context.Background(), row["id"].(string), "audio-measurement", row, refs)
+	if err == nil {
+		t.Fatal("Model inference acquired a native resource reference")
 	}
 }
 

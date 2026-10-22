@@ -252,6 +252,12 @@ func validateProjection(w DocumentWrite, b []byte) error {
 	foreign := map[string]bool{}
 	var walk func(any, string)
 	walk = func(value any, p string) {
+		// A model finding is inference data, not a native resource graph.
+		// Its known fields were admitted by the schema; annotation IDs must
+		// not become database links or native acoustic evidence.
+		if w.Kind == "audio-measurement" && p == "/auditory_finding" {
+			return
+		}
 		switch x := value.(type) {
 		case map[string]any:
 			for k, val := range x {

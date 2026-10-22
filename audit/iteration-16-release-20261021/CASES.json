@@ -2008,7 +2008,7 @@
         "exact_test": "TestNativeDiagnosticPersistencePositive",
         "literal_executable_fixture": "func TestNativeDiagnosticPersistencePositive(t *testing.T) {\n\tf, calls := diagnosticFixture(t, \"\")\n\tbefore, err := f.s.Store.ReadDocument(context.Background(), f.id)\n\trequireListening(t, err)\n\tv := diagnosticRun(t, f, \"ffmpeg-ebur128-v1\")\n\trun := v[\"run\"].(map[string]any)\n\tif *calls != 1 || run[\"status\"] != \"complete\" || len(v[\"measurements\"].([]map[string]any)) != 1 {\n\t\tt.Fatal(v, *calls)\n\t}\n\trows, err := f.s.Store.reviewMeasurements(context.Background(), f.id)\n\trequireListening(t, err)\n\tif len(rows) != 1 {\n\t\tt.Fatal(rows)\n\t}\n\tafter, err := f.s.Store.ReadDocument(context.Background(), f.id)\n\trequireListening(t, err)\n\tif string(before.Payload) != string(after.Payload) {\n\t\tt.Fatal(\"advisory diagnostics changed key\")\n\t}\n\tlisted, err := f.s.Store.listAudioDiagnostics(context.Background(), f.id, \"\")\n\trequireListening(t, err)\n\tif len(listed[\"items\"].([]any)) != 1 || *calls != 1 {\n\t\tt.Fatal(listed, *calls)\n\t}\n\tvar contexts, receipts int\n\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM document WHERE kind='provider-receipt' AND payload->>'context_snapshot_id' IS NOT NULL\").Scan(&contexts))\n\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM document WHERE kind='provider-receipt'\").Scan(&receipts))\n\tif contexts != 1 || receipts != 1 {\n\t\tt.Fatal(contexts, receipts)\n\t}\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2035,7 +2035,7 @@
         "exact_test": "TestNativeDiagnosticReplayPositive",
         "literal_executable_fixture": "func TestNativeDiagnosticReplayPositive(t *testing.T) {\n\tf, calls := diagnosticFixture(t, \"\")\n\tkey := uuid.NewString()\n\trequest := diagnosticRequest(f, \"ffmpeg-ebur128-v1\")\n\ta, err := f.s.MeasureCase(context.Background(), request, key, nil)\n\trequireListening(t, err)\n\tf.s.SpeechURL = \"http://unavailable.invalid\"\n\tb, err := f.s.MeasureCase(context.Background(), request, key, nil)\n\trequireListening(t, err)\n\tif a[\"run\"].(map[string]any)[\"id\"] != b[\"run\"].(map[string]any)[\"id\"] || *calls != 1 {\n\t\tt.Fatal(a, b, *calls)\n\t}\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2062,7 +2062,7 @@
         "exact_test": "TestNativeDiagnosticFailedHistoryNegative",
         "literal_executable_fixture": "func TestNativeDiagnosticFailedHistoryNegative(t *testing.T) {\n\tf, calls := diagnosticFixture(t, \"failure\")\n\tkey := uuid.NewString()\n\trequest := diagnosticRequest(f, \"ffmpeg-ebur128-v1\")\n\tfor i := 0; i < 2; i++ {\n\t\tv, err := f.s.MeasureCase(context.Background(), request, key, nil)\n\t\tif err == nil || v[\"run\"].(map[string]any)[\"status\"] != \"failed\" {\n\t\t\tt.Fatal(v, err)\n\t\t}\n\t}\n\tif *calls != 1 {\n\t\tt.Fatal(\"failed replay dispatched again\", *calls)\n\t}\n\tlisted, err := f.s.Store.listAudioDiagnostics(context.Background(), f.id, \"\")\n\trequireListening(t, err)\n\tif len(listed[\"items\"].([]any)) != 1 {\n\t\tt.Fatal(listed)\n\t}\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2089,7 +2089,7 @@
         "exact_test": "TestNativeDiagnosticOutputClockNegative",
         "literal_executable_fixture": "func TestNativeDiagnosticOutputClockNegative(t *testing.T) {\n\tf, calls := diagnosticFixture(t, \"clock\")\n\tv, err := f.s.MeasureCase(context.Background(), diagnosticRequest(f, \"ffmpeg-ebur128-v1\"), uuid.NewString(), nil)\n\tif err == nil || *calls != 1 || len(v[\"run\"].(map[string]any)[\"output_asset_ids\"].([]any)) != 1 || len(v[\"run\"].(map[string]any)[\"measurement_ids\"].([]any)) != 0 {\n\t\tt.Fatal(v, err, *calls)\n\t}\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2116,7 +2116,7 @@
         "exact_test": "TestNativeDiagnosticOutputHashNegative",
         "literal_executable_fixture": "func TestNativeDiagnosticOutputHashNegative(t *testing.T) {\n\tf, _ := diagnosticFixture(t, \"hash\")\n\tv, err := f.s.MeasureCase(context.Background(), diagnosticRequest(f, \"ffmpeg-ebur128-v1\"), uuid.NewString(), nil)\n\tif err == nil || v[\"run\"].(map[string]any)[\"status\"] != \"failed\" {\n\t\tt.Fatal(v, err)\n\t}\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2143,7 +2143,7 @@
         "exact_test": "TestNativeDiagnosticMissingObservationNegative",
         "literal_executable_fixture": "func TestNativeDiagnosticMissingObservationNegative(t *testing.T) {\n\tf, _ := diagnosticFixture(t, \"missing\")\n\tv, err := f.s.MeasureCase(context.Background(), diagnosticRequest(f, \"ffmpeg-ebur128-v1\"), uuid.NewString(), nil)\n\tif err == nil || v[\"run\"].(map[string]any)[\"status\"] != \"failed\" {\n\t\tt.Fatal(v, err)\n\t}\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2170,7 +2170,7 @@
         "exact_test": "TestNativeDiagnosticRequestHashNegative",
         "literal_executable_fixture": "func TestNativeDiagnosticRequestHashNegative(t *testing.T) {\n\tf, calls := diagnosticFixture(t, \"\")\n\tr := diagnosticRequest(f, \"ffmpeg-ebur128-v1\")\n\tr.AudioSHA = strings.Repeat(\"0\", 64)\n\tkey := uuid.NewString()\n\tfor i := 0; i < 2; i++ {\n\t\t_, err := f.s.MeasureCase(context.Background(), r, key, nil)\n\t\tif !errors.Is(err, ErrRevision) || *calls != 0 {\n\t\t\tt.Fatal(err, *calls)\n\t\t}\n\t}\n\tvar active int\n\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM operation WHERE operation_name='speech_measure' AND state='running'\").Scan(&active))\n\tif active != 0 {\n\t\tt.Fatal(\"invalid preflight consumed foreground claim\", active)\n\t}\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2197,7 +2197,7 @@
         "exact_test": "TestNativeDiagnosticUnknownMethodNegative",
         "literal_executable_fixture": "func TestNativeDiagnosticUnknownMethodNegative(t *testing.T) {\n\tf, calls := diagnosticFixture(t, \"\")\n\t_, err := f.s.MeasureCase(context.Background(), diagnosticRequest(f, \"invented-method\"), uuid.NewString(), nil)\n\tif err == nil || *calls != 0 {\n\t\tt.Fatal(err, *calls)\n\t}\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2224,7 +2224,7 @@
         "exact_test": "TestNativeDiagnosticUnrelatedReadNegative",
         "literal_executable_fixture": "func TestNativeDiagnosticUnrelatedReadNegative(t *testing.T) {\n\tf, calls := diagnosticFixture(t, \"\")\n\tdiagnosticRun(t, f, \"ffmpeg-ebur128-v1\")\n\trows, err := f.s.Store.reviewMeasurements(context.Background(), uuid.NewString())\n\trequireListening(t, err)\n\tif len(rows) != 0 || *calls != 1 {\n\t\tt.Fatal(rows, *calls)\n\t}\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2251,7 +2251,7 @@
         "exact_test": "TestNativeDiagnosticPromptConfigurationPositive",
         "literal_executable_fixture": "func TestNativeDiagnosticPromptConfigurationPositive(t *testing.T) {\n\tf, calls := diagnosticFixture(t, \"\")\n\tp := audioDiagnosticDefaults()[\"profiles\"].([]any)[1].(map[string]any)\n\tc, err := diagnosticConfiguration(t, f, p, true)\n\trequireListening(t, err)\n\tsaved := c[\"audio_diagnostic_profile\"].(map[string]any)\n\tid := saved[\"prompt_asset_id\"].(string)\n\tif id == \"builtin-audio-judge-v1\" {\n\t\tt.Fatal(\"builtin prompt not materialized\")\n\t}\n\traw, err := f.s.Store.ReadAsset(context.Background(), id)\n\trequireListening(t, err)\n\tif string(raw) != string(audioJudgePrompt) {\n\t\tt.Fatal(\"wrong prompt\")\n\t}\n\tc, err = diagnosticConfiguration(t, f, nil, false)\n\trequireListening(t, err)\n\tif c[\"audio_diagnostic_profile\"].(map[string]any)[\"prompt_asset_id\"] != id || *calls != 0 {\n\t\tt.Fatal(c, *calls)\n\t}\n\tc, err = diagnosticConfiguration(t, f, nil, true)\n\trequireListening(t, err)\n\tif c[\"audio_diagnostic_profile\"] != nil {\n\t\tt.Fatal(\"explicit disable ignored\", c)\n\t}\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2278,7 +2278,7 @@
         "exact_test": "TestNativeDiagnosticPromptHashNegative",
         "literal_executable_fixture": "func TestNativeDiagnosticPromptHashNegative(t *testing.T) {\n\tf, calls := diagnosticFixture(t, \"\")\n\tp := audioDiagnosticDefaults()[\"profiles\"].([]any)[1].(map[string]any)\n\tp[\"prompt_sha256\"] = strings.Repeat(\"0\", 64)\n\t_, err := diagnosticConfiguration(t, f, p, true)\n\tif !errors.Is(err, ErrReference) || *calls != 0 {\n\t\tt.Fatal(err, *calls)\n\t}\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2305,7 +2305,7 @@
         "exact_test": "TestNativeDiagnosticHTTPPositive",
         "literal_executable_fixture": "func TestNativeDiagnosticHTTPPositive(t *testing.T) {\n\tf, calls := diagnosticFixture(t, \"\")\n\traw, _ := json.Marshal(diagnosticRequest(f, \"ffmpeg-ebur128-v1\"))\n\tw := f.request(\"POST\", \"/api/v1/cases/\"+f.id+\"/measurements\", string(raw), uuid.NewString(), \"\")\n\tif w.Code != 200 {\n\t\tt.Fatal(w.Code, w.Body.String())\n\t}\n\tw = f.request(\"GET\", \"/api/v1/cases/\"+f.id+\"/measurements\", \"\", \"\", \"\")\n\tif w.Code != 200 || !strings.Contains(w.Body.String(), \"-18.25\") || *calls != 1 {\n\t\tt.Fatal(w.Code, w.Body.String(), *calls)\n\t}\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2332,7 +2332,7 @@
         "exact_test": "TestNativeDiagnosticHTTPIdentityNegative",
         "literal_executable_fixture": "func TestNativeDiagnosticHTTPIdentityNegative(t *testing.T) {\n\tf, calls := diagnosticFixture(t, \"\")\n\traw, _ := json.Marshal(diagnosticRequest(f, \"ffmpeg-ebur128-v1\"))\n\tw := f.request(\"POST\", \"/api/v1/cases/\"+uuid.NewString()+\"/measurements\", string(raw), uuid.NewString(), \"\")\n\tif w.Code != 400 || *calls != 0 {\n\t\tt.Fatal(w.Code, w.Body.String(), *calls)\n\t}\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2359,7 +2359,7 @@
         "exact_test": "TestNativeDiagnosticDeletionPositive",
         "literal_executable_fixture": "func TestNativeDiagnosticDeletionPositive(t *testing.T) {\n\tf, calls := diagnosticFixture(t, \"\")\n\tv := diagnosticRun(t, f, \"ffmpeg-ebur128-v1\")\n\trun := v[\"run\"].(map[string]any)\n\tp, err := f.s.Store.PlanDeletion(context.Background(), DeletionSelection{IDs: []string{f.id}})\n\trequireListening(t, err)\n\twanted := map[string]bool{run[\"id\"].(string): false, run[\"measurement_ids\"].([]any)[0].(string): false}\n\tfor _, id := range p.Documents {\n\t\tif _, ok := wanted[id]; ok {\n\t\t\twanted[id] = true\n\t\t}\n\t}\n\tfor id, found := range wanted {\n\t\tif !found {\n\t\t\tt.Fatal(\"diagnostic omitted from erasure\", id, p)\n\t\t}\n\t}\n\tp, err = f.s.Store.ApplyDeletion(context.Background(), p.ID, p.Digest)\n\trequireListening(t, err)\n\tif p.State != \"native_erased\" || p.LabCleanup != \"pending_explicit_local_lab_cleanup\" || *calls != 1 {\n\t\tt.Fatal(p, *calls)\n\t}\n\tfor id := range wanted {\n\t\tvar count int\n\t\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM document WHERE id=$1\", id).Scan(&count))\n\t\tif count != 0 {\n\t\t\tt.Fatal(\"diagnostic survived native deletion\", id)\n\t\t}\n\t}\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2386,7 +2386,7 @@
         "exact_test": "TestNativeDiagnosticNativeMethodsPositive",
         "literal_executable_fixture": "func TestNativeDiagnosticNativeMethodsPositive(t *testing.T) {\n\tf := listeningCase(t)\n\tf.s.SpeechURL = os.Getenv(\"TANGERINE_SPEECH_TEST_URL\")\n\tf.s.speechToken = \"actual-local-speech-test\"\n\tv := diagnosticRun(t, f, \"ffmpeg-ebur128-v1\", \"praat-ac-v1\")\n\tif len(v[\"measurements\"].([]map[string]any)) != 13 {\n\t\tt.Fatal(v)\n\t}\n\traw, _ := json.MarshalIndent(v, \"\", \"  \")\n\tif root := os.Getenv(\"TANGERINE_PREPARATION_TEST_EVIDENCE\"); root != \"\" {\n\t\trequireListening(t, os.WriteFile(filepath.Join(root, \"actual-measurements.json\"), raw, 0600))\n\t}\n}\n\n// This fixture performs actual Kokoro decoding, then publishes its actual new\n// WAV through the regular key/admission/publication owners. No reference audio\n// or diagnostic result is supplied to the recognizer.\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2413,7 +2413,7 @@
         "exact_test": "TestNativeDiagnosticActualASRPositive",
         "literal_executable_fixture": "func TestNativeDiagnosticActualASRPositive(t *testing.T) {\n\tf := diagnosticActualCase(t)\n\tdiagnosticCapture(t, f)\n\tv := diagnosticRun(t, f, \"faster-whisper-local-en-v1\")\n\trows := v[\"measurements\"].([]map[string]any)\n\tif len(rows) != 1 || rows[0][\"feature\"] != \"WER\" || rows[0][\"numeric_value\"] != \"0\" {\n\t\tt.Fatal(\"Independent Hello world transcription disagreed with literal reference\", v)\n\t}\n\trun := v[\"run\"].(map[string]any)\n\toutput, err := f.s.Store.ReadAsset(context.Background(), run[\"output_asset_ids\"].([]any)[0].(string))\n\trequireListening(t, err)\n\tvar raw map[string]any\n\trequireListening(t, json.Unmarshal(output, &raw))\n\tnative := raw[\"native\"].(map[string]any)\n\tif text := strings.TrimSpace(native[\"hypothesis\"].(string)); text != \"Hello world.\" && text != \"Hello, world.\" {\n\t\tt.Fatal(\"unexpected raw transcription\", text)\n\t}\n\tparams := native[\"parameters\"].(map[string]any)\n\tif params[\"initial_prompt\"] != nil || params[\"condition_on_previous_text\"] != false || params[\"word_timestamps\"] != true || len(native[\"segments\"].([]any)) == 0 {\n\t\tt.Fatal(native)\n\t}\n\tif root := os.Getenv(\"TANGERINE_PREPARATION_TEST_EVIDENCE\"); root != \"\" {\n\t\trequireListening(t, os.WriteFile(filepath.Join(root, \"actual-asr.json\"), output, 0600))\n\t}\n}\n\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2440,7 +2440,7 @@
         "exact_test": "TestNativeDiagnosticRightsNegative",
         "literal_executable_fixture": "func TestNativeDiagnosticRightsNegative(t *testing.T) {\n\tf, calls := diagnosticFixture(t, \"\")\n\t_, err := f.s.Store.DB.Exec(context.Background(), \"UPDATE exercise_catalog SET availability='rights_restricted' WHERE id::text=$1\", f.id)\n\trequireListening(t, err)\n\t_, err = f.s.MeasureCase(context.Background(), diagnosticRequest(f, \"ffmpeg-ebur128-v1\"), uuid.NewString(), nil)\n\tif !errors.Is(err, ErrAttemptRights) || *calls != 0 {\n\t\tt.Fatal(err, *calls)\n\t}\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2467,7 +2467,7 @@
         "exact_test": "TestNativeDiagnosticCancellationNegative",
         "literal_executable_fixture": "func TestNativeDiagnosticCancellationNegative(t *testing.T) {\n\tf := listeningCase(t)\n\tentered := make(chan struct{})\n\tdone := make(chan struct{})\n\tendpoint := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\n\t\tclose(entered)\n\t\tselect {\n\t\tcase <-r.Context().Done():\n\t\tcase <-done:\n\t\t}\n\t}))\n\tdefer endpoint.Close()\n\tdefer close(done)\n\tf.s.SpeechURL = endpoint.URL\n\tf.s.speechToken = \"cancel-owned\"\n\tctx, cancel := context.WithCancel(context.Background())\n\tdefer cancel()\n\tgo func() {\n\t\tselect {\n\t\tcase <-entered:\n\t\t\tcancel()\n\t\tcase <-time.After(10 * time.Second):\n\t\t\tcancel()\n\t\t}\n\t}()\n\tv, err := f.s.MeasureCase(ctx, diagnosticRequest(f, \"ffmpeg-ebur128-v1\"), uuid.NewString(), nil)\n\tdiagnosticEvidence(t, f, v)\n\tif !errors.Is(err, context.Canceled) || v == nil {\n\t\tt.Fatal(v, err)\n\t}\n\trun := v[\"run\"].(map[string]any)\n\tif run[\"status\"] != \"failed\" || run[\"failure_code\"] != \"CANCELLED\" || len(run[\"receipt_ids\"].([]any)) != 1 {\n\t\tt.Fatal(v)\n\t}\n\tlisted, err := f.s.Store.listAudioDiagnostics(context.Background(), f.id, \"\")\n\trequireListening(t, err)\n\tif len(listed[\"items\"].([]any)) != 1 {\n\t\tt.Fatal(listed)\n\t}\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2494,7 +2494,7 @@
         "exact_test": "TestNativeDiagnosticPaginationPositive",
         "literal_executable_fixture": "func TestNativeDiagnosticPaginationPositive(t *testing.T) {\n\tf, calls := diagnosticFixture(t, \"\")\n\tfor i := 0; i < 21; i++ {\n\t\tdiagnosticRun(t, f, \"ffmpeg-ebur128-v1\")\n\t}\n\tfirst, err := f.s.Store.listAudioDiagnostics(context.Background(), f.id, \"\")\n\trequireListening(t, err)\n\tcursor, ok := first[\"next_cursor\"].(string)\n\tif !ok || len(first[\"items\"].([]any)) != 20 {\n\t\tt.Fatal(first)\n\t}\n\tlast, err := f.s.Store.listAudioDiagnostics(context.Background(), f.id, cursor)\n\trequireListening(t, err)\n\tif len(last[\"items\"].([]any)) != 1 || last[\"next_cursor\"] != nil || *calls != 21 {\n\t\tt.Fatal(last, *calls)\n\t}\n\tseen := map[string]bool{}\n\tfor _, page := range []map[string]any{first, last} {\n\t\tfor _, v := range page[\"items\"].([]any) {\n\t\t\tid := v.(map[string]any)[\"run\"].(map[string]any)[\"id\"].(string)\n\t\t\tif seen[id] {\n\t\t\t\tt.Fatal(\"repeated history row\", id)\n\t\t\t}\n\t\t\tseen[id] = true\n\t\t}\n\t}\n}\n\n// Constructed model annotations exercise actual admission, transaction and\n// readback. No upstream model call or acoustic accuracy is claimed.\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -2521,7 +2521,7 @@
         "exact_test": "TestNativeDiagnosticActualAuditoryPositive",
         "literal_executable_fixture": "func TestNativeDiagnosticActualAuditoryPositive(t *testing.T) {\n\tf := actualAuditoryFixture(t, false)\n\tv := diagnosticRun(t, f, \"qwen25-omni-audio-v1\")\n\tassertActualAuditory(t, f, v, \"pause_insert\", \"supported\", 2)\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -6949,7 +6949,7 @@
         "exact_test": "TestNativeReleaseMutationLocatorPositive",
         "literal_executable_fixture": "func TestNativeReleaseMutationLocatorPositive(t *testing.T) {\n\ts, r, client, calls, _ := nativeMutationFixture(t, \"unique-locator\")\n\tp, err := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\trequireListening(t, err)\n\tif *calls != 1 {\n\t\tt.Fatal(\"literal arithmetic caused another model call\", *calls)\n\t}\n\traw, err := s.Store.ReadAsset(context.Background(), p[\"mutation_manifest_asset_id\"].(string))\n\trequireListening(t, err)\n\tvar c map[string]any\n\trequireListening(t, json.Unmarshal(raw, &c))\n\tspan := projectedSpan(c)\n\tif span[\"start_cp\"] != float64(9) || span[\"end_cp\"] != float64(13) {\n\t\tt.Fatal(span)\n\t}\n\tsaveNativeMutationEvidence(t, s, p)\n}\n\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -6976,7 +6976,7 @@
         "exact_test": "TestNativeReleaseMutationShapePositive",
         "literal_executable_fixture": "func TestNativeReleaseMutationShapePositive(t *testing.T) {\n\ts, r, client, calls, _ := nativeMutationFixture(t, \"shape-defaults\")\n\tp, err := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\trequireListening(t, err)\n\tif *calls != 1 {\n\t\tt.Fatal(\"empty shape defaults caused another model call\", *calls)\n\t}\n\traw, err := s.Store.ReadAsset(context.Background(), p[\"mutation_manifest_asset_id\"].(string))\n\trequireListening(t, err)\n\tvar c map[string]any\n\trequireListening(t, json.Unmarshal(raw, &c))\n\tu := c[\"planned_units\"].([]any)[0].(map[string]any)\n\tif len(u[\"rationale_forbidden_propositions\"].([]any)) != 0 || u[\"corrections\"].([]any)[0].(map[string]any)[\"canonical\"] != true || u[\"rationale\"] != \"A singular subject requires singular agreement.\" {\n\t\tt.Fatal(c)\n\t}\n}\n\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -7003,7 +7003,7 @@
         "exact_test": "TestNativeReleaseWordCountsPositive",
         "literal_executable_fixture": "func TestNativeReleaseWordCountsPositive(t *testing.T) {\n\ts, p, _ := nativeSpeechFixture(t, 0)\n\tsaved, err := s.Store.Preparation(context.Background(), p[\"id\"].(string))\n\trequireListening(t, err)\n\tsummary := speechSummary(saved)\n\tif summary[\"canonical_word_count\"] != float64(4) || summary[\"surface_word_count\"] != float64(4) {\n\t\tt.Fatal(\"actual admitted word counts not retained\", summary)\n\t}\n}\n\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -7030,7 +7030,7 @@
         "exact_test": "TestNativeReleaseConservativeContextPositive",
         "literal_executable_fixture": "func TestNativeReleaseConservativeContextPositive(t *testing.T) {\n\ts, r, client, calls, _ := nativeMutationFixture(t, \"token-unknown-fit\")\n\tp, err := s.PrepareMutation(context.Background(), r, uuid.NewString(), client)\n\trequireListening(t, err)\n\tif *calls != 1 || p[\"phase_states\"].(map[string]any)[\"mutation\"] != \"complete\" {\n\t\tt.Fatal(p, *calls)\n\t}\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -9568,7 +9568,7 @@
         "exact_test": "TestNativeDiagnosticActualAuditoryContrastNegative",
         "literal_executable_fixture": "func TestNativeDiagnosticActualAuditoryContrastNegative(t *testing.T) {\n\tf := actualAuditoryFixture(t, true)\n\tv := diagnosticRun(t, f, \"qwen25-omni-audio-v1\")\n\tassertActualAuditory(t, f, v, \"speech_realization\", \"contradicted\", 1)\n}\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
@@ -9701,13 +9701,13 @@
       },
       "input": {
         "exact_test": "TestNativeDiagnosticExtraAnnotationPositive",
-        "literal_executable_fixture": "func TestNativeDiagnosticExtraAnnotationPositive(t *testing.T) {\n\tf, row, output := diagnosticAnnotationFixture(t, \"supported\")\n\tctx := context.Background()\n\tinput, err := f.s.Store.saveProviderBytes(ctx, []byte(`{\"origin\":\"constructed_annotation_fixture\"}`), \"provider_input\")\n\trequireListening(t, err)\n\top, err := f.s.Store.ReserveOperation(ctx, OperationRequest{Name: \"speech_measure\", Key: uuid.NewString(), Path: \"/test/annotation\", Body: []byte(`{}`)})\n\trequireListening(t, err)\n\trequireListening(t, f.s.Store.claimInference(ctx, op.ID))\n\tdefer f.s.Store.releaseInference(ctx, op.ID)\n\trun := map[string]any{\"schema_version\": \"2.0.0\", \"id\": uuid.NewString(), \"case_version_id\": f.id, \"operation_id\": op.ID, \"status\": \"complete\", \"method_ids\": []any{\"qwen25-omni-audio-v1\"}, \"input_asset_id\": input.ID, \"output_asset_ids\": []any{output.ID}, \"support_asset_ids\": []any{}, \"receipt_ids\": []any{}, \"measurement_ids\": []any{}, \"failure_code\": nil}\n\t_, err = f.s.Store.finishAudioDiagnostic(ctx, op, run, []map[string]any{row})\n\trequireListening(t, err)\n\trows, err := f.s.Store.reviewMeasurements(ctx, f.id)\n\trequireListening(t, err)\n\tif len(rows) != 1 {\n\t\tt.Fatal(rows)\n\t}\n\tvar saved map[string]any\n\trequireListening(t, json.Unmarshal(rows[0].(json.RawMessage), &saved))\n\tif saved[\"numeric_value\"] != nil || saved[\"auditory_finding\"].(map[string]any)[\"model_annotation\"] != \"Uncalibrated model commentary.\" {\n\t\tt.Fatal(\"Annotation was lost or became a native score\", saved)\n\t}\n\tout := map[string]any{\"schema_version\": \"2.0.0\", \"findings\": []any{row[\"auditory_finding\"]}, \"summary\": \"Constructed advisory output.\", \"model_annotation\": \"Uncalibrated root commentary.\"}\n\t_, _, err = contracts.Validate(\"audio-judge-output\", \"2.0.0\", sourceBytes(out))\n\trequireListening(t, err)\n}\n\n",
+        "literal_executable_fixture": "func TestNativeDiagnosticExtraAnnotationPositive(t *testing.T) {\n\tf, row, output := diagnosticAnnotationFixture(t, \"supported\")\n\tctx := context.Background()\n\tinput, err := f.s.Store.saveProviderBytes(ctx, []byte(`{\"origin\":\"constructed_annotation_fixture\"}`), \"provider_input\")\n\trequireListening(t, err)\n\top, err := f.s.Store.ReserveOperation(ctx, OperationRequest{Name: \"speech_measure\", Key: uuid.NewString(), Path: \"/test/annotation\", Body: []byte(`{}`)})\n\trequireListening(t, err)\n\trequireListening(t, f.s.Store.claimInference(ctx, op.ID))\n\tdefer f.s.Store.releaseInference(ctx, op.ID)\n\trun := map[string]any{\"schema_version\": \"2.0.0\", \"id\": uuid.NewString(), \"case_version_id\": f.id, \"operation_id\": op.ID, \"status\": \"complete\", \"method_ids\": []any{\"qwen25-omni-audio-v1\"}, \"input_asset_id\": input.ID, \"output_asset_ids\": []any{output.ID}, \"support_asset_ids\": []any{}, \"receipt_ids\": []any{}, \"measurement_ids\": []any{}, \"failure_code\": nil}\n\t_, err = f.s.Store.finishAudioDiagnostic(ctx, op, run, []map[string]any{row})\n\trequireListening(t, err)\n\trows, err := f.s.Store.reviewMeasurements(ctx, f.id)\n\trequireListening(t, err)\n\tif len(rows) != 1 {\n\t\tt.Fatal(rows)\n\t}\n\tvar saved map[string]any\n\trequireListening(t, json.Unmarshal(rows[0].(json.RawMessage), &saved))\n\tannotation := saved[\"auditory_finding\"].(map[string]any)[\"model_annotation\"].(map[string]any)\n\tif saved[\"numeric_value\"] != nil || annotation[\"source_asset_id\"] != \"model-local-annotation\" || annotation[\"native_score\"] != float64(99) {\n\t\tt.Fatal(\"Annotation was lost or became a native score\", saved)\n\t}\n\tvar links int\n\trequireListening(t, f.s.Store.DB.QueryRow(ctx, \"SELECT count(*) FROM object_reference WHERE source_document_id=$1 AND source_pointer LIKE '/auditory_finding/%'\", row[\"id\"]).Scan(&links))\n\tif links != 0 {\n\t\tt.Fatal(\"Model-local IDs became native resource links\", links)\n\t}\n\tout := map[string]any{\"schema_version\": \"2.0.0\", \"findings\": []any{row[\"auditory_finding\"]}, \"summary\": \"Constructed advisory output.\", \"model_annotation\": \"Uncalibrated root commentary.\"}\n\t_, _, err = contracts.Validate(\"audio-judge-output\", \"2.0.0\", sourceBytes(out))\n\trequireListening(t, err)\n}\n\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestNativeDiagnosticExtraAnnotationPositive(t *testing.T) {\n\tf, row, output := diagnosticAnnotationFixture(t, \"supported\")\n\tctx := context.Background()\n\tinput, err := f.s.Store.saveProviderBytes(ctx, []byte(`{\"origin\":\"constructed_annotation_fixture\"}`), \"provider_input\")\n\trequireListening(t, err)\n\top, err := f.s.Store.ReserveOperation(ctx, OperationRequest{Name: \"speech_measure\", Key: uuid.NewString(), Path: \"/test/annotation\", Body: []byte(`{}`)})\n\trequireListening(t, err)\n\trequireListening(t, f.s.Store.claimInference(ctx, op.ID))\n\tdefer f.s.Store.releaseInference(ctx, op.ID)\n\trun := map[string]any{\"schema_version\": \"2.0.0\", \"id\": uuid.NewString(), \"case_version_id\": f.id, \"operation_id\": op.ID, \"status\": \"complete\", \"method_ids\": []any{\"qwen25-omni-audio-v1\"}, \"input_asset_id\": input.ID, \"output_asset_ids\": []any{output.ID}, \"support_asset_ids\": []any{}, \"receipt_ids\": []any{}, \"measurement_ids\": []any{}, \"failure_code\": nil}\n\t_, err = f.s.Store.finishAudioDiagnostic(ctx, op, run, []map[string]any{row})\n\trequireListening(t, err)\n\trows, err := f.s.Store.reviewMeasurements(ctx, f.id)\n\trequireListening(t, err)\n\tif len(rows) != 1 {\n\t\tt.Fatal(rows)\n\t}\n\tvar saved map[string]any\n\trequireListening(t, json.Unmarshal(rows[0].(json.RawMessage), &saved))\n\tif saved[\"numeric_value\"] != nil || saved[\"auditory_finding\"].(map[string]any)[\"model_annotation\"] != \"Uncalibrated model commentary.\" {\n\t\tt.Fatal(\"Annotation was lost or became a native score\", saved)\n\t}\n\tout := map[string]any{\"schema_version\": \"2.0.0\", \"findings\": []any{row[\"auditory_finding\"]}, \"summary\": \"Constructed advisory output.\", \"model_annotation\": \"Uncalibrated root commentary.\"}\n\t_, _, err = contracts.Validate(\"audio-judge-output\", \"2.0.0\", sourceBytes(out))\n\trequireListening(t, err)\n}\n\n",
+        "independent_literal_assertions": "func TestNativeDiagnosticExtraAnnotationPositive(t *testing.T) {\n\tf, row, output := diagnosticAnnotationFixture(t, \"supported\")\n\tctx := context.Background()\n\tinput, err := f.s.Store.saveProviderBytes(ctx, []byte(`{\"origin\":\"constructed_annotation_fixture\"}`), \"provider_input\")\n\trequireListening(t, err)\n\top, err := f.s.Store.ReserveOperation(ctx, OperationRequest{Name: \"speech_measure\", Key: uuid.NewString(), Path: \"/test/annotation\", Body: []byte(`{}`)})\n\trequireListening(t, err)\n\trequireListening(t, f.s.Store.claimInference(ctx, op.ID))\n\tdefer f.s.Store.releaseInference(ctx, op.ID)\n\trun := map[string]any{\"schema_version\": \"2.0.0\", \"id\": uuid.NewString(), \"case_version_id\": f.id, \"operation_id\": op.ID, \"status\": \"complete\", \"method_ids\": []any{\"qwen25-omni-audio-v1\"}, \"input_asset_id\": input.ID, \"output_asset_ids\": []any{output.ID}, \"support_asset_ids\": []any{}, \"receipt_ids\": []any{}, \"measurement_ids\": []any{}, \"failure_code\": nil}\n\t_, err = f.s.Store.finishAudioDiagnostic(ctx, op, run, []map[string]any{row})\n\trequireListening(t, err)\n\trows, err := f.s.Store.reviewMeasurements(ctx, f.id)\n\trequireListening(t, err)\n\tif len(rows) != 1 {\n\t\tt.Fatal(rows)\n\t}\n\tvar saved map[string]any\n\trequireListening(t, json.Unmarshal(rows[0].(json.RawMessage), &saved))\n\tannotation := saved[\"auditory_finding\"].(map[string]any)[\"model_annotation\"].(map[string]any)\n\tif saved[\"numeric_value\"] != nil || annotation[\"source_asset_id\"] != \"model-local-annotation\" || annotation[\"native_score\"] != float64(99) {\n\t\tt.Fatal(\"Annotation was lost or became a native score\", saved)\n\t}\n\tvar links int\n\trequireListening(t, f.s.Store.DB.QueryRow(ctx, \"SELECT count(*) FROM object_reference WHERE source_document_id=$1 AND source_pointer LIKE '/auditory_finding/%'\", row[\"id\"]).Scan(&links))\n\tif links != 0 {\n\t\tt.Fatal(\"Model-local IDs became native resource links\", links)\n\t}\n\tout := map[string]any{\"schema_version\": \"2.0.0\", \"findings\": []any{row[\"auditory_finding\"]}, \"summary\": \"Constructed advisory output.\", \"model_annotation\": \"Uncalibrated root commentary.\"}\n\t_, _, err = contracts.Validate(\"audio-judge-output\", \"2.0.0\", sourceBytes(out))\n\trequireListening(t, err)\n}\n\n",
         "oracle": "Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores."
       },
       "independent_oracle": "Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.",
@@ -9728,13 +9728,40 @@
       },
       "input": {
         "exact_test": "TestNativeDiagnosticAmbiguousJudgmentNegative",
-        "literal_executable_fixture": "func TestNativeDiagnosticAmbiguousJudgmentNegative(t *testing.T) {\n\tf, row, output := diagnosticAnnotationFixture(t, \"supported or contradicted\")\n\t_, _, err := f.s.Store.diagnosticDocument(context.Background(), row[\"id\"].(string), \"audio-measurement\", row, map[string]string{\"/evidence_asset_ids/0\": output.ID})\n\tif err == nil {\n\t\tt.Fatal(\"An ambiguous judgment acquired a canonical status\")\n\t}\n\tvar count int\n\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM document WHERE id=$1\", row[\"id\"]).Scan(&count))\n\tif count != 0 {\n\t\tt.Fatal(\"Rejected measurement was published\", count)\n\t}\n}\n\n// Positive and negative use actual generated recordings. The negative key is\n// deliberately constructed with unfulfilled pause intent and the real clean\n// source recording; it never rewrites a published case or invents acoustic gold.\n",
+        "literal_executable_fixture": "func TestNativeDiagnosticAmbiguousJudgmentNegative(t *testing.T) {\n\tf, row, output := diagnosticAnnotationFixture(t, \"supported or contradicted\")\n\t_, _, err := f.s.Store.diagnosticDocument(context.Background(), row[\"id\"].(string), \"audio-measurement\", row, map[string]string{\"/evidence_asset_ids/0\": output.ID})\n\tif err == nil {\n\t\tt.Fatal(\"An ambiguous judgment acquired a canonical status\")\n\t}\n\tvar count int\n\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM document WHERE id=$1\", row[\"id\"]).Scan(&count))\n\tif count != 0 {\n\t\tt.Fatal(\"Rejected measurement was published\", count)\n\t}\n}\n\n",
         "source_path": "tests/native_audio_diagnostics_test.go",
-        "source_sha256": "6bdebea28be68568ce50c9722a04e83d167853119cc34c32399f992423a4bd2d",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
         "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
       },
       "expected": {
-        "independent_literal_assertions": "func TestNativeDiagnosticAmbiguousJudgmentNegative(t *testing.T) {\n\tf, row, output := diagnosticAnnotationFixture(t, \"supported or contradicted\")\n\t_, _, err := f.s.Store.diagnosticDocument(context.Background(), row[\"id\"].(string), \"audio-measurement\", row, map[string]string{\"/evidence_asset_ids/0\": output.ID})\n\tif err == nil {\n\t\tt.Fatal(\"An ambiguous judgment acquired a canonical status\")\n\t}\n\tvar count int\n\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM document WHERE id=$1\", row[\"id\"]).Scan(&count))\n\tif count != 0 {\n\t\tt.Fatal(\"Rejected measurement was published\", count)\n\t}\n}\n\n// Positive and negative use actual generated recordings. The negative key is\n// deliberately constructed with unfulfilled pause intent and the real clean\n// source recording; it never rewrites a published case or invents acoustic gold.\n",
+        "independent_literal_assertions": "func TestNativeDiagnosticAmbiguousJudgmentNegative(t *testing.T) {\n\tf, row, output := diagnosticAnnotationFixture(t, \"supported or contradicted\")\n\t_, _, err := f.s.Store.diagnosticDocument(context.Background(), row[\"id\"].(string), \"audio-measurement\", row, map[string]string{\"/evidence_asset_ids/0\": output.ID})\n\tif err == nil {\n\t\tt.Fatal(\"An ambiguous judgment acquired a canonical status\")\n\t}\n\tvar count int\n\trequireListening(t, f.s.Store.DB.QueryRow(context.Background(), \"SELECT count(*) FROM document WHERE id=$1\", row[\"id\"]).Scan(&count))\n\tif count != 0 {\n\t\tt.Fatal(\"Rejected measurement was published\", count)\n\t}\n}\n\n",
+        "oracle": "Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores."
+      },
+      "independent_oracle": "Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.",
+      "observation_state": "not_run"
+    },
+    {
+      "case_id": "I16-03.P1.S55.NEGATIVE",
+      "property_id": "I16-03.P1",
+      "polarity": "negative",
+      "scenario": "I16-03 Explicit saved-audio diagnostics",
+      "fixture_id": "iteration16-I16-03-P1-S55-NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeDiagnosticModelReferenceNegative",
+      "mode": "declared_behavior",
+      "action": "Execute TestNativeDiagnosticModelReferenceNegative through tests/native_audio_diagnostics_test.go",
+      "initial_state": {
+        "origin": "Actual current source/application owner and independent literal expectations. Constructed tone/error values are not model quality.",
+        "setup": "Complete executable source plus shared fixture library; actual Chrome/source startup and storage when named."
+      },
+      "input": {
+        "exact_test": "TestNativeDiagnosticModelReferenceNegative",
+        "literal_executable_fixture": "func TestNativeDiagnosticModelReferenceNegative(t *testing.T) {\n\tf, row, output := diagnosticAnnotationFixture(t, \"supported\")\n\trow[\"auditory_finding\"].(map[string]any)[\"model_annotation\"].(map[string]any)[\"source_asset_id\"] = output.ID\n\trefs := map[string]string{\"/evidence_asset_ids/0\": output.ID, \"/auditory_finding/model_annotation/source_asset_id\": output.ID}\n\t_, _, err := f.s.Store.diagnosticDocument(context.Background(), row[\"id\"].(string), \"audio-measurement\", row, refs)\n\tif err == nil {\n\t\tt.Fatal(\"Model inference acquired a native resource reference\")\n\t}\n}\n\n// Positive and negative use actual generated recordings. The negative key is\n// deliberately constructed with unfulfilled pause intent and the real clean\n// source recording; it never rewrites a published case or invents acoustic gold.\n",
+        "source_path": "tests/native_audio_diagnostics_test.go",
+        "source_sha256": "712a147b861a58398dc3b80b3c7878c34e81c0f7dae8cc18050d913a86abfee8",
+        "shared_fixture_library": "audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/native_audio_diagnostics_test.go"
+      },
+      "expected": {
+        "independent_literal_assertions": "func TestNativeDiagnosticModelReferenceNegative(t *testing.T) {\n\tf, row, output := diagnosticAnnotationFixture(t, \"supported\")\n\trow[\"auditory_finding\"].(map[string]any)[\"model_annotation\"].(map[string]any)[\"source_asset_id\"] = output.ID\n\trefs := map[string]string{\"/evidence_asset_ids/0\": output.ID, \"/auditory_finding/model_annotation/source_asset_id\": output.ID}\n\t_, _, err := f.s.Store.diagnosticDocument(context.Background(), row[\"id\"].(string), \"audio-measurement\", row, refs)\n\tif err == nil {\n\t\tt.Fatal(\"Model inference acquired a native resource reference\")\n\t}\n}\n\n// Positive and negative use actual generated recordings. The negative key is\n// deliberately constructed with unfulfilled pause intent and the real clean\n// source recording; it never rewrites a published case or invents acoustic gold.\n",
         "oracle": "Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores."
       },
       "independent_oracle": "Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.",

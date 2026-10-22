@@ -17,7 +17,8 @@ for path in sorted((R/'data/iteration16').iterdir()):
   eligible=True
   if identity in ['tangerine.local/api/internal/app::TestNativeDiagnosticActualAuditoryPositive','tangerine.local/api/internal/app::TestNativeDiagnosticActualAuditoryContrastNegative']:eligible=path.name.startswith('auditory-native-quality-sdpa')
   if identity.startswith('unittest::test_release_diagnostic_lab.ReleaseDiagnosticLabTests.'):eligible=path.name.startswith(('diagnostic-quality-lab','diagnostic-lab-'))
-  if identity=='unittest::test_release_current_source.CurrentSourceTests.test_current_arm64_source_positive':eligible=path.name.startswith('current-startup-')
+  if identity=='unittest::test_release_current_source.CurrentSourceTests.test_current_arm64_source_positive':eligible=path.name.startswith('current-startup-model-annotations-')
+  if identity in ['tangerine.local/api/internal/app::TestNativeDiagnosticExtraAnnotationPositive','tangerine.local/api/internal/app::TestNativeDiagnosticAmbiguousJudgmentNegative']:eligible=path.name.startswith('annotation-reference-green')
   if status in ['pass','fail']:observations[identity].append(dict(status=status,path=str(path.relative_to(R)),mtime=path.stat().st_mtime,eligible_for_current_contract=eligible))
 # The prior clean I15 launcher cases are unaffected: only start/build and
 # maintenance wait changed; these cases exercise lab routing before either.
