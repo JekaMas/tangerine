@@ -169,7 +169,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | acoustic-production-plan | schema hash | derived DTO or actual operation input/output receipt | 36 |
 
-| audio-judge-input | schema hash | derived DTO or actual operation input/output receipt | 17 |
+| audio-judge-input | schema hash | derived DTO or actual operation input/output receipt | 18 |
 
 | audio-judge-output | schema hash | derived DTO or actual operation input/output receipt | 12 |
 

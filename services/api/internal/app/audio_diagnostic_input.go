@@ -156,7 +156,7 @@ func diagnosticIntent(f diagnosticFrozen, interval map[string]any) map[string]an
 			}
 		}
 	}
-	return map[string]any{"schema_version": "2.0.0", "case_version_id": f.Key["case_version_id"], "audio_sha256": f.Key["audio"].(map[string]any)["sha256"], "source_interval": interval, "canonical_text": f.Canonical, "surface_text": f.Surface, "units": ids, "features": features, "planned_units": selected, "acoustic_edits": edits, "reference_clip_asset_id": nil, "task_target": f.Key["public_context"]}
+	return map[string]any{"schema_version": "2.0.0", "case_version_id": f.Key["case_version_id"], "audio_sha256": f.Key["audio"].(map[string]any)["sha256"], "source_interval": interval, "clip_duration_seconds": (interval["end"].(float64) - interval["start"].(float64)) / 24000, "canonical_text": f.Canonical, "surface_text": f.Surface, "units": ids, "features": features, "planned_units": selected, "acoustic_edits": edits, "reference_clip_asset_id": nil, "task_target": f.Key["public_context"]}
 }
 
 // Requested features come from the actual unit/controlled plan, never a model

@@ -9,7 +9,7 @@ from release_source import archive_source
 from importlib.util import module_from_spec,spec_from_file_location
 R=Path(__file__).resolve().parents[1];S=Path(os.environ['TANGERINE_RELEASE_SOURCE_EVIDENCE']).resolve();E=Path(os.environ['TANGERINE_RELEASE_EVIDENCE']).resolve();E.mkdir(parents=True,exist_ok=True)
 identity=json.loads((S/'session.json').read_text());original=json.loads((S/'receipt.json').read_text());assert original['status']=='passed' and original['architecture']=='arm64'
-name='tangerine-i16-amd64-'+uuid.uuid4().hex[:8];restored=name+'-restored';env=dict(os.environ,COMPOSE_PROJECT_NAME=name,DOCKER_DEFAULT_PLATFORM='linux/amd64');obs={};browser=None;preview=False;postgres_image='postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826';original_postgres_arch=None
+name='tangerine-i16-amd64-'+uuid.uuid4().hex[:8];restored=name+'-restored';env=dict(os.environ,COMPOSE_PROJECT_NAME=name,DOCKER_DEFAULT_PLATFORM='linux/amd64');obs={};browser=None;preview=False;postgres_image='postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826';original_postgres_arch=None;postgres_changed=False
 log=(E/'commands.log').open('w')
 with tempfile.TemporaryDirectory(prefix=name,dir=E) as tmp:
  work=Path(tmp)/'tangerine';work.mkdir()
@@ -38,7 +38,7 @@ with tempfile.TemporaryDirectory(prefix=name,dir=E) as tmp:
   running=call(['docker','inspect','-f','{{.State.Running}}','tangerine-i1-web-1'],False)
   if running.returncode==0 and running.stdout.strip()==b'true':raise AssertionError('Existing preview owns port3000; preserve it and use a separately available test endpoint.')
   cached=call(['docker','image','inspect','--format','{{.Architecture}}',postgres_image],False);original_postgres_arch=cached.stdout.decode().strip() if cached.returncode==0 else None
-  call(['docker','pull','--platform','linux/amd64',postgres_image])
+  call(['docker','pull','--platform','linux/amd64',postgres_image]);postgres_changed=True
   call(['sh','scripts/tangerine','start']);record('test_amd64_start_positive',True)
   spec=spec_from_file_location('release_arch',R/'scripts/assert_runtime_architecture.py');module=module_from_spec(spec);spec.loader.exec_module(module);rows=module.inspect(name,'amd64');(E/'architecture.json').write_text(json.dumps(rows,indent=2));record('test_amd64_architecture_positive',len(rows)==5 and {r['architecture'] for r in rows}=={'amd64'})
   try:module.inspect(name,'arm64')
@@ -66,5 +66,5 @@ with tempfile.TemporaryDirectory(prefix=name,dir=E) as tmp:
    runtime=work/'data/config/runtime.env' if project==name else work/'data/config/restores'/project/'runtime.env'
    if runtime.exists():call(compose('down','--volumes','--remove-orphans',project=project),False)
    for kind in ['api','minio','speech','web']:call(['docker','image','rm',project+'-'+kind+':local'],False)
-  if original_postgres_arch and original_postgres_arch!='amd64':call(['docker','pull','--platform','linux/'+original_postgres_arch,postgres_image])
+  if postgres_changed and original_postgres_arch and original_postgres_arch!='amd64':call(['docker','pull','--platform','linux/'+original_postgres_arch,postgres_image])
   if preview:call(['docker','start','tangerine-i1-web-1'],False)

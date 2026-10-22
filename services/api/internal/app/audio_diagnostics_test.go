@@ -185,7 +185,7 @@ func TestAudioDiagnosticControlledTargetPositive(t *testing.T) {
 	f.Manifest = map[string]any{"acoustic_edits": []any{map[string]any{"unit_id": unit["id"], "controller": "pause_insert"}}}
 	out := diagnosticIntent(f, map[string]any{"start": float64(0), "end": float64(2400)})
 	features := out["features"].([]any)
-	if len(features) != 1 || features[0] != "pause_insert" {
+	if len(features) != 1 || features[0] != "pause_insert" || out["clip_duration_seconds"] != 0.1 {
 		t.Fatal(out)
 	}
 	if len(out["acoustic_edits"].([]any)) != 1 {

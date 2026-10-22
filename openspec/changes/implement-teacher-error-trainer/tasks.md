@@ -815,3 +815,7 @@ Resume: audit/iteration-16-release-20261021/PROGRESS.md.
 - [ ] I16.R18 Remove overstrict auditory auxiliary-finding/wrapper gates and derive an omitted display caption only from the supplied reason: keep complete raw output, project only requested unit/feature pairs and retain native unknowns for missing targets. Test exact requested+auxiliary and unrelated-only examples; actual qualification requires a genuine requested finding, not a native placeholder.
 
 - [ ] I16.R19 Observe saved-attempt history itself during a real owned database outage, retained links/error, Refresh recovery and reopening the unchanged saved draft; retain full-page pictures/video and add exact paired DAG cases without rerunning the unchanged listening scenarios.
+
+- [ ] I16.R20 Separate completed auditory transport from actual contrast quality. Clarify target/reference and text-offset/sample-time context, retain the earlier contradictory/out-of-clock response as failed quality evidence, and require actual generated pause-present/no-pause contrasts with independently expected verdicts, raw context and Lab evidence. No runtime score/publication gate or winner selection is added.
+
+- [ ] I16.R21 Preserve additional model annotations in the declared auditory response and saved finding, retaining them as inference data without native numerical grades. Verify real admission/transaction/readback and rejected ambiguous status; keep the separate failed acoustic-quality oracle unchanged.

@@ -65,10 +65,10 @@ class DiagnosticRuntimeTests(unittest.TestCase):
  def test_auditory_task_after_audio_positive(self):
   prompt='Compare target and reference.';content='{"targets":["e1"]}'
   result=auditory_conversation(prompt,content,['target.wav','reference.wav'])
-  self.assertEqual(result,[dict(role='user',content=[dict(type='text',text=content),dict(type='text',text='Target audio'),dict(type='audio',audio='target.wav'),dict(type='text',text='Reference audio'),dict(type='audio',audio='reference.wav'),dict(type='text',text=prompt)])])
+  self.assertEqual(result,[dict(role='system',content=[dict(type='text',text='You are Qwen, a virtual human developed by the Qwen Team, Alibaba Group, capable of perceiving auditory and visual inputs, as well as generating text and speech.')]),dict(role='user',content=[dict(type='text',text=content),dict(type='text',text='Target audio'),dict(type='audio',audio='target.wav'),dict(type='text',text='Reference audio'),dict(type='audio',audio='reference.wav'),dict(type='text',text=prompt)])])
  def test_auditory_no_reference_negative(self):
   result=auditory_conversation('Judge only actual audio.','{}',['target.wav'])
-  self.assertEqual([p['audio'] for p in result[0]['content'] if p['type']=='audio'],['target.wav']);self.assertEqual(result[0]['content'][-1],dict(type='text',text='Judge only actual audio.'));self.assertNotIn('Reference audio',str(result))
+  self.assertEqual([p['audio'] for p in result[1]['content'] if p['type']=='audio'],['target.wav']);self.assertEqual(result[1]['content'][-1],dict(type='text',text='Judge only actual audio.'));self.assertNotIn('Reference audio',str(result))
  def test_judge_array_reason_positive(self):
   first=dict(unit_id='e1',feature='pause_insert',status='supported',reason='Intrusive pause removed in reference.')
   second=dict(unit_id='e1',feature='pause_insert',status='not_applicable',reason='No pause in target.')
@@ -76,6 +76,17 @@ class DiagnosticRuntimeTests(unittest.TestCase):
   self.assertEqual(out['findings'],[{**first,'description':first['reason'],'clip_interval':None,'proposed_ipa':None},{**second,'description':second['reason'],'clip_interval':None,'proposed_ipa':None}]);self.assertEqual([r['status'] for r in out['findings']],['supported','not_applicable'])
  def test_judge_array_transcription_negative(self):
   with self.assertRaisesRegex(ValueError,'DIAGNOSTIC_OUTPUT_INVALID'):decode_findings('["The café opens tomorrow."]')
+ def test_judge_decorated_status_positive(self):
+  labels={'supported (audible)':'supported','contradicted (not realized)':'contradicted','uncertain (cannot tell)':'uncertain','not_applicable (cannot apply)':'not_applicable'}
+  for supplied,expected in labels.items():
+   text=json.dumps(dict(findings=[dict(unit_id='e1',feature='pause_insert',status=supplied,reason='The actual supplied acoustic reason.')]))
+   actual=decode_findings(text)['findings'][0]
+   self.assertEqual(actual['status'],expected);self.assertEqual(actual['reason'],'The actual supplied acoustic reason.');self.assertIn(supplied,text)
+ def test_judge_ambiguous_status_negative(self):
+  from diagnostic_audio import judge_measurements
+  actual=decode_findings(json.dumps(dict(findings=[dict(unit_id='e1',feature='pause_insert',status='supported or contradicted',reason='Ambiguous supplied judgment.')])) )
+  self.assertEqual(actual['findings'][0]['status'],'supported or contradicted')
+  with self.assertRaisesRegex(ValueError,'DIAGNOSTIC_OUTPUT_INVALID'):judge_measurements(actual,'a'*64,'qwen25-omni-audio-v1','v1',dict(start=0,end=24000),[])
  def test_download_incomplete_negative(self):
   class Response:
    status=200;headers={'Content-Length':'6'}

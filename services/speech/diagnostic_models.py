@@ -2,6 +2,7 @@
 import base64,hashlib,io,json,os,pathlib,tempfile,time,urllib.request,urllib.error,wave
 from dataclasses import asdict,is_dataclass
 from diagnostic_audio import transcribe_complete
+from diagnostic_context import project_audio_intent
 from model_setup import installed
 from inference_capture import observe_method,values,DiagnosticTokenCapture
 
@@ -45,6 +46,10 @@ def decode_findings(text):
  out.setdefault('schema_version','2.0.0');out.setdefault('summary','Audio diagnostic')
  for row in out['findings']:
   if not isinstance(row,dict):raise ValueError('DIAGNOSTIC_OUTPUT_INVALID')
+  # These are the exact explanatory labels supplied by the managed task.
+  # Remove only redundant decoration, never resolve an ambiguous judgment.
+  labels={'supported (audible)':'supported','contradicted (not realized)':'contradicted','uncertain (cannot tell)':'uncertain','not_applicable (cannot apply)':'not_applicable'}
+  if isinstance(row.get('status'),str):row['status']=labels.get(row['status'],row['status'])
   # Display the model's own reason verbatim when it omitted a duplicate caption.
   # Never invent a target, judgment, acoustic claim or conflict resolution.
   if 'description' not in row and isinstance(row.get('reason'),str):row['description']=row['reason']
@@ -61,16 +66,17 @@ def auditory_conversation(prompt,content,audio_paths):
  parts=[{'type':'text','text':content}]
  for i,path in enumerate(audio_paths):
   parts.extend([{'type':'text','text':'Target audio' if i==0 else 'Reference audio'},{'type':'audio','audio':str(path)}])
- # Put the managed task after its audio, as the checkpoint's chat interface
- # expects. Its own template supplies the system identity.
+ # Match the upstream multimodal identity, rather than the tokenizer's
+ # generic helpful-assistant fallback. The exact template is captured.
  parts.append({'type':'text','text':prompt})
- return [{'role':'user','content':parts}]
+ return [{'role':'system','content':[{'type':'text','text':'You are Qwen, a virtual human developed by the Qwen Team, Alibaba Group, capable of perceiving auditory and visual inputs, as well as generating text and speech.'}]},{'role':'user','content':parts}]
 
 def auditory(profile,prompt,input,clips,timeout=260,capture=lambda value:None):
  content=json.dumps(input,ensure_ascii=False,sort_keys=True)
  started=time.time()
  if profile['provider']=='local_qwen25_omni':
   if profile['billing_mode']!='local':raise ValueError('PAID_USE_FORBIDDEN')
+  content=json.dumps(project_audio_intent(input),ensure_ascii=False,sort_keys=True)
   selection='qwen25-omni-3b-audio-v1' if profile['model']=='Qwen/Qwen2.5-Omni-3B' else 'qwen25-omni-audio-v1'
   root,manifest=installed(selection)
   if manifest['repo']!=profile['model'] or manifest['revision']!=profile['revision']:raise ValueError('MODEL_BINDING_MISMATCH')
@@ -80,15 +86,15 @@ def auditory(profile,prompt,input,clips,timeout=260,capture=lambda value:None):
   from torch.ao.quantization import quantize_dynamic
   torch.set_num_threads(min(4,os.cpu_count() or 1))
   # This action produces text only. Do not allocate the unused speech decoder.
-  model=Qwen2_5OmniThinkerForConditionalGeneration.from_pretrained(str(root),torch_dtype=torch.float32,attn_implementation='eager',local_files_only=True).to(profile['device'])
   compute_type=profile.get('compute_type','float32')
+  model,loading_info=Qwen2_5OmniThinkerForConditionalGeneration.from_pretrained(str(root),torch_dtype=torch.float32,attn_implementation='sdpa',local_files_only=True,output_loading_info=True)
+  model=model.to(profile['device'])
   if compute_type=='int8_dynamic':
    if profile.get('quantization_engine'):torch.backends.quantized.engine=profile['quantization_engine']
    model=quantize_dynamic(model,{torch.nn.Linear},dtype=torch.qint8,inplace=True)
-   # The CPU allocator can retain the freed float-weight arenas after packing.
-   # Release that unused setup memory before allocating generation workspaces.
-   import gc,ctypes
-   gc.collect();ctypes.CDLL('libc.so.6').malloc_trim(0)
+  # Release unused initialization/packing arenas before generation workspaces.
+  import gc,ctypes
+  gc.collect();ctypes.CDLL('libc.so.6').malloc_trim(0)
   quantized_linear_modules=sum(isinstance(module,DynamicLinear) for module in model.modules())
   processor=Qwen2_5OmniProcessor.from_pretrained(str(root),local_files_only=True)
   rate=int(processor.feature_extractor.sampling_rate)
@@ -106,18 +112,18 @@ def auditory(profile,prompt,input,clips,timeout=260,capture=lambda value:None):
    audio_options=processor_audio_options(audios,processor.feature_extractor.hop_length)
    encoded=processor(text=text,audio=audios,images=None,videos=None,return_tensors='pt',padding=True,use_audio_in_video=False,audio_kwargs=dict(audio_options)).to(profile['device'])
    encoded_context=values(dict(encoded));events=[]
-   capture(dict(model_encoded_inputs=encoded_context,provider='local_qwen25_omni',model_manifest=manifest,model_visible_template=text,profile=profile,input_audio=[dict(sha256=hashlib.sha256(c).hexdigest(),base64=base64.b64encode(c).decode(),sample_rate_hz=rate) for c in derivatives],input_token_ids=encoded['input_ids'].cpu().tolist(),parameters=dict(processor_audio_kwargs=audio_options,device=profile['device'],compute_type=compute_type,quantized_linear_modules=quantized_linear_modules,quantization_engine=torch.backends.quantized.engine,torch_version=torch.__version__,dtype='float32_with_qint8_dynamic_linear' if compute_type=='int8_dynamic' else 'float32',attention='eager',eos_token_id=processor.tokenizer.eos_token_id,pad_token_id=processor.tokenizer.pad_token_id,model_class='Qwen2_5OmniThinkerForConditionalGeneration',enable_audio_output=False,do_sample=False,repetition_penalty=profile.get('repetition_penalty',1.0),max_new_tokens=profile['max_output_tokens'])))
+   capture(dict(model_encoded_inputs=encoded_context,provider='local_qwen25_omni',checkpoint_loading=loading_info,model_manifest=manifest,model_visible_template=text,profile=profile,input_audio=[dict(sha256=hashlib.sha256(c).hexdigest(),base64=base64.b64encode(c).decode(),sample_rate_hz=rate) for c in derivatives],input_token_ids=encoded['input_ids'].cpu().tolist(),parameters=dict(processor_audio_kwargs=audio_options,device=profile['device'],compute_type=compute_type,quantized_linear_modules=quantized_linear_modules,quantization_engine=torch.backends.quantized.engine,torch_version=torch.__version__,dtype='float32_with_qint8_dynamic_linear' if compute_type=='int8_dynamic' else 'float32',attention=model.config._attn_implementation,audio_attention=model.audio_tower.config._attn_implementation,eos_token_id=processor.tokenizer.eos_token_id,pad_token_id=processor.tokenizer.pad_token_id,model_class='Qwen2_5OmniThinkerForConditionalGeneration',enable_audio_output=False,do_sample=False,repetition_penalty=profile.get('repetition_penalty',1.0),max_new_tokens=profile['max_output_tokens'])))
    capture_path=os.environ.get('TANGERINE_DIAGNOSTIC_CAPTURE')
    streamer=DiagnosticTokenCapture(pathlib.Path(capture_path).with_suffix('.tokens.json') if capture_path else None)
    try:
     with observe_method(model,'generate',events),torch.inference_mode():output=model.generate(**encoded,do_sample=False,repetition_penalty=profile.get('repetition_penalty',1.0),max_new_tokens=profile['max_output_tokens'],streamer=streamer,eos_token_id=processor.tokenizer.eos_token_id,pad_token_id=processor.tokenizer.pad_token_id)
    except Exception as error:
-    capture(dict(provider='local_qwen25_omni',model_manifest=manifest,model_visible_template=text,profile=profile,model_encoded_inputs={'reference':'model_visible_calls[0].kwargs','keys':list(encoded)},model_visible_calls=events,failure_type=type(error).__name__))
+    capture(dict(provider='local_qwen25_omni',checkpoint_loading=loading_info,model_manifest=manifest,model_visible_template=text,profile=profile,model_encoded_inputs={'reference':'model_visible_calls[0].kwargs','keys':list(encoded)},model_visible_calls=events,failure_type=type(error).__name__))
     raise
-   capture(dict(provider='local_qwen25_omni',model_manifest=manifest,profile=profile,model_visible_template=text,model_encoded_inputs={'reference':'model_visible_calls[0].kwargs','keys':list(encoded)},model_visible_calls=events,raw_output=values(output),raw_output_type=type(output).__name__))
+   capture(dict(provider='local_qwen25_omni',checkpoint_loading=loading_info,model_manifest=manifest,profile=profile,model_visible_template=text,model_encoded_inputs={'reference':'model_visible_calls[0].kwargs','keys':list(encoded)},model_visible_calls=events,raw_output=values(output),raw_output_type=type(output).__name__))
    generated=output[:,encoded['input_ids'].shape[1]:]
    visible=processor.batch_decode(generated,skip_special_tokens=True,clean_up_tokenization_spaces=False)[0]
-  wire=dict(model_encoded_inputs={'reference':'model_visible_calls[0].kwargs','keys':list(encoded)},model_visible_calls=events,provider='local_qwen25_omni',model_manifest=manifest,model_visible_template=text,profile=profile,input_audio=[dict(sha256=hashlib.sha256(c).hexdigest(),base64=base64.b64encode(c).decode(),sample_rate_hz=rate,source_sample_rate_hz=24000) for c in derivatives],input_token_ids=encoded['input_ids'].cpu().tolist(),output_token_ids=generated.cpu().tolist(),output_text=visible,parameters=dict(processor_audio_kwargs=audio_options,device=profile['device'],compute_type=compute_type,quantized_linear_modules=quantized_linear_modules,quantization_engine=torch.backends.quantized.engine,torch_version=torch.__version__,dtype='float32_with_qint8_dynamic_linear' if compute_type=='int8_dynamic' else 'float32',attention='eager',eos_token_id=processor.tokenizer.eos_token_id,pad_token_id=processor.tokenizer.pad_token_id,model_class='Qwen2_5OmniThinkerForConditionalGeneration',enable_audio_output=False,do_sample=False,repetition_penalty=profile.get('repetition_penalty',1.0),max_new_tokens=profile['max_output_tokens']))
+  wire=dict(model_encoded_inputs={'reference':'model_visible_calls[0].kwargs','keys':list(encoded)},model_visible_calls=events,provider='local_qwen25_omni',checkpoint_loading=loading_info,model_manifest=manifest,model_visible_template=text,profile=profile,input_audio=[dict(sha256=hashlib.sha256(c).hexdigest(),base64=base64.b64encode(c).decode(),sample_rate_hz=rate,source_sample_rate_hz=24000) for c in derivatives],input_token_ids=encoded['input_ids'].cpu().tolist(),output_token_ids=generated.cpu().tolist(),output_text=visible,parameters=dict(processor_audio_kwargs=audio_options,device=profile['device'],compute_type=compute_type,quantized_linear_modules=quantized_linear_modules,quantization_engine=torch.backends.quantized.engine,torch_version=torch.__version__,dtype='float32_with_qint8_dynamic_linear' if compute_type=='int8_dynamic' else 'float32',attention=model.config._attn_implementation,audio_attention=model.audio_tower.config._attn_implementation,eos_token_id=processor.tokenizer.eos_token_id,pad_token_id=processor.tokenizer.pad_token_id,model_class='Qwen2_5OmniThinkerForConditionalGeneration',enable_audio_output=False,do_sample=False,repetition_penalty=profile.get('repetition_penalty',1.0),max_new_tokens=profile['max_output_tokens']))
  elif profile['provider']=='gemini_interactions':
   # Only an explicitly selected free/included binding can reach this adapter.
   if profile['billing_mode'] not in ['free_tier','included_subscription']:raise ValueError('PAID_USE_FORBIDDEN')

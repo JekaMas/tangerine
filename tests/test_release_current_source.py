@@ -11,7 +11,10 @@ class CurrentSourceTests(unittest.TestCase):
   (cls.root/'stdout').write_text(p.stdout);(cls.root/'stderr').write_text(p.stderr)
   if p.returncode:raise AssertionError('Current source failure: '+str(cls.root))
   cls.values=json.loads((cls.root/'observations.json').read_text())
-  (R/'data/iteration16/release/current-source.json').write_text(json.dumps(dict(root=str(cls.root.relative_to(R)),receipt=json.loads((cls.root/'receipt.json').read_text())),indent=2))
+  pointer=R/'data/iteration16/release/current-source.json'
+  settings=R/'data/iteration16/release/settings-current.json'
+  if os.environ.get('TANGERINE_RELEASE_SOURCE_FOCUS')=='startup' and pointer.exists() and not settings.exists():settings.write_text(pointer.read_text())
+  pointer.write_text(json.dumps(dict(root=str(cls.root.relative_to(R)),receipt=json.loads((cls.root/'receipt.json').read_text())),indent=2))
  def test_current_arm64_source_positive(self):self.assertIs(self.values['test_current_arm64_source_positive'],True)
  def test_current_architecture_negative(self):self.assertIs(self.values['test_current_architecture_negative'],True)
  def test_current_precision_ui_positive(self):self.assertIs(self.values['test_current_precision_ui_positive'],True)

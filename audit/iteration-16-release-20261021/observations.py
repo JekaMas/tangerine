@@ -14,7 +14,11 @@ for path in sorted((R/'data/iteration16').iterdir()):
  events={**parse_unittest_events(text),**parse_go_events('\n'.join(go))}
  for identity,status in events.items():
   identity=identity.replace('unittest::tests.','unittest::')
-  if status in ['pass','fail']:observations[identity].append(dict(status=status,path=str(path.relative_to(R)),mtime=path.stat().st_mtime))
+  eligible=True
+  if identity in ['tangerine.local/api/internal/app::TestNativeDiagnosticActualAuditoryPositive','tangerine.local/api/internal/app::TestNativeDiagnosticActualAuditoryContrastNegative']:eligible=path.name.startswith('auditory-native-quality-sdpa')
+  if identity.startswith('unittest::test_release_diagnostic_lab.ReleaseDiagnosticLabTests.'):eligible=path.name.startswith(('diagnostic-quality-lab','diagnostic-lab-'))
+  if identity=='unittest::test_release_current_source.CurrentSourceTests.test_current_arm64_source_positive':eligible=path.name.startswith('current-startup-')
+  if status in ['pass','fail']:observations[identity].append(dict(status=status,path=str(path.relative_to(R)),mtime=path.stat().st_mtime,eligible_for_current_contract=eligible))
 # The prior clean I15 launcher cases are unaffected: only start/build and
 # maintenance wait changed; these cases exercise lab routing before either.
 old=R.parent/'tangerine_iteration15_20261021/data/iteration15/verify-acceptance-fresh.json'
@@ -26,8 +30,8 @@ rows={};missing=[]
 for case in selected:
  identity=case['test_id']
  if identity in rows:continue
- options=sorted(observations.get(identity,[]),key=lambda x:x['mtime'])
+ history=sorted(observations.get(identity,[]),key=lambda x:x['mtime']);options=[o for o in history if o.get('eligible_for_current_contract',True)]
  if not options or options[-1]['status']!='pass':missing.append(identity)
- rows[identity]=dict(latest=options[-1] if options else None,history=options)
+ rows[identity]=dict(latest=options[-1] if options else None,history=history)
 result=dict(required=len(rows),observed=len(rows)-len(missing),missing=missing,records=rows)
 return_value=result

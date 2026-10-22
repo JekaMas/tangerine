@@ -6,7 +6,7 @@ from browser_probe import Browser
 from release_source import archive_source
 from importlib.util import module_from_spec,spec_from_file_location
 R=Path(__file__).resolve().parents[1];E=Path(os.environ['TANGERINE_RELEASE_EVIDENCE']).resolve();E.mkdir(parents=True,exist_ok=True)
-name='tangerine-current-source-'+uuid.uuid4().hex[:8];env=dict(os.environ,COMPOSE_PROJECT_NAME=name,DOCKER_DEFAULT_PLATFORM='linux/arm64');obs={};browser=None
+name='tangerine-current-source-'+uuid.uuid4().hex[:8];env=dict(os.environ,COMPOSE_PROJECT_NAME=name,DOCKER_DEFAULT_PLATFORM='linux/arm64');obs={};browser=None;startup_only=os.environ.get("TANGERINE_RELEASE_SOURCE_FOCUS")=="startup"
 log=(E/'commands.log').open('w')
 with tempfile.TemporaryDirectory(prefix=name,dir=E) as directory:
  work=Path(directory)/'tangerine';work.mkdir()
@@ -34,18 +34,19 @@ with tempfile.TemporaryDirectory(prefix=name,dir=E) as directory:
   rows=module.inspect(name,'arm64');(E/'architecture.json').write_text(json.dumps(rows,indent=2))
   browser=Browser(E/'chrome','http://localhost:3000/');browser.wait('Exercise library');browser.wait('No exercises yet')
   record('test_current_arm64_source_positive',len(rows)==5 and {r['architecture'] for r in rows}=={'arm64'})
-  try:module.inspect(name,'amd64')
-  except ValueError as error:record('test_current_architecture_negative','architecture mismatch' in str(error))
-  else:raise AssertionError('Wrong expected architecture accepted')
-  browser.call('Page.navigate',{'url':'http://localhost:3000/settings'});browser.wait('Optional audio diagnostics');wait("document.querySelector('[aria-label=\"Audio diagnostic profile\"]').disabled",False)
-  browser.call('UI.select',{'selector':'[aria-label="Audio diagnostic profile"]','value':'qwen-omni-3b'});browser.wait('Settings saved.')
-  browser.call('Page.reload');browser.wait('Optional audio diagnostics');wait("document.querySelector('[aria-label=\"Audio diagnostic profile\"]').value",'qwen-omni-3b')
-  saved=configuration();(E/'selected-profile.json').write_text(json.dumps(saved['audio_diagnostic_profile'],indent=2))
-  record('test_current_precision_ui_positive',saved['audio_diagnostic_profile']['compute_type']=='int8_dynamic' and saved['audio_diagnostic_profile']['device']=='cpu' and saved['audio_diagnostic_profile']['quantization_engine']=='qnnpack' and saved['audio_diagnostic_profile']['repetition_penalty']==1.1)
-  changed=json.loads(json.dumps(saved));changed['audio_diagnostic_profile']['compute_type']='invented'
-  for key in ['workspace_id','configuration_sha256','provider_access_policy']:changed.pop(key,None)
-  browser.call('UI.click',{'selector':'summary:text-is("Advanced configuration")'});browser.call('UI.fill',{'selector':'[aria-label="Advanced LLM configuration"]','value':json.dumps(changed)});browser.call('UI.click',{'selector':'button:text-is("Save configuration")'});browser.wait('Settings were not saved.')
-  retained=configuration();record('test_current_precision_negative',retained['configuration_sha256']==saved['configuration_sha256'] and retained['audio_diagnostic_profile']['compute_type']=='int8_dynamic')
+  if not startup_only:
+   try:module.inspect(name,'amd64')
+   except ValueError as error:record('test_current_architecture_negative','architecture mismatch' in str(error))
+   else:raise AssertionError('Wrong expected architecture accepted')
+   browser.call('Page.navigate',{'url':'http://localhost:3000/settings'});browser.wait('Optional audio diagnostics');wait("document.querySelector('[aria-label=\"Audio diagnostic profile\"]').disabled",False)
+   browser.call('UI.select',{'selector':'[aria-label="Audio diagnostic profile"]','value':'qwen-omni-3b'});browser.wait('Settings saved.')
+   browser.call('Page.reload');browser.wait('Optional audio diagnostics');wait("document.querySelector('[aria-label=\"Audio diagnostic profile\"]').value",'qwen-omni-3b')
+   saved=configuration();(E/'selected-profile.json').write_text(json.dumps(saved['audio_diagnostic_profile'],indent=2))
+   record('test_current_precision_ui_positive',saved['audio_diagnostic_profile']['compute_type']=='int8_dynamic' and saved['audio_diagnostic_profile']['device']=='cpu' and saved['audio_diagnostic_profile']['quantization_engine']=='qnnpack' and saved['audio_diagnostic_profile']['repetition_penalty']==1.1)
+   changed=json.loads(json.dumps(saved));changed['audio_diagnostic_profile']['compute_type']='invented'
+   for key in ['workspace_id','configuration_sha256','provider_access_policy']:changed.pop(key,None)
+   browser.call('UI.click',{'selector':'summary:text-is("Advanced configuration")'});browser.call('UI.fill',{'selector':'[aria-label="Advanced LLM configuration"]','value':json.dumps(changed)});browser.call('UI.click',{'selector':'button:text-is("Save configuration")'});browser.wait('Settings were not saved.')
+   retained=configuration();record('test_current_precision_negative',retained['configuration_sha256']==saved['configuration_sha256'] and retained['audio_diagnostic_profile']['compute_type']=='int8_dynamic')
   runtime=work/'data/config/runtime.env'
   count=call(['docker','compose','--project-name',name,'--env-file',str(work/'.env'),'--env-file',str(runtime),'-f',str(work/'deploy/local/compose.yaml'),'exec','-T','postgres','psql','-X','-At','-U','tangerine','-d','tangerine','-c',"SELECT count(*) FROM document WHERE kind='provider-receipt'"]).stdout
   assert int(count)==0

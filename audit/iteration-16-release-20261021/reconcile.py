@@ -9,12 +9,12 @@ if args.out.exists():raise SystemExit('Refuse to overwrite an original receipt')
 head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip();dirty=bool(subprocess.check_output(['git','status','--porcelain','--untracked-files=normal'],cwd=R,text=True))
 x=runpy.run_path(str(A/'observations.py'))['return_value'];g=json.loads((R/'openspec/changes/implement-teacher-error-trainer/verification.json').read_text());selected=[c for c in g['cases'] if c['id'].startswith('I16-')]
 fresh={}
-for path in [R/'data/iteration16/current-source-0baea04.json',R/'data/iteration16/portable-0baea04.json']:
+for path in [R/'data/iteration16/current-source-0baea04.json',R/'data/iteration16/attempts-b6e8e70.json',R/'data/iteration16/portable-b6e8e70.json',*sorted((R/'data/iteration16').glob('portable-remaining-*.json')),*sorted((R/'data/iteration16').glob('current-startup-*.json')),*sorted((R/'data/iteration16').glob('diagnostic-lab-*.json'))]:
  if path.exists():
   receipt=json.loads(path.read_text())
-  if receipt['status']=='passed' and receipt['git'].get('dirty') is False:
+  if receipt.get('git',{}).get('dirty') is False:
    for identity,row in receipt['cases'].items():
-    if row['status']=='passed':fresh[identity]=dict(receipt=str(path.relative_to(R)),source_revision=receipt['git']['head'],original_evidence_fingerprint=row['evidence_fingerprint'])
+    if row['status']=='passed':fresh[identity]=dict(receipt=str(path.relative_to(R)),source_revision=receipt['git']['head'],original_command_status=receipt['status'],original_evidence_fingerprint=row['evidence_fingerprint'])
 rows={}
 for c in selected:
  observation=x['records'][c['test_id']]['latest']

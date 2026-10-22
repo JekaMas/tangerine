@@ -14,6 +14,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"tangerine.local/api/internal/contracts"
+	"tangerine.local/api/internal/lab"
 	"testing"
 	"time"
 )
@@ -480,7 +482,64 @@ func TestNativeDiagnosticPaginationPositive(t *testing.T) {
 		}
 	}
 }
-func TestNativeDiagnosticActualAuditoryPositive(t *testing.T) {
+
+// Constructed model annotations exercise actual admission, transaction and
+// readback. No upstream model call or acoustic accuracy is claimed.
+func diagnosticAnnotationFixture(t *testing.T, status string) (listeningFixture, map[string]any, Asset) {
+	t.Helper()
+	f := listeningCase(t)
+	target := f.key["units"].([]any)[0].(map[string]any)["id"]
+	finding := map[string]any{"unit_id": target, "feature": "speech_realization", "status": status, "description": "Constructed target description.", "reason": "Constructed advisory explanation.", "clip_interval": nil, "proposed_ipa": nil, "model_annotation": "Uncalibrated model commentary."}
+	output, err := f.s.Store.saveProviderBytes(context.Background(), sourceBytes(finding), "provider_output")
+	requireListening(t, err)
+	row := map[string]any{"id": uuid.NewString(), "audio_sha256": f.audioSHA, "method_id": "qwen25-omni-audio-v1", "method_version": "constructed-annotation-v1", "feature": "speech_realization", "interval": map[string]any{"start": 0, "end": 24000, "sample_rate_hz": 24000}, "status": "observed", "numeric_value": nil, "categorical_value": "model_supported", "unit": "category", "evidence_asset_ids": []any{output.ID}, "reason": nil, "target_unit_id": target, "auditory_finding": finding}
+	return f, row, output
+}
+
+func TestNativeDiagnosticExtraAnnotationPositive(t *testing.T) {
+	f, row, output := diagnosticAnnotationFixture(t, "supported")
+	ctx := context.Background()
+	input, err := f.s.Store.saveProviderBytes(ctx, []byte(`{"origin":"constructed_annotation_fixture"}`), "provider_input")
+	requireListening(t, err)
+	op, err := f.s.Store.ReserveOperation(ctx, OperationRequest{Name: "speech_measure", Key: uuid.NewString(), Path: "/test/annotation", Body: []byte(`{}`)})
+	requireListening(t, err)
+	requireListening(t, f.s.Store.claimInference(ctx, op.ID))
+	defer f.s.Store.releaseInference(ctx, op.ID)
+	run := map[string]any{"schema_version": "2.0.0", "id": uuid.NewString(), "case_version_id": f.id, "operation_id": op.ID, "status": "complete", "method_ids": []any{"qwen25-omni-audio-v1"}, "input_asset_id": input.ID, "output_asset_ids": []any{output.ID}, "support_asset_ids": []any{}, "receipt_ids": []any{}, "measurement_ids": []any{}, "failure_code": nil}
+	_, err = f.s.Store.finishAudioDiagnostic(ctx, op, run, []map[string]any{row})
+	requireListening(t, err)
+	rows, err := f.s.Store.reviewMeasurements(ctx, f.id)
+	requireListening(t, err)
+	if len(rows) != 1 {
+		t.Fatal(rows)
+	}
+	var saved map[string]any
+	requireListening(t, json.Unmarshal(rows[0].(json.RawMessage), &saved))
+	if saved["numeric_value"] != nil || saved["auditory_finding"].(map[string]any)["model_annotation"] != "Uncalibrated model commentary." {
+		t.Fatal("Annotation was lost or became a native score", saved)
+	}
+	out := map[string]any{"schema_version": "2.0.0", "findings": []any{row["auditory_finding"]}, "summary": "Constructed advisory output.", "model_annotation": "Uncalibrated root commentary."}
+	_, _, err = contracts.Validate("audio-judge-output", "2.0.0", sourceBytes(out))
+	requireListening(t, err)
+}
+
+func TestNativeDiagnosticAmbiguousJudgmentNegative(t *testing.T) {
+	f, row, output := diagnosticAnnotationFixture(t, "supported or contradicted")
+	_, _, err := f.s.Store.diagnosticDocument(context.Background(), row["id"].(string), "audio-measurement", row, map[string]string{"/evidence_asset_ids/0": output.ID})
+	if err == nil {
+		t.Fatal("An ambiguous judgment acquired a canonical status")
+	}
+	var count int
+	requireListening(t, f.s.Store.DB.QueryRow(context.Background(), "SELECT count(*) FROM document WHERE id=$1", row["id"]).Scan(&count))
+	if count != 0 {
+		t.Fatal("Rejected measurement was published", count)
+	}
+}
+
+// Positive and negative use actual generated recordings. The negative key is
+// deliberately constructed with unfulfilled pause intent and the real clean
+// source recording; it never rewrites a published case or invents acoustic gold.
+func actualAuditoryFixture(t *testing.T, absent bool) listeningFixture {
 	s, p := nativeAcousticFixture(t, "pause_insert")
 	p = renderNativeActual(t, s, p, uuid.NewString(), 1)
 	var id string
@@ -491,10 +550,68 @@ func TestNativeDiagnosticActualAuditoryPositive(t *testing.T) {
 	requireListening(t, json.Unmarshal(doc.Payload, &key))
 	audio := key["audio"].(map[string]any)
 	f := listeningFixture{s: s, id: id, key: key, audioSHA: audio["sha256"].(string)}
+
+	if absent {
+		frozen, err := s.Store.diagnosticInputs(context.Background(), diagnosticRequest(f, "qwen25-omni-audio-v1"))
+		requireListening(t, err)
+		piece := frozen.Progress["pieces"].([]any)[0].(map[string]any)
+		clean, err := s.Store.ReadAsset(context.Background(), piece["source_asset_id"].(string))
+		requireListening(t, err)
+		asset, err := s.saveAudioBytes(context.Background(), clean)
+		requireListening(t, err)
+		key = reviewClone(key)
+		n := (len(clean) - 44) / 2
+		duration := float64((n + 23) / 24)
+		key["audio"].(map[string]any)["asset_id"] = asset.ID
+		key["audio"].(map[string]any)["sha256"] = asset.SHA
+		key["audio"].(map[string]any)["duration_ms"] = duration
+		for _, value := range key["utterances"].([]any) {
+			value.(map[string]any)["audio_interval"] = map[string]any{"start_ms": float64(0), "end_ms": duration}
+		}
+		for _, value := range key["units"].([]any) {
+			u := value.(map[string]any)
+			u["audio_intervals"] = []any{map[string]any{"start_ms": float64(0), "end_ms": duration}}
+			u["evidence_ids"] = []any{}
+		}
+		content := map[string]any{}
+		for _, field := range []string{"public_context", "variety_policy", "audio", "speakers", "utterances", "units", "taxonomy_version", "verification_policy_version"} {
+			content[field] = key[field]
+		}
+		key["case_sha256"] = lab.Hash(content)
+		source, err := s.Store.saveGroundTruth(context.Background(), key)
+		requireListening(t, err)
+		tx, err := beginWrite(context.Background(), s.Store)
+		requireListening(t, err)
+		defer tx.Rollback(context.Background())
+		id, err = s.Store.publishListeningCase(context.Background(), tx, source, preparationBlueprint(t, 1)["task_components"].(map[string]any), "Constructed missing-pause diagnostic contrast", "monologue")
+		requireListening(t, err)
+		requireListening(t, tx.Commit(context.Background()))
+		saved, err := s.Store.ReadDocument(context.Background(), id)
+		requireListening(t, err)
+		requireListening(t, json.Unmarshal(saved.Payload, &key))
+		f = listeningFixture{s: s, id: id, key: key, audioSHA: asset.SHA}
+	}
 	profile := audioDiagnosticDefaults()["profiles"].([]any)[1].(map[string]any)
+	profile["compute_type"] = "float32"
+	profile["repetition_penalty"] = 1.0
+	delete(profile, "quantization_engine")
 	_, err = diagnosticConfiguration(t, f, profile, true)
 	requireListening(t, err)
+	return f
+}
+func TestNativeDiagnosticActualAuditoryPositive(t *testing.T) {
+	f := actualAuditoryFixture(t, false)
 	v := diagnosticRun(t, f, "qwen25-omni-audio-v1")
+	assertActualAuditory(t, f, v, "pause_insert", "supported", 2)
+}
+func TestNativeDiagnosticActualAuditoryContrastNegative(t *testing.T) {
+	f := actualAuditoryFixture(t, true)
+	v := diagnosticRun(t, f, "qwen25-omni-audio-v1")
+	assertActualAuditory(t, f, v, "speech_realization", "contradicted", 1)
+}
+func assertActualAuditory(t *testing.T, f listeningFixture, v map[string]any, expectedFeature, expectedStatus string, expectedClips int) {
+	t.Helper()
+	s := f.s
 	rows := v["measurements"].([]map[string]any)
 	if len(rows) == 0 {
 		t.Fatal("actual judge omitted every selected target", v)
@@ -520,15 +637,33 @@ func TestNativeDiagnosticActualAuditoryPositive(t *testing.T) {
 		t.Fatal("no actual model finding; native unknowns do not qualify inference", result)
 	}
 	parameters := wire["parameters"].(map[string]any)
-	if parameters["compute_type"] != "int8_dynamic" || parameters["quantization_engine"] != "qnnpack" || parameters["repetition_penalty"] != 1.1 || parameters["quantized_linear_modules"].(float64) <= 0 {
-		t.Fatal("Selected CPU int8 inference was not realized", parameters)
+	if parameters["compute_type"] != "float32" || parameters["dtype"] != "float32" || parameters["attention"] != "sdpa" || parameters["audio_attention"] != "sdpa" || parameters["repetition_penalty"] != 1.0 || parameters["quantized_linear_modules"].(float64) != 0 {
+		t.Fatal("Selected unquantized float32/SDPA inference was not realized", parameters)
 	}
-	if wire["provider"] != "local_qwen25_omni" || len(wire["model_visible_calls"].([]any)) == 0 || len(wire["input_audio"].([]any)) != 2 {
+	if wire["provider"] != "local_qwen25_omni" || len(wire["model_visible_calls"].([]any)) == 0 || len(wire["input_audio"].([]any)) != expectedClips {
 		t.Fatal("missing actual target/reference/model call", wire)
 	}
-	if len(run["support_asset_ids"].([]any)) < 2 {
+	if len(run["support_asset_ids"].([]any)) < expectedClips {
 		t.Fatal("paired reference not durably retained", run)
 	}
+	loading := wire["checkpoint_loading"].(map[string]any)
+	if len(loading["missing_keys"].([]any)) != 0 || len(loading["mismatched_keys"].([]any)) != 0 {
+		t.Fatal("Checkpoint initialization differs from declared Thinker", loading)
+	}
+	actual := 0
+	for _, value := range result["output"].(map[string]any)["findings"].([]any) {
+		finding := value.(map[string]any)
+		if finding["unit_id"] == "e1" && finding["feature"] == expectedFeature {
+			actual++
+			if finding["status"] != expectedStatus {
+				t.Fatal("actual audio contrast judgment differs from independent expected presence/absence", finding, expectedStatus)
+			}
+		}
+	}
+	if actual == 0 {
+		t.Fatal("model supplied no actual requested contrast judgment", result["output"])
+	}
+
 }
 
 func diagnosticCapture(t *testing.T, f listeningFixture) {
