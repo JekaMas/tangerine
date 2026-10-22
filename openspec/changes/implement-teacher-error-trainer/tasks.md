@@ -873,9 +873,11 @@ GEN final continuation supersedes the earlier main-flow-incomplete checkpoint. A
 
 ## Interactive usability repair (2026-10-22)
 
-- [ ] USE.R1 Expose all existing ordinary preparation controls, preserve automatic/zero/advanced semantics and saved request summaries; qualify positive and negative real-browser/native cases.
-- [ ] USE.R2 Project durable foreground checking stages, show saved answer/elapsed time and score before comments, retain zero-inference reads and existing foreground ownership.
-- [ ] USE.R3 Verify progress-read failure, request completion/unmount, immutable answer preservation and explicit feedback-only retry through the real UI/API/DB owners.
-- [ ] USE.R4 Reconcile property coverage/DAG, review separated responsibilities, run affected language/spec/preservation checks, commit and observe committed-clean selected acceptance; deploy the repair to the existing local service.
+- [x] USE.R1 Expose all existing ordinary preparation controls, preserve automatic/zero/advanced semantics and saved request summaries; qualify positive and negative real-browser/native cases.
+- [x] USE.R2 Project durable foreground checking stages, show saved answer/elapsed time and score before comments, retain zero-inference reads and existing foreground ownership.
+- [x] USE.R3 Verify progress-read failure, request completion/unmount, immutable answer preservation and explicit feedback-only retry through the real UI/API/DB owners.
+- [x] USE.R4 Reconcile property coverage/DAG, review separated responsibilities, run affected language/spec/preservation checks, commit and observe committed-clean selected acceptance; deploy the repair to the existing local service.
 
 Current checkpoint: audit/interactive-usability-20261022/REPORT.md. Initial runtime inspection identifies 30.623 s of sequential semantic evaluation, with a 0.013 s save. No model/profile/prompt or scoring change is planned. Semantic search is unavailable for this exact worktree; exact tracing is recorded.
+
+Interactive usability acceptance: all26selected test identities are observed passed:20real-browser cases executed by the DAG with --require-clean on157b65b; six unchanged native race/property cases retain their original unit.jsonl receipt. The browser fixture setup failure on6c31484is preserved and superseded by the controller-based fixture repair.447static assertions, strictOpenSpec, full graph/discovery and Go static analysis pass. The normal local stack is rebuilt/healthy, /prepare exposes the new controls, and user attempt3f4535dd remains exactly its submitted completed record with complete feedback. No prompt/model/scoring/source/migration change or new hosted inference occurred. Audit: audit/interactive-usability-20261022/REPORT.md.
