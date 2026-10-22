@@ -17,7 +17,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"tangerine.local/api/internal/lab"
 )
 
 func TestNativeUsabilitySummaryPersistencePositive(t *testing.T) {
@@ -44,16 +43,18 @@ func TestNativeUsabilityBrowserFixture(t *testing.T) {
 	f.modePath = filepath.Join(dir, "mode")
 	f.s.token = "listening-owned-token"
 	f.s.Origin = os.Getenv("TANGERINE_TEST_ORIGIN")
-	// Seed an actual initial preparation through the real freeze/checkpoint owner.
-	// It remains not generated; this fixture proves requested-settings display only.
+	// Seed through the complete canonical preparation owner. Only its model reply
+	// is constructed; this proves requested-settings persistence/display, not quality.
 	ctx := context.Background()
 	blueprint, err := f.s.Store.WriteBlueprint(ctx, []byte(`{"exercise_request":{"topic":"Saved seed settings","speaker_count":1,"text_length_words":123,"english_level":"A2","mutation_count":0,"category_families":["grammar"]}}`), uuid.NewString())
 	requireListening(t, err)
 	configuration, _, err := f.s.Store.Configuration(ctx)
 	requireListening(t, err)
-	op, err := f.s.Store.ReserveOperation(ctx, OperationRequest{Name: "canonical_prepare", Key: uuid.NewString(), Path: "/api/v1/candidates:generate", Body: json.RawMessage(`{}`)})
-	requireListening(t, err)
-	_, err = f.s.freezePreparation(ctx, blueprint, configuration, lab.Shipped(), op)
+	client := &http.Client{Transport: preparationTrip(func(r *http.Request) (*http.Response, error) {
+		packet := map[string]any{"id": "constructed-seed-clean", "object": "response", "status": "completed", "output": []any{map[string]any{"type": "message", "content": []any{map[string]any{"type": "output_text", "text": string(mustJSON(canonicalFixture(blueprint)))}}}}}
+		return &http.Response{StatusCode: 200, Header: http.Header{"Content-Type": []string{"application/json"}}, Body: io.NopCloser(strings.NewReader(string(mustJSON(packet))))}, nil
+	})}
+	_, err = f.s.PrepareCanonical(ctx, CanonicalPreparationRequest{BlueprintID: blueprint["id"].(string), ConfigurationSHA: configuration["configuration_sha256"].(string), Sources: []string{}, Attempt: 1}, uuid.NewString(), client)
 	requireListening(t, err)
 	var reads, submissions, preparations atomic.Int64
 	gate := func(stage string, r *http.Request) bool {
