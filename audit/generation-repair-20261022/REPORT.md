@@ -1,0 +1,33 @@
+# Live generation incident, 2026-10-22
+
+Scope: repair the user's incomplete local generation without paid credits or provider substitution. Baseline f0e9dcd. User preparation a4fd706a-bddd-4e7b-a4d0-adcd263cca72 requests car insurance in the US, two speakers, approximately 600 words, B1, automatic categories/count and controlled local Kokoro. Preserve this request and saved checkpoint.
+
+Observed baseline: first actual GPT-OSS20B response completed in53.175s with5376input/1793output tokens. It supplied coherent clean dialogue plus an identical repeated blueprint_id and additive metadata. Canonical admission lacks the tolerant stage normalization already used by mutation/review. Strict duplicate-key parsing rejected the result, then the single repair exhausted the90-second frozen canonical stage deadline. No canonical asset, mutations or audio were completed. The response's claim that saved text/mutations/audio were retained was inaccurate for this failure.
+
+Owners: services/api/internal/app/preparation.go finishCanonical -> InvokeLLM -> provider.projectStageVisible; generation_http.go generationResponse; durable preparation checkpoint already records canonical_text=failed and unchanged settings. Repair should opt this owner into existing unambiguous stage parsing, retain final canonical semantic validation and the270-second synchronous parent contract. No repeated stored-data audits or new validation framework.
+
+Pending: paired regression baseline/candidate, actual unchanged-request completion, native/Lab evidence and committed repair. Historical release receipts do not cover this newly discovered model-output case.
+
+## Repairs and actual follow-up
+
+Canonical clean output now opts into the existing tolerant stage parser. Identical repeated fields and additive metadata no longer trigger a new model call; conflicting repeats remain rejected. A literal real-storage regression fails on the original code, then passes with one dispatch after repair; its conflicting-identity sibling remains rejected. All30native preparation regressions pass. Public generation errors retain a deadline code, report only completed saved stages, and display a specific temporary-provider-unavailability message.
+
+The local model then completed350clean words, but returned only one changed turn, absent key fields and invalid final-surface localization; its repair hit the combined deadline. A separately selected structured-output profile completed437clean words but returned an incorrect severity weight, a quote absent from the surface and an invalid correction. Its retained repair still failed actual key admission. These are failed quality observations; neither generated a key or playable audio. The user request was not reduced or replaced with a pregenerated fixture.
+
+To use the operator's already admitted unbilled Gemini project, the existing provider layer gained an explicit native Interactions text adapter. It preserves complete instructions/input, stateless wire, actual raw replies/usage, server-only x-goog-api-key credentials, normal per-stage/caller deadlines and the existing one repair/retry. Only an explicitly configured free_tier route is admitted; no local failure silently switches provider. The credential owner now recognizes GEMINI_API_KEY; Compose forwards that reference to API as well as speech. Startup clears ambient Gemini variables like the existing provider variables. The operational API was recreated with all separately billed key variables empty; only the admitted Gemini key is present.
+
+Actual Google requests returned service_unavailable for3.8Flash and3.5Flash. The listed2.5Flash endpoint explicitly refused new-user access. All raw successful/failed request snapshots, receipts and attempts remain private in data/generation-repair-20261022/ and the local runtime. No new external corpus or human review was required. No purchase, billing account, trial, top-up, overage or silent paid fallback was enabled. Native cost fields remain unknown where not reported; the previously admitted unbilled project supplies the no-purchased-use boundary.
+
+The main user scenario is **not complete**. GEN.R3/R4 stay unchecked for actual provider quality and full audio/listening completion. The new adapter is protocol-tested, not a claim of an available model or completed application flow. The UI remains running and now reports the actual temporary-provider failure.
+
+## Verification and retained evidence
+
+155distinct Go test identities pass when reconciling the actual native, app and provider events. Two shell-installation checks pass. The first new quota fixture incorrectly supplied an empty input; it failed before dispatch, was corrected to the real nonempty-input contract, and its narrow rerun passed. Original failed package/fixture and all failed model/provider observations remain retained; an individual pass inside a failed command does not make that whole original command green. Unchanged positive paths retain their observations under the user's semantic-invalidation rule; there was no blind full-release rerun.
+
+New cases are wired to existing I5/I7 admission/availability and I4 provider/credential properties in verification.json and discovery.json. The latest graph/discovery receipts and strict OpenSpec check are structural evidence, not a successful generation. Native/Lab exports are explicitly posthoc debugging copies of original captured requests/replies and retain original flags. Export verification performs zero inference and does not change frozen learner settings.
+
+Current execution roots: data/generation-repair-20261022/{red-native.jsonl,green-native.jsonl,unit.jsonl,gemini-protocol.jsonl,gemini-quota.jsonl,gemini-credentials.jsonl,provider-outage.jsonl,provider-environment.log,native/,lab-readback-current.json}. Provider bodies/keys and private prompt/audio data remain outside Git.
+
+Latest reconciliation records17paired incident edges with155distinct passing Go identities, two passing environment cases and10verified native/Lab operations, zero export inference. Static447checks, strict OpenSpec, DAG/discovery, Go vet/gofmt and source diff checks pass within their stated scope. All5actual preparations remain incomplete and there are zero playable exercises. This is not full-flow acceptance.
+
+The existing ChatGPT Pro connection is prepared at OpenAI's account chooser, with no account-selection grant or inference. The actual action-time browser account-access confirmation is pending. The included-plan route must establish purchased-credit exclusion in the provider controls before dispatch; automatic-reload status alone does not suffice. No new paid subscription or API key is proposed.

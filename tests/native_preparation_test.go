@@ -141,6 +141,14 @@ func prepareNativeFixtureOptions(t *testing.T, response string, status int, conf
 					invalid["utterances"].([]any)[0].(map[string]any)["surface_text"] = "The café open tomorrow."
 				}
 				payload, _ := json.Marshal(invalid)
+				if defect == "canonical-repeat-identical" || defect == "canonical-repeat-conflict" {
+					blueprintID := b["id"]
+					if defect == "canonical-repeat-conflict" {
+						blueprintID = "different-blueprint"
+					}
+					echo, _ := json.Marshal(blueprintID)
+					payload = append(payload[:len(payload)-1], []byte(`,"blueprint_id":`+string(echo)+`,"status_label":"acceptable_variant","rationale":"Clean dialogue."}`)...)
+				}
 				encoded, _ := json.Marshal(string(payload))
 				w.WriteHeader(status)
 				_, _ = io.WriteString(w, `{"object":"response","id":"canonical-defect","status":"completed","model":"constructed-clean-text","output":[{"type":"message","content":[{"type":"output_text","text":`+string(encoded)+`}]}]}`)
@@ -163,6 +171,30 @@ func prepareNativeFixtureOptions(t *testing.T, response string, status int, conf
 	t.Setenv("OPENAI_API_KEY", "CONSTRUCTED_NATIVE_CREDENTIAL")
 	s := NewServer(store, "http://localhost:3000", "")
 	return s, CanonicalPreparationRequest{BlueprintID: b["id"].(string), ConfigurationSHA: saved["configuration_sha256"].(string), Sources: []string{}, Attempt: 1}, client, &n
+}
+
+// Constructed minimal reproductions of the real local-model failure: an
+// identical blueprint echo is harmless; conflicting identities remain ambiguous.
+func TestNativePreparationRepeatedMetadataPositive(t *testing.T) {
+	s, r, client, calls := prepareNativeFixture(t, "canonical-repeat-identical", http.StatusOK)
+	p, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)
+	if err != nil || *calls != 1 || p["phase_states"].(map[string]any)["canonical_text"] != "complete" {
+		t.Fatal("unambiguous clean text must complete with one call", err, *calls, p)
+	}
+	raw, err := s.Store.ReadAsset(context.Background(), p["canonical_asset_id"].(string))
+	if err != nil || !strings.Contains(string(raw), "The café opens tomorrow.") || strings.Contains(string(raw), "Clean dialogue.") {
+		t.Fatal("clean content lost or additive metadata promoted", err, string(raw))
+	}
+	saveNativePreparationEvidence(t, s, p)
+}
+
+func TestNativePreparationConflictingMetadataNegative(t *testing.T) {
+	s, r, client, calls := prepareNativeFixture(t, "canonical-repeat-conflict", http.StatusOK)
+	p, err := s.PrepareCanonical(context.Background(), r, uuid.NewString(), client)
+	if err == nil || *calls != 2 || p["phase_states"].(map[string]any)["canonical_text"] != "failed" || p["canonical_asset_id"] != nil {
+		t.Fatal("conflicting identities must fail without inventing clean text", err, *calls, p)
+	}
+	saveNativePreparationEvidence(t, s, p)
 }
 func saveNativePreparationEvidence(t *testing.T, s *Server, p map[string]any) {
 	t.Helper()

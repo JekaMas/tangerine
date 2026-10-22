@@ -111,7 +111,7 @@ func (s *Storage) LLMDiagnostic(ctx context.Context, r LLMResult, capture, trace
 	// Originals remain in the immutable native documents and wire/component assets.
 	// Never persist the ephemeral credential set, even inside a private export file.
 	secrets := append([]string(nil), r.privateSecrets...)
-	for _, key := range []string{"OPENAI_API_KEY", "DEEPSEEK_API_KEY", "AZURE_SPEECH_KEY", "ELEVENLABS_API_KEY", "API_INTERNAL_TOKEN", "SPEECH_INTERNAL_TOKEN", "MINIO_ACCESS_KEY", "MINIO_SECRET_KEY", "MINIO_ROOT_USER", "MINIO_ROOT_PASSWORD"} {
+	for _, key := range []string{"OPENAI_API_KEY", "DEEPSEEK_API_KEY", "GEMINI_API_KEY", "AZURE_SPEECH_KEY", "ELEVENLABS_API_KEY", "API_INTERNAL_TOKEN", "SPEECH_INTERNAL_TOKEN", "MINIO_ACCESS_KEY", "MINIO_SECRET_KEY", "MINIO_ROOT_USER", "MINIO_ROOT_PASSWORD"} {
 		if value := os.Getenv(key); value != "" {
 			secrets = append(secrets, value)
 		}

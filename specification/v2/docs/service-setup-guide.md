@@ -81,3 +81,10 @@ ASR/transcription and pronunciation assessment support optional acoustic diagnos
 The complete feature/service/data acceptance map, controlled speech and diagnostic contracts are in [full development readiness](full-development-readiness.md). A starter setup does not by itself qualify every optional feature or all acoustic targets. Full product scope is retained; development iterations may repair implementations, not defer product features.
 
 Full-scope extensions: [full build contract](full-build-contract.md) specifies controlled local speech selection, generated acoustic pairs, exact decoder/sample-map clocks, per-piece resume/readback, native export mapping, actual auditory-model diagnostics and their user scenarios. New private fields use existing owners/operations; original main-flow and component-score contracts remain.
+
+
+## 2026-10-22 user-scenario qualification limit
+
+The live request for approximately600words, two speakers and B1 exposed a canonical duplicate-key admission defect and local GPT-OSS20B mutation quality/latency failures. The canonical admission is repaired; structural/protocol passes and earlier short controlled local examples do not qualify arbitrary requested exercises. The original requested flow and full category scope remain required. No failed key is published as a playable exercise.
+
+An explicitly configured native Gemini Free text adapter now uses the existing admitted unbilled project/key, independently of its audio-judge profile. Native protocol/credential tests are separate from provider availability and linguistic quality. Actual Gemini3.8/3.5 trials returned temporary service-unavailable responses; listed Gemini2.5 rejected new-user access. Model listing alone does not establish access. The actual full requested flow remains unverified until an available admitted model completes text, mutations/key and stored audio. No metered credential, paid fallback, corpus requirement or human review is introduced to claim completion. Current status/evidence: audit/generation-repair-20261022/REPORT.md.

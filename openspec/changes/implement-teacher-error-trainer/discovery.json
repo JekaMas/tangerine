@@ -4335,7 +4335,24 @@
       "unittest::test_auditory_protocol.AuditoryProtocolTests.test_configured_proxy_positive",
       "unittest::test_auditory_protocol.AuditoryProtocolTests.test_redirect_credential_negative",
       "unittest::test_release_network.BridgeFramingTests.test_authorized_gemini_tunnel_positive",
-      "unittest::test_release_network.BridgeFramingTests.test_unapproved_host_or_port_negative"
+      "unittest::test_release_network.BridgeFramingTests.test_unapproved_host_or_port_negative",
+      "tangerine.local/api/internal/app::TestNativePreparationRepeatedMetadataPositive",
+      "tangerine.local/api/internal/app::TestNativePreparationConflictingMetadataNegative",
+      "tangerine.local/api/internal/app::TestGenerationResponseSuccessPositive",
+      "tangerine.local/api/internal/app::TestGenerationResponseFailureNegative",
+      "tangerine.local/api/internal/provider::TestGeminiWirePositive",
+      "tangerine.local/api/internal/provider::TestGeminiStructuredWirePositive",
+      "tangerine.local/api/internal/provider::TestGeminiResponsePositive",
+      "tangerine.local/api/internal/provider::TestGeminiPolicyNegative",
+      "tangerine.local/api/internal/provider::TestGeminiIncompleteNegative",
+      "tangerine.local/api/internal/provider::TestGeminiQuotaNegative",
+      "tangerine.local/api/internal/provider::TestGeminiMissingCredentialNegative",
+      "tangerine.local/api/internal/app::TestGeminiCredentialPositive",
+      "tangerine.local/api/internal/app::TestGeminiCredentialNegative",
+      "tangerine.local/api/internal/provider::TestGeminiUnavailableNegative",
+      "tangerine.local/api/internal/app::TestGenerationResponseProviderUnavailableNegative",
+      "unittest::test_provider_environment.ProviderEnvironmentTests.test_installation_credentials_preserved_positive",
+      "unittest::test_provider_environment.ProviderEnvironmentTests.test_ambient_credentials_cleared_negative"
     ]
   },
   "reviews": [
@@ -20492,6 +20509,87 @@
       ],
       "disposition": "current_change",
       "rationale": "Existing user-authorized Gemini Free qualification; no new product, billing, proxy service or runtime audit."
+    },
+    {
+      "id": "generation-incident-20261022",
+      "question": "Why did the actual local Generate request fail before playable audio, and does the repair preserve a real failure for ambiguous data?",
+      "property_ids": [
+        "I4-11.P1",
+        "I4-13.P1",
+        "I4-14.P1",
+        "I4-16.P1",
+        "I4-25.P1",
+        "I5-05.P1",
+        "I7-09.P1",
+        "I4-01.P1"
+      ],
+      "test_ids": [
+        "tangerine.local/api/internal/app::TestNativePreparationRepeatedMetadataPositive",
+        "tangerine.local/api/internal/app::TestNativePreparationConflictingMetadataNegative",
+        "tangerine.local/api/internal/app::TestGenerationResponseSuccessPositive",
+        "tangerine.local/api/internal/app::TestGenerationResponseFailureNegative",
+        "tangerine.local/api/internal/provider::TestGeminiWirePositive",
+        "tangerine.local/api/internal/provider::TestGeminiStructuredWirePositive",
+        "tangerine.local/api/internal/provider::TestGeminiResponsePositive",
+        "tangerine.local/api/internal/provider::TestGeminiPolicyNegative",
+        "tangerine.local/api/internal/provider::TestGeminiIncompleteNegative",
+        "tangerine.local/api/internal/provider::TestGeminiQuotaNegative",
+        "tangerine.local/api/internal/provider::TestGeminiMissingCredentialNegative",
+        "tangerine.local/api/internal/app::TestGeminiCredentialPositive",
+        "tangerine.local/api/internal/app::TestGeminiCredentialNegative",
+        "tangerine.local/api/internal/provider::TestGeminiUnavailableNegative",
+        "tangerine.local/api/internal/app::TestGenerationResponseProviderUnavailableNegative",
+        "unittest::test_provider_environment.ProviderEnvironmentTests.test_installation_credentials_preserved_positive",
+        "unittest::test_provider_environment.ProviderEnvironmentTests.test_ambient_credentials_cleared_negative"
+      ],
+      "searches": [
+        {
+          "kind": "exact",
+          "status": "completed",
+          "query": "Actual saved preparation, native schema_error/deadline receipts, exact raw Ollama response, canonical/mutation projection call sites and public generationResponse",
+          "outcome": "Canonical owner lacked existing tolerant admission; identical repeated blueprint ID triggered an unnecessary full repair and deadline. Failure text overstated completed checkpoints.",
+          "results": [
+            {
+              "path": "services/api/internal/app/preparation.go",
+              "classification": "change_candidate",
+              "reason": "Opt clean stage into existing single-admission identical-field parsing."
+            },
+            {
+              "path": "services/api/internal/app/generation_http.go",
+              "classification": "change_candidate",
+              "reason": "Keep deadline code and describe only completed saved stages."
+            },
+            {
+              "path": "services/api/internal/provider/gemini.go",
+              "classification": "change_candidate",
+              "reason": "Native explicit free-only text adapter after local quality failures; Google execution is not labelled local inference."
+            },
+            {
+              "path": "services/api/internal/app/provider_connections.go",
+              "classification": "change_candidate",
+              "reason": "Resolve the approved private Gemini reference through the existing credential owner."
+            }
+          ]
+        },
+        {
+          "kind": "semantic",
+          "status": "not_applicable",
+          "query": "Known exact generation/projection owners from actual native receipts",
+          "reason": "Live native errors and already known exact symbols identified the owners; these search methods were not performed.",
+          "outcome": "No semantic-search or IDE-index evidence is claimed.",
+          "results": []
+        },
+        {
+          "kind": "jetbrains-index",
+          "status": "not_applicable",
+          "query": "Known exact generation/projection owners from actual native receipts",
+          "reason": "Live native errors and already known exact symbols identified the owners; these search methods were not performed.",
+          "outcome": "No semantic-search or IDE-index evidence is claimed.",
+          "results": []
+        }
+      ],
+      "disposition": "current_change",
+      "rationale": "Repair the user-reported local generation failure using the same declared owners and no paid resources; actual full-flow observation remains separately required."
     }
   ]
 }

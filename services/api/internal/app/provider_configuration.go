@@ -211,7 +211,7 @@ func configurationView(c map[string]any) map[string]any {
 	}
 	creds := []any{}
 	now := time.Now().UTC().Format(time.RFC3339Nano)
-	for _, name := range []string{"OPENAI_API_KEY", "DEEPSEEK_API_KEY", "AZURE_SPEECH_KEY", "ELEVENLABS_API_KEY"} {
+	for _, name := range []string{"OPENAI_API_KEY", "DEEPSEEK_API_KEY", "AZURE_SPEECH_KEY", "ELEVENLABS_API_KEY", "GEMINI_API_KEY"} {
 		creds = append(creds, map[string]any{"name": name, "present": os.Getenv(name) != "", "last_checked_at": now})
 	}
 	return map[string]any{"configuration_sha256": c["configuration_sha256"], "profile_ids": ids, "credentials": creds, "source_statuses": []any{}, "intended_uses": c["intended_uses"], "limits": c["limits"], "configuration": c}
@@ -334,7 +334,7 @@ func (s *Server) providerReadiness(ctx context.Context) string {
 	if p.Auth == "local_none" {
 		return "ready"
 	}
-	if (p.CredentialRef == "OPENAI_API_KEY" || p.CredentialRef == "DEEPSEEK_API_KEY") && strings.TrimSpace(os.Getenv(p.CredentialRef)) != "" {
+	if (p.CredentialRef == "OPENAI_API_KEY" || p.CredentialRef == "DEEPSEEK_API_KEY" || p.CredentialRef == "GEMINI_API_KEY") && strings.TrimSpace(os.Getenv(p.CredentialRef)) != "" {
 		return "ready"
 	}
 	return "missing_credentials"

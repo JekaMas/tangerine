@@ -88,6 +88,10 @@ func Included(p Profile) error {
 		return fail("CONSTRAINT_CONFLICT")
 	}
 	switch p.Provider {
+	case "gemini_interactions":
+		if p.Auth != "api_key" || p.Billing != "free_tier" || p.Endpoint != GeminiEndpoint || p.Stream || p.Reasoning != nil {
+			return fail("CONSTRAINT_CONFLICT")
+		}
 	case "openai_chatgpt":
 		if p.Auth != "chatgpt_plan_oauth" || p.Billing != "included_subscription" || p.Endpoint != "https://api.openai.com/v1/responses" || !p.Stream || p.Temperature != nil || p.MaxOutput != nil {
 			return fail("CONSTRAINT_CONFLICT")
@@ -118,6 +122,9 @@ func Serialize(p Profile, instructions string, input []any, format any) ([]byte,
 	}
 	if input == nil {
 		return nil, fail("CONSTRAINT_CONFLICT")
+	}
+	if p.Provider == "gemini_interactions" {
+		return serializeGemini(p, instructions, input, format)
 	}
 	if p.Provider == "openai_chatgpt" {
 		for _, item := range input {
@@ -258,7 +265,9 @@ func Exchange(ctx context.Context, client *http.Client, p Profile, wire []byte, 
 		return out, fail("PROVIDER_FAILURE")
 	}
 	req.Header.Set("Content-Type", "application/json")
-	if p.Auth != "local_none" {
+	if p.Provider == "gemini_interactions" {
+		req.Header.Set("x-goog-api-key", credential)
+	} else if p.Auth != "local_none" {
 		req.Header.Set("Authorization", "Bearer "+credential)
 	}
 	if client == nil {
@@ -280,6 +289,9 @@ func Exchange(ctx context.Context, client *http.Client, p Profile, wire []byte, 
 	}
 	if status < 200 || status >= 300 {
 		out.Raw, _ = io.ReadAll(res.Body)
+		if p.Provider == "gemini_interactions" {
+			return out, geminiError(out.Raw, status)
+		}
 		var v struct{ Error struct{ Code string } }
 		_ = json.Unmarshal(out.Raw, &v)
 		if v.Error.Code != "" {
@@ -291,6 +303,9 @@ func Exchange(ctx context.Context, client *http.Client, p Profile, wire []byte, 
 		out.Raw, e = io.ReadAll(res.Body)
 		if e != nil {
 			return out, fail("PROVIDER_FAILURE")
+		}
+		if p.Provider == "gemini_interactions" {
+			return out, out.geminiContent(out.Raw)
 		}
 		return out, out.content(out.Raw)
 	}

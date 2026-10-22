@@ -329,7 +329,7 @@ func providerCredential(ctx context.Context, m *provider.Manager, p provider.Pro
 		return "", nil
 	}
 	// Profile refs are names, never arbitrary file paths or borrowed app credentials.
-	if p.CredentialRef != "OPENAI_API_KEY" && p.CredentialRef != "DEEPSEEK_API_KEY" {
+	if p.CredentialRef != "OPENAI_API_KEY" && p.CredentialRef != "DEEPSEEK_API_KEY" && p.CredentialRef != "GEMINI_API_KEY" {
 		return "", &provider.Failure{Code: "MISSING_CREDENTIALS"}
 	}
 	value := os.Getenv(p.CredentialRef)
