@@ -56,7 +56,7 @@ Actual browser recordings (silent; exact WAVs above):
 - [page@c532ea82635a34f6c6efe573f420ac00.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-88ea846dd0/videos/page@c532ea82635a34f6c6efe573f420ac00.webm) — 2.12 seconds.
 - [page@7c5a31e1e83f759ebd0631b7a3160635.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-88ea846dd0/videos/page@7c5a31e1e83f759ebd0631b7a3160635.webm) — 14.08 seconds.
 - [page@61a6a26a2ab4c4c27843b75b2e3d3a3a.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-88ea846dd0/videos/page@61a6a26a2ab4c4c27843b75b2e3d3a3a.webm) — 240.0 seconds.
-- [page@209e0bb1cd30b84af69f930396b42722.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/current-arm64-eae99f1828/videos/page@209e0bb1cd30b84af69f930396b42722.webm) — 1.76 seconds.
+- [page@5864b61ddea9a3967149ccd66440f82a.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/custom-audio-profile/run-f0551a07c5/videos/page@5864b61ddea9a3967149ccd66440f82a.webm) — 3.88 seconds.
 - [page@1e86a1bce465337aa38176620377c7c1.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/current-arm64-77829a7670/videos/page@1e86a1bce465337aa38176620377c7c1.webm) — 4.56 seconds.
 
-All 142 pictures and native metadata are indexed in [MEDIA.json](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/audit/iteration-16-release-20261021/MEDIA.json).
+All 144 pictures and native metadata are indexed in [MEDIA.json](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/audit/iteration-16-release-20261021/MEDIA.json).
