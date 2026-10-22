@@ -9,7 +9,7 @@ if args.out.exists():raise SystemExit('Refuse to overwrite an original receipt')
 head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip();dirty=bool(subprocess.check_output(['git','status','--porcelain','--untracked-files=normal'],cwd=R,text=True))
 x=runpy.run_path(str(A/'observations.py'))['return_value'];g=json.loads((R/'openspec/changes/implement-teacher-error-trainer/verification.json').read_text());selected=[c for c in g['cases'] if c['id'].startswith('I16-')]
 fresh={}
-for path in [R/'data/iteration16/current-source-0baea04.json',R/'data/iteration16/attempts-b6e8e70.json',R/'data/iteration16/portable-b6e8e70.json',*sorted((R/'data/iteration16').glob('portable-remaining-*.json')),*sorted((R/'data/iteration16').glob('current-startup-*.json')),*sorted((R/'data/iteration16').glob('diagnostic-lab-*.json'))]:
+for path in [R/'data/iteration16/current-source-0baea04.json',R/'data/iteration16/attempts-b6e8e70.json',R/'data/iteration16/portable-b6e8e70.json',*sorted((R/'data/iteration16').glob('portable-remaining-*.json')),*sorted((R/'data/iteration16').glob('current-startup-*.json')),*sorted((R/'data/iteration16').glob('diagnostic-lab-*.json')),*sorted((R/'data/iteration16').glob('verify-custom-final-*.json'))]:
  if path.exists():
   receipt=json.loads(path.read_text())
   if receipt.get('git',{}).get('dirty') is False:

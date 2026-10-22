@@ -6,7 +6,7 @@ from browser_probe import Browser
 from release_source import archive_source
 from importlib.util import module_from_spec,spec_from_file_location
 R=Path(__file__).resolve().parents[1];E=Path(os.environ['TANGERINE_RELEASE_EVIDENCE']).resolve();E.mkdir(parents=True,exist_ok=True)
-name='tangerine-current-source-'+uuid.uuid4().hex[:8];env=dict(os.environ,COMPOSE_PROJECT_NAME=name,DOCKER_DEFAULT_PLATFORM='linux/arm64');obs={};browser=None;startup_only=os.environ.get("TANGERINE_RELEASE_SOURCE_FOCUS")=="startup"
+name='tangerine-current-source-'+uuid.uuid4().hex[:8];env=dict(os.environ,COMPOSE_PROJECT_NAME=name,DOCKER_DEFAULT_PLATFORM='linux/arm64');obs={};browser=None;focus=os.environ.get("TANGERINE_RELEASE_SOURCE_FOCUS");startup_only=focus=="startup"
 log=(E/'commands.log').open('w')
 with tempfile.TemporaryDirectory(prefix=name,dir=E) as directory:
  work=Path(directory)/'tangerine';work.mkdir()
@@ -33,8 +33,25 @@ with tempfile.TemporaryDirectory(prefix=name,dir=E) as directory:
   spec=spec_from_file_location('current_arch',R/'scripts/assert_runtime_architecture.py');module=module_from_spec(spec);spec.loader.exec_module(module)
   rows=module.inspect(name,'arm64');(E/'architecture.json').write_text(json.dumps(rows,indent=2))
   browser=Browser(E/'chrome','http://localhost:3000/');browser.wait('Exercise library');browser.wait('No exercises yet')
-  record('test_current_arm64_source_positive',len(rows)==5 and {r['architecture'] for r in rows}=={'arm64'})
-  if not startup_only:
+  if focus!='custom-audio-profile':record('test_current_arm64_source_positive',len(rows)==5 and {r['architecture'] for r in rows}=={'arm64'})
+  if focus=='custom-audio-profile':
+   browser.call('Page.navigate',{'url':'http://localhost:3000/settings'});browser.wait('Optional audio diagnostics');wait("document.querySelector('[aria-label=\"Audio diagnostic profile\"]').disabled",False)
+   browser.call('UI.select',{'selector':'[aria-label="Audio diagnostic profile"]','value':'qwen-omni-3b'});browser.wait('Settings saved.')
+   saved=configuration();custom=json.loads(json.dumps(saved));custom['audio_diagnostic_profile']['id']='custom-local-audio-judge'
+   for key in ['workspace_id','configuration_sha256','provider_access_policy']:custom.pop(key,None)
+   browser.call('UI.click',{'selector':'summary:text-is("Advanced configuration")'});browser.call('UI.fill',{'selector':'[aria-label="Advanced LLM configuration"]','value':json.dumps(custom)});browser.call('UI.click',{'selector':'button:text-is("Save configuration")'});browser.wait('Settings saved.')
+   browser.call('Page.reload');browser.wait('Optional audio diagnostics');wait("document.querySelector('[aria-label=\"Audio diagnostic profile\"]').disabled",False)
+   active=configuration();obs['test_custom_profile_positive']=dict(setup_commands=browser.evaluate("[...document.querySelectorAll('code')].map(e=>e.textContent).filter(t=>t.includes('qwen25-omni'))"),saved_profile=active['audio_diagnostic_profile']['id'],displayed_profile=browser.evaluate("document.querySelector('[aria-label=\"Audio diagnostic profile\"]').value"),label=browser.evaluate("document.querySelector('[aria-label=\"Audio diagnostic profile\"]').selectedOptions[0].textContent"));browser.capture(E,'test_custom_profile_positive')
+   browser.call('UI.select',{'selector':'[aria-label="Audio diagnostic profile"]','value':''});browser.wait('Settings saved.')
+   browser.call('Page.reload');browser.wait('Optional audio diagnostics');wait("document.querySelector('[aria-label=\"Audio diagnostic profile\"]').disabled",False)
+   disabled=configuration();obs['test_custom_profile_disable_negative']=dict(saved_profile=disabled.get('audio_diagnostic_profile'),displayed_profile=browser.evaluate("document.querySelector('[aria-label=\"Audio diagnostic profile\"]').value"),llm_profiles_preserved=disabled['llm_profiles']==saved['llm_profiles']);browser.capture(E,'test_custom_profile_disable_negative')
+   override=json.loads(json.dumps(saved));override['audio_diagnostic_profile']['model']='Qwen/Qwen2.5-Omni-7B';override['audio_diagnostic_profile']['revision']='ae9e1690543ffd5c0221dc27f79834d0294cba00'
+   for key in ['workspace_id','configuration_sha256','provider_access_policy']:override.pop(key,None)
+   browser.call('UI.click',{'selector':'summary:text-is("Advanced configuration")'});browser.call('UI.fill',{'selector':'[aria-label="Advanced LLM configuration"]','value':json.dumps(override)});browser.call('UI.click',{'selector':'button:text-is("Save configuration")'});browser.wait('Settings saved.')
+   browser.call('Page.reload');browser.wait('Optional audio diagnostics');wait("document.querySelector('[aria-label=\"Audio diagnostic profile\"]').disabled",False)
+   active=configuration();obs['test_saved_binding_positive']=dict(setup_commands=browser.evaluate("[...document.querySelectorAll('code')].map(e=>e.textContent).filter(t=>t.includes('qwen25-omni'))"),saved_model=active['audio_diagnostic_profile']['model'],displayed_profile=browser.evaluate("document.querySelector('[aria-label=\"Audio diagnostic profile\"]').value"),label=browser.evaluate("document.querySelector('[aria-label=\"Audio diagnostic profile\"]').selectedOptions[0].textContent"));browser.capture(E,'test_saved_binding_positive')
+   (E/'observations.json').write_text(json.dumps(obs,indent=2))
+  elif not startup_only:
    try:module.inspect(name,'amd64')
    except ValueError as error:record('test_current_architecture_negative','architecture mismatch' in str(error))
    else:raise AssertionError('Wrong expected architecture accepted')

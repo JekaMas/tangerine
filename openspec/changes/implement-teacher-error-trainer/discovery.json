@@ -4296,7 +4296,7 @@
       "unittest::test_speech_server.SpeechServer.test_diagnostic_worker_exit_negative",
       "unittest::test_release_current_source.CurrentSourceTests.test_current_precision_ui_positive",
       "unittest::test_release_current_source.CurrentSourceTests.test_current_precision_negative",
-      "unittest::test_release_current_source.CurrentSourceTests.test_current_arm64_source_positive",
+      "unittest::test_custom_audio_profile_browser.CustomAudioProfileTests.test_current_source_positive",
       "unittest::test_release_current_source.CurrentSourceTests.test_current_architecture_negative",
       "unittest::test_diagnostic_runtime.DiagnosticRuntimeTests.test_generation_token_capture_positive",
       "unittest::test_diagnostic_runtime.DiagnosticRuntimeTests.test_interrupted_token_capture_negative",
@@ -4323,7 +4323,10 @@
       "unittest::test_diagnostic_runtime.DiagnosticRuntimeTests.test_judge_ambiguous_status_negative",
       "tangerine.local/api/internal/app::TestNativeDiagnosticExtraAnnotationPositive",
       "tangerine.local/api/internal/app::TestNativeDiagnosticAmbiguousJudgmentNegative",
-      "tangerine.local/api/internal/app::TestNativeDiagnosticModelReferenceNegative"
+      "tangerine.local/api/internal/app::TestNativeDiagnosticModelReferenceNegative",
+      "unittest::test_custom_audio_profile_browser.CustomAudioProfileTests.test_custom_profile_positive",
+      "unittest::test_custom_audio_profile_browser.CustomAudioProfileTests.test_custom_profile_disable_negative",
+      "unittest::test_custom_audio_profile_browser.CustomAudioProfileTests.test_saved_binding_positive"
     ]
   },
   "reviews": [
@@ -20251,7 +20254,7 @@
         "unittest::test_speech_server.SpeechServer.test_diagnostic_worker_exit_negative",
         "unittest::test_release_current_source.CurrentSourceTests.test_current_precision_ui_positive",
         "unittest::test_release_current_source.CurrentSourceTests.test_current_precision_negative",
-        "unittest::test_release_current_source.CurrentSourceTests.test_current_arm64_source_positive",
+        "unittest::test_custom_audio_profile_browser.CustomAudioProfileTests.test_current_source_positive",
         "unittest::test_release_current_source.CurrentSourceTests.test_current_architecture_negative",
         "unittest::test_diagnostic_runtime.DiagnosticRuntimeTests.test_generation_token_capture_positive",
         "unittest::test_diagnostic_runtime.DiagnosticRuntimeTests.test_interrupted_token_capture_negative",
@@ -20328,6 +20331,54 @@
       ],
       "disposition": "current_change",
       "rationale": "User-authorized full local release apply, no paid/hosted calls, human review, new service or repeated accepted-data checks."
+    },
+    {
+      "id": "iteration16-verification-custom-profile",
+      "question": "Does Settings faithfully represent the actual saved custom/model-override audio profile and setup command?",
+      "property_ids": [
+        "I16-04.P1",
+        "I16-06.P1",
+        "I16-07.P1"
+      ],
+      "test_ids": [
+        "unittest::test_custom_audio_profile_browser.CustomAudioProfileTests.test_custom_profile_positive",
+        "unittest::test_custom_audio_profile_browser.CustomAudioProfileTests.test_custom_profile_disable_negative",
+        "unittest::test_custom_audio_profile_browser.CustomAudioProfileTests.test_saved_binding_positive",
+        "unittest::test_custom_audio_profile_browser.CustomAudioProfileTests.test_current_source_positive"
+      ],
+      "searches": [
+        {
+          "kind": "exact",
+          "status": "completed",
+          "query": "Exact AudioDiagnostics/Settings/runtime schema/custom source-built browser path",
+          "outcome": "Real browser red: active custom profile displayed No audio judge selected; model setup selected7Bfor3B. Repair is UI-only.",
+          "results": [
+            {
+              "path": "services/web/app/settings/AudioDiagnostics.js",
+              "classification": "change_candidate",
+              "reason": "Saved profile identity/model and setup command must match actual accepted configuration."
+            }
+          ]
+        },
+        {
+          "kind": "semantic",
+          "status": "unavailable",
+          "query": "Exact iteration16worktree Settings custom-profile review",
+          "reason": "No matching semantic/IDEindex was available in the retained exact-worktree discovery; current owner is directly identified. No index refresh or semantic result is claimed.",
+          "outcome": "Exact known-owner source/native browser tracing only.",
+          "results": []
+        },
+        {
+          "kind": "jetbrains-index",
+          "status": "unavailable",
+          "query": "Exact iteration16worktree Settings custom-profile review",
+          "reason": "No matching semantic/IDEindex was available in the retained exact-worktree discovery; current owner is directly identified. No index refresh or semantic result is claimed.",
+          "outcome": "Exact known-owner source/native browser tracing only.",
+          "results": []
+        }
+      ],
+      "disposition": "current_change",
+      "rationale": "User-authorized I16repair. Real source-built browser/API/DB, no model fixture supplied as actual inference; zero model calls. Existing unaffected greens remain retained."
     }
   ]
 }
