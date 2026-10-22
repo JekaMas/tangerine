@@ -4,11 +4,11 @@ Actual local browser/runtime/model artifacts; individual constructed/actual boun
 
 | Screen | Route | Picture | Evidence boundary |
 |---|---|---|---|
-| Library | / | [Open picture](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-4a793cab0e/test_library_positive.png) | Actual empty Library before generation; populated Listen-and-answer navigation is captured in the actual main-flow video. |
+| Library | / | [Open picture](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/amd64-42717b5216/test_portable_library_positive.png) | Actual restored populated Library on amd64; the original empty Library and generation path remain captured in the main-flow video. |
 | Prepare | /prepare | [Open picture](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-4a793cab0e/test_generation_positive.png) | Actual installed local LLM clean→mutations/key with one explicitly saved Resume. |
 | Saved audio | /audio | [Open picture](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration7/browser/run-16fdff2d1dc5/test_playback_positive.png) | Actual native Kokoro/control/storage; text-key upstream is constructed. |
 | Listen/results | /listen | [Open picture](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-4a793cab0e/test_primary_score_positive.png) | Actual local LLM interpretation/native100/comments; optional explanation absent. |
-| Saved attempts | /attempts | [Open picture](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/attempts/run-498170c8d8/attempts-history.png) | Actual stored history; separate owned real DB outage/Refresh/reopen. |
+| Saved attempts | /attempts | [Open picture](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/amd64-42717b5216/attempts-history.png) | Actual stored history; separate owned real DB outage/Refresh/reopen. |
 | Reviews | /reviews | [Open picture](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-88ea846dd0/test_review_positive.png) | Actual local reconsideration/dispute and unchanged supported primary score. |
 | Sources | /sources | [Open picture](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration13/browser/run-69bcea2bd5/test_rows_positive.png) | Real importer/DB/UI with labelled constructed native source records. |
 | Reports/Lab | /reports | [Open picture](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration14/browser/run-a21836ff35/test_report_positive.png) | Real source/attempt/experiment owners; constructed reporting population. |
@@ -21,6 +21,7 @@ Exact audio files:
 - [played.wav](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-4a793cab0e/played.wav) — 27.075 seconds, 24000 Hz.
 - [qwen-custom.wav](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/frontend/audio/qwen-custom.wav) — 2.4 seconds, 24000 Hz.
 - [qwen-base.wav](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/frontend/audio/qwen-base.wav) — 1.84 seconds, 24000 Hz.
+- [actual-amd64-speech.wav](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/amd64-42717b5216/actual-amd64-speech.wav) — 1.575 seconds, 24000 Hz.
 - [acoustic-pause_insert-source.wav](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration8/native/tangerine-acoustic-21b85f0167e6/acoustic-pause_insert-source.wav) — 2.1 seconds, 24000 Hz.
 - [acoustic-pause_insert-result.wav](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration8/native/tangerine-acoustic-21b85f0167e6/acoustic-pause_insert-result.wav) — 4.1 seconds, 24000 Hz.
 - [acoustic-vowel_duration-source.wav](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration8/native/tangerine-acoustic-21b85f0167e6/acoustic-vowel_duration-source.wav) — 2.1 seconds, 24000 Hz.
@@ -58,5 +59,7 @@ Actual browser recordings (silent; exact WAVs above):
 - [page@61a6a26a2ab4c4c27843b75b2e3d3a3a.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-88ea846dd0/videos/page@61a6a26a2ab4c4c27843b75b2e3d3a3a.webm) — 240.0 seconds.
 - [page@5864b61ddea9a3967149ccd66440f82a.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/custom-audio-profile/run-f0551a07c5/videos/page@5864b61ddea9a3967149ccd66440f82a.webm) — 3.88 seconds.
 - [page@1e86a1bce465337aa38176620377c7c1.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/current-arm64-77829a7670/videos/page@1e86a1bce465337aa38176620377c7c1.webm) — 4.56 seconds.
+- [page@80189cfe854bfaa7dd1c357b37bde29c.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/amd64-42717b5216/videos/page@80189cfe854bfaa7dd1c357b37bde29c.webm) — 6.72 seconds.
+- [page@8d1f7899e150b876073f22d95f6f22e7.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/amd64-42717b5216/videos/page@8d1f7899e150b876073f22d95f6f22e7.webm) — 2.32 seconds.
 
-All 144 pictures and native metadata are indexed in [MEDIA.json](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/audit/iteration-16-release-20261021/MEDIA.json).
+All 151 pictures and native metadata are indexed in [MEDIA.json](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/audit/iteration-16-release-20261021/MEDIA.json).
