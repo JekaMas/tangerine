@@ -6,11 +6,13 @@ from pathlib import Path
 import base64,json,os,shutil,subprocess,sys,tempfile,time,uuid,zipfile
 from browser_probe import Browser
 from release_source import archive_source
+from release_images import PlatformImage
 from importlib.util import module_from_spec,spec_from_file_location
 R=Path(__file__).resolve().parents[1];S=Path(os.environ['TANGERINE_RELEASE_SOURCE_EVIDENCE']).resolve();E=Path(os.environ['TANGERINE_RELEASE_EVIDENCE']).resolve();E.mkdir(parents=True,exist_ok=True)
 identity=json.loads((S/'session.json').read_text());original=json.loads((S/'receipt.json').read_text());assert original['status']=='passed' and original['architecture']=='arm64'
-name='tangerine-i16-amd64-'+uuid.uuid4().hex[:8];restored=name+'-restored';env=dict(os.environ,COMPOSE_PROJECT_NAME=name,DOCKER_DEFAULT_PLATFORM='linux/amd64');obs={};browser=None;preview=False;postgres_image='postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826';original_postgres_arch=None;postgres_changed=False
+name='tangerine-i16-amd64-'+uuid.uuid4().hex[:8];restored=name+'-restored';env=dict(os.environ,COMPOSE_PROJECT_NAME=name,DOCKER_DEFAULT_PLATFORM='linux/amd64');obs={};browser=None;preview=False;postgres_image='postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826'
 log=(E/'commands.log').open('w')
+platform_image=None
 with tempfile.TemporaryDirectory(prefix=name,dir=E) as tmp:
  work=Path(tmp)/'tangerine';work.mkdir()
  def call(args,check=True,timeout=1500,input=None):
@@ -37,8 +39,8 @@ with tempfile.TemporaryDirectory(prefix=name,dir=E) as tmp:
   license_bytes=(work/'LICENSE').read_bytes();(work/'LICENSE').unlink();failure=call(['sh','scripts/tangerine','start'],False);record('test_incomplete_source_negative',failure.returncode!=0 and b'SOURCE_INCOMPLETE: missing LICENSE' in failure.stderr);(work/'LICENSE').write_bytes(license_bytes)
   running=call(['docker','inspect','-f','{{.State.Running}}','tangerine-i1-web-1'],False)
   if running.returncode==0 and running.stdout.strip()==b'true':raise AssertionError('Existing preview owns port3000; preserve it and use a separately available test endpoint.')
-  cached=call(['docker','image','inspect','--format','{{.Architecture}}',postgres_image],False);original_postgres_arch=cached.stdout.decode().strip() if cached.returncode==0 else None
-  call(['docker','pull','--platform','linux/amd64',postgres_image]);postgres_changed=True
+  platform_image=PlatformImage(call,postgres_image,name+'-postgres-cache:original',E/'image-cache-restoration.json')
+  platform_image.select('amd64')
   call(['sh','scripts/tangerine','start']);record('test_amd64_start_positive',True)
   spec=spec_from_file_location('release_arch',R/'scripts/assert_runtime_architecture.py');module=module_from_spec(spec);spec.loader.exec_module(module);rows=module.inspect(name,'amd64');(E/'architecture.json').write_text(json.dumps(rows,indent=2));record('test_amd64_architecture_positive',len(rows)==5 and {r['architecture'] for r in rows}=={'amd64'})
   try:module.inspect(name,'arm64')
@@ -57,7 +59,7 @@ with tempfile.TemporaryDirectory(prefix=name,dir=E) as tmp:
   audio=browser.evaluate("fetch(document.querySelector('audio').src).then(async r=>({status:r.status,sha:(r.headers.get('etag')||'').replaceAll('\"',''),bytes:[...new Uint8Array(await r.arrayBuffer())]}))");(E/'played.wav').write_bytes(bytes(audio['bytes']));record('test_portable_audio_positive',audio['status']==200 and audio['sha']==identity['audio_sha256'] and bytes(audio['bytes'])==(S/'played.wav').read_bytes())
   browser.close();browser=None;call(compose('stop','web','api','speech',project=restored));call(compose('up','-d','--wait','--wait-timeout','180','web',project=restored));browser=Browser(E/'restarted','http://localhost:3000/listen?attempt='+identity['attempt_id']);browser.wait('Your answer');wait("document.querySelector('textarea').value",identity['answer']);record('test_amd64_restart_positive',True)
   saved=json.loads(call(compose('exec','-T','postgres','psql','-X','-At','-U','tangerine','-d','tangerine','-c',"SELECT count(*) FROM document WHERE kind='provider-receipt'",project=restored)).stdout);record('test_portable_no_inference_negative',saved==len(json.loads((S/'provider-receipts.json').read_text())))
-  (E/'receipt.json').write_text(json.dumps(dict(status='passed',architecture='amd64',source_architecture='arm64',observations=obs,source_evidence=str(S),source_archive=str(current_archive),new_llm_calls=0),indent=2))
+  completed_receipt=dict(status='passed',architecture='amd64',source_architecture='arm64',observations=obs,source_evidence=str(S),source_archive=str(current_archive),new_llm_calls=0)
  finally:
   if browser:
    try:browser.capture(E,'final-observation')
@@ -66,5 +68,7 @@ with tempfile.TemporaryDirectory(prefix=name,dir=E) as tmp:
    runtime=work/'data/config/runtime.env' if project==name else work/'data/config/restores'/project/'runtime.env'
    if runtime.exists():call(compose('down','--volumes','--remove-orphans',project=project),False)
    for kind in ['api','minio','speech','web']:call(['docker','image','rm',project+'-'+kind+':local'],False)
-  if postgres_changed and original_postgres_arch and original_postgres_arch!='amd64':call(['docker','pull','--platform','linux/'+original_postgres_arch,postgres_image])
+  if platform_image:platform_image.restore()
   if preview:call(['docker','start','tangerine-i1-web-1'],False)
+
+ (E/'receipt.json').write_text(json.dumps(completed_receipt,indent=2))

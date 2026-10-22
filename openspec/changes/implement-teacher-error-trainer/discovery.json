@@ -4326,7 +4326,12 @@
       "tangerine.local/api/internal/app::TestNativeDiagnosticModelReferenceNegative",
       "unittest::test_custom_audio_profile_browser.CustomAudioProfileTests.test_custom_profile_positive",
       "unittest::test_custom_audio_profile_browser.CustomAudioProfileTests.test_custom_profile_disable_negative",
-      "unittest::test_custom_audio_profile_browser.CustomAudioProfileTests.test_saved_binding_positive"
+      "unittest::test_custom_audio_profile_browser.CustomAudioProfileTests.test_saved_binding_positive",
+      "unittest::test_release_images.ReleaseImageTests.test_switch_restore_positive",
+      "unittest::test_release_images.ReleaseImageTests.test_matching_cache_positive",
+      "unittest::test_release_images.ReleaseImageTests.test_failed_pull_negative",
+      "unittest::test_release_images.ReleaseImageTests.test_remove_failure_negative",
+      "unittest::test_release_portable.ReleasePortableTests.test_original_cache_restore_positive"
     ]
   },
   "reviews": [
@@ -20379,6 +20384,53 @@
       ],
       "disposition": "current_change",
       "rationale": "User-authorized I16repair. Real source-built browser/API/DB, no model fixture supplied as actual inference; zero model calls. Existing unaffected greens remain retained."
+    },
+    {
+      "id": "iteration16-platform-cache-repair",
+      "question": "Does genuine dual-architecture acquisition preserve the original image and protected host state, including a failed pull?",
+      "property_ids": [
+        "I16-07.P1"
+      ],
+      "test_ids": [
+        "unittest::test_release_images.ReleaseImageTests.test_switch_restore_positive",
+        "unittest::test_release_images.ReleaseImageTests.test_matching_cache_positive",
+        "unittest::test_release_images.ReleaseImageTests.test_failed_pull_negative",
+        "unittest::test_release_images.ReleaseImageTests.test_remove_failure_negative",
+        "unittest::test_release_portable.ReleasePortableTests.test_original_cache_restore_positive"
+      ],
+      "searches": [
+        {
+          "kind": "exact",
+          "status": "completed",
+          "query": "Actual docker pull cannot overwrite digest after successful registry restart; release-portable platform owner",
+          "outcome": "Protect original cache with an owned rollback-only tag, officially acquire target platform and observe final restoration after cleanup.",
+          "results": [
+            {
+              "path": "tests/release_images.py",
+              "classification": "change_candidate",
+              "reason": "Classic Docker image store holds one platform for the pinned digest reference."
+            }
+          ]
+        },
+        {
+          "kind": "semantic",
+          "status": "unavailable",
+          "query": "Exact iteration16platform-cache test owner",
+          "reason": "No matching semantic/IDEindex available; explicit failure identifies the exact existing fixture owner.",
+          "outcome": "No semantic evidence claimed.",
+          "results": []
+        },
+        {
+          "kind": "jetbrains-index",
+          "status": "unavailable",
+          "query": "Exact iteration16platform-cache test owner",
+          "reason": "No matching semantic/IDEindex available; explicit failure identifies the exact existing fixture owner.",
+          "outcome": "No semantic evidence claimed.",
+          "results": []
+        }
+      ],
+      "disposition": "current_change",
+      "rationale": "User-authorized registry repair. Tests alone own cache switching; application keeps official pinned images and its existing launcher."
     }
   ]
 }

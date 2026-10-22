@@ -11,6 +11,7 @@ class ReleasePortableTests(unittest.TestCase):
   p=subprocess.run([str(R/'tests/release-portable')],cwd=R,env=env,capture_output=True,text=True,timeout=2200)
   (cls.root/'stdout').write_text(p.stdout);(cls.root/'stderr').write_text(p.stderr)
   cls.failure='Actual cross-architecture release failed; evidence: '+str(cls.root)
+  cls.completed=p.returncode==0
   cls.values=json.loads((cls.root/'observations.json').read_text()) if (cls.root/'observations.json').exists() else {}
   if p.returncode==0:(R/'data/iteration16/release/portable-current.json').write_text(json.dumps(dict(root=str(cls.root.relative_to(R)),receipt=json.loads((cls.root/'receipt.json').read_text())),indent=2))
  def check(self,name):self.assertIs(self.values.get(name),True,self.failure)
@@ -27,4 +28,8 @@ class ReleasePortableTests(unittest.TestCase):
  def test_portable_audio_positive(self):self.check('test_portable_audio_positive')
  def test_amd64_restart_positive(self):self.check('test_amd64_restart_positive')
  def test_portable_no_inference_negative(self):self.check('test_portable_no_inference_negative')
+ def test_original_cache_restore_positive(self):
+  self.assertTrue(self.completed,self.failure)
+  saved=json.loads((self.root/'image-cache-restoration.json').read_text())
+  self.assertEqual(saved['status'],'restored');self.assertEqual(saved['architecture'],'arm64');self.assertEqual(saved['original_id'],saved['restored_id'])
 if __name__=='__main__':unittest.main()

@@ -555,7 +555,7 @@ func TestNativeDiagnosticModelReferenceNegative(t *testing.T) {
 // Positive and negative use actual generated recordings. The negative key is
 // deliberately constructed with unfulfilled pause intent and the real clean
 // source recording; it never rewrites a published case or invents acoustic gold.
-func actualAuditoryFixture(t *testing.T, absent bool) listeningFixture {
+func actualAuditoryFixture(t *testing.T, absent bool) (listeningFixture, string) {
 	s, p := nativeAcousticFixture(t, "pause_insert")
 	p = renderNativeActual(t, s, p, uuid.NewString(), 1)
 	var id string
@@ -611,18 +611,29 @@ func actualAuditoryFixture(t *testing.T, absent bool) listeningFixture {
 	profile["compute_type"] = "float32"
 	profile["repetition_penalty"] = 1.0
 	delete(profile, "quantization_engine")
+	method := "qwen25-omni-audio-v1"
+	if path := os.Getenv("TANGERINE_AUDIO_JUDGE_TEST_PROFILE"); path != "" {
+		raw, err := os.ReadFile(path)
+		requireListening(t, err)
+		profile = nil
+		requireListening(t, json.Unmarshal(raw, &profile))
+		if profile["provider"] != "gemini_interactions" || profile["billing_mode"] != "free_tier" {
+			t.Fatal("The selected hosted qualification must use the approved Gemini free-tier binding")
+		}
+		method = "gemini-audio-v1"
+	}
 	_, err = diagnosticConfiguration(t, f, profile, true)
 	requireListening(t, err)
-	return f
+	return f, method
 }
 func TestNativeDiagnosticActualAuditoryPositive(t *testing.T) {
-	f := actualAuditoryFixture(t, false)
-	v := diagnosticRun(t, f, "qwen25-omni-audio-v1")
+	f, method := actualAuditoryFixture(t, false)
+	v := diagnosticRun(t, f, method)
 	assertActualAuditory(t, f, v, "pause_insert", "supported", 2)
 }
 func TestNativeDiagnosticActualAuditoryContrastNegative(t *testing.T) {
-	f := actualAuditoryFixture(t, true)
-	v := diagnosticRun(t, f, "qwen25-omni-audio-v1")
+	f, method := actualAuditoryFixture(t, true)
+	v := diagnosticRun(t, f, method)
 	assertActualAuditory(t, f, v, "speech_realization", "contradicted", 1)
 }
 func assertActualAuditory(t *testing.T, f listeningFixture, v map[string]any, expectedFeature, expectedStatus string, expectedClips int) {
@@ -652,19 +663,42 @@ func assertActualAuditory(t *testing.T, f listeningFixture, v map[string]any, ex
 	if actualFindings == 0 {
 		t.Fatal("no actual model finding; native unknowns do not qualify inference", result)
 	}
-	parameters := wire["parameters"].(map[string]any)
-	if parameters["compute_type"] != "float32" || parameters["dtype"] != "float32" || parameters["attention"] != "sdpa" || parameters["audio_attention"] != "sdpa" || parameters["repetition_penalty"] != 1.0 || parameters["quantized_linear_modules"].(float64) != 0 {
-		t.Fatal("Selected unquantized float32/SDPA inference was not realized", parameters)
-	}
-	if wire["provider"] != "local_qwen25_omni" || len(wire["model_visible_calls"].([]any)) == 0 || len(wire["input_audio"].([]any)) != expectedClips {
-		t.Fatal("missing actual target/reference/model call", wire)
-	}
-	if len(run["support_asset_ids"].([]any)) < expectedClips {
-		t.Fatal("paired reference not durably retained", run)
-	}
-	loading := wire["checkpoint_loading"].(map[string]any)
-	if len(loading["missing_keys"].([]any)) != 0 || len(loading["mismatched_keys"].([]any)) != 0 {
-		t.Fatal("Checkpoint initialization differs from declared Thinker", loading)
+	if wire["provider"] == "local_qwen25_omni" {
+		parameters := wire["parameters"].(map[string]any)
+		if parameters["compute_type"] != "float32" || parameters["dtype"] != "float32" || parameters["attention"] != "sdpa" || parameters["audio_attention"] != "sdpa" || parameters["repetition_penalty"] != 1.0 || parameters["quantized_linear_modules"].(float64) != 0 {
+			t.Fatal("Selected unquantized float32/SDPA inference was not realized", parameters)
+		}
+		if wire["provider"] != "local_qwen25_omni" || len(wire["model_visible_calls"].([]any)) == 0 || len(wire["input_audio"].([]any)) != expectedClips {
+			t.Fatal("missing actual target/reference/model call", wire)
+		}
+		if len(run["support_asset_ids"].([]any)) < expectedClips {
+			t.Fatal("paired reference not durably retained", run)
+		}
+		loading := wire["checkpoint_loading"].(map[string]any)
+		if len(loading["missing_keys"].([]any)) != 0 || len(loading["mismatched_keys"].([]any)) != 0 {
+			t.Fatal("Checkpoint initialization differs from declared Thinker", loading)
+		}
+	} else if wire["provider"] == "gemini_interactions" {
+		request := wire["request"].(map[string]any)
+		profile := wire["profile"].(map[string]any)
+		if wire["http_status"] != float64(200) || profile["billing_mode"] != "free_tier" || request["model"] != profile["model"] || request["store"] != false || request["stream"] != false || request["background"] != false {
+			t.Fatal("Approved stateless free-tier binding was not realized", wire)
+		}
+		clips := 0
+		for _, value := range request["input"].([]any) {
+			part := value.(map[string]any)
+			if part["type"] == "audio" {
+				clips++
+				if part["mime_type"] != "audio/wav" || part["data"] == "" {
+					t.Fatal("Actual audio is missing", part)
+				}
+			}
+		}
+		if clips != expectedClips || len(run["support_asset_ids"].([]any)) < expectedClips {
+			t.Fatal("Missing actual target/reference", clips, run)
+		}
+	} else {
+		t.Fatal("Unexpected auditory provider", wire["provider"])
 	}
 	actual := 0
 	for _, value := range result["output"].(map[string]any)["findings"].([]any) {

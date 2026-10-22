@@ -19,7 +19,9 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
    call(['docker','build','-t',name+'-speech','-f','services/speech/Dockerfile','.']);runtime=name+'-speech'
   # Explicitly selected, actually qualified dependency image + exact production
   # source mount. This never substitutes a synthesis/parser/storage owner.
-  call(['docker','run','-d','--name',name+'-speech','--network',name,'--network-alias','speech','-e','SPEECH_INTERNAL_TOKEN=actual-local-speech-test','--tmpfs','/models:rw','-v',str(r/'data/iteration7/models/kokoro-local-en-v1')+':/models/kokoro-local-en-v1:ro','-v',str(r/'data/iteration16/models/faster-whisper-local-en-v1')+':/models/faster-whisper-local-en-v1:ro','-v',str(r/'data/iteration16/models/qwen25-omni-3b-audio-v1')+':/models/qwen25-omni-3b-audio-v1:ro','-v',str(r/'services/speech')+':/app:ro',runtime])
+  speech_secret=[]
+  if env.get('TANGERINE_GEMINI_TEST_ENV_FILE'):speech_secret=['--env-file',str(Path(env['TANGERINE_GEMINI_TEST_ENV_FILE']).resolve())]
+  call(['docker','run',*speech_secret,'-d','--name',name+'-speech','--network',name,'--network-alias','speech','-e','SPEECH_INTERNAL_TOKEN=actual-local-speech-test','--tmpfs','/models:rw','-v',str(r/'data/iteration7/models/kokoro-local-en-v1')+':/models/kokoro-local-en-v1:ro','-v',str(r/'data/iteration16/models/faster-whisper-local-en-v1')+':/models/faster-whisper-local-en-v1:ro','-v',str(r/'data/iteration16/models/qwen25-omni-3b-audio-v1')+':/models/qwen25-omni-3b-audio-v1:ro','-v',str(r/'services/speech')+':/app:ro',runtime])
   call(['docker','run','-d','--name',name+'-postgres','--network',name,'--network-alias','postgres','--env-file',str(config),'postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826'])
   call(['docker','run','-d','--name',name+'-media','--network',name,'--network-alias','minio','--env-file',str(config),name+'-minio'])
   for kind in ['postgres','media']:
@@ -33,6 +35,8 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
   evidence=r/'data/iteration16/native'/name;evidence.mkdir(parents=True,exist_ok=True)
   print('Private evidence: '+str(evidence.relative_to(r)),file=sys.stderr)
   args=['docker','run','--rm','--network',name,'--env-file',str(config),'-e','TANGERINE_PREPARATION_TEST_EVIDENCE=/evidence','-e','TANGERINE_SPEECH_TEST_URL=http://speech:8090','-v',str(evidence)+':/evidence','-v',str(r/'tests/native_preparation_test.go')+':/src/internal/app/native_preparation_test.go:ro','-v',str(r/'tests/native_mutation_test.go')+':/src/internal/app/native_mutation_test.go:ro','-v',str(r/'tests/native_speech_test.go')+':/src/internal/app/native_speech_test.go:ro','-v',str(r/'tests/native_listening_test.go')+':/src/internal/app/native_listening_test.go:ro','-v',str(r/'tests/native_acoustic_test.go')+':/src/internal/app/native_acoustic_test.go:ro','-v',str(r/'tests/native_audio_diagnostics_test.go')+':/src/internal/app/native_audio_diagnostics_test.go:ro','--entrypoint','go',name+'-go',*go_args]
+  if env.get('TANGERINE_AUDIO_JUDGE_TEST_PROFILE'):
+   index=args.index('--entrypoint');args[index:index]=['-e','TANGERINE_AUDIO_JUDGE_TEST_PROFILE=/audio-test-profile.json','-v',str(Path(env['TANGERINE_AUDIO_JUDGE_TEST_PROFILE']).resolve())+':/audio-test-profile.json:ro']
   p=subprocess.run(args,cwd=r,env=env,timeout=900,capture_output=True,text=True)
   print(p.stdout,end='');print(p.stderr,file=sys.stderr,end='');(evidence/'go-test.jsonl').write_text(p.stdout)
   status=p.returncode
