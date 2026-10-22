@@ -9,13 +9,16 @@ portable_pointer=D/'release/portable-current.json';portable=R/load(portable_poin
 attempts=D/'attempts/run-498170c8d8'
 roots={'speech':R/'data/iteration7/browser/run-16fdff2d1dc5','listening':R/'data/iteration9/browser/run-f15b42d86f1b','interpretation':R/'data/iteration10/browser/run-f105d75c23d4','scoring':R/'data/iteration11/browser/run-922f48e71445','review':R/'data/iteration12/browser/run-9cdd7962284c','sources':R/'data/iteration13/browser/run-69bcea2bd5','reports':R/'data/iteration14/browser/run-a21836ff35','recovery':R/'data/iteration15/workspace/run-ead277e23e','actual-main':prior,'actual-continuation':live,'current-source':current,'current-settings':settings,'attempts':attempts}
 if portable:roots['portable']=portable
+# Retain the actually qualified custom Settings run when the source pointer
+# advances to a startup-only observation.
+roots['custom-audio-settings']=R/'data/iteration16/custom-audio-profile/run-f0551a07c5'
 rows=[('Library','/',(portable/'test_portable_library_positive.png') if portable else prior/'test_library_positive.png','Actual restored populated Library on amd64; the original empty Library and generation path remain captured in the main-flow video.' if portable else 'Actual empty Library before generation; populated Listen-and-answer navigation is captured in the actual main-flow video.'),('Prepare','/prepare',prior/'test_generation_positive.png','Actual installed local LLM clean→mutations/key with one explicitly saved Resume.'),('Saved audio','/audio',roots['speech']/'test_playback_positive.png','Actual native Kokoro/control/storage; text-key upstream is constructed.'),('Listen/results','/listen',prior/'test_primary_score_positive.png','Actual local LLM interpretation/native100/comments; optional explanation absent.'),('Saved attempts','/attempts',(portable/'attempts-history.png') if portable else attempts/'attempts-history.png','Actual stored history; separate owned real DB outage/Refresh/reopen.'),('Reviews','/reviews',live/'test_review_positive.png','Actual local reconsideration/dispute and unchanged supported primary score.'),('Sources','/sources',roots['sources']/'test_rows_positive.png','Real importer/DB/UI with labelled constructed native source records.'),('Reports/Lab','/reports',roots['reports']/'test_report_positive.png','Real source/attempt/experiment owners; constructed reporting population.'),('Settings','/settings',settings/'test_current_precision_ui_positive.png','Actual source save/reload of CPU/int8/qnnpack/repetition binding; no inference.'),('Recovery','/recovery',roots['recovery']/'test_switch_back_positive.png','Actual native maintenance, restore/switch and saved-data readback.'),('Cleanup','/cleanup',roots['recovery']/'test_cleanup_preview_positive.png','Actual owned records, preview/confirmation rejection/application; no user data erased.')]
 media=[]
 for title,route,path,boundary in rows:
  if not path.is_file():raise ValueError('Missing route picture: '+str(path))
  width,height=struct.unpack('>II',path.read_bytes()[16:24]);media.append(dict(screen=title,route=route,picture=str(path.relative_to(R)),width=width,height=height,proof_boundary=boundary))
 videos={}
-for directory in [D/'frontend/final-videos',prior/'videos',live/'videos',current/'videos',settings/'videos',*([portable/'videos'] if portable else [])]:
+for directory in [D/'frontend/final-videos',prior/'videos',live/'videos',current/'videos',settings/'videos',roots['custom-audio-settings']/'videos',*([portable/'videos'] if portable else [])]:
  for path in directory.glob('browser-*.json'):
   meta=load(path)
   for v in meta['videos']:
@@ -34,7 +37,7 @@ p=subprocess.run(['docker','run','--rm','--network','none','-v',str(R)+':/repo:r
 if p.returncode:raise AssertionError(p.stderr)
 probes={**retained,**json.loads(p.stdout)}
 for path,row in videos.items():row['ffprobe']=probes[path]
-audio_paths=[prior/'played.wav',D/'frontend/audio/qwen-custom.wav',D/'frontend/audio/qwen-base.wav']
+audio_paths=[prior/'played.wav',D/'frontend/audio/qwen-custom.wav',D/'frontend/audio/qwen-base.wav',D/'audio/gemini-pause-present.wav',D/'audio/gemini-pause-absent.wav']
 if portable:audio_paths.append(portable/'actual-amd64-speech.wav')
 # Exact already-observed native source/result pairs; no resynthesis or edit.
 acoustic=R/'data/iteration8/native/tangerine-acoustic-21b85f0167e6'

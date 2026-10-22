@@ -21,6 +21,8 @@ Exact audio files:
 - [played.wav](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-4a793cab0e/played.wav) — 27.075 seconds, 24000 Hz.
 - [qwen-custom.wav](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/frontend/audio/qwen-custom.wav) — 2.4 seconds, 24000 Hz.
 - [qwen-base.wav](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/frontend/audio/qwen-base.wav) — 1.84 seconds, 24000 Hz.
+- [gemini-pause-present.wav](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/audio/gemini-pause-present.wav) — 4.1 seconds, 24000 Hz.
+- [gemini-pause-absent.wav](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/audio/gemini-pause-absent.wav) — 2.1 seconds, 24000 Hz.
 - [actual-amd64-speech.wav](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/amd64-42717b5216/actual-amd64-speech.wav) — 1.575 seconds, 24000 Hz.
 - [acoustic-pause_insert-source.wav](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration8/native/tangerine-acoustic-21b85f0167e6/acoustic-pause_insert-source.wav) — 2.1 seconds, 24000 Hz.
 - [acoustic-pause_insert-result.wav](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration8/native/tangerine-acoustic-21b85f0167e6/acoustic-pause_insert-result.wav) — 4.1 seconds, 24000 Hz.
@@ -57,9 +59,10 @@ Actual browser recordings (silent; exact WAVs above):
 - [page@c532ea82635a34f6c6efe573f420ac00.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-88ea846dd0/videos/page@c532ea82635a34f6c6efe573f420ac00.webm) — 2.12 seconds.
 - [page@7c5a31e1e83f759ebd0631b7a3160635.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-88ea846dd0/videos/page@7c5a31e1e83f759ebd0631b7a3160635.webm) — 14.08 seconds.
 - [page@61a6a26a2ab4c4c27843b75b2e3d3a3a.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/arm64-88ea846dd0/videos/page@61a6a26a2ab4c4c27843b75b2e3d3a3a.webm) — 240.0 seconds.
-- [page@5864b61ddea9a3967149ccd66440f82a.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/custom-audio-profile/run-f0551a07c5/videos/page@5864b61ddea9a3967149ccd66440f82a.webm) — 3.88 seconds.
+- [page@aa66914c5c32593001842b49470480ab.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/custom-audio-profile/run-c3e483234d/videos/page@aa66914c5c32593001842b49470480ab.webm) — 1.6 seconds.
 - [page@1e86a1bce465337aa38176620377c7c1.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/current-arm64-77829a7670/videos/page@1e86a1bce465337aa38176620377c7c1.webm) — 4.56 seconds.
+- [page@5864b61ddea9a3967149ccd66440f82a.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/custom-audio-profile/run-f0551a07c5/videos/page@5864b61ddea9a3967149ccd66440f82a.webm) — 3.88 seconds.
 - [page@80189cfe854bfaa7dd1c357b37bde29c.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/amd64-42717b5216/videos/page@80189cfe854bfaa7dd1c357b37bde29c.webm) — 6.72 seconds.
 - [page@8d1f7899e150b876073f22d95f6f22e7.webm](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/iteration16/release/amd64-42717b5216/videos/page@8d1f7899e150b876073f22d95f6f22e7.webm) — 2.32 seconds.
 
-All 151 pictures and native metadata are indexed in [MEDIA.json](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/audit/iteration-16-release-20261021/MEDIA.json).
+All 153 pictures and native metadata are indexed in [MEDIA.json](/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/audit/iteration-16-release-20261021/MEDIA.json).

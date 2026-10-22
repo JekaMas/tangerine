@@ -1,6 +1,8 @@
-# Iteration 16 release application and evidence
+# Historical iteration 16 apply checkpoint (82bbea4)
 
-**Status: incomplete; full release acceptance remains open.** Code revision `82bbea4dfcc6e352395e4e6e5c41cb2a57ac1a53` is committed clean. The immutable [reconciliation](RECONCILIATION.json) accounts for349/361selected DAG edges and309/321distinct physical tests across eight properties. It combines actual new observations with retained valid original observations; it is not a newly executed whole suite.
+This is the retained earlier checkpoint, not the current verdict. The completed verification is [GREEN](ACCEPTANCE.md), with the current [report](../iteration-16-verification-20261022/REPORT.md) and reconciliation. The original observations below remain historical.
+
+**Historical status: incomplete; full release acceptance remains open.** Code revision `82bbea4dfcc6e352395e4e6e5c41cb2a57ac1a53` is committed clean. The immutable [reconciliation](RECONCILIATION.json) accounts for349/361selected DAG edges and309/321distinct physical tests across eight properties. It combines actual new observations with retained valid original observations; it is not a newly executed whole suite.
 
 Exactly twelve selected observations remain unresolved: eleven actual amd64cases blocked before startup by the Docker registry connection, and one actual auditory negative which returns the wrong acoustic judgment. Structural checks, copied Lab artifacts and a successful ordinary exercise cannot close those cases. No full-release acceptance artifact is issued.
 
