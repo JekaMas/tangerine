@@ -1,9 +1,10 @@
 'use client';
 import useListening from './useListening';
 import Results from './Results';
+import CheckingStatus from './CheckingStatus';
 
 export default function Listen() {
-  const {attempt, answer, language, recovered, error, notice, busy, audioRevision,
+  const {attempt, answer, language, recovered, error, notice, busy, checking, audioRevision,
     canRefresh, refresh, write, editAnswer, editLanguage, playback, audioError, results, retryChecking} = useListening();
   const submitted = attempt?.submitted_at != null;
   return <main>
@@ -12,6 +13,7 @@ export default function Listen() {
     <section className="card">
       {error && <p role="alert" className="error">{error}</p>}
       {notice && <p role="status">{notice}</p>}
+      <CheckingStatus checking={checking}/>
       <button className="secondary" onClick={refresh} disabled={busy || !canRefresh}>Refresh saved state</button>
       {attempt && <>
         <h2>{attempt.case.title}</h2><p>{attempt.case.public_context}</p>
@@ -26,7 +28,7 @@ export default function Listen() {
         {submitted ? <p>Answer submitted and saved. <a href="/attempts">Open saved attempts</a></p>
           : <div className="actions"><button onClick={() => write(false)} disabled={busy}>Save draft</button><button onClick={() => write(true)} disabled={busy}>Submit answer</button></div>}
         {submitted&&<section aria-label="Answer findings">
-          <Results results={results} busy={busy} retry={retryChecking}/>
+          <Results results={results} busy={busy} checking={checking} retry={retryChecking}/>
           <h3>Answer findings</h3>
           {results?.interpretation?.status==='complete'&&<p>Answer interpretation ready.</p>}
           {results?.status==='review_required'&&<p>Some findings remain uncertain. Supported components are retained.</p>}

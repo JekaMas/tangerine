@@ -5,7 +5,7 @@ function Metric({name, value}) {
   return <p>{name}: {value?.status === 'available' ? value.display + '%' :
     value?.status === 'review_required' ? 'uncertain' : 'not applicable'}{value?.reason ? ' · ' + value.reason.replaceAll('_', ' ') : ''}</p>;
 }
-export default function Results({results, busy, retry}) {
+export default function Results({results, busy, checking, retry}) {
   const score = results?.score;
   if (!score) return null;
   return <section aria-label="Scores and practice">
@@ -34,7 +34,7 @@ export default function Results({results, busy, retry}) {
       <p><strong>{item.kind === 'recommendation' ? 'New practice recommendation' : item.kind.replaceAll('_', ' ')}</strong>{item.status === 'needs_review' ? ' · uncertain' : ''}</p>
       <p>{item.text}</p>
     </article>)}
-    {results.feedback_status !== 'complete' && <><p>Comments and practice recommendations are unavailable. Your score and answer are saved.</p>
-      <button disabled={busy} onClick={retry}>Retry comments and recommendations</button></>}
+    {results.feedback_status !== 'complete' && (checking ? <p>Comments and practice recommendations are being prepared. Your score and answer are saved.</p> : <><p>Comments and practice recommendations are unavailable. Your score and answer are saved.</p>
+      <button disabled={busy} onClick={retry}>Retry comments and recommendations</button></>)}
   </section>;
 }

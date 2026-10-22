@@ -3991,6 +3991,24 @@
       "capability": "iteration-sixteen-release",
       "title": "I16-08 Native and media evidence correspondence",
       "fingerprint": "b48697edc85f15b2c9d55998ac0b10f892d58e2fa5897189a0a00793aa078619"
+    },
+    {
+      "id": "USE-01",
+      "capability": "interactive-usability",
+      "title": "USE-01 Ordinary exercise controls",
+      "fingerprint": "f650dd33115efdadc979f26b6440f7048cb3d2154d0ce72d18bd3e4ccb811dd3"
+    },
+    {
+      "id": "USE-02",
+      "capability": "interactive-usability",
+      "title": "USE-02 Visible foreground checking",
+      "fingerprint": "0fb8721ce410cd1285e2a1b4edd6a8380eb50c307363abec917a85941c114d52"
+    },
+    {
+      "id": "USE-03",
+      "capability": "interactive-usability",
+      "title": "USE-03 Checking failure and lifecycle",
+      "fingerprint": "bc2217b6992b55fdb6253f08758dde82f56f423c6465614b4fb4641d77c08ee7"
     }
   ],
   "properties": [
@@ -15594,6 +15612,47 @@
       "oracle": "Independent literal assertions in named executable test plus complete shared fixture source. Retain actual pictures, flushed video, played audio and native/provider/Lab readback with explicit constructed/actual/unavailable boundaries; saved readback and maintenance perform no inference.",
       "source_globs": [
         "tests/release_lab.py"
+      ]
+    },
+    {
+      "id": "USE-01.P1",
+      "requirement_id": "USE-01",
+      "statement": "USE-01 Ordinary exercise controls with exact saved/requested state and no extra inference.",
+      "scenarios": [
+        "USE-01 Selected, automatic and rejected controls"
+      ],
+      "owner": "services/web/app/prepare/page.js",
+      "oracle": "Literal independently expected request/state/call-count/score values observed in real Chrome/API/PostgreSQL/MinIO; model output only is constructed.",
+      "source_globs": [
+        "services/web/app/prepare/*"
+      ]
+    },
+    {
+      "id": "USE-02.P1",
+      "requirement_id": "USE-02",
+      "statement": "USE-02 Visible foreground checking with exact saved/requested state and no extra inference.",
+      "scenarios": [
+        "USE-02 Saved answer and score during checking"
+      ],
+      "owner": "services/web/app/listen/useListening.js",
+      "oracle": "Literal independently expected request/state/call-count/score values observed in real Chrome/API/PostgreSQL/MinIO; model output only is constructed.",
+      "source_globs": [
+        "services/web/app/listen/*",
+        "services/api/internal/app/interpretation_view.go"
+      ]
+    },
+    {
+      "id": "USE-03.P1",
+      "requirement_id": "USE-03",
+      "statement": "USE-03 Checking failure and lifecycle with exact saved/requested state and no extra inference.",
+      "scenarios": [
+        "USE-03 Read failure, completion and explicit retry"
+      ],
+      "owner": "services/web/app/listen/useListening.js",
+      "oracle": "Literal independently expected request/state/call-count/score values observed in real Chrome/API/PostgreSQL/MinIO; model output only is constructed.",
+      "source_globs": [
+        "services/web/app/listen/*",
+        "services/api/internal/app/interpretation_view.go"
       ]
     }
   ],
@@ -191078,6 +191137,930 @@
       "designed_fixture_id": "generation-kokoro-test_exited_worker_negative",
       "fixture_observation_state": "not_run",
       "distinct_reason": "An independently identified successful caller recovers after an idle model process exits."
+    },
+    {
+      "id": "USE-01.P1.test_controls_positive",
+      "property_id": "USE-01.P1",
+      "polarity": "positive",
+      "scenario": "USE-01 Selected, automatic and rejected controls",
+      "scenario_fingerprint": "d758aab710018473e4eff902f74704e0e9e614f4abe9918f5fe8e6e683995dce",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_controls_positive(self):\\n        self.assertEqual(self.values['test_controls_positive'],{'request':{'topic':'Insurance choices','speaker_count':2,'text_length_words':180,'english_level':'B2','category_families':['grammar','lexis'],'mutation_count':3,'mutation_seed':None,'audio_backend':None},'levels':['B2','B2']})\"}",
+      "observable": "def test_controls_positive(self):\n        self.assertEqual(self.values['test_controls_positive'],{'request':{'topic':'Insurance choices','speaker_count':2,'text_length_words':180,'english_level':'B2','category_families':['grammar','lexis'],'mutation_count':3,'mutation_seed':None,'audio_backend':None},'levels':['B2','B2']})",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_controls_positive",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/prepare",
+        "services/api/internal/app/preparation.go",
+        "services/api/internal/app/speech_http.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-01 Selected, automatic and rejected controls: test_controls_positive qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-01.P1.test_saved_summary_positive",
+      "property_id": "USE-01.P1",
+      "polarity": "positive",
+      "scenario": "USE-01 Selected, automatic and rejected controls",
+      "scenario_fingerprint": "d758aab710018473e4eff902f74704e0e9e614f4abe9918f5fe8e6e683995dce",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_saved_summary_positive(self):self.assertIs(self.values['test_saved_summary_positive'],True)\"}",
+      "observable": "def test_saved_summary_positive(self):self.assertIs(self.values['test_saved_summary_positive'],True)",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_saved_summary_positive",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/prepare",
+        "services/api/internal/app/preparation.go",
+        "services/api/internal/app/speech_http.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-01 Selected, automatic and rejected controls: test_saved_summary_positive qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-01.P1.test_levels_positive",
+      "property_id": "USE-01.P1",
+      "polarity": "positive",
+      "scenario": "USE-01 Selected, automatic and rejected controls",
+      "scenario_fingerprint": "d758aab710018473e4eff902f74704e0e9e614f4abe9918f5fe8e6e683995dce",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_levels_positive(self):self.assertEqual(self.values['test_levels_positive'],['A1','A2','B1','B2','C1','C2'])\"}",
+      "observable": "def test_levels_positive(self):self.assertEqual(self.values['test_levels_positive'],['A1','A2','B1','B2','C1','C2'])",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_levels_positive",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/prepare",
+        "services/api/internal/app/preparation.go",
+        "services/api/internal/app/speech_http.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-01 Selected, automatic and rejected controls: test_levels_positive qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-01.P1.test_families_positive",
+      "property_id": "USE-01.P1",
+      "polarity": "positive",
+      "scenario": "USE-01 Selected, automatic and rejected controls",
+      "scenario_fingerprint": "d758aab710018473e4eff902f74704e0e9e614f4abe9918f5fe8e6e683995dce",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_families_positive(self):self.assertEqual(self.values['test_families_positive'],['grammar','lexis','pronunciation','pronunciation.segmental','pronunciation.suprasegmental','fluency','discourse','pragmatics_register'])\"}",
+      "observable": "def test_families_positive(self):self.assertEqual(self.values['test_families_positive'],['grammar','lexis','pronunciation','pronunciation.segmental','pronunciation.suprasegmental','fluency','discourse','pragmatics_register'])",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_families_positive",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/prepare",
+        "services/api/internal/app/preparation.go",
+        "services/api/internal/app/speech_http.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-01 Selected, automatic and rejected controls: test_families_positive qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-01.P1.test_automatic_positive",
+      "property_id": "USE-01.P1",
+      "polarity": "positive",
+      "scenario": "USE-01 Selected, automatic and rejected controls",
+      "scenario_fingerprint": "d758aab710018473e4eff902f74704e0e9e614f4abe9918f5fe8e6e683995dce",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_automatic_positive(self):self.assertEqual(self.values['test_automatic_positive'],{'english_level':None,'category_families':[],'mutation_count':None})\"}",
+      "observable": "def test_automatic_positive(self):self.assertEqual(self.values['test_automatic_positive'],{'english_level':None,'category_families':[],'mutation_count':None})",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_automatic_positive",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/prepare",
+        "services/api/internal/app/preparation.go",
+        "services/api/internal/app/speech_http.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-01 Selected, automatic and rejected controls: test_automatic_positive qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-01.P1.test_zero_positive",
+      "property_id": "USE-01.P1",
+      "polarity": "positive",
+      "scenario": "USE-01 Selected, automatic and rejected controls",
+      "scenario_fingerprint": "d758aab710018473e4eff902f74704e0e9e614f4abe9918f5fe8e6e683995dce",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_zero_positive(self):self.assertEqual(self.values['test_zero_positive'],0)\"}",
+      "observable": "def test_zero_positive(self):self.assertEqual(self.values['test_zero_positive'],0)",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_zero_positive",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/prepare",
+        "services/api/internal/app/preparation.go",
+        "services/api/internal/app/speech_http.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-01 Selected, automatic and rejected controls: test_zero_positive qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-01.P1.test_advanced_positive",
+      "property_id": "USE-01.P1",
+      "polarity": "positive",
+      "scenario": "USE-01 Selected, automatic and rejected controls",
+      "scenario_fingerprint": "d758aab710018473e4eff902f74704e0e9e614f4abe9918f5fe8e6e683995dce",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_advanced_positive(self):self.assertEqual(self.values['test_advanced_positive'],{'english_level':'C1','category_families':['discourse'],'mutation_count':4})\"}",
+      "observable": "def test_advanced_positive(self):self.assertEqual(self.values['test_advanced_positive'],{'english_level':'C1','category_families':['discourse'],'mutation_count':4})",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_advanced_positive",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/prepare",
+        "services/api/internal/app/preparation.go",
+        "services/api/internal/app/speech_http.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-01 Selected, automatic and rejected controls: test_advanced_positive qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-01.P1.test_invalid_json_negative",
+      "property_id": "USE-01.P1",
+      "polarity": "negative",
+      "scenario": "USE-01 Selected, automatic and rejected controls",
+      "scenario_fingerprint": "d758aab710018473e4eff902f74704e0e9e614f4abe9918f5fe8e6e683995dce",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_invalid_json_negative(self):self.assertEqual(self.values['test_invalid_json_negative'],'Insurance choices')\"}",
+      "observable": "def test_invalid_json_negative(self):self.assertEqual(self.values['test_invalid_json_negative'],'Insurance choices')",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_invalid_json_negative",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/prepare",
+        "services/api/internal/app/preparation.go",
+        "services/api/internal/app/speech_http.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-01 Selected, automatic and rejected controls: test_invalid_json_negative qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-01.P1.test_invalid_count_negative",
+      "property_id": "USE-01.P1",
+      "polarity": "negative",
+      "scenario": "USE-01 Selected, automatic and rejected controls",
+      "scenario_fingerprint": "d758aab710018473e4eff902f74704e0e9e614f4abe9918f5fe8e6e683995dce",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_invalid_count_negative(self):self.assertEqual(self.values['test_invalid_count_negative'],[False,False])\"}",
+      "observable": "def test_invalid_count_negative(self):self.assertEqual(self.values['test_invalid_count_negative'],[False,False])",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_invalid_count_negative",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/prepare",
+        "services/api/internal/app/preparation.go",
+        "services/api/internal/app/speech_http.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-01 Selected, automatic and rejected controls: test_invalid_count_negative qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-01.P1.test_request_failure_negative",
+      "property_id": "USE-01.P1",
+      "polarity": "negative",
+      "scenario": "USE-01 Selected, automatic and rejected controls",
+      "scenario_fingerprint": "d758aab710018473e4eff902f74704e0e9e614f4abe9918f5fe8e6e683995dce",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_request_failure_negative(self):self.assertEqual(self.values['test_request_failure_negative'],{'topic':'Insurance choices','count':'3'})\"}",
+      "observable": "def test_request_failure_negative(self):self.assertEqual(self.values['test_request_failure_negative'],{'topic':'Insurance choices','count':'3'})",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_request_failure_negative",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/prepare",
+        "services/api/internal/app/preparation.go",
+        "services/api/internal/app/speech_http.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-01 Selected, automatic and rejected controls: test_request_failure_negative qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-01.P1.TestPreparationOrdinaryChoicesPositive",
+      "property_id": "USE-01.P1",
+      "polarity": "positive",
+      "scenario": "USE-01 Selected, automatic and rejected controls",
+      "scenario_fingerprint": "d758aab710018473e4eff902f74704e0e9e614f4abe9918f5fe8e6e683995dce",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"package app\\n\\nimport (\\n\\t\\\"encoding/json\\\"\\n\\t\\\"reflect\\\"\\n\\t\\\"testing\\\"\\n)\\n\\nfunc TestPreparationOrdinaryChoicesPositive(t *testing.T) {\\n\\tfor _, level := range []any{nil, \\\"A1\\\", \\\"A2\\\", \\\"B1\\\", \\\"B2\\\", \\\"C1\\\", \\\"C2\\\"} {\\n\\t\\tfor _, family := range []string{\\\"grammar\\\", \\\"lexis\\\", \\\"pronunciation\\\", \\\"pronunciation.segmental\\\", \\\"pronunciation.suprasegmental\\\", \\\"fluency\\\", \\\"discourse\\\", \\\"pragmatics_register\\\"} {\\n\\t\\t\\tfor _, count := range []any{nil, float64(0), float64(3)} {\\n\\t\\t\\t\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180, \\\"english_level\\\": level, \\\"category_families\\\": []any{family}, \\\"mutation_count\\\": count}\\n\\t\\t\\t\\traw, _ := json.Marshal(map[string]any{\\\"exercise_request\\\": request})\\n\\t\\t\\t\\tblueprint, err := ExpandBlueprint(raw, DefaultConfiguration())\\n\\t\\t\\t\\tif err != nil {\\n\\t\\t\\t\\t\\tt.Fatal(level, family, count, err)\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tsaved := blueprint[\\\"exercise_request\\\"].(map[string]any)\\n\\t\\t\\t\\tif saved[\\\"english_level\\\"] != level || saved[\\\"mutation_count\\\"] != count || !reflect.DeepEqual(saved[\\\"category_families\\\"], []any{family}) {\\n\\t\\t\\t\\t\\tt.Fatal(saved)\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tfor _, value := range blueprint[\\\"speakers\\\"].([]any) {\\n\\t\\t\\t\\t\\tif value.(map[string]any)[\\\"learner_cefr\\\"] != level {\\n\\t\\t\\t\\t\\t\\tt.Fatal(\\\"level not propagated\\\", blueprint)\\n\\t\\t\\t\\t\\t}\\n\\t\\t\\t\\t}\\n\\t\\t\\t}\\n\\t\\t}\\n\\t}\\n}\\n\\nfunc TestPreparationOrdinaryInvalidNegative(t *testing.T) {\\n\\tfor _, invalid := range []map[string]any{{\\\"english_level\\\": \\\"A0\\\"}, {\\\"category_families\\\": []any{\\\"made_up\\\"}}, {\\\"mutation_count\\\": -1}, {\\\"mutation_count\\\": 1.5}, {\\\"speaker_count\\\": 0}, {\\\"text_length_words\\\": 0}} {\\n\\t\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180}\\n\\t\\tfor key, value := range invalid {\\n\\t\\t\\trequest[key] = value\\n\\t\\t}\\n\\t\\traw, _ := json.Marshal(map[string]any{\\\"exercise_request\\\": request})\\n\\t\\tif _, err := ExpandBlueprint(raw, DefaultConfiguration()); err == nil {\\n\\t\\t\\tt.Fatal(\\\"invalid request accepted\\\", invalid)\\n\\t\\t}\\n\\t}\\n}\\n\\nfunc TestCheckingStagesPositive(t *testing.T) {\\n\\trecord := AttemptRecord{Attempt: map[string]any{\\\"state\\\": \\\"evaluating\\\"}, Context: map[string]any{\\\"configuration\\\": map[string]any{}}}\\n\\tid := \\\"accepted-checkpoint\\\"\\n\\tstate := &InterpretationState{Status: \\\"running\\\"}\\n\\tif checkingStage(record, state) != \\\"extraction\\\" {\\n\\t\\tt.Fatal(\\\"extraction\\\")\\n\\t}\\n\\tstate.Extraction = &id\\n\\tif checkingStage(record, state) != \\\"matching\\\" {\\n\\t\\tt.Fatal(\\\"matching\\\")\\n\\t}\\n\\tstate.Mapping = &id\\n\\tif checkingStage(record, state) != \\\"scoring\\\" {\\n\\t\\tt.Fatal(\\\"scoring\\\")\\n\\t}\\n\\trecord.Context[\\\"configuration\\\"].(map[string]any)[\\\"mapping_audit_enabled\\\"] = true\\n\\tif checkingStage(record, state) != \\\"audit\\\" {\\n\\t\\tt.Fatal(\\\"audit\\\")\\n\\t}\\n\\tstate.Audit = &id\\n\\tstate.Result = &id\\n\\tif checkingStage(record, state) != \\\"feedback\\\" {\\n\\t\\tt.Fatal(\\\"feedback\\\")\\n\\t}\\n\\trecord.Attempt[\\\"state\\\"] = \\\"completed\\\"\\n\\tstate.Status = \\\"complete\\\"\\n\\tif checkingStage(record, state) != \\\"complete\\\" {\\n\\t\\tt.Fatal(\\\"complete\\\")\\n\\t}\\n}\\n\\nfunc TestCheckingIncompleteNegative(t *testing.T) {\\n\\trecord := AttemptRecord{Attempt: map[string]any{\\\"state\\\": \\\"submitted\\\"}, Context: map[string]any{}}\\n\\tif checkingStage(record, nil) != \\\"not_started\\\" {\\n\\t\\tt.Fatal(\\\"unsaved progress invented\\\")\\n\\t}\\n\\tstate := &InterpretationState{Status: \\\"failed\\\"}\\n\\tif checkingStage(record, state) != \\\"failed\\\" {\\n\\t\\tt.Fatal(\\\"failure hidden\\\")\\n\\t}\\n\\tid := \\\"saved-score\\\"\\n\\tstate.Result = &id\\n\\tif checkingStage(record, state) != \\\"failed\\\" {\\n\\t\\tt.Fatal(\\\"partial saved score hides failure\\\")\\n\\t}\\n}\\n\\nfunc TestPreparationSummaryChoicesPositive(t *testing.T) {\\n\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180, \\\"english_level\\\": \\\"B2\\\", \\\"category_families\\\": []any{\\\"grammar\\\", \\\"lexis\\\"}, \\\"mutation_count\\\": 0}\\n\\tsummary := speechSummary(map[string]any{\\\"id\\\": \\\"p1\\\", \\\"phase_states\\\": map[string]any{\\\"render\\\": \\\"not_started\\\"}, \\\"exercise_request\\\": request, \\\"key_id\\\": \\\"private-key\\\"})\\n\\tif !reflect.DeepEqual(summary[\\\"exercise_request\\\"], request) {\\n\\t\\tt.Fatal(summary)\\n\\t}\\n\\tif _, leaked := summary[\\\"key_id\\\"]; leaked {\\n\\t\\tt.Fatal(\\\"key leaked\\\")\\n\\t}\\n}\\n\\nfunc TestPreparationLegacySummaryNegative(t *testing.T) {\\n\\tsummary := speechSummary(map[string]any{\\\"id\\\": \\\"old\\\", \\\"phase_states\\\": map[string]any{\\\"render\\\": \\\"complete\\\"}})\\n\\tif _, invented := summary[\\\"exercise_request\\\"]; invented {\\n\\t\\tt.Fatal(\\\"legacy request invented\\\")\\n\\t}\\n}\"}",
+      "observable": "package app\n\nimport (\n\t\"encoding/json\"\n\t\"reflect\"\n\t\"testing\"\n)\n\nfunc TestPreparationOrdinaryChoicesPositive(t *testing.T) {\n\tfor _, level := range []any{nil, \"A1\", \"A2\", \"B1\", \"B2\", \"C1\", \"C2\"} {\n\t\tfor _, family := range []string{\"grammar\", \"lexis\", \"pronunciation\", \"pronunciation.segmental\", \"pronunciation.suprasegmental\", \"fluency\", \"discourse\", \"pragmatics_register\"} {\n\t\t\tfor _, count := range []any{nil, float64(0), float64(3)} {\n\t\t\t\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180, \"english_level\": level, \"category_families\": []any{family}, \"mutation_count\": count}\n\t\t\t\traw, _ := json.Marshal(map[string]any{\"exercise_request\": request})\n\t\t\t\tblueprint, err := ExpandBlueprint(raw, DefaultConfiguration())\n\t\t\t\tif err != nil {\n\t\t\t\t\tt.Fatal(level, family, count, err)\n\t\t\t\t}\n\t\t\t\tsaved := blueprint[\"exercise_request\"].(map[string]any)\n\t\t\t\tif saved[\"english_level\"] != level || saved[\"mutation_count\"] != count || !reflect.DeepEqual(saved[\"category_families\"], []any{family}) {\n\t\t\t\t\tt.Fatal(saved)\n\t\t\t\t}\n\t\t\t\tfor _, value := range blueprint[\"speakers\"].([]any) {\n\t\t\t\t\tif value.(map[string]any)[\"learner_cefr\"] != level {\n\t\t\t\t\t\tt.Fatal(\"level not propagated\", blueprint)\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}\n\nfunc TestPreparationOrdinaryInvalidNegative(t *testing.T) {\n\tfor _, invalid := range []map[string]any{{\"english_level\": \"A0\"}, {\"category_families\": []any{\"made_up\"}}, {\"mutation_count\": -1}, {\"mutation_count\": 1.5}, {\"speaker_count\": 0}, {\"text_length_words\": 0}} {\n\t\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180}\n\t\tfor key, value := range invalid {\n\t\t\trequest[key] = value\n\t\t}\n\t\traw, _ := json.Marshal(map[string]any{\"exercise_request\": request})\n\t\tif _, err := ExpandBlueprint(raw, DefaultConfiguration()); err == nil {\n\t\t\tt.Fatal(\"invalid request accepted\", invalid)\n\t\t}\n\t}\n}\n\nfunc TestCheckingStagesPositive(t *testing.T) {\n\trecord := AttemptRecord{Attempt: map[string]any{\"state\": \"evaluating\"}, Context: map[string]any{\"configuration\": map[string]any{}}}\n\tid := \"accepted-checkpoint\"\n\tstate := &InterpretationState{Status: \"running\"}\n\tif checkingStage(record, state) != \"extraction\" {\n\t\tt.Fatal(\"extraction\")\n\t}\n\tstate.Extraction = &id\n\tif checkingStage(record, state) != \"matching\" {\n\t\tt.Fatal(\"matching\")\n\t}\n\tstate.Mapping = &id\n\tif checkingStage(record, state) != \"scoring\" {\n\t\tt.Fatal(\"scoring\")\n\t}\n\trecord.Context[\"configuration\"].(map[string]any)[\"mapping_audit_enabled\"] = true\n\tif checkingStage(record, state) != \"audit\" {\n\t\tt.Fatal(\"audit\")\n\t}\n\tstate.Audit = &id\n\tstate.Result = &id\n\tif checkingStage(record, state) != \"feedback\" {\n\t\tt.Fatal(\"feedback\")\n\t}\n\trecord.Attempt[\"state\"] = \"completed\"\n\tstate.Status = \"complete\"\n\tif checkingStage(record, state) != \"complete\" {\n\t\tt.Fatal(\"complete\")\n\t}\n}\n\nfunc TestCheckingIncompleteNegative(t *testing.T) {\n\trecord := AttemptRecord{Attempt: map[string]any{\"state\": \"submitted\"}, Context: map[string]any{}}\n\tif checkingStage(record, nil) != \"not_started\" {\n\t\tt.Fatal(\"unsaved progress invented\")\n\t}\n\tstate := &InterpretationState{Status: \"failed\"}\n\tif checkingStage(record, state) != \"failed\" {\n\t\tt.Fatal(\"failure hidden\")\n\t}\n\tid := \"saved-score\"\n\tstate.Result = &id\n\tif checkingStage(record, state) != \"failed\" {\n\t\tt.Fatal(\"partial saved score hides failure\")\n\t}\n}\n\nfunc TestPreparationSummaryChoicesPositive(t *testing.T) {\n\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180, \"english_level\": \"B2\", \"category_families\": []any{\"grammar\", \"lexis\"}, \"mutation_count\": 0}\n\tsummary := speechSummary(map[string]any{\"id\": \"p1\", \"phase_states\": map[string]any{\"render\": \"not_started\"}, \"exercise_request\": request, \"key_id\": \"private-key\"})\n\tif !reflect.DeepEqual(summary[\"exercise_request\"], request) {\n\t\tt.Fatal(summary)\n\t}\n\tif _, leaked := summary[\"key_id\"]; leaked {\n\t\tt.Fatal(\"key leaked\")\n\t}\n}\n\nfunc TestPreparationLegacySummaryNegative(t *testing.T) {\n\tsummary := speechSummary(map[string]any{\"id\": \"old\", \"phase_states\": map[string]any{\"render\": \"complete\"}})\n\tif _, invented := summary[\"exercise_request\"]; invented {\n\t\tt.Fatal(\"legacy request invented\")\n\t}\n}",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "tangerine.local/api/internal/app::TestPreparationOrdinaryChoicesPositive",
+      "command_id": "usability-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/usability_test.go",
+      "source_sha256": "ca78aae479943cb13559c5ef9328634664e72846433b03cb4d3b8b41a0ebfe56",
+      "invalidation_dependencies": [
+        "services/api/internal/app/usability_test.go",
+        "services/web/app/prepare",
+        "services/api/internal/app/preparation.go",
+        "services/api/internal/app/speech_http.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE"
+      },
+      "distinct_reason": "USE-01 Selected, automatic and rejected controls: TestPreparationOrdinaryChoicesPositive qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-01.P1.TestPreparationOrdinaryInvalidNegative",
+      "property_id": "USE-01.P1",
+      "polarity": "negative",
+      "scenario": "USE-01 Selected, automatic and rejected controls",
+      "scenario_fingerprint": "d758aab710018473e4eff902f74704e0e9e614f4abe9918f5fe8e6e683995dce",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"package app\\n\\nimport (\\n\\t\\\"encoding/json\\\"\\n\\t\\\"reflect\\\"\\n\\t\\\"testing\\\"\\n)\\n\\nfunc TestPreparationOrdinaryChoicesPositive(t *testing.T) {\\n\\tfor _, level := range []any{nil, \\\"A1\\\", \\\"A2\\\", \\\"B1\\\", \\\"B2\\\", \\\"C1\\\", \\\"C2\\\"} {\\n\\t\\tfor _, family := range []string{\\\"grammar\\\", \\\"lexis\\\", \\\"pronunciation\\\", \\\"pronunciation.segmental\\\", \\\"pronunciation.suprasegmental\\\", \\\"fluency\\\", \\\"discourse\\\", \\\"pragmatics_register\\\"} {\\n\\t\\t\\tfor _, count := range []any{nil, float64(0), float64(3)} {\\n\\t\\t\\t\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180, \\\"english_level\\\": level, \\\"category_families\\\": []any{family}, \\\"mutation_count\\\": count}\\n\\t\\t\\t\\traw, _ := json.Marshal(map[string]any{\\\"exercise_request\\\": request})\\n\\t\\t\\t\\tblueprint, err := ExpandBlueprint(raw, DefaultConfiguration())\\n\\t\\t\\t\\tif err != nil {\\n\\t\\t\\t\\t\\tt.Fatal(level, family, count, err)\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tsaved := blueprint[\\\"exercise_request\\\"].(map[string]any)\\n\\t\\t\\t\\tif saved[\\\"english_level\\\"] != level || saved[\\\"mutation_count\\\"] != count || !reflect.DeepEqual(saved[\\\"category_families\\\"], []any{family}) {\\n\\t\\t\\t\\t\\tt.Fatal(saved)\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tfor _, value := range blueprint[\\\"speakers\\\"].([]any) {\\n\\t\\t\\t\\t\\tif value.(map[string]any)[\\\"learner_cefr\\\"] != level {\\n\\t\\t\\t\\t\\t\\tt.Fatal(\\\"level not propagated\\\", blueprint)\\n\\t\\t\\t\\t\\t}\\n\\t\\t\\t\\t}\\n\\t\\t\\t}\\n\\t\\t}\\n\\t}\\n}\\n\\nfunc TestPreparationOrdinaryInvalidNegative(t *testing.T) {\\n\\tfor _, invalid := range []map[string]any{{\\\"english_level\\\": \\\"A0\\\"}, {\\\"category_families\\\": []any{\\\"made_up\\\"}}, {\\\"mutation_count\\\": -1}, {\\\"mutation_count\\\": 1.5}, {\\\"speaker_count\\\": 0}, {\\\"text_length_words\\\": 0}} {\\n\\t\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180}\\n\\t\\tfor key, value := range invalid {\\n\\t\\t\\trequest[key] = value\\n\\t\\t}\\n\\t\\traw, _ := json.Marshal(map[string]any{\\\"exercise_request\\\": request})\\n\\t\\tif _, err := ExpandBlueprint(raw, DefaultConfiguration()); err == nil {\\n\\t\\t\\tt.Fatal(\\\"invalid request accepted\\\", invalid)\\n\\t\\t}\\n\\t}\\n}\\n\\nfunc TestCheckingStagesPositive(t *testing.T) {\\n\\trecord := AttemptRecord{Attempt: map[string]any{\\\"state\\\": \\\"evaluating\\\"}, Context: map[string]any{\\\"configuration\\\": map[string]any{}}}\\n\\tid := \\\"accepted-checkpoint\\\"\\n\\tstate := &InterpretationState{Status: \\\"running\\\"}\\n\\tif checkingStage(record, state) != \\\"extraction\\\" {\\n\\t\\tt.Fatal(\\\"extraction\\\")\\n\\t}\\n\\tstate.Extraction = &id\\n\\tif checkingStage(record, state) != \\\"matching\\\" {\\n\\t\\tt.Fatal(\\\"matching\\\")\\n\\t}\\n\\tstate.Mapping = &id\\n\\tif checkingStage(record, state) != \\\"scoring\\\" {\\n\\t\\tt.Fatal(\\\"scoring\\\")\\n\\t}\\n\\trecord.Context[\\\"configuration\\\"].(map[string]any)[\\\"mapping_audit_enabled\\\"] = true\\n\\tif checkingStage(record, state) != \\\"audit\\\" {\\n\\t\\tt.Fatal(\\\"audit\\\")\\n\\t}\\n\\tstate.Audit = &id\\n\\tstate.Result = &id\\n\\tif checkingStage(record, state) != \\\"feedback\\\" {\\n\\t\\tt.Fatal(\\\"feedback\\\")\\n\\t}\\n\\trecord.Attempt[\\\"state\\\"] = \\\"completed\\\"\\n\\tstate.Status = \\\"complete\\\"\\n\\tif checkingStage(record, state) != \\\"complete\\\" {\\n\\t\\tt.Fatal(\\\"complete\\\")\\n\\t}\\n}\\n\\nfunc TestCheckingIncompleteNegative(t *testing.T) {\\n\\trecord := AttemptRecord{Attempt: map[string]any{\\\"state\\\": \\\"submitted\\\"}, Context: map[string]any{}}\\n\\tif checkingStage(record, nil) != \\\"not_started\\\" {\\n\\t\\tt.Fatal(\\\"unsaved progress invented\\\")\\n\\t}\\n\\tstate := &InterpretationState{Status: \\\"failed\\\"}\\n\\tif checkingStage(record, state) != \\\"failed\\\" {\\n\\t\\tt.Fatal(\\\"failure hidden\\\")\\n\\t}\\n\\tid := \\\"saved-score\\\"\\n\\tstate.Result = &id\\n\\tif checkingStage(record, state) != \\\"failed\\\" {\\n\\t\\tt.Fatal(\\\"partial saved score hides failure\\\")\\n\\t}\\n}\\n\\nfunc TestPreparationSummaryChoicesPositive(t *testing.T) {\\n\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180, \\\"english_level\\\": \\\"B2\\\", \\\"category_families\\\": []any{\\\"grammar\\\", \\\"lexis\\\"}, \\\"mutation_count\\\": 0}\\n\\tsummary := speechSummary(map[string]any{\\\"id\\\": \\\"p1\\\", \\\"phase_states\\\": map[string]any{\\\"render\\\": \\\"not_started\\\"}, \\\"exercise_request\\\": request, \\\"key_id\\\": \\\"private-key\\\"})\\n\\tif !reflect.DeepEqual(summary[\\\"exercise_request\\\"], request) {\\n\\t\\tt.Fatal(summary)\\n\\t}\\n\\tif _, leaked := summary[\\\"key_id\\\"]; leaked {\\n\\t\\tt.Fatal(\\\"key leaked\\\")\\n\\t}\\n}\\n\\nfunc TestPreparationLegacySummaryNegative(t *testing.T) {\\n\\tsummary := speechSummary(map[string]any{\\\"id\\\": \\\"old\\\", \\\"phase_states\\\": map[string]any{\\\"render\\\": \\\"complete\\\"}})\\n\\tif _, invented := summary[\\\"exercise_request\\\"]; invented {\\n\\t\\tt.Fatal(\\\"legacy request invented\\\")\\n\\t}\\n}\"}",
+      "observable": "package app\n\nimport (\n\t\"encoding/json\"\n\t\"reflect\"\n\t\"testing\"\n)\n\nfunc TestPreparationOrdinaryChoicesPositive(t *testing.T) {\n\tfor _, level := range []any{nil, \"A1\", \"A2\", \"B1\", \"B2\", \"C1\", \"C2\"} {\n\t\tfor _, family := range []string{\"grammar\", \"lexis\", \"pronunciation\", \"pronunciation.segmental\", \"pronunciation.suprasegmental\", \"fluency\", \"discourse\", \"pragmatics_register\"} {\n\t\t\tfor _, count := range []any{nil, float64(0), float64(3)} {\n\t\t\t\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180, \"english_level\": level, \"category_families\": []any{family}, \"mutation_count\": count}\n\t\t\t\traw, _ := json.Marshal(map[string]any{\"exercise_request\": request})\n\t\t\t\tblueprint, err := ExpandBlueprint(raw, DefaultConfiguration())\n\t\t\t\tif err != nil {\n\t\t\t\t\tt.Fatal(level, family, count, err)\n\t\t\t\t}\n\t\t\t\tsaved := blueprint[\"exercise_request\"].(map[string]any)\n\t\t\t\tif saved[\"english_level\"] != level || saved[\"mutation_count\"] != count || !reflect.DeepEqual(saved[\"category_families\"], []any{family}) {\n\t\t\t\t\tt.Fatal(saved)\n\t\t\t\t}\n\t\t\t\tfor _, value := range blueprint[\"speakers\"].([]any) {\n\t\t\t\t\tif value.(map[string]any)[\"learner_cefr\"] != level {\n\t\t\t\t\t\tt.Fatal(\"level not propagated\", blueprint)\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}\n\nfunc TestPreparationOrdinaryInvalidNegative(t *testing.T) {\n\tfor _, invalid := range []map[string]any{{\"english_level\": \"A0\"}, {\"category_families\": []any{\"made_up\"}}, {\"mutation_count\": -1}, {\"mutation_count\": 1.5}, {\"speaker_count\": 0}, {\"text_length_words\": 0}} {\n\t\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180}\n\t\tfor key, value := range invalid {\n\t\t\trequest[key] = value\n\t\t}\n\t\traw, _ := json.Marshal(map[string]any{\"exercise_request\": request})\n\t\tif _, err := ExpandBlueprint(raw, DefaultConfiguration()); err == nil {\n\t\t\tt.Fatal(\"invalid request accepted\", invalid)\n\t\t}\n\t}\n}\n\nfunc TestCheckingStagesPositive(t *testing.T) {\n\trecord := AttemptRecord{Attempt: map[string]any{\"state\": \"evaluating\"}, Context: map[string]any{\"configuration\": map[string]any{}}}\n\tid := \"accepted-checkpoint\"\n\tstate := &InterpretationState{Status: \"running\"}\n\tif checkingStage(record, state) != \"extraction\" {\n\t\tt.Fatal(\"extraction\")\n\t}\n\tstate.Extraction = &id\n\tif checkingStage(record, state) != \"matching\" {\n\t\tt.Fatal(\"matching\")\n\t}\n\tstate.Mapping = &id\n\tif checkingStage(record, state) != \"scoring\" {\n\t\tt.Fatal(\"scoring\")\n\t}\n\trecord.Context[\"configuration\"].(map[string]any)[\"mapping_audit_enabled\"] = true\n\tif checkingStage(record, state) != \"audit\" {\n\t\tt.Fatal(\"audit\")\n\t}\n\tstate.Audit = &id\n\tstate.Result = &id\n\tif checkingStage(record, state) != \"feedback\" {\n\t\tt.Fatal(\"feedback\")\n\t}\n\trecord.Attempt[\"state\"] = \"completed\"\n\tstate.Status = \"complete\"\n\tif checkingStage(record, state) != \"complete\" {\n\t\tt.Fatal(\"complete\")\n\t}\n}\n\nfunc TestCheckingIncompleteNegative(t *testing.T) {\n\trecord := AttemptRecord{Attempt: map[string]any{\"state\": \"submitted\"}, Context: map[string]any{}}\n\tif checkingStage(record, nil) != \"not_started\" {\n\t\tt.Fatal(\"unsaved progress invented\")\n\t}\n\tstate := &InterpretationState{Status: \"failed\"}\n\tif checkingStage(record, state) != \"failed\" {\n\t\tt.Fatal(\"failure hidden\")\n\t}\n\tid := \"saved-score\"\n\tstate.Result = &id\n\tif checkingStage(record, state) != \"failed\" {\n\t\tt.Fatal(\"partial saved score hides failure\")\n\t}\n}\n\nfunc TestPreparationSummaryChoicesPositive(t *testing.T) {\n\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180, \"english_level\": \"B2\", \"category_families\": []any{\"grammar\", \"lexis\"}, \"mutation_count\": 0}\n\tsummary := speechSummary(map[string]any{\"id\": \"p1\", \"phase_states\": map[string]any{\"render\": \"not_started\"}, \"exercise_request\": request, \"key_id\": \"private-key\"})\n\tif !reflect.DeepEqual(summary[\"exercise_request\"], request) {\n\t\tt.Fatal(summary)\n\t}\n\tif _, leaked := summary[\"key_id\"]; leaked {\n\t\tt.Fatal(\"key leaked\")\n\t}\n}\n\nfunc TestPreparationLegacySummaryNegative(t *testing.T) {\n\tsummary := speechSummary(map[string]any{\"id\": \"old\", \"phase_states\": map[string]any{\"render\": \"complete\"}})\n\tif _, invented := summary[\"exercise_request\"]; invented {\n\t\tt.Fatal(\"legacy request invented\")\n\t}\n}",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "tangerine.local/api/internal/app::TestPreparationOrdinaryInvalidNegative",
+      "command_id": "usability-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/usability_test.go",
+      "source_sha256": "ca78aae479943cb13559c5ef9328634664e72846433b03cb4d3b8b41a0ebfe56",
+      "invalidation_dependencies": [
+        "services/api/internal/app/usability_test.go",
+        "services/web/app/prepare",
+        "services/api/internal/app/preparation.go",
+        "services/api/internal/app/speech_http.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE"
+      },
+      "distinct_reason": "USE-01 Selected, automatic and rejected controls: TestPreparationOrdinaryInvalidNegative qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-01.P1.TestPreparationSummaryChoicesPositive",
+      "property_id": "USE-01.P1",
+      "polarity": "positive",
+      "scenario": "USE-01 Selected, automatic and rejected controls",
+      "scenario_fingerprint": "d758aab710018473e4eff902f74704e0e9e614f4abe9918f5fe8e6e683995dce",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"package app\\n\\nimport (\\n\\t\\\"encoding/json\\\"\\n\\t\\\"reflect\\\"\\n\\t\\\"testing\\\"\\n)\\n\\nfunc TestPreparationOrdinaryChoicesPositive(t *testing.T) {\\n\\tfor _, level := range []any{nil, \\\"A1\\\", \\\"A2\\\", \\\"B1\\\", \\\"B2\\\", \\\"C1\\\", \\\"C2\\\"} {\\n\\t\\tfor _, family := range []string{\\\"grammar\\\", \\\"lexis\\\", \\\"pronunciation\\\", \\\"pronunciation.segmental\\\", \\\"pronunciation.suprasegmental\\\", \\\"fluency\\\", \\\"discourse\\\", \\\"pragmatics_register\\\"} {\\n\\t\\t\\tfor _, count := range []any{nil, float64(0), float64(3)} {\\n\\t\\t\\t\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180, \\\"english_level\\\": level, \\\"category_families\\\": []any{family}, \\\"mutation_count\\\": count}\\n\\t\\t\\t\\traw, _ := json.Marshal(map[string]any{\\\"exercise_request\\\": request})\\n\\t\\t\\t\\tblueprint, err := ExpandBlueprint(raw, DefaultConfiguration())\\n\\t\\t\\t\\tif err != nil {\\n\\t\\t\\t\\t\\tt.Fatal(level, family, count, err)\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tsaved := blueprint[\\\"exercise_request\\\"].(map[string]any)\\n\\t\\t\\t\\tif saved[\\\"english_level\\\"] != level || saved[\\\"mutation_count\\\"] != count || !reflect.DeepEqual(saved[\\\"category_families\\\"], []any{family}) {\\n\\t\\t\\t\\t\\tt.Fatal(saved)\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tfor _, value := range blueprint[\\\"speakers\\\"].([]any) {\\n\\t\\t\\t\\t\\tif value.(map[string]any)[\\\"learner_cefr\\\"] != level {\\n\\t\\t\\t\\t\\t\\tt.Fatal(\\\"level not propagated\\\", blueprint)\\n\\t\\t\\t\\t\\t}\\n\\t\\t\\t\\t}\\n\\t\\t\\t}\\n\\t\\t}\\n\\t}\\n}\\n\\nfunc TestPreparationOrdinaryInvalidNegative(t *testing.T) {\\n\\tfor _, invalid := range []map[string]any{{\\\"english_level\\\": \\\"A0\\\"}, {\\\"category_families\\\": []any{\\\"made_up\\\"}}, {\\\"mutation_count\\\": -1}, {\\\"mutation_count\\\": 1.5}, {\\\"speaker_count\\\": 0}, {\\\"text_length_words\\\": 0}} {\\n\\t\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180}\\n\\t\\tfor key, value := range invalid {\\n\\t\\t\\trequest[key] = value\\n\\t\\t}\\n\\t\\traw, _ := json.Marshal(map[string]any{\\\"exercise_request\\\": request})\\n\\t\\tif _, err := ExpandBlueprint(raw, DefaultConfiguration()); err == nil {\\n\\t\\t\\tt.Fatal(\\\"invalid request accepted\\\", invalid)\\n\\t\\t}\\n\\t}\\n}\\n\\nfunc TestCheckingStagesPositive(t *testing.T) {\\n\\trecord := AttemptRecord{Attempt: map[string]any{\\\"state\\\": \\\"evaluating\\\"}, Context: map[string]any{\\\"configuration\\\": map[string]any{}}}\\n\\tid := \\\"accepted-checkpoint\\\"\\n\\tstate := &InterpretationState{Status: \\\"running\\\"}\\n\\tif checkingStage(record, state) != \\\"extraction\\\" {\\n\\t\\tt.Fatal(\\\"extraction\\\")\\n\\t}\\n\\tstate.Extraction = &id\\n\\tif checkingStage(record, state) != \\\"matching\\\" {\\n\\t\\tt.Fatal(\\\"matching\\\")\\n\\t}\\n\\tstate.Mapping = &id\\n\\tif checkingStage(record, state) != \\\"scoring\\\" {\\n\\t\\tt.Fatal(\\\"scoring\\\")\\n\\t}\\n\\trecord.Context[\\\"configuration\\\"].(map[string]any)[\\\"mapping_audit_enabled\\\"] = true\\n\\tif checkingStage(record, state) != \\\"audit\\\" {\\n\\t\\tt.Fatal(\\\"audit\\\")\\n\\t}\\n\\tstate.Audit = &id\\n\\tstate.Result = &id\\n\\tif checkingStage(record, state) != \\\"feedback\\\" {\\n\\t\\tt.Fatal(\\\"feedback\\\")\\n\\t}\\n\\trecord.Attempt[\\\"state\\\"] = \\\"completed\\\"\\n\\tstate.Status = \\\"complete\\\"\\n\\tif checkingStage(record, state) != \\\"complete\\\" {\\n\\t\\tt.Fatal(\\\"complete\\\")\\n\\t}\\n}\\n\\nfunc TestCheckingIncompleteNegative(t *testing.T) {\\n\\trecord := AttemptRecord{Attempt: map[string]any{\\\"state\\\": \\\"submitted\\\"}, Context: map[string]any{}}\\n\\tif checkingStage(record, nil) != \\\"not_started\\\" {\\n\\t\\tt.Fatal(\\\"unsaved progress invented\\\")\\n\\t}\\n\\tstate := &InterpretationState{Status: \\\"failed\\\"}\\n\\tif checkingStage(record, state) != \\\"failed\\\" {\\n\\t\\tt.Fatal(\\\"failure hidden\\\")\\n\\t}\\n\\tid := \\\"saved-score\\\"\\n\\tstate.Result = &id\\n\\tif checkingStage(record, state) != \\\"failed\\\" {\\n\\t\\tt.Fatal(\\\"partial saved score hides failure\\\")\\n\\t}\\n}\\n\\nfunc TestPreparationSummaryChoicesPositive(t *testing.T) {\\n\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180, \\\"english_level\\\": \\\"B2\\\", \\\"category_families\\\": []any{\\\"grammar\\\", \\\"lexis\\\"}, \\\"mutation_count\\\": 0}\\n\\tsummary := speechSummary(map[string]any{\\\"id\\\": \\\"p1\\\", \\\"phase_states\\\": map[string]any{\\\"render\\\": \\\"not_started\\\"}, \\\"exercise_request\\\": request, \\\"key_id\\\": \\\"private-key\\\"})\\n\\tif !reflect.DeepEqual(summary[\\\"exercise_request\\\"], request) {\\n\\t\\tt.Fatal(summary)\\n\\t}\\n\\tif _, leaked := summary[\\\"key_id\\\"]; leaked {\\n\\t\\tt.Fatal(\\\"key leaked\\\")\\n\\t}\\n}\\n\\nfunc TestPreparationLegacySummaryNegative(t *testing.T) {\\n\\tsummary := speechSummary(map[string]any{\\\"id\\\": \\\"old\\\", \\\"phase_states\\\": map[string]any{\\\"render\\\": \\\"complete\\\"}})\\n\\tif _, invented := summary[\\\"exercise_request\\\"]; invented {\\n\\t\\tt.Fatal(\\\"legacy request invented\\\")\\n\\t}\\n}\"}",
+      "observable": "package app\n\nimport (\n\t\"encoding/json\"\n\t\"reflect\"\n\t\"testing\"\n)\n\nfunc TestPreparationOrdinaryChoicesPositive(t *testing.T) {\n\tfor _, level := range []any{nil, \"A1\", \"A2\", \"B1\", \"B2\", \"C1\", \"C2\"} {\n\t\tfor _, family := range []string{\"grammar\", \"lexis\", \"pronunciation\", \"pronunciation.segmental\", \"pronunciation.suprasegmental\", \"fluency\", \"discourse\", \"pragmatics_register\"} {\n\t\t\tfor _, count := range []any{nil, float64(0), float64(3)} {\n\t\t\t\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180, \"english_level\": level, \"category_families\": []any{family}, \"mutation_count\": count}\n\t\t\t\traw, _ := json.Marshal(map[string]any{\"exercise_request\": request})\n\t\t\t\tblueprint, err := ExpandBlueprint(raw, DefaultConfiguration())\n\t\t\t\tif err != nil {\n\t\t\t\t\tt.Fatal(level, family, count, err)\n\t\t\t\t}\n\t\t\t\tsaved := blueprint[\"exercise_request\"].(map[string]any)\n\t\t\t\tif saved[\"english_level\"] != level || saved[\"mutation_count\"] != count || !reflect.DeepEqual(saved[\"category_families\"], []any{family}) {\n\t\t\t\t\tt.Fatal(saved)\n\t\t\t\t}\n\t\t\t\tfor _, value := range blueprint[\"speakers\"].([]any) {\n\t\t\t\t\tif value.(map[string]any)[\"learner_cefr\"] != level {\n\t\t\t\t\t\tt.Fatal(\"level not propagated\", blueprint)\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}\n\nfunc TestPreparationOrdinaryInvalidNegative(t *testing.T) {\n\tfor _, invalid := range []map[string]any{{\"english_level\": \"A0\"}, {\"category_families\": []any{\"made_up\"}}, {\"mutation_count\": -1}, {\"mutation_count\": 1.5}, {\"speaker_count\": 0}, {\"text_length_words\": 0}} {\n\t\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180}\n\t\tfor key, value := range invalid {\n\t\t\trequest[key] = value\n\t\t}\n\t\traw, _ := json.Marshal(map[string]any{\"exercise_request\": request})\n\t\tif _, err := ExpandBlueprint(raw, DefaultConfiguration()); err == nil {\n\t\t\tt.Fatal(\"invalid request accepted\", invalid)\n\t\t}\n\t}\n}\n\nfunc TestCheckingStagesPositive(t *testing.T) {\n\trecord := AttemptRecord{Attempt: map[string]any{\"state\": \"evaluating\"}, Context: map[string]any{\"configuration\": map[string]any{}}}\n\tid := \"accepted-checkpoint\"\n\tstate := &InterpretationState{Status: \"running\"}\n\tif checkingStage(record, state) != \"extraction\" {\n\t\tt.Fatal(\"extraction\")\n\t}\n\tstate.Extraction = &id\n\tif checkingStage(record, state) != \"matching\" {\n\t\tt.Fatal(\"matching\")\n\t}\n\tstate.Mapping = &id\n\tif checkingStage(record, state) != \"scoring\" {\n\t\tt.Fatal(\"scoring\")\n\t}\n\trecord.Context[\"configuration\"].(map[string]any)[\"mapping_audit_enabled\"] = true\n\tif checkingStage(record, state) != \"audit\" {\n\t\tt.Fatal(\"audit\")\n\t}\n\tstate.Audit = &id\n\tstate.Result = &id\n\tif checkingStage(record, state) != \"feedback\" {\n\t\tt.Fatal(\"feedback\")\n\t}\n\trecord.Attempt[\"state\"] = \"completed\"\n\tstate.Status = \"complete\"\n\tif checkingStage(record, state) != \"complete\" {\n\t\tt.Fatal(\"complete\")\n\t}\n}\n\nfunc TestCheckingIncompleteNegative(t *testing.T) {\n\trecord := AttemptRecord{Attempt: map[string]any{\"state\": \"submitted\"}, Context: map[string]any{}}\n\tif checkingStage(record, nil) != \"not_started\" {\n\t\tt.Fatal(\"unsaved progress invented\")\n\t}\n\tstate := &InterpretationState{Status: \"failed\"}\n\tif checkingStage(record, state) != \"failed\" {\n\t\tt.Fatal(\"failure hidden\")\n\t}\n\tid := \"saved-score\"\n\tstate.Result = &id\n\tif checkingStage(record, state) != \"failed\" {\n\t\tt.Fatal(\"partial saved score hides failure\")\n\t}\n}\n\nfunc TestPreparationSummaryChoicesPositive(t *testing.T) {\n\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180, \"english_level\": \"B2\", \"category_families\": []any{\"grammar\", \"lexis\"}, \"mutation_count\": 0}\n\tsummary := speechSummary(map[string]any{\"id\": \"p1\", \"phase_states\": map[string]any{\"render\": \"not_started\"}, \"exercise_request\": request, \"key_id\": \"private-key\"})\n\tif !reflect.DeepEqual(summary[\"exercise_request\"], request) {\n\t\tt.Fatal(summary)\n\t}\n\tif _, leaked := summary[\"key_id\"]; leaked {\n\t\tt.Fatal(\"key leaked\")\n\t}\n}\n\nfunc TestPreparationLegacySummaryNegative(t *testing.T) {\n\tsummary := speechSummary(map[string]any{\"id\": \"old\", \"phase_states\": map[string]any{\"render\": \"complete\"}})\n\tif _, invented := summary[\"exercise_request\"]; invented {\n\t\tt.Fatal(\"legacy request invented\")\n\t}\n}",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "tangerine.local/api/internal/app::TestPreparationSummaryChoicesPositive",
+      "command_id": "usability-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/usability_test.go",
+      "source_sha256": "ca78aae479943cb13559c5ef9328634664e72846433b03cb4d3b8b41a0ebfe56",
+      "invalidation_dependencies": [
+        "services/api/internal/app/usability_test.go",
+        "services/web/app/prepare",
+        "services/api/internal/app/preparation.go",
+        "services/api/internal/app/speech_http.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE"
+      },
+      "distinct_reason": "USE-01 Selected, automatic and rejected controls: TestPreparationSummaryChoicesPositive qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-01.P1.TestPreparationLegacySummaryNegative",
+      "property_id": "USE-01.P1",
+      "polarity": "negative",
+      "scenario": "USE-01 Selected, automatic and rejected controls",
+      "scenario_fingerprint": "d758aab710018473e4eff902f74704e0e9e614f4abe9918f5fe8e6e683995dce",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"package app\\n\\nimport (\\n\\t\\\"encoding/json\\\"\\n\\t\\\"reflect\\\"\\n\\t\\\"testing\\\"\\n)\\n\\nfunc TestPreparationOrdinaryChoicesPositive(t *testing.T) {\\n\\tfor _, level := range []any{nil, \\\"A1\\\", \\\"A2\\\", \\\"B1\\\", \\\"B2\\\", \\\"C1\\\", \\\"C2\\\"} {\\n\\t\\tfor _, family := range []string{\\\"grammar\\\", \\\"lexis\\\", \\\"pronunciation\\\", \\\"pronunciation.segmental\\\", \\\"pronunciation.suprasegmental\\\", \\\"fluency\\\", \\\"discourse\\\", \\\"pragmatics_register\\\"} {\\n\\t\\t\\tfor _, count := range []any{nil, float64(0), float64(3)} {\\n\\t\\t\\t\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180, \\\"english_level\\\": level, \\\"category_families\\\": []any{family}, \\\"mutation_count\\\": count}\\n\\t\\t\\t\\traw, _ := json.Marshal(map[string]any{\\\"exercise_request\\\": request})\\n\\t\\t\\t\\tblueprint, err := ExpandBlueprint(raw, DefaultConfiguration())\\n\\t\\t\\t\\tif err != nil {\\n\\t\\t\\t\\t\\tt.Fatal(level, family, count, err)\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tsaved := blueprint[\\\"exercise_request\\\"].(map[string]any)\\n\\t\\t\\t\\tif saved[\\\"english_level\\\"] != level || saved[\\\"mutation_count\\\"] != count || !reflect.DeepEqual(saved[\\\"category_families\\\"], []any{family}) {\\n\\t\\t\\t\\t\\tt.Fatal(saved)\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tfor _, value := range blueprint[\\\"speakers\\\"].([]any) {\\n\\t\\t\\t\\t\\tif value.(map[string]any)[\\\"learner_cefr\\\"] != level {\\n\\t\\t\\t\\t\\t\\tt.Fatal(\\\"level not propagated\\\", blueprint)\\n\\t\\t\\t\\t\\t}\\n\\t\\t\\t\\t}\\n\\t\\t\\t}\\n\\t\\t}\\n\\t}\\n}\\n\\nfunc TestPreparationOrdinaryInvalidNegative(t *testing.T) {\\n\\tfor _, invalid := range []map[string]any{{\\\"english_level\\\": \\\"A0\\\"}, {\\\"category_families\\\": []any{\\\"made_up\\\"}}, {\\\"mutation_count\\\": -1}, {\\\"mutation_count\\\": 1.5}, {\\\"speaker_count\\\": 0}, {\\\"text_length_words\\\": 0}} {\\n\\t\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180}\\n\\t\\tfor key, value := range invalid {\\n\\t\\t\\trequest[key] = value\\n\\t\\t}\\n\\t\\traw, _ := json.Marshal(map[string]any{\\\"exercise_request\\\": request})\\n\\t\\tif _, err := ExpandBlueprint(raw, DefaultConfiguration()); err == nil {\\n\\t\\t\\tt.Fatal(\\\"invalid request accepted\\\", invalid)\\n\\t\\t}\\n\\t}\\n}\\n\\nfunc TestCheckingStagesPositive(t *testing.T) {\\n\\trecord := AttemptRecord{Attempt: map[string]any{\\\"state\\\": \\\"evaluating\\\"}, Context: map[string]any{\\\"configuration\\\": map[string]any{}}}\\n\\tid := \\\"accepted-checkpoint\\\"\\n\\tstate := &InterpretationState{Status: \\\"running\\\"}\\n\\tif checkingStage(record, state) != \\\"extraction\\\" {\\n\\t\\tt.Fatal(\\\"extraction\\\")\\n\\t}\\n\\tstate.Extraction = &id\\n\\tif checkingStage(record, state) != \\\"matching\\\" {\\n\\t\\tt.Fatal(\\\"matching\\\")\\n\\t}\\n\\tstate.Mapping = &id\\n\\tif checkingStage(record, state) != \\\"scoring\\\" {\\n\\t\\tt.Fatal(\\\"scoring\\\")\\n\\t}\\n\\trecord.Context[\\\"configuration\\\"].(map[string]any)[\\\"mapping_audit_enabled\\\"] = true\\n\\tif checkingStage(record, state) != \\\"audit\\\" {\\n\\t\\tt.Fatal(\\\"audit\\\")\\n\\t}\\n\\tstate.Audit = &id\\n\\tstate.Result = &id\\n\\tif checkingStage(record, state) != \\\"feedback\\\" {\\n\\t\\tt.Fatal(\\\"feedback\\\")\\n\\t}\\n\\trecord.Attempt[\\\"state\\\"] = \\\"completed\\\"\\n\\tstate.Status = \\\"complete\\\"\\n\\tif checkingStage(record, state) != \\\"complete\\\" {\\n\\t\\tt.Fatal(\\\"complete\\\")\\n\\t}\\n}\\n\\nfunc TestCheckingIncompleteNegative(t *testing.T) {\\n\\trecord := AttemptRecord{Attempt: map[string]any{\\\"state\\\": \\\"submitted\\\"}, Context: map[string]any{}}\\n\\tif checkingStage(record, nil) != \\\"not_started\\\" {\\n\\t\\tt.Fatal(\\\"unsaved progress invented\\\")\\n\\t}\\n\\tstate := &InterpretationState{Status: \\\"failed\\\"}\\n\\tif checkingStage(record, state) != \\\"failed\\\" {\\n\\t\\tt.Fatal(\\\"failure hidden\\\")\\n\\t}\\n\\tid := \\\"saved-score\\\"\\n\\tstate.Result = &id\\n\\tif checkingStage(record, state) != \\\"failed\\\" {\\n\\t\\tt.Fatal(\\\"partial saved score hides failure\\\")\\n\\t}\\n}\\n\\nfunc TestPreparationSummaryChoicesPositive(t *testing.T) {\\n\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180, \\\"english_level\\\": \\\"B2\\\", \\\"category_families\\\": []any{\\\"grammar\\\", \\\"lexis\\\"}, \\\"mutation_count\\\": 0}\\n\\tsummary := speechSummary(map[string]any{\\\"id\\\": \\\"p1\\\", \\\"phase_states\\\": map[string]any{\\\"render\\\": \\\"not_started\\\"}, \\\"exercise_request\\\": request, \\\"key_id\\\": \\\"private-key\\\"})\\n\\tif !reflect.DeepEqual(summary[\\\"exercise_request\\\"], request) {\\n\\t\\tt.Fatal(summary)\\n\\t}\\n\\tif _, leaked := summary[\\\"key_id\\\"]; leaked {\\n\\t\\tt.Fatal(\\\"key leaked\\\")\\n\\t}\\n}\\n\\nfunc TestPreparationLegacySummaryNegative(t *testing.T) {\\n\\tsummary := speechSummary(map[string]any{\\\"id\\\": \\\"old\\\", \\\"phase_states\\\": map[string]any{\\\"render\\\": \\\"complete\\\"}})\\n\\tif _, invented := summary[\\\"exercise_request\\\"]; invented {\\n\\t\\tt.Fatal(\\\"legacy request invented\\\")\\n\\t}\\n}\"}",
+      "observable": "package app\n\nimport (\n\t\"encoding/json\"\n\t\"reflect\"\n\t\"testing\"\n)\n\nfunc TestPreparationOrdinaryChoicesPositive(t *testing.T) {\n\tfor _, level := range []any{nil, \"A1\", \"A2\", \"B1\", \"B2\", \"C1\", \"C2\"} {\n\t\tfor _, family := range []string{\"grammar\", \"lexis\", \"pronunciation\", \"pronunciation.segmental\", \"pronunciation.suprasegmental\", \"fluency\", \"discourse\", \"pragmatics_register\"} {\n\t\t\tfor _, count := range []any{nil, float64(0), float64(3)} {\n\t\t\t\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180, \"english_level\": level, \"category_families\": []any{family}, \"mutation_count\": count}\n\t\t\t\traw, _ := json.Marshal(map[string]any{\"exercise_request\": request})\n\t\t\t\tblueprint, err := ExpandBlueprint(raw, DefaultConfiguration())\n\t\t\t\tif err != nil {\n\t\t\t\t\tt.Fatal(level, family, count, err)\n\t\t\t\t}\n\t\t\t\tsaved := blueprint[\"exercise_request\"].(map[string]any)\n\t\t\t\tif saved[\"english_level\"] != level || saved[\"mutation_count\"] != count || !reflect.DeepEqual(saved[\"category_families\"], []any{family}) {\n\t\t\t\t\tt.Fatal(saved)\n\t\t\t\t}\n\t\t\t\tfor _, value := range blueprint[\"speakers\"].([]any) {\n\t\t\t\t\tif value.(map[string]any)[\"learner_cefr\"] != level {\n\t\t\t\t\t\tt.Fatal(\"level not propagated\", blueprint)\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}\n\nfunc TestPreparationOrdinaryInvalidNegative(t *testing.T) {\n\tfor _, invalid := range []map[string]any{{\"english_level\": \"A0\"}, {\"category_families\": []any{\"made_up\"}}, {\"mutation_count\": -1}, {\"mutation_count\": 1.5}, {\"speaker_count\": 0}, {\"text_length_words\": 0}} {\n\t\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180}\n\t\tfor key, value := range invalid {\n\t\t\trequest[key] = value\n\t\t}\n\t\traw, _ := json.Marshal(map[string]any{\"exercise_request\": request})\n\t\tif _, err := ExpandBlueprint(raw, DefaultConfiguration()); err == nil {\n\t\t\tt.Fatal(\"invalid request accepted\", invalid)\n\t\t}\n\t}\n}\n\nfunc TestCheckingStagesPositive(t *testing.T) {\n\trecord := AttemptRecord{Attempt: map[string]any{\"state\": \"evaluating\"}, Context: map[string]any{\"configuration\": map[string]any{}}}\n\tid := \"accepted-checkpoint\"\n\tstate := &InterpretationState{Status: \"running\"}\n\tif checkingStage(record, state) != \"extraction\" {\n\t\tt.Fatal(\"extraction\")\n\t}\n\tstate.Extraction = &id\n\tif checkingStage(record, state) != \"matching\" {\n\t\tt.Fatal(\"matching\")\n\t}\n\tstate.Mapping = &id\n\tif checkingStage(record, state) != \"scoring\" {\n\t\tt.Fatal(\"scoring\")\n\t}\n\trecord.Context[\"configuration\"].(map[string]any)[\"mapping_audit_enabled\"] = true\n\tif checkingStage(record, state) != \"audit\" {\n\t\tt.Fatal(\"audit\")\n\t}\n\tstate.Audit = &id\n\tstate.Result = &id\n\tif checkingStage(record, state) != \"feedback\" {\n\t\tt.Fatal(\"feedback\")\n\t}\n\trecord.Attempt[\"state\"] = \"completed\"\n\tstate.Status = \"complete\"\n\tif checkingStage(record, state) != \"complete\" {\n\t\tt.Fatal(\"complete\")\n\t}\n}\n\nfunc TestCheckingIncompleteNegative(t *testing.T) {\n\trecord := AttemptRecord{Attempt: map[string]any{\"state\": \"submitted\"}, Context: map[string]any{}}\n\tif checkingStage(record, nil) != \"not_started\" {\n\t\tt.Fatal(\"unsaved progress invented\")\n\t}\n\tstate := &InterpretationState{Status: \"failed\"}\n\tif checkingStage(record, state) != \"failed\" {\n\t\tt.Fatal(\"failure hidden\")\n\t}\n\tid := \"saved-score\"\n\tstate.Result = &id\n\tif checkingStage(record, state) != \"failed\" {\n\t\tt.Fatal(\"partial saved score hides failure\")\n\t}\n}\n\nfunc TestPreparationSummaryChoicesPositive(t *testing.T) {\n\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180, \"english_level\": \"B2\", \"category_families\": []any{\"grammar\", \"lexis\"}, \"mutation_count\": 0}\n\tsummary := speechSummary(map[string]any{\"id\": \"p1\", \"phase_states\": map[string]any{\"render\": \"not_started\"}, \"exercise_request\": request, \"key_id\": \"private-key\"})\n\tif !reflect.DeepEqual(summary[\"exercise_request\"], request) {\n\t\tt.Fatal(summary)\n\t}\n\tif _, leaked := summary[\"key_id\"]; leaked {\n\t\tt.Fatal(\"key leaked\")\n\t}\n}\n\nfunc TestPreparationLegacySummaryNegative(t *testing.T) {\n\tsummary := speechSummary(map[string]any{\"id\": \"old\", \"phase_states\": map[string]any{\"render\": \"complete\"}})\n\tif _, invented := summary[\"exercise_request\"]; invented {\n\t\tt.Fatal(\"legacy request invented\")\n\t}\n}",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "tangerine.local/api/internal/app::TestPreparationLegacySummaryNegative",
+      "command_id": "usability-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/usability_test.go",
+      "source_sha256": "ca78aae479943cb13559c5ef9328634664e72846433b03cb4d3b8b41a0ebfe56",
+      "invalidation_dependencies": [
+        "services/api/internal/app/usability_test.go",
+        "services/web/app/prepare",
+        "services/api/internal/app/preparation.go",
+        "services/api/internal/app/speech_http.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE"
+      },
+      "distinct_reason": "USE-01 Selected, automatic and rejected controls: TestPreparationLegacySummaryNegative qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-02.P1.test_extraction_progress_positive",
+      "property_id": "USE-02.P1",
+      "polarity": "positive",
+      "scenario": "USE-02 Saved answer and score during checking",
+      "scenario_fingerprint": "ede74c3a6e51daaed1b04268cba32c0ac6f381f881ddfaa03b7f15b74ef5aee4",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_extraction_progress_positive(self):self.assertEqual(self.values['test_extraction_progress_positive'],{'saved':True,'stage':True,'answer':'Use opens.'})\"}",
+      "observable": "def test_extraction_progress_positive(self):self.assertEqual(self.values['test_extraction_progress_positive'],{'saved':True,'stage':True,'answer':'Use opens.'})",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_extraction_progress_positive",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/listen",
+        "services/api/internal/app/interpretation_view.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-02 Saved answer and score during checking: test_extraction_progress_positive qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-02.P1.test_matching_progress_positive",
+      "property_id": "USE-02.P1",
+      "polarity": "positive",
+      "scenario": "USE-02 Saved answer and score during checking",
+      "scenario_fingerprint": "ede74c3a6e51daaed1b04268cba32c0ac6f381f881ddfaa03b7f15b74ef5aee4",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_matching_progress_positive(self):self.assertIs(self.values['test_matching_progress_positive'],True)\"}",
+      "observable": "def test_matching_progress_positive(self):self.assertIs(self.values['test_matching_progress_positive'],True)",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_matching_progress_positive",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/listen",
+        "services/api/internal/app/interpretation_view.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-02 Saved answer and score during checking: test_matching_progress_positive qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-02.P1.test_score_before_comments_positive",
+      "property_id": "USE-02.P1",
+      "polarity": "positive",
+      "scenario": "USE-02 Saved answer and score during checking",
+      "scenario_fingerprint": "ede74c3a6e51daaed1b04268cba32c0ac6f381f881ddfaa03b7f15b74ef5aee4",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_score_before_comments_positive(self):self.assertEqual(self.values['test_score_before_comments_positive'],{'primary':'Primary score: 100.0 / 100','stage':True,'pending':True,'falseFailure':False})\"}",
+      "observable": "def test_score_before_comments_positive(self):self.assertEqual(self.values['test_score_before_comments_positive'],{'primary':'Primary score: 100.0 / 100','stage':True,'pending':True,'falseFailure':False})",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_score_before_comments_positive",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/listen",
+        "services/api/internal/app/interpretation_view.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-02 Saved answer and score during checking: test_score_before_comments_positive qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-02.P1.test_reads_no_dispatch_negative",
+      "property_id": "USE-02.P1",
+      "polarity": "negative",
+      "scenario": "USE-02 Saved answer and score during checking",
+      "scenario_fingerprint": "ede74c3a6e51daaed1b04268cba32c0ac6f381f881ddfaa03b7f15b74ef5aee4",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_reads_no_dispatch_negative(self):self.assertEqual(self.values['test_reads_no_dispatch_negative'],{'extractions':0,'mappings':0,'feedback':0,'submissions':0})\"}",
+      "observable": "def test_reads_no_dispatch_negative(self):self.assertEqual(self.values['test_reads_no_dispatch_negative'],{'extractions':0,'mappings':0,'feedback':0,'submissions':0})",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_reads_no_dispatch_negative",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/listen",
+        "services/api/internal/app/interpretation_view.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-02 Saved answer and score during checking: test_reads_no_dispatch_negative qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-02.P1.test_privacy_negative",
+      "property_id": "USE-02.P1",
+      "polarity": "negative",
+      "scenario": "USE-02 Saved answer and score during checking",
+      "scenario_fingerprint": "ede74c3a6e51daaed1b04268cba32c0ac6f381f881ddfaa03b7f15b74ef5aee4",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_privacy_negative(self):self.assertIs(self.values['test_privacy_negative'],False)\"}",
+      "observable": "def test_privacy_negative(self):self.assertIs(self.values['test_privacy_negative'],False)",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_privacy_negative",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/listen",
+        "services/api/internal/app/interpretation_view.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-02 Saved answer and score during checking: test_privacy_negative qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-02.P1.TestCheckingStagesPositive",
+      "property_id": "USE-02.P1",
+      "polarity": "positive",
+      "scenario": "USE-02 Saved answer and score during checking",
+      "scenario_fingerprint": "ede74c3a6e51daaed1b04268cba32c0ac6f381f881ddfaa03b7f15b74ef5aee4",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"package app\\n\\nimport (\\n\\t\\\"encoding/json\\\"\\n\\t\\\"reflect\\\"\\n\\t\\\"testing\\\"\\n)\\n\\nfunc TestPreparationOrdinaryChoicesPositive(t *testing.T) {\\n\\tfor _, level := range []any{nil, \\\"A1\\\", \\\"A2\\\", \\\"B1\\\", \\\"B2\\\", \\\"C1\\\", \\\"C2\\\"} {\\n\\t\\tfor _, family := range []string{\\\"grammar\\\", \\\"lexis\\\", \\\"pronunciation\\\", \\\"pronunciation.segmental\\\", \\\"pronunciation.suprasegmental\\\", \\\"fluency\\\", \\\"discourse\\\", \\\"pragmatics_register\\\"} {\\n\\t\\t\\tfor _, count := range []any{nil, float64(0), float64(3)} {\\n\\t\\t\\t\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180, \\\"english_level\\\": level, \\\"category_families\\\": []any{family}, \\\"mutation_count\\\": count}\\n\\t\\t\\t\\traw, _ := json.Marshal(map[string]any{\\\"exercise_request\\\": request})\\n\\t\\t\\t\\tblueprint, err := ExpandBlueprint(raw, DefaultConfiguration())\\n\\t\\t\\t\\tif err != nil {\\n\\t\\t\\t\\t\\tt.Fatal(level, family, count, err)\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tsaved := blueprint[\\\"exercise_request\\\"].(map[string]any)\\n\\t\\t\\t\\tif saved[\\\"english_level\\\"] != level || saved[\\\"mutation_count\\\"] != count || !reflect.DeepEqual(saved[\\\"category_families\\\"], []any{family}) {\\n\\t\\t\\t\\t\\tt.Fatal(saved)\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tfor _, value := range blueprint[\\\"speakers\\\"].([]any) {\\n\\t\\t\\t\\t\\tif value.(map[string]any)[\\\"learner_cefr\\\"] != level {\\n\\t\\t\\t\\t\\t\\tt.Fatal(\\\"level not propagated\\\", blueprint)\\n\\t\\t\\t\\t\\t}\\n\\t\\t\\t\\t}\\n\\t\\t\\t}\\n\\t\\t}\\n\\t}\\n}\\n\\nfunc TestPreparationOrdinaryInvalidNegative(t *testing.T) {\\n\\tfor _, invalid := range []map[string]any{{\\\"english_level\\\": \\\"A0\\\"}, {\\\"category_families\\\": []any{\\\"made_up\\\"}}, {\\\"mutation_count\\\": -1}, {\\\"mutation_count\\\": 1.5}, {\\\"speaker_count\\\": 0}, {\\\"text_length_words\\\": 0}} {\\n\\t\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180}\\n\\t\\tfor key, value := range invalid {\\n\\t\\t\\trequest[key] = value\\n\\t\\t}\\n\\t\\traw, _ := json.Marshal(map[string]any{\\\"exercise_request\\\": request})\\n\\t\\tif _, err := ExpandBlueprint(raw, DefaultConfiguration()); err == nil {\\n\\t\\t\\tt.Fatal(\\\"invalid request accepted\\\", invalid)\\n\\t\\t}\\n\\t}\\n}\\n\\nfunc TestCheckingStagesPositive(t *testing.T) {\\n\\trecord := AttemptRecord{Attempt: map[string]any{\\\"state\\\": \\\"evaluating\\\"}, Context: map[string]any{\\\"configuration\\\": map[string]any{}}}\\n\\tid := \\\"accepted-checkpoint\\\"\\n\\tstate := &InterpretationState{Status: \\\"running\\\"}\\n\\tif checkingStage(record, state) != \\\"extraction\\\" {\\n\\t\\tt.Fatal(\\\"extraction\\\")\\n\\t}\\n\\tstate.Extraction = &id\\n\\tif checkingStage(record, state) != \\\"matching\\\" {\\n\\t\\tt.Fatal(\\\"matching\\\")\\n\\t}\\n\\tstate.Mapping = &id\\n\\tif checkingStage(record, state) != \\\"scoring\\\" {\\n\\t\\tt.Fatal(\\\"scoring\\\")\\n\\t}\\n\\trecord.Context[\\\"configuration\\\"].(map[string]any)[\\\"mapping_audit_enabled\\\"] = true\\n\\tif checkingStage(record, state) != \\\"audit\\\" {\\n\\t\\tt.Fatal(\\\"audit\\\")\\n\\t}\\n\\tstate.Audit = &id\\n\\tstate.Result = &id\\n\\tif checkingStage(record, state) != \\\"feedback\\\" {\\n\\t\\tt.Fatal(\\\"feedback\\\")\\n\\t}\\n\\trecord.Attempt[\\\"state\\\"] = \\\"completed\\\"\\n\\tstate.Status = \\\"complete\\\"\\n\\tif checkingStage(record, state) != \\\"complete\\\" {\\n\\t\\tt.Fatal(\\\"complete\\\")\\n\\t}\\n}\\n\\nfunc TestCheckingIncompleteNegative(t *testing.T) {\\n\\trecord := AttemptRecord{Attempt: map[string]any{\\\"state\\\": \\\"submitted\\\"}, Context: map[string]any{}}\\n\\tif checkingStage(record, nil) != \\\"not_started\\\" {\\n\\t\\tt.Fatal(\\\"unsaved progress invented\\\")\\n\\t}\\n\\tstate := &InterpretationState{Status: \\\"failed\\\"}\\n\\tif checkingStage(record, state) != \\\"failed\\\" {\\n\\t\\tt.Fatal(\\\"failure hidden\\\")\\n\\t}\\n\\tid := \\\"saved-score\\\"\\n\\tstate.Result = &id\\n\\tif checkingStage(record, state) != \\\"failed\\\" {\\n\\t\\tt.Fatal(\\\"partial saved score hides failure\\\")\\n\\t}\\n}\\n\\nfunc TestPreparationSummaryChoicesPositive(t *testing.T) {\\n\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180, \\\"english_level\\\": \\\"B2\\\", \\\"category_families\\\": []any{\\\"grammar\\\", \\\"lexis\\\"}, \\\"mutation_count\\\": 0}\\n\\tsummary := speechSummary(map[string]any{\\\"id\\\": \\\"p1\\\", \\\"phase_states\\\": map[string]any{\\\"render\\\": \\\"not_started\\\"}, \\\"exercise_request\\\": request, \\\"key_id\\\": \\\"private-key\\\"})\\n\\tif !reflect.DeepEqual(summary[\\\"exercise_request\\\"], request) {\\n\\t\\tt.Fatal(summary)\\n\\t}\\n\\tif _, leaked := summary[\\\"key_id\\\"]; leaked {\\n\\t\\tt.Fatal(\\\"key leaked\\\")\\n\\t}\\n}\\n\\nfunc TestPreparationLegacySummaryNegative(t *testing.T) {\\n\\tsummary := speechSummary(map[string]any{\\\"id\\\": \\\"old\\\", \\\"phase_states\\\": map[string]any{\\\"render\\\": \\\"complete\\\"}})\\n\\tif _, invented := summary[\\\"exercise_request\\\"]; invented {\\n\\t\\tt.Fatal(\\\"legacy request invented\\\")\\n\\t}\\n}\"}",
+      "observable": "package app\n\nimport (\n\t\"encoding/json\"\n\t\"reflect\"\n\t\"testing\"\n)\n\nfunc TestPreparationOrdinaryChoicesPositive(t *testing.T) {\n\tfor _, level := range []any{nil, \"A1\", \"A2\", \"B1\", \"B2\", \"C1\", \"C2\"} {\n\t\tfor _, family := range []string{\"grammar\", \"lexis\", \"pronunciation\", \"pronunciation.segmental\", \"pronunciation.suprasegmental\", \"fluency\", \"discourse\", \"pragmatics_register\"} {\n\t\t\tfor _, count := range []any{nil, float64(0), float64(3)} {\n\t\t\t\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180, \"english_level\": level, \"category_families\": []any{family}, \"mutation_count\": count}\n\t\t\t\traw, _ := json.Marshal(map[string]any{\"exercise_request\": request})\n\t\t\t\tblueprint, err := ExpandBlueprint(raw, DefaultConfiguration())\n\t\t\t\tif err != nil {\n\t\t\t\t\tt.Fatal(level, family, count, err)\n\t\t\t\t}\n\t\t\t\tsaved := blueprint[\"exercise_request\"].(map[string]any)\n\t\t\t\tif saved[\"english_level\"] != level || saved[\"mutation_count\"] != count || !reflect.DeepEqual(saved[\"category_families\"], []any{family}) {\n\t\t\t\t\tt.Fatal(saved)\n\t\t\t\t}\n\t\t\t\tfor _, value := range blueprint[\"speakers\"].([]any) {\n\t\t\t\t\tif value.(map[string]any)[\"learner_cefr\"] != level {\n\t\t\t\t\t\tt.Fatal(\"level not propagated\", blueprint)\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}\n\nfunc TestPreparationOrdinaryInvalidNegative(t *testing.T) {\n\tfor _, invalid := range []map[string]any{{\"english_level\": \"A0\"}, {\"category_families\": []any{\"made_up\"}}, {\"mutation_count\": -1}, {\"mutation_count\": 1.5}, {\"speaker_count\": 0}, {\"text_length_words\": 0}} {\n\t\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180}\n\t\tfor key, value := range invalid {\n\t\t\trequest[key] = value\n\t\t}\n\t\traw, _ := json.Marshal(map[string]any{\"exercise_request\": request})\n\t\tif _, err := ExpandBlueprint(raw, DefaultConfiguration()); err == nil {\n\t\t\tt.Fatal(\"invalid request accepted\", invalid)\n\t\t}\n\t}\n}\n\nfunc TestCheckingStagesPositive(t *testing.T) {\n\trecord := AttemptRecord{Attempt: map[string]any{\"state\": \"evaluating\"}, Context: map[string]any{\"configuration\": map[string]any{}}}\n\tid := \"accepted-checkpoint\"\n\tstate := &InterpretationState{Status: \"running\"}\n\tif checkingStage(record, state) != \"extraction\" {\n\t\tt.Fatal(\"extraction\")\n\t}\n\tstate.Extraction = &id\n\tif checkingStage(record, state) != \"matching\" {\n\t\tt.Fatal(\"matching\")\n\t}\n\tstate.Mapping = &id\n\tif checkingStage(record, state) != \"scoring\" {\n\t\tt.Fatal(\"scoring\")\n\t}\n\trecord.Context[\"configuration\"].(map[string]any)[\"mapping_audit_enabled\"] = true\n\tif checkingStage(record, state) != \"audit\" {\n\t\tt.Fatal(\"audit\")\n\t}\n\tstate.Audit = &id\n\tstate.Result = &id\n\tif checkingStage(record, state) != \"feedback\" {\n\t\tt.Fatal(\"feedback\")\n\t}\n\trecord.Attempt[\"state\"] = \"completed\"\n\tstate.Status = \"complete\"\n\tif checkingStage(record, state) != \"complete\" {\n\t\tt.Fatal(\"complete\")\n\t}\n}\n\nfunc TestCheckingIncompleteNegative(t *testing.T) {\n\trecord := AttemptRecord{Attempt: map[string]any{\"state\": \"submitted\"}, Context: map[string]any{}}\n\tif checkingStage(record, nil) != \"not_started\" {\n\t\tt.Fatal(\"unsaved progress invented\")\n\t}\n\tstate := &InterpretationState{Status: \"failed\"}\n\tif checkingStage(record, state) != \"failed\" {\n\t\tt.Fatal(\"failure hidden\")\n\t}\n\tid := \"saved-score\"\n\tstate.Result = &id\n\tif checkingStage(record, state) != \"failed\" {\n\t\tt.Fatal(\"partial saved score hides failure\")\n\t}\n}\n\nfunc TestPreparationSummaryChoicesPositive(t *testing.T) {\n\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180, \"english_level\": \"B2\", \"category_families\": []any{\"grammar\", \"lexis\"}, \"mutation_count\": 0}\n\tsummary := speechSummary(map[string]any{\"id\": \"p1\", \"phase_states\": map[string]any{\"render\": \"not_started\"}, \"exercise_request\": request, \"key_id\": \"private-key\"})\n\tif !reflect.DeepEqual(summary[\"exercise_request\"], request) {\n\t\tt.Fatal(summary)\n\t}\n\tif _, leaked := summary[\"key_id\"]; leaked {\n\t\tt.Fatal(\"key leaked\")\n\t}\n}\n\nfunc TestPreparationLegacySummaryNegative(t *testing.T) {\n\tsummary := speechSummary(map[string]any{\"id\": \"old\", \"phase_states\": map[string]any{\"render\": \"complete\"}})\n\tif _, invented := summary[\"exercise_request\"]; invented {\n\t\tt.Fatal(\"legacy request invented\")\n\t}\n}",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "tangerine.local/api/internal/app::TestCheckingStagesPositive",
+      "command_id": "usability-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/usability_test.go",
+      "source_sha256": "ca78aae479943cb13559c5ef9328634664e72846433b03cb4d3b8b41a0ebfe56",
+      "invalidation_dependencies": [
+        "services/api/internal/app/usability_test.go",
+        "services/web/app/listen",
+        "services/api/internal/app/interpretation_view.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE"
+      },
+      "distinct_reason": "USE-02 Saved answer and score during checking: TestCheckingStagesPositive qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-02.P1.TestCheckingIncompleteNegative",
+      "property_id": "USE-02.P1",
+      "polarity": "negative",
+      "scenario": "USE-02 Saved answer and score during checking",
+      "scenario_fingerprint": "ede74c3a6e51daaed1b04268cba32c0ac6f381f881ddfaa03b7f15b74ef5aee4",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"package app\\n\\nimport (\\n\\t\\\"encoding/json\\\"\\n\\t\\\"reflect\\\"\\n\\t\\\"testing\\\"\\n)\\n\\nfunc TestPreparationOrdinaryChoicesPositive(t *testing.T) {\\n\\tfor _, level := range []any{nil, \\\"A1\\\", \\\"A2\\\", \\\"B1\\\", \\\"B2\\\", \\\"C1\\\", \\\"C2\\\"} {\\n\\t\\tfor _, family := range []string{\\\"grammar\\\", \\\"lexis\\\", \\\"pronunciation\\\", \\\"pronunciation.segmental\\\", \\\"pronunciation.suprasegmental\\\", \\\"fluency\\\", \\\"discourse\\\", \\\"pragmatics_register\\\"} {\\n\\t\\t\\tfor _, count := range []any{nil, float64(0), float64(3)} {\\n\\t\\t\\t\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180, \\\"english_level\\\": level, \\\"category_families\\\": []any{family}, \\\"mutation_count\\\": count}\\n\\t\\t\\t\\traw, _ := json.Marshal(map[string]any{\\\"exercise_request\\\": request})\\n\\t\\t\\t\\tblueprint, err := ExpandBlueprint(raw, DefaultConfiguration())\\n\\t\\t\\t\\tif err != nil {\\n\\t\\t\\t\\t\\tt.Fatal(level, family, count, err)\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tsaved := blueprint[\\\"exercise_request\\\"].(map[string]any)\\n\\t\\t\\t\\tif saved[\\\"english_level\\\"] != level || saved[\\\"mutation_count\\\"] != count || !reflect.DeepEqual(saved[\\\"category_families\\\"], []any{family}) {\\n\\t\\t\\t\\t\\tt.Fatal(saved)\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tfor _, value := range blueprint[\\\"speakers\\\"].([]any) {\\n\\t\\t\\t\\t\\tif value.(map[string]any)[\\\"learner_cefr\\\"] != level {\\n\\t\\t\\t\\t\\t\\tt.Fatal(\\\"level not propagated\\\", blueprint)\\n\\t\\t\\t\\t\\t}\\n\\t\\t\\t\\t}\\n\\t\\t\\t}\\n\\t\\t}\\n\\t}\\n}\\n\\nfunc TestPreparationOrdinaryInvalidNegative(t *testing.T) {\\n\\tfor _, invalid := range []map[string]any{{\\\"english_level\\\": \\\"A0\\\"}, {\\\"category_families\\\": []any{\\\"made_up\\\"}}, {\\\"mutation_count\\\": -1}, {\\\"mutation_count\\\": 1.5}, {\\\"speaker_count\\\": 0}, {\\\"text_length_words\\\": 0}} {\\n\\t\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180}\\n\\t\\tfor key, value := range invalid {\\n\\t\\t\\trequest[key] = value\\n\\t\\t}\\n\\t\\traw, _ := json.Marshal(map[string]any{\\\"exercise_request\\\": request})\\n\\t\\tif _, err := ExpandBlueprint(raw, DefaultConfiguration()); err == nil {\\n\\t\\t\\tt.Fatal(\\\"invalid request accepted\\\", invalid)\\n\\t\\t}\\n\\t}\\n}\\n\\nfunc TestCheckingStagesPositive(t *testing.T) {\\n\\trecord := AttemptRecord{Attempt: map[string]any{\\\"state\\\": \\\"evaluating\\\"}, Context: map[string]any{\\\"configuration\\\": map[string]any{}}}\\n\\tid := \\\"accepted-checkpoint\\\"\\n\\tstate := &InterpretationState{Status: \\\"running\\\"}\\n\\tif checkingStage(record, state) != \\\"extraction\\\" {\\n\\t\\tt.Fatal(\\\"extraction\\\")\\n\\t}\\n\\tstate.Extraction = &id\\n\\tif checkingStage(record, state) != \\\"matching\\\" {\\n\\t\\tt.Fatal(\\\"matching\\\")\\n\\t}\\n\\tstate.Mapping = &id\\n\\tif checkingStage(record, state) != \\\"scoring\\\" {\\n\\t\\tt.Fatal(\\\"scoring\\\")\\n\\t}\\n\\trecord.Context[\\\"configuration\\\"].(map[string]any)[\\\"mapping_audit_enabled\\\"] = true\\n\\tif checkingStage(record, state) != \\\"audit\\\" {\\n\\t\\tt.Fatal(\\\"audit\\\")\\n\\t}\\n\\tstate.Audit = &id\\n\\tstate.Result = &id\\n\\tif checkingStage(record, state) != \\\"feedback\\\" {\\n\\t\\tt.Fatal(\\\"feedback\\\")\\n\\t}\\n\\trecord.Attempt[\\\"state\\\"] = \\\"completed\\\"\\n\\tstate.Status = \\\"complete\\\"\\n\\tif checkingStage(record, state) != \\\"complete\\\" {\\n\\t\\tt.Fatal(\\\"complete\\\")\\n\\t}\\n}\\n\\nfunc TestCheckingIncompleteNegative(t *testing.T) {\\n\\trecord := AttemptRecord{Attempt: map[string]any{\\\"state\\\": \\\"submitted\\\"}, Context: map[string]any{}}\\n\\tif checkingStage(record, nil) != \\\"not_started\\\" {\\n\\t\\tt.Fatal(\\\"unsaved progress invented\\\")\\n\\t}\\n\\tstate := &InterpretationState{Status: \\\"failed\\\"}\\n\\tif checkingStage(record, state) != \\\"failed\\\" {\\n\\t\\tt.Fatal(\\\"failure hidden\\\")\\n\\t}\\n\\tid := \\\"saved-score\\\"\\n\\tstate.Result = &id\\n\\tif checkingStage(record, state) != \\\"failed\\\" {\\n\\t\\tt.Fatal(\\\"partial saved score hides failure\\\")\\n\\t}\\n}\\n\\nfunc TestPreparationSummaryChoicesPositive(t *testing.T) {\\n\\trequest := map[string]any{\\\"topic\\\": \\\"Insurance choices\\\", \\\"speaker_count\\\": 2, \\\"text_length_words\\\": 180, \\\"english_level\\\": \\\"B2\\\", \\\"category_families\\\": []any{\\\"grammar\\\", \\\"lexis\\\"}, \\\"mutation_count\\\": 0}\\n\\tsummary := speechSummary(map[string]any{\\\"id\\\": \\\"p1\\\", \\\"phase_states\\\": map[string]any{\\\"render\\\": \\\"not_started\\\"}, \\\"exercise_request\\\": request, \\\"key_id\\\": \\\"private-key\\\"})\\n\\tif !reflect.DeepEqual(summary[\\\"exercise_request\\\"], request) {\\n\\t\\tt.Fatal(summary)\\n\\t}\\n\\tif _, leaked := summary[\\\"key_id\\\"]; leaked {\\n\\t\\tt.Fatal(\\\"key leaked\\\")\\n\\t}\\n}\\n\\nfunc TestPreparationLegacySummaryNegative(t *testing.T) {\\n\\tsummary := speechSummary(map[string]any{\\\"id\\\": \\\"old\\\", \\\"phase_states\\\": map[string]any{\\\"render\\\": \\\"complete\\\"}})\\n\\tif _, invented := summary[\\\"exercise_request\\\"]; invented {\\n\\t\\tt.Fatal(\\\"legacy request invented\\\")\\n\\t}\\n}\"}",
+      "observable": "package app\n\nimport (\n\t\"encoding/json\"\n\t\"reflect\"\n\t\"testing\"\n)\n\nfunc TestPreparationOrdinaryChoicesPositive(t *testing.T) {\n\tfor _, level := range []any{nil, \"A1\", \"A2\", \"B1\", \"B2\", \"C1\", \"C2\"} {\n\t\tfor _, family := range []string{\"grammar\", \"lexis\", \"pronunciation\", \"pronunciation.segmental\", \"pronunciation.suprasegmental\", \"fluency\", \"discourse\", \"pragmatics_register\"} {\n\t\t\tfor _, count := range []any{nil, float64(0), float64(3)} {\n\t\t\t\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180, \"english_level\": level, \"category_families\": []any{family}, \"mutation_count\": count}\n\t\t\t\traw, _ := json.Marshal(map[string]any{\"exercise_request\": request})\n\t\t\t\tblueprint, err := ExpandBlueprint(raw, DefaultConfiguration())\n\t\t\t\tif err != nil {\n\t\t\t\t\tt.Fatal(level, family, count, err)\n\t\t\t\t}\n\t\t\t\tsaved := blueprint[\"exercise_request\"].(map[string]any)\n\t\t\t\tif saved[\"english_level\"] != level || saved[\"mutation_count\"] != count || !reflect.DeepEqual(saved[\"category_families\"], []any{family}) {\n\t\t\t\t\tt.Fatal(saved)\n\t\t\t\t}\n\t\t\t\tfor _, value := range blueprint[\"speakers\"].([]any) {\n\t\t\t\t\tif value.(map[string]any)[\"learner_cefr\"] != level {\n\t\t\t\t\t\tt.Fatal(\"level not propagated\", blueprint)\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}\n\nfunc TestPreparationOrdinaryInvalidNegative(t *testing.T) {\n\tfor _, invalid := range []map[string]any{{\"english_level\": \"A0\"}, {\"category_families\": []any{\"made_up\"}}, {\"mutation_count\": -1}, {\"mutation_count\": 1.5}, {\"speaker_count\": 0}, {\"text_length_words\": 0}} {\n\t\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180}\n\t\tfor key, value := range invalid {\n\t\t\trequest[key] = value\n\t\t}\n\t\traw, _ := json.Marshal(map[string]any{\"exercise_request\": request})\n\t\tif _, err := ExpandBlueprint(raw, DefaultConfiguration()); err == nil {\n\t\t\tt.Fatal(\"invalid request accepted\", invalid)\n\t\t}\n\t}\n}\n\nfunc TestCheckingStagesPositive(t *testing.T) {\n\trecord := AttemptRecord{Attempt: map[string]any{\"state\": \"evaluating\"}, Context: map[string]any{\"configuration\": map[string]any{}}}\n\tid := \"accepted-checkpoint\"\n\tstate := &InterpretationState{Status: \"running\"}\n\tif checkingStage(record, state) != \"extraction\" {\n\t\tt.Fatal(\"extraction\")\n\t}\n\tstate.Extraction = &id\n\tif checkingStage(record, state) != \"matching\" {\n\t\tt.Fatal(\"matching\")\n\t}\n\tstate.Mapping = &id\n\tif checkingStage(record, state) != \"scoring\" {\n\t\tt.Fatal(\"scoring\")\n\t}\n\trecord.Context[\"configuration\"].(map[string]any)[\"mapping_audit_enabled\"] = true\n\tif checkingStage(record, state) != \"audit\" {\n\t\tt.Fatal(\"audit\")\n\t}\n\tstate.Audit = &id\n\tstate.Result = &id\n\tif checkingStage(record, state) != \"feedback\" {\n\t\tt.Fatal(\"feedback\")\n\t}\n\trecord.Attempt[\"state\"] = \"completed\"\n\tstate.Status = \"complete\"\n\tif checkingStage(record, state) != \"complete\" {\n\t\tt.Fatal(\"complete\")\n\t}\n}\n\nfunc TestCheckingIncompleteNegative(t *testing.T) {\n\trecord := AttemptRecord{Attempt: map[string]any{\"state\": \"submitted\"}, Context: map[string]any{}}\n\tif checkingStage(record, nil) != \"not_started\" {\n\t\tt.Fatal(\"unsaved progress invented\")\n\t}\n\tstate := &InterpretationState{Status: \"failed\"}\n\tif checkingStage(record, state) != \"failed\" {\n\t\tt.Fatal(\"failure hidden\")\n\t}\n\tid := \"saved-score\"\n\tstate.Result = &id\n\tif checkingStage(record, state) != \"failed\" {\n\t\tt.Fatal(\"partial saved score hides failure\")\n\t}\n}\n\nfunc TestPreparationSummaryChoicesPositive(t *testing.T) {\n\trequest := map[string]any{\"topic\": \"Insurance choices\", \"speaker_count\": 2, \"text_length_words\": 180, \"english_level\": \"B2\", \"category_families\": []any{\"grammar\", \"lexis\"}, \"mutation_count\": 0}\n\tsummary := speechSummary(map[string]any{\"id\": \"p1\", \"phase_states\": map[string]any{\"render\": \"not_started\"}, \"exercise_request\": request, \"key_id\": \"private-key\"})\n\tif !reflect.DeepEqual(summary[\"exercise_request\"], request) {\n\t\tt.Fatal(summary)\n\t}\n\tif _, leaked := summary[\"key_id\"]; leaked {\n\t\tt.Fatal(\"key leaked\")\n\t}\n}\n\nfunc TestPreparationLegacySummaryNegative(t *testing.T) {\n\tsummary := speechSummary(map[string]any{\"id\": \"old\", \"phase_states\": map[string]any{\"render\": \"complete\"}})\n\tif _, invented := summary[\"exercise_request\"]; invented {\n\t\tt.Fatal(\"legacy request invented\")\n\t}\n}",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "tangerine.local/api/internal/app::TestCheckingIncompleteNegative",
+      "command_id": "usability-go",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/usability_test.go",
+      "source_sha256": "ca78aae479943cb13559c5ef9328634664e72846433b03cb4d3b8b41a0ebfe56",
+      "invalidation_dependencies": [
+        "services/api/internal/app/usability_test.go",
+        "services/web/app/listen",
+        "services/api/internal/app/interpretation_view.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE"
+      },
+      "distinct_reason": "USE-02 Saved answer and score during checking: TestCheckingIncompleteNegative qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-03.P1.test_read_failure_negative",
+      "property_id": "USE-03.P1",
+      "polarity": "negative",
+      "scenario": "USE-03 Read failure, completion and explicit retry",
+      "scenario_fingerprint": "59edbff14090ae00024b419a977ad4f0c025218e6b56cde915e2e5507c59d5f3",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_read_failure_negative(self):self.assertEqual(self.values['test_read_failure_negative'],{'answer':'Use opens.','saved':True,'disabled':True})\"}",
+      "observable": "def test_read_failure_negative(self):self.assertEqual(self.values['test_read_failure_negative'],{'answer':'Use opens.','saved':True,'disabled':True})",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_read_failure_negative",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/listen",
+        "services/api/internal/app/interpretation_view.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-03 Read failure, completion and explicit retry: test_read_failure_negative qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-03.P1.test_feedback_failure_negative",
+      "property_id": "USE-03.P1",
+      "polarity": "negative",
+      "scenario": "USE-03 Read failure, completion and explicit retry",
+      "scenario_fingerprint": "59edbff14090ae00024b419a977ad4f0c025218e6b56cde915e2e5507c59d5f3",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_feedback_failure_negative(self):self.assertEqual(self.values['test_feedback_failure_negative'],{'primary':'Primary score: 100.0 / 100','answer':'Use opens.'})\"}",
+      "observable": "def test_feedback_failure_negative(self):self.assertEqual(self.values['test_feedback_failure_negative'],{'primary':'Primary score: 100.0 / 100','answer':'Use opens.'})",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_feedback_failure_negative",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/listen",
+        "services/api/internal/app/interpretation_view.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-03 Read failure, completion and explicit retry: test_feedback_failure_negative qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-03.P1.test_feedback_retry_positive",
+      "property_id": "USE-03.P1",
+      "polarity": "positive",
+      "scenario": "USE-03 Read failure, completion and explicit retry",
+      "scenario_fingerprint": "59edbff14090ae00024b419a977ad4f0c025218e6b56cde915e2e5507c59d5f3",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_feedback_retry_positive(self):self.assertEqual(self.values['test_feedback_retry_positive'],{'extractions':0,'mappings':0,'feedback':1,'submissions':0})\"}",
+      "observable": "def test_feedback_retry_positive(self):self.assertEqual(self.values['test_feedback_retry_positive'],{'extractions':0,'mappings':0,'feedback':1,'submissions':0})",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_feedback_retry_positive",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/listen",
+        "services/api/internal/app/interpretation_view.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-03 Read failure, completion and explicit retry: test_feedback_retry_positive qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-03.P1.test_observer_stop_positive",
+      "property_id": "USE-03.P1",
+      "polarity": "positive",
+      "scenario": "USE-03 Read failure, completion and explicit retry",
+      "scenario_fingerprint": "59edbff14090ae00024b419a977ad4f0c025218e6b56cde915e2e5507c59d5f3",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_observer_stop_positive(self):self.assertEqual(self.values['test_observer_stop_positive'],0)\"}",
+      "observable": "def test_observer_stop_positive(self):self.assertEqual(self.values['test_observer_stop_positive'],0)",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_observer_stop_positive",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/listen",
+        "services/api/internal/app/interpretation_view.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-03 Read failure, completion and explicit retry: test_observer_stop_positive qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "USE-03.P1.test_unmount_negative",
+      "property_id": "USE-03.P1",
+      "polarity": "negative",
+      "scenario": "USE-03 Read failure, completion and explicit retry",
+      "scenario_fingerprint": "59edbff14090ae00024b419a977ad4f0c025218e6b56cde915e2e5507c59d5f3",
+      "setup": "{\"origin\": \"Real application/storage/browser with constructed external model replies and held response timing; form generation stops after real blueprint save. Native initial preparation is seeded through the actual freeze/checkpoint owner.\", \"fixture\": \"tests/usability-browser and tests/usability_fixture_test.go\", \"literal_test\": \"def test_unmount_negative(self):self.assertEqual(self.values['test_unmount_negative'],{'additional_reads':0,'additional_submissions':0})\"}",
+      "observable": "def test_unmount_negative(self):self.assertEqual(self.values['test_unmount_negative'],{'additional_reads':0,'additional_submissions':0})",
+      "red_expectation": "A changed request/score/answer, missing stage/control, extra inference/submission, private leak or live observer after completion fails the exact assertions.",
+      "green_expectation": "Each independently specified literal input/state/count/display equals the actual selected native/browser output.",
+      "test_id": "unittest::test_usability_browser.UsabilityBrowser.test_unmount_negative",
+      "command_id": "usability-browser",
+      "state": "implemented",
+      "source_path": "tests/test_usability_browser.py",
+      "source_sha256": "1eefc1ef189690b6e8644ca55977fe72147328d43523983c63eadfe36b442740",
+      "invalidation_dependencies": [
+        "tests/test_usability_browser.py",
+        "services/web/app/listen",
+        "services/api/internal/app/interpretation_view.go",
+        "tests/usability-browser",
+        "tests/usability_fixture_test.go",
+        "tests/native_listening_test.go",
+        "tests/native_interpretation_test.go",
+        "tests/native_scoring_test.go"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "External model output/timing and post-blueprint generation only.",
+        "proof_claims": [
+          "Actual UI/HTTP/admission/checkpoint/storage behavior and exact state/call-count/score projection."
+        ],
+        "forbidden_claims": [
+          "Live provider linguistic quality, CEFR certification or synthesis quality.",
+          "Complete generation from the deliberately paused form test."
+        ]
+      },
+      "distinct_reason": "USE-03 Read failure, completion and explicit retry: test_unmount_negative qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
     }
   ],
   "commands": [
@@ -195376,6 +196359,46 @@
         "TANGERINE_GENERATION_LIVE_EVIDENCE": "data/generation-repair-20261022/live-observations.json"
       },
       "timeout_seconds": 60,
+      "authority": "local"
+    },
+    {
+      "id": "usability-go",
+      "runner": "go-test-json",
+      "argv": [
+        "./tests/go-docker",
+        "test",
+        "-json",
+        "-race",
+        "-count=1",
+        "-run",
+        "^Test(PreparationOrdinary|PreparationSummary|PreparationLegacySummary|Checking)",
+        "./internal/app"
+      ],
+      "cwd": ".",
+      "env": {},
+      "timeout_seconds": 300,
+      "authority": "local"
+    },
+    {
+      "id": "usability-browser",
+      "runner": "python-unittest",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_usability_browser.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "env": {
+        "TANGERINE_USABILITY_WEB_IMAGE": "tangerine-usability-web:local"
+      },
+      "timeout_seconds": 660,
       "authority": "local"
     }
   ]

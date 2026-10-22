@@ -1,0 +1,142 @@
+#!/usr/bin/env python3
+"""Owned real browser stack on a free port. Never stop the user's preview.
+
+Only model replies/timing and generation after blueprint persistence are replaced.
+"""
+from pathlib import Path
+import json,os,secrets,subprocess,sys,tempfile,time,uuid,urllib.request
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from browser_probe import Browser
+ROOT=Path(__file__).resolve().parents[1]
+env=dict(os.environ)
+name='tangerine-usability-'+uuid.uuid4().hex[:8]
+evidence=Path(env['TANGERINE_USABILITY_EVIDENCE']).resolve()
+evidence.mkdir(parents=True,exist_ok=True)
+# The accepted web boundary deliberately uses localhost:3000. Briefly replace
+# only the preview web container; all user storage/API/model containers stay up.
+port=3000;base='http://localhost:3000'
+browser=go=None;preview=False
+def call(args,check=True):
+    p=subprocess.run(args,cwd=ROOT,env=env,capture_output=True,text=True,timeout=240)
+    with (evidence/'setup.log').open('a') as log:log.write(p.stdout+p.stderr)
+    if check and p.returncode:raise AssertionError('Native setup failed; see '+str(evidence/'setup.log'))
+    return p
+with tempfile.TemporaryDirectory(prefix=name) as tmp:
+    password=secrets.token_hex(24);config=Path(tmp)/'runtime.env'
+    config.write_text(f'POSTGRES_DB=tangerine\nPOSTGRES_USER=tangerine\nPOSTGRES_PASSWORD={password}\nDATABASE_URL=postgres://tangerine:{password}@postgres:5432/tangerine?sslmode=disable\nMINIO_ROOT_USER=native-regression\nMINIO_ROOT_PASSWORD={password}\nMINIO_ENDPOINT=minio:9000\nMINIO_ACCESS_KEY=native-regression\nMINIO_SECRET_KEY={password}\nMINIO_BUCKET=regressions\nAPI_INTERNAL_TOKEN=listening-owned-token\nAPI_INTERNAL_URL=http://api:8080\nTANGERINE_TEST_ORIGIN={base}\n')
+    config.chmod(0o600)
+    try:
+        call(['docker','build','--target','build','-t',name+'-go','-f','services/api/Dockerfile','.'])
+        call(['docker','network','create',name])
+        for kind,image in [('postgres','postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826'),('media','tangerine-local-minio:local')]:
+            call(['docker','run','-d','--name',name+'-'+kind,'--network',name,'--network-alias','postgres' if kind=='postgres' else 'minio','--env-file',str(config),image])
+            for _ in range(120):
+                probe=['pg_isready','-h','127.0.0.1','-U','tangerine','-d','tangerine'] if kind=='postgres' else ['/usr/local/bin/probe','http://127.0.0.1:9000/minio/health/ready']
+                if call(['docker','exec',name+'-'+kind,*probe],False).returncode==0:break
+                time.sleep(.1)
+            else:raise AssertionError('Native service did not become ready')
+        call(['docker','run','--rm','--network',name,'--env-file',str(config),'--entrypoint','/tangerine',name+'-go','initialize'])
+        args=['docker','run','--rm','--name',name+'-api','--network',name,'--network-alias','api','-p','127.0.0.1::8080','--env-file',str(config),'-e','TANGERINE_USABILITY_EVIDENCE=/evidence','-v',str(evidence)+':/evidence']
+        for source in ['native_listening_test.go','native_interpretation_test.go','native_scoring_test.go','native_preparation_test.go','usability_fixture_test.go']:
+            args+=['-v',str(ROOT/'tests'/source)+':/src/internal/app/'+source+':ro']
+        go=subprocess.Popen(args+['--entrypoint','go',name+'-go','test','-json','-race','-count=1','-run','^TestNativeUsabilityBrowserFixture$','./internal/app'],cwd=ROOT,env=env,stdout=(evidence/'native.jsonl').open('w'),stderr=(evidence/'native.stderr').open('w'))
+        for _ in range(1200):
+            if (evidence/'fixture.json').exists():break
+            if go.poll() is not None:raise AssertionError('Native fixture failed: '+str(evidence/'native.jsonl'))
+            time.sleep(.1)
+        else:raise AssertionError('Native fixture did not start')
+        api_port=call(['docker','port',name+'-api','8080/tcp']).stdout.strip().rsplit(':',1)[1]
+        running=call(['docker','inspect','-f','{{.State.Running}}','tangerine-local-web-1'],False)
+        if running.returncode==0 and running.stdout.strip()=='true':call(['docker','stop','tangerine-local-web-1']);preview=True
+        call(['docker','run','-d','--name',name+'-web','--network',name,'--env-file',str(config),'-p',f'127.0.0.1:{port}:3000',env['TANGERINE_USABILITY_WEB_IMAGE']])
+        browser=Browser(Path(tmp)/'chrome',base+'/prepare')
+        observed={}
+        def wait(expression,expected,timeout=25):
+            until=time.monotonic()+timeout
+            while time.monotonic()<until:
+                actual=browser.evaluate(expression)
+                if actual==expected:return actual
+                time.sleep(.1)
+            raise AssertionError((expression,actual,expected))
+        def record(test,expression,expected):
+            observed[test]=wait(expression,expected);browser.capture(evidence,test)
+        def click(label):browser.call('UI.click',{'selector':f'button:has-text("{label}")'})
+        def fill(label,value):browser.call('UI.fill',{'selector':f'[aria-label="{label}"]','value':str(value)})
+        def select(label,value):browser.call('UI.select',{'selector':f'[aria-label="{label}"]','value':value})
+        def counts():
+            with urllib.request.urlopen('http://127.0.0.1:'+api_port+'/test-counts',timeout=5) as response:return json.load(response)
+        def prepared():
+            click('Generate exercise');browser.wait('Test-owned generation is paused')
+            wait("document.querySelector('button[type=submit]')?.disabled ?? [...document.querySelectorAll('button')].find(x=>x.textContent==='Generate exercise')?.disabled",False)
+            return json.loads((evidence/'blueprint.json').read_text())
+        browser.wait('Number of mistakes')
+        record('test_saved_summary_positive',"document.body.textContent.includes('Saved seed settings · 1 speakers · approximately 123 words · A2 · 0 mistakes · grammar')",True)
+        fill('Topic','Insurance choices');fill('Speakers',2);fill('Approximate words',180);select('English level','B2');fill('Number of mistakes',3)
+        for label in ['Grammar','Vocabulary']:browser.call('UI.click',{'selector':f'[aria-label="{label}"]'})
+        b=prepared();request=b['exercise_request']
+        expected={'topic':'Insurance choices','speaker_count':2,'text_length_words':180,'english_level':'B2','category_families':['grammar','lexis'],'mutation_count':3,'mutation_seed':None,'audio_backend':None}
+        assert request==expected,(request,expected)
+        observed['test_controls_positive']={'request':request,'levels':[s['learner_cefr'] for s in b['speakers']]}
+        browser.capture(evidence,'controls-selected')
+        levels=[]
+        for level in ['A1','A2','B1','B2','C1','C2']:
+            select('English level',level);b=prepared();assert b['exercise_request']['english_level']==level;assert [s['learner_cefr'] for s in b['speakers']]==[level,level];levels.append(level)
+        observed['test_levels_positive']=levels
+        for label in ['Grammar','Vocabulary']:browser.call('UI.click',{'selector':f'[aria-label="{label}"]'})
+        families=[]
+        labels=[('Grammar','grammar'),('Vocabulary','lexis'),('Pronunciation (all)','pronunciation'),('Pronunciation: individual sounds','pronunciation.segmental'),('Pronunciation: stress and intonation','pronunciation.suprasegmental'),('Fluency','fluency'),('Discourse and coherence','discourse'),('Pragmatics and register','pragmatics_register')]
+        for label,identity in labels:
+            browser.call('UI.click',{'selector':f'[aria-label="{label}"]'});b=prepared();assert b['exercise_request']['category_families']==[identity];families.append(identity);browser.call('UI.click',{'selector':f'[aria-label="{label}"]'})
+        observed['test_families_positive']=families
+        select('English level','');fill('Number of mistakes','');b=prepared()
+        observed['test_automatic_positive']={k:b['exercise_request'][k] for k in ['english_level','category_families','mutation_count']}
+        fill('Number of mistakes',0);b=prepared();observed['test_zero_positive']=b['exercise_request']['mutation_count']
+        browser.call('UI.click',{'selector':'summary'});fill('Advanced blueprint','{"exercise_request":{"english_level":"C1","mutation_count":4,"category_families":["discourse"]}}')
+        b=prepared();observed['test_advanced_positive']={k:b['exercise_request'][k] for k in ['english_level','category_families','mutation_count']}
+        before=counts()['preparations'];fill('Advanced blueprint','{');click('Generate exercise');browser.wait('Advanced blueprint is not valid JSON')
+        assert counts()['preparations']==before
+        observed['test_invalid_json_negative']=browser.evaluate("document.querySelector('[aria-label=\"Topic\"]').value")
+        fill('Advanced blueprint','');invalid=[]
+        for value in ['-1','1.5']:
+            fill('Number of mistakes',value);click('Generate exercise');assert counts()['preparations']==before;invalid.append(browser.evaluate("document.querySelector('[aria-label=\"Number of mistakes\"]').validity.valid"))
+        observed['test_invalid_count_negative']=invalid
+        fill('Number of mistakes',3);prepared()
+        observed['test_request_failure_negative']=browser.evaluate("({topic:document.querySelector('[aria-label=\"Topic\"]').value,count:document.querySelector('[aria-label=\"Number of mistakes\"]').value})")
+        fixture=json.loads((evidence/'fixture.json').read_text())
+        def new_answer():
+            browser.call('Page.navigate',{'url':base+'/listen?case='+fixture['case_id']+'&sha='+fixture['case_sha256']})
+            browser.wait('Your answer');wait("document.querySelector('[aria-label=\"Your answer\"]')?.disabled",False)
+            fill('Your answer','Use opens.')
+        (evidence/'gate').write_text('extraction');new_answer();click('Submit answer')
+        record('test_extraction_progress_positive',"({saved:document.body.textContent.includes('Answer submitted and saved.'),stage:document.querySelector('[aria-label=\"Checking progress\"]')?.textContent.includes('Reading your findings'),answer:document.querySelector('textarea').value})",{'saved':True,'stage':True,'answer':'Use opens.'})
+        before=counts();time.sleep(1.2);after=counts();assert after['reads']>before['reads'];assert after['submissions']==1
+        observed['test_reads_no_dispatch_negative']={key:after[key]-before[key] for key in ['extractions','mappings','feedback','submissions']}
+        (evidence/'gate').write_text('matching')
+        record('test_matching_progress_positive',"document.querySelector('[aria-label=\"Checking progress\"]')?.textContent.includes('Checking findings, corrections and optional explanations')",True)
+        (evidence/'fail-reads').write_text('fail');time.sleep(1.2)
+        observed['test_read_failure_negative']=browser.evaluate("({answer:document.querySelector('textarea').value,saved:document.body.textContent.includes('Answer submitted and saved.'),disabled:document.querySelector('textarea').disabled})")
+        (evidence/'fail-reads').unlink();(evidence/'gate').write_text('feedback')
+        record('test_score_before_comments_positive',"({primary:document.querySelector('[aria-label=\"Primary score\"]')?.textContent,stage:document.querySelector('[aria-label=\"Checking progress\"]')?.textContent.includes('Writing comments'),pending:document.body.textContent.includes('Comments and practice recommendations are being prepared.'),falseFailure:document.body.textContent.includes('recommendations are unavailable')})",{'primary':'Primary score: 100.0 / 100','stage':True,'pending':True,'falseFailure':False})
+        record('test_privacy_negative',"/resources_asset_id|context_snapshot_id|credential_ref|provider_request_id|wire_request|mapping_asset_id/.test(document.documentElement.outerHTML)",False)
+        (evidence/'gate').write_text('');browser.wait('The museum opens at nine.');wait("document.querySelector('[aria-label=\"Checking progress\"]')===null",True)
+        before=counts();time.sleep(1.3);after=counts();observed['test_observer_stop_positive']=after['reads']-before['reads']
+        (evidence/'mode').write_text('feedback-failure');new_answer();click('Submit answer');browser.wait('Retry comments and recommendations')
+        record('test_feedback_failure_negative',"({primary:document.querySelector('[aria-label=\"Primary score\"]').textContent,answer:document.querySelector('textarea').value})",{'primary':'Primary score: 100.0 / 100','answer':'Use opens.'})
+        before=counts();(evidence/'mode').write_text('good');click('Retry comments and recommendations');browser.wait('The museum opens at nine.');wait("document.querySelector('[aria-label=\"Checking progress\"]')===null",True)
+        after=counts();observed['test_feedback_retry_positive']={k:after[k]-before[k] for k in ['extractions','mappings','feedback','submissions']}
+        (evidence/'gate').write_text('feedback');new_answer();click('Submit answer');wait("document.querySelector('[aria-label=\"Checking progress\"]')?.textContent.includes('Writing comments')",True)
+        browser.call('Page.navigate',{'url':base+'/prepare'});browser.wait('Number of mistakes');before=counts();time.sleep(1.5);after=counts();observed['test_unmount_negative']={'additional_reads':after['reads']-before['reads'],'additional_submissions':after['submissions']-before['submissions']}
+        (evidence/'gate').write_text('');(evidence/'done').write_text('done')
+        assert go.wait(timeout=30)==0
+        (evidence/'observations.json').write_text(json.dumps({'values':observed,'origin':'real_browser_api_postgres_minio_with_constructed_model_boundary','network_substitution':False,'model_quality_claim':False,'driver':browser.driver_version,'base_url':base},indent=2))
+    finally:
+        (evidence/'gate').write_text('');(evidence/'done').write_text('done')
+        if browser:
+            try:browser.capture(evidence,'final')
+            finally:browser.close()
+        for kind in ['web','api','postgres','media']:call(['docker','rm','-f','-v',name+'-'+kind],False)
+        if go:
+            try:go.wait(timeout=10)
+            except subprocess.TimeoutExpired:go.terminate();go.wait()
+        call(['docker','network','rm',name],False);call(['docker','image','rm',name+'-go'],False)
+        if preview:call(['docker','start','tangerine-local-web-1'])

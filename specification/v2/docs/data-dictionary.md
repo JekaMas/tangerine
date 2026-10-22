@@ -98,7 +98,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | render-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | resolve-dispute-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 8 |
 | restore-request | schema hash | derived DTO or actual operation input/output receipt | 2 |
-| result-envelope | 2.0.0 | document.payload | 12 |
+| result-envelope | 2.0.0 | document.payload | 13 |
 | result-revision | 2.0.0 | document.payload | 11 |
 | retry-request | schema hash | derived DTO or actual operation input/output receipt | 2 |
 | review-context | 2.0.0 | document.payload | 19 |
@@ -152,7 +152,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | key-repair-proposal | 2.0.0 | LLM canonical payload stored with review/judgment and private raw receipt assets | 6 |
 | preparation-settings | 2.0.0 | immutable private settings asset linked from preparation document | 16 |
-| preparation-state | 2.0.0 | document.payload with entity_head revision and linked private assets | 33 |
+| preparation-state | 2.0.0 | document.payload with entity_head revision and linked private assets | 34 |
 | provider-access-policy | 2.0.0 | configuration or transient operation DTO; never model/callback secret evidence | 4 |
 
 | provider-callback-query | 2.0.0 | configuration or transient operation DTO; never model/callback secret evidence | 6 |
@@ -191,7 +191,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | preparation-render-request | schema hash | derived DTO or actual operation input/output receipt | 2 |
 
-| preparation-summary | schema hash | derived DTO or actual operation input/output receipt | 14 |
+| preparation-summary | schema hash | derived DTO or actual operation input/output receipt | 15 |
 
 | feedback-score | schema hash | derived DTO or actual operation input/output receipt | 40 |
 

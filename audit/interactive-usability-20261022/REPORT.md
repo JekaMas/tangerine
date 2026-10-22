@@ -1,0 +1,16 @@
+# Submit latency and preparation controls
+
+Scope: the user's submit-latency question and ordinary preparation-property coverage. Worktree: tangerine_iteration16_20261021, base 36768161a50b8dee370815d8281630c8155223bb. Preserve existing user answers, configuration, audio and canonical unrelated GAPS.md. No purchased credits, billing fallback or model/profile change is authorized.
+
+The actual submitted user attempt completed in 30.623 seconds. Native operation times: save 0.013 s, extraction 9.163 s, mapping 9.709 s, feedback 10.432 s. No optional mapping audit ran. The current page waits for all three sequential stages without an acknowledgement/progress view. The existing score is already checkpointed before feedback.
+
+Preparation inspection: topic/speaker/approximate length/optional CEFR exist; category families require comma-separated text and mutation_count requires advanced JSON. Existing native owners already preserve optional level, select all original families/recipes, admit exact counts and explicit zero, enforce selected family coverage, and retain frozen settings. This increment exposes those accepted controls and adds independent browser/property evidence. It does not certify a generated text's CEFR level from a dropdown alone.
+
+Semantic discovery: jbcontext reported no index for this exact checkout. Exact source/runtime tracing is used; no semantic-index or independent-agent review is claimed.
+
+Selected owners: services/web/app/prepare, services/web/app/listen, the public interpretation projection and result-envelope contract. No prompt, model binding, provider dispatch, scoring formula or stored migration is changed. Model responses in interface tests are explicit external-boundary fixtures; these tests do not establish provider quality. Existing actual Pro/local generation observations remain separate. Exact new observations and final disposition will be recorded here.
+
+
+Implementation checkpoint: six directly affected Go race tests passed, including168 combinations of level/family/count and six invalid-request examples. Nineteen real-browser checks passed against the repaired interface. Review found missing browser evidence for saved requested-settings metadata; a real initial preparation fixture and a twentieth assertion now cover that display. This changes the shared browser fixture population, invalidating its earlier19-case observation for the final expanded run. The fixture's first attempt on another port failed the intentionally fixed localhost3000 host boundary; the corrected harness briefly replaces only the preview web container and always restores it. No host-boundary product policy was changed.
+
+The one-time static metadata refresh updates the three changed optional DTO fields, their existing persistence/field indexes and contract vector; no schema-byte archive or repeated runtime consistency check is introduced. Current structural checks:447assertions passed; strictOpenSpec passed; Go vet/gofmt passed. Final graph/discovery and the expanded committed-clean browser run remain pending until their actual observations. Six existing native unit receipts are retained because no semantic input changed; formatting and later evidence commits are not invalidations.

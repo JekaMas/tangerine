@@ -128,3 +128,10 @@ The current runtime mapping and responsibility split are specified in specificat
 ## Iteration15 recovery and complete usability
 
 The active runtime contract is specification/v2/docs/recovery-and-usability-runtime.md. Generation coordinates existing frozen stage owners; recovery archive encoding, storage snapshots, Docker lifecycle and explicit native erasure have separate owners. No new service, queue, human gate, archive chain or repeated stored-data qualification. Backups/restores use the existing Docker-only source-built helper. Every positive/negative behavior remains independently observed; prior unfinished acceptance is preserved.
+
+
+## Interactive usability repair (2026-10-22)
+
+Expose existing accepted preparation fields through Controls, keep request precedence in a pure request builder and HTTP/retention in usePreparation. Copy the accepted exercise_request into new preparation metadata at its creation, preserving absent legacy values; no extra storage read/revalidation is added. Keep interpretation, native scoring and feedback unchanged. Add a read-only public checking_stage projection derived from accepted checkpoints, then observe the existing synchronous operation from the browser. The observer owns sequential read cancellation; the listening hook owns submitted text/recovery and the presentation components own elapsed/stage/score display. The score already persists before comments. Avoid extra inference, polling-driven work, schema-byte checks, new queue or deployment infrastructure.
+
+The selected 270-second foreground contract remains. Native evidence shows the user's check took30.623seconds, predominantly three sequential model requests; this change improves acknowledgement and exposes the score sooner, without claiming faster model inference. Tests gate only constructed external response timing, using real application/storage/browser owners on an isolated loopback port. Actual provider latency comes from the existing unmodified native operations, not those controlled timings.

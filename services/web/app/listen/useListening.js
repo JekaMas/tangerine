@@ -1,5 +1,6 @@
 'use client';
 import {useEffect, useRef, useState} from 'react';
+import {watchChecking} from './checkingProgress';
 
 // Own the listening session and HTTP transitions; rendering lives in page.js.
 export default function useListening() {
@@ -12,6 +13,8 @@ export default function useListening() {
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
+  const [checking, setChecking] = useState(null);
+  const observer = useRef(null), writeController = useRef(null), mounted = useRef(true);
   const [audioRevision, setAudioRevision] = useState(0);
   const draft = useRef({answer: '', language: 'en', dirty: false});
   const revision = useRef('"0"');
@@ -26,6 +29,27 @@ export default function useListening() {
     setAnswer(text);
     setLanguage(locale);
   }
+  function showSubmitted(value) {
+    const local = draft.current;
+    if (local.dirty && (local.answer !== value.answer_text || local.language !== value.requested_language)) {
+      setRecovered({answer: local.answer, language: local.language});
+    }
+    showDraft(value.answer_text, value.requested_language);
+  }
+  function observeChecking(stage) {
+    observer.current?.();
+    setChecking({startedAt: Date.now(), stage});
+    observer.current = watchChecking(attemptID.current, (value, saved) => {
+      setAttempt(value);
+      showSubmitted(value);
+      if (saved) setResults(saved);
+      setChecking(old => old && ({...old, stage: saved?.checking_stage || (old.stage === 'saving' ? 'not_started' : old.stage)}));
+    });
+  }
+  function stopChecking() {
+    observer.current?.();
+    observer.current = null;
+  }
   async function load(preserve = false) {
     const response = await fetch('/api/v1/attempts/' + attemptID.current, {cache: 'no-store'});
     if (!response.ok) throw Error('Saved attempt is unavailable. Your text is retained. Refresh to retry.');
@@ -36,13 +60,9 @@ export default function useListening() {
     configurationHash.current=response.headers.get('x-tangerine-configuration-sha256');
     setAttempt(value);
     if (value.submitted_at != null) {
-      const local = draft.current;
-      if (local.dirty && (local.answer !== value.answer_text || local.language !== value.requested_language)) {
-        setRecovered({answer: local.answer, language: local.language});
-      }
       // The submitted display always comes from the durable record. Local intent
       // survives separately and can never masquerade as the immutable submission.
-      showDraft(value.answer_text, value.requested_language);
+      showSubmitted(value);
       pending.current = null;
       const saved=await fetch(value.results_path,{cache:'no-store'});
       if(saved.ok){setResults(await saved.json());}else{setError('Your answer is saved. Findings are temporarily unavailable. Refresh to retry.');}
@@ -52,6 +72,7 @@ export default function useListening() {
     return value;
   }
   useEffect(() => {
+    mounted.current = true;
     page.current = crypto.randomUUID();
     let active = true;
     async function open() {
@@ -86,7 +107,7 @@ export default function useListening() {
       finally { if (active) setBusy(false); }
     }
     open();
-    return () => { active = false; };
+    return () => { active = false; mounted.current = false; stopChecking(); writeController.current?.abort(); };
   }, []);
 
   async function refresh() {
@@ -108,11 +129,13 @@ export default function useListening() {
     const action = submit ? ':submit' : '/answer';
     const signature = action + '|' + revision.current + '|' + body;
     if (pending.current?.signature !== signature) pending.current = {signature, key: crypto.randomUUID()};
+    writeController.current = new AbortController();
+    if (submit) observeChecking('saving');
     try {
       const response = await fetch('/api/v1/attempts/' + attemptID.current + action, {
         method: submit ? 'POST' : 'PUT',
         headers: {'Content-Type': 'application/json', 'If-Match': revision.current, 'Idempotency-Key': pending.current.key},
-        body, signal: AbortSignal.timeout(310000),
+        body, signal: AbortSignal.any([writeController.current.signal, AbortSignal.timeout(310000)]),
       });
       const outcome=await response.json();
       const committed=submit&&!response.ok&&outcome.attempt_id===attemptID.current&&(outcome.status==='evaluation_failed'||outcome.score!=null);
@@ -122,26 +145,41 @@ export default function useListening() {
           : 'Your answer could not be saved. Your text is retained. Retry the same action.');
       draft.current.dirty = false;
       pending.current = null;
+      stopChecking();
+      if (!mounted.current) return;
       await load();
       setNotice(submit ? 'Answer submitted and saved.' : 'Draft saved.');
       if(committed)setError(outcome.score!=null?'Your answer and score are saved. Comments are unavailable. Retry comments and recommendations.':'Your answer is saved. Checking failed. Retry checking after the service is available.');
-    } catch (e) { setError(e.message); }
-    finally { setBusy(false); }
+    } catch (e) {
+      stopChecking();
+      if (!mounted.current) return;
+      if (submit) {
+        try {
+          const saved = await load(true);
+          if (saved.submitted_at != null) {
+            setNotice('Answer submitted and saved.');
+            setError('Checking was interrupted. Your saved answer and any completed findings are retained. Refresh saved state, then explicitly resume if needed.');
+          } else setError(e.message);
+        } catch { setError('Completion could not be confirmed. Your text is retained. Refresh saved state before retrying.'); }
+      } else setError(e.message);
+    }
+    finally { stopChecking(); writeController.current = null; if (mounted.current) { setChecking(null); setBusy(false); } }
   }
   async function retryChecking(){
     setBusy(true);setError('');setNotice('');
     const body=JSON.stringify({answer_sha256:answerHash.current,configuration_sha256:configurationHash.current});
     const signature='retry|'+revision.current+'|'+body;
     if(pending.current?.signature!==signature)pending.current={signature,key:crypto.randomUUID()};
+    writeController.current=new AbortController();observeChecking(results?.score?'feedback':'not_started');
     try{
       const action=results?.score?':retry-feedback':':retry';
-      const response=await fetch('/api/v1/attempts/'+attemptID.current+action,{method:'POST',headers:{'Content-Type':'application/json','If-Match':revision.current,'Idempotency-Key':pending.current.key},body,signal:AbortSignal.timeout(310000)});
+      const response=await fetch('/api/v1/attempts/'+attemptID.current+action,{method:'POST',headers:{'Content-Type':'application/json','If-Match':revision.current,'Idempotency-Key':pending.current.key},body,signal:AbortSignal.any([writeController.current.signal,AbortSignal.timeout(310000)])});
       const value=await response.json();
       if(!response.ok&&value.attempt_id!==attemptID.current)throw Error(response.status===409?'Checking is already active or the saved state changed. Refresh saved state.':'Checking is unavailable. Your submitted answer is retained.');
-      pending.current=null;await load();
+      pending.current=null;stopChecking();if(!mounted.current)return;await load();
       if(value.status==='evaluation_failed')setError('Your answer is saved. Checking failed. Retry checking after the service is available.');
       else setNotice('Saved findings refreshed.');
-    }catch(e){setError(e.message)}finally{setBusy(false)}
+    }catch(e){if(mounted.current)setError(e.message)}finally{stopChecking();writeController.current=null;if(mounted.current){setChecking(null);setBusy(false)}}
   }
   function editAnswer(text) {
     draft.current.answer = text; draft.current.dirty = true;
@@ -164,7 +202,7 @@ export default function useListening() {
       body: JSON.stringify(value),
     }).catch(() => {});
   }
-  return {attempt, answer, language, recovered, results, error, notice, busy, audioRevision, retryChecking,
+  return {attempt, answer, language, recovered, results, error, notice, busy, checking, audioRevision, retryChecking,
     canRefresh: !!attemptID.current, refresh, write, editAnswer, editLanguage, playback,
     audioError: () => setError('Saved audio is temporarily unavailable. Your answer is retained. Refresh saved state to retry playback.')};
 }

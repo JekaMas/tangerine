@@ -120,6 +120,20 @@
     "interpretation": {
       "$ref": "interpretation-view.schema.json",
       "description": "Saved semantic findings; complete interpretation is not an authoritative numeric grade."
+    },
+    "checking_stage": {
+      "type": "string",
+      "enum": [
+        "not_started",
+        "extraction",
+        "matching",
+        "audit",
+        "scoring",
+        "feedback",
+        "complete",
+        "failed"
+      ],
+      "description": "Read-only foreground progress derived from saved interpretation checkpoints. Optional on historic saved envelopes; reading never dispatches or resumes work."
     }
   },
   "required": [

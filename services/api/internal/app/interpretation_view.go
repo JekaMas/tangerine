@@ -20,6 +20,42 @@ func publicSemanticComponent(j SemanticComponent, spans []AnswerSpan) map[string
 	return map[string]any{"supplied": j.Supplied, "status": j.Status, "source_texts": texts, "additional_assertions": additional}
 }
 func (s *Storage) interpretationEnvelope(ctx context.Context, record AttemptRecord, state *InterpretationState) (map[string]any, error) {
+	envelope, err := s.interpretationContent(ctx, record, state)
+	if err == nil {
+		envelope["checking_stage"] = checkingStage(record, state)
+	}
+	return envelope, err
+}
+
+// A read-only projection of accepted checkpoints. This exposes no private IDs
+// and cannot dispatch or resume evaluation.
+func checkingStage(record AttemptRecord, state *InterpretationState) string {
+	if state == nil {
+		return "not_started"
+	}
+	if state.Status == "failed" {
+		return "failed"
+	}
+	if state.Status != "running" && record.Attempt["state"] != "evaluating" {
+		return "complete"
+	}
+	if state.Result != nil {
+		return "feedback"
+	}
+	if state.Extraction == nil {
+		return "extraction"
+	}
+	if state.Mapping == nil {
+		return "matching"
+	}
+	configuration, _ := record.Context["configuration"].(map[string]any)
+	if configuration["mapping_audit_enabled"] == true && state.Audit == nil {
+		return "audit"
+	}
+	return "scoring"
+}
+
+func (s *Storage) interpretationContent(ctx context.Context, record AttemptRecord, state *InterpretationState) (map[string]any, error) {
 	envelope := savedResult(record.Attempt)
 	if selected, ok := record.Context["result_id"].(string); ok && selected != "" {
 		return s.readScoringResult(ctx, selected)

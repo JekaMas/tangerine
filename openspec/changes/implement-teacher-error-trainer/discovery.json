@@ -682,7 +682,10 @@
       "I16-05.P1",
       "I16-06.P1",
       "I16-07.P1",
-      "I16-08.P1"
+      "I16-08.P1",
+      "USE-01.P1",
+      "USE-02.P1",
+      "USE-03.P1"
     ],
     "test_ids": [
       "planned::AUT-01::negative",
@@ -4365,7 +4368,33 @@
       "unittest::test_generation_live.GenerationLiveTests.test_scoring_feedback_positive",
       "unittest::test_generation_live.GenerationLiveTests.test_false_claim_negative",
       "unittest::test_generation_live.GenerationLiveTests.test_playback_and_unanswered_attempt_positive",
-      "unittest::test_kokoro_worker.KokoroWorkerTests.test_idle_exit_recovery_positive"
+      "unittest::test_kokoro_worker.KokoroWorkerTests.test_idle_exit_recovery_positive",
+      "unittest::test_usability_browser.UsabilityBrowser.test_controls_positive",
+      "unittest::test_usability_browser.UsabilityBrowser.test_saved_summary_positive",
+      "unittest::test_usability_browser.UsabilityBrowser.test_levels_positive",
+      "unittest::test_usability_browser.UsabilityBrowser.test_families_positive",
+      "unittest::test_usability_browser.UsabilityBrowser.test_automatic_positive",
+      "unittest::test_usability_browser.UsabilityBrowser.test_zero_positive",
+      "unittest::test_usability_browser.UsabilityBrowser.test_advanced_positive",
+      "unittest::test_usability_browser.UsabilityBrowser.test_invalid_json_negative",
+      "unittest::test_usability_browser.UsabilityBrowser.test_invalid_count_negative",
+      "unittest::test_usability_browser.UsabilityBrowser.test_request_failure_negative",
+      "tangerine.local/api/internal/app::TestPreparationOrdinaryChoicesPositive",
+      "tangerine.local/api/internal/app::TestPreparationOrdinaryInvalidNegative",
+      "tangerine.local/api/internal/app::TestPreparationSummaryChoicesPositive",
+      "tangerine.local/api/internal/app::TestPreparationLegacySummaryNegative",
+      "unittest::test_usability_browser.UsabilityBrowser.test_extraction_progress_positive",
+      "unittest::test_usability_browser.UsabilityBrowser.test_matching_progress_positive",
+      "unittest::test_usability_browser.UsabilityBrowser.test_score_before_comments_positive",
+      "unittest::test_usability_browser.UsabilityBrowser.test_reads_no_dispatch_negative",
+      "unittest::test_usability_browser.UsabilityBrowser.test_privacy_negative",
+      "tangerine.local/api/internal/app::TestCheckingStagesPositive",
+      "tangerine.local/api/internal/app::TestCheckingIncompleteNegative",
+      "unittest::test_usability_browser.UsabilityBrowser.test_read_failure_negative",
+      "unittest::test_usability_browser.UsabilityBrowser.test_feedback_failure_negative",
+      "unittest::test_usability_browser.UsabilityBrowser.test_feedback_retry_positive",
+      "unittest::test_usability_browser.UsabilityBrowser.test_observer_stop_positive",
+      "unittest::test_usability_browser.UsabilityBrowser.test_unmount_negative"
     ]
   },
   "reviews": [
@@ -20637,6 +20666,91 @@
       ],
       "disposition": "current_change",
       "rationale": "Repair the user-reported local generation failure using the same declared owners and no paid resources; actual full-flow observation remains separately required."
+    },
+    {
+      "id": "interactive-usability-20261022",
+      "question": "Why did submit take30seconds, and are ordinary request controls and foreground progress complete?",
+      "property_ids": [
+        "USE-01.P1",
+        "USE-02.P1",
+        "USE-03.P1"
+      ],
+      "test_ids": [
+        "tangerine.local/api/internal/app::TestCheckingIncompleteNegative",
+        "tangerine.local/api/internal/app::TestCheckingStagesPositive",
+        "tangerine.local/api/internal/app::TestPreparationLegacySummaryNegative",
+        "tangerine.local/api/internal/app::TestPreparationOrdinaryChoicesPositive",
+        "tangerine.local/api/internal/app::TestPreparationOrdinaryInvalidNegative",
+        "tangerine.local/api/internal/app::TestPreparationSummaryChoicesPositive",
+        "unittest::test_usability_browser.UsabilityBrowser.test_advanced_positive",
+        "unittest::test_usability_browser.UsabilityBrowser.test_automatic_positive",
+        "unittest::test_usability_browser.UsabilityBrowser.test_controls_positive",
+        "unittest::test_usability_browser.UsabilityBrowser.test_extraction_progress_positive",
+        "unittest::test_usability_browser.UsabilityBrowser.test_families_positive",
+        "unittest::test_usability_browser.UsabilityBrowser.test_feedback_failure_negative",
+        "unittest::test_usability_browser.UsabilityBrowser.test_feedback_retry_positive",
+        "unittest::test_usability_browser.UsabilityBrowser.test_invalid_count_negative",
+        "unittest::test_usability_browser.UsabilityBrowser.test_invalid_json_negative",
+        "unittest::test_usability_browser.UsabilityBrowser.test_levels_positive",
+        "unittest::test_usability_browser.UsabilityBrowser.test_matching_progress_positive",
+        "unittest::test_usability_browser.UsabilityBrowser.test_observer_stop_positive",
+        "unittest::test_usability_browser.UsabilityBrowser.test_privacy_negative",
+        "unittest::test_usability_browser.UsabilityBrowser.test_read_failure_negative",
+        "unittest::test_usability_browser.UsabilityBrowser.test_reads_no_dispatch_negative",
+        "unittest::test_usability_browser.UsabilityBrowser.test_request_failure_negative",
+        "unittest::test_usability_browser.UsabilityBrowser.test_saved_summary_positive",
+        "unittest::test_usability_browser.UsabilityBrowser.test_score_before_comments_positive",
+        "unittest::test_usability_browser.UsabilityBrowser.test_unmount_negative",
+        "unittest::test_usability_browser.UsabilityBrowser.test_zero_positive"
+      ],
+      "searches": [
+        {
+          "kind": "exact",
+          "status": "completed",
+          "query": "Actual attempt operation timing and exact preparation/interpretation/listening/score owners and tests",
+          "outcome": "Answer save took0.013s; extraction/mapping/feedback took9.163/9.709/10.432s. Count existed only in advanced JSON and categories were free text; score already checkpoints before comments.",
+          "results": [
+            {
+              "path": "services/web/app/prepare/page.js",
+              "classification": "change_candidate",
+              "reason": "Expose accepted inputs or read-only durable checking progress through the existing owner."
+            },
+            {
+              "path": "services/web/app/listen/useListening.js",
+              "classification": "change_candidate",
+              "reason": "Expose accepted inputs or read-only durable checking progress through the existing owner."
+            },
+            {
+              "path": "services/api/internal/app/interpretation_view.go",
+              "classification": "change_candidate",
+              "reason": "Expose accepted inputs or read-only durable checking progress through the existing owner."
+            },
+            {
+              "path": "services/api/internal/app/preparation.go",
+              "classification": "change_candidate",
+              "reason": "Expose accepted inputs or read-only durable checking progress through the existing owner."
+            }
+          ]
+        },
+        {
+          "kind": "semantic",
+          "status": "unavailable",
+          "query": "jbcontext search for submit latency and preparation controls in the exact checkout",
+          "reason": "No index found for repository fffb5cc5644365f06373a66ac2d3932f0d4b510a4a6f7f5df5c8ffd285d35165.",
+          "outcome": "Used exact source/runtime tracing; no semantic-index evidence claimed.",
+          "results": []
+        },
+        {
+          "kind": "jetbrains-index",
+          "status": "not_applicable",
+          "query": "Exact runtime and known owner inspection",
+          "reason": "The actual native records and exact owners resolved the selected behavior; no index/refactor operation was required.",
+          "outcome": "No IDE-index evidence claimed.",
+          "results": []
+        }
+      ],
+      "disposition": "current_change",
+      "rationale": "Repair ordinary UI/property gaps without changing grading stages, prompts, models, formulas, paid access or foreground ownership."
     }
   ]
 }

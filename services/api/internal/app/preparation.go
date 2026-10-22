@@ -331,6 +331,9 @@ func (s *Server) freezePreparation(ctx context.Context, b map[string]any, c map[
 	}
 	now := time.Now().UTC().Format(time.RFC3339Nano)
 	p := map[string]any{"schema_version": "2.0.0", "id": uuid.NewString(), "revision": float64(0), "original_operation_id": op.ID, "operation_ids": []any{op.ID}, "active_operation_id": op.ID, "settings_asset_id": asset.ID, "settings_sha256": asset.SHA, "selected_speech_profile": b["provider_profile_id"], "phase_states": map[string]any{"canonical_text": "running", "mutation": "not_started", "render": "not_started"}, "created_at": now, "updated_at": now}
+	if request, present := b["exercise_request"]; present {
+		p["exercise_request"] = request
+	}
 	for _, k := range []string{"canonical_asset_id", "canonical_sha256", "candidate_id", "mutated_asset_id", "mutation_manifest_asset_id", "render_plan_asset_id", "render_progress_asset_id", "audio_asset_id", "audio_sha256", "key_id", "last_failure"} {
 		p[k] = nil
 	}
