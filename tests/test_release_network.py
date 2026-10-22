@@ -36,8 +36,13 @@ class BridgeFramingTests(unittest.TestCase):
   handler.do_CONNECT();return events
  def test_authorized_gemini_tunnel_positive(self):
   self.assertEqual(self.connect('generativelanguage.googleapis.com:443'),[('tunnel',{'host':'generativelanguage.googleapis.com','port':443,'kind':'dependency'})])
+ def test_authorized_openai_tunnel_positive(self):
+  for host in ('auth.openai.com','api.openai.com'):
+   self.assertEqual(self.connect(host+':443'),[('tunnel',{'host':host,'port':443,'kind':'dependency'})])
  def test_unapproved_host_or_port_negative(self):
-  self.assertEqual(self.connect('api.openai.com:443'),[('rejected',403)])
+  self.assertEqual(self.connect('unapproved.example:443'),[('rejected',403)])
+  self.assertEqual(self.connect('api.openai.com:80'),[('rejected',403)])
+  self.assertEqual(self.connect('api.openai.com.unapproved.example:443'),[('rejected',403)])
   self.assertEqual(self.connect('generativelanguage.googleapis.com:80'),[('rejected',403)])
 
 if __name__=='__main__':unittest.main()

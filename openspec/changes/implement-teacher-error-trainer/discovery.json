@@ -4352,7 +4352,20 @@
       "tangerine.local/api/internal/provider::TestGeminiUnavailableNegative",
       "tangerine.local/api/internal/app::TestGenerationResponseProviderUnavailableNegative",
       "unittest::test_provider_environment.ProviderEnvironmentTests.test_installation_credentials_preserved_positive",
-      "unittest::test_provider_environment.ProviderEnvironmentTests.test_ambient_credentials_cleared_negative"
+      "unittest::test_provider_environment.ProviderEnvironmentTests.test_ambient_credentials_cleared_negative",
+      "unittest::test_release_network.BridgeFramingTests.test_authorized_openai_tunnel_positive",
+      "unittest::test_kokoro_worker.KokoroWorkerTests.test_reuse_and_context_positive",
+      "unittest::test_kokoro_worker.KokoroWorkerTests.test_native_error_preserved_positive",
+      "unittest::test_kokoro_worker.KokoroWorkerTests.test_waiter_cannot_cancel_owner_negative",
+      "unittest::test_kokoro_worker.KokoroWorkerTests.test_deadline_negative",
+      "unittest::test_kokoro_worker.KokoroWorkerTests.test_disconnect_and_recovery_negative",
+      "unittest::test_kokoro_worker.KokoroWorkerTests.test_reset_connection_negative",
+      "unittest::test_kokoro_worker.KokoroWorkerTests.test_exited_worker_negative",
+      "unittest::test_generation_live.GenerationLiveTests.test_completed_generation_positive",
+      "unittest::test_generation_live.GenerationLiveTests.test_scoring_feedback_positive",
+      "unittest::test_generation_live.GenerationLiveTests.test_false_claim_negative",
+      "unittest::test_generation_live.GenerationLiveTests.test_playback_and_unanswered_attempt_positive",
+      "unittest::test_kokoro_worker.KokoroWorkerTests.test_idle_exit_recovery_positive"
     ]
   },
   "reviews": [
@@ -20514,6 +20527,8 @@
       "id": "generation-incident-20261022",
       "question": "Why did the actual local Generate request fail before playable audio, and does the repair preserve a real failure for ambiguous data?",
       "property_ids": [
+        "I16-06.P1",
+        "I4-01.P1",
         "I4-11.P1",
         "I4-13.P1",
         "I4-14.P1",
@@ -20521,7 +20536,11 @@
         "I4-25.P1",
         "I5-05.P1",
         "I7-09.P1",
-        "I4-01.P1"
+        "I7-14.P1",
+        "I7-05.P1",
+        "I11-09.P1",
+        "I10-08.P1",
+        "I7-07.P1"
       ],
       "test_ids": [
         "tangerine.local/api/internal/app::TestNativePreparationRepeatedMetadataPositive",
@@ -20540,7 +20559,20 @@
         "tangerine.local/api/internal/provider::TestGeminiUnavailableNegative",
         "tangerine.local/api/internal/app::TestGenerationResponseProviderUnavailableNegative",
         "unittest::test_provider_environment.ProviderEnvironmentTests.test_installation_credentials_preserved_positive",
-        "unittest::test_provider_environment.ProviderEnvironmentTests.test_ambient_credentials_cleared_negative"
+        "unittest::test_provider_environment.ProviderEnvironmentTests.test_ambient_credentials_cleared_negative",
+        "unittest::test_release_network.BridgeFramingTests.test_authorized_openai_tunnel_positive",
+        "unittest::test_kokoro_worker.KokoroWorkerTests.test_reuse_and_context_positive",
+        "unittest::test_kokoro_worker.KokoroWorkerTests.test_native_error_preserved_positive",
+        "unittest::test_kokoro_worker.KokoroWorkerTests.test_waiter_cannot_cancel_owner_negative",
+        "unittest::test_kokoro_worker.KokoroWorkerTests.test_deadline_negative",
+        "unittest::test_kokoro_worker.KokoroWorkerTests.test_disconnect_and_recovery_negative",
+        "unittest::test_kokoro_worker.KokoroWorkerTests.test_reset_connection_negative",
+        "unittest::test_kokoro_worker.KokoroWorkerTests.test_exited_worker_negative",
+        "unittest::test_generation_live.GenerationLiveTests.test_completed_generation_positive",
+        "unittest::test_generation_live.GenerationLiveTests.test_scoring_feedback_positive",
+        "unittest::test_generation_live.GenerationLiveTests.test_false_claim_negative",
+        "unittest::test_generation_live.GenerationLiveTests.test_playback_and_unanswered_attempt_positive",
+        "unittest::test_kokoro_worker.KokoroWorkerTests.test_idle_exit_recovery_positive"
       ],
       "searches": [
         {
@@ -20568,6 +20600,21 @@
               "path": "services/api/internal/app/provider_connections.go",
               "classification": "change_candidate",
               "reason": "Resolve the approved private Gemini reference through the existing credential owner."
+            },
+            {
+              "path": "tests/release_network.py",
+              "classification": "change_candidate",
+              "reason": "User-approved official OpenAI TLS route; actual native OAuth/credit exclusion verified separately."
+            },
+            {
+              "path": "services/speech/kokoro_worker.py",
+              "classification": "change_candidate",
+              "reason": "One idle local model cache; every inference retains its foreground owner and cancellation. Native HTTP/actual local synthesis and fresh user exercise are separate observations."
+            },
+            {
+              "path": "tests/test_generation_live.py",
+              "classification": "change_candidate",
+              "reason": "Read-only assertions on retained actual app/browser and native semantic results; no fixture model replies or new inference."
             }
           ]
         },

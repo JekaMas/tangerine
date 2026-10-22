@@ -41,6 +41,12 @@ class Handler(BaseHTTPRequestHandler):
    if self.path in ('/internal/v1/measure','/internal/v1/measure-plan'):
     from diagnostic_server import serve
     serve(self,raw,timeout);return
+   if self.path=='/internal/v1/piece' and packet.get('profile',{}).get('provider')=='local_kokoro':
+    from kokoro_worker import KOKORO
+    def disconnected():
+     return bool(select.select([self.connection],[],[],0)[0]) and self.connection.recv(1,socket.MSG_PEEK)==b''
+    result=KOKORO.execute(packet,timeout,disconnected)
+    self.send(422 if result.get('error') else 200,result);return
    # A process belongs to the foreground request and is killed on its deadline.
    p=subprocess.Popen([sys.executable,'-B',os.path.join(os.path.dirname(__file__),'backends.py')],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True)
    completed=queue.Queue()

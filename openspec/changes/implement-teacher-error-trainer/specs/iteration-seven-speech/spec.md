@@ -186,6 +186,18 @@ The application SHALL report actual engine/model state and admit private request
 
 The application SHALL reap actual successful/failed workers and kill the actual process group on deadline or client disconnect; no detached synthesis remains. Literal tests and independent expectations SHALL be retained in audit/iteration-7-speech-20261011/CASES.json. These cases do not establish hosted account entitlement, perceived accent fidelity or later acoustic/listening/scoring features.
 
+Kokoro may retain an idle private model process between pieces to reuse loaded weights. Every inference still belongs to its foreground caller and retains its own native context/receipt. Cancellation or timeout kills and reaps the active model process. Waiting callers have their own deadline/cancellation and cannot interrupt another active owner. An idle loaded model performs no synthesis and is not a queued generation task.
+
+#### Scenario: Reuse local model memory without mixing callers
+- **WHEN** successive foreground Kokoro pieces have different speaker text or voice settings
+- **THEN** the loaded local model is reused and each result preserves its own complete inputs and native receipt
+- **AND** an expired waiting caller cannot cancel the current owner
+
+#### Scenario: Cancel and recover a cached local model
+- **WHEN** the active caller disconnects, reaches its deadline or its model process exits
+- **THEN** that process is reaped and unfinished audio remains incomplete
+- **AND** the next explicit call starts a fresh model process and cannot consume an earlier caller's response
+
 #### Scenario: I7-14 packet 1
 
 - **WHEN** the first positive or negative literal packet executes

@@ -51,7 +51,9 @@ def kokoro(profile,turn):
  sys.path.insert(0,str(root/'g2p'));os.environ['HF_HUB_OFFLINE']='1';os.environ['TRANSFORMERS_OFFLINE']='1'
  from kokoro import KModel,KPipeline
  from misaki import en
+ import torch
  if 'model' not in CACHE:
+  torch.set_num_threads(min(4,os.cpu_count() or 1))
   weight=next(r['path'] for r in manifest['files'] if r['path'].endswith('.pth'))
   CACHE['model']=KModel(repo_id=manifest['repo'],config=str(root/'config.json'),model=str(root/weight)).to('cpu').eval()
  code={'en-US':'a','en-GB':'b'}[turn['locale']]
@@ -83,6 +85,7 @@ def kokoro(profile,turn):
  from acoustic_alignment import decoder_scopes
  scopes=decoder_scopes(turn,tokens[0]) if turn.get('acoustic_token_scopes') and len(tokens)==1 else []
  return audio,{'acoustic_scopes':scopes,'model_manifest':manifest,'decoder':tokens,'model_visible_calls':model_calls,
+               'execution':{'device':'cpu','torch_num_threads':torch.get_num_threads()},
                'inference_receipt':{'id':invocation_id,'provider':'local_kokoro','model':manifest['repo'],'voice_id':turn['voice_id'],'locale':turn['locale'],'started_at_unix':invocation_started,'finished_at_unix':time.time(),'input':turn,'audio_sha256':hashlib.sha256(audio).hexdigest(),'decoder_call_count':len(model_calls)}},None
 
 def espeak(profile,turn):
@@ -233,9 +236,8 @@ def plan(profile,render_plan):
    pieces.append(piece)
  return {'pieces':pieces,'model_context':context}
 
-if __name__=='__main__':
+def execute_packet(packet):
  try:
-  packet=json.load(sys.stdin)
   with contextlib.redirect_stdout(sys.stderr):
    if packet.get('action')=='plan':result=plan(packet['profile'],packet['plan'])
    elif packet.get('action')=='resolve':result=resolve_acoustic(packet)
@@ -245,11 +247,21 @@ if __name__=='__main__':
     from diagnostic_runtime import execute,plan as diagnostic_plan
     result=execute(packet) if packet['action']=='measure' else diagnostic_plan(packet)
    else:result=render(packet['profile'],packet['turn'],packet.get('timeout_seconds',260))
-  print(json.dumps(result))
+  return result,0
  except Exception as e:
   # Raw library/provider exceptions may contain credentials or private text.
   code=str(e) if isinstance(e,ValueError) and str(e) in {'PAID_USE_FORBIDDEN','PROVIDER_QUOTA','PROVIDER_FAILED','MISSING_CREDENTIALS','CAPABILITY_UNAVAILABLE','VOICE_UNAVAILABLE','VOICE_SETUP_REQUIRED','MODEL_SETUP_REQUIRED','MODEL_BINDING_MISMATCH','DIAGNOSTIC_OUTPUT_INVALID','INVALID_AUDIO_INTERVAL','INPUT_CAPACITY_EXCEEDED','AUDIO_FORMAT_INVALID','AUDIO_SILENT','SYNTHESIS_FAILED','CONSTRAINT_CONFLICT','ALIGNMENT_UNAVAILABLE','ACOUSTIC_NOT_MEASURABLE'} else 'DIAGNOSTIC_FAILED' if packet.get('action')=='measure' else 'SYNTHESIS_FAILED'
   failure={'error':code}
   if packet.get('action')=='measure':failure['failure_type']=type(e).__name__
   if getattr(e,'reason',None) is not None:failure.update(reason=e.reason,observations=e.observations)
-  print(json.dumps(failure));sys.exit(1)
+  return failure,1
+
+if __name__=='__main__':
+ if sys.argv[1:]==['--kokoro-worker']:
+  for raw in sys.stdin.buffer:
+   packet=json.loads(raw)
+   result,_=execute_packet(packet)
+   print(json.dumps(result),flush=True)
+ else:
+  result,code=execute_packet(json.load(sys.stdin))
+  print(json.dumps(result));sys.exit(code)

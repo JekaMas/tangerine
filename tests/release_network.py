@@ -3,13 +3,15 @@
 Host can reach Docker's published loopback ports while Docker currently cannot
 reach host/public addresses. Host agents open outbound tunnels to this private
 container. Public TLS remains end to end. Inference destinations are the
-allowlisted installed Ollama models and the explicitly authorized Gemini host.
-Gemini billing is enforced by the admitted unbilled project, not this TLS tunnel.
+allowlisted installed Ollama models, the explicitly authorized Gemini host and
+OpenAI's official account/API hosts for the approved Tangerine plan connection.
+Billing is enforced by the admitted project/plan controls, not this TLS tunnel.
 """
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 from pathlib import Path
 import hashlib,json,os,queue,select,socket,sys,threading,time,uuid
 PUBLIC={'codeload.github.com','proxy.golang.org','sum.golang.org','storage.googleapis.com','pypi.org','files.pythonhosted.org','download.pytorch.org','download-r2.pytorch.org','download.pytorch.com','huggingface.co','github.com','objects.githubusercontent.com','release-assets.githubusercontent.com','generativelanguage.googleapis.com'}
+PUBLIC.update({'auth.openai.com','api.openai.com'})
 MODELS={'gpt-oss:20b','tangerine-qwen35-9b-i6-20261020'}
 JOBS=queue.Queue()
 

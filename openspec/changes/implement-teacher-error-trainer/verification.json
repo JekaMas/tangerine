@@ -3240,7 +3240,7 @@
       "id": "I7-14",
       "capability": "iteration-seven-speech",
       "title": "I7-14 Foreground speech child lifetime",
-      "fingerprint": "6f7102f2ef648cc0eb94e5cde796673ef303d44dda628612434df141b5b291c7"
+      "fingerprint": "8c3112d513454d559e047b1298e555f15ea6627a0095acc6a9b65b656e38b455"
     },
     {
       "id": "I7-15",
@@ -13681,7 +13681,9 @@
       "statement": "The application SHALL reap actual successful/failed workers and kill the actual process group on deadline or client disconnect; no detached synthesis remains.",
       "scenarios": [
         "I7-14 packet 1",
-        "I7-14 packet 2"
+        "I7-14 packet 2",
+        "Reuse local model memory without mixing callers",
+        "Cancel and recover a cached local model"
       ],
       "owner": "services/speech/server.py",
       "oracle": "The application SHALL reap actual successful/failed workers and kill the actual process group on deadline or client disconnect; no detached synthesis remains. Independent expectations are literal assertions over test-owned bytes/state, actual native stored artifacts and observed dispatch counts. Constructed text/model or hosted responses are explicitly qualified; real local speech and browser cases do not substitute their speech/storage/UI owner.",
@@ -180733,7 +180735,7 @@
       "command_id": "iteration16-00-test_release_network",
       "state": "implemented",
       "source_path": "tests/test_release_network.py",
-      "source_sha256": "4fd25f5ca830e390e3accacb782206b69e7ef52bd4669185373ba848872ac2ba",
+      "source_sha256": "03af7fed577535ffcb376319e444d026a95e620919762dd04af04c29442ea62b",
       "invalidation_dependencies": [
         "tests/test_release_network.py",
         "scripts/tangerine",
@@ -180815,7 +180817,7 @@
       "command_id": "iteration16-00-test_release_network",
       "state": "implemented",
       "source_path": "tests/test_release_network.py",
-      "source_sha256": "4fd25f5ca830e390e3accacb782206b69e7ef52bd4669185373ba848872ac2ba",
+      "source_sha256": "03af7fed577535ffcb376319e444d026a95e620919762dd04af04c29442ea62b",
       "invalidation_dependencies": [
         "tests/test_release_network.py",
         "scripts/tangerine",
@@ -180897,7 +180899,7 @@
       "command_id": "iteration16-00-test_release_network",
       "state": "implemented",
       "source_path": "tests/test_release_network.py",
-      "source_sha256": "4fd25f5ca830e390e3accacb782206b69e7ef52bd4669185373ba848872ac2ba",
+      "source_sha256": "03af7fed577535ffcb376319e444d026a95e620919762dd04af04c29442ea62b",
       "invalidation_dependencies": [
         "tests/test_release_network.py",
         "scripts/tangerine",
@@ -180979,7 +180981,7 @@
       "command_id": "iteration16-00-test_release_network",
       "state": "implemented",
       "source_path": "tests/test_release_network.py",
-      "source_sha256": "4fd25f5ca830e390e3accacb782206b69e7ef52bd4669185373ba848872ac2ba",
+      "source_sha256": "03af7fed577535ffcb376319e444d026a95e620919762dd04af04c29442ea62b",
       "invalidation_dependencies": [
         "tests/test_release_network.py",
         "scripts/tangerine",
@@ -181061,7 +181063,7 @@
       "command_id": "iteration16-00-test_release_network",
       "state": "implemented",
       "source_path": "tests/test_release_network.py",
-      "source_sha256": "4fd25f5ca830e390e3accacb782206b69e7ef52bd4669185373ba848872ac2ba",
+      "source_sha256": "03af7fed577535ffcb376319e444d026a95e620919762dd04af04c29442ea62b",
       "invalidation_dependencies": [
         "tests/test_release_network.py",
         "scripts/tangerine",
@@ -189892,7 +189894,7 @@
       "command_id": "iteration16-00-test_release_network",
       "state": "implemented",
       "source_path": "tests/test_release_network.py",
-      "source_sha256": "4fd25f5ca830e390e3accacb782206b69e7ef52bd4669185373ba848872ac2ba",
+      "source_sha256": "03af7fed577535ffcb376319e444d026a95e620919762dd04af04c29442ea62b",
       "invalidation_dependencies": [
         "tests/test_release_network.py",
         "scripts/tangerine",
@@ -189965,81 +189967,33 @@
       "polarity": "negative",
       "scenario": "I16-06 Extracted Apache source startup",
       "scenario_fingerprint": "7c862c57a9a15d51e23da85cf27a23ca9910b18e22943741e6427ebef77b62b3",
-      "distinct_reason": "Scenario I16-06 Extracted Apache source startup: exact proxy/tunnel counterexample test_unapproved_host_or_port_negative",
-      "setup": "Observe test_unapproved_host_or_port_negative through the actual proxy/tunnel owner with constructed transport only {\"exact_test\": \"test_unapproved_host_or_port_negative\", \"literal_executable_fixture\": \"def test_unapproved_host_or_port_negative(self):\\n  self.assertEqual(self.connect('api.openai.com:443'),[('rejected',403)])\\n  self.assertEqual(self.connect('generativelanguage.googleapis.com:80'),[('rejected',403)])\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_release_network.py\", \"source_path\": \"tests/test_release_network.py\", \"source_sha256\": \"4fd25f5ca830e390e3accacb782206b69e7ef52bd4669185373ba848872ac2ba\"}",
-      "observable": "{\"independent_literal_assertions\": \"def test_unapproved_host_or_port_negative(self):\\n  self.assertEqual(self.connect('api.openai.com:443'),[('rejected',403)])\\n  self.assertEqual(self.connect('generativelanguage.googleapis.com:80'),[('rejected',403)])\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Download/run source without Git or workflow metadata, using Docker as the only host runtime prerequisite, retain Apache2/third-party terms and provide actionable missing dependency errors.\"}",
+      "distinct_reason": "Approved ChatGPT plan connection: exact TLS host/port boundary test_unapproved_host_or_port_negative",
+      "setup": "{\"origin\": \"constructed native tunnel callbacks\", \"exact_test\": \"test_unapproved_host_or_port_negative\", \"literal_executable_fixture\": \" def test_unapproved_host_or_port_negative(self):\\n  self.assertEqual(self.connect('unapproved.example:443'),[('rejected',403)])\\n  self.assertEqual(self.connect('api.openai.com:80'),[('rejected',403)])\\n  self.assertEqual(self.connect('api.openai.com.unapproved.example:443'),[('rejected',403)])\\n  self.assertEqual(self.connect('generativelanguage.googleapis.com:80'),[('rejected',403)])\", \"shared_fixture_library\": \"audit/generation-repair-20261022/NETWORK-FIXTURE-LIBRARY.json#tests/test_release_network.py\"}",
+      "observable": "{\"independent_literal_assertions\": \" def test_unapproved_host_or_port_negative(self):\\n  self.assertEqual(self.connect('unapproved.example:443'),[('rejected',403)])\\n  self.assertEqual(self.connect('api.openai.com:80'),[('rejected',403)])\\n  self.assertEqual(self.connect('api.openai.com.unapproved.example:443'),[('rejected',403)])\\n  self.assertEqual(self.connect('generativelanguage.googleapis.com:80'),[('rejected',403)])\", \"oracle\": \"Literal expected destination or 403; does not infer account entitlement, inference success or billing controls.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
       "green_expectation": "All independently expected observations pass with their stated origin and limits.",
       "test_id": "unittest::test_release_network.BridgeFramingTests.test_unapproved_host_or_port_negative",
       "command_id": "iteration16-00-test_release_network",
       "state": "implemented",
       "source_path": "tests/test_release_network.py",
-      "source_sha256": "4fd25f5ca830e390e3accacb782206b69e7ef52bd4669185373ba848872ac2ba",
+      "source_sha256": "03af7fed577535ffcb376319e444d026a95e620919762dd04af04c29442ea62b",
       "invalidation_dependencies": [
         "tests/test_release_network.py",
-        "scripts/tangerine",
-        "tests/native_audio_diagnostics_test.go",
-        "tests/native_acoustic_test.go",
-        "tests/release-live",
-        "tests/release-portable",
-        "tests/release_lab.py",
-        "tests/diagnostics-native",
-        "tests/native-acoustic",
-        "tests/release_network.py",
-        "tests/browser_playwright.cjs",
-        "tests/browser_probe.py",
-        "tests/recovery-workspace",
-        "tests/listening_browser_fixture_test.go",
-        "tests/source_browser_fixture_test.go",
-        "tests/scoring_browser_fixture_test.go",
-        "tests/quality_browser_fixture_test.go",
-        "tests/interpretation_browser_fixture_test.go",
-        "tests/review_browser_fixture_test.go",
-        "tests/recovery_workspace_fixture_test.go",
-        "tests/speech_browser_fixture_test.go",
-        "tests/native_recovery_test.go",
-        "tests/native_preparation_test.go",
-        "tests/native_scoring_test.go",
-        "tests/native_listening_test.go",
-        "tests/native_quality_test.go",
-        "tests/native_storage_regression_test.go",
-        "tests/native_local_review_test.go",
-        "tests/native_quality_local_test.go",
-        "tests/native_local_interpretation_test.go",
-        "tests/native_local_scoring_test.go",
-        "tests/native_source_data_test.go",
-        "tests/native_source_test.go",
-        "tests/native_local_mutation_test.go",
-        "tests/native_provider_test.go",
-        "tests/native_speech_test.go",
-        "tests/native_mutation_test.go",
-        "tests/native_interpretation_test.go",
-        "tests/native_source_full_test.go",
-        "tests/native_quality_pipeline_test.go",
-        "tests/native_source_repair_test.go",
-        "tests/native_review_test.go",
-        "services/api/internal/app/audio_diagnostic*.go",
-        "services/api/internal/app/mutation*.go",
-        "services/api/internal/app/preparation*.go",
-        "services/api/internal/app/speech*.go",
-        "services/api/internal/app/acoustic*.go",
-        "services/api/internal/app/review*.go",
-        "services/api/internal/contracts/**",
-        "services/api/internal/provider/**",
-        "services/api/internal/localctl/**",
-        "services/api/internal/recovery/**",
-        "services/speech/**",
-        "services/api/internal/lab/**",
-        "deploy/local/compose*.yaml",
-        "specification/v2/docs/audio-diagnostics-runtime.md"
+        "tests/release_network.py"
       ],
       "substitution": {
         "classification": "EXTERNAL_BOUNDARY",
-        "owner_replaced": "Only constructed urllib transport or tunnel transfer callbacks",
+        "owner_replaced": "Network transfer callback only",
+        "proof_claims": [
+          "Exact TLS destination/port admission"
+        ],
         "forbidden_claims": [
-          "No actual Google TLS, model response, entitlement, billing enforcement or acoustic accuracy inferred."
+          "Actual account/model availability",
+          "Purchased-credit exclusion"
         ]
-      }
+      },
+      "designed_fixture_id": "generation-plan-test_unapproved_host_or_port_negative",
+      "fixture_observation_state": "not_run"
     },
     {
       "id": "I5-05.P1.INCIDENT.POSITIVE",
@@ -190650,6 +190604,480 @@
       },
       "designed_fixture_id": "generation-incident-test_ambient_credentials_cleared_negative",
       "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I16-06.P1.OPENAI.POSITIVE",
+      "property_id": "I16-06.P1",
+      "polarity": "positive",
+      "scenario": "I16-06 Extracted Apache source startup",
+      "scenario_fingerprint": "7c862c57a9a15d51e23da85cf27a23ca9910b18e22943741e6427ebef77b62b3",
+      "distinct_reason": "Approved ChatGPT plan connection: exact TLS host/port boundary test_authorized_openai_tunnel_positive",
+      "setup": "{\"origin\": \"constructed native tunnel callbacks\", \"exact_test\": \"test_authorized_openai_tunnel_positive\", \"literal_executable_fixture\": \" def test_authorized_openai_tunnel_positive(self):\\n  for host in ('auth.openai.com','api.openai.com'):\\n   self.assertEqual(self.connect(host+':443'),[('tunnel',{'host':host,'port':443,'kind':'dependency'})])\", \"shared_fixture_library\": \"audit/generation-repair-20261022/NETWORK-FIXTURE-LIBRARY.json#tests/test_release_network.py\"}",
+      "observable": "{\"independent_literal_assertions\": \" def test_authorized_openai_tunnel_positive(self):\\n  for host in ('auth.openai.com','api.openai.com'):\\n   self.assertEqual(self.connect(host+':443'),[('tunnel',{'host':host,'port':443,'kind':'dependency'})])\", \"oracle\": \"Literal expected destination or 403; does not infer account entitlement, inference success or billing controls.\"}",
+      "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
+      "green_expectation": "All independently expected observations pass with their stated origin and limits.",
+      "test_id": "unittest::test_release_network.BridgeFramingTests.test_authorized_openai_tunnel_positive",
+      "command_id": "iteration16-00-test_release_network",
+      "state": "implemented",
+      "source_path": "tests/test_release_network.py",
+      "source_sha256": "03af7fed577535ffcb376319e444d026a95e620919762dd04af04c29442ea62b",
+      "invalidation_dependencies": [
+        "tests/test_release_network.py",
+        "tests/release_network.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Network transfer callback only",
+        "proof_claims": [
+          "Exact TLS destination/port admission"
+        ],
+        "forbidden_claims": [
+          "Actual account/model availability",
+          "Purchased-credit exclusion"
+        ]
+      },
+      "designed_fixture_id": "generation-plan-test_authorized_openai_tunnel_positive",
+      "fixture_observation_state": "not_run"
+    },
+    {
+      "id": "I7-14.P1.CACHE.test_reuse_and_context_positive",
+      "property_id": "I7-14.P1",
+      "polarity": "positive",
+      "scenario": "Reuse local model memory without mixing callers",
+      "scenario_fingerprint": "c84830d386faf52d358091819634cc05b7b69e6f7daffc6c3b238ef25400ec04",
+      "setup": "{\"origin\": \"real process/IPC owner; constructed model replies only\", \"literal_executable_fixture\": \"    def test_reuse_and_context_positive(self):\\n        first = self.call({'text': 'First speaker: caf\\u00e9.'})\\n        second = self.call({'text': 'Second speaker: two quotes.'})\\n        self.assertEqual(first, {'pid': first['pid'], 'ordinal': 1, 'text': 'First speaker: caf\\u00e9.'})\\n        self.assertEqual(second, {'pid': first['pid'], 'ordinal': 2, 'text': 'Second speaker: two quotes.'})\\n        self.assertIsNone(self.worker.process.poll())\", \"source_path\": \"tests/test_kokoro_worker.py\"}",
+      "observable": "{\"independent_literal_assertions\": \"    def test_reuse_and_context_positive(self):\\n        first = self.call({'text': 'First speaker: caf\\u00e9.'})\\n        second = self.call({'text': 'Second speaker: two quotes.'})\\n        self.assertEqual(first, {'pid': first['pid'], 'ordinal': 1, 'text': 'First speaker: caf\\u00e9.'})\\n        self.assertEqual(second, {'pid': first['pid'], 'ordinal': 2, 'text': 'Second speaker: two quotes.'})\\n        self.assertIsNone(self.worker.process.poll())\"}",
+      "red_expectation": "A mixed response, detached inference, wrong error, unreaped process or incorrectly cancelled owner fails the literal assertion.",
+      "green_expectation": "Exact request context, native error, process lifetime and recovery expectations hold.",
+      "test_id": "unittest::test_kokoro_worker.KokoroWorkerTests.test_reuse_and_context_positive",
+      "command_id": "generation-kokoro-worker",
+      "state": "implemented",
+      "source_path": "tests/test_kokoro_worker.py",
+      "source_sha256": "40dd86c0c0aeb7580df9fbb1414a075bab4f489cff095d6d79fdd4d5a31a7001",
+      "invalidation_dependencies": [
+        "tests/test_kokoro_worker.py",
+        "services/speech/kokoro_worker.py",
+        "services/speech/server.py",
+        "services/speech/backends.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Kokoro model replies only, through an actual local subprocess",
+        "proof_claims": [
+          "Real IPC, serialized request identity, actual process reaping and recovery"
+        ],
+        "forbidden_claims": [
+          "Linguistic/audio quality or actual model inference",
+          "Any provider entitlement or billing observation"
+        ]
+      },
+      "designed_fixture_id": "generation-kokoro-test_reuse_and_context_positive",
+      "fixture_observation_state": "not_run",
+      "distinct_reason": "Cached Kokoro IPC/process lifetime: test_reuse_and_context_positive"
+    },
+    {
+      "id": "I7-14.P1.CACHE.test_native_error_preserved_positive",
+      "property_id": "I7-14.P1",
+      "polarity": "positive",
+      "scenario": "Reuse local model memory without mixing callers",
+      "scenario_fingerprint": "c84830d386faf52d358091819634cc05b7b69e6f7daffc6c3b238ef25400ec04",
+      "setup": "{\"origin\": \"real process/IPC owner; constructed model replies only\", \"literal_executable_fixture\": \"    def test_native_error_preserved_positive(self):\\n        self.assertEqual(self.call({'text': 'Invalid voice.', 'bad_voice': True}), {'error': 'VOICE_UNAVAILABLE'})\\n        pid = self.worker.process.pid\\n        self.assertEqual(self.call({'text': 'Valid next request.'}), {'pid': pid, 'ordinal': 2, 'text': 'Valid next request.'})\", \"source_path\": \"tests/test_kokoro_worker.py\"}",
+      "observable": "{\"independent_literal_assertions\": \"    def test_native_error_preserved_positive(self):\\n        self.assertEqual(self.call({'text': 'Invalid voice.', 'bad_voice': True}), {'error': 'VOICE_UNAVAILABLE'})\\n        pid = self.worker.process.pid\\n        self.assertEqual(self.call({'text': 'Valid next request.'}), {'pid': pid, 'ordinal': 2, 'text': 'Valid next request.'})\"}",
+      "red_expectation": "A mixed response, detached inference, wrong error, unreaped process or incorrectly cancelled owner fails the literal assertion.",
+      "green_expectation": "Exact request context, native error, process lifetime and recovery expectations hold.",
+      "test_id": "unittest::test_kokoro_worker.KokoroWorkerTests.test_native_error_preserved_positive",
+      "command_id": "generation-kokoro-worker",
+      "state": "implemented",
+      "source_path": "tests/test_kokoro_worker.py",
+      "source_sha256": "40dd86c0c0aeb7580df9fbb1414a075bab4f489cff095d6d79fdd4d5a31a7001",
+      "invalidation_dependencies": [
+        "tests/test_kokoro_worker.py",
+        "services/speech/kokoro_worker.py",
+        "services/speech/server.py",
+        "services/speech/backends.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Kokoro model replies only, through an actual local subprocess",
+        "proof_claims": [
+          "Real IPC, serialized request identity, actual process reaping and recovery"
+        ],
+        "forbidden_claims": [
+          "Linguistic/audio quality or actual model inference",
+          "Any provider entitlement or billing observation"
+        ]
+      },
+      "designed_fixture_id": "generation-kokoro-test_native_error_preserved_positive",
+      "fixture_observation_state": "not_run",
+      "distinct_reason": "Cached Kokoro IPC/process lifetime: test_native_error_preserved_positive"
+    },
+    {
+      "id": "I7-14.P1.CACHE.test_waiter_cannot_cancel_owner_negative",
+      "property_id": "I7-14.P1",
+      "polarity": "negative",
+      "scenario": "Reuse local model memory without mixing callers",
+      "scenario_fingerprint": "c84830d386faf52d358091819634cc05b7b69e6f7daffc6c3b238ef25400ec04",
+      "setup": "{\"origin\": \"real process/IPC owner; constructed model replies only\", \"literal_executable_fixture\": \"    def test_waiter_cannot_cancel_owner_negative(self):\\n        with tempfile.TemporaryDirectory() as folder:\\n            ready, release = Path(folder) / 'ready', Path(folder) / 'release'\\n            results = []\\n            owner = threading.Thread(target=lambda: results.append(self.call({'text': 'Owner.', 'ready': str(ready), 'wait': str(release)})))\\n            owner.start()\\n            try:\\n                deadline = time.monotonic() + 2\\n                while not ready.exists() and time.monotonic() < deadline:\\n                    time.sleep(.01)\\n                self.assertTrue(ready.exists())\\n                pid = self.worker.process.pid\\n                with self.assertRaises(subprocess.TimeoutExpired):\\n                    self.call({'text': 'Expired waiter.'}, timeout=.1)\\n                self.assertEqual(self.worker.process.pid, pid)\\n                self.assertIsNone(self.worker.process.poll())\\n            finally:\\n                release.touch()\\n                owner.join(timeout=4)\\n            self.assertFalse(owner.is_alive())\\n            self.assertEqual(results, [{'pid': pid, 'ordinal': 1, 'text': 'Owner.'}])\\n            self.assertEqual(self.call({'text': 'Next.'}), {'pid': pid, 'ordinal': 2, 'text': 'Next.'})\", \"source_path\": \"tests/test_kokoro_worker.py\"}",
+      "observable": "{\"independent_literal_assertions\": \"    def test_waiter_cannot_cancel_owner_negative(self):\\n        with tempfile.TemporaryDirectory() as folder:\\n            ready, release = Path(folder) / 'ready', Path(folder) / 'release'\\n            results = []\\n            owner = threading.Thread(target=lambda: results.append(self.call({'text': 'Owner.', 'ready': str(ready), 'wait': str(release)})))\\n            owner.start()\\n            try:\\n                deadline = time.monotonic() + 2\\n                while not ready.exists() and time.monotonic() < deadline:\\n                    time.sleep(.01)\\n                self.assertTrue(ready.exists())\\n                pid = self.worker.process.pid\\n                with self.assertRaises(subprocess.TimeoutExpired):\\n                    self.call({'text': 'Expired waiter.'}, timeout=.1)\\n                self.assertEqual(self.worker.process.pid, pid)\\n                self.assertIsNone(self.worker.process.poll())\\n            finally:\\n                release.touch()\\n                owner.join(timeout=4)\\n            self.assertFalse(owner.is_alive())\\n            self.assertEqual(results, [{'pid': pid, 'ordinal': 1, 'text': 'Owner.'}])\\n            self.assertEqual(self.call({'text': 'Next.'}), {'pid': pid, 'ordinal': 2, 'text': 'Next.'})\"}",
+      "red_expectation": "A mixed response, detached inference, wrong error, unreaped process or incorrectly cancelled owner fails the literal assertion.",
+      "green_expectation": "Exact request context, native error, process lifetime and recovery expectations hold.",
+      "test_id": "unittest::test_kokoro_worker.KokoroWorkerTests.test_waiter_cannot_cancel_owner_negative",
+      "command_id": "generation-kokoro-worker",
+      "state": "implemented",
+      "source_path": "tests/test_kokoro_worker.py",
+      "source_sha256": "40dd86c0c0aeb7580df9fbb1414a075bab4f489cff095d6d79fdd4d5a31a7001",
+      "invalidation_dependencies": [
+        "tests/test_kokoro_worker.py",
+        "services/speech/kokoro_worker.py",
+        "services/speech/server.py",
+        "services/speech/backends.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Kokoro model replies only, through an actual local subprocess",
+        "proof_claims": [
+          "Real IPC, serialized request identity, actual process reaping and recovery"
+        ],
+        "forbidden_claims": [
+          "Linguistic/audio quality or actual model inference",
+          "Any provider entitlement or billing observation"
+        ]
+      },
+      "designed_fixture_id": "generation-kokoro-test_waiter_cannot_cancel_owner_negative",
+      "fixture_observation_state": "not_run",
+      "distinct_reason": "Cached Kokoro IPC/process lifetime: test_waiter_cannot_cancel_owner_negative"
+    },
+    {
+      "id": "I7-14.P1.CACHE.test_deadline_negative",
+      "property_id": "I7-14.P1",
+      "polarity": "negative",
+      "scenario": "Cancel and recover a cached local model",
+      "scenario_fingerprint": "f6d94cfbea9127993395520ecb24790e9969b50ebd1fccdffc4a8a1f4f00ccd8",
+      "setup": "{\"origin\": \"real process/IPC owner; constructed model replies only\", \"literal_executable_fixture\": \"    def test_deadline_negative(self):\\n        with self.assertRaises(subprocess.TimeoutExpired):\\n            self.call({'text': 'Slow result must not arrive.', 'sleep': 5}, timeout=.2)\\n        self.assertIsNone(self.worker.process)\\n        self.assertEqual(self.call({'text': 'Recovered.'})['ordinal'], 1)\", \"source_path\": \"tests/test_kokoro_worker.py\"}",
+      "observable": "{\"independent_literal_assertions\": \"    def test_deadline_negative(self):\\n        with self.assertRaises(subprocess.TimeoutExpired):\\n            self.call({'text': 'Slow result must not arrive.', 'sleep': 5}, timeout=.2)\\n        self.assertIsNone(self.worker.process)\\n        self.assertEqual(self.call({'text': 'Recovered.'})['ordinal'], 1)\"}",
+      "red_expectation": "A mixed response, detached inference, wrong error, unreaped process or incorrectly cancelled owner fails the literal assertion.",
+      "green_expectation": "Exact request context, native error, process lifetime and recovery expectations hold.",
+      "test_id": "unittest::test_kokoro_worker.KokoroWorkerTests.test_deadline_negative",
+      "command_id": "generation-kokoro-worker",
+      "state": "implemented",
+      "source_path": "tests/test_kokoro_worker.py",
+      "source_sha256": "40dd86c0c0aeb7580df9fbb1414a075bab4f489cff095d6d79fdd4d5a31a7001",
+      "invalidation_dependencies": [
+        "tests/test_kokoro_worker.py",
+        "services/speech/kokoro_worker.py",
+        "services/speech/server.py",
+        "services/speech/backends.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Kokoro model replies only, through an actual local subprocess",
+        "proof_claims": [
+          "Real IPC, serialized request identity, actual process reaping and recovery"
+        ],
+        "forbidden_claims": [
+          "Linguistic/audio quality or actual model inference",
+          "Any provider entitlement or billing observation"
+        ]
+      },
+      "designed_fixture_id": "generation-kokoro-test_deadline_negative",
+      "fixture_observation_state": "not_run",
+      "distinct_reason": "Cached Kokoro IPC/process lifetime: test_deadline_negative"
+    },
+    {
+      "id": "I7-14.P1.CACHE.test_disconnect_and_recovery_negative",
+      "property_id": "I7-14.P1",
+      "polarity": "negative",
+      "scenario": "Cancel and recover a cached local model",
+      "scenario_fingerprint": "f6d94cfbea9127993395520ecb24790e9969b50ebd1fccdffc4a8a1f4f00ccd8",
+      "setup": "{\"origin\": \"real process/IPC owner; constructed model replies only\", \"literal_executable_fixture\": \"    def test_disconnect_and_recovery_negative(self):\\n        with tempfile.TemporaryDirectory() as folder:\\n            ready = Path(folder) / 'ready'\\n            observed = []\\n            def disconnected():\\n                if ready.exists():\\n                    observed.append(self.worker.process.pid)\\n                    return True\\n                return False\\n            with self.assertRaises(ConnectionAbortedError):\\n                self.call({'text': 'Cancelled.', 'ready': str(ready), 'sleep': 5}, disconnected=disconnected)\\n            with self.assertRaises(ProcessLookupError):\\n                os.kill(observed[0], 0)\\n            recovered = self.call({'text': 'Fresh context.'})\\n            self.assertEqual(recovered['ordinal'], 1)\\n            self.assertNotEqual(recovered['pid'], observed[0])\", \"source_path\": \"tests/test_kokoro_worker.py\"}",
+      "observable": "{\"independent_literal_assertions\": \"    def test_disconnect_and_recovery_negative(self):\\n        with tempfile.TemporaryDirectory() as folder:\\n            ready = Path(folder) / 'ready'\\n            observed = []\\n            def disconnected():\\n                if ready.exists():\\n                    observed.append(self.worker.process.pid)\\n                    return True\\n                return False\\n            with self.assertRaises(ConnectionAbortedError):\\n                self.call({'text': 'Cancelled.', 'ready': str(ready), 'sleep': 5}, disconnected=disconnected)\\n            with self.assertRaises(ProcessLookupError):\\n                os.kill(observed[0], 0)\\n            recovered = self.call({'text': 'Fresh context.'})\\n            self.assertEqual(recovered['ordinal'], 1)\\n            self.assertNotEqual(recovered['pid'], observed[0])\"}",
+      "red_expectation": "A mixed response, detached inference, wrong error, unreaped process or incorrectly cancelled owner fails the literal assertion.",
+      "green_expectation": "Exact request context, native error, process lifetime and recovery expectations hold.",
+      "test_id": "unittest::test_kokoro_worker.KokoroWorkerTests.test_disconnect_and_recovery_negative",
+      "command_id": "generation-kokoro-worker",
+      "state": "implemented",
+      "source_path": "tests/test_kokoro_worker.py",
+      "source_sha256": "40dd86c0c0aeb7580df9fbb1414a075bab4f489cff095d6d79fdd4d5a31a7001",
+      "invalidation_dependencies": [
+        "tests/test_kokoro_worker.py",
+        "services/speech/kokoro_worker.py",
+        "services/speech/server.py",
+        "services/speech/backends.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Kokoro model replies only, through an actual local subprocess",
+        "proof_claims": [
+          "Real IPC, serialized request identity, actual process reaping and recovery"
+        ],
+        "forbidden_claims": [
+          "Linguistic/audio quality or actual model inference",
+          "Any provider entitlement or billing observation"
+        ]
+      },
+      "designed_fixture_id": "generation-kokoro-test_disconnect_and_recovery_negative",
+      "fixture_observation_state": "not_run",
+      "distinct_reason": "Cached Kokoro IPC/process lifetime: test_disconnect_and_recovery_negative"
+    },
+    {
+      "id": "I7-14.P1.CACHE.test_reset_connection_negative",
+      "property_id": "I7-14.P1",
+      "polarity": "negative",
+      "scenario": "Cancel and recover a cached local model",
+      "scenario_fingerprint": "f6d94cfbea9127993395520ecb24790e9969b50ebd1fccdffc4a8a1f4f00ccd8",
+      "setup": "{\"origin\": \"real process/IPC owner; constructed model replies only\", \"literal_executable_fixture\": \"    def test_reset_connection_negative(self):\\n        with tempfile.TemporaryDirectory() as folder:\\n            ready = Path(folder) / 'ready'\\n            observed = []\\n            def reset():\\n                if ready.exists():\\n                    observed.append(self.worker.process.pid)\\n                    raise ConnectionResetError()\\n                return False\\n            with self.assertRaises(ConnectionResetError):\\n                self.call({'text': 'Reset.', 'ready': str(ready), 'sleep': 5}, disconnected=reset)\\n            self.assertIsNone(self.worker.process)\\n            with self.assertRaises(ProcessLookupError):\\n                os.kill(observed[0], 0)\\n            self.assertEqual(self.call({'text': 'Recovered.'})['ordinal'], 1)\", \"source_path\": \"tests/test_kokoro_worker.py\"}",
+      "observable": "{\"independent_literal_assertions\": \"    def test_reset_connection_negative(self):\\n        with tempfile.TemporaryDirectory() as folder:\\n            ready = Path(folder) / 'ready'\\n            observed = []\\n            def reset():\\n                if ready.exists():\\n                    observed.append(self.worker.process.pid)\\n                    raise ConnectionResetError()\\n                return False\\n            with self.assertRaises(ConnectionResetError):\\n                self.call({'text': 'Reset.', 'ready': str(ready), 'sleep': 5}, disconnected=reset)\\n            self.assertIsNone(self.worker.process)\\n            with self.assertRaises(ProcessLookupError):\\n                os.kill(observed[0], 0)\\n            self.assertEqual(self.call({'text': 'Recovered.'})['ordinal'], 1)\"}",
+      "red_expectation": "A mixed response, detached inference, wrong error, unreaped process or incorrectly cancelled owner fails the literal assertion.",
+      "green_expectation": "Exact request context, native error, process lifetime and recovery expectations hold.",
+      "test_id": "unittest::test_kokoro_worker.KokoroWorkerTests.test_reset_connection_negative",
+      "command_id": "generation-kokoro-worker",
+      "state": "implemented",
+      "source_path": "tests/test_kokoro_worker.py",
+      "source_sha256": "40dd86c0c0aeb7580df9fbb1414a075bab4f489cff095d6d79fdd4d5a31a7001",
+      "invalidation_dependencies": [
+        "tests/test_kokoro_worker.py",
+        "services/speech/kokoro_worker.py",
+        "services/speech/server.py",
+        "services/speech/backends.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Kokoro model replies only, through an actual local subprocess",
+        "proof_claims": [
+          "Real IPC, serialized request identity, actual process reaping and recovery"
+        ],
+        "forbidden_claims": [
+          "Linguistic/audio quality or actual model inference",
+          "Any provider entitlement or billing observation"
+        ]
+      },
+      "designed_fixture_id": "generation-kokoro-test_reset_connection_negative",
+      "fixture_observation_state": "not_run",
+      "distinct_reason": "Cached Kokoro IPC/process lifetime: test_reset_connection_negative"
+    },
+    {
+      "id": "I7-14.P1.CACHE.test_exited_worker_negative",
+      "property_id": "I7-14.P1",
+      "polarity": "negative",
+      "scenario": "Cancel and recover a cached local model",
+      "scenario_fingerprint": "f6d94cfbea9127993395520ecb24790e9969b50ebd1fccdffc4a8a1f4f00ccd8",
+      "setup": "{\"origin\": \"real process/IPC owner; constructed model replies only\", \"literal_executable_fixture\": \"    def test_exited_worker_negative(self):\\n        self.assertEqual(self.call({'text': 'Failed.', 'exit': True}), {'error': 'SYNTHESIS_FAILED'})\\n        self.assertIsNone(self.worker.process)\\n        self.assertEqual(self.call({'text': 'Recovered.'})['ordinal'], 1)\", \"source_path\": \"tests/test_kokoro_worker.py\"}",
+      "observable": "{\"independent_literal_assertions\": \"    def test_exited_worker_negative(self):\\n        self.assertEqual(self.call({'text': 'Failed.', 'exit': True}), {'error': 'SYNTHESIS_FAILED'})\\n        self.assertIsNone(self.worker.process)\\n        self.assertEqual(self.call({'text': 'Recovered.'})['ordinal'], 1)\"}",
+      "red_expectation": "A mixed response, detached inference, wrong error, unreaped process or incorrectly cancelled owner fails the literal assertion.",
+      "green_expectation": "Exact request context, native error, process lifetime and recovery expectations hold.",
+      "test_id": "unittest::test_kokoro_worker.KokoroWorkerTests.test_exited_worker_negative",
+      "command_id": "generation-kokoro-worker",
+      "state": "implemented",
+      "source_path": "tests/test_kokoro_worker.py",
+      "source_sha256": "40dd86c0c0aeb7580df9fbb1414a075bab4f489cff095d6d79fdd4d5a31a7001",
+      "invalidation_dependencies": [
+        "tests/test_kokoro_worker.py",
+        "services/speech/kokoro_worker.py",
+        "services/speech/server.py",
+        "services/speech/backends.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Kokoro model replies only, through an actual local subprocess",
+        "proof_claims": [
+          "Real IPC, serialized request identity, actual process reaping and recovery"
+        ],
+        "forbidden_claims": [
+          "Linguistic/audio quality or actual model inference",
+          "Any provider entitlement or billing observation"
+        ]
+      },
+      "designed_fixture_id": "generation-kokoro-test_exited_worker_negative",
+      "fixture_observation_state": "not_run",
+      "distinct_reason": "Cached Kokoro IPC/process lifetime: test_exited_worker_negative"
+    },
+    {
+      "id": "I7-05.P1.LIVE.test_completed_generation_positive",
+      "property_id": "I7-05.P1",
+      "polarity": "positive",
+      "scenario": "I7-05 packet 1",
+      "scenario_fingerprint": "e903b7daf2c47d80935ffa718f5f417ccf95a7a313b13e01479b30971f07f8fd",
+      "setup": "{\"origin\": \"retained actual app/provider/browser data; constructed teacher response\", \"literal_executable_fixture\": \"    def test_completed_generation_positive(self):\\n        x = self.observation\\n        self.assertEqual(x['origin'], 'actual_native_and_browser_observation_not_model_fixture')\\n        generation = x['generation']\\n        self.assertEqual(generation['phase_states'], {'canonical_text': 'complete', 'mutation': 'complete', 'render': 'complete'})\\n        self.assertTrue(generation['audio_available'])\\n        self.assertIsNone(generation['last_failure'])\\n        self.assertGreater(generation['canonical_word_count'], 0)\\n        progress = generation['render_progress_summary']\\n        self.assertGreater(progress['total_pieces'], 1)\\n        self.assertEqual(progress['complete_pieces'], progress['total_pieces'])\\n        self.assertTrue(progress['ready_to_assemble'])\\n        self.assertLessEqual(x['foreground_seconds'], 270)\", \"input\": \"data/generation-repair-20261022/live-observations.json\"}",
+      "observable": "{\"independent_literal_assertions\": \"    def test_completed_generation_positive(self):\\n        x = self.observation\\n        self.assertEqual(x['origin'], 'actual_native_and_browser_observation_not_model_fixture')\\n        generation = x['generation']\\n        self.assertEqual(generation['phase_states'], {'canonical_text': 'complete', 'mutation': 'complete', 'render': 'complete'})\\n        self.assertTrue(generation['audio_available'])\\n        self.assertIsNone(generation['last_failure'])\\n        self.assertGreater(generation['canonical_word_count'], 0)\\n        progress = generation['render_progress_summary']\\n        self.assertGreater(progress['total_pieces'], 1)\\n        self.assertEqual(progress['complete_pieces'], progress['total_pieces'])\\n        self.assertTrue(progress['ready_to_assemble'])\\n        self.assertLessEqual(x['foreground_seconds'], 270)\", \"oracle\": \"Actual native records and browser DOM; exact 45/30 weighted arithmetic calculated independently with fractions.\"}",
+      "red_expectation": "Missing/partial generation, accepted false assertion, wrong score or missing browser playback fails the literal expectation.",
+      "green_expectation": "The retained actual end-to-end observations match the literal expectations. Replay executes no inference.",
+      "test_id": "unittest::test_generation_live.GenerationLiveTests.test_completed_generation_positive",
+      "command_id": "generation-live-observations",
+      "state": "implemented",
+      "source_path": "tests/test_generation_live.py",
+      "source_sha256": "250f26a7be172621a548b2e0848cf8582f7ffb3f0b594b89d2e561804515f0bf",
+      "invalidation_dependencies": [
+        "tests/test_generation_live.py",
+        "data/generation-repair-20261022/live-observations.json",
+        "services/speech/kokoro_worker.py",
+        "services/speech/backends.py",
+        "services/api/internal/provider/transport.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Actual selected own-account generation, native local synthesis, browser playback or semantic decisions and exact scoring"
+        ],
+        "forbidden_claims": [
+          "Universal model/category/accent quality",
+          "Authentic participant/corpus data",
+          "Qualification of the unavailable Gemini text models"
+        ],
+        "note": "Constructed teacher answer is test input; model replies, application owners, audio and browser observations are real. Missing private evidence fails; replay performs no inference."
+      },
+      "designed_fixture_id": "generation-live-test_completed_generation_positive",
+      "fixture_observation_state": "not_run",
+      "distinct_reason": "Actual native/browser incident observation: test_completed_generation_positive"
+    },
+    {
+      "id": "I11-09.P1.LIVE.test_scoring_feedback_positive",
+      "property_id": "I11-09.P1",
+      "polarity": "positive",
+      "scenario": "I11-09 packet 1",
+      "scenario_fingerprint": "901a241c9c100d9f2b8d035608d17758ec7fbd8db30f1306c4ebb846560e307d",
+      "setup": "{\"origin\": \"retained actual app/provider/browser data; constructed teacher response\", \"literal_executable_fixture\": \"    def test_scoring_feedback_positive(self):\\n        result = self.observation['result']\\n        self.assertEqual(result['status'], 'complete')\\n        score = result['score']\\n        self.assertEqual({k: score['counts'][k] for k in ('tp', 'fp', 'fn')}, {'tp': 1, 'fp': 1, 'fn': 0})\\n        # Independent exact answer-components-v2 arithmetic: F1=2/3, repair=1.\\n        expected = 100 * (45 * Fraction(2, 3) + 30) / (45 + 30)\\n        exact = score['composite']['exact_value_0_100']\\n        self.assertEqual(Fraction(int(exact['numerator']), int(exact['denominator'])), expected)\\n        self.assertEqual(score['composite']['display'], '80.0')\\n        matched = [d for d in result['interpretation']['decisions'] if d['decision'] == 'matched_error']\\n        self.assertEqual(len(matched), 1)\\n        self.assertEqual(matched[0]['correction']['status'], 'accepted')\\n        self.assertEqual(matched[0]['explanation']['status'], 'accepted')\\n        self.assertIsNotNone(result['feedback'])\", \"input\": \"data/generation-repair-20261022/live-observations.json\"}",
+      "observable": "{\"independent_literal_assertions\": \"    def test_scoring_feedback_positive(self):\\n        result = self.observation['result']\\n        self.assertEqual(result['status'], 'complete')\\n        score = result['score']\\n        self.assertEqual({k: score['counts'][k] for k in ('tp', 'fp', 'fn')}, {'tp': 1, 'fp': 1, 'fn': 0})\\n        # Independent exact answer-components-v2 arithmetic: F1=2/3, repair=1.\\n        expected = 100 * (45 * Fraction(2, 3) + 30) / (45 + 30)\\n        exact = score['composite']['exact_value_0_100']\\n        self.assertEqual(Fraction(int(exact['numerator']), int(exact['denominator'])), expected)\\n        self.assertEqual(score['composite']['display'], '80.0')\\n        matched = [d for d in result['interpretation']['decisions'] if d['decision'] == 'matched_error']\\n        self.assertEqual(len(matched), 1)\\n        self.assertEqual(matched[0]['correction']['status'], 'accepted')\\n        self.assertEqual(matched[0]['explanation']['status'], 'accepted')\\n        self.assertIsNotNone(result['feedback'])\", \"oracle\": \"Actual native records and browser DOM; exact 45/30 weighted arithmetic calculated independently with fractions.\"}",
+      "red_expectation": "Missing/partial generation, accepted false assertion, wrong score or missing browser playback fails the literal expectation.",
+      "green_expectation": "The retained actual end-to-end observations match the literal expectations. Replay executes no inference.",
+      "test_id": "unittest::test_generation_live.GenerationLiveTests.test_scoring_feedback_positive",
+      "command_id": "generation-live-observations",
+      "state": "implemented",
+      "source_path": "tests/test_generation_live.py",
+      "source_sha256": "250f26a7be172621a548b2e0848cf8582f7ffb3f0b594b89d2e561804515f0bf",
+      "invalidation_dependencies": [
+        "tests/test_generation_live.py",
+        "data/generation-repair-20261022/live-observations.json",
+        "services/speech/kokoro_worker.py",
+        "services/speech/backends.py",
+        "services/api/internal/provider/transport.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Actual selected own-account generation, native local synthesis, browser playback or semantic decisions and exact scoring"
+        ],
+        "forbidden_claims": [
+          "Universal model/category/accent quality",
+          "Authentic participant/corpus data",
+          "Qualification of the unavailable Gemini text models"
+        ],
+        "note": "Constructed teacher answer is test input; model replies, application owners, audio and browser observations are real. Missing private evidence fails; replay performs no inference."
+      },
+      "designed_fixture_id": "generation-live-test_scoring_feedback_positive",
+      "fixture_observation_state": "not_run",
+      "distinct_reason": "Actual native/browser incident observation: test_scoring_feedback_positive"
+    },
+    {
+      "id": "I10-08.P1.LIVE.test_false_claim_negative",
+      "property_id": "I10-08.P1",
+      "polarity": "negative",
+      "scenario": "I10-08 packet 1",
+      "scenario_fingerprint": "916d93aa28d7adfca1a35ad719b0ffe4bf76220a35ba32242578c7f2c1fa9f88",
+      "setup": "{\"origin\": \"retained actual app/provider/browser data; constructed teacher response\", \"literal_executable_fixture\": \"    def test_false_claim_negative(self):\\n        result = self.observation['result']\\n        false = [d for d in result['interpretation']['decisions'] if d['decision'] == 'false_positive']\\n        self.assertEqual(len(false), 1)\\n        self.assertEqual(false[0]['correction']['status'], 'rejected')\\n        self.assertFalse(false[0]['explanation']['supplied'])\\n        self.assertEqual(result['score']['counts']['unresolved_claims'], 0)\", \"input\": \"data/generation-repair-20261022/live-observations.json\"}",
+      "observable": "{\"independent_literal_assertions\": \"    def test_false_claim_negative(self):\\n        result = self.observation['result']\\n        false = [d for d in result['interpretation']['decisions'] if d['decision'] == 'false_positive']\\n        self.assertEqual(len(false), 1)\\n        self.assertEqual(false[0]['correction']['status'], 'rejected')\\n        self.assertFalse(false[0]['explanation']['supplied'])\\n        self.assertEqual(result['score']['counts']['unresolved_claims'], 0)\", \"oracle\": \"Actual native records and browser DOM; exact 45/30 weighted arithmetic calculated independently with fractions.\"}",
+      "red_expectation": "Missing/partial generation, accepted false assertion, wrong score or missing browser playback fails the literal expectation.",
+      "green_expectation": "The retained actual end-to-end observations match the literal expectations. Replay executes no inference.",
+      "test_id": "unittest::test_generation_live.GenerationLiveTests.test_false_claim_negative",
+      "command_id": "generation-live-observations",
+      "state": "implemented",
+      "source_path": "tests/test_generation_live.py",
+      "source_sha256": "250f26a7be172621a548b2e0848cf8582f7ffb3f0b594b89d2e561804515f0bf",
+      "invalidation_dependencies": [
+        "tests/test_generation_live.py",
+        "data/generation-repair-20261022/live-observations.json",
+        "services/speech/kokoro_worker.py",
+        "services/speech/backends.py",
+        "services/api/internal/provider/transport.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Actual selected own-account generation, native local synthesis, browser playback or semantic decisions and exact scoring"
+        ],
+        "forbidden_claims": [
+          "Universal model/category/accent quality",
+          "Authentic participant/corpus data",
+          "Qualification of the unavailable Gemini text models"
+        ],
+        "note": "Constructed teacher answer is test input; model replies, application owners, audio and browser observations are real. Missing private evidence fails; replay performs no inference."
+      },
+      "designed_fixture_id": "generation-live-test_false_claim_negative",
+      "fixture_observation_state": "not_run",
+      "distinct_reason": "Actual native/browser incident observation: test_false_claim_negative"
+    },
+    {
+      "id": "I7-07.P1.LIVE.test_playback_and_unanswered_attempt_positive",
+      "property_id": "I7-07.P1",
+      "polarity": "positive",
+      "scenario": "I7-07 packet 1",
+      "scenario_fingerprint": "a2277f2e036bdb9cca365d08af041bdd6e43cfab1a25202a8aadc7b677049f87",
+      "setup": "{\"origin\": \"retained actual app/provider/browser data; constructed teacher response\", \"literal_executable_fixture\": \"    def test_playback_and_unanswered_attempt_positive(self):\\n        played = self.observation['playback']\\n        self.assertGreater(played['duration'], 0)\\n        self.assertGreater(played['currentTime'], 0)\\n        self.assertFalse(played['paused'])\\n        self.assertEqual(played['readyState'], 4)\\n        self.assertIsNone(played['error'])\\n        attempt = self.observation['unanswered_attempt']\\n        self.assertEqual(attempt['state'], 'started')\\n        self.assertEqual(attempt['answer_text'], '')\\n        self.assertIsNone(attempt['submitted_at'])\", \"input\": \"data/generation-repair-20261022/live-observations.json\"}",
+      "observable": "{\"independent_literal_assertions\": \"    def test_playback_and_unanswered_attempt_positive(self):\\n        played = self.observation['playback']\\n        self.assertGreater(played['duration'], 0)\\n        self.assertGreater(played['currentTime'], 0)\\n        self.assertFalse(played['paused'])\\n        self.assertEqual(played['readyState'], 4)\\n        self.assertIsNone(played['error'])\\n        attempt = self.observation['unanswered_attempt']\\n        self.assertEqual(attempt['state'], 'started')\\n        self.assertEqual(attempt['answer_text'], '')\\n        self.assertIsNone(attempt['submitted_at'])\", \"oracle\": \"Actual native records and browser DOM; exact 45/30 weighted arithmetic calculated independently with fractions.\"}",
+      "red_expectation": "Missing/partial generation, accepted false assertion, wrong score or missing browser playback fails the literal expectation.",
+      "green_expectation": "The retained actual end-to-end observations match the literal expectations. Replay executes no inference.",
+      "test_id": "unittest::test_generation_live.GenerationLiveTests.test_playback_and_unanswered_attempt_positive",
+      "command_id": "generation-live-observations",
+      "state": "implemented",
+      "source_path": "tests/test_generation_live.py",
+      "source_sha256": "250f26a7be172621a548b2e0848cf8582f7ffb3f0b594b89d2e561804515f0bf",
+      "invalidation_dependencies": [
+        "tests/test_generation_live.py",
+        "data/generation-repair-20261022/live-observations.json",
+        "services/speech/kokoro_worker.py",
+        "services/speech/backends.py",
+        "services/api/internal/provider/transport.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Actual selected own-account generation, native local synthesis, browser playback or semantic decisions and exact scoring"
+        ],
+        "forbidden_claims": [
+          "Universal model/category/accent quality",
+          "Authentic participant/corpus data",
+          "Qualification of the unavailable Gemini text models"
+        ],
+        "note": "Constructed teacher answer is test input; model replies, application owners, audio and browser observations are real. Missing private evidence fails; replay performs no inference."
+      },
+      "designed_fixture_id": "generation-live-test_playback_and_unanswered_attempt_positive",
+      "fixture_observation_state": "not_run",
+      "distinct_reason": "Actual native/browser incident observation: test_playback_and_unanswered_attempt_positive"
+    },
+    {
+      "id": "I7-14.P1.CACHE.test_idle_exit_recovery_positive",
+      "property_id": "I7-14.P1",
+      "polarity": "positive",
+      "scenario": "Cancel and recover a cached local model",
+      "scenario_fingerprint": "f6d94cfbea9127993395520ecb24790e9969b50ebd1fccdffc4a8a1f4f00ccd8",
+      "setup": "{\"origin\": \"real process/IPC owner; constructed model replies only\", \"literal_executable_fixture\": \"    def test_idle_exit_recovery_positive(self):\\n        first = self.call({'text': 'Finished before exit.'})\\n        self.worker.process.kill()\\n        self.worker.process.wait(timeout=3)\\n        recovered = self.call({'text': 'Fresh successful caller.'})\\n        self.assertNotEqual(recovered['pid'], first['pid'])\\n        self.assertEqual(recovered, {'pid': recovered['pid'], 'ordinal': 1, 'text': 'Fresh successful caller.'})\"}",
+      "observable": "{\"independent_literal_assertions\": \"    def test_idle_exit_recovery_positive(self):\\n        first = self.call({'text': 'Finished before exit.'})\\n        self.worker.process.kill()\\n        self.worker.process.wait(timeout=3)\\n        recovered = self.call({'text': 'Fresh successful caller.'})\\n        self.assertNotEqual(recovered['pid'], first['pid'])\\n        self.assertEqual(recovered, {'pid': recovered['pid'], 'ordinal': 1, 'text': 'Fresh successful caller.'})\"}",
+      "red_expectation": "A mixed response, detached inference, wrong error, unreaped process or incorrectly cancelled owner fails the literal assertion.",
+      "green_expectation": "A new successful caller after the idle process exits receives a fresh PID, ordinal1 and its own text.",
+      "test_id": "unittest::test_kokoro_worker.KokoroWorkerTests.test_idle_exit_recovery_positive",
+      "command_id": "generation-kokoro-worker",
+      "state": "implemented",
+      "source_path": "tests/test_kokoro_worker.py",
+      "source_sha256": "40dd86c0c0aeb7580df9fbb1414a075bab4f489cff095d6d79fdd4d5a31a7001",
+      "invalidation_dependencies": [
+        "tests/test_kokoro_worker.py",
+        "services/speech/kokoro_worker.py",
+        "services/speech/server.py",
+        "services/speech/backends.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Kokoro model replies only, through an actual local subprocess",
+        "proof_claims": [
+          "Real IPC, serialized request identity, actual process reaping and recovery"
+        ],
+        "forbidden_claims": [
+          "Linguistic/audio quality or actual model inference",
+          "Any provider entitlement or billing observation"
+        ]
+      },
+      "designed_fixture_id": "generation-kokoro-test_exited_worker_negative",
+      "fixture_observation_state": "not_run",
+      "distinct_reason": "An independently identified successful caller recovers after an idle model process exits."
     }
   ],
   "commands": [
@@ -194905,6 +195333,48 @@
       ],
       "cwd": ".",
       "env": {},
+      "timeout_seconds": 60,
+      "authority": "local"
+    },
+    {
+      "id": "generation-kokoro-worker",
+      "runner": "python-unittest",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_kokoro_worker.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "env": {},
+      "timeout_seconds": 60,
+      "authority": "local"
+    },
+    {
+      "id": "generation-live-observations",
+      "runner": "python-unittest",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_generation_live.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "env": {
+        "TANGERINE_GENERATION_LIVE_EVIDENCE": "data/generation-repair-20261022/live-observations.json"
+      },
       "timeout_seconds": 60,
       "authority": "local"
     }
