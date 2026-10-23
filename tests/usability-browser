@@ -69,8 +69,8 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
             click('Generate exercise');browser.wait('Test-owned generation is paused')
             wait("document.querySelector('button[type=submit]')?.disabled ?? [...document.querySelectorAll('button')].find(x=>x.textContent==='Generate exercise')?.disabled",False)
             return json.loads((evidence/'blueprint.json').read_text())
-        browser.wait('Number of mistakes')
-        record('test_saved_summary_positive',"document.body.textContent.includes('Saved seed settings · 1 speakers · approximately 123 words · A2 · 0 mistakes · grammar')",True)
+        browser.wait('How many mistakes');wait("document.querySelectorAll('.category-tree details').length",7);browser.call('UI.click',{'selector':'button:has-text("Exact")'})
+        record('test_saved_summary_positive',"document.body.textContent.includes('Saved seed settings · 1 speaker · approximately 123 words · A2 · 0 mistakes · Grammar')",True)
         fill('Topic','Insurance choices');fill('Speakers',2);fill('Approximate words',180);select('English level','B2');fill('Number of mistakes',3)
         for label in ['Grammar','Vocabulary']:browser.call('UI.click',{'selector':f'[aria-label="{label}"]'})
         b=prepared();request=b['exercise_request']
@@ -84,14 +84,14 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
         observed['test_levels_positive']=levels
         for label in ['Grammar','Vocabulary']:browser.call('UI.click',{'selector':f'[aria-label="{label}"]'})
         families=[]
-        labels=[('Grammar','grammar'),('Vocabulary','lexis'),('Pronunciation (all)','pronunciation'),('Pronunciation: individual sounds','pronunciation.segmental'),('Pronunciation: stress and intonation','pronunciation.suprasegmental'),('Fluency','fluency'),('Discourse and coherence','discourse'),('Pragmatics and register','pragmatics_register')]
+        labels=[('Grammar','grammar'),('Vocabulary','lexis'),('Pronunciation (all)','pronunciation'),('Pronunciation: individual sounds','pronunciation.segmental'),('Pronunciation: stress and intonation','pronunciation.suprasegmental'),('Fluency','fluency'),('Discourse and coherence','discourse'),('Style and register','pragmatics_register')]
         for label,identity in labels:
             browser.call('UI.click',{'selector':f'[aria-label="{label}"]'});b=prepared();assert b['exercise_request']['category_families']==[identity];families.append(identity);browser.call('UI.click',{'selector':f'[aria-label="{label}"]'})
         observed['test_families_positive']=families
-        select('English level','');fill('Number of mistakes','');b=prepared()
+        select('English level','');click('Automatic');b=prepared()
         observed['test_automatic_positive']={k:b['exercise_request'][k] for k in ['english_level','category_families','mutation_count']}
-        fill('Number of mistakes',0);b=prepared();observed['test_zero_positive']=b['exercise_request']['mutation_count']
-        browser.call('UI.click',{'selector':'summary'});fill('Advanced blueprint','{"exercise_request":{"english_level":"C1","mutation_count":4,"category_families":["discourse"]}}')
+        click('Exact');fill('Number of mistakes',0);b=prepared();observed['test_zero_positive']=b['exercise_request']['mutation_count']
+        browser.call('UI.click',{'selector':'summary:has-text("Advanced blueprint and speaker voices")'});fill('Advanced blueprint','{"exercise_request":{"english_level":"C1","mutation_count":4,"category_families":["discourse"]}}')
         b=prepared();observed['test_advanced_positive']={k:b['exercise_request'][k] for k in ['english_level','category_families','mutation_count']}
         before=counts()['preparations'];fill('Advanced blueprint','{');click('Generate exercise');browser.wait('Advanced blueprint is not valid JSON')
         assert counts()['preparations']==before
@@ -125,7 +125,7 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
         before=counts();(evidence/'mode').write_text('good');click('Retry comments and recommendations');browser.wait('The museum opens at nine.');wait("document.querySelector('[aria-label=\"Checking progress\"]')===null",True)
         after=counts();observed['test_feedback_retry_positive']={k:after[k]-before[k] for k in ['extractions','mappings','feedback','submissions']}
         (evidence/'gate').write_text('feedback');new_answer();click('Submit answer');wait("document.querySelector('[aria-label=\"Checking progress\"]')?.textContent.includes('Writing comments')",True)
-        browser.call('Page.navigate',{'url':base+'/prepare'});browser.wait('Number of mistakes');before=counts();time.sleep(1.5);after=counts();observed['test_unmount_negative']={'additional_reads':after['reads']-before['reads'],'additional_submissions':after['submissions']-before['submissions']}
+        browser.call('Page.navigate',{'url':base+'/prepare'});browser.wait('How many mistakes');wait("document.querySelectorAll('.category-tree details').length",7);browser.call('UI.click',{'selector':'button:has-text("Exact")'});before=counts();time.sleep(1.5);after=counts();observed['test_unmount_negative']={'additional_reads':after['reads']-before['reads'],'additional_submissions':after['submissions']-before['submissions']}
         (evidence/'gate').write_text('');(evidence/'done').write_text('done')
         assert go.wait(timeout=30)==0
         (evidence/'observations.json').write_text(json.dumps({'values':observed,'origin':'real_browser_api_postgres_minio_with_constructed_model_boundary','network_substitution':False,'model_quality_claim':False,'driver':browser.driver_version,'base_url':base},indent=2))

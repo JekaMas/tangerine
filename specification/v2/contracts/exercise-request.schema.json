@@ -99,6 +99,31 @@
       ],
       "default": null,
       "description": "Optional synthesis choice; null inherits workspace speech selection."
+    },
+    "category_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Optional exact registered error leaves. Nonempty restricts generation to these leaves and requests at least one true error per leaf unless mutation_count is zero. Empty/absent retains broad-family/advanced target selection."
+    },
+    "severity_levels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "minor",
+          "moderate",
+          "major",
+          "communication_breakdown"
+        ]
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Optional allowed true-error severities. Empty/absent means any; existing weights remain 1/2/3/4 independently of count or CEFR."
     }
   },
   "required": [

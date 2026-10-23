@@ -65,6 +65,16 @@ Scoring and recommendations use the model/profile frozen when an attempt starts.
 
 Open **Prepare** from the Library, enter topic/speakers/approximate words and select **Generate exercise**. Generation saves clean text, mutations/key and audio in order. Failed/interrupted requests appear under saved preparations; **Resume exercise** reuses their frozen settings. Open **Saved attempts** for drafts, submitted answers and immutable result history. Reading saved data makes no provider call.
 
+Choose broad mistake families or search for individual categories, including
+collocations and style/register. Severity is independent of count: allow any,
+or select Minor, Moderate, Major or Communication breakdown. Automatic lets the
+LLM choose a count; Low/Medium/High request about 1/2/4 mistakes per 100 requested
+words, with the effective total shown before generation. Exact accepts your own
+count, including zero for an exercise without injected mistakes. Selected exact
+categories each receive an error for positive counts. Settings, selected
+categories, severity and the effective count are saved with the preparation.
+See [exercise controls](specification/v2/docs/exercise-controls.md).
+
 From the extracted source directory:
 
 ```sh

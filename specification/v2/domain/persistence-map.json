@@ -23550,7 +23550,7 @@
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
-      "sha256": "9c07617efdccd97331dcbbd7bb4bef7e428de7097311009d44082da9aef8d49c",
+      "sha256": "e0a282d879be6fa4ed5c61c9d8316465651dafbc4605892984519984a39a36a4",
       "fields": [
         {
           "name": "topic",
@@ -23615,6 +23615,22 @@
           "description": "Optional synthesis choice; null inherits workspace speech selection.",
           "schema_reference": null,
           "rule_sha256": "4b6c6bac6dd370055bb06c26873644fce62c5f00b14350b703328183c762b0f2"
+        },
+        {
+          "name": "category_ids",
+          "pointer": "/properties/category_ids",
+          "required_in_parent": false,
+          "description": "Optional exact registered error leaves. Nonempty restricts generation to these leaves and requests at least one true error per leaf unless mutation_count is zero. Empty/absent retains broad-family/advanced target selection.",
+          "schema_reference": null,
+          "rule_sha256": "08bd7f2cd233ef5b8334a30f45146277aaf94e42c0216480368b9c0f8a9fa2d8"
+        },
+        {
+          "name": "severity_levels",
+          "pointer": "/properties/severity_levels",
+          "required_in_parent": false,
+          "description": "Optional allowed true-error severities. Empty/absent means any; existing weights remain 1/2/3/4 independently of count or CEFR.",
+          "schema_reference": null,
+          "rule_sha256": "956b2a2d38afe1eeb3f0e3b6cac547cd504098c739b5c8e0e90d540f954165cc"
         }
       ]
     },
@@ -31641,6 +31657,72 @@
           "description": null,
           "schema_reference": null,
           "rule_sha256": "8ea96cb3e2dfa590dd66d553832dcd8c356ed5a149ad53c7b6efcc1d08c96e71"
+        }
+      ]
+    },
+    {
+      "kind": "preparation-options",
+      "schema": "contracts/preparation-options.schema.json",
+      "schema_version": null,
+      "persistent_domain_record": false,
+      "storage": "derived DTO or actual operation input/output receipt",
+      "sha256": "d87214164d5cceddbc25fd4a6038a3e8c24e0718e6bb385a1015b201fa7aae38",
+      "fields": [
+        {
+          "name": "taxonomy_version",
+          "pointer": "/properties/taxonomy_version",
+          "required_in_parent": true,
+          "description": "Version of the exact shipped taxonomy from which these records are projected.",
+          "schema_reference": null,
+          "rule_sha256": "85116565c534a0e918bf87a4c50244ea6293c1332d97dea9652edd9dd6e1f101"
+        },
+        {
+          "name": "categories",
+          "pointer": "/properties/categories",
+          "required_in_parent": true,
+          "description": "All registered leaves including controls; ordinary error selection excludes control records.",
+          "schema_reference": null,
+          "rule_sha256": "f9dcb3aaf51efd5d5cd0e543ddb0f4fed75c78845dcfdd8e8ff9daed57d41476"
+        },
+        {
+          "name": "id",
+          "pointer": "/properties/categories/items/properties/id",
+          "required_in_parent": true,
+          "description": "Registered stable taxonomy leaf identifier.",
+          "schema_reference": null,
+          "rule_sha256": "0d8897010d9c43169946fc31e0e37123a37086a7f5794d9cc66e6f45643103db"
+        },
+        {
+          "name": "label",
+          "pointer": "/properties/categories/items/properties/label",
+          "required_in_parent": true,
+          "description": "Human-readable category label.",
+          "schema_reference": null,
+          "rule_sha256": "2e3e9e2bd1820f693f21b5f22becb7bb609fcb92510a1621386d6ac7ece8a75a"
+        },
+        {
+          "name": "description",
+          "pointer": "/properties/categories/items/properties/description",
+          "required_in_parent": true,
+          "description": "Contextual definition retained from the generation taxonomy.",
+          "schema_reference": null,
+          "rule_sha256": "d35e0b83d8241d2336df970fc10958e0e749502ed2a2c4a6bac418cc775a6df2"
+        },
+        {
+          "name": "family",
+          "pointer": "/properties/categories/items/properties/family",
+          "required_in_parent": true,
+          "description": "Original reporting domain used for grouping and broad selection.",
+          "schema_reference": null,
+          "rule_sha256": "415f5e5dda1166a991b693132b852b967450f85ecaac3f9ab928d1f11b0f7a55"
+        },
+        {
+          "name": "control",
+          "pointer": "/properties/categories/items/properties/control",
+          "required_in_parent": true,
+          "description": "True for an acceptable-variant control; it is not an ordinary injected-error choice.",
+          "schema_reference": null,
+          "rule_sha256": "e8d7c7de0627fb8e2bd9e979c04b55aec428ac5cbe65cdeafb186965c866997b"
         }
       ]
     }

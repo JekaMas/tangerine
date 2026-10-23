@@ -43,3 +43,9 @@ Complete distinct per-property positive/negative sets and DAG case identities: [
 Implemented optional empirical/quality tooling: [runtime and operator contract](docs/empirical-experiment-runtime.md).
 
 Iteration15 runtime: [Recovery and complete usability](docs/recovery-and-usability-runtime.md) owns the concrete local Generate/Resume, archive2/helper restore/switch and explicit erasure contracts. It supersedes obsolete prototype archive-chain and revocation-epoch fields; historical source documents remain unchanged.
+
+Current interface controls: [Choosing an exercise](docs/exercise-controls.md)
+defines the shared workspace, registered category picker, independent severity,
+amount presets/exact counts, safe category metadata endpoint and existing
+blueprint/checkpoint persistence. Original taxonomy, formulas and full-source
+features remain preserved.

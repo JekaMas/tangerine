@@ -26,9 +26,16 @@ func mutationSelection(blueprint map[string]any, taxonomyBytes, recipeBytes, pro
 		requested[v.(map[string]any)["taxonomy_id"].(string)] = true
 	}
 	families := []string{}
+	exact := map[string]bool{}
 	if r, ok := blueprint["exercise_request"].(map[string]any); ok {
 		for _, v := range r["category_families"].([]any) {
 			families = append(families, v.(string))
+		}
+		if ids, ok := r["category_ids"].([]any); ok {
+			for _, id := range ids {
+				exact[id.(string)] = true
+				requested[id.(string)] = true
+			}
 		}
 	}
 	registered := map[string]string{}
@@ -41,8 +48,14 @@ func mutationSelection(blueprint map[string]any, taxonomyBytes, recipeBytes, pro
 		if !ok || len(families) > 0 && !mutationFamilyMatches(families, domain) {
 			return nil, nil, nil, ErrConflict
 		}
+		if len(exact) > 0 && !exact[id] {
+			return nil, nil, nil, ErrConflict
+		}
 	}
 	selected := func(id, domain string) bool {
+		if len(exact) > 0 {
+			return exact[id]
+		}
 		if len(families) > 0 {
 			return mutationFamilyMatches(families, domain)
 		}

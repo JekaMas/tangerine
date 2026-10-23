@@ -3,13 +3,14 @@ import {useEffect,useRef,useState} from 'react';
 import Results from '../listen/Results';
 import ReconsiderSelected from './ReconsiderSelected';
 import Measurements from './Measurements';
+import ChooseCase from './ChooseCase';
 
 export default function Reviews(){
  const [scope,setScope]=useState(null),[rows,setRows]=useState([]),[selected,setSelected]=useState(null),[statement,setStatement]=useState(''),[result,setResult]=useState(null),[current,setCurrent]=useState(null),[caseItem,setCaseItem]=useState(null),[busy,setBusy]=useState(false),[error,setError]=useState(''),[cursor,setCursor]=useState('');
  const pending=useRef(null);
  async function request(path,options={}){const response=await fetch('/api/v1/'+path,{cache:'no-store',signal:AbortSignal.timeout(310000),...options});const body=await response.json();if(!response.ok){if(body.id){setSelected(body);throw Error('Review did not complete. Saved findings and the original answer/result are retained. Retry this review after the service is available.')}throw Error(response.status===409?'The selected version changed or work is already running. Refresh saved state.':'Review is unavailable. Your statement and saved data are retained.')}return {body,response};}
  async function refresh(value=scope,more=''){
-  if(!value)return;setError('');try{
+  if(!value?.case&&!value?.attempt)return;setError('');try{
    const filter=value.attempt?'attempt_id='+value.attempt:'case_version_id='+value.case;
    const {body,response}=await request('reviews?'+filter+(more?'&cursor='+more:''));setRows(old=>more?[...old,...body]:body);setCursor(response.headers.get('X-Tangerine-Next-Cursor')||'');
    if(value.attempt){const {body:latest}=await request('attempts/'+value.attempt+'/results');setCurrent(latest);if(!more)setResult(latest)}else{const {body:items}=await request('library');setCaseItem(items.find(item=>item.id===value.case)||null)}
@@ -29,9 +30,12 @@ export default function Reviews(){
  async function select(id){setBusy(true);setError('');try{const {body}=await request('reviews/'+id);setSelected(body)}catch(e){setError(e.message)}finally{setBusy(false)}}
  async function retry(){setBusy(true);setError('');try{const {body}=await request('reviews/'+selected.id);await run(body)}catch(e){setError(e.message)}finally{setBusy(false)}}
  async function resultVersion(id){setBusy(true);setError('');try{const {body}=await request('attempts/'+scope.attempt+'/results?result_id='+id);setResult(body)}catch(e){setError(e.message)}finally{setBusy(false)}}
- return <main><header><a className="brand" href="/">Tangerine</a><a href="/attempts">Saved attempts</a><a href="/settings">Settings</a></header>
-  <section className="card"><h1>Optional LLM review</h1><p>Ask the configured LLM to review a case or reconsider an answer. Your original recording, answer and result stay available.</p>
+ return <main id="main-content">
+  <section className="intro"><h1>Optional LLM review</h1><p>Ask the configured LLM to review a case or reconsider an answer. Your original recording, answer and result stay available.</p></section>
+  <section className="card">
+   {scope&&!scope.case&&!scope.attempt&&<ChooseCase/>}
    {error&&<p role="alert">{error}</p>}
+   {(scope?.case||scope?.attempt)&&<>
    <button disabled={busy} onClick={()=>refresh()}>Refresh saved state</button>
    {scope?.attempt&&current?.score&&<><button disabled={busy} onClick={()=>create('answer_reconsideration')}>Reconsider answer</button><label>Dispute statement<textarea aria-label="Dispute statement" rows={5} value={statement} maxLength={20000} onChange={e=>setStatement(e.target.value)}/></label><button disabled={busy||!statement.trim()} onClick={()=>create('dispute')}>Submit dispute</button></>}
    {scope?.case&&caseItem&&<button disabled={busy} onClick={()=>create('case_review')}>Review case</button>}
@@ -45,6 +49,7 @@ export default function Reviews(){
     {selected.new_case_version_id&&<p>A corrected key version uses the same recording. <a href="/">Open the Library</a></p>}
    </section>}
    <h2>Review history</h2>{rows.map(row=><p key={row.id}><button disabled={busy} onClick={()=>select(row.id)}>{row.purpose.replaceAll('_',' ')} · {row.status} · {row.created_at}</button></p>)}{cursor&&<button disabled={busy} onClick={()=>refresh(scope,cursor)}>More reviews</button>}
+   </>}
   </section>
   {((scope?.case&&caseItem)||(scope?.attempt&&current?.score))&&<Measurements key={scope.attempt?current.score.case_version_id:scope.case} caseID={scope.attempt?current.score.case_version_id:scope.case} attemptID={scope.attempt} audioSHA={scope.attempt?null:caseItem.audio_sha256}/>}
   {scope?.attempt&&current&&<section className="card"><h2>Result history</h2><button disabled={busy} onClick={()=>resultVersion(current.result_id)}>Current result</button>{current.result_revision_ids?.map((id,i)=><button key={id} disabled={busy} onClick={()=>resultVersion(id)}>{i===0?'Original result':'Earlier result '+(i+1)}</button>)}<Results results={result} busy={true} retry={()=>{}}/><a href={'/listen?attempt='+scope.attempt}>Return to listening and results</a></section>}

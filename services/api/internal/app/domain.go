@@ -297,6 +297,9 @@ func validateProjection(w DocumentWrite, b []byte) error {
 	return nil
 }
 func externalID(kind, key string) bool {
+	if kind == "preparation-state" && key == "category_ids" {
+		return true // Taxonomy labels in the saved request, bound by the frozen registry asset; not document IDs.
+	}
 	if kind == "audio-measurement" && (key == "method_id" || key == "target_unit_id" || key == "unit_id") {
 		// Method metadata and case-scoped unit names are not global document
 		// IDs. The diagnostic input selected them from its saved case; the

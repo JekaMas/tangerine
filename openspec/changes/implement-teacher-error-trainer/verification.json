@@ -4069,6 +4069,30 @@
       "capability": "linguistic-coverage",
       "title": "LF-06 Changed prompts have bounded actual flow evidence",
       "fingerprint": "fc164588f0cb988deca861b39041020d9173519708b9e4c1805fb8551604c88d"
+    },
+    {
+      "id": "UX-01",
+      "capability": "interface-and-controls",
+      "title": "UX-01 Consistent accessible listening workspace",
+      "fingerprint": "0bc70c413bba820516f921673abf3165dbad7d216dd86eb5059c756d839c95db"
+    },
+    {
+      "id": "UX-02",
+      "capability": "interface-and-controls",
+      "title": "UX-02 Searchable exact mistake selection",
+      "fingerprint": "d71fe7324ff08de1fe63a42f85ac3a24cef52a6894daf39660f1bdf8eac7a18e"
+    },
+    {
+      "id": "UX-03",
+      "capability": "interface-and-controls",
+      "title": "UX-03 Explicit independent severity",
+      "fingerprint": "a5ba2cef9908d6dbe23b46d724d6300442fb4f95d07e0c2f6b8d382660144b99"
+    },
+    {
+      "id": "UX-04",
+      "capability": "interface-and-controls",
+      "title": "UX-04 Understandable mistake amounts",
+      "fingerprint": "52db7b90a2b1d275734642ecd6e5c38cbd546e7f10a79e7fdb649a6a960a184d"
     }
   ],
   "properties": [
@@ -15897,6 +15921,82 @@
         "services/api/internal/scoring/count.go",
         "services/api/internal/lab/builtin.json",
         "specification/v2/domain/linguistic-contrast-set.v1.json"
+      ]
+    },
+    {
+      "id": "UX-01.P1",
+      "requirement_id": "UX-01",
+      "statement": "The application SHALL Consistent accessible listening workspace.",
+      "scenarios": [
+        "UX-01 Desktop and narrow route continuity"
+      ],
+      "owner": "services/web/app/AppShell.js",
+      "oracle": "Independent literal request/count/severity expectations and actual rendered/readback evidence; preserve unknown provider observations.",
+      "source_globs": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt"
+      ]
+    },
+    {
+      "id": "UX-02.P1",
+      "requirement_id": "UX-02",
+      "statement": "The application SHALL Searchable exact mistake selection.",
+      "scenarios": [
+        "UX-02 Exact categories and valid controls"
+      ],
+      "owner": "services/web/app/prepare/CategoryPicker.js",
+      "oracle": "Independent literal request/count/severity expectations and actual rendered/readback evidence; preserve unknown provider observations.",
+      "source_globs": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt"
+      ]
+    },
+    {
+      "id": "UX-03.P1",
+      "requirement_id": "UX-03",
+      "statement": "The application SHALL Explicit independent severity.",
+      "scenarios": [
+        "UX-03 Severity request and incompatible output"
+      ],
+      "owner": "services/api/internal/app/mutation_content.go",
+      "oracle": "Independent literal request/count/severity expectations and actual rendered/readback evidence; preserve unknown provider observations.",
+      "source_globs": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt"
+      ]
+    },
+    {
+      "id": "UX-04.P1",
+      "requirement_id": "UX-04",
+      "statement": "The application SHALL Understandable mistake amounts.",
+      "scenarios": [
+        "UX-04 Preset resolution and exact override"
+      ],
+      "owner": "services/web/app/prepare/request.js",
+      "oracle": "Independent literal request/count/severity expectations and actual rendered/readback evidence; preserve unknown provider observations.",
+      "source_globs": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt"
       ]
     }
   ],
@@ -241737,6 +241837,1264 @@
           "All-provider integration or published optional-review revisions"
         ]
       }
+    },
+    {
+      "id": "UX-01.P1.test_routes_desktop_positive",
+      "property_id": "UX-01.P1",
+      "polarity": "positive",
+      "scenario": "UX-01 Desktop and narrow route continuity",
+      "scenario_fingerprint": "f6ecf5586a74109b50273bd51ab576fa8594fd317de0463a5496e9d65d46de48",
+      "setup": "Authored literal fixtures and real owners; All eleven real routes render shared navigation, headings and original actions.",
+      "observable": "All eleven real routes render shared navigation, headings and original actions.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "All eleven real routes render shared navigation, headings and original actions.",
+      "test_id": "unittest::test_ux_browser.UXBrowser.test_routes_desktop_positive",
+      "command_id": "ux-browser",
+      "state": "implemented",
+      "source_path": "tests/test_ux_browser.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_browser.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "All eleven real routes render shared navigation, headings and original actions."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "daf4aa282ce87593cbb78ee386f32bd86fab0381aef34b8012bea181bb13105f"
+    },
+    {
+      "id": "UX-01.P1.test_mobile_navigation_positive",
+      "property_id": "UX-01.P1",
+      "polarity": "positive",
+      "scenario": "UX-01 Desktop and narrow route continuity",
+      "scenario_fingerprint": "f6ecf5586a74109b50273bd51ab576fa8594fd317de0463a5496e9d65d46de48",
+      "setup": "Authored literal fixtures and real owners; At 390px the menu opens, links work and current route is announced.",
+      "observable": "At 390px the menu opens, links work and current route is announced.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "At 390px the menu opens, links work and current route is announced.",
+      "test_id": "unittest::test_ux_browser.UXBrowser.test_mobile_navigation_positive",
+      "command_id": "ux-browser",
+      "state": "implemented",
+      "source_path": "tests/test_ux_browser.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_browser.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "At 390px the menu opens, links work and current route is announced."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "daf4aa282ce87593cbb78ee386f32bd86fab0381aef34b8012bea181bb13105f"
+    },
+    {
+      "id": "UX-01.P1.test_no_horizontal_overflow_negative",
+      "property_id": "UX-01.P1",
+      "polarity": "negative",
+      "scenario": "UX-01 Desktop and narrow route continuity",
+      "scenario_fingerprint": "f6ecf5586a74109b50273bd51ab576fa8594fd317de0463a5496e9d65d46de48",
+      "setup": "Authored literal fixtures and real owners; No tested page exceeds its 390px viewport; long data stays locally scrollable.",
+      "observable": "No tested page exceeds its 390px viewport; long data stays locally scrollable.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "No tested page exceeds its 390px viewport; long data stays locally scrollable.",
+      "test_id": "unittest::test_ux_browser.UXBrowser.test_no_horizontal_overflow_negative",
+      "command_id": "ux-browser",
+      "state": "implemented",
+      "source_path": "tests/test_ux_browser.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_browser.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "No tested page exceeds its 390px viewport; long data stays locally scrollable."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "daf4aa282ce87593cbb78ee386f32bd86fab0381aef34b8012bea181bb13105f"
+    },
+    {
+      "id": "UX-01.P1.test_saved_answer_unchanged_negative",
+      "property_id": "UX-01.P1",
+      "polarity": "negative",
+      "scenario": "UX-01 Desktop and narrow route continuity",
+      "scenario_fingerprint": "f6ecf5586a74109b50273bd51ab576fa8594fd317de0463a5496e9d65d46de48",
+      "setup": "Authored literal fixtures and real owners; Original saved attempt answer/status and provider policy remain unchanged; UI reads dispatch no inference.",
+      "observable": "Original saved attempt answer/status and provider policy remain unchanged; UI reads dispatch no inference.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Original saved attempt answer/status and provider policy remain unchanged; UI reads dispatch no inference.",
+      "test_id": "unittest::test_ux_browser.UXBrowser.test_saved_answer_unchanged_negative",
+      "command_id": "ux-browser",
+      "state": "implemented",
+      "source_path": "tests/test_ux_browser.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_browser.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Original saved attempt answer/status and provider policy remain unchanged; UI reads dispatch no inference."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "daf4aa282ce87593cbb78ee386f32bd86fab0381aef34b8012bea181bb13105f"
+    },
+    {
+      "id": "UX-01.P1.test_review_selection_positive",
+      "property_id": "UX-01.P1",
+      "polarity": "positive",
+      "scenario": "UX-01 Desktop and narrow route continuity",
+      "scenario_fingerprint": "f6ecf5586a74109b50273bd51ab576fa8594fd317de0463a5496e9d65d46de48",
+      "setup": "Authored literal fixtures and real owners; Reviews navigation offers actual saved exercises and selecting one loads history without running a review.",
+      "observable": "Reviews navigation offers actual saved exercises and selecting one loads history without running a review.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Reviews navigation offers actual saved exercises and selecting one loads history without running a review.",
+      "test_id": "unittest::test_ux_browser.UXBrowser.test_review_selection_positive",
+      "command_id": "ux-browser",
+      "state": "implemented",
+      "source_path": "tests/test_ux_browser.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_browser.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Reviews navigation offers actual saved exercises and selecting one loads history without running a review."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "daf4aa282ce87593cbb78ee386f32bd86fab0381aef34b8012bea181bb13105f"
+    },
+    {
+      "id": "UX-01.P1.test_review_selection_failure_negative",
+      "property_id": "UX-01.P1",
+      "polarity": "negative",
+      "scenario": "UX-01 Desktop and narrow route continuity",
+      "scenario_fingerprint": "f6ecf5586a74109b50273bd51ab576fa8594fd317de0463a5496e9d65d46de48",
+      "setup": "Authored literal fixtures and real owners; A real catalogue outage offers retry; recovery does not dispatch a review.",
+      "observable": "A real catalogue outage offers retry; recovery does not dispatch a review.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "A real catalogue outage offers retry; recovery does not dispatch a review.",
+      "test_id": "unittest::test_ux_browser.UXBrowser.test_review_selection_failure_negative",
+      "command_id": "ux-browser",
+      "state": "implemented",
+      "source_path": "tests/test_ux_browser.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_browser.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "A real catalogue outage offers retry; recovery does not dispatch a review."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "daf4aa282ce87593cbb78ee386f32bd86fab0381aef34b8012bea181bb13105f"
+    },
+    {
+      "id": "UX-02.P1.TestUXCatalogPositive",
+      "property_id": "UX-02.P1",
+      "polarity": "positive",
+      "scenario": "UX-02 Exact categories and valid controls",
+      "scenario_fingerprint": "a228913acc2b9bcee6d7a21a0fd2370c1391d5ac7971f8e7a71660aae9ca7bdd",
+      "setup": "Authored literal fixtures and real owners; GET preparation options returns exact shipped leaf IDs/labels and all 122 items without DB/model use.",
+      "observable": "GET preparation options returns exact shipped leaf IDs/labels and all 122 items without DB/model use.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "GET preparation options returns exact shipped leaf IDs/labels and all 122 items without DB/model use.",
+      "test_id": "tangerine.local/api/internal/app::TestUXCatalogPositive",
+      "command_id": "ux-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/ux_controls_test.go",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "services/api/internal/app/ux_controls_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "GET preparation options returns exact shipped leaf IDs/labels and all 122 items without DB/model use."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "5f51f2db0d2cc7865408689f5e0af31cf9c1d9e86229d0decc45391cc5194771"
+    },
+    {
+      "id": "UX-02.P1.TestUXCatalogControlsNegative",
+      "property_id": "UX-02.P1",
+      "polarity": "negative",
+      "scenario": "UX-02 Exact categories and valid controls",
+      "scenario_fingerprint": "a228913acc2b9bcee6d7a21a0fd2370c1391d5ac7971f8e7a71660aae9ca7bdd",
+      "setup": "Authored literal fixtures and real owners; The eight acceptable-variant leaves are explicitly controls; no unknown or duplicate category.",
+      "observable": "The eight acceptable-variant leaves are explicitly controls; no unknown or duplicate category.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "The eight acceptable-variant leaves are explicitly controls; no unknown or duplicate category.",
+      "test_id": "tangerine.local/api/internal/app::TestUXCatalogControlsNegative",
+      "command_id": "ux-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/ux_controls_test.go",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "services/api/internal/app/ux_controls_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "The eight acceptable-variant leaves are explicitly controls; no unknown or duplicate category."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "5f51f2db0d2cc7865408689f5e0af31cf9c1d9e86229d0decc45391cc5194771"
+    },
+    {
+      "id": "UX-02.P1.test_exact_categories_positive",
+      "property_id": "UX-02.P1",
+      "polarity": "positive",
+      "scenario": "UX-02 Exact categories and valid controls",
+      "scenario_fingerprint": "a228913acc2b9bcee6d7a21a0fd2370c1391d5ac7971f8e7a71660aae9ca7bdd",
+      "setup": "Authored literal fixtures and real owners; Collocation/formality yield only those two category_ids, no broad families and minimum one error each.",
+      "observable": "Collocation/formality yield only those two category_ids, no broad families and minimum one error each.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Collocation/formality yield only those two category_ids, no broad families and minimum one error each.",
+      "test_id": "unittest::test_ux_request.UXRequest.test_exact_categories_positive",
+      "command_id": "ux-request",
+      "state": "implemented",
+      "source_path": "tests/test_ux_request.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_request.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Collocation/formality yield only those two category_ids, no broad families and minimum one error each."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "ccd5a048c21be45bc4068727b4ae83c40072a6bca446746a5b1518a78dc797ea"
+    },
+    {
+      "id": "UX-02.P1.test_clear_categories_positive",
+      "property_id": "UX-02.P1",
+      "polarity": "positive",
+      "scenario": "UX-02 Exact categories and valid controls",
+      "scenario_fingerprint": "a228913acc2b9bcee6d7a21a0fd2370c1391d5ac7971f8e7a71660aae9ca7bdd",
+      "setup": "Authored literal fixtures and real owners; Clearing exact selection restores empty targets and automatic families/count.",
+      "observable": "Clearing exact selection restores empty targets and automatic families/count.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Clearing exact selection restores empty targets and automatic families/count.",
+      "test_id": "unittest::test_ux_request.UXRequest.test_clear_categories_positive",
+      "command_id": "ux-request",
+      "state": "implemented",
+      "source_path": "tests/test_ux_request.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_request.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Clearing exact selection restores empty targets and automatic families/count."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "ccd5a048c21be45bc4068727b4ae83c40072a6bca446746a5b1518a78dc797ea"
+    },
+    {
+      "id": "UX-02.P1.test_category_failure_negative",
+      "property_id": "UX-02.P1",
+      "polarity": "negative",
+      "scenario": "UX-02 Exact categories and valid controls",
+      "scenario_fingerprint": "a228913acc2b9bcee6d7a21a0fd2370c1391d5ac7971f8e7a71660aae9ca7bdd",
+      "setup": "Authored literal fixtures and real owners; Failed catalogue read retains topic and selections, offers retry and never claims missing categories loaded.",
+      "observable": "Failed catalogue read retains topic and selections, offers retry and never claims missing categories loaded.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Failed catalogue read retains topic and selections, offers retry and never claims missing categories loaded.",
+      "test_id": "unittest::test_ux_browser.UXBrowser.test_category_failure_negative",
+      "command_id": "ux-browser",
+      "state": "implemented",
+      "source_path": "tests/test_ux_browser.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_browser.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Failed catalogue read retains topic and selections, offers retry and never claims missing categories loaded."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "daf4aa282ce87593cbb78ee386f32bd86fab0381aef34b8012bea181bb13105f"
+    },
+    {
+      "id": "UX-02.P1.TestUXExactSelectionNegative",
+      "property_id": "UX-02.P1",
+      "polarity": "negative",
+      "scenario": "UX-02 Exact categories and valid controls",
+      "scenario_fingerprint": "a228913acc2b9bcee6d7a21a0fd2370c1391d5ac7971f8e7a71660aae9ca7bdd",
+      "setup": "Authored literal fixtures and real owners; An unrelated registered category cannot be admitted for a blueprint limited to exact leaves.",
+      "observable": "An unrelated registered category cannot be admitted for a blueprint limited to exact leaves.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "An unrelated registered category cannot be admitted for a blueprint limited to exact leaves.",
+      "test_id": "tangerine.local/api/internal/app::TestUXExactSelectionNegative",
+      "command_id": "ux-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/ux_controls_test.go",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "services/api/internal/app/ux_controls_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "An unrelated registered category cannot be admitted for a blueprint limited to exact leaves."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "5f51f2db0d2cc7865408689f5e0af31cf9c1d9e86229d0decc45391cc5194771"
+    },
+    {
+      "id": "UX-02.P1.TestUXCategoryCoveragePositive",
+      "property_id": "UX-02.P1",
+      "polarity": "positive",
+      "scenario": "UX-02 Exact categories and valid controls",
+      "scenario_fingerprint": "a228913acc2b9bcee6d7a21a0fd2370c1391d5ac7971f8e7a71660aae9ca7bdd",
+      "setup": "Authored literal fixtures and real owners; Two independent errors covering both requested leaves are accepted.",
+      "observable": "Two independent errors covering both requested leaves are accepted.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Two independent errors covering both requested leaves are accepted.",
+      "test_id": "tangerine.local/api/internal/app::TestUXCategoryCoveragePositive",
+      "command_id": "ux-coverage",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/ux_coverage_test.go",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "services/api/internal/app/ux_coverage_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Two independent errors covering both requested leaves are accepted."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "e6ed53720b8557a7636e4d640914da01ceb1cbe96266b8f71f662ddc2ae67d3a"
+    },
+    {
+      "id": "UX-02.P1.TestUXCategoryCoverageNegative",
+      "property_id": "UX-02.P1",
+      "polarity": "negative",
+      "scenario": "UX-02 Exact categories and valid controls",
+      "scenario_fingerprint": "a228913acc2b9bcee6d7a21a0fd2370c1391d5ac7971f8e7a71660aae9ca7bdd",
+      "setup": "Authored literal fixtures and real owners; Two repeated-category errors cannot satisfy a request for two different categories.",
+      "observable": "Two repeated-category errors cannot satisfy a request for two different categories.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Two repeated-category errors cannot satisfy a request for two different categories.",
+      "test_id": "tangerine.local/api/internal/app::TestUXCategoryCoverageNegative",
+      "command_id": "ux-coverage",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/ux_coverage_test.go",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "services/api/internal/app/ux_coverage_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Two repeated-category errors cannot satisfy a request for two different categories."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "e6ed53720b8557a7636e4d640914da01ceb1cbe96266b8f71f662ddc2ae67d3a"
+    },
+    {
+      "id": "UX-02.P1.TestUXAcousticSelectionPositive",
+      "property_id": "UX-02.P1",
+      "polarity": "positive",
+      "scenario": "UX-02 Exact categories and valid controls",
+      "scenario_fingerprint": "a228913acc2b9bcee6d7a21a0fd2370c1391d5ac7971f8e7a71660aae9ca7bdd",
+      "setup": "Authored literal fixtures and real owners; Exact pronunciation IDs retain the controlled local speech route.",
+      "observable": "Exact pronunciation IDs retain the controlled local speech route.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Exact pronunciation IDs retain the controlled local speech route.",
+      "test_id": "tangerine.local/api/internal/app::TestUXAcousticSelectionPositive",
+      "command_id": "ux-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/ux_controls_test.go",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "services/api/internal/app/ux_controls_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Exact pronunciation IDs retain the controlled local speech route."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "5f51f2db0d2cc7865408689f5e0af31cf9c1d9e86229d0decc45391cc5194771"
+    },
+    {
+      "id": "UX-02.P1.TestUXAcousticSelectionNegative",
+      "property_id": "UX-02.P1",
+      "polarity": "negative",
+      "scenario": "UX-02 Exact categories and valid controls",
+      "scenario_fingerprint": "a228913acc2b9bcee6d7a21a0fd2370c1391d5ac7971f8e7a71660aae9ca7bdd",
+      "setup": "Authored literal fixtures and real owners; Text-only exact IDs do not acquire an acoustic route; an unavailable plain adapter cannot accept explicit pronunciation.",
+      "observable": "Text-only exact IDs do not acquire an acoustic route; an unavailable plain adapter cannot accept explicit pronunciation.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Text-only exact IDs do not acquire an acoustic route; an unavailable plain adapter cannot accept explicit pronunciation.",
+      "test_id": "tangerine.local/api/internal/app::TestUXAcousticSelectionNegative",
+      "command_id": "ux-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/ux_controls_test.go",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "services/api/internal/app/ux_controls_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Text-only exact IDs do not acquire an acoustic route; an unavailable plain adapter cannot accept explicit pronunciation."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "5f51f2db0d2cc7865408689f5e0af31cf9c1d9e86229d0decc45391cc5194771"
+    },
+    {
+      "id": "UX-02.P1.TestUXCheckpointProjectionPositive",
+      "property_id": "UX-02.P1",
+      "polarity": "positive",
+      "scenario": "UX-02 Exact categories and valid controls",
+      "scenario_fingerprint": "a228913acc2b9bcee6d7a21a0fd2370c1391d5ac7971f8e7a71660aae9ca7bdd",
+      "setup": "Authored literal fixtures and real owners; Category labels remain frozen request metadata rather than database object references.",
+      "observable": "Category labels remain frozen request metadata rather than database object references.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Category labels remain frozen request metadata rather than database object references.",
+      "test_id": "tangerine.local/api/internal/app::TestUXCheckpointProjectionPositive",
+      "command_id": "ux-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/ux_controls_test.go",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "services/api/internal/app/ux_controls_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Category labels remain frozen request metadata rather than database object references."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "5f51f2db0d2cc7865408689f5e0af31cf9c1d9e86229d0decc45391cc5194771"
+    },
+    {
+      "id": "UX-02.P1.TestUXCheckpointProjectionNegative",
+      "property_id": "UX-02.P1",
+      "polarity": "negative",
+      "scenario": "UX-02 Exact categories and valid controls",
+      "scenario_fingerprint": "a228913acc2b9bcee6d7a21a0fd2370c1391d5ac7971f8e7a71660aae9ca7bdd",
+      "setup": "Authored literal fixtures and real owners; The category-label exemption preserves the actual settings asset association.",
+      "observable": "The category-label exemption preserves the actual settings asset association.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "The category-label exemption preserves the actual settings asset association.",
+      "test_id": "tangerine.local/api/internal/app::TestUXCheckpointProjectionNegative",
+      "command_id": "ux-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/ux_controls_test.go",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "services/api/internal/app/ux_controls_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "The category-label exemption preserves the actual settings asset association."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "5f51f2db0d2cc7865408689f5e0af31cf9c1d9e86229d0decc45391cc5194771"
+    },
+    {
+      "id": "UX-03.P1.TestUXSeverityPositive",
+      "property_id": "UX-03.P1",
+      "polarity": "positive",
+      "scenario": "UX-03 Severity request and incompatible output",
+      "scenario_fingerprint": "71a80709f6f501a23dc391e84d5aa94e198063a9ae1700218ca0c29a262aad04",
+      "setup": "Authored literal fixtures and real owners; Every selected severity is accepted with the unchanged 1/2/3/4 weight.",
+      "observable": "Every selected severity is accepted with the unchanged 1/2/3/4 weight.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Every selected severity is accepted with the unchanged 1/2/3/4 weight.",
+      "test_id": "tangerine.local/api/internal/app::TestUXSeverityPositive",
+      "command_id": "ux-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/ux_controls_test.go",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "services/api/internal/app/ux_controls_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Every selected severity is accepted with the unchanged 1/2/3/4 weight."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "5f51f2db0d2cc7865408689f5e0af31cf9c1d9e86229d0decc45391cc5194771"
+    },
+    {
+      "id": "UX-03.P1.TestUXSeverityRejectedNegative",
+      "property_id": "UX-03.P1",
+      "polarity": "negative",
+      "scenario": "UX-03 Severity request and incompatible output",
+      "scenario_fingerprint": "71a80709f6f501a23dc391e84d5aa94e198063a9ae1700218ca0c29a262aad04",
+      "setup": "Authored literal fixtures and real owners; A major true-error output is rejected when only minor/moderate is selected.",
+      "observable": "A major true-error output is rejected when only minor/moderate is selected.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "A major true-error output is rejected when only minor/moderate is selected.",
+      "test_id": "tangerine.local/api/internal/app::TestUXSeverityRejectedNegative",
+      "command_id": "ux-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/ux_controls_test.go",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "services/api/internal/app/ux_controls_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "A major true-error output is rejected when only minor/moderate is selected."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "5f51f2db0d2cc7865408689f5e0af31cf9c1d9e86229d0decc45391cc5194771"
+    },
+    {
+      "id": "UX-03.P1.TestUXSeverityLegacyPositive",
+      "property_id": "UX-03.P1",
+      "polarity": "positive",
+      "scenario": "UX-03 Severity request and incompatible output",
+      "scenario_fingerprint": "71a80709f6f501a23dc391e84d5aa94e198063a9ae1700218ca0c29a262aad04",
+      "setup": "Authored literal fixtures and real owners; Absent/empty selection preserves prior admission and request compatibility.",
+      "observable": "Absent/empty selection preserves prior admission and request compatibility.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Absent/empty selection preserves prior admission and request compatibility.",
+      "test_id": "tangerine.local/api/internal/app::TestUXSeverityLegacyPositive",
+      "command_id": "ux-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/ux_controls_test.go",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "services/api/internal/app/ux_controls_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Absent/empty selection preserves prior admission and request compatibility."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "5f51f2db0d2cc7865408689f5e0af31cf9c1d9e86229d0decc45391cc5194771"
+    },
+    {
+      "id": "UX-03.P1.TestUXSeverityZeroPositive",
+      "property_id": "UX-03.P1",
+      "polarity": "positive",
+      "scenario": "UX-03 Severity request and incompatible output",
+      "scenario_fingerprint": "71a80709f6f501a23dc391e84d5aa94e198063a9ae1700218ca0c29a262aad04",
+      "setup": "Authored literal fixtures and real owners; Explicit zero with selected severity accepts an unchanged text/empty key.",
+      "observable": "Explicit zero with selected severity accepts an unchanged text/empty key.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Explicit zero with selected severity accepts an unchanged text/empty key.",
+      "test_id": "tangerine.local/api/internal/app::TestUXSeverityZeroPositive",
+      "command_id": "ux-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/ux_controls_test.go",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "services/api/internal/app/ux_controls_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Explicit zero with selected severity accepts an unchanged text/empty key."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "5f51f2db0d2cc7865408689f5e0af31cf9c1d9e86229d0decc45391cc5194771"
+    },
+    {
+      "id": "UX-03.P1.test_minor_actual_positive",
+      "property_id": "UX-03.P1",
+      "polarity": "positive",
+      "scenario": "UX-03 Severity request and incompatible output",
+      "scenario_fingerprint": "71a80709f6f501a23dc391e84d5aa94e198063a9ae1700218ca0c29a262aad04",
+      "setup": "Authored literal fixtures and real owners; Actual native mutation on the saved clean text satisfies exact category/count/minor request; retain prompt/context/model/output and MLflow.",
+      "observable": "Actual native mutation on the saved clean text satisfies exact category/count/minor request; retain prompt/context/model/output and MLflow.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Actual native mutation on the saved clean text satisfies exact category/count/minor request; retain prompt/context/model/output and MLflow.",
+      "test_id": "unittest::test_ux_model_evidence.UXModel.test_minor_actual_positive",
+      "command_id": "ux-model",
+      "state": "implemented",
+      "source_path": "tests/test_ux_model_evidence.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_model_evidence.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Actual native mutation on the saved clean text satisfies exact category/count/minor request; retain prompt/context/model/output and MLflow."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "c92b92d9ba2c0a50baf26a2b114795fb9d2d3628a2e1b065889689732d585a52"
+    },
+    {
+      "id": "UX-03.P1.test_zero_actual_negative",
+      "property_id": "UX-03.P1",
+      "polarity": "negative",
+      "scenario": "UX-03 Severity request and incompatible output",
+      "scenario_fingerprint": "71a80709f6f501a23dc391e84d5aa94e198063a9ae1700218ca0c29a262aad04",
+      "setup": "Authored literal fixtures and real owners; Actual native zero request adds no errors despite category/severity context; no phantom defect or invented observation.",
+      "observable": "Actual native zero request adds no errors despite category/severity context; no phantom defect or invented observation.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Actual native zero request adds no errors despite category/severity context; no phantom defect or invented observation.",
+      "test_id": "unittest::test_ux_model_evidence.UXModel.test_zero_actual_negative",
+      "command_id": "ux-model",
+      "state": "implemented",
+      "source_path": "tests/test_ux_model_evidence.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_model_evidence.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Actual native zero request adds no errors despite category/severity context; no phantom defect or invented observation."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "c92b92d9ba2c0a50baf26a2b114795fb9d2d3628a2e1b065889689732d585a52"
+    },
+    {
+      "id": "UX-04.P1.test_presets_positive",
+      "property_id": "UX-04.P1",
+      "polarity": "positive",
+      "scenario": "UX-04 Preset resolution and exact override",
+      "scenario_fingerprint": "a3cd59217eb55e59c9ef1b17c3fccf908566b94bf643b5fb510b0823c3f7181a",
+      "setup": "Authored literal fixtures and real owners; 200 requested words resolve Low=2, Medium=4, High=8; 150 Low=2 and short requests retain minimum one.",
+      "observable": "200 requested words resolve Low=2, Medium=4, High=8; 150 Low=2 and short requests retain minimum one.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "200 requested words resolve Low=2, Medium=4, High=8; 150 Low=2 and short requests retain minimum one.",
+      "test_id": "unittest::test_ux_request.UXRequest.test_presets_positive",
+      "command_id": "ux-request",
+      "state": "implemented",
+      "source_path": "tests/test_ux_request.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_request.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "200 requested words resolve Low=2, Medium=4, High=8; 150 Low=2 and short requests retain minimum one."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "ccd5a048c21be45bc4068727b4ae83c40072a6bca446746a5b1518a78dc797ea"
+    },
+    {
+      "id": "UX-04.P1.test_coverage_floor_positive",
+      "property_id": "UX-04.P1",
+      "polarity": "positive",
+      "scenario": "UX-04 Preset resolution and exact override",
+      "scenario_fingerprint": "a3cd59217eb55e59c9ef1b17c3fccf908566b94bf643b5fb510b0823c3f7181a",
+      "setup": "Authored literal fixtures and real owners; A preset below three distinct required categories visibly resolves to three; overlapping pronunciation families are not double-counted.",
+      "observable": "A preset below three distinct required categories visibly resolves to three; overlapping pronunciation families are not double-counted.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "A preset below three distinct required categories visibly resolves to three; overlapping pronunciation families are not double-counted.",
+      "test_id": "unittest::test_ux_request.UXRequest.test_coverage_floor_positive",
+      "command_id": "ux-request",
+      "state": "implemented",
+      "source_path": "tests/test_ux_request.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_request.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "A preset below three distinct required categories visibly resolves to three; overlapping pronunciation families are not double-counted."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "ccd5a048c21be45bc4068727b4ae83c40072a6bca446746a5b1518a78dc797ea"
+    },
+    {
+      "id": "UX-04.P1.test_exact_and_zero_positive",
+      "property_id": "UX-04.P1",
+      "polarity": "positive",
+      "scenario": "UX-04 Preset resolution and exact override",
+      "scenario_fingerprint": "a3cd59217eb55e59c9ef1b17c3fccf908566b94bf643b5fb510b0823c3f7181a",
+      "setup": "Authored literal fixtures and real owners; Exact 3 stays 3, exact 0 stays 0 and Automatic stays null.",
+      "observable": "Exact 3 stays 3, exact 0 stays 0 and Automatic stays null.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Exact 3 stays 3, exact 0 stays 0 and Automatic stays null.",
+      "test_id": "unittest::test_ux_request.UXRequest.test_exact_and_zero_positive",
+      "command_id": "ux-request",
+      "state": "implemented",
+      "source_path": "tests/test_ux_request.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_request.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Exact 3 stays 3, exact 0 stays 0 and Automatic stays null."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "ccd5a048c21be45bc4068727b4ae83c40072a6bca446746a5b1518a78dc797ea"
+    },
+    {
+      "id": "UX-04.P1.test_advanced_override_positive",
+      "property_id": "UX-04.P1",
+      "polarity": "positive",
+      "scenario": "UX-04 Preset resolution and exact override",
+      "scenario_fingerprint": "a3cd59217eb55e59c9ef1b17c3fccf908566b94bf643b5fb510b0823c3f7181a",
+      "setup": "Authored literal fixtures and real owners; Explicit advanced targets/families/count/severity override matching simple controls; topic/other fields remain.",
+      "observable": "Explicit advanced targets/families/count/severity override matching simple controls; topic/other fields remain.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Explicit advanced targets/families/count/severity override matching simple controls; topic/other fields remain.",
+      "test_id": "unittest::test_ux_request.UXRequest.test_advanced_override_positive",
+      "command_id": "ux-request",
+      "state": "implemented",
+      "source_path": "tests/test_ux_request.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_request.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Explicit advanced targets/families/count/severity override matching simple controls; topic/other fields remain."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "ccd5a048c21be45bc4068727b4ae83c40072a6bca446746a5b1518a78dc797ea"
+    },
+    {
+      "id": "UX-04.P1.test_invalid_count_negative",
+      "property_id": "UX-04.P1",
+      "polarity": "negative",
+      "scenario": "UX-04 Preset resolution and exact override",
+      "scenario_fingerprint": "a3cd59217eb55e59c9ef1b17c3fccf908566b94bf643b5fb510b0823c3f7181a",
+      "setup": "Authored literal fixtures and real owners; Negative/fractional/blank exact values are rejected without dispatch; no silent rounding of an exact count.",
+      "observable": "Negative/fractional/blank exact values are rejected without dispatch; no silent rounding of an exact count.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Negative/fractional/blank exact values are rejected without dispatch; no silent rounding of an exact count.",
+      "test_id": "unittest::test_ux_request.UXRequest.test_invalid_count_negative",
+      "command_id": "ux-request",
+      "state": "implemented",
+      "source_path": "tests/test_ux_request.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_request.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Negative/fractional/blank exact values are rejected without dispatch; no silent rounding of an exact count."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "ccd5a048c21be45bc4068727b4ae83c40072a6bca446746a5b1518a78dc797ea"
+    },
+    {
+      "id": "UX-04.P1.test_severity_independent_negative",
+      "property_id": "UX-04.P1",
+      "polarity": "negative",
+      "scenario": "UX-04 Preset resolution and exact override",
+      "scenario_fingerprint": "a3cd59217eb55e59c9ef1b17c3fccf908566b94bf643b5fb510b0823c3f7181a",
+      "setup": "Authored literal fixtures and real owners; Changing severity never changes the requested amount or category IDs.",
+      "observable": "Changing severity never changes the requested amount or category IDs.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Changing severity never changes the requested amount or category IDs.",
+      "test_id": "unittest::test_ux_request.UXRequest.test_severity_independent_negative",
+      "command_id": "ux-request",
+      "state": "implemented",
+      "source_path": "tests/test_ux_request.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_request.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Changing severity never changes the requested amount or category IDs."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "ccd5a048c21be45bc4068727b4ae83c40072a6bca446746a5b1518a78dc797ea"
+    },
+    {
+      "id": "UX-04.P1.test_advanced_editor_negative",
+      "property_id": "UX-04.P1",
+      "polarity": "negative",
+      "scenario": "UX-04 Preset resolution and exact override",
+      "scenario_fingerprint": "a3cd59217eb55e59c9ef1b17c3fccf908566b94bf643b5fb510b0823c3f7181a",
+      "setup": "Authored literal fixtures and real owners; Invalid advanced field types preserve the editor and leave the page usable without a request.",
+      "observable": "Invalid advanced field types preserve the editor and leave the page usable without a request.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Invalid advanced field types preserve the editor and leave the page usable without a request.",
+      "test_id": "unittest::test_ux_browser.UXBrowser.test_advanced_editor_negative",
+      "command_id": "ux-browser",
+      "state": "implemented",
+      "source_path": "tests/test_ux_browser.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_browser.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Invalid advanced field types preserve the editor and leave the page usable without a request."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "daf4aa282ce87593cbb78ee386f32bd86fab0381aef34b8012bea181bb13105f"
+    },
+    {
+      "id": "UX-04.P1.test_request_interruption_negative",
+      "property_id": "UX-04.P1",
+      "polarity": "negative",
+      "scenario": "UX-04 Preset resolution and exact override",
+      "scenario_fingerprint": "a3cd59217eb55e59c9ef1b17c3fccf908566b94bf643b5fb510b0823c3f7181a",
+      "setup": "Authored literal fixtures and real owners; A real blocked generation transport preserves all selected values and provides clear recovery without inference.",
+      "observable": "A real blocked generation transport preserves all selected values and provides clear recovery without inference.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "A real blocked generation transport preserves all selected values and provides clear recovery without inference.",
+      "test_id": "unittest::test_ux_browser.UXBrowser.test_request_interruption_negative",
+      "command_id": "ux-browser",
+      "state": "implemented",
+      "source_path": "tests/test_ux_browser.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_browser.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "A real blocked generation transport preserves all selected values and provides clear recovery without inference."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "daf4aa282ce87593cbb78ee386f32bd86fab0381aef34b8012bea181bb13105f"
+    },
+    {
+      "id": "UX-04.P1.test_zero_caption_positive",
+      "property_id": "UX-04.P1",
+      "polarity": "positive",
+      "scenario": "UX-04 Preset resolution and exact override",
+      "scenario_fingerprint": "a3cd59217eb55e59c9ef1b17c3fccf908566b94bf643b5fb510b0823c3f7181a",
+      "setup": "Authored literal fixtures and real owners; Exact zero retains selected categories while clearly saying no mistakes are injected.",
+      "observable": "Exact zero retains selected categories while clearly saying no mistakes are injected.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Exact zero retains selected categories while clearly saying no mistakes are injected.",
+      "test_id": "unittest::test_ux_browser.UXBrowser.test_zero_caption_positive",
+      "command_id": "ux-browser",
+      "state": "implemented",
+      "source_path": "tests/test_ux_browser.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_browser.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Exact zero retains selected categories while clearly saying no mistakes are injected."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "daf4aa282ce87593cbb78ee386f32bd86fab0381aef34b8012bea181bb13105f"
+    },
+    {
+      "id": "UX-04.P1.test_saved_request_positive",
+      "property_id": "UX-04.P1",
+      "polarity": "positive",
+      "scenario": "UX-04 Preset resolution and exact override",
+      "scenario_fingerprint": "a3cd59217eb55e59c9ef1b17c3fccf908566b94bf643b5fb510b0823c3f7181a",
+      "setup": "Authored literal fixtures and real owners; Real saved blueprint/readback preserves target IDs, severity and resolved count, including existing legacy records.",
+      "observable": "Real saved blueprint/readback preserves target IDs, severity and resolved count, including existing legacy records.",
+      "red_expectation": "A missing, changed, silently substituted or unobserved requested value fails.",
+      "green_expectation": "Real saved blueprint/readback preserves target IDs, severity and resolved count, including existing legacy records.",
+      "test_id": "unittest::test_ux_browser.UXBrowser.test_saved_request_positive",
+      "command_id": "ux-browser",
+      "state": "implemented",
+      "source_path": "tests/test_ux_browser.py",
+      "invalidation_dependencies": [
+        "services/web/app",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/mutation_content.go",
+        "services/api/internal/app/domain.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "specification/v2/prompts/generate-v1.txt",
+        "tests/test_ux_browser.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real saved blueprint/readback preserves target IDs, severity and resolved count, including existing legacy records."
+        ],
+        "forbidden_claims": [
+          "Universal linguistic/perceptual accuracy",
+          "Paid provider integration",
+          "Execution of unselected original release cases"
+        ]
+      },
+      "source_sha256": "daf4aa282ce87593cbb78ee386f32bd86fab0381aef34b8012bea181bb13105f"
     }
   ],
   "commands": [
@@ -246231,6 +247589,117 @@
         "TANGERINE_SPEECH_TEST_RUNTIME_IMAGE": "sha256:e60ccf1b355001517bf95d3e5f135414b05740d08ca677cb74c1a19e714cb2df"
       },
       "timeout_seconds": 90,
+      "authority": "local"
+    },
+    {
+      "id": "ux-native",
+      "runner": "go-test-json",
+      "argv": [
+        "./tests/go-docker",
+        "test",
+        "-json",
+        "-race",
+        "-count=1",
+        "-run",
+        "^TestUX(Catalog|ExactSelection|Severity|AcousticSelection|Checkpoint)",
+        "./internal/app"
+      ],
+      "cwd": ".",
+      "env": {
+        "DOCKER_HOST": "unix:///Users/jekamas/Library/Containers/com.docker.docker/Data/docker.raw.sock",
+        "DOCKER_CONFIG": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/local-preview/docker-config"
+      },
+      "timeout_seconds": 300,
+      "authority": "local"
+    },
+    {
+      "id": "ux-coverage",
+      "runner": "go-test-json",
+      "argv": [
+        "./tests/go-docker",
+        "test",
+        "-json",
+        "-race",
+        "-count=1",
+        "-run",
+        "^TestUXCategoryCoverage",
+        "./internal/app"
+      ],
+      "cwd": ".",
+      "env": {
+        "DOCKER_HOST": "unix:///Users/jekamas/Library/Containers/com.docker.docker/Data/docker.raw.sock",
+        "DOCKER_CONFIG": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/local-preview/docker-config"
+      },
+      "timeout_seconds": 300,
+      "authority": "local"
+    },
+    {
+      "id": "ux-request",
+      "runner": "python-unittest",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_ux_request.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "env": {
+        "DOCKER_HOST": "unix:///Users/jekamas/Library/Containers/com.docker.docker/Data/docker.raw.sock",
+        "DOCKER_CONFIG": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/local-preview/docker-config"
+      },
+      "timeout_seconds": 180,
+      "authority": "local"
+    },
+    {
+      "id": "ux-browser",
+      "runner": "python-unittest",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_ux_browser.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "env": {
+        "DOCKER_HOST": "unix:///Users/jekamas/Library/Containers/com.docker.docker/Data/docker.raw.sock",
+        "DOCKER_CONFIG": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/local-preview/docker-config"
+      },
+      "timeout_seconds": 180,
+      "authority": "local"
+    },
+    {
+      "id": "ux-model",
+      "runner": "python-unittest",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_ux_model_evidence.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "env": {
+        "DOCKER_HOST": "unix:///Users/jekamas/Library/Containers/com.docker.docker/Data/docker.raw.sock",
+        "DOCKER_CONFIG": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/local-preview/docker-config"
+      },
+      "timeout_seconds": 180,
       "authority": "local"
     }
   ]

@@ -904,3 +904,13 @@ Interactive usability acceptance: all26selected test identities are observed pas
 - [x] CS.R3 Expose focused listening examples, review evidence and separated responsibilities, reconcile limits, commit and preserve the original exercise and comparison sets.
 
 Connected-speech checkpoint: audit/connected-speech-20261023/REPORT.md records27DAG code cases plus10existing regressions,12/12actual physical observations,31browser-playable WAVs and local Lab run0a6494d4086c49c7a46299cbe0d52c4b. Source-relative falling/fall-rise/rise-fall and voiced-span resolution are repaired; original data/formulas/taxonomy remain. Paired auditory opinions agree on15/22literal options and remain mixed, especially weak-form and intrusive-linking realization. No universal perceptual or full-release pass is claimed. Original free/local-only and data-preservation constraints hold.
+
+## Interface and exercise controls (2026-10-23)
+
+- [x] UX.R1 Apply the shared navigation, responsive layout and bundled typography across all eleven routes; retain existing content/actions and browser evidence.
+- [x] UX.R2 Expose searchable exact registered categories, broad families and correct control distinctions; verify real request projection and failure/input retention.
+- [x] UX.R3 Implement optional independent severity through the saved blueprint, mutation prompt and single output admission; retain positive/negative native and permitted model/Lab evidence.
+- [x] UX.R4 Add visible Low/Medium/High density presets plus Automatic/Exact/zero, preserving advanced overrides and frozen saved requests; verify exact expectations.
+- [x] UX.R5 Reconcile paired DAG cases, inspect actual desktop/mobile screens, repair findings, run affected checks, commit and deploy to the existing local service without changing provider/spending settings or user records.
+
+Interface/control acceptance: audit/ux-controls-20261023/REPORT.md and RECONCILIATION.json reconcile all34selected positive/negative cases,20existing browser regressions,11routes at desktop/narrow widths and two actual included-ChatGPT/local-Kokoro generation flows. Twelve native capture packets and both WAVs are read back in local MLflow run11d2c3c8f45549acbfe3c2cc904ce2b5. Native strict OpenSpec1.13.1,387artifact assertions, DAG/discovery, stable Go vet/gofmt and the production web build pass within recorded boundaries. The pinned wrapper preview-parser failure remains retained with a full-native-artifact reconciliation. Original records/configuration and taxonomy/recipes/formulas/source scopes remain. No paid use, overage, publication or universal linguistic/provider qualification is claimed.

@@ -6,6 +6,34 @@ info:
 servers:
   - url: http://localhost:3000
 paths:
+  /api/v1/preparation-options:
+    get:
+      operationId: preparationOptions
+      description: Read registered category labels and control distinctions without inference.
+      responses:
+        "403":
+          description: The existing private internal bearer credential is required.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required: [error]
+                additionalProperties: false
+        "200":
+          description: Safe projection of the shipped generation taxonomy.
+          content:
+            application/json:
+              schema:
+                $ref: preparation-options.schema.json
+        "503":
+          description: Category metadata unavailable; retain the form and offer explicit retry.
+          content:
+            application/json:
+              schema:
+                $ref: error-response.schema.json
   /api/v1/health:
     get:
       operationId: health

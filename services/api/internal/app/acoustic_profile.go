@@ -13,6 +13,15 @@ func acousticRequested(b map[string]any) bool {
 		if r["mutation_count"] == float64(0) {
 			return false
 		}
+		if ids, ok := r["category_ids"].([]any); ok && len(ids) > 0 {
+			for _, v := range ids {
+				id := v.(string)
+				if strings.HasPrefix(id, "pronunciation.") || strings.HasPrefix(id, "fluency.") {
+					return true
+				}
+			}
+			return false
+		}
 		if families, ok := r["category_families"].([]any); ok {
 			if len(families) == 0 {
 				return true
@@ -105,6 +114,13 @@ func requestedAcousticCapability(b, profile map[string]any) error {
 		routes[r["taxonomy_id"].(string)] = r["controller"].(string)
 	}
 	targets, _ := b["targets"].([]any)
+	if r, ok := b["exercise_request"].(map[string]any); ok {
+		if ids, ok := r["category_ids"].([]any); ok {
+			for _, id := range ids {
+				targets = append(targets, map[string]any{"taxonomy_id": id})
+			}
+		}
+	}
 	for _, v := range targets {
 		route := routes[v.(map[string]any)["taxonomy_id"].(string)]
 		if route != "" && route != "surface_text" && route != "control_variant" {

@@ -122,6 +122,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/v1/attempts/{id}/audio", s.attemptAudio)
 	mux.HandleFunc("GET /api/v1/attempts/{id}/results", s.attemptResults)
 	mux.HandleFunc("GET /api/v1/preparations", s.preparationList)
+	mux.HandleFunc("GET /api/v1/preparation-options", s.preparationOptions)
 	mux.HandleFunc("POST /api/v1/candidates:generate", s.generateExercise)
 	mux.HandleFunc("POST /api/v1/preparations/{action}", func(w http.ResponseWriter, r *http.Request) {
 		if id, ok := strings.CutSuffix(r.PathValue("action"), ":resume"); ok {

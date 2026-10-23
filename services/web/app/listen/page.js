@@ -7,8 +7,8 @@ export default function Listen() {
   const {attempt, answer, language, recovered, error, notice, busy, checking, audioRevision,
     canRefresh, refresh, write, editAnswer, editLanguage, playback, audioError, results, retryChecking} = useListening();
   const submitted = attempt?.submitted_at != null;
-  return <main>
-    <header><a className="brand" href="/">Tangerine</a><a href="/attempts">Saved attempts</a><a href="/settings">Settings</a></header>
+  return <main id="main-content">
+
     <section className="intro"><h1>Listen and respond</h1><p>Describe the mistakes you hear and offer corrections. Reasons are optional. You can answer in English or Russian.</p></section>
     <section className="card">
       {error && <p role="alert" className="error">{error}</p>}

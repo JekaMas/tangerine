@@ -4,7 +4,8 @@ import {blueprintRequest} from './request';
 
 // Own foreground requests and retained form state; Controls owns presentation.
 export default function usePreparation() {
-  const [form, setForm] = useState({topic:'', speakers:1, words:150, level:'', families:[], mutationCount:'', advanced:''});
+  const [form, setForm] = useState({topic:'', speakers:1, words:150, level:'', families:[], categories:[], severities:[], amount:'auto', mutationCount:'', advanced:''});
+  const [categories,setCategories]=useState([]),[categoryLoading,setCategoryLoading]=useState(true),[categoryError,setCategoryError]=useState('');
   const [items, setItems] = useState([]), [cursor, setCursor] = useState(null);
   const [busy, setBusy] = useState(false), [error, setError] = useState(''), [notice, setNotice] = useState('');
   const controller = useRef(null);
@@ -17,7 +18,8 @@ export default function usePreparation() {
       const data = await r.json(); setItems(old => append ? [...old,...data.items] : data.items); setCursor(data.next_cursor);
     } catch(e) { setError(e.message); }
   }
-  useEffect(() => { refresh(); return () => controller.current?.abort(); }, []);
+  async function retryCategories(){setCategoryLoading(true);setCategoryError('');try{const r=await fetch('/api/v1/preparation-options',{cache:'no-store'});if(!r.ok)throw Error('Catalogue unavailable');const data=await r.json();setCategories(data.categories);}catch{setCategoryError('Individual categories are unavailable. Your choices are retained. Retry to load the list.');}finally{setCategoryLoading(false);}}
+  useEffect(() => { refresh(); retryCategories(); return () => controller.current?.abort(); }, []);
   async function request(url, body, key) {
     const r = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':key},body:JSON.stringify(body),signal:controller.current.signal});
     const data = await r.json();
@@ -49,9 +51,9 @@ export default function usePreparation() {
       }
       setNotice('Exercise saved. Open the Library to listen and answer.');
     } catch(e) {
-      setError(e.name==='AbortError' ? 'Generation stopped. Saved text, mutations and completed audio pieces are retained. Refresh, then Resume explicitly.' : e instanceof SyntaxError ? 'Advanced blueprint is not valid JSON. Your form values are retained.' : e.message);
+      setError(e.name==='AbortError' ? 'Generation stopped. Saved text, mutations and completed audio pieces are retained. Refresh, then Resume explicitly.' : e instanceof SyntaxError ? 'Advanced blueprint is not valid JSON. Your form values are retained.' : e instanceof TypeError && /fetch/i.test(e.message) ? 'Could not reach the local service. Your choices are retained. Check Recovery, then retry or resume a saved preparation.' : e.message);
       setNotice('');
     } finally { clearTimeout(timeout); controller.current=null; setBusy(false); await refresh(); }
   }
-  return {form, update, items, cursor, busy, error, notice, generate, refresh: (append=false) => {setError(''); return refresh(append);}, stop: () => controller.current?.abort()};
+  return {form, update, items, cursor, busy, error, notice, generate, categories, categoryLoading, categoryError, retryCategories, refresh: (append=false) => {setError(''); return refresh(append);}, stop: () => controller.current?.abort()};
 }

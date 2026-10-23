@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.local/schemas/preparation-options.schema.json",
+  "title": "Registered preparation choices",
+  "type": "object",
+  "properties": {
+    "taxonomy_version": {
+      "type": "string",
+      "description": "Version of the exact shipped taxonomy from which these records are projected."
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Registered stable taxonomy leaf identifier."
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable category label."
+          },
+          "description": {
+            "type": "string",
+            "description": "Contextual definition retained from the generation taxonomy."
+          },
+          "family": {
+            "type": "string",
+            "description": "Original reporting domain used for grouping and broad selection."
+          },
+          "control": {
+            "type": "boolean",
+            "description": "True for an acceptable-variant control; it is not an ordinary injected-error choice."
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "description",
+          "family",
+          "control"
+        ],
+        "additionalProperties": false
+      },
+      "description": "All registered leaves including controls; ordinary error selection excludes control records."
+    }
+  },
+  "required": [
+    "taxonomy_version",
+    "categories"
+  ],
+  "additionalProperties": false,
+  "description": "Safe local preparation metadata; read-only and contains no learner answers, credentials or inference."
+}

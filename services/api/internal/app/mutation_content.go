@@ -49,6 +49,15 @@ func mutationContent(raw []byte, blueprint, clean, taxonomy map[string]any) (map
 	scopes := map[string][][2]int{}
 	counts := map[string]int{}
 	trueErrors := 0
+	errorCategories := map[string]bool{}
+	allowedSeverity := map[string]bool{}
+	if r, ok := blueprint["exercise_request"].(map[string]any); ok {
+		if values, ok := r["severity_levels"].([]any); ok {
+			for _, value := range values {
+				allowedSeverity[value.(string)] = true
+			}
+		}
+	}
 	familyEvents := map[string]bool{}
 	obligations := map[string]bool{}
 	for _, v := range units {
@@ -74,7 +83,11 @@ func mutationContent(raw []byte, blueprint, clean, taxonomy map[string]any) (map
 			return nil, &provider.OutputValidationError{Detail: "accepted_taxonomy_ids must include the primary category."}
 		}
 		if u["expected_judgment"] == "true_error" {
+			if len(allowedSeverity) > 0 && !allowedSeverity[u["severity"].(string)] {
+				return nil, &provider.OutputValidationError{Detail: "Every true error must use one of exercise_request.severity_levels. Severity and the requested number of mistakes are independent; retain the existing severity weight."}
+			}
 			trueErrors++
+			errorCategories[primary] = true
 			familyEvents[u["domain"].(string)] = true
 			obligation := mutationObligation(u)
 			if obligations[obligation] {
@@ -177,6 +190,13 @@ func mutationContent(raw []byte, blueprint, clean, taxonomy map[string]any) (map
 					}
 					if !covered {
 						return nil, &provider.OutputValidationError{Detail: "Include at least one independent true-error event in every requested category family; broad pronunciation may use either subdomain. Only explicit mutation_count=0 overrides family coverage."}
+					}
+				}
+			}
+			if categories, ok := r["category_ids"].([]any); ok {
+				for _, id := range categories {
+					if !errorCategories[id.(string)] {
+						return nil, &provider.OutputValidationError{Detail: "Include at least one true error in every explicitly selected exercise_request.category_ids category. Only explicit mutation_count=0 overrides category coverage."}
 					}
 				}
 			}

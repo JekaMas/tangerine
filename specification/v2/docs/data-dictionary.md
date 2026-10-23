@@ -128,7 +128,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | unit-map-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 10 |
 | verification-report | 1.0.0 | document.payload | 26 |
 
-| exercise-request | schema hash | derived DTO or actual operation input/output receipt | 8 |
+| exercise-request | schema hash | derived DTO or actual operation input/output receipt | 10 |
 
 | llm-context-snapshot | 2.0.0 | document.payload with linked private assets | 27 |
 
@@ -220,3 +220,5 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | audio-diagnostic-run | schema hash | derived DTO or actual operation input/output receipt | 12 |
 
 | audio-diagnostic-view | schema hash | derived DTO or actual operation input/output receipt | 2 |
+
+| preparation-options | schema hash | derived DTO or actual operation input/output receipt | 7 |
