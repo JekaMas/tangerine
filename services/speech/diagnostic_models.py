@@ -40,6 +40,10 @@ def decode_findings(text):
  try:out,_=decoder.raw_decode(text[min(starts):])
  except ValueError:raise ValueError('DIAGNOSTIC_OUTPUT_INVALID') from None
  if isinstance(out,list):out=dict(findings=out)
+ if isinstance(out,dict) and 'findings' not in out:
+  if isinstance(out.get('results'),list):out={**out,'findings':out['results']}
+  elif out and all(isinstance(row,dict) and ('unit_id' in row or {'feature','status'}<=set(row)) for row in out.values()):
+   out=dict(findings=[dict(row,unit_id=row.get('unit_id',key)) for key,row in out.items()])
  if isinstance(out,dict) and 'findings' not in out and {'unit_id','feature','status'}<=set(out) and ('description' in out or 'reason' in out):
   out=dict(findings=[out],summary=out.get('reason',out.get('description')))
  if not isinstance(out,dict) or not isinstance(out.get('findings'),list):raise ValueError('DIAGNOSTIC_OUTPUT_INVALID')

@@ -889,3 +889,11 @@ Interactive usability acceptance: all26selected test identities are observed pas
 - [ ] CMP.R3 Obtain a complete Qwen clean/mutated pair on a usable local runtime. Current native float32 and 635-second int8 CPU probes did not produce a full pair; the genuine 5.6-second native preview is labelled partial. Production adapters remain unchanged.
 
 - [x] CMP.R4 Generate the full saved dialogue with targets covering all 26 pronunciation categories, preserve the same speakers/text and local/free-only boundary, expose actual listening/download artifacts and target-position controls, retain native/context/Lab/browser evidence, and disclose exact versus approximate/unavailable controls. Full Kokoro/Flash/GeminiFlash recordings and full v4 target track exist; v4 uses the explicitly labelled Flash clean reference. Flash-Lite partials/quota failure and local VOT/Praat limitations are retained. This is completion of the requested finite listening experiment, not certification of 26 audible deviations or production-adapter qualification. Evidence: audit/pronunciation-all-20261023/REPORT.md. CMP.R2/R3 remain open.
+
+## Connected speech and intonation follow-up (2026-10-23)
+
+- [x] CS.R1 Trace rhythm, blending/coalescence, assimilation, connected speech and question/statement contours; close missing source-relative contour families and preserve permitted natural variants.
+- [x] CS.R2 Add independent positive/negative cases and DAG links; run affected regressions, actual local recordings/measurements and permitted free auditory observations, retaining model/context/output in Lab.
+- [x] CS.R3 Expose focused listening examples, review evidence and separated responsibilities, reconcile limits, commit and preserve the original exercise and comparison sets.
+
+Connected-speech checkpoint: audit/connected-speech-20261023/REPORT.md records27DAG code cases plus10existing regressions,12/12actual physical observations,31browser-playable WAVs and local Lab run0a6494d4086c49c7a46299cbe0d52c4b. Source-relative falling/fall-rise/rise-fall and voiced-span resolution are repaired; original data/formulas/taxonomy remain. Paired auditory opinions agree on15/22literal options and remain mixed, especially weak-form and intrusive-linking realization. No universal perceptual or full-release pass is claimed. Original free/local-only and data-preservation constraints hold.

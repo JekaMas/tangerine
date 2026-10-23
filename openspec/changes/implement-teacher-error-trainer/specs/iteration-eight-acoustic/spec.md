@@ -377,3 +377,39 @@ The application SHALL show actual saved-piece counts and selected profile in the
 
 - **WHEN** the second distinct positive or negative packet executes
 - **THEN** its independently expected actual state, waveform or failure SHALL hold
+
+### Requirement: CS-01 Source-relative intonation families
+
+The existing intonation contour/function leaves SHALL resolve the four source-relative templates in specification/v2/docs/connected-speech-and-intonation.md using actual source median F0 and voiced-frame times, including falling, fall-rise and rise-fall; the named contour SHALL finish on voiced speech rather than an unvoiced tail. Existing rising, custom absolute curves and already resolved steps SHALL retain their semantics. Unvoiced source audio SHALL not create an invented relative pitch target.
+
+#### Scenario: CS-01 Relative and absolute contours
+
+- **WHEN** an actual source is resolved with each named template, a custom absolute curve or a resolved step
+- **THEN** the named offsets are source-relative once, absolute/resolved curves remain unchanged and unvoiced templates remain not measurable
+
+### Requirement: CS-02 Audible contour and scoped rhythm contrasts
+
+The existing waveform owner SHALL produce opposed rising/falling acoustic contours and scoped rhythm-duration changes with independent numerical observations. A question mark SHALL NOT require a rising contour for every question; explicit conversational function and permitted alternatives own the contrast. Untargeted audio SHALL remain preserved.
+
+#### Scenario: CS-02 Measured contours and rhythm
+
+- **WHEN** positive contour/rhythm targets and matched negative controls execute through the native waveform owner
+- **THEN** independently measured pitch direction and selected sample duration match the declared contrast without changing unrelated timing or inferring meaning solely from punctuation
+
+### Requirement: CS-03 Coalescent blending and acceptable variants
+
+The existing assimilation phone-pair route SHALL accept complete boundary sequences for coalescent blending, including would-you and don't-you contexts. Natural coalescent and clear unblended variants SHALL remain permitted controls; the key SHALL name the actual faulty change rather than treating connected speech itself as an error.
+
+#### Scenario: CS-03 Boundary phones and transcript preservation
+
+- **WHEN** blended and unblended phrase references and an explicitly faulty boundary are compiled
+- **THEN** the original transcript stays intact and complete reference/replacement phone sequences remain renderable without creating a new taxonomy leaf or automatically scoring a permitted variant as an error
+
+### Requirement: CS-04 Tolerant auditory observation projection
+
+The diagnostic response owner SHALL preserve all identified unit observations from a single findings list, results-list wrapper or unit-keyed object, keeping uncertain judgments and the actual provider text. Unrelated objects and malformed result containers SHALL remain invalid; normalization SHALL not invent findings or certify their truth.
+
+#### Scenario: CS-04 Actual observation wrappers
+
+- **WHEN** a retained auditory reply uses a findings/results list or an unambiguous map of unit records
+- **THEN** all supplied unit records and uncertainty survive normalization, while an unrelated or malformed container does not become a fabricated observation

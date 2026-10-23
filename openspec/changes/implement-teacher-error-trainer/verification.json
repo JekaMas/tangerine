@@ -4009,6 +4009,30 @@
       "capability": "interactive-usability",
       "title": "USE-03 Checking failure and lifecycle",
       "fingerprint": "bc2217b6992b55fdb6253f08758dde82f56f423c6465614b4fb4641d77c08ee7"
+    },
+    {
+      "id": "CS-01",
+      "capability": "iteration-eight-acoustic",
+      "title": "CS-01 Source-relative intonation families",
+      "fingerprint": "7fc36199b502c7a450e3d9d69f9ad8af547724dca173abf471e91221a5914b6c"
+    },
+    {
+      "id": "CS-02",
+      "capability": "iteration-eight-acoustic",
+      "title": "CS-02 Audible contour and scoped rhythm contrasts",
+      "fingerprint": "5a70aa1e0a3fdd19b0909d06b4a9b5f282bee3a43b5ecd96dca4e2e0fb38a22b"
+    },
+    {
+      "id": "CS-03",
+      "capability": "iteration-eight-acoustic",
+      "title": "CS-03 Coalescent blending and acceptable variants",
+      "fingerprint": "60fbcd5e2d7ac7de98f5ac3d8a809c1dd22c9e264b702a1133b9ffb05e0a5d17"
+    },
+    {
+      "id": "CS-04",
+      "capability": "iteration-eight-acoustic",
+      "title": "CS-04 Tolerant auditory observation projection",
+      "fingerprint": "fb103a460aa66e77429759924994e329b4c3ae28efab12bca3919c779e90d32f"
     }
   ],
   "properties": [
@@ -15653,6 +15677,70 @@
       "source_globs": [
         "services/web/app/listen/*",
         "services/api/internal/app/interpretation_view.go"
+      ]
+    },
+    {
+      "id": "CS-01.P1",
+      "requirement_id": "CS-01",
+      "statement": "The application SHALL Resolve all four declared source-relative contours once while preserving absolute/resolved semantics and rejecting missing periodic evidence.",
+      "scenarios": [
+        "CS-01 Relative and absolute contours"
+      ],
+      "owner": "services/speech/acoustic_controls.py",
+      "oracle": "Literal independently stated offsets/sample counts and actual zero-crossing F0; full-phrase source/replacement phone strings. These tests do not claim perceived IPA, hosted capability or learner scoring accuracy.",
+      "source_globs": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py"
+      ]
+    },
+    {
+      "id": "CS-02.P1",
+      "requirement_id": "CS-02",
+      "statement": "The application SHALL Measure opposite native pitch direction and selected rhythm duration independently; do not equate question punctuation with rising F0 or change untargeted timing.",
+      "scenarios": [
+        "CS-02 Measured contours and rhythm"
+      ],
+      "owner": "services/speech/acoustic_controls.py",
+      "oracle": "Literal independently stated offsets/sample counts and actual zero-crossing F0; full-phrase source/replacement phone strings. These tests do not claim perceived IPA, hosted capability or learner scoring accuracy.",
+      "source_globs": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py"
+      ]
+    },
+    {
+      "id": "CS-03.P1",
+      "requirement_id": "CS-03",
+      "statement": "The application SHALL Compile whole-phrase coalescent and unblended boundary sequences with unchanged literal text; permitted natural variants remain controls.",
+      "scenarios": [
+        "CS-03 Boundary phones and transcript preservation"
+      ],
+      "owner": "services/speech/acoustic_alignment.py",
+      "oracle": "Literal independently stated offsets/sample counts and actual zero-crossing F0; full-phrase source/replacement phone strings. These tests do not claim perceived IPA, hosted capability or learner scoring accuracy.",
+      "source_globs": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py"
+      ]
+    },
+    {
+      "id": "CS-04.P1",
+      "requirement_id": "CS-04",
+      "statement": "The application SHALL Normalize actual findings/results-list and unit-keyed auditory observations without losing supplied uncertainty or fabricating unrelated findings.",
+      "scenarios": [
+        "CS-04 Actual observation wrappers"
+      ],
+      "owner": "services/speech/diagnostic_models.py",
+      "oracle": "Literal independently stated offsets/sample counts and actual zero-crossing F0; full-phrase source/replacement phone strings. These tests do not claim perceived IPA, hosted capability or learner scoring accuracy.",
+      "source_globs": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py"
       ]
     }
   ],
@@ -192061,6 +192149,924 @@
         ]
       },
       "distinct_reason": "USE-03 Read failure, completion and explicit retry: test_unmount_negative qualifies the specific selected request/progress/lifecycle obligation with independent literal expectations."
+    },
+    {
+      "id": "CS-01.P1.RISE_POSITIVE",
+      "property_id": "CS-01.P1",
+      "polarity": "positive",
+      "scenario": "CS-01 Relative and absolute contours",
+      "scenario_fingerprint": "18e885bb53d43f3fd7048e9d9931cc506f59a9960c2c4963e5805754d69f28e6",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_rise_positive",
+      "observable": "def test_rise_positive(self):self.relative('rise')",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_rise_positive",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-01.P1.FALL_POSITIVE",
+      "property_id": "CS-01.P1",
+      "polarity": "positive",
+      "scenario": "CS-01 Relative and absolute contours",
+      "scenario_fingerprint": "18e885bb53d43f3fd7048e9d9931cc506f59a9960c2c4963e5805754d69f28e6",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_fall_positive",
+      "observable": "def test_fall_positive(self):self.relative('fall')",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_fall_positive",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-01.P1.FALL_RISE_POSITIVE",
+      "property_id": "CS-01.P1",
+      "polarity": "positive",
+      "scenario": "CS-01 Relative and absolute contours",
+      "scenario_fingerprint": "18e885bb53d43f3fd7048e9d9931cc506f59a9960c2c4963e5805754d69f28e6",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_fall_rise_positive",
+      "observable": "def test_fall_rise_positive(self):self.relative('fall_rise')",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_fall_rise_positive",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-01.P1.RISE_FALL_POSITIVE",
+      "property_id": "CS-01.P1",
+      "polarity": "positive",
+      "scenario": "CS-01 Relative and absolute contours",
+      "scenario_fingerprint": "18e885bb53d43f3fd7048e9d9931cc506f59a9960c2c4963e5805754d69f28e6",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_rise_fall_positive",
+      "observable": "def test_rise_fall_positive(self):self.relative('rise_fall')",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_rise_fall_positive",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-01.P1.RISE_UNVOICED_NEGATIVE",
+      "property_id": "CS-01.P1",
+      "polarity": "negative",
+      "scenario": "CS-01 Relative and absolute contours",
+      "scenario_fingerprint": "18e885bb53d43f3fd7048e9d9931cc506f59a9960c2c4963e5805754d69f28e6",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_rise_unvoiced_negative",
+      "observable": "def test_rise_unvoiced_negative(self):self.unvoiced('rise')",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_rise_unvoiced_negative",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-01.P1.FALL_UNVOICED_NEGATIVE",
+      "property_id": "CS-01.P1",
+      "polarity": "negative",
+      "scenario": "CS-01 Relative and absolute contours",
+      "scenario_fingerprint": "18e885bb53d43f3fd7048e9d9931cc506f59a9960c2c4963e5805754d69f28e6",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_fall_unvoiced_negative",
+      "observable": "def test_fall_unvoiced_negative(self):self.unvoiced('fall')",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_fall_unvoiced_negative",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-01.P1.FALL_RISE_UNVOICED_NEGATIVE",
+      "property_id": "CS-01.P1",
+      "polarity": "negative",
+      "scenario": "CS-01 Relative and absolute contours",
+      "scenario_fingerprint": "18e885bb53d43f3fd7048e9d9931cc506f59a9960c2c4963e5805754d69f28e6",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_fall_rise_unvoiced_negative",
+      "observable": "def test_fall_rise_unvoiced_negative(self):self.unvoiced('fall_rise')",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_fall_rise_unvoiced_negative",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-01.P1.RISE_FALL_UNVOICED_NEGATIVE",
+      "property_id": "CS-01.P1",
+      "polarity": "negative",
+      "scenario": "CS-01 Relative and absolute contours",
+      "scenario_fingerprint": "18e885bb53d43f3fd7048e9d9931cc506f59a9960c2c4963e5805754d69f28e6",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_rise_fall_unvoiced_negative",
+      "observable": "def test_rise_fall_unvoiced_negative(self):self.unvoiced('rise_fall')",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_rise_fall_unvoiced_negative",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-01.P1.VOICED_INTERVAL_POSITIVE",
+      "property_id": "CS-01.P1",
+      "polarity": "positive",
+      "scenario": "CS-01 Relative and absolute contours",
+      "scenario_fingerprint": "18e885bb53d43f3fd7048e9d9931cc506f59a9960c2c4963e5805754d69f28e6",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_voiced_interval_positive",
+      "observable": "def test_voiced_interval_positive(self):\n  raw=encode(np.concatenate([np.zeros(12000),samples(source()),np.zeros(12000)]));step=intent('fall_rise');step['source_interval']['end']=48000\n  result,_=resolve_parameters(step,raw);points=result['parameters']['pitch_points'];self.assertGreaterEqual(points[0]['fraction'],.25-1e-12);self.assertLessEqual(points[-1]['fraction'],.75+1e-12);self.assertTrue(points[0]['fraction']<points[1]['fraction']<points[2]['fraction'])",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_voiced_interval_positive",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-01.P1.UNVOICED_TAIL_IS_NOT_CONTOUR_ENDPOINT_NEGATIVE",
+      "property_id": "CS-01.P1",
+      "polarity": "negative",
+      "scenario": "CS-01 Relative and absolute contours",
+      "scenario_fingerprint": "18e885bb53d43f3fd7048e9d9931cc506f59a9960c2c4963e5805754d69f28e6",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_unvoiced_tail_is_not_contour_endpoint_negative",
+      "observable": "def test_unvoiced_tail_is_not_contour_endpoint_negative(self):\n  raw=encode(np.concatenate([samples(source()),np.zeros(24000)]));step=intent('rise');step['source_interval']['end']=48000\n  result,_=resolve_parameters(step,raw);self.assertLessEqual(result['parameters']['pitch_points'][-1]['fraction'],.5+1e-12)",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_unvoiced_tail_is_not_contour_endpoint_negative",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-01.P1.OTHER_PITCH_CATEGORY_IS_NOT_RELATIVE_NEGATIVE",
+      "property_id": "CS-01.P1",
+      "polarity": "negative",
+      "scenario": "CS-01 Relative and absolute contours",
+      "scenario_fingerprint": "18e885bb53d43f3fd7048e9d9931cc506f59a9960c2c4963e5805754d69f28e6",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_other_pitch_category_is_not_relative_negative",
+      "observable": "def test_other_pitch_category_is_not_relative_negative(self):\n  original=intent('fall','pronunciation.suprasegmental.pitch_range')\n  # This different category already owns source-derived pitch-range expansion;\n  # test an explicitly absolute generic pitch operation instead.\n  original.pop('taxonomy_id');result,_=resolve_parameters(original,source())\n  self.assertEqual(result['parameters'],original['parameters'])",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_other_pitch_category_is_not_relative_negative",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-01.P1.NULLABLE_PITCH_POINTS_NEGATIVE",
+      "property_id": "CS-01.P1",
+      "polarity": "negative",
+      "scenario": "CS-01 Relative and absolute contours",
+      "scenario_fingerprint": "18e885bb53d43f3fd7048e9d9931cc506f59a9960c2c4963e5805754d69f28e6",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_nullable_pitch_points_negative",
+      "observable": "def test_nullable_pitch_points_negative(self):\n  original=intent('rise','pronunciation.suprasegmental.assimilation');original['controller']='phone_pair';original['parameters']=dict(reference_ipa='w\u028ad ju',mutated_ipa='w\u028ad\u0292\u0259',pitch_points=None)\n  result,_=resolve_parameters(original,source());self.assertIsNone(result['parameters']['pitch_points']);self.assertEqual(result['parameters'],original['parameters'])",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_nullable_pitch_points_negative",
+      "command_id": "connected-speech-nullable",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-01.P1.CUSTOM_ABSOLUTE_CONTOUR_PRESERVED_NEGATIVE",
+      "property_id": "CS-01.P1",
+      "polarity": "negative",
+      "scenario": "CS-01 Relative and absolute contours",
+      "scenario_fingerprint": "18e885bb53d43f3fd7048e9d9931cc506f59a9960c2c4963e5805754d69f28e6",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_custom_absolute_contour_preserved_negative",
+      "observable": "def test_custom_absolute_contour_preserved_negative(self):\n  original=intent('fall');original['parameters']['pitch_points']=[dict(fraction=0,semitones=7),dict(fraction=1,semitones=2)]\n  result,_=resolve_parameters(original,source());self.assertEqual(result['parameters'],original['parameters'])",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_custom_absolute_contour_preserved_negative",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-01.P1.RESOLVED_CONTOUR_STAYS_RESOLVED_POSITIVE",
+      "property_id": "CS-01.P1",
+      "polarity": "positive",
+      "scenario": "CS-01 Relative and absolute contours",
+      "scenario_fingerprint": "18e885bb53d43f3fd7048e9d9931cc506f59a9960c2c4963e5805754d69f28e6",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_resolved_contour_stays_resolved_positive",
+      "observable": "def test_resolved_contour_stays_resolved_positive(self):\n  resolved,_=resolve_parameters(intent('fall'),source());again,_=resolve_parameters(resolved,source(210));self.assertEqual(again['parameters'],resolved['parameters'])",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_resolved_contour_stays_resolved_positive",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-02.P1.RISING_WAVE_POSITIVE",
+      "property_id": "CS-02.P1",
+      "polarity": "positive",
+      "scenario": "CS-02 Measured contours and rhythm",
+      "scenario_fingerprint": "c29c2e0918b330a2da051511b19d7af2e43caf9afb4cefa224263612a83190e5",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_rising_wave_positive",
+      "observable": "def test_rising_wave_positive(self):self.assertGreater(self.measured_change('rise'),3)",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_rising_wave_positive",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-02.P1.FALLING_WAVE_POSITIVE",
+      "property_id": "CS-02.P1",
+      "polarity": "positive",
+      "scenario": "CS-02 Measured contours and rhythm",
+      "scenario_fingerprint": "c29c2e0918b330a2da051511b19d7af2e43caf9afb4cefa224263612a83190e5",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_falling_wave_positive",
+      "observable": "def test_falling_wave_positive(self):self.assertLess(self.measured_change('fall'),-3)",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_falling_wave_positive",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-02.P1.QUESTION_MARK_DOES_NOT_FORCE_RISE_NEGATIVE",
+      "property_id": "CS-02.P1",
+      "polarity": "negative",
+      "scenario": "CS-02 Measured contours and rhythm",
+      "scenario_fingerprint": "c29c2e0918b330a2da051511b19d7af2e43caf9afb4cefa224263612a83190e5",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_question_mark_does_not_force_rise_negative",
+      "observable": "def test_question_mark_does_not_force_rise_negative(self):\n  # Same physical falling template is available to a WH-question; no punctuation\n  # classifier is allowed to turn every question into the rising template.\n  self.assertLess(self.measured_change('fall'),-3)",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_question_mark_does_not_force_rise_negative",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-02.P1.RHYTHM_SELECTED_INTERVAL_POSITIVE",
+      "property_id": "CS-02.P1",
+      "polarity": "positive",
+      "scenario": "CS-02 Measured contours and rhythm",
+      "scenario_fingerprint": "c29c2e0918b330a2da051511b19d7af2e43caf9afb4cefa224263612a83190e5",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_rhythm_selected_interval_positive",
+      "observable": "def test_rhythm_selected_interval_positive(self):\n  raw=source();step=dict(id='rhythm',unit_id='rhythm',source_piece_id='rhythm-source',controller='pitch_duration',source_interval=dict(start=4800,end=16800),parameters=dict(duration_ratio=1.5))\n  result=transform(raw,step);out=base64.b64decode(result['audio_base64']);self.assertLess(abs(result['sample_count']-30000),30);self.assertEqual(out[44:44+9600],raw[44:44+9600]);self.assertEqual(out[-14400:],raw[-14400:])",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_rhythm_selected_interval_positive",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-02.P1.RHYTHM_NOT_GLOBAL_SLOWDOWN_NEGATIVE",
+      "property_id": "CS-02.P1",
+      "polarity": "negative",
+      "scenario": "CS-02 Measured contours and rhythm",
+      "scenario_fingerprint": "c29c2e0918b330a2da051511b19d7af2e43caf9afb4cefa224263612a83190e5",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_rhythm_not_global_slowdown_negative",
+      "observable": "def test_rhythm_not_global_slowdown_negative(self):\n  raw=source();step=dict(id='rhythm',unit_id='rhythm',source_piece_id='rhythm-source',controller='pitch_duration',source_interval=dict(start=4800,end=16800),parameters=dict(duration_ratio=1))\n  result=transform(raw,step);self.assertLess(abs(result['sample_count']-24000),30)",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_rhythm_not_global_slowdown_negative",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-03.P1.BLENDED_PHRASE_COMPILES_POSITIVE",
+      "property_id": "CS-03.P1",
+      "polarity": "positive",
+      "scenario": "CS-03 Boundary phones and transcript preservation",
+      "scenario_fingerprint": "9ab40e63680a0862477400cbbe3885830cf55a9099f7ea8be93954b19a022915",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_blended_phrase_compiles_positive",
+      "observable": "def test_blended_phrase_compiles_positive(self):\n  result=self.pair('w\u028ad\u0292\u0259','w\u028at\u0283\u0259');self.assertTrue(result['compiled_phonemes'].startswith('w\u028ad\u0292\u0259 '));self.assertEqual(result['operations'][0]['text'],'Would you compare the quotes?');self.assertIn('w\u028at\u0283\u0259',result['phone_variants']['blending']['compiled_phonemes'])",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_blended_phrase_compiles_positive",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-03.P1.UNBLENDED_VARIANT_IS_RENDERABLE_NEGATIVE",
+      "property_id": "CS-03.P1",
+      "polarity": "negative",
+      "scenario": "CS-03 Boundary phones and transcript preservation",
+      "scenario_fingerprint": "9ab40e63680a0862477400cbbe3885830cf55a9099f7ea8be93954b19a022915",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_unblended_variant_is_renderable_negative",
+      "observable": "def test_unblended_variant_is_renderable_negative(self):\n  # Unblended careful speech is a permitted control, not automatically an error.\n  result=self.pair('w\u028ad ju','w\u028ad\u0292\u0259');self.assertTrue(result['compiled_phonemes'].startswith('w\u028ad ju '));self.assertIn('w\u028ad\u0292\u0259',result['phone_variants']['blending']['compiled_phonemes'])",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.ConnectedSpeech.test_unblended_variant_is_renderable_negative",
+      "command_id": "connected-speech-python",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-04.P1.RESULTS_WRAPPER_POSITIVE",
+      "property_id": "CS-04.P1",
+      "polarity": "positive",
+      "scenario": "CS-04 Actual observation wrappers",
+      "scenario_fingerprint": "25fdf3523e9edffb3397b280db646813f198b7c7d2bc36d93e472bceb9586dbf",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_results_wrapper_positive",
+      "observable": "def test_results_wrapper_positive(self):\n  from diagnostic_models import decode_findings\n  out=decode_findings('{\"results\":[{\"unit_id\":\"a\",\"status\":\"uncertain\",\"description\":\"Cannot distinguish phones\"}],\"summary\":\"actual opinion\"}')\n  self.assertEqual(len(out['findings']),1);self.assertEqual(out['findings'][0]['status'],'uncertain');self.assertEqual(out['summary'],'actual opinion')",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.AuditoryWrappers.test_results_wrapper_positive",
+      "command_id": "connected-speech-wrappers",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-04.P1.KEYED_WRAPPER_POSITIVE",
+      "property_id": "CS-04.P1",
+      "polarity": "positive",
+      "scenario": "CS-04 Actual observation wrappers",
+      "scenario_fingerprint": "25fdf3523e9edffb3397b280db646813f198b7c7d2bc36d93e472bceb9586dbf",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_keyed_wrapper_positive",
+      "observable": "def test_keyed_wrapper_positive(self):\n  from diagnostic_models import decode_findings\n  out=decode_findings('{\"clip-A\":{\"unit_id\":\"a\",\"status\":\"supported\",\"proposed_ipa\":\"w\u028ad\u0292\u0259\",\"description\":\"Voiced affricate\"},\"clip-B\":{\"unit_id\":\"b\",\"status\":\"uncertain\",\"description\":\"Indistinct\"}}')\n  self.assertEqual([x['unit_id'] for x in out['findings']],['a','b']);self.assertEqual(out['findings'][0]['proposed_ipa'],'w\u028ad\u0292\u0259');self.assertEqual(out['findings'][1]['status'],'uncertain')",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.AuditoryWrappers.test_keyed_wrapper_positive",
+      "command_id": "connected-speech-wrappers",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-04.P1.KEYED_LABEL_IS_UNIT_ID_POSITIVE",
+      "property_id": "CS-04.P1",
+      "polarity": "positive",
+      "scenario": "CS-04 Actual observation wrappers",
+      "scenario_fingerprint": "25fdf3523e9edffb3397b280db646813f198b7c7d2bc36d93e472bceb9586dbf",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_keyed_label_is_unit_id_positive",
+      "observable": "def test_keyed_label_is_unit_id_positive(self):\n  from diagnostic_models import decode_findings\n  out=decode_findings('{\"A\":{\"feature\":\"phones\",\"status\":\"uncertain\",\"description\":\"Indistinct\"},\"B\":{\"feature\":\"phones\",\"status\":\"supported\",\"proposed_ipa\":\"w\u028at\u0283\u0259\",\"description\":\"Voiceless affricate\"}}')\n  self.assertEqual([r['unit_id'] for r in out['findings']],['A','B']);self.assertEqual(out['findings'][0]['status'],'uncertain');self.assertEqual(out['findings'][1]['proposed_ipa'],'w\u028at\u0283\u0259')",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.AuditoryWrappers.test_keyed_label_is_unit_id_positive",
+      "command_id": "connected-speech-wrappers",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-04.P1.SUMMARY_STATUS_IS_NOT_UNIT_NEGATIVE",
+      "property_id": "CS-04.P1",
+      "polarity": "negative",
+      "scenario": "CS-04 Actual observation wrappers",
+      "scenario_fingerprint": "25fdf3523e9edffb3397b280db646813f198b7c7d2bc36d93e472bceb9586dbf",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_summary_status_is_not_unit_negative",
+      "observable": "def test_summary_status_is_not_unit_negative(self):\n  from diagnostic_models import decode_findings\n  with self.assertRaisesRegex(ValueError,'DIAGNOSTIC_OUTPUT_INVALID'):decode_findings('{\"summary\":{\"status\":\"supported\",\"description\":\"No acoustic feature or unit identity\"}}')",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.AuditoryWrappers.test_summary_status_is_not_unit_negative",
+      "command_id": "connected-speech-wrappers",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-04.P1.MALFORMED_RESULTS_NEGATIVE",
+      "property_id": "CS-04.P1",
+      "polarity": "negative",
+      "scenario": "CS-04 Actual observation wrappers",
+      "scenario_fingerprint": "25fdf3523e9edffb3397b280db646813f198b7c7d2bc36d93e472bceb9586dbf",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_malformed_results_negative",
+      "observable": "def test_malformed_results_negative(self):\n  from diagnostic_models import decode_findings\n  with self.assertRaisesRegex(ValueError,'DIAGNOSTIC_OUTPUT_INVALID'):decode_findings('{\"results\":\"no observations\"}')",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.AuditoryWrappers.test_malformed_results_negative",
+      "command_id": "connected-speech-wrappers",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
+    },
+    {
+      "id": "CS-04.P1.UNRELATED_KEYED_VALUES_NEGATIVE",
+      "property_id": "CS-04.P1",
+      "polarity": "negative",
+      "scenario": "CS-04 Actual observation wrappers",
+      "scenario_fingerprint": "25fdf3523e9edffb3397b280db646813f198b7c7d2bc36d93e472bceb9586dbf",
+      "setup": "Run the actual Python owner using the literal fixture in tests/test_connected_speech.py::test_unrelated_keyed_values_negative",
+      "observable": "def test_unrelated_keyed_values_negative(self):\n  from diagnostic_models import decode_findings\n  with self.assertRaisesRegex(ValueError,'DIAGNOSTIC_OUTPUT_INVALID'):decode_findings('{\"summary\":{\"description\":\"No identified unit\"}}')",
+      "red_expectation": "Any wrong offset, wrong measured direction/duration, changed outside samples or incorrect phone projection fails its independently declared assertion.",
+      "green_expectation": "All literal assertions hold; no perceptual or hosted claim follows.",
+      "test_id": "unittest::test_connected_speech.AuditoryWrappers.test_unrelated_keyed_values_negative",
+      "command_id": "connected-speech-wrappers",
+      "state": "implemented",
+      "source_path": "tests/test_connected_speech.py",
+      "source_sha256": "136d83b254bf8e713de9ab51e49308b610d422bc76922c863005e9dedfd17cd6",
+      "invalidation_dependencies": [
+        "services/speech/acoustic_controls.py",
+        "services/speech/acoustic_alignment.py",
+        "services/speech/diagnostic_models.py",
+        "tests/test_connected_speech.py",
+        "specification/v2/docs/connected-speech-and-intonation.md"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real native compiler/control on constructed signal and literal phone fixtures"
+        ],
+        "forbidden_claims": [
+          "Perceived phonetic correctness",
+          "Hosted provider capability",
+          "Actual learner semantic scoring"
+        ]
+      }
     }
   ],
   "commands": [
@@ -196399,6 +197405,79 @@
         "TANGERINE_USABILITY_WEB_IMAGE": "tangerine-usability-web:local"
       },
       "timeout_seconds": 660,
+      "authority": "local"
+    },
+    {
+      "id": "connected-speech-python",
+      "runner": "python-unittest",
+      "argv": [
+        "./tests/speech-python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_connected_speech.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "env": {
+        "DOCKER_HOST": "unix:///Users/jekamas/Library/Containers/com.docker.docker/Data/docker.raw.sock",
+        "DOCKER_CONFIG": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/local-preview/docker-config",
+        "TANGERINE_SPEECH_TEST_RUNTIME_IMAGE": "sha256:e60ccf1b355001517bf95d3e5f135414b05740d08ca677cb74c1a19e714cb2df"
+      },
+      "timeout_seconds": 90,
+      "authority": "local"
+    },
+    {
+      "id": "connected-speech-wrappers",
+      "runner": "python-unittest",
+      "argv": [
+        "./tests/speech-python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_connected_speech.py",
+        "-k",
+        "AuditoryWrappers",
+        "-v"
+      ],
+      "cwd": ".",
+      "env": {
+        "DOCKER_HOST": "unix:///Users/jekamas/Library/Containers/com.docker.docker/Data/docker.raw.sock",
+        "DOCKER_CONFIG": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/local-preview/docker-config",
+        "TANGERINE_SPEECH_TEST_RUNTIME_IMAGE": "sha256:e60ccf1b355001517bf95d3e5f135414b05740d08ca677cb74c1a19e714cb2df"
+      },
+      "timeout_seconds": 90,
+      "authority": "local"
+    },
+    {
+      "id": "connected-speech-nullable",
+      "runner": "python-unittest",
+      "argv": [
+        "./tests/speech-python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_connected_speech.py",
+        "-k",
+        "nullable",
+        "-v"
+      ],
+      "cwd": ".",
+      "env": {
+        "DOCKER_HOST": "unix:///Users/jekamas/Library/Containers/com.docker.docker/Data/docker.raw.sock",
+        "DOCKER_CONFIG": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/local-preview/docker-config",
+        "TANGERINE_SPEECH_TEST_RUNTIME_IMAGE": "sha256:e60ccf1b355001517bf95d3e5f135414b05740d08ca677cb74c1a19e714cb2df"
+      },
+      "timeout_seconds": 90,
       "authority": "local"
     }
   ]

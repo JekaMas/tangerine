@@ -26,10 +26,19 @@ def resolve_parameters(step, audio, words=None, gap_samples=0, target_wpm=None):
     step = copy.deepcopy(step)
     a, b = step['source_interval']['start'], step['source_interval']['end']; p = step['parameters']
     source = samples(audio)[a:b]; observation = features(source)
-    if step.get('taxonomy_id') in ('pronunciation.suprasegmental.intonation_contour','pronunciation.suprasegmental.intonation_function') and p.get('pitch_points')==[{'fraction':0,'semitones':0},{'fraction':1,'semitones':5}]:
+    points = p.get('pitch_points') or []
+    shape = tuple((r['fraction'], r['semitones']) for r in points)
+    relative_contours = (
+        ((0, 0), (1, 5)), ((0, 0), (1, -5)),
+        ((0, 0), (.5, -3), (1, 3)), ((0, 0), (.5, 3), (1, -3)),
+    )
+    if step.get('taxonomy_id') in ('pronunciation.suprasegmental.intonation_contour','pronunciation.suprasegmental.intonation_function') and shape in relative_contours:
         if observation['median_f0_hz'] is None:raise Unmeasurable(observation['reason'],observation)
         median=12*math.log2(observation['median_f0_hz']/100)
-        p['pitch_points']=[{'fraction':0,'semitones':median},{'fraction':1,'semitones':median+5}]
+        voiced=observation['pitch_points']
+        if len(voiced)<len(points):raise Unmeasurable('insufficient_voiced_frames',observation)
+        p['pitch_points']=[{'fraction':voiced[round(x['fraction']*(len(voiced)-1))]['fraction'],
+                            'semitones':median+x['semitones']} for x in points]
     if step.get('taxonomy_id') == 'pronunciation.suprasegmental.pitch_range':
         points = observation['pitch_points']
         if not points: raise Unmeasurable(observation['reason'], observation)
