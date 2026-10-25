@@ -2,10 +2,19 @@
 
 The canonical product-specific policy is ../../specification/v2/docs/ai-development.md. Load it for every AI-affecting implementation/review increment. The selected MLflow Lab is required for actual development observation; ordinary downloaded application use remains independent. Keep the pinned shared workflow and one tasks.md unchanged.
 
+The 2026-10-25 user budget amendment excludes LLM performance benchmarks from
+mandatory development and verification. No load/throughput/latency/cost campaign,
+model/parameter sweep, repeated judge campaign or bulk 732-case LLM run is
+required. Use existing valid receipts, deterministic fixtures and the minimum
+directly relevant functional calls within actual remaining included/free/local
+limits. Capture those calls in Lab; exporting/inspecting them adds no inference.
+Excluded benchmarks are out of scope, not failed prerequisites or fake passes.
+Unknown performance remains unknown. No paid credits, overage or fallback.
+
 1. Identify actual changed semantic dependencies and affected requirement/property/case closure. Inventory all owned model paths and trusted fragments; no-op/unrelated changes retain valid earlier evidence. New providers/helpers/local models must be included, not bypass instrumentation.
 2. Prepare permitted frozen input/reference cases and baseline/candidate bundle/configuration/scorer/judge identities. Select positive/negative and affected dependent pipeline cases. Record absent implementation/keys/observations as planned/blocked; this policy grants no permission to run them.
 3. For authorized runtime work, start `sh scripts/tangerine lab`; use the existing bundle export/activation tools. The implemented `sh scripts/tangerine lab eval <experiment-file> --development <development-run-file>` runs the selected native owners with run-scoped tracing/sanitized capture and tags each foreground operation with tangerine.development_run_id. It does not change ordinary capture settings. Explicit inference needs the selected provider/local resources and task authority.
-4. Inspect actual requests/outputs/failures and paired quality/latency/usage/cost diagnostics. Use immutable input and independent expectations; judge self-consistency is separately labelled. Repair through the native owner, freeze a new changed variant and rerun only invalidated evidence.
+4. Inspect actual functional requests/outputs/failures with independent expectations. Read available quality/latency/usage/cost diagnostics from retained or necessary functional observations; do not dispatch extra calls to populate them. Judge self-consistency is separately labelled. Repair through the native owner, freeze a changed variant and rerun only invalidated evidence.
 5. The implemented `sh scripts/tangerine lab verify <development-run-file>` performs an export/artifact/coverage check only, with no inference. It validates the finite selected inventory and the independent dispatch/native/MLflow correspondence, returning nonzero and explicit discrepancies on missing required coverage. Zero populations stay N/A; a deterministic zero-call artifact run has a reason and cannot claim provider integration. The exact verifier policy is specification/v2/docs/ai-development.md, not a hidden quality-score threshold.
 6. If Lab export fails, retain native results, inspect/repair independently, then use existing `lab sync` with no new calls. Completion evidence remains incomplete until actual selected artifacts reconcile. Keep every failed/cancelled/unperformed case and body-inspection limit visible. Backups/deletion follow the existing private-data rules.
 

@@ -1,3 +1,16 @@
+# Later selected-flow reconciliation — 2026-10-25
+
+The native48/48own and380-case dependency observations below retain their original
+scope. The old I4-linked hosted-access blocker was subsequently resolved for the
+selected Pro/local route, as recorded in the actual [generation continuation](../generation-repair-20261022/REPORT.md).
+The [accepted I16 cohort](../iteration-16-release-20261021/ACCEPTANCE.md) and later
+selected flow supply actual native/model/audio/Lab evidence. This is scoped
+supersession, not an invented retrospective whole-I5 clean receipt. The broad
+full-graph/current-delivery row remains linked to iterations29/30 in
+[I17's ledger](../iteration-17-reconciliation-20261025/LEDGER.md).
+
+---
+
 # Iteration5 verification and repair
 
 All identified native defects and artifact drift are repaired. The own iteration5 selection passed48/48 cases on committed-clean8b00d79b8ea14b330fb839acd8bdd4adace18a04. Current native reconciliation covers380/380 cases,190 positive and190 negative:184 newly observed cases and196 unchanged retained cases. Full hosted iteration5 acceptance remains blocked by the actual provider boundary below; native fixtures do not establish it.

@@ -1,6 +1,24 @@
 # Full local Teacher Error Trainer
 
-The current objective is the full Tangerine local open-source product specified in specification/v2/README.md. The current user-authorized increment is iteration16: complete local release acceptance and full frontend picture/video/audio evidence after the implemented iterations. Earlier research-only statements below describe those dated increments, not the current implementation scope. User decisions in docs/authority.md supersede inherited package instructions and human peer review procedures.
+Current authorized increment: **iteration 17** applies historical status,
+acceptance/tool reconciliation and existing FX/CV overlap mapping. It changes
+no application execution owner and makes no model/speech call.
+
+The current objective is the full Tangerine local open-source product specified in specification/v2/README.md. The 2026-10-25 user-authorized increment plans the complete remaining inventory as iterations 17–30 and wires UI/UX, typography and evidence into verification. It does not implement those application changes, run providers or publish. See completion-iterations.md and completion-iterations.json; tasks.md remains the sole checklist. Earlier research, implementation and acceptance statements below retain their dated scopes. User decisions in docs/authority.md supersede inherited package instructions and human peer review procedures.
+
+The latest budget amendment excludes LLM performance/bulk benchmark execution
+from completion requirements. Iteration 28 verifies saved-data reports with zero
+new inference. Other iterations retain directly relevant functional tests within
+actual included/free/local limits, reuse valid evidence and require no extra
+model calls for diagnostics. Product datasets, metrics and report capabilities
+remain; excluded campaigns are not missing release prerequisites or fake passes.
+
+The final reference-based spec review maps both supplied inventories in
+completion-coverage.md and closes concrete history/replay/guided-form/adapter
+acceptance gaps in specification/v2/docs/completion-contract-details.md. The
+canonical transport fields were additive plans at that review snapshot. FX
+commit `8bbc1e2` subsequently implemented them in native/embedded schemas and UI;
+I17 maps exact reusable and residual proof before iteration 19 acceptance.
 
 The GitHub source ZIP/clone includes every application build input and a simple Compose helper. One local workspace offers preparation, the library, listening/answering, results, configurable LLM case review and adjudication, source import, benchmarks and recovery. No account, complex public API, human peer reviewer, qualification signature or full-corpus certification is required for ordinary use.
 

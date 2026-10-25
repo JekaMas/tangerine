@@ -1,3 +1,19 @@
+# Current I12 acceptance reconciliation — 2026-10-25
+
+The pending-acceptance text below is a historical development checkpoint.
+The actual original committed-clean ancestor `691714a73e5d169bdf5da0fe848b8b0f092d7e68`
+passed139/139cases and six independently expected local semantic contrasts.
+[The retained correspondence](../iteration-16-release-20261021/I12-RETENTION.md)
+and the later [373-case release reconciliation](../iteration-16-verification-20261022/RECONCILIATION.json)
+identify narrow owner changes and their bridge proof. I17 read the original raw
+receipt in the iteration12 worktree; its bounded content projection is
+[ACCEPTANCE-SOURCES](../iteration-17-reconciliation-20261025/ACCEPTANCE-SOURCES.json).
+The task/report mismatch is resolved by those exact later records, not a generic
+demo. Original failed candidates and the checkpoint below are retained. No new
+inference, all-provider or universal linguistic acceptance is claimed.
+
+---
+
 # Iteration 12 — Optional LLM review and disputes
 
 Implementation is complete; committed-clean acceptance is pending. The feature is optional and does not gate generation, listening or ordinary scoring. It provides explicit case review, saved-answer reconsideration, exact disputes, durable retry/resume, supported mapping/key repairs and immutable original/current result history. Only explicitly selected historical answers are reconsidered.

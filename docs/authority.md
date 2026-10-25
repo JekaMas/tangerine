@@ -1,4 +1,30 @@
+2026-10-25 iteration 17 apply: the actual user explicitly invokes OpenSpec apply
+for reconciliation of all 101 historical entries, acceptance records, tool versions
+and existing overlapping implementation. This authorizes scoped ledger/status/
+document/test/DAG changes, adoption of the approved continuation-plan context,
+local validation and commits through clean selected acceptance. It authorizes no
+new application feature, provider inference/synthesis, acquisition, installation,
+merge/publication or paid use. Later continuation tasks remain individually open.
+
 # Current authority and scope
+
+2026-10-25 final spec review: the actual user asks to trace both quoted remaining-
+work/UI reports, repair specification gaps and finalize the iteration plan. This
+authorizes spec/contract/task/DAG review and corrections, not application changes,
+provider calls, purchases, installation or publication. Keep
+the latest LLM benchmark exclusion and preserve concurrent category-realization
+work. Independent reference/oracle checks remain distinct from external review.
+
+2026-10-25 budget amendment: the actual user excludes LLM-related performance
+benchmarks so development stays within included/free/local limits. Mandatory
+apply/verify work excludes model load/throughput/latency/cost campaigns,
+parameter/model sweeps, repeated judge campaigns and bulk LLM benchmark runs.
+Keep directly relevant functional positive/negative tests, exact scoring and
+actual selected-flow evidence; reuse valid observations and deterministic tests.
+Saved diagnostic records may be inspected without inference. This amendment
+does not authorize model calls, purchases, overage or automatic paid fallback.
+The preceding requirement to run the full 732-stimulus model benchmark in the
+continuation plan is superseded; its dataset/report capability remains available.
 
 2026-10-25 recurring-error increment: the actual user asks to research and add
 fossilized-like mistakes for a speaker at roughly70–95% of relevant opportunities.
@@ -110,6 +136,7 @@ The actual user requests openspec-apply-change iteration14 Empirical reports and
 2026-10-23: The actual user requests UI/UX and typography skill research, a whole-service visual refresh, and usable category, severity and mistake-amount selection. This authorizes the scoped frontend/native/specification changes, local/free/included development observations, browser testing, Lab evidence, local deployment and commit. Preserve all existing records/features and provider configuration. No paid credits, overage, purchases, new account, installation or publication is authorized.
 
 2026-10-25: The actual user requests a real full-flow demo video, then asks to add accents and explicitly chooses Australian and Indian English. This authorizes scoped local accent/voice controls and model integration, necessary explicit public model-asset acquisition, real local/included browser and speech observations, evidence/Lab retention, the demo, local deployment and commit. Keep host prerequisites, existing user work and saved provider/financial settings unchanged. No paid credits, purchases, overage, account signup, hosted fallback or publication is authorized.
+
 
 2026-10-25 category-realization increment: the actual user says “Do it, fix or apply missing” after the category/audio validation proposal. This authorizes scoped specification, native blind-probe/comparison tooling, all-category positive/negative tests and DAG wiring, finite actual existing-local/free/included observations, local Lab evidence and in-scope repair. Preserve the single-admission policy, ordinary optional diagnostics, user records and financial settings. No purchased credits, overage, account changes, human review, new service or universal perceptual claim is authorized.
 

@@ -1,5 +1,11 @@
 # Tangerine active specification
 
+The planned continuation repair contracts are in
+[completion-contract-details.md](docs/completion-contract-details.md). They bind
+additive history metadata, finite passage replay, guided no-JSON starters and the
+ordinary ElevenLabs dictionary path to iterations19–22. Canonical schema additions
+are planned definitions; the application/embedded copies change during apply.
+
 Category implementation versus actual-audio evidence is defined in
 [category realization validation](docs/category-realization-validation.md).
 

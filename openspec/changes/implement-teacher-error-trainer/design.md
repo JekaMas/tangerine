@@ -136,6 +136,58 @@ Expose existing accepted preparation fields through Controls, keep request prece
 
 The selected 270-second foreground contract remains. Native evidence shows the user's check took30.623seconds, predominantly three sequential model requests; this change improves acknowledgement and exposes the score sooner, without claiming faster model inference. Tests gate only constructed external response timing, using real application/storage/browser owners on an isolated loopback port. Actual provider latency comes from the existing unmodified native operations, not those controlled timings.
 
+## Remaining-work planning and verification (2026-10-25)
+
+`completion-iterations.md` maps the unapplied inventory to iterations 17–30.
+`completion-iterations.json` is development routing data containing dependency
+edges, source findings and exact behavior/review selectors. It is not a product
+configuration service, runtime registry or second task checklist. The existing
+`tasks.md` retains all earlier rows; iteration 17 reconciles the frozen 101-row
+unchecked baseline by actual evidence rather than checkbox arithmetic.
+
+The new delta specification and planned DAG cases preserve independent positive
+and negative expectations. Application owners remain presentation components,
+pure request/projection helpers, existing API/storage/provider owners and speech
+adapters. Keep each repair at its owner; no new queue, identity layer, evidence
+database, repeated stored-byte validation or human review is introduced.
+
+The existing workflow project profile already routes verification to
+`docs/development/REVIEW_AND_VALIDATION.md`. That adapter now requires
+`UI_UX_TYPOGRAPHY_VERIFICATION.md`, which specifies actual interaction, typography
+skill review and evidence-content inspection. Every continuation iteration has
+its own review property and declared applicability. Typed observations support
+the review; a report reader or screenshot count cannot automatically establish
+visual quality. Generated operation adapters and the shared workflow stay
+unchanged. Verify-only is read-only; repair follows the enclosing request.
+
+Provider/source/empirical qualification tracks 23–28 retain their full selected
+scope and exact external dependencies while independent core work can proceed.
+A selected full-feature claim cannot conceal an incomplete qualification. No
+provider, install, acquisition or publication action follows from this planning
+request, and purchased credits/overage require individual personal approval.
+The later delivery iteration must preserve unrelated canonical GAPS.md edits and
+observe an actual authorized remote and downloaded source archive.
+
+The subsequent user budget amendment removes LLM performance/bulk benchmark
+campaigns from mandatory execution. Iteration 28 consumes saved records or
+deterministic fixtures with zero new inference; existing dataset/report features
+remain. Verify inspects retained diagnostics and actual necessary functional
+calls within included/free/local limits, without benchmark-only baselines,
+extra judges or paid fallback. This is selection policy, not a new runtime
+quota service or a change to learner scoring.
+
+The final source-report trace is completion-coverage.md. History title/excerpt/
+creation-time additions are read-only projections of accepted native records,
+optional for legacy responses; iteration19 applies canonical and embedded
+contracts together. Existing playback owns finite-range stop/cancellation, and
+normal starter forms compose existing defaults/native definitions without JSON
+editing. The adapter proof crosses ordinary preparation/render/listening/answer
+owners, with controlled fresh-error admission and no quota exhaustion. CV-01–
+CV-06 are retained dependencies of iteration26; final conditional edges to
+23–28 activate only for selected/confirmed claims. No new service, migration,
+report-validation product or automatic judge is introduced.
+
+
 ## Category realization evidence, 2026-10-25
 
 The existing speech diagnostic transport gains an optional blind development probe. A small comparison owner keeps authored expected labels outside model input, records false alarms and requires waveform evidence for numeric claims. Existing category/scoring receipts are joined to actual final WAV observations per tested binding. Successful transport, typed plans and symbolic captions cannot qualify a sound. One explicit observation is persisted; reads do not infer or rehash stored data. The managed prompt is separate from ordinary audio diagnostics and the original nine stage bindings. No new service, queue, table, human review or ordinary-use gate is introduced. Canonical CV.R1–R4 and audit/category-realization-20261025 own evidence and observed limitations.
@@ -152,3 +204,15 @@ Preparation presents its resolved request before Generate and groups optional co
 Guided tools construct typed portable requests from labelled authored examples and existing Lab defaults. Native owners admit/save them; saving does not run an experiment. Cleanup selects full existing identities then uses the existing preview/apply owner. The shared web transport-message helper formats recovery guidance only: no retry, provider fallback or financial policy change.
 
 FX-01 through FX-06 and their positive/negative executable cases are in verification.json. Source bindings and selected actual observations reconcile in audit/final-functional-ux-20261025/. Existing semantic/scoring/source/native receipts remain within their original proof boundaries; the ordinary user flow still needs no Lab, corpus or human reviewer.
+
+## Iteration 17 reconciliation application
+
+The immutable101-row baseline is reconciled item by item in
+`audit/iteration-17-reconciliation-20261025/LEDGER.json`. The maintained status
+owner remains `tasks.md`. Written-definition closure, finite native acceptance,
+actual model observations, optional external inputs and remaining delivery are
+separate scopes. Existing FX/CV tests map to future FIN expectations with honest
+partial cases (for example five actual intervals cannot prove a six-interval
+fixture). No product data migration, extra validation boundary, new service,
+provider call or model campaign is introduced. Original failed receipts and
+historical checkpoint bodies stay retained. Only I17 is accepted in this batch.

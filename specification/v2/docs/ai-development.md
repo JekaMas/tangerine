@@ -2,6 +2,36 @@
 
 The actual user requires Tangerine AI development to use the selected MLflow tooling and have no unaccounted prompts/context in its owned execution paths. This is the project development contract. Ordinary downloaded application use still needs no Lab, benchmark, human review or quality threshold. This specification update starts no service, makes no model call and grants no implementation authority.
 
+## Included-limit execution scope (2026-10-25)
+
+The actual user excludes LLM-related performance benchmarks from the required
+development/release work. Do not run load, concurrency, throughput, latency,
+token/cost, model/parameter-comparison or repeated judge campaigns, nor bulk LLM
+benchmark populations such as the 732-stimulus set, to satisfy apply or verify.
+This applies to hosted and local LLMs. Existing benchmark datasets, report
+capabilities, metric definitions and historical results remain intact; their
+execution is not a completion prerequisite. A later separately requested
+campaign still needs permitted resources and the user's individual approval
+for any paid-credit exception.
+
+Retain directly affected functional positive/negative tests, exact native
+arithmetic, pronunciation controls and relevant actual selected-flow evidence.
+Reuse valid receipts and saved audio/outputs; prefer deterministic fixtures for
+native/error cases. Use only the minimum necessary functional model calls within
+the selected resource's actual remaining included/free allowance. Do not probe
+until exhaustion, repeat valid baselines for performance statistics or dispatch
+an extra judge solely to obtain a metric. At a quota/entitlement stop, retain
+the functional checkpoint and report that selected observation honestly; never
+switch to paid credits, overage or another provider silently.
+
+Inspect/export actual prompt/context/model/output/Lab evidence from retained or
+necessary functional calls without new inference. Available timing/usage/cost
+fields may be reported descriptively, with unavailable statistics left unknown.
+No percentile, ranking or minimum sample count is required. Excluded campaigns
+are recorded out of scope and cannot block functional acceptance or masquerade
+as successful performance evidence. This scope controls the comparison/evidence
+wording below and the continuation plan's former full-benchmark requirement.
+
 ## Mandatory development route
 
 An AI-affecting change is any change to a model-call owner, adapter/request serializer, trusted instruction/schema description, prompt/context template, recipe selection, source retrieval/context selection, tokenizer/budget, model/profile parameters, speech model/voice/render input, extraction/mapping/judge/scorer interpretation, cache identity, retry/repair behavior or diagnostic exporter. Review the actual dependency diff; filenames alone are not the oracle. A documentation-only edit that changes no execution contract, or unrelated CSS, need not run inference. Every AI-affecting increment records its affected properties and known surfaces, frozen baseline/candidate identities, selected positive/negative cases and observed Lab evidence in the existing canonical change. Development completion cannot claim AI integration/quality with an absent or incomplete observation record.

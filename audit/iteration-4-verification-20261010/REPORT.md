@@ -1,3 +1,16 @@
+# Later selected-provider reconciliation — 2026-10-25
+
+The native332-case receipt and original hosted blocker below retain their dated
+scope. The later [Pro generation continuation](../generation-repair-20261022/REPORT.md)
+records app-owned OAuth, purchased-credit exclusion, actual returned catalogue
+and genuine generation/checking with native/Lab evidence. That supersedes the old
+HTTPS/grant blocker **for this selected Pro route**. It does not rewrite the old
+receipt as a fresh whole-I4 or every-provider acceptance. Current release landing
+and publication remain iteration30. [I17's ledger](../iteration-17-reconciliation-20261025/LEDGER.md)
+gives the exact historical dispositions.
+
+---
+
 # Iteration 4 verification and repairs
 
 The local implementation findings are repaired. Native verification reconciles all332 required cases:140 iteration4 and192 affected predecessor cases,166 positive and166 negative. The complete native verification result and the hosted provider requirement have separate proof boundaries. This is self-review through the pinned OpenSpec verify procedure, followed by actual repair and revalidation; no independent reviewer or linguistic-quality judgment is claimed.

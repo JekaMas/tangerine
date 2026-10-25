@@ -1,5 +1,11 @@
 # Tasks
 
+I17 status annotations below reconcile preserved historical wording; an old
+"BLOCKED"/"future" phrase is not a current blocker where its explicit I17
+disposition is completed or superseded. The immutable 101-row original and
+per-item scope/evidence are in [the ledger](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+Only the selected iteration is being accepted; future FIN cases remain planned.
+
 ## 1. Source and specification recovery
 
 - [x] 1.1 Import all nine supplied files unchanged and retain source SHA-256 provenance; verify import-manifest.json against supplied bytes.
@@ -7,11 +13,11 @@
 - [x] 1.3 Recover task-derived requirements and positive/negative property definitions, including 27 core and 15 auxiliary metrics; inspect every source task point in audit/completeness.md.
 - [x] 1.4 Prepare separate DEC-001 through DEC-008 proposals; verify no approval reference is fabricated.
 - [x] 1.5 Recover all 95 archive members; preserve exact user-supplied provenance, original 122-category registry, 15 schemas, five prompts, validation policy and original 48 requirements/96 scenarios; reconcile without weakening scope. This is source recovery, not semantic or empirical acceptance.
-- [ ] 1.6 Resolve each of the eight decisions separately with actual scoped owner messages; verify dependent operation positive/negative cases. BLOCKED: eight exact property drafts remain unapproved; original bodies are recovered, but genuinely missing method/alias/audit/counting/capability definitions remain.
+- [ ] 1.6 Resolve each of the eight decisions separately with actual scoped owner messages; verify dependent operation positive/negative cases. BLOCKED: eight exact property drafts remain unapproved; original bodies are recovered, but genuinely missing method/alias/audit/counting/capability definitions remain. — I17 H001: superseded; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 ## 2. Historical runtime foundation and pending local alignment
 
-- [ ] 2.1 Build API/web/speech/MinIO images and validate healthy Compose startup at 127.0.0.1:3000; retain actual build/image/runtime receipts.
+- [ ] 2.1 Build API/web/speech/MinIO images and validate healthy Compose startup at 127.0.0.1:3000; retain actual build/image/runtime receipts. — I17 H002: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 - [x] 2.2 Historical receipt: real migration/account initialization idempotency and hash persistence. Account setup is superseded by the local product scope; this checkbox does not prove current no-account startup.
 - [x] 2.3 Verify private storage and readiness failure when a real dependency is unavailable.
 - [x] 2.4 Historical receipt: login/logout and cross-origin boundary checks. Login/session checks are legacy after the user scope change; current no-account/projection checks remain future work.
@@ -21,41 +27,49 @@
 ## 3. Domain model and scoring
 
 - [x] 3.1 Implement exact registry arithmetic for all 27 core formulas and positive/negative arithmetic vectors, N/A and display rounding; verify retained formulas and actual Python results. Scope: arithmetic only, no semantic scoring acceptance.
-- [ ] 3.2 Implement full source-bound taxonomy/key/context contracts and local evidence/source/state constraints; verify every valid/invalid category and ownership seam. Original bodies recovered; future implementation and exact permission/decision/oracle evidence are still required.
-- [ ] 3.3 Implement Unicode extraction, repeats, contradictions, retractions and all scoring counters/domain breakdowns; use independently approved/real claims and original contracts.
-- [ ] 3.4 Implement 15 auxiliary owners with approved measurement methods and null unobserved teacher metrics; run each positive/negative property case.
+- [ ] 3.2 Implement full source-bound taxonomy/key/context contracts and local evidence/source/state constraints; verify every valid/invalid category and ownership seam. Original bodies recovered; future implementation and exact permission/decision/oracle evidence are still required. — I17 H003: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 3.3 Implement Unicode extraction, repeats, contradictions, retractions and all scoring counters/domain breakdowns; use independently approved/real claims and original contracts. — I17 H004: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 3.4 Implement 15 auxiliary owners with approved measurement methods and null unobserved teacher metrics; run each positive/negative property case. — I17 H005: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 ## 4. Author, reviewers, publication and disputes
 
-- [ ] 4.1 Implement author preparation and real synthetic audio from original RenderPlan; verify valid/invalid constraints and retained target errors.
-- [ ] 4.2 Implement optional configurable LLM case review with actual modality/receipts, truthful key exposure and retained native source-import blind/person metadata; no human reviewer or qualification prerequisite.
-- [ ] 4.3 Preserve machine disagreement and explicit LLM adjudication, immutable key/result versions and full local browser review/recovery paths; ordinary publication requires no review gate.
-- [ ] 4.4 Implement dispute evidence and append-only result versions with real local adjudication evidence; verify previous-result readback and rejection paths.
+- [ ] 4.1 Implement author preparation and real synthetic audio from original RenderPlan; verify valid/invalid constraints and retained target errors. — I17 H006: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 4.2 Implement optional configurable LLM case review with actual modality/receipts, truthful key exposure and retained native source-import blind/person metadata; no human reviewer or qualification prerequisite. — I17 H007: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 4.3 Preserve machine disagreement and explicit LLM adjudication, immutable key/result versions and full local browser review/recovery paths; ordinary publication requires no review gate. — I17 H008: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 4.4 Implement dispute evidence and append-only result versions with real local adjudication evidence; verify previous-result readback and rejection paths. — I17 H009: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 ## 5. Real provider integration
 
-- [ ] 5.1 Implement configurable versioned real adapters with the user-selected DeepSeek 4.1 fast development profile and preserved original baseline; retain prompt/schema/hash/usage/error receipts; verify successful/failed real calls without fallback. Five prompt/15 schema bodies recovered; DeepSeek credential reference found, but role qualification/live calls are not_run and linguistic_audit remains DEC-001-blocked.
-- [ ] 5.2 Run source-bound TTS capability cases and qualified listening review early; retain actual audio and DEC-007 evidence per target.
-- [ ] 5.3 Bound ASR/PA advisory claims and en-US prosody; verify unsupported targets do not create numeric truth.
+- [ ] 5.1 Implement configurable versioned real adapters with the user-selected DeepSeek 4.1 fast development profile and preserved original baseline; retain prompt/schema/hash/usage/error receipts; verify successful/failed real calls without fallback. Five prompt/15 schema bodies recovered; DeepSeek credential reference found, but role qualification/live calls are not_run and linguistic_audit remains DEC-001-blocked. — I17 H010: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 5.2 Run source-bound TTS capability cases and qualified listening review early; retain actual audio and DEC-007 evidence per target. — I17 H011: still required; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 5.3 Bound ASR/PA advisory claims and en-US prosody; verify unsupported targets do not create numeric truth. — I17 H012: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 ## 6. Synchronous teacher loop
 
 - [x] 6.1 Persist original answers/hashes before blind extraction, mapping and separate audit; verify failure preserves answers and prevents pre-submit key leakage.
 - [x] 6.2 Connect deterministic score calculation and grounded feedback; verify source evidence, false positives, misses, corrections, explanations and domain metrics.
-- [ ] 6.3 Persist complete/review_required/evaluation_failed as recovered contract states and derive ready/needs_review/technical_error UI labels and implement user-only retry with same saved answer, shared 270-second end-to-end cancellation, recovered 300-second lease/HTTP statuses, 285/300/310 outer timeouts and no queue; verify positive/negative lifecycle sequences.
+- [ ] 6.3 Persist complete/review_required/evaluation_failed as recovered contract states and derive ready/needs_review/technical_error UI labels and implement user-only retry with same saved answer, shared 270-second end-to-end cancellation, recovered 300-second lease/HTTP statuses, 285/300/310 outer timeouts and no queue; verify positive/negative lifecycle sequences. — I17 H013: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 ## 7. Permitted corpus and empirical validation
 
-- [ ] 7.1 Acquire all authorized full named releases/components for all eight source profiles with legal receipts, safe quarantine/import and immutable provenance; inaccessible sources stay explicit blockers; verify unsafe/invalid source rejection.
-- [ ] 7.2 Cover all 122 categories and controls under approved DEC-002 counting; verify real independent audio review and per-leaf denominators.
-- [ ] 7.3 Collect real teacher answers and independent labels for every required claim class; verify absent classes are reported rather than fabricated.
-- [ ] 7.4 Freeze related-record splits, prompts and approved thresholds; measure mapping precision, coverage, correction agreement and repeatability with real denominators; verify leakage rejection.
+- [ ] 7.1 Acquire all authorized full named releases/components for all eight source profiles with legal receipts, safe quarantine/import and immutable provenance; inaccessible sources stay explicit blockers; verify unsafe/invalid source rejection. — I17 H014: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 7.2 Cover all 122 categories and controls under approved DEC-002 counting; verify real independent audio review and per-leaf denominators. — I17 H015: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 7.3 Collect real teacher answers and independent labels for every required claim class; verify absent classes are reported rather than fabricated. — I17 H016: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 7.4 Freeze related-record splits, prompts and approved thresholds; measure mapping precision, coverage, correction agreement and repeatability with real denominators; verify leakage rejection. — I17 H017: superseded; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 ## 8. Full release acceptance
 
 - [x] 8.1 Deliver complete GitHub source ZIP/clone build inputs, normal dependency lock files and concise prerequisite/key/start/stop/restart README instructions; verify actual local builds without Git metadata or workflow submodules. No formal deployment/release manifest or prebuilt application-image publication is required.
 - [x] 8.2 Complete the current ordinary generation/listening/grading and optional LLM review/dispute browser cycle, restart, backup/restore, secret/key leakage and real-provider cases; retain all positive and negative receipts.
 - [x] 8.3 Build and run both amd64 and arm64, reconcile all required cases and final self-review; unperformed cases remain not_run and block release.
+
+I17 scope clarification: tasks 8.1–8.3 retain the accepted local source-only
+startup/build and finite release cohort. They do not claim actual GitHub
+publication/download (I30), every optional source/provider qualification,
+physical x86/Windows execution, or universal audible realization. The I16
+verification receipt supersedes its incomplete apply checkpoint only for the
+named 373 cases. I12 acceptance is the original 139-case clean ancestor plus
+recorded owner bridges; see the current I17 receipt index.
 
 ## 9. Complete-source specification recheck (specification only)
 
@@ -67,11 +81,11 @@
 
 ## Future implementation additions (outside the current spec-only request)
 
-- [ ] 10.1 Implement and qualify CFG-01–04 against every full schema/role; positive selection/secret/cache cases and negative unsupported-schema/refusal/extra-field/span/ownership/leakage cases. No silent fallback or constraint stripping.
-- [ ] 10.2 Implement SYNC-01/02 recovered Unicode/idempotency/CAS/deadline/state contracts; positive completion/retry and negative late-result/active-lease/time-budget cases; repair outer timeouts after implementation authorization.
-- [ ] 10.3 Implement full-release manifests/parsers for DATAFULL-01–11 after exact rights/access and release contracts; positive all-components reconciliation and negative partial/missing-partition/label/permission rejection for each source. Unavailable releases cannot PASS.
-- [ ] 10.4 Obtain approved real full-domain gold and teacher responses for COV-001–122; positive inclusion/control/split cases and negative context/exclusion/unrealized/duplicate/borrowed-approval rejection per leaf. Preserve DEC-002 candidate six/732 floor pending exact counting.
-- [ ] 10.5 Measure every VALFULL gate on fixed approved grouped holdout, sufficient actual per-domain denominators and real independent labels; positive threshold/count receipts and negative insufficient/tuned/leaked holdout rejection.
+- [ ] 10.1 Implement and qualify CFG-01–04 against every full schema/role; positive selection/secret/cache cases and negative unsupported-schema/refusal/extra-field/span/ownership/leakage cases. No silent fallback or constraint stripping. — I17 H018: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 10.2 Implement SYNC-01/02 recovered Unicode/idempotency/CAS/deadline/state contracts; positive completion/retry and negative late-result/active-lease/time-budget cases; repair outer timeouts after implementation authorization. — I17 H019: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 10.3 Implement full-release manifests/parsers for DATAFULL-01–11 after exact rights/access and release contracts; positive all-components reconciliation and negative partial/missing-partition/label/permission rejection for each source. Unavailable releases cannot PASS. — I17 H020: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 10.4 Obtain approved real full-domain gold and teacher responses for COV-001–122; positive inclusion/control/split cases and negative context/exclusion/unrealized/duplicate/borrowed-approval rejection per leaf. Preserve DEC-002 candidate six/732 floor pending exact counting. — I17 H021: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 10.5 Measure every VALFULL gate on fixed approved grouped holdout, sufficient actual per-domain denominators and real independent labels; positive threshold/count receipts and negative insufficient/tuned/leaked holdout rejection. — I17 H022: superseded; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 ## 11. Exhaustive specification closure (specification only)
 
@@ -79,69 +93,69 @@
 - [x] 11.2 Research primary source release/protocol details and correct metadata/count/transport interpretation without acquiring data or calling inference providers.
 - [x] 11.3 Prepare the exact55-gap questionnaire, full operation/formula/schema/leaf/corpus matrices and SPEC-001–055 positive/negative planned closure cases. No executable test is added.
 - [x] 11.4 Validate the changed native OpenSpec/graph/discovery and exact line/source preservation inventory; retain spec-only receipts. Native strict and graph/discovery checks passed;67 static preservation/index/reference checks passed. All82 existing observed behavior receipts remain valid; no application test was rerun. Line inventory refreshed after this completion-note change because its exact source bytes changed.
-- [ ] 11.5.1 Close GAP-001 / SPEC-001: Complete product and internal API operation contracts. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.2 Close GAP-002 / SPEC-002: Public and private transport projections. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice.
-- [ ] 11.5.3 Close GAP-003 / SPEC-003: Complete persistent entity and constraint model. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.4 Close GAP-004 / SPEC-004: Database and object-store commit protocol. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
+- [ ] 11.5.1 Close GAP-001 / SPEC-001: Complete product and internal API operation contracts. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H023: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.2 Close GAP-002 / SPEC-002: Public and private transport projections. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice. — I17 H024: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.3 Close GAP-003 / SPEC-003: Complete persistent entity and constraint model. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H025: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.4 Close GAP-004 / SPEC-004: Database and object-store commit protocol. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H026: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 - [x] 11.5.5 GAP-005 / SPEC-005: former account/access-role choice superseded by the explicit simple-local user request. Defined in docs/simple-local-product.md; no implementation or behavior acceptance is claimed.
 - [x] 11.5.6 GAP-006 / SPEC-006: former account/access-role choice superseded by the explicit simple-local user request. Defined in docs/simple-local-product.md; no implementation or behavior acceptance is claimed.
-- [ ] 11.5.7 Close GAP-007 / SPEC-007: Case lifecycle transition and guard table. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice.
-- [ ] 11.5.8 Close GAP-008 / SPEC-008: Attempt and evaluation recovery transition table. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.9 Close GAP-009 / SPEC-009: Dispute and adjudicated result revision records. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice.
-- [ ] 11.5.10 Close GAP-010 / SPEC-010: Independent blind-listening annotation contract. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.11 Close GAP-011 / SPEC-011: Reviewer independence and qualification records. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice.
-- [ ] 11.5.12 Close GAP-012 / SPEC-012: Teacher-answer gold annotation data contract. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.13 Close GAP-013 / SPEC-013: Detection-event boundaries and overlapping category resolution. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.14 Close GAP-014 / SPEC-014: Frozen English/Russian aliases and taxonomy ancestors. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: linguistic_policy.
-- [ ] 11.5.15 Close GAP-015 / SPEC-015: Severity assignment and fixed weight binding. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice.
-- [ ] 11.5.16 Close GAP-016 / SPEC-016: Rated difficulty evidence protocol. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice.
-- [ ] 11.5.17 Close GAP-017 / SPEC-017: Variety, register and judgment consistency table. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: linguistic_policy.
-- [ ] 11.5.18 Close GAP-018 / SPEC-018: Claim identity, extraction partition and completeness. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.19 Close GAP-019 / SPEC-019: Fragment consolidation, duplicate and retraction normalization. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.20 Close GAP-020 / SPEC-020: Evaluator and cross-schema conditional truth tables. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.21 Close GAP-021 / SPEC-021: Approved rationale registry and explanation-null binding. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.22 Close GAP-022 / SPEC-022: Semantic decisions to deterministic rubric and scorer input. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.23 Close GAP-023 / SPEC-023: Mapper/auditor comparison equality contract. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.24 Close GAP-024 / SPEC-024: Exact score transport, composite rational and numeric bounds. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.25 Close GAP-025 / SPEC-025: Auxiliary and provisional result response contracts. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.26 Close GAP-026 / SPEC-026: Grounded bilingual feedback and missed-unit references. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.27 Close GAP-027 / SPEC-027: Feedback-only failure versus evaluation-failure outcome. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice.
-- [ ] 11.5.28 Close GAP-028 / SPEC-028: Linguistic audit role prompt, schema and decisions. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: linguistic_policy.
-- [ ] 11.5.29 Close GAP-029 / SPEC-029: Complete role input and configuration binding schemas. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.30 Close GAP-030 / SPEC-030: Provider-specific strict-schema projection and response parsing. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.31 Close GAP-031 / SPEC-031: Retry, deadline and input/output capacity protocol. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.32 Close GAP-032 / SPEC-032: Typed render operator and hard-capability catalog. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice.
-- [ ] 11.5.33 Close GAP-033 / SPEC-033: SSML compilation and final-audio assembly specification. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.34 Close GAP-034 / SPEC-034: Audio quality measurement method and boundary rules. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.35 Close GAP-035 / SPEC-035: Speech tokenizer, reviewed intervals and disfluency event rules. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: linguistic_policy.
-- [ ] 11.5.36 Close GAP-036 / SPEC-036: Prosody feature/unit/method and valid missingness table. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: linguistic_policy.
-- [ ] 11.5.37 Close GAP-037 / SPEC-037: ASR and pronunciation advisory normalization. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.38 Close GAP-038 / SPEC-038: Full synthetic target capability and canary specification. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.39 Close GAP-039 / SPEC-039: Full source manifest, legal scope and transformation contracts. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.40 Close GAP-040 / SPEC-040: Complete SpeechOcean762 parser and source scale profile. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.41 Close GAP-041 / SPEC-041: Complete L2-ARCTIC v5 read and suitcase parser profile. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.42 Close GAP-042 / SPEC-042: Complete W&I+LOCNESS and FCE v2.1 M2 parser profiles. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.43 Close GAP-043 / SPEC-043: EFCAMDAT full release and derivative ingest scope. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: source_owner_input.
-- [ ] 11.5.44 Close GAP-044 / SPEC-044: Doubao underlying study-record release contract. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: source_owner_input.
-- [ ] 11.5.45 Close GAP-045 / SPEC-045: Moodrick and NIR vendor-data scope and contracts. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: source_owner_input.
-- [ ] 11.5.46 Close GAP-046 / SPEC-046: Leakage grouping, split allocation and duplicate protocol. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice.
-- [ ] 11.5.47 Close GAP-047 / SPEC-047: Gold stimulus, asset and negative-control counting. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: linguistic_policy.
-- [ ] 11.5.48 Close GAP-048 / SPEC-048: Agreement and semantic evaluation denominator protocols. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.49 Close GAP-049 / SPEC-049: Elapsed attempt start and validated playback event contracts. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.50 Close GAP-050 / SPEC-050: Complete heldout acceptance protocol and critical cases. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.51 Close GAP-051 / SPEC-051: Retention, deletion and permission revocation lifecycle. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice.
-- [ ] 11.5.52 Close GAP-052 / SPEC-052: Request quotas, concurrency, costs and import resource bounds. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice.
-- [ ] 11.5.53 Close GAP-053 / SPEC-053: Backup/restore consistency and compatibility protocol. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
-- [ ] 11.5.54 Close GAP-054 / SPEC-054: Basic GitHub download-and-run setup. Distribution choice is resolved by the user; engineering must define exact prerequisites/commands, included build inputs, provider settings/defaults and automatic internal initialization/errors. No formal release manifest, prebuilt-image publication or production deployment system. Check successful ZIP startup and missing-prerequisite/key/build-input boundaries after implementation authorization.
-- [ ] 11.5.55 Close GAP-055 / SPEC-055: Specification authority, version compatibility and drift closure. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition.
+- [ ] 11.5.7 Close GAP-007 / SPEC-007: Case lifecycle transition and guard table. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice. — I17 H027: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.8 Close GAP-008 / SPEC-008: Attempt and evaluation recovery transition table. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H028: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.9 Close GAP-009 / SPEC-009: Dispute and adjudicated result revision records. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice. — I17 H029: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.10 Close GAP-010 / SPEC-010: Independent blind-listening annotation contract. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H030: superseded; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.11 Close GAP-011 / SPEC-011: Reviewer independence and qualification records. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice. — I17 H031: superseded; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.12 Close GAP-012 / SPEC-012: Teacher-answer gold annotation data contract. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H032: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.13 Close GAP-013 / SPEC-013: Detection-event boundaries and overlapping category resolution. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H033: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.14 Close GAP-014 / SPEC-014: Frozen English/Russian aliases and taxonomy ancestors. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: linguistic_policy. — I17 H034: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.15 Close GAP-015 / SPEC-015: Severity assignment and fixed weight binding. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice. — I17 H035: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.16 Close GAP-016 / SPEC-016: Rated difficulty evidence protocol. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice. — I17 H036: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.17 Close GAP-017 / SPEC-017: Variety, register and judgment consistency table. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: linguistic_policy. — I17 H037: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.18 Close GAP-018 / SPEC-018: Claim identity, extraction partition and completeness. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H038: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.19 Close GAP-019 / SPEC-019: Fragment consolidation, duplicate and retraction normalization. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H039: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.20 Close GAP-020 / SPEC-020: Evaluator and cross-schema conditional truth tables. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H040: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.21 Close GAP-021 / SPEC-021: Approved rationale registry and explanation-null binding. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H041: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.22 Close GAP-022 / SPEC-022: Semantic decisions to deterministic rubric and scorer input. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H042: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.23 Close GAP-023 / SPEC-023: Mapper/auditor comparison equality contract. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H043: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.24 Close GAP-024 / SPEC-024: Exact score transport, composite rational and numeric bounds. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H044: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.25 Close GAP-025 / SPEC-025: Auxiliary and provisional result response contracts. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H045: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.26 Close GAP-026 / SPEC-026: Grounded bilingual feedback and missed-unit references. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H046: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.27 Close GAP-027 / SPEC-027: Feedback-only failure versus evaluation-failure outcome. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice. — I17 H047: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.28 Close GAP-028 / SPEC-028: Linguistic audit role prompt, schema and decisions. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: linguistic_policy. — I17 H048: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.29 Close GAP-029 / SPEC-029: Complete role input and configuration binding schemas. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H049: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.30 Close GAP-030 / SPEC-030: Provider-specific strict-schema projection and response parsing. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H050: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.31 Close GAP-031 / SPEC-031: Retry, deadline and input/output capacity protocol. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H051: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.32 Close GAP-032 / SPEC-032: Typed render operator and hard-capability catalog. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice. — I17 H052: still required; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.33 Close GAP-033 / SPEC-033: SSML compilation and final-audio assembly specification. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H053: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.34 Close GAP-034 / SPEC-034: Audio quality measurement method and boundary rules. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H054: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.35 Close GAP-035 / SPEC-035: Speech tokenizer, reviewed intervals and disfluency event rules. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: linguistic_policy. — I17 H055: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.36 Close GAP-036 / SPEC-036: Prosody feature/unit/method and valid missingness table. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: linguistic_policy. — I17 H056: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.37 Close GAP-037 / SPEC-037: ASR and pronunciation advisory normalization. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H057: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.38 Close GAP-038 / SPEC-038: Full synthetic target capability and canary specification. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H058: still required; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.39 Close GAP-039 / SPEC-039: Full source manifest, legal scope and transformation contracts. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H059: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.40 Close GAP-040 / SPEC-040: Complete SpeechOcean762 parser and source scale profile. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H060: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.41 Close GAP-041 / SPEC-041: Complete L2-ARCTIC v5 read and suitcase parser profile. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H061: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.42 Close GAP-042 / SPEC-042: Complete W&I+LOCNESS and FCE v2.1 M2 parser profiles. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H062: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.43 Close GAP-043 / SPEC-043: EFCAMDAT full release and derivative ingest scope. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: source_owner_input. — I17 H063: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.44 Close GAP-044 / SPEC-044: Doubao underlying study-record release contract. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: source_owner_input. — I17 H064: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.45 Close GAP-045 / SPEC-045: Moodrick and NIR vendor-data scope and contracts. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: source_owner_input. — I17 H065: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.46 Close GAP-046 / SPEC-046: Leakage grouping, split allocation and duplicate protocol. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice. — I17 H066: superseded; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.47 Close GAP-047 / SPEC-047: Gold stimulus, asset and negative-control counting. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: linguistic_policy. — I17 H067: superseded; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.48 Close GAP-048 / SPEC-048: Agreement and semantic evaluation denominator protocols. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H068: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.49 Close GAP-049 / SPEC-049: Elapsed attempt start and validated playback event contracts. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H069: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.50 Close GAP-050 / SPEC-050: Complete heldout acceptance protocol and critical cases. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H070: superseded; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.51 Close GAP-051 / SPEC-051: Retention, deletion and permission revocation lifecycle. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice. — I17 H071: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.52 Close GAP-052 / SPEC-052: Request quotas, concurrency, costs and import resource bounds. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: product_choice. — I17 H072: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.53 Close GAP-053 / SPEC-053: Backup/restore consistency and compatibility protocol. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H073: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.54 Close GAP-054 / SPEC-054: Basic GitHub download-and-run setup. Distribution choice is resolved by the user; engineering must define exact prerequisites/commands, included build inputs, provider settings/defaults and automatic internal initialization/errors. No formal release manifest, prebuilt-image publication or production deployment system. Check successful ZIP startup and missing-prerequisite/key/build-input boundaries after implementation authorization. — I17 H074: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 11.5.55 Close GAP-055 / SPEC-055: Specification authority, version compatibility and drift closure. Supply the exact missing fields/rules and source/owner decision, reconcile every dependent contract, then observe its positive and negative closure. Owner: engineering_definition. — I17 H075: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 ## 12. Simple local product reconciliation
 
 - [x] 12.1 Specify key-only local setup, one workspace and activity views; remove account/session/tenant/access-role/public API obligations without weakening linguistic or corpus coverage.
 - [x] 12.2 Define explicit local attempt schema 1.1.0 and authority overlay; preserve original 1.0.0 and source bytes. Record all 55 gap dispositions, with two superseded and 53 open.
 - [x] 12.3 Validate active OpenSpec, graph/discovery, local schema delta, source preservation and spec-only diff. Strict/graph checks and 163 static checks passed. Preserve 82 historical observations: 63 passed and 3 failed remain valid for unchanged scope; 16 are invalidated for current local requirements. No behavior rerun; see evidence/simple-local-20261008.
-- [ ] 12.4 Future implementation only: align migration/startup/proxy/UI and remove mandatory login/accounts/sessions; implement supplied launcher and automatic persistent internal secrets. Check positive fresh/restart/key-free-library behavior and negative remote exposure, failed dependency, browser-secret and cross-origin boundaries.
-- [ ] 12.5 Future implementation only: integrate ordinary Prepare/Review/Results views, genuine person evidence and minimal internal operation contracts; check positive complete user paths and negative duplicate-person, key leak, unreviewed publication and wrong-version references.
+- [ ] 12.4 Future implementation only: align migration/startup/proxy/UI and remove mandatory login/accounts/sessions; implement supplied launcher and automatic persistent internal secrets. Check positive fresh/restart/key-free-library behavior and negative remote exposure, failed dependency, browser-secret and cross-origin boundaries. — I17 H076: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 12.5 Future implementation only: integrate ordinary Prepare/Review/Results views, genuine person evidence and minimal internal operation contracts; check positive complete user paths and negative duplicate-person, key leak, unreviewed publication and wrong-version references. — I17 H077: superseded; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 - [x] 12.6 Record the full current 53-gap clarification in audit/simple-local-20261008/REMAINING-GAPS.md and remaining-gaps.json, including owner, existing definitions, missing rules, reason, required input/artifact and positive/negative closure. Report consistency checks passed; no contract changed or gap closed. Preserve prior graph/behavior receipts without rerunning them.
 
@@ -155,8 +169,8 @@
 - [x] 13.4 Validate the affected OpenSpec/graph/discovery, schema meta/compile structure, exact formula identities and static positive/negative artifact checks. Retain valid greens and initial failures with their corrected inputs; no application/provider/corpus/human acceptance test was run.
 - [x] 13.5 Publish local REPORT.md and the complete current REMAINING-GAPS.md under audit/full-release-reconciliation-20261008; bind exact planned positive/negative scenario observables and retain historical behavior receipts. Local files only, no GitHub publication.
 - [x] 13.6 Reconcile the historical written-definition and product-policy portion against the later simplification, Apache/source research and current-flow audits. Product choices and in-scope engineering definitions are settled; historical rightsholder requests do not create source rights. See audit/decision-closure-20261009/REPORT.md. Actual GAP-043/044/045 native source acquisition remains separately incomplete below.
-- [ ] 13.6a Optional external acquisition, not product completion: when selected, obtain actual complete Cambridge releases/dictionaries/access terms, Doubao participant/instrument release and separate Moodrick/NIR exports/dictionaries/use terms. Keep full-source support and lossless intake in the implementation plan; actual owner releases remain source-status inputs. No academic identity, private API, study-scale implementation or participant recruitment is required to deliver that support. See specification/v2/docs/product-data-relevance.md and the existing acquisition ledger.
-- [ ] 13.7 Future implementation only after separate authorization: integrate v2 DTOs/configuration/lifecycle/scoring/audio/import/maintenance/no-account migration and source launcher; then exercise all affected production positive/negative/property boundaries with actual permitted data and actual configured providers and LLM answer/review owners. Preserve full-source/full-taxonomy scope and existing valid observations.
+- [ ] 13.6a Optional external acquisition, not product completion: when selected, obtain actual complete Cambridge releases/dictionaries/access terms, Doubao participant/instrument release and separate Moodrick/NIR exports/dictionaries/use terms. Keep full-source support and lossless intake in the implementation plan; actual owner releases remain source-status inputs. No academic identity, private API, study-scale implementation or participant recruitment is required to deliver that support. See specification/v2/docs/product-data-relevance.md and the existing acquisition ledger. — I17 H078: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 13.7 Future implementation only after separate authorization: integrate v2 DTOs/configuration/lifecycle/scoring/audio/import/maintenance/no-account migration and source launcher; then exercise all affected production positive/negative/property boundaries with actual permitted data and actual configured providers and LLM answer/review owners. Preserve full-source/full-taxonomy scope and existing valid observations. — I17 H079: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 ## Historical resume notes
 
@@ -209,9 +223,9 @@ User-supplied L2 access-email reconciliation: all34 links match the previously r
 - [x] Measure native tags, token exposure, window prevalence and distinct-tag co-occurrence in all12BEAM2views; retain annotators/noops/unknowns, exact denominators and overlapping representations separately.
 - [x] Reconcile structural/alternative/co-occurrence/confusion meanings, all18original/supplemental data identities and exact uses/missing inputs; preserve full original source scope.
 - [x] Update the active specification/generator instructions and seven OpenSpec requirements with28unperformed behavior plans; preserve every original graph entry and protected taxonomy/metric/source/schema byte. Record539positive/negative static/native checks and their limited proof boundary in audit/mistake-data-coverage-20261009/.
-- [ ] Optional full empirical source-coverage work when requested: prepare localized native-to-leaf mappings and actual source/interval/context counts for every122leaf, retaining native/inferred/unknown origin. Selected imported mappings remain supported; this full population is not required for generated mutation/key/answer matching or product completion.
-- [ ] Optional full-benchmark collection when requested: collect the full732final error/control stimuli, matched acoustic/contextual contrasts and independent split families through authorized future generation/import. Preserve this exact complete-benchmark definition; selected development cases and product completion do not require its full population.
-- [ ] Future authorized main-flow implementation: observe the selected configured provider generation/answer matching and reference/prediction decisions. Optional frequency/co-occurrence/confusion and genuine-attempt difficulty reports use only their corresponding actual populations; collecting those populations is not main-flow completion work.
+- [ ] Optional full empirical source-coverage work when requested: prepare localized native-to-leaf mappings and actual source/interval/context counts for every122leaf, retaining native/inferred/unknown origin. Selected imported mappings remain supported; this full population is not required for generated mutation/key/answer matching or product completion. — I17 H080: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] Optional full-benchmark collection when requested: collect the full732final error/control stimuli, matched acoustic/contextual contrasts and independent split families through authorized future generation/import. Preserve this exact complete-benchmark definition; selected development cases and product completion do not require its full population. — I17 H081: superseded; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] Future authorized main-flow implementation: observe the selected configured provider generation/answer matching and reference/prediction decisions. Optional frequency/co-occurrence/confusion and genuine-attempt difficulty reports use only their corresponding actual populations; collecting those populations is not main-flow completion work. — I17 H082: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 Current resume: requested specification/data audit is documented in audit/mistake-data-coverage-20261009/REPORT.md; the source/coverage/mutation/diagnosis/answer-matching mechanics are explicit. The project has all122finite taxonomy definitions/recipes, but no complete empirical all-leaf mistake corpus. Three original native sources, the pinned L2mirror and multiple full supplements are acquired; private/restricted releases and linked speech media remain listed. No application implementation, inference, audio generation or unchanged behavior rerun. No new product-owner decision/human approval ceremony is needed for this audit. Preserve the unrelated dirty GAPS.md and keep the unfinished product change open.
 
@@ -221,7 +235,7 @@ Current resume: requested specification/data audit is documented in audit/mistak
 - [x] Remove reference audio, full empirical corpus, benchmark and separate case-review prerequisites from ordinary authored use; retain every original feature, 122 taxonomy leaves, 42 formulas and 11 full-source identities/scopes.
 - [x] Specify minimal-input blueprint expansion, two phase identities, saved-output retry/replay, generated provenance, optional local speech model, hidden listener key and grounded new practice recommendations without human approval.
 - [x] Validate the affected specification/index/graph and positive/negative artifact checks: 187 static checks, strict OpenSpec and full graph/discovery passed; retain every new application/provider/audio behavior edge as blocked.
-- [ ] Future implementation: wire the main form and the existing generation/render/listen/check/result operations; exercise real providers/local speech, stored playback, mutation fidelity and semantic grading with positive/negative cases.
+- [ ] Future implementation: wire the main form and the existing generation/render/listen/check/result operations; exercise real providers/local speech, stored playback, mutation fidelity and semantic grading with positive/negative cases. — I17 H083: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 Current resume: specification updates only; audit/simple-generation-flow-20261009/REPORT.md records the latest contract and validation. Audio examples are optional calibration/reference material. The generated mutation list is the ordinary answer key; no separate case review is required. OOD means novel instances/contexts/combinations relative to explicit examples/history, not a claim about an undisclosed LLM training distribution. Acquired corpus bytes/statuses are unchanged and remain optional enrichment/evaluation for this flow. No application implementation, inference, audio synthesis, model setup, installation or publication is authorized/performed here. Preserve the unrelated user edit in audit/spec-fullness-20261008/GAPS.md.
 
@@ -231,7 +245,7 @@ Current resume: specification updates only; audit/simple-generation-flow-2026100
 - [x] Specify immutable prompt/context bundles, explicit activation/revert, frozen per-attempt context and traces, production-owner experiment reuse and configurable semantic judges.
 - [x] Define all diagnostic formulas/populations, per-case origin/coverage/failure reporting and privacy/backup/deletion semantics while preserving every original category/source/grade formula.
 - [x] Reconcile current indexes/graph and validate positive/negative specification contracts:232static checks, strict OpenSpec and graph/discovery passed; retain all28new application/provider/MLflow proofs as blocked.
-- [ ] Future authorized implementation: optional Lab build/helper, native bundle/context/trace plumbing, shared-owner replay/evaluation and all positive/negative acceptance properties with actual configured providers.
+- [ ] Future authorized implementation: optional Lab build/helper, native bundle/context/trace plumbing, shared-owner replay/evaluation and all positive/negative acceptance properties with actual configured providers. — I17 H084: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 Current resume: specification-only Lab selection/definitions are in specification/v2/docs/llm-lab.md and audit/llm-lab-20261009/REPORT.md. No tool installation, inference, Docker execution, workflow change, credential modification or publication. Existing green application receipts remain within their original contracts; normal generated exercises need no Lab or new review/quality gate. Preserve the unrelated GAPS.md edit.
 
@@ -241,7 +255,7 @@ Current resume: specification-only Lab selection/definitions are in specificatio
 - [x] Specify concrete simple defaults/bindings, exact replayable mutation assets, complete generated/imported key provenance, frozen preparation and typed Lab datasets/configurations/judge contracts; preserve all122leaves/recipes,42formulas and11full-source identities/scopes.
 - [x] Reconcile all209active files/132schemas/2,877indexed field occurrences and88schema references; validate366static artifact/independent arithmetic checks, strict OpenSpec,362requirement/377property/1,508edge graph and discovery.
 - [x] Add24positive/negative behavior plans for six completeness requirements, keeping them blocked/unexecuted; retain unchanged app/native/provider evidence and every earlier graph entry.
-- [ ] Future implementation and empirical observation: exercise these contracts in actual generation/render/evaluation/import/Lab owners, real provider/local audio runs and complete intended benchmark/source populations under subsequent authorization.
+- [ ] Future implementation and empirical observation: exercise these contracts in actual generation/render/evaluation/import/Lab owners, real provider/local audio runs and complete intended benchmark/source populations under subsequent authorization. — I17 H085: superseded; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 Current resume: the requested completeness audit is in audit/flow-fullness-20261009/REPORT.md. No additional product-owner decision is identified for the defined main flow. External restricted/private sources, official L2equivalence/linked media and future provider/benchmark observations remain explicitly listed, without becoming normal-use gates. No implementation, inference, model setup, Docker/MLflow execution, migration, install, secret/config change or publication occurred. Preserve the unrelated user edit in audit/spec-fullness-20261008/GAPS.md. Local specification work only; keep the application change open.
 
@@ -260,7 +274,7 @@ Current resume: audit/decision-closure-20261009/REPORT.md separates closed defin
 - [x] Define complete versioned trusted fragments, model-visible input snapshots, all attempt/local/speech/judge paths, run-scoped Lab evidence, finite three-way coverage, explicit omissions/unknowns, regressions and affected-proof invalidation.
 - [x] Route both project instruction clients and development review through AI_DEVELOPMENT.md; remove stale human/corpus-approval/tenant review requirements without changing the pinned shared workflow or ordinary runtime optionality.
 - [x] Validate95static contract/independent coverage checks, all213files/134schemas/3,001field occurrences/88references, strict OpenSpec and374requirement/389property/1,556edge graph/discovery. Retain48new behavior edges as unexecuted and original scope/formula/prompt/provider bytes unchanged.
-- [ ] Future authorized implementation: instrument every owned AI path and trusted fragment, implement development eval/verify linkage and native/private/sanitized snapshots, exercise actual MLflow plus controlled transport/local boundaries and real provider observations under their proper proof limits.
+- [ ] Future authorized implementation: instrument every owned AI path and trusted fragment, implement development eval/verify linkage and native/private/sanitized snapshots, exercise actual MLflow plus controlled transport/local boundaries and real provider observations under their proper proof limits. — I17 H086: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 Current resume: spec/property exploration is in audit/ai-development-20261009/REPORT.md and specification/v2/docs/ai-development.md. AI-affecting development observation must use the selected Lab; ordinary local use remains independent. Current source has no implemented model-call/synthesis owner and no observed runtime coverage. No inference, runtime, installation, secret change, application implementation or publication occurred. Preserve the unrelated GAPS.md edit. Keep one task list and the unfinished application change open.
 
@@ -269,7 +283,7 @@ Current resume: spec/property exploration is in audit/ai-development-20261009/RE
 - [x] Map all seven prior remaining-input groups to28specific product/use/activation/disposition records, including exact contract owners, retained data and removed requirements.
 - [x] Remove administrative identity/private-API/study-reproduction/duplicate-representation/official-certification/population-collection prerequisites while preserving all122categories/recipes,42formulas,11original full-source scopes, existing data and mandatory actual AI-development Lab evidence.
 - [x] Scope original-source acquisition, all-leaf empirical mapping,732stimuli and genuine participant collection to selected optional features/reports; retain actual main-flow implementation/audio/provider acceptance as necessary future engineering work.
-- [ ] Future authorized implementation: verify dependency-scoped dispatch, unavailable selected-source actions, source intake/raw-only meaning, exact source completeness and selected Lab experiments through their real owners with the added positive/negative plans.
+- [ ] Future authorized implementation: verify dependency-scoped dispatch, unavailable selected-source actions, source intake/raw-only meaning, exact source completeness and selected Lab experiments through their real owners with the added positive/negative plans. — I17 H087: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 Current resume: specification/v2/docs/product-data-relevance.md and domain/product-data-relevance.v1.json supersede broad dependency/completion requests in prior audits. New report: audit/product-dependency-scope-20261009/REPORT.md. Historical acquisition failures and unknown source bytes stay factual; no product decision is pending. This is specification-only, with no inference, application implementation, download, email, installation or publication. Preserve the unrelated GAPS.md edit.
 
@@ -300,7 +314,7 @@ Current resume: audit/component-scoring-20261009/REPORT.md and REMAINING-GAPS.md
 - [x] Specify durable preparation/settings/phase artifacts, readback and explicit frozen resume using existing local storage/foreground operations.
 - [x] Prohibit generated mistakes based on private/external facts; preserve all categories through self-contained audible instances.
 - [x] Replace generic current case setup with exact constructed fixture bindings for all405properties/1,620edges; retain original receipts and explicitly invalidate four stale account/login proof scopes.
-- [ ] Future authorized implementation/observations: materialize and execute the selected fixture packets through real owners, including actual semantic judgments, durable restart/restore, synthesis and required AI-development Lab export. These are not unresolved product/specification decisions.
+- [ ] Future authorized implementation/observations: materialize and execute the selected fixture packets through real owners, including actual semantic judgments, durable restart/restore, synthesis and required AI-development Lab export. These are not unresolved product/specification decisions. — I17 H088: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 Current resume: audit/final-spec-closure-20261009/REPORT.md owns this specification-only closure. No product-owner decision remains for the four findings. No application/provider/audio implementation or execution, source acquisition, installation, credential edit or publication occurred. Preserve the unrelated audit/spec-fullness-20261008/GAPS.md edit. New fixture designs are unexecuted; existing bounded receipts remain distinct.
 
@@ -310,7 +324,7 @@ Current resume: audit/final-spec-closure-20261009/REPORT.md owns this specificat
 - [x] Specify included-only access/defaults, safe durable provider connection, subscription streaming/parameter omissions/terminal failure, typed speech extension configuration, target-local dictionaries/conditioning and exact empirical-data consumer/availability/denominator ledger.
 - [x] Preserve all122categories/recipes,42equations,11full original scopes and original provider profiles; update RUN-08 key-only wording without adding application accounts, human reviews, a queue or corpus/Lab prerequisites for ordinary use.
 - [x] Add24literal positive/negative behavior plans for six properties, reconcile current graph/fixtures/schema fields and validate546affected static checks plus strict OpenSpec/graph/discovery; keep actual account/provider/audio/quality observations unexecuted.
-- [ ] Future authorized implementation/observations: implement the selected starter provider connection/transport through the existing owners, materialize selected fixture/Lab experiments and test actual account limits, local speech output and selected optional controls. Acquire missing originals only for their selected full-source features; no new product approval or every-corpus download is an ordinary-use dependency.
+- [ ] Future authorized implementation/observations: implement the selected starter provider connection/transport through the existing owners, materialize selected fixture/Lab experiments and test actual account limits, local speech output and selected optional controls. Acquire missing originals only for their selected full-source features; no new product approval or every-corpus download is an ordinary-use dependency. — I17 H089: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 Current resume: audit/service-and-data-readiness-20261009/REPORT.md and specification/v2/docs/provider-access.md, speech-service-selection.md, empirical-data-needs.md own this specification research. Current user reports ChatGPT Pro and DeepSeek access, without separately billed calls/purchased usage. No purchase, account connection, inference, audio generation, install, secret/config change, implementation or publication occurred. Preserve the unrelated GAPS.md edit. The application change remains open; new scenario plans are not runtime acceptance.
 
@@ -319,7 +333,7 @@ Current resume: audit/service-and-data-readiness-20261009/REPORT.md and specific
 - [x] Make both clean-text and mutation generation explicitly LLM-owned per user request; remove recipe-only/prebuilt-bank substitution and any setup/ordinary-use pregenerated corpus or batch requirement.
 - [x] Trace original/surface text and mutation units through existing evaluation-key into mapping/feedback; retain findings/misses/comments, optional explanation scoring, exact native formulas, stored replay/resume and all optional source/import/benchmark scopes.
 - [x] Add four concrete positive/negative behavior plans with dispatch/state and independent fraction expectations; validate39affected static checks, strict OpenSpec and graph/discovery, preserving prior observed receipts and all original taxonomy/recipe/formula/source/provider bytes.
-- [ ] Future authorized implementation: execute on-demand clean/mutation/audio/answer/checking through real owners and observe the affected cases with actual model/audio/native Lab evidence. No pregenerated exercise corpus is an implementation or ordinary-use prerequisite.
+- [ ] Future authorized implementation: execute on-demand clean/mutation/audio/answer/checking through real owners and observe the affected cases with actual model/audio/native Lab evidence. No pregenerated exercise corpus is an implementation or ordinary-use prerequisite. — I17 H090: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 Current resume: audit/on-demand-flow-20261009/REPORT.md and specification/v2/docs/simple-generation-flow.md own the latest five-step user flow. No generation, synthesis, account/provider call, corpus creation, implementation, installation or publication occurred. Three trusted prompt texts/manifest hashes are updated; current behavior plans remain unexecuted. Preserve the unrelated GAPS.md edit.
 
@@ -329,7 +343,7 @@ Current resume: audit/on-demand-flow-20261009/REPORT.md and specification/v2/doc
 - [x] Prepare the optional ElevenLabs Free signup and request the browser tool's confirmation at its actual legal-terms acceptance step; record pending status without creating credentials or buying anything.
 - [x] Reconcile provider/account instructions, generated Free-media terms and exact remaining core/optional data consumers; preserve on-demand LLM generation,122categories/recipes,42formulas and11full-source scopes.
 - [x] Complete the prepared ElevenLabs Free signup after the user's explicit agreement approval; read back Free plan/allowance and Auto Top Up off. Current evidence supersedes the dated pending receipt in audit/full-development-readiness-20261009/.
-- [ ] Future authorized implementation/setup: complete Tangerine's own ChatGPT callback/token flow, inspect its app-specific credit controls and model catalogue, set up selected local speech, and execute designed main-flow/Lab observations. No duplicate LLM account or optional-every-provider registration is required.
+- [ ] Future authorized implementation/setup: complete Tangerine's own ChatGPT callback/token flow, inspect its app-specific credit controls and model catalogue, set up selected local speech, and execute designed main-flow/Lab observations. No duplicate LLM account or optional-every-provider registration is required. — I17 H091: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 Current resume: audit/provider-registration-20261009/REPORT.md and observations.json record exact live account/documentation readback. ElevenLabs remains pending_confirmation; no account creation, API key, token exchange, model request, synthesis, installation, purchase, implementation or publication occurred. No new product decision is identified; the pending browser agreement confirmation is a tool requirement. Existing green graph/fixture receipts are retained within their scope. Preserve the unrelated GAPS.md edit.
 
@@ -345,7 +359,7 @@ Current resume: specification/v2/docs/service-setup-guide.md and audit/service-s
 - [x] Complete approved ElevenLabs Free onboarding; verify actual plan, unused creative pool, API access and Auto Top Up off without creating a key or buying usage.
 - [x] Map every current property/case and all 122 recipe operations to retained full-scope development acceptance; identify unavailable native sources and unobserved runtime/provider/audio evidence.
 - [x] Specify controlled local Kokoro phoneme input, independent local ASR, wider configured English voice locales, model-specific ElevenLabs dialogue transport and non-human measurement missingness. Preserve task variety defaults and original profiles.
-- [ ] Future full-scope development: implement all accepted feature owners and execute independent actual cases, including controlled acoustic realization/diagnostics, provider limits, Lab, source intake, restart/restore and supported-platform delivery. Selected complete source reports remain dependent on actual native bytes; missing inputs do not count as accepted product scope.
+- [ ] Future full-scope development: implement all accepted feature owners and execute independent actual cases, including controlled acoustic realization/diagnostics, provider limits, Lab, source intake, restart/restore and supported-platform delivery. Selected complete source reports remain dependent on actual native bytes; missing inputs do not count as accepted product scope. — I17 H092: still required; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 Current resume: specification/v2/docs/full-development-readiness.md and audit/full-development-readiness-20261009/REPORT.md. Registration and read-only host observations are setup evidence only. No application implementation, model setup, inference, synthesis, paid usage or publication. Development may iterate; no MVP/product deferral is approved. Preserve the unrelated GAPS.md edit and historical receipts.
 
@@ -355,7 +369,7 @@ Current resume: specification/v2/docs/full-development-readiness.md and audit/fu
 - [x] Specify typed on-demand acoustic edits, finite production routes, generated paired contrasts, sample transforms/maps and component-scoped realization failure.
 - [x] Specify durable per-piece render progress/270s explicit continuation, full source-export mapping interpreter and local/free auditory LLM diagnostics with controlled context/Lab evidence.
 - [x] Reconcile24literal positive/negative plans,151schema/field/prompt/version metadata;3,791static +607schema/metadata assertions, strict OpenSpec/graph/discovery checks passed. Behavior remains unexecuted.
-- [ ] Future authorized full implementation: implement and qualify the entire accepted feature graph, actual provider/local model behavior, acoustic realization, persisted restart/restore and selected original-source bindings. Written fixture designs and public metadata are not runtime acceptance.
+- [ ] Future authorized full implementation: implement and qualify the entire accepted feature graph, actual provider/local model behavior, acoustic realization, persisted restart/restore and selected original-source bindings. Written fixture designs and public metadata are not runtime acceptance. — I17 H093: still required; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 Current resume: audit/build-contract-completeness-20261009/. Preserve unrelated audit/spec-fullness-20261008/GAPS.md. No implementation/inference/install authority in this increment.
 
@@ -365,7 +379,7 @@ Current resume: audit/build-contract-completeness-20261009/. Preserve unrelated 
 - [x] Audit all 422 properties by exact distinct input/expected packet rather than scenario counts; repair false true-error scoring for eight permitted-variant controls and separate false-positive tests from hidden-context rejection.
 - [x] Add 444 distinct functional/arithmetic/failure plans, retaining existing scenario coverage and all 122 categories, 42 formulas and eleven original source identities; bind every new edge to the existing DAG command and discovery ledger.
 - [x] Add the complete per-property set index, independent expected packets and a finite specification consistency/oracle-sensitivity checker; preserve actual historical evidence separately from unexecuted future acceptance.
-- [ ] Execute full acceptance through the future real application/provider/audio owners. Specification checks and IDE indexes do not establish application acceptance.
+- [ ] Execute full acceptance through the future real application/provider/audio owners. Specification checks and IDE indexes do not establish application acceptance. — I17 H094: still required; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 Resume: audit/property-test-sets-20261010/REPORT.md owns current specification/test-set and requested IDE/Context handoff evidence. No product feature is deferred or removed.
 
@@ -469,8 +483,8 @@ Verification resume: all seven findings are repaired and closed on committed-cle
 - [x] Implement shared stateless Responses transport, complete terminal handling, attempt/deadline budgets and tolerant semantic projection.
 - [x] Persist exact private context/request/reply/native receipt evidence and reconcile selected actual Lab observations without credential capture.
 - [x] Materialize every iteration property with distinct positive/negative packets; wire cases/discovery and observe native storage/browser/protocol behavior.
-- [ ] Inspect and repair findings; complete affected language/specification/preservation/DAG checks and committed-clean full iteration acceptance.
-- [ ] Commit acceptance, restore preview and fast-forward canonical checkout while preserving unrelated user data.
+- [ ] Inspect and repair findings; complete affected language/specification/preservation/DAG checks and committed-clean full iteration acceptance. — I17 H095: superseded; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] Commit acceptance, restore preview and fast-forward canonical checkout while preserving unrelated user data. — I17 H096: still required; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 Resume: baseline fe98b1b; scope and native protocol/storage/finalizer anchors recorded in audit/iteration-4-providers-20261010/PLAN.md. No provider credential or dispatch is borrowed from Codex.
 
@@ -518,8 +532,8 @@ Scope/anchors: audit/iteration-5-preparation-20261010/PLAN.md. This stage is the
 - [x] Implement restart/read/keyset pages, frozen resume, deadline/CAS ownership and completed-child recovery without another call.
 - [x] Materialize all48 literal positive/negative native cases, wire the DAG/discovery and repair all native findings.
 - [x] Complete stable language/specification/preservation checks and the complete native selection on a clean committed candidate.
-- [ ] Observe actual Tangerine-owned included-only generation and frozen positive/negative model quality/context/native/MLflow evidence. BLOCKED by iteration4 LIVE-BLOCKER.json; controlled HTTP replies do not satisfy this task.
-- [ ] Reconcile full iteration5 acceptance and land the result with no pending required evidence. Do not check this from native/structural results alone.
+- [ ] Observe actual Tangerine-owned included-only generation and frozen positive/negative model quality/context/native/MLflow evidence. BLOCKED by iteration4 LIVE-BLOCKER.json; controlled HTTP replies do not satisfy this task. — I17 H097: superseded; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] Reconcile full iteration5 acceptance and land the result with no pending required evidence. Do not check this from native/structural results alone. — I17 H098: still required; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 Iteration5 steering: user replaces schema/adapter archiving and repeated stored-data checks with one admission and trusted reuse. The b77cecb/9bc53fc observations are superseded for affected cases. Runtime reads and Resume trust accepted records; readiness observes availability. Revised native cases and DAG are required before closure.
 
@@ -860,7 +874,7 @@ Generation incident repair, 2026-10-22 (user's live local workspace):
 - [x] GEN.R2 Report only genuinely completed stages as retained after generation failure; add positive/negative response assertions.
 - [x] GEN.R3 Rebuild the local runtime, complete the user's unchanged 600-word/two-speaker/B1 request with the explicitly selected local/free/included LLM and local speech, observe playback in the browser, retain native/context/Lab evidence, review the repair and commit.
 
-- [ ] GEN.R4 Qualify the existing unbilled Gemini project as an explicitly selected native text provider (not a local-model fallback), preserving actual request/response/context/usage, free-only admission, secret transport and quota stop; verify positive/negative protocol behavior and an actual unchanged-request exercise.
+- [ ] GEN.R4 Qualify the existing unbilled Gemini project as an explicitly selected native text provider (not a local-model fallback), preserving actual request/response/context/usage, free-only admission, secret transport and quota stop; verify positive/negative protocol behavior and an actual unchanged-request exercise. — I17 H099: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 Linguistic fullness / acceptable-variant audit, 2026-10-23:
 - [x] LF.R1 Inspect every existing leaf and recipe, research primary references, enumerate missing subtypes and correct contextual variants, and preserve all category IDs/formulas/source scopes.
@@ -892,8 +906,8 @@ Interactive usability acceptance: all26selected test identities are observed pas
 ## Requested same-dialogue speech comparison (2026-10-22)
 
 - [x] CMP.R1 Generate and retain four complete clean/mistake-directed pairs for the available local/free routes: Kokoro, ElevenLabs Flash v2, ElevenLabs v4 dialogue and Gemini TTS. Use the same four saved turns and four targets; expose a private local listening sheet, actual context/output and separate automated opinions. Preserve unavailable/failed routes and the original exercise. Evidence: audit/speech-comparison-20261022/REPORT.md.
-- [ ] CMP.R2 Complete the Azure comparison after the pending Microsoft sign-in and availability of an actual F0 resource/key. No trial, billing linkage, S0 or paid fallback is authorized.
-- [ ] CMP.R3 Obtain a complete Qwen clean/mutated pair on a usable local runtime. Current native float32 and 635-second int8 CPU probes did not produce a full pair; the genuine 5.6-second native preview is labelled partial. Production adapters remain unchanged.
+- [ ] CMP.R2 Complete the Azure comparison after the pending Microsoft sign-in and availability of an actual F0 resource/key. No trial, billing linkage, S0 or paid fallback is authorized. — I17 H100: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] CMP.R3 Obtain a complete Qwen clean/mutated pair on a usable local runtime. Current native float32 and 635-second int8 CPU probes did not produce a full pair; the genuine 5.6-second native preview is labelled partial. Production adapters remain unchanged. — I17 H101: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 - [x] CMP.R4 Generate the full saved dialogue with targets covering all 26 pronunciation categories, preserve the same speakers/text and local/free-only boundary, expose actual listening/download artifacts and target-position controls, retain native/context/Lab/browser evidence, and disclose exact versus approximate/unavailable controls. Full Kokoro/Flash/GeminiFlash recordings and full v4 target track exist; v4 uses the explicitly labelled Flash clean reference. Flash-Lite partials/quota failure and local VOT/Praat limitations are retained. This is completion of the requested finite listening experiment, not certification of 26 audible deviations or production-adapter qualification. Evidence: audit/pronunciation-all-20261023/REPORT.md. CMP.R2/R3 remain open.
 
@@ -933,6 +947,172 @@ Accent acceptance: audit/accents-20261025/REPORT.md and RECONCILIATION.json map2
 
 Recurring-pattern acceptance: audit/recurring-errors-20261025/REPORT.md and RECONCILIATION.json reconcile 30 passing cases across four properties (15 positive, 15 negative), actual included-plan generation and two answer probes, plus repeated local Melo/Kokoro pronunciation transformations with a preserved correct occurrence. The actual dialogue has six changed contexts out of seven for one speaker; another speaker remains correct. Seventeen native packets and results were read back in local MLflow run18805aa087ac49df80609360aaa4a6cb. Evaluation/comments projection gaps and the development schema-registration omission are repaired; saved text/audio and answers were reused. Native strict OpenSpec1.13.1,388static assertions, DAG/discovery, stable builds/Go checks and affected regressions pass within the report’s finite boundaries. Original user records/settings, all protected registries and migrations remain unchanged. No paid calls, new hosted qualification, universal empirical frequency or whole-release claim is made.
 
+## Remaining-work continuation plan (2026-10-25)
+
+The requested plan and local verify wiring are recorded in
+`completion-iterations.md`, `completion-iterations.json`, `completion-coverage.md` and
+`audit/completion-plan-20261025/REPORT.md`. These are planning artifacts. Every
+task below remains unchecked until its own implementation/qualification is
+observed. Earlier boxes and receipts retain their original state; the 101
+baseline unchecked rows are captured in `UNCHECKED-BASELINE.json` for iteration
+17, not silently converted into missing features or accepted work.
+
+The latest user excludes LLM performance benchmarks: load/throughput/latency/cost
+campaigns, model/parameter sweeps, repeated judge campaigns and bulk 732-case
+model execution are out of completion scope. This supersedes earlier benchmark
+execution wording in this plan and historical task rows. Keep product datasets,
+reporting and diagnostic fields, and test their native behavior with saved data
+or deterministic fixtures. Preserve functional positive/negative cases and only
+necessary authorized real-flow calls within actual remaining included/free/local
+limits. Excluded campaigns neither block release nor count as executed passes.
+
+For each iteration: select the exact listed behavior properties and dependent
+cases; materialize the existing literal positive/negative plans with independent
+expectations; implement through the real owner with separated responsibilities;
+observe and repair; preserve prompt/context/model/output/Lab evidence for AI
+changes; reconcile valid retained greens and newly invalidated observations;
+update this task list and commit. Verify also selects `FIN-VERIFY.I<n>` and
+records actual UI/UX, typography and evidence dispositions using the local guide.
+No product change, provider use, install, acquisition or publication is executed
+by adding this plan.
+
+Reuse/rebind existing FX/CV or earlier executable cases and valid receipts when
+they prove these same literal expectations. Materialize only missing coverage;
+do not create duplicate test modules or rerun unchanged inference to change IDs.
+Keep each retained case's original semantic scope and observation boundary.
+
+### Iteration 17 — Reconcile tasks, acceptance and tool versions
+
+Properties: `FIN-LEDGER.P1`, `FIN-VERIFY.I17`. Sources: all 101 baseline rows,
+I4/I5 historical blockers, the I12 report/task mismatch, later I16 acceptance and
+the recorded OpenSpec 1.13.1 versus installed 1.14.3 observation.
+
+- [ ] I17.1 Materialize paired ledger cases and give all 101 baseline rows, including 53 historical GAP/SPEC rows, referenced completed, superseded, still-required or optional/external dispositions; refresh current repository/acceptance facts without inventing evidence or owner approvals.
+- [ ] I17.2 Reconcile dated audit/task/tool records and current functional-category-ux overlaps/receipts before duplicating UI work; route genuine residuals to their owner and preserve original failures and accepted intent.
+- [ ] I17.3 Verify the complete ledger/review selection, record justified UI/style applicability, update canonical status and commit.
+
+### Iteration 18 — Preparation UX and readable controls
+
+Depends on 17. Properties: `FIN-UI-01.P1`, `FIN-UI-06.P1`, `FIN-UI-07.P1`,
+`FIN-VERIFY.I18`. Closes UX-01, UX-06 and UX-07.
+
+- [ ] I18.1 Materialize positive/negative responsive-summary, simple-path, zero/advanced-precedence, keyboard and caption-readability cases.
+- [ ] I18.2 Repair existing preparation components/styles while preserving categories, severity, count, per-speaker voices/accents, recurrence, advanced settings and saved work.
+- [ ] I18.3 Verify actual desktop/narrow interaction and typography, affected request regressions and evidence content; reconcile and commit.
+
+### Iteration 19 — Saved work and failure recovery
+
+Depends on 17. Properties: `FIN-UI-02.P1`, `FIN-UI-03.P1`, `FIN-VERIFY.I19`.
+Closes UX-02 and UX-03.
+
+- [ ] I19.1 Materialize saved failure/recovery and typed title/excerpt/date projection cases, including original-heard identity, duplicate short-ID prefixes, legacy metadata and narrow layouts.
+- [ ] I19.2 Apply the canonical additive response schemas to shipped projections and UI together; show retained failure guidance, original-heard titles, excerpts and readable times through existing owners, preserving IDs/pagination and zero-dispatch reads.
+- [ ] I19.3 Verify success/failure/recovery through actual browser/storage owners, typography and evidence; reconcile and commit.
+
+### Iteration 20 — Results hierarchy and passage replay
+
+Depends on 19. Properties: `FIN-UI-04.P1`, `FIN-UI-05.P1`, `FIN-VERIFY.I20`.
+Closes UX-04 and UX-05.
+
+- [ ] I20.1 Materialize the independent 60/100 score fixture, optional-explanation/uncertainty and saved-answer cases; prove stored-range seek/play/end pause, replacement/manual interruption, absent timing, no autoplay and media recovery.
+- [ ] I20.2 Foreground completed results and next practice; retain details and implement finite passage controls with correct cancellation through existing audio/playback owners, without inference, synthesis or clip regeneration.
+- [ ] I20.3 Verify draft/checking/completed views, keyboard replay, typography and correct media/result association; reconcile and commit.
+
+### Iteration 21 — Usable reports, experiments and cleanup
+
+Depends on 19. Properties: `FIN-UI-08.P1`, `FIN-VERIFY.I21`. Closes UX-08.
+
+- [ ] I21.1 Materialize ordinary named-form starter save without JSON/ID editing, empty-workspace/recovery and advanced-invalid-input cases, plus named-record/shared-media/preview-only Cleanup counterexamples.
+- [ ] I21.2 Add guided starter fields/named choices backed by existing defaults and native schemas; retain advanced JSON/import and useful missing-input guidance. Route named Cleanup selection through existing preview/explicit apply with zero implicit model calls.
+- [ ] I21.3 Verify populated/empty/error paths, keyboard use, typography, no implicit provider dispatch/deletion and exact evidence; reconcile and commit.
+
+### Iteration 22 — Production ElevenLabs pronunciation dictionaries
+
+Depends on 17. Properties: `FIN-SP-01.P1`, `FIN-VERIFY.I22`. Closes SP-01;
+the standalone comparison is not production adapter acceptance.
+
+- [ ] I22.1 Materialize ordinary preparation/render/playback/answer scoring, same-turn same-word target controls, saved-piece resume and fresh invalid-locator admission. Use controlled unsupported/quota replies, never deliberate allowance exhaustion.
+- [ ] I22.2 Integrate dictionaries through existing speech/configuration/storage owners and qualify complete actual output using only permitted included/free access; preserve native acoustic routes and their limits.
+- [ ] I22.3 Verify real preparation/audio/answer flow for the selected binding, actual pronunciation observations, UI/typography and native/Lab evidence; reconcile and commit.
+
+### Iteration 23 — Actual free Gemini text qualification
+
+Depends on 17; optional selected provider scope. Properties: `FIN-GEMINI.P1`,
+`FIN-VERIFY.I23`. Owns GEN.R4.
+
+- [ ] I23.1 Materialize actual selected-profile full-flow and quota/denial/service-unavailable expectations without provider substitution.
+- [ ] I23.2 Use the existing unbilled project only when free access is actually available; complete the unchanged request through generation, audio, checking and exact results with native/context/Lab observations.
+- [ ] I23.3 Verify the complete selected set, applicable UI/style or concrete not-applicable reasons and evidence; retain unavailable status if access fails, reconcile the honest result and commit.
+
+### Iteration 24 — Complete Azure F0 comparison
+
+Depends on 17 and actual authorized Microsoft/F0 access. Properties:
+`FIN-AZURE.P1`, `FIN-VERIFY.I24`. Owns CMP.R2.
+
+- [ ] I24.1 Materialize same-dialogue clean/mutated pair and missing-key/non-F0/free-only negative cases.
+- [ ] I24.2 Complete both recordings with actual F0 key/region, saved speaker/target plan and native SSML/output; no trial, S0, payment linkage or paid fallback.
+- [ ] I24.3 Verify playback, target observations, comparison UI/typography and exact evidence; keep missing access explicit, reconcile and commit.
+
+### Iteration 25 — Complete local Qwen comparison pair
+
+Depends on 17 and a usable local runtime. Properties: `FIN-QWEN.P1`,
+`FIN-VERIFY.I25`. Owns CMP.R3.
+
+- [ ] I25.1 Materialize full-pair completion and partial/cancel/deadline counterexamples; keep the existing foreground deadline and native ownership.
+- [ ] I25.2 Produce both saved dialogue variants on the practical selected runtime, retaining actual model/voice/compute/input/output; never substitute the 5.6-second preview.
+- [ ] I25.3 Verify complete playback versus truthful incomplete states, typography and evidence content; reconcile and commit without relaxing accepted contracts.
+
+### Iteration 26 — Selected acoustic evidence and correct variants
+
+Depends on 22; 24/25 are dependencies only if their output is selected.
+Properties: `FIN-ACOUSTIC.P1`, `FIN-VERIFY.I26`, and retained `CV-01.P1` through
+`CV-06.P1`. Reconcile current category-realization evidence; do not reimplement it.
+
+- [ ] I26.1 Reconcile and retain valid CV-01–CV-06 native/evidence receipts. Materialize only missing target/control/allowed-variant cases for selected uncertain linking, weak-form or connected-speech claims; do not automatically repeat the full observed population.
+- [ ] I26.2 Reuse saved audio/measurements/judgments and obtain only necessary authorized selected observations within remaining limits. Repair supported defects, preserve correct variants/uncertainty and never request a bulk retry of unavailable judgments.
+- [ ] I26.3 Verify target-specific claims, listening UI/typography and native/Lab evidence without universal acoustic certification or a human review gate; reconcile and commit.
+
+### Iteration 27 — Complete selected original-source inputs
+
+Depends on 17 and source-owner access. Properties: `FIN-SOURCES.P1`,
+`FIN-VERIFY.I27`. Optional selected full-source scope; all eleven identities stay.
+
+- [ ] I27.1 Materialize separate-release completeness/provenance and partial/merged/mirror-mislabelling counterexamples through existing import owners.
+- [ ] I27.2 Acquire/import authorized complete selected Cambridge derivatives, Doubao records/instruments, separate Moodrick/NIR and eligible supplements with actual dictionaries/media/terms; reconcile official L2 bytes only if claiming official provenance, and do not download prohibited ICNALE media.
+- [ ] I27.3 Verify actual selected completeness and honest missing/raw-only states, Sources/report UI/typography and native evidence; leave unavailable owner inputs visible, reconcile and commit.
+
+### Iteration 28 — Saved-data empirical reports and coverage
+
+Depends on 17; 27 only if those sources are selected. Properties:
+`FIN-EMPIRICAL.P1`, `FIN-VERIFY.I28`. Optional selected saved-data report scope;
+verification performs zero new model calls.
+
+- [ ] I28.1 Materialize deterministic/saved-record report arithmetic, provenance, denominator and coverage cases, including constructed-versus-genuine and missing-input counterexamples; no bulk LLM execution.
+- [ ] I28.2 Reproduce reports from available saved populations; keep source frequency/relationships, difficulty and recommendation-effect claims distinct and unavailable inputs unknown. Existing benchmark datasets/fields remain, but no performance campaign is required.
+- [ ] I28.3 Verify exact report results, UI/typography, retained native/Lab evidence and zero new inference; retain missing data honestly, reconcile and commit without a model benchmark prerequisite.
+
+### Iteration 29 — Final UI/UX, typography and real full flow
+
+Depends on 18, 19, 20, 21 and 22. Properties: `FIN-FLOW.P1`,
+`FIN-VERIFY.I29`. Optional qualifications selected for the final claim must also
+have their actual required evidence; unrelated missing ones remain explicit.
+Conditional dependency edges to 23–28 are recorded in completion-iterations.json.
+
+- [ ] I29.1 Materialize current-route/state and real-flow expectations, including independently calculated results for the actual generated saved key and misleading/old/substituted-media counterexamples.
+- [ ] I29.2 Inspect all eleven routes at desktop/narrow widths with appropriate empty/populated/error/recovery/keyboard states; record actual generation→audio→answer→checking→results→recommendations→reopen with pictures, video and stored audio.
+- [ ] I29.3 Review typography and evidence contents, disclose cuts/constructed answers/uncertainty, repair authorized findings, reconcile retained and invalidated cases, then commit the verified result.
+
+### Iteration 30 — Main and download-and-run release
+
+Depends on 29 and the actual authorized destination; 23–28 apply only to
+selected/confirmed release claims. Properties:
+`FIN-DELIVERY.P1`, `FIN-VERIFY.I30`.
+
+- [ ] I30.1 Materialize landing/archive/start/restart and missing-remote/failed-push/omitted-build-input/protected-dirty-file counterexamples.
+- [ ] I30.2 Land intended work while preserving unrelated canonical GAPS.md edits; resolve the actual GitHub destination and publish only with publication authority.
+- [ ] I30.3 Download the published source ZIP into a disposable directory, prove documented Docker-only startup/persistence, inspect setup UI/typography and publication readback, then reconcile and commit delivery records.
+
+
 ## Category implementation and actual-audio validation — 2026-10-25
 
 - [x] CV.R1 Freeze all 122 authored category fixtures and explicit positive/negative properties in the existing DAG.
@@ -957,3 +1137,16 @@ Evidence: `audit/final-functional-ux-20261025/REPORT.md`, `COVERAGE.md`,
 `EVIDENCE.md`. This is the FX software/visual acceptance selection. It does not
 mark the separate completion roadmap implemented or turn mixed audio observations
 into universal auditory qualification. No new model inference occurred.
+
+## Iteration 17 application — historical and overlapping-work reconciliation
+
+The [101-row ledger](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md)
+retains each original entry and its exact scope/evidence. Its 64 completed and
+13 superseded dispositions do not invent new runtime observations. Sixteen
+optional/external and eight still-required entries retain activation/owner links.
+The [overlap map](../../../audit/iteration-17-reconciliation-20261025/OVERLAP.json)
+connects all 38 ordinary UI cases in iterations 18–21 to existing FX proof:
+24 reusable, 14 partial, with explicit residual observations. Their FIN cases
+remain planned; I17 does not accept those later iterations. CV's 518 software
+observations retain mixed auditory outcomes. See the current I17 report for
+original I12/I16 receipts, scoped I4/I5 supersession and tool binding.
