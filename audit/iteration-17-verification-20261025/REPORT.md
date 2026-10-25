@@ -5,9 +5,9 @@ existing FX/CV overlaps, and the user's explicit whole-service error recovery,
 UI/UX and typography amendment. Started from clean
 `d23b75d0a3128d46a6fb328bf17dea7e9c0520d5`.
 
-The source repairs and directly affected observations pass. Final acceptance
-requires the committed-clean 47-case selection; its exact revision and receipt
-will be recorded in `ACCEPTANCE.json`. This report does not accept iterations
+The repaired full I17 selection passed **47/47 cases** on clean revision
+`b048d91aa49df17ac21ca60353d052bbfc739f7f`. The exact receipt, source and evidence
+boundaries are recorded in `ACCEPTANCE.json`. This report does not accept iterations
 18–30 or claim new hosted-provider/linguistic qualification.
 
 ## Findings and generalized repairs
@@ -91,7 +91,9 @@ Deployment, postdeployment, PBT and financial execution were excluded.
 
 ## Acceptance checkpoint
 
-Implementation and focused repair evidence are complete. The final clean source
-revision, 47/47 exact cases, structural receipts and canonical I17.V4 completion
-are recorded after the committed-clean run. There is no additional product
+The full47-case selection passed with zero unresolved cases on the committed
+clean source above. Strict OpenSpec, graph/discovery and the final frontend build
+passed. Canonical I17.V1–V4 are complete. Temporary test container/gateway were
+stopped, the review tab closed and viewport reset. The subsequent record-only
+commit does not invalidate the tested runtime or assertions. There is no additional product
 approval or decision needed for these repairs.

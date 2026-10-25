@@ -37,3 +37,9 @@ scrolling and action spacing now pass actual inspection and the new literal
 table oracle. Final selection47; image
 sha256:725386f29e8f21ceddf7df41277ddffa66c1a247c50718a478cf9802d58afca3.
 Original46case49cc5de receipt retained; final clean gate is accepted-clean-47.json.
+
+FINAL:47/47passed --require-clean at b048d91aa49df17ac21ca60353d052bbfc739f7f.
+Strict1.13.1 zero issues, graph/discovery, final web build and preservation pass.
+No unresolved I17 findings. Test container/gateway stopped, tab closed and
+viewport reset. I17.V1–V4 complete; later iterations remain open.
+Acceptance commit changes only checklist/report/receipt records.

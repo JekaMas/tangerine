@@ -1174,4 +1174,9 @@ execution are excluded; the real running app/data/settings remain unchanged.
 - [x] I17.V1 Strengthen actual acceptance/source identity and maintained task correspondence; reject duplicate/unrelated rows, dirty provenance and empty semantic artifacts without adding a product gate.
 - [x] I17.V2 Repair raw error/message/code exposure and transient read handling through single shared request/presentation owners; cover Prepare, Library, Attempts, Audio, Listen, Reviews, Reports, Sources, Settings, Recovery and Cleanup siblings with controlled inputs and preserved explicit write/resume semantics.
 - [x] I17.V3 Repair Refresh keyboard-focus loss through one shared read-action presentation owner; inspect desktop/mobile/narrow screens and actual controls with the typography skill/project UI guide, retaining input and truthful save/outcome wording.
-- [ ] I17.V4 Reconcile the full affected I17 selection and valid retained evidence, finish stable language/build/spec/preservation checks, commit, pass committed-clean verification and record acceptance. No deployment or new provider calls.
+- [x] I17.V4 Reconcile the full affected I17 selection and valid retained evidence, finish stable language/build/spec/preservation checks, commit, pass committed-clean verification and record acceptance. No deployment or new provider calls.
+
+Repaired I17 acceptance: audit/iteration-17-verification-20261025/ACCEPTANCE.json.
+47/47 cases passed on clean b048d91aa49df17ac21ca60353d052bbfc739f7f. The subsequent acceptance
+commit changes checklist/report records only; it does not change runtime, tests,
+contracts or the verification manifest. Later iterations remain open.
