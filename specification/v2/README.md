@@ -52,3 +52,11 @@ defines the shared workspace, registered category picker, independent severity,
 amount presets/exact counts, safe category metadata endpoint and existing
 blueprint/checkpoint persistence. Original taxonomy, formulas and full-source
 features remain preserved.
+
+
+The implemented FX category/interface increment is specified in
+`openspec/changes/implement-teacher-error-trainer/specs/functional-category-ux/spec.md`
+and reviewed in `audit/final-functional-ux-20261025/REPORT.md`: all 88
+non-pronunciation leaves are mapped, 83 written contrasts have native mutation
+admission/replay cases, and the main interface has browser/typography evidence.
+Native software coverage and mixed actual-audio qualification remain distinct.

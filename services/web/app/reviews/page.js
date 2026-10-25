@@ -1,4 +1,5 @@
 'use client';
+import {requestError} from '../requestError';
 import {useEffect,useRef,useState} from 'react';
 import Results from '../listen/Results';
 import ReconsiderSelected from './ReconsiderSelected';
@@ -14,7 +15,7 @@ export default function Reviews(){
    const filter=value.attempt?'attempt_id='+value.attempt:'case_version_id='+value.case;
    const {body,response}=await request('reviews?'+filter+(more?'&cursor='+more:''));setRows(old=>more?[...old,...body]:body);setCursor(response.headers.get('X-Tangerine-Next-Cursor')||'');
    if(value.attempt){const {body:latest}=await request('attempts/'+value.attempt+'/results');setCurrent(latest);if(!more)setResult(latest)}else{const {body:items}=await request('library');setCaseItem(items.find(item=>item.id===value.case)||null)}
-  }catch(e){setError(e.message)}
+  }catch(e){setError(requestError(e))}
  }
  useEffect(()=>{const q=new URLSearchParams(window.location.search);const value={case:q.get('case'),attempt:q.get('attempt')};setScope(value);refresh(value)},[]);
  async function run(review){
@@ -26,10 +27,10 @@ export default function Reviews(){
   if(scope.attempt){input.attempt_id=scope.attempt;input.result_id=current.result_id;if(purpose==='dispute')input.statement=statement}else input.audio_sha256=caseItem.audio_sha256;
   const body=JSON.stringify(input),signature='create|'+body;if(pending.current?.signature!==signature)pending.current={signature,key:crypto.randomUUID()};
   const {body:review}=await request('reviews',{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':pending.current.key},body});pending.current=null;setSelected(review);await run(review);
- }catch(e){setError(e.message)}finally{setBusy(false)}}
- async function select(id){setBusy(true);setError('');try{const {body}=await request('reviews/'+id);setSelected(body)}catch(e){setError(e.message)}finally{setBusy(false)}}
- async function retry(){setBusy(true);setError('');try{const {body}=await request('reviews/'+selected.id);await run(body)}catch(e){setError(e.message)}finally{setBusy(false)}}
- async function resultVersion(id){setBusy(true);setError('');try{const {body}=await request('attempts/'+scope.attempt+'/results?result_id='+id);setResult(body)}catch(e){setError(e.message)}finally{setBusy(false)}}
+ }catch(e){setError(requestError(e))}finally{setBusy(false)}}
+ async function select(id){setBusy(true);setError('');try{const {body}=await request('reviews/'+id);setSelected(body)}catch(e){setError(requestError(e))}finally{setBusy(false)}}
+ async function retry(){setBusy(true);setError('');try{const {body}=await request('reviews/'+selected.id);await run(body)}catch(e){setError(requestError(e))}finally{setBusy(false)}}
+ async function resultVersion(id){setBusy(true);setError('');try{const {body}=await request('attempts/'+scope.attempt+'/results?result_id='+id);setResult(body)}catch(e){setError(requestError(e))}finally{setBusy(false)}}
  return <main id="main-content">
   <section className="intro"><h1>Optional LLM review</h1><p>Ask the configured LLM to review a case or reconsider an answer. Your original recording, answer and result stay available.</p></section>
   <section className="card">

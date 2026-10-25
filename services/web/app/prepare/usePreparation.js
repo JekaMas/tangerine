@@ -1,4 +1,5 @@
 'use client';
+import {requestError} from '../requestError';
 import {useEffect, useRef, useState} from 'react';
 import {blueprintRequest} from './request';
 
@@ -13,11 +14,11 @@ export default function usePreparation() {
   const update = (field, value) => setForm(old => ({...old, [field]:value}));
   async function refresh(append=false) {
     try {
-      const q = new URLSearchParams({limit:'50'}); if (append && cursor) q.set('cursor',cursor);
+      const q = new URLSearchParams({limit:'50',view:'public'}); if (append && cursor) q.set('cursor',cursor);
       const r = await fetch('/api/v1/preparations?'+q,{cache:'no-store'});
       if (!r.ok) throw Error('Saved preparations are unavailable. Your input is retained. Refresh to retry.');
       const data = await r.json(); setItems(old => append ? [...old,...data.items] : data.items); setCursor(data.next_cursor);
-    } catch(e) { setError(e.message); }
+    } catch(e) { setError(requestError(e)); }
   }
   async function retryCategories(){setCategoryLoading(true);setCategoryError('');try{const r=await fetch('/api/v1/preparation-options',{cache:'no-store'});if(!r.ok)throw Error('Catalogue unavailable');const data=await r.json();setCategories(data.categories);setVoices(data.voices||[]);}catch{setCategoryError('Category and voice choices are unavailable. Your choices are retained. Retry to load the list.');}finally{setCategoryLoading(false);}}
   useEffect(() => { refresh(); retryCategories(); return () => controller.current?.abort(); }, []);

@@ -1,4 +1,5 @@
 'use client';
+import {requestError} from './requestError';
 import { useEffect, useState } from 'react';
 import Icon from './Icon';
 export default function Page() {
@@ -11,7 +12,7 @@ export default function Page() {
       const response = await fetch('/api/v1/library', { cache: 'no-store', signal: AbortSignal.timeout(270000) });
       if (!response.ok) throw new Error('The Library is unavailable. Your local data has been retained. Retry when the services are ready.');
       setExercises(await response.json());
-    } catch (failure) { setError(failure.message); }
+    } catch (failure) { setError(requestError(failure)); }
     finally { setBusy(false); }
   }
   useEffect(() => { refresh(); }, []);

@@ -1,4 +1,5 @@
 'use client';
+import {requestError} from '../requestError';
 import {useEffect, useRef, useState} from 'react';
 import {watchChecking} from './checkingProgress';
 
@@ -103,7 +104,7 @@ export default function useListening() {
           history.replaceState(null, '', '/listen?attempt=' + attemptID.current);
         }
         if (active) await load();
-      } catch (e) { if (active) setError(e.message); }
+      } catch (e) { if (active) setError(requestError(e)); }
       finally { if (active) setBusy(false); }
     }
     open();
@@ -116,7 +117,7 @@ export default function useListening() {
       await load(true);
       setAudioRevision(n => n + 1);
       setNotice(draft.current.dirty ? 'Saved state refreshed. Your unsaved text is retained.' : 'Saved state refreshed.');
-    } catch (e) { setError(e.message); }
+    } catch (e) { setError(requestError(e)); }
     finally { setBusy(false); }
   }
   async function write(submit) {
@@ -159,9 +160,9 @@ export default function useListening() {
           if (saved.submitted_at != null) {
             setNotice('Answer submitted and saved.');
             setError('Checking was interrupted. Your saved answer and any completed findings are retained. Refresh saved state, then explicitly resume if needed.');
-          } else setError(e.message);
+          } else setError(requestError(e));
         } catch { setError('Completion could not be confirmed. Your text is retained. Refresh saved state before retrying.'); }
-      } else setError(e.message);
+      } else setError(requestError(e));
     }
     finally { stopChecking(); writeController.current = null; if (mounted.current) { setChecking(null); setBusy(false); } }
   }
@@ -179,7 +180,7 @@ export default function useListening() {
       pending.current=null;stopChecking();if(!mounted.current)return;await load();
       if(value.status==='evaluation_failed')setError('Your answer is saved. Checking failed. Retry checking after the service is available.');
       else setNotice('Saved findings refreshed.');
-    }catch(e){if(mounted.current)setError(e.message)}finally{stopChecking();writeController.current=null;if(mounted.current){setChecking(null);setBusy(false)}}
+    }catch(e){if(mounted.current)setError(requestError(e))}finally{stopChecking();writeController.current=null;if(mounted.current){setChecking(null);setBusy(false)}}
   }
   function editAnswer(text) {
     draft.current.answer = text; draft.current.dirty = true;

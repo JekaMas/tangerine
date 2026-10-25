@@ -59,9 +59,9 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
   def type_answer(text):
    browser.evaluate("document.querySelector('textarea').focus();true");browser.call('Input.insertText',{'text':text});wait_value("document.querySelector('textarea').value",text)
   def new_answer():
-   browser.call('Page.navigate',{'url':'http://localhost:3000/'});browser.wait('Listen and answer');click('Listen and answer');browser.wait('Your answer');wait_value("document.querySelector('textarea').disabled",False)
+   browser.call('Page.navigate',{'url':'http://localhost:3000/'});browser.wait('Listen and answer');click('Listen and answer');browser.wait('Your answer');wait_value("(document.querySelector('textarea').disabled||document.querySelector('textarea').readOnly)",False)
   new_answer();type_answer('Use opens.');click('Submit answer');browser.wait('Answer interpretation ready.')
-  record('test_submit_positive',"({answer:document.querySelector('[aria-label=\"Your answer\"]').value,disabled:document.querySelector('textarea').disabled,findings:document.querySelector('[aria-label=\"Answer findings\"]').textContent.includes('Correction: accepted'),optional:document.body.textContent.includes('Explanation: not provided (optional)')})",{'answer':'Use opens.','disabled':True,'findings':True,'optional':True})
+  record('test_submit_positive',"({answer:document.querySelector('[aria-label=\"Your answer\"]').value,disabled:(document.querySelector('textarea').disabled||document.querySelector('textarea').readOnly),findings:document.querySelector('[aria-label=\"Answer findings\"]').textContent.includes('Correction: accepted'),optional:document.body.textContent.includes('Explanation: not provided (optional)')})",{'answer':'Use opens.','disabled':True,'findings':True,'optional':True})
   record('test_private_negative',"/resources_asset_id|context_snapshot_id|credential_ref|provider_request_id|wire_request|mapping_asset_id/.test(document.documentElement.outerHTML)",False)
   url=browser.evaluate('location.href');browser.call('Page.navigate',{'url':'http://localhost:3000/attempts'});browser.wait('Open saved answer');click('Open saved answer');browser.wait('Answer interpretation ready.')
   record('test_history_positive',"document.querySelector('[aria-label=\"Your answer\"]').value",'Use opens.')
@@ -69,10 +69,10 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
   assert status in (409,412),status
   record('test_immutable_negative',"document.querySelector('[aria-label=\"Your answer\"]').value",'Use opens.')
   (evidence/'mode').write_text('bad-unit');new_answer();type_answer('Use opens.');click('Submit answer');browser.wait('Your answer is saved. Checking failed.')
-  record('test_failure_negative',"({answer:document.querySelector('textarea').value,disabled:document.querySelector('textarea').disabled,retry:document.body.textContent.includes('Check saved answer')})",{'answer':'Use opens.','disabled':True,'retry':True})
+  record('test_failure_negative',"({answer:document.querySelector('textarea').value,disabled:(document.querySelector('textarea').disabled||document.querySelector('textarea').readOnly),retry:document.body.textContent.includes('Check saved answer')})",{'answer':'Use opens.','disabled':True,'retry':True})
   (evidence/'mode').write_text('good');click('Check saved answer');browser.wait('Answer interpretation ready.');record('test_retry_positive',"document.body.textContent.includes('Correction: accepted')",True)
-  new_answer();type_answer('Use opens.');call(['docker','stop',name+'-media']);click('Submit answer');wait_value("document.querySelector('textarea').disabled && document.body.textContent.includes('Answer submitted and saved.')",True)
-  record('test_media_failure_negative',"({answer:document.querySelector('textarea').value,disabled:document.querySelector('textarea').disabled})",{'answer':'Use opens.','disabled':True})
+  new_answer();type_answer('Use opens.');call(['docker','stop',name+'-media']);click('Submit answer');wait_value("(document.querySelector('textarea').disabled||document.querySelector('textarea').readOnly) && document.body.textContent.includes('Answer submitted and saved.')",True)
+  record('test_media_failure_negative',"({answer:document.querySelector('textarea').value,disabled:(document.querySelector('textarea').disabled||document.querySelector('textarea').readOnly)})",{'answer':'Use opens.','disabled':True})
   call(['docker','start',name+'-media']);ready('media');click('Refresh saved state');browser.wait('Check saved answer');click('Check saved answer');browser.wait('Answer interpretation ready.');record('test_media_recovery_positive',"document.body.textContent.includes('Correction: accepted')",True)
   browser.evaluate("document.querySelector('[aria-label=\"Answer findings\"]').scrollIntoView({block:'end'});true")
   screenshot=browser.call('Page.captureScreenshot');(evidence/'findings.png').write_bytes(base64.b64decode(screenshot['data']))

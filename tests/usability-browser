@@ -105,7 +105,7 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
         fixture=json.loads((evidence/'fixture.json').read_text())
         def new_answer():
             browser.call('Page.navigate',{'url':base+'/listen?case='+fixture['case_id']+'&sha='+fixture['case_sha256']})
-            browser.wait('Your answer');wait("document.querySelector('[aria-label=\"Your answer\"]')?.disabled",False)
+            browser.wait('Your answer');wait("(document.querySelector('[aria-label=\"Your answer\"]')?.disabled||document.querySelector('[aria-label=\"Your answer\"]')?.readOnly)",False)
             fill('Your answer','Use opens.')
         (evidence/'gate').write_text('extraction');new_answer();click('Submit answer')
         record('test_extraction_progress_positive',"({saved:document.body.textContent.includes('Answer submitted and saved.'),stage:document.querySelector('[aria-label=\"Checking progress\"]')?.textContent.includes('Reading your findings'),answer:document.querySelector('textarea').value})",{'saved':True,'stage':True,'answer':'Use opens.'})
@@ -114,7 +114,7 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
         (evidence/'gate').write_text('matching')
         record('test_matching_progress_positive',"document.querySelector('[aria-label=\"Checking progress\"]')?.textContent.includes('Checking findings, corrections and optional explanations')",True)
         (evidence/'fail-reads').write_text('fail');time.sleep(1.2)
-        observed['test_read_failure_negative']=browser.evaluate("({answer:document.querySelector('textarea').value,saved:document.body.textContent.includes('Answer submitted and saved.'),disabled:document.querySelector('textarea').disabled})")
+        observed['test_read_failure_negative']=browser.evaluate("({answer:document.querySelector('textarea').value,saved:document.body.textContent.includes('Answer submitted and saved.'),disabled:(document.querySelector('textarea').disabled||document.querySelector('textarea').readOnly)})")
         (evidence/'fail-reads').unlink();(evidence/'gate').write_text('feedback')
         record('test_score_before_comments_positive',"({primary:document.querySelector('[aria-label=\"Primary score\"]')?.textContent,stage:document.querySelector('[aria-label=\"Checking progress\"]')?.textContent.includes('Writing comments'),pending:document.body.textContent.includes('Comments and practice recommendations are being prepared.'),falseFailure:document.body.textContent.includes('recommendations are unavailable')})",{'primary':'Primary score: 100.0 / 100','stage':True,'pending':True,'falseFailure':False})
         record('test_privacy_negative',"/resources_asset_id|context_snapshot_id|credential_ref|provider_request_id|wire_request|mapping_asset_id/.test(document.documentElement.outerHTML)",False)

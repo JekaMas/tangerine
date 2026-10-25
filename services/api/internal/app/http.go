@@ -222,19 +222,20 @@ func (s *Server) ready(w http.ResponseWriter, r *http.Request) {
 }
 
 type LibraryItem struct {
-	ID            string  `json:"id"`
-	Title         string  `json:"title"`
-	PublicContext string  `json:"public_context"`
-	DurationMS    int     `json:"duration_ms"`
-	Format        string  `json:"format"`
-	Difficulty    string  `json:"difficulty"`
-	Availability  string  `json:"availability"`
-	CaseSHA256    *string `json:"case_sha256,omitempty"`
-	AudioSHA256   *string `json:"audio_sha256,omitempty"`
+	ID            string     `json:"id"`
+	Title         string     `json:"title"`
+	PublicContext string     `json:"public_context"`
+	DurationMS    int        `json:"duration_ms"`
+	Format        string     `json:"format"`
+	Difficulty    string     `json:"difficulty"`
+	Availability  string     `json:"availability"`
+	CaseSHA256    *string    `json:"case_sha256,omitempty"`
+	AudioSHA256   *string    `json:"audio_sha256,omitempty"`
+	CreatedAt     *time.Time `json:"created_at,omitempty"`
 }
 
 func (s *Server) library(w http.ResponseWriter, r *http.Request) {
-	rows, err := s.Store.DB.Query(r.Context(), `SELECT c.id::text,c.title,c.public_context,c.duration_ms,c.format,c.difficulty,c.availability,l.case_sha256,l.audio_sha256 FROM exercise_catalog c LEFT JOIN listening_case l ON l.case_version_id=c.id::text WHERE public_context IS NOT NULL AND duration_ms IS NOT NULL AND format IS NOT NULL AND difficulty IS NOT NULL AND availability IN ('published','retired','quarantined','rights_restricted') ORDER BY published_at DESC,c.id`)
+	rows, err := s.Store.DB.Query(r.Context(), `SELECT c.id::text,c.title,c.public_context,c.duration_ms,c.format,c.difficulty,c.availability,l.case_sha256,l.audio_sha256,d.created_at FROM exercise_catalog c LEFT JOIN listening_case l ON l.case_version_id=c.id::text LEFT JOIN document d ON d.id=c.id::text WHERE public_context IS NOT NULL AND duration_ms IS NOT NULL AND format IS NOT NULL AND difficulty IS NOT NULL AND availability IN ('published','retired','quarantined','rights_restricted') ORDER BY published_at DESC,c.id`)
 	if err != nil {
 		writeJSON(w, 503, map[string]string{"error": "storage_unavailable"})
 		return
@@ -243,7 +244,7 @@ func (s *Server) library(w http.ResponseWriter, r *http.Request) {
 	items := make([]LibraryItem, 0)
 	for rows.Next() {
 		var x LibraryItem
-		if rows.Scan(&x.ID, &x.Title, &x.PublicContext, &x.DurationMS, &x.Format, &x.Difficulty, &x.Availability, &x.CaseSHA256, &x.AudioSHA256) != nil {
+		if rows.Scan(&x.ID, &x.Title, &x.PublicContext, &x.DurationMS, &x.Format, &x.Difficulty, &x.Availability, &x.CaseSHA256, &x.AudioSHA256, &x.CreatedAt) != nil {
 			writeJSON(w, 503, map[string]string{"error": "storage_unavailable"})
 			return
 		}

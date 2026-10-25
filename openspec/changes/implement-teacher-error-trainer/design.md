@@ -139,3 +139,16 @@ The selected 270-second foreground contract remains. Native evidence shows the u
 ## Category realization evidence, 2026-10-25
 
 The existing speech diagnostic transport gains an optional blind development probe. A small comparison owner keeps authored expected labels outside model input, records false alarms and requires waveform evidence for numeric claims. Existing category/scoring receipts are joined to actual final WAV observations per tested binding. Successful transport, typed plans and symbolic captions cannot qualify a sound. One explicit observation is persisted; reads do not infer or rehash stored data. The managed prompt is separate from ordinary audio diagnostics and the original nine stage bindings. No new service, queue, table, human review or ordinary-use gate is introduced. Canonical CV.R1–R4 and audit/category-realization-20261025 own evidence and observed limitations.
+
+
+## FX — functional category and interface completion
+
+Keep generic mutation/scoring owners: no parallel per-category algorithm or corpus prerequisite. Constructed contrasts exercise native admission, manifest projection and replay for every written non-pronunciation leaf; context/control/scoring and actual audio retain separate inherited evidence. Keep unknown/unrealized acoustic observations explicit.
+
+Storage projects original heard titles, actual answer excerpts and immutable creation dates using existing queries. Pure native caption helpers own truncation; web helpers own English dates/status. No migration, metadata service or historical revalidation is added. The existing preparation summary exposes saved failure reasons.
+
+Preparation presents its resolved request before Generate and groups optional controls in a disclosure. Results consume native grades, retain a collapsed copyable read-only answer and own no arithmetic. A small media-event owner controls one finite range on the existing player, cancelling on seek/pause/play/replacement/navigation. No resynthesis, encoded excerpt or audio judge is involved in replay.
+
+Guided tools construct typed portable requests from labelled authored examples and existing Lab defaults. Native owners admit/save them; saving does not run an experiment. Cleanup selects full existing identities then uses the existing preview/apply owner. The shared web transport-message helper formats recovery guidance only: no retry, provider fallback or financial policy change.
+
+FX-01 through FX-06 and their positive/negative executable cases are in verification.json. Source bindings and selected actual observations reconcile in audit/final-functional-ux-20261025/. Existing semantic/scoring/source/native receipts remain within their original proof boundaries; the ordinary user flow still needs no Lab, corpus or human reviewer.

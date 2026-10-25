@@ -941,3 +941,19 @@ Recurring-pattern acceptance: audit/recurring-errors-20261025/REPORT.md and RECO
 - [x] CV.R4 Repair in-scope findings, run only affected checks, reconcile retained valid evidence, review the diff and commit the scoped delivery.
 
 Category-validation acceptance: audit/category-realization-20261025/REPORT.md and RECONCILIATION.json retain518 observed passing test identities,45 affected regressions, all122 actual fixture sets and local MLflow readback. Actual auditory qualification is44 confirmed,6 unconfirmed targets,4 physical/auditory conflicts,2 probes with three correct-control false alarms and66 HTTP503 failures. This is complete finite validation tooling, not blanket speech/product acceptance; the simultaneous-masking subtype remains explicitly unavailable. No paid credits, overage, human review, stored-byte reaudits or ordinary-use gate was added.
+
+
+## FX — non-pronunciation coverage and final functional interface review (2026-10-25)
+
+- [x] FX-01: Trace all 88 non-pronunciation leaves; materialize native admission/manifest replay and negative cases for all 83 written contrasts; retain correct variants and separate audio limitations.
+- [x] FX-02: Repair quick preparation, effective request visibility/precedence, saved failure reasons and explicit cancellation/recovery; observe positive and negative browser paths.
+- [x] FX-03: Project original heard titles, saved excerpts and existing creation dates; show recognizable history/audio/review choices and complete identities without new storage machinery.
+- [x] FX-04: Present primary/optional scores before a copyable immutable saved answer; implement real finite stored-passage replay, replacement, manual-seek cancellation and media recovery.
+- [x] FX-05: Supply valid guided constructed report/actual-configuration experiment starters; preserve advanced formats; provide named exact cleanup preview selection with no deletion on selection/save.
+- [x] FX-06: Review eleven routes at desktop/mobile and affected narrow widths, keyboard/focus/typography, native saved values and exact action results; repair screenshot and transport findings, reconcile 253 selected DAG cases and commit scoped work.
+
+Evidence: `audit/final-functional-ux-20261025/REPORT.md`, `COVERAGE.md`,
+`CASES.json`, `RECONCILIATION.json` and local raw observations described in
+`EVIDENCE.md`. This is the FX software/visual acceptance selection. It does not
+mark the separate completion roadmap implemented or turn mixed audio observations
+into universal auditory qualification. No new model inference occurred.

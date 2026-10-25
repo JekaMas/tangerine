@@ -2,11 +2,22 @@
 import useListening from './useListening';
 import Results from './Results';
 import CheckingStatus from './CheckingStatus';
+import {useCallback,useRef} from 'react';
+import {createPassageReplay} from './passageReplay';
 
 export default function Listen() {
   const {attempt, answer, language, recovered, error, notice, busy, checking, audioRevision,
     canRefresh, refresh, write, editAnswer, editLanguage, playback, audioError, results, retryChecking} = useListening();
   const submitted = attempt?.submitted_at != null;
+  const player = useRef(null);
+  const bindPlayer = useCallback(element => {
+    player.current?.dispose();
+    player.current = element ? createPassageReplay(element) : null;
+  }, []);
+  async function replay(interval) {
+    try { await player.current?.replay(interval); }
+    catch { audioError(); }
+  }
   return <main id="main-content">
 
     <section className="intro"><h1>Listen and respond</h1><p>Describe the mistakes you hear and offer corrections. Reasons are optional. You can answer in English or Russian.</p></section>
@@ -18,17 +29,17 @@ export default function Listen() {
       {attempt && <>
         <h2>{attempt.case.title}</h2><p>{attempt.case.public_context}</p>
         <p>Identify mistakes{attempt.task_components.classification ? ', name their categories' : ''}{attempt.task_components.correction ? ' and offer corrections' : ''}. Explanations are optional.</p>
-        <audio key={audioRevision} controls preload="metadata" aria-label="Exercise audio"
+        <audio ref={bindPlayer} key={audioRevision} controls preload="metadata" aria-label="Exercise audio"
           src={attempt.audio_path + '?playback_revision=' + audioRevision}
           onPlay={e => playback('play', e)} onPause={e => playback('pause', e)}
           onSeeked={e => playback('seek', e)} onEnded={e => playback('ended', e)} onError={audioError}/>
-        <label>Response language<select aria-label="Response language" disabled={busy || submitted} value={language} onChange={e => editLanguage(e.target.value)}><option value="en">English</option><option value="ru">Russian</option></select></label>
+        {submitted&&<Results results={results} busy={busy} checking={checking} retry={retryChecking} replay={replay}/>}
+        {submitted?<details className="saved-answer"><summary>Your saved answer · {language==='ru'?'Russian':'English'}</summary><p>Answer submitted and saved.</p><label>Saved response<textarea className="answer-text" aria-label="Your answer" lang={language} readOnly rows={6} value={answer}/></label><a href="/attempts">Open saved attempts</a></details>:<>
+        <label>Response language<select aria-label="Response language" disabled={busy} value={language} onChange={e => editLanguage(e.target.value)}><option value="en">English</option><option value="ru">Russian</option></select></label>
         <label>Your answer<textarea aria-label="Your answer" rows={10} disabled={busy || submitted} value={answer} onChange={e => editAnswer(e.target.value)}/></label>
         <p>{Array.from(answer).length.toLocaleString('en-US')} / 20,000 characters · {attempt.state}</p>
-        {submitted ? <p>Answer submitted and saved. <a href="/attempts">Open saved attempts</a></p>
-          : <div className="actions"><button onClick={() => write(false)} disabled={busy}>Save draft</button><button onClick={() => write(true)} disabled={busy}>Submit answer</button></div>}
+        <div className="actions"><button onClick={() => write(false)} disabled={busy}>Save draft</button><button onClick={() => write(true)} disabled={busy}>Submit answer</button></div></>}
         {submitted&&<section aria-label="Answer findings">
-          <Results results={results} busy={busy} checking={checking} retry={retryChecking}/>
           <h3>Answer findings</h3>
           {results?.interpretation?.status==='complete'&&<p>Answer interpretation ready.</p>}
           {results?.status==='review_required'&&<p>Some findings remain uncertain. Supported components are retained.</p>}

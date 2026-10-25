@@ -59,21 +59,21 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
   def type_answer(text):
    browser.evaluate("document.querySelector('textarea').focus();true");browser.call('Input.insertText',{'text':text});wait_value("document.querySelector('textarea').value",text)
   def new_answer():
-   browser.call('Page.navigate',{'url':'http://localhost:3000/'});browser.wait('Listen and answer');click('Listen and answer');browser.wait('Your answer');wait_value("document.querySelector('textarea').disabled",False)
+   browser.call('Page.navigate',{'url':'http://localhost:3000/'});browser.wait('Listen and answer');click('Listen and answer');browser.wait('Your answer');wait_value("(document.querySelector('textarea').disabled||document.querySelector('textarea').readOnly)",False)
   new_answer();type_answer('Use opens.');click('Submit answer');browser.wait('New practice recommendation')
   record('test_scores_positive',"({primary:document.querySelector('[aria-label=\"Primary score\"]').textContent,optional:document.body.textContent.includes('Optional explanation: not applicable'),recommendation:document.body.textContent.includes('The museum opens at nine.')})",{'primary':'Primary score: 100.0 / 100','optional':True,'recommendation':True})
   record('test_privacy_negative',"/resources_asset_id|context_snapshot_id|credential_ref|provider_request_id|wire_request|mapping_asset_id/.test(document.documentElement.outerHTML)",False)
   url=browser.evaluate('location.href');browser.call('Page.navigate',{'url':'http://localhost:3000/attempts'});browser.wait('Open saved answer');click('Open saved answer');browser.wait('New practice recommendation')
   (evidence/'mode').write_text('feedback-failure');new_answer();type_answer('Use opens.');click('Submit answer');browser.wait('Retry comments and recommendations')
-  record('test_feedback_failure_negative',"({primary:document.querySelector('[aria-label=\"Primary score\"]').textContent,answer:document.querySelector('textarea').value,disabled:document.querySelector('textarea').disabled})",{'primary':'Primary score: 100.0 / 100','answer':'Use opens.','disabled':True})
+  record('test_feedback_failure_negative',"({primary:document.querySelector('[aria-label=\"Primary score\"]').textContent,answer:document.querySelector('textarea').value,disabled:(document.querySelector('textarea').disabled||document.querySelector('textarea').readOnly)})",{'primary':'Primary score: 100.0 / 100','answer':'Use opens.','disabled':True})
   (evidence/'mode').write_text('good');click('Retry comments and recommendations');browser.wait('New practice recommendation')
   record('test_retry_positive',"({primary:document.querySelector('[aria-label=\"Primary score\"]').textContent,recommendation:document.body.textContent.includes('The museum opens at nine.')})",{'primary':'Primary score: 100.0 / 100','recommendation':True})
   schema=fixture['schema']
   sql=f'\"{schema}\"'
   fault="SET search_path TO "+sql+"; CREATE FUNCTION reject_feedback_result() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN IF NEW.kind='result-envelope' AND NEW.payload->>'feedback_status'='complete' THEN RAISE EXCEPTION 'test-owned feedback write failure'; END IF; RETURN NEW; END $$; CREATE TRIGGER reject_feedback_result BEFORE INSERT ON document FOR EACH ROW EXECUTE FUNCTION reject_feedback_result();"
   call(['docker','exec',name+'-postgres','psql','-X','-U','tangerine','-d','tangerine','-v','ON_ERROR_STOP=1','-c',fault])
-  new_answer();type_answer('Use opens.');click('Submit answer');browser.wait('Answer submitted and saved.')
-  record('test_write_failure_negative',"({answer:document.querySelector('[aria-label=\"Your answer\"]').value,disabled:document.querySelector('textarea').disabled,primary:document.querySelector('[aria-label=\"Primary score\"]')?.textContent})",{'answer':'Use opens.','disabled':True,'primary':'Primary score: 100.0 / 100'})
+  new_answer();type_answer('Use opens.');click('Submit answer');browser.wait('Your saved answer')
+  record('test_write_failure_negative',"({answer:document.querySelector('[aria-label=\"Your answer\"]').value,disabled:(document.querySelector('textarea').disabled||document.querySelector('textarea').readOnly),primary:document.querySelector('[aria-label=\"Primary score\"]')?.textContent})",{'answer':'Use opens.','disabled':True,'primary':'Primary score: 100.0 / 100'})
   call(['docker','exec',name+'-postgres','psql','-X','-U','tangerine','-d','tangerine','-v','ON_ERROR_STOP=1','-c','SET search_path TO '+sql+'; DROP TRIGGER reject_feedback_result ON document;'])
   click('Retry comments and recommendations');browser.wait('New practice recommendation')
   record('test_write_recovery_positive',"document.querySelector('[aria-label=\"Primary score\"]').textContent",'Primary score: 100.0 / 100')
