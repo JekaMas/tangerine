@@ -244,10 +244,8 @@ func TestNativeSpeechRestartPositive(t *testing.T) {
 	s, p, calls := nativeSpeechFixture(t, 0)
 	key := uuid.NewString()
 	p = renderNative(t, s, p, key, 1)
-	restarted := *s
-	restarted.Store = preparationNative(t)
-	restarted.SpeechURL = "http://unreachable.invalid"
-	saved := renderNative(t, &restarted, p, key, 1)
+	restarted := NewServer(preparationNative(t), s.Origin, "http://unreachable.invalid")
+	saved := renderNative(t, restarted, p, key, 1)
 	if saved["audio_asset_id"] != p["audio_asset_id"] || *calls != 2 {
 		t.Fatal(saved, *calls)
 	}

@@ -1,3 +1,12 @@
+2026-10-26 iteration19: the actual user selects persistent failure guidance
+and recognizable saved records, including native metadata projections. Implement
+remaining behavior, materialize native/browser positive and negative cases,
+inspect UI/UX and typography, repair siblings and commit through clean selected
+acceptance. Preserve user app/data/configuration. No deployment, postdeployment,
+PBT, financial execution, paid credits/overage, external inference/synthesis,
+installation or publication. Test-owned storage and controlled transport inputs
+prove only their stated boundaries.
+
 2026-10-26 iteration18 verification/repair: the actual user asks to verify the
 full preparation iteration, fix all findings and siblings, and inspect UI/UX,
 typography and nonblocking recovery. Scoped frontend, tests, DAG/evidence,

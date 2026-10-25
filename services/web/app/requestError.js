@@ -17,6 +17,7 @@ const reasons = {
   CAPABILITY_UNQUALIFIED: 'The selected speech capability needs setup or a compatible voice.',
   MODEL_SETUP_REQUIRED: 'The selected local speech model needs setup.',
   MISSING_CREDENTIAL: 'The selected service needs its credential in Settings.',
+  MISSING_CREDENTIALS: 'The selected service needs its credential in Settings.',
   LOCAL_BUDGET_EXCEEDED: 'The selected included or free allowance is unavailable.',
   PAID_USE_FORBIDDEN: 'This profile has no confirmed local, free or included access.',
 };

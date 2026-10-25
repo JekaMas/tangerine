@@ -1,9 +1,10 @@
 # Full local Teacher Error Trainer
 
-Current authorized increment: **iteration 18** implements and verifies the
-approved preparation summary, short basic path and readable captions. Retain
-optional controls and actual advanced precedence. Use controlled frontend
-submission/read-only saved data; no new model/speech call or deployment.
+Current authorized increment: **iteration 19** implements and verifies
+persistent failure guidance and recognizable saved attempts/audio/review choices,
+including the original-heard title/excerpt/time native projections. Reuse
+existing correct owners and receipts; exercise literal native/browser fixtures.
+No deployment, external model/speech call, financial execution or paid use.
 
 The current objective is the full Tangerine local open-source product specified in specification/v2/README.md. The 2026-10-25 user-authorized increment plans the complete remaining inventory as iterations 17–30 and wires UI/UX, typography and evidence into verification. It does not implement those application changes, run providers or publish. See completion-iterations.md and completion-iterations.json; tasks.md remains the sole checklist. Earlier research, implementation and acceptance statements below retain their dated scopes. User decisions in docs/authority.md supersede inherited package instructions and human peer review procedures.
 

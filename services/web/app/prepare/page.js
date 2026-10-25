@@ -1,4 +1,5 @@
 'use client';
+import RecordIdentity from '../RecordIdentity';
 import RefreshButton from '../RefreshButton.js';
 import Controls from './Controls';
 import usePreparation from './usePreparation';
@@ -30,7 +31,7 @@ export default function Prepare() {
     </form></section>
     <section id="saved-preparations" className="card saved-preparations"><div className="row"><div><h2>Saved preparations</h2><p className="field-help">Your progress is saved. Resume any unfinished exercise.</p></div><RefreshButton onClick={() => refresh()}>Refresh</RefreshButton></div>
       {!items.length && <p>No saved preparations yet.</p>}
-      {items.map(item => <article key={item.id}><h3>{recordTitle(item)}</h3><p>{recordDate(item.created_at)}</p>
+      {items.map(item => <article key={item.id}><h3>{recordTitle(item)}</h3><p>{recordDate(item.created_at)}</p><RecordIdentity item={item} items={items} dateField="created_at"/>
         <RequestSummary request={item.exercise_request} categories={categories}/>
         <ol className="phase-list" aria-label="Preparation progress">{[['canonical_text','Clean text'],['mutation','Mistakes'],['render','Audio']].map(([key,label])=><li key={key} data-state={item.phase_states[key]}><span className="phase-dot"/>{label}<small>{item.phase_states[key].replaceAll('_',' ')}</small></li>)}</ol>
         {item.canonical_word_count != null && <p>Clean text: {item.canonical_word_count} words{item.surface_word_count != null ? ` · With mutations: ${item.surface_word_count} words` : ''}</p>}

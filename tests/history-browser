@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+"""Interactive native fixture. Signal completion with <evidence>/done.
+
+Owns a disposable internal PostgreSQL/MinIO/API network. The browser frontend
+may join the printed network while this harness waits. No hosted inference.
+"""
+from pathlib import Path
+import subprocess as sp, time, secrets, json, os, uuid
+R=Path(__file__).resolve().parents[1]
+D=R/os.environ['TANGERINE_HISTORY_TEST_DATA'];D.mkdir(parents=True,exist_ok=True)
+N='tangerine-history-'+uuid.uuid4().hex[:10]
+os.chdir(R)
+(D/'resources.json').write_text(json.dumps({'network':N,'api':N+'-api'}))
+def run(a):
+ p=sp.run(a,capture_output=True,text=True);(D/'setup.log').open('a').write(p.stdout+p.stderr)
+ if p.returncode:raise RuntimeError(str(a[:3])+' failed; see setup.log')
+ return p.stdout.strip()
+password=secrets.token_hex(24)
+e=D/'runtime.env';e.write_text('POSTGRES_DB=tangerine\nPOSTGRES_USER=tangerine\nPOSTGRES_PASSWORD='+password+'\nMINIO_ROOT_USER=native-regression\nMINIO_ROOT_PASSWORD='+password+'\nDATABASE_URL=postgres://tangerine:'+password+'@postgres:5432/tangerine?sslmode=disable\nMINIO_ENDPOINT=minio:9000\nMINIO_ACCESS_KEY=native-regression\nMINIO_SECRET_KEY='+password+'\nMINIO_BUCKET=regressions\n');e.chmod(0o600)
+run(['docker','build','--target','build','-t',N+'-go','-f','services/api/Dockerfile','.'])
+run(['docker','build','-t',N+'-minio','-f','deploy/local/minio.Dockerfile','.'])
+run(['docker','network','create','--internal',N])
+for kind,img,alias in [('postgres','postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826','postgres'),('minio',N+'-minio','minio')]:
+ run(['docker','run','-d','--name',N+'-'+kind,'--network',N,'--network-alias',alias,'--env-file',str(e),img])
+ for n in range(60):
+  cmd=['pg_isready','-U','tangerine','-d','tangerine'] if kind=='postgres' else ['/usr/local/bin/probe','http://127.0.0.1:9000/minio/health/ready']
+  if sp.run(['docker','exec',N+'-'+kind]+cmd,stdout=sp.DEVNULL,stderr=sp.DEVNULL).returncode==0:break
+  time.sleep(.5)
+ else:raise RuntimeError('not ready')
+run(['docker','run','--rm','--network',N,'--env-file',str(e),'--entrypoint','/tangerine',N+'-go','initialize'])
+args=['docker','run','--rm','--name',N+'-api','--network',N,'--network-alias','api','--env-file',str(e),'-e','TANGERINE_HISTORY_EVIDENCE=/evidence','-e','TANGERINE_PREPARATION_TEST_EVIDENCE=/evidence','-v',str(D)+':/evidence']
+for f in ['native_preparation_test.go','native_mutation_test.go','native_speech_test.go','history_browser_fixture_test.go']:args+=['-v',str(R/'tests'/f)+':/src/internal/app/'+f+':ro']
+p=sp.Popen(args+['--entrypoint','go',N+'-go','test','-timeout=70m','-json','-race','-count=1','-run','^TestI19HistoryBrowserFixture$','./internal/app'],stdout=(D/'native.jsonl').open('w'),stderr=(D/'native.stderr.log').open('w'))
+print('Native fixture started; resources: '+str(D/'resources.json'),flush=True)
+try:
+ status=p.wait(timeout=4300)
+finally:
+ for kind in ['api','postgres','minio']:
+  sp.run(['docker','rm','-f','-v',N+'-'+kind],stdout=sp.DEVNULL,stderr=sp.DEVNULL)
+ sp.run(['docker','network','rm',N],stdout=sp.DEVNULL,stderr=sp.DEVNULL)
+ e.unlink(missing_ok=True)
+raise SystemExit(status)
