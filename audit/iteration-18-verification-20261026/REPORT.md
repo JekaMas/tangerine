@@ -133,6 +133,14 @@ obsolete planning-only blocker text. That text is removed; actual future planned
 placeholders remain visible. The metadata correction invalidates structural
 manifest acceptance only, not the unchanged behavioral observations.
 
+The first committed-clean selection at `58916ca` passed52/53. Its remaining
+case errored in the test journal lookup (`KeyError: scenario`) on an initial
+unlabelled GET. The hypothesis was confirmed by replaying the same exact records
+with optional label lookup and an added assertion rejecting unlabelled POSTs.
+The focused case passed without changing expected bodies, counts or dispatch
+checks. Original failed receipt: `data/iteration-18-verification-20261026/accepted-clean.json`.
+This is a test-adapter repair; no application or browser observation changed.
+
 ## Acceptance checkpoint
 
 Pending the full committed-clean53-case selection. Preserve valid receipts and

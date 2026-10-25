@@ -30,7 +30,7 @@ class CompletionI18(unittest.TestCase):
             self.assertIn('Recurring patterns disabled',r['summary']);self.assertNotIn('target 85%',r['summary'])
             self.assertLess(r['summary'].index('Speaker 1: Australian English'),r['summary'].index('Speaker 2: British English'))
             self.assertFalse(r['overflow'])
-        self.assertFalse(any(e['method']=='POST' and e['scenario']=='override-inspection' for e in self.events))
+        self.assertFalse(any(e['method']=='POST' and e.get('scenario')=='override-inspection' for e in self.events))
     def test_simple_positive(self):
         r=self.c['simple'];self.assertEqual({'Speakers':'2','Length':'About 90 words','English level':'B1','Mistakes':'2','Severity':'Minor'},r['fields'])
         self.assertIn('Number, Collocation',r['summary']);self.assertEqual(['bf_emma','melo_en_au'],r['voices'])
@@ -45,11 +45,12 @@ class CompletionI18(unittest.TestCase):
         r=self.c['clearedOverride'];self.assertEqual('',r['advanced']);self.assertEqual(['B1','2'],[r['fields']['English level'],r['fields']['Mistakes']])
         self.assertNotIn('Advanced fields override',r['summary']);self.assertNotIn('None (control)',r['summary']);self.assertIn('target 85%',r['summary'])
     def test_simple_path_positive(self):
+        self.assertFalse(any(e['method']=='POST' and not e.get('scenario') for e in self.events))
         self.assertEqual([1280,390,320],[r['viewport'] for r in self.c['quick']])
         for r in self.c['quick']:
             self.assertFalse(r['customizeOpen']);self.assertTrue(r['geometry']['summaryBeforeAction']);self.assertLess(r['geometry']['actionY'],2*r['geometry']['viewportHeight'])
             self.assertIn('Configured defaults for each speaker',r['summary']);self.assertTrue(r['generateEnabled']);self.assertEqual('Short picnic request.',r['retainedTopic'])
-            posts=[e for e in self.events if e['scenario']=='quick-'+str(r['viewport']) and e['method']=='POST'];self.assertEqual(1,len(posts))
+            posts=[e for e in self.events if e.get('scenario')=='quick-'+str(r['viewport']) and e['method']=='POST'];self.assertEqual(1,len(posts))
             self.assertEqual({'topic':'Short picnic request.','speaker_count':1,'text_length_words':150,'english_level':None,'category_families':[],'mutation_count':None},posts[0]['body']['exercise_request'])
     def test_expanded_options_positive(self):
         a,b,c=[self.c[k] for k in ['expandedBefore','expandedClosed','expandedAfter']]
@@ -59,7 +60,7 @@ class CompletionI18(unittest.TestCase):
         self.assertTrue(c['recurring']);self.assertIn('target 85%',c['summary']);self.assertEqual('#saved-preparations',self.c['savedAnchor']['url'])
     def test_focus_negative(self):
         r=self.c['required'];self.assertEqual('Topic',r['focused']);self.assertTrue(r['missing']);self.assertGreater(r['top'],r['headerBottom']);self.assertLessEqual(r['bottom'],r['viewportHeight'])
-        self.assertFalse(any(e['method']=='POST' and e['scenario'].startswith('required-validation') for e in self.events))
+        self.assertFalse(any(e['method']=='POST' and (e.get('scenario') or '').startswith('required-validation') for e in self.events))
         self.assertGreater(self.c['savedAnchor']['top'],self.c['savedAnchor']['headerBottom'])
         self.assertEqual(12,len(self.c['keyboard']))
         for step in self.c['keyboard']:

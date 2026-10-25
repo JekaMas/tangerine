@@ -68,3 +68,16 @@ leaving future placeholders intact. This invalidates the graph's manifest input
 only; no behavior test or frontend build is invalidated by that metadata repair.
 Final graph check and committed-clean iteration run follow. Preserve original
 I18 and shared I17 receipts; no model, synthesis, native write or deployment.
+
+First committed-clean full run at58916ca:52/53 passed. The remaining case
+`FIN-UI-06.P1.simple_path_positive` errored with KeyError scenario. Confirmed
+harness hypothesis: the initial unlabeled GET rows are legitimate gateway
+observations, but the inherited test indexed scenario on every row before
+filtering for its named request. Product behavior is not implicated.
+Discriminator: same exact data, safe optional scenario lookup plus an explicit
+assertion rejecting unlabeled POSTs; the affected test passes. Expected bodies,
+counts and negative dispatch checks are unchanged. Retain the original failed
+receipt and logs. Update only the assertion source binding, validate the graph
+and commit this harness repair before a new complete clean selection. The
+frontend build, source-built CUA observations and52other behavior results have
+no changed semantic inputs. No additional browser/provider call is needed.
