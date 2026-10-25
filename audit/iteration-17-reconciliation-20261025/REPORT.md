@@ -126,3 +126,14 @@ packaging and publication-source checks also pass. A trailing blank line in the
 new continuation delta was removed after the diff whitespace check identified it.
 These are repair observations, not a shared workflow upgrade or an application
 feature. Original failing output and later green receipts remain distinct.
+
+## Final selected acceptance
+
+All **six selected cases pass** with `--require-clean` on committed revision
+`57221cf49f9ba3e8525657dca3fecf6276ff30cb`, with no selected placeholder, missing,
+failed or skipped case. Native pinned strict also passes on that revision after
+the EOF repair. [ACCEPTANCE.json](ACCEPTANCE.json) records exact observed IDs,
+source revision, checks and proof boundaries. Completed/superseded historical
+rows and I17.1–I17.3 are now checked; residual/external rows and all later FIN
+iterations remain open. The acceptance commit updates records only and does not
+invalidate the tested implementation. No product or provider acceptance is added.

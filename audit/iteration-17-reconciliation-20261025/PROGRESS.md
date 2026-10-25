@@ -32,3 +32,10 @@ retaining the local review adapter rules, then bootstrap passes. Packaging,
 publication-source and route checks pass. No production owner changed. Next:
 commit scoped plan/reconciliation/tests, execute six cases with require-clean,
 then check canonical tasks and commit acceptance.
+
+Finished: clean selected execution on57221cfpasses all6exact case identities.
+Committed native pinned strict passes after the EOF repair. Canonical I17 tasks
+and77completed/superseded historical rows checked only after that observation;
+24external/residual rows remain unchecked. Acceptance record is ACCEPTANCE.json.
+Next authorized increment may reconcile I18's reusable/partial bindings; I17
+does not authorize or silently apply it. Final action: commit acceptance records.
