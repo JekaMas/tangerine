@@ -2,6 +2,13 @@
 
 A local, open-source Teacher Error Trainer. Original software is licensed under [Apache-2.0](LICENSE); imported data and third-party components retain their own terms. All project artifacts are in English.
 
+Recurring mistakes are optional in each speaker's Prepare card. Choose a 70–95%
+target (default 85%) and optionally name a habit, such as dropping plural endings.
+The percentage applies to relevant contexts, not all words. A recurring rule is
+scored once; its changed occurrences and correct exceptions are saved separately.
+See [recurring errors](specification/v2/docs/recurring-errors.md). This uses the
+same configured LLM and local speech; no additional service or key is needed.
+
 ## Run locally
 
 Download and extract the complete GitHub source ZIP, or clone this repository. Install and start Docker Desktop, or Docker Engine with Docker Compose v2.20 or newer. No host Go, Node, Python, Git or workflow submodule is required to run the downloaded application.

@@ -27,7 +27,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | cancel-request | schema hash | derived DTO or actual operation input/output receipt | 1 |
 | candidate-envelope | schema hash | document.payload | 5 |
 | capability-record | schema hash | document.payload | 13 |
-| case-candidate | 1.0.0 | document.payload | 80 |
+| case-candidate | 1.0.0 | document.payload | 81 |
 | case-head | schema hash | document.payload | 9 |
 | claim-extraction | 2.0.0 | document.payload | 46 |
 | common | schema hash | derived DTO or actual operation input/output receipt | 10 |
@@ -47,7 +47,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | effective-binding | 2.0.0 | document.payload | 37 |
 | error-opportunity | schema hash | document.payload | 11 |
 | error-response | schema hash | derived DTO or actual operation input/output receipt | 8 |
-| evaluation-key | 2.0.0 | document.payload | 115 |
+| evaluation-key | 2.0.0 | document.payload | 116 |
 | evaluator-output | 1.0.0 | derived DTO or actual operation input/output receipt | 38 |
 | evidence | 2.0.0 | document.payload | 20 |
 | exact-rational | schema hash | derived DTO or actual operation input/output receipt | 2 |
@@ -59,7 +59,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | generation-input | 2.0.0 | derived DTO or actual operation input/output receipt | 29 |
 | generation-request | schema hash | derived DTO or actual operation input/output receipt | 5 |
 | grant-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 15 |
-| ground-truth | 2.0.0 | document.payload | 118 |
+| ground-truth | 2.0.0 | document.payload | 119 |
 | health | schema hash | derived DTO or actual operation input/output receipt | 6 |
 | holdout-report | 2.0.0 | document.payload | 18 |
 | import-report | 2.0.0 | document.payload | 26 |
@@ -94,7 +94,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | raw-record | 2.0.0 | document.payload | 13 |
 | reconsider-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | render-constraint | schema hash | document.payload | 11 |
-| render-plan | 2.0.0 | document.payload | 59 |
+| render-plan | 2.0.0 | document.payload | 60 |
 | render-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | resolve-dispute-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 8 |
 | restore-request | schema hash | derived DTO or actual operation input/output receipt | 2 |
@@ -104,7 +104,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | review-context | 2.0.0 | document.payload | 19 |
 | review-decide-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 5 |
 | review-decision | 2.0.0 | document.payload | 26 |
-| score-result | 2.0.0 | document.payload | 483 |
+| score-result | 2.0.0 | document.payload | 491 |
 | scoring-input | schema hash | derived DTO or actual operation input/output receipt | 29 |
 | source-format-binding | 2.0.0 | document.payload | 20 |
 | source-release-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 26 |
@@ -119,7 +119,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | taxonomy-context | schema hash | derived DTO or actual operation input/output receipt | 13 |
 | teacher-gold-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 18 |
 | teacher-gold | 2.0.0 | document.payload | 24 |
-| teacher-key | 2.0.0 | Derived view; durable source record remains private | 113 |
+| teacher-key | 2.0.0 | Derived view; durable source record remains private | 114 |
 | teacher-rationale | schema hash | Derived projection/configuration member; not an independent evidence document | 6 |
 | teacher-start-view | schema hash | derived DTO or actual operation input/output receipt | 11 |
 | transformation | 2.0.0 | document.payload | 12 |
@@ -128,7 +128,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | unit-map-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 10 |
 | verification-report | 1.0.0 | document.payload | 26 |
 
-| exercise-request | schema hash | derived DTO or actual operation input/output receipt | 11 |
+| exercise-request | schema hash | derived DTO or actual operation input/output receipt | 15 |
 
 | llm-context-snapshot | 2.0.0 | document.payload with linked private assets | 27 |
 
@@ -144,7 +144,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | llm-quality-judge-output | 2.0.0 | document.payload with linked private assets | 9 |
 
-| mutation-manifest | 2.0.0 | document.payload with linked private assets | 108 |
+| mutation-manifest | 2.0.0 | document.payload with linked private assets | 109 |
 
 | ai-development-run | 2.0.0 | document.payload with linked private assets | 96 |
 
@@ -193,7 +193,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | preparation-summary | schema hash | derived DTO or actual operation input/output receipt | 15 |
 
-| feedback-score | schema hash | derived DTO or actual operation input/output receipt | 40 |
+| feedback-score | schema hash | derived DTO or actual operation input/output receipt | 48 |
 
 | review-request | schema hash | derived DTO or actual operation input/output receipt | 16 |
 
@@ -222,3 +222,5 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | audio-diagnostic-view | schema hash | derived DTO or actual operation input/output receipt | 2 |
 
 | preparation-options | schema hash | derived DTO or actual operation input/output receipt | 15 |
+
+| recurring-error | schema hash | derived DTO or actual operation input/output receipt | 14 |

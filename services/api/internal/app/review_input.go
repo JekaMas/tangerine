@@ -174,6 +174,9 @@ func reviewCandidate(key map[string]any) map[string]any {
 		for _, k := range []string{"id", "primary_taxonomy_id", "accepted_taxonomy_ids", "secondary_taxonomy_ids", "domain", "expected_judgment", "status_label", "utterance_ids", "text_spans", "realization", "severity", "weight", "difficulty", "correction_eligible", "corrections", "explanation_eligible", "rationale_required_propositions", "rationale_forbidden_propositions", "rationale"} {
 			p[k] = u[k]
 		}
+		if recurrence, exists := u["recurrence"]; exists {
+			p["recurrence"] = recurrence
+		}
 		units = append(units, p)
 	}
 	turns := []any{}

@@ -1,5 +1,12 @@
 # Ordinary generation: complete expansion and mutation records
 
+The optional [recurring speaker contract](recurring-errors.md) is an explicit
+grouped-unit exception: one same-speaker context-conditioned rule may span several
+authored occurrences. It counts once, while its ledger retains every changed and
+correct case. Ordinary independent repair events keep their existing granularity.
+Shared per-pattern speech variants retain distinct scoped operations and actual
+audio correspondence. All categories, formulas and source scopes remain.
+
 This document completes simple-generation-flow.md. It defines future application behavior, not an implemented converter or a new approval step.
 
 ## Expand the three-input form

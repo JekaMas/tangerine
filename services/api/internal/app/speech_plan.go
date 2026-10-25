@@ -70,6 +70,14 @@ func compileSpeechPlan(preparation string, settings, candidate, profile map[stri
 		}
 	}
 	byTurn := map[string][]any{}
+	recurring := map[string]bool{}
+	planned, _ := candidate["planned_units"].([]any)
+	for _, value := range planned {
+		unit := value.(map[string]any)
+		if _, ok := unit["recurrence"]; ok {
+			recurring[unit["id"].(string)] = true
+		}
+	}
 	edits, _ := candidate["acoustic_edits"].([]any)
 	if len(edits) > 0 {
 		if e := requireAcousticProfile(profile); e != nil {
@@ -111,6 +119,17 @@ func compileSpeechPlan(preparation string, settings, candidate, profile map[stri
 		if ops := byTurn[u["id"].(string)]; len(ops) > 0 {
 			turn["acoustic_edits"] = ops
 			turn["target_wpm"] = sp["pace_wpm"]
+			groups, seen := []any{}, map[string]bool{}
+			for _, value := range ops {
+				id := value.(map[string]any)["unit_id"].(string)
+				if recurring[id] && !seen[id] {
+					groups = append(groups, id)
+					seen[id] = true
+				}
+			}
+			if len(groups) > 0 {
+				turn["recurring_unit_ids"] = groups
+			}
 		}
 		turns = append(turns, turn)
 	}

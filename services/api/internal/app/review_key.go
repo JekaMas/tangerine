@@ -194,7 +194,7 @@ func projectReviewKey(key, p map[string]any, review string, allocate func() stri
 				u[k] = old[k]
 			}
 			same := true
-			for _, k := range []string{"primary_taxonomy_id", "expected_judgment", "text_spans", "realization", "corrections", "correction_eligible"} {
+			for _, k := range []string{"primary_taxonomy_id", "expected_judgment", "text_spans", "realization", "corrections", "correction_eligible", "recurrence"} {
 				same = same && reflect.DeepEqual(old[k], original[k])
 			}
 			if same {

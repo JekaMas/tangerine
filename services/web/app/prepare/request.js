@@ -1,3 +1,5 @@
+import {recurringRequests} from './recurringRequest.js';
+
 export const mistakeFamilies = [
   ['grammar', 'Grammar'], ['lexis', 'Vocabulary'],
   ['pronunciation', 'Pronunciation (all)'],
@@ -25,7 +27,7 @@ export function mistakeCount(form) {
   const mode=form.amount || (form.mutationCount===''?'auto':'exact');
   if (['low','medium','high'].includes(mode)) {
     const rate={low:1,medium:2,high:4}[mode];
-    return Math.max(1,categoryFloor(form),Math.round(Number(form.words)*rate/100));
+    return Math.max(1,categoryFloor(form),recurringRequests(form).length,Math.round(Number(form.words)*rate/100));
   }
   if (mode==='auto') return null;
   const count=Number(form.mutationCount);
@@ -39,6 +41,7 @@ export function blueprintRequest(form) {
     throw Error('Advanced blueprint must be a JSON object. Your form values are retained.');
   }
   const count=mistakeCount(form);
+  const recurring=recurringRequests(form);
   const request={
     topic: form.topic, speaker_count: Number(form.speakers), text_length_words: Number(form.words),
     english_level: form.level || null, category_families: form.families || [],
@@ -46,9 +49,10 @@ export function blueprintRequest(form) {
     ...(!advanced.speakers && form.voices?.slice(0,Number(form.speakers)).some(Boolean) ? {speaker_voice_ids:Array.from({length:Number(form.speakers)},(_,i)=>form.voices[i]||null)} : {}),
     ...(form.categories?.length ? {category_ids:form.categories} : {}),
     ...(form.severities?.length ? {severity_levels:form.severities} : {}),
+    ...(recurring.length ? {recurring_errors:recurring} : {}),
     ...advanced.exercise_request,
   };
-  const floor=categoryFloor({categories:Array.isArray(request.category_ids)?request.category_ids:[],families:Array.isArray(request.category_families)?request.category_families:[]});
-  if (Number.isInteger(request.mutation_count) && request.mutation_count>0 && request.mutation_count<floor) throw Error(`Choose at least ${floor} mistakes to cover your selected categories, or zero for a control exercise. Your choices are retained.`);
+  const floor=Math.max(categoryFloor({categories:Array.isArray(request.category_ids)?request.category_ids:[],families:Array.isArray(request.category_families)?request.category_families:[]}),Array.isArray(request.recurring_errors)?request.recurring_errors.length:0);
+  if (Number.isInteger(request.mutation_count) && request.mutation_count>0 && request.mutation_count<floor) throw Error(`Choose at least ${floor} mistakes to cover your selected categories and recurring speaker patterns, or zero for a control exercise. Your choices are retained.`);
   return {...advanced, exercise_request:request};
 }

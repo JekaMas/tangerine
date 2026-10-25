@@ -1,5 +1,6 @@
 'use client';
 import {useState} from 'react';
+import RecurringErrors from './RecurringErrors';
 
 export function resizeVoices(voices,count){return Array.from({length:count},(_,i)=>voices?.[i]||'');}
 
@@ -18,6 +19,7 @@ export default function SpeakerVoices({form,update,voices,loading,error,retry}){
     <label>Voice<select aria-label={'Speaker '+(i+1)+' voice'} value={id} disabled={!accent||loading||Boolean(error)} onChange={e=>choose(i,e.target.value)}><option value="">Configured default</option>{available.map(v=><option value={v.id} key={v.id}>{v.label}</option>)}</select></label>
    </div>
    {selected&&<div className="voice-preview"><p className="field-help">{selected.engine} · {selected.accent_label} · fixed sample</p><audio key={selected.id} aria-label={'Preview '+selected.label} controls preload="none" src={selected.preview_url} onError={()=>setPreviewError('This voice preview is unavailable. Your speaker choices are retained. Retry playback or choose another voice.')}/></div>}
+   <RecurringErrors index={i} form={form} update={update}/>
   </div>;})}</div>
   {previewError&&<p className="error" role="alert">{previewError}</p>}
   <p className="field-help">Australian and Indian voices use MeloTTS; American and British voices use Kokoro. First-time model setup is explicit. Previews replay saved audio and make no LLM call.</p>

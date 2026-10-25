@@ -1,5 +1,12 @@
 # Current authority and scope
 
+2026-10-25 recurring-error increment: the actual user asks to research and add
+fossilized-like mistakes for a speaker at roughly70–95% of relevant opportunities.
+This authorizes scoped implementation/specification, existing included/local
+model and browser/Lab verification, in-scope repair, local deployment and commit.
+No paid credits/overage, new account, publication or real-person diagnosis is
+authorized. Configurable simulation percentages are not empirical measurements.
+
 The actual user authorizes research, exhaustive specification reconciliation, repository/specification updates, contacting the listed source owners, downloading accessible data, and extending the search for alternatives. No application implementation, migrations, provider inference, installation, Docker execution, secret/configuration change or external publication is authorized in this increment.
 
 The user approves the supplied native/conversion approaches for SpeechOcean762, L2-ARCTIC and BEA; the written product/linguistic policy proposals; and the concrete contracts, rules and failure behavior, subject to the latest simplification. The user restores a simple open-source GitHub project: download the complete source, provide keys, run locally and use it. All features, all 122 taxonomy leaves, all eleven separately named source releases and all 42 equations remain in scope.

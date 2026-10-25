@@ -58,6 +58,9 @@ func expandBlueprint(raw []byte, configuration map[string]any) (map[string]any, 
 		}
 		count := req["speaker_count"].(float64)
 		n := int(count)
+		if e := admitRecurringRequest(req, n); e != nil {
+			return nil, e
+		}
 		speech := "kokoro-local-en-v1"
 		if v, ok := configuration["speech_profile"].(string); ok {
 			speech = v

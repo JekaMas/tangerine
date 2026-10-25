@@ -240,6 +240,9 @@ func mutationContent(raw []byte, blueprint, clean, taxonomy map[string]any) (map
 			return nil, &provider.OutputValidationError{Detail: "Each true acoustic error needs a corresponding typed acoustic operation."}
 		}
 	}
+	if e := admitRecurringPatterns(c, blueprint); e != nil {
+		return nil, e
+	}
 	return c, nil
 }
 

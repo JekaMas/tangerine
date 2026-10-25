@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/recurring-error.schema.json",
+  "title": "recurring-error",
+  "type": "object",
+  "properties": {
+    "speaker_number": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "One-based role in the frozen blueprint; all opportunities belong to this speaker."
+    },
+    "target_percent": {
+      "type": "integer",
+      "minimum": 70,
+      "maximum": 95,
+      "description": "Requested simulation percentage, not an empirical claim."
+    },
+    "rule": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Specific context-conditioned recurring mistake and its valid repair; category alone is insufficient."
+    },
+    "opportunities": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "properties": {
+          "utterance_id": {
+            "type": "string"
+          },
+          "canonical_span": {
+            "type": "object",
+            "properties": {
+              "start_cp": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "end_cp": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "exact_text": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "start_cp",
+              "end_cp",
+              "exact_text"
+            ],
+            "additionalProperties": false,
+            "description": "Literal Unicode codepoint interval [start_cp,end_cp) in the declared canonical or surface utterance."
+          },
+          "surface_span": {
+            "type": "object",
+            "properties": {
+              "start_cp": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "end_cp": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "exact_text": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "start_cp",
+              "end_cp",
+              "exact_text"
+            ],
+            "additionalProperties": false,
+            "description": "Literal Unicode codepoint interval [start_cp,end_cp) in the declared canonical or surface utterance."
+          },
+          "mutated": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "utterance_id",
+          "canonical_span",
+          "surface_span",
+          "mutated"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Complete eligible contexts in this speaker, including both changed and correct occurrences."
+    }
+  },
+  "required": [
+    "speaker_number",
+    "target_percent",
+    "rule",
+    "opportunities"
+  ],
+  "additionalProperties": false
+}

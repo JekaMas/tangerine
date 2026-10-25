@@ -1,5 +1,11 @@
 # Choosing an exercise
 
+Per-speaker [recurring error profiles](recurring-errors.md) optionally repeat one
+specific rule at a requested 70–95% of relevant contexts. A declared recurring
+pattern counts once toward the displayed mistake total, with every changed and
+correct occurrence saved. Other independent mistakes retain their existing count;
+exact zero disables both. The actual rounded fraction appears after submission.
+
 Prepare offers topic, speakers, approximate words and optional CEFR. Category
 choice has two levels: broad families permit the LLM to choose applicable leaves;
 specific categories restrict it to the selected registered IDs. Selecting a

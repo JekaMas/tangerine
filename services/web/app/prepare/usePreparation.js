@@ -4,7 +4,7 @@ import {blueprintRequest} from './request';
 
 // Own foreground requests and retained form state; Controls owns presentation.
 export default function usePreparation() {
-  const [form, setForm] = useState({topic:'', speakers:1, words:150, level:'', families:[], categories:[], severities:[], amount:'auto', mutationCount:'', voices:[], advanced:''});
+  const [form, setForm] = useState({topic:'', speakers:1, words:150, level:'', families:[], categories:[], severities:[], amount:'auto', mutationCount:'', voices:[], recurring:[], advanced:''});
   const [voices,setVoices]=useState([]);
   const [categories,setCategories]=useState([]),[categoryLoading,setCategoryLoading]=useState(true),[categoryError,setCategoryError]=useState('');
   const [items, setItems] = useState([]), [cursor, setCursor] = useState(null);

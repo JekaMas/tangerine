@@ -65,6 +65,8 @@ def replace_scope(rows,start,end,phones):
 
 def compile_turn(turn):
  text=turn['operations'][0]['text'];f=frontend(text);edits=turn.get('acoustic_edits',[])
+ offset=turn.get('surface_scope',{}).get('start',0);f['offset_cp']=offset
+ for row in f['rows']:row['start_cp']+=offset;row['end_cp']+=offset
  references={}
  for e in edits:
   if e['controller']=='phone_pair':
@@ -87,7 +89,15 @@ def compile_turn(turn):
   changed=reference
   for a,b,replacement in reversed(changes):changed=changed[:a]+replacement+changed[b:]
   rows=replace_scope(f['rows'],*scope,ipa_phones(changed))
-  for e in group:variants[e['unit_id']]={**f,'rows':rows}
+  from acoustic_alignment import scope_key
+  for e in group:
+   if e['unit_id'] in turn.get('recurring_unit_ids',[]):
+    previous=variants.get(e['unit_id'],f)
+    variants[e['unit_id']]={**f,'rows':replace_scope(previous['rows'],*scope,ipa_phones(changed))}
+    continue
+   repeated=sum(x['unit_id']==e['unit_id'] and x['controller']=='phone_pair' for x in edits)>1
+   key=scope_key(e['unit_id'],e['scope']) if repeated else e['unit_id']
+   variants[key]={**f,'rows':rows}
  turn['melo_variants']=variants
  return turn
 
@@ -126,7 +136,7 @@ def synthesize(profile,turn,variant=None):
   x,y=indices[0],indices[-1]+1;scopes.append({'unit_id':edit['unit_id'],'surface_scope':edit['scope'],'start':intervals[x]['start'],'end':intervals[y-1]['end'],'phonemes':[r['phone'] for r in rows[x:y]],'phone_intervals':intervals[x:y]})
  words=[]
  for a,b in sorted(set((r['start_cp'],r['end_cp']) for r in rows if r['end_cp']>r['start_cp'])):
-  idx=[i for i,r in enumerate(rows) if (r['start_cp'],r['end_cp'])==(a,b)];words.append({'text':f['text'][a:b],'start_sample':intervals[idx[0]]['start'],'end_sample':intervals[idx[-1]]['end'],'basis':'melo_native_attention'})
+  idx=[i for i,r in enumerate(rows) if (r['start_cp'],r['end_cp'])==(a,b)];offset=f.get('offset_cp',0);words.append({'text':f['text'][a-offset:b-offset],'start_sample':intervals[idx[0]]['start'],'end_sample':intervals[idx[-1]]['end'],'basis':'melo_native_attention'})
  native={'model_manifest':manifest,'speaker_id':speaker,'frontend':f,'decoder':[{'phone_intervals':intervals,'phonemes':[r['phone'] for r in rows],'word_tokens':words,'sample_count':count,'timing_basis':'melo_native_attention_512_at_44100_resampled_24000','attention_durations':durations}], 'acoustic_scopes':scopes,'model_visible_calls':calls,'execution':{'device':'cpu','torch_num_threads':torch.get_num_threads(),'sdp_ratio':.2,'noise_scale':.6,'noise_scale_w':.8},'inference_receipt':{'id':str(uuid.uuid4()),'provider':'local_melo','model':manifest['repo'],'voice_id':turn['voice_id'],'speaker_id':speaker,'locale':turn['locale'],'started_at_unix':start,'finished_at_unix':time.time(),'audio_sha256':hashlib.sha256(audio).hexdigest()}}
  return audio,native,None
 

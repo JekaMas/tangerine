@@ -199,6 +199,23 @@ def compile_scopes(piece,edits,offset,vocabulary):
         for e in pairs:
             key=scope_key(e['unit_id'],e['scope']) if sum(x['unit_id']==e['unit_id'] for x in scopes)>1 else e['unit_id']
             variants[key]={'compiled_phonemes':piece['compiled_phonemes'][:a]+changed+piece['compiled_phonemes'][b:], 'scopes':projected}
+    # A declared recurring rule shares one full-phrase model variant. Each
+    # occurrence still has its own projected scope/crop. Ordinary independent
+    # scopes keep their existing variants and semantics.
+    for unit in piece.get('recurring_unit_ids',[]):
+        selected=[s for s in scopes if s['unit_id']==unit and scope_key(unit,s['surface_scope']) in variants]
+        if len(selected)<2:continue
+        phones=piece['compiled_phonemes'];projected=copy.deepcopy(scopes)
+        for target in sorted(selected,key=lambda s:s['phone_start'],reverse=True):
+            variant=variants.pop(scope_key(unit,target['surface_scope']))
+            actual=matching_scope(variant['scopes'],unit,target['surface_scope'])
+            replacement=variant['compiled_phonemes'][actual['phone_start']:actual['phone_end']]
+            a,b=target['phone_start'],target['phone_end'];delta=len(replacement)-(b-a)
+            phones=phones[:a]+replacement+phones[b:]
+            for row in projected:
+                if row['phone_start']==a and row['phone_end']==b:row['phone_end']+=delta
+                elif row['phone_start']>=b:row['phone_start']+=delta;row['phone_end']+=delta
+        variants[unit]={'compiled_phonemes':phones,'scopes':projected}
     for phones in [piece['compiled_phonemes']]+[v['compiled_phonemes'] for v in variants.values()]:
         if len(phones)>510:raise ValueError('INPUT_CAPACITY_EXCEEDED')
         if any(c not in vocabulary for c in phones):raise ValueError('CAPABILITY_UNAVAILABLE')

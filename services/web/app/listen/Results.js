@@ -21,6 +21,7 @@ export default function Results({results, busy, checking, retry}) {
       {item.reference && <><p>Recorded target: {item.reference.target_texts.join(' · ')}</p>
         {item.reference.repairs.length > 0 && <p>Permitted repairs: {item.reference.repairs.join(' · ')}</p>}
         <p>{item.reference.rationale}</p>
+        {item.reference.recurrence&&<div className="recurrence-result"><p><strong>Recurring pattern · Speaker {item.reference.recurrence.speaker_number}</strong></p><p>{item.reference.recurrence.rule}</p><p>Target {item.reference.recurrence.target_percent}% · Applied at {item.reference.recurrence.mutation_count} of {item.reference.recurrence.opportunity_count} relevant opportunities ({item.reference.recurrence.realized_percent_display}%). This pattern is scored once.</p>{item.reference.recurrence.correct_examples.length>0&&<p>Correct uses retained: {item.reference.recurrence.correct_examples.join(' · ')}</p>}</div>}
         {item.reference.audio_intervals.map((interval, j) => <p key={j}>Audio interval: {interval.start_ms}–{interval.end_ms} ms</p>)}</>}
     </article>)}
     <details><summary>Detailed metrics and domains</summary>

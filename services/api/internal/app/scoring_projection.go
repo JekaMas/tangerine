@@ -176,6 +176,9 @@ func scoreInterpretation(record AttemptRecord, resources InterpretationResources
 			}
 		}
 		item.Reference = map[string]any{"target_texts": targets, "repairs": repairs, "rationale": u["rationale"], "audio_intervals": u["audio_intervals"]}
+		if recurrence := recurringSummary(u); recurrence != nil {
+			item.Reference["recurrence"] = recurrence
+		}
 	}
 	return result, nil
 }
