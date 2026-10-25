@@ -1,5 +1,21 @@
 # Implementation design
 
+## Iteration 20 result and playback ownership
+
+Results consumes authoritative score displays, counts and feedback; page keeps
+its existing results-before-saved-answer hierarchy. Numeric score grouping
+preserves60.0/100 as one unit at320px while unavailable words may wrap. No grade
+or API transformation is introduced. passageReplay keeps one active range object;
+only that object's pending play may cancel it or report a failure. Superseded
+promise completion cannot change a newer range. Time labels round hundredths
+before dividing minutes. Media clock end pause, cancellation and cleanup retain
+the existing audio element and useListening playback-event accounting.
+
+Actual source-built media/UI observations, constructed transport boundaries,
+retained native score/answer/dialogue evidence and direct positive/negative owner
+cases are in audit/iteration-20-results-replay-20261026/. No new inference,
+synthesis, clip creation, data validation boundary or learner gate is added.
+
 ## Iteration 18 current UI alignment
 
 The existing request projection still owns submitted values, Controls retains

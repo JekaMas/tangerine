@@ -11,8 +11,8 @@ export default function Results({results, busy, checking, retry, replay}) {
   if (!score) return null;
   return <section aria-label="Scores and practice">
     <h3>Results</h3>
-    <div className="score-summary"><p className="primary-score" aria-label="Primary score"><span className="score-label">Primary score: </span>{score.composite.display != null ? score.composite.display + ' / 100' :
-      score.status === 'review_required' ? 'uncertain' : 'not applicable'}</p>
+    <div className="score-summary"><p className="primary-score" aria-label="Primary score"><span className="score-label">Primary score: </span><span className={score.composite.display != null ? 'score-value' : undefined}>{score.composite.display != null ? score.composite.display + ' / 100' :
+      score.status === 'review_required' ? 'uncertain' : 'not applicable'}</span></p>
     <Metric name="Optional explanation" value={score.optional_explanation}/>
     <p>Explanations are optional and scored separately. Missing explanations do not reduce your primary score.</p>
     {score.counts && <p>Found {score.counts.tp} of {score.counts.true_errors} mistakes · {score.counts.fn} missed · {score.counts.fp} false positives</p>}

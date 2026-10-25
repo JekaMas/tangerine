@@ -1,3 +1,11 @@
+2026-10-26 iteration20: the actual user selects UX-04/UX-05 results-first layout
+and finite passage replay. Apply the complete iteration through real presentation,
+stored-media and session owners; inspect/repair direct siblings, retain valid
+native/model receipts and record current UI/UX/typography evidence. Local commits
+and isolated deterministic/browser tests are in scope. No paid credits/overage,
+provider inference/synthesis, deployment/postdeployment, PBT, installation or
+publication. Preserve the running user app, settings and saved data.
+
 2026-10-26 iteration19 verification/repair: the actual user asks to verify
 UX-02/UX-03 fully, resolve error causes and similar siblings, preserve nonblocking
 UX and inspect UI/UX/typography with applicable skills. Scoped presentation,

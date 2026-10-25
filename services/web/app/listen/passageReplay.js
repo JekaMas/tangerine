@@ -1,6 +1,6 @@
 // One range on the existing stored recording. No synthesis, encoding or scoring.
 export function createPassageReplay(audio) {
-  let range = null, starting = false, expectedSeek = null;
+  let range = null, expectedSeek = null;
   const cancel = () => { range = null; expectedSeek = null; };
   const time = () => {
     if (range && audio.currentTime >= range.end) { cancel(); audio.pause(); }
@@ -9,7 +9,7 @@ export function createPassageReplay(audio) {
     if (expectedSeek != null && Math.abs(audio.currentTime - expectedSeek) < .05) { expectedSeek = null; return; }
     cancel();
   };
-  const play = () => { if (!starting) cancel(); };
+  const play = () => { if (!range?.starting) cancel(); };
   audio.addEventListener('timeupdate', time);
   audio.addEventListener('seeking', seek);
   audio.addEventListener('play', play);
@@ -19,12 +19,13 @@ export function createPassageReplay(audio) {
   return {
     async replay(interval) {
       cancel();
-      range = {end: interval.end_ms / 1000};
+      const current = {end: interval.end_ms / 1000, starting: true};
+      range = current;
       expectedSeek = interval.start_ms / 1000;
-      starting = true;
       audio.currentTime = expectedSeek;
-      try { await audio.play(); } catch (error) { cancel(); throw error; }
-      finally { starting = false; }
+      try { await audio.play(); }
+      catch (error) { if (range === current) { cancel(); throw error; } }
+      finally { current.starting = false; }
     },
     cancel,
     dispose() {
@@ -35,6 +36,6 @@ export function createPassageReplay(audio) {
 }
 
 export function passageTime(ms) {
-  const seconds = ms / 1000;
-  return `${Math.floor(seconds / 60)}:${(seconds % 60).toFixed(2).padStart(5,'0')}`;
+  const hundredths = Math.round(ms / 10);
+  return `${Math.floor(hundredths / 6000)}:${((hundredths % 6000) / 100).toFixed(2).padStart(5,'0')}`;
 }
