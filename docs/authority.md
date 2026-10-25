@@ -1,3 +1,11 @@
+2026-10-26 iteration18 verification/repair: the actual user asks to verify the
+full preparation iteration, fix all findings and siblings, and inspect UI/UX,
+typography and nonblocking recovery. Scoped frontend, tests, DAG/evidence,
+canonical task updates and local commits are authorized. No deployment,
+postdeployment, PBT, financial execution, installation, model/speech calls,
+paid credits, overage or publication. Preserve user data and the running app.
+Test-owned controlled responses may observe failure/retry without real writes.
+
 2026-10-26 iteration18: the actual user selects effective summary, shorter
 preparation and readable captions. Implement and repair the existing UI/projection
 owners, materialize exact positive/negative cases, inspect source-built browser

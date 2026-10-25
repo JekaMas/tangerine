@@ -1001,6 +1001,7 @@ Depends on 17. Properties: `FIN-UI-01.P1`, `FIN-UI-06.P1`, `FIN-UI-07.P1`,
 - [x] I18.2a Fix omitted complete advanced speaker voices and unambiguous zero-error recurrence display; retain safe malformed-input recovery and ordered simple/custom/default voice semantics.
 - [x] I18.2b Fix mobile native-validation/control and saved-preparation anchor focus covered by the sticky header, through shared preparation scroll spacing.
 - [x] I18.3 Verify actual desktop/narrow interaction and typography, affected request regressions and evidence content; reconcile and commit.
+- [ ] I18.4 Verify/repair malformed structured-summary siblings, advanced precedence over unfinished simple inputs, human-readable response errors and retained failure/recovery; expand literal tests, inspect UI/typography and reconcile clean full-iteration acceptance. See audit/iteration-18-verification-20261026/PROGRESS.md.
 
 ### Iteration 19 — Saved work and failure recovery
 

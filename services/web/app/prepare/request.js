@@ -24,11 +24,11 @@ export function categoryFloor(form) {
   return [...families].filter(x=>!x.startsWith('pronunciation')).length + Number(sounds)+Number(stress)+Number(families.has('pronunciation')&&!sounds&&!stress);
 }
 
-export function mistakeCount(form) {
+export function mistakeCount(form, recurringCount) {
   const mode=form.amount || (form.mutationCount===''?'auto':'exact');
   if (['low','medium','high'].includes(mode)) {
     const rate={low:1,medium:2,high:4}[mode];
-    return Math.max(1,categoryFloor(form),recurringRequests(form).length,Math.round(Number(form.words)*rate/100));
+    return Math.max(1,categoryFloor(form),recurringCount ?? recurringRequests(form).length,Math.round(Number(form.words)*rate/100));
   }
   if (mode==='auto') return null;
   const count=Number(form.mutationCount);
@@ -36,21 +36,32 @@ export function mistakeCount(form) {
   return count;
 }
 
-export function blueprintRequest(form) {
+export function advancedBlueprint(form) {
   const advanced = form.advanced.trim() ? parseUserJSON(form.advanced,'Advanced blueprint') : {};
   if (!advanced || Array.isArray(advanced) || typeof advanced !== 'object') {
     throw userError('Advanced blueprint must be a JSON object. Your form values are retained.');
   }
-  const count=mistakeCount(form);
-  const recurring=recurringRequests(form);
+  return advanced;
+}
+
+export function blueprintRequest(form) {
+  const advanced=advancedBlueprint(form), overrides=advanced.exercise_request || {};
+  const effective={...form,
+    speakers:overrides.speaker_count ?? form.speakers,
+    words:overrides.text_length_words ?? form.words,
+    categories:overrides.category_ids ?? form.categories,
+    families:overrides.category_families ?? form.families,
+  };
+  const recurring=Object.hasOwn(overrides,'recurring_errors') ? overrides.recurring_errors : recurringRequests(effective);
+  const count=Object.hasOwn(overrides,'mutation_count') ? overrides.mutation_count : mistakeCount(effective,Array.isArray(recurring)?recurring.length:0);
   const request={
     topic: form.topic, speaker_count: Number(form.speakers), text_length_words: Number(form.words),
     english_level: form.level || null, category_families: form.families || [],
     mutation_count: count,
-    ...(!advanced.speakers && form.voices?.slice(0,Number(form.speakers)).some(Boolean) ? {speaker_voice_ids:Array.from({length:Number(form.speakers)},(_,i)=>form.voices[i]||null)} : {}),
+    ...(!advanced.speakers && form.voices?.slice(0,Number(effective.speakers)).some(Boolean) ? {speaker_voice_ids:Array.from({length:Number(effective.speakers)},(_,i)=>form.voices[i]||null)} : {}),
     ...(form.categories?.length ? {category_ids:form.categories} : {}),
     ...(form.severities?.length ? {severity_levels:form.severities} : {}),
-    ...(recurring.length ? {recurring_errors:recurring} : {}),
+    ...(recurring?.length ? {recurring_errors:recurring} : {}),
     ...advanced.exercise_request,
   };
   const floor=Math.max(categoryFloor({categories:Array.isArray(request.category_ids)?request.category_ids:[],families:Array.isArray(request.category_families)?request.category_families:[]}),Array.isArray(request.recurring_errors)?request.recurring_errors.length:0);

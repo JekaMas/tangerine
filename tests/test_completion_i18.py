@@ -6,11 +6,13 @@ records. No new generation, native storage write or provider quality is claimed.
 import copy
 import importlib.util
 import json
+import os
 import unittest
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-DATA=ROOT/'data/iteration-18-preparation-20261026'
+DATA=ROOT/os.environ.get('TANGERINE_I18_DATA','data/iteration-18-preparation-20261026')
 AUDIT=ROOT/'audit/iteration-18-preparation-20261026'
+REVIEW_RECORD=ROOT/os.environ.get('TANGERINE_I18_REVIEW','audit/iteration-18-preparation-20261026/REVIEW.json')
 spec=importlib.util.spec_from_file_location('i18_review',AUDIT/'review.py')
 review=importlib.util.module_from_spec(spec);spec.loader.exec_module(review)
 class CompletionI18(unittest.TestCase):
@@ -19,6 +21,8 @@ class CompletionI18(unittest.TestCase):
         cls.v=json.loads((DATA/'observations.json').read_text())
         cls.c=cls.v['cases']
         cls.events=[json.loads(x) for x in (DATA/'requests.jsonl').read_text().splitlines()]
+        for path in cls.v.get('retained_request_evidence',[]):
+            cls.events.extend(json.loads(x) for x in (ROOT/path).read_text().splitlines())
     def test_override_positive(self):
         rows=self.c['overrideWidths'];self.assertEqual([1280,960,390,320],[r['viewport'] for r in rows])
         for r in rows:
@@ -79,7 +83,7 @@ class CompletionI18(unittest.TestCase):
     def test_hierarchy_negative(self):
         r=self.c['hierarchy'];self.assertEqual(['BUTTON','Medium\n2 per 100 words','3px','Low\n1 per 100 words'],[r['tag'],r['focus'],r['outline'],r['lowSelected']]);self.assertEqual('17px',r['bodySize']);self.assertGreater(review.px(r['titleSize']),24);self.assertFalse(r['overflow'])
         self.assertEqual([],review.readability_issues(self.c['captionWidths'][-1]))
-    def packet(self):return json.loads((AUDIT/'REVIEW.json').read_text())
+    def packet(self):return json.loads(REVIEW_RECORD.read_text())
     def errors(self,p,facts=None,submitted=None):return review.review_errors(p,facts or self.c['captionsRestored'],self.c['simple'],submitted or self.c['simplePosts'][0]['body']['exercise_request'])
     def test_review_positive(self):self.assertEqual([],self.errors(self.packet()))
     def test_ux_omission_negative(self):
