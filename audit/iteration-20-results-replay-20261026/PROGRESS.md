@@ -76,3 +76,10 @@ Full stable informational run passes33/33, with19current UI/review,8existing
 helper and6new owner identities observed exactly. Dirty source state is explicit.
 No additional production/test edit remains. Commit next, then the same33-case
 --require-clean run and strict OpenSpec on that committed revision.
+
+Final acceptance:33/33 exact selected cases and33 unique physical identities
+pass with --require-clean on f2bb38fd712cd3089fd909b0789197e9ecaa2b7d.
+Strict OpenSpec passes with zero issues. I20.1–I20.4 are checked only against
+that acceptance. Findings F1/F2/F3 and their siblings are resolved. Test resources
+are cleaned, viewport restored and user app remains HTTP200. Only acceptance,
+checklist/report/progress now change; no further behavioral rerun is invalidated.

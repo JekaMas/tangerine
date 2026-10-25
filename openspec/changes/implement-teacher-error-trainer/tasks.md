@@ -1018,10 +1018,10 @@ Closes UX-02 and UX-03.
 Depends on 19. Properties: `FIN-UI-04.P1`, `FIN-UI-05.P1`, `FIN-VERIFY.I20`.
 Closes UX-04 and UX-05.
 
-- [ ] I20.1 Materialize the independent 60/100 score fixture, optional-explanation/uncertainty and saved-answer cases; prove stored-range seek/play/end pause, replacement/manual interruption, absent timing, no autoplay and media recovery.
-- [ ] I20.2 Foreground completed results and next practice; retain details and implement finite passage controls with correct cancellation through existing audio/playback owners, without inference, synthesis or clip regeneration.
-- [ ] I20.3 Verify draft/checking/completed views, keyboard replay, typography and correct media/result association; reconcile and commit.
-- [ ] I20.4 Repair superseded asynchronous playback ownership and minute-label rounding; keep the primary score value together at narrow widths. Verify the direct counterexamples and reuse unaffected native/media evidence.
+- [x] I20.1 Materialize the independent 60/100 score fixture, optional-explanation/uncertainty and saved-answer cases; prove stored-range seek/play/end pause, replacement/manual interruption, absent timing, no autoplay and media recovery.
+- [x] I20.2 Foreground completed results and next practice; retain details and implement finite passage controls with correct cancellation through existing audio/playback owners, without inference, synthesis or clip regeneration.
+- [x] I20.3 Verify draft/checking/completed views, keyboard replay, typography and correct media/result association; reconcile and commit.
+- [x] I20.4 Repair superseded asynchronous playback ownership and minute-label rounding; keep the primary score value together at narrow widths. Verify the direct counterexamples and reuse unaffected native/media evidence.
 
 ### Iteration 21 — Usable reports, experiments and cleanup
 

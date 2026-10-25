@@ -40,8 +40,11 @@ cases cover every selected property. REVIEW.json, SELECTION.json and
 INVALIDATION.md record current versus retained scope, independent literal
 expectations and replaced HTTP/event boundaries. No planned case remains in I20.
 The full stable selection passed 33/33 across three commands in the explicit
-dirty-tree informational run. Committed-clean results will be recorded in
-ACCEPTANCE.json once observed; this preliminary result is not final acceptance.
+dirty-tree informational run. Committed-clean acceptance passed 33/33 exact cases and 33 unique physical
+test identities on f2bb38fd712cd3089fd909b0789197e9ecaa2b7d. Strict
+OpenSpec validation passed with zero issues. ACCEPTANCE.json joins exact case
+identities, source revision, receipts and proof boundaries. All four I20 tasks
+are complete; no unresolved finding remains in the selected iteration.
 
 Native attempt/results/WAV were retrieved read-only from the existing local app.
 Six interval locations, recurring projection, uncertainty/absence/maximum/
