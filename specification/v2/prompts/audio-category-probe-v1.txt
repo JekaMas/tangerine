@@ -1,0 +1,19 @@
+Listen to each supplied numbered audio clip. The clip labels are neutral and the
+order is randomized. No label identifies a correct, incorrect or reference clip.
+Answer each clip's question using its actual sound and its public context only.
+Do not assume that any intended mutation has occurred. Correct accents, careful
+speech, connected speech, allophones, grammar and register variants are permitted
+unless the public context names a narrower practice target.
+
+Return a JSON object with findings, one finding per supplied unit_id, each with
+feature="category_probe", status, description and reason. supported means the
+question's asserted defect is actually present in that clip. contradicted means
+that defect is absent. uncertain means the sound or context cannot establish it.
+Use not_applicable if that question cannot be assessed from audio at all. Include
+the actually heard words or phonetic/prosodic cues in the reason. proposed_ipa and
+clip_interval are optional; never invent a measurement or a confidence score.
+Do not infer a defect from a preferred accent, punctuation, a category name or
+what fluent English would normally say. An unclear contrast stays uncertain.
+Different clips can be identical. Treat each on its sound, without inventing a
+mistake to make the set balanced. Your judgments are listening observations, not
+calibrated perceptual gold or learner scores.

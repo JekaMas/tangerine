@@ -3,6 +3,7 @@ import base64,hashlib,io,json,os,pathlib,tempfile,time,urllib.request,urllib.err
 from dataclasses import asdict,is_dataclass
 from diagnostic_audio import transcribe_complete
 from diagnostic_context import project_audio_intent
+from category_validation import blind_input
 from model_setup import installed
 from inference_capture import observe_method,values,DiagnosticTokenCapture
 
@@ -42,6 +43,7 @@ def decode_findings(text):
  if isinstance(out,list):out=dict(findings=out)
  if isinstance(out,dict) and 'findings' not in out:
   if isinstance(out.get('results'),list):out={**out,'findings':out['results']}
+  elif isinstance(out.get('clips'),list):out={**out,'findings':out['clips']}
   elif out and all(isinstance(row,dict) and ('unit_id' in row or {'feature','status'}<=set(row)) for row in out.values()):
    out=dict(findings=[dict(row,unit_id=row.get('unit_id',key)) for key,row in out.items()])
  if isinstance(out,dict) and 'findings' not in out and {'unit_id','feature','status'}<=set(out) and ('description' in out or 'reason' in out):
@@ -66,21 +68,23 @@ def processor_audio_options(audios,hop_length):
  longest=max(len(audio) for audio in audios)
  return dict(max_length=((longest+hop_length-1)//hop_length)*hop_length,truncation=False)
 
-def auditory_conversation(prompt,content,audio_paths):
+def auditory_conversation(prompt,content,audio_paths,blind=False):
  parts=[{'type':'text','text':content}]
  for i,path in enumerate(audio_paths):
-  parts.extend([{'type':'text','text':'Target audio' if i==0 else 'Reference audio'},{'type':'audio','audio':str(path)}])
+  label='clip-'+str(i+1) if blind else 'Target audio' if i==0 else 'Reference audio'
+  parts.extend([{'type':'text','text':label},{'type':'audio','audio':str(path)}])
  # Match the upstream multimodal identity, rather than the tokenizer's
  # generic helpful-assistant fallback. The exact template is captured.
  parts.append({'type':'text','text':prompt})
  return [{'role':'system','content':[{'type':'text','text':'You are Qwen, a virtual human developed by the Qwen Team, Alibaba Group, capable of perceiving auditory and visual inputs, as well as generating text and speech.'}]},{'role':'user','content':parts}]
 
 def auditory(profile,prompt,input,clips,timeout=260,capture=lambda value:None):
- content=json.dumps(input,ensure_ascii=False,sort_keys=True)
+ blind=input.get('task')=='blind_category_probe'
+ content=json.dumps(blind_input(input) if blind else input,ensure_ascii=False,sort_keys=True)
  started=time.time()
  if profile['provider']=='local_qwen25_omni':
   if profile['billing_mode']!='local':raise ValueError('PAID_USE_FORBIDDEN')
-  content=json.dumps(project_audio_intent(input),ensure_ascii=False,sort_keys=True)
+  content=json.dumps(blind_input(input) if blind else project_audio_intent(input),ensure_ascii=False,sort_keys=True)
   selection='qwen25-omni-3b-audio-v1' if profile['model']=='Qwen/Qwen2.5-Omni-3B' else 'qwen25-omni-audio-v1'
   root,manifest=installed(selection)
   if manifest['repo']!=profile['model'] or manifest['revision']!=profile['revision']:raise ValueError('MODEL_BINDING_MISMATCH')
@@ -107,7 +111,7 @@ def auditory(profile,prompt,input,clips,timeout=260,capture=lambda value:None):
    paths=[]
    for i,clip in enumerate(derivatives):
     path=pathlib.Path(tmp)/('clip-'+str(i)+'.wav');path.write_bytes(clip);paths.append(path)
-   conversation=auditory_conversation(prompt,content,paths)
+   conversation=auditory_conversation(prompt,content,paths,blind)
    text=processor.apply_chat_template(conversation,add_generation_prompt=True,tokenize=False)
    # This adapter already owns decoded, mono PCM derivatives. Supply those
    # samples directly; the general image/video/URL helper would decode them
@@ -134,7 +138,9 @@ def auditory(profile,prompt,input,clips,timeout=260,capture=lambda value:None):
   key=os.environ.get('GEMINI_API_KEY')
   if not key:raise ValueError('MISSING_CREDENTIALS')
   parts=[dict(type='text',text=content)]
-  for i,clip in enumerate(clips):parts.extend([dict(type='text',text='Target audio' if i==0 else 'Reference audio'),dict(type='audio',data=base64.b64encode(clip).decode(),mime_type='audio/wav')])
+  for i,clip in enumerate(clips):
+   label='clip-'+str(i+1) if blind else 'Target audio' if i==0 else 'Reference audio'
+   parts.extend([dict(type='text',text=label),dict(type='audio',data=base64.b64encode(clip).decode(),mime_type='audio/wav')])
   request=dict(model=profile['model'],input=parts,store=False,stream=False,background=False,tools=[],system_instruction=prompt,generation_config=dict(max_output_tokens=profile['max_output_tokens']))
   raw=json.dumps(request,ensure_ascii=False,separators=(',',':')).encode()
   if len(raw)>=20000000:raise ValueError('INPUT_CAPACITY_EXCEEDED')

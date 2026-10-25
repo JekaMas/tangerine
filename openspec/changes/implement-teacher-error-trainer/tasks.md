@@ -932,3 +932,12 @@ Accent acceptance: audit/accents-20261025/REPORT.md and RECONCILIATION.json map2
 - [x] FOS.R4 Reconcile affected evidence, preserve original work, update instructions, deploy and commit.
 
 Recurring-pattern acceptance: audit/recurring-errors-20261025/REPORT.md and RECONCILIATION.json reconcile 30 passing cases across four properties (15 positive, 15 negative), actual included-plan generation and two answer probes, plus repeated local Melo/Kokoro pronunciation transformations with a preserved correct occurrence. The actual dialogue has six changed contexts out of seven for one speaker; another speaker remains correct. Seventeen native packets and results were read back in local MLflow run18805aa087ac49df80609360aaa4a6cb. Evaluation/comments projection gaps and the development schema-registration omission are repaired; saved text/audio and answers were reused. Native strict OpenSpec1.13.1,388static assertions, DAG/discovery, stable builds/Go checks and affected regressions pass within the report’s finite boundaries. Original user records/settings, all protected registries and migrations remain unchanged. No paid calls, new hosted qualification, universal empirical frequency or whole-release claim is made.
+
+## Category implementation and actual-audio validation — 2026-10-25
+
+- [x] CV.R1 Freeze all 122 authored category fixtures and explicit positive/negative properties in the existing DAG.
+- [x] CV.R2 Implement neutral blind audio projection, false-metadata controls, honest comparison outcomes and one-check persistence through existing speech owners.
+- [x] CV.R3 Observe selected actual local speech/free auditory execution, retain all failures and precise category/binding coverage, and synchronize the existing local Lab.
+- [x] CV.R4 Repair in-scope findings, run only affected checks, reconcile retained valid evidence, review the diff and commit the scoped delivery.
+
+Category-validation acceptance: audit/category-realization-20261025/REPORT.md and RECONCILIATION.json retain518 observed passing test identities,45 affected regressions, all122 actual fixture sets and local MLflow readback. Actual auditory qualification is44 confirmed,6 unconfirmed targets,4 physical/auditory conflicts,2 probes with three correct-control false alarms and66 HTTP503 failures. This is complete finite validation tooling, not blanket speech/product acceptance; the simultaneous-masking subtype remains explicitly unavailable. No paid credits, overage, human review, stored-byte reaudits or ordinary-use gate was added.

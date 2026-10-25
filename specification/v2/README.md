@@ -1,5 +1,8 @@
 # Tangerine active specification
 
+Category implementation versus actual-audio evidence is defined in
+[category realization validation](docs/category-realization-validation.md).
+
 This is the current specification for the existing implement-teacher-error-trainer OpenSpec change. It is not implemented application behavior. Current user authority is ../../docs/authority.md. Immutable imported archives remain under ../../spec-inputs. Earlier root contracts and audit reports are historical; this namespace is the sole active contract set.
 
 The main flow is topic/speaker count/word length, optional level/broad mistake categories -> saved clean LLM text -> novel mutations and their list/key -> local or service synthesis -> stored playback -> free-text listener answer -> LLM comparison with the list -> exact score and recommendations. docs/simple-generation-flow.md and contracts/exercise-request.schema.json own this flow. Reference audio, full corpus acquisition, empirical frequency tables and separate case review are optional enrichment/evaluation, not prerequisites.

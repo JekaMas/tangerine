@@ -41,9 +41,13 @@ def execute(packet):
   return dict(measurements=rows,native=raw,receipt=dict(model=raw['model_manifest']['repo'],started_at_unix=started,finished_at_unix=time.time(),inference_calls=1))
  if method not in ['qwen25-omni-audio-v1','gemini-audio-v1']:raise ValueError('CAPABILITY_UNAVAILABLE')
  clips=[audio]
- if packet.get('reference_audio_base64'):clips.append(base64.b64decode(packet['reference_audio_base64']))
+ blind=packet['input'].get('task')=='blind_category_probe'
+ if blind:
+  clips.extend(base64.b64decode(value) for value in packet.get('additional_audio_base64',[]))
+ else:
+  if packet.get('reference_audio_base64'):clips.append(base64.b64decode(packet['reference_audio_base64']))
  result=auditory(packet['profile'],packet['prompt'],packet['input'],clips,packet.get('timeout_seconds',260),checkpoint)
- if result.get('error'):return result
- result['measurements']=complete_judge_measurements(result['output'],packet['input'],method)
  result['receipt']=dict(model=packet['profile']['model'],started_at_unix=started,finished_at_unix=time.time(),inference_calls=1)
+ if result.get('error'):return result
+ if not blind:result['measurements']=complete_judge_measurements(result['output'],packet['input'],method)
  return result
