@@ -1008,9 +1008,9 @@ Depends on 17. Properties: `FIN-UI-01.P1`, `FIN-UI-06.P1`, `FIN-UI-07.P1`,
 Depends on 17. Properties: `FIN-UI-02.P1`, `FIN-UI-03.P1`, `FIN-VERIFY.I19`.
 Closes UX-02 and UX-03.
 
-- [ ] I19.1 Materialize saved failure/recovery and typed title/excerpt/date projection cases, including original-heard identity, duplicate short-ID prefixes, legacy metadata and narrow layouts.
-- [ ] I19.2 Apply the canonical additive response schemas to shipped projections and UI together; show retained failure guidance, original-heard titles, excerpts and readable times through existing owners, preserving IDs/pagination and zero-dispatch reads.
-- [ ] I19.3 Verify success/failure/recovery through actual browser/storage owners, typography and evidence; reconcile and commit.
+- [x] I19.1 Materialize saved failure/recovery and typed title/excerpt/date projection cases, including original-heard identity, duplicate short-ID prefixes, legacy metadata and narrow layouts.
+- [x] I19.2 Apply the canonical additive response schemas to shipped projections and UI together; show retained failure guidance, original-heard titles, excerpts and readable times through existing owners, preserving IDs/pagination and zero-dispatch reads.
+- [x] I19.3 Verify success/failure/recovery through actual browser/storage owners, typography and evidence; reconcile and commit.
 
 ### Iteration 20 — Results hierarchy and passage replay
 

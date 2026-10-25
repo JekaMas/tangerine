@@ -53,3 +53,9 @@ bodies. The first25-case dirty run passed; adding the corrected harness proof
 invalidates only recovery assertion/registration and final iteration gate.
 Next: final stable selection, implementation commit, committed-clean selection,
 strict native OpenSpec/graph reconciliation, checklist/acceptance commit, cleanup.
+
+Completion: committed source 4133f9b33ce15dfa3227f55c90777a1f3e7daac3 passes25/25 exact selected
+cases with --require-clean; strict OpenSpec has zero issues. All selected task
+boxes are now backed by ACCEPTANCE.json. Language/build/preservation observations
+remain valid for unchanged source. Owned test resources removed; no I19 finding,
+product decision or blocked case remains. Next commit records acceptance only.

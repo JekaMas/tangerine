@@ -96,8 +96,15 @@ GAPS.md work were untouched. Only owned test containers/networks were used.
 
 ## Acceptance checkpoint
 
-The stable selection passes25/25 informationally while dirty. Commit the final
-implementation and run the same exact selection with --require-clean. Only that
-receipt accepts I19; task boxes remain unchecked until it passes. Native/build/
-format/vet observations retain their exact stable source identities. Strict
-OpenSpec1.13.1, graph/discovery and preservation are reconciled on that revision.
+The final25-case selection passed --require-clean on committed revision
+`4133f9b33ce15dfa3227f55c90777a1f3e7daac3`. All25 exact observed test identities match the selected
+case set, with no skipped/planned/blocked cases accepted. ACCEPTANCE.json joins
+those identities/fingerprints to native/browser and language/structural receipts.
+Strict pinned OpenSpec1.13.1, graph/discovery, final web build, scoped Go vet/
+format and preservation passed or retain unchanged stable-source observations.
+I19.1–I19.3 are complete. No I19 product finding or decision remains open.
+
+The acceptance commit changes only task/report/receipt records, preserving the
+tested runtime, fixtures and assertions. Both owned test stacks/networks and the
+test gateway are removed; review tabs are closed and viewport reset. The actual
+user application/data were not modified. Later iterations remain unaccepted.
