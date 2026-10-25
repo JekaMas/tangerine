@@ -996,11 +996,11 @@ the recorded OpenSpec 1.13.1 versus installed 1.14.3 observation.
 Depends on 17. Properties: `FIN-UI-01.P1`, `FIN-UI-06.P1`, `FIN-UI-07.P1`,
 `FIN-VERIFY.I18`. Closes UX-01, UX-06 and UX-07.
 
-- [ ] I18.1 Materialize positive/negative responsive-summary, simple-path, zero/advanced-precedence, keyboard and caption-readability cases.
-- [ ] I18.2 Repair existing preparation components/styles while preserving categories, severity, count, per-speaker voices/accents, recurrence, advanced settings and saved work.
-- [ ] I18.2a Fix omitted complete advanced speaker voices and unambiguous zero-error recurrence display; retain safe malformed-input recovery and ordered simple/custom/default voice semantics.
-- [ ] I18.2b Fix mobile native-validation/control and saved-preparation anchor focus covered by the sticky header, through shared preparation scroll spacing.
-- [ ] I18.3 Verify actual desktop/narrow interaction and typography, affected request regressions and evidence content; reconcile and commit.
+- [x] I18.1 Materialize positive/negative responsive-summary, simple-path, zero/advanced-precedence, keyboard and caption-readability cases.
+- [x] I18.2 Repair existing preparation components/styles while preserving categories, severity, count, per-speaker voices/accents, recurrence, advanced settings and saved work.
+- [x] I18.2a Fix omitted complete advanced speaker voices and unambiguous zero-error recurrence display; retain safe malformed-input recovery and ordered simple/custom/default voice semantics.
+- [x] I18.2b Fix mobile native-validation/control and saved-preparation anchor focus covered by the sticky header, through shared preparation scroll spacing.
+- [x] I18.3 Verify actual desktop/narrow interaction and typography, affected request regressions and evidence content; reconcile and commit.
 
 ### Iteration 19 — Saved work and failure recovery
 
@@ -1182,3 +1182,8 @@ Repaired I17 acceptance: audit/iteration-17-verification-20261025/ACCEPTANCE.jso
 47/47 cases passed on clean b048d91aa49df17ac21ca60353d052bbfc739f7f. The subsequent acceptance
 commit changes checklist/report records only; it does not change runtime, tests,
 contracts or the verification manifest. Later iterations remain open.
+
+Iteration18 acceptance: audit/iteration-18-preparation-20261026/ACCEPTANCE.json.
+20/20cases passed --require-clean at a12061d28bee2d6b21a3f35be6a224f19953633d.
+The subsequent acceptance commit changes checklist/report records only, with
+no runtime/test/specification/manifest changes. Later iterations remain open.

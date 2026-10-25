@@ -5,9 +5,9 @@ all optional controls, advanced settings, per-speaker accents/voices, recurrence
 and saved work. Started from clean
 `b54dfe734163dd154c1afc61107d6d510e9bd197` in the iteration16 worktree.
 
-All20materialized cases pass the stable informational run. The full committed
-clean selection is required before acceptance; its exact source/receipt will be
-recorded in ACCEPTANCE.json. Future iterations are not accepted by this report.
+The full20-case selection passed --require-clean on committed revision
+`a12061d28bee2d6b21a3f35be6a224f19953633d`. All20exact observed tests passed;
+ACCEPTANCE.json records their identities, source and proof boundaries. Future iterations are not accepted by this report.
 
 ## Repairs and retained implementation
 
@@ -77,7 +77,9 @@ canonical GAPS.md work remain untouched.
 
 ## Acceptance checkpoint
 
-The code, directly affected cases, stable20-case informational run, strict pinned
-OpenSpec1.13.1, graph/discovery, final web build and preservation checks pass.
-The implementation commit and identical --require-clean selection complete the
-remaining acceptance step; I18.1–I18.3 stay unchecked until that actual receipt.
+The code, full20-case committed-clean run, strict pinned OpenSpec1.13.1,
+graph/discovery, final web build and preservation checks pass. I18.1–I18.3,
+including the two explicit finding subitems, are complete. Test container/gateway
+were stopped, the review tab closed and viewport reset. The acceptance commit
+changes only checklist/report/receipt records; tested runtime/assertions remain
+unchanged. No unresolved I18 finding or additional product decision remains.
