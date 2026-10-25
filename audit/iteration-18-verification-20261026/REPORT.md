@@ -143,6 +143,15 @@ This is a test-adapter repair; no application or browser observation changed.
 
 ## Acceptance checkpoint
 
-Pending the full committed-clean53-case selection. Preserve valid receipts and
-run that selection once at the stable revision; update this checkpoint with the
-actual result. No product decision is required for these repairs.
+The full expanded selection passed **53/53** on committed-clean revision
+`d15661fbecea8e51018faa1941ae5cb31172826f`. All 53 exact observed test identities
+are pass; all six commands exit0. The invocation includes --require-clean, and
+the native receipt records dirty=false. `ACCEPTANCE.json` preserves the exact
+case/test reconciliation and original failed receipt. I18.4 is complete.
+
+The test tab, viewport override, frontend container and gateway are cleaned up.
+The existing local application remains running and unchanged. The acceptance
+commit changes only checklist/report/receipt records; it does not invalidate the
+tested runtime or assertions. No unresolved I18 finding or product decision
+remains. This is iteration acceptance, not full-product or later-iteration
+qualification.
