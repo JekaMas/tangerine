@@ -44,8 +44,10 @@ behavior is re-observed and which native receipts remain valid.
 Focused 30 new cases, the final Next.js source build and scoped graph/discovery/
 compatibility validation passed. The full stable selection passed 55/55 across
 four commands before the source commit (stable-informational.json, dirty tree).
-Committed-clean acceptance will be recorded in ACCEPTANCE.json once observed;
-this preliminary result alone does not establish the required clean gate.
+Committed-clean acceptance passed 55/55 exact cases and 55 unique physical
+test identities on source revision 185e25d18e997b911e1e28562bcfb67956876433.
+Strict OpenSpec validation passed with no issues. ACCEPTANCE.json joins the
+selection, exact identities, source revision, retained receipts and boundaries.
 
 No provider inference/synthesis, purchased credits, overage, PBT, deployment,
 postdeployment, installation or publication is included. The user app on 3000,
@@ -54,8 +56,12 @@ API, speech, migrations, 122 categories/recipes, 42 formulas and 11 source scope
 unchanged. The Context status reports no index for this checkout; ownership was
 known and exact source/runtime inspection was used, with no semantic/IDE proof
 claimed. There is no additional product decision or unresolved finding in the
-selected iteration after the recorded repairs; final acceptance awaits the
-clean gate.
+selected iteration after the recorded repairs; committed-clean acceptance is recorded in
+ACCEPTANCE.json.
 
 Evidence directory: data/iteration-19-verification-20261026/ (ignored).
 Original native receipts: data/iteration-19-saved-records-20261026/ (ignored).
+
+Isolated fixture cleanup completed: tab15, gateway3347 and the owned frontend
+container were removed; viewport restored. The existing app on3000 returns
+HTTP200. No user data, settings, media or pre-existing tab was modified.
