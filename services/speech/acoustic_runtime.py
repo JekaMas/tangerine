@@ -6,7 +6,8 @@ def controlled_plan(profile,render_plan,text_plan):
  from acoustic_plan import scopes
  kokoro=profile['provider']=='local_kokoro' and profile.get('adapter_version')=='kokoro-controlled-v1'
  azure=profile['provider']=='azure_speech'
- if not kokoro and not azure:raise ValueError('CAPABILITY_UNAVAILABLE')
+ melo=profile['provider']=='local_melo' and profile.get('adapter_version')=='melo-controlled-v1'
+ if not kokoro and not azure and not melo:raise ValueError('CAPABILITY_UNAVAILABLE')
  partition=[(t,scopes(t)) for t in render_plan['turns']]
  manifest={};vocabulary=None
  if kokoro:
@@ -17,7 +18,7 @@ def controlled_plan(profile,render_plan,text_plan):
   source['g2p_reference_edits']=[e for _,_,_,group in segments for e in group if e['controller']=='phone_pair']
   packet=text_plan(profile,{'turns':[source]})
   edits=[e for _,_,_,group in reversed(segments) for e in group]
-  if not kokoro:
+  if not kokoro and not melo:
    # Without native word timing only a complete, explicitly selected phrase is
    # controllable. Never manufacture a word boundary by re-rendering fragments.
    length=sum(len(op['text']) for op in turn['operations'])
@@ -32,6 +33,9 @@ def controlled_plan(profile,render_plan,text_plan):
    assigned+=len(selected)
    if selected:
     piece['acoustic_edits']=selected
+    if melo:
+     from melo_english import compile_turn
+     compile_turn(piece)
     if kokoro:
      from acoustic_alignment import compile_scopes
      compile_scopes(piece,selected,a,vocabulary)
@@ -60,7 +64,7 @@ def resolve_acoustic(packet):
    value['landmarks']['source_offset_samples']=a
    value['landmarks']['clock']='source_interval_relative_24000'
   resolved.append(value);observations.append(observation)
- return {'steps':resolved,'source_observations':observations,'alignment_basis':'kokoro_decoder_duration_proposal'}
+ return {'steps':resolved,'source_observations':observations,'alignment_basis':native.get('decoder',[{}])[0].get('timing_basis','kokoro_decoder_duration_proposal') if native.get('speaker_id') is not None else 'kokoro_decoder_duration_proposal'}
 
 
 def transform_acoustic(packet):

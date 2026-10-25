@@ -38,6 +38,12 @@ def download(url,dest,expected=None):
  return {'path':str(dest.name),'sha256':sha.hexdigest(),'size':size,'url':url}
 
 def setup(profile):
+ if profile == 'local-english-accents-v1':
+  setup('kokoro-local-en-v1')
+  profile='melo-local-en-v1'
+ if profile == 'melo-local-en-v1':
+  from melo_setup import setup as setup_melo
+  return setup_melo()
  if profile == 'kokoro-controlled-v1': profile = 'kokoro-local-en-v1'
  repo, revision = MODELS[profile]; root = ROOT/profile; root.mkdir(parents=True, exist_ok=True)
  manifest_path = root/'manifest.json'

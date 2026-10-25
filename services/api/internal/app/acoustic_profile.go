@@ -76,6 +76,9 @@ func resolvedPreparationSpeechProfile(b, c map[string]any) (map[string]any, erro
 }
 
 func requireAcousticProfile(profile map[string]any) error {
+	if profile["provider"] == "local_english_accents" && profile["adapter_version"] == localAccentProfile {
+		return nil
+	}
 	if profile["provider"] == "azure_speech" {
 		caps, _ := profile["capabilities"].([]any)
 		for _, v := range caps {

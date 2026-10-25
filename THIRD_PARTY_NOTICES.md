@@ -10,6 +10,7 @@ not a claim that all separately distributed components share one license.
 |---|---|
 | Next.js, React and Node runtime | services/web/package-lock.json and services/web/Dockerfile; upstream package LICENSE files and installed package metadata |
 | Source Sans 3 | Bundled local font in services/web/public/fonts; SIL Open Font License 1.1 retained in OFL.txt; https://github.com/adobe-fonts/source-sans and https://github.com/google/fonts/tree/main/ofl/sourcesans3 |
+| MeloTTS English model/runtime and BERT | Explicit model setup retains pinned upstream MeloTTS MIT license/model card, CMU data and google-bert/bert-base-uncased model card. See specification/v2/docs/speaker-accents.md; fixed preview audio is generated locally. |
 | Go application dependencies | services/api/go.mod and go.sum; upstream module LICENSE files |
 | PostgreSQL | Pinned postgres image in deploy/local/compose.yaml; https://www.postgresql.org/about/licence/ |
 | MinIO | Source-built from the exact upstream commit in deploy/local/minio.Dockerfile; GNU AGPLv3; https://github.com/minio/minio/tree/7aac2a2c5b7c882e68c1ce017d8256be2feea27f |

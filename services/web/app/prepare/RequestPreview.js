@@ -1,6 +1,6 @@
 import {blueprintRequest,severityOptions} from './request';
 
-export default function RequestPreview({form,categories}) {
+export default function RequestPreview({form,categories,voices=[]}) {
   let blueprint,error='';try{blueprint=blueprintRequest(form);}catch(e){error=e.message;}
   const r=blueprint?.exercise_request;
   const labels=(Array.isArray(r?.category_ids)?r.category_ids:[]).map(id=>categories.find(x=>x.id===id)?.label||id);
@@ -11,6 +11,7 @@ export default function RequestPreview({form,categories}) {
     <p>A new conversation, with mistakes chosen for your practice.</p>
     {error?<p className="field-help">{error}</p>:<>
       <dl className="summary-list"><div><dt>Speakers</dt><dd>{display(r.speaker_count)}</dd></div><div><dt>Length</dt><dd>About {display(r.text_length_words)} words</dd></div><div><dt>English level</dt><dd>{r.english_level==null?'Any level':display(r.english_level)}</dd></div><div><dt>Mistakes</dt><dd>{r.mutation_count==null?'Automatic':r.mutation_count===0?'None (control)':display(r.mutation_count)}</dd></div><div><dt>Severity</dt><dd>{severity.length?severity.map(id=>severityOptions.find(x=>x[0]===id)?.[1]||display(id)).join(', '):'Any severity'}</dd></div></dl>
+      {Array.isArray(r.speaker_voice_ids)&&r.speaker_voice_ids.some(Boolean)&&<><h3>Speaker voices</h3><p>{r.speaker_voice_ids.map((id,i)=>{const voice=voices.find(v=>v.id===id);return `Speaker ${i+1}: ${voice?voice.accent_label+' · '+voice.label:id||'Automatic'}`;}).join('; ')}</p></>}
       <h3>Practice focus</h3><p className="preview-categories">{labels.length?labels.map(display).join(', '):families.length?families.map(x=>display(x).replaceAll('_',' ').replaceAll('.',' / ')).join(', '):'Let the LLM choose'}</p>
       <div className="flow-note"><span>Listen to the conversation</span><span>Describe what you notice</span><span>Get feedback and recommendations</span></div>
       {form.advanced.trim()&&<p className="field-help">Advanced fields override the matching choices above.</p>}

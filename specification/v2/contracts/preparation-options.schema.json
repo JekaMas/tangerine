@@ -44,11 +44,52 @@
         "additionalProperties": false
       },
       "description": "All registered leaves including controls; ordinary error selection excludes control records."
+    },
+    "voices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "accent": {
+            "type": "string"
+          },
+          "accent_label": {
+            "type": "string"
+          },
+          "locale": {
+            "type": "string"
+          },
+          "engine": {
+            "type": "string"
+          },
+          "preview_url": {
+            "type": "string",
+            "description": "Same-origin fixed actual voice-preview WAV; replay makes no inference call."
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "accent",
+          "accent_label",
+          "locale",
+          "engine",
+          "preview_url"
+        ],
+        "additionalProperties": false
+      }
     }
   },
   "required": [
     "taxonomy_version",
-    "categories"
+    "categories",
+    "voices"
   ],
   "additionalProperties": false,
   "description": "Safe local preparation metadata; read-only and contains no learner answers, credentials or inference."

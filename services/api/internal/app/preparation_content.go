@@ -74,6 +74,25 @@ func expandBlueprint(raw []byte, configuration map[string]any) (map[string]any, 
 			}
 			speech = v
 		}
+		_, advancedSpeakers := input["speakers"]
+		var choiceIDs []any
+		useLocal := false
+		if !advancedSpeakers {
+			var choiceErr error
+			choiceIDs, useLocal, choiceErr = requestedLocalVoices(req, n)
+			if choiceErr != nil {
+				return nil, choiceErr
+			}
+		}
+		if useLocal && !advancedSpeakers {
+			if explicit, ok := input["provider_profile_id"]; ok && explicit != localAccentProfile {
+				return nil, ErrConflict
+			}
+			if req["audio_backend"] == "service" {
+				return nil, ErrConflict
+			}
+			speech = localAccentProfile
+		}
 		variety := prep["variety_policy"]
 		if v, ok := input["variety_policy"]; ok {
 			variety = v
@@ -108,6 +127,9 @@ func expandBlueprint(raw []byte, configuration map[string]any) (map[string]any, 
 				}
 			}
 		}
+		if speech == localAccentProfile {
+			voices = []any{"af_heart", "am_adam"}
+		}
 		speakers, explicit := input["speakers"].([]any)
 		if !explicit {
 			if len(voices) == 0 {
@@ -115,7 +137,16 @@ func expandBlueprint(raw []byte, configuration map[string]any) (map[string]any, 
 			}
 			speakers = []any{}
 			for i := 0; i < n; i++ {
-				speakers = append(speakers, map[string]any{"id": fmt.Sprintf("s%d", i+1), "voice_profile_id": voices[i%len(voices)], "learner_cefr": req["english_level"], "l1": nil, "requested_accent": nil, "pace_wpm": prep["pace_wpm"], "pace_tolerance_fraction": prep["pace_tolerance_fraction"]})
+				voiceID := voices[i%len(voices)]
+				var accent any
+				if useLocal {
+					if choiceIDs[i] != nil {
+						voiceID = choiceIDs[i]
+					}
+					selected, _ := findLocalVoice(voiceID.(string))
+					accent = selected.AccentLabel
+				}
+				speakers = append(speakers, map[string]any{"id": fmt.Sprintf("s%d", i+1), "voice_profile_id": voiceID, "learner_cefr": req["english_level"], "l1": nil, "requested_accent": accent, "pace_wpm": prep["pace_wpm"], "pace_tolerance_fraction": prep["pace_tolerance_fraction"]})
 			}
 		}
 		format := "monologue"

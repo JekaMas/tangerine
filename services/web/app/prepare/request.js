@@ -43,6 +43,7 @@ export function blueprintRequest(form) {
     topic: form.topic, speaker_count: Number(form.speakers), text_length_words: Number(form.words),
     english_level: form.level || null, category_families: form.families || [],
     mutation_count: count,
+    ...(!advanced.speakers && form.voices?.slice(0,Number(form.speakers)).some(Boolean) ? {speaker_voice_ids:Array.from({length:Number(form.speakers)},(_,i)=>form.voices[i]||null)} : {}),
     ...(form.categories?.length ? {category_ids:form.categories} : {}),
     ...(form.severities?.length ? {severity_levels:form.severities} : {}),
     ...advanced.exercise_request,

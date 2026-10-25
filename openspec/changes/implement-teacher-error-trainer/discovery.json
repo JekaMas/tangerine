@@ -699,7 +699,11 @@
       "UX-01.P1",
       "UX-02.P1",
       "UX-03.P1",
-      "UX-04.P1"
+      "UX-04.P1",
+      "ACC-01.P1",
+      "ACC-02.P1",
+      "ACC-03.P1",
+      "ACC-04.P1"
     ],
     "test_ids": [
       "planned::AUT-01::negative",
@@ -5735,7 +5739,32 @@
       "unittest::test_ux_browser.UXBrowser.test_advanced_editor_negative",
       "unittest::test_ux_browser.UXBrowser.test_request_interruption_negative",
       "unittest::test_ux_browser.UXBrowser.test_zero_caption_positive",
-      "unittest::test_ux_browser.UXBrowser.test_saved_request_positive"
+      "unittest::test_ux_browser.UXBrowser.test_saved_request_positive",
+      "unittest::tests.test_accents.AccentRequest.test_speaker_choices_positive",
+      "unittest::tests.test_accents.AccentRequest.test_speaker_restore_positive",
+      "unittest::tests.test_accents.AccentRequest.test_advanced_speakers_positive",
+      "unittest::tests.test_accents.AccentRequest.test_auto_negative",
+      "unittest::tests.test_accents.AccentRequest.test_active_count_negative",
+      "unittest::tests.test_accent_evidence.AccentEvidence.test_controls_positive",
+      "unittest::tests.test_accent_evidence.AccentEvidence.test_voice_failure_negative",
+      "tangerine.local/api/internal/app::TestAccentBlueprintPositive",
+      "tangerine.local/api/internal/app::TestAccentDefaultsNegative",
+      "tangerine.local/api/internal/app::TestAccentProfilePositive",
+      "tangerine.local/api/internal/app::TestAccentUnknownNegative",
+      "tangerine.local/api/internal/app::TestAccentCheckpointPositive",
+      "tangerine.local/api/internal/app::TestAccentFrozenProfilePositive",
+      "tangerine.local/api/internal/app::TestAccentAdvancedSpeakersPositive",
+      "tangerine.local/api/internal/app::TestAccentCheckpointNegative",
+      "unittest::test_accent_speech.AccentSpeech.test_ipa_positive",
+      "unittest::test_accent_speech.AccentSpeech.test_unknown_phone_negative",
+      "unittest::test_accent_speech.AccentSpeech.test_routing_positive",
+      "unittest::test_accent_speech.AccentSpeech.test_missing_model_negative",
+      "unittest::test_accent_evidence.AccentEvidence.test_australian_positive",
+      "unittest::test_accent_evidence.AccentEvidence.test_indian_positive",
+      "unittest::test_accent_evidence.AccentEvidence.test_acoustic_pair_positive",
+      "unittest::tests.test_accent_evidence.AccentEvidence.test_preview_replay_negative",
+      "unittest::tests.test_accent_evidence.AccentEvidence.test_actual_demo_positive",
+      "unittest::tests.test_accent_evidence.AccentEvidence.test_preserved_work_negative"
     ]
   },
   "reviews": [
@@ -23626,6 +23655,116 @@
       ],
       "disposition": "current_change",
       "rationale": "Current user directly authorizes interface and control implementation; one canonical task list, no new paid service or runtime audit."
+    },
+    {
+      "id": "accents-20261025",
+      "question": "Selectable local Australian/Indian voices and real full-flow demo.",
+      "property_ids": [
+        "ACC-01.P1",
+        "ACC-02.P1",
+        "ACC-03.P1",
+        "ACC-04.P1"
+      ],
+      "test_ids": [
+        "unittest::tests.test_accents.AccentRequest.test_speaker_choices_positive",
+        "unittest::tests.test_accents.AccentRequest.test_speaker_restore_positive",
+        "unittest::tests.test_accents.AccentRequest.test_advanced_speakers_positive",
+        "unittest::tests.test_accents.AccentRequest.test_auto_negative",
+        "unittest::tests.test_accents.AccentRequest.test_active_count_negative",
+        "unittest::tests.test_accent_evidence.AccentEvidence.test_controls_positive",
+        "unittest::tests.test_accent_evidence.AccentEvidence.test_voice_failure_negative",
+        "tangerine.local/api/internal/app::TestAccentBlueprintPositive",
+        "tangerine.local/api/internal/app::TestAccentDefaultsNegative",
+        "tangerine.local/api/internal/app::TestAccentProfilePositive",
+        "tangerine.local/api/internal/app::TestAccentUnknownNegative",
+        "tangerine.local/api/internal/app::TestAccentCheckpointPositive",
+        "tangerine.local/api/internal/app::TestAccentFrozenProfilePositive",
+        "tangerine.local/api/internal/app::TestAccentAdvancedSpeakersPositive",
+        "tangerine.local/api/internal/app::TestAccentCheckpointNegative",
+        "unittest::test_accent_speech.AccentSpeech.test_ipa_positive",
+        "unittest::test_accent_speech.AccentSpeech.test_unknown_phone_negative",
+        "unittest::test_accent_speech.AccentSpeech.test_routing_positive",
+        "unittest::test_accent_speech.AccentSpeech.test_missing_model_negative",
+        "unittest::test_accent_evidence.AccentEvidence.test_australian_positive",
+        "unittest::test_accent_evidence.AccentEvidence.test_indian_positive",
+        "unittest::test_accent_evidence.AccentEvidence.test_acoustic_pair_positive",
+        "unittest::tests.test_accent_evidence.AccentEvidence.test_preview_replay_negative",
+        "unittest::tests.test_accent_evidence.AccentEvidence.test_actual_demo_positive",
+        "unittest::tests.test_accent_evidence.AccentEvidence.test_preserved_work_negative"
+      ],
+      "searches": [
+        {
+          "kind": "exact",
+          "status": "completed",
+          "query": "Known preparation/voice/render/model/acoustic owners and existing native tests; primary Melo upstream code/config.",
+          "outcome": "Reuse existing checkpoint, speaker and foreground speech owners; add explicit local voices and English adapter.",
+          "results": [
+            {
+              "path": "services/web/app/prepare",
+              "classification": "change_candidate",
+              "reason": "Scoped actual owner; preserve existing data and single admission."
+            },
+            {
+              "path": "services/api/internal/app/local_voices.go",
+              "classification": "change_candidate",
+              "reason": "Scoped actual owner; preserve existing data and single admission."
+            },
+            {
+              "path": "services/api/internal/app/preparation_content.go",
+              "classification": "change_candidate",
+              "reason": "Scoped actual owner; preserve existing data and single admission."
+            },
+            {
+              "path": "services/api/internal/app/preparation_catalog.go",
+              "classification": "change_candidate",
+              "reason": "Scoped actual owner; preserve existing data and single admission."
+            },
+            {
+              "path": "services/api/internal/app/acoustic_profile.go",
+              "classification": "change_candidate",
+              "reason": "Scoped actual owner; preserve existing data and single admission."
+            },
+            {
+              "path": "services/api/internal/app/speech_plan.go",
+              "classification": "change_candidate",
+              "reason": "Scoped actual owner; preserve existing data and single admission."
+            },
+            {
+              "path": "services/api/internal/app/domain.go",
+              "classification": "change_candidate",
+              "reason": "Scoped actual owner; preserve existing data and single admission."
+            },
+            {
+              "path": "services/speech",
+              "classification": "change_candidate",
+              "reason": "Scoped actual owner; preserve existing data and single admission."
+            },
+            {
+              "path": "specification/v2/contracts/exercise-request.schema.json",
+              "classification": "change_candidate",
+              "reason": "Scoped actual owner; preserve existing data and single admission."
+            }
+          ]
+        },
+        {
+          "kind": "semantic",
+          "status": "not_applicable",
+          "query": "Known owners from preceding speaker/locale inspection",
+          "reason": "No unknown-owner lookup is needed; no semantic-index claim.",
+          "outcome": "Exact source tracing only.",
+          "results": []
+        },
+        {
+          "kind": "jetbrains-index",
+          "status": "not_applicable",
+          "query": "Known component and pure adapter implementation",
+          "reason": "No IDE symbol operation is needed.",
+          "outcome": "No IDE-index claim.",
+          "results": []
+        }
+      ],
+      "disposition": "current_change",
+      "rationale": "Actual user requests accents and chooses Australian/Indian; keep the earlier real demo request in scope."
     }
   ]
 }

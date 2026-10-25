@@ -4,7 +4,8 @@ import {blueprintRequest} from './request';
 
 // Own foreground requests and retained form state; Controls owns presentation.
 export default function usePreparation() {
-  const [form, setForm] = useState({topic:'', speakers:1, words:150, level:'', families:[], categories:[], severities:[], amount:'auto', mutationCount:'', advanced:''});
+  const [form, setForm] = useState({topic:'', speakers:1, words:150, level:'', families:[], categories:[], severities:[], amount:'auto', mutationCount:'', voices:[], advanced:''});
+  const [voices,setVoices]=useState([]);
   const [categories,setCategories]=useState([]),[categoryLoading,setCategoryLoading]=useState(true),[categoryError,setCategoryError]=useState('');
   const [items, setItems] = useState([]), [cursor, setCursor] = useState(null);
   const [busy, setBusy] = useState(false), [error, setError] = useState(''), [notice, setNotice] = useState('');
@@ -18,7 +19,7 @@ export default function usePreparation() {
       const data = await r.json(); setItems(old => append ? [...old,...data.items] : data.items); setCursor(data.next_cursor);
     } catch(e) { setError(e.message); }
   }
-  async function retryCategories(){setCategoryLoading(true);setCategoryError('');try{const r=await fetch('/api/v1/preparation-options',{cache:'no-store'});if(!r.ok)throw Error('Catalogue unavailable');const data=await r.json();setCategories(data.categories);}catch{setCategoryError('Individual categories are unavailable. Your choices are retained. Retry to load the list.');}finally{setCategoryLoading(false);}}
+  async function retryCategories(){setCategoryLoading(true);setCategoryError('');try{const r=await fetch('/api/v1/preparation-options',{cache:'no-store'});if(!r.ok)throw Error('Catalogue unavailable');const data=await r.json();setCategories(data.categories);setVoices(data.voices||[]);}catch{setCategoryError('Category and voice choices are unavailable. Your choices are retained. Retry to load the list.');}finally{setCategoryLoading(false);}}
   useEffect(() => { refresh(); retryCategories(); return () => controller.current?.abort(); }, []);
   async function request(url, body, key) {
     const r = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':key},body:JSON.stringify(body),signal:controller.current.signal});
@@ -27,7 +28,7 @@ export default function usePreparation() {
       const messages = {
         PAID_USE_FORBIDDEN:'This profile has no confirmed free, local or included access. Choose an eligible profile in Settings. No paid fallback was used.',
         LOCAL_BUDGET_EXCEEDED:'Included allowance is unavailable. Check Settings or retry after reset.',
-        MODEL_SETUP_REQUIRED:'Set up the selected local speech model with scripts/tangerine model-setup, then Resume.',
+        MODEL_SETUP_REQUIRED:'Set up the selected local speech model, then Resume. For Australian or Indian voices, run scripts/tangerine model-setup local-english-accents-v1.',
         MISSING_CREDENTIAL:'Supply the selected credential in Settings, then Resume.',
         LEASE_ACTIVE:'This preparation is still running. Refresh after it finishes or its foreground deadline expires.',
         REVISION_STALE:'The saved state changed. Refresh before resuming.',
@@ -55,5 +56,5 @@ export default function usePreparation() {
       setNotice('');
     } finally { clearTimeout(timeout); controller.current=null; setBusy(false); await refresh(); }
   }
-  return {form, update, items, cursor, busy, error, notice, generate, categories, categoryLoading, categoryError, retryCategories, refresh: (append=false) => {setError(''); return refresh(append);}, stop: () => controller.current?.abort()};
+  return {form, update, items, cursor, busy, error, notice, generate, categories, voices, categoryLoading, categoryError, retryCategories, refresh: (append=false) => {setError(''); return refresh(append);}, stop: () => controller.current?.abort()};
 }

@@ -4093,6 +4093,30 @@
       "capability": "interface-and-controls",
       "title": "UX-04 Understandable mistake amounts",
       "fingerprint": "52db7b90a2b1d275734642ecd6e5c38cbd546e7f10a79e7fdb649a6a960a184d"
+    },
+    {
+      "id": "ACC-01",
+      "capability": "speaker-accents",
+      "title": "ACC-01 Per-speaker accent and voice selection",
+      "fingerprint": "455d4f20e394b19ef34bb015f4a7dbc888382031fca9bff1e290d55b31de8823"
+    },
+    {
+      "id": "ACC-02",
+      "capability": "speaker-accents",
+      "title": "ACC-02 Explicit local rendering and persistence",
+      "fingerprint": "8bf76fcf245ebf59554177dd6e980c3ff7f65dd4d88fbb78ab2447729d9bd559"
+    },
+    {
+      "id": "ACC-03",
+      "capability": "speaker-accents",
+      "title": "ACC-03 Local model and pronunciation evidence",
+      "fingerprint": "674e67cd07e90faff2ab60a96dd25e56a0512d938d78ebf26f40fbd56df53a9e"
+    },
+    {
+      "id": "ACC-04",
+      "capability": "speaker-accents",
+      "title": "ACC-04 Real whole-flow demonstration",
+      "fingerprint": "56b53c7fe6ef9f754e21f54d0ed05c913687510303f5a9ac90e6613a84250d1d"
     }
   ],
   "properties": [
@@ -15997,6 +16021,90 @@
         "services/api/internal/app/acoustic_profile.go",
         "specification/v2/contracts/exercise-request.schema.json",
         "specification/v2/prompts/generate-v1.txt"
+      ]
+    },
+    {
+      "id": "ACC-01.P1",
+      "requirement_id": "ACC-01",
+      "statement": "Each role independently selects a previewable registered accent/voice, retaining choices across count changes, failures and advanced overrides.",
+      "scenarios": [
+        "ACC-01 Independent choices and override"
+      ],
+      "owner": "services/web/app/prepare/SpeakerVoices.js",
+      "oracle": "Independent literal expectations and actual native/browser/model artifacts with explicit limits.",
+      "source_globs": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json"
+      ]
+    },
+    {
+      "id": "ACC-02.P1",
+      "requirement_id": "ACC-02",
+      "statement": "An explicitly selected local speaker binding persists through preparation and resume without changing workspace defaults or substituting unavailable voices.",
+      "scenarios": [
+        "ACC-02 Mixed accents and interruption"
+      ],
+      "owner": "services/api/internal/app/local_voices.go",
+      "oracle": "Independent literal expectations and actual native/browser/model artifacts with explicit limits.",
+      "source_globs": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json"
+      ]
+    },
+    {
+      "id": "ACC-03.P1",
+      "requirement_id": "ACC-03",
+      "statement": "Actual local AU/IN speech and controlled phone edits retain native input/output/timing; preview replay dispatches no synthesis.",
+      "scenarios": [
+        "ACC-03 Actual voice and controlled mistake"
+      ],
+      "owner": "services/speech/melo_english.py",
+      "oracle": "Independent literal expectations and actual native/browser/model artifacts with explicit limits.",
+      "source_globs": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json"
+      ]
+    },
+    {
+      "id": "ACC-04.P1",
+      "requirement_id": "ACC-04",
+      "statement": "The real recorded generation/listening/answer/result flow preserves original work and uses admitted included/local resources with labelled edits.",
+      "scenarios": [
+        "ACC-04 Real generation through feedback"
+      ],
+      "owner": "audit/accents-20261025/REPORT.md",
+      "oracle": "Independent literal expectations and actual native/browser/model artifacts with explicit limits.",
+      "source_globs": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json"
       ]
     }
   ],
@@ -243095,6 +243203,979 @@
         ]
       },
       "source_sha256": "daf4aa282ce87593cbb78ee386f32bd86fab0381aef34b8012bea181bb13105f"
+    },
+    {
+      "id": "ACC-01.P1.test_speaker_choices_positive",
+      "property_id": "ACC-01.P1",
+      "polarity": "positive",
+      "scenario": "ACC-01 Independent choices and override",
+      "scenario_fingerprint": "91e70a3c244a825ffafa32c017697986f4b690c44284a3dee1df061384e226ea",
+      "setup": "Two roles selecting Australian/Indian submit [melo_en_au,melo_en_in] in order.",
+      "observable": "Two roles selecting Australian/Indian submit [melo_en_au,melo_en_in] in order.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "Two roles selecting Australian/Indian submit [melo_en_au,melo_en_in] in order.",
+      "test_id": "unittest::tests.test_accents.AccentRequest.test_speaker_choices_positive",
+      "command_id": "accent-request",
+      "state": "implemented",
+      "source_path": "tests/test_accents.py",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "tests/test_accents.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Two roles selecting Australian/Indian submit [melo_en_au,melo_en_in] in order."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "2259ed3c011a11243f79bfd4e9409202b00518f33ab1a7537d80a11baf659143"
+    },
+    {
+      "id": "ACC-01.P1.test_speaker_restore_positive",
+      "property_id": "ACC-01.P1",
+      "polarity": "positive",
+      "scenario": "ACC-01 Independent choices and override",
+      "scenario_fingerprint": "91e70a3c244a825ffafa32c017697986f4b690c44284a3dee1df061384e226ea",
+      "setup": "Count 2→1→2 retains the first two chosen roles; growth defaults only new roles.",
+      "observable": "Count 2→1→2 retains the first two chosen roles; growth defaults only new roles.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "Count 2→1→2 retains the first two chosen roles; growth defaults only new roles.",
+      "test_id": "unittest::tests.test_accents.AccentRequest.test_speaker_restore_positive",
+      "command_id": "accent-request",
+      "state": "implemented",
+      "source_path": "tests/test_accents.py",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "tests/test_accents.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Count 2→1→2 retains the first two chosen roles; growth defaults only new roles."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "2259ed3c011a11243f79bfd4e9409202b00518f33ab1a7537d80a11baf659143"
+    },
+    {
+      "id": "ACC-01.P1.test_advanced_speakers_positive",
+      "property_id": "ACC-01.P1",
+      "polarity": "positive",
+      "scenario": "ACC-01 Independent choices and override",
+      "scenario_fingerprint": "91e70a3c244a825ffafa32c017697986f4b690c44284a3dee1df061384e226ea",
+      "setup": "Explicit advanced speakers and effective speaker_count override matching simple controls.",
+      "observable": "Explicit advanced speakers and effective speaker_count override matching simple controls.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "Explicit advanced speakers and effective speaker_count override matching simple controls.",
+      "test_id": "unittest::tests.test_accents.AccentRequest.test_advanced_speakers_positive",
+      "command_id": "accent-request",
+      "state": "implemented",
+      "source_path": "tests/test_accents.py",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "tests/test_accents.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Explicit advanced speakers and effective speaker_count override matching simple controls."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "2259ed3c011a11243f79bfd4e9409202b00518f33ab1a7537d80a11baf659143"
+    },
+    {
+      "id": "ACC-01.P1.test_auto_negative",
+      "property_id": "ACC-01.P1",
+      "polarity": "negative",
+      "scenario": "ACC-01 Independent choices and override",
+      "scenario_fingerprint": "91e70a3c244a825ffafa32c017697986f4b690c44284a3dee1df061384e226ea",
+      "setup": "All Automatic omits speaker_voice_ids and never forces the local profile.",
+      "observable": "All Automatic omits speaker_voice_ids and never forces the local profile.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "All Automatic omits speaker_voice_ids and never forces the local profile.",
+      "test_id": "unittest::tests.test_accents.AccentRequest.test_auto_negative",
+      "command_id": "accent-request",
+      "state": "implemented",
+      "source_path": "tests/test_accents.py",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "tests/test_accents.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "All Automatic omits speaker_voice_ids and never forces the local profile."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "2259ed3c011a11243f79bfd4e9409202b00518f33ab1a7537d80a11baf659143"
+    },
+    {
+      "id": "ACC-01.P1.test_active_count_negative",
+      "property_id": "ACC-01.P1",
+      "polarity": "negative",
+      "scenario": "ACC-01 Independent choices and override",
+      "scenario_fingerprint": "91e70a3c244a825ffafa32c017697986f4b690c44284a3dee1df061384e226ea",
+      "setup": "A one-speaker request excludes retained hidden second-speaker choices.",
+      "observable": "A one-speaker request excludes retained hidden second-speaker choices.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "A one-speaker request excludes retained hidden second-speaker choices.",
+      "test_id": "unittest::tests.test_accents.AccentRequest.test_active_count_negative",
+      "command_id": "accent-request",
+      "state": "implemented",
+      "source_path": "tests/test_accents.py",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "tests/test_accents.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "A one-speaker request excludes retained hidden second-speaker choices."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "2259ed3c011a11243f79bfd4e9409202b00518f33ab1a7537d80a11baf659143"
+    },
+    {
+      "id": "ACC-01.P1.test_controls_positive",
+      "property_id": "ACC-01.P1",
+      "polarity": "positive",
+      "scenario": "ACC-01 Independent choices and override",
+      "scenario_fingerprint": "91e70a3c244a825ffafa32c017697986f4b690c44284a3dee1df061384e226ea",
+      "setup": "Actual browser selects Australian and Indian independently and plays the exact stored previews.",
+      "observable": "Actual browser selects Australian and Indian independently and plays the exact stored previews.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "Actual browser selects Australian and Indian independently and plays the exact stored previews.",
+      "test_id": "unittest::tests.test_accent_evidence.AccentEvidence.test_controls_positive",
+      "command_id": "accent-evidence",
+      "state": "implemented",
+      "source_path": "tests/test_accent_evidence.py",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "tests/test_accent_evidence.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Actual browser selects Australian and Indian independently and plays the exact stored previews."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "456f8d567198817c648217ac89044ed3b542539f7bbf42f0cc0f5bbd11619c04"
+    },
+    {
+      "id": "ACC-01.P1.test_voice_failure_negative",
+      "property_id": "ACC-01.P1",
+      "polarity": "negative",
+      "scenario": "ACC-01 Independent choices and override",
+      "scenario_fingerprint": "91e70a3c244a825ffafa32c017697986f4b690c44284a3dee1df061384e226ea",
+      "setup": "Catalogue/preview failure retains topic and role selections without LLM dispatch.",
+      "observable": "Catalogue/preview failure retains topic and role selections without LLM dispatch.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "Catalogue/preview failure retains topic and role selections without LLM dispatch.",
+      "test_id": "unittest::tests.test_accent_evidence.AccentEvidence.test_voice_failure_negative",
+      "command_id": "accent-evidence",
+      "state": "implemented",
+      "source_path": "tests/test_accent_evidence.py",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "tests/test_accent_evidence.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Browser transport to the catalogue/preview URLs is blocked explicitly by the test through native CDP, then restored.",
+        "allowed_proof": "Actual UI displays transport failure and retains inputs/voice choices, then recovers without LLM dispatch.",
+        "forbidden_claims": [
+          "An actual API/storage outage occurred",
+          "Real generation used substituted responses"
+        ]
+      },
+      "source_sha256": "456f8d567198817c648217ac89044ed3b542539f7bbf42f0cc0f5bbd11619c04"
+    },
+    {
+      "id": "ACC-02.P1.TestAccentBlueprintPositive",
+      "property_id": "ACC-02.P1",
+      "polarity": "positive",
+      "scenario": "ACC-02 Mixed accents and interruption",
+      "scenario_fingerprint": "4825c92e1736d42b9f02b9b367f9876e4fdbb9d9186d52db334c906d4a9f1197",
+      "setup": "Exact native blueprint expansion maps ordered AU/IN to melo_en_au/melo_en_in and persists speaker descriptions.",
+      "observable": "Exact native blueprint expansion maps ordered AU/IN to melo_en_au/melo_en_in and persists speaker descriptions.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "Exact native blueprint expansion maps ordered AU/IN to melo_en_au/melo_en_in and persists speaker descriptions.",
+      "test_id": "tangerine.local/api/internal/app::TestAccentBlueprintPositive",
+      "command_id": "accent-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/accents_test.go",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "services/api/internal/app/accents_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Exact native blueprint expansion maps ordered AU/IN to melo_en_au/melo_en_in and persists speaker descriptions."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "16be33d084b41331245e07bb53cddcb4ca9c236f277849e3ff357549da281504"
+    },
+    {
+      "id": "ACC-02.P1.TestAccentDefaultsNegative",
+      "property_id": "ACC-02.P1",
+      "polarity": "negative",
+      "scenario": "ACC-02 Mixed accents and interruption",
+      "scenario_fingerprint": "4825c92e1736d42b9f02b9b367f9876e4fdbb9d9186d52db334c906d4a9f1197",
+      "setup": "Absent/all-null choices preserve Kokoro defaults and existing settings; no global configuration mutation.",
+      "observable": "Absent/all-null choices preserve Kokoro defaults and existing settings; no global configuration mutation.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "Absent/all-null choices preserve Kokoro defaults and existing settings; no global configuration mutation.",
+      "test_id": "tangerine.local/api/internal/app::TestAccentDefaultsNegative",
+      "command_id": "accent-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/accents_test.go",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "services/api/internal/app/accents_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Absent/all-null choices preserve Kokoro defaults and existing settings; no global configuration mutation."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "16be33d084b41331245e07bb53cddcb4ca9c236f277849e3ff357549da281504"
+    },
+    {
+      "id": "ACC-02.P1.TestAccentProfilePositive",
+      "property_id": "ACC-02.P1",
+      "polarity": "positive",
+      "scenario": "ACC-02 Mixed accents and interruption",
+      "scenario_fingerprint": "4825c92e1736d42b9f02b9b367f9876e4fdbb9d9186d52db334c906d4a9f1197",
+      "setup": "A mixed six-voice local profile routes AU/IN locales per actual speaker rather than text variety.",
+      "observable": "A mixed six-voice local profile routes AU/IN locales per actual speaker rather than text variety.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "A mixed six-voice local profile routes AU/IN locales per actual speaker rather than text variety.",
+      "test_id": "tangerine.local/api/internal/app::TestAccentProfilePositive",
+      "command_id": "accent-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/accents_test.go",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "services/api/internal/app/accents_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "A mixed six-voice local profile routes AU/IN locales per actual speaker rather than text variety."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "16be33d084b41331245e07bb53cddcb4ca9c236f277849e3ff357549da281504"
+    },
+    {
+      "id": "ACC-02.P1.TestAccentUnknownNegative",
+      "property_id": "ACC-02.P1",
+      "polarity": "negative",
+      "scenario": "ACC-02 Mixed accents and interruption",
+      "scenario_fingerprint": "4825c92e1736d42b9f02b9b367f9876e4fdbb9d9186d52db334c906d4a9f1197",
+      "setup": "Unknown voice and wrong choice count fail admission; no substitution.",
+      "observable": "Unknown voice and wrong choice count fail admission; no substitution.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "Unknown voice and wrong choice count fail admission; no substitution.",
+      "test_id": "tangerine.local/api/internal/app::TestAccentUnknownNegative",
+      "command_id": "accent-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/accents_test.go",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "services/api/internal/app/accents_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Unknown voice and wrong choice count fail admission; no substitution."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "16be33d084b41331245e07bb53cddcb4ca9c236f277849e3ff357549da281504"
+    },
+    {
+      "id": "ACC-02.P1.TestAccentCheckpointPositive",
+      "property_id": "ACC-02.P1",
+      "polarity": "positive",
+      "scenario": "ACC-02 Mixed accents and interruption",
+      "scenario_fingerprint": "4825c92e1736d42b9f02b9b367f9876e4fdbb9d9186d52db334c906d4a9f1197",
+      "setup": "speaker_voice_ids are frozen registry metadata rather than database IDs.",
+      "observable": "speaker_voice_ids are frozen registry metadata rather than database IDs.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "speaker_voice_ids are frozen registry metadata rather than database IDs.",
+      "test_id": "tangerine.local/api/internal/app::TestAccentCheckpointPositive",
+      "command_id": "accent-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/accents_test.go",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "services/api/internal/app/accents_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "speaker_voice_ids are frozen registry metadata rather than database IDs."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "16be33d084b41331245e07bb53cddcb4ca9c236f277849e3ff357549da281504"
+    },
+    {
+      "id": "ACC-02.P1.TestAccentFrozenProfilePositive",
+      "property_id": "ACC-02.P1",
+      "polarity": "positive",
+      "scenario": "ACC-02 Mixed accents and interruption",
+      "scenario_fingerprint": "4825c92e1736d42b9f02b9b367f9876e4fdbb9d9186d52db334c906d4a9f1197",
+      "setup": "Resume retains the admitted saved profile and speed rather than replacing them with the current built-in catalogue.",
+      "observable": "Resume retains the admitted saved profile and speed rather than replacing them with the current built-in catalogue.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "Resume retains the admitted saved profile and speed rather than replacing them with the current built-in catalogue.",
+      "test_id": "tangerine.local/api/internal/app::TestAccentFrozenProfilePositive",
+      "command_id": "accent-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/accents_test.go",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "services/api/internal/app/accents_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Resume retains the admitted saved profile and speed rather than replacing them with the current built-in catalogue."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "16be33d084b41331245e07bb53cddcb4ca9c236f277849e3ff357549da281504"
+    },
+    {
+      "id": "ACC-02.P1.TestAccentAdvancedSpeakersPositive",
+      "property_id": "ACC-02.P1",
+      "polarity": "positive",
+      "scenario": "ACC-02 Mixed accents and interruption",
+      "scenario_fingerprint": "4825c92e1736d42b9f02b9b367f9876e4fdbb9d9186d52db334c906d4a9f1197",
+      "setup": "Explicit complete advanced speakers override stale simple choices even when changing the effective role count.",
+      "observable": "Explicit complete advanced speakers override stale simple choices even when changing the effective role count.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "Explicit complete advanced speakers override stale simple choices even when changing the effective role count.",
+      "test_id": "tangerine.local/api/internal/app::TestAccentAdvancedSpeakersPositive",
+      "command_id": "accent-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/accents_test.go",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "services/api/internal/app/accents_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Explicit complete advanced speakers override stale simple choices even when changing the effective role count."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "16be33d084b41331245e07bb53cddcb4ca9c236f277849e3ff357549da281504"
+    },
+    {
+      "id": "ACC-02.P1.TestAccentCheckpointNegative",
+      "property_id": "ACC-02.P1",
+      "polarity": "negative",
+      "scenario": "ACC-02 Mixed accents and interruption",
+      "scenario_fingerprint": "4825c92e1736d42b9f02b9b367f9876e4fdbb9d9186d52db334c906d4a9f1197",
+      "setup": "The metadata exemption preserves required settings association validation.",
+      "observable": "The metadata exemption preserves required settings association validation.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "The metadata exemption preserves required settings association validation.",
+      "test_id": "tangerine.local/api/internal/app::TestAccentCheckpointNegative",
+      "command_id": "accent-native",
+      "state": "implemented",
+      "source_path": "services/api/internal/app/accents_test.go",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "services/api/internal/app/accents_test.go"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "The metadata exemption preserves required settings association validation."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "16be33d084b41331245e07bb53cddcb4ca9c236f277849e3ff357549da281504"
+    },
+    {
+      "id": "ACC-03.P1.test_ipa_positive",
+      "property_id": "ACC-03.P1",
+      "polarity": "positive",
+      "scenario": "ACC-03 Actual voice and controlled mistake",
+      "scenario_fingerprint": "37c2972a9dd4d969e8295792724ec97b970189075e5cf5f5025be45660c826d0",
+      "setup": "Literal theta→s, ship→sheep and stress inputs yield independently expected model phone/tone sequences.",
+      "observable": "Literal theta→s, ship→sheep and stress inputs yield independently expected model phone/tone sequences.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "Literal theta→s, ship→sheep and stress inputs yield independently expected model phone/tone sequences.",
+      "test_id": "unittest::test_accent_speech.AccentSpeech.test_ipa_positive",
+      "command_id": "accent-speech",
+      "state": "implemented",
+      "source_path": "tests/test_accent_speech.py",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "tests/test_accent_speech.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Literal theta→s, ship→sheep and stress inputs yield independently expected model phone/tone sequences."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "acef14b255185ab3d600b40cedc47542beb2ec74bf9554eb16dff927cd9f8121"
+    },
+    {
+      "id": "ACC-03.P1.test_unknown_phone_negative",
+      "property_id": "ACC-03.P1",
+      "polarity": "negative",
+      "scenario": "ACC-03 Actual voice and controlled mistake",
+      "scenario_fingerprint": "37c2972a9dd4d969e8295792724ec97b970189075e5cf5f5025be45660c826d0",
+      "setup": "An unsupported IPA symbol is rejected; no dropped segment or other-voice fallback.",
+      "observable": "An unsupported IPA symbol is rejected; no dropped segment or other-voice fallback.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "An unsupported IPA symbol is rejected; no dropped segment or other-voice fallback.",
+      "test_id": "unittest::test_accent_speech.AccentSpeech.test_unknown_phone_negative",
+      "command_id": "accent-speech",
+      "state": "implemented",
+      "source_path": "tests/test_accent_speech.py",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "tests/test_accent_speech.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "An unsupported IPA symbol is rejected; no dropped segment or other-voice fallback."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "acef14b255185ab3d600b40cedc47542beb2ec74bf9554eb16dff927cd9f8121"
+    },
+    {
+      "id": "ACC-03.P1.test_routing_positive",
+      "property_id": "ACC-03.P1",
+      "polarity": "positive",
+      "scenario": "ACC-03 Actual voice and controlled mistake",
+      "scenario_fingerprint": "37c2972a9dd4d969e8295792724ec97b970189075e5cf5f5025be45660c826d0",
+      "setup": "AU maps to native speaker3, IN to2; US/UK retain Kokoro with unchanged voice IDs.",
+      "observable": "AU maps to native speaker3, IN to2; US/UK retain Kokoro with unchanged voice IDs.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "AU maps to native speaker3, IN to2; US/UK retain Kokoro with unchanged voice IDs.",
+      "test_id": "unittest::test_accent_speech.AccentSpeech.test_routing_positive",
+      "command_id": "accent-speech",
+      "state": "implemented",
+      "source_path": "tests/test_accent_speech.py",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "tests/test_accent_speech.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "AU maps to native speaker3, IN to2; US/UK retain Kokoro with unchanged voice IDs."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "acef14b255185ab3d600b40cedc47542beb2ec74bf9554eb16dff927cd9f8121"
+    },
+    {
+      "id": "ACC-03.P1.test_missing_model_negative",
+      "property_id": "ACC-03.P1",
+      "polarity": "negative",
+      "scenario": "ACC-03 Actual voice and controlled mistake",
+      "scenario_fingerprint": "37c2972a9dd4d969e8295792724ec97b970189075e5cf5f5025be45660c826d0",
+      "setup": "An empty actual model directory yields MODEL_SETUP_REQUIRED before inference.",
+      "observable": "An empty actual model directory yields MODEL_SETUP_REQUIRED before inference.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "An empty actual model directory yields MODEL_SETUP_REQUIRED before inference.",
+      "test_id": "unittest::test_accent_speech.AccentSpeech.test_missing_model_negative",
+      "command_id": "accent-speech",
+      "state": "implemented",
+      "source_path": "tests/test_accent_speech.py",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "tests/test_accent_speech.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "An empty actual model directory yields MODEL_SETUP_REQUIRED before inference."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "acef14b255185ab3d600b40cedc47542beb2ec74bf9554eb16dff927cd9f8121"
+    },
+    {
+      "id": "ACC-03.P1.test_australian_positive",
+      "property_id": "ACC-03.P1",
+      "polarity": "positive",
+      "scenario": "ACC-03 Actual voice and controlled mistake",
+      "scenario_fingerprint": "37c2972a9dd4d969e8295792724ec97b970189075e5cf5f5025be45660c826d0",
+      "setup": "Actual local AU WAV and native call bind model speaker3 and en-AU with inspectable inputs.",
+      "observable": "Actual local AU WAV and native call bind model speaker3 and en-AU with inspectable inputs.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "Actual local AU WAV and native call bind model speaker3 and en-AU with inspectable inputs.",
+      "test_id": "unittest::test_accent_evidence.AccentEvidence.test_australian_positive",
+      "command_id": "accent-audio",
+      "state": "implemented",
+      "source_path": "tests/test_accent_evidence.py",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "tests/test_accent_evidence.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Actual local AU WAV and native call bind model speaker3 and en-AU with inspectable inputs."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "456f8d567198817c648217ac89044ed3b542539f7bbf42f0cc0f5bbd11619c04"
+    },
+    {
+      "id": "ACC-03.P1.test_indian_positive",
+      "property_id": "ACC-03.P1",
+      "polarity": "positive",
+      "scenario": "ACC-03 Actual voice and controlled mistake",
+      "scenario_fingerprint": "37c2972a9dd4d969e8295792724ec97b970189075e5cf5f5025be45660c826d0",
+      "setup": "Actual local IN WAV and native call bind model speaker2 and en-IN with inspectable inputs.",
+      "observable": "Actual local IN WAV and native call bind model speaker2 and en-IN with inspectable inputs.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "Actual local IN WAV and native call bind model speaker2 and en-IN with inspectable inputs.",
+      "test_id": "unittest::test_accent_evidence.AccentEvidence.test_indian_positive",
+      "command_id": "accent-audio",
+      "state": "implemented",
+      "source_path": "tests/test_accent_evidence.py",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "tests/test_accent_evidence.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Actual local IN WAV and native call bind model speaker2 and en-IN with inspectable inputs."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "456f8d567198817c648217ac89044ed3b542539f7bbf42f0cc0f5bbd11619c04"
+    },
+    {
+      "id": "ACC-03.P1.test_acoustic_pair_positive",
+      "property_id": "ACC-03.P1",
+      "polarity": "positive",
+      "scenario": "ACC-03 Actual voice and controlled mistake",
+      "scenario_fingerprint": "37c2972a9dd4d969e8295792724ec97b970189075e5cf5f5025be45660c826d0",
+      "setup": "Actual AU/IN reference versus mutated phone inputs and produced waveforms retain model-derived timing.",
+      "observable": "Actual AU/IN reference versus mutated phone inputs and produced waveforms retain model-derived timing.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "Actual AU/IN reference versus mutated phone inputs and produced waveforms retain model-derived timing.",
+      "test_id": "unittest::test_accent_evidence.AccentEvidence.test_acoustic_pair_positive",
+      "command_id": "accent-audio",
+      "state": "implemented",
+      "source_path": "tests/test_accent_evidence.py",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "tests/test_accent_evidence.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Actual AU/IN reference versus mutated phone inputs and produced waveforms retain model-derived timing."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "456f8d567198817c648217ac89044ed3b542539f7bbf42f0cc0f5bbd11619c04"
+    },
+    {
+      "id": "ACC-03.P1.test_preview_replay_negative",
+      "property_id": "ACC-03.P1",
+      "polarity": "negative",
+      "scenario": "ACC-03 Actual voice and controlled mistake",
+      "scenario_fingerprint": "37c2972a9dd4d969e8295792724ec97b970189075e5cf5f5025be45660c826d0",
+      "setup": "Two actual preview plays read the same stored WAV and trigger zero synthesis/LLM requests.",
+      "observable": "Two actual preview plays read the same stored WAV and trigger zero synthesis/LLM requests.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "Two actual preview plays read the same stored WAV and trigger zero synthesis/LLM requests.",
+      "test_id": "unittest::tests.test_accent_evidence.AccentEvidence.test_preview_replay_negative",
+      "command_id": "accent-evidence",
+      "state": "implemented",
+      "source_path": "tests/test_accent_evidence.py",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "tests/test_accent_evidence.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Two actual preview plays read the same stored WAV and trigger zero synthesis/LLM requests."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "456f8d567198817c648217ac89044ed3b542539f7bbf42f0cc0f5bbd11619c04"
+    },
+    {
+      "id": "ACC-04.P1.test_actual_demo_positive",
+      "property_id": "ACC-04.P1",
+      "polarity": "positive",
+      "scenario": "ACC-04 Real generation through feedback",
+      "scenario_fingerprint": "9b1a7485740486d0517a1157c1f2e40b148562b257789d4cacbd448b070f3102",
+      "setup": "Real video and persisted exercise/attempt/result show generation, listening, submitted answer, native score and LLM comments.",
+      "observable": "Real video and persisted exercise/attempt/result show generation, listening, submitted answer, native score and LLM comments.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "Real video and persisted exercise/attempt/result show generation, listening, submitted answer, native score and LLM comments.",
+      "test_id": "unittest::tests.test_accent_evidence.AccentEvidence.test_actual_demo_positive",
+      "command_id": "accent-evidence",
+      "state": "implemented",
+      "source_path": "tests/test_accent_evidence.py",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "tests/test_accent_evidence.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Real video and persisted exercise/attempt/result show generation, listening, submitted answer, native score and LLM comments."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "456f8d567198817c648217ac89044ed3b542539f7bbf42f0cc0f5bbd11619c04"
+    },
+    {
+      "id": "ACC-04.P1.test_preserved_work_negative",
+      "property_id": "ACC-04.P1",
+      "polarity": "negative",
+      "scenario": "ACC-04 Real generation through feedback",
+      "scenario_fingerprint": "9b1a7485740486d0517a1157c1f2e40b148562b257789d4cacbd448b070f3102",
+      "setup": "Original attempt/configuration match baseline and demo has no simulated network/model results or paid fallback.",
+      "observable": "Original attempt/configuration match baseline and demo has no simulated network/model results or paid fallback.",
+      "red_expectation": "Any missing, changed, unobserved or silently substituted requested outcome fails.",
+      "green_expectation": "Original attempt/configuration match baseline and demo has no simulated network/model results or paid fallback.",
+      "test_id": "unittest::tests.test_accent_evidence.AccentEvidence.test_preserved_work_negative",
+      "command_id": "accent-evidence",
+      "state": "implemented",
+      "source_path": "tests/test_accent_evidence.py",
+      "invalidation_dependencies": [
+        "services/web/app/prepare",
+        "services/api/internal/app/local_voices.go",
+        "services/api/internal/app/preparation_content.go",
+        "services/api/internal/app/preparation_catalog.go",
+        "services/api/internal/app/acoustic_profile.go",
+        "services/api/internal/app/speech_plan.go",
+        "services/api/internal/app/domain.go",
+        "services/speech",
+        "specification/v2/contracts/exercise-request.schema.json",
+        "tests/test_accent_evidence.py"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Original attempt/configuration match baseline and demo has no simulated network/model results or paid fallback."
+        ],
+        "forbidden_claims": [
+          "Universal accent/perceptual correctness",
+          "Unselected provider qualification",
+          "Reexecution of retained earlier checks"
+        ]
+      },
+      "source_sha256": "456f8d567198817c648217ac89044ed3b542539f7bbf42f0cc0f5bbd11619c04"
     }
   ],
   "commands": [
@@ -247692,6 +248773,113 @@
         "tests",
         "-p",
         "test_ux_model_evidence.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "env": {
+        "DOCKER_HOST": "unix:///Users/jekamas/Library/Containers/com.docker.docker/Data/docker.raw.sock",
+        "DOCKER_CONFIG": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/local-preview/docker-config"
+      },
+      "timeout_seconds": 180,
+      "authority": "local"
+    },
+    {
+      "id": "accent-native",
+      "runner": "go-test-json",
+      "argv": [
+        "./tests/go-docker",
+        "test",
+        "-json",
+        "-race",
+        "-count=1",
+        "-run",
+        "^TestAccent",
+        "./internal/app"
+      ],
+      "cwd": ".",
+      "env": {
+        "DOCKER_HOST": "unix:///Users/jekamas/Library/Containers/com.docker.docker/Data/docker.raw.sock",
+        "DOCKER_CONFIG": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/local-preview/docker-config"
+      },
+      "timeout_seconds": 300,
+      "authority": "local"
+    },
+    {
+      "id": "accent-request",
+      "runner": "python-unittest",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_accents"
+      ],
+      "cwd": ".",
+      "env": {
+        "DOCKER_HOST": "unix:///Users/jekamas/Library/Containers/com.docker.docker/Data/docker.raw.sock",
+        "DOCKER_CONFIG": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/local-preview/docker-config"
+      },
+      "timeout_seconds": 180,
+      "authority": "local"
+    },
+    {
+      "id": "accent-evidence",
+      "runner": "python-unittest",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_accent_evidence.AccentEvidence.test_controls_positive",
+        "tests.test_accent_evidence.AccentEvidence.test_voice_failure_negative",
+        "tests.test_accent_evidence.AccentEvidence.test_preview_replay_negative",
+        "tests.test_accent_evidence.AccentEvidence.test_actual_demo_positive",
+        "tests.test_accent_evidence.AccentEvidence.test_preserved_work_negative"
+      ],
+      "cwd": ".",
+      "env": {
+        "DOCKER_HOST": "unix:///Users/jekamas/Library/Containers/com.docker.docker/Data/docker.raw.sock",
+        "DOCKER_CONFIG": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/local-preview/docker-config"
+      },
+      "timeout_seconds": 180,
+      "authority": "local"
+    },
+    {
+      "id": "accent-audio",
+      "runner": "python-unittest",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_accent_evidence.AccentEvidence.test_australian_positive",
+        "test_accent_evidence.AccentEvidence.test_indian_positive",
+        "test_accent_evidence.AccentEvidence.test_acoustic_pair_positive"
+      ],
+      "cwd": "tests",
+      "env": {
+        "DOCKER_HOST": "unix:///Users/jekamas/Library/Containers/com.docker.docker/Data/docker.raw.sock",
+        "DOCKER_CONFIG": "/Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021/data/local-preview/docker-config"
+      },
+      "timeout_seconds": 180,
+      "authority": "local"
+    },
+    {
+      "id": "accent-speech",
+      "runner": "python-unittest",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_accent_speech.py",
         "-v"
       ],
       "cwd": ".",

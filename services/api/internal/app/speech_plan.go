@@ -13,6 +13,9 @@ func speechProfile(settings map[string]any, registry []byte) (map[string]any, er
 	if frozen, ok := settings["speech_profile"].(map[string]any); ok && frozen["id"] == id {
 		return frozen, nil
 	}
+	if id == localAccentProfile {
+		return localAccentSpeechProfile(), nil
+	}
 	if rows, ok := settings["configuration"].(map[string]any)["speech_profiles"].([]any); ok {
 		for _, v := range rows {
 			p := v.(map[string]any)

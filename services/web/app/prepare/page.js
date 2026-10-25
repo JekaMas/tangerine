@@ -12,17 +12,17 @@ function RequestSummary({request,categories}) {
 }
 
 export default function Prepare() {
-  const {form, update, items, cursor, busy, error, notice, generate, refresh, stop, categories, categoryLoading, categoryError, retryCategories} = usePreparation();
+  const {form, update, items, cursor, busy, error, notice, generate, refresh, stop, categories, voices, categoryLoading, categoryError, retryCategories} = usePreparation();
   return <main id="main-content">
 
     <section className="intro"><h1>Prepare an exercise</h1><p>Make a conversation worth listening to. Choose the mistakes you want to practise, then generate your text and audio.</p></section>
     <div className="prepare-grid"><section className="card preparation-card"><form onSubmit={e => {e.preventDefault(); generate();}}>
-      <Controls form={form} update={update} busy={busy} categories={categories} categoryLoading={categoryLoading} categoryError={categoryError} retryCategories={retryCategories}/>
+      <Controls form={form} update={update} busy={busy} categories={categories} voices={voices} categoryLoading={categoryLoading} categoryError={categoryError} retryCategories={retryCategories}/>
       <div className="form-submit"><button disabled={busy}>{busy ? 'Generating…' : 'Generate exercise'}<Icon name="arrow" size={18}/></button>
       {busy && <button type="button" className="secondary" onClick={stop}>Stop generation</button>}
       </div>
     </form>{error && <p className="error" role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}</section>
-    <RequestPreview form={form} categories={categories}/></div>
+    <RequestPreview form={form} categories={categories} voices={voices}/></div>
     <section className="card saved-preparations"><div className="row"><div><h2>Saved preparations</h2><p className="field-help">Your progress is saved. Resume any unfinished exercise.</p></div><button className="secondary" disabled={busy} onClick={() => refresh()}>Refresh</button></div>
       {!items.length && <p>No saved preparations yet.</p>}
       {items.map(item => <article key={item.id}><h3>Exercise {item.id.slice(0,8)}</h3>

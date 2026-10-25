@@ -53,5 +53,5 @@ func (s *Server) preparationOptions(w http.ResponseWriter, r *http.Request) {
 		preparationHTTPError(w, 503, "CATALOGUE_UNAVAILABLE")
 		return
 	}
-	writeJSON(w, 200, map[string]any{"taxonomy_version": version, "categories": categories})
+	writeJSON(w, 200, map[string]any{"taxonomy_version": version, "categories": categories, "voices": localVoices})
 }

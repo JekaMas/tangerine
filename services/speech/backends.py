@@ -149,6 +149,9 @@ def qwen(profile,turn):
 ROOT_CONDITION=pathlib.Path(os.environ.get('TANGERINE_MODEL_DIR','/models'))/'voices'
 
 def render(profile,turn,timeout=260):
+ if profile["provider"]=="local_english_accents":
+  from english_accents import voice_profile
+  return render(voice_profile(profile,turn["voice_id"]),turn,timeout)
  billing(profile)
  permitted={v['id']:v for v in profile['voices']}
  if turn['voice_id'] not in permitted or permitted[turn['voice_id']]['locale']!=turn['locale']:raise ValueError('VOICE_UNAVAILABLE')
@@ -160,6 +163,9 @@ def render(profile,turn,timeout=260):
    changed,changed_native,_=kokoro(profile,altered);admit(changed)
    native.setdefault('paired_mutations',{})[unit]={'audio_base64':base64.b64encode(changed).decode(),'audio_sha256':hashlib.sha256(changed).hexdigest(),'native':changed_native}
 
+ elif provider=='local_melo':
+  from melo_english import render as melo_render
+  audio,native,raw=melo_render(profile,turn)
  elif provider=='local_espeak_ng':audio,native,raw=espeak(profile,turn)
  elif provider=='local_qwen3_tts':audio,native,raw=qwen(profile,turn)
  else:
@@ -179,6 +185,9 @@ def render(profile,turn,timeout=260):
 
 
 def plan(profile,render_plan):
+ if profile["provider"]=="local_english_accents":
+  from english_accents import plan as accents_plan
+  return accents_plan(profile,render_plan,plan)
  billing(profile)
  if any(t.get('acoustic_edits') for t in render_plan['turns']):
   return controlled_plan(profile,render_plan,plan)
@@ -233,6 +242,9 @@ def plan(profile,render_plan):
    piece['gap_after_ms']=turn['gap_after_ms'] if index==len(chunks)-1 else 0
    if phones:piece['compiled_phonemes']=phones;piece['g2p_tokens']=g2p_tokens
    piece['accent_description']=selected.get('accent_description')
+   if profile['provider']=='local_melo':
+    from melo_english import compile_turn,assets
+    compile_turn(piece);_,context=assets()
    pieces.append(piece)
  return {'pieces':pieces,'model_context':context}
 

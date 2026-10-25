@@ -41,3 +41,6 @@ The existing blueprint stores effective count, IDs and severity; frozen settings
 and resume retain them. No new checkpoint, validation loop or observation gate
 is introduced. Correct variants, native arithmetic, all original categories and
 optional corpus/empirical features remain unchanged.
+
+Per-speaker accent/voice selection, explicit local routing and preview replay are
+defined in [speaker accents](speaker-accents.md).

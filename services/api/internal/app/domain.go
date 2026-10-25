@@ -297,7 +297,7 @@ func validateProjection(w DocumentWrite, b []byte) error {
 	return nil
 }
 func externalID(kind, key string) bool {
-	if kind == "preparation-state" && key == "category_ids" {
+	if kind == "preparation-state" && (key == "category_ids" || key == "speaker_voice_ids") {
 		return true // Taxonomy labels in the saved request, bound by the frozen registry asset; not document IDs.
 	}
 	if kind == "audio-measurement" && (key == "method_id" || key == "target_unit_id" || key == "unit_id") {

@@ -1,8 +1,9 @@
 'use client';
 import CategoryPicker from './CategoryPicker';
 import AmountControl from './AmountControl';
+import SpeakerVoices from './SpeakerVoices';
 
-export default function Controls({form, update, busy, categories, categoryLoading, categoryError, retryCategories}) {
+export default function Controls({form, update, busy, categories, voices, categoryLoading, categoryError, retryCategories}) {
   return <fieldset disabled={busy} className="preparation-controls">
     <div className="control-section"><h2>Start with a conversation</h2><label>Topic<textarea className="topic-input" aria-label="Topic" required rows={3} placeholder="Two colleagues planning a weekend away…" value={form.topic} onChange={e => update('topic', e.target.value)}/></label>
     <div className="form-grid">
@@ -11,6 +12,7 @@ export default function Controls({form, update, busy, categories, categoryLoadin
     <label>English level (optional)<select aria-label="English level" value={form.level} onChange={e => update('level', e.target.value)}>
       <option value="">Any level</option>{['A1','A2','B1','B2','C1','C2'].map(x => <option key={x}>{x}</option>)}
     </select></label></div></div>
+    <SpeakerVoices form={form} update={update} voices={voices} loading={categoryLoading} error={categoryError} retry={retryCategories}/>
     <CategoryPicker form={form} update={update} categories={categories} loading={categoryLoading} error={categoryError} retry={retryCategories}/>
     <AmountControl form={form} update={update}/>
     <details className="advanced-controls"><summary>Advanced blueprint and speaker voices</summary>

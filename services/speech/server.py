@@ -41,7 +41,7 @@ class Handler(BaseHTTPRequestHandler):
    if self.path in ('/internal/v1/measure','/internal/v1/measure-plan'):
     from diagnostic_server import serve
     serve(self,raw,timeout);return
-   if self.path=='/internal/v1/piece' and packet.get('profile',{}).get('provider')=='local_kokoro':
+   if self.path=='/internal/v1/piece' and packet.get('profile',{}).get('provider') in ('local_kokoro','local_english_accents'):
     from kokoro_worker import KOKORO
     def disconnected():
      return bool(select.select([self.connection],[],[],0)[0]) and self.connection.recv(1,socket.MSG_PEEK)==b''

@@ -75,6 +75,12 @@ categories each receive an error for positive counts. Settings, selected
 categories, severity and the effective count are saved with the preparation.
 See [exercise controls](specification/v2/docs/exercise-controls.md).
 
+Choose an accent and voice per speaker: American/British use Kokoro;
+Australian/Indian English use local MeloTTS. Fixed previews replay without model
+calls. First-time extra-accent setup is explicit:
+`sh scripts/tangerine model-setup local-english-accents-v1`.
+See [speaker accents](specification/v2/docs/speaker-accents.md).
+
 From the extracted source directory:
 
 ```sh
