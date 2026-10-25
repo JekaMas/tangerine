@@ -137,3 +137,10 @@ source revision, checks and proof boundaries. Completed/superseded historical
 rows and I17.1–I17.3 are now checked; residual/external rows and all later FIN
 iterations remain open. The acceptance commit updates records only and does not
 invalidate the tested implementation. No product or provider acceptance is added.
+
+## Subsequent verification
+
+The original six-case status-only acceptance remains historical. The user's
+later UI/error-recovery amendment and repaired I17 acceptance are recorded in
+[the verification repair report](../iteration-17-verification-20261025/REPORT.md).
+Do not use the old UI/typography N/A or six cases to claim the expanded scope.

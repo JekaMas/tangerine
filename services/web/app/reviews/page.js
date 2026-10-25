@@ -1,5 +1,7 @@
 'use client';
-import {requestError} from '../requestError';
+import RefreshButton from '../RefreshButton.js';
+import {clientFetch as fetch} from '../clientRequest.js';
+import {requestError,userError} from '../requestError.js';
 import {useEffect,useRef,useState} from 'react';
 import Results from '../listen/Results';
 import ReconsiderSelected from './ReconsiderSelected';
@@ -9,7 +11,7 @@ import ChooseCase from './ChooseCase';
 export default function Reviews(){
  const [scope,setScope]=useState(null),[rows,setRows]=useState([]),[selected,setSelected]=useState(null),[statement,setStatement]=useState(''),[result,setResult]=useState(null),[current,setCurrent]=useState(null),[caseItem,setCaseItem]=useState(null),[busy,setBusy]=useState(false),[error,setError]=useState(''),[cursor,setCursor]=useState('');
  const pending=useRef(null);
- async function request(path,options={}){const response=await fetch('/api/v1/'+path,{cache:'no-store',signal:AbortSignal.timeout(310000),...options});const body=await response.json();if(!response.ok){if(body.id){setSelected(body);throw Error('Review did not complete. Saved findings and the original answer/result are retained. Retry this review after the service is available.')}throw Error(response.status===409?'The selected version changed or work is already running. Refresh saved state.':'Review is unavailable. Your statement and saved data are retained.')}return {body,response};}
+ async function request(path,options={}){const response=await fetch('/api/v1/'+path,{cache:'no-store',signal:AbortSignal.timeout(310000),...options});const body=await response.json();if(!response.ok){if(body.id){setSelected(body);throw userError('Review did not complete. Saved findings and the original answer/result are retained. Retry this review after the service is available.')}throw userError(response.status===409?'The selected version changed or work is already running. Refresh saved state.':'Review is unavailable. Your statement and saved data are retained.')}return {body,response};}
  async function refresh(value=scope,more=''){
   if(!value?.case&&!value?.attempt)return;setError('');try{
    const filter=value.attempt?'attempt_id='+value.attempt:'case_version_id='+value.case;
@@ -37,7 +39,7 @@ export default function Reviews(){
    {scope&&!scope.case&&!scope.attempt&&<ChooseCase/>}
    {error&&<p role="alert">{error}</p>}
    {(scope?.case||scope?.attempt)&&<>
-   <button disabled={busy} onClick={()=>refresh()}>Refresh saved state</button>
+   <RefreshButton onClick={()=>refresh()}>Refresh saved state</RefreshButton>
    {scope?.attempt&&current?.score&&<><button disabled={busy} onClick={()=>create('answer_reconsideration')}>Reconsider answer</button><label>Dispute statement<textarea aria-label="Dispute statement" rows={5} value={statement} maxLength={20000} onChange={e=>setStatement(e.target.value)}/></label><button disabled={busy||!statement.trim()} onClick={()=>create('dispute')}>Submit dispute</button></>}
    {scope?.case&&caseItem&&<button disabled={busy} onClick={()=>create('case_review')}>Review case</button>}
    {selected&&<section aria-label="Review findings"><h2>Saved review</h2><p>{selected.status.replaceAll('_',' ')}{selected.resolution?' · '+selected.resolution.replaceAll('_',' '):''}</p><p>{selected.input_modality==='text'?'Text review; the LLM did not hear the recording.':'Review used text and saved speech observations; this is not direct hearing.'}</p>

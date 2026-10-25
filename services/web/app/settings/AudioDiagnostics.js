@@ -1,9 +1,10 @@
 'use client';
-import {requestError} from '../requestError';
+import {clientFetch as fetch} from '../clientRequest.js';
+import {requestError,userError} from '../requestError.js';
 import {useEffect,useState} from 'react';
 export default function AudioDiagnostics({configuration,busy,save}){
  const [defaults,setDefaults]=useState(null),[error,setError]=useState('');
- useEffect(()=>{fetch('/api/v1/audio-diagnostics/defaults',{cache:'no-store'}).then(async r=>{if(!r.ok)throw Error('Diagnostic setup is unavailable. Refresh Settings to retry.');setDefaults(await r.json())}).catch(e=>setError(requestError(e)))},[]);
+ useEffect(()=>{fetch('/api/v1/audio-diagnostics/defaults',{cache:'no-store'}).then(async r=>{if(!r.ok)throw userError('Diagnostic setup is unavailable. Refresh Settings to retry.');setDefaults(await r.json())}).catch(e=>setError(requestError(e)))},[]);
  const selected=configuration?.audio_diagnostic_profile;
  const profiles=defaults?.profiles||[],custom=selected&&!profiles.some(p=>p.id===selected.id);
  const setupProfile=profiles.find(p=>p.provider===selected?.provider&&p.model===selected?.model);

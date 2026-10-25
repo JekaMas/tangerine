@@ -1,3 +1,4 @@
+import {userError,parseUserJSON} from '../requestError.js';
 import {recurringRequests} from './recurringRequest.js';
 
 export const mistakeFamilies = [
@@ -31,14 +32,14 @@ export function mistakeCount(form) {
   }
   if (mode==='auto') return null;
   const count=Number(form.mutationCount);
-  if (form.mutationCount==='' || !Number.isSafeInteger(count) || count<0) throw Error('Enter a whole number of mistakes, zero or greater. Your other choices are retained.');
+  if (form.mutationCount==='' || !Number.isSafeInteger(count) || count<0) throw userError('Enter a whole number of mistakes, zero or greater. Your other choices are retained.');
   return count;
 }
 
 export function blueprintRequest(form) {
-  const advanced = form.advanced.trim() ? JSON.parse(form.advanced) : {};
+  const advanced = form.advanced.trim() ? parseUserJSON(form.advanced,'Advanced blueprint') : {};
   if (!advanced || Array.isArray(advanced) || typeof advanced !== 'object') {
-    throw Error('Advanced blueprint must be a JSON object. Your form values are retained.');
+    throw userError('Advanced blueprint must be a JSON object. Your form values are retained.');
   }
   const count=mistakeCount(form);
   const recurring=recurringRequests(form);
@@ -53,6 +54,6 @@ export function blueprintRequest(form) {
     ...advanced.exercise_request,
   };
   const floor=Math.max(categoryFloor({categories:Array.isArray(request.category_ids)?request.category_ids:[],families:Array.isArray(request.category_families)?request.category_families:[]}),Array.isArray(request.recurring_errors)?request.recurring_errors.length:0);
-  if (Number.isInteger(request.mutation_count) && request.mutation_count>0 && request.mutation_count<floor) throw Error(`Choose at least ${floor} mistakes to cover your selected categories and recurring speaker patterns, or zero for a control exercise. Your choices are retained.`);
+  if (Number.isInteger(request.mutation_count) && request.mutation_count>0 && request.mutation_count<floor) throw userError(`Choose at least ${floor} mistakes to cover your selected categories and recurring speaker patterns, or zero for a control exercise. Your choices are retained.`);
   return {...advanced, exercise_request:request};
 }

@@ -182,3 +182,14 @@ Every iteration 17–30 SHALL select its behavior and `FIN-VERIFY.I<n>` properti
 - **THEN** its exact behavior and review case set is reconciled with independently expected positive and negative outcomes
 - **AND** applicable UI/UX and typography are inspected visually and by interaction rather than inferred from a build or screenshot count
 - **AND** each unsupported, missing or substituted claim remains a finding or incomplete with its real proof boundary
+
+### Requirement: FIN-RECOVERY Unobstructed local error recovery
+The browser SHALL recover transient local reads through one shared request owner, log redacted diagnostics, retain form/saved data and show only locally authored human-readable guidance after safe recovery cannot complete. Reads may retry at most twice within the original signal/deadline; long Retry-After, cancellation and non-transient denials are respected. Writes, generation, grading, cleanup and financial/provider actions SHALL NOT be automatically replayed by this browser read-recovery owner. Existing explicit idempotency/resume owners remain unchanged. No new qualification, validation, account or approval gate may block ordinary use. Refresh reads remain keyboard reachable while pending and preserve existing missing-record availability conditions. A read-only Refresh SHALL NOT release an active write action or re-enable duplicate submission.
+
+#### Scenario: FIN-RECOVERY Observable recovery and counterexamples
+- **GIVEN** controlled transient/persistent HTTP and network failures, an existing saved record and retained local form input
+- **WHEN** actual shared browser request/presentation owners and representative sibling routes are exercised
+- **THEN** a transient read succeeds without a final error, exhausted reads stop with useful inline guidance, and Refresh remains usable with keyboard focus and retained input
+- **AND** raw backend messages, stack traces and technical exception text never become ordinary user messages
+- **AND** logs omit query values, credentials and answer bodies, and writes retain their exact identity without automatic replay
+- **AND** no deployment, postdeployment, PBT, model/speech inference or financial execution is required by these controlled checks

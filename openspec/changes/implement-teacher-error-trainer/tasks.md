@@ -1164,3 +1164,14 @@ model call, synthesis, source acquisition, installation, merge or publication.
 Acceptance: audit/iteration-17-reconciliation-20261025/ACCEPTANCE.json.
 The acceptance commit changes only checklist/report/check records; it introduces
 no new runtime or tested contract. Iterations 18–30 remain unchecked.
+
+## Iteration 17 verification repair — error recovery and sibling review
+
+The latest user explicitly extends verification with UI/UX/typography and
+nonblocking human-readable recovery. Deployment, postdeployment, PBT and financial
+execution are excluded; the real running app/data/settings remain unchanged.
+
+- [x] I17.V1 Strengthen actual acceptance/source identity and maintained task correspondence; reject duplicate/unrelated rows, dirty provenance and empty semantic artifacts without adding a product gate.
+- [x] I17.V2 Repair raw error/message/code exposure and transient read handling through single shared request/presentation owners; cover Prepare, Library, Attempts, Audio, Listen, Reviews, Reports, Sources, Settings, Recovery and Cleanup siblings with controlled inputs and preserved explicit write/resume semantics.
+- [x] I17.V3 Repair Refresh keyboard-focus loss through one shared read-action presentation owner; inspect desktop/mobile/narrow screens and actual controls with the typography skill/project UI guide, retaining input and truthful save/outcome wording.
+- [ ] I17.V4 Reconcile the full affected I17 selection and valid retained evidence, finish stable language/build/spec/preservation checks, commit, pass committed-clean verification and record acceptance. No deployment or new provider calls.

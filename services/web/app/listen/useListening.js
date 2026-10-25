@@ -1,5 +1,6 @@
 'use client';
-import {requestError} from '../requestError';
+import {clientFetch as fetch} from '../clientRequest.js';
+import {requestError,userError} from '../requestError.js';
 import {useEffect, useRef, useState} from 'react';
 import {watchChecking} from './checkingProgress';
 
@@ -53,7 +54,7 @@ export default function useListening() {
   }
   async function load(preserve = false) {
     const response = await fetch('/api/v1/attempts/' + attemptID.current, {cache: 'no-store'});
-    if (!response.ok) throw Error('Saved attempt is unavailable. Your text is retained. Refresh to retry.');
+    if (!response.ok) throw userError('Saved attempt is unavailable. Your text is retained. Refresh to retry.');
     const value = await response.json();
     revision.current = response.headers.get('etag');
     audioHash.current = response.headers.get('x-tangerine-audio-sha256');
@@ -83,7 +84,7 @@ export default function useListening() {
         attemptID.current = q.get('attempt') || '';
         if (!attemptID.current) {
           const id = q.get('case'), sha = q.get('sha');
-          if (!id || !sha) throw Error('Select a playable exercise from the Library.');
+          if (!id || !sha) throw userError('Select a playable exercise from the Library.');
           const storageKey = 'tangerine-start:' + id;
           let key = sessionStorage.getItem(storageKey);
           if (!key) { key = crypto.randomUUID(); sessionStorage.setItem(storageKey, key); }
@@ -93,7 +94,7 @@ export default function useListening() {
           });
           if (!response.ok) {
             const failure = await response.json();
-            throw Error(failure.code === 'CAPABILITY_UNQUALIFIED'
+            throw userError(failure.code === 'CAPABILITY_UNQUALIFIED'
               ? 'Select an available included, free or local evaluator model in Settings before starting an attempt.'
               : response.status === 409 ? 'This exercise is unavailable for a new attempt. Return to the Library.'
                 : 'The attempt could not be started. Refresh to retry.');
@@ -112,13 +113,12 @@ export default function useListening() {
   }, []);
 
   async function refresh() {
-    setBusy(true); setError('');
+    setError('');
     try {
       await load(true);
       setAudioRevision(n => n + 1);
       setNotice(draft.current.dirty ? 'Saved state refreshed. Your unsaved text is retained.' : 'Saved state refreshed.');
     } catch (e) { setError(requestError(e)); }
-    finally { setBusy(false); }
   }
   async function write(submit) {
     if (Array.from(answer).length > 20000) {
@@ -140,7 +140,7 @@ export default function useListening() {
       });
       const outcome=await response.json();
       const committed=submit&&!response.ok&&outcome.attempt_id===attemptID.current&&(outcome.status==='evaluation_failed'||outcome.score!=null);
-      if (!response.ok&&!committed) throw Error(response.status === 412
+      if (!response.ok&&!committed) throw userError(response.status === 412
         ? 'The saved draft changed. Your text is retained. Refresh saved state, then save again.'
         : response.status === 409 ? 'This answer is already submitted or conflicts with a saved request. Your text is retained. Refresh saved state.'
           : 'Your answer could not be saved. Your text is retained. Retry the same action.');
@@ -176,7 +176,7 @@ export default function useListening() {
       const action=results?.score?':retry-feedback':':retry';
       const response=await fetch('/api/v1/attempts/'+attemptID.current+action,{method:'POST',headers:{'Content-Type':'application/json','If-Match':revision.current,'Idempotency-Key':pending.current.key},body,signal:AbortSignal.any([writeController.current.signal,AbortSignal.timeout(310000)])});
       const value=await response.json();
-      if(!response.ok&&value.attempt_id!==attemptID.current)throw Error(response.status===409?'Checking is already active or the saved state changed. Refresh saved state.':'Checking is unavailable. Your submitted answer is retained.');
+      if(!response.ok&&value.attempt_id!==attemptID.current)throw userError(response.status===409?'Checking is already active or the saved state changed. Refresh saved state.':'Checking is unavailable. Your submitted answer is retained.');
       pending.current=null;stopChecking();if(!mounted.current)return;await load();
       if(value.status==='evaluation_failed')setError('Your answer is saved. Checking failed. Retry checking after the service is available.');
       else setNotice('Saved findings refreshed.');

@@ -1,3 +1,15 @@
+2026-10-25 iteration 17 verify/repair amendment: the actual user asks to verify
+I17, repair all findings/siblings and review whole-service UI/UX/typography and
+error recovery. This authorizes scoped frontend/audit/spec/test fixes and local
+commits. Deployment, postdeployment, PBT and financial execution are excluded.
+Use only read-only existing records and test-owned controlled failures; no new
+LLM/speech call, provider/financial action or alteration of user settings/data.
+An isolated source-built browser fixture is test execution, not deployment of
+the user's application. Recover safe transient reads and keep diagnostics out
+of ordinary messages. Writes retain existing explicit idempotency/resume owners;
+never replay generation, grading or deletion merely to hide an uncertain error.
+No new runtime gate or repeated accepted-data validation is introduced.
+
 2026-10-25 iteration 17 apply: the actual user explicitly invokes OpenSpec apply
 for reconciliation of all 101 historical entries, acceptance records, tool versions
 and existing overlapping implementation. This authorizes scoped ledger/status/

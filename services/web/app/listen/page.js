@@ -1,4 +1,5 @@
 'use client';
+import RefreshButton from '../RefreshButton.js';
 import useListening from './useListening';
 import Results from './Results';
 import CheckingStatus from './CheckingStatus';
@@ -25,7 +26,7 @@ export default function Listen() {
       {error && <p role="alert" className="error">{error}</p>}
       {notice && <p role="status">{notice}</p>}
       <CheckingStatus checking={checking}/>
-      <button className="secondary" onClick={refresh} disabled={busy || !canRefresh}>Refresh saved state</button>
+      <RefreshButton onClick={refresh} available={canRefresh}>Refresh saved state</RefreshButton>
       {attempt && <>
         <h2>{attempt.case.title}</h2><p>{attempt.case.public_context}</p>
         <p>Identify mistakes{attempt.task_components.classification ? ', name their categories' : ''}{attempt.task_components.correction ? ' and offer corrections' : ''}. Explanations are optional.</p>

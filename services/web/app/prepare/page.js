@@ -1,4 +1,5 @@
 'use client';
+import RefreshButton from '../RefreshButton.js';
 import Controls from './Controls';
 import usePreparation from './usePreparation';
 import RequestPreview from './RequestPreview';
@@ -26,7 +27,7 @@ export default function Prepare() {
       </div>
       </Controls>
     </form>{error && <p className="error" role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}</section>
-    <section id="saved-preparations" className="card saved-preparations"><div className="row"><div><h2>Saved preparations</h2><p className="field-help">Your progress is saved. Resume any unfinished exercise.</p></div><button className="secondary" disabled={busy} onClick={() => refresh()}>Refresh</button></div>
+    <section id="saved-preparations" className="card saved-preparations"><div className="row"><div><h2>Saved preparations</h2><p className="field-help">Your progress is saved. Resume any unfinished exercise.</p></div><RefreshButton onClick={() => refresh()}>Refresh</RefreshButton></div>
       {!items.length && <p>No saved preparations yet.</p>}
       {items.map(item => <article key={item.id}><h3>{recordTitle(item)}</h3><p>{recordDate(item.created_at)}</p>
         <RequestSummary request={item.exercise_request} categories={categories}/>

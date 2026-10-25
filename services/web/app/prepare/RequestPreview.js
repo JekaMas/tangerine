@@ -1,7 +1,8 @@
+import {requestError} from '../requestError.js';
 import {blueprintRequest,severityOptions} from './request';
 
 export default function RequestPreview({form,categories,voices=[]}) {
-  let blueprint,error='';try{blueprint=blueprintRequest(form);}catch(e){error=e.message;}
+  let blueprint,error='';try{blueprint=blueprintRequest(form);}catch(e){error=requestError(e, 'Advanced blueprint is not valid JSON. Your choices are retained.');}
   const r=blueprint?.exercise_request;
   const labels=(Array.isArray(r?.category_ids)?r.category_ids:[]).map(id=>categories.find(x=>x.id===id)?.label||id);
   const severity=Array.isArray(r?.severity_levels)?r.severity_levels:[];

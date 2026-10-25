@@ -751,7 +751,8 @@
       "FX-03.P1",
       "FX-04.P1",
       "FX-05.P1",
-      "FX-06.P1"
+      "FX-06.P1",
+      "FIN-RECOVERY.P1"
     ],
     "test_ids": [
       "planned::AUT-01::negative",
@@ -6731,7 +6732,31 @@
       "unittest::test_request_error.RequestError.test_context_positive",
       "unittest::test_request_error.RequestError.test_native_error_negative",
       "unittest::test_request_error.RequestError.test_nontransport_type_error_negative",
-      "unittest::test_request_error.RequestError.test_unknown_outcome_negative"
+      "unittest::test_request_error.RequestError.test_unknown_outcome_negative",
+      "unittest::tests.test_client_recovery.ClientRecovery.test_transient_read_recovers_positive",
+      "unittest::tests.test_client_recovery.ClientRecovery.test_network_read_recovers_positive",
+      "unittest::tests.test_client_recovery.ClientRecovery.test_exhaustion_is_bounded_negative",
+      "unittest::tests.test_client_recovery.ClientRecovery.test_no_permission_or_quota_probe_negative",
+      "unittest::tests.test_client_recovery.ClientRecovery.test_no_write_replay_negative",
+      "unittest::tests.test_client_recovery.ClientRecovery.test_cancel_never_dispatches_negative",
+      "unittest::tests.test_client_recovery.ClientRecovery.test_write_identity_preserved_positive",
+      "unittest::tests.test_client_recovery.ClientRecovery.test_technical_errors_not_displayed_negative",
+      "unittest::tests.test_client_recovery.ClientRecovery.test_authored_recovery_positive",
+      "unittest::tests.test_client_recovery.ClientRecovery.test_invalid_json_has_field_guidance_negative",
+      "unittest::tests.test_client_recovery.ClientRecovery.test_diagnostic_log_redacted_negative",
+      "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_routes_readable_positive",
+      "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_all_read_failures_negative",
+      "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_transient_read_positive",
+      "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_source_recovery_positive",
+      "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_generation_failure_negative",
+      "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_report_failure_negative",
+      "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_keyboard_refresh_positive",
+      "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_refresh_during_write_negative",
+      "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_saved_result_positive",
+      "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_controlled_write_not_replayed_negative",
+      "unittest::tests.test_client_recovery.ClientRecovery.test_deadline_stops_retry_negative",
+      "unittest::tests.test_client_recovery.ClientRecovery.test_retry_after_date_respected_negative",
+      "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_failed_experiment_row_negative"
     ]
   },
   "reviews": [
@@ -26333,6 +26358,126 @@
       ],
       "disposition": "current_change",
       "rationale": "User selected I17; materialize its ledger/review tests. No new application, provider or source qualification follows."
+    },
+    {
+      "id": "iteration17-verification-recovery-20261026",
+      "question": "Review the exact ledger helper, shared client failure owners and all sibling routes; repair observed errors without new UX gates or provider operations.",
+      "property_ids": [
+        "FIN-LEDGER.P1",
+        "FIN-VERIFY.I17",
+        "FIN-RECOVERY.P1"
+      ],
+      "test_ids": [
+        "unittest::test_ux_request.UXRequest.test_exact_categories_positive",
+        "unittest::test_ux_request.UXRequest.test_clear_categories_positive",
+        "unittest::test_ux_request.UXRequest.test_presets_positive",
+        "unittest::test_ux_request.UXRequest.test_coverage_floor_positive",
+        "unittest::test_ux_request.UXRequest.test_exact_and_zero_positive",
+        "unittest::test_ux_request.UXRequest.test_advanced_override_positive",
+        "unittest::test_ux_request.UXRequest.test_invalid_count_negative",
+        "unittest::test_ux_request.UXRequest.test_severity_independent_negative",
+        "unittest::tests.test_completion_i17.CompletionI17.test_ledger_positive",
+        "unittest::tests.test_completion_i17.CompletionI17.test_ledger_negative",
+        "unittest::tests.test_completion_i17.CompletionI17.test_review_positive",
+        "unittest::tests.test_completion_i17.CompletionI17.test_ux_omission_negative",
+        "unittest::tests.test_completion_i17.CompletionI17.test_typography_omission_negative",
+        "unittest::tests.test_completion_i17.CompletionI17.test_evidence_mismatch_negative",
+        "unittest::test_final_functional_helpers.FinalFunctionalHelpers.test_failure_reasons_positive",
+        "unittest::test_final_functional_helpers.FinalFunctionalHelpers.test_failure_empty_message_negative",
+        "unittest::test_final_functional_helpers.FinalFunctionalHelpers.test_completed_stale_failure_negative",
+        "unittest::test_request_error.RequestError.test_network_positive",
+        "unittest::test_request_error.RequestError.test_context_positive",
+        "unittest::test_request_error.RequestError.test_native_error_negative",
+        "unittest::test_request_error.RequestError.test_nontransport_type_error_negative",
+        "unittest::test_request_error.RequestError.test_unknown_outcome_negative",
+        "unittest::tests.test_client_recovery.ClientRecovery.test_transient_read_recovers_positive",
+        "unittest::tests.test_client_recovery.ClientRecovery.test_network_read_recovers_positive",
+        "unittest::tests.test_client_recovery.ClientRecovery.test_exhaustion_is_bounded_negative",
+        "unittest::tests.test_client_recovery.ClientRecovery.test_no_permission_or_quota_probe_negative",
+        "unittest::tests.test_client_recovery.ClientRecovery.test_no_write_replay_negative",
+        "unittest::tests.test_client_recovery.ClientRecovery.test_cancel_never_dispatches_negative",
+        "unittest::tests.test_client_recovery.ClientRecovery.test_write_identity_preserved_positive",
+        "unittest::tests.test_client_recovery.ClientRecovery.test_technical_errors_not_displayed_negative",
+        "unittest::tests.test_client_recovery.ClientRecovery.test_authored_recovery_positive",
+        "unittest::tests.test_client_recovery.ClientRecovery.test_invalid_json_has_field_guidance_negative",
+        "unittest::tests.test_client_recovery.ClientRecovery.test_diagnostic_log_redacted_negative",
+        "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_routes_readable_positive",
+        "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_all_read_failures_negative",
+        "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_transient_read_positive",
+        "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_source_recovery_positive",
+        "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_generation_failure_negative",
+        "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_report_failure_negative",
+        "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_keyboard_refresh_positive",
+        "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_refresh_during_write_negative",
+        "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_saved_result_positive",
+        "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_controlled_write_not_replayed_negative",
+        "unittest::tests.test_client_recovery.ClientRecovery.test_deadline_stops_retry_negative",
+        "unittest::tests.test_client_recovery.ClientRecovery.test_retry_after_date_respected_negative",
+        "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_failed_experiment_row_negative"
+      ],
+      "searches": [
+        {
+          "kind": "exact",
+          "status": "completed",
+          "query": "Read named requestError/usePreparation/useListening/route owners, original101ledger and admitted receipts; inspect all sibling fetch/error/Refresh sites.",
+          "outcome": "Receipt-identity weakness, raw technical projections, absent safe read retries, Refresh focus/state ownership and Recovery missing presentation import repaired. Controlled all-route failures and retained-field/score/focus observations recorded.",
+          "results": [
+            {
+              "path": "services/web/app/requestError.js",
+              "classification": "interface_dependency",
+              "reason": "Exact named production/review/test owner inspected."
+            },
+            {
+              "path": "services/web/app/clientRequest.js",
+              "classification": "interface_dependency",
+              "reason": "Exact named production/review/test owner inspected."
+            },
+            {
+              "path": "services/web/app/RefreshButton.js",
+              "classification": "interface_dependency",
+              "reason": "Exact named production/review/test owner inspected."
+            },
+            {
+              "path": "services/web/app/listen/useListening.js",
+              "classification": "interface_dependency",
+              "reason": "Exact named production/review/test owner inspected."
+            },
+            {
+              "path": "services/web/app/reports/page.js",
+              "classification": "interface_dependency",
+              "reason": "Exact named production/review/test owner inspected."
+            },
+            {
+              "path": "services/web/app/recovery/page.js",
+              "classification": "interface_dependency",
+              "reason": "Exact named production/review/test owner inspected."
+            },
+            {
+              "path": "audit/iteration-17-reconciliation-20261025/verify.py",
+              "classification": "interface_dependency",
+              "reason": "Exact named production/review/test owner inspected."
+            }
+          ]
+        },
+        {
+          "kind": "semantic",
+          "status": "not_applicable",
+          "query": "Known exact error/request and I17 audit owners.",
+          "reason": "The entry-point files and owner functions were already identified; direct sibling source tracing answered this verification question. No semantic search evidence is claimed.",
+          "outcome": "Known source reads plus actual browser and literal owner tests.",
+          "results": []
+        },
+        {
+          "kind": "jetbrains-index",
+          "status": "not_applicable",
+          "query": "Known JS modules and document records.",
+          "reason": "No IDE refactor or unknown symbol ownership was needed; no IDE/index evidence is claimed.",
+          "outcome": "Known source reads only.",
+          "results": []
+        }
+      ],
+      "disposition": "current_change",
+      "rationale": "Current user authorizes I17 verification plus generalized sibling UI recovery repairs; no deployment, PBT, financial execution or provider calls."
     }
   ]
 }

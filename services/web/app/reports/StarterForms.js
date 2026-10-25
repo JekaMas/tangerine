@@ -1,5 +1,6 @@
 'use client';
-import {requestError} from '../requestError';
+import {clientFetch as fetch} from '../clientRequest.js';
+import {requestError,userError} from '../requestError.js';
 import {useEffect,useState} from 'react';
 import {reportStarter,experimentStarter} from './starters';
 
@@ -7,7 +8,7 @@ export default function StarterForms({kind,busy,onSave}) {
   const [title,setTitle]=useState('Constructed example: one error in two sentences'),[category,setCategory]=useState('lexis.collocation');
   const [topic,setTopic]=useState('A café opening tomorrow'),[level,setLevel]=useState('B1'),[words,setWords]=useState(50),[profile,setProfile]=useState('');
   const [defaults,setDefaults]=useState(null),[error,setError]=useState(''),[loading,setLoading]=useState(false);
-  async function load(){setLoading(true);setError('');try{const r=await fetch('/api/v1/lab/defaults',{cache:'no-store'});if(!r.ok)throw Error();const value=await r.json();setDefaults(value);setProfile(value.configuration.stage_profiles?.case_generation||value.configuration.llm_profile);}catch{setError('Configured experiment choices are unavailable. Retry or open Settings. Your input is retained.');}finally{setLoading(false);}}
+  async function load(){setLoading(true);setError('');try{const r=await fetch('/api/v1/lab/defaults',{cache:'no-store'});if(!r.ok)throw userError();const value=await r.json();setDefaults(value);setProfile(value.configuration.stage_profiles?.case_generation||value.configuration.llm_profile);}catch{setError('Configured experiment choices are unavailable. Retry or open Settings. Your input is retained.');}finally{setLoading(false);}}
   useEffect(()=>{if(kind==='experiment')load();},[kind]);
   async function save(event){event.preventDefault();setError('');try{const value=kind==='report'?reportStarter(title,category):await experimentStarter(defaults,{topic,level,words,profile});await onSave(JSON.stringify(value));}catch(e){setError(requestError(e));}}
   return <form className="card" onSubmit={save}>

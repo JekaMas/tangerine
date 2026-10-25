@@ -1,5 +1,6 @@
 'use client';
-import {requestError} from '../requestError';
+import {clientFetch as fetch} from '../clientRequest.js';
+import {requestError,userError} from '../requestError.js';
 import {useEffect, useRef, useState} from 'react';
 import {blueprintRequest} from './request';
 
@@ -16,11 +17,11 @@ export default function usePreparation() {
     try {
       const q = new URLSearchParams({limit:'50',view:'public'}); if (append && cursor) q.set('cursor',cursor);
       const r = await fetch('/api/v1/preparations?'+q,{cache:'no-store'});
-      if (!r.ok) throw Error('Saved preparations are unavailable. Your input is retained. Refresh to retry.');
+      if (!r.ok) throw userError('Saved preparations are unavailable. Your input is retained. Refresh to retry.');
       const data = await r.json(); setItems(old => append ? [...old,...data.items] : data.items); setCursor(data.next_cursor);
     } catch(e) { setError(requestError(e)); }
   }
-  async function retryCategories(){setCategoryLoading(true);setCategoryError('');try{const r=await fetch('/api/v1/preparation-options',{cache:'no-store'});if(!r.ok)throw Error('Catalogue unavailable');const data=await r.json();setCategories(data.categories);setVoices(data.voices||[]);}catch{setCategoryError('Category and voice choices are unavailable. Your choices are retained. Retry to load the list.');}finally{setCategoryLoading(false);}}
+  async function retryCategories(){setCategoryLoading(true);setCategoryError('');try{const r=await fetch('/api/v1/preparation-options',{cache:'no-store'});if(!r.ok)throw userError('Catalogue unavailable');const data=await r.json();setCategories(data.categories);setVoices(data.voices||[]);}catch{setCategoryError('Category and voice choices are unavailable. Your choices are retained. Retry to load the list.');}finally{setCategoryLoading(false);}}
   useEffect(() => { refresh(); retryCategories(); return () => controller.current?.abort(); }, []);
   async function request(url, body, key) {
     const r = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':key},body:JSON.stringify(body),signal:controller.current.signal});
@@ -34,7 +35,7 @@ export default function usePreparation() {
         LEASE_ACTIVE:'This preparation is still running. Refresh after it finishes or its foreground deadline expires.',
         REVISION_STALE:'The saved state changed. Refresh before resuming.',
       };
-      throw Error(messages[data.code] || data.message || 'The exercise is not complete. Refresh to see saved progress, then Resume.');
+      throw userError(messages[data.code] || 'This step could not be completed. Your choices are retained. Refresh saved preparations before trying again.');
     }
     return data;
   }
@@ -47,13 +48,13 @@ export default function usePreparation() {
       else {
         const blueprint = await request('/api/v1/blueprints',blueprintRequest(form),crypto.randomUUID());
         const config = await fetch('/api/v1/configuration',{cache:'no-store',signal:controller.current.signal});
-        if (!config.ok) throw Error('Configuration is unavailable. Your request is retained. Retry when Settings is available.');
+        if (!config.ok) throw userError('Configuration is unavailable. Your request is retained. Retry when Settings is available.');
         const c = await config.json();
         await request('/api/v1/candidates:generate',{blueprint_id:blueprint.id,effective_configuration_sha256:c.configuration.configuration_sha256,source_record_ids:[],generation_attempt:1,preparation_id:null},crypto.randomUUID());
       }
       setNotice('Exercise saved. Open the Library to listen and answer.');
     } catch(e) {
-      setError(e.name==='AbortError' ? 'Generation stopped. Saved text, mutations and completed audio pieces are retained. Refresh, then Resume explicitly.' : e instanceof SyntaxError ? 'Advanced blueprint is not valid JSON. Your form values are retained.' : e instanceof TypeError && /fetch/i.test(e.message) ? 'Could not reach the local service. Your choices are retained. Check Recovery, then retry or resume a saved preparation.' : e.message);
+      setError(e.name==='AbortError' ? 'Generation stopped. Saved text, mutations and completed audio pieces are retained. Refresh, then Resume explicitly.' : e instanceof SyntaxError ? 'Advanced blueprint is not valid JSON. Your form values are retained.' : e instanceof TypeError && /fetch/i.test(e.message) ? 'Could not reach the local service. Your choices are retained. Check Recovery, then retry or resume a saved preparation.' : requestError(e));
       setNotice('');
     } finally { clearTimeout(timeout); controller.current=null; setBusy(false); await refresh(); }
   }

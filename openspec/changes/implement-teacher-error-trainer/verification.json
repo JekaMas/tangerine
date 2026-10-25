@@ -4327,6 +4327,12 @@
       "capability": "functional-category-ux",
       "title": "FX-06 Functional and visual user journeys",
       "fingerprint": "74b4bd95d29ab18b811b253827f49fec744562d4940eb9daf6e75ea72bd80bf7"
+    },
+    {
+      "id": "FIN-RECOVERY",
+      "capability": "completion-and-verification",
+      "title": "FIN-RECOVERY Unobstructed local error recovery",
+      "fingerprint": "8d5ce8df0cb56ce19b0b07b94a0578507435e7b5f4dc6c7bec4134f0b2981d6d"
     }
   ],
   "properties": [
@@ -16447,7 +16453,7 @@
         "audit/iteration-17-reconciliation-20261025/verify.py",
         "audit/iteration-17-reconciliation-20261025/LEDGER.json",
         "audit/iteration-17-reconciliation-20261025/OVERLAP.json",
-        "audit/iteration-17-reconciliation-20261025/REVIEW.json",
+        "audit/iteration-17-verification-20261025/REVIEW.json",
         "audit/iteration-17-reconciliation-20261025/ACCEPTANCE-SOURCES.json",
         "audit/iteration-17-reconciliation-20261025/REPOSITORY-TOOLS.json",
         "audit/completion-plan-20261025/UNCHECKED-BASELINE.json",
@@ -16749,7 +16755,7 @@
     {
       "id": "FIN-VERIFY.I17",
       "requirement_id": "FIN-VERIFY",
-      "statement": "Iteration 17 verification records actual UI/UX, typography and evidence dispositions for: Status and documentation only; no new application UI behavior. Missing applicability or proof cannot become green. LLM performance/bulk benchmark campaigns are excluded; necessary functional calls must stay within actual included/free/local limits and unchanged valid receipts are reused.",
+      "statement": "Iteration 17 records actual ledger/evidence review plus the explicitly authorized whole-service recovery, UI/UX and typography repairs. Inspect affected real source-built views/actions with independent literal expectations. Exclude deployment, postdeployment, PBT, financial execution and new inference/synthesis; do not accept later iterations or universal product/provider quality.",
       "scenarios": [
         "FIN-VERIFY Iteration-specific review and evidence"
       ],
@@ -16760,7 +16766,7 @@
         "audit/iteration-17-reconciliation-20261025/verify.py",
         "audit/iteration-17-reconciliation-20261025/LEDGER.json",
         "audit/iteration-17-reconciliation-20261025/OVERLAP.json",
-        "audit/iteration-17-reconciliation-20261025/REVIEW.json",
+        "audit/iteration-17-verification-20261025/REVIEW.json",
         "audit/iteration-17-reconciliation-20261025/ACCEPTANCE-SOURCES.json",
         "audit/iteration-17-reconciliation-20261025/REPOSITORY-TOOLS.json",
         "audit/completion-plan-20261025/UNCHECKED-BASELINE.json",
@@ -17241,6 +17247,26 @@
         "services/web/app/styles/base.css",
         "services/web/app/styles/prepare.css"
       ]
+    },
+    {
+      "id": "FIN-RECOVERY.P1",
+      "requirement_id": "FIN-RECOVERY",
+      "statement": "Actual browser recovery retries safe reads, shows authored inline guidance, retains inputs and keyboard focus, and keeps writes singly owned without automatic replay or new UX gates.",
+      "scenarios": [
+        "FIN-RECOVERY Observable recovery and counterexamples"
+      ],
+      "owner": "services/web/app/clientRequest.js",
+      "oracle": "Literal call counts/status/delays, exact safe messages, retained field/score values, actual CUA focus and controlled write observations; expected results authored independently of production output.",
+      "source_globs": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_client_recovery.py",
+        "tests/test_i17_recovery_browser.py"
+      ],
+      "iteration": 17
     }
   ],
   "cases": [
@@ -246735,13 +246761,13 @@
       "command_id": "completion-i17",
       "state": "implemented",
       "source_path": "tests/test_completion_i17.py",
-      "source_sha256": "66e14f40c1e3f02031fd1af978aed4208c625a08e2b3de9a8ca36d9029df2186",
+      "source_sha256": "db2aef28747f77ea509ba08199069fb58ade4c468a265b54b206a9c52f007228",
       "invalidation_dependencies": [
         "tests/test_completion_i17.py",
         "audit/iteration-17-reconciliation-20261025/verify.py",
         "audit/iteration-17-reconciliation-20261025/LEDGER.json",
         "audit/iteration-17-reconciliation-20261025/OVERLAP.json",
-        "audit/iteration-17-reconciliation-20261025/REVIEW.json",
+        "audit/iteration-17-verification-20261025/REVIEW.json",
         "audit/iteration-17-reconciliation-20261025/ACCEPTANCE-SOURCES.json",
         "audit/iteration-17-reconciliation-20261025/REPOSITORY-TOOLS.json",
         "audit/completion-plan-20261025/UNCHECKED-BASELINE.json",
@@ -246777,13 +246803,13 @@
       "command_id": "completion-i17",
       "state": "implemented",
       "source_path": "tests/test_completion_i17.py",
-      "source_sha256": "66e14f40c1e3f02031fd1af978aed4208c625a08e2b3de9a8ca36d9029df2186",
+      "source_sha256": "db2aef28747f77ea509ba08199069fb58ade4c468a265b54b206a9c52f007228",
       "invalidation_dependencies": [
         "tests/test_completion_i17.py",
         "audit/iteration-17-reconciliation-20261025/verify.py",
         "audit/iteration-17-reconciliation-20261025/LEDGER.json",
         "audit/iteration-17-reconciliation-20261025/OVERLAP.json",
-        "audit/iteration-17-reconciliation-20261025/REVIEW.json",
+        "audit/iteration-17-verification-20261025/REVIEW.json",
         "audit/iteration-17-reconciliation-20261025/ACCEPTANCE-SOURCES.json",
         "audit/iteration-17-reconciliation-20261025/REPOSITORY-TOOLS.json",
         "audit/completion-plan-20261025/UNCHECKED-BASELINE.json",
@@ -248636,13 +248662,13 @@
       "command_id": "completion-i17",
       "state": "implemented",
       "source_path": "tests/test_completion_i17.py",
-      "source_sha256": "66e14f40c1e3f02031fd1af978aed4208c625a08e2b3de9a8ca36d9029df2186",
+      "source_sha256": "db2aef28747f77ea509ba08199069fb58ade4c468a265b54b206a9c52f007228",
       "invalidation_dependencies": [
         "tests/test_completion_i17.py",
         "audit/iteration-17-reconciliation-20261025/verify.py",
         "audit/iteration-17-reconciliation-20261025/LEDGER.json",
         "audit/iteration-17-reconciliation-20261025/OVERLAP.json",
-        "audit/iteration-17-reconciliation-20261025/REVIEW.json",
+        "audit/iteration-17-verification-20261025/REVIEW.json",
         "audit/iteration-17-reconciliation-20261025/ACCEPTANCE-SOURCES.json",
         "audit/iteration-17-reconciliation-20261025/REPOSITORY-TOOLS.json",
         "audit/completion-plan-20261025/UNCHECKED-BASELINE.json",
@@ -248655,7 +248681,7 @@
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
         "proof_claims": [
-          "Development ledger and recorded evidence reconciliation only; no new product/provider/audio execution."
+          "Review packet correctness against independently authored evidence rules. Actual visual/action observations are separately registered under FIN-RECOVERY.P1."
         ],
         "forbidden_claims": [
           "Automatic proof of aesthetics from metadata",
@@ -248678,13 +248704,13 @@
       "command_id": "completion-i17",
       "state": "implemented",
       "source_path": "tests/test_completion_i17.py",
-      "source_sha256": "66e14f40c1e3f02031fd1af978aed4208c625a08e2b3de9a8ca36d9029df2186",
+      "source_sha256": "db2aef28747f77ea509ba08199069fb58ade4c468a265b54b206a9c52f007228",
       "invalidation_dependencies": [
         "tests/test_completion_i17.py",
         "audit/iteration-17-reconciliation-20261025/verify.py",
         "audit/iteration-17-reconciliation-20261025/LEDGER.json",
         "audit/iteration-17-reconciliation-20261025/OVERLAP.json",
-        "audit/iteration-17-reconciliation-20261025/REVIEW.json",
+        "audit/iteration-17-verification-20261025/REVIEW.json",
         "audit/iteration-17-reconciliation-20261025/ACCEPTANCE-SOURCES.json",
         "audit/iteration-17-reconciliation-20261025/REPOSITORY-TOOLS.json",
         "audit/completion-plan-20261025/UNCHECKED-BASELINE.json",
@@ -248697,7 +248723,7 @@
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
         "proof_claims": [
-          "Development ledger and recorded evidence reconciliation only; no new product/provider/audio execution."
+          "Review packet correctness against independently authored evidence rules. Actual visual/action observations are separately registered under FIN-RECOVERY.P1."
         ],
         "forbidden_claims": [
           "Automatic proof of aesthetics from metadata",
@@ -248720,13 +248746,13 @@
       "command_id": "completion-i17",
       "state": "implemented",
       "source_path": "tests/test_completion_i17.py",
-      "source_sha256": "66e14f40c1e3f02031fd1af978aed4208c625a08e2b3de9a8ca36d9029df2186",
+      "source_sha256": "db2aef28747f77ea509ba08199069fb58ade4c468a265b54b206a9c52f007228",
       "invalidation_dependencies": [
         "tests/test_completion_i17.py",
         "audit/iteration-17-reconciliation-20261025/verify.py",
         "audit/iteration-17-reconciliation-20261025/LEDGER.json",
         "audit/iteration-17-reconciliation-20261025/OVERLAP.json",
-        "audit/iteration-17-reconciliation-20261025/REVIEW.json",
+        "audit/iteration-17-verification-20261025/REVIEW.json",
         "audit/iteration-17-reconciliation-20261025/ACCEPTANCE-SOURCES.json",
         "audit/iteration-17-reconciliation-20261025/REPOSITORY-TOOLS.json",
         "audit/completion-plan-20261025/UNCHECKED-BASELINE.json",
@@ -248739,7 +248765,7 @@
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
         "proof_claims": [
-          "Development ledger and recorded evidence reconciliation only; no new product/provider/audio execution."
+          "Review packet correctness against independently authored evidence rules. Actual visual/action observations are separately registered under FIN-RECOVERY.P1."
         ],
         "forbidden_claims": [
           "Automatic proof of aesthetics from metadata",
@@ -248762,13 +248788,13 @@
       "command_id": "completion-i17",
       "state": "implemented",
       "source_path": "tests/test_completion_i17.py",
-      "source_sha256": "66e14f40c1e3f02031fd1af978aed4208c625a08e2b3de9a8ca36d9029df2186",
+      "source_sha256": "db2aef28747f77ea509ba08199069fb58ade4c468a265b54b206a9c52f007228",
       "invalidation_dependencies": [
         "tests/test_completion_i17.py",
         "audit/iteration-17-reconciliation-20261025/verify.py",
         "audit/iteration-17-reconciliation-20261025/LEDGER.json",
         "audit/iteration-17-reconciliation-20261025/OVERLAP.json",
-        "audit/iteration-17-reconciliation-20261025/REVIEW.json",
+        "audit/iteration-17-verification-20261025/REVIEW.json",
         "audit/iteration-17-reconciliation-20261025/ACCEPTANCE-SOURCES.json",
         "audit/iteration-17-reconciliation-20261025/REPOSITORY-TOOLS.json",
         "audit/completion-plan-20261025/UNCHECKED-BASELINE.json",
@@ -248781,7 +248807,7 @@
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
         "proof_claims": [
-          "Development ledger and recorded evidence reconciliation only; no new product/provider/audio execution."
+          "Review packet correctness against independently authored evidence rules. Actual visual/action observations are separately registered under FIN-RECOVERY.P1."
         ],
         "forbidden_claims": [
           "Automatic proof of aesthetics from metadata",
@@ -275153,7 +275179,7 @@
       "red_expectation": "The literal expected state/value/action is absent or wrong.",
       "green_expectation": "Native JS owner with independently literal expectations in tests/test_final_functional_helpers.py::test_failure_reasons_positive",
       "test_id": "unittest::test_final_functional_helpers.FinalFunctionalHelpers.test_failure_reasons_positive",
-      "command_id": "final-functional-helpers",
+      "command_id": "i17-affected-failure-helpers",
       "state": "implemented",
       "source_path": "tests/test_final_functional_helpers.py",
       "source_sha256": "beede90fac52f9236ca5f7cfac40e13d940fc2ce64b46941fff28adc95a10d53",
@@ -275189,7 +275215,7 @@
       "red_expectation": "The literal expected state/value/action is absent or wrong.",
       "green_expectation": "Native JS owner with independently literal expectations in tests/test_final_functional_helpers.py::test_failure_empty_message_negative",
       "test_id": "unittest::test_final_functional_helpers.FinalFunctionalHelpers.test_failure_empty_message_negative",
-      "command_id": "final-functional-helpers",
+      "command_id": "i17-affected-failure-helpers",
       "state": "implemented",
       "source_path": "tests/test_final_functional_helpers.py",
       "source_sha256": "beede90fac52f9236ca5f7cfac40e13d940fc2ce64b46941fff28adc95a10d53",
@@ -275225,7 +275251,7 @@
       "red_expectation": "The literal expected state/value/action is absent or wrong.",
       "green_expectation": "Native JS owner with independently literal expectations in tests/test_final_functional_helpers.py::test_completed_stale_failure_negative",
       "test_id": "unittest::test_final_functional_helpers.FinalFunctionalHelpers.test_completed_stale_failure_negative",
-      "command_id": "final-functional-helpers",
+      "command_id": "i17-affected-failure-helpers",
       "state": "implemented",
       "source_path": "tests/test_final_functional_helpers.py",
       "source_sha256": "beede90fac52f9236ca5f7cfac40e13d940fc2ce64b46941fff28adc95a10d53",
@@ -277701,15 +277727,15 @@
       "polarity": "positive",
       "scenario": "Main paths at desktop and narrow widths",
       "scenario_fingerprint": "aec2338e06496ba7827073b296c0d277331c9a23b351b48503ef8e873c199ef4",
-      "setup": "Transport formatting retains specific native errors and uncertain write outcomes: test_network_positive",
-      "observable": "Transport formatting retains specific native errors and uncertain write outcomes: test_network_positive",
+      "setup": "Exercise the actual shared presentation owner with network/programmer exceptions and explicitly authored user guidance.",
+      "observable": "Unknown technical errors use safe fallback; explicitly authored guidance survives; uncertain write outcomes do not claim deletion or saving.",
       "red_expectation": "The literal expected state/value/action is absent or wrong.",
-      "green_expectation": "Transport formatting retains specific native errors and uncertain write outcomes: test_network_positive",
+      "green_expectation": "Unknown technical errors use safe fallback; explicitly authored guidance survives; uncertain write outcomes do not claim deletion or saving.",
       "test_id": "unittest::test_request_error.RequestError.test_network_positive",
       "command_id": "final-functional-errors",
       "state": "implemented",
       "source_path": "tests/test_request_error.py",
-      "source_sha256": "f958294df8545747c4617f2a44b004a9699a2ec4f19814fc9ec87617d1c4371c",
+      "source_sha256": "c10bd318586d8d6176f106cba44ea99187440393bdc1e3bf8fd671bc3b450845",
       "invalidation_dependencies": [
         "services/web/app/**/*.js",
         "services/web/app/styles/base.css",
@@ -277719,7 +277745,7 @@
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
         "proof_claims": [
-          "Transport formatting retains specific native errors and uncertain write outcomes: test_network_positive"
+          "Unknown technical errors use safe fallback; explicitly authored guidance survives; uncertain write outcomes do not claim deletion or saving."
         ],
         "forbidden_claims": [
           "Universal linguistic or auditory quality",
@@ -277734,15 +277760,15 @@
       "polarity": "positive",
       "scenario": "Main paths at desktop and narrow widths",
       "scenario_fingerprint": "aec2338e06496ba7827073b296c0d277331c9a23b351b48503ef8e873c199ef4",
-      "setup": "Transport formatting retains specific native errors and uncertain write outcomes: test_context_positive",
-      "observable": "Transport formatting retains specific native errors and uncertain write outcomes: test_context_positive",
+      "setup": "Exercise the actual shared presentation owner with network/programmer exceptions and explicitly authored user guidance.",
+      "observable": "Unknown technical errors use safe fallback; explicitly authored guidance survives; uncertain write outcomes do not claim deletion or saving.",
       "red_expectation": "The literal expected state/value/action is absent or wrong.",
-      "green_expectation": "Transport formatting retains specific native errors and uncertain write outcomes: test_context_positive",
+      "green_expectation": "Unknown technical errors use safe fallback; explicitly authored guidance survives; uncertain write outcomes do not claim deletion or saving.",
       "test_id": "unittest::test_request_error.RequestError.test_context_positive",
       "command_id": "final-functional-errors",
       "state": "implemented",
       "source_path": "tests/test_request_error.py",
-      "source_sha256": "f958294df8545747c4617f2a44b004a9699a2ec4f19814fc9ec87617d1c4371c",
+      "source_sha256": "c10bd318586d8d6176f106cba44ea99187440393bdc1e3bf8fd671bc3b450845",
       "invalidation_dependencies": [
         "services/web/app/**/*.js",
         "services/web/app/styles/base.css",
@@ -277752,7 +277778,7 @@
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
         "proof_claims": [
-          "Transport formatting retains specific native errors and uncertain write outcomes: test_context_positive"
+          "Unknown technical errors use safe fallback; explicitly authored guidance survives; uncertain write outcomes do not claim deletion or saving."
         ],
         "forbidden_claims": [
           "Universal linguistic or auditory quality",
@@ -277767,15 +277793,15 @@
       "polarity": "negative",
       "scenario": "Main paths at desktop and narrow widths",
       "scenario_fingerprint": "aec2338e06496ba7827073b296c0d277331c9a23b351b48503ef8e873c199ef4",
-      "setup": "Transport formatting retains specific native errors and uncertain write outcomes: test_native_error_negative",
-      "observable": "Transport formatting retains specific native errors and uncertain write outcomes: test_native_error_negative",
+      "setup": "Exercise the actual shared presentation owner with network/programmer exceptions and explicitly authored user guidance.",
+      "observable": "Unknown technical errors use safe fallback; explicitly authored guidance survives; uncertain write outcomes do not claim deletion or saving.",
       "red_expectation": "The literal expected state/value/action is absent or wrong.",
-      "green_expectation": "Transport formatting retains specific native errors and uncertain write outcomes: test_native_error_negative",
+      "green_expectation": "Unknown technical errors use safe fallback; explicitly authored guidance survives; uncertain write outcomes do not claim deletion or saving.",
       "test_id": "unittest::test_request_error.RequestError.test_native_error_negative",
       "command_id": "final-functional-errors",
       "state": "implemented",
       "source_path": "tests/test_request_error.py",
-      "source_sha256": "f958294df8545747c4617f2a44b004a9699a2ec4f19814fc9ec87617d1c4371c",
+      "source_sha256": "c10bd318586d8d6176f106cba44ea99187440393bdc1e3bf8fd671bc3b450845",
       "invalidation_dependencies": [
         "services/web/app/**/*.js",
         "services/web/app/styles/base.css",
@@ -277785,7 +277811,7 @@
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
         "proof_claims": [
-          "Transport formatting retains specific native errors and uncertain write outcomes: test_native_error_negative"
+          "Unknown technical errors use safe fallback; explicitly authored guidance survives; uncertain write outcomes do not claim deletion or saving."
         ],
         "forbidden_claims": [
           "Universal linguistic or auditory quality",
@@ -277800,15 +277826,15 @@
       "polarity": "negative",
       "scenario": "Main paths at desktop and narrow widths",
       "scenario_fingerprint": "aec2338e06496ba7827073b296c0d277331c9a23b351b48503ef8e873c199ef4",
-      "setup": "Transport formatting retains specific native errors and uncertain write outcomes: test_nontransport_type_error_negative",
-      "observable": "Transport formatting retains specific native errors and uncertain write outcomes: test_nontransport_type_error_negative",
+      "setup": "Exercise the actual shared presentation owner with network/programmer exceptions and explicitly authored user guidance.",
+      "observable": "Unknown technical errors use safe fallback; explicitly authored guidance survives; uncertain write outcomes do not claim deletion or saving.",
       "red_expectation": "The literal expected state/value/action is absent or wrong.",
-      "green_expectation": "Transport formatting retains specific native errors and uncertain write outcomes: test_nontransport_type_error_negative",
+      "green_expectation": "Unknown technical errors use safe fallback; explicitly authored guidance survives; uncertain write outcomes do not claim deletion or saving.",
       "test_id": "unittest::test_request_error.RequestError.test_nontransport_type_error_negative",
       "command_id": "final-functional-errors",
       "state": "implemented",
       "source_path": "tests/test_request_error.py",
-      "source_sha256": "f958294df8545747c4617f2a44b004a9699a2ec4f19814fc9ec87617d1c4371c",
+      "source_sha256": "c10bd318586d8d6176f106cba44ea99187440393bdc1e3bf8fd671bc3b450845",
       "invalidation_dependencies": [
         "services/web/app/**/*.js",
         "services/web/app/styles/base.css",
@@ -277818,7 +277844,7 @@
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
         "proof_claims": [
-          "Transport formatting retains specific native errors and uncertain write outcomes: test_nontransport_type_error_negative"
+          "Unknown technical errors use safe fallback; explicitly authored guidance survives; uncertain write outcomes do not claim deletion or saving."
         ],
         "forbidden_claims": [
           "Universal linguistic or auditory quality",
@@ -277833,15 +277859,15 @@
       "polarity": "negative",
       "scenario": "Main paths at desktop and narrow widths",
       "scenario_fingerprint": "aec2338e06496ba7827073b296c0d277331c9a23b351b48503ef8e873c199ef4",
-      "setup": "Transport formatting retains specific native errors and uncertain write outcomes: test_unknown_outcome_negative",
-      "observable": "Transport formatting retains specific native errors and uncertain write outcomes: test_unknown_outcome_negative",
+      "setup": "Exercise the actual shared presentation owner with network/programmer exceptions and explicitly authored user guidance.",
+      "observable": "Unknown technical errors use safe fallback; explicitly authored guidance survives; uncertain write outcomes do not claim deletion or saving.",
       "red_expectation": "The literal expected state/value/action is absent or wrong.",
-      "green_expectation": "Transport formatting retains specific native errors and uncertain write outcomes: test_unknown_outcome_negative",
+      "green_expectation": "Unknown technical errors use safe fallback; explicitly authored guidance survives; uncertain write outcomes do not claim deletion or saving.",
       "test_id": "unittest::test_request_error.RequestError.test_unknown_outcome_negative",
       "command_id": "final-functional-errors",
       "state": "implemented",
       "source_path": "tests/test_request_error.py",
-      "source_sha256": "f958294df8545747c4617f2a44b004a9699a2ec4f19814fc9ec87617d1c4371c",
+      "source_sha256": "c10bd318586d8d6176f106cba44ea99187440393bdc1e3bf8fd671bc3b450845",
       "invalidation_dependencies": [
         "services/web/app/**/*.js",
         "services/web/app/styles/base.css",
@@ -277851,12 +277877,924 @@
       "substitution": {
         "classification": "NO_TEST_DOUBLE",
         "proof_claims": [
-          "Transport formatting retains specific native errors and uncertain write outcomes: test_unknown_outcome_negative"
+          "Unknown technical errors use safe fallback; explicitly authored guidance survives; uncertain write outcomes do not claim deletion or saving."
         ],
         "forbidden_claims": [
           "Universal linguistic or auditory quality",
           "Unperformed hosted integration",
           "Independent human gold"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_transient_read_recovers_positive",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "positive",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Exercise the actual JS owner with controlled responses.",
+      "observable": "503 then 200: exactly two calls and one 160ms wait.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: 503 then 200: exactly two calls and one 160ms wait.",
+      "green_expectation": "503 then 200: exactly two calls and one 160ms wait.",
+      "test_id": "unittest::tests.test_client_recovery.ClientRecovery.test_transient_read_recovers_positive",
+      "command_id": "i17-client-recovery",
+      "state": "implemented",
+      "source_path": "tests/test_client_recovery.py",
+      "source_sha256": "639fe5f2d01e6a5160dfbc765b06befe8b9e53411de54e6e4731481264f64042",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_client_recovery.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP/network outcomes",
+        "allowed_proof": "503 then 200: exactly two calls and one 160ms wait.",
+        "proof_claims": [
+          "503 then 200: exactly two calls and one 160ms wait."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_network_read_recovers_positive",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "positive",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Exercise the actual JS owner with controlled responses.",
+      "observable": "Network TypeError then 200: exactly two calls.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: Network TypeError then 200: exactly two calls.",
+      "green_expectation": "Network TypeError then 200: exactly two calls.",
+      "test_id": "unittest::tests.test_client_recovery.ClientRecovery.test_network_read_recovers_positive",
+      "command_id": "i17-client-recovery",
+      "state": "implemented",
+      "source_path": "tests/test_client_recovery.py",
+      "source_sha256": "639fe5f2d01e6a5160dfbc765b06befe8b9e53411de54e6e4731481264f64042",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_client_recovery.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP/network outcomes",
+        "allowed_proof": "Network TypeError then 200: exactly two calls.",
+        "proof_claims": [
+          "Network TypeError then 200: exactly two calls."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_exhaustion_is_bounded_negative",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "negative",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Exercise the actual JS owner with controlled responses.",
+      "observable": "Persistent 503: exactly three calls; waits [160,480]; return 503.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: Persistent 503: exactly three calls; waits [160,480]; return 503.",
+      "green_expectation": "Persistent 503: exactly three calls; waits [160,480]; return 503.",
+      "test_id": "unittest::tests.test_client_recovery.ClientRecovery.test_exhaustion_is_bounded_negative",
+      "command_id": "i17-client-recovery",
+      "state": "implemented",
+      "source_path": "tests/test_client_recovery.py",
+      "source_sha256": "639fe5f2d01e6a5160dfbc765b06befe8b9e53411de54e6e4731481264f64042",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_client_recovery.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP/network outcomes",
+        "allowed_proof": "Persistent 503: exactly three calls; waits [160,480]; return 503.",
+        "proof_claims": [
+          "Persistent 503: exactly three calls; waits [160,480]; return 503."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_no_permission_or_quota_probe_negative",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "negative",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Exercise the actual JS owner with controlled responses.",
+      "observable": "403 and Retry-After 60s each dispatch once.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: 403 and Retry-After 60s each dispatch once.",
+      "green_expectation": "403 and Retry-After 60s each dispatch once.",
+      "test_id": "unittest::tests.test_client_recovery.ClientRecovery.test_no_permission_or_quota_probe_negative",
+      "command_id": "i17-client-recovery",
+      "state": "implemented",
+      "source_path": "tests/test_client_recovery.py",
+      "source_sha256": "639fe5f2d01e6a5160dfbc765b06befe8b9e53411de54e6e4731481264f64042",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_client_recovery.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP/network outcomes",
+        "allowed_proof": "403 and Retry-After 60s each dispatch once.",
+        "proof_claims": [
+          "403 and Retry-After 60s each dispatch once."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_no_write_replay_negative",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "negative",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Exercise the actual JS owner with controlled responses.",
+      "observable": "POST network failure and PUT 503 each dispatch once.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: POST network failure and PUT 503 each dispatch once.",
+      "green_expectation": "POST network failure and PUT 503 each dispatch once.",
+      "test_id": "unittest::tests.test_client_recovery.ClientRecovery.test_no_write_replay_negative",
+      "command_id": "i17-client-recovery",
+      "state": "implemented",
+      "source_path": "tests/test_client_recovery.py",
+      "source_sha256": "639fe5f2d01e6a5160dfbc765b06befe8b9e53411de54e6e4731481264f64042",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_client_recovery.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP/network outcomes",
+        "allowed_proof": "POST network failure and PUT 503 each dispatch once.",
+        "proof_claims": [
+          "POST network failure and PUT 503 each dispatch once."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_cancel_never_dispatches_negative",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "negative",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Exercise the actual JS owner with controlled responses.",
+      "observable": "Pre-aborted signal dispatches zero calls.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: Pre-aborted signal dispatches zero calls.",
+      "green_expectation": "Pre-aborted signal dispatches zero calls.",
+      "test_id": "unittest::tests.test_client_recovery.ClientRecovery.test_cancel_never_dispatches_negative",
+      "command_id": "i17-client-recovery",
+      "state": "implemented",
+      "source_path": "tests/test_client_recovery.py",
+      "source_sha256": "639fe5f2d01e6a5160dfbc765b06befe8b9e53411de54e6e4731481264f64042",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_client_recovery.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP/network outcomes",
+        "allowed_proof": "Pre-aborted signal dispatches zero calls.",
+        "proof_claims": [
+          "Pre-aborted signal dispatches zero calls."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_write_identity_preserved_positive",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "positive",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Exercise the actual JS owner with controlled responses.",
+      "observable": "PUT retains identical options object, body and Idempotency-Key same.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: PUT retains identical options object, body and Idempotency-Key same.",
+      "green_expectation": "PUT retains identical options object, body and Idempotency-Key same.",
+      "test_id": "unittest::tests.test_client_recovery.ClientRecovery.test_write_identity_preserved_positive",
+      "command_id": "i17-client-recovery",
+      "state": "implemented",
+      "source_path": "tests/test_client_recovery.py",
+      "source_sha256": "639fe5f2d01e6a5160dfbc765b06befe8b9e53411de54e6e4731481264f64042",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_client_recovery.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP/network outcomes",
+        "allowed_proof": "PUT retains identical options object, body and Idempotency-Key same.",
+        "proof_claims": [
+          "PUT retains identical options object, body and Idempotency-Key same."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_technical_errors_not_displayed_negative",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "negative",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Exercise the actual JS owner with controlled responses.",
+      "observable": "Raw SQL/secret/Traceback absent from displayed exception and saved failure guidance.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: Raw SQL/secret/Traceback absent from displayed exception and saved failure guidance.",
+      "green_expectation": "Raw SQL/secret/Traceback absent from displayed exception and saved failure guidance.",
+      "test_id": "unittest::tests.test_client_recovery.ClientRecovery.test_technical_errors_not_displayed_negative",
+      "command_id": "i17-client-recovery",
+      "state": "implemented",
+      "source_path": "tests/test_client_recovery.py",
+      "source_sha256": "639fe5f2d01e6a5160dfbc765b06befe8b9e53411de54e6e4731481264f64042",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_client_recovery.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP/network outcomes",
+        "allowed_proof": "Raw SQL/secret/Traceback absent from displayed exception and saved failure guidance.",
+        "proof_claims": [
+          "Raw SQL/secret/Traceback absent from displayed exception and saved failure guidance."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_authored_recovery_positive",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "positive",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Exercise the actual JS owner with controlled responses.",
+      "observable": "Exact authored message: Your answer is saved. Refresh to continue.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: Exact authored message: Your answer is saved. Refresh to continue.",
+      "green_expectation": "Exact authored message: Your answer is saved. Refresh to continue.",
+      "test_id": "unittest::tests.test_client_recovery.ClientRecovery.test_authored_recovery_positive",
+      "command_id": "i17-client-recovery",
+      "state": "implemented",
+      "source_path": "tests/test_client_recovery.py",
+      "source_sha256": "639fe5f2d01e6a5160dfbc765b06befe8b9e53411de54e6e4731481264f64042",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_client_recovery.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP/network outcomes",
+        "allowed_proof": "Exact authored message: Your answer is saved. Refresh to continue.",
+        "proof_claims": [
+          "Exact authored message: Your answer is saved. Refresh to continue."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_invalid_json_has_field_guidance_negative",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "negative",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Exercise the actual JS owner with controlled responses.",
+      "observable": "Invalid JSON names Mapping program and retained input, without raw content.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: Invalid JSON names Mapping program and retained input, without raw content.",
+      "green_expectation": "Invalid JSON names Mapping program and retained input, without raw content.",
+      "test_id": "unittest::tests.test_client_recovery.ClientRecovery.test_invalid_json_has_field_guidance_negative",
+      "command_id": "i17-client-recovery",
+      "state": "implemented",
+      "source_path": "tests/test_client_recovery.py",
+      "source_sha256": "639fe5f2d01e6a5160dfbc765b06befe8b9e53411de54e6e4731481264f64042",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_client_recovery.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP/network outcomes",
+        "allowed_proof": "Invalid JSON names Mapping program and retained input, without raw content.",
+        "proof_claims": [
+          "Invalid JSON names Mapping program and retained input, without raw content."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_diagnostic_log_redacted_negative",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "negative",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Exercise the actual JS owner with controlled responses.",
+      "observable": "Logged path/status excludes hidden query, private answer and password.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: Logged path/status excludes hidden query, private answer and password.",
+      "green_expectation": "Logged path/status excludes hidden query, private answer and password.",
+      "test_id": "unittest::tests.test_client_recovery.ClientRecovery.test_diagnostic_log_redacted_negative",
+      "command_id": "i17-client-recovery",
+      "state": "implemented",
+      "source_path": "tests/test_client_recovery.py",
+      "source_sha256": "639fe5f2d01e6a5160dfbc765b06befe8b9e53411de54e6e4731481264f64042",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_client_recovery.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP/network outcomes",
+        "allowed_proof": "Logged path/status excludes hidden query, private answer and password.",
+        "proof_claims": [
+          "Logged path/status excludes hidden query, private answer and password."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_routes_readable_positive",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "positive",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Read retained actual CUA actions from the isolated source-built frontend; all writes are controlled, only saved-record reads reach local backend.",
+      "observable": "All eleven named headings at mobile390x844 and desktop1280x720; Source Sans 3 body17px, no horizontal overflow.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: All eleven named headings at mobile390x844 and desktop1280x720; Source Sans 3 body17px, no horizontal overflow.",
+      "green_expectation": "All eleven named headings at mobile390x844 and desktop1280x720; Source Sans 3 body17px, no horizontal overflow.",
+      "test_id": "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_routes_readable_positive",
+      "command_id": "i17-recovery-browser",
+      "state": "implemented",
+      "source_path": "tests/test_i17_recovery_browser.py",
+      "source_sha256": "92ed0ca8ec0403496b221b517b58c9ced34f683ffe0fddb657b1f6f0619297d9",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_i17_recovery_browser.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP failure/write outcomes supplied by a test-owned gateway; saved records are read only",
+        "allowed_proof": "All eleven named headings at mobile390x844 and desktop1280x720; Source Sans 3 body17px, no horizontal overflow.",
+        "proof_claims": [
+          "All eleven named headings at mobile390x844 and desktop1280x720; Source Sans 3 body17px, no horizontal overflow."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_all_read_failures_negative",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "negative",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Read retained actual CUA actions from the isolated source-built frontend; all writes are controlled, only saved-record reads reach local backend.",
+      "observable": "All eleven routes under controlled503 retain a visible human error and enabled recovery action without raw marker/overflow.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: All eleven routes under controlled503 retain a visible human error and enabled recovery action without raw marker/overflow.",
+      "green_expectation": "All eleven routes under controlled503 retain a visible human error and enabled recovery action without raw marker/overflow.",
+      "test_id": "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_all_read_failures_negative",
+      "command_id": "i17-recovery-browser",
+      "state": "implemented",
+      "source_path": "tests/test_i17_recovery_browser.py",
+      "source_sha256": "92ed0ca8ec0403496b221b517b58c9ced34f683ffe0fddb657b1f6f0619297d9",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_i17_recovery_browser.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP failure/write outcomes supplied by a test-owned gateway; saved records are read only",
+        "allowed_proof": "All eleven routes under controlled503 retain a visible human error and enabled recovery action without raw marker/overflow.",
+        "proof_claims": [
+          "All eleven routes under controlled503 retain a visible human error and enabled recovery action without raw marker/overflow."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_transient_read_positive",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "positive",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Read retained actual CUA actions from the isolated source-built frontend; all writes are controlled, only saved-record reads reach local backend.",
+      "observable": "Actual source route recovers silently with populated records and enabled Refresh.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: Actual source route recovers silently with populated records and enabled Refresh.",
+      "green_expectation": "Actual source route recovers silently with populated records and enabled Refresh.",
+      "test_id": "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_transient_read_positive",
+      "command_id": "i17-recovery-browser",
+      "state": "implemented",
+      "source_path": "tests/test_i17_recovery_browser.py",
+      "source_sha256": "92ed0ca8ec0403496b221b517b58c9ced34f683ffe0fddb657b1f6f0619297d9",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_i17_recovery_browser.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP failure/write outcomes supplied by a test-owned gateway; saved records are read only",
+        "allowed_proof": "Actual source route recovers silently with populated records and enabled Refresh.",
+        "proof_claims": [
+          "Actual source route recovers silently with populated records and enabled Refresh."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_source_recovery_positive",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "positive",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Read retained actual CUA actions from the isolated source-built frontend; all writes are controlled, only saved-record reads reach local backend.",
+      "observable": "Source outage then Refresh retains review-input-retained and restores the source list.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: Source outage then Refresh retains review-input-retained and restores the source list.",
+      "green_expectation": "Source outage then Refresh retains review-input-retained and restores the source list.",
+      "test_id": "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_source_recovery_positive",
+      "command_id": "i17-recovery-browser",
+      "state": "implemented",
+      "source_path": "tests/test_i17_recovery_browser.py",
+      "source_sha256": "92ed0ca8ec0403496b221b517b58c9ced34f683ffe0fddb657b1f6f0619297d9",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_i17_recovery_browser.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP failure/write outcomes supplied by a test-owned gateway; saved records are read only",
+        "allowed_proof": "Source outage then Refresh retains review-input-retained and restores the source list.",
+        "proof_claims": [
+          "Source outage then Refresh retains review-input-retained and restores the source list."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_generation_failure_negative",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "negative",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Read retained actual CUA actions from the isolated source-built frontend; all writes are controlled, only saved-record reads reach local backend.",
+      "observable": "Failed initial blueprint shows choices retained, topic retained, Generate enabled; never claims saved exercise.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: Failed initial blueprint shows choices retained, topic retained, Generate enabled; never claims saved exercise.",
+      "green_expectation": "Failed initial blueprint shows choices retained, topic retained, Generate enabled; never claims saved exercise.",
+      "test_id": "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_generation_failure_negative",
+      "command_id": "i17-recovery-browser",
+      "state": "implemented",
+      "source_path": "tests/test_i17_recovery_browser.py",
+      "source_sha256": "92ed0ca8ec0403496b221b517b58c9ced34f683ffe0fddb657b1f6f0619297d9",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_i17_recovery_browser.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP failure/write outcomes supplied by a test-owned gateway; saved records are read only",
+        "allowed_proof": "Failed initial blueprint shows choices retained, topic retained, Generate enabled; never claims saved exercise.",
+        "proof_claims": [
+          "Failed initial blueprint shows choices retained, topic retained, Generate enabled; never claims saved exercise."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_report_failure_negative",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "negative",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Read retained actual CUA actions from the isolated source-built frontend; all writes are controlled, only saved-record reads reach local backend.",
+      "observable": "Controlled report write failure retains Recovery review report title and Calculate action with exact human guidance.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: Controlled report write failure retains Recovery review report title and Calculate action with exact human guidance.",
+      "green_expectation": "Controlled report write failure retains Recovery review report title and Calculate action with exact human guidance.",
+      "test_id": "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_report_failure_negative",
+      "command_id": "i17-recovery-browser",
+      "state": "implemented",
+      "source_path": "tests/test_i17_recovery_browser.py",
+      "source_sha256": "92ed0ca8ec0403496b221b517b58c9ced34f683ffe0fddb657b1f6f0619297d9",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_i17_recovery_browser.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP failure/write outcomes supplied by a test-owned gateway; saved records are read only",
+        "allowed_proof": "Controlled report write failure retains Recovery review report title and Calculate action with exact human guidance.",
+        "proof_claims": [
+          "Controlled report write failure retains Recovery review report title and Calculate action with exact human guidance."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_keyboard_refresh_positive",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "positive",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Read retained actual CUA actions from the isolated source-built frontend; all writes are controlled, only saved-record reads reach local backend.",
+      "observable": "Enter leaves BUTTON Refresh focused with 3px outline, retained title and no alert after successful read.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: Enter leaves BUTTON Refresh focused with 3px outline, retained title and no alert after successful read.",
+      "green_expectation": "Enter leaves BUTTON Refresh focused with 3px outline, retained title and no alert after successful read.",
+      "test_id": "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_keyboard_refresh_positive",
+      "command_id": "i17-recovery-browser",
+      "state": "implemented",
+      "source_path": "tests/test_i17_recovery_browser.py",
+      "source_sha256": "92ed0ca8ec0403496b221b517b58c9ced34f683ffe0fddb657b1f6f0619297d9",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_i17_recovery_browser.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP failure/write outcomes supplied by a test-owned gateway; saved records are read only",
+        "allowed_proof": "Enter leaves BUTTON Refresh focused with 3px outline, retained title and no alert after successful read.",
+        "proof_claims": [
+          "Enter leaves BUTTON Refresh focused with 3px outline, retained title and no alert after successful read."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_refresh_during_write_negative",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "negative",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Read retained actual CUA actions from the isolated source-built frontend; all writes are controlled, only saved-record reads reach local backend.",
+      "observable": "During delayed write Calculate remains disabled, Refresh enabled; Calculate re-enables after failure.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: During delayed write Calculate remains disabled, Refresh enabled; Calculate re-enables after failure.",
+      "green_expectation": "During delayed write Calculate remains disabled, Refresh enabled; Calculate re-enables after failure.",
+      "test_id": "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_refresh_during_write_negative",
+      "command_id": "i17-recovery-browser",
+      "state": "implemented",
+      "source_path": "tests/test_i17_recovery_browser.py",
+      "source_sha256": "92ed0ca8ec0403496b221b517b58c9ced34f683ffe0fddb657b1f6f0619297d9",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_i17_recovery_browser.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP failure/write outcomes supplied by a test-owned gateway; saved records are read only",
+        "allowed_proof": "During delayed write Calculate remains disabled, Refresh enabled; Calculate re-enables after failure.",
+        "proof_claims": [
+          "During delayed write Calculate remains disabled, Refresh enabled; Calculate re-enables after failure."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_saved_result_positive",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "positive",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Read retained actual CUA actions from the isolated source-built frontend; all writes are controlled, only saved-record reads reach local backend.",
+      "observable": "Existing saved result stays primary60/100, optional explanation100%,1of2found,1miss,0false positives; answer read-only/audio paused.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: Existing saved result stays primary60/100, optional explanation100%,1of2found,1miss,0false positives; answer read-only/audio paused.",
+      "green_expectation": "Existing saved result stays primary60/100, optional explanation100%,1of2found,1miss,0false positives; answer read-only/audio paused.",
+      "test_id": "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_saved_result_positive",
+      "command_id": "i17-recovery-browser",
+      "state": "implemented",
+      "source_path": "tests/test_i17_recovery_browser.py",
+      "source_sha256": "92ed0ca8ec0403496b221b517b58c9ced34f683ffe0fddb657b1f6f0619297d9",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_i17_recovery_browser.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP failure/write outcomes supplied by a test-owned gateway; saved records are read only",
+        "allowed_proof": "Existing saved result stays primary60/100, optional explanation100%,1of2found,1miss,0false positives; answer read-only/audio paused.",
+        "proof_claims": [
+          "Existing saved result stays primary60/100, optional explanation100%,1of2found,1miss,0false positives; answer read-only/audio paused."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_controlled_write_not_replayed_negative",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "negative",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Read retained actual CUA actions from the isolated source-built frontend; all writes are controlled, only saved-record reads reach local backend.",
+      "observable": "One controlled POST and two GET report reads during Refresh; no automatic write replay.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: One controlled POST and two GET report reads during Refresh; no automatic write replay.",
+      "green_expectation": "One controlled POST and two GET report reads during Refresh; no automatic write replay.",
+      "test_id": "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_controlled_write_not_replayed_negative",
+      "command_id": "i17-recovery-browser",
+      "state": "implemented",
+      "source_path": "tests/test_i17_recovery_browser.py",
+      "source_sha256": "92ed0ca8ec0403496b221b517b58c9ced34f683ffe0fddb657b1f6f0619297d9",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_i17_recovery_browser.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP failure/write outcomes supplied by a test-owned gateway; saved records are read only",
+        "allowed_proof": "One controlled POST and two GET report reads during Refresh; no automatic write replay.",
+        "proof_claims": [
+          "One controlled POST and two GET report reads during Refresh; no automatic write replay."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_deadline_stops_retry_negative",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "negative",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Exercise the actual JS owner with controlled responses.",
+      "observable": "TimeoutError dispatches once; it is never retried.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: TimeoutError dispatches once; it is never retried.",
+      "green_expectation": "TimeoutError dispatches once; it is never retried.",
+      "test_id": "unittest::tests.test_client_recovery.ClientRecovery.test_deadline_stops_retry_negative",
+      "command_id": "i17-client-recovery",
+      "state": "implemented",
+      "source_path": "tests/test_client_recovery.py",
+      "source_sha256": "639fe5f2d01e6a5160dfbc765b06befe8b9e53411de54e6e4731481264f64042",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_client_recovery.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP/network outcomes",
+        "allowed_proof": "TimeoutError dispatches once; it is never retried.",
+        "proof_claims": [
+          "TimeoutError dispatches once; it is never retried."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_retry_after_date_respected_negative",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "negative",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Exercise the actual JS owner with controlled responses.",
+      "observable": "Future HTTP-date Retry-After dispatches once and returns503.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: Future HTTP-date Retry-After dispatches once and returns503.",
+      "green_expectation": "Future HTTP-date Retry-After dispatches once and returns503.",
+      "test_id": "unittest::tests.test_client_recovery.ClientRecovery.test_retry_after_date_respected_negative",
+      "command_id": "i17-client-recovery",
+      "state": "implemented",
+      "source_path": "tests/test_client_recovery.py",
+      "source_sha256": "639fe5f2d01e6a5160dfbc765b06befe8b9e53411de54e6e4731481264f64042",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_client_recovery.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP/network outcomes",
+        "allowed_proof": "Future HTTP-date Retry-After dispatches once and returns503.",
+        "proof_claims": [
+          "Future HTTP-date Retry-After dispatches once and returns503."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
+        ]
+      }
+    },
+    {
+      "id": "FIN-RECOVERY.P1.test_failed_experiment_row_negative",
+      "property_id": "FIN-RECOVERY.P1",
+      "polarity": "negative",
+      "scenario": "FIN-RECOVERY Observable recovery and counterexamples",
+      "scenario_fingerprint": "eb2e5695450adeb79abd30b710c3899c26404b56fc6d9e5cfa8c950acc115365",
+      "setup": "Read retained actual CUA actions from the isolated source-built frontend; all writes are controlled, only saved-record reads reach local backend.",
+      "observable": "Controlled failed experiment row displays exact human guidance without raw error code or page overflow.",
+      "red_expectation": "The independently expected outcome is absent or contradicted: Controlled failed experiment row displays exact human guidance without raw error code or page overflow.",
+      "green_expectation": "Controlled failed experiment row displays exact human guidance without raw error code or page overflow.",
+      "test_id": "unittest::tests.test_i17_recovery_browser.RecoveryBrowser.test_failed_experiment_row_negative",
+      "command_id": "i17-recovery-browser",
+      "state": "implemented",
+      "source_path": "tests/test_i17_recovery_browser.py",
+      "source_sha256": "92ed0ca8ec0403496b221b517b58c9ced34f683ffe0fddb657b1f6f0619297d9",
+      "invalidation_dependencies": [
+        "services/web/app/clientRequest.js",
+        "services/web/app/requestError.js",
+        "services/web/app/RefreshButton.js",
+        "services/web/app/**/*.js",
+        "services/web/app/styles/base.css",
+        "tests/test_i17_recovery_browser.py"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "HTTP failure/write outcomes supplied by a test-owned gateway; saved records are read only",
+        "allowed_proof": "Controlled failed experiment row displays exact human guidance without raw error code or page overflow.",
+        "proof_claims": [
+          "Controlled failed experiment row displays exact human guidance without raw error code or page overflow."
+        ],
+        "forbidden_claims": [
+          "Hosted model/speech operation or quality",
+          "New end-to-end generation/grading",
+          "Deployment or financial execution",
+          "An independent reviewer or universal product correctness"
         ]
       }
     }
@@ -283026,6 +283964,58 @@
       "cwd": ".",
       "env": {},
       "timeout_seconds": 90,
+      "authority": "local"
+    },
+    {
+      "id": "i17-client-recovery",
+      "runner": "python-unittest",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_client_recovery"
+      ],
+      "cwd": ".",
+      "env": {},
+      "timeout_seconds": 60,
+      "authority": "local"
+    },
+    {
+      "id": "i17-recovery-browser",
+      "runner": "python-unittest",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_i17_recovery_browser"
+      ],
+      "cwd": ".",
+      "env": {},
+      "timeout_seconds": 60,
+      "authority": "local"
+    },
+    {
+      "id": "i17-affected-failure-helpers",
+      "runner": "python-unittest",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_final_functional_helpers.FinalFunctionalHelpers.test_failure_reasons_positive",
+        "test_final_functional_helpers.FinalFunctionalHelpers.test_failure_empty_message_negative",
+        "test_final_functional_helpers.FinalFunctionalHelpers.test_completed_stale_failure_negative"
+      ],
+      "cwd": ".",
+      "env": {
+        "PYTHONPATH": "tests"
+      },
+      "timeout_seconds": 60,
       "authority": "local"
     }
   ]

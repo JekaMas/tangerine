@@ -1,3 +1,4 @@
+import {userError} from '../requestError.js';
 // Constructed starters are development examples, never empirical observations.
 const ordered = value => Array.isArray(value) ? value.map(ordered) : value && typeof value==='object'
   ? Object.fromEntries(Object.keys(value).sort().map(key=>[key,ordered(value[key])])) : value;
@@ -8,7 +9,7 @@ async function digest(value) {
 }
 
 export function reportStarter(title, category) {
-  if (!title.trim() || !category) throw Error('Give the report a title and choose a category.');
+  if (!title.trim() || !category) throw userError('Give the report a title and choose a category.');
   return {title:title.trim(), input:{population:{release:'constructed-starter-v1',view:'two-authored-sentences',split:'development',annotator:'authored-reference',window:'sentence',modality:'text',taxonomy_version:'v1',crosswalk_version:'identity',label_origin:'constructed',l1:null,cefr:null,task:null},annotated_leaf_ids:[category],leaves:[category],windows:[
     {id:category==='lexis.collocation'?'We did a decision.':'The café open tomorrow.',fully_annotated:true,native_tokens:4,events:[{id:'authored-error',native_label:category,leaf_id:category,secondary_ids:[],control:false,excluded_reason:''}],opportunities:{[category]:1}},
     {id:category==='lexis.collocation'?'We made a decision.':'The café opens tomorrow.',fully_annotated:true,native_tokens:4,events:[],opportunities:{[category]:1}},
@@ -16,8 +17,8 @@ export function reportStarter(title, category) {
 }
 
 export async function experimentStarter(defaults,{topic,level,words,profile}) {
-  if (!topic.trim() || !Number.isSafeInteger(Number(words)) || Number(words)<1) throw Error('Enter a topic and a positive whole word count.');
-  if (!defaults?.configuration?.llm_profiles.some(p=>p.id===profile&&p.roles.includes('case_generation'))) throw Error('Choose a configured LLM profile with the generation role.');
+  if (!topic.trim() || !Number.isSafeInteger(Number(words)) || Number(words)<1) throw userError('Enter a topic and a positive whole word count.');
+  if (!defaults?.configuration?.llm_profiles.some(p=>p.id===profile&&p.roles.includes('case_generation'))) throw userError('Choose a configured LLM profile with the generation role.');
   const config=structuredClone(defaults.configuration);
   config.llm_profile=profile;
   config.stage_profiles={...config.stage_profiles,case_generation:profile};

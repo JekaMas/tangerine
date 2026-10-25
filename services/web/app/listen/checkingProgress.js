@@ -1,3 +1,4 @@
+import {clientFetch as fetch} from '../clientRequest.js';
 // Observe the existing foreground operation. Reads never start or retry work.
 export function watchChecking(id, onProgress) {
   let active = true, timer, request;
