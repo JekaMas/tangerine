@@ -1,5 +1,17 @@
 # Implementation design
 
+## Iteration 18 current UI alignment
+
+The existing request projection still owns submitted values, Controls retains
+form/disclosure state, and RequestPreview shows those effective choices before
+Generate. summaryVoices follows complete advanced speakers before simple ordered
+voice IDs and labels configured defaults without inventing a provider binding.
+Exact zero makes recurrence visibly inactive while retaining optional choices.
+The short path and14px caption rules already exist and are exercised rather than
+rewritten. No prompt, endpoint, durable preparation, native API/speech or provider
+configuration changes. I18 actual source-built UI and independent literal cases
+are recorded in audit/iteration-18-preparation-20261026/.
+
 The latest primary flow is topic/speaker count/approximate word length and optional level/broad categories -> saved clean LLM text -> separate novel/OOD mutation phase with list/key -> local or service synthesis -> stored listening exercise -> free-text answer -> LLM comparison with the list -> exact score/recommendations. specification/v2/docs/simple-generation-flow.md owns it. The simple request expands to existing blueprint fields; both generation phases use case_generation and retain separate inputs/outputs. Optional case review, native example audio, full empirical corpus and benchmarks are not required for ordinary use. All original data/features remain additional resources. This update changes specifications only.
 
 The current objective is the full Tangerine local open-source product specified in specification/v2/README.md. This increment revises specifications only. User decisions in docs/authority.md supersede inherited package instructions and human peer review procedures.

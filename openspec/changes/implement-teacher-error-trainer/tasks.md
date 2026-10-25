@@ -998,6 +998,8 @@ Depends on 17. Properties: `FIN-UI-01.P1`, `FIN-UI-06.P1`, `FIN-UI-07.P1`,
 
 - [ ] I18.1 Materialize positive/negative responsive-summary, simple-path, zero/advanced-precedence, keyboard and caption-readability cases.
 - [ ] I18.2 Repair existing preparation components/styles while preserving categories, severity, count, per-speaker voices/accents, recurrence, advanced settings and saved work.
+- [ ] I18.2a Fix omitted complete advanced speaker voices and unambiguous zero-error recurrence display; retain safe malformed-input recovery and ordered simple/custom/default voice semantics.
+- [ ] I18.2b Fix mobile native-validation/control and saved-preparation anchor focus covered by the sticky header, through shared preparation scroll spacing.
 - [ ] I18.3 Verify actual desktop/narrow interaction and typography, affected request regressions and evidence content; reconcile and commit.
 
 ### Iteration 19 — Saved work and failure recovery

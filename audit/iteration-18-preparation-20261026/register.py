@@ -1,0 +1,32 @@
+"""Bind I18 literal cases to the implemented owners; no runtime/model execution."""
+import ast
+import hashlib
+import json
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2]
+BASE=ROOT/'openspec/changes/implement-teacher-error-trainer'
+path=BASE/'verification.json';v=json.loads(path.read_text())
+props=['FIN-UI-01.P1','FIN-UI-06.P1','FIN-UI-07.P1','FIN-VERIFY.I18']
+ui=['services/web/app/prepare/RequestPreview.js','services/web/app/prepare/summaryVoices.js','services/web/app/prepare/Controls.js','services/web/app/prepare/AmountControl.js','services/web/app/prepare/CategoryPicker.js','services/web/app/prepare/SpeakerVoices.js','services/web/app/prepare/RecurringErrors.js','services/web/app/prepare/request.js','services/web/app/prepare/recurringRequest.js','services/web/app/styles/prepare.css','services/web/app/styles/base.css','services/web/app/styles/shell.css']
+evidence=['audit/iteration-18-preparation-20261026/review.py','audit/iteration-18-preparation-20261026/REVIEW.json','data/iteration-18-preparation-20261026/observations.json','data/iteration-18-preparation-20261026/requests.jsonl']
+sha=lambda p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest()
+for p in v['properties']:
+ if p['id'] in props:p['source_globs']=ui+evidence+['tests/test_completion_i18.py','tests/test_preparation_summary.py']
+for c in v['cases']:
+ if c['property_id'] in props:
+  c['state']='implemented';c['source_path']='tests/test_completion_i18.py';c['source_sha256']=sha(c['source_path']);c['invalidation_dependencies']=ui+evidence+[c['source_path']]
+  c['substitution']={'classification':'EXTERNAL_BOUNDARY','owner_replaced':'HTTP write outcomes intercepted by a test-owned gateway; only GET/HEAD reach existing saved local data','allowed_proof':'Actual source-built frontend summary, controls, keyboard, typography and submitted blueprint body with independent literal expectations. Review counterexamples inspect actual DOM facts and request identity.','forbidden_claims':['New generation/grading/synthesis','Native storage write or provider operation/quality','An independent human review','Deployment or whole-product acceptance']}
+command='i18-summary-voices';v['commands'].append(dict(id=command,runner='python-unittest',argv=['python3','-B','-m','unittest','-v','tests.test_preparation_summary'],cwd='.',env={},timeout_seconds=30,authority='local'))
+template=next(c for c in v['cases'] if c['id']=='FIN-UI-01.P1.simple_positive')
+oracles={'test_simple_order_positive':'British Emma then Australian voice are described in the requested order.','test_advanced_precedence_positive':'Complete advanced profiles override the simple voice vector, preserve order and requested accent.','test_no_invented_default_negative':'Unresolved configured defaults do not invent a named voice.','test_partial_and_custom_negative':'Null means configured default and a custom configured profile remains named without an invented catalogue label.'}
+for method,oracle in oracles.items():
+ c=dict(id='FIN-UI-01.P1.'+method,property_id='FIN-UI-01.P1',polarity='positive' if method.endswith('positive') else 'negative',scenario=template['scenario'],scenario_fingerprint=template['scenario_fingerprint'],setup='Call the actual pure summaryVoices owner with authored simple/advanced voice inputs.',observable=oracle,red_expectation='The literal ordered/default description is contradicted: '+oracle,green_expectation=oracle,test_id='unittest::tests.test_preparation_summary.PreparationSummary.'+method,command_id=command,state='implemented',source_path='tests/test_preparation_summary.py',source_sha256=sha('tests/test_preparation_summary.py'),invalidation_dependencies=['services/web/app/prepare/summaryVoices.js','tests/test_preparation_summary.py'],substitution=dict(classification='NO_TEST_DOUBLE',proof_claims=[oracle],forbidden_claims=['Resolved provider defaults or generated audio/accent quality']))
+ v['cases'].append(c)
+path.write_text(json.dumps(v,indent=2)+'\n')
+selected=[c for c in v['cases'] if c['property_id'] in props]
+sel={'iteration':18,'properties':props,'expected_case_count':20,'case_ids':[c['id'] for c in selected],'boundaries':'UI/projection/controlled HTTP submission only; no native app write, model/speech call or deployment.'}
+(ROOT/'audit/iteration-18-preparation-20261026/SELECTION.json').write_text(json.dumps(sel,indent=2)+'\n')
+p=BASE/'discovery.json';d=json.loads(p.read_text());ids=[c['test_id'] for c in selected];d['scope']['test_ids']=list(dict.fromkeys(d['scope']['test_ids']+ids))
+d['reviews'].append(dict(id='iteration18-preparation-application-20261026',question='Apply exact effective-summary, short-path and caption contracts, reusing existing matching behavior and repairing actual omitted advanced voices/covered validation focus.',property_ids=props,test_ids=ids,disposition='current_change',rationale='The actual user selects I18. Preserve existing optional controls/projection and provider/data boundaries; no deployment or new inference.',searches=[dict(kind='exact',status='completed',query='Read named RequestPreview/Controls/AmountControl/prepare.css owners, actual blueprint speaker schema, native request expansion and prior I17 FX overlap. Trace caller usePreparation to controlled blueprint POST.',outcome='Most short-path/caption implementation exists. Advanced complete speaker voices were omitted; malformed profile display needed the existing safe catch. 320px native validation was covered by sticky header. Scoped presentation/scroll fixes and all exact literal observations now implemented.',results=[dict(path=p,classification='interface_dependency',reason='Known named production or contract owner read and traced for this iteration.') for p in ui[:8]]),dict(kind='semantic',status='not_applicable',query='Exact UI owners supplied by approved iteration and previous reconciled owner map.',reason='No unfamiliar ownership question remained; direct named source/contract reads answered the question. No semantic index evidence claimed.',outcome='Exact source/caller inspection and actual browser observations.',results=[]),dict(kind='jetbrains-index',status='not_applicable',query='Known JS presentation modules, CSS and Python test registrations.',reason='No IDE symbol refactor or index-dependent investigation was needed. No IDE/index evidence claimed.',outcome='Direct known owner inspection only.',results=[])]))
+p.write_text(json.dumps(d,indent=2)+'\n')
+print('Registered',len(selected),'I18 cases')

@@ -1,3 +1,11 @@
+2026-10-26 iteration18: the actual user selects effective summary, shorter
+preparation and readable captions. Implement and repair the existing UI/projection
+owners, materialize exact positive/negative cases, inspect source-built browser
+interaction/typography, commit and record clean iteration acceptance. No deployment,
+postdeployment, PBT, provider inference/synthesis, financial execution, paid credits,
+overage, installation or publication is included. Existing app/data/config stay
+unchanged.
+
 2026-10-25 iteration 17 verify/repair amendment: the actual user asks to verify
 I17, repair all findings/siblings and review whole-service UI/UX/typography and
 error recovery. This authorizes scoped frontend/audit/spec/test fixes and local
