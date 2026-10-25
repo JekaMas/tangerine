@@ -2,6 +2,7 @@
 import {clientFetch as fetch} from '../clientRequest.js';
 import {requestError,userError} from '../requestError.js';
 import {useEffect, useRef, useState} from 'react';
+import useSavedList from '../useSavedList.js';
 import {blueprintRequest} from './request';
 import {preparationResponse} from './response.js';
 
@@ -10,20 +11,13 @@ export default function usePreparation() {
   const [form, setForm] = useState({topic:'', speakers:1, words:150, level:'', families:[], categories:[], severities:[], amount:'auto', mutationCount:'', voices:[], recurring:[], advanced:''});
   const [voices,setVoices]=useState([]);
   const [categories,setCategories]=useState([]),[categoryLoading,setCategoryLoading]=useState(true),[categoryError,setCategoryError]=useState('');
-  const [items, setItems] = useState([]), [cursor, setCursor] = useState(null);
+  const saved=useSavedList('/api/v1/preparations',{limit:50,publicView:true,wrapped:true,unavailable:'Saved preparations are unavailable. Your input is retained. Refresh to retry.'});
+  const {items,cursor,refresh}=saved;
   const [busy, setBusy] = useState(false), [error, setError] = useState(''), [notice, setNotice] = useState('');
   const controller = useRef(null);
   const update = (field, value) => setForm(old => ({...old, [field]:value}));
-  async function refresh(append=false) {
-    try {
-      const q = new URLSearchParams({limit:'50',view:'public'}); if (append && cursor) q.set('cursor',cursor);
-      const r = await fetch('/api/v1/preparations?'+q,{cache:'no-store'});
-      if (!r.ok) throw userError('Saved preparations are unavailable. Your input is retained. Refresh to retry.');
-      const data = await r.json(); setItems(old => append ? [...old,...data.items] : data.items); setCursor(data.next_cursor);
-    } catch(e) { const message=requestError(e);setError(old=>old||message); }
-  }
   async function retryCategories(){setCategoryLoading(true);setCategoryError('');try{const r=await fetch('/api/v1/preparation-options',{cache:'no-store'});if(!r.ok)throw userError('Catalogue unavailable');const data=await r.json();setCategories(data.categories);setVoices(data.voices||[]);}catch{setCategoryError('Category and voice choices are unavailable. Your choices are retained. Retry to load the list.');}finally{setCategoryLoading(false);}}
-  useEffect(() => { refresh(); retryCategories(); return () => controller.current?.abort(); }, []);
+  useEffect(() => { retryCategories(); return () => controller.current?.abort(); }, []);
   async function request(url, body, key) {
     const r = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':key},body:JSON.stringify(body),signal:controller.current.signal});
     return preparationResponse(r);
@@ -47,5 +41,5 @@ export default function usePreparation() {
       setNotice('');
     } finally { clearTimeout(timeout); controller.current=null; setBusy(false); await refresh(); }
   }
-  return {form, update, items, cursor, busy, error, notice, generate, categories, voices, categoryLoading, categoryError, retryCategories, refresh: (append=false) => {setError(''); return refresh(append);}, stop: () => controller.current?.abort()};
+  return {form, update, items, cursor, busy, error, notice, generate, categories, voices, categoryLoading, categoryError, retryCategories, refresh, listError:saved.error, listLoading:saved.loading, listLoaded:saved.loaded, stop: () => controller.current?.abort()};
 }

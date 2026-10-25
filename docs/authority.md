@@ -1,3 +1,11 @@
+2026-10-26 iteration19 verification/repair: the actual user asks to verify
+UX-02/UX-03 fully, resolve error causes and similar siblings, preserve nonblocking
+UX and inspect UI/UX/typography with applicable skills. Scoped presentation,
+state ownership, tests/evidence/DAG and local commits are authorized. Retain valid
+greens; use isolated controlled read/action fixtures. No deployment/postdeployment,
+PBT, financial execution, paid credits/overage, provider inference/synthesis,
+installation or publication. Preserve the running user app and all saved data.
+
 2026-10-26 iteration19: the actual user selects persistent failure guidance
 and recognizable saved records, including native metadata projections. Implement
 remaining behavior, materialize native/browser positive and negative cases,

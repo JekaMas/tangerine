@@ -1011,6 +1011,7 @@ Closes UX-02 and UX-03.
 - [x] I19.1 Materialize saved failure/recovery and typed title/excerpt/date projection cases, including original-heard identity, duplicate short-ID prefixes, legacy metadata and narrow layouts.
 - [x] I19.2 Apply the canonical additive response schemas to shipped projections and UI together; show retained failure guidance, original-heard titles, excerpts and readable times through existing owners, preserving IDs/pagination and zero-dispatch reads.
 - [x] I19.3 Verify success/failure/recovery through actual browser/storage owners, typography and evidence; reconcile and commit.
+- [ ] I19.4 Repair verified stale list-response ordering and false empty/loading/error states through one shared saved-list owner; cover all four sibling views, retained inputs/actions, logs/retry and responsive typography, then reconcile committed-clean full-iteration acceptance.
 
 ### Iteration 20 — Results hierarchy and passage replay
 

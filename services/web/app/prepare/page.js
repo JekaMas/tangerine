@@ -16,7 +16,7 @@ function RequestSummary({request,categories}) {
 }
 
 export default function Prepare() {
-  const {form, update, items, cursor, busy, error, notice, generate, refresh, stop, categories, voices, categoryLoading, categoryError, retryCategories} = usePreparation();
+  const {form, update, items, cursor, busy, error, notice, generate, refresh, listError, listLoading, listLoaded, stop, categories, voices, categoryLoading, categoryError, retryCategories} = usePreparation();
   return <main id="main-content">
 
     <section className="intro"><h1>Prepare an exercise</h1><p>Choose a topic and generate a conversation to listen to. Voices, mistake types and difficulty are yours to customize.</p><a href="#saved-preparations">Continue a saved exercise</a></section>
@@ -30,7 +30,9 @@ export default function Prepare() {
       </Controls>
     </form></section>
     <section id="saved-preparations" className="card saved-preparations"><div className="row"><div><h2>Saved preparations</h2><p className="field-help">Your progress is saved. Resume any unfinished exercise.</p></div><RefreshButton onClick={() => refresh()}>Refresh</RefreshButton></div>
-      {!items.length && <p>No saved preparations yet.</p>}
+      {listLoading&&<p role="status">Loading saved preparations…</p>}
+      {listError&&<p className="error" role="alert">{listError}</p>}
+      {listLoaded&&!listLoading&&!listError&&!items.length&&<p>No saved preparations yet.</p>}
       {items.map(item => <article key={item.id}><h3>{recordTitle(item)}</h3><p>{recordDate(item.created_at)}</p><RecordIdentity item={item} items={items} dateField="created_at"/>
         <RequestSummary request={item.exercise_request} categories={categories}/>
         <ol className="phase-list" aria-label="Preparation progress">{[['canonical_text','Clean text'],['mutation','Mistakes'],['render','Audio']].map(([key,label])=><li key={key} data-state={item.phase_states[key]}><span className="phase-dot"/>{label}<small>{item.phase_states[key].replaceAll('_',' ')}</small></li>)}</ol>
