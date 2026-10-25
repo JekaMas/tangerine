@@ -76,6 +76,22 @@ class RecoveryBrowser(unittest.TestCase):
         self.assertIn('Primary score: 60.0 / 100', row['score'])
         self.assertIn('Optional explanation: 100.0%', row['score'])
         self.assertIn('Found 1 of 2 mistakes · 1 missed · 0 false positives', row['score'])
+    def test_readable_tables_keyboard_positive(self):
+        row = self.v['tableReview']
+        self.assertFalse(row['pageOverflow'])
+        self.assertEqual({'Experiment progress', 'Experiment diagnostic measurements'}, {t['name'] for t in row['tables']})
+        for table in row['tables']:
+            self.assertLess(table['maxHeaderHeight'], 60)
+            self.assertEqual('normal', table['overflowWrap'])
+            self.assertGreater(table['contentWidth'], table['width'])
+        self.assertGreaterEqual(row['noteWidth'], 140)
+        self.assertTrue(row['keyboard']['focused'])
+        self.assertEqual('3px', row['keyboard']['outline'])
+        self.assertGreater(row['keyboard']['scrollLeft'], 0)
+        empirical = self.v['empiricalTable']
+        self.assertFalse(empirical['pageOverflow'])
+        self.assertTrue(empirical['focusable'])
+        self.assertLess(empirical['maxHeaderHeight'], 60)
     def test_failed_experiment_row_negative(self):
         row = self.actions['failed_experiment_row']
         self.assertEqual('This row did not complete. Refresh saved state, then retry when the selected service is available.', row['guidance'])

@@ -28,3 +28,19 @@ Early capture scaling, a test-gateway connection issue, selector timeouts and a
 build-time directive/import repair are retained as test/repair observations.
 They do not demonstrate pre-existing live-app defects. The final unscaled
 screens and successful observations supersede only those failed capture steps.
+
+## Late visual counterexample
+
+The first46-case clean receipt at49cc5de passed its registered assertions.
+Final inspection of the newly added failed experiment-row screenshot nevertheless
+found letter-by-letter mobile table wrapping. The no-page-overflow check alone
+did not prove readable columns. Its screenshot is retained as a negative.
+
+The repair changes only shared table CSS and Reports table/action presentation:
+normal word wrapping, intact headers, a readable prose column, named keyboard
+scrolling and spaced action controls. Add a literal positive table/keyboard oracle
+and inspect empirical/progress/diagnostic table siblings. The selected set expands
+46→47. This material UI finding, changed CSS/test assertion and expanded selection
+invalidate the prior complete-iteration gate, requiring the new stable clean
+selection. Unchanged standalone native/provider/media receipts remain retained;
+no unrelated broader checks or provider calls are rerun.

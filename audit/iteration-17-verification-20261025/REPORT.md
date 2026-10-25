@@ -6,7 +6,7 @@ UI/UX and typography amendment. Started from clean
 `d23b75d0a3128d46a6fb328bf17dea7e9c0520d5`.
 
 The source repairs and directly affected observations pass. Final acceptance
-requires the committed-clean 46-case selection; its exact revision and receipt
+requires the committed-clean 47-case selection; its exact revision and receipt
 will be recorded in `ACCEPTANCE.json`. This report does not accept iterations
 18–30 or claim new hosted-provider/linguistic qualification.
 
@@ -28,6 +28,11 @@ Failed reads on all eleven routes retain human guidance and a usable recovery
 action. No modal, publication gate, human review, repeated validation or new
 eligibility requirement was added. An exhausted foreground retry is described as
 temporary unavailability; the app does not pretend future recovery is impossible.
+
+The first46-case clean gate passed at49cc5de. A subsequent screenshot inspection
+found vertically broken mobile table words; the repaired final selection expands
+to47. The original46-case receipt is retained and does not cover the new table
+readability/keyboard oracle.
 
 ## UI, UX and typography
 
@@ -57,6 +62,14 @@ record GET/HEAD reads to the existing local backend. No write reached the real
 backend. The source-built frontend was a disposable test fixture; localhost3000,
 its containers, settings, stored answers and audio were not deployed or replaced.
 
+The table finding is repaired through shared CSS (normal word wrapping, intact
+headers and contained horizontal overflow), a readable prose column, named
+keyboard-focusable tables, and spaced experiment actions. Actual header height
+is41.34px at390px; the failure column is155.07px; ArrowRight scrolls the focused
+table with3px outline while the page itself does not overflow. Empirical,
+progress and diagnostic table siblings were inspected. The malformed screenshot
+remains a negative; `screens/experiment-table-final-reviewed.png` is final proof.
+
 ## Reconciliation and preservation
 
 All original101rows remain present:64completed,13superseded,16optional/external
@@ -79,6 +92,6 @@ Deployment, postdeployment, PBT and financial execution were excluded.
 ## Acceptance checkpoint
 
 Implementation and focused repair evidence are complete. The final clean source
-revision, 46/46 exact cases, structural receipts and canonical I17.V4 completion
+revision, 47/47 exact cases, structural receipts and canonical I17.V4 completion
 are recorded after the committed-clean run. There is no additional product
 approval or decision needed for these repairs.

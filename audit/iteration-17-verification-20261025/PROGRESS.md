@@ -30,3 +30,10 @@ No real app/data/configuration changes or provider calls. Strict1.13.1, graph,
 discovery and preserved native/data scopes pass. Focused27+16+3cases passed;
 46distinct current cases are selected. Next: commit source, run full46selection
 with --require-clean, record acceptance/checklist and stop only owned test fixtures.
+
+Late screenshot counterexample: vertically broken mobile table words invalidated
+the first46-case review gate. Shared wrapping/prose width, named keyboard table
+scrolling and action spacing now pass actual inspection and the new literal
+table oracle. Final selection47; image
+sha256:725386f29e8f21ceddf7df41277ddffa66c1a247c50718a478cf9802d58afca3.
+Original46case49cc5de receipt retained; final clean gate is accepted-clean-47.json.

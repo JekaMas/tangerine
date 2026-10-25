@@ -191,5 +191,6 @@ The browser SHALL recover transient local reads through one shared request owner
 - **WHEN** actual shared browser request/presentation owners and representative sibling routes are exercised
 - **THEN** a transient read succeeds without a final error, exhausted reads stop with useful inline guidance, and Refresh remains usable with keyboard focus and retained input
 - **AND** raw backend messages, stack traces and technical exception text never become ordinary user messages
+- **AND** failure tables retain readable words/headers and contained overflow, with named keyboard scrolling and visible focus
 - **AND** logs omit query values, credentials and answer bodies, and writes retain their exact identity without automatic replay
 - **AND** no deployment, postdeployment, PBT, model/speech inference or financial execution is required by these controlled checks
