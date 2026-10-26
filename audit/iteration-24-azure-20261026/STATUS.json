@@ -1,19 +1,28 @@
 {
   "iteration": 24,
+  "operation": "verify with repair",
   "status": "blocked",
   "iteration_complete": false,
   "acceptance_issued": false,
-  "source_commit": "d9af363b3d72ba0ec2d1a190c335d372440c59cc",
+  "source_commit": "4c282849c5dcd64ed859001ffe085e71b36cea6f",
+  "previous_apply": {
+    "source_commit": "d9af363b3d72ba0ec2d1a190c335d372440c59cc",
+    "receipt": "data/iteration-24-azure-20261026/clean.json",
+    "counts": {
+      "passed": 16,
+      "skip": 2
+    }
+  },
   "full_selection": {
     "properties": [
       "FIN-AZURE.P1",
       "FIN-VERIFY.I24"
     ],
-    "receipt": "data/iteration-24-azure-20261026/clean.json",
+    "receipt": "data/iteration-24-verify-20261026/clean.json",
     "committed_clean": true,
     "runner_status": "incomplete",
     "counts": {
-      "passed": 16,
+      "passed": 28,
       "skip": 2
     },
     "skipped_cases": [
@@ -48,56 +57,92 @@
           "unittest::tests.test_azure_comparison.AzureComparison.test_saved_response_recovery_positive": "pass",
           "unittest::tests.test_azure_comparison.AzureComparison.test_ssml_continuity_negative": "pass",
           "unittest::tests.test_azure_comparison.AzureComparison.test_ssml_targets_positive": "pass",
-          "unittest::tests.test_azure_comparison.AzureComparison.test_text_prosody_pause_siblings_positive": "pass"
+          "unittest::tests.test_azure_comparison.AzureComparison.test_text_prosody_pause_siblings_positive": "pass",
+          "unittest::tests.test_azure_player_observations.AzurePlayerObservations.test_player_controlled_layout_positive": "pass",
+          "unittest::tests.test_azure_player_observations.AzurePlayerObservations.test_player_media_retry_positive": "pass",
+          "unittest::tests.test_azure_player_observations.AzurePlayerObservations.test_player_persistent_media_failure_negative": "pass",
+          "unittest::tests.test_azure_recovery.AzureRecovery.test_cli_cancel_retains_progress_negative": "pass",
+          "unittest::tests.test_azure_recovery.AzureRecovery.test_cli_exhaustion_is_human_negative": "pass",
+          "unittest::tests.test_azure_recovery.AzureRecovery.test_completed_variant_survives_failure_positive": "pass",
+          "unittest::tests.test_azure_recovery.AzureRecovery.test_known_rate_limit_recovery_positive": "pass",
+          "unittest::tests.test_azure_recovery.AzureRecovery.test_player_progress_positive": "pass",
+          "unittest::tests.test_azure_recovery.AzureRecovery.test_retry_deadline_negative": "pass",
+          "unittest::tests.test_azure_recovery.AzureRecovery.test_terminal_failures_negative": "pass",
+          "unittest::tests.test_azure_recovery.AzureRecovery.test_transient_retry_positive": "pass",
+          "unittest::tests.test_azure_recovery.AzureRecovery.test_transport_failure_metadata_positive": "pass"
         }
       }
     ],
-    "started_at": "2026-10-26T05:52:25.971666+00:00",
-    "finished_at": "2026-10-26T05:52:38.925532+00:00"
+    "started_at": "2026-10-26T06:38:42.438797+00:00",
+    "finished_at": "2026-10-26T06:39:09.183058+00:00"
+  },
+  "findings": {
+    "comparison_failure_recovery": "repaired; literal controlled positive/negative cases",
+    "complete_reference_hidden": "repaired; completed variant survives later failure",
+    "player_state_and_media_recovery": "repaired; actual controlled browser GET/recovery observations",
+    "cancellation": "repaired; paused progress, safe exit130 and no retry",
+    "acoustic_review_oracle": "repaired; exact target correspondence and observations required"
   },
   "retained_sibling_observations": {
     "count": 6,
     "receipt": "data/iteration-24-azure-20261026/siblings.log",
-    "invalidation": "No sibling compiler/production input changed after this observed pass."
+    "reason": "Unchanged hosted-success/SSML inputs and confirmed identical speech image; no new sibling run claimed."
   },
   "structural_checks": {
-    "openspec": "passed; pinned 1.13.1, openspec-stable.log",
-    "graph_and_discovery": "passed; three native validation documents, graph-stable.json",
+    "openspec": "passed; pinned 1.13.1, openspec.log",
+    "graph_and_discovery": "passed; three native structural validation documents, graph.json",
     "python_syntax": "passed; syntax.json",
+    "player_javascript_syntax": "passed; existing Node --check, javascript-syntax.log",
     "preservation": "passed; PRESERVATION.json",
-    "proof_boundary": "Structural/syntax/preservation checks are not provider, audio or iteration acceptance. Their exact source inputs are unchanged by the source commit."
+    "proof_boundary": "Exact source inputs are unchanged between stable structural checks and source commit. These checks are not actual Azure or iteration acceptance."
+  },
+  "reviews": {
+    "ui_ux": "incomplete; rendered/progress/media-recovery states observed, manual activation and real Azure playback unverified",
+    "typography": "pass for inspected desktop/narrow rendered states; expanded hidden content unverified",
+    "evidence": "incomplete for actual Azure comparison; controlled origin and failed input probe retained"
   },
   "lab": {
     "experiment_id": "15",
     "run_id": "6dda9035ba664cca8b6e2abfeb10ed74",
-    "artifact_prefix": "final-preparation",
+    "artifact_prefix": "verification-recovery-20261026",
     "readback": true,
-    "clean_receipt_readback": true,
-    "origin": "Constructed native preparation/PCM, not Azure audio",
-    "inference_calls": 0
+    "source_commit": "4c282849c5dcd64ed859001ffe085e71b36cea6f",
+    "qualification": "incomplete; controlled recovery and retained browser observations only",
+    "actual_azure_calls": 0,
+    "actual_model_calls": 0,
+    "export_inference_calls": 0
   },
   "actual_azure_synthesis_calls": 0,
   "actual_azure_recordings": 0,
   "actual_model_calls": 0,
   "paid_use": false,
   "blockers": [
-    "Existing Microsoft passkey/security-window confirmation pending in Azure tab25.",
-    "Actual Azure F0 Speech resource/key/region and usable free access are unavailable in this installation."
+    "Microsoft passkey/security-window confirmation pending in the preserved Azure tab25; actual F0 resource/key/region unavailable in this installation.",
+    "Manual browser activation returned unchanged state on both the player and an independent plain HTML form. Native app inspection was blocked by tool safety; exact input-delivery cause remains unknown."
   ],
   "unchecked_tasks": [
     "I24.1",
     "I24.2",
     "I24.3",
-    "I24.R1"
+    "I24.R1",
+    "I24.R2",
+    "I24.R3"
   ],
-  "resume": "User completes Microsoft sign-in; inspect actual F0 access, follow README.md for frozen pair synthesis, target observations and complete UI/playback review.",
+  "resume": "Complete protected Microsoft sign-in; inspect actual F0 access; follow README.md for both real recordings, exact target observations and complete player/keyboard activation review.",
   "cleanup": {
-    "owned_player_servers_stopped": true,
-    "owned_player_tab_closed": true,
-    "browser_viewport_reset": true,
-    "microsoft_handoff_tab": 25,
-    "app3000_readiness_http": 200,
-    "user_data_settings_and_media_preserved": true,
-    "canonical_user_GAPS_edit_preserved": true
+    "owned_fixture_server_stopped": true,
+    "owned_tab27_closed": true,
+    "viewport_reset": true,
+    "microsoft_handoff_tab25_preserved": true,
+    "app3000": {
+      "status": 200,
+      "body": "{\"status\":\"ready\"}"
+    },
+    "unchanged_speech_image": "sha256:3650d46b038a05834491545fd48f0c5d72cde3a5c8875b032644b6fe4b217945",
+    "canonical_user_edit": "M audit/spec-fullness-20261008/GAPS.md",
+    "actual_azure_calls": 0,
+    "actual_model_calls": 0,
+    "paid_use": false,
+    "deployment_or_product_restart": false
   }
 }

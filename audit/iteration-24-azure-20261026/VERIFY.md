@@ -111,3 +111,22 @@ Retest manual activation once browser input is available. These are external
 execution/evidence dependencies, not an unresolved product decision. Keep all
 I24 tasks unchecked and do not issue an acceptance record until the complete
 selection passes on a committed-clean revision with that actual evidence.
+
+## Final reconciliation
+
+Source `4c282849c5dcd64ed859001ffe085e71b36cea6f`: full30-case committed-clean
+selection reports **28 passed, two skipped**, overall incomplete. Exact receipt:
+`data/iteration-24-verify-20261026/clean.json`. The two skipped cases are
+FIN-AZURE.P1.azure_positive and FIN-VERIFY.I24.review_positive. All five finding
+groups above have their scoped code/test repairs; this does not close the missing
+actual Azure/audio/activation evidence. No acceptance record is issued.
+
+Pinned OpenSpec1.13.1, graph/discovery, Python AST, player JavaScript syntax and
+original-scope preservation passed. Their inputs match the source commit;
+metadata-only status recording does not invalidate those observations. Local
+MLflow experiment15/run6dda9035ba664cca8b6e2abfeb10ed74, prefix
+verification-recovery-20261026, retains source/native/browser evidence and actual
+readback. Export added zero inference. No deployment, postdeployment, PBT,
+financial execution, provider/key change or paid use occurred. Owned test server
+and tab27 were closed, viewport reset and Microsoft handoff tab25 preserved.
+The user's app reports ready on3000 and canonical GAPS.md remains untouched.
