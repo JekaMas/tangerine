@@ -1,0 +1,140 @@
+{
+  "iteration": 25,
+  "operation": "apply with native self-review/repair",
+  "status": "blocked",
+  "iteration_complete": false,
+  "acceptance_issued": false,
+  "source_commit": "35ac5b52632105738ec0aeb128bcd3434645d424",
+  "source_commits": [
+    "f975f009b7cd4e792760be2be9a99ffdfaf262f4",
+    "35ac5b52632105738ec0aeb128bcd3434645d424"
+  ],
+  "full_selection": {
+    "properties": [
+      "FIN-QWEN.P1",
+      "FIN-VERIFY.I25"
+    ],
+    "receipt": "data/iteration-25-qwen-20261026/clean-bound-runtime.json",
+    "committed_clean": true,
+    "runner_status": "incomplete",
+    "counts": {
+      "passed": 26,
+      "skip": 2
+    },
+    "skipped_cases": [
+      "FIN-QWEN.P1.qwen_positive",
+      "FIN-VERIFY.I25.review_positive"
+    ],
+    "commands": [
+      {
+        "id": "completion-i25",
+        "exit_code": 0,
+        "observed_tests": {
+          "unittest::tests.test_completion_i25.CompletionI25.test_evidence_mismatch_negative": "pass",
+          "unittest::tests.test_completion_i25.CompletionI25.test_qwen_positive": "skip",
+          "unittest::tests.test_completion_i25.CompletionI25.test_review_positive": "skip",
+          "unittest::tests.test_completion_i25.CompletionI25.test_typography_omission_negative": "pass",
+          "unittest::tests.test_completion_i25.CompletionI25.test_ux_omission_negative": "pass"
+        }
+      },
+      {
+        "id": "completion-i25-contracts",
+        "exit_code": 0,
+        "observed_tests": {
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_cli_human_failure_negative": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_complete_pair_assembly_positive": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_foreground_deadline_negative": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_partial_cancel_negative": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_plan_freezes_default_runtime_positive": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_plan_targets_and_voices_positive": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_player_private_routes_negative": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_preview_is_incomplete_negative": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_reference_survives_later_failure_positive": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_resume_saved_responses_positive": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_runtime_no_fallback_negative": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_runtime_selection_positive": "pass",
+          "unittest::tests.test_qwen_comparison.QwenForeground.test_client_timeout_closes_native_child_negative": "pass",
+          "unittest::tests.test_qwen_comparison.QwenForeground.test_native_deadline_is_capped_negative": "pass",
+          "unittest::tests.test_qwen_comparison.QwenForeground.test_native_deadline_releases_child_negative": "pass",
+          "unittest::tests.test_qwen_comparison.QwenForeground.test_native_disconnect_releases_child_negative": "pass"
+        }
+      },
+      {
+        "id": "completion-i25-native-runtime",
+        "exit_code": 0,
+        "observed_tests": {
+          "unittest::tests.test_qwen_native_runtime.QwenNativeRuntime.test_native_compute_context_positive": "pass",
+          "unittest::tests.test_qwen_native_runtime.QwenNativeRuntime.test_native_frozen_runtime_positive": "pass",
+          "unittest::tests.test_qwen_native_runtime.QwenNativeRuntime.test_native_runtime_cache_separation_positive": "pass",
+          "unittest::tests.test_qwen_native_runtime.QwenNativeRuntime.test_native_unavailable_device_negative": "pass"
+        }
+      },
+      {
+        "id": "completion-i25-player",
+        "exit_code": 0,
+        "observed_tests": {
+          "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_rendered_layout_positive": "pass",
+          "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_saved_media_failure_negative": "pass",
+          "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_saved_media_retry_positive": "pass"
+        }
+      }
+    ],
+    "started_at": "2026-10-26T07:40:55.424589+00:00",
+    "finished_at": "2026-10-26T07:41:13.435302+00:00"
+  },
+  "findings": {
+    "unbound_compute_label": "reproduced on f975f00; repaired by consuming frozen qwen_runtime plan pieces, planner/default and native factory red/green tests",
+    "partial_resume": "implemented and observed through native owners with constructed model output",
+    "deadline_disconnect": "unchanged native child owner; actual process-group termination observed using controlled model-import timing",
+    "player_read_recovery": "actual controlled browser/HTTP observations; one retry then human guidance"
+  },
+  "structural_checks": {
+    "openspec": "passed with pinned1.13.1; delta requirements unchanged since receipt",
+    "graph_and_discovery": "passed; graph-bound-runtime.json and discovery-bound-runtime.json",
+    "python_syntax": "passed; syntax.json plus invalidated-owner syntax-bound-runtime.json",
+    "player_javascript": "passed; javascript-syntax.log, player code unchanged",
+    "preservation": "passed; PRESERVATION.json"
+  },
+  "reviews": {
+    "ui_ux": "incomplete: controlled rendered/read-recovery behavior observed, native activation/keyboard/actual Qwen playback unverified",
+    "typography": "pass for inspected1280/390/320 rendered states; expanded details unverified",
+    "evidence": "incomplete: no complete real Qwen pair; constructed/native evidence and limitations retained"
+  },
+  "lab": {
+    "experiment_id": "16",
+    "run_id": "22acb2b0fcc54e8780554724ebeb203c",
+    "artifact_prefix": "source-35ac5b5",
+    "source_commit": "35ac5b52632105738ec0aeb128bcd3434645d424",
+    "readback": true,
+    "actual_model_calls": 0,
+    "matched_successful_model_calls": 0,
+    "export_inference_calls": 0,
+    "qualification": "incomplete: controlled/native preparation only"
+  },
+  "actual_model_calls": 0,
+  "actual_qwen_recordings": 0,
+  "paid_use": false,
+  "installation_performed": false,
+  "unapproved_setup_request": "Install pinned Qwen speech dependencies into an isolated project environment and copy the accepted local model cache. Pending.",
+  "blockers": [
+    "Practical MPS candidate: actual host PyTorch/MPS available, but Qwen/Transformers/tokenizer/audio dependencies absent; isolated local setup approval is pending. Historical CPU partial/timeout is retained, not labelled a complete or practical pair.",
+    "Browser input delivery: native click/Expand/audio Play/Tab, Playwright click and scoped CDP mouse did not activate controls. Actual playback/keyboard review cannot be claimed; exact cause remains unknown."
+  ],
+  "unchecked_tasks": [
+    "I25.1",
+    "I25.2",
+    "I25.3"
+  ],
+  "resume": "Resolve the pending isolated setup selection, render both original variants through the native foreground owner with frozen compute/voices/targets, retain actual model input/output/Lab evidence, restore browser input delivery and observe real playback. Rerun invalidated cases; check tasks only after a complete committed-clean passed selection.",
+  "cleanup": {
+    "owned_fixture_server_stopped": true,
+    "owned_tab28_closed": true,
+    "viewport_reset": true,
+    "temporary_visibility_reset": true,
+    "microsoft_handoff_tab25_preserved": true,
+    "app3000_health_last_observed": 200,
+    "speech_image_unchanged": "sha256:3650d46b038a05834491545fd48f0c5d72cde3a5c8875b032644b6fe4b217945",
+    "canonical_user_edit_preserved": "M audit/spec-fullness-20261008/GAPS.md",
+    "application_deployed": false
+  }
+}

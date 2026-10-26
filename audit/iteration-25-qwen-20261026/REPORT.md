@@ -46,8 +46,8 @@ served. Private requests, environment and Lab artifacts are not exposed.
 The complete selected informational graph has **28 exact cases: 26 passed,
 2 skipped, 0 failed**. The skips are `FIN-QWEN.P1.qwen_positive` and
 `FIN-VERIFY.I25.review_positive`. Native command exit 0 does not turn those skips
-into acceptance. The committed-clean observation will be recorded in STATUS.json
-on the source revision; this document does not claim a green acceptance receipt.
+into acceptance. The committed-clean observation on source `35ac5b5` is recorded in STATUS.json:
+26 pass,2 skip, runner incomplete. This is not a green acceptance receipt.
 
 The passing cases cover literal target/voice/split projection; complete sample
 assembly with exact turn gaps; admitted-response and completed-piece reuse;
@@ -116,8 +116,11 @@ the owned test tab/server were closed; user tabs and Microsoft handoff survive.
 functional evidence and media read observations are retained separately from
 actual synthesis. Model dispatches in this increment are 0; no hosted judge,
 performance/bulk campaign, purchase, overage or fallback occurred. Local Lab
-export/readback will preserve this bounded zero-call scope and source revision;
-it cannot convert missing real synthesis into a pass. The earlier CPU timeout,
+experiment16/run `22acb2b0fcc54e8780554724ebeb203c`, prefix `source-35ac5b5`,
+retains48 artifacts and actual scoped readback of the source-bound run scope,
+clean receipt, runtime inventory and browser observations. Export adds0 model
+calls and cannot convert missing real synthesis into a pass. The earlier source
+run `4afde08a6b9c487cb52660f32f37c4a2` remains separate. The earlier CPU timeout,
 cancelled int8 attempt and short preview remain in the original comparison audit.
 
 ## Exact runtime blocker and next operation
