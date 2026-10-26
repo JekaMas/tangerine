@@ -1200,9 +1200,18 @@ Depends on 17; 27 only if those sources are selected. Properties:
 `FIN-EMPIRICAL.P1`, `FIN-VERIFY.I28`. Optional selected saved-data report scope;
 verification performs zero new model calls.
 
-- [ ] I28.1 Materialize deterministic/saved-record report arithmetic, provenance, denominator and coverage cases, including constructed-versus-genuine and missing-input counterexamples; no bulk LLM execution.
-- [ ] I28.2 Reproduce reports from available saved populations; keep source frequency/relationships, difficulty and recommendation-effect claims distinct and unavailable inputs unknown. Existing benchmark datasets/fields remain, but no performance campaign is required.
-- [ ] I28.3 Verify exact report results, UI/typography, retained native/Lab evidence and zero new inference; retain missing data honestly, reconcile and commit without a model benchmark prerequisite.
+- [x] I28.1 Materialize deterministic/saved-record report arithmetic, provenance, denominator and coverage cases, including constructed-versus-genuine and missing-input counterexamples; no bulk LLM execution.
+- [x] I28.2 Reproduce reports from available saved populations; keep source frequency/relationships, difficulty and recommendation-effect claims distinct and unavailable inputs unknown. Existing benchmark datasets/fields remain, but no performance campaign is required.
+- [x] I28.3 Verify exact report results, UI/typography, retained native/Lab evidence and zero new inference; retain missing data honestly, reconcile and commit without a model benchmark prerequisite.
+
+I28 acceptance: 32/32 selected cases (15 positive, 17 negative) passed on committed-
+clean `da09fc70677f6257d58d67e31757371cd4293189`. Exact native fractions, report
+persistence/replay, constructed-versus-genuine eligibility, unknown denominators,
+122-category coverage and actual Chrome/typography/recovery observations are in
+`audit/iteration-28-reports-20261026/REPORT.md` and `ACCEPTANCE.json`. Zero new
+model or speech calls; no performance campaign. Missing genuine populations stay
+unknown. The unchanged download handler/control is separate from unobserved
+browser file delivery. User app/data/settings and canonical GAPS.md are preserved.
 
 ### Iteration 29 — Final UI/UX, typography and real full flow
 

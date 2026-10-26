@@ -46,9 +46,7 @@ Unchanged I14 arithmetic/experiment and I21 selection/recovery observations keep
 their original proof boundaries. New presentation and selected-population cases
 need fresh observations; no unrelated full-project or model benchmark reruns.
 
-Status: stable implementation and self-review complete; the repaired 32-case
-informational selection passes. Local code commit and committed-clean acceptance
-are next.
+Status: complete. The 32-case committed-clean selection passes on `da09fc70677f6257d58d67e31757371cd4293189`. I28.1–I28.3 are checked against those actual outcomes; acceptance is in ACCEPTANCE.json.
 
 Native red observation: thirteen exact tests passed; self-referential follow-up
 incorrectly produced a paired 0/1. The original failed package receipt is retained

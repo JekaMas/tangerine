@@ -1,7 +1,9 @@
 # Iteration 28 — saved-data empirical reports and coverage
 
-Implementation and self-review are complete; committed-clean acceptance is
-pending. The selected properties are `FIN-EMPIRICAL.P1` and `FIN-VERIFY.I28`.
+**Passed for the selected iteration 28 scope: 32/32 cases** (15 positive, 17 negative)
+on committed-clean source `da09fc70677f6257d58d67e31757371cd4293189`. The selected properties are
+`FIN-EMPIRICAL.P1` and `FIN-VERIFY.I28`; I28.1–I28.3 are complete.
+`ACCEPTANCE.json` records the exact case outcomes and original proof limits.
 `SELECTION.json` registers 32 literal cases. No model call, speech synthesis,
 provider change, purchase, installation, acquisition, deployment or publication
 occurred. This is the I28 report capability, not whole-product release acceptance.
