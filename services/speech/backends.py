@@ -123,9 +123,11 @@ def hosted(profile,turn,timeout):
 def qwen(profile,turn):
  from qwen_tts import Qwen3TTSModel
  import numpy as np,torch
+ from qwen_runtime import configuration
+ execution=configuration(torch)
  # Small autoregressive CPU steps lose time to oversized intra-op pools.
  torch.set_num_threads(min(4,os.cpu_count() or 1))
- execution={'device':'cpu','dtype':'float32','attention_implementation':'eager','torch_num_threads':torch.get_num_threads(),'torch_interop_threads':torch.get_num_interop_threads()}
+ execution.update(torch_num_threads=torch.get_num_threads(),torch_interop_threads=torch.get_num_interop_threads(),torch_version=torch.__version__)
  text=''.join(op['text'] for op in turn['operations'] if op['kind']=='text')
  if len(turn['operations'])!=1 or turn['operations'][0]['kind']!='text':raise ValueError('CAPABILITY_UNAVAILABLE')
  custom=profile.get('adapter_version')=='qwen-custom-v1'
@@ -137,9 +139,15 @@ def qwen(profile,turn):
    prompt=torch.load(conditioning/'conditioning.pt',map_location='cpu',weights_only=False)
    conditioning_manifest=json.loads((conditioning/'manifest.json').read_text())
   except FileNotFoundError:raise ValueError('VOICE_SETUP_REQUIRED') from None
- key=str(root)
- if key not in CACHE:CACHE[key]=Qwen3TTSModel.from_pretrained(str(root),device_map='cpu',dtype=torch.float32,attn_implementation='eager',local_files_only=True)
+ key=(str(root),execution['device'],execution['dtype'])
+ if key not in CACHE:CACHE[key]=Qwen3TTSModel.from_pretrained(str(root),device_map=execution['device'],dtype=getattr(torch,execution['dtype']),attn_implementation='eager',local_files_only=True)
  model=CACHE[key]
+ # Capture placement reported by the loaded model as distinct from the request.
+ # Unknown fixture/library fields stay unknown; this adds no qualification gate.
+ execution.update(
+  model_device=str(model.device) if getattr(model,'device',None) is not None else None,
+  model_dtype=str(model.model.dtype) if getattr(model.model,'dtype',None) is not None else None,
+  codec_device=str(model.model.speech_tokenizer.device) if getattr(getattr(model.model,'speech_tokenizer',None),'device',None) is not None else None)
  inputs=[]
  with observe_method(model,'_tokenize_texts',inputs),observe_method(model.model,'generate',inputs,capture_result=False):
   if custom:audio,rate=model.generate_custom_voice(text=text,language='English',speaker=turn['voice_id'],instruct=turn.get('accent_description') or '')

@@ -266,3 +266,15 @@ paid credits/overage, trial, billing linkage, installation or publication.
 The existing Microsoft protected sign-in and actual F0 access remain prerequisites
 for real Azure observations, not product approval gates. Preserve the user's
 running services, data, settings, media, browser tabs and canonical GAPS.md edit.
+
+2026-10-26 iteration25: the actual user selects the complete local Qwen dialogue
+pair. Scoped native runtime selection, comparison/persistence/player tests,
+DAG/specification reconciliation, existing-local inference/Lab observations and
+local commits are in scope. The original four saved turns, Ryan/Aiden assignment,
+four targets and270-second foreground child ownership remain. No paid credits,
+overage, fallback, deployment, PBT, financial execution, publication or changes to
+the running user's app/settings/data/media. An isolated macOS dependency setup
+was specifically requested because existing host PyTorch supports MPS but the
+Qwen speech dependencies are absent; approval is pending and no installation has
+occurred. Browser input delivery remains unverified separately from actual
+rendering/metadata/read-recovery observations. No new product approval gate.

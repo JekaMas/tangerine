@@ -1,5 +1,18 @@
 # Speech preparation runtime
 
+The iteration25 finite comparison reuses the same native Qwen plan/piece and
+foreground child owners. Its optional local development runtime is explicitly
+selected with `TANGERINE_QWEN_DEVICE=cpu|mps` and
+`TANGERINE_QWEN_DTYPE=float32|float16`; defaults stay CPU/float32. Actual compute,
+Torch version, tokenizer/generation input, pinned model and voice are saved in
+the existing receipt. An unavailable selected device returns the existing
+capability failure and never falls back. This does not select a new ordinary
+provider, change the Docker-only application prerequisites or qualify arbitrary
+MPS model/voice combinations. The selected CustomVoice comparison still needs
+actual complete native/Lab/media observations; respelling is an approximation,
+and a short preview remains incomplete. See
+`audit/iteration-25-qwen-20261026/README.md` for its exact scope and saved source.
+
 Iteration7 implements rendering of an existing on-demand preparation after its clean text and mutation phases. The foreground Go owner reads the accepted frozen settings and candidate; it never calls the text LLM during rendering. Controlled acoustic operations are implemented by iteration8 as defined in controlled-acoustic-runtime.md; source/native-import integration remains iteration13. Their contracts and features are preserved.
 
 POST /api/v1/preparations/{id}:render accepts preparation_id and a positive render_attempt with Idempotency-Key. The CLI equivalent is `prepare` action `render`. GET /api/v1/preparations?view=public supplies only preparation identity, phase states, availability, safe failure and the next render counter; limit/cursor pagination preserves access to all records. GET /api/v1/preparations/{id}/audio streams the saved finite WAV and supports byte ranges. The browser exposes these operations through its existing private proxy and displays Generate audio, Retry audio and stored playback. Refresh retries failed reads and reloads the audio element. Text, mutations, correction key and private receipts are never returned by this listener view.
