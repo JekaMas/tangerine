@@ -167,10 +167,14 @@ missing successful live recommendation stage. The first observer run also found
 an authored experiment-envelope shape mistake; its corrected literal test passes.
 It is retained as a harness error, not an application defect.
 
-Stable Go formatting/vet and the final locked Next build passed. Actual affected
-Go tests, native serving/storage and current Chrome/media checks are retained;
-OpenSpec/DAG/discovery and committed-clean selection results are recorded in
-STATUS.json after execution. REUSE.md names exact invalidation and proof limits.
+Stable Go formatting/vet and the final locked Next build passed. The affected
+Go receipts contain79 unique passing test identities, including six new cases.
+Pinned strict OpenSpec and graph/discovery validation pass. The actual committed-
+clean selection on `cef9d4315e7d21621292d2fdb27d104aca020ba2` has35 passed and
+two failed cases out of37 (23positive,14negative); the failed cases are exactly
+the required full-flow/review positives above. STATUS.json and the native clean
+receipt retain that failed gate, rather than a fabricated passed acceptance.
+REUSE.md names exact invalidation and proof limits.
 No unrelated green suite is rerun to inflate this result.
 
 The owned API exited successfully and owned web/speech/DB/media are stopped;

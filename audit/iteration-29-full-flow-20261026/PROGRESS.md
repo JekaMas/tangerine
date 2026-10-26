@@ -143,3 +143,11 @@ No green scope is silently weakened. Strict pinned OpenSpec and graph/discovery
 validation passed. Stable Go formatting/vet and final locked web build are
 retained. The final committed-clean observer gate and its exact candidate/status
 will be recorded in STATUS.json; I29.2/.3 remain open, not accepted.
+
+Committed source candidate cef9d4315e7d21621292d2fdb27d104aca020ba2 was clean
+when the full37-case observer gate ran. Actual result:35passed,2fail, exactly
+FIN-FLOW.P1.flow_positive and FIN-VERIFY.I29.review_positive for the unavailable
+required recommendation stage. All14negative cases pass. STATUS.json records
+the native failed gate and finite successful scopes. The final record commit
+changes only audit disposition/progress; it does not refresh fingerprints or
+rerun unaffected runtime observations. No further provider/speech call occurred.
