@@ -1,6 +1,15 @@
 # Full local Teacher Error Trainer
 
-Current authorized increment: **iteration 26** reconciles existing CV-01–CV-06
+Current authorized increment: **iteration 30** lands the verified release branch
+into main, publishes to the actual authorized GitHub destination and verifies
+the real downloaded source ZIP using the Docker-only launcher, retained data
+through restart, native readback and fresh setup UI/typography. Preserve the
+unrelated canonical GAPS.md edit and running app3000. No model/provider calls,
+paid use, PBT, host installation or hosted deployment are required. Current
+authority is recorded in docs/authority.md; earlier increment scopes below are
+historical rather than additional current restrictions.
+
+Earlier iteration 26 reconciled existing CV-01–CV-06
 evidence and selected connected-speech target/control observations. Reuse saved
 audio, physical measurements, successful judgments and original failures. Repair
 the selected probe contexts and missing correct controls through the existing

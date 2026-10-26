@@ -1,3 +1,14 @@
+2026-10-27 iteration30 apply: the actual user requests landing into main,
+publication to the authorized GitHub destination and verification of the real
+downloaded source ZIP. Source/test/documentation repairs, ordinary Git/GitHub
+operations, disposable Docker-only startup/restart, browser/typography review
+and local commits are in scope. No remote was configured at entry; exact public
+repository selection is pending the requested user response. Do not publish
+until it is resolved. Preserve the canonical GAPS.md edit, running app3000,
+its records/settings/media, other Docker resources and existing browser tabs.
+No provider calls, model downloads, purchased credits/overage, PBT, financial
+execution, host installation or hosted application deployment are included.
+
 2026-10-26 iteration29 verify/repair: the user requires full selected conformance,
 root-cause/sibling repair, safe nonblocking error recovery and actual UI/UX,
 typography and media review through committed-clean iteration acceptance. Reuse
