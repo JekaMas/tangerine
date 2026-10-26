@@ -23,10 +23,13 @@ The local comparison player only reads saved recordings; viewing, refreshing
 and playing never dispatch synthesis. A full pair requires all planned pieces
 and both complete variants; the old 5.6-second preview cannot satisfy it.
 
-The native plan binds `qwen_runtime` per piece. The CLI selection is therefore
-the consumed selection even after a native server environment change; direct
+The native plan binds `qwen_runtime` per piece. The original CLI selection is
+frozen and remains the consumed selection after a native server environment change; direct
 legacy pieces without that binding keep the explicit environment/default route.
 Loaded model/codec placement is recorded separately from requested placement.
+The `--device` and `--dtype` flags select a new plan; they do not rewrite a saved
+one on resume. Use a new output folder for a changed compute candidate, preserving
+the old plan and recordings.
 
 Native inputs, outputs, calls, actual runtime and failures belong in ignored
 `data/iteration-25-qwen-20261026/`. The existing local MLflow Lab receives these
@@ -39,7 +42,7 @@ one new piece, reuses saved responses/audio and prints its effective frozen
 compute selection. Repeat the same command/output directory to resume. A
 partial step is ordinary saved progress; it is not a full-pair result. The
 reference WAV becomes playable once its own pieces finish. A temporary local
-connection or HTTP502/503 failure retries once within the original270seconds;
+connection or HTTP502/503 failure retries once within the original 270 seconds;
 cancellation, deadline and terminal configuration failures do not retry.
 The local player retries failed file reads once, keeps independent recordings
 available and gives authored recovery guidance without exposing backend errors.
@@ -55,7 +58,7 @@ This Mac is an Apple M1 Max with 64 GiB RAM. Its existing Python 3.12/PyTorch
 are absent. An isolated dependency setup is requested; no installation has
 occurred at this checkpoint. An unavailable GPU must not silently select CPU.
 
-Verify2026-10-26 exercised the installed CPU image through a test-owned native
+Verify 2026-10-26 exercised the installed CPU image through a test-owned native
 server. The first piece timed out at the unchanged client deadline; the native
 child was released and no completed audio was admitted. Requested inputs and
 the failure are retained; actual encoded model context is unavailable because

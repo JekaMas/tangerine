@@ -1,35 +1,82 @@
 {
   "iteration": 25,
-  "operation": "apply with native self-review/repair",
+  "operation": "verify with authorized repair",
   "status": "blocked",
   "iteration_complete": false,
   "acceptance_issued": false,
-  "source_commit": "35ac5b52632105738ec0aeb128bcd3434645d424",
+  "source_commit": "c6cad2f0c13c40cec1fb4749dad6b09ec0ecdc1f",
   "source_commits": [
     "f975f009b7cd4e792760be2be9a99ffdfaf262f4",
-    "35ac5b52632105738ec0aeb128bcd3434645d424"
+    "35ac5b52632105738ec0aeb128bcd3434645d424",
+    "c6cad2f0c13c40cec1fb4749dad6b09ec0ecdc1f"
   ],
+  "previous_apply": {
+    "source_commit": "35ac5b52632105738ec0aeb128bcd3434645d424",
+    "receipt": "data/iteration-25-qwen-20261026/clean-bound-runtime.json",
+    "counts": {
+      "passed": 26,
+      "skip": 2
+    }
+  },
   "full_selection": {
     "properties": [
       "FIN-QWEN.P1",
       "FIN-VERIFY.I25"
     ],
-    "receipt": "data/iteration-25-qwen-20261026/clean-bound-runtime.json",
+    "receipt": "data/iteration-25-verify-20261026/clean.json",
     "committed_clean": true,
     "runner_status": "incomplete",
     "counts": {
-      "passed": 26,
+      "passed": 37,
       "skip": 2
     },
-    "skipped_cases": [
-      "FIN-QWEN.P1.qwen_positive",
-      "FIN-VERIFY.I25.review_positive"
-    ],
+    "case_statuses": {
+      "FIN-QWEN.P1.actual_cpu_timeout_negative": "passed",
+      "FIN-QWEN.P1.bounded_step_resume_positive": "passed",
+      "FIN-QWEN.P1.cli_human_failure_negative": "passed",
+      "FIN-QWEN.P1.cli_setup_failure_negative": "passed",
+      "FIN-QWEN.P1.client_timeout_closes_native_child_negative": "passed",
+      "FIN-QWEN.P1.complete_pair_assembly_positive": "passed",
+      "FIN-QWEN.P1.foreground_deadline_negative": "passed",
+      "FIN-QWEN.P1.http_status_failure_negative": "passed",
+      "FIN-QWEN.P1.native_compute_context_positive": "passed",
+      "FIN-QWEN.P1.native_deadline_is_capped_negative": "passed",
+      "FIN-QWEN.P1.native_deadline_releases_child_negative": "passed",
+      "FIN-QWEN.P1.native_disconnect_releases_child_negative": "passed",
+      "FIN-QWEN.P1.native_frozen_runtime_positive": "passed",
+      "FIN-QWEN.P1.native_runtime_cache_separation_positive": "passed",
+      "FIN-QWEN.P1.native_unavailable_device_negative": "passed",
+      "FIN-QWEN.P1.plan_freezes_default_runtime_positive": "passed",
+      "FIN-QWEN.P1.plan_targets_and_voices_positive": "passed",
+      "FIN-QWEN.P1.player_private_routes_negative": "passed",
+      "FIN-QWEN.P1.preview_is_incomplete_negative": "passed",
+      "FIN-QWEN.P1.qwen_negative": "passed",
+      "FIN-QWEN.P1.qwen_positive": "skip",
+      "FIN-QWEN.P1.reference_available_at_step_boundary_positive": "passed",
+      "FIN-QWEN.P1.reference_survives_later_failure_positive": "passed",
+      "FIN-QWEN.P1.resume_saved_responses_positive": "passed",
+      "FIN-QWEN.P1.retry_exhausted_and_terminal_negative": "passed",
+      "FIN-QWEN.P1.retry_transient_positive": "passed",
+      "FIN-QWEN.P1.runtime_no_fallback_negative": "passed",
+      "FIN-QWEN.P1.runtime_selection_positive": "passed",
+      "FIN-VERIFY.I25.evidence_mismatch_negative": "passed",
+      "FIN-VERIFY.I25.player_http_file_failure_negative": "passed",
+      "FIN-VERIFY.I25.player_read_retry_positive": "passed",
+      "FIN-VERIFY.I25.player_sibling_read_failure_negative": "passed",
+      "FIN-VERIFY.I25.read_failure_rendered_negative": "passed",
+      "FIN-VERIFY.I25.rendered_layout_positive": "passed",
+      "FIN-VERIFY.I25.review_positive": "skip",
+      "FIN-VERIFY.I25.saved_media_failure_negative": "passed",
+      "FIN-VERIFY.I25.saved_media_retry_positive": "passed",
+      "FIN-VERIFY.I25.typography_omission_negative": "passed",
+      "FIN-VERIFY.I25.ux_omission_negative": "passed"
+    },
     "commands": [
       {
         "id": "completion-i25",
         "exit_code": 0,
         "observed_tests": {
+          "unittest::tests.test_completion_i25.CompletionI25.test_actual_cpu_timeout_negative": "pass",
           "unittest::tests.test_completion_i25.CompletionI25.test_evidence_mismatch_negative": "pass",
           "unittest::tests.test_completion_i25.CompletionI25.test_qwen_positive": "skip",
           "unittest::tests.test_completion_i25.CompletionI25.test_review_positive": "skip",
@@ -41,16 +88,25 @@
         "id": "completion-i25-contracts",
         "exit_code": 0,
         "observed_tests": {
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_bounded_step_resume_positive": "pass",
           "unittest::tests.test_qwen_comparison.QwenComparison.test_cli_human_failure_negative": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_cli_setup_failure_negative": "pass",
           "unittest::tests.test_qwen_comparison.QwenComparison.test_complete_pair_assembly_positive": "pass",
           "unittest::tests.test_qwen_comparison.QwenComparison.test_foreground_deadline_negative": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_http_status_failure_negative": "pass",
           "unittest::tests.test_qwen_comparison.QwenComparison.test_partial_cancel_negative": "pass",
           "unittest::tests.test_qwen_comparison.QwenComparison.test_plan_freezes_default_runtime_positive": "pass",
           "unittest::tests.test_qwen_comparison.QwenComparison.test_plan_targets_and_voices_positive": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_player_http_file_failure_negative": "pass",
           "unittest::tests.test_qwen_comparison.QwenComparison.test_player_private_routes_negative": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_player_read_retry_positive": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_player_sibling_read_failure_negative": "pass",
           "unittest::tests.test_qwen_comparison.QwenComparison.test_preview_is_incomplete_negative": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_reference_available_at_step_boundary_positive": "pass",
           "unittest::tests.test_qwen_comparison.QwenComparison.test_reference_survives_later_failure_positive": "pass",
           "unittest::tests.test_qwen_comparison.QwenComparison.test_resume_saved_responses_positive": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_retry_exhausted_and_terminal_negative": "pass",
+          "unittest::tests.test_qwen_comparison.QwenComparison.test_retry_transient_positive": "pass",
           "unittest::tests.test_qwen_comparison.QwenComparison.test_runtime_no_fallback_negative": "pass",
           "unittest::tests.test_qwen_comparison.QwenComparison.test_runtime_selection_positive": "pass",
           "unittest::tests.test_qwen_comparison.QwenForeground.test_client_timeout_closes_native_child_negative": "pass",
@@ -73,68 +129,85 @@
         "id": "completion-i25-player",
         "exit_code": 0,
         "observed_tests": {
+          "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_read_failure_rendered_negative": "pass",
           "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_rendered_layout_positive": "pass",
           "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_saved_media_failure_negative": "pass",
           "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_saved_media_retry_positive": "pass"
         }
       }
     ],
-    "started_at": "2026-10-26T07:40:55.424589+00:00",
-    "finished_at": "2026-10-26T07:41:13.435302+00:00"
+    "started_at": "2026-10-26T08:25:38.671843+00:00",
+    "finished_at": "2026-10-26T08:25:59.474947+00:00"
   },
   "findings": {
-    "unbound_compute_label": "reproduced on f975f00; repaired by consuming frozen qwen_runtime plan pieces, planner/default and native factory red/green tests",
-    "partial_resume": "implemented and observed through native owners with constructed model output",
-    "deadline_disconnect": "unchanged native child owner; actual process-group termination observed using controlled model-import timing",
-    "player_read_recovery": "actual controlled browser/HTTP observations; one retry then human guidance"
+    "transient_retry": "reproduced on01ecb48; one retry for connection/HTTP502/503 within the original shared deadline; terminal/cancellation/deadline remain finite",
+    "http_status_protocol": "typed actual HTTP/protocol failures; no error body/token forwarded into public recovery",
+    "cli_setup": "folder and plan setup covered by the human-readable command handler",
+    "player_read_recovery": "single read owner retries once and retains independently saved media; persistent failure has authored guidance",
+    "player_fallback_status": "one complete reference is no longer labelled no recording when progress is unreadable",
+    "bounded_progress": "one-new-piece explicit steps reuse admitted responses and publish the completed reference before later mutation work"
   },
   "structural_checks": {
-    "openspec": "passed with pinned1.13.1; delta requirements unchanged since receipt",
-    "graph_and_discovery": "passed; graph-bound-runtime.json and discovery-bound-runtime.json",
-    "python_syntax": "passed; syntax.json plus invalidated-owner syntax-bound-runtime.json",
-    "player_javascript": "passed; javascript-syntax.log, player code unchanged",
-    "preservation": "passed; PRESERVATION.json"
+    "openspec": "passed: pinned1.13.1, tasks artifact changed",
+    "graph_discovery": "passed:11newcases registered and discovery scope repaired",
+    "python_syntax": "passed:changed six Python files",
+    "whitespace": "passed:stable staged batch",
+    "player_javascript": "retained unchanged script syntax receipt",
+    "preservation": "passed:original122categories/recipes,42formulas,11source scopes and migrations unchanged"
   },
   "reviews": {
-    "ui_ux": "incomplete: controlled rendered/read-recovery behavior observed, native activation/keyboard/actual Qwen playback unverified",
-    "typography": "pass for inspected1280/390/320 rendered states; expanded details unverified",
-    "evidence": "incomplete: no complete real Qwen pair; constructed/native evidence and limitations retained"
+    "code": "pass for the repaired comparison/transport/read owners with literal regression cases; self-review",
+    "ui_ux": "incomplete: rendered recovery states pass; in-app native input activation and real full-pair playback remain unobserved",
+    "typography": "pass for inspected collapsed recovery states at1280/390/320; expanded/focus states remain unobserved",
+    "evidence": "incomplete:actual CPU request timed out with no complete audio or encoded model receipt; Lab export/readback succeeded with these limits explicit"
   },
   "lab": {
     "experiment_id": "16",
-    "run_id": "22acb2b0fcc54e8780554724ebeb203c",
-    "artifact_prefix": "source-35ac5b5",
-    "source_commit": "35ac5b52632105738ec0aeb128bcd3434645d424",
+    "run_id": "93d86570ac8244149c1f70c0acfd63c8",
+    "artifact_prefix": "verify-c6cad2f",
+    "source_commit": "c6cad2f0c13c40cec1fb4749dad6b09ec0ecdc1f",
     "readback": true,
-    "actual_model_calls": 0,
+    "actual_native_piece_requests": 1,
+    "actual_model_calls": null,
     "matched_successful_model_calls": 0,
     "export_inference_calls": 0,
-    "qualification": "incomplete: controlled/native preparation only"
+    "qualification": "incomplete: real CPU timeout; no full pair/native output or activation"
   },
-  "actual_model_calls": 0,
+  "actual_native_piece_requests": 1,
+  "actual_native_plan_requests": 1,
+  "actual_model_calls": null,
+  "actual_model_call_count_reason": "Worker terminated before returning its model-visible receipt; no successful entrypoint count is fabricated.",
   "actual_qwen_recordings": 0,
   "paid_use": false,
   "installation_performed": false,
   "unapproved_setup_request": "Install pinned Qwen speech dependencies into an isolated project environment and copy the accepted local model cache. Pending.",
   "blockers": [
-    "Practical MPS candidate: actual host PyTorch/MPS available, but Qwen/Transformers/tokenizer/audio dependencies absent; isolated local setup approval is pending. Historical CPU partial/timeout is retained, not labelled a complete or practical pair.",
-    "Browser input delivery: native click/Expand/audio Play/Tab, Playwright click and scoped CDP mouse did not activate controls. Actual playback/keyboard review cannot be claimed; exact cause remains unknown."
+    "The selected installed CPU request did not finish one piece inside270seconds. Complete real pair/native output/encoded-context observations remain absent. The previous isolated MPS dependency setup question is unanswered; no alternative runtime is installed or silently selected.",
+    "In-app browser native disclosure click again left the control collapsed/focus on the web area. Actual playback/keyboard/click proof remains absent. The installed-Chrome selection question is unanswered."
   ],
   "unchecked_tasks": [
     "I25.1",
     "I25.2",
     "I25.3"
   ],
-  "resume": "Resolve the pending isolated setup selection, render both original variants through the native foreground owner with frozen compute/voices/targets, retain actual model input/output/Lab evidence, restore browser input delivery and observe real playback. Rerun invalidated cases; check tasks only after a complete committed-clean passed selection.",
+  "resume": "Resolve the existing isolated-runtime setup selection and browser question. Preserve the failed CPU plan/logs and start a separately frozen explicit candidate for another compute selection; resume must not rewrite frozen CPU settings. Produce both complete original variants through native270second ownership, capture actual model inputs/outputs/Lab observations and observe playback/keyboard/click actions. Reobserve only invalidated cases, then reconcile the whole iteration on a clean committed source before accepting tasks.",
   "cleanup": {
+    "test_owned_native_container_removed": true,
+    "user_app_health_http": 200,
+    "canonical_status": [
+      " M audit/spec-fullness-20261008/GAPS.md"
+    ],
+    "user_volumes_removed": false,
+    "user_services_restarted": false,
+    "paid_use": false,
+    "installation_performed": false,
+    "application_deployed": false,
+    "postdeployment": false,
+    "pbt": false,
+    "financial_execution": false,
     "owned_fixture_server_stopped": true,
-    "owned_tab28_closed": true,
+    "owned_browser_tab29_closed": true,
     "viewport_reset": true,
-    "temporary_visibility_reset": true,
-    "microsoft_handoff_tab25_preserved": true,
-    "app3000_health_last_observed": 200,
-    "speech_image_unchanged": "sha256:3650d46b038a05834491545fd48f0c5d72cde3a5c8875b032644b6fe4b217945",
-    "canonical_user_edit_preserved": "M audit/spec-fullness-20261008/GAPS.md",
-    "application_deployed": false
+    "microsoft_handoff_tab25_preserved": true
   }
 }

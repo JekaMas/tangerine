@@ -1,5 +1,11 @@
 # Iteration 25 apply — local Qwen dialogue pair
 
+**Latest verify checkpoint:** [VERIFY.md](VERIFY.md) supersedes this historical
+apply checkpoint. Clean source `c6cad2f` has 37 passes/two skips over 39 cases.
+The actual installed CPU attempt timed out with no complete audio; encoded model
+context and full playback/activation remain unavailable. No iteration acceptance
+is issued. The current machine-readable state is `STATUS.json`.
+
 **Incomplete; no iteration acceptance.** The native completion/recovery tooling
 is implemented and its controlled observations pass. The complete real Qwen pair
 and actual browser activation/playback remain unavailable. Tasks I25.1–I25.3
