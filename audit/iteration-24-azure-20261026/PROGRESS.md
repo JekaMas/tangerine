@@ -35,9 +35,21 @@ Local MLflow run6dda9035ba664cca8b6e2abfeb10ed74 retains controlled preparation
 and readback with its origin limits. The waiting view was visually inspected at
 1280/390/320; interaction/playback remains unverified.
 
-Current checkpoint: actual Microsoft passkey handoff and actual F0
-resource/key/region still unavailable. Finish independent record/structural work,
-commit this partial increment and run the same full selection with --require-clean.
-Keep all I24 tasks unchecked and record incomplete, not iteration acceptance.
-Resume action: user finishes Microsoft sign-in, then follow README.md with
-observed F0 access and complete both actual recordings/target/player proof.
+Current checkpoint: partial source committed as
+`d9af363b3d72ba0ec2d1a190c335d372440c59cc`. The full18-case committed-clean
+selection reports incomplete:16 passed and two actual Azure/media cases skipped.
+OpenSpec1.13.1, graph/discovery, Python syntax and preservation checks passed;
+structural success is not I24 acceptance. The clean receipt was also read back
+from the existing local Lab run. See STATUS.json for exact identities.
+
+Owned comparison servers and tab26 were closed; the browser viewport was reset.
+Microsoft handoff tab25 remains available. The user's app3000 is ready (HTTP200),
+existing comparison servers and data/settings/media are preserved, and canonical
+GAPS.md remains the user's unrelated edit. Zero Azure/model calls or paid use.
+
+Absolute blocker: Microsoft passkey confirmation and actual F0 resource/key/region
+remain unavailable. All I24 tasks stay unchecked. Resume after the user finishes
+Microsoft sign-in, then follow README.md with observed F0 access and complete
+both actual recordings, target observations and player proof. No spec change or
+additional product decision is needed. Do not issue a green acceptance record
+from controlled fixtures or the two skipped cases.
