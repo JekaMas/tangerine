@@ -85,6 +85,43 @@ its original `source-0987483` model/audio/context artifacts and appends this sco
 verification without repeating them. Private environment/credential files are
 excluded from the explicit artifact allowlist.
 
-Exact final revision, gate counts, structural/language checks, Lab readback and
-cleanup are added below after the committed-source run. No deployment,
-postdeployment, PBT, financial execution, paid use, installation or publication.
+## Final native result and remaining blocker
+
+The full eight-property `--require-clean` run on source
+`ec2407177693a9dcf95c0532d59b24d1ae59f7cc` observes **541 passes, one skip and
+zero failures across542 cases**. Its exact receipt is
+`data/iteration-26-verification-20261026/clean.json`. The four command owners
+observe6/512/6/18 exact tests respectively; only
+`FIN-VERIFY.I26.review_positive` skips. Native command exit0 does not make that
+case pass. The overall runner verdict is `incomplete`, so no iteration acceptance
+is issued. I26.1/I26.2 now have complete native proof; I26.3 stays unchecked.
+
+Strict native OpenSpec1.13.1, graph and final discovery validation pass. The new
+discovery row initially used an unsupported classification; it was repaired and
+revalidated without repeating behavior tests. Stable Python syntax passes for
+seven changed files; unchanged rendered JavaScript/Go/web receipts are retained.
+All original122 categories/recipes,42 formulas,11 source scopes, migrations and
+518 CV bindings remain unchanged. These are structural/preservation observations,
+not acoustic or user-interaction substitutes.
+
+Local Lab17/run `1585a80aa1cf4ee08202ce41c450fa82`, prefix `verify-ec24071`, retains
+21 current verification artifacts. Actual readback of the full native receipt,
+source record, browser facts and HTTP observations succeeds. Original model/audio
+context remains at `source-0987483`; no copies are presented as new inference.
+Current verification, export and readback make zero model or synthesis calls.
+
+The current browser-selection question explicitly asks to use installed Chrome
+only for localhost/saved-audio interaction. It remains unanswered. The tool's
+selected-browser rule prevents an automatic switch; no product approval or new
+human review is required. Restore permitted IAB input or answer that selection
+to observe actual Play/time advancement, single-player behavior, keyboard and
+Refresh, then rerun only invalidated evidence through the complete committed
+iteration contract. Never repeat the four model calls or erase the original
+failures to fill this UI gap.
+
+The controlled failure server/tab are stopped/closed and the viewport reset.
+The read-only8772 deliverable now serves the repaired owner and all20 actual
+recordings load. The user's app `/health/ready` returns200; no user service was
+restarted and no user data/settings/media or volumes were changed. The canonical
+checkout still has only its unrelated GAPS.md edit. No deployment, postdeployment,
+PBT, financial execution, paid use, installation or publication occurred.

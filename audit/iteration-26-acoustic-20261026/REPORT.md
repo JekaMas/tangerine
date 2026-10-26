@@ -1,5 +1,10 @@
 # Iteration 26 — selected acoustic confirmation and CV reuse
 
+Latest verification: [VERIFY.md](../iteration-26-verification-20261026/VERIFY.md)
+supersedes this historical apply checkpoint. Committed source `ec24071` observes
+541 passes and one actual-interaction skip over all542 selected cases. Two
+recovery defects are fixed; I26.1/I26.2 are complete and I26.3 remains open.
+
 **Apply is incomplete; no iteration acceptance is issued.** The selected probe
 repairs and saved-media tooling are implemented. Four actual Gemini Free calls
 finished and their full requests, outputs and comparisons are retained. Current
