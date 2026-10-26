@@ -1,43 +1,41 @@
 {
-  "properties": [
-    "FIN-ACOUSTIC.P1",
-    "FIN-VERIFY.I26",
-    "CV-01.P1",
-    "CV-02.P1",
-    "CV-03.P1",
-    "CV-04.P1",
-    "CV-05.P1",
-    "CV-06.P1"
-  ],
-  "total_cases": 538,
-  "retained_cv_cases": 518,
-  "retained_reference": "REUSE.json",
-  "new_case_ids": [
-    "FIN-ACOUSTIC.P1.acoustic_positive",
-    "FIN-ACOUSTIC.P1.acoustic_negative",
-    "FIN-VERIFY.I26.review_positive",
-    "FIN-VERIFY.I26.ux_omission_negative",
-    "FIN-VERIFY.I26.typography_omission_negative",
-    "FIN-VERIFY.I26.evidence_mismatch_negative",
-    "FIN-ACOUSTIC.P1.contract_correct_control_projection_positive",
-    "FIN-ACOUSTIC.P1.contract_blind_public_context_negative",
-    "FIN-ACOUSTIC.P1.contract_boundary_context_repair_positive",
-    "FIN-ACOUSTIC.P1.contract_selected_save_and_read_positive",
-    "FIN-ACOUSTIC.P1.contract_response_finalizer_recovery_positive",
-    "FIN-ACOUSTIC.P1.contract_interrupted_request_negative",
-    "FIN-ACOUSTIC.P1.contract_free_failure_preserved_negative",
-    "FIN-ACOUSTIC.P1.contract_correct_variant_false_alarm_negative",
-    "FIN-ACOUSTIC.P1.contract_native_http_failure_retention_negative",
-    "FIN-ACOUSTIC.P1.contract_remote_endpoint_rejected_negative",
-    "FIN-VERIFY.I26.contract_gallery_contexts_and_playback_positive",
-    "FIN-VERIFY.I26.contract_pending_error_and_read_failure_nonblocking_negative",
-    "FIN-VERIFY.I26.contract_read_and_refresh_do_not_infer_positive",
-    "FIN-VERIFY.I26.contract_media_relation_and_private_route_negative"
-  ],
-  "new_commands": [
-    "completion-i26",
-    "completion-i26-contracts"
-  ],
-  "full_iteration_status": "incomplete; native browser interaction unobserved",
-  "behavior_rerun_policy": "Retain the518 unchanged original CV test observations. Observe20 newly materialized cases and the3 directly affected shared-reader regressions; no new learned-model calls during tests."
+  "scope": "selected saved-audio functional probes; no synthesis or universal qualification",
+  "baseline": "699351e0d0a3a5f3793654014e113c5717a361cb",
+  "retained_linking": "data/category-realization-20261025/observations-gemini31/pronunciation.suprasegmental.linking_resyllabification",
+  "cases": [
+    {
+      "id": "assimilation",
+      "category_id": "pronunciation.suprasegmental.assimilation",
+      "context": "This narrow voiced-joining drill asks for would you with voicing retained in the joined consonant. Careful unblended delivery is also permitted. This is a drill target, not a claim that every natural devoiced variant is wrong.",
+      "control_context": "Careful unblended would you and natural voiced coalescence are both permitted in this drill.",
+      "question": "Does the heard delivery fail the explicit public target? Describe the consonant or joining you actually hear; retain uncertainty if it cannot be distinguished.",
+      "repair": "Describe the public voicing target without private intended IPA; test the existing careful variant as correct."
+    },
+    {
+      "id": "weak-form",
+      "category_id": "pronunciation.suprasegmental.weak_form",
+      "context": "This narrow neutral weak-form drill asks for an unstressed reduced to in to be. Emphatic full-vowel forms are correct in other contexts.",
+      "control_context": "The speaker contrastively emphasizes the preposition TO. Full-vowel or stressed to is permitted here.",
+      "question": "Does the heard delivery fail the explicit public target? Describe whether to sounds reduced and unstressed or full and stressed. Retain uncertainty if you cannot hear the distinction.",
+      "acceptable_from": "mutated",
+      "repair": "Use the actual saved full-form request as the acceptable contrastive control, rather than repeating the weak reference."
+    },
+    {
+      "id": "thought-group",
+      "category_id": "pronunciation.suprasegmental.thought_group_chunking",
+      "context": "In this one-thought-group drill, the article and noun in the policy must stay together without a phrase break between the and policy. Pauses elsewhere at legitimate phrase boundaries are permitted.",
+      "control_context": "The policy is spoken as one thought group. Ordinary phrase-boundary pauses elsewhere are permitted.",
+      "question": "Does the heard delivery introduce a phrase break inside the specified article-and-noun group? Describe the actual boundary; do not infer it from punctuation.",
+      "repair": "Match the public target to the actual inserted boundary between the and policy, rather than claiming an interruption inside the word policy."
+    },
+    {
+      "id": "intonation-function",
+      "category_id": "pronunciation.suprasegmental.intonation_function",
+      "context": "The speaker says You have insurance to tell the listener a settled fact, rather than to ask the listener to confirm whether it is true.",
+      "control_context": "The speaker repeats You have insurance to request confirmation that it is true. Declarative word order is permitted for this confirmation question.",
+      "question": "Does the heard intonation conflict with the stated conversational purpose? Describe whether it sounds like an assertion, a confirmation question or an uncertain reading. Punctuation alone is not evidence.",
+      "acceptable_from": "mutated",
+      "repair": "Test the actual saved rise as a valid confirmation question, separately from its mismatch with the assertion context."
+    }
+  ]
 }

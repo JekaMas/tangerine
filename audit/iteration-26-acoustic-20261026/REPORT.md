@@ -94,6 +94,14 @@ both exit0; the skip still makes the selected verdict incomplete. The expanded
 full iteration has538 cases:518 retained CV cases plus these20. Counts alone are
 not proof; exact case/test IDs and source/receipt joins are retained.
 
+Before the clean run, packaging self-review found a case-insensitive filename
+collision on this Mac: the proposed `SELECTION.json` DAG summary replaced the
+distinctly purposed `selection.json` experiment input. The first source commit
+`cf2e8ac` has no acceptance receipt. The experiment input was restored against the
+saved frozen public/private correspondence and the summary is now
+`DAG-SELECTION.json`. Three directly affected context/media regressions passed
+after restoration. Saved observations were untouched; no model request repeated.
+
 No semantic input to the existing CV mechanisms changed. Their valid518 greens
 are reused per the workspace instruction, without rerunning those suites. The
 same20 newly materialized cases receive a committed-clean observation. A full
