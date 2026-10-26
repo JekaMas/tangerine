@@ -366,9 +366,20 @@ func TestSavedReportsBrowserFixture(t *testing.T) {
 	missing.Input.Windows = nil
 	missing.Input.AnnotatedLeaves = []string{}
 	unknown := savedCreate(t, s, missing)
+	declared := savedInput()
+	declared.Title = "Declared scope without observations"
+	declared.Input.Windows = nil
+	unobserved := savedCreate(t, s, declared)
+	savedEqual(t, int64(0), unobserved["report"].(empirical.Report).Annotated)
+	declared.Title = "Source annotations without mapped coverage"
+	declared.Input.Windows = savedInput().Input.Windows[:1]
+	declared.Input.Windows[0].Events[0].Leaf = nil
+	unmapped := savedCreate(t, s, declared)
+	savedEqual(t, int64(0), unmapped["report"].(empirical.Report).Annotated)
+	savedEqual(t, int64(1), unmapped["report"].(empirical.Report).SourceAnnotated)
 	var schema string
 	savedRequire(t, s.DB.QueryRow(ctx, "SELECT current_schema()").Scan(&schema))
-	savedEmit(t, "browser-fixture.json", map[string]any{"schema": schema, "report": full, "unknown": unknown, "origin": "constructed native PostgreSQL/MinIO report fixtures"})
+	savedEmit(t, "browser-fixture.json", map[string]any{"schema": schema, "report": full, "unknown": unknown, "unobserved": unobserved, "unmapped": unmapped, "origin": "constructed native PostgreSQL/MinIO report fixtures"})
 	server := NewServer(s, "http://localhost:3000", "http://unused.invalid")
 	server.token = "saved-report-test-token"
 	listener, e := net.Listen("tcp", ":8080")

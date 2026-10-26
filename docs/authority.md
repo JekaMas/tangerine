@@ -1,3 +1,12 @@
+2026-10-26 iteration28 verify/repair: the actual user requests complete selected
+conformance review, root-cause/sibling repair and UI/UX/typography evidence through
+committed-clean acceptance. Saved deterministic observations only, zero new model
+or speech calls. Scoped source/test/specification/DAG repairs and local commits
+are authorized. No deployment/postdeployment, PBT, financial execution, paid
+credits/overage, installation, acquisition or publication. The prior explicit
+selection of installed Chrome remains applicable to the owned local fixtures.
+Preserve the running user app, records/settings/media/tabs and canonical GAPS.md.
+
 2026-10-26 iteration28: the actual user selects saved-data empirical reports and
 coverage with zero new model calls. Scoped report/presentation/persistence,
 literal arithmetic/population/coverage tests, existing native/Lab evidence

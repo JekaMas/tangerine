@@ -26,10 +26,13 @@ test('missing_provenance_negative',()=>{
   assert.equal(populationNotice('unknown'),'Observation origin is unknown. This report does not establish real learner frequencies.');
 });
 test('coverage_positive',()=>{
-  assert.deepEqual(coverageSummary({annotated_leaf_ids:['A'],leaves:[{id:'A',events:2},{id:'B',events:0},{id:'C',events:1}]}),{inspected:1,total:3,withEvents:2});
+  assert.deepEqual(coverageSummary({annotated_leaf_ids:['A'],leaves:[{id:'A',events:2},{id:'B',events:0},{id:'C',events:1}]}),{declared:1,total:3,withEvents:2});
 });
 test('uninspected_zero_negative',()=>{
-  assert.deepEqual(coverageSummary({leaves:[{id:'A',events:0},{id:'B',events:0}]}),{inspected:0,total:2,withEvents:0});
+  assert.deepEqual(coverageSummary({leaves:[{id:'A',events:0},{id:'B',events:0}]}),{declared:0,total:2,withEvents:0});
+});
+test('declared_scope_is_not_observation_negative',()=>{
+  assert.deepEqual(coverageSummary({annotated_leaf_ids:['A'],annotated_windows:0,source_annotated_windows:1,mapping_incomplete_windows:1,leaves:[{id:'A',events:0},{id:'B',events:0}]}),{declared:1,total:2,withEvents:0});
 });
 test('difficulty_population_positive',()=>{
   assert.equal(difficultyReason('insufficient_sample'),'At least 100 independent first answers are needed to rate difficulty.');

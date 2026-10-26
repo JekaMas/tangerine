@@ -6,11 +6,12 @@ arithmetic/storage. No model, speech, financial or user-workspace write can pass
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import http.client
 import json
+import os
 from pathlib import Path
 import threading
 
 ROOT=Path(__file__).resolve().parents[1]
-DATA=ROOT/'data/iteration-28-reports-20261026'
+DATA=Path(os.environ.get('TANGERINE_SAVED_REPORT_EVIDENCE', ROOT/'data/iteration-28-reports-20261026')).resolve()
 STACK=json.loads((DATA/'browser-stack.json').read_text())
 LOCK=threading.Lock()
 CONTROL={'name':'initial','failures':{}}

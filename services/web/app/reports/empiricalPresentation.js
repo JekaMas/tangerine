@@ -34,6 +34,6 @@ const exclusions=new Map([
 ]);
 export const exclusionLabel=reason=>exclusions.get(reason)||'Other excluded observations';
 export function coverageSummary(report) {
-  return {inspected:report.annotated_leaf_ids?.length||0,total:report.leaves.length,
+  return {declared:report.annotated_leaf_ids?.length||0,total:report.leaves.length,
     withEvents:report.leaves.filter(leaf=>leaf.events>0).length};
 }

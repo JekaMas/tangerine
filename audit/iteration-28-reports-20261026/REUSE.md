@@ -51,3 +51,39 @@ handler/control retain their separate scopes. The review does not certify that
 unobserved transport. Observed console warnings came from an installed browser
 extension, separate from expected controlled HTTP failures; no extension setting
 was changed.
+
+## Verification of the accepted iteration
+
+The fresh verify starts at clean `62f0274`. It demonstrates one additional
+presentation defect: declared annotation scope was called “inspected for absence”
+even with zero fully mapped windows. Empty-window and incompletely mapped source
+siblings are observed before and after the repair. The native arithmetic and
+single admission/read ownership are unchanged. The display helper's count is now
+named `declared`; scope text and unlisted-pair guidance explain actual observation
+requirements without a new runtime gate.
+
+Display assertions and the affected rendered scope/layout were reobserved in
+`data/iteration-28-verify-20261026/`. The three affected original receipt readers
+now use the fresh 11-test JS/display observations and actual populated report.
+The other original native, storage, eligibility, coverage and bounded read/error
+observations remain applicable: their production paths, fixtures and assertions
+did not change. Appending two constructed browser fixtures does not retrospectively
+alter the earlier finite tests. The new mounted fixture itself was rerun through
+real PostgreSQL/MinIO and source-built Next.js, finishing with zero provider
+receipts. Six new exact receipt cases cover the two absence counterexamples,
+current layout/keyboard, zero execution and actual download delivery.
+
+The original apply's unobserved browser file delivery stays unobserved for that
+run. The fresh verification closes the current gap separately: the observed
+test-owned Chrome button produced the expected normal Downloads JSON file, which
+equals its exact native snapshot. `download-receipt.json` and the actual copied
+`downloaded-report.json` retain that observation. The browser event observer still
+does not return a receipt; no browser-internal page, database or permission was
+used to obtain the downloaded artifact.
+
+Fresh console diagnostics also identify the storage errors' actual execution
+context as the installed Read on reMarkable extension's isolated world, separate
+from Tangerine's default page context. The default page remains usable; no
+extension/browser setting was changed. Owned viewport overrides, tab, proxy and
+containers were cleaned up. App3000 and its one saved report/three planned
+experiments still match their original observations; canonical GAPS.md is intact.

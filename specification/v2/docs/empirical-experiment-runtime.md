@@ -35,6 +35,10 @@ denominator, inspected category/window/token counts and unmapped/excluded data.
 Native labels, mapped categories, observed relationships and reference/prediction
 confusion have distinct readable sections; the original saved JSON remains
 available. Unknown observations are never displayed as measured zero.
+Declared annotation scope is labelled separately from actual inspected windows.
+A declared category alone is no evidence that any absence observation occurred;
+an empty or incompletely mapped population cannot supply one or imply measured
+pair absence. This affects presentation only, without a new admission/read gate.
 
 Source frequencies and relationships describe their selected annotation stratum.
 Learner difficulty uses the separately declared eligible first-answer population;

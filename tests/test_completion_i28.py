@@ -12,6 +12,7 @@ from urllib.parse import urlparse, parse_qs
 ROOT=Path(__file__).resolve().parents[1]
 DATA=ROOT/'data/iteration-28-reports-20261026'
 AUDIT=ROOT/'audit/iteration-28-reports-20261026'
+VERIFY=ROOT/'data/iteration-28-verify-20261026'
 A='grammar.verbs.subject_verb_agreement'
 B='lexis.collocation'
 
@@ -130,21 +131,21 @@ class CompletionI28(unittest.TestCase):
         self.assertEqual({'/api/v1/reports/empirical'},{r['path'] for r in self.requests if r['method']=='POST'})
 
     def test_display_positive(self):
-        log=(DATA/'presentation-green.log').read_text()
+        log=(VERIFY/'presentation-green.log').read_text()
         for name in ['exact_denominator_positive','selected_provenance_positive','coverage_positive','difficulty_population_positive']:
             self.assertRegex(log,r'(?m)^✔ '+name+r' \(')
-        self.assertIn('ℹ pass 10',log);self.assertIn('ℹ fail 0',log)
+        self.assertIn('ℹ pass 11',log);self.assertIn('ℹ fail 0',log)
         self.assertIn('ℹ skipped 0',log)
 
     def test_display_negative(self):
-        log=(DATA/'presentation-green.log').read_text()
+        log=(VERIFY/'presentation-green.log').read_text()
         for name in ['zero_denominator_negative','unknown_exposure_negative','constructed_origin_negative','missing_provenance_negative','uninspected_zero_negative','no_technical_reason_negative']:
             self.assertRegex(log,r'(?m)^✔ '+name+r' \(')
 
     def test_browser_population_positive(self):
-        value=self.c['selectedReloadFinal'];self.assertEqual([],value['alerts'])
+        value=json.loads((VERIFY/'browser-observations.json').read_text())['cases']['reopened'];self.assertEqual([],value['alerts'])
         text=normalize(value['report']);self.assertIn('10 fully inspected mapped windows',text)
-        self.assertIn('1 of 122 categories inspected for absence',text)
+        self.assertIn('Declared annotation scope: 1 of 122 categories.',text)
         self.assertEqual([A+'\t2\n8 correct controls · 0 secondary labels\n\t1/1\n2 / 2\n\t1/5\n2 / 10\n\t1/5\n2 / 10\n\t40/1\n2000 / 50'],value['rows'])
         self.assertIn('constructed-ten-exposures-v1',text)
 
