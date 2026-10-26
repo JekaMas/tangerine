@@ -1032,6 +1032,8 @@ Depends on 19. Properties: `FIN-UI-08.P1`, `FIN-VERIFY.I21`. Closes UX-08.
 - [x] I21.2 Add guided starter fields/named choices backed by existing defaults and native schemas; retain advanced JSON/import and useful missing-input guidance. Route named Cleanup selection through existing preview/explicit apply with zero implicit model calls.
 - [x] I21.3 Verify populated/empty/error paths, keyboard use, typography, no implicit provider dispatch/deletion and exact evidence; reconcile and commit.
 
+- [ ] I21.4 Repair verified report/experiment selection and Refresh ordering, optional comparison isolation, pending-preview confirmation, and sibling file/error/named-record presentation through single owners. Add direct positive/negative regressions, current native/browser/typography evidence, reconcile all I21 cases and commit clean verification.
+
 ### Iteration 22 — Production ElevenLabs pronunciation dictionaries
 
 Depends on 17. Properties: `FIN-SP-01.P1`, `FIN-VERIFY.I22`. Closes SP-01;

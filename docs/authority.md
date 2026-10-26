@@ -1,3 +1,11 @@
+2026-10-26 iteration21 verification/repair: the actual user requests the full
+guided tools iteration, root-cause and sibling repairs, human recovery, UI/UX
+and typography inspection through committed-clean scoped acceptance. Deterministic
+and disposable native/browser counterexamples, in-scope fixes and local commits
+are authorized. No deployment/postdeployment, PBT, financial execution, inference/
+synthesis, purchased credits/overage, installation or publication. Preserve the
+running app3000, user configuration/database/media, existing tabs and GAPS.md.
+
 2026-10-26 iteration21: the actual user selects UX-08 guided reports/experiments
 and named Cleanup selection. Reuse and complete existing starter/default/native
 storage and deletion owners, preserve advanced entry, materialize independent

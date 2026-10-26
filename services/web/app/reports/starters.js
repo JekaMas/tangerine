@@ -21,9 +21,12 @@ export function reportFromPopulation(title, submission) {
   return {...structuredClone(submission),title:title.trim()};
 }
 
+export const generationProfiles=defaults=>(defaults?.configuration?.llm_profiles||[])
+  .filter(profile=>profile.roles.includes('case_generation')&&profile.model&&profile.model!=='unselected');
+
 export async function experimentStarter(defaults,{topic,level,words,profile,dataset:savedDataset}) {
   if (!savedDataset && (!topic.trim() || !Number.isSafeInteger(Number(words)) || Number(words)<1)) throw userError('Enter a topic and a positive whole word count.');
-  if (!defaults?.configuration?.llm_profiles.some(p=>p.id===profile&&p.roles.includes('case_generation'))) throw userError('Choose a configured LLM profile with the generation role.');
+  if (!generationProfiles(defaults).some(p=>p.id===profile)) throw userError('Choose a configured LLM profile with a generation model. Update Settings or select another profile.');
   if (savedDataset && (savedDataset.scope!=='generation_pipeline' || savedDataset.judge_policy_asset_id)) throw userError('Use the advanced experiment definition for this dataset.');
   const config=structuredClone(defaults.configuration);
   config.llm_profile=profile;

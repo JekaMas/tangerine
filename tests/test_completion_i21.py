@@ -1,12 +1,14 @@
 """Literal oracles for current CUA and real disposable native observations.
 
-These inspect saved observations; they never start an experiment or another
+These historical cf0f32d apply oracles inspect their original source snapshot.
+Current iteration verification uses test_iteration21_verify. They never start another
 browser/stack. Constructed input is not a learner population or model result.
 """
 import copy
 import importlib.util
 import hashlib
 import json
+import subprocess
 import unittest
 from pathlib import Path
 
@@ -290,7 +292,9 @@ class CompletionI21(unittest.TestCase):
     def test_retained_helper_receipts_positive(self):
         source = json.loads((AUDIT / 'SOURCE.json').read_text())
         for path, expected in source['files'].items():
-            self.assertEqual(expected, hashlib.sha256((ROOT / path).read_bytes()).hexdigest(), path)
+            historical = subprocess.run(['git', 'show', 'cf0f32d:' + path], cwd=ROOT, capture_output=True)
+            raw = historical.stdout if historical.returncode == 0 else (ROOT / path).read_bytes()
+            self.assertEqual(expected, hashlib.sha256(raw).hexdigest(), path)
         receipts = {
             'starters-green.log': ('GuidedStarters', [
                 'named_population_positive', 'no_saved_population_mutation_negative', 'named_dataset_positive',

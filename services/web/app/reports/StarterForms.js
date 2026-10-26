@@ -3,7 +3,7 @@ import {useEffect,useRef,useState} from 'react';
 import RefreshButton from '../RefreshButton.js';
 import {requestError,userError} from '../requestError.js';
 import {recordDate} from '../savedRecord';
-import {reportStarter,reportFromPopulation,experimentStarter} from './starters';
+import {reportStarter,reportFromPopulation,experimentStarter,generationProfiles} from './starters';
 import {reportRequest} from './request';
 
 export default function StarterForms({kind,busy,onSave,list,onRefresh}) {
@@ -28,7 +28,7 @@ export default function StarterForms({kind,busy,onSave,list,onRefresh}) {
   }
   useEffect(()=>{if(kind==='experiment')load();return()=>{version.current++;};},[kind]);
   const choices=(list?.items||[]).filter(item=>kind==='report'||(item.scope==='generation_pipeline'&&!item.judge_policy_asset_id));
-  const profiles=(defaults?.configuration.llm_profiles||[]).filter(p=>p.roles.includes('case_generation')&&p.model&&p.model!=='unselected');
+  const profiles=generationProfiles(defaults);
   async function save(event) {
     event.preventDefault();setError('');setSaving(true);
     try {

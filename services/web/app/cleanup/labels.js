@@ -1,7 +1,7 @@
 // Presentation of accepted native outcomes, never a new admission check.
 export const cleanupStatus=state=>({
   preview:'Preview ready',
-  blocked_active_reference:'Still in use',
+  blocked_active_reference:'Selection needs attention',
   native_erased:'Local records deleted; external cleanup remains',
   native_erased_media_cleanup_pending:'Local records deleted; media cleanup remains',
   erased:'Deletion complete',

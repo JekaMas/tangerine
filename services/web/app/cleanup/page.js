@@ -15,7 +15,7 @@ export default function Cleanup() {
       {error&&<p className="error" role="alert">{error}</p>}
       {plan&&<>
         <h2>Deletion preview</h2><p>{scope}</p><p role="status">{cleanupStatus(plan.state)} · {plan.documents.length} documents · {plan.assets.length} private objects</p>
-        {plan.blocked.length>0&&<p role="alert">Some selected records are still in use. Open their saved references, then refresh the preview. Other exercises remain available.</p>}
+        {plan.blocked.length>0&&<p role="alert">Some selected records are unavailable or still in use. Choose saved records by name or check the full IDs, then refresh the preview. Other exercises remain available.</p>}
         <details><summary>Affected identifiers</summary><pre>{JSON.stringify({documents:plan.documents,assets:plan.assets,heads:plan.heads,source:plan.source,blocked:plan.blocked},null,2)}</pre></details>
         <p>{labCleanupStatus(plan.lab_cleanup)}. For external copies, use the explicit Lab cleanup command in <a href="/recovery">Recovery</a>; local erasure alone does not erase external copies.</p>
         {plan.state==='preview'&&<><label><input type="checkbox" className="check" aria-label="Confirm deletion" checked={confirmed} disabled={applying} onChange={event=>confirm(event.target.checked)}/> Delete the records shown in this preview.</label><button disabled={!!pending||!confirmed||plan.blocked.length>0} onClick={apply}>Apply deletion</button></>}

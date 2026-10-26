@@ -1,5 +1,9 @@
 # Iteration21 — guided reports, experiments and named Cleanup
 
+Historical apply report. The current verification supersedes its no-findings
+conclusion; see VERIFY-REPORT.md and VERIFY-ACCEPTANCE.json. Original receipts
+and observations below retain their original revision and proof boundary.
+
 The implemented increment closes UX-08. Ordinary report/experiment starters use
 labelled fields and real named saved choices; Advanced JSON/file entry remains
 available. Cleanup offers recognizable records and preserves explicit native

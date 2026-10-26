@@ -26,7 +26,8 @@ let errors=[];
 for(const fn of [()=>reportFromPopulation('',input),()=>experimentStarter(defaults,{profile:'invented',dataset}),()=>experimentStarter(defaults,{profile:'local-generation',dataset:{...dataset,scope:'answer_pipeline'}}),()=>experimentStarter(defaults,{profile:'local-generation',dataset:{...dataset,judge_policy_asset_id:'judge'}})]){
  try{await fn();errors.push(null)}catch(e){errors.push(e.message)}
 }
-console.log(JSON.stringify({report,unchanged:JSON.stringify(input)===before,reused,errors,sva:reportStarter('SVA','grammar.verbs.subject_verb_agreement')}));
+const unavailable=structuredClone(defaults);unavailable.configuration.llm_profiles.find(p=>p.id==='local-generation').model='unselected';let unavailableError=null;try{await experimentStarter(unavailable,{profile:'local-generation',dataset})}catch(e){unavailableError=e.message}
+console.log(JSON.stringify({unavailableError,report,unchanged:JSON.stringify(input)===before,reused,errors,sva:reportStarter('SVA','grammar.verbs.subject_verb_agreement')}));
 """
         result = subprocess.run([str(NODE), '--input-type=module', '-e', script], cwd=ROOT,
                                 capture_output=True, text=True, timeout=20)
@@ -64,6 +65,10 @@ console.log(JSON.stringify({report,unchanged:JSON.stringify(input)===before,reus
         self.assertIn('title', errors[0])
         self.assertIn('configured LLM profile', errors[1])
         self.assertEqual(['Use the advanced experiment definition for this dataset.'] * 2, errors[2:])
+
+    def test_unavailable_selected_profile_negative(self):
+        self.assertIsNotNone(self.v['unavailableError'])
+        self.assertIn('configured LLM profile', self.v['unavailableError'])
 
     def test_constructed_scope_positive(self):
         value = self.v['sva']

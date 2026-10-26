@@ -18,6 +18,16 @@ preview responses, so old results cannot restore Apply. Existing PlanDeletion
 and ApplyDeletion retain exact dependency/shared-media and erasure semantics.
 No schema, new API, approval step or repeated stored-data check is added.
 
+Verification repair: the reports session owns intended record identities before
+requests start, so Refresh retries the intended record and cannot restore a
+superseded one. Read progress is separate from native write progress. Optional
+comparisons deliver independently and retry only their asset. Each editable
+definition has one file-read owner; typed/newer content supersedes older reads.
+One generation-profile eligibility predicate serves both choices and builder.
+A new Cleanup preview replaces its old confirmation; only its delivered plan
+can be confirmed. Missing/referenced selections share accurate authored guidance.
+These are delivery/presentation repairs, without new stored-data validation.
+
 ## Iteration 20 result and playback ownership
 
 Results consumes authoritative score displays, counts and feedback; page keeps

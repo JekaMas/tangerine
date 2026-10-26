@@ -19,9 +19,15 @@ next=owner.preview();pending[2].resolve(plan('three'));await next;owner.confirm(
 owner.select('four');old=owner.preview();owner.select('five');next=owner.preview();pending[5].resolve(plan('five'));await next;pending[4].reject(Error('private backend payload'));await old;out.obsoleteError={id:state.plan.id,error:state.error};
 owner.select('six');next=owner.preview();pending[6].reject(Error('private backend payload'));await next;out.failure={ids:state.ids,error:state.error,pending:state.pending};
 next=owner.preview();pending[7].resolve({...plan('six'),blocked:['shared-audio']});await next;owner.confirm(true);n=calls.length;await owner.apply();out.blocked=calls.length-n;
-next=owner.preview();owner.cancel();pending[8].resolve(plan('disposed'));await next;out.disposed=state.plan.id;
+next=owner.preview();owner.cancel();pending[8].resolve(plan('disposed'));await next;out.disposed=state.plan?.id??null;
 owner.select('six');next=owner.preview(true);pending[9].resolve(plan('orphans'));await next;owner.confirm(true);next=owner.apply();pending[10].resolve({...plan('orphans'),state:'erased'});await next;out.orphanScope=state.scope;
 out.labels=['preview','blocked_active_reference','native_erased','native_erased_media_cleanup_pending','erased'].map(cleanupStatus);out.unknown=[cleanupStatus('private backend detail'),labCleanupStatus('private backend detail')];out.lab=['not_requested','pending_explicit_local_lab_cleanup','erased'].map(labCleanupStatus);
+let replacementState,finish;const replacementCalls=[];
+const replacement=createCleanupSession({onChange:s=>replacementState=s,request:args=>{replacementCalls.push(args);return new Promise((resolve,reject)=>finish={resolve,reject})}});
+replacement.select('same');let replacing=replacement.preview();finish.resolve(plan('old'));await replacing;replacement.confirm(true);
+replacing=replacement.preview();out.pendingReplacement={plan:replacementState.plan,confirmed:replacementState.confirmed};replacement.confirm(true);out.pendingConfirmation=replacementState.confirmed;finish.resolve(plan('new'));await replacing;out.newConfirmation=replacementState.confirmed;
+n=replacementCalls.length;await replacement.apply();out.replacementUnconfirmed=replacementCalls.length-n;
+replacing=replacement.preview();finish.reject(Error('private backend detail'));await replacing;out.previewFailure={ids:replacementState.ids,plan:replacementState.plan,pending:replacementState.pending,error:replacementState.error};
 console.log(JSON.stringify(out));
 """
   p=subprocess.run([str(NODE),'--input-type=module','-e',script],cwd=ROOT,capture_output=True,text=True,timeout=20)
@@ -35,8 +41,11 @@ console.log(JSON.stringify(out));
  def test_obsolete_error_negative(self):self.assertEqual({'id':'five','error':''},self.v['obsoleteError'])
  def test_current_failure_retains_selection_positive(self):self.assertEqual('six',self.v['failure']['ids']);self.assertIsNone(self.v['failure']['pending']);self.assertIn('selection is retained',self.v['failure']['error']);self.assertNotIn('private',self.v['failure']['error'])
  def test_blocked_apply_negative(self):self.assertEqual(0,self.v['blocked'])
- def test_readable_status_positive(self):self.assertEqual(['Preview ready','Still in use','Local records deleted; external cleanup remains','Local records deleted; media cleanup remains','Deletion complete'],self.v['labels']);self.assertEqual(['No external cleanup requested','External Lab cleanup remains','External copies deleted'],self.v['lab'])
+ def test_readable_status_positive(self):self.assertEqual(['Preview ready','Selection needs attention','Local records deleted; external cleanup remains','Local records deleted; media cleanup remains','Deletion complete'],self.v['labels']);self.assertEqual(['No external cleanup requested','External Lab cleanup remains','External copies deleted'],self.v['lab'])
  def test_unknown_status_negative(self):self.assertEqual(['Cleanup needs attention','Check external cleanup in Recovery'],self.v['unknown'])
  def test_orphan_scope_positive(self):self.assertEqual('Old unlinked media',self.v['orphanScope'])
- def test_disposal_negative(self):self.assertEqual('six',self.v['disposed'])
+ def test_disposal_negative(self):self.assertIsNone(self.v['disposed'])
+ def test_replacement_clears_preview_negative(self):self.assertEqual({'plan':None,'confirmed':False},self.v['pendingReplacement'])
+ def test_pending_confirmation_negative(self):self.assertFalse(self.v['pendingConfirmation']);self.assertFalse(self.v['newConfirmation']);self.assertEqual(0,self.v['replacementUnconfirmed'])
+ def test_preview_failure_drops_old_plan_negative(self):self.assertEqual('same',self.v['previewFailure']['ids']);self.assertIsNone(self.v['previewFailure']['plan']);self.assertIsNone(self.v['previewFailure']['pending']);self.assertIn('selection is retained',self.v['previewFailure']['error'])
 if __name__=='__main__':unittest.main(verbosity=2)
