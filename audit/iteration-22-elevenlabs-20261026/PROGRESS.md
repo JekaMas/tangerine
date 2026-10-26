@@ -87,3 +87,15 @@ Go race/vet, web build, Python owner observations and original-scope preservatio
 are complete. Native/Lab artifacts retained; owned stack/tab closed, viewport
 restored and user app3000 readiness200. Next: source commit, same13-case clean
 selection, then canonical I22 checkboxes and acceptance-only commit.
+
+## Accepted iteration
+
+Source commit0ee1f51f5c2a931c4f7bd8ef43429b7ad1fe5a6a. The same complete
+selection passed with --require-clean:13/13 exact cases, no skips/planned nodes.
+Required Go race/vet, source-built web, Python owner cases, structural
+OpenSpec1.13.1/graph/discovery and122/42/11 preservation match these semantic
+inputs. I22.1–I22.3 are now checked. ACCEPTANCE.json records the exact receipt.
+Only acceptance/tasks metadata remains to commit; no provider rerun, deployment,
+PBT, financial execution, installation or publication is part of completion.
+No unresolved in-scope finding or product decision remains. Later iterations
+retain their own planned/blocked scopes.

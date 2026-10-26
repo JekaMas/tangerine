@@ -1039,9 +1039,11 @@ Depends on 19. Properties: `FIN-UI-08.P1`, `FIN-VERIFY.I21`. Closes UX-08.
 Depends on 17. Properties: `FIN-SP-01.P1`, `FIN-VERIFY.I22`. Closes SP-01;
 the standalone comparison is not production adapter acceptance.
 
-- [ ] I22.1 Materialize ordinary preparation/render/playback/answer scoring, same-turn same-word target controls, saved-piece resume and fresh invalid-locator admission. Use controlled unsupported/quota replies, never deliberate allowance exhaustion.
-- [ ] I22.2 Integrate dictionaries through existing speech/configuration/storage owners and qualify complete actual output using only permitted included/free access; preserve native acoustic routes and their limits.
-- [ ] I22.3 Verify real preparation/audio/answer flow for the selected binding, actual pronunciation observations, UI/typography and native/Lab evidence; reconcile and commit.
+- [x] I22.1 Materialize ordinary preparation/render/playback/answer scoring, same-turn same-word target controls, saved-piece resume and fresh invalid-locator admission. Use controlled unsupported/quota replies, never deliberate allowance exhaustion.
+- [x] I22.2 Integrate dictionaries through existing speech/configuration/storage owners and qualify complete actual output using only permitted included/free access; preserve native acoustic routes and their limits.
+- [x] I22.3 Verify real preparation/audio/answer flow for the selected binding, actual pronunciation observations, UI/typography and native/Lab evidence; reconcile and commit.
+
+I22 acceptance: `0ee1f51` committed-clean13/13 for FIN-SP-01.P1 and FIN-VERIFY.I22. See [report](../../../audit/iteration-22-elevenlabs-20261026/REPORT.md) and [acceptance](../../../audit/iteration-22-elevenlabs-20261026/ACCEPTANCE.json). Actual selected Free speech, durable resume, browser answer100, UI recovery and typography are observed; constructed text/semantic and model-opinion limits remain explicit. No paid use, deployment, PBT or financial execution.
 
 ### Iteration 23 — Actual free Gemini text qualification
 
