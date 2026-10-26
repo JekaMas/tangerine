@@ -1133,6 +1133,14 @@ Depends on 22; 24/25 are dependencies only if their output is selected.
 Properties: `FIN-ACOUSTIC.P1`, `FIN-VERIFY.I26`, and retained `CV-01.P1` through
 `CV-06.P1`. Reconcile current category-realization evidence; do not reimplement it.
 
+Apply checkpoint2026-10-26: `audit/iteration-26-acoustic-20261026/REPORT.md`
+records518 retained exact CV observations and20 newly implemented cases. Four
+finite Gemini Free observations are saved once; correct contextual controls and
+the actual thought-group boundary are repaired. Native browser activation remains
+unobserved, so no complete iteration acceptance or checked completion is claimed.
+The existing Chrome-selection question is unanswered. Azure/Qwen outputs are
+unselected; no new synthesis, paid use or bulk judge campaign is required.
+
 - [ ] I26.1 Reconcile and retain valid CV-01–CV-06 native/evidence receipts. Materialize only missing target/control/allowed-variant cases for selected uncertain linking, weak-form or connected-speech claims; do not automatically repeat the full observed population.
 - [ ] I26.2 Reuse saved audio/measurements/judgments and obtain only necessary authorized selected observations within remaining limits. Repair supported defects, preserve correct variants/uncertainty and never request a bulk retry of unavailable judgments.
 - [ ] I26.3 Verify target-specific claims, listening UI/typography and native/Lab evidence without universal acoustic certification or a human review gate; reconcile and commit.

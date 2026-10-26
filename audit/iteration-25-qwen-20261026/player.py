@@ -19,7 +19,7 @@ def read_saved(read, fallback=None):
         try:
             return read()
         except (OSError, ValueError, EOFError, wave.Error) as error:
-            logging.warning('Saved Qwen comparison read failed: %s (attempt %s)', type(error).__name__, attempt+1)
+            logging.warning('Saved comparison read failed: %s (attempt %s)', type(error).__name__, attempt+1)
     return fallback
 
 

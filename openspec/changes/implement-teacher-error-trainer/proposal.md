@@ -1,13 +1,14 @@
 # Full local Teacher Error Trainer
 
-Current authorized increment: **iteration 25** completes the selected local Qwen
-reference/mutated comparison of the original four saved turns. Preserve its
-model, voices, targets, native input/output/Lab evidence, foreground270-second
-ownership, explicit resume and truthful partial playback. Reuse the accepted
-model cache; an isolated macOS dependency setup is requested and pending.
-Rendering/recovery fixtures cannot establish a complete real Qwen pair or browser
-activation. No paid credits/overage, provider fallback, application deployment,
-PBT, financial execution or publication.
+Current authorized increment: **iteration 26** reconciles existing CV-01–CV-06
+evidence and selected connected-speech target/control observations. Reuse saved
+audio, physical measurements, successful judgments and original failures. Repair
+the selected probe contexts and missing correct controls through the existing
+blind auditory owner, with only necessary explicitly frozen local/free requests.
+Preserve uncertainty, actual model/context/Lab evidence and the foreground
+270-second owner. Azure and Qwen outputs are unselected; their earlier blockers
+remain separate. No paid credits/overage, provider fallback, application
+deployment, PBT, financial execution, bulk judge campaign or publication.
 
 The current objective is the full Tangerine local open-source product specified in specification/v2/README.md. The 2026-10-25 user-authorized increment plans the complete remaining inventory as iterations 17–30 and wires UI/UX, typography and evidence into verification. It does not implement those application changes, run providers or publish. See completion-iterations.md and completion-iterations.json; tasks.md remains the sole checklist. Earlier research, implementation and acceptance statements below retain their dated scopes. User decisions in docs/authority.md supersede inherited package instructions and human peer review procedures.
 
