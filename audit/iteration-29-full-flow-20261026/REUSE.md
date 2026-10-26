@@ -95,3 +95,57 @@ not a model reply or live recommendation. Reload restores actual native unavaila
 feedback. This second source change invalidates the intermediate web build; its
 final cached locked build and one new literal UI observer pass. No model, numeric
 scoring, source, speech or native interpretation behavior is repeated or changed.
+
+## Final selected complete flow and exact invalidations
+
+The c46d720 committed-clean receipt remains44/46, not acceptance. Its failed
+Gemini attempt remains unavailable. The selected full-flow contract is provider-
+agnostic: new attempt a5f608ea-6719-4682-9f86-d6330a4707b2 explicitly freezes local
+checking on the identical real generated case/key/audio. Reuse still-valid
+Gemini generation/mutations and four Kokoro syntheses; do not regenerate them.
+All8 necessary local checking calls, failures and actual complete feedback are
+retained. All37 text receipts reconcile; read/reopen/export adds zero inference.
+The separate9 failed local-generation calls/three preparations are retained and
+are not accepted generation. No paid fallback, installation or deadline change.
+
+The actual source-span semantic input changes only double-quote representation
+at valid explicit coordinates. New paired literal cases and81 current native
+source/interpretation siblings pass with race; the real source-built same-answer
+retry then completes exact60/100, optional100%, actual comments and practice.
+All prior exact source, scope, retraction, rubric and scoring meaning remains.
+
+The actual provider input changes only the known Ollama Docker alias Host. Its
+real403/200 probe and actual inference are retained. Final review narrows the
+initial proposal to preserve generic llm-local virtual-host routing. That last
+restriction invalidates the provider test/static receipts, not the unchanged
+actual exercised ollama branch. The final provider unit/race suite has123 pass
+events, including subtests, zero fail/skip, and fresh provider vet; no model rerun.
+The stable API-wide vet and gofmt receipts remain valid outside that restriction.
+
+The real multiline practice output reveals collapsed UI lines. Scoped Results
+feedback/rationale text now uses pre-wrap without interpreting HTML or changing
+saved text. The final locked web build and actual1280/390/320 pictures/read-only
+observations prove this changed state. Other ten route renderers/body styles are
+semantically unchanged, so their existing green visual/recovery evidence remains.
+The initial observer's whitespace-comparison failure is retained and corrected;
+that harness correction does not manufacture a model or product success.
+
+The new197.675second movie combines actual generation and current checking of
+the same case, with explicit new attempt, cuts, waits/frame gaps, editorial cards
+and separately synchronized original WAV. New codec-window comparison is needed
+because the encoded timeline changes: correlation0.9999036,0sample lag. Old
+incomplete and pre-linebreak films remain historical. The viewer's tall poster
+is repaired by its existing producer's16:9 aspect ratio; real browser playback,
+correct proportions and the retained oversized counterexample are observed.
+
+The observer helper's retained old artifact namespace is reconciled by copying
+only actual current-origin rows/frames/pictures, without altering originals or
+inventing gaps. Local Lab20/rune324400ee8184a97b68630ad2abc0a05 reads back actual
+native/context/media/source observations and failed local experiments; export
+makes zero inference. Candidate linguistic/accent labels stay explicit.
+
+Final I29 registry materializes57 cases. Its full committed-clean selection is
+the acceptance receipt. Structural OpenSpec/DAG/discovery results are separate;
+no selected failure is waived, no unexecuted case is called passed, and no new
+commit or evidence-record edit alone requires repeating unchanged green behavior.
+I30/publication/deployment/PBT/financial execution remains outside this operation.

@@ -1227,7 +1227,7 @@ Conditional dependency edges to 23–28 are recorded in completion-iterations.js
 - [ ] I29.2 Inspect all eleven routes at desktop/narrow widths with appropriate empty/populated/error/recovery/keyboard states; record actual generation→audio→answer→checking→results→recommendations→reopen with pictures, video and stored audio.
 - [ ] I29.3 Review typography and evidence contents, disclose cuts/constructed answers/uncertainty, repair authorized findings, reconcile retained and invalidated cases, then commit the verified result.
 
-I29 apply checkpoint: actual source-built Chrome observations cover all eleven
+Historical I29 apply checkpoint (superseded by the complete verification below): actual source-built Chrome observations cover all eleven
 routes at desktop/narrow widths, controlled read-error/recovery, keyboard,
 playback, finite replay and saved answer/result reopening. The new actual
 94-word/two-speaker exercise has two selected text mistakes,29.65s stored local
@@ -1254,6 +1254,21 @@ unavailable. I29.2/.3 remain open. Current verification, exact committed-clean
 result and preservation are in `VERIFY-REPORT.md` and `VERIFY-STATUS.json` under
 the same I29 audit directory. Earlier37-case results retain their historical
 scope and failures; the partial video is not full-flow acceptance.
+
+- [x] I29.V3 Repair the real Ollama alias HTTP403 through the local transport, preserving the configured TCP target, endpoint/billing policies, loopback hosts and generic llm-local virtual-host routing. Observe actual inference plus positive/negative provider siblings.
+- [x] I29.V4 Repair source-confirmed double-quote representation through the existing source-span owner. Preserve exact original wording and reject changed words/negation/apostrophes/ranges/ambiguous locations; observe paired native cases,81 siblings and actual same-answer local checking recovery.
+- [x] I29.V5 Preserve multiline practice/feedback/rationale text through the shared Results presentation, with current desktop/narrow screenshots, unchanged native content and no new inference. Correct the static evidence viewer's oversized poster through its existing producer.
+
+The final selected real flow reuses actual still-valid Gemini-generated text,
+mutations and local Kokoro speech for the identical case, and creates a new
+ordinary attempt with explicit local gpt-oss checking. It completes60/100,
+optional100%, actual comments/recommendations and reopening with zero read-time
+inference. The old unavailable Gemini attempt and unsuccessful local generation
+experiments remain unaccepted; no frozen attempt changes provider. The registry
+now contains57 literal I29 cases. Current media, source/transport/UI repairs,
+Lab20 readback and the exact stable committed-clean verdict are recorded in
+`audit/iteration-29-full-flow-20261026/VERIFY-REPORT.md` and `VERIFY-STATUS.json`.
+The implementation observations do not by themselves replace that clean gate.
 
 ### Iteration 30 — Main and download-and-run release
 

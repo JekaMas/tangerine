@@ -1,114 +1,144 @@
 # Iteration 29 verification and repair
 
-Verdict: **incomplete — actual required recommendations remain unavailable**.
-The in-scope implementation finding is repaired and observed. Neither this
-review nor the retained partial video is full iteration acceptance.
+The complete selected functional flow is now observed, including actual LLM
+comments and recommendations. Committed-clean acceptance is recorded in
+VERIFY-STATUS.json after the final selection run. Earlier incomplete37/46-case
+receipts remain retained; they are not relabelled successful.
 
-Start: clean0fcbca1bb8c17844a7fd4573d0e78fc19af94c68 in the existing iteration16
-worktree and branch. User authorizes full I29 verify, root-cause/sibling repair,
-safe nonblocking errors and local commits. No deployment, postdeployment, PBT,
-financial execution, purchased credits, overage, fallback or host install.
-Use the supplied OpenSpec verify skill, SDD workflow, verification-design review
-procedure, typography skill and project UI/UX procedure. This is self-review
-with literal independent expectations, not an independent reviewer.
+Worktree: /Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021,
+branch tangerine/iteration-16-release. Verify starts at0fcbca1; c46d720 repairs the
+first two findings and has44/46 passes. This continuation preserves those results
+and repairs the additional demonstrated findings below. No deployment,
+postdeployment, PBT, financial execution, purchased credits, overage, paid
+fallback, model download or host prerequisite installation is included.
 
-## Findings and dispositions
+Use the requested OpenSpec verify skill, personal SDD workflow, pinned review/
+verification procedure, typography skill and project UI/UX procedure. This is
+self-review with literal independent expectations and actual native/browser
+observations, not an independent reviewer or model-generated linguistic gold.
 
-| Finding | Cause and exact owner | Disposition / useful evidence |
+## Findings, root causes and sibling dispositions
+
+| Finding | Single owner and repair | Observed positive/negative or sibling evidence |
 |---|---|---|
-| Retry announces saved findings refreshed while feedback remains unavailable | useListening retry branches on numeric result status, which can be complete independently of feedback | Repaired through checkingProgress feedbackReadyNotice; complete/unavailable/pending tests, actual source-built desktop/narrow UI and explicit safe transport recovery pass |
-| A returned result is hidden if its follow-up result read fails | Common listening load ignores the usable native write envelope and asks for it again | Repaired for submission/retry through the existing load owner: show the returned result immediately, skip the redundant result GET, retain metadata refresh/default recovery. Actual CUA red/green with a labelled constructed HTTP reply proves the fix; it is not live recommendations |
-| Required recommendations still missing | Actual Gemini Free HTTP503 high-demand responses, not an output rejected by Tangerine | External dependency remains unavailable. One necessary verify retry receives503 twice. Score/answer/audio remain available; full-flow/review positives must fail |
-| Suspected unbounded read could hang the UI | Trace shared fetch, proxy and saved-list/Refresh owners | Refuted: the existing proxy has a270second deadline and Refresh/navigation remain reachable. No new gate or retry framework added |
+| Feedback retry announced success while comments remained unavailable | Existing listening status owner branches on feedback completion | Complete/unavailable/not-started literal tests; actual desktop/narrow, safe transport failure/recovery and keyboard observations |
+| A usable write result disappeared when a redundant result GET failed | Existing listening controller uses the already returned result immediately for submission/retry | CUA HTTP red/green, explicitly labelled constructed UI reply, failed GET counterexample and restored actual native state; this fixture never proves live recommendations |
+| Docker Ollama requests received403 | Existing local provider transport uses localhost as HTTP Host for the known ollama alias, retaining its configured TCP/URL target | Actual metadata403/200 probes; real local inference through that alias; controlled alias positive and unchanged loopback/generic llm-local virtual-host negatives; final provider unit/race suite |
+| Correct answer coordinates were rejected because a duplicate quote omitted curly double quotes | Existing source-span normalization projects the exact submitted slice when only double quotation marks differ at valid explicit coordinates | Actual raw local reply and source-built retry; four literal positives, six negatives for words/negation/apostrophes/ranges/ambiguity;81 extraction/interpretation/span siblings pass with race |
+| Practice-example line breaks collapsed into one paragraph | Shared Results presentation preserves lines in feedback and reference rationales through scoped pre-wrap text | Retained old screenshot/native multiline text and current1280/390/320 screens; exact native text remains unchanged; no HTML parser or model call |
 
-The same saved attempt uses its frozen provider/key, answer, extraction, mapping
-and score. Current actual result is60/100 with optional explanation100%, one
-found/one missed/zero false positives. No text, mutation, audio or numeric score
-is regenerated. The latest hosted dispatches33/34 both return503. All29 hosted
-attempts reconcile to native request/context/binding/output records; four actual
-local synthesis receipts remain unchanged. No success is inferred from eventual
-retry or a model's own key. The candidate linguistic key remains candidate.
+The source-span projection never guesses a location, changes a substantive word,
+creates a reason, changes a rubric or recalculates a grade. Raw model replies
+remain retained. The final Host repair is narrowed to Ollama: generic llm-local
+routing is unchanged. This last restriction invalidates only its provider unit/
+static observations; the real exercised ollama branch is identical and its model
+calls are retained. No additional inference follows final presentation review.
 
-## Full iteration and sibling review
+All eleven route families were traced for shared request logging/retry, authored
+error guidance, retained inputs/lists/results, navigation and explicit recovery.
+A raw private-backend canary never becomes a user message. Reads safely retry;
+writes retain their existing idempotency/foreground owner. Errors do not erase
+saved work, playback, navigation or recovery actions. Suspected unbounded reads
+were refuted by the existing270second proxy deadline; no new gate/retry framework
+was added. No corpus, benchmark, Lab or peer review becomes a learner prerequisite.
 
-Review all I29 production changes and surrounding source/shape/relation, scoring/
-feedback, saved-list, request/diagnostic and page owners against the canonical
-contracts/tasks. Original span/attachment, Library retention/Refresh and Audio
-status repairs remain supported by their actual finite receipts. All122 category/
-recipe IDs,42 formulas and11 source scopes are preserved.
+## Actual complete flow and independent expectation
 
-All eleven routes remain selected. Ten unchanged route renderers/styles and
-their earlier empty/populated/error/recovery/keyboard observations are retained;
-current Listen changes are observed at1280×720,390×844 and320×740. Do not rerun
-valid model/browser paths merely for a new screenshot count.
+The original Gemini Free attempt remains unavailable for feedback after29 actual
+hosted dispatch attempts. Its frozen answer,60/100, key and audio are unchanged.
+No further hosted call is made after the retained two503 verify observations.
 
-For all eleven route families, inspect shared clientFetch transport logging and
-retry, authored requestError/source/report/preparation recovery messages, list
-retention and explicit action ownership. Backend body/exception text is not a
-UserMessage. Reads can retry safely; writes retain their existing idempotency and
-foreground provider retry owner. A temporary failure preserves saved work,
-playback, navigation and explicit retry; it is not labelled permanently impossible.
-No human review, corpus, Lab, stored-byte check or new qualification blocks use.
+I29's full-flow contract is provider-agnostic. A new ordinary listening attempt
+explicitly selects installed local gpt-oss:20b checking on the identical actual
+Gemini-generated/Kokoro case. This is not fallback inside a frozen attempt.
+Generation, mutations and speech are reused because their inputs/meaning remain
+valid. No pregenerated seed or model reply is substituted.
 
-Sibling cases for the new notice include a complete score with unavailable or
-not-started feedback, genuine complete feedback, controlled retry HTTP503 with
-private canary text, recovery using the exact actual saved unavailable envelope,
-keyboard focus and navigation Library→saved attempt→the same result. The last
-controlled envelope is a UI transport fixture only; it is not successful live
-feedback or a substituted model reply. Actual new provider calls are only the
-two high-demand failures before these UI checks. Navigation/controlled UI,
-observer checks and export add zero inference.
+- Preparation: bc740ead-ff03-455f-805b-0fb4c7babcf1.
+- Case:3029a559-14ca-4992-a984-b1c02cb067c4; source key:f3ceb3d6-be27-4cb3-a88f-86dc27a81a9f.
+- New attempt:a5f608ea-6719-4682-9f86-d6330a4707b2.
+- Audio:f4683a72-c1b2-42dd-91ec-7207eb9e7a04;94words, four pieces,29.65seconds.
+- Two minor textual mistakes:many book→many books;do it a fun event→make it a fun event.
+
+The deliberately partial developer answer identifies/corrects the number error
+and gives its valid optional reason; the collocation error is omitted. Before
+this attempt is submitted, the actual frozen detection/correction selection is
+read and the independent expectation recorded:
+100×(45×2/3+30×1/2)/75=60. One found, one missed, no false positives; optional
+explanation100% separately. Actual native extraction, mapping, exact score,
+source-quoted assessments, comments and practice recommendation match those
+functional expectations. Full stored playback, saved draft/reload, finite missed-
+passage replay, refresh and the correct saved-answer link are observed. Reopening
+and final UI/export work add zero model calls.
+
+All37 text receipts reconcile to actual observed wire/context/binding/output:
+29 reused Free Gemini and8 new local checking calls. Four original local
+syntheses are reused. Failed extraction/repair/deadline observations are retained,
+not counted as successful outcomes. The final successful local extraction
+retains the exact source quotation that the model's duplicate quote omitted.
+
+Separate installed-local generation attempts remain failures: the earlier Qwen
+profile returns a runner500/invalid mutations; gpt-oss returns invalid mutations;
+the installed27b profile reaches the unchanged canonical deadline, including its
+explicit resume. They are retained as failed capability observations and are not
+used in the accepted generation. No model sweep/performance campaign, new model,
+deadline relaxation, lost taxonomy or fabricated key supplies a green result.
 
 ## UI/UX, typography and evidence
 
-**UI/UX: pass for the observed repair scope; full live flow incomplete.** Failed
-feedback no longer announces a successful refresh. The actual score60/100,
-submitted answer and recording remain usable. A transport503 shows Checking is
-unavailable / answer retained; its raw private canary stays out of the page.
-Explicit retry recovers that transport state, preserves the unavailable-feedback
-guidance and remains enabled. Keyboard/mobile navigation reopens the same answer
-without autoplay, model calls or grade changes.
+**UI/UX: pass for the selected finite scope.** All eleven routes retain their
+meaningful empty/populated/error/recovery and keyboard observations. The
+source-dependent current Listen/results state has fresh complete-result,
+playback/replay, draft, navigation/reopen and narrow-screen evidence. Controlled
+HTTP reply/fault tests remain distinguished from native model/storage behavior.
+The real final comments/recommendations originate in the actual local response.
 
-**Typography: pass for inspected current views and retained unchanged views.**
-Actual desktop/narrow screenshots were inspected:17px Source Sans3 body,
-24.65px line height, readable wrapping, no page overflow and3px visible keyboard
-focus. Earlier all-eleven-route typography/caption observations retain their
-unchanged source scope. A scrolled screenshot's clipped top is not called a
-page-rendering defect. No automated aesthetic or universal accessibility claim.
+**Typography: pass for inspected current and retained unchanged screens.**
+Actual Source Sans3 body17px/line24.65px, readable quantitative captions14px,
+visible3px keyboard focus and no page overflow at1280/390/320. Scores and next
+practice actions remain prominent; long comments wrap naturally. Current line-
+preservation screenshots retain separate correct/incorrect practice lines and
+source rationales. The scoped new class has no effect on the other ten route
+renderers; their unchanged typography evidence is retained. A screenshot clipped
+by intentional scrolling is not a rendering defect. No automated aesthetic or
+universal accessibility/linguistic-quality certification is claimed.
 
-**Evidence: accurately bounded; required full-flow evidence incomplete.**
-The original181.632s edited MP4 and29.65s stored WAV remain the actual earlier
-flow, with disclosed cuts/editorial cards/synchronized audio and missing stage.
-Its pre-notice-repair scope remains explicit. Fresh actual pictures establish
-the notice repair; no missing recommendations are edited into the video. The
-local viewer8773 labels the verification update separately.
+**Evidence: pass for actual finite contents and disclosed scope.** The new
+197.675second edited MP4 combines actual generation and current local checking
+for the same case. It discloses cuts/compressed waits/source-frame gaps, the
+explicit new attempt, editorial key/arithmetic cards and separately synchronized
+saved WAV. The decoded window has711600 samples matching the stored29.65second
+recording, aligned correlation0.9999036 with0sample lag. That comparison proves
+file correspondence, not pronunciation/accent realization. The older incomplete
+movie and every provider/model failure remain available separately.
 
-Local MLflow experiment19/runbc495d5a1c8f41d39a49cfe91e8390c6 copies/read-backs
-the current native key/result/29-call context and verification observations with
-zero inference. FINISHED describes export only; application acceptance remains
-incomplete. The earlier27-call Lab run and baseline native/provider artifacts
-remain intact. Private environment/account files are excluded.
+The initial CUA observer retained its old output path after reassignment. Actual
+current-origin rows/frames/pictures are copied unchanged into the selected data
+folder; originals and this tool-path reconciliation remain retained. No missing
+browser frame is invented. The preliminary oracle compared literal newlines
+against collapsed DOM whitespace; its failure remains retained and its text-
+content expectation is corrected independently of the typography improvement.
 
-## Checks, preservation and remaining action
+Local Lab export/readback includes the actual native requests, outputs, contexts,
+model metadata, source owners, old failures, media and independent expectation.
+FINISHED describes export; the committed-clean gate remains a separate receipt.
+Private environment files/account screens are excluded. Candidate key labels and
+unverified accent observations stay explicit; current provider availability and
+universal generated-prose quality are not inferred from this one functional case.
 
-Three new literal JavaScript status tests and six actual verify observers pass.
-The selected I29 DAG expands from37 to46 cases. Its stable committed-clean run
-and exact candidate/results are in VERIFY-STATUS.json; the required full-flow
-and review positives remain non-green while recommendations are unavailable.
-The actual changed web owner invalidates the web build. The normal locked Docker
-build succeeds after an offline dependency-cache failure; no package version or
-host prerequisite is changed. The earlier79 Go regression identities, Go static
-checks and unchanged provider/speech/other route observations remain valid.
+## Validation, preservation and acceptance boundary
 
-The original test_checking_progress file is unchanged; new status literals live
-separately. An initial query intersected its temporary in-flight edit and failed
-its source binding. Final graph/discovery validation uses restored original
-bindings plus the new exact cases. That intermediate failure is retained.
+The full I29 selection is FIN-FLOW.P1 plus FIN-VERIFY.I29, expanded to57 literal
+implemented cases. New source/behavior is checked first; unchanged green
+receipts retain their finite meanings. The stable committed-clean selection and
+exact candidate/results are in VERIFY-STATUS.json. Strict OpenSpec uses the
+pinned1.13.1 tool, with DAG/discovery validation separately labelled structural.
+The final locked web build, native race suites and stable Go static checks are
+retained; an actual new semantic input is documented before each repeated check.
 
-The user app on3000, its data/config/media/tabs and canonical GAPS.md are
-preserved. Only isolated test services are started/replaced/stopped. Retain the
-owned DB/media and saved attempt8db4a113-d8b6-430c-9bb1-eaec2fc19ff5.
-No further retry is useful without provider recovery; the same actual503
-condition has recurred after long intervals. A successful same-profile feedback
-response is still required before full I29 acceptance, without regeneration,
-rescoring, paid use, weakening the requirement or repeating green work.
+All122 categories/recipes,42 formulas,11 original source scopes, migration data
+and existing source/provider registries are preserved. User app3000, its
+configuration/data/media/tabs and canonical GAPS.md are untouched. Only owned
+test services are replaced/stopped, preserving their DB/media for inspection.
+The static evidence viewer has no account/provider access. No publishing, PR,
+main merge or iteration30 release acceptance is implied.

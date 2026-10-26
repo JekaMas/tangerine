@@ -82,7 +82,7 @@ func containsAnswerSpan(outer, inner AnswerSpan) bool {
 	return outer.Start <= inner.Start && inner.End <= outer.End
 }
 
-// Recover only exact evidence: correct codepoints, matching UTF-16 coordinates,
+// Recover only source evidence: explicit codepoints, matching UTF-16 coordinates,
 // or one unique literal quote (including a unique complete-word occurrence).
 // Ambiguous repeated quotes remain unresolved.
 func normalizeAnswerSpan(text string, s *AnswerSpan) error {
@@ -92,6 +92,17 @@ func normalizeAnswerSpan(text string, s *AnswerSpan) error {
 	runes := []rune(text)
 	if inAnswer(runes, *s) {
 		return nil
+	}
+	if s.Start >= 0 && s.Start < s.End && s.End <= len(runes) && s.Text != "" {
+		source := string(runes[s.Start:s.End])
+		// Coordinates already identify the original evidence. A duplicate quote
+		// can omit or restyle double quotation marks; keep the source itself.
+		// Apostrophes, other punctuation and every substantive word stay exact.
+		quotes := strings.NewReplacer("“", "", "”", "", `"`, "", "„", "", "‟", "", "«", "", "»", "")
+		if quotes.Replace(source) == quotes.Replace(s.Text) {
+			s.Text = source
+			return nil
+		}
 	}
 	utf16Start, utf16End, clock := -1, -1, 0
 	for i, r := range runes {

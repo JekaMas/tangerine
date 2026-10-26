@@ -53,6 +53,7 @@ class CompletionI29(unittest.TestCase):
         cls.prep=read('preparations/'+PREP+'.json');cls.key=read('keys/'+PREP+'.json')
         cls.attempt=read('attempts/'+ATTEMPT+'.json')['Attempt'];cls.result=read('attempts/'+ATTEMPT+'-result.json')
         cls.requests=events('requests.jsonl');cls.dispatch=read('dispatches.json');cls.native=read('call-reconciliation.json')
+        cls.selected_native=json.loads((ROOT/'data/iteration-29-saved-case-flow-20261026/call-reconciliation.json').read_text())
     def packet(self):return json.loads((AUDIT/'REVIEW.json').read_text())
     def test_request_positive(self):
         r=self.prep['exercise_request']
@@ -199,18 +200,18 @@ class CompletionI29(unittest.TestCase):
     def test_lab_positive(self):
         r=read('lab-readback.json');self.assertTrue(r['readback']);self.assertEqual(('FINISHED',0),(r['status'],r['export_inference_calls']))
         self.assertIn('flow/call-reconciliation.json',r['files']);self.assertIn('flow/media-receipt.json',r['files'])
-    def test_flow_positive(self):self.assertEqual([],flow_errors(self.packet(),self.native),'Actual required recommendations must complete; partial scores/builds cannot close I29.')
+    def test_flow_positive(self):self.assertEqual([],flow_errors(self.packet(),self.selected_native),'Actual required recommendations must complete; partial scores/builds cannot close I29.')
     def test_flow_negative(self):
-        n=copy.deepcopy(self.native);n['complete_flow']=False;self.assertIn('required live stage incomplete',flow_errors(self.packet(),n))
-        p=self.packet();p['audio_asset_id']='old-recording';self.assertIn('audio_asset_id mismatch',flow_errors(p,self.native))
-    def test_review_positive(self):self.assertEqual([],review_errors(self.packet(),self.f,self.native))
+        n=copy.deepcopy(self.selected_native);n['complete_flow']=False;self.assertIn('required live stage incomplete',flow_errors(self.packet(),n))
+        p=self.packet();p['audio_asset_id']='old-recording';self.assertIn('audio_asset_id mismatch',flow_errors(p,self.selected_native))
+    def test_review_positive(self):self.assertEqual([],review_errors(self.packet(),self.f,self.selected_native))
     def test_ux_omission_negative(self):
-        p=self.packet();p.pop('ui_ux');self.assertIn('ui_ux unsupported',review_errors(p,self.f,self.native))
+        p=self.packet();p.pop('ui_ux');self.assertIn('ui_ux unsupported',review_errors(p,self.f,self.selected_native))
     def test_typography_omission_negative(self):
-        p=self.packet();p.pop('typography');self.assertIn('typography unsupported',review_errors(p,self.f,self.native))
-        p=self.packet();p['actionable_caption_px']=10;self.assertIn('actionable caption readability',review_errors(p,self.f,self.native))
+        p=self.packet();p.pop('typography');self.assertIn('typography unsupported',review_errors(p,self.f,self.selected_native))
+        p=self.packet();p['actionable_caption_px']=10;self.assertIn('actionable caption readability',review_errors(p,self.f,self.selected_native))
     def test_evidence_mismatch_negative(self):
-        native=copy.deepcopy(self.native);native['complete_flow']=True
+        native=copy.deepcopy(self.selected_native);native['complete_flow']=True
         baseline=self.packet();baseline['omitted_stages']=[]
         self.assertEqual([],flow_errors(baseline,native))
         for key,value in [('attempt_id','other-attempt'),('case_version_id','other-key'),('reference_origin','candidate gold'),('unexecuted_claimed_passed',['planned']),('performance_campaign','50 p95 calls'),('edits_disclosed',False)]:

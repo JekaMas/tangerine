@@ -4,11 +4,11 @@ No browser automation, arithmetic, model reply substitution or account changes.
 Only explicit real-flow steps can dispatch models; UI-only checks cannot do so.
 """
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
-import http.client,json,threading,time,sys
+import http.client,json,threading,time,sys,os
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
-DATA=ROOT/'data/iteration-29-full-flow-20261026'
+DATA=ROOT/os.environ.get('TANGERINE_I29_EVIDENCE','data/iteration-29-full-flow-20261026')
 STACK=json.loads((DATA/'stack.json').read_text())
 LOCK=threading.Lock();STAMP=None
 CONTROL={'name':'empty-route-review','allow_model_calls':False,'failures':{}}

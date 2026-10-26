@@ -25,7 +25,8 @@ func i29Observe(t *testing.T) func() {
 		g23Require(t, json.Unmarshal(raw, &dispatches))
 	}
 	http.DefaultTransport = g23Trip(func(req *http.Request) (*http.Response, error) {
-		model := req.URL.Hostname() == "generativelanguage.googleapis.com"
+		local := req.URL.Hostname() == "ollama" && req.URL.Path == "/v1/responses"
+		model := req.URL.Hostname() == "generativelanguage.googleapis.com" || local
 		speech := req.URL.Hostname() == "speech" && req.Method == http.MethodPost
 		if !model && !speech {
 			return old.RoundTrip(req)
@@ -38,8 +39,12 @@ func i29Observe(t *testing.T) func() {
 		mu.Lock()
 		index := len(dispatches)
 		row := map[string]any{"index": index, "url": req.URL.String(), "request": json.RawMessage(raw), "started_at": time.Now().UTC().Format(time.RFC3339Nano), "credential_header_present": req.Header.Get("x-goog-api-key") != "", "speech_internal_header_present": speech && req.Header.Get("Authorization") != "", "kind": "speech_worker"}
+		row["http_host"] = req.Host
 		if model {
 			row["kind"] = "gemini_free"
+			if local {
+				row["kind"] = "local_responses"
+			}
 		}
 		dispatches = append(dispatches, row)
 		g23Write(t, "dispatches.json", dispatches)

@@ -265,6 +265,15 @@ func Exchange(ctx context.Context, client *http.Client, p Profile, wire []byte, 
 		return out, fail("PROVIDER_FAILURE")
 	}
 	req.Header.Set("Content-Type", "application/json")
+	// The Ollama container alias addresses the configured local daemon. Its
+	// loopback Host policy sees localhost; the URL keeps the actual TCP target.
+	// Generic llm-local endpoints retain their configured virtual-host routing.
+	if p.Provider == "local_responses" && req.URL.Hostname() == "ollama" {
+		req.Host = "localhost"
+		if port := req.URL.Port(); port != "" {
+			req.Host += ":" + port
+		}
+	}
 	if p.Provider == "gemini_interactions" {
 		req.Header.Set("x-goog-api-key", credential)
 	} else if p.Auth != "local_none" {

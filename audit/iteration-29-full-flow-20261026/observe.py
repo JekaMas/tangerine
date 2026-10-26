@@ -1,9 +1,9 @@
 """Reconcile actual finite I29 observations; no inference or runtime admission."""
 from pathlib import Path
-import json
+import json,sys,os
 
 ROOT=Path(__file__).resolve().parents[2]
-DATA=ROOT/'data/iteration-29-full-flow-20261026'
+DATA=ROOT/os.environ.get('TANGERINE_I29_OBSERVATIONS', 'data/iteration-29-local-full-flow-20261026' if '--local' in sys.argv else 'data/iteration-29-full-flow-20261026')
 
 def load(name): return json.loads((DATA/name).read_text())
 def asset(id): return load('assets/'+id+'.json')
@@ -17,7 +17,7 @@ def main():
     bindings={d['binding_sha256']:d for d in docs if 'prompt_id' in d}
     rows=[]
     unused=list(receipts)
-    for observed in [d for d in dispatch if d['kind']=='gemini_free']:
+    for observed in [d for d in dispatch if d['kind'] in ['gemini_free','local_responses']]:
         match=next((r for r in unused if asset(r['wire_request_asset_id'])==observed['request']),None)
         if match is None: raise AssertionError('Unreconciled actual dispatch '+str(observed['index']))
         unused.remove(match)
@@ -44,10 +44,13 @@ def main():
         if context['wire_request_asset_id']!=r['wire_request_asset_id'] or context['profile']!=observed['request']['profile']:raise AssertionError('Another speech context')
         speech.append({'dispatch_index':observed['index'],'receipt_id':r['id'],'context_asset_id':r['context_snapshot_id'],'binding_sha256':r['binding_sha256'],'profile':context['profile'],'wire_request_asset_id':r['wire_request_asset_id'],'wire_response_asset_id':r['wire_response_asset_id']})
     if unused:raise AssertionError('Native synthesis receipt lacks its boundary observation')
-    prep=next((DATA/'preparations').glob('*.json'))
+    prep=(DATA/'preparations'/((DATA/'selected-preparation').read_text().strip()+'.json')) if (DATA/'selected-preparation').exists() else next((DATA/'preparations').glob('*.json'))
     preparation=json.loads(prep.read_text())
     key=load('keys/'+preparation['id']+'.json')
-    attempt=load('attempts/8db4a113-d8b6-430c-9bb1-eaec2fc19ff5.json')['Attempt']
+    attempts=[p for p in (DATA/'attempts').glob('*.json') if not p.name.endswith('-result.json')]
+    selected=(DATA/'selected-attempt').read_text().strip() if (DATA/'selected-attempt').exists() else None
+    assert selected or len(attempts)==1, 'Select the exact functional attempt explicitly'
+    attempt=load('attempts/'+selected+'.json')['Attempt'] if selected else json.loads(attempts[0].read_text())['Attempt']
     result=load('attempts/'+attempt['attempt_id']+'-result.json')
     relation=next(x for x in load('native-relationships.json') if x['case_version_id']==attempt['case_version_id'])
     output={'origin':'actual native HTTP/storage observations; self-review, not independent linguistic gold','provider_dispatches':len(rows),'native_receipts':len(receipts),'calls':rows,'speech_calls':speech,'unmatched_dispatches':[],'unmatched_receipts':[],'speech_worker_requests':len([d for d in dispatch if d['kind']=='speech_worker']),'local_synthesis_requests':len(speech),'preparation_id':preparation['id'],'source_key_id':preparation['key_id'],'case_version_id':attempt['case_version_id'],'attempt_id':attempt['attempt_id'],'audio_asset_id':preparation['audio_asset_id'],'audio_sha256':preparation['audio_sha256'],'relation':relation,'key_verification':sorted({u['verification'] for u in key['units']}),'primary_score':result['score']['composite']['exact_value_0_100'],'feedback_status':result['feedback_status'],'complete_flow':result['feedback_status']=='complete' and bool(result['feedback']),'performance_campaign':'excluded','export_inference_calls':0}
