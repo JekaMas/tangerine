@@ -1178,7 +1178,9 @@ I27.2 remains open for the six unavailable Cambridge/study/vendor owner releases
 I27.3 remains open for actual IAB saved-release/Refresh activation. Rendering,
 focus, reload recovery and typography have separate observations. No full
 iteration acceptance or population/linguistic/model claim follows from these
-partial observations. Details are in `audit/iteration-27-sources-20261026/`.
+partial observations. Committed-clean candidate `6ba7e7257992069888ff4c5db458dfc5f5c8bc98`
+records18passed/2skipped/0failed for the20selected receipt cases; acceptance
+remains incomplete. Details are in `audit/iteration-27-sources-20261026/`.
 
 - [x] I27.1 Materialize separate-release completeness/provenance and partial/merged/mirror-mislabelling counterexamples through existing import owners.
 - [ ] I27.2 Acquire/import authorized complete selected Cambridge derivatives, Doubao records/instruments, separate Moodrick/NIR and eligible supplements with actual dictionaries/media/terms; reconcile official L2 bytes only if claiming official provenance, and do not download prohibited ICNALE media.

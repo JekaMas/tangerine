@@ -135,3 +135,10 @@ receipts were not rewritten or promoted to blanket current-head acceptance.
 The selected20receipt readers finish18passed/2skipped,0failed; the two skipped
 requirements remain open. A committed-clean observation will record the candidate
 revision without repeating the corpus imports, browser work or any inference.
+
+Committed-clean candidate `6ba7e7257992069888ff4c5db458dfc5f5c8bc98` finishes
+18passed/2skipped/0failed, status incomplete. `ACCEPTANCE.json` records both open
+requirements. This follow-up changes only evidence/canonical progress notes,
+not source/test/fixture/contract inputs; no native or selected-case rerun is
+invalidated by those notes. The running local app remains HTTP200, temporary I27
+containers/proxy are absent, and the canonical unrelated GAPS.md edit is intact.

@@ -143,9 +143,12 @@ are unread, not inferred. No new source-owner message was sent.
 - Original taxonomy/recipes, 42 formulas, source identity definitions and preset
   definitions are byte-identical to the starting revision. Schema copies match;
   the status/report additions are additive. See `PRESERVATION.json`.
-- A committed-clean selected receipt run will record the exact code candidate in
-  `ACCEPTANCE.json`. It reuses observed native evidence rather than repeating
-  downloads, imports or browser work solely because a commit changed.
+- Committed-clean candidate `6ba7e7257992069888ff4c5db458dfc5f5c8bc98` records
+  **18 passed, 2 skipped, 0 failed** in `ACCEPTANCE.json` and the private clean
+  receipt. Overall acceptance remains incomplete. This reused observed native
+  evidence without repeating downloads, imports or browser work solely because
+  a commit changed. The follow-up evidence-only commit does not change those
+  semantic inputs.
 
 No model inference, speech generation, paid credits/overage, account creation,
 installation, deployment, publication, property-based campaign or financial
