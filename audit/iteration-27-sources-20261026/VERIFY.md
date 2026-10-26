@@ -122,8 +122,19 @@ fresh target/recovery/native observations inspected, constructed boundaries
 labelled; complete owner populations remain unavailable. Overall I27 acceptance
 remains incomplete and independent exercise use is not gated.
 
-The final committed-clean selection will record the current candidate and exact
-pass/skip/fail counts in VERIFY-ACCEPTANCE.json. Stable native/Go vet receipts
+The committed-clean selection on `adcedb5c93f087118bb474202e30f6bcd7123874`
+records **49 passed, 2 skipped, 0 failed** in `VERIFY-ACCEPTANCE.json` and the
+private clean receipt. Both selected command processes exited successfully;
+the overall executor status remains incomplete because two requirements skip. Stable native/Go vet receipts
 are reused; the final gate executes the new direct Sources-owner assertions and
 receipt reconciliation without new corpus import/download or provider calls.
 No whole-project/all-iteration readiness, deployment or release is claimed.
+
+Final disposition: six finding groups and their listed siblings have repairs
+and passing directly affected owner cases. Full iteration acceptance is **not
+green**. I27.2 stays open for the six actual owner releases and I27.3 for actual
+browser activation. The final evidence-only commit does not change semantic
+source/test/fixture/contract inputs, so valid behavior/build/native receipts
+are retained without another run. Temporary fixture containers/proxy/tabs are
+removed; the existing user application, listening deliverable and Azure handoff
+are preserved. No additional product approval can supply the missing owner data.
