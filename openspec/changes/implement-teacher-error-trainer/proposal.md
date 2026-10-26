@@ -1,10 +1,11 @@
 # Full local Teacher Error Trainer
 
-Current authorized increment: **iteration 20** applies results-first completed
-views and finite stored passage replay, preserving optional explanation,
-uncertainty, exact answers and existing playback accounting. Reuse correct owners
-and native receipts; cover literal media/browser counterexamples. No deployment,
-external model/speech call, financial execution or paid use.
+Current authorized increment: **iteration 21** completes guided report/experiment
+starters with named saved populations/datasets and configured defaults, preserves
+advanced JSON/file entry and implements named Cleanup selection through existing
+preview and explicit apply. Reuse actual native owners and valid receipts; verify
+empty/error/recovery, exact identities, no implicit calls/deletion, keyboard and
+typography. No deployment, external inference/synthesis, paid or financial use.
 
 The current objective is the full Tangerine local open-source product specified in specification/v2/README.md. The 2026-10-25 user-authorized increment plans the complete remaining inventory as iterations 17–30 and wires UI/UX, typography and evidence into verification. It does not implement those application changes, run providers or publish. See completion-iterations.md and completion-iterations.json; tasks.md remains the sole checklist. Earlier research, implementation and acceptance statements below retain their dated scopes. User decisions in docs/authority.md supersede inherited package instructions and human peer review procedures.
 

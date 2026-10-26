@@ -1,3 +1,12 @@
+2026-10-26 iteration21: the actual user selects UX-08 guided reports/experiments
+and named Cleanup selection. Reuse and complete existing starter/default/native
+storage and deletion owners, preserve advanced entry, materialize independent
+positive/negative cases and verify actual UI/UX/typography through committed-clean
+iteration acceptance. Local commits and isolated test-owned data are authorized.
+No provider inference/synthesis, paid credits/overage, deployment/postdeployment,
+PBT, financial execution, installation or publication. Preserve the running user
+app, settings/database/media, pre-existing tabs and unrelated canonical GAPS.md.
+
 2026-10-26 iteration20: the actual user selects UX-04/UX-05 results-first layout
 and finite passage replay. Apply the complete iteration through real presentation,
 stored-media and session owners; inspect/repair direct siblings, retain valid

@@ -1,5 +1,23 @@
 # Implementation design
 
+## Iteration 21 guided tool ownership
+
+Reuse the constructed report/generation starters, with normal labels and named
+choices for saved report populations and compatible saved generation datasets.
+Resolve actual full asset references through existing report/experiment/defaults
+and private asset reads. Native CreateEmpiricalReport and AdmitExperiment retain
+all arithmetic, input admission, provenance and durable planned-state ownership.
+Saving freezes a definition; Run remains a separate explicit operation. Advanced
+JSON/file entry preserves every supported diagnostic scope.
+
+The reports session owns request/action and selected-result delivery; forms own
+editable fields. Existing useSavedList owns list pagination/order/retention for
+report/experiment choices and Cleanup records. The Cleanup session alone owns
+selection, preview and confirmation: changing the selection supersedes pending
+preview responses, so old results cannot restore Apply. Existing PlanDeletion
+and ApplyDeletion retain exact dependency/shared-media and erasure semantics.
+No schema, new API, approval step or repeated stored-data check is added.
+
 ## Iteration 20 result and playback ownership
 
 Results consumes authoritative score displays, counts and feedback; page keeps

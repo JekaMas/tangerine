@@ -1,6 +1,25 @@
 'use client';
-import {clientFetch as fetch} from '../clientRequest.js';
-import {requestError,userError} from '../requestError.js';
-import {useEffect,useState} from 'react';
 import RecordPicker from './RecordPicker';
-export default function Cleanup(){const [ids,setIDs]=useState(''),[plan,setPlan]=useState(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[confirmed,setConfirmed]=useState(false);function select(value){setIDs(value);setPlan(null);setConfirmed(false)}useEffect(()=>{const id=new URLSearchParams(window.location.search).get('subject');if(id)select(id)},[]);async function action(apply=false,orphans=false){setError('');setBusy(true);try{const response=await fetch(apply?'/api/v1/deletions/'+plan.id+':apply':'/api/v1/deletions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(apply?{confirmed_plan_sha256:plan.confirmation_sha256}:{subject_ids:orphans?[]:ids.split(/[,\s]+/).filter(Boolean),orphan_cleanup:orphans})});const p=await response.json();if(!response.ok)throw userError('The cleanup outcome could not be confirmed. Refresh the preview to check saved state before trying again.');setPlan(p);setConfirmed(false)}catch(e){setError(requestError(e))}finally{setBusy(false)}}return <main id="main-content"><section className="intro"><h1>Cleanup and deletion</h1><p>Preview exact affected records before applying. Shared audio stays while another exercise needs it. External backup copies remain under your control.</p></section><section className="card"><RecordPicker ids={ids} onChange={select} busy={busy}/><details><summary>Selected full IDs or manual entry</summary><label>Subject IDs (comma or space separated)<textarea aria-label="Deletion subjects" value={ids} onChange={e=>select(e.target.value)}/></label></details><div className="actions"><button disabled={busy||!ids.trim()} onClick={()=>action()}>Preview deletion</button><button className="secondary" disabled={busy} onClick={()=>action(false,true)}>Preview old unlinked media</button></div>{error&&<p className="error" role="alert">{error}</p>}{plan&&<><h2>Deletion preview</h2><p role="status">{plan.state} · {plan.documents.length} documents · {plan.assets.length} private objects</p>{plan.blocked.length>0&&<p role="alert">Some selected records are still in use. Open their saved references, then refresh the preview. Other exercises remain available.</p>}<details><summary>Affected identifiers</summary><pre>{JSON.stringify({documents:plan.documents,assets:plan.assets,heads:plan.heads,source:plan.source,blocked:plan.blocked},null,2)}</pre></details><p>Lab copies: {plan.lab_cleanup}. If pending, use the explicit Lab cleanup command in Recovery; native erasure alone does not erase external copies.</p>{plan.state==='preview'&&<><label><input type="checkbox" className="check" aria-label="Confirm deletion" checked={confirmed} onChange={e=>setConfirmed(e.target.checked)}/> Delete the records shown in this preview.</label><button disabled={busy||!confirmed} onClick={()=>action(true)}>Apply deletion</button></>}</>}</section></main>}
+import useCleanup from './useCleanup';
+import {cleanupStatus,labCleanupStatus} from './labels';
+
+export default function Cleanup() {
+  const {ids,plan,error,pending,confirmed,scope,select,confirm,preview,apply}=useCleanup();
+  const applying=pending==='apply';
+  return <main id="main-content"><section className="intro"><h1>Cleanup and deletion</h1><p>Preview exact affected records before applying. Shared audio stays while another exercise needs it. External backup copies remain under your control.</p></section>
+    <section className="card">
+      <RecordPicker ids={ids} onChange={select} busy={applying}/>
+      <details><summary>Selected full IDs or manual entry</summary><label>Subject IDs (comma or space separated)<textarea aria-label="Deletion subjects" value={ids} disabled={applying} onChange={event=>select(event.target.value)}/></label></details>
+      <div className="actions"><button disabled={!!pending||!ids.trim()} onClick={()=>preview()}>Preview deletion</button><button className="secondary" disabled={!!pending} onClick={()=>preview(true)}>Preview old unlinked media</button></div>
+      {pending&&<p role="status">{applying?'Applying the confirmed preview…':'Preparing the selected preview…'}</p>}
+      {error&&<p className="error" role="alert">{error}</p>}
+      {plan&&<>
+        <h2>Deletion preview</h2><p>{scope}</p><p role="status">{cleanupStatus(plan.state)} · {plan.documents.length} documents · {plan.assets.length} private objects</p>
+        {plan.blocked.length>0&&<p role="alert">Some selected records are still in use. Open their saved references, then refresh the preview. Other exercises remain available.</p>}
+        <details><summary>Affected identifiers</summary><pre>{JSON.stringify({documents:plan.documents,assets:plan.assets,heads:plan.heads,source:plan.source,blocked:plan.blocked},null,2)}</pre></details>
+        <p>{labCleanupStatus(plan.lab_cleanup)}. For external copies, use the explicit Lab cleanup command in <a href="/recovery">Recovery</a>; local erasure alone does not erase external copies.</p>
+        {plan.state==='preview'&&<><label><input type="checkbox" className="check" aria-label="Confirm deletion" checked={confirmed} disabled={applying} onChange={event=>confirm(event.target.checked)}/> Delete the records shown in this preview.</label><button disabled={!!pending||!confirmed||plan.blocked.length>0} onClick={apply}>Apply deletion</button></>}
+      </>}
+    </section>
+  </main>;
+}
