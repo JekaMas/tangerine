@@ -1057,6 +1057,9 @@ Depends on 17; optional selected provider scope. Properties: `FIN-GEMINI.P1`,
 - [x] I23.R1 Keep speaker/turn attribution with extracted claims; preserve genuinely unresolved assertions. Recheck the same saved exercise/answer with the changed frozen prompt and retain the original uncertainty.
 - [x] I23.R2 Remove the OpenAI-wire assumption from semantic-repair context capture. Carry the shared executor's actual repair message through native persistence, including a subsequent transport retry; repair and verify explicit same-attempt resume.
 
+- [x] I23.R3 Distinguish Gemini terminal credential/access/model/allowance errors from temporary outages, including current error.code and legacy error.status bodies. Show authored immediate and persisted Settings/reset guidance; preserve saved progress and never retry a payment/denial response automatically or switch providers.
+- [x] I23.R4 Add the literal terminal/transient and privacy regressions, observe current native failure and successful explicit resume through local audio and actual browser reopen, inspect1280/390/320 layouts and keyboard recovery, and retain unchanged actual Gemini/Lab scoring evidence. Verification acceptance is recorded separately below.
+
 I23 stable evidence: `audit/iteration-23-gemini-20261026/REPORT.md`. The primary
 selection contains eight exact cases; six directly affected historical I17
 replay cases are selected alongside them. The latter read I17's accepted source
@@ -1064,6 +1067,13 @@ snapshot, allowing later GEN.R4 completion without rewriting I17's dated ledger.
 Acceptance: `audit/iteration-23-gemini-20261026/ACCEPTANCE.json`;14/14 selected
 cases passed --require-clean on `33c2d29`. GEN.R4 is closed for the actual selected
 Free profile. Failed baseline/controlled scopes remain explicit; later iterations open.
+
+I23 verification repair: `audit/iteration-23-verification-20261026/REPORT.md`.
+The current primary selection expands to21 cases (8 qualified-flow/review cases
+and13 terminal/native/UI recovery cases). Six unaffected historical I17 cases
+retain their committed-clean33c2d29 receipt. Current committed-clean acceptance
+is pending the final source commit and selection receipt; previous acceptance
+does not cover these newly repaired error paths.
 
 ### Iteration 24 — Complete Azure F0 comparison
 

@@ -13,6 +13,7 @@ const reasons = {
   DEADLINE_EXCEEDED: 'Generation reached its time limit.',
   PROVIDER_OUTPUT_INVALID: 'The provider returned an incomplete or unusable response.',
   PROVIDER_FAILURE: 'The selected provider could not complete this step.',
+  CONSTRAINT_CONFLICT: 'The selected settings or service access cannot complete this request.',
   INFRASTRUCTURE_UNAVAILABLE: 'A local dependency is unavailable.',
   CAPABILITY_UNQUALIFIED: 'The selected speech capability needs setup or a compatible voice.',
   MODEL_SETUP_REQUIRED: 'The selected local speech model needs setup.',

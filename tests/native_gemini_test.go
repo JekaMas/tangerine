@@ -230,7 +230,7 @@ func TestNativeGeminiErrors(t *testing.T) {
 		status     int
 		body, code string
 		calls      int
-	}{{"quota", 429, `{"error":{"status":"RESOURCE_EXHAUSTED","message":"private quota diagnostic"}}`, "LOCAL_BUDGET_EXCEEDED", 1}, {"denied", 403, `{"error":{"status":"PERMISSION_DENIED","message":"private denial diagnostic"}}`, "PROVIDER_FAILURE", 1}, {"credentials", 401, `{"error":{"status":"UNAUTHENTICATED"}}`, "MISSING_CREDENTIALS", 1}, {"unavailable", 503, `{"error":{"status":"UNAVAILABLE","message":"private outage diagnostic"}}`, "PROVIDER_FAILURE", 2}} {
+	}{{"quota", 429, `{"error":{"status":"RESOURCE_EXHAUSTED","message":"private quota diagnostic"}}`, "LOCAL_BUDGET_EXCEEDED", 1}, {"denied", 403, `{"error":{"status":"PERMISSION_DENIED","message":"private denial diagnostic"}}`, "CONSTRAINT_CONFLICT", 1}, {"credentials", 401, `{"error":{"status":"UNAUTHENTICATED"}}`, "MISSING_CREDENTIALS", 1}, {"unavailable", 503, `{"error":{"status":"UNAVAILABLE","message":"private outage diagnostic"}}`, "PROVIDER_FAILURE", 2}} {
 		t.Run(tc.name, func(t *testing.T) {
 			s, r := g23Setup(t)
 			calls := 0

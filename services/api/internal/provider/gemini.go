@@ -47,11 +47,18 @@ func geminiError(raw []byte, status int) error {
 	if code == "" {
 		_ = json.Unmarshal(body.Error.Code, &code)
 	}
-	if status == 429 || code == "RESOURCE_EXHAUSTED" {
+	// Interactions returns lowercase error.code; older Google errors carry an
+	// uppercase error.status. Keep the private native reason and use the existing
+	// public categories so callers never mistake setup/budget errors for outages.
+	reason := strings.ToLower(code)
+	if status == 402 || status == 429 || reason == "resource_exhausted" || reason == "payment_required" || reason == "quota_exceeded" || reason == "rate_limit_exceeded" || reason == "too_many_requests" {
 		return &Failure{Code: "LOCAL_BUDGET_EXCEEDED", ProviderCode: code}
 	}
-	if status == 401 || code == "UNAUTHENTICATED" {
+	if status == 401 || reason == "unauthenticated" || reason == "authentication" {
 		return &Failure{Code: "MISSING_CREDENTIALS", ProviderCode: code}
+	}
+	if status == 403 || reason == "permission_denied" || reason == "model_not_found" {
+		return &Failure{Code: "CONSTRAINT_CONFLICT", ProviderCode: code}
 	}
 	return &Failure{Code: "PROVIDER_FAILURE", ProviderCode: code}
 }

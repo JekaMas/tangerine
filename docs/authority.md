@@ -238,3 +238,11 @@ The actual user requests openspec-apply-change iteration14 Empirical reports and
 
 
 2026-10-25 final-functional-ux: the actual user requests all non-pronunciation category coverage, tests/evidence, in-scope implementation/repair, complete main-path UI/UX/typography review using skills/screenshots/actions, verification and a scoped local commit. This authorizes the FX increment and test-owned records, finite local browser/native operations and artifact retention. It authorizes no purchased credits, overage, billing/provider changes, new account or publication. Preserve original learner records and concurrent work.
+2026-10-26 iteration23 verification/repair: the actual user requests complete
+Gemini Free qualification review, root-cause and sibling repairs, safe logged
+retries, human recovery, UI/UX and typography inspection through committed-clean
+acceptance. Scoped source/spec/test/DAG repairs and local commits are authorized.
+Retain valid native/model/Lab observations; controlled errors must not exhaust
+real quota. No purchased credits, overage, paid fallback, deployment/postdeployment,
+PBT, financial execution, installation or publication. Preserve app3000, all user
+data/settings/media/tabs and canonical GAPS.md. No new runtime approval gate.

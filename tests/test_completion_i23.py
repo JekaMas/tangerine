@@ -46,10 +46,11 @@ class CompletionI23(unittest.TestCase):
   self.assertTrue(passed('resume/native.jsonl','TestNativeGeminiResume'))
 
  def test_gemini_negative(self):
-  for name,calls,code in [('quota',1,'LOCAL_BUDGET_EXCEEDED'),('denied',1,'PROVIDER_FAILURE'),('credentials',1,'MISSING_CREDENTIALS'),('unavailable',2,'PROVIDER_FAILURE')]:
-   row=read('controlled/error-'+name+'.json');self.assertEqual((calls,code),(row['calls'],row['code']));before,after=row['before'],row['after']
+  current=ROOT/'data/iteration-23-verification-20261026/controlled'
+  for name,calls,code in [('quota',1,'LOCAL_BUDGET_EXCEEDED'),('denied',1,'CONSTRAINT_CONFLICT'),('credentials',1,'MISSING_CREDENTIALS'),('unavailable',2,'PROVIDER_FAILURE')]:
+   row=json.loads((current/('error-'+name+'.json')).read_text());self.assertEqual((calls,code),(row['calls'],row['code']));before,after=row['before'],row['after']
    self.assertIsNotNone(before['canonical_asset_id']);self.assertEqual(before['canonical_asset_id'],after['canonical_asset_id']);self.assertEqual(before['settings_asset_id'],after['settings_asset_id']);self.assertIsNone(after['audio_asset_id']);self.assertEqual('complete',after['phase_states']['canonical_text']);self.assertEqual('failed',after['phase_states']['mutation'])
-   self.assertTrue(passed('controlled/native.jsonl','TestNativeGeminiErrors/'+name))
+   self.assertTrue(passed(current/'native.jsonl','TestNativeGeminiErrors/'+name))
   self.assertEqual(2,read('controlled/recovery.json')['calls']);self.assertTrue(passed('controlled/native.jsonl','TestNativeGeminiUnavailableRecovery'))
   live=read('live/dispatches.json');self.assertEqual([503,200],[x['http_status'] for x in live[1:3]]);self.assertEqual(live[1]['request'],live[2]['request'])
 

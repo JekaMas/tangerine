@@ -72,6 +72,20 @@ The optional native `gemini_interactions` text adapter uses `https://generativel
 
 The exact owned system instructions remain in system_instruction; the complete existing input-message array is serialized as JSON in the native text input, preserving order, roles and verbatim data. Explicit temperature/output cap map to generation_config; unspecified reasoning is omitted. An optional structured schema maps to native response_format type=text/mime_type=application/json/schema, rather than OpenAI Responses fields. Every actual request is saved before dispatch without credential headers. Native completed model_output text is concatenated in order; incomplete output cannot become a key or score. Preserve raw response and actually returned model/interaction ID. Native total_input_tokens/total_output_tokens/total_thought_tokens/total_cached_tokens map only when reported; unknown usage/cost stays unknown. Resource-exhaustion/HTTP429 stops as LOCAL_BUDGET_EXCEEDED without another attempt or paid fallback; missing credentials dispatch zero calls. Other existing retry/repair and270-second foreground limits remain unchanged.
 
+Terminal Gemini errors use existing public categories: authentication/HTTP401
+uses MISSING_CREDENTIALS; permission_denied/HTTP403 and model_not_found use
+CONSTRAINT_CONFLICT with model/access/settings guidance; payment_required/HTTP402
+and quota/HTTP429 use LOCAL_BUDGET_EXCEEDED. Accept native lowercase error.code
+and the older uppercase error.status dialect. Preserve native diagnostics
+privately. These terminal responses do not automatically retry, switch models,
+ask for a purchase or change the frozen exercise. A temporary503 keeps the
+existing bounded same-request retry and explicit saved-checkpoint resume.
+Preparation displays authored guidance for both credential-code spellings,
+including immediately after failure and after reopening the saved record.
+See [Google's native error reference](https://ai.google.dev/gemini-api/docs/api-errors)
+and [retry guidance](https://ai.google.dev/gemini-api/docs/troubleshooting),
+checked2026-10-26. This is error interpretation, not another admission gate.
+
 This adapter serves all existing text roles without changing prompts, taxonomy, formulas or native score arithmetic. Audio judging remains the independently selected speech diagnostic profile. The 2026-10-22 local incident established that the installed GPT-OSS20B can fail a general full-category mutation request despite protocol/release fixture passes; local qualification is task-specific, not a guarantee of arbitrary model quality. Current actual provider quality is recorded in audit/generation-repair-20261022/REPORT.md.
 
 Iteration 23 (2026-10-26) qualifies the explicitly selected `gemini-3.1-flash-lite`
