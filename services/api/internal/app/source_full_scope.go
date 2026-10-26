@@ -18,7 +18,7 @@ func (s *Storage) sourceFullMissing(ctx context.Context, release SourceRelease, 
 			return e
 		}
 		if n != want {
-			missing = append(missing, fmt.Sprintf("%s: expected%d, observed%d", label, want, n))
+			missing = append(missing, fmt.Sprintf("%s: expected %d, observed %d", label, want, n))
 		}
 		return nil
 	}
@@ -60,7 +60,7 @@ func (s *Storage) sourceFullMissing(ctx context.Context, release SourceRelease, 
 			}
 		}
 		if recordings != 5245 {
-			missing = append(missing, fmt.Sprintf("Complete native WAVE files: expected5245, observed%d; includes245unrated recordings", recordings))
+			missing = append(missing, fmt.Sprintf("Complete native WAVE files: expected 5245, observed %d; includes 245 unrated recordings", recordings))
 		}
 		if e := requireRows("aggregate scored utterances", "scores.json", "", 5000); e != nil {
 			return nil, e
@@ -78,7 +78,7 @@ func (s *Storage) sourceFullMissing(ctx context.Context, release SourceRelease, 
 			return nil, e
 		}
 		if speakers != 250 {
-			missing = append(missing, fmt.Sprintf("250native speakers; observed%d", speakers))
+			missing = append(missing, fmt.Sprintf("250 native speakers; observed %d", speakers))
 		}
 	case "L2-ARCTIC":
 		var read, suit int64
@@ -86,7 +86,7 @@ func (s *Storage) sourceFullMissing(ctx context.Context, release SourceRelease, 
 			return nil, e
 		}
 		if read != 26867 || suit != 22 {
-			missing = append(missing, fmt.Sprintf("complete read/suitcase utterances expected26867/22; observed%d/%d", read, suit))
+			missing = append(missing, fmt.Sprintf("Complete read/suitcase utterances: expected 26867/22; observed %d/%d", read, suit))
 		}
 	case "TET-GOLD-1":
 		goldMissing, e := s.sourceGoldMissing(ctx, importID, members)

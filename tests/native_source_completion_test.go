@@ -230,3 +230,28 @@ func TestNativeSourceSpeechMediaScopeNegative(t *testing.T) {
 		sourceAssert(t, count != 5245, found)
 	}
 }
+
+func TestNativeSourceStatusMeaningPositive(t *testing.T) {
+	f := sourceFixture(t)
+	f.upload(t, "train.m2", "S We made a decision .\n\n")
+	f.register(t, "FCE-2.1", "partial_export")
+	run := f.run(t, "native", nil)
+	sourceRequire(t, f.s.Store.CommitSourceImport(context.Background(), run.Report.ID))
+	sourceAssert(t, "0", run.Report.RawOnly)
+	sourceAssert(t, false, run.Report.Normalized)
+	// The documented converter exists. Missing native partitions are not a
+	// missing dictionary and must not send the user to invent a mapping.
+	sourceAssert(t, "incomplete", completionSourceStatus(t, f, "FCE-2.1")["status"])
+}
+
+func TestNativeSourceStatusMeaningNegative(t *testing.T) {
+	f := sourceFixture(t)
+	f.bea(t)
+	run := f.run(t, "raw-only", nil)
+	sourceRequire(t, f.s.Store.CommitSourceImport(context.Background(), run.Report.ID))
+	sourceAssert(t, false, run.Report.Normalized)
+	if run.Report.RawOnly == "0" {
+		t.Fatal("raw-only counterexample did not reach the unconverted-record boundary")
+	}
+	sourceAssert(t, "format_unbound", completionSourceStatus(t, f, "FCE-2.1")["status"])
+}

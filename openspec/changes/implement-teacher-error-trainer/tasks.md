@@ -1180,7 +1180,13 @@ focus, reload recovery and typography have separate observations. No full
 iteration acceptance or population/linguistic/model claim follows from these
 partial observations. Committed-clean candidate `6ba7e7257992069888ff4c5db458dfc5f5c8bc98`
 records18passed/2skipped/0failed for the20selected receipt cases; acceptance
-remains incomplete. Details are in `audit/iteration-27-sources-20261026/`.
+remains incomplete. The subsequent I27 verify repairs selection/read/cache
+recovery, stale release/export responses, human issue/record diagnostics and
+incorrect conversion-unavailable status. Its51case selection adds27direct
+controlled Sources-owner cases and4native-result observers; fresh native
+status/HTTP cases and responsive error/reload observations are retained. Final
+committed verification and exact external blockers are recorded in
+`audit/iteration-27-sources-20261026/VERIFY.md`.
 
 - [x] I27.1 Materialize separate-release completeness/provenance and partial/merged/mirror-mislabelling counterexamples through existing import owners.
 - [ ] I27.2 Acquire/import authorized complete selected Cambridge derivatives, Doubao records/instruments, separate Moodrick/NIR and eligible supplements with actual dictionaries/media/terms; reconcile official L2 bytes only if claiming official provenance, and do not download prohibited ICNALE media.

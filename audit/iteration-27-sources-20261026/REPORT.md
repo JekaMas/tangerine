@@ -1,6 +1,8 @@
 # Iteration 27 — full-source acquisition, native imports and provenance
 
 Status: **partially applied; full iteration acceptance is incomplete**.
+The subsequent review/repair record is [VERIFY.md](VERIFY.md); original apply
+receipts and their exact code revision remain preserved below.
 Started from clean `8cac484a9cb0c067d15e9ee988f739dc95d5251f` on
 `tangerine/iteration-16-release`. Canonical scope is I27.1–I27.3 in the existing
 OpenSpec task list. I27.1 is complete; I27.2 and I27.3 remain open for the exact

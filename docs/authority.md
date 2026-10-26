@@ -1,3 +1,11 @@
+2026-10-26 iteration27 verify: actual user requests full conformance review and
+in-scope repair, sibling/root-cause investigation, UI/UX/typography review and
+local commits. Preserve independent use; log causes, reuse bounded safe read
+retries, retain saved state and render authored human recovery guidance. No
+deployment/postdeployment, PBT, financial execution, inference/synthesis, paid
+credits/overage or publication is authorized by this verify. Missing actual
+owner releases and browser-input observations cannot be relabelled green.
+
 2026-10-26 iteration27: the actual user selects complete selected full-source
 acquisitions/imports and provenance. Scoped eligible downloads, native import/
 completeness and per-release projection repairs, exact positive/negative tests,

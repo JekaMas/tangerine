@@ -81,8 +81,10 @@ func (s *Storage) SourceStatuses(ctx context.Context) ([]map[string]any, error) 
 					item["status"] = "ready_to_import"
 				case report.State != "complete":
 					item["status"] = "incomplete"
-				case !report.Normalized:
+				case !report.Normalized && report.RawOnly != "0":
 					item["status"] = "format_unbound"
+				case !report.Normalized:
+					item["status"] = "incomplete"
 				case last.Scope != "full_named_release" || len(missing) > 0:
 					item["status"] = "incomplete"
 				default:

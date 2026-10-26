@@ -10,17 +10,20 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT/'data/iteration-27-sources-20261026'
+REVIEW = ROOT/'data/iteration-27-verify-20261026'
 IDS = ['TET-GOLD-1', 'SPEECHOCEAN762', 'L2-ARCTIC', 'WILOCNESS-2.1', 'FCE-2.1',
        'EFCAMDAT-R2', 'EFCAMDAT-SHATZ2020', 'EFCAMDAT-OKSUZ2025',
        'DOUBAO-STUDY-RECORDS', 'MOODRICK-DATA', 'NIR-DATA']
 
 
 def read(path):
-    return json.loads((DATA/path).read_text())
+    directory = REVIEW if str(path).startswith('browser/') else DATA
+    return json.loads((directory/path).read_text())
 
 
 def events(name):
-    return [json.loads(line) for line in (DATA/name).read_text().splitlines()
+    directory = REVIEW if str(name).startswith('browser/') else DATA
+    return [json.loads(line) for line in (directory/name).read_text().splitlines()
             if line.startswith('{')]
 
 
@@ -59,6 +62,26 @@ def packet():
 
 
 class CompletionI27(unittest.TestCase):
+    def test_status_meaning_positive(self):
+        values = [json.loads(line) for line in (REVIEW/'status-native.jsonl').read_text().splitlines() if line.startswith('{')]
+        self.assertIn('TestNativeSourceStatusMeaningPositive', {row.get('Test') for row in values if row.get('Action') == 'pass'})
+        red = (REVIEW/'status-red.jsonl').read_text()
+        self.assertIn('want \\\"incomplete\\\"; got \\\"format_unbound\\\"', red)
+
+    def test_status_meaning_negative(self):
+        values = [json.loads(line) for line in (REVIEW/'status-native.jsonl').read_text().splitlines() if line.startswith('{')]
+        self.assertFalse([row for row in values if row.get('Action') in ['fail', 'skip']])
+        self.assertIn('TestNativeSourceStatusMeaningNegative', {row.get('Test') for row in values if row.get('Action') == 'pass'})
+
+    def test_http_diagnostics_positive(self):
+        values = [json.loads(line) for line in (REVIEW/'http-native.jsonl').read_text().splitlines() if line.startswith('{')]
+        self.assertIn('TestSourceHTTPFailureLoggingPositive', {row.get('Test') for row in values if row.get('Action') == 'pass'})
+
+    def test_http_diagnostics_negative(self):
+        values = [json.loads(line) for line in (REVIEW/'http-native.jsonl').read_text().splitlines() if line.startswith('{')]
+        self.assertFalse([row for row in values if row.get('Action') in ['fail', 'skip']])
+        self.assertIn('TestSourceHTTPFailureMessageNegative', {row.get('Test') for row in values if row.get('Action') == 'pass'})
+
     def test_sources_positive(self):
         actual = passed('full-native.jsonl')
         for name in ['TestNativeSourceFullFCEPositive', 'TestNativeSourceFullWIPositive']:

@@ -67,3 +67,28 @@ foreground-operation failures remain in the saved issue/event history and are
 not shown as records still needing attention. Actual malformed data, unknown
 semantics and unresolved count mismatches retain their own visible states.
 No accepted rows are revalidated or rewritten merely to refresh a status view.
+
+## Source presentation and recovery
+
+Sources keeps one selected release/import association, including saved binding,
+permission selectors, rows and cursors. Changing source clears the previous
+source’s draft metadata and conversion fields. Changing binding clears the old
+import view. Superseded release/progress/row/history reads cannot replace the
+current selection; a late remote export cannot attach files to another source.
+This is asynchronous UI ownership, not a stored-data validation or approval gate.
+
+Transient reads reuse the shared bounded retry owner. Known invalid input,
+missing-source and conflict results use locally authored guidance. Raw backend
+messages, parser diagnostics and exception payloads are never ordinary UI text.
+The source HTTP owner logs the cause; API/storage retain original issue history.
+Sources renders history and record warnings in place with authored explanations.
+An unreadable reply still retains an available saved-import header. Unsafe writes
+are not blindly repeated; the existing saved operation/import supports explicit
+resume with retained progress. Failed row/history reads keep available saved
+progress usable; a successful retry clears the resolved warning.
+
+A complete converter with missing source components is incomplete, not format
+unbound. Actual unconverted records retain that distinct conversion-unavailable
+status. Counts and native source metadata remain available in the interface,
+with readable status labels and expandable missing-component details. No
+external corpus is made a prerequisite for independent exercise generation.

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/minio/minio-go/v7"
 	"io"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -44,6 +45,7 @@ func sourceHTTPError(w http.ResponseWriter, e error) {
 		status = 404
 		code = "source_not_found"
 	}
+	log.Printf("source request failed: code=%s cause=%v", code, e)
 	writeJSON(w, status, map[string]string{"error": code})
 }
 func (s *Server) sourcesGet(w http.ResponseWriter, r *http.Request) {
