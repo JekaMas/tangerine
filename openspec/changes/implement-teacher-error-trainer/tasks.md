@@ -1282,6 +1282,20 @@ selected/confirmed release claims. Properties:
 - [ ] I30.2 Land intended work while preserving unrelated canonical GAPS.md edits; resolve the actual GitHub destination and publish only with publication authority.
 - [ ] I30.3 Download the published source ZIP into a disposable directory, prove documented Docker-only startup/persistence, inspect setup UI/typography and publication readback, then reconcile and commit delivery records.
 
+I30 checkpoint (2026-10-27): canonical main was fast-forwarded to preparation
+commit86c722e with the unrelated GAPS.md file and patch preserved. Four real Git
+counterexample/landing tests and two native/preservation observer tests passed;
+three real damaged-source preflights reject missing mandatory files without
+container/state mutation. Fourteen literal cases are now registered, and strict
+OpenSpec1.13.1 plus DAG/discovery validation pass structurally. No remote or
+selected existing GitHub repository exists. The exact public JekaMas/tangerine
+selection is pending the user's answer; no create/push/download is claimed.
+Actual ZIP startup/restart/UI and the complete committed-clean I30 gate remain
+not_run, so all three task boxes remain unchecked. See
+audit/iteration-30-release-20261027/REPORT.md and PROGRESS.md. Production owners,
+app3000, provider settings/data/media and canonical GAPS.md remain unchanged;
+valid I29 evidence is retained. No inference, paid use or deployment occurred.
+
 
 ## Category implementation and actual-audio validation — 2026-10-25
 
