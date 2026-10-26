@@ -47,7 +47,7 @@ class CompletionI25(unittest.TestCase):
     def test_qwen_positive(self):
         out = DATA/'live'
         if not (out/'result.json').exists():
-            self.skipTest('No complete native Qwen pair on the selected practical local runtime; isolated setup permission is pending.')
+            self.skipTest('No complete native Qwen pair has been retained. The selected CPU request hit the foreground deadline; alternate runtime setup remains pending.')
         result = json.loads((out/'result.json').read_text())
         plan = json.loads((out/'plan.json').read_text())
         self.assertEqual(('complete', SOURCE), (result['status'], result['source_preparation']))
@@ -100,6 +100,23 @@ class CompletionI25(unittest.TestCase):
             self.assertEqual(layout['width'], layout['pageWidth'])
             self.assertEqual(('17px', '24.65px'), (layout['size'], layout['line']))
             self.assertTrue(layout['fontLoaded'])
+
+    def test_actual_cpu_timeout_negative(self):
+        facts = json.loads((ROOT/'data/iteration-25-verify-20261026/cpu-timeout-observation.json').read_text())
+        request = facts['request']
+        self.assertEqual(('piece', 'failed', 'TimeoutError'),
+                         (request['action'], request['outcome'], request['exception_type']))
+        self.assertEqual(dict(device='cpu', dtype='float32'), request['input']['turn']['qwen_runtime'])
+        self.assertLessEqual(request['finished_at']-request['started_at'], 270.5)
+        self.assertEqual(('paused', 0, 26),
+                         (facts['progress']['state'], facts['progress']['completed_pieces'], facts['progress']['total_pieces']))
+        self.assertEqual([], facts['saved_piece_waves'])
+        self.assertFalse(facts['result_exists'])
+        self.assertIn('Saved text and completed pieces are retained', facts['progress']['message'])
+        self.assertEqual(2, len(facts['worker_processes_after_deadline']))  # Header and the native server; no synthesis child.
+        self.assertEqual(1, facts['actual_native_piece_requests'])
+        self.assertIsNone(facts['model_call_count'])
+        self.assertFalse(facts['paid_use'])
 
     def test_ux_omission_negative(self):
         packet = constructed_packet()

@@ -1108,6 +1108,16 @@ committed-clean source35ac5b5; runner incomplete). Complete real
 pair and browser activation are still unobserved; isolated host dependency setup
 permission is pending. No task is accepted from constructed PCM or preview.
 
+Verify checkpoint2026-10-26: repaired transient retry, HTTP status/protocol
+classification, CLI setup errors and sibling player file-read/status recovery.
+The new one-piece foreground checkpoint preserves the existing270second owner.
+An actual installed CPU request hit its deadline, released its child and saved
+no complete audio. Updated controlled recovery rendering is inspected at1280,
+390and320pixels; actual playback and activation remain unobserved. Existing
+isolated MPS setup approval and the new Chrome browser selection are pending.
+Full real-pair/Lab and interaction acceptance remain required; see
+`audit/iteration-25-qwen-20261026/VERIFY.md`. Tasks stay unchecked.
+
 Depends on 17 and a usable local runtime. Properties: `FIN-QWEN.P1`,
 `FIN-VERIFY.I25`. Owns CMP.R3.
 

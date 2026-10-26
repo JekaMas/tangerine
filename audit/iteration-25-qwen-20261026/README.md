@@ -34,6 +34,16 @@ same artifacts, with zero additional inference for export or verification.
 Actual browser observations are separate from deterministic lifecycle fixtures.
 No paid service, purchase, overage or provider switch is allowed.
 
+The CLI defaults to `--max-pieces 1`: each explicit invocation admits at most
+one new piece, reuses saved responses/audio and prints its effective frozen
+compute selection. Repeat the same command/output directory to resume. A
+partial step is ordinary saved progress; it is not a full-pair result. The
+reference WAV becomes playable once its own pieces finish. A temporary local
+connection or HTTP502/503 failure retries once within the original270seconds;
+cancellation, deadline and terminal configuration failures do not retry.
+The local player retries failed file reads once, keeps independent recordings
+available and gives authored recovery guidance without exposing backend errors.
+
 ## Runtime investigation
 
 The installed Docker speech image has the accepted pinned model
@@ -44,6 +54,14 @@ This Mac is an Apple M1 Max with 64 GiB RAM. Its existing Python 3.12/PyTorch
 2.5.0 reports MPS built and available, but Qwen/Transformers/audio dependencies
 are absent. An isolated dependency setup is requested; no installation has
 occurred at this checkpoint. An unavailable GPU must not silently select CPU.
+
+Verify2026-10-26 exercised the installed CPU image through a test-owned native
+server. The first piece timed out at the unchanged client deadline; the native
+child was released and no completed audio was admitted. Requested inputs and
+the failure are retained; actual encoded model context is unavailable because
+the child was terminated before returning its receipt. This is a failed real
+qualification, not a benchmark or proof that every CPU configuration is unusable.
+See `VERIFY.md` for repairs, sibling cases and the remaining observation limits.
 
 The initial structural DAG/discovery proof is retained from
 `data/iteration-24-verify-20261026/graph.json`: the starting manifest has not

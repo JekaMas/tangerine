@@ -15,7 +15,7 @@ spec.loader.exec_module(player)
 
 
 def setup(output):
-    for name in ['empty', 'partial', 'complete', 'transient', 'failure']:
+    for name in ['empty', 'partial', 'complete', 'transient', 'failure', 'read_failure']:
         directory = output/name
         directory.mkdir(parents=True, exist_ok=True)
         (directory/'state.json').write_text(json.dumps(dict(
@@ -23,7 +23,9 @@ def setup(output):
             message='Both complete recordings are available.' if name in ['complete', 'transient', 'failure'] else 'The comparison stopped. Saved text and completed pieces are retained. Resume explicitly when ready.',
             completed_pieces=8 if name in ['complete', 'transient', 'failure'] else 4 if name == 'partial' else 0,
             total_pieces=8)))
-        for variant in (['clean', 'mistakes'] if name in ['complete', 'transient', 'failure'] else ['clean'] if name == 'partial' else []):
+        if name == 'read_failure':
+            (directory/'state.json').write_text('{unfinished')
+        for variant in (['clean', 'mistakes'] if name in ['complete', 'transient', 'failure'] else ['clean'] if name in ['partial', 'read_failure'] else []):
             with wave.open(str(directory/('qwen-'+variant+'.wav')), 'wb') as audio:
                 audio.setparams((1, 2, 24000, 0, 'NONE', 'not compressed'))
                 audio.writeframes(b''.join(struct.pack('<h', int(4000*math.sin(i*.06))) for i in range(144000)))
@@ -38,7 +40,7 @@ def handler(output):
             state = parts[0]
             if path == '/font.ttf':
                 body, kind = player.FONT.read_bytes(), 'font/ttf'
-            elif state in ['empty', 'partial', 'complete', 'transient', 'failure']:
+            elif state in ['empty', 'partial', 'complete', 'transient', 'failure', 'read_failure']:
                 if len(parts) == 1 or parts[1] == '':
                     body = player.page(output/state, 'controlled').replace('src="/qwen-', 'src="/'+state+'/qwen-').replace('href="/qwen-', 'href="/'+state+'/qwen-').encode()
                     kind = 'text/html; charset=utf-8'

@@ -48,6 +48,24 @@ class QwenPlayerObservations(unittest.TestCase):
         self.assertTrue(all(not b['disabled'] for b in facts['buttons']))
         self.assertEqual(0, http['model_calls'])
 
+    def test_read_failure_rendered_negative(self):
+        path = AUDIT.parents[1]/'data/iteration-25-verify-20261026/read-failure-browser.json'
+        facts = json.loads(path.read_text())
+        self.assertEqual(0, facts['actual_model_calls'])
+        self.assertIn('constructed six-second PCM', facts['origin'])
+        self.assertEqual([1280, 390, 320], [view['width'] for view in facts['layouts']])
+        for view in facts['layouts']:
+            self.assertEqual(view['width'], view['pageWidth'])
+            self.assertEqual(('17px', '24.65px'), (view['size'], view['line']))
+            self.assertTrue(view['fontLoaded'])
+            self.assertIn('One complete recording is available.', view['status'])
+            self.assertIn('Progress details are temporarily unavailable.', view['status'])
+            self.assertNotIn('JSONDecodeError', view['bodyText'])
+            self.assertEqual([dict(text='Refresh saved recordings', disabled=False)], view['buttons'])
+            self.assertEqual(1, len(view['audio']))
+            self.assertEqual(('/read_failure/qwen-clean.wav', 6, True),
+                             (view['audio'][0]['src'], view['audio'][0]['duration'], view['audio'][0]['paused']))
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

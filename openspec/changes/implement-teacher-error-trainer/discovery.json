@@ -6919,7 +6919,18 @@
       "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_saved_media_retry_positive",
       "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_saved_media_failure_negative",
       "unittest::tests.test_qwen_comparison.QwenComparison.test_plan_freezes_default_runtime_positive",
-      "unittest::tests.test_qwen_native_runtime.QwenNativeRuntime.test_native_frozen_runtime_positive"
+      "unittest::tests.test_qwen_native_runtime.QwenNativeRuntime.test_native_frozen_runtime_positive",
+      "unittest::tests.test_qwen_comparison.QwenComparison.test_bounded_step_resume_positive",
+      "unittest::tests.test_qwen_comparison.QwenComparison.test_retry_transient_positive",
+      "unittest::tests.test_qwen_comparison.QwenComparison.test_retry_exhausted_and_terminal_negative",
+      "unittest::tests.test_qwen_comparison.QwenComparison.test_reference_available_at_step_boundary_positive",
+      "unittest::tests.test_qwen_comparison.QwenComparison.test_cli_setup_failure_negative",
+      "unittest::tests.test_qwen_comparison.QwenComparison.test_http_status_failure_negative",
+      "unittest::tests.test_qwen_comparison.QwenComparison.test_player_read_retry_positive",
+      "unittest::tests.test_qwen_comparison.QwenComparison.test_player_sibling_read_failure_negative",
+      "unittest::tests.test_qwen_comparison.QwenComparison.test_player_http_file_failure_negative",
+      "unittest::tests.test_completion_i25.CompletionI25.test_actual_cpu_timeout_negative",
+      "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_read_failure_rendered_negative"
     ]
   },
   "reviews": [
@@ -28173,16 +28184,27 @@
         "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_saved_media_retry_positive",
         "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_saved_media_failure_negative",
         "unittest::tests.test_qwen_comparison.QwenComparison.test_plan_freezes_default_runtime_positive",
-        "unittest::tests.test_qwen_native_runtime.QwenNativeRuntime.test_native_frozen_runtime_positive"
+        "unittest::tests.test_qwen_native_runtime.QwenNativeRuntime.test_native_frozen_runtime_positive",
+        "unittest::tests.test_qwen_comparison.QwenComparison.test_bounded_step_resume_positive",
+        "unittest::tests.test_qwen_comparison.QwenComparison.test_retry_transient_positive",
+        "unittest::tests.test_qwen_comparison.QwenComparison.test_retry_exhausted_and_terminal_negative",
+        "unittest::tests.test_qwen_comparison.QwenComparison.test_reference_available_at_step_boundary_positive",
+        "unittest::tests.test_qwen_comparison.QwenComparison.test_cli_setup_failure_negative",
+        "unittest::tests.test_qwen_comparison.QwenComparison.test_http_status_failure_negative",
+        "unittest::tests.test_qwen_comparison.QwenComparison.test_player_read_retry_positive",
+        "unittest::tests.test_qwen_comparison.QwenComparison.test_player_sibling_read_failure_negative",
+        "unittest::tests.test_qwen_comparison.QwenComparison.test_player_http_file_failure_negative",
+        "unittest::tests.test_completion_i25.CompletionI25.test_actual_cpu_timeout_negative",
+        "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_read_failure_rendered_negative"
       ],
       "disposition": "current_change",
-      "rationale": "Existing CPU full pair remains incomplete. Mac MPS is actually available but Qwen speech dependencies are missing; permission for an isolated setup is pending. Added explicit native compute selection, real HTTP comparison/resume, controlled model-boundary/lifecycle tests and read-only player. No actual new synthesis or click/keyboard acceptance is claimed. Follow-up self-review reproduced requested/consumed compute mismatch on f975f00; fixed through frozen qwen_runtime plan pieces and native configuration precedence, with literal red/green device-factory expectations.",
+      "rationale": "Existing CPU full pair remains incomplete. Mac MPS is actually available but Qwen speech dependencies are missing; permission for an isolated setup is pending. Added explicit native compute selection, real HTTP comparison/resume, controlled model-boundary/lifecycle tests and read-only player. No actual new synthesis or click/keyboard acceptance is claimed. Follow-up self-review reproduced requested/consumed compute mismatch on f975f00; fixed through frozen qwen_runtime plan pieces and native configuration precedence, with literal red/green device-factory expectations. Verify at01ecb48 reproduced transient retry, CLI setup and player read failures, repaired them through single comparison/transport/read owners and added11literal sibling/observation cases. Actual installed CPU first-piece qualification timed out without accepted audio; native child cleanup observed. New controlled failure rendering inspected at1280/390/320. Full real pair, successful native/Lab context and actual playback activation remain incomplete. No benchmark, paid use, install, deployment, PBT or fallback occurred.",
       "searches": [
         {
           "kind": "exact",
           "status": "completed",
           "query": "Trace known backends.qwen/plan/render, private Handler.do_POST, model_setup.installed and original Qwen comparison batches/receipts; inspect actual host Python dependencies, MPS availability and cached pinned model manifest.",
-          "outcome": "Located accepted cached CustomVoice0.6B and historical timeout/cancelled partial probes. Actual host PyTorchMPS available; speech dependencies absent. Controlled native process tests and actual browser read-recovery/layout observations retained; activation still unchanged.",
+          "outcome": "Located accepted cached CustomVoice0.6B and historical timeout/cancelled partial probes. Actual host PyTorchMPS available; speech dependencies absent. Controlled native process tests and actual browser read-recovery/layout observations retained; activation still unchanged. Verify traced every comparison transport/CLI/file-read error surface and added actual CPU timeout and native process observations; no unknown owner remained.",
           "results": [
             {
               "path": "services/speech/backends.py",
@@ -28258,6 +28280,21 @@
               "path": "tests/test_completion_i25.py",
               "classification": "interface_dependency",
               "reason": "Known native owner, literal source or independently expected test/evidence relation."
+            },
+            {
+              "path": "audit/iteration-25-qwen-20261026/VERIFY.md",
+              "classification": "interface_dependency",
+              "reason": "Selected verify failure, repair or actual observation with explicit proof boundary."
+            },
+            {
+              "path": "data/iteration-25-verify-20261026/cpu-timeout-observation.json",
+              "classification": "interface_dependency",
+              "reason": "Selected verify failure, repair or actual observation with explicit proof boundary."
+            },
+            {
+              "path": "data/iteration-25-verify-20261026/read-failure-browser.json",
+              "classification": "interface_dependency",
+              "reason": "Selected verify failure, repair or actual observation with explicit proof boundary."
             }
           ]
         },

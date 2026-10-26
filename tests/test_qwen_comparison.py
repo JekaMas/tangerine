@@ -113,6 +113,61 @@ class QwenComparison(unittest.TestCase):
             with patch.object(comparison, 'NativeSpeech', side_effect=AssertionError('replay must make no model call')):
                 comparison.execute(plan, out, lambda *a: self.fail('unexpected inference'))
 
+    def test_bounded_step_resume_positive(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out, plan = Path(tmp), self.plan()
+            calls = []
+            def native(action, packet, timeout):
+                calls.append(packet['turn']['operations'][0]['text'])
+                return self.reply(packet)
+            first = comparison.execute(plan, out, native, max_pieces=1)
+            self.assertEqual(('partial', 1, 1), (first['status'], first['completed_pieces'], len(calls)))
+            self.assertEqual(dict(device='cpu', dtype='float32'), first['runtime'])
+            self.assertFalse((out/'result.json').exists())
+            comparison.save(out/'piece-1-response.json', self.reply({}))
+            second = comparison.execute(plan, out, native, max_pieces=1)
+            self.assertEqual(('partial', 3, 2), (second['status'], second['completed_pieces'], len(calls)))
+            comparison.execute(plan, out, native)
+            self.assertEqual('complete', json.loads((out/'result.json').read_text())['status'])
+            self.assertEqual(len(plan['pieces'])-1, len(calls))
+
+    def test_retry_transient_positive(self):
+        for temporary in [ConnectionRefusedError('private-canary'), comparison.NativeFailure('TEMPORARY', 503)]:
+            with self.subTest(error=type(temporary).__name__), tempfile.TemporaryDirectory() as tmp:
+                calls = []
+                def native(action, packet, timeout):
+                    calls.append((action, packet['turn']['id']))
+                    if len(calls) == 1:
+                        raise temporary
+                    return self.reply(packet)
+                with patch.object(comparison.time, 'sleep') as sleep:
+                    result = comparison.execute(self.plan(), Path(tmp), native, max_pieces=1)
+                self.assertEqual(('partial', 1), (result['status'], result['completed_pieces']))
+                self.assertEqual([('piece', 'clean-u1')]*2, calls)
+                sleep.assert_called_once()
+                self.assertNotIn('private-canary', (Path(tmp)/'state.json').read_text())
+
+    def test_retry_exhausted_and_terminal_negative(self):
+        for error, count in [(ConnectionRefusedError('private-canary'), 2),
+                             (comparison.NativeFailure('CAPABILITY_UNAVAILABLE', 422), 1)]:
+            with self.subTest(error=type(error).__name__), tempfile.TemporaryDirectory() as tmp:
+                native = unittest.mock.Mock(side_effect=error)
+                with patch.object(comparison.time, 'sleep'), self.assertRaises(type(error)):
+                    comparison.execute(self.plan(), Path(tmp), native)
+                self.assertEqual(count, native.call_count)
+                self.assertFalse((Path(tmp)/'result.json').exists())
+                self.assertNotIn('private-canary', (Path(tmp)/'state.json').read_text())
+
+    def test_reference_available_at_step_boundary_positive(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out, plan = Path(tmp), self.plan()
+            clean = [p for p in plan['pieces'] if p['id'].startswith('clean-')]
+            result = comparison.execute(plan, out, lambda a, p, t: self.reply(p), max_pieces=len(clean))
+            self.assertEqual('partial', result['status'])
+            self.assertTrue((out/'qwen-clean.wav').exists())
+            self.assertFalse((out/'qwen-mistakes.wav').exists())
+            self.assertFalse((out/'result.json').exists())
+
     def test_partial_cancel_negative(self):
         with tempfile.TemporaryDirectory() as tmp:
             out, plan, count = Path(tmp), self.plan(), 0
@@ -197,6 +252,27 @@ class QwenComparison(unittest.TestCase):
             finally:
                 listener.shutdown(); listener.server_close(); thread.join()
 
+    def test_player_read_retry_positive(self):
+        reads = unittest.mock.Mock(side_effect=[PermissionError('private-canary'), 'saved'])
+        self.assertEqual('saved', player.read_saved(reads))
+        self.assertEqual(2, reads.call_count)
+
+    def test_player_sibling_read_failure_negative(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            (out/'qwen-clean.wav').write_bytes(audio.wav_bytes(b'\0\x10'*2400))
+            (out/'state.json').write_text('{unfinished')
+            with patch.object(player, 'MATERIAL', out/'missing-transcript.json'):
+                page = player.page(out)
+            self.assertIn('src="/qwen-clean.wav"', page)
+            self.assertIn('transcript is temporarily unavailable', page)
+            self.assertIn('targets are temporarily unavailable', page)
+            self.assertIn('One complete recording is available.', page)
+            self.assertNotIn('No complete recording is available yet.', page)
+            self.assertNotIn('JSONDecodeError', page)
+            self.assertNotIn('Traceback', page)
+            self.assertNotIn('Both complete recordings', page)
+
     def test_cli_human_failure_negative(self):
         with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, dict(SPEECH_INTERNAL_TOKEN='fixture-token')):
             stdout = io.StringIO()
@@ -210,6 +286,74 @@ class QwenComparison(unittest.TestCase):
             self.assertNotIn('Traceback', stdout.getvalue())
             self.assertEqual('paused', json.loads((Path(tmp)/'state.json').read_text())['state'])
             self.assertTrue((Path(tmp)/'plan.json').exists())
+
+    def test_cli_setup_failure_negative(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)/'not-a-directory'
+            out.write_text('retained')
+            stdout = io.StringIO()
+            with patch.object(sys, 'argv', ['compare', '--out', str(out), '--device', 'cpu']), contextlib.redirect_stdout(stdout):
+                code = comparison.main()
+            self.assertEqual(1, code)
+            self.assertIn('Check the selected local folder', stdout.getvalue())
+            self.assertNotIn('Traceback', stdout.getvalue())
+            self.assertEqual('retained', out.read_text())
+
+    def test_http_status_failure_negative(self):
+        class Unavailable(server.BaseHTTPRequestHandler):
+            reply_status = 503
+            reply_body = b'{}'
+            def do_POST(self):
+                self.rfile.read(int(self.headers['Content-Length']))
+                self.send_response(self.reply_status)
+                self.send_header('Content-Length', str(len(self.reply_body)))
+                self.end_headers()
+                self.wfile.write(self.reply_body)
+            def log_message(self, *args):
+                pass
+        http = server.ThreadingHTTPServer(('127.0.0.1', 0), Unavailable)
+        thread = threading.Thread(target=http.serve_forever, daemon=True)
+        thread.start()
+        try:
+            with tempfile.TemporaryDirectory() as tmp:
+                native = comparison.NativeSpeech('http://127.0.0.1:'+str(http.server_port), 'fixture-token', Path(tmp))
+                for status, body in [(503, b'{}'), (502, b'private-proxy-canary'), (200, b'private-proxy-canary')]:
+                    with self.subTest(status=status):
+                        Unavailable.reply_status, Unavailable.reply_body = status, body
+                        with self.assertRaises(comparison.NativeFailure) as raised:
+                            native('plan', {}, 2)
+                        self.assertEqual(status, raised.exception.status)
+                        self.assertIn('local speech service', comparison.recovery(raised.exception))
+                        facts = json.loads((Path(tmp)/'dispatches.json').read_text())
+                        self.assertEqual(('failed', status), (facts[-1]['outcome'], facts[-1]['http_status']))
+                        self.assertNotIn('fixture-token', json.dumps(facts))
+                        self.assertNotIn('private-proxy-canary', json.dumps(facts))
+        finally:
+            http.shutdown(); http.server_close(); thread.join()
+
+    def test_player_http_file_failure_negative(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            (out/'qwen-clean.wav').write_bytes(audio.wav_bytes(b'\0\x10'*2400))
+            listener = player.ThreadingHTTPServer(('127.0.0.1', 0), player.handler(out))
+            thread = threading.Thread(target=listener.serve_forever, daemon=True)
+            thread.start()
+            conn = http.client.HTTPConnection('127.0.0.1', listener.server_port)
+            try:
+                with patch.object(Path, 'read_bytes', side_effect=PermissionError('private-canary')) as read:
+                    conn.request('GET', '/qwen-clean.wav')
+                    response = conn.getresponse()
+                    self.assertEqual(503, response.status)
+                    body = response.read().decode()
+                    self.assertIn('temporarily unavailable', body)
+                    self.assertNotIn('private-canary', body)
+                    self.assertEqual(2, read.call_count)
+                conn.request('GET', '/qwen-clean.wav')
+                response = conn.getresponse()
+                self.assertEqual(200, response.status)
+                self.assertEqual(2400, wave.open(io.BytesIO(response.read())).getnframes())
+            finally:
+                conn.close(); listener.shutdown(); listener.server_close(); thread.join()
 
 
 class QwenForeground(unittest.TestCase):
