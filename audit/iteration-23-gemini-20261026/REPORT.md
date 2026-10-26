@@ -125,6 +125,9 @@ changed with the meaningful snapshot repair; their original receipt is not
 relabeled as current. Unchanged frontend, source/corpus and other iteration
 checks are retained within their existing proof boundaries.
 
-Source commit, strict/spec/graph results and committed-clean selected acceptance
-are recorded in the sibling acceptance record when observed. Task checkboxes
-remain pending until that final clean pass; later iterations remain open.
+Source commit **33c2d29** passed the committed-clean selection: **14/14**, with
+exact observed identities and zero substitution gaps. `ACCEPTANCE.json` records
+the source, checks and proof limits. All five I23 tasks and GEN.R4 are closed.
+The following acceptance commit changes metadata only; later iterations remain
+open. The user app3000 health is 200 and its data/settings are preserved; owned
+containers/network/gateway/tabs are removed and the shared model volume remains.

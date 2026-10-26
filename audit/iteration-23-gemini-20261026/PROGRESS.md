@@ -50,6 +50,10 @@ playback/settings/reopen. No frontend change or provider substitution. Historica
 I17 replay is bound to its actual accepted task/graph snapshot, allowing later
 current GEN.R4 completion without rewriting its dated classification.
 
-Next: register the eight literal I23 cases, run stable selected validation,
-commit source, run the same selection --require-clean, then record acceptance
-and canonical task completion. No new inference/synthesis is needed.
+Final: source `33c2d29` passes --require-clean for all 14 selected cases (8 I23,
+6 affected historical replay cases). Strict OpenSpec1.13.1, 388 static assertions,
+graph/discovery, focused native/race tests and Go vet pass; unchanged builds
+are retained. ACCEPTANCE.json records the observed exact closure. I23.1–.3,
+I23.R1–.R2 and GEN.R4 are complete. Later iterations remain open. All owned
+runtime fixtures are removed; app3000 is healthy and canonical GAPS.md remains
+user-dirty/untouched. No remaining I23 action or new inference is required.

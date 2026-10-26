@@ -874,7 +874,7 @@ Generation incident repair, 2026-10-22 (user's live local workspace):
 - [x] GEN.R2 Report only genuinely completed stages as retained after generation failure; add positive/negative response assertions.
 - [x] GEN.R3 Rebuild the local runtime, complete the user's unchanged 600-word/two-speaker/B1 request with the explicitly selected local/free/included LLM and local speech, observe playback in the browser, retain native/context/Lab evidence, review the repair and commit.
 
-- [ ] GEN.R4 Qualify the existing unbilled Gemini project as an explicitly selected native text provider (not a local-model fallback), preserving actual request/response/context/usage, free-only admission, secret transport and quota stop; verify positive/negative protocol behavior and an actual unchanged-request exercise. — I17 H099: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [x] GEN.R4 Qualify the existing unbilled Gemini project as an explicitly selected native text provider (not a local-model fallback), preserving actual request/response/context/usage, free-only admission, secret transport and quota stop; verify positive/negative protocol behavior and an actual unchanged-request exercise. — I17 H099: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md). Completed in I23 on clean `33c2d29`; [actual qualification](../../../audit/iteration-23-gemini-20261026/ACCEPTANCE.json) supersedes this dated I17 availability status.
 
 Linguistic fullness / acceptable-variant audit, 2026-10-23:
 - [x] LF.R1 Inspect every existing leaf and recipe, research primary references, enumerate missing subtypes and correct contextual variants, and preserve all category IDs/formulas/source scopes.
@@ -1050,19 +1050,20 @@ I22 acceptance: `0ee1f51` committed-clean13/13 for FIN-SP-01.P1 and FIN-VERIFY.I
 Depends on 17; optional selected provider scope. Properties: `FIN-GEMINI.P1`,
 `FIN-VERIFY.I23`. Owns GEN.R4.
 
-- [ ] I23.1 Materialize actual selected-profile full-flow and quota/denial/service-unavailable expectations without provider substitution.
-- [ ] I23.2 Use the existing unbilled project only when free access is actually available; complete the unchanged request through generation, audio, checking and exact results with native/context/Lab observations.
-- [ ] I23.3 Verify the complete selected set, applicable UI/style or concrete not-applicable reasons and evidence; retain unavailable status if access fails, reconcile the honest result and commit.
+- [x] I23.1 Materialize actual selected-profile full-flow and quota/denial/service-unavailable expectations without provider substitution.
+- [x] I23.2 Use the existing unbilled project only when free access is actually available; complete the unchanged request through generation, audio, checking and exact results with native/context/Lab observations.
+- [x] I23.3 Verify the complete selected set, applicable UI/style or concrete not-applicable reasons and evidence; retain unavailable status if access fails, reconcile the honest result and commit.
 
-- [ ] I23.R1 Keep speaker/turn attribution with extracted claims; preserve genuinely unresolved assertions. Recheck the same saved exercise/answer with the changed frozen prompt and retain the original uncertainty.
-- [ ] I23.R2 Remove the OpenAI-wire assumption from semantic-repair context capture. Carry the shared executor's actual repair message through native persistence, including a subsequent transport retry; repair and verify explicit same-attempt resume.
+- [x] I23.R1 Keep speaker/turn attribution with extracted claims; preserve genuinely unresolved assertions. Recheck the same saved exercise/answer with the changed frozen prompt and retain the original uncertainty.
+- [x] I23.R2 Remove the OpenAI-wire assumption from semantic-repair context capture. Carry the shared executor's actual repair message through native persistence, including a subsequent transport retry; repair and verify explicit same-attempt resume.
 
 I23 stable evidence: `audit/iteration-23-gemini-20261026/REPORT.md`. The primary
 selection contains eight exact cases; six directly affected historical I17
 replay cases are selected alongside them. The latter read I17's accepted source
 snapshot, allowing later GEN.R4 completion without rewriting I17's dated ledger.
-Task completion and GEN.R4 closure await committed-clean acceptance. Failed
-baseline and controlled transport scopes remain explicit; later iterations open.
+Acceptance: `audit/iteration-23-gemini-20261026/ACCEPTANCE.json`;14/14 selected
+cases passed --require-clean on `33c2d29`. GEN.R4 is closed for the actual selected
+Free profile. Failed baseline/controlled scopes remain explicit; later iterations open.
 
 ### Iteration 24 — Complete Azure F0 comparison
 
