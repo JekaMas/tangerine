@@ -1140,6 +1140,11 @@ the actual thought-group boundary are repaired. Native browser activation remain
 unobserved, so no complete iteration acceptance or checked completion is claimed.
 The existing Chrome-selection question is unanswered. Azure/Qwen outputs are
 unselected; no new synthesis, paid use or bulk judge campaign is required.
+Committed source `d072e9e` observes19 passes and one interaction skip over the20
+new cases. Export-only `0987483` and local Lab17 retain the four actual requests
+and20 saved role-labelled clips. `STATUS.json` reconciles538 total cases as518
+valid retained CV observations plus19 current passes and the one skip. This is
+an incomplete iteration, not a full all-eight-property clean acceptance.
 
 - [ ] I26.1 Reconcile and retain valid CV-01–CV-06 native/evidence receipts. Materialize only missing target/control/allowed-variant cases for selected uncertain linking, weak-form or connected-speech claims; do not automatically repeat the full observed population.
 - [ ] I26.2 Reuse saved audio/measurements/judgments and obtain only necessary authorized selected observations within remaining limits. Repair supported defects, preserve correct variants/uncertainty and never request a bulk retry of unavailable judgments.

@@ -12,6 +12,17 @@ source, reconciled case statuses and local Lab readback are recorded in
 `STATUS.json` after the stable-source checks. The selected properties are
 `FIN-ACOUSTIC.P1`, `FIN-VERIFY.I26` and `CV-01.P1` through `CV-06.P1`.
 
+The committed-clean new-case receipt on `d072e9e` records19 passes, one skip and
+zero failures. All20 case fingerprints match the earlier informational run after
+the packaging input was restored. The later export-only source `0987483` corrects
+the retained linking response filename; it invalidates no native/test/prompt or
+fixture input to that receipt. It is the source bound to local Lab17, run
+`1585a80aa1cf4ee08202ce41c450fa82`, prefix `source-0987483`. Export/readback retains
+68 files, including actual native wires/context,20 role-labelled WAVs and scoped
+sources;40 selected JSON/media artifacts were read back and compared. The initial
+missing-source export failure is preserved and no model request was repeated.
+Lab FINISHED means that saved experiment export finished, not iteration acceptance.
+
 ## What changed and why
 
 The existing blind comparison, native HTTP diagnostic, speech/measurement and
@@ -168,3 +179,12 @@ are unselected here, so their I24/I25 access/runtime blockers do not become I26
 dependencies. The user app/settings/DB/media and unrelated canonical GAPS edit
 remain protected. No deployment/postdeployment, PBT, financial execution,
 installation, publication, account change or user-service restart occurs.
+
+The labelled test-only diagnostic container was removed without removing
+volumes. The read-only sheet at `http://127.0.0.1:8772/` is retained as a deliberate
+saved-audio deliverable; its server and playback cannot dispatch inference. The
+temporary viewport is reset and the existing Microsoft handoff/user tabs remain.
+The actual app `/health/ready` returns200; web and API containers report healthy.
+The canonical checkout still has only its unrelated GAPS.md edit. All I26
+completion boxes remain unchecked until the recorded interaction blocker is
+resolved and the complete required acceptance exists.
