@@ -23,6 +23,11 @@ DEPENDENCIES = [
     'data/iteration-30-release-20261027/ui-observations.json',
     'data/iteration-30-release-20261027/preservation-before.json',
     'data/iteration-30-release-20261027/preservation-after.json',
+    'data/iteration-30-release-20261027/native-origin-fixture-failure.json',
+    'data/iteration-30-release-20261027/native-header-fixture-failure.json',
+    'data/iteration-30-release-20261027/readiness-header-discriminator.json',
+    'data/iteration-30-release-20261027/archive-native-readback.json',
+    'data/iteration-30-release-20261027/public-main.zip',
 ]
 
 
@@ -35,7 +40,7 @@ def main():
     graph['cases'] = [row for row in graph['cases'] if row['property_id'] not in PROPERTIES]
     source = (ROOT / SOURCE).read_text()
     sha = hashlib.sha256(source.encode()).hexdigest()
-    reviews = {'test_review_positive', 'test_ux_omission_negative',
+    reviews = {'test_review_positive', 'test_ux_omission_negative', 'test_partial_review_negative',
                'test_typography_omission_negative', 'test_evidence_mismatch_negative'}
     tests = []
     for node in ast.walk(ast.parse(source)):
@@ -48,7 +53,7 @@ def main():
                    property_id=prop, test_id=identity, state='implemented',
                    command_id='completion-i30', source_path=SOURCE, source_sha256=sha,
                    polarity='negative' if node.name.endswith('negative') else 'positive',
-                   setup='Real disposable Git operations, damaged-source launcher cases and actual retained native GitHub/ZIP/Docker/CUA observations. Independent literal expectations are the test body; this observer dispatches no model/provider call.',
+                   setup='Real disposable Git operations, damaged-source launcher cases and actual retained native GitHub/ZIP/Docker/CUA observations, including failed origin/header isolation counterexamples. Independent literal expectations are the test body; this observer dispatches no model/provider call.',
                    observable=ast.get_source_segment(source, node),
                    green_expectation='The literal expected Git state, actual public ref/archive, unchanged downloaded source startup, private configuration and persisted workspace/settings, or inspected layout/review relation holds. Missing actual evidence fails rather than passing from a label.',
                    red_expectation='The exact Git state, required source input, actual ZIP/native/UI relationship, private-state preservation or review dimension contradicts its independently specified expected value.',
@@ -56,7 +61,7 @@ def main():
         row.pop('blocker', None)
         row['substitution'] = dict(
             classification='EXTERNAL_BOUNDARY',
-            owner_replaced='Only isolated constructed Git repositories and damaged-source inputs; actual ZIP startup uses the real Docker engine with a test-only Compose port/origin overlay and transparent readiness network forwarding. No GitHub/archive/application reply is replaced.',
+            owner_replaced='Only isolated constructed Git repositories and damaged-source inputs; actual ZIP startup uses the real Docker engine with a test-only port overlay and transparent Host/Origin projection to the unchanged localhost:3000 application origin. Exact response headers/status/body are forwarded. No GitHub/archive/application reply is replaced.',
             allowed_proof='Exact finite Git failure/preservation behavior, actual selected published source and native Docker-only startup/restart, and inspected fresh-install browser/typography. Review counterexamples prove development bookkeeping only.',
             proof_claims=['The literal selected release, startup/persistence and reviewed interface boundary only.'],
             forbidden_claims=['Universal platform/provider/acoustic/corpus qualification',
@@ -73,7 +78,7 @@ def main():
         id='iteration30-source-delivery-20261027', property_ids=PROPERTIES, test_ids=tests,
         disposition='current_change',
         question='Trace actual main/GitHub source publication and Docker-only downloaded ZIP startup/persistence, preserving unrelated work and inspecting fresh-install UI/typography.',
-        rationale='Git and GitHub own source/ref delivery. The existing launcher, configuration, Compose, Dockerfiles and locks own initialization/restart. Test-only network isolation preserves app3000 and changes no downloaded source. Retained native facts and literal negative examples remain distinct from executed acceptance. No application feature, provider call, paid use or new runtime gate is added.',
+        rationale='Git and GitHub own source/ref delivery. Actual public repository/main and both immutable/unauthenticated source ZIPs are observed. The existing launcher, configuration, Compose, Dockerfiles and locks own initialization/restart. Test-only network isolation preserves app3000 and changes no downloaded source. Wrong origin and omitted readiness headers were demonstrated and repaired only in the shared isolation harness. Partial UI remains unaccepted while computer control is unavailable. No application feature, provider call, paid use or new runtime gate is added.',
         searches=[
             dict(kind='exact', status='completed',
                  query='Inspect FIN-DELIVERY.P1, FIN-VERIFY.I30, actual refs/remotes, source launcher/Compose/build inputs, release tests and native/browser publication records.',

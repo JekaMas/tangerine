@@ -1,5 +1,62 @@
 # Iteration 30 — source publication and downloaded ZIP
 
+## Active verification checkpoint — 2026-10-27
+
+The renewed user request authorizes publication and repair. The previous exact
+destination confirmation was unnecessary; public `JekaMas/tangerine` was resolved
+from the named open-source project and signed-in owner. Repository creation and
+the initial SSH push succeeded. An HTTPS readback/push reported up-to-date; no
+global transport setting changed. Local/canonical main and GitHub main are at
+`4558af1d954704b3c38d9bbee36c9ef967749584`.
+
+Actual repository: https://github.com/JekaMas/tangerine. The immutable API ZIP
+is `data/iteration-30-release-20261027/published-source.zip`,32,185,718bytes,
+SHA256 `6e037f31d7e68328f3e725438101c65d1a2a1c753204d54389b562bcec1566b8`.
+The README's unauthenticated `main.zip` also downloaded successfully and has
+identical member contents.592actual application/build files match the published
+Git commit. Source ZIP is extracted under `downloaded/JekaMas-tangerine-4558af1`.
+
+Owned stack `tangerine-i30-69e527e0`: all five application services are healthy.
+Runner `...-launcher`, readiness forwarder `...-probe-network`, browser forwarder
+`...-browser-network`. Direct web port53039; browser origin
+http://localhost:53261. All application sources remain unchanged. The CLI runner
+and transparent port/Host/Origin forwarding are only test network isolation,
+preserving the actual product origin http://localhost:3000 and user app3000.
+Do not replace source ValidateOrigin with a permissive test-only setting.
+
+Two demonstrated harness defects are repaired: initial overlay incorrectly
+changed APP_ORIGIN, then an old in-memory forwarder omitted the readiness
+instance header. Actual API/server/header discriminators and both failed
+native snapshots/logs remain retained. The shared forwarder preserves response
+headers and exact known-browser origin projection; the corrected launcher
+passes. Actual Settings configuration saved through ordinary HTTP PUT/API owner
+and the documented stop/start both pass, preserving selected
+kokoro-controlled-v1, workspace UUID, volumes and private credentials.0provider
+receipts/exercises, no model setup or inference. The UI save action is not yet
+claimed. `native.json` records all native outcomes; seven new native observer
+tests pass in `native-verify-green.log`.
+
+CUA successfully inspected actual Library1280x720 and Prepare390x844, keyboard
+hero navigation, topic/90words/B1 changes,3px focus and expanded mobile menu.
+Pictures and `ui-observations-progress.json` are saved. CUA then began timing
+out even for native Chrome and read-only inventory. The user has been asked
+whether to use the repository's existing disposable Chrome/Playwright test
+harness instead, because computer-use instructions require explicit authority
+to change automation methods. That answer is pending. Do not execute the
+alternate browser harness or claim remaining UI observations until authorized;
+no deployment/account/payment/model action is involved.
+
+Remaining: actual Settings save/reopen,320px screenshot, native dependency-read
+failure/recovery UI and request observations; finish REVIEW.json (currently
+honestly partial), register the18current literal tests, run affected new cases,
+commit stable code/evidence, execute the full I30 --require-clean gate, then
+commit/push delivery acceptance records and verify final source continuity.
+Preserve valid greens; unchanged Go/web/product owners have no new behavior
+invalidation. No main/GitHub final acceptance or full I30 green is yet claimed.
+The original user GAPS.md file/patch and all prior containers remain preserved.
+
+Earlier apply checkpoint below is historical and superseded by this section.
+
 Source at start: `87047d1df8d58faa1cd1d48315bac27b4343b2d3`, branch
 `tangerine/iteration-16-release`. Canonical `main` starts at
 `bd2829e25e549d33bff759e7977e04cc4ad6a7e1` and is an ancestor. The unrelated

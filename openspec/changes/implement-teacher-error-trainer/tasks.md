@@ -1282,6 +1282,28 @@ selected/confirmed release claims. Properties:
 - [ ] I30.2 Land intended work while preserving unrelated canonical GAPS.md edits; resolve the actual GitHub destination and publish only with publication authority.
 - [ ] I30.3 Download the published source ZIP into a disposable directory, prove documented Docker-only startup/persistence, inspect setup UI/typography and publication readback, then reconcile and commit delivery records.
 
+- [ ] I30.V1 Preserve the fixed product origin in the source-unchanged test isolation harness; retain the actual failed startup and successful recovery through the existing launcher.
+- [ ] I30.V2 Preserve readiness/configuration response headers through one shared transparent forwarder; reject a200response without the actual installation identity and retain native restart evidence.
+- [ ] I30.V3 Reject partial/omitted or mismatched review evidence explicitly, without adding any learner/runtime gate; register paired exact counterexamples.
+- [ ] I30.V4 Complete actual Settings save/reopen,320px layout and dependency-read failure/recovery UI observations, then finish the full committed-clean I30 gate and publish acceptance records.
+
+I30 verification checkpoint (2026-10-27) supersedes the earlier destination
+blocker below: public JekaMas/tangerine is created, main4558af1 is published and
+Git/GitHub read back its exact ref. Both immutable and unauthenticated README
+source ZIPs downloaded and match. The unchanged actual ZIP launcher and all five
+services start through Docker; ordinary configuration HTTP save and documented
+stop/start preserve workspace, settings, private credentials and volumes with
+zero provider calls. Two isolation-harness defects were demonstrated and repaired
+through shared origin/header forwarding, without application source changes.
+Eighteen cases are registered;17exact identities have passing individual
+observations, not complete iteration acceptance. Actual CUA Library1280/Prepare390
+and keyboard/mobile/typography observations are retained. Computer control then
+became unavailable even for read-only/native operations; authorization for the
+existing disposable Chrome/Playwright harness is pending. Fresh Settings/320px/
+error-recovery UI and the full committed-clean I30 gate remain not_run. Boxes
+remain unchecked under the acceptance rule. See the current REPORT.md,
+VERIFY-STATUS.json and PROGRESS.md in audit/iteration-30-release-20261027.
+
 I30 checkpoint (2026-10-27): canonical main was fast-forwarded to preparation
 commit86c722e with the unrelated GAPS.md file and patch preserved. Four real Git
 counterexample/landing tests and two native/preservation observer tests passed;

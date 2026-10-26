@@ -37,6 +37,8 @@ def review_errors(packet, facts):
         value = packet.get(part, {})
         if not value.get('observations') or not value.get('references'):
             errors.append(part + ' unsupported')
+        if value.get('status') != 'passed':
+            errors.append(part + ' unverified')
     if packet.get('archive_revision') != facts['archive_revision']:
         errors.append('archive mismatch')
     if packet.get('reference_origin') != 'literal Git, Docker and browser expectations':
@@ -183,6 +185,32 @@ class CompletionI30(unittest.TestCase):
         self.assertEqual(0, facts['provider_receipts_after'])
         self.assertEqual(0, facts['exercise_count_after'])
 
+    def test_port_isolation_positive(self):
+        facts = read('native.json')
+        self.assertEqual('http://localhost:3000', facts['actual_api_origin'])
+        self.assertIs(True, facts['public_identity_matches'])
+        self.assertEqual(0, facts['start_exit'])
+        self.assertEqual(1, read('native-origin-fixture-failure.json')['start_exit'])
+
+    def test_dropped_identity_header_negative(self):
+        facts = read('readiness-header-discriminator.json')
+        self.assertEqual({'status': 200, 'instance_header_present': True}, facts['direct_web'])
+        self.assertEqual({'status': 200, 'instance_header_present': True}, facts['browser_network'])
+        self.assertEqual({'status': 200, 'instance_header_present': False}, facts['old_probe_network'])
+        self.assertEqual(1, read('native-header-fixture-failure.json')['start_exit'])
+        self.assertEqual(0, read('native.json')['start_exit'])
+
+    def test_unauthenticated_download_positive(self):
+        facts = read('archive-native-readback.json')
+        self.assertEqual(read('publication.json')['archive_revision'], facts['revision'])
+        self.assertEqual('https://github.com/JekaMas/tangerine/archive/refs/heads/main.zip',
+                         facts['unauthenticated_url'])
+        with zipfile.ZipFile(DATA / 'public-main.zip') as archive, \
+                zipfile.ZipFile(DATA / read('publication.json')['archive_file']) as immutable:
+            prefix = immutable.namelist()[0]
+            for name in REQUIRED:
+                self.assertEqual(immutable.read(prefix + name), archive.read('tangerine-main/' + name), name)
+
     def test_delivery_negative(self):
         facts = read('launcher-negative.json')
         for value in facts['missing_inputs']:
@@ -234,10 +262,19 @@ class CompletionI30(unittest.TestCase):
         facts = read('publication.json'); packet = self.packet()
         packet['archive_revision'] = '0' * 40
         self.assertIn('archive mismatch', review_errors(packet, facts))
-        for field, value in [('new_model_calls', 50), ('unexecuted_claimed_passed', True),
-                             ('reference_origin', 'candidate-generated gold')]:
+        for field, value, expected in [('new_model_calls', 50, 'execution scope'),
+                                      ('unexecuted_claimed_passed', True, 'unexecuted claim'),
+                                      ('reference_origin', 'candidate-generated gold', 'reference origin')]:
             packet = self.packet(); packet[field] = value
-            self.assertTrue(review_errors(packet, facts))
+            self.assertIn(expected, review_errors(packet, facts))
+
+    def test_partial_review_negative(self):
+        packet = self.packet()
+        packet['ui_ux']['status'] = 'partial'
+        packet['typography']['status'] = 'partial'
+        errors = review_errors(packet, read('publication.json'))
+        self.assertIn('ui_ux unverified', errors)
+        self.assertIn('typography unverified', errors)
 
 
 if __name__ == '__main__':

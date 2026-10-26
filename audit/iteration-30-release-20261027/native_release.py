@@ -2,7 +2,8 @@
 
 Only the developer harness requires Python. The downloaded app runs through its
 documented shell launcher inside an existing Docker CLI image. A test-only
-Compose overlay changes exposed port/origin, and a network forwarder lets the
+Compose overlay changes only the exposed port. Network forwarders preserve the
+fixed product origin for the test browser and let the
 unchanged readiness probe reach that exact web service. No replies are faked.
 """
 from pathlib import Path
@@ -97,14 +98,6 @@ def start():
   web:
     ports: !override
       - "127.0.0.1:PORT:3000"
-    environment:
-      APP_ORIGIN: http://localhost:PORT
-  api:
-    environment:
-      APP_ORIGIN: http://localhost:PORT
-  initialize:
-    environment:
-      APP_ORIGIN: http://localhost:PORT
 '''.replace('PORT', str(port)))
     state = dict(project=project, runner=project + '-launcher', proxy=project + '-probe-network',
                  source_root=str(source), origin_url='http://localhost:' + str(port), web_port=port,
@@ -119,13 +112,44 @@ def start():
     run(['docker', 'run', '-d', '--name', state['proxy'], '--network', 'container:' + state['runner'],
          '-v', str(fixtures) + ':/i30:ro', '-e', 'I30_WEB_PORT=' + str(port),
          PYTHON, 'python', '-B', '/i30/readiness_forwarder.py'], 'network-create')
+    browser_network(state)
     code = run(command(state, 'start'), 'source-start', check=False)
+    finish_start(state, code)
+
+
+def browser_network(state):
+    with socket.socket() as probe:
+        probe.bind(('127.0.0.1', 0)); port = probe.getsockname()[1]
+    state.update(gateway=state['project'] + '-browser-network', browser_port=port,
+                 origin_url='http://localhost:' + str(port))
+    save('stack.json', state)
+    run(['docker', 'run', '-d', '--name', state['gateway'],
+         '-v', str(DATA / 'fixtures') + ':/i30:ro',
+         '-p', '127.0.0.1:' + str(port) + ':8088',
+         '-e', 'I30_WEB_PORT=' + str(state['web_port']), '-e', 'I30_BROWSER_GATEWAY=1',
+         '-e', 'I30_BROWSER_ORIGIN=' + state['origin_url'],
+         PYTHON, 'python', '-B', '/i30/readiness_forwarder.py'], 'browser-network-create')
+
+
+def resume_start():
+    state = load('stack.json')
+    shutil.copy2(HERE / 'readiness_forwarder.py', DATA / 'fixtures/readiness_forwarder.py')
+    (DATA / 'fixtures/network-override.yaml').write_text('services:\n  web:\n    ports: !override\n      - "127.0.0.1:' + str(state['web_port']) + ':3000"\n')
+    if not state.get('gateway'):
+        browser_network(state)
+    code = run(command(state, 'start'), 'source-start-recovered', check=False)
+    finish_start(state, code, 'source-start-recovered.log')
+
+
+def finish_start(state, code, log='source-start.log'):
+    source = Path(state['source_root']); project = state['project']
+    publication = load('publication.json')
     native = dict(source_root=str(source), archive_revision=publication['archive_revision'],
                   origin='Docker-only source launcher; isolated ports, source unchanged', start_exit=code)
     save('native.json', native)
     if code:
         raise RuntimeError('Unchanged downloaded launcher failed; private source-start.log retains failure')
-    native['start_message'] = (DATA / 'source-start.log').read_text().splitlines()[-1]
+    native['start_message'] = (DATA / log).read_text().splitlines()[-1]
     values = sql(state)
     for field in ['workspace_count', 'workspace_id', 'provider_receipts', 'exercise_count']:
         native[field + '_before'] = values[field]
@@ -146,7 +170,7 @@ def start():
 def restart():
     state = load('stack.json'); native = load('native.json')
     saved = configuration(state)
-    assert saved['speech_profile'] == 'kokoro-controlled-v1', 'Save through the real Settings control first'
+    assert saved['speech_profile'] == 'kokoro-controlled-v1', 'Save the test-owned choice through the normal configuration owner first'
     native['saved_configuration_sha256'] = saved['configuration_sha256']
     native['stop_exit'] = run(command(state, 'stop'), 'source-stop')
     native['volumes_while_stopped'] = volumes(state)
@@ -197,8 +221,9 @@ def missing_inputs():
 def cleanup():
     state = load('stack.json')
     run(compose(state, 'down', '--volumes', '--remove-orphans'), 'owned-cleanup', check=False)
-    run(['docker', 'rm', '-f', state['proxy'], state['runner']], 'runner-cleanup', check=False)
+    run(['docker', 'rm', '-f', state.get('gateway', state['proxy']), state['proxy'], state['runner']], 'runner-cleanup', check=False)
 
 
 if __name__ == '__main__':
-    {'start': start, 'restart': restart, 'negative': missing_inputs, 'cleanup': cleanup}[sys.argv[1]]()
+    {'start': start, 'resume-start': resume_start, 'restart': restart,
+     'negative': missing_inputs, 'cleanup': cleanup}[sys.argv[1]]()
