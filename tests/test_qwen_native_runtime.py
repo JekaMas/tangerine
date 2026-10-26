@@ -84,12 +84,30 @@ class QwenNativeRuntime(unittest.TestCase):
     def test_native_unavailable_device_negative(self):
         import torch
         from qwen_tts import Qwen3TTSModel
-        with patch.dict(os.environ, dict(TANGERINE_QWEN_DEVICE='mps')), \
+        turn = self.turn()
+        turn['qwen_runtime'] = dict(device='mps', dtype='float32')
+        with patch.dict(os.environ, dict(TANGERINE_QWEN_DEVICE='cpu')), \
                 patch.object(torch.backends.mps, 'is_available', return_value=False), \
                 patch.object(Qwen3TTSModel, 'from_pretrained') as factory:
-            result, status = backends.execute_packet(dict(profile=self.profile(), turn=self.turn()))
+            result, status = backends.execute_packet(dict(profile=self.profile(), turn=turn))
         self.assertEqual(({'error': 'CAPABILITY_UNAVAILABLE'}, 1), (result, status))
         factory.assert_not_called()
+
+    def test_native_frozen_runtime_positive(self):
+        import torch
+        from qwen_tts import Qwen3TTSModel
+        turn = self.turn()
+        turn['qwen_runtime'] = dict(device='cpu', dtype='float32')
+        # The saved selection must be the consumed selection. A later server
+        # environment must not turn a frozen CPU piece into an MPS invocation.
+        with patch.dict(os.environ, dict(TANGERINE_QWEN_DEVICE='mps', TANGERINE_QWEN_DTYPE='float16')), \
+                patch.object(torch.backends.mps, 'is_available', return_value=True), \
+                patch.object(backends, 'installed', return_value=(Path('/fixture-model'), dict(repo='constructed'))), \
+                patch.object(Qwen3TTSModel, 'from_pretrained', return_value=self.model()) as factory:
+            result = backends.render(self.profile(), turn)
+        self.assertEqual('cpu', factory.call_args.kwargs['device_map'])
+        self.assertEqual(torch.float32, factory.call_args.kwargs['dtype'])
+        self.assertEqual('cpu', result['receipt']['native']['execution_parameters']['device'])
 
 
 if __name__ == '__main__':

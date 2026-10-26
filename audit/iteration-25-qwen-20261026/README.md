@@ -23,6 +23,11 @@ The local comparison player only reads saved recordings; viewing, refreshing
 and playing never dispatch synthesis. A full pair requires all planned pieces
 and both complete variants; the old 5.6-second preview cannot satisfy it.
 
+The native plan binds `qwen_runtime` per piece. The CLI selection is therefore
+the consumed selection even after a native server environment change; direct
+legacy pieces without that binding keep the explicit environment/default route.
+Loaded model/codec placement is recorded separately from requested placement.
+
 Native inputs, outputs, calls, actual runtime and failures belong in ignored
 `data/iteration-25-qwen-20261026/`. The existing local MLflow Lab receives these
 same artifacts, with zero additional inference for export or verification.

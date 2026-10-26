@@ -6917,7 +6917,9 @@
       "unittest::tests.test_qwen_native_runtime.QwenNativeRuntime.test_native_unavailable_device_negative",
       "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_rendered_layout_positive",
       "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_saved_media_retry_positive",
-      "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_saved_media_failure_negative"
+      "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_saved_media_failure_negative",
+      "unittest::tests.test_qwen_comparison.QwenComparison.test_plan_freezes_default_runtime_positive",
+      "unittest::tests.test_qwen_native_runtime.QwenNativeRuntime.test_native_frozen_runtime_positive"
     ]
   },
   "reviews": [
@@ -28169,10 +28171,12 @@
         "unittest::tests.test_qwen_native_runtime.QwenNativeRuntime.test_native_unavailable_device_negative",
         "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_rendered_layout_positive",
         "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_saved_media_retry_positive",
-        "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_saved_media_failure_negative"
+        "unittest::tests.test_qwen_player_observations.QwenPlayerObservations.test_saved_media_failure_negative",
+        "unittest::tests.test_qwen_comparison.QwenComparison.test_plan_freezes_default_runtime_positive",
+        "unittest::tests.test_qwen_native_runtime.QwenNativeRuntime.test_native_frozen_runtime_positive"
       ],
       "disposition": "current_change",
-      "rationale": "Existing CPU full pair remains incomplete. Mac MPS is actually available but Qwen speech dependencies are missing; permission for an isolated setup is pending. Added explicit native compute selection, real HTTP comparison/resume, controlled model-boundary/lifecycle tests and read-only player. No actual new synthesis or click/keyboard acceptance is claimed.",
+      "rationale": "Existing CPU full pair remains incomplete. Mac MPS is actually available but Qwen speech dependencies are missing; permission for an isolated setup is pending. Added explicit native compute selection, real HTTP comparison/resume, controlled model-boundary/lifecycle tests and read-only player. No actual new synthesis or click/keyboard acceptance is claimed. Follow-up self-review reproduced requested/consumed compute mismatch on f975f00; fixed through frozen qwen_runtime plan pieces and native configuration precedence, with literal red/green device-factory expectations.",
       "searches": [
         {
           "kind": "exact",

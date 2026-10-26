@@ -5,7 +5,13 @@ foreground child owners. Its optional local development runtime is explicitly
 selected with `TANGERINE_QWEN_DEVICE=cpu|mps` and
 `TANGERINE_QWEN_DTYPE=float32|float16`; defaults stay CPU/float32. Actual compute,
 Torch version, tokenizer/generation input, pinned model and voice are saved in
-the existing receipt. An unavailable selected device returns the existing
+the existing receipt. Native planned pieces retain `qwen_runtime` with the
+selected device/dtype. That frozen selection is consumed by synthesis and wins
+over a later server environment; unbound legacy/direct pieces use the explicit
+environment/defaults. The comparison CLI carries its selected runtime into
+these pieces rather than merely labelling the result. Requested placement and
+loaded model/codec placement are separate receipt facts, with unknown values
+remaining unknown. An unavailable selected device returns the existing
 capability failure and never falls back. This does not select a new ordinary
 provider, change the Docker-only application prerequisites or qualify arbitrary
 MPS model/voice combinations. The selected CustomVoice comparison still needs

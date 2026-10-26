@@ -124,7 +124,7 @@ def qwen(profile,turn):
  from qwen_tts import Qwen3TTSModel
  import numpy as np,torch
  from qwen_runtime import configuration
- execution=configuration(torch)
+ execution=configuration(torch,turn.get('qwen_runtime'))
  # Small autoregressive CPU steps lose time to oversized intra-op pools.
  torch.set_num_threads(min(4,os.cpu_count() or 1))
  execution.update(torch_num_threads=torch.get_num_threads(),torch_interop_threads=torch.get_num_interop_threads(),torch_version=torch.__version__)
@@ -253,6 +253,9 @@ def plan(profile,render_plan):
     end=len(text) if index==len(chunks)-1 else found+len(surface)
     surface=text[position:end];position=end
    piece=dict(turn);piece['operations']=[{'kind':'text','text':surface}]
+   if profile['provider']=='local_qwen3_tts':
+    from qwen_runtime import selection
+    piece['qwen_runtime']=selection(turn.get('qwen_runtime'))
    piece['gap_after_ms']=turn['gap_after_ms'] if index==len(chunks)-1 else 0
    if phones:piece['compiled_phonemes']=phones;piece['g2p_tokens']=g2p_tokens
    piece['accent_description']=selected.get('accent_description')

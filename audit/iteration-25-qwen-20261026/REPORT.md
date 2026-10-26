@@ -43,7 +43,7 @@ served. Private requests, environment and Lab artifacts are not exposed.
 
 ## Observed tests and preserved failures
 
-The complete selected informational graph has **26 exact cases: 24 passed,
+The complete selected informational graph has **28 exact cases: 26 passed,
 2 skipped, 0 failed**. The skips are `FIN-QWEN.P1.qwen_positive` and
 `FIN-VERIFY.I25.review_positive`. Native command exit 0 does not turn those skips
 into acceptance. The committed-clean observation will be recorded in STATUS.json
@@ -59,6 +59,17 @@ layout and actual controlled media read recovery; and misleading/omitted evidenc
 counterexamples. Only the trained-model output, device-availability signal or
 model-import timing is substituted in those native cases. No fixture proves GPU
 execution, Qwen voice quality, acoustic realization or real user activation.
+
+Self-review then reproduced a requested/consumed-runtime defect on source
+`f975f00`: a frozen CPU request was labelled one way while the adapter consumed
+the server's MPS environment. The native factory counterexample failed as
+expected. Runtime selection now travels in each saved `qwen_runtime` piece and
+is consumed by the existing configuration owner, preserving it across changed
+server defaults. Requested and actually loaded placement remain separate facts.
+The exact red/green model-factory and planner tests retain this repair without
+any trained-model inference or new runtime validation gate. The original
+committed-clean24-pass/2-skip record is retained as superseded partial evidence;
+it does not cover this counterexample or the repaired source.
 
 The first route test failed because its test-local variable shadowed the
 `http` module. That harness error was repaired and its exact case passed.

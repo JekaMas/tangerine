@@ -44,6 +44,7 @@ def request_plan(material, runtime):
             turns.append(dict(id=variant+'-'+row['id'], utterance_id=row['id'],
                               speaker_id=row['speaker_id'], voice_id=VOICES[row['speaker_id']],
                               locale='en-US', gap_after_ms=300,
+                              qwen_runtime=dict(runtime),
                               operations=[dict(kind='text', text=text)]))
     return dict(source_preparation=material['source_preparation'], source_material=material,
                 runtime=runtime, profile=profile, turns=turns,

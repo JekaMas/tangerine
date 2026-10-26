@@ -65,6 +65,18 @@ class QwenComparison(unittest.TestCase):
             pieces = [p for p in plan['pieces'] if p['id'] == turn['id']]
             self.assertEqual(turn['operations'][0]['text'], ''.join(p['operations'][0]['text'] for p in pieces))
             self.assertEqual([0]*(len(pieces)-1)+[300], [p['gap_after_ms'] for p in pieces])
+            self.assertTrue(all(p['qwen_runtime'] == dict(device='cpu', dtype='float32') for p in pieces))
+
+    def test_plan_freezes_default_runtime_positive(self):
+        plan = self.plan()
+        turn = copy.deepcopy(plan['turns'][0])
+        turn.pop('qwen_runtime')
+        with patch.dict(os.environ, dict(TANGERINE_QWEN_DEVICE='cpu', TANGERINE_QWEN_DTYPE='float32')):
+            original = backends.plan(plan['profile'], dict(turns=[turn]))['pieces']
+        self.assertTrue(all(p['qwen_runtime'] == dict(device='cpu', dtype='float32') for p in original))
+        with patch.dict(os.environ, dict(TANGERINE_QWEN_DEVICE='mps', TANGERINE_QWEN_DTYPE='float16')):
+            resumed = backends.plan(plan['profile'], dict(turns=original))['pieces']
+        self.assertTrue(all(p['qwen_runtime'] == dict(device='cpu', dtype='float32') for p in resumed))
 
     def test_complete_pair_assembly_positive(self):
         with tempfile.TemporaryDirectory() as tmp:

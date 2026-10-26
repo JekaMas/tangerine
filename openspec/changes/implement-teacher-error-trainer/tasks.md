@@ -1103,7 +1103,7 @@ I24.1–I24.3/R1–R3 remain unchecked; no iteration acceptance is issued.
 
 Apply checkpoint2026-10-26: actual cached pinned model and Mac MPS capability
 located. Explicit compute selection, native comparison/resume and read-only
-player are implemented with literal lifecycle/output tests (24 pass,2 skip in
+player are implemented with literal lifecycle/output tests (26 pass,2 skip in
 the selected informational graph). Complete real
 pair and browser activation are still unobserved; isolated host dependency setup
 permission is pending. No task is accepted from constructed PCM or preview.
