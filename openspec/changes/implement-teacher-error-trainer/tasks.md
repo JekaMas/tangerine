@@ -1028,9 +1028,9 @@ Closes UX-04 and UX-05.
 
 Depends on 19. Properties: `FIN-UI-08.P1`, `FIN-VERIFY.I21`. Closes UX-08.
 
-- [ ] I21.1 Materialize ordinary named-form starter save without JSON/ID editing, empty-workspace/recovery and advanced-invalid-input cases, plus named-record/shared-media/preview-only Cleanup counterexamples.
-- [ ] I21.2 Add guided starter fields/named choices backed by existing defaults and native schemas; retain advanced JSON/import and useful missing-input guidance. Route named Cleanup selection through existing preview/explicit apply with zero implicit model calls.
-- [ ] I21.3 Verify populated/empty/error paths, keyboard use, typography, no implicit provider dispatch/deletion and exact evidence; reconcile and commit.
+- [x] I21.1 Materialize ordinary named-form starter save without JSON/ID editing, empty-workspace/recovery and advanced-invalid-input cases, plus named-record/shared-media/preview-only Cleanup counterexamples.
+- [x] I21.2 Add guided starter fields/named choices backed by existing defaults and native schemas; retain advanced JSON/import and useful missing-input guidance. Route named Cleanup selection through existing preview/explicit apply with zero implicit model calls.
+- [x] I21.3 Verify populated/empty/error paths, keyboard use, typography, no implicit provider dispatch/deletion and exact evidence; reconcile and commit.
 
 ### Iteration 22 — Production ElevenLabs pronunciation dictionaries
 

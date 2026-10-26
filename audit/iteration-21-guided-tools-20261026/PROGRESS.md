@@ -93,3 +93,11 @@ Next: execute the full24-case iteration oracle selection (dirty informational),
 commit source, repeat the same evidence selection with --require-clean against
 the committed source, then check I21 tasks and commit acceptance only. No
 additional stack/helper/model/provider run is needed.
+
+Completed: dirty informational selection passed24/24; source committed as
+cf0f32d89dc02bed75c7c4acfe4ffd72ea6378a7. The same24-case selection then passed
+with --require-clean, known clean Git provenance and24 exact observed identities.
+All I21 tasks are checked only after that result. Acceptance/checklist/report/
+progress are committed separately; runtime, assertions, fixtures and manifest
+remain identical to the accepted source. No open I21 finding, product decision
+or required provider operation remains. Later iterations remain out of scope.

@@ -3,8 +3,9 @@
 The implemented increment closes UX-08. Ordinary report/experiment starters use
 labelled fields and real named saved choices; Advanced JSON/file entry remains
 available. Cleanup offers recognizable records and preserves explicit native
-preview, confirmation and apply. The final acceptance revision and exact
-selected case outcomes are recorded in ACCEPTANCE.json after the clean run.
+preview, confirmation and apply. Committed-clean acceptance passed all24 selected cases on
+`cf0f32d89dc02bed75c7c4acfe4ffd72ea6378a7`. The exact outcomes are in
+ACCEPTANCE.json; all three canonical I21 tasks are complete.
 
 ## Behavior and ownership
 
