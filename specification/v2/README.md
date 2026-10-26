@@ -1,15 +1,17 @@
 # Tangerine active specification
 
-The planned continuation repair contracts are in
+The continuation repair contracts are in
 [completion-contract-details.md](docs/completion-contract-details.md). They bind
 additive history metadata, finite passage replay, guided no-JSON starters and the
-ordinary ElevenLabs dictionary path to iterations19–22. Canonical schema additions
-are planned definitions; the application/embedded copies change during apply.
+ordinary ElevenLabs dictionary path to iterations19–22. Those selected iterations
+now have scoped implementation/acceptance records. Current remaining work across
+all iterations is in [remaining implementation](docs/remaining-implementation.md)
+and [the complete audit](../../audit/all-iterations-remaining-20261027/REPORT.md).
 
 Category implementation versus actual-audio evidence is defined in
 [category realization validation](docs/category-realization-validation.md).
 
-This is the current specification for the existing implement-teacher-error-trainer OpenSpec change. It is not implemented application behavior. Current user authority is ../../docs/authority.md. Immutable imported archives remain under ../../spec-inputs. Earlier root contracts and audit reports are historical; this namespace is the sole active contract set.
+This is the current specification for the existing implement-teacher-error-trainer OpenSpec change. It defines requirements; actual implementation and acceptance have their own scoped records. Current user authority is ../../docs/authority.md. Immutable imported archives remain under ../../spec-inputs. Earlier root contracts and audit reports are historical; this namespace is the sole active contract set.
 
 The main flow is topic/speaker count/word length, optional level/broad mistake categories -> saved clean LLM text -> novel mutations and their list/key -> local or service synthesis -> stored playback -> free-text listener answer -> LLM comparison with the list -> exact score and recommendations. docs/simple-generation-flow.md and contracts/exercise-request.schema.json own this flow. Reference audio, full corpus acquisition, empirical frequency tables and separate case review are optional enrichment/evaluation, not prerequisites.
 
@@ -19,7 +21,7 @@ All 122 original taxonomy IDs, 27 core and 15 auxiliary equations, all internal 
 
 Owning definitions are docs/local-delivery.md, architecture.md, lifecycle.md, review-and-gold.md, math-and-judgments.md, provider-contracts.md, runtime-and-storage.md, interface-contract.md and docs/sources/. Closed storage schemas describe canonical records; provider output normalization tolerates harmless wrappers/additive fields before projection. Request projections and all operation field ownership are explicit. Reference Python and SQL are inert design material, not production owners or acceptance evidence.
 
-Current decisions, external operational dependencies, removed restrictions and exhaustive checks are recorded in ../../audit/source-contract-research-20261009/. Hash indexes are mechanical coverage, not linguistic validation. Native acquisition now has actual receipts in ../../audit/corpus-acquisition-20261009/: SpeechOcean762 and both complete BEA v2.1 packages are downloaded, as is the complete four-member Öksüz public companion. A complete pinned L2-ARCTIC raw mirror is separately acquired; official byte identity remains unknown; the2026-10-21typed-parser audit corrects the historical operation counter and matches the native README counts. Restricted Cambridge releases and private/study records remain unacquired. Cambridge has replied that academic email is required. Raw acquisition does not establish application import, semantic normalization, inference, implementation or empirical threshold success. Supplemental sources and media dependencies are tracked in docs/sources/alternatives.md; none replaces an original source.
+Current decisions, external operational dependencies, removed restrictions and exhaustive checks are recorded in ../../audit/source-contract-research-20261009/. Hash indexes are mechanical coverage, not linguistic validation. Native acquisition now has actual receipts in ../../audit/corpus-acquisition-20261009/: SpeechOcean762 and both complete BEA v2.1 packages are downloaded, as is the complete four-member Öksüz public companion. A complete pinned L2-ARCTIC raw mirror and the owner-supplied official v5 archive are acquired. I27 reconciles all component/data populations while preserving the different official README; it does not claim whole-bundle equality or a full normalized application import. The typed-parser audit preserves native operation meanings. Restricted Cambridge releases and private/study records remain unacquired. Cambridge has replied that academic email is required. Raw acquisition does not establish application import, semantic normalization, inference, implementation or empirical threshold success. Supplemental sources and media dependencies are tracked in docs/sources/alternatives.md; none replaces an original source.
 
 The software license is Apache-2.0. Source-specific research and exact missing artifacts are owned by domain/source-research.v1.json, docs/sources/efcamdat.md, docs/sources/doubao-study.md and docs/sources/private-vendors-and-study.md. Public documentation/metadata is available independently of actual data acquisition. The current input ledger has no remaining product-owner license choice.
 

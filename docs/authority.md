@@ -1,3 +1,12 @@
+2026-10-27 all-iteration remaining-work audit: the actual user asks to inspect
+all iterations' optional, blocked, external and unimplemented scope, research how
+each can close, track progress and report. Repository/public-source research,
+documentation/closure-plan updates, discovery and local inventory validation are
+in scope. This request does not execute every proposed implementation, provider
+call, installation, acquisition, outreach or publication. Preserve running apps,
+data/settings/media/tabs and the unrelated canonical GAPS.md edit. Retain valid
+greens; no paid credits/overage or product gates are introduced by the audit.
+
 2026-10-27 iteration30 verify/repair: the actual user renews the full iteration
 request, including publication, root-cause/sibling repairs, safe recovery and
 actual UI/UX/typography through green committed-clean acceptance. Use the named

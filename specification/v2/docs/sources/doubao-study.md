@@ -1,6 +1,6 @@
 # Doubao study source contract
 
-Identity: DOUBAO-STUDY-RECORDS. Citation: Shi et al., 2026, DOI 10.17265/2161-623X/2026.03.001. [Publisher record](https://www.davidpublisher.com/index.php/Home/Article/index?id=53382.html), [paper](https://www.davidpublisher.com/Public/uploads/Contribute/69cb6d5a93e58.pdf), printed pp.119–125. Public documentary facts below are research evidence, not acquired participant records.
+Identity: DOUBAO-STUDY-RECORDS. Citation: Shi et al., 2026, DOI 10.17265/2161-623X/2026.03.001. [Publisher record](https://www.davidpublisher.com/index.php/Home/Article/index?id=53382.html), [paper](https://www.davidpublisher.com/Public/uploads/Contribute/69cb6d5a93e58.pdf), current publisher/PDF pagination pp.115–128 (14 pages, rechecked 2026-10-27). The earlier 119–125 citation is retained only in dated research notes. Public documentary facts below are research evidence, not acquired participant records.
 
 ## Published release expectations
 

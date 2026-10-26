@@ -1,0 +1,1164 @@
+{
+  "baseline_revision": "324d8e7d378a21f4fe43d9f25231b62fe70320e3",
+  "scope": "Research and closure planning; no implementation or live qualification is performed by this inventory.",
+  "items": [
+    {
+      "id": "ENG-01",
+      "title": "Simultaneous interruption and word masking",
+      "kind": "missing_implementation",
+      "status": "not_implemented",
+      "iterations": [
+        8,
+        26
+      ],
+      "historical_ids": [
+        "H011",
+        "H052",
+        "H058",
+        "H092",
+        "H093"
+      ],
+      "product_use": "Generate the preserved discourse.turn_taking subtype in which another speaker actually overlaps and masks critical speech; also accept cooperative overlap as a correct control.",
+      "implemented": "Two voices, sequential turns, actual cutoff/invited-handoff examples, ordinary transforms and final sample/key maps exist.",
+      "missing": "The production composer concatenates pieces. It has no simultaneous start/mix operation; a caption saying that speakers overlap cannot produce the requested sound.",
+      "owners": [
+        "services/api/internal/app/speech_assembly.go",
+        "services/api/internal/app/speech_key.go",
+        "services/speech/acoustic_runtime.py",
+        "specification/v2/contracts/render-plan.schema.json"
+      ],
+      "references": [
+        "audit/category-realization-20261025/QUALIFICATION-GAPS.json",
+        "audit/category-realization-20261025/prepare_interaction.py"
+      ],
+      "steps": [
+        "Add an additive explicit overlap intent with participating turn IDs, source intervals, final sample starts and fixed gains; retain the original text, voices and single sequential default.",
+        "Implement one sample-domain composition owner. Mix both retained PCM streams at their requested offsets, preserve unselected samples and map each source independently into the common final clock. Keep headroom explicit and do not hide clipping by normalizing every recording.",
+        "Project concurrent intervals and the actual masked passage into the saved mutation/key; persist the admitted composition plan/output through existing resume ownership.",
+        "Use actual local recordings for an obstructive interruption and a permitted backchannel. Verify the audible and contextual contrast separately from waveform arithmetic; no per-exercise judge or human-review gate."
+      ],
+      "positive": "At 24 kHz, two 24,000-sample sources starting at 0 and 12,000 produce 36,000 final samples. Samples in 12,000..24,000 equal the independently specified weighted sum. Both source clocks survive. A permitted backchannel earns no error credit/penalty.",
+      "negative": "Sequential concatenation, a text description, clipped/wrong-offset mixing, an incorrect second-speaker/key interval or treating every overlap as wrong must fail the corresponding development expectation.",
+      "prerequisite": "Local engineering and a scoped apply request; existing local synthesis suffices. No paid service, corpus or product decision is needed.",
+      "depends_on": []
+    },
+    {
+      "id": "TRACE-01",
+      "title": "Reconcile historical DAG placeholders with exact successor tests",
+      "kind": "verification_registration",
+      "status": "unreconciled",
+      "iterations": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        30
+      ],
+      "historical_ids": [
+        "H092",
+        "H093",
+        "H094",
+        "H096",
+        "H098"
+      ],
+      "product_use": "Make whole-change completion/archival describe the actual implementation and exact outstanding obligations rather than old scaffolding or broad feature-level claims.",
+      "implemented": "The graph has 4,797 implemented case entries and extensive finite acceptance receipts. I17 reconciled task rows, not every old graph placeholder.",
+      "missing": "At the audit baseline, 1,895 blocked and 14 planned cases span 389 properties, including 359 with no implemented case on that same property. Generic old blockers are stale for some features. Exact literal equivalence is not yet established for every placeholder.",
+      "owners": [
+        "openspec/changes/implement-teacher-error-trainer/verification.json",
+        "openspec/changes/implement-teacher-error-trainer/discovery.json",
+        "openspec/changes/implement-teacher-error-trainer/tasks.md"
+      ],
+      "references": [
+        "audit/iteration-17-reconciliation-20261025/LEDGER.json",
+        "openspec/changes/implement-teacher-error-trainer/completion-iterations.json"
+      ],
+      "steps": [
+        "Use GRAPH-TRIAGE.json to inspect every exact placeholder, its independent fixture/oracle and candidate successor cohort. A candidate link is not a pass.",
+        "Reuse an existing physical test only when its actual input, assertions and dependency scope prove the original literal. Preserve its original receipt and register a truthful alias/reuse relationship instead of duplicating execution.",
+        "For partial matches retain the unmet assertion and materialize only that missing positive/negative behavior. Route authentic populations to EMP/DATA, conditional providers to QUAL and the excluded bulk campaign to preserved conditional plans.",
+        "Reconcile I4/I5 native plus later own-Pro evidence and current landing explicitly; never fabricate a retrospective whole-I4/I5 clean receipt. Validate the final graph once after stable registration."
+      ],
+      "positive": "An original formula case can point to an already observed exact numerator/denominator oracle with matching scope; a complete literal join retains the original receipt without inference.",
+      "negative": "A screenshot, passing report label, category ID, sibling method name, aggregate count or blanket prefix mapping cannot close an unobserved assertion. Unmatched cases remain open.",
+      "prerequisite": "Engineering evidence reconciliation. This audit classifies all entries but does not relabel them implemented or passed.",
+      "depends_on": []
+    },
+    {
+      "id": "VER-01",
+      "title": "Finish the actual interaction observations for I24–I27",
+      "kind": "missing_verification",
+      "status": "partial",
+      "iterations": [
+        24,
+        25,
+        26,
+        27
+      ],
+      "historical_ids": [
+        "H011",
+        "H052",
+        "H058",
+        "H092",
+        "H093",
+        "H094"
+      ],
+      "product_use": "Establish that saved comparison clips and Sources controls actually work through Play, keyboard, disclosure, Refresh, selected-release changes and recovery.",
+      "implemented": "Players, retry/recovery owners, source selection owners and native state tests are implemented. Real media/rendered states were retained. I26 has 541/542 passes; I27 has 49/51.",
+      "missing": "Their actual activation cases were skipped when the then-selected browser ignored input. Later user selection of installed Chrome supersedes the old request to choose a browser; it does not create missing observations.",
+      "owners": [
+        "audit/iteration-24-azure-20261026/player.py",
+        "audit/iteration-25-qwen-20261026/player.py",
+        "audit/iteration-26-acoustic-20261026/listening.py",
+        "services/web/app/sources"
+      ],
+      "references": [
+        "audit/iteration-24-azure-20261026/VERIFY.md",
+        "audit/iteration-25-qwen-20261026/VERIFY.md",
+        "audit/iteration-26-verification-20261026/VERIFY.md",
+        "audit/iteration-27-sources-20261026/VERIFY.md"
+      ],
+      "steps": [
+        "Reuse existing saved recordings and test-owned source fixtures; restore the authorized browser-control lane. Do not repeat inference or source downloads for interaction testing.",
+        "Observe Play advancing time, single-player behavior, keyboard actions, disclosure and Refresh. For Sources, select two saved releases and prove their distinct metadata/report associations and stale-read recovery.",
+        "Inspect the activated/expanded narrow layouts and screenshots, record exact HTTP effects, then execute only newly observed/invalidated cases and reconcile the selected clean gate.",
+        "Real Azure/Qwen playback additionally waits for QUAL-01/QUAL-02; I26 clips and I27 interaction can finish independently."
+      ],
+      "positive": "The selected actual WAV advances under a user action, another player pauses, Refresh recovers a restored dependency, and switching releases displays that release's saved report.",
+      "negative": "Metadata loaded at readyState4, navigation reload, constructed tones or a forced scripted play do not prove the missing actual activation. Preserve failures and unrelated clips/fields.",
+      "prerequisite": "Working authorized computer control. The old Chrome-selection approval is already supplied; I30's later control-transport failure is a separate current tool issue.",
+      "depends_on": []
+    },
+    {
+      "id": "VER-02",
+      "title": "Finish I30's downloaded-ZIP UI and committed-clean acceptance",
+      "kind": "missing_verification",
+      "status": "partial",
+      "iterations": [
+        30
+      ],
+      "historical_ids": [
+        "H092",
+        "H093",
+        "H094",
+        "H096",
+        "H098"
+      ],
+      "product_use": "Close the requested public download-and-run release evidence.",
+      "implemented": "Main is landed and public at JekaMas/tangerine. Actual source ZIP download, all 592 build inputs, Docker-only startup, ordinary HTTP configuration save and persistent restart were observed. Seventeen of eighteen exact case identities have individual passes.",
+      "missing": "Fresh Settings save/reopen by UI, the 320px view, dependency-read failure/recovery interaction and the full committed-clean I30 gate are absent. REVIEW.json remains partial.",
+      "owners": [
+        "audit/iteration-30-release-20261027/native_release.py",
+        "audit/iteration-30-release-20261027/REVIEW.json",
+        "tests/test_completion_i30.py",
+        "services/web/app/settings"
+      ],
+      "references": [
+        "audit/iteration-30-release-20261027/VERIFY-STATUS.json",
+        "audit/iteration-30-release-20261027/PROGRESS.md"
+      ],
+      "steps": [
+        "Restore computer control or resolve the existing pending choice of the disposable Chrome/Playwright harness. Do not recreate the repository, replace the source ZIP or touch the user's app3000.",
+        "Complete actual UI save/reopen, 320px and controlled dependency-recovery observations on the already tested source; inspect their screenshots and update the partial review truthfully.",
+        "Reconcile retained native passes with the missing review and run the revision/clean-state gate. A new documentation commit alone does not invalidate startup/provider tests.",
+        "When delivery continuation is authorized, record/publish final acceptance and read it back. Keep failed origin/header harness receipts and the protected canonical edit."
+      ],
+      "positive": "The UI saves and reloads the chosen profile after restart, 320px remains usable, a controlled read failure recovers with authored guidance, and the complete selected gate has no missing case.",
+      "negative": "A native PUT is not a UI save; seventeen individual passes are not a whole clean gate; prior I29 screenshots cannot certify the fresh ZIP's missing Settings observation.",
+      "prerequisite": "Current control-transport recovery or the pending explicit alternate-harness selection. No provider call, key, installation or product decision is needed.",
+      "depends_on": []
+    },
+    {
+      "id": "VER-03",
+      "title": "Physical host qualification beyond the observed Mac",
+      "kind": "platform_qualification",
+      "status": "limited_evidence",
+      "iterations": [
+        1,
+        15,
+        16,
+        30
+      ],
+      "historical_ids": [
+        "H092",
+        "H093",
+        "H094"
+      ],
+      "product_use": "Substantiate native Linux amd64/arm64 and Windows WSL2 download/start/restore claims beyond emulated containers on this Apple Silicon host.",
+      "implemented": "Docker-only delivery, both image architectures, emulated amd64 execution, restart and cross-architecture restore have finite observed evidence.",
+      "missing": "Separate physical x86/Linux/Windows-WSL2 hosts were not independently qualified. Architecture emulation is not a Windows or physical-x86 observation.",
+      "owners": [
+        "scripts/tangerine",
+        "deploy/local/compose.yaml",
+        "specification/v2/docs/local-delivery.md"
+      ],
+      "references": [
+        "audit/iteration-16-release-20261021/ORIGINAL-SCOPE.md",
+        "audit/iteration-16-verification-20261022/REPORT.md"
+      ],
+      "steps": [
+        "Use an already available authorized host and the public source ZIP with documented Docker/Compose prerequisites.",
+        "Observe fresh start, empty Library, configuration, saved-media persistence and backup/restore; retain the actual OS/architecture/tool versions and failure/recovery cases.",
+        "Fix only demonstrated host differences through the launcher/runtime owner. Do not claim every supported host from emulation and do not buy CI capacity or install host tools under this audit."
+      ],
+      "positive": "The documented source ZIP starts and restores real storage on the named physical host without host Go/Node/Python.",
+      "negative": "Emulated amd64 on arm64, a successful image build or a Docker version string alone cannot count as a separate physical/WSL2 run.",
+      "prerequisite": "Access to the relevant test hosts; engineering execution rather than a new product decision.",
+      "depends_on": []
+    },
+    {
+      "id": "QUAL-01",
+      "title": "Actual Azure F0 dialogue pair",
+      "kind": "account_and_live_qualification",
+      "status": "external_access_missing",
+      "iterations": [
+        7,
+        8,
+        24
+      ],
+      "historical_ids": [
+        "H100"
+      ],
+      "product_use": "Use the existing Azure adapter for named accent voices and precise SSML phone/prosody controls; complete the saved same-dialogue comparison.",
+      "implemented": "Production adapter/SSML, punctuation repair, frozen eight-turn comparison, piece resume, safe retry and player are implemented. The latest I24 clean selection has 28 passes and two skips.",
+      "missing": "Protected Microsoft sign-in, an actually eligible F0 Speech resource/key/region and both real recordings. No Azure synthesis was performed in I24.",
+      "owners": [
+        "services/speech/backends.py",
+        "audit/iteration-24-azure-20261026/compare.py",
+        "audit/iteration-24-azure-20261026/README.md"
+      ],
+      "references": [
+        "audit/iteration-24-azure-20261026/STATUS.json",
+        "audit/iteration-24-azure-20261026/VERIFY.md"
+      ],
+      "steps": [
+        "Finish the user's protected sign-in and inspect an existing eligible subscription/resource. Microsoft documents F0, but that does not establish this account can obtain it without a payment/trial change.",
+        "Save the actual F0 key/region privately and confirm available allowance/voices. Stop if only S0, trial, billing linkage or paid enrollment is available under the current rule.",
+        "Render the frozen US/UK dialogue reference and four IPA targets, resume accepted pieces, retain native requests/audio/model/context and inspect each actual target.",
+        "Complete VER-01 and the two skipped I24 cases using retained 28 valid passes."
+      ],
+      "positive": "Both original complete recordings exist with their four actual speaker/word target observations and permitted F0 native receipts.",
+      "negative": "Missing key, S0, unknown free access, denied voice, quota, textual IPA or synthetic PCM never counts as actual free Azure qualification; no paid fallback.",
+      "prerequisite": "User-controlled Microsoft security step and genuine F0 access. Product policy is already settled; no repeat product approval can supply a key.",
+      "depends_on": [
+        "VER-01"
+      ]
+    },
+    {
+      "id": "QUAL-02",
+      "title": "Complete Qwen pair on a practical local runtime",
+      "kind": "runtime_setup_and_live_qualification",
+      "status": "runtime_unqualified",
+      "iterations": [
+        7,
+        25
+      ],
+      "historical_ids": [
+        "H101"
+      ],
+      "product_use": "Optional richer local voices and the preserved full clean/mutated same-dialogue comparison.",
+      "implemented": "The accepted 0.6B CustomVoice cache, explicit CPU/MPS/device/dtype binding, actual native owner, cancellation, one-piece checkpoints, saved reference and resume are implemented. I25 has 37 passes/two skips.",
+      "missing": "The CPU request timed out at 269.92 seconds before its first completed piece. No complete pair or returned encoded model context exists. The host has MPS capability but lacks the isolated Qwen dependencies.",
+      "owners": [
+        "services/speech/backends.py",
+        "services/speech/qwen_runtime.py",
+        "audit/iteration-25-qwen-20261026/compare.py"
+      ],
+      "references": [
+        "audit/iteration-25-qwen-20261026/VERIFY.md",
+        "audit/iteration-25-qwen-20261026/STATUS.json"
+      ],
+      "steps": [
+        "Resolve the pending isolated local-dependency setup choice. Reuse the accepted cache; select explicit MPS with compatible dtype/attention only after checking support, or an already authorized existing CUDA host. PyTorch MPS support does not prove this complete model works there.",
+        "Create a separately frozen runtime candidate; do not mutate the failed CPU plan. Preserve the same dialogue, Ryan/Aiden and four respellings, existing deadline and foreground process cleanup.",
+        "Run bounded explicit piece steps, retaining returned model inputs/outputs and actual placement. Complete all 26 planned pieces and assemble both variants; do not restart an unchanged heavy failed CPU probe.",
+        "Inspect actual sound and VER-01 interaction, export/read back Lab evidence and close the two missing I25 observations. Respelling remains approximate, not exact IPA control."
+      ],
+      "positive": "Both full original variants, all actual pieces and encoded contexts exist and playback works within unchanged foreground ownership.",
+      "negative": "The old 5.6-second preview, constructed audio, an unreturned timed-out request, silent CPU fallback or a larger deadline cannot close the comparison.",
+      "prerequisite": "Explicit isolated-runtime setup authorization/access, currently pending. No hosted service or paid compute is needed for the proposed local route.",
+      "depends_on": [
+        "VER-01"
+      ]
+    },
+    {
+      "id": "QUAL-03",
+      "title": "Per-category actual-audio confirmation matrix",
+      "kind": "acoustic_qualification",
+      "status": "mixed_observations",
+      "iterations": [
+        8,
+        16,
+        26
+      ],
+      "historical_ids": [
+        "H011",
+        "H015",
+        "H021",
+        "H052",
+        "H058",
+        "H092",
+        "H093"
+      ],
+      "product_use": "Support precise claims that a selected generated category is actually audible while correct varieties/controls remain acceptable.",
+      "implemented": "All 122 category/recipe routes, native context/selection/scoring tests, actual recordings and the finite per-category report exist.",
+      "missing": "The retained original population is 44 confirmed and 78 unconfirmed: 66 provider-unavailable, six listener non-confirmations, four physical/listener conflicts and two correct-control false alarms. These are observation classes, not 78 proven rendering defects. Later I26 contrasts do not replace the original population wholesale.",
+      "owners": [
+        "audit/category-realization-20261025/run.py",
+        "services/speech/diagnostic_models.py",
+        "services/api/internal/app/audio_diagnostic_input.go"
+      ],
+      "references": [
+        "audit/category-realization-20261025/COVERAGE.json",
+        "audit/category-realization-20261025/QUALIFICATION-GAPS.json",
+        "audit/iteration-26-verification-20261026/VERIFY.md"
+      ],
+      "steps": [
+        "Use CATEGORIES.json for every exact leaf, binding, outcome and retained implementation case; keep native rendering and listener opinion separate.",
+        "Investigate the actual failed target/control/context first. Repair a renderer only for an established implementation defect; fix an ambiguous fixture or judge interpretation at its own owner.",
+        "Reuse saved actual clips, physical measurements and valid judgments. Any additional selected functional observation must have a justified changed input or missing assertion and actual free/local allowance.",
+        "Do not relaunch the excluded bulk/repeated-judge campaign, infer universal accuracy or turn confirmation into a playback/generation/scoring gate. Full-population confirmation remains unclaimed under the current exclusions."
+      ],
+      "positive": "A saved actual target/control pair with independently expected context and correctly associated acoustic/listener observations qualifies only its exact binding.",
+      "negative": "An intended mutation, ASR word, manifest, model's self-generated key or permitted accent cannot prove an audible error or justify a control false alarm.",
+      "prerequisite": "No new product decision. Universal/full-population empirical certification is neither available nor promised by finite tests; a bulk campaign remains excluded unless the user changes scope.",
+      "depends_on": []
+    },
+    {
+      "id": "QUAL-04",
+      "title": "Resolve the selected weak-form, boundary and intonation disagreements",
+      "kind": "linguistic_fixture_or_diagnostic_qualification",
+      "status": "mixed_observations",
+      "iterations": [
+        8,
+        26
+      ],
+      "historical_ids": [
+        "H011",
+        "H052",
+        "H058"
+      ],
+      "product_use": "Avoid declaring legitimate strong forms or question contours wrong; distinguish physical realization from communicative meaning.",
+      "implemented": "I26 retains selected assimilation confirmation, narrow linking confirmation, physical 600 ms boundary insertion and measured opposed F0 directions, with all original model replies.",
+      "missing": "Weak form was not confirmed as an error in its neutral context; the model missed a physically present pause and disagreed on intonation, including a valid-question false alarm. These are unresolved contextual/diagnostic judgments, not proof every transform failed.",
+      "owners": [
+        "audit/iteration-26-acoustic-20261026/selection.json",
+        "services/speech/acoustic_controls.py",
+        "services/speech/diagnostic_models.py"
+      ],
+      "references": [
+        "audit/iteration-26-acoustic-20261026/REPORT.md",
+        "audit/connected-speech-20261023/REPORT.md"
+      ],
+      "steps": [
+        "Inspect retained target/reference/three correct-control clips and context. Keep a strong vowel in neutral/emphatic speech acceptable rather than forcing a universal weak-form rule.",
+        "Where the exercise needs an error, choose a self-contained context making the selected communicative deviation clear and audible; never rely on generator-private facts.",
+        "Retain exact silence/sample and independent F0 observations. Separate phonetic direction from pragmatic intent in expected judgments; repair fixture/context or decoder only where its own counterexample establishes the cause.",
+        "Use a minimal selected changed-context functional probe only when authorized; retain contrary opinions and stop instead of retrying until a favorable result."
+      ],
+      "positive": "The expected correct control stays acceptable, an actual 600 ms inserted interval is physically reported, and a rise/fall measurement does not automatically decide conversational appropriateness.",
+      "negative": "Question-mark spelling, requested contour, a strong function word or one judge's uncertain answer cannot supply the missing functional truth.",
+      "prerequisite": "Engineering/linguistic fixture repair and selected evidence work; no human peer reviewer, empirical corpus or paid service is required.",
+      "depends_on": []
+    },
+    {
+      "id": "QUAL-05",
+      "title": "Wider local-model generation reliability",
+      "kind": "model_qualification",
+      "status": "task_specific",
+      "iterations": [
+        4,
+        5,
+        6,
+        10,
+        11,
+        14,
+        29
+      ],
+      "historical_ids": [
+        "H092",
+        "H093"
+      ],
+      "product_use": "Offer an entirely local generation/checking option with honest task-specific capability and useful recovery.",
+      "implemented": "Actual local mutation, interpretation, review and Lab cases exist. I29's complete result uses actual Gemini-generated text/mutations and explicitly selected local gpt-oss checking.",
+      "missing": "Other installed local generation attempts returned invalid mutations/runner failure or timed out. A prior narrow local success does not establish arbitrary full-category generation, and protocol compatibility is not semantic adequacy.",
+      "owners": [
+        "services/api/internal/provider/execute.go",
+        "services/api/internal/app/generation.go",
+        "services/api/internal/app/mutation.go"
+      ],
+      "references": [
+        "audit/generation-repair-20261022/REPORT.md",
+        "audit/iteration-29-full-flow-20261026/VERIFY-REPORT.md"
+      ],
+      "steps": [
+        "Retain failed actual wires and identify the precise violated mutation/answer contract. Keep transport, prompt assembly, semantic projection and numerical scoring at their existing owners.",
+        "Repair an actual context/projection defect with literal independent cases; otherwise choose an explicitly available local model/profile suited to the request in a new preparation, without silently changing a frozen attempt.",
+        "Observe only the directly affected positive/negative functional request with actual context/model/output/Lab evidence. Do not run a model sweep, relax taxonomy/answer semantics or claim universal prose quality."
+      ],
+      "positive": "An actual local request returns a replayable saved mutation list/key matching independently expected targets; local answer checking preserves optional-reason independence.",
+      "negative": "Invalid mutations, missing output or deadline remain an incomplete exercise with retained work and human recovery; no fabricated key, hidden hosted fallback or benchmark sweep.",
+      "prerequisite": "No unresolved product choice. Additional model installation or functional execution needs its own applicable scope; none is done in this audit.",
+      "depends_on": []
+    },
+    {
+      "id": "QUAL-06",
+      "title": "DeepSeek role qualification under the no-paid-use rule",
+      "kind": "provider_entitlement_and_qualification",
+      "status": "entitlement_unproven",
+      "iterations": [
+        4,
+        5,
+        6
+      ],
+      "historical_ids": [
+        "H010"
+      ],
+      "product_use": "Preserve the requested fast DeepSeek text profile for generation, mutations, checking and feedback when a permitted installation can use it.",
+      "implemented": "Configurable native Responses-compatible transport, secret references and the preserved profile exist. The old DEC-001 approval blocker is superseded.",
+      "missing": "An API key/Codex model listing or reported subscription does not establish a covered Tangerine API entitlement. Official model calls deduct token charges from granted or topped-up balances.",
+      "owners": [
+        "services/api/internal/provider/transport.go",
+        "services/api/internal/provider/execute.go",
+        "specification/v2/docs/provider-access.md"
+      ],
+      "references": [
+        "audit/iteration-17-reconciliation-20261025/LEDGER.json",
+        "specification/v2/domain/service-research.v1.json"
+      ],
+      "steps": [
+        "Establish a documented eligible free/included route with a hard stop before any purchased balance, or leave this optional route unavailable under the current rule.",
+        "If such access exists, freeze actual endpoint/model/version and role bindings, run a minimum complete real exercise with actual receipts/context/usage/Lab and controlled credential/quota/error cases.",
+        "Do not borrow the Codex session's authorization, infer free entitlement from a remaining balance or call a token-billed endpoint to discover its billing behavior."
+      ],
+      "positive": "An actually permitted free/included binding completes the exact selected stages and stops on its allowance without using purchased balance.",
+      "negative": "A key, promotional/general granted balance mixed with a chargeable balance, a successful paid protocol call or a general prior approval cannot satisfy included-only qualification.",
+      "prerequisite": "Documented entitlement; otherwise this route cannot be activated under the settled spending rule. No paid exception is requested.",
+      "depends_on": []
+    },
+    {
+      "id": "QUAL-07",
+      "title": "Finish the optional Gemini TTS all-pronunciation comparison",
+      "kind": "optional_comparison_and_adapter_scope",
+      "status": "partial_comparison",
+      "iterations": [
+        7,
+        26
+      ],
+      "historical_ids": [],
+      "product_use": "Compare expressive generated speech across the same original 26 pronunciation targets.",
+      "implemented": "The standalone comparison has a full clean Gemini 3.8 Flash-Lite TTS recording and a partial mutated recording through targets 1–18. Actual quota429 and partial assets were retained.",
+      "missing": "Targets 19–26 and the complete mutated comparison were not rendered. This experiment is not a production Gemini speech adapter; I23 qualifies Gemini text, not Gemini TTS integration.",
+      "owners": [
+        "audit/pronunciation-all-20261023/REPORT.md",
+        "services/speech/backends.py",
+        "specification/v2/docs/speech-service-selection.md"
+      ],
+      "references": [
+        "audit/pronunciation-all-20261023/REPORT.md"
+      ],
+      "steps": [
+        "If completing the comparison is selected, inspect actual Free allowance after reset and resume only missing turns from the saved plan. Preserve original clean/partial files and the actual429.",
+        "Retain actual whole-phrase outputs and selected target observations; prompted pronunciation is approximate and must not be advertised as exact IPA.",
+        "If production integration is separately selected, add one native speech backend/profile using existing foreground capture/storage/resume owners, then verify ordinary preparation→audio→answer/scoring. A completed standalone pair alone does not implement that adapter."
+      ],
+      "positive": "The unchanged complete clean and mutated recordings retain all original target/turn identities and truthful acoustic outcomes.",
+      "negative": "A partial141.42-second track, requested style, I23 text receipt or a paid-tier switch cannot count as full TTS/ordinary-flow qualification.",
+      "prerequisite": "Optional selected comparison and actual Free quota. No new purchase/paid fallback or ordinary-use dependency.",
+      "depends_on": []
+    },
+    {
+      "id": "DATA-01",
+      "title": "Complete EFCAMDAT-R2 original release",
+      "kind": "restricted_source_input",
+      "status": "not_acquired",
+      "iterations": [
+        13,
+        27
+      ],
+      "historical_ids": [
+        "H014",
+        "H020",
+        "H063",
+        "H078",
+        "H093"
+      ],
+      "product_use": "Optional authentic writing/level/task/error enrichment and exact full-source reports for this separate original identity.",
+      "implemented": "Lossless XML intake, source binding/mapping, private raw storage, complete-release assessment, resume and truthful missing/raw-only states exist.",
+      "missing": "Owner XML, full prompt/documentation components and applicable actual access/use permission. Cambridge's current route requires academic affiliation/university-email Google access; the selected personal-account route was refused.",
+      "owners": [
+        "services/api/internal/source/xml.go",
+        "services/api/internal/app/source_import.go",
+        "specification/v2/docs/sources/efcamdat.md"
+      ],
+      "references": [
+        "audit/iteration-27-sources-20261026/REPORT.md"
+      ],
+      "steps": [
+        "Obtain a legitimate eligible academic account/collaboration or a written owner exception covering this local educational/LLM use; do not invent an affiliation or bypass Drive access.",
+        "Acquire the complete authorized release and its documentation privately. Bind actual native XML fields and all components through the existing source-format/mapping program, retaining every unknown raw field.",
+        "Run one actual full native import/completeness assessment and per-source report/reopen checks. Retain original notices; do not redistribute the corpus in the Apache source ZIP."
+      ],
+      "positive": "Every supplied original component and documented population reconciles once with actual native identities/fields and saved assessment.",
+      "negative": "Public metadata, a derivative, a subset, a third-party notebook or fabricated fields cannot certify the complete R2 population.",
+      "prerequisite": "Source-owner access/terms and actual release bytes, not a Tangerine product approval.",
+      "depends_on": []
+    },
+    {
+      "id": "DATA-02",
+      "title": "Complete EFCAMDAT-SHATZ2020 derivative",
+      "kind": "restricted_source_input",
+      "status": "not_acquired",
+      "iterations": [
+        13,
+        27
+      ],
+      "historical_ids": [
+        "H014",
+        "H020",
+        "H063",
+        "H078",
+        "H093"
+      ],
+      "product_use": "Preserve the distinct cleaned writing source and its authentic grouping/curation contexts.",
+      "implemented": "Separate registry identity, generic table/archive intake and explicit binding/missingness are supported.",
+      "missing": "Both complete samples, supplied intermediate versions, actual glossary/scripts, source prompt limitations and permission. The owner folder remains inaccessible in the retained observation.",
+      "owners": [
+        "services/api/internal/source/workbook.go",
+        "services/api/internal/app/source_mapping.go",
+        "specification/v2/docs/sources/efcamdat.md"
+      ],
+      "references": [
+        "audit/iteration-27-sources-20261026/REPORT.md"
+      ],
+      "steps": [
+        "Use Cambridge's eligible owner access/exception route to obtain both complete samples plus actual support files.",
+        "Map actual columns/types/identities. Keep copied first-sample prompts distinct from unknown second elicitation prompts; do not invent corrections that this annotation-free derivative does not supply.",
+        "Import both components, retain learner/script grouping across derivatives and assess complete raw versus normalized scope separately."
+      ],
+      "positive": "Both owner samples and every supplied intermediate/glossary/script component survive; source absence of corrections stays absent.",
+      "negative": "Only the406,062 first-sample records, copied prompts or another derivative cannot satisfy the complete two-sample release.",
+      "prerequisite": "Actual owner release and permitted use, independent of DATA-01's file contents.",
+      "depends_on": []
+    },
+    {
+      "id": "DATA-03",
+      "title": "Complete EFCAMDAT-OKSUZ2025 derivative",
+      "kind": "restricted_source_input",
+      "status": "companion_only",
+      "iterations": [
+        13,
+        27
+      ],
+      "historical_ids": [
+        "H014",
+        "H020",
+        "H063",
+        "H078",
+        "H093"
+      ],
+      "product_use": "Authentic article opportunities, paired original/corrected text and POS/error layers for this separate source.",
+      "implemented": "Four complete public OSF companion files, observed CSV headers and the two article-table identities are retained; workbook/CSV intake and explicit binding exist.",
+      "missing": "The complete owner error-coded workbook/release, native variable glossary, ambiguous text/original column semantics and applicable reuse terms. Companion analyses are not the full derivative.",
+      "owners": [
+        "services/api/internal/source/workbook.go",
+        "services/api/internal/app/source_mapping.go",
+        "specification/v2/docs/sources/efcamdat.md"
+      ],
+      "references": [
+        "audit/corpus-acquisition-20261009/oksuz-full-csv-inventory.json",
+        "audit/iteration-27-sources-20261026/REPORT.md"
+      ],
+      "steps": [
+        "Obtain authorized owner workbook/dictionary through Cambridge's actual access route; preserve the already acquired public companion without downloading it again.",
+        "Bind real workbook/CSV meanings, blank-header ordinals, paired POS/corrections and obligatory-context denominators. Keep source labels, documentary inconsistencies and native/derived origin distinct.",
+        "Import the complete original and companions once, with source-scoped completeness and separate article-table identity; no generated localized spans from ratios."
+      ],
+      "positive": "Actual paired source text/layers and all supplied workbook sheets join under genuine IDs with documented denominator semantics.",
+      "negative": "OSF analysis alone, rounded SOC-derived counts, a guessed text-column meaning or Phonological_variant_errors interpreted as audio phoneme labels cannot satisfy full native gold.",
+      "prerequisite": "Owner release/dictionary/terms; no product formula change or academic-study UI is needed.",
+      "depends_on": []
+    },
+    {
+      "id": "DATA-04",
+      "title": "Doubao underlying study records and instruments",
+      "kind": "restricted_source_input",
+      "status": "documentation_only",
+      "iterations": [
+        13,
+        27
+      ],
+      "historical_ids": [
+        "H014",
+        "H020",
+        "H064",
+        "H078",
+        "H093"
+      ],
+      "product_use": "Optional source archive/context analysis, preserving complete supplied participant/day/media/instrument data. It is not Tangerine's ordinary exercise bank or scoring policy.",
+      "implemented": "The publisher paper, documentary population expectations and complete local-export/binding behavior are specified; lossless generic intake exists.",
+      "missing": "Actual de-identified participant submissions, valid/invalid media, journals, full prompt/instrument wording, questionnaire/interview responses/scales, dictionary and use/consent terms. No linked participant release was found in the inspected publisher material.",
+      "owners": [
+        "services/api/internal/app/source_mapping.go",
+        "specification/v2/docs/sources/doubao-study.md",
+        "specification/v2/docs/sources/private-vendors-and-study.md"
+      ],
+      "references": [
+        "audit/corpus-acquisition-20261009/outreach.json",
+        "audit/iteration-27-sources-20261026/REPORT.md"
+      ],
+      "steps": [
+        "Obtain the actual author reply/release via the already sent institution-forwarding request; the present audit sends no new message and has no fresh mailbox read.",
+        "Require an author-scoped de-identified export with its actual components/terms. Bind native participant/day/prompt/media/instrument identities through existing local export intake.",
+        "Import all actually supplied valid and invalid records, retaining exclusions and documentary-versus-observed counts. Add source-native fixtures after real headers are available; do not recreate a study or recruitment UI."
+      ],
+      "positive": "Actual authorized participant/submission joins, all supplied instrument versions and valid/invalid assets survive with honest missingness.",
+      "negative": "The PDF, published totals, guessed Likert wording, generated journals or an invented control/follow-up group are not participant data.",
+      "prerequisite": "Author release/dictionary/terms. The user's approval cannot create undisclosed records or consent.",
+      "depends_on": []
+    },
+    {
+      "id": "DATA-05",
+      "title": "Separate Moodrick export",
+      "kind": "private_source_input",
+      "status": "not_acquired",
+      "iterations": [
+        13,
+        27
+      ],
+      "historical_ids": [
+        "H014",
+        "H020",
+        "H065",
+        "H078",
+        "H093"
+      ],
+      "product_use": "Optional authentic simulation sessions, profiles, turns/media and pedagogical feedback; keep this original identity separate from NIR.",
+      "implemented": "Complete local-export intake, configurable native field bindings and raw-only handling are implemented. Public owner HTML and the prior separate inquiry are available.",
+      "missing": "Authorized scoped complete export, actual file/population manifest, session/turn/profile/rubric/media dictionary and reuse/LLM terms. Current public HTML has demonstrations/contact, not an export contract or corpus.",
+      "owners": [
+        "services/api/internal/app/source_mapping.go",
+        "services/api/internal/source/remote.go",
+        "specification/v2/docs/sources/private-vendors-and-study.md"
+      ],
+      "references": [
+        "audit/corpus-acquisition-20261009/outreach.json",
+        "audit/iteration-27-sources-20261026/REPORT.md"
+      ],
+      "steps": [
+        "Obtain the owner's answer/export through the already established contact; retain exact allowed scope, including whether it is personal sessions or a licensed whole population.",
+        "Upload the complete local archive/directory and bind its actual dictionary. Preserve every original field and media/feedback/rubric association.",
+        "Run actual native import/count/reopen checks. Implement a private API only if a documented remote contract is separately supplied and selected; do not reverse-engineer private endpoints."
+      ],
+      "positive": "A genuine complete scoped export retains all declared sessions, turns, audio and source-native report scales under its own identity.",
+      "negative": "A public demo percentage, a few account sessions labelled as all vendor data, NIR's schema or a guessed API cannot satisfy Moodrick completeness.",
+      "prerequisite": "Owner export/dictionary/terms; no vendor API or new subscription is required for the supported local-export route.",
+      "depends_on": []
+    },
+    {
+      "id": "DATA-06",
+      "title": "Separate NIR export",
+      "kind": "private_source_input",
+      "status": "not_acquired",
+      "iterations": [
+        13,
+        27
+      ],
+      "historical_ids": [
+        "H014",
+        "H020",
+        "H065",
+        "H078",
+        "H093"
+      ],
+      "product_use": "Optional authentic NIR learner-profile/session/transcript/report data, preserving SIM/OBSERVE/NIRA component origins if actually supplied.",
+      "implemented": "Separate source identity, generic lossless local-export intake/binding and documented remote-export machinery exist.",
+      "missing": "Its own authorized full scoped export, native dictionary, manifest/counts, media and applicable terms. The current SIM description does not provide a corpus release/export API; a privacy portability route is not a bulk-data grant.",
+      "owners": [
+        "services/api/internal/app/source_mapping.go",
+        "services/api/internal/source/remote.go",
+        "specification/v2/docs/sources/private-vendors-and-study.md"
+      ],
+      "references": [
+        "audit/corpus-acquisition-20261009/outreach.json",
+        "audit/iteration-27-sources-20261026/REPORT.md"
+      ],
+      "steps": [
+        "Obtain an actual NIR reply/export under the previously sent independent request, with its permitted population and source-use terms.",
+        "Bind exact session/turn/profile/stage/media/report/scale/version fields; retain raw additional fields and component identity.",
+        "Perform actual full scoped native import/report/readback checks. Keep a personal export honestly scoped, and avoid the unrelated nira.app API."
+      ],
+      "positive": "Actual NIR sessions/turns/reports/media preserve exact native joins and source scale; unknown fields remain retained rather than dropped.",
+      "negative": "Moodrick records, public NIR reports, personal portability alone or another Nira product's API are not the missing full NIR population.",
+      "prerequisite": "Actual separate vendor export/terms. No new Tangerine product decision or private API is needed for local intake.",
+      "depends_on": []
+    },
+    {
+      "id": "DATA-07",
+      "title": "Whole L2-ARCTIC normalized application import",
+      "kind": "native_import_qualification",
+      "status": "bytes_complete_import_unobserved",
+      "iterations": [
+        13,
+        27
+      ],
+      "historical_ids": [
+        "H014",
+        "H020",
+        "H093"
+      ],
+      "product_use": "Optional native pronunciation annotations, speaker/utterance context and source-scoped reports.",
+      "implemented": "Official v5 acquisition is complete:24 speaker ZIPs, suitcase and four documents. All25 component ZIP/data populations match retained mirror receipts; the distinct official README is preserved. Native parser/inventory behavior is implemented.",
+      "missing": "That provenance reconciliation is not an actual full normalized PostgreSQL/MinIO import of the entire L2 population. The six owner-release blockers do not include L2 anymore.",
+      "owners": [
+        "services/api/internal/source/textgrid.go",
+        "services/api/internal/app/source_import.go",
+        "specification/v2/docs/sources/l2-arctic-v5.md"
+      ],
+      "references": [
+        "audit/iteration-27-sources-20261026/L2-OFFICIAL.json",
+        "audit/iteration-27-sources-20261026/REPORT.md"
+      ],
+      "steps": [
+        "Reuse the retained official archive and admitted component inventory without rehashing/reacquiring unchanged source bytes.",
+        "Run a selected disposable full native import with the actual source binding, all partitions/annotation layers/suitcase/media and resumable foreground operations.",
+        "Reconcile raw versus normalized/native event counts and original README differences once; inspect Sources/report reopening. Add only regressions for real converter failures."
+      ],
+      "positive": "The full selected release has actual stored raw/native-normalized counts and media associations, preserving all original annotation operations and source-use metadata.",
+      "negative": "A complete download, mirror equality, file counts alone or a sample TextGrid import cannot be called the full normalized application import.",
+      "prerequisite": "Local engineering execution/storage capacity; source bytes and CC BY-NC4.0 notice are already present. No model or new access approval is needed.",
+      "depends_on": []
+    },
+    {
+      "id": "DATA-08",
+      "title": "Optional complete TET-GOLD-1 fixed benchmark",
+      "kind": "conditional_evaluation_data",
+      "status": "definition_preserved_population_absent",
+      "iterations": [
+        13,
+        14,
+        26,
+        28
+      ],
+      "historical_ids": [
+        "H015",
+        "H021",
+        "H092",
+        "H093"
+      ],
+      "product_use": "A separately selected fixed benchmark:122 leaves across development/calibration/holdout, each with mutated and correct controls; not a pregenerated learner exercise bank.",
+      "implemented": "Full benchmark/split/provenance contracts, authored category fixtures, dataset intake and report/experiment mechanisms exist.",
+      "missing": "The complete independent732-stimulus population, actual required audio and reference answer/component labels are not an acquired/qualified gold release. Model-generated cases and finite fixtures have their actual origins.",
+      "owners": [
+        "specification/v2/docs/splits-and-validation.md",
+        "specification/v2/docs/review-and-gold.md",
+        "services/api/internal/app/empirical_reports.go"
+      ],
+      "references": [
+        "audit/iteration-16-release-20261021/ORIGINAL-SCOPE.md",
+        "specification/v2/docs/empirical-data-needs.md"
+      ],
+      "steps": [
+        "Preserve the exact benchmark and source identity. If the user later selects its data assembly, create/import self-contained distinct cases with documented independent expectations and connected-group splits.",
+        "Retain actual audio for acoustic cases, valid variants and source/model/constructed provenance. Genuine learner-response analysis additionally needs EMP-02.",
+        "Keep bulk732-case model execution and repeated-judge campaigns excluded under current authority. Dataset capability can be complete while that optional empirical release remains absent; never make it a generation/startup prerequisite."
+      ],
+      "positive": "A selected complete data release has every required leaf/split/polarity with independent context, actual required media and honest label provenance.",
+      "negative": "Repeating one fixture, generated answers called genuine teachers, missing controls/audio or an unexecuted benchmark labelled passed cannot satisfy the complete release.",
+      "prerequisite": "Separate explicit benchmark selection if its population/campaign is wanted. Current audit does not restore the excluded bulk execution or human peer review.",
+      "depends_on": []
+    },
+    {
+      "id": "EMP-01",
+      "title": "Authentic per-leaf frequency and relationship populations",
+      "kind": "empirical_data",
+      "status": "incomplete_population",
+      "iterations": [
+        13,
+        14,
+        28
+      ],
+      "historical_ids": [
+        "H015",
+        "H020",
+        "H080"
+      ],
+      "product_use": "Report source/population-specific mistake prevalence, co-occurrence/support/conditional probability/lift and real category coverage.",
+      "implemented": "Exact report arithmetic, immutable source-scoped reports, mapping/annotation-scope handling, missingness and guided UI are accepted in I14/I28.",
+      "missing": "Localized native-to-leaf event mappings and complete inspected exposure/window denominators for every122leaf/population do not exist. A taxonomy graph, uniform mutation selection or an unmapped source event is not empirical frequency/absence coverage.",
+      "owners": [
+        "services/api/internal/empirical/report.go",
+        "services/api/internal/source/mapping.go",
+        "services/api/internal/app/empirical_reports.go"
+      ],
+      "references": [
+        "audit/iteration-14-empirical-20261021/REPORT.md",
+        "audit/iteration-28-reports-20261026/VERIFY-REPORT.md"
+      ],
+      "steps": [
+        "Use authorized actual annotated sources. Preserve native events and publish a versioned inferred/native/unmapped crosswalk with real context and grouping.",
+        "Declare fully inspected opportunity/window populations and native denominator units, not just categories present. Save rows and compute through existing reports.",
+        "Extend genuine coverage as observations accumulate. Continue N/A for unobserved categories/windows; do not manufacture an all-English frequency distribution."
+      ],
+      "positive": "With100fully inspected windows,nA20,nB10,nAB5, report support1/20, P(B|A)1/4 and lift5/2, with source/window scope attached.",
+      "negative": "No inspected windows, unmapped events, zero denominators or secondary labels counted as new independent errors must not yield invented rates or false absence claims.",
+      "prerequisite": "Actual annotated populations/denominators and mapping work; current report code does not need a new product decision.",
+      "depends_on": []
+    },
+    {
+      "id": "EMP-02",
+      "title": "Genuine answer and independent semantic-reference populations",
+      "kind": "empirical_data",
+      "status": "population_absent",
+      "iterations": [
+        10,
+        11,
+        12,
+        14,
+        28
+      ],
+      "historical_ids": [
+        "H016",
+        "H021",
+        "H032"
+      ],
+      "product_use": "Measure real listener detection/correction/confusion and compare semantic judgments against separately established expected claims.",
+      "implemented": "Real answer/draft persistence, source claims, independent correction/optional-reason judgments, disputes, exact scores and report ingestion exist; literal development cases and actual finite model observations are retained.",
+      "missing": "An authentic answer population spanning all requested response classes and independent reference labels is not available. Developer scripted answers and model-authored gold cannot be called genuine teacher study data or their own accuracy oracle.",
+      "owners": [
+        "services/api/internal/empirical/attempts.go",
+        "services/api/internal/app/empirical_reports.go",
+        "specification/v2/docs/review-and-gold.md"
+      ],
+      "references": [
+        "audit/iteration-10-verification-20261021/REPORT.md",
+        "audit/iteration-14-empirical-20261021/REPORT.md",
+        "audit/iteration-28-reports-20261026/VERIFY-REPORT.md"
+      ],
+      "steps": [
+        "Collect voluntary real local-use answers with saved case/key/model/policy provenance or import an authorized genuine dataset; no new app accounts, recruitment UI or human peer-review gate.",
+        "Retain correct/partial/vague/repeated/contradictory/false/alternative/off-key classes actually observed. Keep independent expected propositions separate from the model being assessed and label any inferred reference as such.",
+        "Use existing report/experiment owners for scoped precision/coverage/agreement/confusion. Missing classes remain unknown and cannot support universal performance claims."
+      ],
+      "positive": "A genuine saved response and separately established reference produce exact scoped TP/FN/FP/component counters with original text and provenance.",
+      "negative": "Constructed fixtures, repeated answers, candidate-authored labels or missing response classes cannot inflate the real population or be relabelled independent gold.",
+      "prerequisite": "Actual voluntary observations or eligible imports, not a product-policy approval. This audit collects none.",
+      "depends_on": []
+    },
+    {
+      "id": "EMP-03",
+      "title": "Observed difficulty calibration",
+      "kind": "empirical_data",
+      "status": "unrated",
+      "iterations": [
+        14,
+        28
+      ],
+      "historical_ids": [
+        "H036"
+      ],
+      "product_use": "Distinguish requested difficulty/severity from measured difficulty on an actual listener population.",
+      "implemented": "Native eligible-attempt/timing/success aggregation, unknown handling and report presentation are implemented.",
+      "missing": "A sufficiently scoped genuine attempt population with actual exposure/success/timing and stable key/policy/model context. A high mutation count, CEFR request or LLM difficulty label is not an observed difficulty measure.",
+      "owners": [
+        "services/api/internal/empirical/attempts.go",
+        "specification/v2/docs/empirical-data-needs.md"
+      ],
+      "references": [
+        "audit/iteration-14-empirical-20261021/REPORT.md",
+        "audit/iteration-28-reports-20261026/VERIFY-REPORT.md"
+      ],
+      "steps": [
+        "Accumulate/import genuine eligible attempts with actual exposure and timing through existing persistence.",
+        "Compute only the established source/population/key-policy scoped statistic, retain exclusions and sample size and leave insufficient populations unrated.",
+        "Use the existing positive/negative arithmetic cases; no new rating ceremony or model call is needed to calculate a saved population."
+      ],
+      "positive": "Genuine eligible successes/exposures yield the independently expected exact ratio under the saved population definition.",
+      "negative": "A constructed/generated attempt, changed-key mismatch, missing exposure or a CEFR/severity setting cannot become an empirical difficulty observation.",
+      "prerequisite": "Genuine observations, not a code feature or product decision.",
+      "depends_on": [
+        "EMP-02"
+      ]
+    },
+    {
+      "id": "EMP-04",
+      "title": "Observed recommendation effectiveness",
+      "kind": "empirical_data",
+      "status": "followup_absent",
+      "iterations": [
+        11,
+        14,
+        28
+      ],
+      "historical_ids": [
+        "H036",
+        "H080"
+      ],
+      "product_use": "Describe observed follow-up after targeted practice; do not confuse a useful recommendation with proof it caused improvement.",
+      "implemented": "Actual LLM comments/practice recommendations and source-scoped follow-up arithmetic/missingness are implemented and have finite functional evidence.",
+      "missing": "Genuine linked baseline/follow-up attempts with exposure, timing, category/key/policy context and a defensible population. There is no collected causal-effectiveness study.",
+      "owners": [
+        "services/api/internal/empirical/attempts.go",
+        "services/api/internal/app/scoring_pipeline.go",
+        "specification/v2/docs/empirical-data-needs.md"
+      ],
+      "references": [
+        "audit/iteration-11-verification-20261021/REPORT.md",
+        "audit/iteration-28-reports-20261026/VERIFY-REPORT.md",
+        "audit/iteration-29-full-flow-20261026/VERIFY-REPORT.md"
+      ],
+      "steps": [
+        "Retain actual practice and genuine linked follow-up observations during voluntary use/import; keep unmatched or incompatible pairs excluded with their reason.",
+        "Use existing saved-data report functions for the precisely defined descriptive change, sample count and missingness.",
+        "Call it association/descriptive improvement unless a separately designed causal study supports more. No new study app or scoring formula is needed."
+      ],
+      "positive": "A compatible real pair yields the independently expected baseline/follow-up difference with its actual eligibility and population.",
+      "negative": "No follow-up, another learner/category/policy, generated practice completion or a positive feedback sentence cannot prove observed or causal improvement.",
+      "prerequisite": "Actual follow-up data; no product approval supplies an outcome.",
+      "depends_on": [
+        "EMP-02"
+      ]
+    },
+    {
+      "id": "SUP-01",
+      "title": "Optional Speak & Improve2025 source",
+      "kind": "supplemental_access",
+      "status": "not_acquired",
+      "iterations": [
+        13,
+        27
+      ],
+      "historical_ids": [
+        "H014"
+      ],
+      "product_use": "Supplemental rated spontaneous learner speech, transcriptions/disfluencies and spoken grammar corrections.",
+      "implemented": "Source request/history and generic lossless intake/mapping support exist. This source does not replace any of the11 originals.",
+      "missing": "Actual eligible complete release and agreement; a retained inbox preview mentions license limits but the complete reply was not read. This audit has no connected mailbox read and does not infer its wording.",
+      "owners": [
+        "specification/v2/docs/sources/alternatives.md",
+        "services/api/internal/app/source_import.go"
+      ],
+      "references": [
+        "audit/iteration-27-sources-20261026/REPORT.md",
+        "audit/corpus-acquisition-20261009/outreach.json"
+      ],
+      "steps": [
+        "Read the actual owner reply and applicable registration/license before a selected acquisition; use the official access form if eligible.",
+        "Keep audio/text/ratings/splits/annotations complete, bind actual native fields and perform source-scoped import checks.",
+        "Use locally hosted or permitted no-training-retention processing as required by the source. Do not send these restricted records to Gemini Free merely because synthetic tests were authorized, or publish restricted corpus-derived outputs without applicable permission."
+      ],
+      "positive": "An authorized complete selected release preserves actual audio/ratings/annotations and source-use restrictions through native import.",
+      "negative": "The paper, inbox preview, generated substitute, unreviewed agreement or unrestricted public/Gemini transfer cannot count as permitted acquisition/use.",
+      "prerequisite": "Actual eligibility, release and applicable source terms. No paid signup is proposed.",
+      "depends_on": []
+    },
+    {
+      "id": "SUP-02",
+      "title": "Optional DRAL additional representations",
+      "kind": "supplemental_data",
+      "status": "base_complete_extras_incomplete",
+      "iterations": [
+        13,
+        27
+      ],
+      "historical_ids": [
+        "H014"
+      ],
+      "product_use": "Optional higher-resolution and third-party re-enactment material for contextual prosody; not extra unique learner-error populations.",
+      "implemented": "The complete16kHzbase and8.0increment are acquired with actual provenance. The owner currently links higher-resolution increments and third-party re-enactments.",
+      "missing": "Selected48kHz representations/third-party components beyond the retained scope. The earlier third-party download returned403; current web retrieval did not establish a working replacement.",
+      "owners": [
+        "specification/v2/docs/sources/alternatives.md",
+        "services/api/internal/app/source_import.go"
+      ],
+      "references": [
+        "audit/iteration-27-sources-20261026/REPORT.md"
+      ],
+      "steps": [
+        "If these exact extra representations are selected, use the official increment list or obtain a working owner link for the denied third-party package.",
+        "Preserve representation/version identity and original clocks while mapping to the same genuine conversation/pair IDs; import the selected complete addition once.",
+        "Keep the complete existing base usable. Do not require duplicate48kHz recordings to generate24kHz exercises or count overlapping versions as new participants."
+      ],
+      "positive": "The selected actual extra component is complete and distinct as a representation while shared utterance identities remain shared.",
+      "negative": "A latest increment without its required base, a403 page or duplicate48kHz files counted as new conversations cannot satisfy the selected claim.",
+      "prerequisite": "Optional selection and working authorized public/owner delivery. No ordinary-flow dependency.",
+      "depends_on": []
+    },
+    {
+      "id": "SUP-03",
+      "title": "ICNALE restricted app use and prohibited media",
+      "kind": "source_rights_boundary",
+      "status": "use_disabled_media_prohibited",
+      "iterations": [
+        13,
+        27
+      ],
+      "historical_ids": [
+        "H014",
+        "H020"
+      ],
+      "product_use": "Potential optional source text enrichment only if the owner explicitly permits this intended use; it is unnecessary for independent generation.",
+      "implemented": "All nine current text/metadata packages are retained. The actual owner's prohibition and disabled exercise/LLM use are recorded.",
+      "missing": "Permission for the intended non-commercial app/LLM use is not established. Sound/video downloads are explicitly prohibited by the supplied owner reply, not merely awaiting a downloader fix.",
+      "owners": [
+        "specification/v2/docs/sources/icnale.md",
+        "specification/v2/docs/sources/acquisition-and-rights.md"
+      ],
+      "references": [
+        "audit/icnale-owner-reply-20261010/REPORT.md"
+      ],
+      "steps": [
+        "Keep the supplied restrictions and current disabled use. Do not retry prohibited audio/video downloads or infer permission from Apache/non-commercial status.",
+        "Only a new explicit source-owner permission that actually covers the selected purpose can change the relevant source-use status. This audit neither requests nor accepts it.",
+        "Retain independently generated exercises and authorized alternative source data without copying restricted material or relabelling alternatives as ICNALE."
+      ],
+      "positive": "Independent generation and unrelated authorized imports continue while unavailable ICNALE use stays explicit.",
+      "negative": "General user approval, free/open-source branding, downloaded text or another corpus license cannot override the retained owner's media prohibition.",
+      "prerequisite": "A changed source-owner permission if that optional purpose is ever selected; no present implementation action can close prohibited media.",
+      "depends_on": []
+    },
+    {
+      "id": "SUP-04",
+      "title": "Actual normalized supplemental imports/crosswalks",
+      "kind": "source_binding_and_qualification",
+      "status": "raw_acquired_selected_normalization_unqualified",
+      "iterations": [
+        13,
+        27,
+        28
+      ],
+      "historical_ids": [
+        "H014",
+        "H080"
+      ],
+      "product_use": "Use JFLEG, EdAcc, ELRD and DiPlomat for real alternative corrections, accent controls and self-contained dialogue/pragmatic contexts.",
+      "implemented": "Complete acquired source representations, documentation and generic raw intake/binding/parsers are retained. Source format meanings and non-duplication rules are specified.",
+      "missing": "A fully verified122-leaf semantic crosswalk and complete actual normalized application import/report for each selected supplement are not established by acquisition. Accent/transcript/context data are not automatically error annotations.",
+      "owners": [
+        "services/api/internal/source/mapping.go",
+        "services/api/internal/app/source_mapping.go",
+        "specification/v2/docs/sources/alternatives.md"
+      ],
+      "references": [
+        "audit/corpus-acquisition-20261009/REPORT.md",
+        "specification/v2/docs/empirical-data-needs.md"
+      ],
+      "steps": [
+        "For each actually selected source, reuse admitted complete bytes and define its documented native binding, real source IDs and required component scope.",
+        "Preserve all four JFLEG repairs, EdAcc variety/timing, ELRD ASR origin and DiPlomat overlapping task views as their native meanings; map only context-supported error candidates with inferred/native provenance.",
+        "Run one full selected native import/readback and scoped mapping/report positives/negatives. Unmapped or ambiguous records remain raw/unknown, not fabricated gold."
+      ],
+      "positive": "Actual full selected data survive with original alternatives, clocks, task-view grouping and honest native versus inferred mappings.",
+      "negative": "Acquisition alone, ASR called gold, accent differences called mistakes or overlapping views counted as independent people cannot supply normalized empirical coverage.",
+      "prerequisite": "Optional selected-source binding/import execution; existing sources do not replace missing original identities.",
+      "depends_on": []
+    },
+    {
+      "id": "SCOPE-01",
+      "title": "Catalogue alternatives are not all implemented adapters",
+      "kind": "scope_clarification",
+      "status": "conditional_not_a_core_gap",
+      "iterations": [
+        4,
+        7,
+        8,
+        16
+      ],
+      "historical_ids": [
+        "H010",
+        "H092",
+        "H093"
+      ],
+      "product_use": "Keep original and researched provider options visible without claiming every vendor endpoint is implemented, free or live-qualified.",
+      "implemented": "Selected ChatGPT-plan/Responses, local text, Gemini text, Kokoro/Melo/eSpeak/Qwen, Azure TTS, ElevenLabs and local/Gemini diagnostics have their actual separate owners and finite observations.",
+      "missing": "Hosted OpenAI TTS/Whisper and Azure Pronunciation Assessment are preserved catalogue/binding candidates, not completed live routes. Claude/other researched subscription alternatives and a production Gemini TTS backend are not implied implementation commitments.",
+      "owners": [
+        "services/speech/backends.py",
+        "services/speech/diagnostic_models.py",
+        "specification/v2/docs/provider-contracts.md",
+        "specification/v2/docs/provider-access.md"
+      ],
+      "references": [
+        "audit/iteration-16-release-20261021/ORIGINAL-SCOPE.md",
+        "specification/v2/domain/service-research.v1.json"
+      ],
+      "steps": [
+        "Keep an explicit service-by-service distinction between catalogue, adapter implementation, actual entitlement and exact live qualification.",
+        "If a catalogue-only adapter is selected later, implement only its native transport/projection in the existing provider or speech/diagnostic owner, reuse frozen context/storage/deadline handling and verify ordinary affected flow plus controlled denials/quota.",
+        "For OpenAI voices, the ChatGPT-plan documentation specifies Responses, not a speech grant; the separate TTS API is not available under the current no-paid route. Current official docs also deprecate legacy Speech models for2027-01-06, so do not build a new unqualified legacy integration.",
+        "Prefer the already implemented local/free route for the required capability; do not purchase credits, scrape consumer voice sessions or introduce realtime services merely to activate a catalogue alternative."
+      ],
+      "positive": "A selected implemented adapter exposes only its actual capability and permitted access; local/free independent flow remains usable.",
+      "negative": "A vendor name, API key, ChatGPT Pro subscription, Azure TTS key or another model's dictionary support cannot certify an absent TTS/ASR/assessment adapter or free grant.",
+      "prerequisite": "Only an explicit selection of an additional adapter and genuine permitted entitlement. The current product does not require every researched vendor; no paid exception is requested.",
+      "depends_on": []
+    },
+    {
+      "id": "DOC-01",
+      "title": "Current status wording and actionable closure trace",
+      "kind": "documentation_repair",
+      "status": "resolved_in_this_audit",
+      "iterations": [
+        4,
+        5,
+        13,
+        17,
+        24,
+        25,
+        26,
+        27,
+        30
+      ],
+      "historical_ids": [
+        "H010",
+        "H011",
+        "H014",
+        "H020",
+        "H052",
+        "H058",
+        "H092",
+        "H093",
+        "H094",
+        "H096",
+        "H098",
+        "H099",
+        "H100",
+        "H101"
+      ],
+      "product_use": "Prevent dated source/provider and iteration17 summaries from being interpreted as current missing code or current acceptance.",
+      "implemented": "Historical receipts and task rows are preserved, including resolved Pro admission, ElevenLabs, Gemini text, official L2 acquisition and source publication.",
+      "missing": "Before this audit, active explanatory documents still contained dated no-run/no-Pro/no-import wording and no single complete mapping of later residuals.",
+      "owners": [
+        "specification/v2/docs/empirical-data-needs.md",
+        "specification/v2/docs/provider-access.md",
+        "specification/v2/docs/sources/alternatives.md",
+        "openspec/changes/implement-teacher-error-trainer/tasks.md"
+      ],
+      "references": [
+        "audit/all-iterations-remaining-20261027/PROGRESS.md"
+      ],
+      "steps": [
+        "Record all30iterations,101historical rows,42baseline unchecked tasks,122category observations,11source identities and every1,909 unmaterialized graph case.",
+        "Add current dated status and exact closure actions without modifying old receipt contents, changing production behavior or marking unavailable work green.",
+        "Validate the audit's coverage/reference consistency and affected structural discovery/spec documents; retain application/provider greens without rerunning them."
+      ],
+      "positive": "Every baseline row/case remains addressable and distinguishes historical state, current implementation, exact missing observation and a named closure action.",
+      "negative": "Do not count all unchecked rows as features, classify a skipped case as passed, erase a source scope, repeat valid tests or imply the audit implemented its plan.",
+      "prerequisite": "Completed by this documentation/research increment only; it does not close the other work items.",
+      "depends_on": []
+    }
+  ]
+}

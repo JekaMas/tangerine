@@ -1399,3 +1399,22 @@ planning metadata and the journal-test adapter are resolved. Original failed
 receipts remain. Evidence: `audit/iteration-18-verification-20261026/ACCEPTANCE.json`.
 Later continuation iterations remain individually open; no deployment/provider
 or financial execution is implied.
+
+## All-iteration remaining-work research — 2026-10-27
+
+The current audit is `audit/all-iterations-remaining-20261027/REPORT.md`;
+`ITERATIONS.md` traces every iteration and `CLOSURE-PLAN.md` specifies each
+remaining owner/input/action and independent positive/negative expectation.
+`HISTORICAL-101.json` preserves the original dispositions beside current scope;
+`OPEN-TASKS.json` maps all 42 pre-audit unchecked rows. Later I22/I23, official
+L2 acquisition and main/publication evidence supersede only their exact earlier
+blockers. Existing acceptance boxes/receipts are not rewritten by this research.
+
+- [ ] ALL-AUDIT.1 Reconcile every historical blocked/planned DAG literal with its actual successor assertion/receipt or exact unmet obligation, using TRACE-01 and GRAPH-TRIAGE.json. Candidate cohort links are not passing evidence; retain valid observations without duplicate execution or excluded model campaigns.
+- [ ] ALL-AUDIT.2 Implement the preserved simultaneous-masking turn-taking subtype through one timed PCM composition owner and concurrent source/final key projection, with exact sample arithmetic, obstructive/permitted-overlap controls and actual local audio evidence, as ENG-01 specifies. Existing CV-01.P1/CV-03.P1 and the original discourse.turn_taking coverage retain the unimplemented subtype until a future apply materializes it.
+
+These two newly explicit follow-ups are plans, not application changes or new
+ordinary-use gates. I24/I25/I26/I27/I30 retain their separately stated missing
+observations/inputs. Source definitions, all 122 categories/recipes and all 42
+formulas remain preserved. No provider call, corpus download, installation,
+outreach, payment, deployment or publication is performed by this audit.
