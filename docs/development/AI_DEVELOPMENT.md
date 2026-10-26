@@ -27,3 +27,11 @@ Product runtime follows single-validation-policy.md: one input/model-output admi
 Iteration6 extends the same native owner with `tangerine prepare` action=mutation and the existing generation-request fields. It requires the completed selected preparation and the next explicit generation_attempt. The separate child operation is mutation, dispatched through InvokeLLM with phase=mutation and frozen full input/context. Its accepted candidate, manifest and candidate envelope remain private; no rendering or playable Library entry is implied. Controlled native endpoints remain labelled protocol fixtures and cannot prove linguistic quality or hosted entitlement.
 
 Shipped default prompts are compiled from services/api/internal/lab/builtin.json. When changing their authored specification/v2/prompts sources, run `python3 -B audit/iteration-10-interpretation-20261020/finalize_spec.py` before building or observing inference; it assembles those prompt bytes and schema bindings into the shipped bundle. The companion check_spec.py supplies development-time positive/counterexample assembly checks, and the native interpretation context case observes the shipped instruction on the actual provider wire. Registry-exported custom bundles keep their existing explicit activation route. Ordinary saved-data reads do not rerun this development check.
+
+Iteration22 implements production ElevenLabs English PLS dictionaries through
+existing plan/piece and acoustic owners. Frozen plan pieces retain admitted
+reference/contrast locators and exact target scopes; resume reuses them and
+completed audio. The selected Flash v2 ordinary-flow qualification, constructed
+text/semantic limits and actual Free audio/Lab observations are documented in
+`audit/iteration-22-elevenlabs-20261026/REPORT.md`. V3/v4 wire tests are controlled;
+this does not claim live qualification of every model or acoustic operation.

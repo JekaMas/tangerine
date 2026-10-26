@@ -76,6 +76,9 @@ func resolvedPreparationSpeechProfile(b, c map[string]any) (map[string]any, erro
 }
 
 func requireAcousticProfile(profile map[string]any) error {
+	if profile["provider"] == "elevenlabs" {
+		return nil // The worker admits model-specific phone operations once at plan creation.
+	}
 	if profile["provider"] == "local_english_accents" && profile["adapter_version"] == localAccentProfile {
 		return nil
 	}
@@ -128,7 +131,7 @@ func requestedAcousticCapability(b, profile map[string]any) error {
 		route := routes[v.(map[string]any)["taxonomy_id"].(string)]
 		if route != "" && route != "surface_text" && route != "control_variant" {
 			explicit = true
-			if profile["provider"] == "azure_speech" && (route == "vowel_duration" || route == "vot_edit") {
+			if (profile["provider"] == "azure_speech" || profile["provider"] == "elevenlabs") && (route == "vowel_duration" || route == "vot_edit") {
 				return &provider.Failure{Code: "CAPABILITY_UNAVAILABLE"}
 			}
 		}

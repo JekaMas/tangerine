@@ -105,15 +105,8 @@ def hosted(profile,turn,timeout):
   if not key or not url:raise ValueError('MISSING_CREDENTIALS')
   headers={'Ocp-Apim-Subscription-Key':key,'Content-Type':'application/ssml+xml','X-Microsoft-OutputFormat':'riff-24khz-16bit-mono-pcm'}
  elif profile['provider']=='elevenlabs':
-  if any(op['kind']!='text' for op in turn['operations']):raise ValueError('CAPABILITY_UNAVAILABLE')
-  text=''.join(op['text'] for op in turn['operations']);model=profile['model'];base=profile.get('endpoint') or 'https://api.elevenlabs.io'
-  if model in ('eleven_v3','eleven_v4'):
-   payload={'inputs':[{'text':text,'voice_id':turn['voice_id']}],'model_id':model};url=base+'/v1/text-to-dialogue?output_format=mp3_44100_128'
-  else:
-   payload={'text':text,'model_id':model,'voice_settings':{k:v for k,v in profile.get('voice_settings',{}).items() if v is not None}};url=base+'/v1/text-to-speech/'+urllib.parse.quote(turn['voice_id'],safe='')+'?output_format=mp3_44100_128'
-  body=json.dumps(payload,ensure_ascii=False,separators=(',',':')).encode();key=os.environ.get('ELEVENLABS_API_KEY')
-  if not key:raise ValueError('MISSING_CREDENTIALS')
-  headers={'xi-api-key':key,'Content-Type':'application/json'}
+  from elevenlabs_dictionary import request
+  url,body,headers=request(profile,turn)
  else:raise ValueError('CAPABILITY_UNAVAILABLE')
  raw,status=transport(url,body,headers,timeout)
  return normalize(raw),{'url':url,'body_base64':base64.b64encode(body).decode(),'http_status':status},raw
@@ -176,6 +169,7 @@ def render(profile,turn,timeout=260):
   audio,native,raw=hosted(profile,source_turn,timeout)
   if pair:
    altered=copy.deepcopy(source_turn);altered['operations'][0]['ipa']=pair['parameters']['mutated_ipa']
+   if provider=='elevenlabs':altered['pronunciation_dictionary_locators']=[turn['pronunciation_dictionary_bindings']['mutated']['locator']]
    changed,changed_native,changed_raw=hosted(profile,altered,timeout);admit(changed)
    native['paired_mutation']={'audio_base64':base64.b64encode(changed).decode(),'audio_sha256':hashlib.sha256(changed).hexdigest(),'native':changed_native,'raw_response_base64':base64.b64encode(changed_raw).decode()}
 
@@ -189,6 +183,9 @@ def plan(profile,render_plan):
   from english_accents import plan as accents_plan
   return accents_plan(profile,render_plan,plan)
  billing(profile)
+ if profile['provider']=='elevenlabs' and any(t.get('acoustic_edits') for t in render_plan['turns']):
+  from elevenlabs_dictionary import plan as dictionary_plan
+  return dictionary_plan(profile,render_plan,plan,transport)
  if any(t.get('acoustic_edits') for t in render_plan['turns']):
   return controlled_plan(profile,render_plan,plan)
 

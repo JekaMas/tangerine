@@ -64,7 +64,9 @@ def resolve_acoustic(packet):
    value['landmarks']['source_offset_samples']=a
    value['landmarks']['clock']='source_interval_relative_24000'
   resolved.append(value);observations.append(observation)
- return {'steps':resolved,'source_observations':observations,'alignment_basis':native.get('decoder',[{}])[0].get('timing_basis','kokoro_decoder_duration_proposal') if native.get('speaker_id') is not None else 'kokoro_decoder_duration_proposal'}
+ decoders=native.get('decoder',[])
+ basis=decoders[0].get('timing_basis','kokoro_decoder_duration_proposal') if decoders else 'generated_piece_interval_24000'
+ return {'steps':resolved,'source_observations':observations,'alignment_basis':basis}
 
 
 def transform_acoustic(packet):

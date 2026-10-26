@@ -128,7 +128,7 @@ export default function useListening() {
   }, []);
 
   async function refresh() {
-    setError('');
+    setError(''); setNotice('');
     try {
       const value = await load(true);
       if (!value) return;

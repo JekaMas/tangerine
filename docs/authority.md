@@ -1,3 +1,20 @@
+2026-10-26 iteration22 verification/repair: the actual user requests full SP-01
+conformance and native/browser evidence; repair causes and siblings with single
+ownership, preserve nonblocking UX, log/retry transient reads and show authored
+human recovery only when the current step cannot complete. Inspect UI/UX and
+typography through committed-clean acceptance. Existing Free/local functional
+scope above remains; no deployment/postdeployment, PBT, financial execution,
+purchased credits, overage, installation or publication. No new product gate.
+
+2026-10-26 iteration22: the actual user selects production ElevenLabs
+pronunciation dictionaries and ordinary-flow verification. Scoped native speech,
+configuration/preparation persistence, tests, evidence/DAG, UI/UX/typography
+inspection and local commits are authorized. Minimal functional synthesis may use
+the existing verified ElevenLabs Free allocation only; no purchased credits,
+overage, paid fallback, deployment/postdeployment, PBT, installation, financial
+execution or publication. Controlled semantic inputs are labelled. Preserve the
+running app3000, user data/settings/media, existing tabs and canonical GAPS.md.
+
 2026-10-26 iteration21 verification/repair: the actual user requests the full
 guided tools iteration, root-cause and sibling repairs, human recovery, UI/UX
 and typography inspection through committed-clean scoped acceptance. Deterministic
