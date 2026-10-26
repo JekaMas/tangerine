@@ -149,7 +149,7 @@ class SelectedListening(unittest.TestCase):
             page=listening.page(rows)
             self.assertEqual(20,page.count('<audio '))
             self.assertIn('Listening confirmation was unavailable',page)
-            self.assertIn('Listening observation not performed',page)
+            self.assertIn('Saved listening observation unavailable',page)
             self.assertNotIn('PRIVATE_CANARY',page)
             self.assertNotIn('JSONDecodeError',page)
             self.assertIn('id="refresh" type="button"',page)

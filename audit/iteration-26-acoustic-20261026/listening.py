@@ -45,6 +45,16 @@ def materialize(output):
     return rows
 
 
+def selection_reader(output):
+    """Admit the saved selection once; a failed read can recover on Refresh."""
+    saved=None
+    def read():
+        nonlocal saved
+        if saved is None:saved=media.read_saved(lambda:materialize(output))
+        return saved or []
+    return read
+
+
 def page(rows):
     escape=lambda value:html.escape(str(value))
     cards=[]
@@ -53,10 +63,12 @@ def page(rows):
         result=media.read_saved(lambda:json.loads(path.read_text())) if path.exists() else None
         contexts={c['unit_id']:c['public_context'] for c in row['probe']['clips']}
         private={c['role']:c for c in row['probe']['withheld']}
-        status=CAPTIONS[(result or {}).get('audio_confirmation','not_run')]
+        status=CAPTIONS[(result or {}).get('audio_confirmation','not_run')] if result is not None else 'Saved listening observation unavailable'
         notes=''
+        if result is None:
+            notes+='<p>The saved listening observation could not be loaded. Refresh saved observations to try again. The recordings remain available; no model call is needed to play them.</p>'
         if result and result.get('error'):
-            notes+='<p>Listening confirmation was unavailable. The saved recordings remain available.</p>'
+            notes+='<p>Listening confirmation was unavailable. The saved recordings remain available. Refresh saved observations to read any completed result.</p>'
         if result and result.get('false_alarms'):
             count=result['false_alarms']
             notes+='<p>The listening model incorrectly flagged '+escape(count)+' correct '+('control' if count==1 else 'controls')+'. That prevents confirmation.</p>'
@@ -94,11 +106,14 @@ document.querySelectorAll('audio').forEach(a=>{
 
 
 def handler(rows,output):
-    allowed={'/audio/'+row['id']+'/'+clip['role']+'.wav':ROOT/clip['audio_path'] for row in rows for clip in row['probe']['withheld']}
     class Listening(media.handler(output)):
         def do_GET(self):
             path=urlsplit(self.path).path
-            if path=='/':self.respond(200,page(rows).encode(),'text/html; charset=utf-8')
+            if path!='/' and not path.startswith('/audio/'):
+                super().do_GET();return
+            current=rows() if callable(rows) else rows
+            allowed={'/audio/'+row['id']+'/'+clip['role']+'.wav':ROOT/clip['audio_path'] for row in current for clip in row['probe']['withheld']}
+            if path=='/':self.respond(200,page(current).encode(),'text/html; charset=utf-8')
             elif path in allowed:
                 raw=media.read_saved(allowed[path].read_bytes)
                 if raw is None:self.respond(503,b'The saved clip is temporarily unavailable. Refresh saved observations to try again.','text/plain; charset=utf-8')
@@ -109,6 +124,6 @@ def handler(rows,output):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--out',type=Path,required=True);parser.add_argument('--port',type=int,default=8772);args=parser.parse_args()
-    rows=media.read_saved(lambda:materialize(args.out),[])
+    rows=selection_reader(args.out)
     server=ThreadingHTTPServer(('127.0.0.1',args.port),handler(rows,args.out))
     print('Read-only selected listening sheet on http://127.0.0.1:'+str(server.server_port)+'/',flush=True);server.serve_forever()

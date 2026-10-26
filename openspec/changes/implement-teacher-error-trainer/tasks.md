@@ -1146,6 +1146,15 @@ and20 saved role-labelled clips. `STATUS.json` reconciles538 total cases as518
 valid retained CV observations plus19 current passes and the one skip. This is
 an incomplete iteration, not a full all-eight-property clean acceptance.
 
+Verify/repair checkpoint2026-10-26: `audit/iteration-26-verification-20261026/VERIFY.md`
+records the startup-empty-selection recovery defect and misleading unreadable-
+judgment caption. Both have failing native counterexamples and passing owner
+repairs, with four new CLI/HTTP cases and browser-observed bounded media recovery.
+The full selected gate expands to542 cases and executes once at the stable
+committed boundary with retained model/audio results and zero new inference.
+Actual IAB pointer/keyboard activation remains externally unobserved; no DOM
+activation, provider switch or human review is substituted for that case.
+
 - [ ] I26.1 Reconcile and retain valid CV-01–CV-06 native/evidence receipts. Materialize only missing target/control/allowed-variant cases for selected uncertain linking, weak-form or connected-speech claims; do not automatically repeat the full observed population.
 - [ ] I26.2 Reuse saved audio/measurements/judgments and obtain only necessary authorized selected observations within remaining limits. Repair supported defects, preserve correct variants/uncertainty and never request a bulk retry of unavailable judgments.
 - [ ] I26.3 Verify target-specific claims, listening UI/typography and native/Lab evidence without universal acoustic certification or a human review gate; reconcile and commit.

@@ -12,9 +12,10 @@ DEPS=['audit/iteration-26-acoustic-20261026/observe.py',
       'audit/iteration-26-acoustic-20261026/listening.py',
       'audit/iteration-26-acoustic-20261026/selection.json',
       'audit/iteration-25-qwen-20261026/player.py',
-      'tests/test_selected_acoustic.py','tests/test_completion_i26.py',
+      'tests/test_selected_acoustic.py','tests/test_selected_listening_recovery.py','tests/test_completion_i26.py',
+      'audit/iteration-26-verification-20261026/browser_fixture.py',
       'data/iteration-26-acoustic-20261026/selected/',
-      'data/iteration-26-acoustic-20261026/browser-observations.json']
+      'data/iteration-26-verification-20261026/browser-observations.json']
 
 
 def main():
@@ -23,23 +24,26 @@ def main():
     graph['cases']=[c for c in graph['cases'] if c['id'].split('.contract_')[0] not in PROPS]
     command='completion-i26-contracts'
     graph['commands']=[c for c in graph['commands'] if c['id']!=command]+[
-        dict(id=command,runner='python-unittest',argv=['python3','-B','-m','unittest','-v','tests.test_selected_acoustic'],cwd='.',env={},timeout_seconds=120,authority='local')]
-    source='tests/test_selected_acoustic.py';text=(ROOT/source).read_text()
-    for cls in ast.parse(text).body:
-        if not isinstance(cls,ast.ClassDef):continue
-        for node in cls.body:
-            if not isinstance(node,ast.FunctionDef) or not node.name.startswith('test_'):continue
-            prop='FIN-VERIFY.I26' if cls.name=='SelectedListening' else 'FIN-ACOUSTIC.P1'
-            case=copy.deepcopy(templates[prop]);literal=ast.get_source_segment(text,node)
-            case.update(id=prop+'.contract_'+node.name.removeprefix('test_'),property_id=prop,
-                        polarity='negative' if node.name.endswith('negative') else 'positive',
-                        setup='Literal selected native projection/persistence or read-only media fixture in '+source+':'+node.name,
-                        observable=literal,red_expectation='The independently specified context, role, receipt, saved-response or media-route expectation fails.',
-                        green_expectation='The literal independent assertions hold through the named owner within the recorded controlled boundary.',
-                        test_id='unittest::tests.test_selected_acoustic.'+cls.name+'.'+node.name,
-                        command_id=command,source_path=source,state='implemented')
-            case['substitution']=dict(classification='EXTERNAL_BOUNDARY',owner_replaced='Only the auditory response or test-owned HTTP failure is constructed. Native blind projection, saved-response finalization and actual saved-file HTTP reader are real.',allowed_proof='Finite selection, correct-variant controls, no-redispatch recovery and file-read behavior. Browser activation is a separate actual case.',forbidden_claims=['Constructed judgments are actual hearing','Every pronunciation, voice or accent is confirmed','Rendered HTML proves user activation'])
-            graph['cases'].append(case)
+        dict(id=command,runner='python-unittest',argv=['python3','-B','-m','unittest','-v','tests.test_selected_acoustic','tests.test_selected_listening_recovery'],cwd='.',env={},timeout_seconds=120,authority='local')]
+    for source in ['tests/test_selected_acoustic.py','tests/test_selected_listening_recovery.py']:
+        text=(ROOT/source).read_text()
+        for cls in ast.parse(text).body:
+            if not isinstance(cls,ast.ClassDef):continue
+            for node in cls.body:
+                if not isinstance(node,ast.FunctionDef) or not node.name.startswith('test_'):continue
+                prop='FIN-ACOUSTIC.P1' if cls.name=='SelectedAcoustic' else 'FIN-VERIFY.I26'
+                case=copy.deepcopy(templates[prop]);literal=ast.get_source_segment(text,node)
+                case.update(id=prop+'.contract_'+node.name.removeprefix('test_'),property_id=prop,
+                            polarity='negative' if node.name.endswith('negative') else 'positive',
+                            setup='Literal selected native projection/persistence or read-only media fixture in '+source+':'+node.name,
+                            observable=literal,red_expectation='The independently specified context, role, receipt, saved-response or media-route expectation fails.',
+                            green_expectation='The literal independent assertions hold through the named owner within the recorded controlled boundary.',
+                            test_id='unittest::tests.'+Path(source).stem+'.'+cls.name+'.'+node.name,
+                            command_id=command,source_path=source,state='implemented')
+                case['substitution']=dict(classification='EXTERNAL_BOUNDARY',owner_replaced='Only the auditory response or test-owned HTTP failure is constructed. Native blind projection, saved-response finalization and actual saved-file HTTP reader are real.',allowed_proof='Finite selection, correct-variant controls, no-redispatch recovery and file-read behavior. Browser activation is a separate actual case.',forbidden_claims=['Constructed judgments are actual hearing','Every pronunciation, voice or accent is confirmed','Rendered HTML proves user activation'])
+                if cls.name=='SelectedListeningRecovery':
+                    case['substitution']=dict(classification='NO_TEST_DOUBLE',proof_claims=['Actual reader CLI and HTTP over test-owned missing/malformed files and saved real media; single admission, retry and independent-record recovery only.'],forbidden_claims=['Native HTTP requests prove pointer or keyboard activation','New auditory inference or universal acoustic correctness'])
+                graph['cases'].append(case)
     selected=[c for c in graph['cases'] if c['property_id'] in PROPS]
     for case in selected:
         case['state']='implemented';case.pop('blocker',None)

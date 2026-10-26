@@ -11,6 +11,7 @@ import unittest
 
 ROOT=Path(__file__).resolve().parents[1]
 DATA=ROOT/'data/iteration-26-acoustic-20261026'
+REVIEW=ROOT/'data/iteration-26-verification-20261026'
 sys.path.insert(0,str(ROOT/'services/speech'))
 from category_validation import compare_probe
 
@@ -81,7 +82,7 @@ class CompletionI26(unittest.TestCase):
         self.assertGreater(measured[1]['actual_semitone_windows'][-1],measured[1]['actual_semitone_windows'][0])
 
     def test_review_positive(self):
-        path=DATA/'browser-observations.json'
+        path=REVIEW/'browser-observations.json'
         if not path.exists():self.skipTest('Selected listening UI observations not yet retained.')
         facts=json.loads(path.read_text())
         if not facts.get('interaction',{}).get('activation_observed'):
