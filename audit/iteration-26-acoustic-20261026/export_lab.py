@@ -37,7 +37,7 @@ def main():
         shutil.copy2(ROOT/name,target)
     rows=json.loads((OUT/'gallery.json').read_text())
     retained=ROOT/json.loads((HERE/'selection.json').read_text())['retained_linking']
-    for name in ['withheld.json','readmitted-response.json','comparison.json']:
+    for name in ['withheld.json','response.json','comparison.json']:
         target=stage/'retained-linking'/name;target.parent.mkdir(parents=True,exist_ok=True)
         shutil.copy2(retained/name,target)
     for row in rows:
