@@ -48,3 +48,50 @@ they cannot convert temporary provider unavailability into full acceptance.
 No deployed/user stack was restarted or replaced. The disposable services are
 stopped, with DB/media and private local configuration retained for an explicit
 same-attempt feedback resume. The separate static viewer has no provider access.
+
+## Fresh verify
+
+The user requests verify and repair from0fcbca1. One required feedback-only retry
+adds exactly two503 observations and matching native records;29 hosted attempts
+now exist. The immutable answer, score, text/key, four synthesis calls and audio
+remain unchanged. Export/readback adds zero inference in local Lab experiment19.
+Original failure artifacts are retained in baseline/ and the first Lab export.
+
+Only the listening retry notice/progress owner changes in product code. Actual
+source-built UI and three literal native-JavaScript status tests prove the new
+positive/unavailable/pending branches. A labelled HTTP fixture replays the exact
+saved unavailable envelope to prove UI recovery without another provider call;
+a controlled transport503 proves safe authored guidance. Current desktop/narrow
+keyboard/navigation/reopen observations cover the changed state. All ten other
+routes, existing schemas, provider adapters, Go/scoring owners and typography
+styles are unchanged; their observed green behavior is retained. An unbounded-
+read suspicion is refuted by the existing270second proxy deadline and always
+reachable Refresh/navigation. No new runtime gate or retry loop is added.
+
+The nine-case temporary progress harness observation is retained, but the final
+three new status tests live in a separate file so the six old test literals and
+their source bindings remain untouched. The first query intersected that
+temporary edit and reported its stale source binding; the final restored source
+is byte-identical to its accepted revision. No hash refresh disguises it.
+An offline dependency-cache build failed; the normal Docker build used the
+unchanged lockfile and standard registry successfully, with no host install.
+The web build was invalidated by the actual JavaScript change. Go/vet and all
+unrelated native/provider/speech greens were not rerun.
+
+Final I29 selection expands to46 cases, with six actual verify observers and
+three new status cases. Its complete committed-clean observer run adds no model
+or native work and must still fail the two required full-flow positives while
+actual recommendations remain unavailable. The earlier edited video retains
+its pre-notice-repair scope; current pictures separately prove the repair.
+
+A subsequent source/HTTP sibling check demonstrates a returned result hidden by
+the follow-up result GET: the old page simultaneously says ready/unavailable and
+drops the supplied prose. The common listening load now presents a usable native
+write result immediately and skips that redundant result read, for submission
+and retry. Metadata refresh and ordinary read-only load keep their existing
+owners; absent scores still use the existing saved-result recovery. Actual CUA
+red/green uses an explicitly constructed complete HTTP reply and a failed GET,
+not a model reply or live recommendation. Reload restores actual native unavailable
+feedback. This second source change invalidates the intermediate web build; its
+final cached locked build and one new literal UI observer pass. No model, numeric
+scoring, source, speech or native interpretation behavior is repeated or changed.

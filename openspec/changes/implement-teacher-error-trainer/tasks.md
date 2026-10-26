@@ -1243,6 +1243,18 @@ unaccepted; I29.2/.3 stay open. Resume only feedback on the saved attempt, then
 invalidate its affected observations; do not regenerate or repeat green calls.
 See `audit/iteration-29-full-flow-20261026/REPORT.md` and `REUSE.md`.
 
+- [x] I29.V1 Repair the demonstrated optimistic feedback-retry notice through the existing listening status owner. Cover complete/unavailable/pending statuses, safe transport error/recovery, keyboard, desktop/narrow readability and same-result navigation, without extra inference for UI checks.
+- [x] I29.V2 Use the already returned saved result immediately through the common submission/retry listening load owner. Prove that a failed follow-up result read cannot hide it, retain the old contradictory UI state and label the constructed complete HTTP reply as UI-only; restore and retain actual native unavailable feedback afterward.
+
+Fresh I29 verify expands the selection to46 implemented cases. The necessary
+same-profile feedback-only retry adds two actual high-demand503 responses;
+all29 hosted receipts match, with no generation/scoring/synthesis repeated.
+The notice repair and sibling cases pass; actual recommendations still remain
+unavailable. I29.2/.3 remain open. Current verification, exact committed-clean
+result and preservation are in `VERIFY-REPORT.md` and `VERIFY-STATUS.json` under
+the same I29 audit directory. Earlier37-case results retain their historical
+scope and failures; the partial video is not full-flow acceptance.
+
 ### Iteration 30 — Main and download-and-run release
 
 Depends on 29 and the actual authorized destination; 23–28 apply only to

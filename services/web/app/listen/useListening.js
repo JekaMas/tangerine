@@ -2,7 +2,7 @@
 import {clientFetch as fetch} from '../clientRequest.js';
 import {requestError,userError} from '../requestError.js';
 import {useEffect, useRef, useState} from 'react';
-import {watchChecking} from './checkingProgress';
+import {watchChecking,feedbackReadyNotice} from './checkingProgress';
 
 // Own the listening session and HTTP transitions; rendering lives in page.js.
 export default function useListening() {
@@ -59,8 +59,11 @@ export default function useListening() {
     observer.current?.();
     observer.current = null;
   }
-  async function load(preserve = false) {
+  async function load(preserve = false, receivedResults = null) {
     const current = beginRead();
+    // A native write reply already contains its saved result. Present it now;
+    // metadata refresh must not hide it or require a second result read.
+    if (receivedResults?.score) setResults(receivedResults);
     try {
       const response = await fetch('/api/v1/attempts/' + attemptID.current, {cache: 'no-store'});
       if (!response.ok) throw userError('Saved attempt is unavailable. Your text is retained. Refresh to retry.');
@@ -77,7 +80,7 @@ export default function useListening() {
         showSubmitted(value);
         pending.current = null;
         const unavailable = 'Your answer is saved. Findings are temporarily unavailable. Refresh to retry.';
-        try {
+        if (!receivedResults?.score) try {
           const saved=await fetch(value.results_path,{cache:'no-store'});
           if(saved.ok){const result=await saved.json();if(current())setResults(result);}
           else if(current())setError(unavailable);
@@ -165,7 +168,7 @@ export default function useListening() {
       pending.current = null;
       stopChecking();
       if (!mounted.current) return;
-      await load();
+      await load(false, submit ? outcome : null);
       setNotice(submit ? 'Answer submitted and saved.' : 'Draft saved.');
       if(committed)setError(outcome.score!=null?'Your answer and score are saved. Comments are unavailable. Retry comments and recommendations.':'Your answer is saved. Checking failed. Retry checking after the service is available.');
     } catch (e) {
@@ -196,9 +199,9 @@ export default function useListening() {
       const response=await fetch('/api/v1/attempts/'+attemptID.current+action,{method:'POST',headers:{'Content-Type':'application/json','If-Match':revision.current,'Idempotency-Key':pending.current.key},body,signal:AbortSignal.any([writeController.current.signal,AbortSignal.timeout(310000)])});
       const value=await response.json();
       if(!response.ok&&value.attempt_id!==attemptID.current)throw userError(response.status===409?'Checking is already active or the saved state changed. Refresh saved state.':'Checking is unavailable. Your submitted answer is retained.');
-      pending.current=null;stopChecking();if(!mounted.current)return;await load();
+      pending.current=null;stopChecking();if(!mounted.current)return;await load(false,value);
       if(value.status==='evaluation_failed')setError('Your answer is saved. Checking failed. Retry checking after the service is available.');
-      else setNotice('Saved findings refreshed.');
+      else setNotice(feedbackReadyNotice(value));
     }catch(e){if(mounted.current)setError(requestError(e))}finally{stopChecking();writeController.current=null;if(mounted.current){setChecking(null);setBusy(false)}}
   }
   function editAnswer(text) {

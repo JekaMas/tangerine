@@ -55,6 +55,11 @@ ol{padding-left:24px}li{padding-left:4px;margin:16px 0}.score{font-size:36px;fon
 <details><summary>Inspect the saved text and mutation key</summary><p>This is an LLM-generated candidate key, not independently annotated linguistic gold.</p><ol>''' + turns + '''</ol><h2>The two intended mistakes</h2><ul>''' + units + '''</ul></details>
 <details><summary>Inspect the eleven actual routes</summary><p>Actual saved screenshots. Some show scrolled sections. Cleanup is a preview; saved exercise data were retained. The isolated Sources page shows its intentionally empty workspace.</p><div class="grid">''' + screens + '''</div></details>
 <p class="muted">Local evidence viewer. No account, external request, inference or synthesis occurs on this page.</p></main></html>'''
+    current = ROOT / 'data/iteration-29-verify-20261026/pictures/feedback-unavailable-390.png'
+    if current.exists():
+        shutil.copy2(current, pictures / 'verification-feedback-390.png')
+        update = '<section><h2>Verification update</h2><p>The retry notice now follows the actual feedback status. Scores, answers, playback and navigation stay available. The same Free service still returns high-demand errors; complete-flow acceptance remains open.</p><p>The video below records the earlier apply stage. This screenshot shows the repaired interface.</p><a href="pictures/verification-feedback-390.png"><img style="max-width:390px" alt="Current mobile result, saved60/100 and retry guidance" src="pictures/verification-feedback-390.png"></a></section>'
+        page = page.replace('<section><h2>Watch the observed flow</h2>', update + '<section><h2>Watch the observed flow</h2>')
     (SHARE / 'index.html').write_text(page)
     print('Static local viewer created; 11 route pictures, existing video/audio; zero new inference')
 

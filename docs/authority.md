@@ -1,3 +1,13 @@
+2026-10-26 iteration29 verify/repair: the user requires full selected conformance,
+root-cause/sibling repair, safe nonblocking error recovery and actual UI/UX,
+typography and media review through committed-clean iteration acceptance. Reuse
+valid greens; only invalidated or required missing observations may execute.
+The existing isolated saved exercise may retry feedback with the same confirmed
+Free profile; no paid credits, overage, fallback, deployment, postdeployment,
+PBT, financial execution, host installation or publication. Preserve user app3000,
+data/settings/media/tabs and canonical GAPS.md. A missing dependency stays
+explicit; no partial result or excluded benchmark becomes full acceptance.
+
 2026-10-26 iteration29: the actual user selects all eleven routes and the real
 complete flow with UI/UX, typography, pictures, video and audio evidence. Scoped
 implementation/repair, deterministic and disposable native/browser fixtures,

@@ -1,5 +1,11 @@
 import {clientFetch as fetch} from '../clientRequest.js';
 import {requestError} from '../requestError.js';
+
+// A saved numeric result is independent of the later feedback outcome.
+export function feedbackReadyNotice(result) {
+  return result.feedback_status === 'complete' ? 'Comments and recommendations are ready.' : '';
+}
+
 // Observe the existing foreground operation. Reads never start or retry work.
 export function watchChecking(id, onProgress, beginRead = () => () => true) {
   let active = true, timer, request;

@@ -8,10 +8,10 @@ from pathlib import Path
 import json
 import shutil
 import subprocess
+import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'data/iteration-29-full-flow-20261026'
-STAGE = OUT / 'lab-export'
 
 
 def call(args):
@@ -22,30 +22,40 @@ def call(args):
 
 
 def main():
-    if (OUT / 'lab-readback.json').exists():
+    verify = '--verify' in sys.argv
+    destination = ROOT / 'data/iteration-29-verify-20261026' if verify else OUT
+    stage = destination / 'lab-export'
+    if (destination / 'lab-readback.json').exists():
         raise SystemExit('Export already recorded; retain its readback')
-    STAGE.mkdir(exist_ok=True)
+    stage.mkdir(exist_ok=True)
     for folder in ['assets', 'attempts', 'keys', 'preparations', 'result-history', 'snapshots', 'pictures', 'share']:
-        shutil.copytree(OUT / folder, STAGE / folder, dirs_exist_ok=True)
+        shutil.copytree(OUT / folder, stage / folder, dirs_exist_ok=True)
     for name in ['call-reconciliation.json', 'dispatches.json', 'documents.json',
                  'answer-expectation.json', 'answer-expectation-original.json',
                  'browser-observations.json', 'requests.jsonl', 'typography-controls.json',
                  'media-receipt.json', 'audio-video-match.json', 'native-relationships.json',
                  'reopen-before.json', 'reopen-after.json', 'attachment-green.jsonl',
                  'extraction-red.jsonl', 'extraction-green.jsonl', 'extraction-detail-green.jsonl']:
-        shutil.copy2(OUT / name, STAGE / name)
+        shutil.copy2(OUT / name, stage / name)
     for name in ['services/api/internal/app/interpretation_claims.go',
                  'services/api/internal/app/interpretation_shape.go',
                  'services/api/internal/app/interpretation_relations.go',
                  'services/api/internal/app/extraction_repair_guidance_test.go',
+                 'services/web/app/listen/checkingProgress.js',
+                 'services/web/app/listen/useListening.js',
                  'specification/v2/prompts/extract-v1.txt',
                  'audit/iteration-29-full-flow-20261026/REVIEW.json']:
-        dest = STAGE / 'source' / name
+        dest = stage / 'source' / name
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / name, dest)
     container = 'tangerine-local-llm-lab-1'
-    call(['docker', 'exec', container, 'mkdir', '-p', '/tmp/tangerine-i29'])
-    call(['docker', 'cp', str(STAGE) + '/.', container + ':/tmp/tangerine-i29'])
+    remote = '/tmp/tangerine-i29-verify' if verify else '/tmp/tangerine-i29'
+    if verify:
+        shutil.copytree(destination / 'pictures', stage / 'verification/pictures', dirs_exist_ok=True)
+        for name in ['feedback-before.json', 'ui-observations.json', 'dispatch-delta.json', 'feedback-notice-green.log']:
+            shutil.copy2(destination / name, stage / 'verification' / name)
+    call(['docker', 'exec', container, 'mkdir', '-p', remote])
+    call(['docker', 'cp', str(stage) + '/.', container + ':' + remote])
     code = '''import json,pathlib
 from mlflow import MlflowClient
 c=MlflowClient(tracking_uri='http://127.0.0.1:5000')
@@ -68,10 +78,12 @@ def walk(path):
 walk('flow');c.set_terminated(r.info.run_id)
 print('TANGERINE_RESULT='+json.dumps({'experiment_id':eid,'run_id':r.info.run_id,'status':c.get_run(r.info.run_id).info.status,'readback':True,'checked_files':checked,'files':files,'export_inference_calls':0,'application_acceptance':'incomplete: recommendations unavailable'}))
 '''
+    if verify:
+        code = code.replace('/tmp/tangerine-i29', remote).replace('Tangerine I29 actual functional flow', 'Tangerine I29 verify and notice repair')
     raw = call(['docker', 'exec', container, 'python', '-c', code])
-    (OUT / 'lab-export.log').write_text(raw)
+    (destination / 'lab-export.log').write_text(raw)
     result = json.loads(next(x.split('=', 1)[1] for x in raw.splitlines() if x.startswith('TANGERINE_RESULT=')))
-    (OUT / 'lab-readback.json').write_text(json.dumps(result, indent=2) + '\n')
+    (destination / 'lab-readback.json').write_text(json.dumps(result, indent=2) + '\n')
     print({k: v for k, v in result.items() if k not in ['files', 'checked_files']})
 
 

@@ -27,12 +27,22 @@ class Handler(BaseHTTPRequestHandler):
     STAMP=path.stat().st_mtime_ns;CONTROL=json.loads(path.read_text())
    name=CONTROL.get('name','initial');key=self.command+' '+self.path.split('?')[0]
    display_fixture=CONTROL.get('display_fixture')
+   response_fixture=CONTROL.get('response_fixture')
+   saved_feedback=response_fixture in ['saved_feedback_unavailable','constructed_feedback_complete'] and key=='POST /api/v1/attempts/8db4a113-d8b6-430c-9bb1-eaec2fc19ff5:retry-feedback'
    remaining=CONTROL.get('failures',{}).get(key,0);fail=remaining!=0
    if remaining>0:CONTROL['failures'][key]=remaining-1
    model_write=self.command=='POST' and (self.path.endswith(('candidates:generate',':submit',':retry',':retry-feedback',':render',':resume',':run',':reconsider','/measurements')))
-   forbidden=model_write and not CONTROL.get('allow_model_calls',False)
+   forbidden=model_write and not CONTROL.get('allow_model_calls',False) and not saved_feedback
   started=time.time()
-  if forbidden:status,raw,headers=403,b'{"error":"test_owned_model_dispatch_disabled"}',{'Content-Type':'application/json'}
+  if saved_feedback:
+   # UI retry-notice regression only: replay the exact actual saved native
+   # unavailable-result envelope. No native write or model reply is simulated.
+   status,raw,headers=200,(DATA/'attempts/8db4a113-d8b6-430c-9bb1-eaec2fc19ff5-result.json').read_bytes(),{'Content-Type':'application/json'}
+   if response_fixture=='constructed_feedback_complete':
+    value=json.loads(raw);value['feedback_status']='complete';value['retry_operation']=None
+    value['feedback']={'items':[{'kind':'recommendation','status':'final','text':'Constructed UI fixture: practise make a plan and make it fun.'}],'origin':'constructed_ui_transport_fixture'}
+    raw=json.dumps(value).encode()
+  elif forbidden:status,raw,headers=403,b'{"error":"test_owned_model_dispatch_disabled"}',{'Content-Type':'application/json'}
   elif fail:status,raw,headers=503,b'{"error":"private backend canary; test-owned dependency unavailable"}',{'Content-Type':'application/json'}
   else:
    upstream=http.client.HTTPConnection('127.0.0.1',int(STACK['web_port']),timeout=280)
@@ -54,7 +64,7 @@ class Handler(BaseHTTPRequestHandler):
    if k.lower() not in ['connection','transfer-encoding','content-length','content-encoding']:self.send_header(k,v)
   self.send_header('Content-Length',str(len(raw)));self.end_headers();self.wfile.write(raw)
   if self.path.startswith('/api/'):
-   event={'scenario':name,'method':self.command,'path':self.path,'status':status,'forbidden':forbidden,'controlled_display_fixture':display_fixture,'started_at_unix':started,'finished_at_unix':time.time()}
+   event={'scenario':name,'method':self.command,'path':self.path,'status':status,'forbidden':forbidden,'controlled_display_fixture':display_fixture,'controlled_response_fixture':response_fixture,'started_at_unix':started,'finished_at_unix':time.time()}
    content_type=next((v for k,v in headers.items() if k.lower()=='content-type'),'')
    if content_type.startswith('application/json'):
     try:event['response']=json.loads(raw)

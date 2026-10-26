@@ -158,6 +158,16 @@ the page; only an explicit Load more action appends. Loading, failure and an
 actually empty successful list remain distinguishable. Navigation and existing
 saved work do not require another model response.
 
+A completed numeric score does not imply completed comments/recommendations.
+Retry completion notices use the saved feedback status: pending or unavailable
+feedback retains the score, listening and navigation without a success notice.
+Read/retry transport errors use authored guidance, retaining saved work and the
+explicit retry action; backend exception strings never become displayed prose.
+When submission/retry already returns its saved score/result envelope, listening
+uses that trusted result immediately. A later metadata refresh cannot require a
+second result read before displaying it. Refresh still reads saved results when
+no usable result has already been received.
+
 Saved audio reports Audio saved when an assembled recording is available. Ready
 to assemble describes completed pieces without that recording, never a completed
 recording. These are presentation states of accepted saved data, not revalidation

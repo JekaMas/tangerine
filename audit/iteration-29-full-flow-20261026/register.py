@@ -9,6 +9,8 @@ ROOT = Path(__file__).resolve().parents[2]
 CHANGE = ROOT / 'openspec/changes/implement-teacher-error-trainer'
 PROPS = ['FIN-FLOW.P1', 'FIN-VERIFY.I29']
 SOURCE = 'tests/test_completion_i29.py'
+VERIFY_SOURCE = 'tests/test_completion_i29_verify.py'
+NOTICE_SOURCE = 'tests/test_feedback_notice.py'
 DATA = 'data/iteration-29-full-flow-20261026/'
 DEPS = [
     'services/api/internal/app/interpretation_claims.go',
@@ -26,6 +28,8 @@ DEPS = [
     'audit/iteration-29-full-flow-20261026/REVIEW.json',
     'audit/iteration-29-full-flow-20261026/REUSE.md',
     'audit/iteration-29-full-flow-20261026/observe.py',
+    'services/web/app/listen/checkingProgress.js',
+    'services/web/app/listen/useListening.js', VERIFY_SOURCE, NOTICE_SOURCE,
 ]
 DEPS += [DATA + name for name in [
     'browser-observations.json', 'requests.jsonl', 'typography-controls.json',
@@ -44,6 +48,13 @@ DEPS += [DATA + name for name in [
     'media-receipt.json', 'audio-video-match.json', 'gallery-observation.json',
     'share/exercise.wav', 'share/tangerine-observed-flow.mp4', 'lab-readback.json',
 ]]
+DEPS += ['data/iteration-29-verify-20261026/' + name for name in [
+    'feedback-before.json', 'ui-observations.json', 'dispatch-delta.json',
+    'ui-dispatches-before.json', 'ui-dispatches-after.json',
+    'lab-readback.json', 'feedback-notice-green.log',
+    'reply-red.json', 'reply-green.json', 'reply-restored-native.json',
+    'reply-retention-green.log',
+]]
 
 
 def main():
@@ -53,12 +64,15 @@ def main():
     templates = {p: copy.deepcopy(next(c for c in old if c['property_id'] == p)) for p in PROPS}
     bymethod = {c['test_id'].split('.')[-1]: c for c in old}
     graph['cases'] = [c for c in graph['cases'] if c['property_id'] not in PROPS]
-    source = (ROOT / SOURCE).read_text()
-    sha = hashlib.sha256(source.encode()).hexdigest()
     review_names = {'test_review_positive', 'test_ux_omission_negative', 'test_typography_omission_negative',
                     'test_evidence_mismatch_negative', 'test_layout_positive', 'test_keyboard_positive',
-                    'test_actionable_caption_positive'}
-    for node in ast.walk(ast.parse(source)):
+                    'test_actionable_caption_positive', 'test_current_layout_keyboard_positive'}
+    for source_path, classname in [(SOURCE, 'tests.test_completion_i29.CompletionI29'),
+                                   (VERIFY_SOURCE, 'tests.test_completion_i29_verify.CompletionI29Verify'),
+                                   (NOTICE_SOURCE, 'tests.test_feedback_notice.FeedbackNotice')]:
+      source = (ROOT / source_path).read_text()
+      sha = hashlib.sha256(source.encode()).hexdigest()
+      for node in ast.walk(ast.parse(source)):
         if not isinstance(node, ast.FunctionDef) or not node.name.startswith('test_'):
             continue
         name = node.name
@@ -66,9 +80,9 @@ def main():
         case = copy.deepcopy(bymethod.get(name, templates[prop]))
         case.update(
             id=bymethod[name]['id'] if name in bymethod else prop + '.' + name.removeprefix('test_'),
-            property_id=prop, source_path=SOURCE, source_sha256=sha,
+            property_id=prop, source_path=source_path, source_sha256=sha,
             state='implemented', command_id='completion-i29',
-            test_id='unittest::tests.test_completion_i29.CompletionI29.' + name,
+            test_id='unittest::' + classname + '.' + name,
             polarity='negative' if name.endswith('negative') else 'positive',
             setup='Observe actual isolated native/CUA/provider/storage/media executions using the exact independent literal assertions below. The partial developer answer and report/reference rows are explicitly constructed. This observer makes no new native/browser/provider calls.',
             observable=ast.get_source_segment(source, node),
@@ -77,7 +91,7 @@ def main():
             invalidation_dependencies=DEPS)
         case['substitution'] = dict(
             classification='EXTERNAL_BOUNDARY',
-            owner_replaced='Only isolated DB/media/configuration, constructed partial answer/reference rows and labelled HTTP read faults/presentation projection. Gemini replies, local Kokoro synthesis, native interpretation/scoring/storage and source-built UI are actual owners.',
+            owner_replaced='Only isolated DB/media/configuration, constructed partial answer/reference rows and labelled HTTP read faults/UI reply projections. A constructed complete HTTP reply proves UI retention only; native feedback remains unavailable. Gemini replies, local Kokoro synthesis and native interpretation/scoring/storage in the actual flow are never replaced.',
             allowed_proof='The exact finite observed functional run and inspected interface. Original failures, repair iterations and missing recommendations remain explicit. Observer/export/reopen work adds zero inference.',
             forbidden_claims=[
                 'A polished video or readable partial result closes the failed required recommendation stage',
@@ -85,6 +99,7 @@ def main():
                 'Constructed developer answers/reports are real learner populations or empirical coverage',
                 'Local selected voices establish universal accent/pronunciation quality',
                 'Controlled HTTP/presentation faults are spontaneous native failures',
+                'A constructed complete HTTP UI reply is successful live recommendations',
                 'Metadata alone establishes visual quality or successful file/media delivery',
                 'Paid use, bulk/performance campaign, publication or deployment'])
         case.pop('blocker', None)
@@ -94,7 +109,8 @@ def main():
             p['source_globs'] = list(dict.fromkeys(p.get('source_globs', []) + DEPS))
     for command in graph['commands']:
         if command['id'] == 'completion-i29':
-            command.update(argv=['python3', '-B', '-m', 'unittest', '-v', 'tests.test_completion_i29'],
+            command.update(argv=['python3', '-B', '-m', 'unittest', '-v', 'tests.test_completion_i29',
+                                 'tests.test_completion_i29_verify', 'tests.test_feedback_notice'],
                            cwd='.', env={}, timeout_seconds=120, runner='python-unittest')
     path.write_text(json.dumps(graph, indent=2, ensure_ascii=False) + '\n')
     selected = [c for c in graph['cases'] if c['property_id'] in PROPS]
@@ -122,6 +138,7 @@ def main():
                  outcome='No semantic-index evidence claimed.', results=[]),
             dict(kind='jetbrains-index', status='not_applicable', query='Exact named Go/React sources; no symbol refactoring.',
                  reason='No PSI operation is needed for this bounded repair.', outcome='No IDE/index evidence claimed.', results=[])]))
+    discovery['reviews'][-1]['rationale'] += ' Fresh verify repairs an optimistic feedback retry notice and stops a follow-up result read from hiding an already returned result, through the existing listening controller/status owners. Current1280/390/320, safe transport-error/recovery, keyboard and saved navigation observations add zero inference. The constructed complete HTTP reply is UI-only; native recommendations remain unavailable. One necessary same-profile feedback retry received two503s; all29 hosted receipts remain matched and successful recommendations remain missing.'
     path.write_text(json.dumps(discovery, indent=2, ensure_ascii=False) + '\n')
     print('Registered', len(selected), 'implemented I29 cases; required full-flow positives remain unaccepted')
 
