@@ -30,8 +30,9 @@ Inspected evidence includes completed-result-1280.jpg, completed-result-320.jpg,
 keyboard-320.jpg, draft-320.jpg and uncertain-390.jpg. The original unchanged
 presentation/maximum/unavailable receipts retain their stated narrower scope.
 
-**Evidence: pass for the observed scope; final committed-clean reconciliation
-is recorded in ACCEPTANCE.json after the source commit.** Existing native
+**Evidence: pass.** Committed-clean acceptance passes60/60 exact cases and
+60 distinct physical identities on source `abfef7674f24921106a95248f2ad73e325e51da3`.
+ACCEPTANCE.json joins that receipt, source, manifest and observations. Existing native
 attempt/results and25.875-second WAV are reused read-only. Current actual media
 traces stop at16.220/16.237s after rapid replacement/queued pause. Ordinary UI
 Replay9.590–14.839 pauses15.089s, with normal browser-event granularity; second
@@ -49,8 +50,9 @@ owner was reobserved and which native/presentation observations remain valid.
 REVIEW.json names actual artifacts and self-review limits.
 
 Focused owner and current-browser cases passed. Final source build, strict
-OpenSpec, structural graph/discovery/compatibility, stable format and exact
-committed-clean acceptance are reconciled in ACCEPTANCE.json. Source/runtime
+OpenSpec1.13.1 (zero issues), structural graph/discovery/compatibility and stable
+format passed. All five committed-clean commands exited0 with every selected
+case observed passing. Exact identities and scopes are in ACCEPTANCE.json. Source/runtime
 and assertion identities are captured once in SOURCE.json; no raw-schema archive
 or runtime consistency check is introduced.
 
@@ -71,4 +73,6 @@ unresolved in-scope finding remains after the recorded repairs.
 
 Evidence: `data/iteration-20-verification-20261026/` (ignored), with retained
 native/presentation receipts in `data/iteration-20-results-replay-20261026/`.
-Only the owned local test tab/gateway/container are cleaned up at completion.
+Owned tab17, gateway3357 and the isolated frontend container are removed; the
+viewport is restored and user app3000 returns HTTP200. No user data or settings
+were changed.

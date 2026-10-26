@@ -57,6 +57,11 @@ viewport is restored and the existing app3000 returns HTTP200. SOURCE.json
 captures stable runtime/assertion/image inputs once; protected native/data
 scopes remain unchanged except the explicit prose clarification.
 
-Next: commit this review/repair source and run the complete60-case committed-
-clean acceptance once. Then record exact observed identities, mark I20.5
-complete and make the acceptance-only commit, preserving the receipt boundary.
+Committed-clean acceptance passed60/60 selected cases and60 distinct physical
+identities across five commands on source `abfef7674f24921106a95248f2ad73e325e51da3`.
+Each selected case identity equals the observed command identity; all outcomes
+are pass and no command has extra/missing tests. The manifest and receipt match.
+ACCEPTANCE.json records exact cases/fingerprints, source, retained proof and
+boundaries. I20.5 is complete. This final acceptance-only commit changes no
+runtime, assertion, fixture or manifest input; no behavior rerun is invalidated.
+No in-scope finding or additional product decision remains.
