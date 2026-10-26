@@ -6,15 +6,19 @@ export function createPassageReplay(audio) {
     if (range && audio.currentTime >= range.end) { cancel(); audio.pause(); }
   };
   const seek = () => {
-    if (expectedSeek != null && Math.abs(audio.currentTime - expectedSeek) < .05) { expectedSeek = null; return; }
+    if (expectedSeek != null && Math.abs(audio.currentTime - expectedSeek) < .05) return;
     cancel();
   };
+  const seeked = () => { if (!audio.seeking) expectedSeek = null; };
   const play = () => { if (!range?.starting) cancel(); };
+  const pause = () => { if (audio.paused) cancel(); };
+  const ended = () => { if (audio.ended) cancel(); };
   audio.addEventListener('timeupdate', time);
   audio.addEventListener('seeking', seek);
+  audio.addEventListener('seeked', seeked);
   audio.addEventListener('play', play);
-  audio.addEventListener('pause', cancel);
-  audio.addEventListener('ended', cancel);
+  audio.addEventListener('pause', pause);
+  audio.addEventListener('ended', ended);
   audio.addEventListener('error', cancel);
   return {
     async replay(interval) {
@@ -30,7 +34,7 @@ export function createPassageReplay(audio) {
     cancel,
     dispose() {
       cancel();
-      for (const [event, listener] of [['timeupdate',time],['seeking',seek],['play',play],['pause',cancel],['ended',cancel],['error',cancel]]) audio.removeEventListener(event,listener);
+      for (const [event, listener] of [['timeupdate',time],['seeking',seek],['seeked',seeked],['play',play],['pause',pause],['ended',ended],['error',cancel]]) audio.removeEventListener(event,listener);
     },
   };
 }

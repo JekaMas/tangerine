@@ -25,6 +25,13 @@ export default function useListening() {
   const sequence = useRef(0);
   const page = useRef('');
   const attemptID = useRef('');
+  const readVersion = useRef(0);
+
+  // Manual refresh, foreground readback and progress share one delivery owner.
+  function beginRead() {
+    const version = ++readVersion.current;
+    return () => mounted.current && version === readVersion.current;
+  }
 
   function showDraft(text, locale) {
     draft.current = {answer: text, language: locale, dirty: false};
@@ -46,32 +53,40 @@ export default function useListening() {
       showSubmitted(value);
       if (saved) setResults(saved);
       setChecking(old => old && ({...old, stage: saved?.checking_stage || (old.stage === 'saving' ? 'not_started' : old.stage)}));
-    });
+    }, beginRead);
   }
   function stopChecking() {
     observer.current?.();
     observer.current = null;
   }
   async function load(preserve = false) {
-    const response = await fetch('/api/v1/attempts/' + attemptID.current, {cache: 'no-store'});
-    if (!response.ok) throw userError('Saved attempt is unavailable. Your text is retained. Refresh to retry.');
-    const value = await response.json();
-    revision.current = response.headers.get('etag');
-    audioHash.current = response.headers.get('x-tangerine-audio-sha256');
-    answerHash.current=response.headers.get('x-tangerine-answer-sha256');
-    configurationHash.current=response.headers.get('x-tangerine-configuration-sha256');
-    setAttempt(value);
-    if (value.submitted_at != null) {
-      // The submitted display always comes from the durable record. Local intent
-      // survives separately and can never masquerade as the immutable submission.
-      showSubmitted(value);
-      pending.current = null;
-      const saved=await fetch(value.results_path,{cache:'no-store'});
-      if(saved.ok){setResults(await saved.json());}else{setError('Your answer is saved. Findings are temporarily unavailable. Refresh to retry.');}
-    } else if (!preserve || !draft.current.dirty) {
-      showDraft(value.answer_text, value.requested_language);
-    }
-    return value;
+    const current = beginRead();
+    try {
+      const response = await fetch('/api/v1/attempts/' + attemptID.current, {cache: 'no-store'});
+      if (!response.ok) throw userError('Saved attempt is unavailable. Your text is retained. Refresh to retry.');
+      const value = await response.json();
+      if (!current()) return null;
+      revision.current = response.headers.get('etag');
+      audioHash.current = response.headers.get('x-tangerine-audio-sha256');
+      answerHash.current=response.headers.get('x-tangerine-answer-sha256');
+      configurationHash.current=response.headers.get('x-tangerine-configuration-sha256');
+      setAttempt(value);
+      if (value.submitted_at != null) {
+        // The submitted display always comes from the durable record. Local intent
+        // survives separately and can never masquerade as the immutable submission.
+        showSubmitted(value);
+        pending.current = null;
+        const unavailable = 'Your answer is saved. Findings are temporarily unavailable. Refresh to retry.';
+        try {
+          const saved=await fetch(value.results_path,{cache:'no-store'});
+          if(saved.ok){const result=await saved.json();if(current())setResults(result);}
+          else if(current())setError(unavailable);
+        } catch (failure) { if(current())setError(requestError(failure,unavailable)); }
+      } else if (!preserve || !draft.current.dirty) {
+        showDraft(value.answer_text, value.requested_language);
+      }
+      return current() ? value : null;
+    } catch (failure) { if(current())throw failure; return null; }
   }
   useEffect(() => {
     mounted.current = true;
@@ -109,13 +124,14 @@ export default function useListening() {
       finally { if (active) setBusy(false); }
     }
     open();
-    return () => { active = false; mounted.current = false; stopChecking(); writeController.current?.abort(); };
+    return () => { active = false; mounted.current = false; readVersion.current++; stopChecking(); writeController.current?.abort(); };
   }, []);
 
   async function refresh() {
     setError('');
     try {
-      await load(true);
+      const value = await load(true);
+      if (!value) return;
       setAudioRevision(n => n + 1);
       setNotice(draft.current.dirty ? 'Saved state refreshed. Your unsaved text is retained.' : 'Saved state refreshed.');
     } catch (e) { setError(requestError(e)); }
@@ -125,6 +141,7 @@ export default function useListening() {
       setError('Answers can contain up to 20,000 characters. Your text is retained.'); return;
     }
     draft.current.dirty = true;
+    readVersion.current++;
     setBusy(true); setError(''); setNotice('');
     const body = JSON.stringify({answer_text: answer, requested_language: language});
     const action = submit ? ':submit' : '/answer';
@@ -157,6 +174,7 @@ export default function useListening() {
       if (submit) {
         try {
           const saved = await load(true);
+          if (!saved) return;
           if (saved.submitted_at != null) {
             setNotice('Answer submitted and saved.');
             setError('Checking was interrupted. Your saved answer and any completed findings are retained. Refresh saved state, then explicitly resume if needed.');
@@ -167,6 +185,7 @@ export default function useListening() {
     finally { stopChecking(); writeController.current = null; if (mounted.current) { setChecking(null); setBusy(false); } }
   }
   async function retryChecking(){
+    readVersion.current++;
     setBusy(true);setError('');setNotice('');
     const body=JSON.stringify({answer_sha256:answerHash.current,configuration_sha256:configurationHash.current});
     const signature='retry|'+revision.current+'|'+body;
@@ -205,5 +224,5 @@ export default function useListening() {
   }
   return {attempt, answer, language, recovered, results, error, notice, busy, checking, audioRevision, retryChecking,
     canRefresh: !!attemptID.current, refresh, write, editAnswer, editLanguage, playback,
-    audioError: () => setError('Saved audio is temporarily unavailable. Your answer is retained. Refresh saved state to retry playback.')};
+    audioError: failure => setError(requestError(failure,'Saved audio is temporarily unavailable. Your answer is retained. Refresh saved state to retry playback.'))};
 }

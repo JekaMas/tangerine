@@ -17,7 +17,7 @@ export default function Listen() {
   }, []);
   async function replay(interval) {
     try { await player.current?.replay(interval); }
-    catch { audioError(); }
+    catch (failure) { audioError(failure); }
   }
   return <main id="main-content">
 

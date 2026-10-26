@@ -35,6 +35,15 @@ UI. This specification edit does not update application copies or runtime code.
 
 ## Replay one stored passage — iteration 20
 
+Refresh, checking progress and the final read after Save/Submit share delivery
+ownership for the listening session. An older response cannot replace a newer
+accepted result, restore an editable draft after submission or replace current
+recovery guidance. Starting a write supersedes outstanding pre-write reads.
+Keep saved results and local unsaved text available during read failure; retry
+transient reads through the existing transport owner and show authored guidance
+only when the read cannot recover. These rules do not add a data-validation gate
+or automatically replay a write or an LLM operation.
+
 For an available saved interval `[start_ms,end_ms]`, label minutes/seconds
 readably and expose a keyboard-operable **Replay passage** action. Activation
 seeks the existing audio element to `start_ms / 1000`, plays the range and pauses
@@ -45,6 +54,11 @@ download a separate clip merely to replay it.
 Starting another range replaces the previous range. A manual seek, ordinary
 full-recording Play, pause or navigation cancels the old range-stop listener so it cannot
 later pause unrelated playback. Normal full-recording controls remain available.
+Queued events from a previous action must not cancel a newer passage: repeated
+seeking events for its own latest seek retain its end stop, and pause/ended
+events reflect the current media state before cancelling. After that seek has
+settled, a manual seek still cancels the range. Disposing the player removes
+all listeners, including seek completion.
 Read, reload, expanding findings and changing result views do not autoplay.
 Each recurring occurrence uses its own saved interval on the same recording;
 the grouped scoring unit is still counted once.

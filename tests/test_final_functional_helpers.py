@@ -19,8 +19,10 @@ class FinalFunctionalHelpers(unittest.TestCase):
   const defaults=JSON.parse(fs.readFileSync('data/final-functional-ux-20261025/lab-defaults.json','utf8'));
   class Media extends EventTarget {
    constructor(){super();this.position=0;this.pauses=0;this.plays=0;this.playing=false;this.fail=false;}
-   set currentTime(v){this.position=v;this.dispatchEvent(new Event('seeking'));}
+   set currentTime(v){this.position=v;this.seeking=true;this.dispatchEvent(new Event('seeking'));this.seeking=false;this.dispatchEvent(new Event('seeked'));}
    get currentTime(){return this.position;}
+   get paused(){return !this.playing;}
+   get ended(){return false;}
    async play(){if(this.fail)throw Error('Unavailable');this.plays++;if(!this.playing){this.playing=true;this.dispatchEvent(new Event('play'));}}
    pause(){this.pauses++;this.playing=false;this.dispatchEvent(new Event('pause'));}
    tick(v){this.position=v;this.dispatchEvent(new Event('timeupdate'));}
