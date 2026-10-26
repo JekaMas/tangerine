@@ -90,7 +90,7 @@ class AzureComparison(unittest.TestCase):
  def test_cli_failure_capture_negative(self):
   with tempfile.TemporaryDirectory() as tmp,patch.dict(os.environ,{'AZURE_SPEECH_KEY':'constructed-private-key'}),patch.object(backends,'transport',side_effect=ValueError('PROVIDER_QUOTA')):
    out=Path(tmp)/'out';resource=Path(tmp)/'resource.json';resource.write_text(json.dumps({'location':'eastus','sku':{'name':'F0'},'origin':'constructed metadata'}))
-   with patch.object(sys,'argv',['compare','--out',str(out),'--resource',str(resource)]),self.assertRaisesRegex(ValueError,'PROVIDER_QUOTA'):comparison.main()
+   with patch.object(sys,'argv',['compare','--out',str(out),'--resource',str(resource)]):self.assertEqual(1,comparison.main())
    dispatches=json.loads((out/'dispatches.json').read_text());self.assertEqual(1,len(dispatches));self.assertEqual('PROVIDER_QUOTA',dispatches[0]['error']);self.assertNotIn('raw_response_base64',dispatches[0]);self.assertFalse((out/'result.json').exists());self.assertEqual([],list(out.glob('azure-*.wav')))
  def test_player_unavailable_positive(self):
   with tempfile.TemporaryDirectory() as tmp:

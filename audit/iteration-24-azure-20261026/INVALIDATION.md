@@ -39,3 +39,18 @@ helper. Its bytes are unchanged; new tests and a fresh checkout no longer depend
 on an ignored prior-run file. Source loading/helper dependencies and the live
 oracle path changed, so the I24 selection is reobserved after this final fixture
 binding. The unchanged waiting-view layout observations remain valid.
+
+Verification follow-up at75801c2 changes comparison retry/cancellation, incremental
+variant finalization, safe HTTP status metadata and media recovery UI. The full
+I24 closure is invalidated and expanded; retain the old18-case receipt with its
+old boundary. The six hosted/SSML siblings do not exercise changed HTTP-error or
+comparison recovery inputs and remain valid. No LLM, prompt, scoring, local
+voice, Go/web product owner or original data scope changed.
+
+Browser layouts were observed before the saved-media retry script change; their
+HTML/style/font inputs are unchanged and remain valid. The new media-error and
+automatic-recovery observations were collected after that script repair. Browser
+clicks also failed on a plain native-form probe; do not substitute DOM reads or
+navigation/reload for activation proof. Authentication, actual F0 access and full
+audio/interaction review remain blocked. See VERIFY.md for the preserved test
+isolation failure and exact root-cause/sibling dispositions.

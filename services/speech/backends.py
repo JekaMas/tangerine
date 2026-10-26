@@ -46,7 +46,13 @@ def transport(url,body,headers,timeout):
  try:
   with opener.open(request,timeout=timeout) as response:return response.read(),response.status
  except urllib.error.HTTPError as e:
-  raise ValueError('PROVIDER_QUOTA' if e.code==429 else 'PROVIDER_FAILED') from None
+  error=ValueError('PROVIDER_QUOTA' if e.code==429 else 'PROVIDER_FAILED')
+  # Preserve nonsecret retry facts for the calling workflow; never expose the
+  # provider's reason/body or retry a credential failure as an outage.
+  error.http_status=e.code
+  try:error.retry_after=max(0,float(e.headers.get('Retry-After')))
+  except (TypeError,ValueError,AttributeError):error.retry_after=None
+  raise error from None
 
 def kokoro(profile,turn):
  invocation_id=str(uuid.uuid4());invocation_started=time.time()

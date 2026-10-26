@@ -43,16 +43,24 @@ docker run --rm --env-file .env \
 ```
 
 This command makes up to eight necessary requests: four turns per variant. It
-does not try another provider or purchase quota. A failed request stops the
-command. Completed native responses and WAV pieces remain saved. Resume using
+does not try another provider or purchase quota. Temporary connection/timeout and selected HTTP failures retry up to three
+attempts within the existing 270-second deadline. A rate-limit response retries
+only when the provider gives a usable Retry-After; unknown allowance, credential,
+unsupported or invalid-audio failures stop without blind retries. Failures are
+logged with safe type/status facts; the CLI prints authored recovery guidance
+instead of a traceback. Completed native responses and WAV pieces remain saved. Resume using
 the same command and output directory: the frozen `plan.json` is reused, saved
 WAVs are trusted, and a saved accepted response can restore a missing WAV without
 another provider call. A changed voice/resource/target plan belongs in a new
 output directory. This is ordinary persistence, with no repeated stored-data
 consistency audit.
 
-The native request journal retains the exact SSML, nonsecret endpoint, response
-and failure observations; it records only whether the credential header was
+Each complete variant is assembled immediately, so a failure in the second
+variant does not hide the first recording. The private state.json records
+rendering, retrying, paused or complete progress for the read-only player.
+
+The native request journal retains each attempt’s exact SSML, nonsecret endpoint,
+response and safe failure observations; it records only whether the credential header was
 present. The key value is not recorded. The journal and native responses remain
 in ignored data. Assembly preserves turn order and adds the original 300 ms gap
 after each turn, including the final turn.
@@ -67,6 +75,18 @@ the existing comparison servers. Listen to both complete recordings, inspect
 each selected target and retain actual playback/target observations. The accent,
 voice and IPA labels describe requests; they do not prove what the audio contains.
 Do not use the constructed `controlled/` PCM fixtures as Azure voice evidence.
+A saved-media fetch failure logs a redacted diagnostic and retries that WAV once
+before showing human recovery. This never triggers synthesis. Failed media can
+recover through Refresh after the dependency returns.
+
+Stopping the comparison with Ctrl+C retains accepted responses/pieces and records
+paused progress with an authored resume message. It returns130 without a
+traceback. The player remains read-only throughout rendering, retry and pause.
+Actual live browser-facts.json must also contain target_observations for u1–u4:
+turn_id, speaker_id, word, reference_file=azure-clean.wav,
+mutated_file=azure-mistakes.wav, outcome (realized, partly_realized, not_realized
+or uncertain) and actual observation text. This records honest target results;
+it does not require all requested mutations to be reported successful.
 
 ## Exact completion selection
 

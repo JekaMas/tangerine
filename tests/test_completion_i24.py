@@ -4,6 +4,11 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 ROOT=Path(__file__).resolve().parents[1];DATA=ROOT/'data/iteration-24-azure-20261026'
 SOURCE='9dbf8c95-51a3-4c0f-9395-b3a77a824d22'
+def target_errors(rows):
+ expected={('u1','s1','choices'),('u2','s2','companies'),('u3','s1','another'),('u4','s2','Collision')}
+ if len(rows)!=4 or {(r.get('turn_id'),r.get('speaker_id'),r.get('word')) for r in rows}!=expected:return ['target observations missing or mismatched']
+ if any(r.get('reference_file')!='azure-clean.wav' or r.get('mutated_file')!='azure-mistakes.wav' or r.get('outcome') not in ['realized','partly_realized','not_realized','uncertain'] or not r.get('observation','').strip() for r in rows):return ['target observations missing or mismatched']
+ return []
 def review_errors(packet):
  errors=[]
  for field in ['ui_ux','typography','evidence']:
@@ -12,6 +17,7 @@ def review_errors(packet):
  if packet.get('requested_benchmark_calls',0):errors.append('excluded performance campaign')
  if packet.get('reference_origin')!='independently authored literal expectations':errors.append('reference origin')
  if packet.get('claims_full_completion') and packet.get('missing_inputs'):errors.append('missing evidence claimed green')
+ if packet.get('claims_full_completion'):errors.extend(target_errors(packet.get('target_observations',[])))
  return errors
 def packet():return dict(source_preparation=SOURCE,reference_origin='independently authored literal expectations',requested_benchmark_calls=0,claims_full_completion=False,missing_inputs=['Microsoft passkey; actual F0 resource/key/region and recordings'],ui_ux=dict(observations='Actual waiting view inspected; interactions and real playback incomplete.'),typography=dict(observations='Actual loaded Source Sans3,17px body and24.65px line height at1280/390/320, no overflow.'),evidence=dict(observations='Native controlled compilation/policy/resume; actual Azure synthesis not performed.'))
 
@@ -41,6 +47,7 @@ class CompletionI24(unittest.TestCase):
   self.assertEqual([],review_errors(packet()))
   if not (DATA/'live/result.json').exists():self.skipTest('No actual Azure pair/player playback to verify; only waiting-state visual observations are available.')
   facts=json.loads((DATA/'live/browser-facts.json').read_text());self.assertTrue(facts['playback_observed']);self.assertEqual(SOURCE,facts['source_preparation'])
+  self.assertEqual([],target_errors(facts['target_observations']))
  def test_ux_omission_negative(self):
   p=packet();p.pop('ui_ux');self.assertIn('ui_ux omitted',review_errors(p))
  def test_typography_omission_negative(self):
@@ -48,5 +55,9 @@ class CompletionI24(unittest.TestCase):
  def test_evidence_mismatch_negative(self):
   for change,error in [({'source_preparation':'wrong'},'source mismatch'),({'claims_full_completion':True},'missing evidence claimed green'),({'requested_benchmark_calls':50},'excluded performance campaign'),({'reference_origin':'candidate-generated'},'reference origin')]:
    p=packet();p.update(change);self.assertIn(error,review_errors(p))
+  rows=[dict(turn_id=u,speaker_id=s,word=w,reference_file='azure-clean.wav',mutated_file='azure-mistakes.wav',outcome='uncertain',observation='Constructed review fixture; no Azure audio claim.') for u,s,w in [('u1','s1','choices'),('u2','s2','companies'),('u3','s1','another'),('u4','s2','Collision')]]
+  self.assertEqual([],target_errors(rows))
+  for invalid in [rows[:3],[{**r,'word':'wrong'} if r['turn_id']=='u1' else r for r in rows],[{**r,'observation':''} for r in rows],[{**r,'reference_file':'another-exercise.wav'} for r in rows]]:
+   self.assertEqual(['target observations missing or mismatched'],target_errors(invalid))
 
 if __name__=='__main__':unittest.main(verbosity=2)

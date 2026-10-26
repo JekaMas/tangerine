@@ -6885,7 +6885,19 @@
       "unittest::tests.test_azure_comparison.AzureComparison.test_cli_context_capture_positive",
       "unittest::tests.test_azure_comparison.AzureComparison.test_cli_failure_capture_negative",
       "unittest::tests.test_azure_comparison.AzureComparison.test_player_unavailable_positive",
-      "unittest::tests.test_azure_comparison.AzureComparison.test_player_private_routes_negative"
+      "unittest::tests.test_azure_comparison.AzureComparison.test_player_private_routes_negative",
+      "unittest::tests.test_azure_recovery.AzureRecovery.test_transport_failure_metadata_positive",
+      "unittest::tests.test_azure_recovery.AzureRecovery.test_transient_retry_positive",
+      "unittest::tests.test_azure_recovery.AzureRecovery.test_known_rate_limit_recovery_positive",
+      "unittest::tests.test_azure_recovery.AzureRecovery.test_terminal_failures_negative",
+      "unittest::tests.test_azure_recovery.AzureRecovery.test_retry_deadline_negative",
+      "unittest::tests.test_azure_recovery.AzureRecovery.test_completed_variant_survives_failure_positive",
+      "unittest::tests.test_azure_recovery.AzureRecovery.test_cli_exhaustion_is_human_negative",
+      "unittest::tests.test_azure_recovery.AzureRecovery.test_player_progress_positive",
+      "unittest::tests.test_azure_player_observations.AzurePlayerObservations.test_player_media_retry_positive",
+      "unittest::tests.test_azure_player_observations.AzurePlayerObservations.test_player_persistent_media_failure_negative",
+      "unittest::tests.test_azure_player_observations.AzurePlayerObservations.test_player_controlled_layout_positive",
+      "unittest::tests.test_azure_recovery.AzureRecovery.test_cli_cancel_retains_progress_negative"
     ]
   },
   "reviews": [
@@ -28006,10 +28018,22 @@
         "unittest::tests.test_azure_comparison.AzureComparison.test_cli_context_capture_positive",
         "unittest::tests.test_azure_comparison.AzureComparison.test_cli_failure_capture_negative",
         "unittest::tests.test_azure_comparison.AzureComparison.test_player_unavailable_positive",
-        "unittest::tests.test_azure_comparison.AzureComparison.test_player_private_routes_negative"
+        "unittest::tests.test_azure_comparison.AzureComparison.test_player_private_routes_negative",
+        "unittest::tests.test_azure_recovery.AzureRecovery.test_transport_failure_metadata_positive",
+        "unittest::tests.test_azure_recovery.AzureRecovery.test_transient_retry_positive",
+        "unittest::tests.test_azure_recovery.AzureRecovery.test_known_rate_limit_recovery_positive",
+        "unittest::tests.test_azure_recovery.AzureRecovery.test_terminal_failures_negative",
+        "unittest::tests.test_azure_recovery.AzureRecovery.test_retry_deadline_negative",
+        "unittest::tests.test_azure_recovery.AzureRecovery.test_completed_variant_survives_failure_positive",
+        "unittest::tests.test_azure_recovery.AzureRecovery.test_cli_exhaustion_is_human_negative",
+        "unittest::tests.test_azure_recovery.AzureRecovery.test_cli_cancel_retains_progress_negative",
+        "unittest::tests.test_azure_recovery.AzureRecovery.test_player_progress_positive",
+        "unittest::tests.test_azure_player_observations.AzurePlayerObservations.test_player_media_retry_positive",
+        "unittest::tests.test_azure_player_observations.AzurePlayerObservations.test_player_persistent_media_failure_negative",
+        "unittest::tests.test_azure_player_observations.AzurePlayerObservations.test_player_controlled_layout_positive"
       ],
       "disposition": "current_change",
-      "rationale": "Native text fragments incorrectly became sentences; red/green mixed-content repair through existing ssml. Materialized frozen/resumable comparison, literal guards and private player. Actual Microsoft passkey and F0 resource/key/region remain external blockers; positive live/media cases skip rather than pass.",
+      "rationale": "Native text fragments incorrectly became sentences; red/green mixed-content repair through existing ssml. Verify additionally reproduced missing transient recovery, tracebacks, delayed complete-variant publication and misleading missing-audio guidance; repaired their existing comparison/transport/player owners with controlled negative cases. Actual Microsoft passkey and F0 resource/key/region remain external blockers; positive live/media cases skip rather than pass.",
       "searches": [
         {
           "kind": "exact",
@@ -28043,6 +28067,26 @@
               "reason": "Known owner, frozen source or literal evidence dependency."
             },
             {
+              "path": "tests/test_azure_recovery.py",
+              "classification": "interface_dependency",
+              "reason": "Known owner, frozen source or literal evidence dependency."
+            },
+            {
+              "path": "tests/test_azure_player_observations.py",
+              "classification": "interface_dependency",
+              "reason": "Known owner, frozen source or literal evidence dependency."
+            },
+            {
+              "path": "audit/iteration-24-azure-20261026/browser-observations.json",
+              "classification": "interface_dependency",
+              "reason": "Known owner, frozen source or literal evidence dependency."
+            },
+            {
+              "path": "audit/iteration-24-azure-20261026/media-http-observations.json",
+              "classification": "interface_dependency",
+              "reason": "Known owner, frozen source or literal evidence dependency."
+            },
+            {
               "path": "tests/test_completion_i24.py",
               "classification": "interface_dependency",
               "reason": "Known owner, frozen source or literal evidence dependency."
@@ -28056,10 +28100,10 @@
         },
         {
           "kind": "semantic",
-          "status": "not_applicable",
-          "query": "Exact ssml/hosted/render and comparison source paths supplied by the prior comparison and selected property.",
-          "reason": "Known ownership is resolved through exact source/native evidence; no index creation required.",
-          "outcome": "No semantic-index proof claimed.",
+          "status": "unavailable",
+          "query": "How do Azure speech synthesis errors propagate from native transport through retries, saved preparation and human readable recovery messages?",
+          "reason": "jbcontext search reports no index for this exact checkout; retained native semantic-search.log. No index creation or semantic proof claimed.",
+          "outcome": "Exact tracing located native transport, comparison retry/finalization, speechPublicFailure and authored frontend failureReason/preparationResponse. Native plain-form probe also failed to activate; product click/keyboard acceptance remains unobserved.",
           "results": []
         },
         {

@@ -1086,13 +1086,18 @@ Depends on 17 and actual authorized Microsoft/F0 access. Properties:
 - [ ] I24.3 Verify playback, target observations, comparison UI/typography and exact evidence; keep missing access explicit, reconcile and commit.
 
 - [ ] I24.R1 Preserve original text/punctuation across phoneme/prosody/pause operations without adding sentence boundaries; materialize exact target, request/context, piece-resume and private-player counterexamples, then finish the actual F0 pair and playback proof when protected access is available.
+- [ ] I24.R2 Retain safe native HTTP failure facts, log and retry temporary comparison failures within the existing deadline, stop repeated credential/unsupported/unknown-allowance failures, retain pieces and show authored recovery instead of tracebacks or backend messages.
+- [ ] I24.R3 Make each complete comparison variant available immediately, retain progress/failure guidance across Refresh and verify waiting/partial/retry/complete/player-error states through the real read-only player without new synthesis.
 
 I24 in progress: `audit/iteration-24-azure-20261026/REPORT.md`. SSML fragment
 repair and the frozen/resumable comparison are implemented with controlled
-positive/negative tests. Actual Microsoft passkey confirmation and an observed
+positive/negative tests. Verify repairs and root-cause/sibling dispositions are
+in `audit/iteration-24-azure-20261026/VERIFY.md`: bounded safe recovery,
+cancellation, immediate complete-variant availability, authored media recovery
+and target-specific evidence. Actual Microsoft passkey confirmation and an observed
 F0 resource/key/region remain unavailable; no Azure recordings are claimed.
 The selected DAG explicitly skips actual synthesis/full-player acceptance.
-I24.1–I24.3/R1 remain unchecked; no iteration acceptance is issued.
+I24.1–I24.3/R1–R3 remain unchecked; no iteration acceptance is issued.
 
 ### Iteration 25 — Complete local Qwen comparison pair
 

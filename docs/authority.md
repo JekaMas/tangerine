@@ -256,3 +256,13 @@ financial execution, installation, publication or bulk/performance campaign.
 Routine existing Microsoft sign-in is in scope; passkey/user-protected steps and
 new terms/access grants require their actual user action/confirmation. Preserve
 app3000, all user settings/data/media/tabs and canonical GAPS.md.
+
+2026-10-26 iteration24 verify/repair: the actual user requests full I24
+conformance, root-cause/sibling repairs, safe logged retries and human recovery,
+UI/UX and typography review through committed-clean evidence. Scoped comparison,
+shared speech failure metadata, tests/DAG and local commits are authorized.
+Retain unaffected greens. No deployment/postdeployment, PBT, financial execution,
+paid credits/overage, trial, billing linkage, installation or publication.
+The existing Microsoft protected sign-in and actual F0 access remain prerequisites
+for real Azure observations, not product approval gates. Preserve the user's
+running services, data, settings, media, browser tabs and canonical GAPS.md edit.

@@ -1,5 +1,10 @@
 # Iteration 24 — Azure F0 speech comparison
 
+The follow-up verification/repair is in [VERIFY.md](VERIFY.md). It supersedes the
+apply-stage implementation/evidence inventory below; the original observations
+and their proof limits are retained. STATUS.json records the latest source and
+full selection. I24 remains incomplete.
+
 **Incomplete: actual Azure access is blocked at Microsoft passkey confirmation.**
 No actual Azure recordings were generated, and no full playback/acoustic claim
 is accepted. The source baseline was clean
