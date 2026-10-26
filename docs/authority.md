@@ -1,3 +1,14 @@
+2026-10-26 iteration28: the actual user selects saved-data empirical reports and
+coverage with zero new model calls. Scoped report/presentation/persistence,
+literal arithmetic/population/coverage tests, existing native/Lab evidence
+inspection, actual local browser/typography review and local commits are in
+scope. The user subsequently selected installed Chrome for local UI checks.
+All observations are saved or constructed; no provider inference/synthesis,
+paid credits/overage, installation, deployment, PBT, acquisition, financial
+execution or publication. Preserve app3000, user settings/data/media/tabs and
+canonical GAPS.md. Missing genuine populations remain unknown, without a new
+runtime qualification gate.
+
 2026-10-26 iteration27 verify: actual user requests full conformance review and
 in-scope repair, sibling/root-cause investigation, UI/UX/typography review and
 local commits. Preserve independent use; log causes, reuse bounded safe read

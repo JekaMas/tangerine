@@ -26,6 +26,34 @@ Fractions retain unreduced numerator/denominator plus a reduced exact pair, or n
 
 attempts contains explicit observation records `{id,participant_id,origin,case_version_id,unit_id,scoring_policy_version,first_exposure,success,followup_of,score_percent}`. success is boolean/null. Only declared genuine_teacher observations with a known participant, supported success and one first exposure per participant enter difficulty. Model/constructed rows, repeat exposures and missing outcomes stay excluded with reasons. A report cannot mix case/key/policy/unit populations. Wilson95% uses z=1.959963984540054 and the existing minimum100observations/bands; crossing bands or insufficient samples remain unrated. Paired same-participant/key/policy follow-up success change is descriptive; it is no causal recommendation-effectiveness estimate. Supplied origin is retained evidence, not independently certified human participation. Machine-generated tests never become genuine participants. Applicable full42native score results remain in fixed-answer experiment row artifacts; the22Lab diagnostics do not replace them.
 
+## Saved-data continuation (iteration28)
+
+The Reports view shows the selected release, member/view, split, annotator,
+window, modality, taxonomy, crosswalk, label origin and available L1/level/task.
+It displays exact reduced fractions together with their original numerator and
+denominator, inspected category/window/token counts and unmapped/excluded data.
+Native labels, mapped categories, observed relationships and reference/prediction
+confusion have distinct readable sections; the original saved JSON remains
+available. Unknown observations are never displayed as measured zero.
+
+Source frequencies and relationships describe their selected annotation stratum.
+Learner difficulty uses the separately declared eligible first-answer population;
+paired follow-up is descriptive and never a causal recommendation-effect estimate.
+An observation cannot be its own before/after pair. Such a link contributes no
+pair; it does not block the rest of the report. Constructed/model observations and
+unknown participant/outcome rows retain their exclusion reasons. Supplied genuine
+origin labels are not independently certified human participation.
+
+The ordinary saved-report link `/reports?report=<id>#empirical-result` reopens the
+existing immutable snapshot through the current read owner. Selecting or saving
+a report updates that URL to the delivered saved ID, so reload retains the current
+selection. Explicit fragment navigation focuses the report after delivery. No recalculation,
+source reacquisition, stored-data audit, inference or speech is performed by
+selection, Refresh, reopen or download. Saved planned quality datasets retain
+all122coverage rows and their original polarity counts; planned/failed/cancelled
+rows are never counted as completed observations. Existing experiment Run remains
+an explicit separate operation outside iteration28's zero-call verification.
+
 ## Portable frozen experiments
 
 POST /v1/lab/experiments accepts `{experiment,assets,development,development_run_id?}`. experiment obeys llm-experiment.schema.json; assets maps portable aliases to exact JSON bodies. Already private asset/document IDs may be used instead. GET /v1/lab/defaults supplies the current complete nonsecret configuration, complete nine-binding bundle and122leaf IDs for constructing a submission. Dataset/case/expectation/judge contracts are llm-quality-dataset, llm-quality-case, llm-quality-expectations and llm-quality-judge-policy. Optional context_asset_id/context_sha256 supplies exact upstream stage context separately from the unchanged stage DTO. This is useful for saved feedback/adjudication stages.

@@ -64,7 +64,7 @@ func DifficultyReport(rows []Attempt) (Difficulty, error) {
 		}
 		if a.Before != nil {
 			b, ok := byID[*a.Before]
-			if ok && b.Origin == "genuine_teacher" && b.Actor == a.Actor && b.Case == a.Case && b.Policy == a.Policy && a.Success != nil && b.Success != nil {
+			if ok && b.ID != a.ID && b.Origin == "genuine_teacher" && b.Actor == a.Actor && b.Case == a.Case && b.Policy == a.Policy && a.Success != nil && b.Success != nil {
 				paired++
 				if *a.Success {
 					change++

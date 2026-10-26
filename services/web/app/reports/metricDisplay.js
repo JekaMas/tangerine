@@ -5,6 +5,9 @@ const unavailable={
   native_token_exposure_unknown:'Token count unavailable',
   no_error_events:'No mistakes observed',
   zero_denominator:'No eligible observations',
+  no_inspected_denominator:'No eligible observations',
+  pair_annotation_scope_not_declared:'Pair not annotated',
+  no_genuine_paired_followup:'No eligible paired follow-up',
 };
 export function metricDisplay(metric) {
   if(metric?.missing_reason)return unavailable[metric.missing_reason]||'Not available';
