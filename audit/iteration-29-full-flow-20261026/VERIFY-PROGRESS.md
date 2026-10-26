@@ -136,3 +136,7 @@ query and then the single stable committed-clean run are recorded separately.
 Next: finish preservation/review record, commit the stable source, execute the
 full57-case clean selection, record its exact verdict and commit that record.
 No additional model call, product decision, paid resource or release action.
+
+## Accepted
+
+The single stable committed-clean I29 run passes57/57, zero fail/skip/missing, on6fa76e0a5a34876028fe4ea6f4e9e9a69e788d64. Canonical I29.2/.3 are closed. Strict OpenSpec/DAG/discovery and native/build/UI/media/Lab/preservation results retain their stated scopes. The final record commit changes only closure metadata; no re-execution of unchanged green behavior, inference, deployment or release follows.

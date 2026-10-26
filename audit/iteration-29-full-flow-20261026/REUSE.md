@@ -149,3 +149,5 @@ the acceptance receipt. Structural OpenSpec/DAG/discovery results are separate;
 no selected failure is waived, no unexecuted case is called passed, and no new
 commit or evidence-record edit alone requires repeating unchanged green behavior.
 I30/publication/deployment/PBT/financial execution remains outside this operation.
+
+Final committed-clean receipt accepts all57cases at6fa76e0a5a34876028fe4ea6f4e9e9a69e788d64. The following closure-record commit changes no behavior, test, fixture or expectation. Its new Git identity invalidates no accepted behavioral receipt; exact accepted source remains named.

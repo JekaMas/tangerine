@@ -1224,8 +1224,8 @@ have their actual required evidence; unrelated missing ones remain explicit.
 Conditional dependency edges to 23–28 are recorded in completion-iterations.json.
 
 - [x] I29.1 Materialize current-route/state and real-flow expectations, including independently calculated results for the actual generated saved key and misleading/old/substituted-media counterexamples.
-- [ ] I29.2 Inspect all eleven routes at desktop/narrow widths with appropriate empty/populated/error/recovery/keyboard states; record actual generation→audio→answer→checking→results→recommendations→reopen with pictures, video and stored audio.
-- [ ] I29.3 Review typography and evidence contents, disclose cuts/constructed answers/uncertainty, repair authorized findings, reconcile retained and invalidated cases, then commit the verified result.
+- [x] I29.2 Inspect all eleven routes at desktop/narrow widths with appropriate empty/populated/error/recovery/keyboard states; record actual generation→audio→answer→checking→results→recommendations→reopen with pictures, video and stored audio.
+- [x] I29.3 Review typography and evidence contents, disclose cuts/constructed answers/uncertainty, repair authorized findings, reconcile retained and invalidated cases, then commit the verified result.
 
 Historical I29 apply checkpoint (superseded by the complete verification below): actual source-built Chrome observations cover all eleven
 routes at desktop/narrow widths, controlled read-error/recovery, keyboard,
@@ -1269,6 +1269,8 @@ now contains57 literal I29 cases. Current media, source/transport/UI repairs,
 Lab20 readback and the exact stable committed-clean verdict are recorded in
 `audit/iteration-29-full-flow-20261026/VERIFY-REPORT.md` and `VERIFY-STATUS.json`.
 The implementation observations do not by themselves replace that clean gate.
+
+I29 final acceptance: **57/57 passed** at committed-clean `6fa76e0a5a34876028fe4ea6f4e9e9a69e788d64` (`VERIFY-STATUS.json`). No failures, skips, missing cases or substituted live recommendations. All eleven routes retain their exact observed scope, and the selected actual complete flow includes saved LLM comments/practice. This closure changes records only; iteration30 remains separate.
 
 ### Iteration 30 — Main and download-and-run release
 

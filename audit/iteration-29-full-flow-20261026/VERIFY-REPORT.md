@@ -1,9 +1,11 @@
 # Iteration 29 verification and repair
 
-The complete selected functional flow is now observed, including actual LLM
-comments and recommendations. Committed-clean acceptance is recorded in
-VERIFY-STATUS.json after the final selection run. Earlier incomplete37/46-case
-receipts remain retained; they are not relabelled successful.
+**Verdict: accepted —57/57 required cases passed** on committed-clean
+`6fa76e0a5a34876028fe4ea6f4e9e9a69e788d64`. There are no failed, skipped or missing I29 cases.
+The exact receipt and full case identities are in VERIFY-STATUS.json. The
+complete selected flow includes actual saved LLM comments and recommendations.
+Earlier incomplete37/46-case receipts remain retained and are not relabelled
+successful.
 
 Worktree: /Users/jekamas/projects/0xatelerix/_worktrees/tangerine_iteration16_20261021,
 branch tangerine/iteration-16-release. Verify starts at0fcbca1; c46d720 repairs the
@@ -25,6 +27,7 @@ observations, not an independent reviewer or model-generated linguistic gold.
 | A usable write result disappeared when a redundant result GET failed | Existing listening controller uses the already returned result immediately for submission/retry | CUA HTTP red/green, explicitly labelled constructed UI reply, failed GET counterexample and restored actual native state; this fixture never proves live recommendations |
 | Docker Ollama requests received403 | Existing local provider transport uses localhost as HTTP Host for the known ollama alias, retaining its configured TCP/URL target | Actual metadata403/200 probes; real local inference through that alias; controlled alias positive and unchanged loopback/generic llm-local virtual-host negatives; final provider unit/race suite |
 | Correct answer coordinates were rejected because a duplicate quote omitted curly double quotes | Existing source-span normalization projects the exact submitted slice when only double quotation marks differ at valid explicit coordinates | Actual raw local reply and source-built retry; four literal positives, six negatives for words/negation/apostrophes/ranges/ambiguity;81 extraction/interpretation/span siblings pass with race |
+| The evidence viewer used an oversized full-page poster | Existing viewer producer keeps video at16:9 and uses the encoded intro card | Actual oversized counterexample and corrected browser dimensions/playback retained |
 | Practice-example line breaks collapsed into one paragraph | Shared Results presentation preserves lines in feedback and reference rationales through scoped pre-wrap text | Retained old screenshot/native multiline text and current1280/390/320 screens; exact native text remains unchanged; no HTML parser or model call |
 
 The source-span projection never guesses a location, changes a substantive word,
@@ -142,3 +145,5 @@ configuration/data/media/tabs and canonical GAPS.md are untouched. Only owned
 test services are replaced/stopped, preserving their DB/media for inspection.
 The static evidence viewer has no account/provider access. No publishing, PR,
 main merge or iteration30 release acceptance is implied.
+
+Final receipt: `data/iteration-29-saved-case-flow-20261026/committed-clean.json`, all57passed, Git clean, candidate6fa76e0. Lab20/run`e324400ee8184a97b68630ad2abc0a05` readback succeeds. The final closure commit updates only audit/task records; no production code, tests, fixtures, expected output or selected behavior changes, so accepted greens are retained without replay.
