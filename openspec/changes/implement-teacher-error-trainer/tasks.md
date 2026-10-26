@@ -1085,6 +1085,15 @@ Depends on 17 and actual authorized Microsoft/F0 access. Properties:
 - [ ] I24.2 Complete both recordings with actual F0 key/region, saved speaker/target plan and native SSML/output; no trial, S0, payment linkage or paid fallback.
 - [ ] I24.3 Verify playback, target observations, comparison UI/typography and exact evidence; keep missing access explicit, reconcile and commit.
 
+- [ ] I24.R1 Preserve original text/punctuation across phoneme/prosody/pause operations without adding sentence boundaries; materialize exact target, request/context, piece-resume and private-player counterexamples, then finish the actual F0 pair and playback proof when protected access is available.
+
+I24 in progress: `audit/iteration-24-azure-20261026/REPORT.md`. SSML fragment
+repair and the frozen/resumable comparison are implemented with controlled
+positive/negative tests. Actual Microsoft passkey confirmation and an observed
+F0 resource/key/region remain unavailable; no Azure recordings are claimed.
+The selected DAG explicitly skips actual synthesis/full-player acceptance.
+I24.1–I24.3/R1 remain unchecked; no iteration acceptance is issued.
+
 ### Iteration 25 — Complete local Qwen comparison pair
 
 Depends on 17 and a usable local runtime. Properties: `FIN-QWEN.P1`,

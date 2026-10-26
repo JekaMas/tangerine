@@ -5875,7 +5875,6 @@
       "unittest::tests.test_completion_i20.CompletionI20.test_autoplay_negative",
       "unittest::tests.test_completion_i20.CompletionI20.test_audio_failure_negative",
       "unittest::tests.test_completion_i24.CompletionI24.test_azure_positive",
-      "unittest::tests.test_completion_i24.CompletionI24.test_azure_negative",
       "unittest::tests.test_completion_i25.CompletionI25.test_qwen_positive",
       "unittest::tests.test_completion_i25.CompletionI25.test_qwen_negative",
       "unittest::tests.test_completion_i26.CompletionI26.test_acoustic_positive",
@@ -6873,7 +6872,20 @@
       "unittest::tests.test_gemini_recovery_evidence.GeminiRecoveryEvidence.test_browser_privacy_negative",
       "unittest::tests.test_gemini_recovery_evidence.GeminiRecoveryEvidence.test_browser_resume_positive",
       "unittest::tests.test_gemini_recovery_evidence.GeminiRecoveryEvidence.test_browser_reopen_positive",
-      "unittest::tests.test_gemini_recovery_evidence.GeminiRecoveryEvidence.test_layouts_positive"
+      "unittest::tests.test_gemini_recovery_evidence.GeminiRecoveryEvidence.test_layouts_positive",
+      "unittest::tests.test_azure_comparison.AzureComparison.test_non_f0_overage_negative",
+      "unittest::tests.test_azure_comparison.AzureComparison.test_ssml_continuity_negative",
+      "unittest::tests.test_azure_comparison.AzureComparison.test_ssml_targets_positive",
+      "unittest::tests.test_azure_comparison.AzureComparison.test_text_prosody_pause_siblings_positive",
+      "unittest::tests.test_azure_comparison.AzureComparison.test_missing_key_negative",
+      "unittest::tests.test_azure_comparison.AzureComparison.test_resource_tier_is_preserved_negative",
+      "unittest::tests.test_azure_comparison.AzureComparison.test_pair_native_transport_positive",
+      "unittest::tests.test_azure_comparison.AzureComparison.test_resume_reuses_pieces_positive",
+      "unittest::tests.test_azure_comparison.AzureComparison.test_saved_response_recovery_positive",
+      "unittest::tests.test_azure_comparison.AzureComparison.test_cli_context_capture_positive",
+      "unittest::tests.test_azure_comparison.AzureComparison.test_cli_failure_capture_negative",
+      "unittest::tests.test_azure_comparison.AzureComparison.test_player_unavailable_positive",
+      "unittest::tests.test_azure_comparison.AzureComparison.test_player_private_routes_negative"
     ]
   },
   "reviews": [
@@ -25099,7 +25111,6 @@
         "unittest::tests.test_completion_i20.CompletionI20.test_autoplay_negative",
         "unittest::tests.test_completion_i20.CompletionI20.test_audio_failure_negative",
         "unittest::tests.test_completion_i24.CompletionI24.test_azure_positive",
-        "unittest::tests.test_completion_i24.CompletionI24.test_azure_negative",
         "unittest::tests.test_completion_i25.CompletionI25.test_qwen_positive",
         "unittest::tests.test_completion_i25.CompletionI25.test_qwen_negative",
         "unittest::tests.test_completion_i26.CompletionI26.test_acoustic_positive",
@@ -25208,7 +25219,8 @@
         "unittest::tests.test_completion_i23.CompletionI23.test_typography_omission_negative",
         "unittest::tests.test_completion_i23.CompletionI23.test_evidence_mismatch_negative",
         "unittest::tests.test_completion_i23.CompletionI23.test_attribution_positive",
-        "unittest::tests.test_completion_i23.CompletionI23.test_unparsed_negative"
+        "unittest::tests.test_completion_i23.CompletionI23.test_unparsed_negative",
+        "unittest::tests.test_azure_comparison.AzureComparison.test_non_f0_overage_negative"
       ],
       "searches": [
         {
@@ -27965,6 +27977,97 @@
           "query": "Known Go/JS owners with no symbol refactoring.",
           "reason": "Exact source and native/browser observation answer the selected question.",
           "outcome": "No IDE/PSI evidence claimed.",
+          "results": []
+        }
+      ]
+    },
+    {
+      "id": "iteration24-azure-20261026",
+      "question": "Complete the original four-turn Azure F0 reference/mutated comparison, preserve target/speaker/SSML provenance, and exclude paid/trial/fallback.",
+      "property_ids": [
+        "FIN-AZURE.P1",
+        "FIN-VERIFY.I24"
+      ],
+      "test_ids": [
+        "unittest::tests.test_completion_i24.CompletionI24.test_azure_positive",
+        "unittest::tests.test_azure_comparison.AzureComparison.test_non_f0_overage_negative",
+        "unittest::tests.test_completion_i24.CompletionI24.test_review_positive",
+        "unittest::tests.test_completion_i24.CompletionI24.test_ux_omission_negative",
+        "unittest::tests.test_completion_i24.CompletionI24.test_typography_omission_negative",
+        "unittest::tests.test_completion_i24.CompletionI24.test_evidence_mismatch_negative",
+        "unittest::tests.test_azure_comparison.AzureComparison.test_ssml_continuity_negative",
+        "unittest::tests.test_azure_comparison.AzureComparison.test_ssml_targets_positive",
+        "unittest::tests.test_azure_comparison.AzureComparison.test_text_prosody_pause_siblings_positive",
+        "unittest::tests.test_azure_comparison.AzureComparison.test_missing_key_negative",
+        "unittest::tests.test_azure_comparison.AzureComparison.test_resource_tier_is_preserved_negative",
+        "unittest::tests.test_azure_comparison.AzureComparison.test_pair_native_transport_positive",
+        "unittest::tests.test_azure_comparison.AzureComparison.test_resume_reuses_pieces_positive",
+        "unittest::tests.test_azure_comparison.AzureComparison.test_saved_response_recovery_positive",
+        "unittest::tests.test_azure_comparison.AzureComparison.test_cli_context_capture_positive",
+        "unittest::tests.test_azure_comparison.AzureComparison.test_cli_failure_capture_negative",
+        "unittest::tests.test_azure_comparison.AzureComparison.test_player_unavailable_positive",
+        "unittest::tests.test_azure_comparison.AzureComparison.test_player_private_routes_negative"
+      ],
+      "disposition": "current_change",
+      "rationale": "Native text fragments incorrectly became sentences; red/green mixed-content repair through existing ssml. Materialized frozen/resumable comparison, literal guards and private player. Actual Microsoft passkey and F0 resource/key/region remain external blockers; positive live/media cases skip rather than pass.",
+      "searches": [
+        {
+          "kind": "exact",
+          "status": "completed",
+          "query": "Trace original speech-comparison REPORT/shared-material/serve, backends ssml/hosted/render/billing, acoustic hosted contracts and account configuration metadata without secret values.",
+          "outcome": "Original four turns and target IPA retained; native compiler, request capture, piece finalizer and existing F0 guards located. Microsoft sign-in handoff observed; no key/resource configured.",
+          "results": [
+            {
+              "path": "services/speech/backends.py",
+              "classification": "interface_dependency",
+              "reason": "Known owner, frozen source or literal evidence dependency."
+            },
+            {
+              "path": "audit/iteration-24-azure-20261026/compare.py",
+              "classification": "interface_dependency",
+              "reason": "Known owner, frozen source or literal evidence dependency."
+            },
+            {
+              "path": "audit/iteration-24-azure-20261026/player.py",
+              "classification": "interface_dependency",
+              "reason": "Known owner, frozen source or literal evidence dependency."
+            },
+            {
+              "path": "audit/iteration-24-azure-20261026/run_contracts.py",
+              "classification": "interface_dependency",
+              "reason": "Known owner, frozen source or literal evidence dependency."
+            },
+            {
+              "path": "tests/test_azure_comparison.py",
+              "classification": "interface_dependency",
+              "reason": "Known owner, frozen source or literal evidence dependency."
+            },
+            {
+              "path": "tests/test_completion_i24.py",
+              "classification": "interface_dependency",
+              "reason": "Known owner, frozen source or literal evidence dependency."
+            },
+            {
+              "path": "audit/iteration-24-azure-20261026/material.json",
+              "classification": "interface_dependency",
+              "reason": "Known owner, frozen source or literal evidence dependency."
+            }
+          ]
+        },
+        {
+          "kind": "semantic",
+          "status": "not_applicable",
+          "query": "Exact ssml/hosted/render and comparison source paths supplied by the prior comparison and selected property.",
+          "reason": "Known ownership is resolved through exact source/native evidence; no index creation required.",
+          "outcome": "No semantic-index proof claimed.",
+          "results": []
+        },
+        {
+          "kind": "jetbrains-index",
+          "status": "not_applicable",
+          "query": "Small known Python compiler/helper change with no symbol refactor.",
+          "reason": "Direct native and source observations answer this increment; no PSI operation needed.",
+          "outcome": "No IDE/index proof claimed.",
           "results": []
         }
       ]

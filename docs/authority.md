@@ -246,3 +246,13 @@ Retain valid native/model/Lab observations; controlled errors must not exhaust
 real quota. No purchased credits, overage, paid fallback, deployment/postdeployment,
 PBT, financial execution, installation or publication. Preserve app3000, all user
 data/settings/media/tabs and canonical GAPS.md. No new runtime approval gate.
+
+2026-10-26 iteration24: the actual user selects complete Azure F0 comparison.
+Scoped compiler/comparison/test/DAG repairs, actual UI/typography/evidence review
+and local commits are authorized. Reuse the saved common dialogue/target plan;
+actual synthesis requires an observed F0 resource/key/region. No S0, paid trial,
+payment linkage, purchased credits, overage, paid fallback, deployment, PBT,
+financial execution, installation, publication or bulk/performance campaign.
+Routine existing Microsoft sign-in is in scope; passkey/user-protected steps and
+new terms/access grants require their actual user action/confirmation. Preserve
+app3000, all user settings/data/media/tabs and canonical GAPS.md.

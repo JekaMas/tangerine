@@ -21,7 +21,10 @@ def ssml(turn):
  voice=ET.SubElement(root,'voice',{'name':turn['voice_id']})
  for op in turn['operations']:
   if op['kind']=='text':
-   child=ET.SubElement(voice,'s');child.text=op['text']
+   # Text operations are fragments around acoustic controls, not sentences.
+   # Preserve mixed content and let the original punctuation carry boundaries.
+   if len(voice):voice[-1].tail=(voice[-1].tail or '')+op['text']
+   else:voice.text=(voice.text or '')+op['text']
   elif op['kind']=='phoneme':ET.SubElement(voice,'phoneme',{'alphabet':'ipa','ph':op['ipa']}).text=op['text']
   elif op['kind']=='pause':ET.SubElement(voice,'break',{'time':str(op['duration_ms'])+'ms'})
   elif op['kind']=='prosody':
