@@ -23,3 +23,47 @@ The authorized 2026-10-09 increment has real native downloads and sent owner req
 Product relevance and action-specific dependency scope are owned by ../product-data-relevance.md. Full scopes/member/native-field accounting remain exact. Missing access/bindings prevent only selected source use/semantic normalization or the corresponding completeness claim, not application delivery or independent generated use.
 
 The user-provided ICNALE owner reply of 2026-10-10 supersedes pending media/use assumptions for that supplementary source; see icnale.md and domain/source-research.v1.json. Sound/video download, commercial-material development and AI transfers for that purpose are denied. Non-commercial app/AI use is not granted by the reply. Current ICNALE exercise/LLM use remains disabled; independent generated cases remain available.
+
+
+## Import completion and saved release selection
+
+The importer assesses the selected native component/population scope once at
+completion, alongside raw/normalized accounting, and persists
+`import-report.full_release_missing_components`. An empty array records an
+assessment with no missing components. Null/absent means unfinished or legacy
+unassessed work, never a fabricated complete named release. Ordinary Sources
+reads trust that stored report; they do not recount rows, reopen raw archives,
+rehash stored data or introduce another approval/verification gate. Existing
+legacy rows remain usable even without this extra completeness claim.
+
+A documented count reconciliation can explain nonzero observed drift. It cannot
+make an entirely absent required component present; an expected zero is valid
+when the actual documented component count is zero. Keep missing/raw-only
+states visible while preserving valid raw intake and unrelated exercises.
+
+`source-status.release_import_report_ids` maps each actual release ID to its own
+saved import IDs in creation order. Opening an older release selects only its
+own report, rows and saved semantic binding. The legacy `import_report_ids`
+projection continues to describe the latest release. If a historical response
+omits the per-release projection, do not substitute another release's report.
+No selected report means an unopened report, not an invented association.
+
+Import progress also returns its saved `format_binding_id` and
+`permission_grant_ids` from the frozen import. Reopening restores these exact
+selectors. The release's initial permissions are only the default before an
+import exists; permissions selected after registration belong to that saved
+import. Clear the previous release's upload/notice selection when opening a
+different saved release. Reading these stored selectors creates no new grant,
+revocation check or approval step.
+
+Standard TAR global PAX headers are container metadata, not special filesystem
+entries or source records. Preserve them in the original retained archive and
+continue ordinary member intake. Their presence does not authorize links,
+devices or unsafe member paths. The actual OpenSLR SpeechOcean archive contains
+such a standard header; complete native intake must accept it without truncation.
+
+A successful resumed import reports current record/mapping issues. Resolved
+foreground-operation failures remain in the saved issue/event history and are
+not shown as records still needing attention. Actual malformed data, unknown
+semantics and unresolved count mismatches retain their own visible states.
+No accepted rows are revalidated or rewritten merely to refresh a status view.

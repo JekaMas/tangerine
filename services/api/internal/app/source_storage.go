@@ -27,6 +27,7 @@ func (s *Storage) SourceImport(ctx context.Context, id string) (SourceRun, error
 	if binding != nil {
 		run.Binding = *binding
 	}
+	run.Permissions = append([]string{}, run.Frozen.Permissions...)
 	return run, nil
 }
 func (s *Storage) createSourceImport(ctx context.Context, release, binding string, permissions []string) (SourceRun, error) {

@@ -56,7 +56,7 @@ func (s *Storage) sourceSummary(ctx context.Context, run *SourceRun) error {
 			if e != nil {
 				return e
 			}
-			matches = expected == n || component.Reason != ""
+			matches = expected == n || n > 0 && component.Reason != ""
 		}
 		run.Report.Components = append(run.Report.Components, SourceComponentCount{component.Name, component.Expected, sourceNumber(n), matches})
 		complete = complete && matches
@@ -67,7 +67,9 @@ func (s *Storage) sourceSummary(ctx context.Context, run *SourceRun) error {
 	}
 	complete = complete && countsComplete
 	run.Report.Issues = []source.Issue{}
-	rows, e := s.DB.Query(ctx, "SELECT locator,code,detail FROM source_issue WHERE import_id=$1 ORDER BY locator,code LIMIT 1000", run.Report.ID)
+	// Recovered foreground failures remain in issue/event history. They are
+	// not outstanding record problems after successful completion.
+	rows, e := s.DB.Query(ctx, "SELECT locator,code,detail FROM source_issue WHERE import_id=$1 AND ($2 OR code<>'import_failed') ORDER BY locator,code LIMIT 1000", run.Report.ID, run.Report.State == "failed")
 	if e != nil {
 		return e
 	}
@@ -89,8 +91,18 @@ func (s *Storage) sourceSummary(ctx context.Context, run *SourceRun) error {
 	}
 	bound := run.Frozen.Program != nil || run.Frozen.Native || run.Frozen.Binding != nil
 	run.Report.Normalized = bound && complete && rawOnly == 0 && quarantine == 0 && staged == 0 && parseFailures == 0 && observed > 0 && len(source.MissingNative(run.Frozen.Release.Source, members)) == 0
+	run.Report.FullMissing, e = s.sourceFullMissing(ctx, run.Frozen.Release, run.Report.ID, members)
+	if e != nil {
+		return e
+	}
+	for _, component := range run.Report.Components {
+		if !component.Complete {
+			run.Report.FullMissing = append(run.Report.FullMissing, "Unreconciled component: "+component.Component)
+		}
+	}
 	// Original full-source acceptance is kept separate from all raw supplied files
-	// having actual complete accepted assets; no missing upstream row is fabricated.
+	// having actual complete accepted assets. Save this assessment once here;
+	// ordinary Sources reads trust the report instead of recounting saved rows.
 	return nil
 }
 func sourceKeys(m map[string]int64) []string {

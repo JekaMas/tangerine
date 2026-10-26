@@ -66,3 +66,28 @@ Do not call ingestion fully normalized while required scale or marker semantics 
 The OpenSLR archive and owner repository snapshot 613968e3b0b789fc33936fb5eba1973176ba7d11 were downloaded in full on 2026-10-09. The owner snapshot contains 5,000 aggregate-score records, 5,000 five-rater records, 2,500 train and 2,500 test IDs with zero overlap; each selected ID has WAVE, aggregate and detailed scores. All selected WAVE headers are 16 kHz mono 16-bit PCM with non-empty frames. Each detailed accuracy array has five raters. The snapshot also contains 245 unselected WAVE stems: retain them as ancillary/unselected data, without counting them as extra scored utterances.
 
 These are verified native-source observations in audit/corpus-acquisition-20261009/speechocean-native-conformance.json, not application import, calibrated pronunciation assessment or taxonomy-wide mistake gold.
+
+## Actual complete-archive import, 26 October 2026
+
+The acquired OpenSLR archive contains **5,245 WAVE files**, while the scored
+population has **5,000 utterances** and **250 speaker IDs in `utt2spk`**. The extra
+245 recordings are unrated native media, not missing scores to fabricate or
+files to discard. Preserve every recording and every supplied metadata/document
+member. Full named-release acceptance includes all5,245recordings; the5,000scored
+subset alone cannot satisfy the original full-media scope. Scored-population
+frequency/rating denominators must not silently include the extra recordings.
+The independent native inventory is retained in the iteration27 audit data.
+
+This actual corpus uses a standard global PAX TAR header and tab-separated
+Kaldi keys whose values contain spaces. The archive metadata stays in the original
+raw archive; key parsing uses the first horizontal separator and preserves exact
+leading-zero IDs and complete raw lines. Neither a public source-code snapshot
+nor a tiny space-delimited fixture proves this complete native import.
+
+The actual native import after those parser repairs retained60,427rows with
+zero quarantines and complete normalization. Its initial test then exposed an
+incorrect5,000-WAVE expectation; the corrected acceptance keeps the245additional
+files. Final selected observations and original failures are recorded in
+`audit/iteration-27-sources-20261026/`. This is native input/mapping evidence,
+not a claim of new model judgments, localized pronunciation-error gold or a
+linguistic qualification of all122categories.

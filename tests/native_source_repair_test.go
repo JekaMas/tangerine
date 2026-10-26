@@ -57,6 +57,16 @@ func TestNativeSourceReadFailurePositive(t *testing.T) {
 	sourceAssert(t, "complete", recovered.Report.State)
 	sourceAssert(t, true, recovered.Report.Normalized)
 	sourceAssert(t, "6", recovered.Report.Observed)
+	for _, issue := range recovered.Report.Issues {
+		if issue.Code == "import_failed" {
+			t.Fatal("recovered import still labels the resolved foreground failure as needing attention")
+		}
+	}
+	var failures int
+	sourceRequire(t, f.s.Store.DB.QueryRow(context.Background(), "SELECT count(*) FROM source_import_event WHERE import_id=$1 AND payload->>'state'='failed'", r.Report.ID).Scan(&failures))
+	if failures == 0 {
+		t.Fatal("recovery discarded the actual failure history")
+	}
 }
 func sourceStoredEssayGroup(t *testing.T, id string) string {
 	t.Helper()

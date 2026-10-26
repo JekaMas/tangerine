@@ -1,3 +1,15 @@
+2026-10-26 iteration27: the actual user selects complete selected full-source
+acquisitions/imports and provenance. Scoped eligible downloads, native import/
+completeness and per-release projection repairs, exact positive/negative tests,
+Sources UI/typography/evidence inspection and local commits are authorized.
+Retain eleven separate original identities and actual source restrictions;
+Cambridge eligibility, private owner exports and official-byte equivalence cannot
+be invented. No prohibited ICNALE audio/video acquisition, paid credits/overage,
+provider inference/synthesis, deployment/postdeployment, PBT, installation,
+financial execution or publication. Reuse valid full-source receipts. Assess
+completeness at import completion and trust the stored result on ordinary reads.
+Preserve app3000, user data/settings/media/tabs and canonical GAPS.md.
+
 2026-10-26 iteration23: the actual user selects actual Gemini Free text-provider
 qualification. The existing billing-unlinked project may serve necessary native
 functional generation, mutation, checking and feedback observations; use local

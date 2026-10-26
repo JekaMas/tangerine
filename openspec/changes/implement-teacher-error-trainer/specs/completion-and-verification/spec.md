@@ -135,6 +135,8 @@ Additional exact acoustic claims SHALL be supported by actual paired audio and t
 ### Requirement: FIN-SOURCES Complete selected original-source inputs
 Selected full-source completion SHALL retain separate EFCAMDAT-R2, EFCAMDAT-SHATZ2020, EFCAMDAT-OKSUZ2025, DOUBAO-STUDY-RECORDS, MOODRICK-DATA and NIR-DATA releases/dictionaries/media/terms, and official L2 provenance only from actual official bytes. Keep all eleven original full-source identities. Preserve usable acquired mirrors under actual provenance; do not resume prohibited ICNALE media acquisition. Missing optional data never blocks independent generation.
 
+Import completion SHALL save its named-release assessment once; Sources reads SHALL trust the saved assessment without recounting accepted rows. Unassessed legacy reports SHALL preserve usable data and disclose the unavailable completeness claim. Per-release report selection SHALL use only that actual release and its saved semantic binding. A reconciliation explanation SHALL NOT turn an entirely absent required component into acquired data.
+
 #### Scenario: FIN-SOURCES Observable behavior and counterexamples
 - **GIVEN** the concrete positive and negative fixtures linked to this property in verification.json
 - **WHEN** iteration 27 is applied and verified through its actual named owners

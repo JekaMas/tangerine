@@ -36,36 +36,42 @@ func (s *Storage) SourceStatuses(ctx context.Context) ([]map[string]any, error) 
 		item["selected_release_ids"] = ids
 		if len(releases) > 0 {
 			last := releases[len(releases)-1]
-			members, e := s.sourceMembers(ctx, last.ID)
-			if e != nil {
-				return nil, e
+			members := []source.Member{}
+			for _, file := range last.Files {
+				members = append(members, source.Member{Path: file.Path})
 			}
 			missing := source.MissingNative(id, members)
 			item["missing_component_names"] = missing
 			item["status"] = "ready_to_import"
 			item["reasons"] = []string{"Actual intake is independent of original full-source and semantic completeness. Selected scope: " + last.Scope}
-			reports, e := s.DB.Query(ctx, "SELECT id,payload,published FROM source_import WHERE release_id=$1 ORDER BY created_at,id", last.ID)
+			reports, e := s.DB.Query(ctx, "SELECT id,release_id,payload,published FROM source_import WHERE release_id=ANY($1) ORDER BY created_at,id", ids)
 			if e != nil {
 				return nil, e
 			}
 			imports := []string{}
+			byRelease := map[string][]string{}
+			for _, rid := range ids {
+				byRelease[rid] = []string{}
+			}
 			for reports.Next() {
-				var iid string
+				var iid, rid string
 				var published bool
 				var b []byte
-				if e = reports.Scan(&iid, &b, &published); e != nil {
+				if e = reports.Scan(&iid, &rid, &b, &published); e != nil {
 					reports.Close()
 					return nil, e
+				}
+				byRelease[rid] = append(byRelease[rid], iid)
+				if rid != last.ID {
+					continue
 				}
 				var report SourceReport
 				_ = json.Unmarshal(b, &report)
 				imports = append(imports, iid)
-				fullMissing, e := s.sourceFullMissing(ctx, last, iid, members)
-				if e != nil {
-					reports.Close()
-					return nil, e
+				missing = report.FullMissing
+				if missing == nil {
+					missing = []string{"Full-release assessment was not saved. Existing retained data remain usable."}
 				}
-				missing = fullMissing
 				item["missing_component_names"] = missing
 				item["raw_complete"] = report.RawComplete
 				item["normalized_complete"] = report.Normalized
@@ -88,6 +94,7 @@ func (s *Storage) SourceStatuses(ctx context.Context) ([]map[string]any, error) 
 				return nil, e
 			}
 			item["import_report_ids"] = imports
+			item["release_import_report_ids"] = byRelease
 			var revoked bool
 			if e = s.DB.QueryRow(ctx, "SELECT EXISTS(SELECT 1 FROM source_permission WHERE source_id=$1 AND revoked_at IS NOT NULL)", id).Scan(&revoked); e != nil {
 				return nil, e
@@ -102,5 +109,5 @@ func (s *Storage) SourceStatuses(ctx context.Context) ([]map[string]any, error) 
 }
 
 func sourceStatusBase(id string) map[string]any {
-	return map[string]any{"source_id": id, "selected_release_ids": []string{}, "release_ids": []string{}, "import_report_ids": []string{}, "status": "not_acquired", "missing_component_names": []string{"actual selected full release"}, "reasons": []string{}, "raw_complete": false, "normalized_complete": false, "raw_only_records": "0"}
+	return map[string]any{"source_id": id, "selected_release_ids": []string{}, "release_ids": []string{}, "import_report_ids": []string{}, "release_import_report_ids": map[string][]string{}, "status": "not_acquired", "missing_component_names": []string{"actual selected full release"}, "reasons": []string{}, "raw_complete": false, "normalized_complete": false, "raw_only_records": "0"}
 }

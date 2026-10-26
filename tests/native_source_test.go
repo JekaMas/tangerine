@@ -1210,7 +1210,7 @@ func sourceSpeechFixture(t *testing.T, bad bool) *sourceNative {
 	for i, part := range []string{"train", "test"} {
 		id := fmt.Sprintf("u%d", i)
 		speaker := fmt.Sprintf("s%d", i)
-		f.upload(t, "speech/"+part+"/text", id+" A native sentence\n")
+		f.upload(t, "speech/"+part+"/text", id+"\tA native sentence\n")
 		f.upload(t, "speech/"+part+"/utt2spk", id+" "+speaker+"\n")
 		f.upload(t, "speech/"+part+"/spk2utt", speaker+" "+id+"\n")
 		f.upload(t, "speech/"+part+"/spk2age", speaker+" adult\n")

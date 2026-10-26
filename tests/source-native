@@ -26,7 +26,7 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
   go_args=['test','-run','^TestNativeSource',*sys.argv[2:]] if len(sys.argv)>1 and sys.argv[1]=='test' else ['test','-json','-race','-count=1','-run',sys.argv[1] if len(sys.argv)>1 else '^TestNativeSource','./internal/app']
   evidence=r/'data/iteration13/native'/name;evidence.mkdir(parents=True,exist_ok=True)
   print('Private evidence: '+str(evidence.relative_to(r)),file=sys.stderr)
-  args=['docker','run','--rm','--network',name,'--env-file',str(config),'-v',str(evidence)+':/evidence','-v',str(r/'tests/native_source_test.go')+':/src/internal/app/native_source_test.go:ro','-v',str(r/'tests/native_source_repair_test.go')+':/src/internal/app/native_source_repair_test.go:ro','--entrypoint','go',name+'-go',*go_args]
+  args=['docker','run','--rm','--network',name,'--env-file',str(config),'-v',str(evidence)+':/evidence','-v',str(r/'tests/native_source_test.go')+':/src/internal/app/native_source_test.go:ro','-v',str(r/'tests/native_source_repair_test.go')+':/src/internal/app/native_source_repair_test.go:ro','-v',str(r/'tests/native_source_completion_test.go')+':/src/internal/app/native_source_completion_test.go:ro','--entrypoint','go',name+'-go',*go_args]
   p=subprocess.run(args,cwd=r,env=env,timeout=1200)
   status=p.returncode
  finally:

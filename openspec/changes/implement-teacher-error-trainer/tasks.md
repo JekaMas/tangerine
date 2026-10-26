@@ -1168,7 +1168,19 @@ recovery. Actual local Lab17 verification readback passed without new calls.
 Depends on 17 and source-owner access. Properties: `FIN-SOURCES.P1`,
 `FIN-VERIFY.I27`. Optional selected full-source scope; all eleven identities stay.
 
-- [ ] I27.1 Materialize separate-release completeness/provenance and partial/merged/mirror-mislabelling counterexamples through existing import owners.
+Current I27 observations (26 October 2026): actual complete official L2 v5
+acquired; all25component ZIPs/84,266data files match retained mirror digests.
+Actual full FCE, W&I and SpeechOcean native imports pass in isolated production
+PostgreSQL/MinIO owners. SpeechOcean preserves5,245WAVE files, including245unrated
+recordings. The selected literal tests now execute; native parser, saved
+assessment/release association and recovered-failure findings are repaired.
+I27.2 remains open for the six unavailable Cambridge/study/vendor owner releases;
+I27.3 remains open for actual IAB saved-release/Refresh activation. Rendering,
+focus, reload recovery and typography have separate observations. No full
+iteration acceptance or population/linguistic/model claim follows from these
+partial observations. Details are in `audit/iteration-27-sources-20261026/`.
+
+- [x] I27.1 Materialize separate-release completeness/provenance and partial/merged/mirror-mislabelling counterexamples through existing import owners.
 - [ ] I27.2 Acquire/import authorized complete selected Cambridge derivatives, Doubao records/instruments, separate Moodrick/NIR and eligible supplements with actual dictionaries/media/terms; reconcile official L2 bytes only if claiming official provenance, and do not download prohibited ICNALE media.
 - [ ] I27.3 Verify actual selected completeness and honest missing/raw-only states, Sources/report UI/typography and native evidence; leave unavailable owner inputs visible, reconcile and commit.
 

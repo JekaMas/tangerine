@@ -23,10 +23,10 @@ with tempfile.TemporaryDirectory(prefix=name) as tmp:
     time.sleep(.5)
    else:raise RuntimeError('native service not ready')
   call(['docker','run','--rm','--network',name,'--env-file',str(config),'--entrypoint','/tangerine',name+'-go','initialize'])
-  go_args=['test','-run','^TestNativeSourceFull(FCE|WI)Positive$',*sys.argv[2:]] if len(sys.argv)>1 and sys.argv[1]=='test' else ['test','-json','-race','-count=1','-timeout=40m','-run',sys.argv[1] if len(sys.argv)>1 else '^TestNativeSourceFull(FCE|WI)Positive$','./internal/app']
+  go_args=['test','-run','^TestNativeSourceFull(FCE|WI|SpeechOcean)Positive$',*sys.argv[2:]] if len(sys.argv)>1 and sys.argv[1]=='test' else ['test','-json','-race','-count=1','-timeout=40m','-run',sys.argv[1] if len(sys.argv)>1 else '^TestNativeSourceFull(FCE|WI|SpeechOcean)Positive$','./internal/app']
   evidence=r/'data/iteration13/native'/name;evidence.mkdir(parents=True,exist_ok=True)
   print('Private evidence: '+str(evidence.relative_to(r)),file=sys.stderr)
-  args=['docker','run','--rm','--network',name,'--env-file',str(config),'-v',str(evidence)+':/evidence','-v',str(r/'tests/native_source_test.go')+':/src/internal/app/native_source_test.go:ro','-e','TANGERINE_CORPUS_DATA=/corpora','-v',str(Path(os.environ.get('TANGERINE_CORPUS_DATA','/Users/jekamas/projects/0xatelerix/tangerine/data/corpora')))+':/corpora:ro','-v',str(r/'tests/native_source_full_test.go')+':/src/internal/app/native_source_full_test.go:ro','--entrypoint','go',name+'-go',*go_args]
+  args=['docker','run','--rm','--network',name,'--env-file',str(config),'-v',str(evidence)+':/evidence','-v',str(r/'tests/native_source_test.go')+':/src/internal/app/native_source_test.go:ro','-e','TANGERINE_CORPUS_DATA=/corpora','-e','TANGERINE_SOURCE_FULL_EVIDENCE=/evidence','-v',str(Path(os.environ.get('TANGERINE_CORPUS_DATA','/Users/jekamas/projects/0xatelerix/tangerine/data/corpora')))+':/corpora:ro','-v',str(r/'tests/native_source_full_test.go')+':/src/internal/app/native_source_full_test.go:ro','--entrypoint','go',name+'-go',*go_args]
   p=subprocess.run(args,cwd=r,env=env,timeout=2600)
   status=p.returncode
  finally:

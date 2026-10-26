@@ -19,9 +19,12 @@ func parseKaldi(member, text string) (Native, error) {
 		line++
 		s := strings.TrimSuffix(strings.TrimSuffix(raw, "\n"), "\r")
 		if strings.TrimSpace(s) != "" {
-			key, rest, ok := strings.Cut(s, " ")
-			if !ok {
-				key, rest, ok = strings.Cut(s, "\t")
+			// The delimiter is the first horizontal whitespace. Preferencing a
+			// later space consumes words into keys in native tab-delimited text.
+			boundary := strings.IndexAny(s, " \t")
+			key, rest, ok := s, "", boundary >= 0
+			if ok {
+				key, rest = s[:boundary], s[boundary+1:]
 			}
 			rest = strings.TrimLeft(rest, " \t")
 			row := Row{"member": member, "key": key, "fields": strings.Fields(rest), "value": rest, "raw": s}

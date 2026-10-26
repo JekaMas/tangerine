@@ -62,6 +62,7 @@ type SourceReport struct {
 	RawComplete   bool                   `json:"raw_complete"`
 	Normalized    bool                   `json:"normalized_complete"`
 	RawOnly       string                 `json:"raw_only_records"`
+	FullMissing   []string               `json:"full_release_missing_components"`
 }
 type SourceComponentCount struct {
 	Component string  `json:"component"`
@@ -70,16 +71,17 @@ type SourceComponentCount struct {
 	Complete  bool    `json:"complete"`
 }
 type SourceRun struct {
-	Report    SourceReport `json:"report"`
-	Revision  int64        `json:"revision"`
-	Epoch     int64        `json:"-"`
-	Operation string       `json:"-"`
-	Phase     string       `json:"phase"`
-	Member    string       `json:"member_cursor"`
-	Row       int64        `json:"row_cursor"`
-	Binding   string       `json:"format_binding_id"`
-	Frozen    SourceFrozen `json:"-"`
-	Replay    bool         `json:"-"`
+	Report      SourceReport `json:"report"`
+	Revision    int64        `json:"revision"`
+	Epoch       int64        `json:"-"`
+	Operation   string       `json:"-"`
+	Phase       string       `json:"phase"`
+	Member      string       `json:"member_cursor"`
+	Row         int64        `json:"row_cursor"`
+	Binding     string       `json:"format_binding_id"`
+	Permissions []string     `json:"permission_grant_ids"`
+	Frozen      SourceFrozen `json:"-"`
+	Replay      bool         `json:"-"`
 }
 type SourceFrozen struct {
 	MethodSHA   string          `json:"method_sha256"`

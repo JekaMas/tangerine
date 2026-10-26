@@ -18,7 +18,13 @@ func sourceFullFixture(t *testing.T, id, name, origin string) *sourceNative {
 		t.Fatal("actual acquired corpus mount required")
 	}
 	f := sourceFixture(t)
-	file, e := os.Open(filepath.Join(root, "bea", name))
+	directory := "bea"
+	version := "BEA-v2.1"
+	if id == "SPEECHOCEAN762" {
+		directory = "speechocean762"
+		version = "OpenSLR101-speechocean762"
+	}
+	file, e := os.Open(filepath.Join(root, directory, name))
 	sourceRequire(t, e)
 	defer file.Close()
 	members, e := f.s.Store.IntakeArchive(context.Background(), name, "tar.gz", file)
@@ -31,7 +37,7 @@ func sourceFullFixture(t *testing.T, id, name, origin string) *sourceNative {
 			docs = append(docs, m.AssetID)
 		}
 	}
-	r, e := f.s.Store.RegisterSource(context.Background(), sourceBytes(map[string]any{"schema_version": "2.0.0", "source_id": id, "source_version": "BEA-v2.1", "origin_uri": origin, "documentation_asset_ids": docs, "permission_grant_ids": []string{}, "format_profile_id": nil, "format_profile_sha256": nil, "files": files, "expected_counts": []any{}, "scope_kind": "full_named_release", "component_expectations": []any{}}), uuid.NewString())
+	r, e := f.s.Store.RegisterSource(context.Background(), sourceBytes(map[string]any{"schema_version": "2.0.0", "source_id": id, "source_version": version, "origin_uri": origin, "documentation_asset_ids": docs, "permission_grant_ids": []string{}, "format_profile_id": nil, "format_profile_sha256": nil, "files": files, "expected_counts": []any{}, "scope_kind": "full_named_release", "component_expectations": []any{}}), uuid.NewString())
 	sourceRequire(t, e)
 	f.release = r
 	f.files = members
@@ -90,4 +96,34 @@ func TestNativeSourceFullWIPositive(t *testing.T) {
 	sourceRequire(t, f.s.Store.DB.QueryRow(context.Background(), "SELECT count(*) FROM source_row WHERE import_id=$1 AND table_name='withheld' AND projection #>> '{raw_metadata,labels_state}'<>'labels_not_supplied'", run.Report.ID).Scan(&fabricated))
 	sourceAssert(t, 0, fabricated)
 	t.Log(fmt.Sprintf("Actual full W&I archive: %d members, %s native rows, withheld labels remain absent", len(f.files), run.Report.Observed))
+}
+
+func TestNativeSourceFullSpeechOceanPositive(t *testing.T) {
+	f := sourceFullFixture(t, "SPEECHOCEAN762", "speechocean762.tar.gz", "https://openslr.org/resources/101/speechocean762.tar.gz")
+	run := sourceFullRun(t, f)
+	if dir := os.Getenv("TANGERINE_SOURCE_FULL_EVIDENCE"); dir != "" {
+		sourceRequire(t, os.WriteFile(filepath.Join(dir, "speechocean-report.json"), sourceBytes(run.Report), 0600))
+	}
+	sourceAssert(t, "0", run.Report.Quarantined)
+	sourceAssert(t, "0", run.Report.RawOnly)
+	sourceAssert(t, true, run.Report.RawComplete)
+	sourceAssert(t, true, run.Report.Normalized)
+	sourceRequire(t, f.s.Store.CommitSourceImport(context.Background(), run.Report.ID))
+	var scored, raters, recordings int
+	sourceRequire(t, f.s.Store.DB.QueryRow(context.Background(), "SELECT count(*) FILTER(WHERE table_name='scores.json'),count(*) FILTER(WHERE table_name='scores-detail.json') FROM source_row WHERE import_id=$1", run.Report.ID).Scan(&scored, &raters))
+	sourceRequire(t, f.s.Store.DB.QueryRow(context.Background(), "SELECT count(*) FROM source_member WHERE release_id=$1 AND lower(relative_path) LIKE '%.wav'", f.release.ID).Scan(&recordings))
+	sourceAssert(t, 5000, scored)
+	sourceAssert(t, 5000, raters)
+	// The actual archive also contains245unrated recordings. Preserve those
+	// native members separately from its5,000scored utterances.
+	sourceAssert(t, 5245, recordings)
+	sourceAssert(t, []string{}, run.Report.FullMissing)
+	statuses, e := f.s.Store.SourceStatuses(context.Background())
+	sourceRequire(t, e)
+	for _, item := range statuses {
+		if item["source_id"] == "SPEECHOCEAN762" {
+			sourceAssert(t, "complete", item["status"])
+		}
+	}
+	t.Logf("Actual full SpeechOcean: %d members, %d scored/rater utterances, %d original WAVE files; native scales and all raw scores retained", len(f.files), scored, recordings)
 }

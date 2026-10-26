@@ -105,6 +105,11 @@ func InspectArchive(ctx context.Context, f *os.File, kind string, limits Limits,
 			if e != nil {
 				return e
 			}
+			// archive/tar exposes a global PAX metadata header separately. It is
+			// not a filesystem entry; the retained original archive preserves it.
+			if h.Typeflag == tar.TypeXGlobalHeader {
+				continue
+			}
 			if h.Typeflag == tar.TypeDir {
 				if _, e = SafePath(strings.TrimSuffix(h.Name, "/")); e != nil {
 					return e

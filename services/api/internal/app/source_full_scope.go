@@ -53,6 +53,15 @@ func (s *Storage) sourceFullMissing(ctx context.Context, release SourceRelease, 
 			requireMember("native "+suffix, suffix)
 		}
 	case "SPEECHOCEAN762":
+		var recordings int
+		for _, member := range members {
+			if strings.HasSuffix(strings.ToLower(member.Path), ".wav") {
+				recordings++
+			}
+		}
+		if recordings != 5245 {
+			missing = append(missing, fmt.Sprintf("Complete native WAVE files: expected5245, observed%d; includes245unrated recordings", recordings))
+		}
 		if e := requireRows("aggregate scored utterances", "scores.json", "", 5000); e != nil {
 			return nil, e
 		}
