@@ -88,8 +88,11 @@ Focused observations pass, as do21 existing JS recovery/preparation siblings,
 the changed API/web builds, stable Go vet/format check, strict pinned OpenSpec
 1.13.1 and current graph/discovery validation. No schema/prompt assembler input
 changed; the unaffected388 static assertions retain their prior proof boundary.
-The final committed-clean21-case receipt is pending the source commit and will
-be recorded in ACCEPTANCE.json; no current acceptance is inferred from a dirty run.
+The full21-case selection passed --require-clean on source **de1c7b2**
+(de1c7b2681f7c0ea17f5c9545c3901a0e9626105), with21 exact observed passes across
+2commands, no skips/missing results and zero substitution gaps. ACCEPTANCE.json
+records each case/source/evidence binding. The following commit changes metadata
+only. No unresolved I23 finding remains.
 
 PRESERVATION.json confirms no change to122 categories/recipes,42 formulas,
 11 original source scopes or migrations. No deployment/postdeployment, PBT,

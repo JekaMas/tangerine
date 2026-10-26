@@ -33,6 +33,9 @@ API/web builds, stable vet/format/diff and preservation pass. Local MLflow run14
 hosted/export inference calls. Owned fixtures/tab removed; user readiness200.
 Six unchanged I17 historical observations are retained from33c2d29.
 
-Next: source commit, run the full21-case selection --require-clean, repair any
-new observation, then record exact acceptance and commit metadata only. No
-additional provider call or product decision is needed.
+Final: source de1c7b2681f7c0ea17f5c9545c3901a0e9626105 passed all21 selected
+cases --require-clean:2commands,8+13 exact observed passes, zero skips/missing
+results/substitution gaps. ACCEPTANCE.json records source/case/evidence bindings,
+retained live/history boundaries and cleanup. Two P2 findings and their siblings
+are resolved. Current report/review/tasks are reconciled. Following commit is
+metadata only; no further I23 action or product decision remains.

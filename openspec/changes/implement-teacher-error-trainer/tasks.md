@@ -1072,8 +1072,9 @@ I23 verification repair: `audit/iteration-23-verification-20261026/REPORT.md`.
 The current primary selection expands to21 cases (8 qualified-flow/review cases
 and13 terminal/native/UI recovery cases). Six unaffected historical I17 cases
 retain their committed-clean33c2d29 receipt. Current committed-clean acceptance
-is pending the final source commit and selection receipt; previous acceptance
-does not cover these newly repaired error paths.
+passed21/21 on `de1c7b2`, with0skips/missing results and zero substitution gaps.
+`audit/iteration-23-verification-20261026/ACCEPTANCE.json` records the exact proof;
+this supersedes the earlier error-path/review scope. No unresolved I23 finding.
 
 ### Iteration 24 — Complete Azure F0 comparison
 
