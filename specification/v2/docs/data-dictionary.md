@@ -12,7 +12,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | asset-reservation-request | schema hash | derived DTO or actual operation input/output receipt | 8 |
 | asset | 2.0.0 | document.payload | 16 |
 | attempt-start-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
-| attempt-summary | schema hash | derived DTO or actual operation input/output receipt | 6 |
+| attempt-summary | schema hash | derived DTO or actual operation input/output receipt | 8 |
 | attempt-view | schema hash | derived DTO or actual operation input/output receipt | 11 |
 | attempt | 2.0.0 | document.payload | 25 |
 | audio-measurement | schema hash | document.payload | 26 |
@@ -67,7 +67,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | judgment-issue | 2.0.0 | document.payload | 9 |
 | key-disclosure | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | key-write | schema hash | document.payload | 3 |
-| library-item | schema hash | derived DTO or actual operation input/output receipt | 9 |
+| library-item | schema hash | derived DTO or actual operation input/output receipt | 10 |
 | linguistic-audit-input | 2.0.0 | derived DTO or actual operation input/output receipt | 8 |
 | linguistic-audit | 2.0.0 | document.payload | 16 |
 | llm-profile | schema hash | Derived projection/configuration member; not an independent evidence document | 26 |
@@ -191,7 +191,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | preparation-render-request | schema hash | derived DTO or actual operation input/output receipt | 2 |
 
-| preparation-summary | schema hash | derived DTO or actual operation input/output receipt | 15 |
+| preparation-summary | schema hash | derived DTO or actual operation input/output receipt | 16 |
 
 | feedback-score | schema hash | derived DTO or actual operation input/output receipt | 48 |
 

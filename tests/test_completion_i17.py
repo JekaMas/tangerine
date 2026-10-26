@@ -1,4 +1,8 @@
-"""Literal reconciliation cases for I17, not runtime/provider qualification."""
+"""Historical I17 reconciliation; later completions remain in current tasks.md.
+
+The ledger describes the accepted I17 snapshot. Replaying it against later I23
+checkboxes must not falsely undo a newly observed provider qualification.
+"""
 import copy,json,subprocess,unittest
 from pathlib import Path
 import importlib.util
@@ -9,11 +13,15 @@ verify=importlib.util.module_from_spec(spec);spec.loader.exec_module(verify)
 def read(name):
  path=ROOT/'audit/iteration-17-verification-20261025/REVIEW.json' if name=='REVIEW.json' else HERE/name
  return json.loads(path.read_text())
+def snapshot_file(path):
+ acceptance=json.loads((ROOT/'audit/iteration-17-verification-20261025/ACCEPTANCE.json').read_text())
+ return subprocess.check_output(['git','show',acceptance['tested_revision']+':'+path],cwd=ROOT,text=True)
+def snapshot_tasks():return snapshot_file('openspec/changes/implement-teacher-error-trainer/tasks.md')
 
 class CompletionI17(unittest.TestCase):
  def test_ledger_positive(self):
   baseline=json.loads((ROOT/'audit/completion-plan-20261025/UNCHECKED-BASELINE.json').read_text());ledger=read('LEDGER.json')
-  self.assertEqual([],verify.ledger_errors(ROOT,ledger,baseline))
+  self.assertEqual([],verify.ledger_errors(ROOT,ledger,baseline,snapshot_tasks()))
   self.assertEqual(53,sum('GAP-' in x['text'] for x in baseline))
   frozen=subprocess.check_output(['git','show',ledger['baseline_revision']+':openspec/changes/implement-teacher-error-trainer/tasks.md'],cwd=ROOT,text=True).splitlines()
   for row in ledger['items']:
@@ -21,7 +29,7 @@ class CompletionI17(unittest.TestCase):
     self.assertEqual('- [ ] '+row['original_text'],frozen[row['baseline_line']-1])
     self.assertIn('I17 '+row['id'],(ROOT/'openspec/changes/implement-teacher-error-trainer/tasks.md').read_text())
   self.assertEqual([],verify.acceptance_errors(read('ACCEPTANCE-SOURCES.json')))
-  self.assertEqual([],verify.overlap_errors(ROOT,read('OVERLAP.json')))
+  self.assertEqual([],verify.overlap_errors(ROOT,read('OVERLAP.json'),json.loads(snapshot_file('openspec/changes/implement-teacher-error-trainer/verification.json'))))
   tools=read('REPOSITORY-TOOLS.json')
   self.assertEqual(('1.14.3','1.13.1','1.13.1'),(tools['global_cli_version'],tools['selected_cli_version'],tools['selected_cli_package_version']))
   self.assertEqual([],tools['remote_names']);self.assertEqual('0\t50',tools['main_head_difference'])
@@ -38,7 +46,7 @@ class CompletionI17(unittest.TestCase):
    if change=='reference':bad['items'][0]['references']=['does-not-exist']
    if change=='fake_provider_pass':bad['items'][98]['disposition']='completed'
    if change=='fake_full_release':bad['items'][93]['disposition']='completed'
-   with self.subTest(change=change):self.assertTrue(verify.ledger_errors(ROOT,bad,baseline))
+   with self.subTest(change=change):self.assertTrue(verify.ledger_errors(ROOT,bad,baseline,snapshot_tasks()))
   packet=read('ACCEPTANCE-SOURCES.json')
   for change in ['demo','missing_i12','old_failed_i16','rewrite_failure','duplicate_i12','unrelated_i16','dirty_i16','blank_semantics']:
    bad=copy.deepcopy(packet)
@@ -51,7 +59,7 @@ class CompletionI17(unittest.TestCase):
    if change=='dirty_i16':bad['i16']['git']['dirty']=True
    if change=='blank_semantics':bad['i12']['semantic_cases']=[{}]*6
    with self.subTest(change=change):self.assertTrue(verify.acceptance_errors(bad))
-  maintained=(ROOT/'openspec/changes/implement-teacher-error-trainer/tasks.md').read_text()
+  maintained=snapshot_tasks()
   bad=maintained.replace('I17 H099: optional/external','I17 H099: completed')
   self.assertTrue(verify.ledger_errors(ROOT,ledger,baseline,bad))
   old=next(line for line in maintained.splitlines() if 'I17 H099:' in line)
@@ -68,6 +76,6 @@ class CompletionI17(unittest.TestCase):
   p=read('REVIEW.json');p['claims_new_product_acceptance']=True;self.assertTrue(verify.review_errors(p))
   p=read('REVIEW.json');p['new_model_calls']=50;p['performance_campaigns']='required';self.assertTrue(verify.review_errors(p))
   p=read('REVIEW.json');p['independence']='independent human approval';self.assertTrue(verify.review_errors(p))
-  p=read('OVERLAP.json');r=next(x for x in p['ui_cases'] if x['continuation_case']=='FIN-UI-05.P1.recurring_positive');r['disposition']='reusable';r['residual_observation']='six recorded intervals';self.assertTrue(verify.overlap_errors(ROOT,p))
+  p=read('OVERLAP.json');r=next(x for x in p['ui_cases'] if x['continuation_case']=='FIN-UI-05.P1.recurring_positive');r['disposition']='reusable';r['residual_observation']='six recorded intervals';self.assertTrue(verify.overlap_errors(ROOT,p,json.loads(snapshot_file('openspec/changes/implement-teacher-error-trainer/verification.json'))))
 
 if __name__=='__main__':unittest.main()

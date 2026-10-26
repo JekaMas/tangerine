@@ -621,7 +621,7 @@
     {
       "kind": "attempt-summary",
       "schema": "contracts/attempt-summary.schema.json",
-      "sha256": "58426a9a0f458d8f60b838bca8a2e89b21766bdf61f0c494d3065451374ac0ec",
+      "sha256": "fef3e0fd27cfc7af7dcfe4ae39e01830abaa530c63a6ba0b7358b50b4e4c19b5",
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -673,6 +673,22 @@
           "description": "The actual latest result.",
           "schema_reference": null,
           "rule_sha256": "87aedd976ed89ee921032ab96df4ff25087906410376eb617e4ee1239be9774d"
+        },
+        {
+          "name": "exercise_title",
+          "pointer": "/properties/exercise_title",
+          "required_in_parent": false,
+          "description": "read-only original-heard exercise title/topic caption, at most 200 code points; 199 plus ellipsis when truncated. Optional/nullable for legacy records.",
+          "schema_reference": null,
+          "rule_sha256": "04b6f69a9d72eb02bcf41d1943eef0ff6b87aac9724c2a9b0f7f70cf0d9dc450"
+        },
+        {
+          "name": "answer_excerpt",
+          "pointer": "/properties/answer_excerpt",
+          "required_in_parent": false,
+          "description": "saved answer with whitespace collapsed/trimmed: at most 160 Unicode code points plus ellipsis when truncated; null for a blank answer. Optional for legacy responses.",
+          "schema_reference": null,
+          "rule_sha256": "a7b660b7bac3904fc2f0bdb27769fd50c20c47581e7716b67be8fb39b552354d"
         }
       ]
     },
@@ -11251,7 +11267,7 @@
     {
       "kind": "library-item",
       "schema": "contracts/library-item.schema.json",
-      "sha256": "41b2a457cb749ce2c5e57f768637b51df32f106297d2ff1f504a62dc54591960",
+      "sha256": "c0b4d268d2d1548feedf91602f4f41cc044d528a713e5ec7f2633c77d4a2a089",
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
@@ -11327,6 +11343,14 @@
           "description": "Saved playable recording digest for explicit case-only review/measurement selection. No transcript, unit, target count or category. Omitted when no listening binding exists.",
           "schema_reference": null,
           "rule_sha256": "841fadff4c09e66473d3b4344abd7448dccb3387bcb9ce2b794411b66775d09a"
+        },
+        {
+          "name": "created_at",
+          "pointer": "/properties/created_at",
+          "required_in_parent": false,
+          "description": "existing case-version creation time for readable disambiguation; optional for legacy rows. No transcript, key or target data.",
+          "schema_reference": null,
+          "rule_sha256": "5870c12ed383042831e8ec5d695e2d6515df77437e536d33f483de3f1b9f538a"
         }
       ]
     },
@@ -30688,7 +30712,7 @@
       "schema_version": null,
       "persistent_domain_record": false,
       "storage": "derived DTO or actual operation input/output receipt",
-      "sha256": "c72553fa83790223b9e1d182d3d6a0a2f2b3eeb8c0642287c2e682b11a8f91e4",
+      "sha256": "c5a6bb614db5be9617bb014f3e784ce74a03a7ea665790f46ab9486eee658c99",
       "fields": [
         {
           "name": "id",
@@ -30777,6 +30801,14 @@
           "description": "Original accepted request copied into new preparation metadata for visible readback. Optional for older or full advanced-only preparations; no inferred legacy values.",
           "schema_reference": "exercise-request.schema.json",
           "rule_sha256": "e8de86d887250cbbbe87a49d37e74610fa0d76c337b652f9173855f874221a10"
+        },
+        {
+          "name": "created_at",
+          "pointer": "/properties/created_at",
+          "required_in_parent": false,
+          "description": "projection of the existing creation timestamp; optional for older summary responses. Never the read time.",
+          "schema_reference": "preparation-state.schema.json#/properties/created_at",
+          "rule_sha256": "9141125c2947aace5de68422a16efcc79fecbd3e0d770ba4f8e5cffab5503b98"
         },
         {
           "name": "complete_pieces",

@@ -35,3 +35,14 @@ completed audio. The selected Flash v2 ordinary-flow qualification, constructed
 text/semantic limits and actual Free audio/Lab observations are documented in
 `audit/iteration-22-elevenlabs-20261026/REPORT.md`. V3/v4 wire tests are controlled;
 this does not claim live qualification of every model or acoustic operation.
+
+Iteration23 qualifies the explicitly selected Gemini Free text profile through
+actual generation, mutation, local stored speech, checking and exact results.
+The shared executor now carries its constructed repair message to the native
+context recorder; no recorder decodes an OpenAI wire assumption for Gemini.
+Transport retries retain that same repair context. The provider-independent
+extractor prompt preserves speaker/turn framing with the source claim. The
+selected candidate has seven matched dispatch/receipt/snapshot observations;
+the prior failed baseline, including one pre-fix missing receipt, stays explicit.
+See `audit/iteration-23-gemini-20261026/REPORT.md`. Export/readback adds zero calls;
+no performance campaign, paid use or change to ordinary user settings follows.

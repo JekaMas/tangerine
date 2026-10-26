@@ -69,8 +69,8 @@ def review_errors(packet):
  if packet.get('claims_new_product_acceptance') is not False:errors.append('Invented universal application/media acceptance')
  return errors
 
-def overlap_errors(root,packet):
- errors=[];graph=read(root,'openspec/changes/implement-teacher-error-trainer/verification.json')
+def overlap_errors(root,packet,graph=None):
+ errors=[];graph=graph if graph is not None else read(root,'openspec/changes/implement-teacher-error-trainer/verification.json')
  cases={x['id']:x for x in graph['cases']};actual={x['case_id']:x for x in read(root,'audit/final-functional-ux-20261025/RECONCILIATION.json')['cases_observed']}
  expected={x['id'] for x in cases.values() if x['command_id'] in [f'completion-i{i}' for i in range(18,22)] and not x['property_id'].startswith('FIN-VERIFY')}
  rows=packet.get('ui_cases',[])

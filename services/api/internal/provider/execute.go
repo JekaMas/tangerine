@@ -29,7 +29,12 @@ type Attempt struct {
 	Response   Response
 	Projection []byte
 	Err        error
+	Repair     *RepairMessage
 }
+
+// The shared execution owner constructs this message before provider-specific
+// serialization. Observers retain it without reverse-parsing a wire dialect.
+type RepairMessage struct{ Instruction, Content string }
 type ExecuteRequest struct {
 	NormalizeProjection func(any) any
 	AllowTransportRetry func() bool
@@ -57,12 +62,13 @@ func Execute(ctx context.Context, client *http.Client, r ExecuteRequest, credent
 	format := r.Format
 	kind := "initial"
 	retried, fallback, repaired := false, false, false
+	var repairMessage *RepairMessage
 	for index := 0; index < 5; index++ {
 		wire, e := Serialize(r.Profile, instructions, input, format)
 		if e != nil {
 			return nil, attempts, e
 		}
-		a := Attempt{Index: index, Kind: kind, Wire: wire}
+		a := Attempt{Index: index, Kind: kind, Wire: wire, Repair: repairMessage}
 		if r.Before != nil {
 			if e = r.Before(ctx, a); e != nil {
 				return nil, attempts, e
@@ -156,6 +162,7 @@ func Execute(ctx context.Context, client *http.Client, r ExecuteRequest, credent
 				repairData["validation_detail"] = detail.ValidationDetail()
 			}
 			payload, _ := json.Marshal(repairData)
+			repairMessage = &RepairMessage{Instruction: RepairInstruction + safe, Content: string(payload)}
 			input = append(input, map[string]any{"role": "user", "content": string(payload)})
 			repaired = true
 			kind = "semantic_repair"

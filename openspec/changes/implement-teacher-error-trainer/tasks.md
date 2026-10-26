@@ -1054,6 +1054,16 @@ Depends on 17; optional selected provider scope. Properties: `FIN-GEMINI.P1`,
 - [ ] I23.2 Use the existing unbilled project only when free access is actually available; complete the unchanged request through generation, audio, checking and exact results with native/context/Lab observations.
 - [ ] I23.3 Verify the complete selected set, applicable UI/style or concrete not-applicable reasons and evidence; retain unavailable status if access fails, reconcile the honest result and commit.
 
+- [ ] I23.R1 Keep speaker/turn attribution with extracted claims; preserve genuinely unresolved assertions. Recheck the same saved exercise/answer with the changed frozen prompt and retain the original uncertainty.
+- [ ] I23.R2 Remove the OpenAI-wire assumption from semantic-repair context capture. Carry the shared executor's actual repair message through native persistence, including a subsequent transport retry; repair and verify explicit same-attempt resume.
+
+I23 stable evidence: `audit/iteration-23-gemini-20261026/REPORT.md`. The primary
+selection contains eight exact cases; six directly affected historical I17
+replay cases are selected alongside them. The latter read I17's accepted source
+snapshot, allowing later GEN.R4 completion without rewriting I17's dated ledger.
+Task completion and GEN.R4 closure await committed-clean acceptance. Failed
+baseline and controlled transport scopes remain explicit; later iterations open.
+
 ### Iteration 24 — Complete Azure F0 comparison
 
 Depends on 17 and actual authorized Microsoft/F0 access. Properties:

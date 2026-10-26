@@ -74,4 +74,19 @@ The exact owned system instructions remain in system_instruction; the complete e
 
 This adapter serves all existing text roles without changing prompts, taxonomy, formulas or native score arithmetic. Audio judging remains the independently selected speech diagnostic profile. The 2026-10-22 local incident established that the installed GPT-OSS20B can fail a general full-category mutation request despite protocol/release fixture passes; local qualification is task-specific, not a guarantee of arbitrary model quality. Current actual provider quality is recorded in audit/generation-repair-20261022/REPORT.md.
 
+Iteration 23 (2026-10-26) qualifies the explicitly selected `gemini-3.1-flash-lite`
+text profile on the existing project observed as Free tier with no billing
+account. The actual 90-word-target/B1/two-speaker garden request produced clean
+text, one article-omission mutation and key, local Kokoro audio, saved answers,
+Gemini extraction/mapping/feedback and native exact results. The text's actual
+length is reported; its approximate target is not an exact-length rejection.
+The attributed-answer regression and a provider-neutral repair-context recorder
+are repaired. Context capture uses the shared executor's actual repair message,
+including a retry of that message, without parsing a different provider's wire.
+Original uncertainty, interrupted checking and provider outage observations stay
+in the audit. Stateless replies omitted an interaction ID; that value remains
+unknown rather than invented. See `audit/iteration-23-gemini-20261026/REPORT.md`
+for bounded observations and Lab evidence; no universal quality or other-model
+qualification follows. Existing operator settings are not switched by this test.
+
 Primary wire references: [Interactions API](https://ai.google.dev/api/interactions-api), [text generation](https://ai.google.dev/gemini-api/docs/text-generation), [structured output](https://ai.google.dev/gemini-api/docs/structured-output).

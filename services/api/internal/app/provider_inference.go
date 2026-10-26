@@ -233,17 +233,8 @@ func (s *Server) InvokeLLM(ctx context.Context, request LLMRequest, client *http
 		}
 		receipt := map[string]any{"schema_version": "2.0.0", "id": receiptID, "operation_id": op.ID, "stage": request.Stage, "binding_sha256": effective["binding_sha256"], "input_sha256": prepared.InputSHA, "wire_request_asset_id": req.ID, "wire_response_asset_id": responseID, "provider_request_id": a.Response.RequestID, "http_status": a.Response.HTTPStatus, "outcome": a.Response.Outcome, "error_code": a.Response.ErrorCode, "input_tokens": tokens("input_tokens"), "cached_input_tokens": tokens("cached_tokens"), "output_tokens": tokens("output_tokens"), "reasoning_tokens": tokens("reasoning_tokens"), "cost_micro_usd": nil, "cost_basis": "unknown", "transport_attempt": a.Index, "started_at": a.Response.Started.Format(time.RFC3339Nano), "finished_at": a.Response.Finished.Format(time.RFC3339Nano), "model_returned": a.Response.Model, "context_snapshot_id": snapshotID, "trace_id": trace, "span_id": span}
 		attemptComponents := append([]any(nil), components...)
-		if a.Kind == "semantic_repair" {
-			var final struct {
-				Instructions string
-				Input        []struct{ Content string }
-			}
-			_ = json.Unmarshal(a.Wire, &final)
-			var repair struct {
-				Instruction string `json:"repair_instruction"`
-			}
-			_ = json.Unmarshal([]byte(final.Input[len(final.Input)-1].Content), &repair)
-			for _, part := range []struct{ Kind, Trust, Body string }{{"prompt", "owned_instruction", repair.Instruction}, {"candidate", "input_data", final.Input[len(final.Input)-1].Content}} {
+		if a.Repair != nil {
+			for _, part := range []struct{ Kind, Trust, Body string }{{"prompt", "owned_instruction", a.Repair.Instruction}, {"candidate", "input_data", a.Repair.Content}} {
 				asset, e := s.Store.saveProviderBytes(ctx, []byte(part.Body), "provider_input")
 				if e != nil {
 					return e

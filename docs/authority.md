@@ -1,3 +1,12 @@
+2026-10-26 iteration23: the actual user selects actual Gemini Free text-provider
+qualification. The existing billing-unlinked project may serve necessary native
+functional generation, mutation, checking and feedback observations; use local
+speech, actual context/receipt/Lab evidence, controlled quota/denial/unavailable
+cases, scoped repairs and local commits through selected clean acceptance.
+No purchased credits, overage, paid fallback, deployment/postdeployment, PBT,
+financial execution, installation, publication or bulk/performance campaign.
+Preserve app3000, user settings/data/media/tabs and canonical GAPS.md.
+
 2026-10-26 iteration22 verification/repair: the actual user requests full SP-01
 conformance and native/browser evidence; repair causes and siblings with single
 ownership, preserve nonblocking UX, log/retry transient reads and show authored
