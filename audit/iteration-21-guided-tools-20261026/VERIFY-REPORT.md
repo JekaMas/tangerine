@@ -3,7 +3,9 @@
 Scope: UX-08, FIN-UI-08.P1 and FIN-VERIFY.I21. Review baseline438687b was clean.
 This verification supersedes the apply report's no-findings conclusion. The
 original cf0f32d receipts and failed baseline observations remain retained.
-Current acceptance revision and exact outcomes are in VERIFY-ACCEPTANCE.json.
+Committed-clean verification passed all32 cases on
+`fd95394f57fef4f7c8e150dd61c2e7a96a05901a`. Exact outcomes are in
+VERIFY-ACCEPTANCE.json. I21.1–I21.4 are complete.
 Later continuation iterations and full-change release acceptance are out of scope.
 
 ## Findings, causes and sibling repairs

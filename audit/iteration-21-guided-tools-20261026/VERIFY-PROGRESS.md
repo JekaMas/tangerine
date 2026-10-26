@@ -74,3 +74,11 @@ The final design paragraph clarifies repaired ownership after the earlier strict
 receipt. Recheck strict OpenSpec for that changed artifact only; native/provider/
 helper/UI receipts are otherwise unchanged. The current32-case dirty selection
 checks the stable evidence snapshot without restarting its observed boundaries.
+
+Completed: stable dirty selection passed32/32; repaired source committed as
+fd95394f57fef4f7c8e150dd61c2e7a96a05901a. The same full I21 selection then passed
+32/32 with --require-clean, known clean Git provenance and32 exact observed
+identities. I21.4 is checked only after that result.45 helper assertions and the
+fresh native race receipt retain their exact proof boundaries. No open I21
+finding or material decision remains. Acceptance/report/progress/checklist-only
+commit follows; runtime/tests/fixtures/matrix remain the accepted source.
