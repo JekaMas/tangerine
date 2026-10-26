@@ -98,3 +98,13 @@ original lists. Protected paths and canonical GAPS.md remain unchanged. All
 owned browser/container/proxy resources and viewport overrides are cleaned up;
 existing user pages/handoffs and services remain. No new model/speech call or
 excluded operation occurred.
+
+## Completed
+
+The full selected committed-clean run passed38/38 exact cases on `4bbcd5d2fada14a9aa1650663aace9604d9a27bc`
+(18positive,20negative), zero failures/skips/substitution gaps. Canonical
+ACCEPTANCE.json now records that receipt, superseding the original32-case apply
+acceptance while retaining all original observations. UI/UX, typography and
+evidence review pass. I28.V1 is complete; no in-scope finding or product decision
+remains. Final metadata changes do not alter a semantic dependency, manifest or
+case fingerprint and do not justify repeating valid behavior/model checks.

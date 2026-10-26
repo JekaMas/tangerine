@@ -1,5 +1,17 @@
 # Iteration 28 — saved-data empirical reports and coverage
 
+**Fresh verify: passed38/38 cases (18positive,20negative), zero failures/skips**,
+on committed-clean source `4bbcd5d2fada14a9aa1650663aace9604d9a27bc`. One additional P2 presentation finding
+was repaired: declared annotation scope is now distinct from actual inspected
+windows, including empty/incompletely mapped siblings. Actual downloaded JSON
+closes the file-delivery proof gap. No new model/speech calls occurred.
+
+The current result is in [VERIFY-REPORT.md](VERIFY-REPORT.md); ACCEPTANCE.json
+records the superseding38-case receipt. The original apply report below remains
+historical evidence for its exact32-case source and proof limits.
+
+## Original apply report
+
 **Passed for the selected iteration 28 scope: 32/32 cases** (15 positive, 17 negative)
 on committed-clean source `da09fc70677f6257d58d67e31757371cd4293189`. The selected properties are
 `FIN-EMPIRICAL.P1` and `FIN-VERIFY.I28`; I28.1–I28.3 are complete.

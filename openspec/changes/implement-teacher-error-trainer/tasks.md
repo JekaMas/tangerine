@@ -1203,7 +1203,7 @@ verification performs zero new model calls.
 - [x] I28.1 Materialize deterministic/saved-record report arithmetic, provenance, denominator and coverage cases, including constructed-versus-genuine and missing-input counterexamples; no bulk LLM execution.
 - [x] I28.2 Reproduce reports from available saved populations; keep source frequency/relationships, difficulty and recommendation-effect claims distinct and unavailable inputs unknown. Existing benchmark datasets/fields remain, but no performance campaign is required.
 - [x] I28.3 Verify exact report results, UI/typography, retained native/Lab evidence and zero new inference; retain missing data honestly, reconcile and commit without a model benchmark prerequisite.
-- [ ] I28.V1 Repair the demonstrated declared-versus-observed coverage wording and its empty/incompletely mapped population siblings; retain native arithmetic and safe read recovery. Observe the exact report through native storage and Chrome at desktop/narrow widths, retain zero-call and independent regression evidence, reconcile the full I28 DAG and commit verified acceptance.
+- [x] I28.V1 Repair the demonstrated declared-versus-observed coverage wording and its empty/incompletely mapped population siblings; retain native arithmetic and safe read recovery. Observe the exact report through native storage and Chrome at desktop/narrow widths, retain zero-call and independent regression evidence, reconcile the full I28 DAG and commit verified acceptance.
 
 I28 acceptance: 32/32 selected cases (15 positive, 17 negative) passed on committed-
 clean `da09fc70677f6257d58d67e31757371cd4293189`. Exact native fractions, report

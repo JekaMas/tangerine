@@ -59,3 +59,13 @@ The preceding informational run failed three receipt-reader assumptions (Node
 reporter format and retained HTTP 503), which were corrected after inspecting the
 original records; its 29 unaffected passing observations remain valid. Native,
 JavaScript and browser observations are reused as documented in REUSE.md.
+
+## Verification complete
+
+Fresh verification starts at62f0274 and repairs the misleading declared-versus-
+observed scope label. Empty and incompletely mapped populations are observed
+before/after the display-only repair. Actual downloaded JSON closes the file
+delivery gap; extension-context diagnostics explain unrelated console storage
+errors. The full38-case selection passes committed-clean on `4bbcd5d2fada14a9aa1650663aace9604d9a27bc`.
+See VERIFY-REPORT.md, VERIFY-PROGRESS.md and the superseding ACCEPTANCE.json.
+No new model/speech call or excluded operation; user data/services/GAPS.md remain.

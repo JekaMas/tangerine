@@ -3,7 +3,7 @@
 Starting revision: `62f0274a5018451e956067af1068340028ea1288`.
 Scope: `FIN-EMPIRICAL.P1`, `FIN-VERIFY.I28`; saved-data reports and coverage,
 zero new model calls. This is iteration verification, not whole-release acceptance.
-The final committed-clean reconciliation is pending at this checkpoint.
+**Passed:38/38 cases (18positive,20negative), zero failures/skips**, on committed-clean source `4bbcd5d2fada14a9aa1650663aace9604d9a27bc`. The acceptance record supersedes the original32-case apply acceptance.
 
 ## Finding, cause and repair
 
@@ -86,7 +86,7 @@ regressions pass in `focused.log`; the sixth new case confirms actual download
 delivery in `download-positive.log`. Eleven production display-helper tests pass.
 The new browser fixture passes Go race/native execution with zero provider
 receipts. Stable pinned Go vet/gofmt and locked Next.js source build pass.
-Full selected DAG, strict OpenSpec and committed-clean reconciliation are pending.
+Strict OpenSpec1.13.1 and complete DAG/discovery validation pass. The complete selected38-case DAG passed with `--require-clean` on `4bbcd5d2fada14a9aa1650663aace9604d9a27bc`. Every exact registered test identity executed; no substitution gap or required skip remains.
 
 Original arithmetic/storage/coverage and bounded read recovery receipts are reused
 as detailed in `REUSE.md`; their semantic inputs were not changed. No valid model,
