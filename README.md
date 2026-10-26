@@ -11,7 +11,7 @@ same configured LLM and local speech; no additional service or key is needed.
 
 ## Run locally
 
-Download and extract the complete GitHub source ZIP, or clone this repository. Install and start Docker Desktop, or Docker Engine with Docker Compose v2.20 or newer. No host Go, Node, Python, Git or workflow submodule is required to run the downloaded application.
+Download and extract the [complete GitHub source ZIP](https://github.com/JekaMas/tangerine/archive/refs/heads/main.zip), or clone [JekaMas/tangerine](https://github.com/JekaMas/tangerine). Install and start Docker Desktop, or Docker Engine with Docker Compose v2.20 or newer. No host Go, Node, Python, Git or workflow submodule is required to run the downloaded application.
 
 ```sh
 sh scripts/tangerine start

@@ -1,10 +1,21 @@
+2026-10-27 iteration30 verify/repair: the actual user renews the full iteration
+request, including publication, root-cause/sibling repairs, safe recovery and
+actual UI/UX/typography through green committed-clean acceptance. Use the named
+open-source project under the signed-in owner's account: public JekaMas/tangerine,
+as proposed in the preceding checkpoint. This destination is resolved from the
+requested project/account and renewed publication instruction, not a fabricated
+separate owner approval. The preceding confirmation was unnecessary; do not add
+another per-release approval ceremony. GitHub source publication is authorized;
+hosted application deployment, postdeployment, PBT and financial execution are
+excluded. Keep all existing data/paid-use/resource-preservation limits below.
+
 2026-10-27 iteration30 apply: the actual user requests landing into main,
 publication to the authorized GitHub destination and verification of the real
 downloaded source ZIP. Source/test/documentation repairs, ordinary Git/GitHub
 operations, disposable Docker-only startup/restart, browser/typography review
 and local commits are in scope. No remote was configured at entry; exact public
-repository selection is pending the requested user response. Do not publish
-until it is resolved. Preserve the canonical GAPS.md edit, running app3000,
+repository selection was pending at that earlier checkpoint; the renewed
+verify/publication request above resolves it. Preserve the canonical GAPS.md edit, running app3000,
 its records/settings/media, other Docker resources and existing browser tabs.
 No provider calls, model downloads, purchased credits/overage, PBT, financial
 execution, host installation or hosted application deployment are included.
