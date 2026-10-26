@@ -147,3 +147,37 @@ list projection; a standalone speech comparison does not prove the app adapter;
 opening a JSON editor does not prove the guided path; and seeking without an
 end observation does not prove finite replay. No new human review gate or
 automatic model judge is required by this specification.
+
+
+## I29 current-interface recovery details
+
+A failed Library refresh preserves already loaded exercise cards and their normal
+listening links while displaying authored retry guidance. Library uses the same
+saved-list read-order/retention owner as the other saved lists. Refresh replaces
+the page; only an explicit Load more action appends. Loading, failure and an
+actually empty successful list remain distinguishable. Navigation and existing
+saved work do not require another model response.
+
+Saved audio reports Audio saved when an assembled recording is available. Ready
+to assemble describes completed pieces without that recording, never a completed
+recording. These are presentation states of accepted saved data, not revalidation
+or publication checks.
+
+Answer extraction accepts source-equivalent relation coordinate names start/end
+and start_cp/end_cp at its existing normalization boundary without overwriting
+explicit canonical coordinates. Invalid/ambiguous source locations use the one
+existing repair with the actual component name, proposed interval and literal
+quote occurrences; the application never chooses a repeated occurrence by
+proximity. A redundant self attachment for an already contained correction or
+reason is removed when its exact source evidence encloses that component. It
+does not add or erase a judgment or duplicate credit. Self retractions and edges
+without that evidence remain substantive errors. Raw replies stay in the
+existing development receipts. No extra runtime audit or qualification is added.
+
+The I29 demonstration retains the actual frozen component selection before
+calculating its independent expectation. In the selected partial answer,
+classification=false, TP=1,FN=1,FP=0,CQ=1,GC=2, so detection/correction give
+100*(45*(2/3)+30*(1/2))/75=60. A supplied correct optional reason gives100
+separately. The generated key remains a candidate; this finite example does not
+qualify every taxonomy leaf, accent or provider. Failed required live stages
+remain incomplete even when other scores, browser checks and builds pass.

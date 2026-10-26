@@ -1,3 +1,15 @@
+2026-10-26 iteration29: the actual user selects all eleven routes and the real
+complete flow with UI/UX, typography, pictures, video and audio evidence. Scoped
+implementation/repair, deterministic and disposable native/browser fixtures,
+minimal necessary actual local/free/included functional generation/checking,
+native/context/Lab evidence export/readback and local commits are authorized.
+The existing selected Chrome may be used for owned local UI checks; provider
+account state may be read without changing billing/access. No purchased credits,
+overage, paid fallback, performance/bulk campaign, PBT, financial execution,
+host installation, deployment to the user's app or publication. Preserve user
+app3000, data/settings/media/tabs and canonical GAPS.md. Ordinary use gains no
+review, corpus, benchmark or verification gate.
+
 2026-10-26 iteration28 verify/repair: the actual user requests complete selected
 conformance review, root-cause/sibling repair and UI/UX/typography evidence through
 committed-clean acceptance. Saved deterministic observations only, zero new model

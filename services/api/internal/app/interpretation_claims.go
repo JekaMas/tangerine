@@ -140,7 +140,16 @@ func normalizeAnswerSpan(text string, s *AnswerSpan) error {
 			return nil
 		}
 	}
-	return interpretationInvalid("A source span must quote its exact original answer location; an ambiguous repeated quote cannot be guessed.")
+	locations := []string{}
+	if s.Text != "" {
+		quoted := []rune(s.Text)
+		for i := 0; i+len(quoted) <= len(runes); i++ {
+			if string(runes[i:i+len(quoted)]) == s.Text {
+				locations = append(locations, fmt.Sprintf("[%d,%d)", i, i+len(quoted)))
+			}
+		}
+	}
+	return interpretationInvalid(fmt.Sprintf("Source quote %q does not match proposed [%d,%d). Exact original occurrences: %s. Select the actual occurrence using the original answer and source_tokens, or quote a longer unique original phrase. An ambiguous repeated quote cannot be guessed.", s.Text, s.Start, s.End, strings.Join(locations, ", ")))
 }
 func sourceIdentity(answerSHA string, s AnswerSpan) string {
 	raw, _ := lab.Canonical([]any{answerSHA, s.Start, s.End, s.Text})
@@ -174,9 +183,16 @@ func normalizeExtraction(answer, answerSHA string, raw []byte) (CanonicalExtract
 			return result, interpretationInvalid("Extraction-local references must identify distinct original claims.")
 		}
 		byRef[c.LocalRef] = i
-		for _, span := range []*AnswerSpan{&c.Span, c.Target, c.Category, c.Correction, c.Rationale, c.Retraction} {
-			if err := normalizeAnswerSpan(answer, span); err != nil {
-				return result, err
+		for _, field := range []struct {
+			name string
+			span *AnswerSpan
+		}{{"claim_span", &c.Span}, {"target_span", c.Target}, {"category_span", c.Category}, {"correction_span", c.Correction}, {"rationale_span", c.Rationale}, {"explicit_retraction_of_span", c.Retraction}} {
+			if err := normalizeAnswerSpan(answer, field.span); err != nil {
+				detail := err.Error()
+				if diagnostic, ok := err.(interface{ ValidationDetail() string }); ok {
+					detail = diagnostic.ValidationDetail()
+				}
+				return result, interpretationInvalid(fmt.Sprintf("Claim %q %s: %s", c.LocalRef, field.name, detail))
 			}
 		}
 		for _, span := range []*AnswerSpan{c.Target, c.Category, c.Correction, c.Rationale} {

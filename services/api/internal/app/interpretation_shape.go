@@ -3,11 +3,26 @@ package app
 // Normalize source-confirmed absence and missing optional prose. No proposal,
 // assertion, identifier or judgment for supplied text is created or discarded.
 func normalizeInterpretationShape(value any, extraction *CanonicalExtraction) any {
-	if extraction == nil {
-		return value
-	}
 	root, ok := value.(map[string]any)
 	if !ok {
+		return value
+	}
+	if extraction == nil {
+		// These aliases describe the same source codepoint coordinates. Normalize
+		// their spelling before the existing schema check, without selecting a
+		// location, changing an explicit coordinate or creating a relation.
+		relations, _ := root["relations"].([]any)
+		for _, raw := range relations {
+			relation, _ := raw.(map[string]any)
+			span, _ := relation["evidence_span"].(map[string]any)
+			for _, name := range []string{"start", "end"} {
+				if _, exists := span[name]; !exists {
+					if coordinate, exists := span[name+"_cp"]; exists {
+						span[name] = coordinate
+					}
+				}
+			}
+		}
 		return value
 	}
 	rows, ok := root["decisions"].([]any)

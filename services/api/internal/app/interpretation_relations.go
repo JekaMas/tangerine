@@ -5,6 +5,28 @@ package app
 import "sort"
 
 func normalizeClaimRelations(answer string, result *CanonicalExtraction, byRef map[string]int) error {
+	// A correction/reason already belongs to its containing claim. Some models
+	// additionally describe that fact as a self attachment. When the exact source
+	// component and enclosing evidence establish this redundancy, drop only the
+	// redundant edge; retain the claim/component once. Self retractions and edges
+	// without that source evidence still follow the ordinary relation rules.
+	relations := result.Extraction.Relations[:0]
+	for _, rel := range result.Extraction.Relations {
+		if index, ok := byRef[rel.From]; ok && rel.From == rel.To {
+			claim := result.Claims[index]
+			var component *AnswerSpan
+			if rel.Kind == "correction_attachment" {
+				component = claim.Correction
+			} else if rel.Kind == "explanation_attachment" {
+				component = claim.Rationale
+			}
+			if component != nil && claim.Span.Start <= rel.Evidence.Start && rel.Evidence.Start <= component.Start && component.End <= rel.Evidence.End && rel.Evidence.End <= claim.Span.End {
+				continue
+			}
+		}
+		relations = append(relations, rel)
+	}
+	result.Extraction.Relations = relations
 	sort.SliceStable(result.Extraction.Relations, func(i, j int) bool {
 		return byRef[result.Extraction.Relations[i].From] < byRef[result.Extraction.Relations[j].From]
 	})

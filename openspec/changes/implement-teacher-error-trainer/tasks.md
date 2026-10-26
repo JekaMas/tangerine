@@ -1205,14 +1205,16 @@ verification performs zero new model calls.
 - [x] I28.3 Verify exact report results, UI/typography, retained native/Lab evidence and zero new inference; retain missing data honestly, reconcile and commit without a model benchmark prerequisite.
 - [x] I28.V1 Repair the demonstrated declared-versus-observed coverage wording and its empty/incompletely mapped population siblings; retain native arithmetic and safe read recovery. Observe the exact report through native storage and Chrome at desktop/narrow widths, retain zero-call and independent regression evidence, reconcile the full I28 DAG and commit verified acceptance.
 
-I28 acceptance: 32/32 selected cases (15 positive, 17 negative) passed on committed-
-clean `da09fc70677f6257d58d67e31757371cd4293189`. Exact native fractions, report
+I28 acceptance: 38/38 selected cases (18 positive, 20 negative) passed on committed-
+clean `4bbcd5d2fada14a9aa1650663aace9604d9a27bc`. Exact native fractions, report
 persistence/replay, constructed-versus-genuine eligibility, unknown denominators,
 122-category coverage and actual Chrome/typography/recovery observations are in
 `audit/iteration-28-reports-20261026/REPORT.md` and `ACCEPTANCE.json`. Zero new
 model or speech calls; no performance campaign. Missing genuine populations stay
-unknown. The unchanged download handler/control is separate from unobserved
-browser file delivery. User app/data/settings and canonical GAPS.md are preserved.
+unknown. Actual normal Downloads JSON from the observed test-owned click equals
+the native report; the separate browser download-event observer returned no receipt.
+This corrects the stale32-case paragraph using the retained acceptance and verify
+report, without rerunning I28. User app/data/settings and canonical GAPS.md are preserved.
 
 ### Iteration 29 — Final UI/UX, typography and real full flow
 
@@ -1221,9 +1223,25 @@ Depends on 18, 19, 20, 21 and 22. Properties: `FIN-FLOW.P1`,
 have their actual required evidence; unrelated missing ones remain explicit.
 Conditional dependency edges to 23–28 are recorded in completion-iterations.json.
 
-- [ ] I29.1 Materialize current-route/state and real-flow expectations, including independently calculated results for the actual generated saved key and misleading/old/substituted-media counterexamples.
+- [x] I29.1 Materialize current-route/state and real-flow expectations, including independently calculated results for the actual generated saved key and misleading/old/substituted-media counterexamples.
 - [ ] I29.2 Inspect all eleven routes at desktop/narrow widths with appropriate empty/populated/error/recovery/keyboard states; record actual generation→audio→answer→checking→results→recommendations→reopen with pictures, video and stored audio.
 - [ ] I29.3 Review typography and evidence contents, disclose cuts/constructed answers/uncertainty, repair authorized findings, reconcile retained and invalidated cases, then commit the verified result.
+
+I29 apply checkpoint: actual source-built Chrome observations cover all eleven
+routes at desktop/narrow widths, controlled read-error/recovery, keyboard,
+playback, finite replay and saved answer/result reopening. The new actual
+94-word/two-speaker exercise has two selected text mistakes,29.65s stored local
+audio and independently expected/observed60/100; optional explanation100%.
+Library retention/Refresh, completed-audio wording and avoidable interpretation
+format failures are repaired through their existing owners with paired/sibling
+evidence. All27 Gemini Free dispatch attempts and four local synthesis calls
+retain exact native context/binding/output records and local Lab readback.
+The edited video explicitly retains the missing stage: required comments and
+recommendations still fail with Gemini high-demand503/deadline responses after
+explicit feedback-only retries. The two full-flow/review positive cases remain
+unaccepted; I29.2/.3 stay open. Resume only feedback on the saved attempt, then
+invalidate its affected observations; do not regenerate or repeat green calls.
+See `audit/iteration-29-full-flow-20261026/REPORT.md` and `REUSE.md`.
 
 ### Iteration 30 — Main and download-and-run release
 
