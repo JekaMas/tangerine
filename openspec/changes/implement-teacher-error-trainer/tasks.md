@@ -1437,6 +1437,8 @@ Iteration 31 acceptance: `completion-i31 --require-clean`, 133/133 selected case
 
 Iteration 31 verification repair (2026-10-27):
 
-- [ ] I31.V1 Reject jointly aliased literal/partial bindings, omitted physical populations and falsified native command outcomes through the single reconciliation owner; cover sibling counterexamples and retain actual valid observations.
-- [ ] I31.V2 Inspect current local UI/UX/typography and safe read failure/recovery with screenshots/video, preserving user state and making no provider calls.
-- [ ] I31.V3 Register and reconcile every updated iteration case on a committed-clean revision; retain prior acceptance/failures, record the superseding review and commit.
+- [x] I31.V1 Reject jointly aliased literal/partial bindings, omitted physical populations and falsified native command outcomes through the single reconciliation owner; cover sibling counterexamples and retain actual valid observations.
+- [x] I31.V2 Inspect current local UI/UX/typography and safe read failure/recovery with screenshots/video, preserving user state and making no provider calls.
+- [x] I31.V3 Register and reconcile every updated iteration case on a committed-clean revision; retain prior acceptance/failures, record the superseding review and commit.
+
+Iteration 31 superseding verify acceptance: `completion-i31 --require-clean`, 140/140 selected case edges and 30/30 physical reconciliation methods at clean `b7875a5b06414d711ef0ed2e94d54d3e87423411`. All five verification findings are closed; actual UI screenshots/video and retained native evidence are indexed in `audit/iteration-31-verification-20261027/ACCEPTANCE.json`. Genuine unmet original obligations remain open.

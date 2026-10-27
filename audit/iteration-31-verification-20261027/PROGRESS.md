@@ -64,3 +64,16 @@ source files are unchanged from verify entry; canonical GAPS.md hash matches.
 Typography also confirms document.fonts loaded Source Sans 3, not only CSS family.
 Next: commit stable repair, execute completion-i31 --require-clean, then save
 actual acceptance, complete I31.V1–V3 and commit bookkeeping.
+
+## Verified completion
+
+Full I31 selection passed 140/140 case edges and 30/30 actual methods at clean
+`b7875a5b06414d711ef0ed2e94d54d3e87423411`; exit zero, no substitution gaps.
+All five finding groups and seven new cases are implemented and observed.
+Original dispositions and all genuine unmet original obligations remain unchanged.
+Latest acceptance points to this repaired cohort; the apply acceptance and all
+initial/repair failures remain retained. I31.V1–V3 are complete.
+
+No further execution is needed: remaining commit changes only acceptance, report,
+progress, finding dispositions and canonical task bookkeeping. No valid native,
+Python literal, structural or product observation is invalidated by it.

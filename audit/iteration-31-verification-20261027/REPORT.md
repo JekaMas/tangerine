@@ -52,6 +52,10 @@ human guidance and available Refresh/Generate controls. Keyboard Refresh then
 returns 200, clears the error, retains all four inputs and shows a 3 px focus
 outline. Internal canary/error text remains in the controlled transport log.
 The mobile menu opens and ordinary keyboard navigation returns to Library.
+Client diagnostics contain four Tangerine request warnings, matching the four
+controlled 503 responses. Browser-injected storage/multiplex warnings were
+retained separately, including their extension origins; they showed no observed
+application blocking and no extension configuration was changed.
 All observed API requests are GET; there are no inference or speech dispatches.
 
 ## Typography
@@ -65,6 +69,9 @@ readable. No observed page-level horizontal overflow. Product style is unchanged
 No additional UI package, visual judge or installation was used.
 
 ## Pictures and video
+
+**Evidence: pass for the selected scope.** Actual files, observed identities,
+rendered contents and their relationships were inspected.
 
 Screenshots and actual DOM/interaction observations are in
 `data/iteration-31-verification-20261027/`. The 52.292-second
@@ -81,7 +88,12 @@ Existing valid product/model/media observations retain their original limits.
 
 ## Validation and acceptance
 
-Final committed-clean selection: pending. Directly invalidated focused tests
+**Verified:** `completion-i31 --require-clean` passed **140/140 case edges**
+and **30/30 actual physical methods** at clean
+`b7875a5b06414d711ef0ed2e94d54d3e87423411`, exit zero, no substitution gaps.
+[ACCEPTANCE.json](ACCEPTANCE.json) records the actual native receipt, exact
+selection and closed findings. All five finding groups are closed; no open
+iteration-31 verification finding remains. Directly invalidated focused tests
 passed after repair. The initial focused population failures are retained: the
 new adapter first omitted the open-conflict diagnostic, then split a native
 namespace at `/` instead of separating its `::` method. The corrected population
@@ -98,3 +110,5 @@ Semantic lookup was attempted from this exact worktree: no index exists for
 is not needed for these known audit/test files; no semantic/IDE evidence is claimed.
 No deployment/postdeployment, PBT, financial operation, paid credit, overage,
 installation, acquisition or publication occurred.
+
+The canonical I31.V1–V3 verification tasks are complete. The superseding acceptance and report bookkeeping are committed separately; no unchanged behavior test is rerun for that bookkeeping.
