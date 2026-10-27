@@ -99,12 +99,73 @@ class OverlapEvidence(unittest.TestCase):
   facts=read(OUT/'browser-observations.json');self.assertEqual({(1280,720),(390,844),(320,740)},{(r['width'],r['height']) for r in facts['layouts']})
   for row in facts['layouts']:self.assertFalse(row['overflow']);self.assertEqual(row['size'],'17px');self.assertEqual(row['lineHeight'],'24.65px');self.assertEqual(row['caption'],'14px')
   self.assertTrue(any(any(a['id']=='clip3' and not a['paused'] and a['time']>0 and a['error'] is None for a in row) for row in facts['playback']))
+ def test_native_range_positive(self):
+  self.require_native(['TestNativeOverlapObstructive','TestNativeOverlapCooperative'])
+  for kind in ['obstructive','cooperative_backchannel']:
+   d,p,source,mixed=scene(kind);r=read(d/'observation.json')['stored_range'];o=p['composition']['overlaps'][0]
+   self.assertEqual((r['start_byte'],r['end_byte_exclusive'],r['status']),(44+2*o['final_start'],44+2*o['final_end'],206))
+ def test_impossible_range_negative(self):
+  for kind in ['obstructive','cooperative_backchannel']:self.assertEqual(read(SELECTED/kind/'observation.json')['stored_range']['invalid_status'],416)
+ def test_quality_nonblocking_positive(self):
+  self.require_native(['TestNativeSpeechQualityMeasuredPositive','TestNativeSpeechQualityWarningPositive','TestNativeSpeechQualityUnavailableNegative','TestNativeSpeechQualityMalformedNegative'])
+ def test_listening_browser_positive(self):
+  facts=read(OUT/'listening-browser.json');self.assertEqual({(1280,720),(390,844),(320,740)},{(r['width'],r['height']) for r in facts['layouts']})
+  for row in facts['layouts']:self.assertFalse(row['overflow']);self.assertIn('Source Sans 3',row['font']);self.assertEqual(row['size'],'17px');self.assertEqual(row['lineHeight'],'24.65px');self.assertEqual(row['caption'],'15px')
+  obs={r['kind']:r for r in facts['observations']}
+  for kind,start,end,limit in [('masked-passage-stop',1.9,2.45,2.8),('cooperative-passage-stop',2.875,3.75,4.1)]:
+   row=obs[kind];self.assertTrue(row['paused']);self.assertIsNone(row['error']);self.assertGreaterEqual(row['time'],end);self.assertLess(row['time'],limit)
+  row=obs['keyboard-replay'];self.assertEqual(row['focus'],'Replay passage 1.1');self.assertEqual(row['outline'],'3px');self.assertFalse(row['paused']);self.assertGreaterEqual(row['time'],1.9);self.assertLess(row['time'],2.45)
+  row=obs['cooperative-full-playback'];self.assertTrue(row['ended']);self.assertEqual(row['time'],5.325);self.assertIsNone(row['error'])
+ def test_transient_read_recovery_positive(self):
+  events=[readline for line in (OUT/'listening-requests.jsonl').read_text().splitlines() if (readline:=json.loads(line))['method']=='GET' and readline['path']=='/api/v1/attempts/11111111-1111-4111-8111-111111111132']
+  self.assertEqual([e['status'] for e in events],[200,503,503,200,503,503,503,200])
+  obs={r['kind']:r for r in read(OUT/'listening-browser.json')['observations']}
+  for kind in ['transient-read-recovered','keyboard-refresh-recovered']:
+   row=obs[kind];self.assertEqual(row['alerts'],[]);self.assertEqual(row['status'],['Saved state refreshed.']);self.assertTrue(row['paused']);self.assertEqual(row['answer'],'B interrupts the warning. B should wait until A finishes.');self.assertEqual(row['score'],'Primary score: 100.0 / 100')
+  self.assertEqual(obs['keyboard-refresh-recovered']['outline'],'3px')
+ def test_technical_error_negative(self):
+  row=next(r for r in read(OUT/'listening-browser.json')['observations'] if r['kind']=='persistent-read-guidance')
+  self.assertEqual(row['alerts'],['Saved attempt is unavailable. Your text is retained. Refresh to retry.']);self.assertTrue(row['refresh']);self.assertEqual(row['score'],'Primary score: 100.0 / 100');self.assertEqual(row['answer'],'B interrupts the warning. B should wait until A finishes.');self.assertTrue(row['paused'])
+  self.assertNotIn('PRIVATE_NATIVE_CANARY',' '.join(row['alerts']))
+ def test_ordinary_playback_no_dispatch_negative(self):
+  events=[json.loads(line) for line in (OUT/'listening-requests.jsonl').read_text().splitlines()]
+  self.assertTrue(events)
+  self.assertTrue(all(e['method']=='GET' or (e['method']=='POST' and '/playback' in e['path']) for e in events))
+  obs=next(r for r in read(OUT/'listening-browser.json')['observations'] if r['kind']=='cooperative-open-no-autoplay');self.assertTrue(obs['paused']);self.assertEqual(obs['time'],0);self.assertIn('Found 0 of 0 mistakes',obs['counts'])
+  for id,kind in [('11111111-1111-4111-8111-111111111132','obstructive'),('22222222-2222-4222-8222-222222222232','cooperative_backchannel')]:
+   sha=hashlib.sha256((SELECTED/kind/'mixed.wav').read_bytes()).hexdigest();self.assertTrue(any(e.get('served_sha256')==sha and id in e['path'] for e in events))
+ def test_video_positive(self):
+  frames=read(OUT/'verify-frames.json');description=read(OUT/'video-description.json');probe=read(OUT/'video-probe.json')
+  self.assertEqual(len(frames),42);self.assertEqual(description['frame_count'],len(frames));self.assertTrue(all((OUT/f'verify-frames/frame-{i:05d}.jpg').stat().st_size>1000 for i in range(len(frames))))
+  stream=next(s for s in probe['streams'] if s['codec_type']=='video');self.assertEqual((stream['width'],stream['height']),(1280,844));self.assertEqual(stream['codec_name'],'h264');self.assertGreater(float(probe['format']['duration']),10)
+ def test_video_claims_negative(self):
+  probe=read(OUT/'video-probe.json');self.assertFalse([s for s in probe['streams'] if s['codec_type']=='audio'])
+  description=read(OUT/'video-description.json');self.assertIn('Silent browser video',description['audio']);self.assertIn('not a new generated full flow',description['ui_boundary']);self.assertIn('static waits',description['cuts'])
+ def test_frozen_failure_policy_positive(self):
+  self.require_native(['TestOverlapFixedFailureNegative','TestOverlapRecoverableFailurePositive','TestOverlapFixedFailureResponseNegative','TestNativeOverlapMissingTimingRecovery'])
+  d=SELECTED/'obstructive-missing-timing';p=read(d/'preparation.json');progress=read(d/'progress.json')
+  self.assertEqual(p['phase_states']['render'],'failed');self.assertFalse(p['last_failure']['retryable']);self.assertEqual(p['last_failure']['code'],'CAPABILITY_UNQUALIFIED');self.assertEqual(len(progress['pieces']),2);self.assertTrue(all(x['state']=='complete' and x['asset_id'] for x in progress['pieces']))
+ def test_frozen_failure_retry_negative(self):
+  p=read(SELECTED/'obstructive-missing-timing/preparation.json');self.assertNotIn('ALIGNMENT_UNAVAILABLE',p['last_failure']['message']);self.assertIn('compatible speech voice',p['last_failure']['message']);self.assertIsNone(p['audio_asset_id'])
+ def test_fixed_recovery_browser_positive(self):
+  facts=read(OUT/'recovery-browser.json');self.assertEqual({(route,w) for route in ['/prepare','/audio'] for w in [1280,390,320]},{(r['route'],r['width']) for r in facts['views']})
+  for row in facts['views']:self.assertFalse(row['overflow']);self.assertEqual(row['size'],'17px');self.assertEqual(row['lineHeight'],'24.65px');self.assertIn('Source Sans 3',row['font']);self.assertEqual(len(row['articles']),3)
+  actions={r['kind']:r for r in facts['actions']};self.assertEqual(actions['new-exercise-link']['hash'],'#main-content');self.assertEqual(actions['new-exercise-link']['topic'],'My retained safety conversation');self.assertEqual(actions['keyboard-topic-focus']['label'],'Topic');self.assertEqual(actions['keyboard-topic-focus']['value'],'A preserved topic for the next exercise');self.assertEqual(actions['keyboard-topic-focus']['outline'],'3px')
+ def test_fixed_recovery_no_resume_negative(self):
+  for row in read(OUT/'recovery-browser.json')['views']:
+   for a in row['articles'][:2]:
+    self.assertEqual(a['buttons'],[]);self.assertEqual(a['links'][0]['text'],'Prepare a new exercise');self.assertIn('compatible voice or different speech settings',a['alerts'][0]);self.assertNotIn('Ready to assemble',a['text']);self.assertNotIn('PRIVATE_NATIVE_CANARY',a['text'])
+   transient=row['articles'][2];self.assertEqual(transient['buttons'],[dict(text='Resume exercise' if row['route']=='/prepare' else 'Resume audio',disabled=False)]);self.assertIn('resume this exercise explicitly',transient['alerts'][0])
+ def test_recovery_video_positive(self):
+  desc=read(OUT/'recovery-video-description.json');frames=read(OUT/'recovery-frames.json');probe=read(OUT/'recovery-video-probe.json');self.assertEqual(desc['frame_count'],25);self.assertEqual(len(frames),25);self.assertFalse([s for s in probe['streams'] if s['codec_type']=='audio']);self.assertIn('read-only HTTP boundary',desc['boundary']);self.assertGreater(float(probe['format']['duration']),5)
  def test_native_owner_positive(self):
   packet=read(OUT/'OBSERVATIONS.json')
   for cohort in packet['cohorts']:
    self.assertEqual(cohort['exit_code'],0)
    raw=ROOT/cohort['stdout'];self.assertEqual(hashlib.sha256(raw.read_bytes()).hexdigest(),cohort['stdout_sha256'])
    events=[json.loads(line) for line in raw.read_text().splitlines() if line.startswith('{')]
+   if cohort['kind']=='contracts-lab':
+    self.assertTrue({e['Package'] for e in events}<= {'tangerine.local/api/internal/contracts','tangerine.local/api/internal/lab'});self.assertTrue(all(not k.startswith('services/api/internal/app/') for k in cohort['source_sha256']));self.assertTrue(cohort['original_non_dependency_bindings'])
    self.assertFalse([e for e in events if e['Action'] in ['fail','skip']]);observed={e['Package']+'::'+e['Test'] for e in events if e.get('Test') and e['Action']=='pass'}
    self.assertEqual(set(cohort['test_ids']),observed)
    for name,digest in cohort['source_sha256'].items():self.assertEqual(hashlib.sha256((ROOT/name).read_bytes()).hexdigest(),digest,name)

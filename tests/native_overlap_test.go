@@ -58,9 +58,12 @@ func overlapScene(t *testing.T, id, kind string, mutation bool) map[string]any {
 	}
 	return c
 }
-func nativeOverlap(t *testing.T, kind string, interrupt bool) {
+func nativeOverlap(t *testing.T, kind string, interrupt, missingTiming bool) {
 	ctx := context.Background()
 	dir := filepath.Join(os.Getenv("TANGERINE_PREPARATION_TEST_EVIDENCE"), kind)
+	if missingTiming {
+		dir += "-missing-timing"
+	}
 	overlapCheck(t, os.MkdirAll(dir, 0700))
 	cache := os.Getenv("TANGERINE_OVERLAP_RECORDINGS")
 	overlapCheck(t, os.MkdirAll(cache, 0700))
@@ -118,6 +121,12 @@ func nativeOverlap(t *testing.T, kind string, interrupt bool) {
 			path := filepath.Join(cache, key+".json")
 			cached, err := os.ReadFile(path)
 			if err == nil {
+				if missingTiming {
+					var value map[string]any
+					overlapCheck(t, json.Unmarshal(cached, &value))
+					value["receipt"].(map[string]any)["native"].(map[string]any)["decoder"] = []any{}
+					cached = overlapJSON(value)
+				}
 				w.Header().Set("Content-Type", "application/json")
 				_, _ = w.Write(cached)
 				return
@@ -164,11 +173,25 @@ func nativeOverlap(t *testing.T, kind string, interrupt bool) {
 	s.speechToken = "actual-local-speech-test"
 	action := uuid.NewString()
 	p, e = s.RenderPreparation(renderCtx, id, action, 1, nil)
+	if missingTiming {
+		code, _ := speechPublicFailure(e)
+		failure := p["last_failure"].(map[string]any)
+		progress := speechProgress(t, s, p)
+		if e == nil || code != "CAPABILITY_UNQUALIFIED" || failure["retryable"] != false || speechProgressSummary(progress)["complete_pieces"] != 2 || modelCalls.Load() != 0 {
+			t.Fatal("fixed timing failure lost saved sources or promised ineffective retry", p, e, progress)
+		}
+		overlapCheck(t, os.WriteFile(filepath.Join(dir, "preparation.json"), overlapJSON(p), 0600))
+		overlapCheck(t, os.WriteFile(filepath.Join(dir, "progress.json"), overlapJSON(progress), 0600))
+		return
+	}
 	if interrupt {
 		if e == nil {
 			t.Fatal("test-owned cancellation did not interrupt finalization")
 		}
 		before := speechProgress(t, s, p)
+		if p["last_failure"].(map[string]any)["retryable"] != true {
+			t.Fatal("foreground interruption lost resume", p)
+		}
 		if before["composition"] == nil || before["assembled_asset_id"] != nil {
 			t.Fatal("resolved composition not durable before mixing", before)
 		}
@@ -256,6 +279,23 @@ func nativeOverlap(t *testing.T, kind string, interrupt bool) {
 	if playback.Code != 200 || !bytes.Equal(playback.Body.Bytes(), audio) {
 		t.Fatal("stored playback mismatch")
 	}
+	// Byte ranges cross the selected shared passage in the *stored mixed*
+	// recording, not either source or the obsolete sequential second turn.
+	from, until := 44+o.Start*2, 44+o.End*2
+	ranged := httptest.NewRecorder()
+	rangeReq := httptest.NewRequest("GET", "/audio", nil)
+	rangeReq.SetPathValue("id", id)
+	rangeReq.Header.Set("Range", fmt.Sprintf("bytes=%d-%d", from, until-1))
+	s.speechPlayback(ranged, rangeReq)
+	if ranged.Code != http.StatusPartialContent || !bytes.Equal(ranged.Body.Bytes(), audio[from:until]) || ranged.Header().Get("Content-Range") != fmt.Sprintf("bytes %d-%d/%d", from, until-1, len(audio)) {
+		t.Fatal("stored concurrent passage range mismatch", ranged.Code, ranged.Header())
+	}
+	invalidRange := httptest.NewRecorder()
+	rangeReq.Header.Set("Range", fmt.Sprintf("bytes=%d-", len(audio)+1))
+	s.speechPlayback(invalidRange, rangeReq)
+	if invalidRange.Code != http.StatusRequestedRangeNotSatisfiable {
+		t.Fatal("impossible range was served as a successful recording", invalidRange.Code)
+	}
 	calls := pieceCalls.Load()
 	restarted := NewServer(preparationNative(t), s.Origin, "http://unreachable.invalid")
 	again, e := restarted.RenderPreparation(ctx, id, uuid.NewString(), 3, nil)
@@ -263,7 +303,7 @@ func nativeOverlap(t *testing.T, kind string, interrupt bool) {
 	if again["audio_asset_id"] != p["audio_asset_id"] || pieceCalls.Load() != calls {
 		t.Fatal("reopen dispatched synthesis")
 	}
-	for name, value := range map[string]any{"progress.json": progress, "preparation.json": p, "score.json": result, "observation.json": map[string]any{"origin": "actual-local-recordings-constructed-text-semantic-decisions", "piece_requests": pieceCalls.Load(), "new_local_recordings": modelCalls.Load(), "context": "saved generated utterances, target scope, actual decoder-derived timing; no auditory judge", "resume_tested": interrupt}} {
+	for name, value := range map[string]any{"progress.json": progress, "preparation.json": p, "score.json": result, "observation.json": map[string]any{"origin": "actual-local-recordings-constructed-text-semantic-decisions", "piece_requests": pieceCalls.Load(), "new_local_recordings": modelCalls.Load(), "context": "saved generated utterances, target scope, actual decoder-derived timing; no auditory judge", "resume_tested": interrupt, "stored_range": map[string]any{"start_byte": from, "end_byte_exclusive": until, "status": ranged.Code, "invalid_status": invalidRange.Code}}} {
 		overlapCheck(t, os.WriteFile(filepath.Join(dir, name), overlapJSON(value), 0600))
 	}
 	for kind, value := range map[string]any{"render-progress": progress, "speech-composition": compositionValue(comp)} {
@@ -283,5 +323,10 @@ func mathRound(v float64) float64 {
 	}
 	return float64(int64(v + .5))
 }
-func TestNativeOverlapObstructive(t *testing.T) { nativeOverlap(t, "obstructive", true) }
-func TestNativeOverlapCooperative(t *testing.T) { nativeOverlap(t, "cooperative_backchannel", false) }
+func TestNativeOverlapObstructive(t *testing.T) { nativeOverlap(t, "obstructive", true, false) }
+func TestNativeOverlapCooperative(t *testing.T) {
+	nativeOverlap(t, "cooperative_backchannel", false, false)
+}
+func TestNativeOverlapMissingTimingRecovery(t *testing.T) {
+	nativeOverlap(t, "obstructive", false, true)
+}

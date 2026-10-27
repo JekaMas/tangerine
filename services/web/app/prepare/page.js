@@ -7,6 +7,7 @@ import RequestPreview from './RequestPreview';
 import Icon from '../Icon';
 import {mistakeFamilies} from './request';
 import SavedFailure from './SavedFailure';
+import {fixedSpeechFailure} from './failureMessage.js';
 import {recordDate, recordTitle} from '../savedRecord';
 
 function RequestSummary({request,categories}) {
@@ -29,7 +30,7 @@ export default function Prepare() {
       {(error||notice)&&<div className="preparation-feedback">{error&&<p className="error" role="alert">{error}</p>}{notice&&<p role="status">{notice}</p>}</div>}
       </Controls>
     </form></section>
-    <section id="saved-preparations" className="card saved-preparations"><div className="row"><div><h2>Saved preparations</h2><p className="field-help">Your progress is saved. Resume any unfinished exercise.</p></div><RefreshButton onClick={() => refresh()}>Refresh</RefreshButton></div>
+    <section id="saved-preparations" className="card saved-preparations"><div className="row"><div><h2>Saved preparations</h2><p className="field-help">Your progress is saved. Continue a saved exercise or prepare another.</p></div><RefreshButton onClick={() => refresh()}>Refresh</RefreshButton></div>
       {listLoading&&<p role="status">Loading saved preparations…</p>}
       {listError&&<p className="error" role="alert">{listError}</p>}
       {listLoaded&&!listLoading&&!listError&&!items.length&&<p>No saved preparations yet.</p>}
@@ -39,7 +40,7 @@ export default function Prepare() {
         {item.canonical_word_count != null && <p>Clean text: {item.canonical_word_count} words{item.surface_word_count != null ? ` · With mutations: ${item.surface_word_count} words` : ''}</p>}
         {item.render_progress_summary?.total_pieces > 0 && <p>{item.render_progress_summary.complete_pieces}/{item.render_progress_summary.total_pieces} audio pieces saved</p>}
         <SavedFailure item={item}/>
-        {item.audio_available ? <a href="/">Open the Library to listen and answer</a> : <button disabled={busy} onClick={() => generate(item.id)}>Resume exercise</button>}<details><summary>Record details</summary><p>Preparation: {item.id}</p><p>Original date: {item.created_at||'unavailable'}</p></details>
+        {item.audio_available ? <a href="/">Open the Library to listen and answer</a> : fixedSpeechFailure(item) ? <a href="#main-content">Prepare a new exercise</a> : <button disabled={busy} onClick={() => generate(item.id)}>Resume exercise</button>}<details><summary>Record details</summary><p>Preparation: {item.id}</p><p>Original date: {item.created_at||'unavailable'}</p></details>
       </article>)}
       {cursor && <button disabled={busy} onClick={() => refresh(true)}>Load more</button>}
     </section>

@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/binary"
 	"encoding/json"
+	"net/http/httptest"
 	"strings"
 	"tangerine.local/api/internal/contracts"
 	"testing"
@@ -246,8 +247,33 @@ func TestOverlapSchemaNegative(t *testing.T) {
 }
 func TestOverlapPublicFailureNegative(t *testing.T) {
 	code, message := speechPublicFailure(compositionFailure("AUDIO_CLIPPING"))
-	if code != "PROVIDER_OUTPUT_INVALID" || strings.Contains(message, "AUDIO_CLIPPING") || !strings.Contains(message, "saved") {
+	if code != "PROVIDER_OUTPUT_INVALID" || strings.Contains(message, "AUDIO_CLIPPING") || !strings.Contains(message, "saved") || !strings.Contains(message, "new exercise") {
 		t.Fatal(code, message)
+	}
+}
+func TestOverlapFixedFailureNegative(t *testing.T) {
+	for _, code := range []string{"AUDIO_CLIPPING", "ALIGNMENT_UNAVAILABLE"} {
+		if speechRetryable(compositionFailure(code)) {
+			t.Fatal("repeating frozen inputs was advertised as repair", code)
+		}
+	}
+}
+func TestOverlapRecoverableFailurePositive(t *testing.T) {
+	for _, code := range []string{"SPEECH_UNAVAILABLE", "SPEECH_TIMEOUT", "MODEL_SETUP_REQUIRED", "MISSING_CREDENTIALS", "CANCELLED"} {
+		if !speechRetryable(compositionFailure(code)) {
+			t.Fatal("recoverable saved work lost resume", code)
+		}
+	}
+}
+func TestOverlapFixedFailureResponseNegative(t *testing.T) {
+	code, message := speechPublicFailure(compositionFailure("ALIGNMENT_UNAVAILABLE"))
+	p := map[string]any{"id": "saved", "phase_states": map[string]any{"render": "failed"}, "last_failure": map[string]any{"code": code, "message": message, "retryable": false}}
+	w := httptest.NewRecorder()
+	(&Server{}).generationResponse(w, p, compositionFailure("ALIGNMENT_UNAVAILABLE"))
+	var body map[string]any
+	_ = json.Unmarshal(w.Body.Bytes(), &body)
+	if body["retryable"] != false || body["code"] != "CAPABILITY_UNQUALIFIED" || strings.Contains(body["message"].(string), "ALIGNMENT_UNAVAILABLE") || !strings.Contains(body["message"].(string), "compatible speech voice") {
+		t.Fatal("immediate response contradicted the saved recovery action", body)
 	}
 }
 func TestOverlapFutureNativeClockNegative(t *testing.T) {

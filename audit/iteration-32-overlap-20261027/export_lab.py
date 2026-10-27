@@ -7,15 +7,17 @@ def call(args):
  if p.returncode:raise RuntimeError(p.stderr[-1500:])
  return p.stdout
 def main():
- stage=OUT/'lab-export';stage.mkdir(exist_ok=True)
+ stage=OUT/'lab-verify-export';stage.mkdir(exist_ok=True)
  for name in ['selected','recordings']:shutil.copytree(OUT/name,stage/name,dirs_exist_ok=True)
- for name in ['go-stable.jsonl','native-stable.jsonl','OBSERVATIONS.json','browser-observations.json','asr.log','player-desktop.jpg','player-mobile-390.jpg','player-mobile-320.jpg','spec-check.json']:shutil.copy2(OUT/name,stage/name)
+ for name in ['OBSERVATIONS.json','browser-observations.json','listening-browser.json','listening-requests.jsonl','video-description.json','video-probe.json','tangerine-i32-ui-review.mp4','asr.log','player-desktop.jpg','player-mobile-390.jpg','player-mobile-320.jpg','listen-desktop-top.jpg','listen-mobile-390.jpg','listen-mobile-320.jpg','listen-recovery-mobile.jpg','spec-check.json','recovery-browser.json','recovery-video-description.json','recovery-video-probe.json','tangerine-i32-recovery-review.mp4','fixed-prepare-1280.jpg','fixed-prepare-320.jpg','fixed-audio-1280.jpg','fixed-audio-320.jpg']:shutil.copy2(OUT/name,stage/name)
+ for cohort in json.loads((OUT/'OBSERVATIONS.json').read_text())['cohorts']:
+  source=ROOT/cohort['stdout'];shutil.copy2(source,stage/source.name)
  for path in [*ROOT.glob('services/api/internal/app/*overlap*.go'),*ROOT.glob('services/api/internal/app/speech*.go'),ROOT/'services/api/internal/lab/builtin.json',ROOT/'specification/v2/prompts/generate-v1.txt',ROOT/'tests/native_overlap_test.go',ROOT/'tests/test_overlap_evidence.py']:
   target=stage/'source'/path.relative_to(ROOT);target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(path,target)
- remote='/tmp/tangerine-iteration32-overlap';call(['docker','exec',CONTAINER,'mkdir','-p',remote]);call(['docker','cp',str(stage)+'/.',CONTAINER+':'+remote])
+ remote='/tmp/tangerine-iteration32-overlap-verify';call(['docker','exec',CONTAINER,'mkdir','-p',remote]);call(['docker','cp',str(stage)+'/.',CONTAINER+':'+remote])
  code='''import json,pathlib
 from mlflow import MlflowClient
-root=pathlib.Path('/tmp/tangerine-iteration32-overlap');c=MlflowClient(tracking_uri='http://127.0.0.1:5000')
+root=pathlib.Path('/tmp/tangerine-iteration32-overlap-verify');c=MlflowClient(tracking_uri='http://127.0.0.1:5000')
 name='Tangerine I32 - actual local overlapping speech';e=c.get_experiment_by_name(name);eid=e.experiment_id if e else c.create_experiment(name)
 r=c.create_run(eid,tags={'tangerine.scope':'Two authored native speech scenes; exact waveform/clock/resume and finite independent local recognition','tangerine.model_observation':'4 actual local Kokoro source recordings and 4 local Whisper recognitions; original contexts/receipts retained','tangerine.semantic_origin':'Constructed text and scoring decisions; no hosted semantic qualification','tangerine.paid_provider_calls':'0','tangerine.performance_campaign':'excluded'})
 c.log_artifacts(r.info.run_id,str(root),artifact_path='evidence')
@@ -26,7 +28,7 @@ def walk(p):
   if item.is_dir:walk(item.path)
   else:files.append(item.path)
 walk('evidence');checked=[]
-for name in ['selected/obstructive/key.json','selected/obstructive/mixed.wav','selected/cooperative_backchannel/key.json','selected/cooperative_backchannel/mixed.wav','selected/obstructive/mixed.wav.asr.json','selected/cooperative_backchannel/mixed.wav.asr.json','OBSERVATIONS.json']:
+for name in ['selected/obstructive/key.json','selected/obstructive/mixed.wav','selected/cooperative_backchannel/key.json','selected/cooperative_backchannel/mixed.wav','selected/obstructive/mixed.wav.asr.json','selected/cooperative_backchannel/mixed.wav.asr.json','OBSERVATIONS.json','native-recovery.jsonl','listening-browser.json','tangerine-i32-ui-review.mp4','recovery-browser.json','tangerine-i32-recovery-review.mp4']:
  p=pathlib.Path(c.download_artifacts(r.info.run_id,'evidence/'+name,'/tmp/tangerine-i32-readback'));assert p.read_bytes()==(root/name).read_bytes();checked.append(name)
 c.set_terminated(r.info.run_id);print('TANGERINE_RESULT='+json.dumps(dict(experiment_id=eid,run_id=r.info.run_id,status=c.get_run(r.info.run_id).info.status,artifact_files=len(files),checked=checked,readback=True,export_inference_calls=0,actual_local_tts_calls=4,actual_local_asr_calls=4,hosted_llm_calls=0)))
 '''

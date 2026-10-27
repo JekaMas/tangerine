@@ -66,3 +66,11 @@ Development evidence distinguishes exact waveform arithmetic, actual local
 recordings, contextual authored labels and independent local recognition.
 Synthesis intent or a loudness ratio alone does not prove complete perceptual
 masking. Finite observed recordings do not qualify every future voice/phrase.
+
+A clipped composition or missing narrow word timing on accepted recordings is
+a fixed failure for those frozen speech inputs. Retain the work, log the cause
+and mark the saved failure non-retryable. Prepare and Saved audio use one authored
+action/message projection: offer a new exercise with compatible speech settings,
+rather than repeatedly resuming the same impossible mix. Temporary service or
+setup failures, and foreground interruption, remain resumable. No backend detail
+is displayed; no provider, saved voice or gain changes automatically.

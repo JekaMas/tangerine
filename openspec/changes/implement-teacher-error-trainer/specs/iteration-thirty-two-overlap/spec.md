@@ -13,7 +13,7 @@ The application SHALL implement ENG-01 through the production sample-domain comp
 
 #### Scenario: I32 Concurrent clocks and persisted recovery
 - **WHEN** composition resolves selected words against actual accepted source timing
-- **THEN** both source mappings and concurrent key intervals survive; split pieces and subsequent turns retain their clocks, and interruption/restart reuses the saved composition/sources without guessed timing or repeated synthesis
+- **THEN** both source mappings and concurrent key intervals survive; split pieces and subsequent turns retain their clocks, and interruption/restart reuses the saved composition/sources without guessed timing or repeated synthesis; fixed clipping/missing-word-timing outcomes retain saved work and offer a new exercise, while temporary failures keep Resume
 
 #### Scenario: I32 Actual obstructive and cooperative recordings
 - **WHEN** actual local recordings realize an explicitly protected safety instruction or an invited brief acknowledgment

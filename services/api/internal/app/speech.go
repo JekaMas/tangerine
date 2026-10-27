@@ -77,7 +77,7 @@ func (s *Server) RenderPreparation(ctx context.Context, id, key string, attempt 
 	if callErr != nil {
 		code, message := speechPublicFailure(callErr)
 		states["render"] = "failed"
-		p["last_failure"] = map[string]any{"code": code, "message": message, "request_id": op.ID, "retryable": true, "object_id": nil, "details": []any{}}
+		p["last_failure"] = map[string]any{"code": code, "message": message, "request_id": op.ID, "retryable": speechRetryable(callErr), "object_id": nil, "details": []any{}}
 	} else {
 		states["render"] = "complete"
 		p["last_failure"] = nil

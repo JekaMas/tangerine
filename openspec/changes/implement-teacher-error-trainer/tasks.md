@@ -1453,3 +1453,9 @@ Iteration 31 superseding verify acceptance: `completion-i31 --require-clean`, 14
 - [ ] I32.5 Review changed owners and siblings, reconcile graph/discovery and valid retained evidence, pass selected committed-clean acceptance and commit.
 
 Resume record: audit/iteration-32-overlap-20261027/PROGRESS.md. Scope is ENG-01 / ALL-AUDIT.2.
+
+Iteration 32 verification repairs:
+
+- [ ] I32.V1 Establish exact native206/416 stored range evidence and ordinary Listen/results replay/retry observations without new inference.
+- [ ] I32.V2 Repair fixed frozen speech failure guidance/actions through one recovery owner; test Prepare/Audio, transient/setup/interruption siblings, responsive typography and keyboard paths with pictures/video.
+- [ ] I32.V3 Reconcile exact actual native/package dependency evidence, preserve original failures and scope limits, pass the full committed-clean I32 selection and commit acceptance.

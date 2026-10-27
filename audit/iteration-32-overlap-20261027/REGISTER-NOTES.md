@@ -26,3 +26,14 @@ Review findings repaired in the implementation batch:
 - New overlap clipping failure needed authored recovery text; cover it explicitly.
 - Source map rows require final-clock sorting while retaining concurrent sources;
   sort the rows once during assembly, without validating saved audio again.
+
+Verify dependency correction: the original contracts/Lab recorder overcaptured
+21 application files beside its true package dependencies. The actual59 tests
+are only internal/contracts and internal/lab; lab imports contracts, neither
+imports app or embeds app data. Removed that non-dependency from the active
+source binding while retaining every original excluded hash in
+OBSERVATIONS.original_non_dependency_bindings. No old hash was refreshed, and
+no unchanged contract/Lab test was repeated. The initial39-case evidence run
+failed on this overly broad recorder binding, not application behavior; its
+original output remains visible. The current native-owner assertion checks the
+actual two-package population and corrected scope.

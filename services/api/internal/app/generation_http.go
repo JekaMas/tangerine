@@ -80,6 +80,11 @@ func (s *Server) generationResponse(w http.ResponseWriter, p map[string]any, e e
 	result := map[string]any{"code": code, "message": message, "retryable": true}
 	if p != nil {
 		result["preparation"] = speechSummary(p)
+		if failure, ok := p["last_failure"].(map[string]any); ok && failure["retryable"] == false {
+			result["retryable"] = false
+			result["code"] = failure["code"]
+			result["message"] = failure["message"]
+		}
 	}
 	writeJSON(w, status, result)
 }

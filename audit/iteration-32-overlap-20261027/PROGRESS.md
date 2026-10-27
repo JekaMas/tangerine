@@ -48,3 +48,47 @@ closure, sibling error/recovery cases and actual media evidence; add ordinary
 stored playback screenshots and a video. No deployment, PBT, financial or
 provider execution. Existing valid native/Go/ASR observations remain retained;
 only changed semantic inputs invalidate their dependent checks.
+
+Implementation checkpoint committed at3bde1fb. Verify found one missing native
+assertion: stored HTTP range playback was stated but only the full response
+was checked. Native overlap tests now assert206 and exact selected mixed bytes,
+Content-Range and416 for an impossible range. This invalidates only the native
+cohort's changed test input; production and138+59 retained observations are
+unchanged. Check sibling advisory quality failure/warning/malformed/measured
+paths through the now changed assembly dependency. Frontend source is identical
+to downloaded release4558af1; the existing source-built isolated web is reusable.
+
+Fresh verify: native6/6 passed (two overlap scenes with206/exact bytes/416,
+four advisory quality siblings), actual session72879 exit0. New recordings0;
+latest native WAVs equal the originally recognized audio exactly. Ordinary
+unchanged Next Listen/results inspected through a read-only controlled fixture
+transport using those native WAV/key/score records. This does not fabricate a
+new durable learner attempt or LLM feedback observation. Keyboard replay and
+refresh, mobile menu,320/390/1280 layouts,503→503→200 transparent recovery,
+persistent3-read failure and authored guidance observed. Saved answer/score/audio
+remain; no backend canary displayed and no write except labelled playback ack.
+No production repair emerged from these observations.
+
+Final recovery trace exposed a real sibling UX defect: fixed clipping or absent
+word timing on frozen recordings was persisted retryable=true, and immediate/
+Prepare/Audio guidance offered ineffective Resume. Repaired speechRetryable at
+the speech outcome owner, shared fixedSpeechFailure/failureMessage UI projection
+and both action lists; immediate generation response now agrees with saved state.
+No new numerical/data audit. Native missing-timing negative retains both actual
+source recordings with retryable=false; interrupted source reuse stays true.
+New narrow policy/response/helper/browser tests plus existing directly dependent
+recovery siblings are selected. Speech outcome/response production changes
+invalidate the former Go/native source-bound cohorts; contract/Lab59 remains
+unchanged. Existing Listen replay/screens/video retain their unchanged owners.
+
+Final stable repair inputs: speechRetryable/speechPublicFailure, immediate
+generation response, shared frontend fixed-failure projection and Prepare/Audio
+actions. Go144/native7 passed after those changes; contract/Lab59 valid greens
+reused with corrected explicit package dependency scope. JS helper/sibling52
+passed. Actual final frontend build and six fixed/transient responsive views
+with two keyboard continuation observations are retained. Model calls during
+verify remain0.39 DAG cases registered across all five properties.
+Final390 structural assertions pass after one required vector refresh; strict
+1.13.1 and graph/discovery pass. Remaining: final lint/metadata readback, commit
+stable code/evidence, execute selected --require-clean, record acceptance and
+check canonical tasks, acceptance-only commit and final clean readback.

@@ -1,4 +1,5 @@
 import {requestError,userError} from '../requestError.js';
+import {failureMessage,fixedSpeechFailure} from './failureMessage.js';
 
 // Own preparation transport messages. Only authored guidance reaches the page.
 const messages = {
@@ -20,6 +21,6 @@ export async function preparationResponse(response) {
     requestError(error); // Redacted diagnostic; never call this a user JSON error.
     throw userError('The local service returned an unreadable response. Your choices are retained. Refresh saved preparations before trying again.');
   }
-  if (!response.ok) throw userError(messages[data?.code] || incomplete);
+  if (!response.ok) throw userError(fixedSpeechFailure(data?.preparation) ? failureMessage(data.preparation) : messages[data?.code] || incomplete);
   return data;
 }

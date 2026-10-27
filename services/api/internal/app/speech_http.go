@@ -72,7 +72,10 @@ func speechSummary(p map[string]any) map[string]any {
 func speechPublicFailure(err error) (string, string) {
 	code, _ := provider.SafeError(err)
 	if code == "AUDIO_CLIPPING" {
-		return "PROVIDER_OUTPUT_INVALID", "The overlapping voices could not be combined clearly. Your saved text and audio are kept. Try a different voice or prepare a new version."
+		return "PROVIDER_OUTPUT_INVALID", "The overlapping voices could not be combined clearly. Your saved text and audio are kept. Prepare a new exercise with different speech settings."
+	}
+	if code == "ALIGNMENT_UNAVAILABLE" {
+		return "CAPABILITY_UNQUALIFIED", "This voice's saved recording has no usable timing for the selected words. Your saved text and audio are kept. Prepare a new exercise with a compatible speech voice."
 	}
 	native := code
 	switch code {
@@ -90,4 +93,12 @@ func speechPublicFailure(err error) (string, string) {
 		code = "PROVIDER_FAILURE"
 	}
 	return code, strings.ReplaceAll(strings.ToLower(native), "_", " ") + ". Saved text and completed audio pieces are retained."
+}
+
+// These accepted source recordings cannot acquire missing word timing or change
+// their frozen gains by repeating assembly. Transient service/setup failures can
+// still recover with the same accepted preparation.
+func speechRetryable(err error) bool {
+	code, _ := provider.SafeError(err)
+	return code != "AUDIO_CLIPPING" && code != "ALIGNMENT_UNAVAILABLE"
 }
