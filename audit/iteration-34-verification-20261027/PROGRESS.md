@@ -50,3 +50,13 @@ specific I32 speech-only branch limit recorded in REPORT.md.
 Next: stable graph/discovery/strict OpenSpec, inspect final diff and video,
 commit implementation/evidence, run the complete16-case I34 selector with
 --require-clean once, then record superseding acceptance and finish I34.V1–V3.
+
+## Verified completion
+
+Complete I34 selection passed16/16 cases, both commands exit0, with no skipped,
+missing or planned cases at committed-clean `f5f014fda80edd087158a7e87c0c3f00d31436a6`.
+Strict OpenSpec1.13.1 and graph/discovery pass. V1–V3 are resolved. Actual
+video frames/content and eleven Lab downloads were inspected; no new model or
+speech calls occurred. The owned gateway/tab are closed and viewport reset.
+Only acceptance/report/progress/task bookkeeping remains for the final commit;
+no semantic input to an observed behavior or structural check changes.

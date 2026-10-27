@@ -1,8 +1,10 @@
 # Iteration 34 verification — local generation repair
 
-Entry revision: `c6cfd58`; implementation: `30d4154`. The verification repairs
-and observations below are complete. The final committed-clean cohort and verdict
-are recorded in ACCEPTANCE.json after the stable commit is tested.
+**Verification passed:16/16 selected cases on committed-clean `f5f014fda80edd087158a7e87c0c3f00d31436a6`.**
+
+Entry revision: `c6cfd58`; original implementation: `30d4154`. This verdict
+supersedes the original eight-case apply acceptance for I34. The original receipt
+remains intact; [ACCEPTANCE.json](ACCEPTANCE.json) records the expanded cohort.
 
 ## Findings and repairs
 
