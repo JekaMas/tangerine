@@ -1565,12 +1565,12 @@ stopped. See audit/iteration-35-verification-20261027/ACCEPTANCE.json.
 Verification reopened the affected consumer UI after acceptance at9751fac. Native
 JFLEG import/mapping/evaluation receipts remain valid. Repairs and scope are in
 `audit/iteration-36-verification-20261027/REPORT.md`; the full selected iteration
-still needs its expanded committed-clean reconciliation.
+passed its expanded22-case committed-clean reconciliation; see the verification acceptance record.
 
-- [ ] I36.V1 Repair superseded correction-page results/errors/loading and the related issue-history ordering through their single state owners; preserve usable Refresh and existing source-row precedence.
-- [ ] I36.V2 Give explicit dataset exports independent progress/error ownership; verify actual held-download/Refresh behavior, safe failure/retry and all original/reference download strings.
-- [ ] I36.V3 Correct partial-reference wording and observe real committed partial/empty imports, keyboard/navigation, desktop/narrow typography, pictures and actual video.
-- [ ] I36.V4 Reconcile unchanged native greens plus all directly invalidated current UI/session observations, wire the eight literal regressions to I36 and accept only its complete committed-clean selection.
+- [x] I36.V1 Repair superseded correction-page results/errors/loading and the related issue-history ordering through their single state owners; preserve usable Refresh and existing source-row precedence.
+- [x] I36.V2 Give explicit dataset exports independent progress/error ownership; verify actual held-download/Refresh behavior, safe failure/retry and all original/reference download strings.
+- [x] I36.V3 Correct partial-reference wording and observe real committed partial/empty imports, keyboard/navigation, desktop/narrow typography, pictures and actual video.
+- [x] I36.V4 Reconcile unchanged native greens plus all directly invalidated current UI/session observations, wire the eight literal regressions to I36 and accept only its complete committed-clean selection.
 
 - [x] I36.1 Admit the complete pinned JFLEG release and retain every owner member/container/document; add its supplemental identity without replacing any original source scope.
 - [x] I36.2 Implement native original/ref0–3/spellchecked pairing and preserve all1501originals/6004reference positions, exact text/line/provenance, unknown/missing and duplicate/unchanged siblings.
@@ -1599,3 +1599,16 @@ invented. Imported private data are retained stopped; user app/data/settings
 remain untouched. No model/speech-provider/paid use, installs, deployment, PBT
 or publication. Other SUP-04 slices remain separate. See
 audit/iteration-36-jfleg-20261027/ACCEPTANCE.json and REPORT.md.
+
+I36 verify accepted: all22 cases across seven properties passed --require-clean
+on `a2675cbbe3aa7eca20e90ea33a77eeced732fc05`. Repairs cover correction/history read
+precedence, independent export progress/recovery and accurate partial/empty UI.
+All46 affected/current JavaScript cases pass, with33unchanged native Go race
+observations retained and2new native fixture/commit cases. Current Chrome
+source/download/retry/keyboard/reflow, typography, screenshots and actual silent
+video were inspected. Source examples retain all1501originals/6004references;
+no native import or evaluator owner changed. Six catalogues and canonical GAPS
+remain unchanged. User app/data/settings are untouched; private test data are
+retained stopped. No inference, paid use, install, deployment/postdeployment, PBT,
+financial execution or publication. See audit/iteration-36-verification-20261027/
+ACCEPTANCE.json and REPORT.md.

@@ -1,5 +1,8 @@
 # I36 verification and repair
 
+**Accepted:** all22 I36 cases across seven properties passed `--require-clean` on
+`a2675cbbe3aa7eca20e90ea33a77eeced732fc05`. Exact gate and case outcomes are in ACCEPTANCE.json.
+
 Entry: clean `0d5ba2f` in the iteration16 worktree. Verify the complete selected
 JFLEG supplement, repair findings and related source-consumer issues. This report
 supersedes the earlier conclusion for the affected UI paths; their old observations

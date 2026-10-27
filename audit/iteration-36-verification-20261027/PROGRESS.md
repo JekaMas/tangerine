@@ -36,6 +36,8 @@ report; it does not weaken completeness. One narrow initial capture was poorly
 framed; focused settled captures show the actual empty result and a single
 navigation header. These are fixture/evidence repairs, not product defects.
 
-Current checkpoint: final review/structure, stable evidence registration and
-committed-clean I36 reconciliation pending. Canonical tasks remain in the active
-OpenSpec change; no separate task list is introduced here.
+Complete: all22 I36 cases passed --require-clean at `a2675cbbe3aa7eca20e90ea33a77eeced732fc05`.
+Exact results and evidence are in ACCEPTANCE.json and RECONCILIATION.json.
+The six catalogue files and canonical GAPS are unchanged. Private dependencies
+are retained stopped; the user stack remains healthy and untouched. Canonical
+tasks remain in the active OpenSpec change; no separate task list is introduced.
