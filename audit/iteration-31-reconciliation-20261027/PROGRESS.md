@@ -172,3 +172,24 @@ before full133-edge --commands completion-i31 --require-clean acceptance.
   Commit this packet, validate affected graph/discovery registration, then run
   the full 133-edge / 23-method completion-i31 committed-clean metadata gate.
   No new runtime/provider observations or main-flow changes are claimed.
+
+## Final accepted checkpoint
+
+- `completion-i31 --require-clean` passed **133/133** selected case edges and
+  **23/23** actual metadata methods on clean
+  `4ed6dbd13322f25d979d6723b526ba94d5a466f8`; exit zero, no substitution gaps.
+- Final graph/discovery checks pass. Strict OpenSpec 1.13.1 and unchanged app
+  checks retain their valid earlier receipts; repaired scoring format/vet pass.
+- Actual evidence: five unchanged Python methods; 44 unaffected native passes
+  retained with original exit 1 and source identity; all 14 originally failed
+  native identities passed in the directed repair. No contrary result erased.
+- Final original dispositions: 234 materialized literals, 618 partial component
+  joins, 1,055 unestablished complete observations, two preserved ratio conflicts.
+  All 4,797 previously implemented case records are unchanged.
+- Canonical GAPS.md hash still matches PRESERVATION.json. Runtime/domain owners,
+  all 122 categories, 42 formulas and 11 full-source scopes are unchanged.
+- ACCEPTANCE.json and the canonical I31/ALL-AUDIT.1 completion entries record
+  this selected acceptance only. No I32–I38 application, runtime/provider call,
+  purchase, install, deployment, publication or whole-product green is claimed.
+- Final commit contains acceptance/report/progress/task bookkeeping only. No
+  valid behavioral observation is invalidated by that bookkeeping; no rerun.

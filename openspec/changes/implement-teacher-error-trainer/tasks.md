@@ -1410,7 +1410,7 @@ remaining owner/input/action and independent positive/negative expectation.
 L2 acquisition and main/publication evidence supersede only their exact earlier
 blockers. Existing acceptance boxes/receipts are not rewritten by this research.
 
-- [ ] ALL-AUDIT.1 Reconcile every historical blocked/planned DAG literal with its actual successor assertion/receipt or exact unmet obligation, using TRACE-01 and GRAPH-TRIAGE.json. Candidate cohort links are not passing evidence; retain valid observations without duplicate execution or excluded model campaigns.
+- [x] ALL-AUDIT.1 Reconcile every historical blocked/planned DAG literal with its actual successor assertion/receipt or exact unmet obligation, using TRACE-01 and GRAPH-TRIAGE.json. Candidate cohort links are not passing evidence; retain valid observations without duplicate execution or excluded model campaigns.
 - [ ] ALL-AUDIT.2 Implement the preserved simultaneous-masking turn-taking subtype through one timed PCM composition owner and concurrent source/final key projection, with exact sample arithmetic, obstructive/permitted-overlap controls and actual local audio evidence, as ENG-01 specifies. Existing CV-01.P1/CV-03.P1 and the original discourse.turn_taking coverage retain the unimplemented subtype until a future apply materializes it.
 
 These two newly explicit follow-ups are plans, not application changes or new
@@ -1427,8 +1427,10 @@ reconciliation, not completion of every original product/qualification scope.
 The exact selection and resume record are in
 `audit/iteration-31-reconciliation-20261027/SELECTION.json` and `PROGRESS.md`.
 
-- [ ] I31.1 Preserve and individually reconcile every one of the original 1,909 planned/blocked identities, original independent expectations and inspected actual successor assertions; expose missing literal observations separately from missing features.
-- [ ] I31.2 Register exact retained native component reuse with actual test/output/command associations; do not promote any unproved full semantic, acoustic, source or empirical scenario.
-- [ ] I31.3 Materialize the selected original arithmetic, auxiliary-population, Unicode and mutation-replay literals through existing owners; retain actual typed execution observations, counterexamples and the contradictory historical ratio vector without inventing a pass.
-- [ ] I31.4 Replace stale specification-only/approval blockers with the actual remaining assertion or conditional dependency; preserve accepted registrations, original runtime/data definitions, all category/formula/source scopes and earlier incomplete acceptance boundaries.
-- [ ] I31.5 Validate the changed specification/DAG/discovery and complete the exact committed-clean iteration reconciliation selection using retained valid native greens, with explicit UI/UX and typography scope dispositions; commit the implementation and acceptance separately.
+- [x] I31.1 Preserve and individually reconcile every one of the original 1,909 planned/blocked identities, original independent expectations and inspected actual successor assertions; expose missing literal observations separately from missing features.
+- [x] I31.2 Register exact retained native component reuse with actual test/output/command associations; do not promote any unproved full semantic, acoustic, source or empirical scenario.
+- [x] I31.3 Materialize the selected original arithmetic, auxiliary-population, Unicode and mutation-replay literals through existing owners; retain actual typed execution observations, counterexamples and the contradictory historical ratio vector without inventing a pass.
+- [x] I31.4 Replace stale specification-only/approval blockers with the actual remaining assertion or conditional dependency; preserve accepted registrations, original runtime/data definitions, all category/formula/source scopes and earlier incomplete acceptance boundaries.
+- [x] I31.5 Validate the changed specification/DAG/discovery and complete the exact committed-clean iteration reconciliation selection using retained valid native greens, with explicit UI/UX and typography scope dispositions; commit the implementation and acceptance separately.
+
+Iteration 31 acceptance: `completion-i31 --require-clean`, 133/133 selected case edges and 23/23 actual reconciliation methods at clean `4ed6dbd13322f25d979d6723b526ba94d5a466f8`. See `audit/iteration-31-reconciliation-20261027/ACCEPTANCE.json`; incomplete original scenarios and historical fixture conflicts remain individually open in LEDGER.json.

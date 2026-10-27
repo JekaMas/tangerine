@@ -74,25 +74,31 @@ acquisition, universal acoustic certification or newly green I24–I30 claim.
 
 ## Checks and scope
 
-Execution/acceptance is pending until recorded by ACCEPTANCE.json. The initial
-five Python observations passed and are retained with their original dirty,
-informational provenance in PYTHON-INITIAL.json. Product/provider/browser and
-old physical test greens remain unchanged and are not repeated. The full I31
-selection in SELECTION.json checks the actual retained literal outputs and
-reconciliation, then receives its own committed-clean receipt.
+**Accepted:** the full selected `completion-i31 --require-clean` run passed
+**133/133 case edges**, backed by **23/23 actual reconciliation methods**, on
+clean revision `4ed6dbd13322f25d979d6723b526ba94d5a466f8`. The command exited zero
+and reported no substitution gaps. [ACCEPTANCE.json](ACCEPTANCE.json) records
+the exact selection, raw-output paths, source revisions and proof boundaries.
+
+The initial five Python literal observations retain their original dirty,
+informational provenance in PYTHON-INITIAL.json. The 44 independent native
+passes retain their original nonzero cohort receipt; the directed run supplies
+actual passes for all 14 failed identities. Product/provider/browser and old
+physical test greens remain unchanged and were not repeated. The metadata gate
+reads these actual typed outputs; it does not repeat accepted literal behavior.
 
 Graph, discovery and strict OpenSpec checks are structural. They establish
 registration/document consistency, not application behavior. Stable-batch Go
 checks apply only to the new test code. There are no production Go/Python/web,
 prompt, configuration, corpus-byte or runtime changes.
 
-The first clean new-native cohort at `7b490a4` passed50logical edges and failed13
+The first clean new-native cohort at `7b490a4` passed 50 logical edges and failed 13
 second-set auxiliary counterexamples because the new test adapter expected a
 missing-observation packet. Their actual packets supply valid inputs and a wrong
 proposed result. The adapter is repaired; its clean `8de797a` directed run passed all 13
 selected counterexamples and all 14 native identities, including their parent.
-Original fixtures and production code are preserved. Keep the44independent physical passes, the original exit1 and
-original hashes. The directed repair selects only the13failed negatives and
+Original fixtures and production code are preserved. Keep the 44 independent physical passes, the original exit 1 and
+original hashes. The directed repair selects only the 13 failed negatives and
 their parent, then the iteration gate requires actual resolved-sibling output
 and a bounded semantic source review. See REUSE-BOUNDARY.md. The failed whole
 cohort is never relabelled a passing command.
@@ -121,6 +127,11 @@ reviews are not rewritten to claim they inspected later tests.
 Semantic lookup was attempted from the exact checkout and returned no index
 for `github.com/jekamas/tangerine`. Known graph/fixture/source files were traced
 directly. No semantic, IDE-index or independent-review result is claimed.
+
+The canonical I31.1–I31.5 and ALL-AUDIT.1 tasks are complete. Remaining original
+whole-scenario obligations, the two historical conflicts and the separately
+proposed iterations 32–38 retain their open status. Acceptance bookkeeping is
+committed separately from the tested implementation and observations.
 
 No inference, synthesis, provider quota, purchased credits, overage,
 installation, acquisition, publication or deployment occurred. The running
