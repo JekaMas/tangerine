@@ -155,3 +155,20 @@ Next: commit this stable repair, run i31-aux-counterexamples --require-clean,
 then export OBSERVATIONS with the44prior independent passes/original hashes,
 actual directed14passes and explicit source reuse review. Commit that packet
 before full133-edge --commands completion-i31 --require-clean acceptance.
+
+## Actual directed native resolution
+
+- Clean repair revision: `8de797aa0d6a6b4e994880c13ec08e28d4bfc6ab`.
+- `i31-aux-counterexamples --require-clean`: all 13 selected original case
+  edges passed; all 14 exact native identities (children and parent) passed.
+- The original first command remains exit 1. Its 44 independent passing
+  physical identities are retained with original hashes and the explicit
+  unchanged-path review; every failed sibling has an actual directed pass.
+- Five unchanged Python literal passes retain their original informational
+  dirty provenance. They are not relabelled committed-clean.
+- Scoring-only gofmt and Docker Go vet passed after the adapter repair. The
+  unchanged app format/vet and selected OpenSpec tool version are retained.
+- OBSERVATIONS.json now binds all actual outputs and the directed resolution.
+  Commit this packet, validate affected graph/discovery registration, then run
+  the full 133-edge / 23-method completion-i31 committed-clean metadata gate.
+  No new runtime/provider observations or main-flow changes are claimed.

@@ -89,8 +89,9 @@ prompt, configuration, corpus-byte or runtime changes.
 The first clean new-native cohort at `7b490a4` passed50logical edges and failed13
 second-set auxiliary counterexamples because the new test adapter expected a
 missing-observation packet. Their actual packets supply valid inputs and a wrong
-proposed result. The adapter is repaired; original fixtures and production code
-are preserved. Keep the44independent physical passes, the original exit1 and
+proposed result. The adapter is repaired; its clean `8de797a` directed run passed all 13
+selected counterexamples and all 14 native identities, including their parent.
+Original fixtures and production code are preserved. Keep the44independent physical passes, the original exit1 and
 original hashes. The directed repair selects only the13failed negatives and
 their parent, then the iteration gate requires actual resolved-sibling output
 and a bounded semantic source review. See REUSE-BOUNDARY.md. The failed whole
