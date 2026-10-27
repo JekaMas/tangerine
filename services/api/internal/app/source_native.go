@@ -155,8 +155,21 @@ func (s *Storage) enrichNative(ctx context.Context, run SourceRun, m *source.Map
 				end, valid := new(big.Rat).SetString(fmt.Sprint(m.Raw["end_seconds"]))
 				frames, fok := new(big.Rat).SetString(fmt.Sprint(asset.Media["sample_count"]))
 				rate, rok := new(big.Rat).SetString(fmt.Sprint(asset.Media["sample_rate_hz"]))
-				if !valid || !fok || !rok || rate.Sign() <= 0 || end.Cmp(new(big.Rat).Quo(frames, rate)) > 0 {
+				within, serialized := sourceWaveEnd(end, frames, rate)
+				if !valid || !fok || !rok || rate.Sign() <= 0 {
+					fail("source_audio_bounds", "Native interval or source media clock cannot be interpreted")
+				} else if !within && run.Report.ParserVersion != source.L2ParserVersion {
 					fail("source_audio_bounds", "Native interval extends beyond the actual accepted source recording")
+				} else if !within {
+					// Both native clocks are valid data. A source annotation may
+					// have a different extent from the supplied recording; retain
+					// that uncertainty without inventing resampling or retiming it.
+					raw["clock_bound_relation"] = "native_extent_exceeds_media"
+					raw["clock_alignment_status"] = "unverified"
+					raw["media_duration_seconds_rational"] = new(big.Rat).Quo(frames, rate).RatString()
+					raw["annotation_processing_rate_hz"] = nil
+				} else if serialized {
+					raw["clock_bound_relation"] = "same_binary64_endpoint"
 				}
 			} else {
 				fail("missing_audio", wav)
@@ -171,9 +184,24 @@ func (s *Storage) enrichNative(ctx context.Context, run SourceRun, m *source.Map
 				raw["phone_annotation"] = parsed
 			}
 		}
-		if m.Table == "intervals" && fmt.Sprint(m.Raw["tier"]) == "" {
-			m.Status = "unmapped"
-			m.Issues = append(m.Issues, source.Issue{Locator: m.Member, Code: "tier_unbound", Detail: "Unnamed linguistic tier retained without guessed meaning"})
+		if m.Table == "intervals" || m.Table == "points" {
+			// The official v5 README defines words/phones plus ancillary
+			// annotator comments. Preserve even an unnamed comment structurally;
+			// its text does not establish narrow IPA or a scored phone event.
+			switch strings.ToLower(fmt.Sprint(m.Raw["tier"])) {
+			case "words":
+				raw["tier_role"] = "words"
+			case "phones":
+				raw["tier_role"] = "phones"
+			default:
+				raw["tier_role"] = "ancillary_comment"
+				raw["linguistic_interpretation"] = nil
+			}
+			kind, _ := m.Raw["kind"].(string)
+			if kind != "interval" && kind != "point" && m.Status != "quarantined" {
+				m.Status = "unmapped"
+				m.Issues = append(m.Issues, source.Issue{Locator: m.Member, Code: "tier_unbound", Detail: "Undocumented native tier structure retained without guessed meaning"})
+			}
 		}
 		if m.Table == "transcripts" {
 			speaker, stem := source.L2Identity(m.Member)

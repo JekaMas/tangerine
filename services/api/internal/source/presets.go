@@ -33,6 +33,10 @@ func NativePlan(id string, m Member) (Options, string, bool) {
 			return o, base, true
 		}
 	case "L2-ARCTIC":
+		if base == "readme.md" {
+			o.Format = "l2-speakers"
+			return o, "speakers", true
+		}
 		if strings.Contains(n, "/transcript/") && strings.HasSuffix(n, ".txt") {
 			o.Format = "lines"
 			return o, "transcripts", true

@@ -1,3 +1,5 @@
+Iteration35 current scope: complete official L2-ARCTIC v5 normalized application import using admitted bytes, private disposable storage, all native layers/media/provenance and durable resume/readback. See iteration35 tasks and audit/iteration-35-official-l2-20261027/PROGRESS.md. Earlier current-scope notes below are historical.
+
 # Full local Teacher Error Trainer
 
 Current authorized increment: **iteration 33** repairs QUAL-04's saved-audio

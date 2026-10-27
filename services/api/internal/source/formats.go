@@ -32,6 +32,8 @@ func Parse(member string, data []byte, o Options) (Native, error) {
 		n, e = parseM2(member, text)
 	case "textgrid":
 		n, e = parseTextGrid(member, text)
+	case "l2-speakers":
+		n, e = parseL2Speakers(member, text)
 	case "kaldi":
 		n, e = parseKaldi(member, text)
 	default:

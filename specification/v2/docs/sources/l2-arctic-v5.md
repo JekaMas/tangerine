@@ -17,11 +17,11 @@ Preserve source rates at 44,100 Hz. Any processing-rate conversion is a separate
 ## Text and clocks
 
 Pair records by exact speaker and utterance basename. Do not merge speakers that share a CMU prompt.
-Retain original transcript text and all TextGrid tiers in source order.
+Retain original transcript text and all TextGrid tiers in source order. Each normalized interval/point includes its one-based native tier_index, original tier name/kind and tier-local index, so repeated or unnamed tiers and mixed point/interval tiers cannot alias. The official README speaker table is normalized as source metadata (speaker code, declared gender/L1, source read/manual counts and original table line/document locator); transcripts join its stated L1 in memory. Missing/ambiguous declarations remain unknown without inferring nationality, pronunciation or errors.
 Parse TextGrid using its declared long or short syntax, quoted-string escape rules, and source clock.
 Store exact decimal boundary strings and a derived rational second value.
-Validate monotonic tier intervals, nonnegative duration, file duration bounds, and speaker/utterance links.
-An unknown tier remains raw and raw-only until its semantic conversion is defined.
+Validate monotonic tier intervals, nonnegative duration, interpretable source clocks and speaker/utterance links. Compare native annotation and media extents as separate source data, not a completeness gate. Praat endpoints serialize binary64 values: a native endpoint infinitesimally above the exact WAVE sample_count/sample_rate rational is the same valid endpoint only when both round to the identical binary64 value. Preserve its exact decimal/rational and mark clock_bound_relation same_binary64_endpoint; do not apply a free epsilon, add a source sample, clamp the source value or call a genuinely later endpoint exact. When a structurally valid native annotation extends beyond the actual recording, preserve its original time and the exact media duration separately, mark clock_bound_relation native_extent_exceeds_media and clock_alignment_status unverified, and leave annotation_processing_rate_hz null. In source-native-l2-v5-v2 this is a source-quality observation, not an unsupported native conversion or a reason to reject the lossless import. Earlier v1 callers retain their existing strict extent contract; their records are not silently upgraded. Exact playback/acoustic-gold consumers must not treat that annotation as verified alignment. This rule does not alter generated-exercise timing or malformed/negative/nonmonotonic native-clock handling.
+An unsupported tier structure remains raw and raw-only until its conversion is defined. The official v5 README documents words and phones plus ancillary annotator-comment tiers. Supported interval/point tiers outside words/phones, including unnamed tiers, therefore normalize as ancillary_comment metadata with linguistic_interpretation null. Preserve their actual names, tier ordinals, labels and clocks; a comment or IPA-looking string is not a new precise phone label or scoring event. This source-specific structural conversion does not assign linguistic meaning to undocumented tier classes.
 A supplied comments tier stays separate from words and phones.
 
 ## Provenance of annotations
@@ -44,6 +44,8 @@ Parse delimiters only under this release grammar. Malformed tuples remain quaran
 Retain every original label, confidence/uncertainty marker, interval, annotator information, and comments.
 A symbol conversion can label an exact phonetic symbol only when the source alphabet supports that conversion.
 Do not infer a narrow project error from an ambiguous phone or an L1 stereotype.
+
+The additive official speaker/tier conversion is identified by parser version `source-native-l2-v5-v2` in its frozen method, report, transcript records and parse transformations. Earlier accepted v1 rows keep their original version and are not re-admitted. Other source adapters retain their existing versions.
 
 ## Grouping and completeness
 
@@ -95,3 +97,37 @@ The native license confirms CC BY-NC4.0. The prior quota/disabled-download
 receipts remain dated failures rather than current acquisition blockers. This
 closes official acquisition/component provenance; a full normalized database
 import is not claimed by this inventory and no audio/model judgment was made.
+
+### Observed native extent distinction (iteration35)
+
+Official HKK manual annotations include endpoints such as1.201375s against an
+actual52,980/44,100s WAVE and1.75375s against77,339/44,100s. The16kHz lattice
+is an observation, not proof of a resampled recording or its processing clock.
+The source names MFA1.0, but its original corpus code reads recording durations
+from their actual WAVE headers and configures each input sample rate. Therefore
+we preserve the mismatch and unknown processing provenance instead of inventing
+a16kHz conversion. See the [original MFA1.0 corpus implementation](https://raw.githubusercontent.com/MontrealCorpusTools/Montreal-Forced-Aligner/v1.0.0/aligner/corpus.py).
+
+## Full official application import — iteration35
+
+The already-admitted official v5 bytes were imported in disposable real
+PostgreSQL/MinIO through the production storage, native parser, projector,
+commit and HTTP readback owners. Observed:84,296 linked release assets
+(84,295 admitted members plus the original ZIP),26,889 original44.1kHz mono
+16-bit WAVE/transcript associations,24 speaker metadata records and1,547,927
+intervals, for1,574,840 accepted normalized rows. Read speech has26,867
+transcripts/automatic grids and3,599 manual grids; suitcase has22 transcripts
+and manual grids and no fabricated automatic grids. Native operation totals
+match the independent corrected receipt. Raw labels, exact boundaries, tier
+ordinals and every raw/transform asset association were preserved.
+
+Actual interruption, durable storage reopen, stale/incomplete-action rejection,
+unchanged accepted rows and11 retained foreground resume observations were
+verified. Source status/release/progress/record/media handlers returned the
+saved official data. Raw-only/quarantined/staged rows are zero at completion.
+This closes DATA-07's normalized-import observation, while native extent/
+linguistic uncertainty remains explicit under the versioned contract above.
+No additional download, repeated byte integrity audit, inference, synthesis
+or publication occurred. The running user database was not populated.
+Evidence: audit/iteration-35-official-l2-20261027/RESULTS.json and REPORT.md;
+clean-acceptance status is recorded separately in ACCEPTANCE.json.

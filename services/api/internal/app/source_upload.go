@@ -50,17 +50,25 @@ func (s *Storage) saveSourceStream(ctx context.Context, name string, r io.Reader
 			m.Media = metadata
 		}
 	}
+	if _, e = f.Seek(0, 0); e != nil {
+		return m, e
+	}
+	return s.saveAdmittedSource(ctx, m, f)
+}
+
+// saveAdmittedSource stores an already admitted stream through the same private
+// asset owner. Its identity comes only from saveSourceStream or retained native
+// admission metadata, never an HTTP claim. Resume trusts source_file and does
+// not read, hash or schema-check accepted bytes again.
+func (s *Storage) saveAdmittedSource(ctx context.Context, m source.Member, r io.Reader) (source.Member, error) {
 	var saved string
-	e = s.DB.QueryRow(ctx, "SELECT asset_id FROM source_file WHERE relative_path=$1 AND sha256=$2 AND byte_count=$3", name, digest, n).Scan(&saved)
+	e := s.DB.QueryRow(ctx, "SELECT asset_id FROM source_file WHERE relative_path=$1 AND sha256=$2 AND byte_count=$3", m.Path, m.SHA, m.Bytes).Scan(&saved)
 	if e == nil {
 		m.AssetID = saved
 		return m, nil
 	}
-	a, e := s.ReserveAsset(ctx, AssetRequest{Operation: OperationRequest{Name: "source-upload", Key: uuid.NewString(), Path: "/sources/upload", Body: sourceBytes(map[string]any{"name": name, "sha": digest, "size": n})}, SHA: digest, Size: n, Purpose: "source_component", MIME: "application/octet-stream"})
+	a, e := s.ReserveAsset(ctx, AssetRequest{Operation: OperationRequest{Name: "source-upload", Key: uuid.NewString(), Path: "/sources/upload", Body: sourceBytes(map[string]any{"name": m.Path, "sha": m.SHA, "size": m.Bytes})}, SHA: m.SHA, Size: m.Bytes, Purpose: "source_component", MIME: "application/octet-stream"})
 	if e != nil {
-		return m, e
-	}
-	if _, e = f.Seek(0, 0); e != nil {
 		return m, e
 	}
 	conn, release, e := s.lockAsset(ctx, a.ID)
@@ -68,7 +76,7 @@ func (s *Storage) saveSourceStream(ctx context.Context, name string, r io.Reader
 		return m, e
 	}
 	defer func() { release() }()
-	if e = s.writeAssetObject(ctx, conn, a, f); e != nil {
+	if e = s.writeAssetObject(ctx, conn, a, r); e != nil {
 		return m, e
 	}
 	tx, e := beginWriteOn(ctx, conn)
@@ -89,7 +97,7 @@ func (s *Storage) saveSourceStream(ctx context.Context, name string, r io.Reader
 		return m, e
 	}
 	m.AssetID = a.ID
-	_, e = s.DB.Exec(ctx, "INSERT INTO source_file(id,relative_path,sha256,byte_count,asset_id,media_metadata) VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT(relative_path,sha256,byte_count) DO NOTHING", uuid.NewString(), name, digest, n, a.ID, nullableJSON(m.Media))
+	_, e = s.DB.Exec(ctx, "INSERT INTO source_file(id,relative_path,sha256,byte_count,asset_id,media_metadata) VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT(relative_path,sha256,byte_count) DO NOTHING", uuid.NewString(), m.Path, m.SHA, m.Bytes, a.ID, nullableJSON(m.Media))
 	return m, e
 }
 func (s *Storage) IntakeArchive(ctx context.Context, name, kind string, r io.Reader) ([]source.Member, error) {

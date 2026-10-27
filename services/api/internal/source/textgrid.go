@@ -53,6 +53,7 @@ func parseTextGrid(member, text string) (Native, error) {
 	issues := []Issue{}
 	var tier, kind string
 	idx := 0
+	tierIndex := 0
 	start, end, label := "", "", ""
 	var previous *big.Rat
 	add := func() error {
@@ -65,7 +66,7 @@ func parseTextGrid(member, text string) (Native, error) {
 			return fmt.Errorf("invalid interval end")
 		}
 		invalid := a.Sign() < 0 || b.Cmp(a) < 0 || (previous != nil && a.Cmp(previous) < 0)
-		row := Row{"member": member, "tier": tier, "index": idx, "kind": kind, "start_seconds": start, "end_seconds": end, "label": label}
+		row := Row{"member": member, "tier": tier, "tier_index": tierIndex, "index": idx, "kind": kind, "start_seconds": start, "end_seconds": end, "label": label}
 		if invalid {
 			row["invalid"] = true
 			issues = append(issues, Issue{fmt.Sprintf("%s:%s:%d", member, tier, idx), "textgrid_clock", "Negative, reversed or nonmonotonic native interval"})
@@ -93,6 +94,7 @@ func parseTextGrid(member, text string) (Native, error) {
 			v = strings.TrimSpace(v)
 			switch k {
 			case "class":
+				tierIndex++
 				t, e := gridTokens(v)
 				if e != nil || len(t) != 1 {
 					return Native{}, Failure(member, "textgrid_syntax", "Invalid class")
@@ -152,6 +154,7 @@ func parseTextGrid(member, text string) (Native, error) {
 		}
 		at++
 		for j := 0; j < count; j++ {
+			tierIndex = j + 1
 			if at+5 > len(t) {
 				return Native{}, Failure(member, "textgrid_syntax", "Truncated short tier")
 			}

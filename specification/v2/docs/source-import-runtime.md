@@ -59,3 +59,13 @@ The existing input API remains unchanged. Additive runtime operations are: POST 
 Mapped rows commit in batches of64 through the dedicated projection-storage owner, with one foreground ownership check per transaction. A failed batch rolls back its rows; retry uses earlier admitted batches and stages. Progress counts follow committed writes in memory and final/readback counts come from stored rows, without repeated full-table recounts after every batch. Immutable binding and source-notice admissions reuse the exact existing content envelope; unchanged connector saves reuse their accepted revision/export. Changed selections remain distinct, and changed permission IDs cannot silently replace a frozen import context. Missing media bytes return dependency failure before an attachment success response.
 
 Native TextGrid parsing consumes the already decoded text and does not run the encoding conversion again. Legacy field bindings respect the parser's duplicate-key finding; conflicting semantic keys stay quarantined with their complete original tree. Native essay group identities include their dataset namespace, while genuine same-source IDs stay linked across releases. Storage read/close errors remain failed dependency operations, separate from permanent native parse findings; restoring the accepted object allows explicit resume without a new raw hash or schema audit.
+
+### Full-release traversal and current count diagnostics
+
+Projection advances through staged rows in `(member, table_name, ordinal)` order
+using a per-call keyset after each saved/checkpointed batch. It must not repeatedly
+scan an expanding accepted prefix. Reopen starts from durable row states;
+accepted rows are not parsed or admitted again and no new durable-cursor gate is
+required. Current count findings report current named units and numeric expected
+values. Resolved count discrepancies remain in history, not active findings;
+a remaining discrepancy reports its latest actual population.

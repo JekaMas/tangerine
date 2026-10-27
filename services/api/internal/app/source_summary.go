@@ -61,15 +61,17 @@ func (s *Storage) sourceSummary(ctx context.Context, run *SourceRun) error {
 		run.Report.Components = append(run.Report.Components, SourceComponentCount{component.Name, component.Expected, sourceNumber(n), matches})
 		complete = complete && matches
 	}
+	run.Report.Issues = []source.Issue{}
 	countsComplete, e := s.sourceExpectedCounts(ctx, run, members)
 	if e != nil {
 		return e
 	}
 	complete = complete && countsComplete
-	run.Report.Issues = []source.Issue{}
 	// Recovered foreground failures remain in issue/event history. They are
-	// not outstanding record problems after successful completion.
-	rows, e := s.DB.Query(ctx, "SELECT locator,code,detail FROM source_issue WHERE import_id=$1 AND ($2 OR code<>'import_failed') ORDER BY locator,code LIMIT 1000", run.Report.ID, run.Report.State == "failed")
+	// not outstanding record problems after successful completion. Current count
+	// findings were freshly projected above; historical count snapshots remain in
+	// issue/event history instead of resurfacing after their population recovers.
+	rows, e := s.DB.Query(ctx, "SELECT locator,code,detail FROM source_issue WHERE import_id=$1 AND ($2 OR code<>'import_failed') AND code NOT IN ('count_mismatch','count_unbound') ORDER BY locator,code LIMIT 1000", run.Report.ID, run.Report.State == "failed")
 	if e != nil {
 		return e
 	}

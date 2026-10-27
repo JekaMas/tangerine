@@ -19,27 +19,14 @@ func (s *Storage) projectSource(ctx context.Context, run *SourceRun, members []s
 	if e != nil {
 		return e
 	}
+	speakers, e := s.sourceL2Speakers(ctx, *run)
+	if e != nil {
+		return e
+	}
+	cursor := stagedSourceRow{Ordinal: -1}
 	for {
-		rows, e := s.DB.Query(ctx, "SELECT member,table_name,ordinal,native_row FROM source_row WHERE import_id=$1 AND state='staged' ORDER BY member,table_name,ordinal LIMIT 64", run.Report.ID)
+		batch, e := s.sourceProjectionBatch(ctx, run.Report.ID, cursor)
 		if e != nil {
-			return e
-		}
-		batch := []stagedSourceRow{}
-		for rows.Next() {
-			var r stagedSourceRow
-			var raw []byte
-			if e = rows.Scan(&r.Member, &r.Table, &r.Ordinal, &raw); e != nil {
-				rows.Close()
-				return e
-			}
-			if e = source.Decode(raw, &r.Row); e != nil {
-				rows.Close()
-				return e
-			}
-			batch = append(batch, r)
-		}
-		rows.Close()
-		if e = rows.Err(); e != nil {
 			return e
 		}
 		if len(batch) == 0 {
@@ -78,6 +65,9 @@ func (s *Storage) projectSource(ctx context.Context, run *SourceRun, members []s
 				if e = s.enrichNative(ctx, *run, &m, byName); e != nil {
 					return e
 				}
+				if run.Frozen.Release.Source == "L2-ARCTIC" {
+					sourceL2SpeakerProjection(&m, speakers, byName)
+				}
 			case run.Frozen.Binding != nil:
 				m = source.LegacyRecord(run.Frozen.Release.Source, run.Report.Release, r.Member, r.Table, int(r.Ordinal), r.Row, run.Frozen.Binding)
 			}
@@ -96,6 +86,7 @@ func (s *Storage) projectSource(ctx context.Context, run *SourceRun, members []s
 		if e = s.checkpointSource(ctx, run, false); e != nil {
 			return e
 		}
+		cursor = batch[len(batch)-1]
 	}
 }
 func nativeMetadata(id, table string) bool {
@@ -105,7 +96,7 @@ func nativeMetadata(id, table string) bool {
 	case "WILOCNESS-2.1", "FCE-2.1":
 		return table == "edits"
 	case "L2-ARCTIC":
-		return table == "intervals" || table == "points"
+		return table == "intervals" || table == "points" || table == "speakers"
 	}
 	return false
 }

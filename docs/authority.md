@@ -1,3 +1,5 @@
+2026-10-27 iteration35 apply: the actual user selects the complete already-admitted official L2-ARCTIC v5 archive, full normalized import in a disposable application stack, preservation of every speaker/native annotation/media/provenance, counts, durable resume and application readback. Scoped source storage/import/test/spec/DAG repairs, copying admitted bytes to private test storage and local commits through clean acceptance are authorized. Reuse prior admission; no download, repeated integrity audit, model/provider calls, installation, paid use, deployment or publication. Preserve app3000, user data/settings/media/tabs and canonical GAPS.md. Source CC BY-NC4.0 remains distinct from Apache-2.0 software.
+
 2026-10-27 iteration34 apply: the actual user selects QUAL-05's installed-local
 generation failures and authorizes necessary actual local functional execution,
 root-cause repair, comparison of repair alternatives, quality/accuracy/precision,

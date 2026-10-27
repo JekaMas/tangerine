@@ -71,10 +71,14 @@ func (s *Storage) createSourceImport(ctx context.Context, release, binding strin
 	if _, e = s.sourceLicence(ctx, r, permissions); e != nil {
 		return SourceRun{}, e
 	}
-	method, _ := contracts.Canonical(sourceBytes(map[string]any{"parser_id": "lossless-source", "parser_version": source.ParserVersion, "binding": f.Binding, "program": f.Program}))
+	parserVersion := source.ParserVersion
+	if f.Native && r.Source == "L2-ARCTIC" {
+		parserVersion = source.L2ParserVersion
+	}
+	method, _ := contracts.Canonical(sourceBytes(map[string]any{"parser_id": "lossless-source", "parser_version": parserVersion, "binding": f.Binding, "program": f.Program}))
 	f.MethodSHA = contracts.Digest(method)
 	run := SourceRun{Binding: binding, Phase: "inventory", Row: -1, Frozen: f}
-	run.Report = SourceReport{Version: "2.0.0", ID: uuid.NewString(), Release: r.ID, Parser: "lossless-source", ParserVersion: source.ParserVersion, State: "inventory", Observed: "0", Accepted: "0", Quarantined: "0", Rejected: "0", RawOnly: "0", Components: []SourceComponentCount{}, Issues: []source.Issue{}, Manifest: r.Manifest, Started: sourceTime()}
+	run.Report = SourceReport{Version: "2.0.0", ID: uuid.NewString(), Release: r.ID, Parser: "lossless-source", ParserVersion: parserVersion, State: "inventory", Observed: "0", Accepted: "0", Quarantined: "0", Rejected: "0", RawOnly: "0", Components: []SourceComponentCount{}, Issues: []source.Issue{}, Manifest: r.Manifest, Started: sourceTime()}
 	tx, e := beginWrite(ctx, s)
 	if e != nil {
 		return run, e

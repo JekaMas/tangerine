@@ -39,12 +39,16 @@ func sourceCorpus(run SourceRun, m source.Mapped, member source.Member, cp, lice
 			split = "holdout"
 		}
 	}
+	parserVersion := run.Report.ParserVersion
+	if parserVersion == "" {
+		parserVersion = source.ParserVersion
+	} // Preserve legacy internal callers.
 	lic := map[string]any{}
 	for k, v := range licence {
 		lic[k] = v
 	}
 	lic["source_record_id"] = m.ID
-	c := map[string]any{"schema_version": "1.0.0", "id": m.ID, "source_id": run.Frozen.Release.Source, "release_id": run.Report.Release, "source_uri": run.Frozen.Release.Origin + "#" + m.Member, "raw_asset_sha256": member.SHA, "licence": lic, "split": split, "group_ids": groups, "origin": origin, "text": text, "speaker_id": nil, "l1": nil, "age_group": "unknown", "raw_annotations_asset_id": member.AssetID, "normalized_case_version_id": nil, "parser_version": source.ParserVersion, "transform_ids": []string{m.ID + "-parse"}, "quality_status": "not_reviewed", "source_score_scale": nil}
+	c := map[string]any{"schema_version": "1.0.0", "id": m.ID, "source_id": run.Frozen.Release.Source, "release_id": run.Report.Release, "source_uri": run.Frozen.Release.Origin + "#" + m.Member, "raw_asset_sha256": member.SHA, "licence": lic, "split": split, "group_ids": groups, "origin": origin, "text": text, "speaker_id": nil, "l1": nil, "age_group": "unknown", "raw_annotations_asset_id": member.AssetID, "normalized_case_version_id": nil, "parser_version": parserVersion, "transform_ids": []string{m.ID + "-parse"}, "quality_status": "not_reviewed", "source_score_scale": nil}
 	for _, k := range []string{"speaker_id", "l1", "age_group", "source_score_scale"} {
 		if v, ok := cp[k]; ok {
 			c[k] = v

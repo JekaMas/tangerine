@@ -74,12 +74,18 @@ func (s *Storage) sourceExpectedCounts(ctx context.Context, run *SourceRun, memb
 		if !matches {
 			complete = false
 			code := "count_mismatch"
-			detail := fmt.Sprintf("%s expected %v; actual %d in its stated native counting unit", name, expected.Value, n)
+			expectedText := "not declared"
+			if expected.Value != nil {
+				expectedText = *expected.Value
+			}
+			detail := fmt.Sprintf("%s expected %s; actual %d in its stated native counting unit", name, expectedText, n)
 			if !known {
 				code = "count_unbound"
 				detail = "Native counting unit has no supplied deterministic binding: " + unit
 			}
-			if e := s.sourceIssue(ctx, *run, source.Issue{Locator: run.Report.Release + ":" + name, Code: code, Detail: detail}); e != nil {
+			issue := source.Issue{Locator: run.Report.Release + ":" + name, Code: code, Detail: detail}
+			run.Report.Issues = append(run.Report.Issues, issue)
+			if e := s.sourceIssue(ctx, *run, issue); e != nil {
 				return false, e
 			}
 		}

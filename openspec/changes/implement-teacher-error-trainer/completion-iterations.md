@@ -166,3 +166,21 @@ The verify follow-up adds real saved-player failure/recovery, keyboard, desktop
 and narrow typography, screenshots and screen-recording inspection. It also
 isolates correct-control labels and keeps unrecognized model statuses uncertain.
 Unchanged original observations remain reusable; no new judge campaign is needed.
+
+## Iteration 35 — Complete official L2-ARCTIC application import
+
+DATA-07 uses the already-admitted official v5 ZIP, not a new acquisition or a
+second corpus integrity audit. The production private storage, native parser,
+source projector and application commit/readback run in disposable PostgreSQL
+and MinIO. All speakers, original documents/containers/media, native annotation
+layers/labels/clocks and provenance remain preserved. The official README
+speaker table supplies declared gender/L1 metadata; tier ordinals preserve
+repeated/unnamed and mixed interval/point layers. Partial or ambiguous source
+metadata stays unknown without a new ordinary-use gate. Actual interruption,
+persistent reopen/resume, full population counts and application media/record
+readback are required; acquisition or a sample parser result cannot substitute.
+
+The exact I35.P1–I35.P4 selection is
+`audit/iteration-35-official-l2-20261027/SELECTION.json`. `tasks.md` remains the
+single checklist. No provider calls, installs, source publication or user app
+changes are included; there is no web presentation change in this increment.
