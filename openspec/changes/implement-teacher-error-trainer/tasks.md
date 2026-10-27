@@ -1676,3 +1676,13 @@ screenshots/video and affected sibling checks pass. No remaining in-scope findin
 or product decision. Data/proof boundaries and retained checks are recorded in
 audit/iteration-38-empirical-20261027/ACCEPTANCE.json and REPORT.md. No provider,
 paid, deployment/postdeployment, PBT or financial execution.
+
+I38 fresh verify/repair, 2026-10-28: the four newly demonstrated input/guidance/
+form-placement findings and their siblings are repaired through existing owners.
+Native HTTP, JS, actual L2/JFLEG Chrome paths, typography and structural checks
+pass. Source arithmetic, all52 saved source views and their independent censuses
+retain valid evidence. The original apply receipt does not cover these added
+counterexamples; the current expanded selection needs its own committed-clean
+receipt. See audit/iteration-38-verification-20261028/REPORT.md and PROGRESS.md.
+
+- [ ] I38.9 Record the complete expanded I38 committed-clean verify acceptance and final preservation/state readback.

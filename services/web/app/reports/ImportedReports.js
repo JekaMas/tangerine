@@ -1,8 +1,9 @@
 'use client';
-import {useEffect,useRef,useState} from 'react';
+import {useState} from 'react';
 import useSavedList from '../useSavedList';
 import RefreshButton from '../RefreshButton';
 import {recordDate} from '../savedRecord';
+import ReportError from './ReportError';
 
 // The source owner selects native rows. The form supplies no labels or counts.
 export default function ImportedReports({busy,onSave,error}) {
@@ -10,8 +11,6 @@ export default function ImportedReports({busy,onSave,error}) {
   const [choice,setChoice]=useState(null),[title,setTitle]=useState('');
   const selected=choice?JSON.stringify(choice.source):'';
   const options=choice&&!choices.items.some(item=>JSON.stringify(item.source)===selected)?[choice,...choices.items]:choices.items;
-  const errorBox=useRef(null);
-  useEffect(()=>{if(error){errorBox.current?.focus({preventScroll:true});errorBox.current?.scrollIntoView({block:'center'});}},[error]);
   return <div className="imported-reports">
     <h3>Explore imported data</h3>
     <p>Choose one source and view. The report counts its original annotations and shows which Tangerine categories can be identified. Nothing is sent to an AI service.</p>
@@ -25,6 +24,6 @@ export default function ImportedReports({busy,onSave,error}) {
       <label>Report name <span className="optional-label">optional</span><input aria-label="Report name" value={title} onChange={event=>setTitle(event.target.value)} placeholder={choice?.title||'A name you will recognise'}/></label>
       <button disabled={busy||!choice}>{busy?'Saving report…':'Create source report'}</button>
     </form>}
-    {error&&<p ref={errorBox} tabIndex={-1} role="alert" className="error">{error}</p>}
+    <ReportError message={error}/>
   </div>;
 }

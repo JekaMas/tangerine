@@ -67,11 +67,11 @@ func (s *Storage) CreateEmpiricalReport(ctx context.Context, r EmpiricalSubmissi
 	r.Input.Leaves = taxonomyLeafIDs()
 	report, e := empirical.Build(r.Input)
 	if e != nil {
-		return nil, e
+		return nil, fmt.Errorf("%w: %v", ErrInput, e)
 	}
 	difficulty, e := empirical.DifficultyReport(r.Attempts)
 	if e != nil {
-		return nil, e
+		return nil, fmt.Errorf("%w: %v", ErrInput, e)
 	}
 	r.SourceSummary = summary
 	input, e := s.saveProviderBytes(ctx, sourceBytes(r), "provider_input")
@@ -143,7 +143,7 @@ func (s *Storage) empiricalSource(ctx context.Context, p empirical.Population, s
 	}
 
 	if selects.Member == "" || (selects.Table != "sentences" && selects.WindowPointer == "") {
-		return empirical.Input{}, fmt.Errorf("select one native sentence view/member or supply explicit localized windows")
+		return empirical.Input{}, fmt.Errorf("%w: select one native sentence view/member or supply explicit localized windows", ErrInput)
 	}
 	p.View = selects.Member
 	p.Annotator = selects.Annotator

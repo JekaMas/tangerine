@@ -139,3 +139,14 @@ form. Writes are not blindly replayed after an ambiguous result. Source choice
 failure, an empty import list and unavailable observations do not block saved
 work, optional other tools or ordinary practice. Opening reports, saving,
 reading, reusing and downloading them make zero model/speech/provider calls.
+
+An invalid report definition or incompatible attempt population is a correctable
+input response, rather than a temporary service failure. Existing validation is
+classified by the report owner; no extra admission or read checks are added.
+An actual database/media failure remains a service failure. After an ambiguous
+save, guidance asks the user to check saved reports before explicitly trying
+again. A zero denominator means no eligible observations for that measurement;
+it does not by itself mean that sentence annotations are missing.
+Save feedback belongs beside the source, saved-input or advanced form that
+submitted it. The shared feedback owner reveals that form and focuses its
+authored message, preserving every field and the previous saved result.

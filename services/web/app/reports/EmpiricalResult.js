@@ -32,7 +32,7 @@ export default function EmpiricalResult({value,onDownload}) {
 
     {!!summary?.coverage.length&&<dl className="population-fields">{summary.coverage.map(row=><div key={row.label}><dt>{row.label}</dt><dd>{count(row.count)}</dd></div>)}</dl>}
     <h4>What was counted?</h4><p>Frequencies describe this source view. They are not estimates for all English learners.</p>
-    {native&&<p>{count(native.annotated_windows)} of {count(native.observed_windows)} examples have usable original error annotations. {native.inspected_native_tokens==null?'A word-count exposure is not available.':count(native.inspected_native_tokens)+' words belong to those fully annotated examples.'}</p>}
+    {native&&<p>{count(native.annotated_windows)} of {count(native.observed_windows)} examples have usable original error annotations. {native.inspected_native_tokens==null?'A word count is not available for these examples.':count(native.inspected_native_tokens)+' words belong to those fully annotated examples.'}</p>}
     <p>{count(r.eligible_events)} mistakes have a derived Tangerine category; {count(r.unmapped_events)} remain outside the resolved mapping. Category proportions use only the mapped mistakes. Original source measurements use their own annotations.</p>
     <p>{coverage.declared?count(coverage.declared)+' categories have declared complete annotation coverage.':'No category has declared complete absence coverage.'} Categories without sufficient annotations are <strong>not measured</strong>, including pronunciation in writing-only data. Missing measurements never mean there are no mistakes.</p>
     <h4>Original source measurements</h4>

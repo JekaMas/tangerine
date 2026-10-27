@@ -8,6 +8,7 @@ import collections,json,unittest
 from fractions import Fraction
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];DATA=ROOT/'data/iteration-38-empirical-20261027'
+REVIEW=ROOT/'data/iteration-38-verification-20261028'
 
 def load(path):return json.loads(path.read_text())
 def native(case,*stems):
@@ -16,6 +17,11 @@ def native(case,*stems):
         rows.extend(json.loads(line) for line in (DATA/(stem+'.jsonl')).read_text().splitlines())
     selected=[r for r in rows if r.get('Test')==case and r['Action'] in ['pass','fail','skip']]
     if not selected or selected[-1]['Action']!='pass':raise AssertionError((case,selected))
+
+def reviewed_native(case,stem='green'):
+    rows=[json.loads(line) for line in (REVIEW/(stem+'.jsonl')).read_text().splitlines()]
+    selected=[r for r in rows if r.get('Test')==case and r['Action'] in ['pass','fail','skip']]
+    if len(selected)!=1 or selected[0]['Action']!='pass':raise AssertionError((case,selected))
 
 def reports(store):
     folder=DATA/('native-'+store);choices=[c for c in load(folder/'catalogue.json') if c['data_origin']=='native']
@@ -47,7 +53,7 @@ class ImportedReports(unittest.TestCase):
     for store in ['36','37']:
         for c in load(DATA/('native-'+store)/'catalogue.json'):
             if c['data_origin']=='constructed':self.assertIn('Constructed example',c['title']);self.assertIn('not an acquired corpus',c['description'])
-    self.assertEqual(1,len([r for r in load(DATA/'browser/requests.json') if r['method']=='POST' and r['scenario']=='save_failure']))
+    self.assertEqual(2,len([r for r in load(REVIEW/'browser/requests.json') if r['method']=='POST' and r['scenario']=='save_failure']))
  def test_writing_positive(self):
     native('TestImportedWritingPositive','fixtures-38')
     oracle=load(DATA/'independent-m2-oracle.json');actual=[v for v in reports('38') if v['report']['population']['view'] in oracle]
@@ -132,22 +138,25 @@ class ImportedReports(unittest.TestCase):
     native('TestNativeSavedReportSecondaryNegative','native-siblings')
     self.assertTrue(all(not v['report']['native_pairs'] for v in reports('36')+reports('37')))
  def test_persistence_positive(self):
+    reviewed_native('TestImportedHTTPRecoveryPositive')
     native('TestImportedPersistencePositive','repair-38');native('TestNativeSavedReportExistingReplayPositive','native-replay')
     p=load(DATA/'native-38/persistence.json');self.assertTrue(p['saved_read_unchanged']);self.assertEqual(0,p['provider_calls'])
-    observed=load(DATA/'browser/observations.json');self.assertEqual(observed['reportID'],observed['download']);self.assertIn('Reloaded exact saved report',observed['actions']);self.assertIn('Reused frozen report observations through saved-population form',observed['actions'])
+    observed=load(REVIEW/'browser/observations.json');self.assertEqual(observed['reportID'],observed['download']);self.assertIn('Reloaded exact saved report',observed['actions']);self.assertIn('Reused frozen report observations through saved-population form',observed['actions'])
  def test_persistence_negative(self):
+    reviewed_native('TestImportedHTTPValidationNegative')
+    reviewed_native('TestImportedHTTPSourceSelectionNegative','selector')
     native('TestImportedPersistenceNegative','missing-38')
-    observed=load(DATA/'browser/observations.json');self.assertIn('save failure with retained input and saved result',observed['states']);self.assertIn('explicit save recovery',observed['states'])
-    writes=[r for r in load(DATA/'browser/requests.json') if r['method']!='GET'];self.assertTrue(all(r['path']=='/api/v1/reports/empirical' and not r['forbidden'] for r in writes));self.assertEqual(1,sum(r['status']==503 for r in writes))
+    observed=load(REVIEW/'browser/observations.json');self.assertIn('save failure with retained input and saved result',observed['states']);self.assertIn('explicit save recovery',observed['states']);self.assertIn('invalid report guidance retains definition and saved result',observed['states']);self.assertIn('saved-population error belongs to submitting form',observed['states']);self.assertIn('corrected report remains usable',observed['states'])
+    writes=[r for r in load(REVIEW/'browser/requests.json') if r['method']!='GET'];self.assertTrue(all(r['path']=='/api/v1/reports/empirical' and not r['forbidden'] for r in writes));self.assertEqual(2,sum(r['status']==503 for r in writes));self.assertEqual(1,sum(r['status']==400 for r in writes))
  def test_usability_positive(self):
-    observed=load(DATA/'browser/observations.json');self.assertTrue(observed['completed']);self.assertEqual([],observed['pageErrors']);self.assertEqual([1280,390,320],[v['width'] for v in observed['layouts']])
+    observed=load(REVIEW/'browser/observations.json');self.assertTrue(observed['completed']);self.assertEqual([],observed['pageErrors']);self.assertEqual([1280,390,320],[v['width'] for v in observed['layouts']])
     for layout in observed['layouts']:self.assertLessEqual(layout['documentWidth'],layout['width']);self.assertEqual('17px',layout['size']);self.assertEqual('24.65px',layout['lineHeight']);self.assertGreaterEqual(layout['small'],14)
-    downloaded=load(DATA/'browser/downloaded-report.json');self.assertEqual(2219,downloaded['report']['native_population']['eligible_events']);self.assertEqual(22,downloaded['report']['native_population']['observed_windows'])
-    coverage=load(DATA/'coverage-browser/observations.json');self.assertTrue(coverage['completed']);self.assertEqual(747,coverage['originals']);self.assertEqual(2988,coverage['alternatives']);self.assertEqual('Not measured',coverage['original_mistakes']);self.assertEqual([1280,390,320],[r['width'] for r in coverage['layouts']])
-    self.assertEqual('0',(DATA/'presentation-exit-code').read_text().strip());self.assertEqual('0',(DATA/'web-candidate-exit-code').read_text().strip());self.assertEqual('0',(DATA/'stable-final-go-exit-code').read_text().strip())
+    downloaded=load(REVIEW/'browser/downloaded-report.json');self.assertEqual(2219,downloaded['report']['native_population']['eligible_events']);self.assertEqual(22,downloaded['report']['native_population']['observed_windows'])
+    coverage=load(REVIEW/'coverage-browser/observations.json');self.assertTrue(coverage['completed']);self.assertEqual(747,coverage['originals']);self.assertEqual(2988,coverage['alternatives']);self.assertEqual('Not measured',coverage['original_mistakes']);self.assertEqual([1280,390,320],[r['width'] for r in coverage['layouts']])
+    self.assertEqual('0',(REVIEW/'presentation-green-exit-code').read_text().strip());self.assertEqual('0',(REVIEW/'guidance-final-exit-code').read_text().strip());self.assertEqual('0',(REVIEW/'web-exit-code').read_text().strip());self.assertEqual('0',(REVIEW/'go-exit-code').read_text().strip())
  def test_usability_negative(self):
-    observed=load(DATA/'browser/observations.json');self.assertIn('empty imports preserve saved report and practice',observed['states']);self.assertIn('keyboard retry recovered',observed['states'])
-    calls=load(DATA/'browser/requests.json');source=[c for c in calls if c['path']=='/api/v1/reports/source-populations']
+    observed=load(REVIEW/'browser/observations.json');self.assertIn('empty imports preserve saved report and practice',observed['states']);self.assertIn('keyboard retry recovered',observed['states'])
+    calls=load(REVIEW/'browser/requests.json');source=[c for c in calls if c['path']=='/api/v1/reports/source-populations']
     self.assertEqual([503,200],[c['status'] for c in source if c['scenario']=='transient']);self.assertEqual([503,503,503],[c['status'] for c in source if c['scenario']=='unavailable']);self.assertFalse(any(c['forbidden'] for c in calls))
     self.assertEqual('0',(DATA/'list-siblings-exit-code').read_text().strip());self.assertTrue(any(c['type']=='warning' and 'Tangerine request' in c['text'] for c in observed['console']))
 

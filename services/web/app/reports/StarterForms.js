@@ -5,8 +5,9 @@ import {requestError,userError} from '../requestError.js';
 import {recordDate} from '../savedRecord';
 import {reportStarter,reportFromPopulation,experimentStarter,generationProfiles} from './starters';
 import {reportRequest} from './request';
+import ReportError from './ReportError';
 
-export default function StarterForms({kind,busy,onSave,list,onRefresh}) {
+export default function StarterForms({kind,busy,onSave,list,onRefresh,saveError}) {
   const [title,setTitle]=useState('Constructed example: one error in two sentences');
   const [category,setCategory]=useState('lexis.collocation'),[selected,setSelected]=useState('');
   const [topic,setTopic]=useState('A café opening tomorrow'),[level,setLevel]=useState('B1');
@@ -49,6 +50,7 @@ export default function StarterForms({kind,busy,onSave,list,onRefresh}) {
   }
   return <form className="card" onSubmit={save}>
     <h3>{kind==='report'?'Create a report':'Create a generation experiment'}</h3>
+    <ReportError message={saveError}/>
     <label>{kind==='report'?'Report data':'Experiment dataset'}<select aria-label={kind==='report'?'Report data':'Experiment dataset'} value={selected} onChange={e=>setSelected(e.target.value)}>
       <option value="">{kind==='report'?'Constructed example · two authored sentences':'New request · subject–verb agreement'}</option>
       {selected&&!choices.some(item=>item.id===selected)&&<option value={selected}>Previously selected data · unavailable</option>}

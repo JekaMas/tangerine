@@ -1,6 +1,6 @@
 // Readable projections of saved measurements. Never infer missing observations.
 export const count=value=>new Intl.NumberFormat('en-GB').format(value);
-const reasons={leaf_annotation_scope_not_declared:'This category was not fully annotated.',correct_opportunity_annotations_absent:'Correct-use opportunities were not counted.',native_token_exposure_unknown:'The relevant word count is not available.',no_inspected_denominator:'No fully annotated examples are available.',pair_annotation_scope_not_declared:'These categories were not fully annotated together.'};
+const reasons={leaf_annotation_scope_not_declared:'This category was not fully annotated.',correct_opportunity_annotations_absent:'Correct-use opportunities were not counted.',native_token_exposure_unknown:'The relevant word count is not available.',no_inspected_denominator:'No eligible observations were counted for this measurement.',pair_annotation_scope_not_declared:'These categories were not fully annotated together.'};
 export function readableMetric(metric,kind='percent') {
   if(!metric||metric.missing_reason||!metric.exact)return {value:'Not measured',basis:reasons[metric?.missing_reason]||'The required observations are not available.'};
   const n=Number(metric.numerator),d=Number(metric.denominator),ratio=Number(metric.exact.numerator)/Number(metric.exact.denominator);
