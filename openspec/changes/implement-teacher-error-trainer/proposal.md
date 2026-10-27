@@ -76,3 +76,8 @@ Current final specification closure (2026-10-09): key-repair-projection.md defin
 Current service/data research (2026-10-09): specification/v2/docs/provider-access.md owns included-only startup selection and the official ChatGPT-plan Responses connection, with provider settings rather than application accounts. Speech-service-selection.md distinguishes accent design from precise acoustic mutation controls; empirical-data-needs.md maps exact missing inputs to selected consumers. Preserve original provider profiles/122recipes/42equations/11full sources; no current provider, audio or application execution is claimed. Three provider-connection operations bring the current internal catalogue to71operations.
 
 Current on-demand clarification: the LLM generates both clean text and mutations for each explicit new user request. Audio follows, then the answer and LLM comparison with same-version originals/mutations, findings/misses/comments and native exact scores. No seed bank or pregenerated exercise corpus is needed or created automatically; all optional source/import/benchmark scopes remain. See specs/on-demand-generation/spec.md and specification/v2/docs/simple-generation-flow.md.
+
+Iteration36 selects the acquired JFLEG supplemental written-correction release
+and actual native/example/evaluation use. It preserves all source alternatives
+and distinguishes native annotations from derived mappings; no additional
+corpus, provider, human-review or qualification prerequisite is introduced.

@@ -23,6 +23,10 @@ func (s *Storage) projectSource(ctx context.Context, run *SourceRun, members []s
 	if e != nil {
 		return e
 	}
+	jfleg, e := s.sourceJFLEGContext(ctx, *run)
+	if e != nil {
+		return e
+	}
 	cursor := stagedSourceRow{Ordinal: -1}
 	for {
 		batch, e := s.sourceProjectionBatch(ctx, run.Report.ID, cursor)
@@ -65,6 +69,9 @@ func (s *Storage) projectSource(ctx context.Context, run *SourceRun, members []s
 				if e = s.enrichNative(ctx, *run, &m, byName); e != nil {
 					return e
 				}
+				if run.Frozen.Release.Source == "JFLEG" {
+					sourceJFLEGProjection(&m, *run, byName, jfleg)
+				}
 				if run.Frozen.Release.Source == "L2-ARCTIC" {
 					sourceL2SpeakerProjection(&m, speakers, byName)
 				}
@@ -91,6 +98,8 @@ func (s *Storage) projectSource(ctx context.Context, run *SourceRun, members []s
 }
 func nativeMetadata(id, table string) bool {
 	switch id {
+	case "JFLEG":
+		return table != "jfleg_source"
 	case "SPEECHOCEAN762":
 		return true
 	case "WILOCNESS-2.1", "FCE-2.1":

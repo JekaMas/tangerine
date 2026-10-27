@@ -12,6 +12,12 @@ func NativePlan(id string, m Member) (Options, string, bool) {
 	n := strings.ToLower(m.Path)
 	base := strings.ToLower(path.Base(m.Path))
 	o := Options{Encoding: "utf-8", Selector: "records"}
+	if id == "JFLEG" {
+		if _, table, ok := JFLEGFile(m.Path); ok {
+			o.Format = "lines"
+			return o, table, true
+		}
+	}
 	if strings.HasSuffix(n, ".m2") {
 		o.Format = "m2"
 		return o, "m2", true
@@ -96,6 +102,11 @@ func NativeRecord(id, release, member, table string, ordinal int, row Row) Mappe
 	groups := []string{}
 	labels := "labels_not_supplied"
 	switch id {
+	case "JFLEG":
+		if table == "jfleg_source" {
+			text, _ = row["text"].(string)
+			labels = "supplied_fluency_references_not_exhaustive_gold"
+		}
 	case "WILOCNESS-2.1", "FCE-2.1":
 		if table == "sentences" || table == "withheld" {
 			text, _ = row["text"].(string)
@@ -280,6 +291,11 @@ func MissingNative(id string, members []Member) []string {
 	}
 	suffix := func(s string) func(string) bool { return func(n string) bool { return strings.HasSuffix(n, s) } }
 	switch id {
+	case "JFLEG":
+		for _, name := range JFLEGRequiredMembers {
+			name := strings.ToLower(name)
+			need(name, func(n string) bool { return n == name || strings.HasSuffix(n, "/"+name) })
+		}
 	case "SPEECHOCEAN762":
 		for _, s := range []string{"scores.json", "scores-detail.json", "train/text", "test/text", "train/utt2spk", "test/utt2spk", "train/wav.scp", "test/wav.scp"} {
 			need(s, suffix(s))

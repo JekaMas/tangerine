@@ -1,0 +1,322 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "kind": {
+      "const": "written_correction_references"
+    },
+    "source_id": {
+      "const": "JFLEG"
+    },
+    "release_id": {
+      "type": "string"
+    },
+    "source_version": {
+      "type": "string"
+    },
+    "source_uri": {
+      "type": "string"
+    },
+    "source_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "source_partition": {
+      "enum": [
+        "",
+        "dev",
+        "test"
+      ]
+    },
+    "scorer_version": {
+      "const": "source-reference-membership-v1"
+    },
+    "licence": {
+      "const": "CC-BY-NC-SA-4.0"
+    },
+    "attribution": {
+      "type": "string"
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "schema_version": {
+            "const": "2.0.0"
+          },
+          "id": {
+            "type": "string"
+          },
+          "corpus_record_id": {
+            "type": "string"
+          },
+          "group_id": {
+            "type": "string"
+          },
+          "source_partition": {
+            "enum": [
+              "dev",
+              "test"
+            ]
+          },
+          "split": {
+            "enum": [
+              "development",
+              "held_out"
+            ]
+          },
+          "original": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "member": {
+                "type": "string"
+              },
+              "asset_id": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "line_index": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "line_ending": {
+                "type": "string"
+              },
+              "origin": {
+                "enum": [
+                  "source_original",
+                  "source_annotation",
+                  "source_tool_derivation"
+                ]
+              }
+            },
+            "required": [
+              "text",
+              "member",
+              "asset_id",
+              "sha256",
+              "line_index",
+              "line_ending",
+              "origin"
+            ],
+            "additionalProperties": false
+          },
+          "references": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string"
+                },
+                "member": {
+                  "type": "string"
+                },
+                "asset_id": {
+                  "type": "string"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "line_index": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "line_ending": {
+                  "type": "string"
+                },
+                "origin": {
+                  "enum": [
+                    "source_original",
+                    "source_annotation",
+                    "source_tool_derivation"
+                  ]
+                },
+                "reference_id": {
+                  "enum": [
+                    "ref0",
+                    "ref1",
+                    "ref2",
+                    "ref3"
+                  ]
+                }
+              },
+              "required": [
+                "text",
+                "member",
+                "asset_id",
+                "sha256",
+                "line_index",
+                "line_ending",
+                "origin",
+                "reference_id"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 4
+          },
+          "spellchecked": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "member": {
+                    "type": "string"
+                  },
+                  "asset_id": {
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "line_index": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "line_ending": {
+                    "type": "string"
+                  },
+                  "origin": {
+                    "enum": [
+                      "source_original",
+                      "source_annotation",
+                      "source_tool_derivation"
+                    ]
+                  }
+                },
+                "required": [
+                  "text",
+                  "member",
+                  "asset_id",
+                  "sha256",
+                  "line_index",
+                  "line_ending",
+                  "origin"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "derived_differences": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "reference_id": {
+                  "type": "string"
+                },
+                "method": {
+                  "const": "unicode-common-ends-v1"
+                },
+                "kind": {
+                  "enum": [
+                    "coarse_replace",
+                    "unchanged"
+                  ]
+                },
+                "original_codepoint_span": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "reference_codepoint_span": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "original_text": {
+                  "type": "string"
+                },
+                "replacement_text": {
+                  "type": "string"
+                },
+                "linguistic_alignment": {
+                  "const": "not_computed"
+                },
+                "category_mapping": {
+                  "const": "not_supplied"
+                }
+              },
+              "required": [
+                "reference_id",
+                "method",
+                "kind",
+                "original_codepoint_span",
+                "reference_codepoint_span",
+                "original_text",
+                "replacement_text",
+                "linguistic_alignment",
+                "category_mapping"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "reference_completeness": {
+            "enum": [
+              "partial",
+              "complete"
+            ]
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "corpus_record_id",
+          "group_id",
+          "source_partition",
+          "split",
+          "original",
+          "references",
+          "spellchecked",
+          "derived_differences",
+          "reference_completeness"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "kind",
+    "source_id",
+    "release_id",
+    "source_version",
+    "source_uri",
+    "source_manifest_sha256",
+    "source_partition",
+    "scorer_version",
+    "licence",
+    "attribution",
+    "examples"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/source-correction-dataset.schema.json",
+  "title": "source-correction-dataset",
+  "description": "Portable native written-correction references. Coarse text differences are derived, not source error spans or taxonomy gold; no audio/model grade is implied."
+}

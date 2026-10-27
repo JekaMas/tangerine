@@ -72,6 +72,9 @@ func (s *Storage) createSourceImport(ctx context.Context, release, binding strin
 		return SourceRun{}, e
 	}
 	parserVersion := source.ParserVersion
+	if f.Native && r.Source == "JFLEG" {
+		parserVersion = source.JFLEGParserVersion
+	}
 	if f.Native && r.Source == "L2-ARCTIC" {
 		parserVersion = source.L2ParserVersion
 	}

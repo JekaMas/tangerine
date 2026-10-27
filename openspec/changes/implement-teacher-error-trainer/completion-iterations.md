@@ -192,3 +192,20 @@ browser quota overflow is repaired by caching a compact saved-data locator and
 restoring through existing reads. Native import code/data remain unchanged;
 original native receipts are reused. The prior four-property selection remains
 the historical apply boundary, not the complete renewed verify selection.
+
+## Iteration 36 — Native JFLEG written corrections
+
+SUP-04:JFLEG uses the already acquired complete owner archive. Preserve all
+29owner members plus its container,1501originals and6004reference positions,
+separate spellchecked/tool/experimental views and source terms. Native source
+parsing, durable resume/commit/readback, Sources examples, development/test
+dataset downloads and local reference-membership evaluation have actual
+consumers. No model call, source script execution, new service/migration or
+new learner prerequisite is required.
+
+Select I36.P1–I36.P7 (14positive/negative cases) via `--requirements I36`.
+Actual native/browser/Lab receipts and known experimental M2 bounds findings
+are reconciled in `audit/iteration-36-jfleg-20261027/`. The native evaluation
+preserves its input and report, and never calls an outside-reference repair
+incorrect. The complete selector and checklist remain in SELECTION.json and
+tasks.md. Other SUP-04 supplements and TET-GOLD-1 remain separate.

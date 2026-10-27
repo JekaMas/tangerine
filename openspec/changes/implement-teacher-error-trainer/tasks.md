@@ -1559,3 +1559,18 @@ are retained. All selected findings are closed;73native source extent difference
 remain explicitly unverified source observations. No new corpus audit/import,
 provider/paid use or user-stack change. Complete imported data are retained
 stopped. See audit/iteration-35-verification-20261027/ACCEPTANCE.json.
+
+### Iteration36 — Available written-correction supplement
+
+- [ ] I36.1 Admit the complete pinned JFLEG release and retain every owner member/container/document; add its supplemental identity without replacing any original source scope.
+- [ ] I36.2 Implement native original/ref0–3/spellchecked pairing and preserve all1501originals/6004reference positions, exact text/line/provenance, unknown/missing and duplicate/unchanged siblings.
+- [ ] I36.3 Provide documented coarse difference mappings and experimental native/tool-origin distinctions without invented linguistic alignment, taxonomy or simultaneous error labels.
+- [ ] I36.4 Perform a complete actual disposable native import with interruption/reopen/resume, stale-revision/accepted-row protection, final counts and application readback.
+- [ ] I36.5 Make saved written-correction examples and separate development/test evaluation datasets usable through native readback and ordinary Sources controls.
+- [ ] I36.6 Connect deterministic reference-membership evaluation to the existing local Lab command, save its real report, and verify all supplied alternatives plus unknown/duplicate/control cases with zero model calls.
+- [ ] I36.7 Reconcile the complete positive/negative DAG, relevant language/structural/preservation checks and actual UI/typography evidence; self-review ownership, repair findings, commit and pass the full committed-clean I36 selection.
+
+I36 is the JFLEG slice of SUP-04. Other supplements and the optional732-stimulus
+TET-GOLD-1 release remain separate; this iteration does not claim their completion.
+Anchors, independent native populations and evidence are in
+`audit/iteration-36-jfleg-20261027/PLAN.json` and PROGRESS.md.

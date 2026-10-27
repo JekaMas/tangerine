@@ -89,6 +89,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/v1/imports/{id}", s.sourceImportGet)
 	mux.HandleFunc("GET /api/v1/imports/{id}/progress", s.sourceProgressGet)
 	mux.HandleFunc("GET /api/v1/imports/{id}/records", s.sourceRowsGet)
+	mux.HandleFunc("GET /api/v1/imports/{id}/corrections", s.sourceCorrectionsGet)
 	mux.HandleFunc("GET /api/v1/imports/{id}/issues", s.sourceIssuesGet)
 	mux.HandleFunc("POST /api/v1/imports/{action}", s.sourceImportAction)
 	mux.HandleFunc("POST /api/v1/reviews", s.reviewCreate)

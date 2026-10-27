@@ -377,7 +377,15 @@ func TestNativeSourceSourcesPositive(t *testing.T) {
 	sourceAssert(t, 200, w.Code)
 	var items []map[string]any
 	sourceRequire(t, json.Unmarshal(w.Body.Bytes(), &items))
-	sourceAssert(t, 11, len(items))
+	sourceAssert(t, 12, len(items))
+	seen := map[string]bool{}
+	for _, item := range items {
+		seen[item["source_id"].(string)] = true
+	}
+	for _, id := range source.IDs {
+		sourceAssert(t, true, seen[id])
+	}
+	sourceAssert(t, true, seen["JFLEG"])
 	for _, s := range items {
 		_, _, e := contracts.Validate("source-status", "2.0.0", sourceBytes(s))
 		sourceRequire(t, e)

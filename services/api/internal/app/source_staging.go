@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/jackc/pgx/v5"
 	"path"
+	"strings"
 	"tangerine.local/api/internal/source"
 )
 
@@ -61,7 +62,7 @@ func (s *Storage) stageSource(ctx context.Context, run *SourceRun, members []sou
 						return nil
 					}
 					table = plan.Name
-				} else if plan.Name == "essays" || plan.Name == "transcripts" || plan.Name == "withheld" || plan.Name == "scores.json" || plan.Name == "scores-detail.json" || plan.Name == "writings" {
+				} else if strings.HasPrefix(plan.Name, "jfleg_") || plan.Name == "essays" || plan.Name == "transcripts" || plan.Name == "withheld" || plan.Name == "scores.json" || plan.Name == "scores-detail.json" || plan.Name == "writings" {
 					table = plan.Name
 				}
 				ordinal := counters[table]

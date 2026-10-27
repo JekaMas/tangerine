@@ -95,6 +95,7 @@ export function createSourceSession({request,publish,remember=()=>{},source='SPE
 }
 
 export function sourceIssueMessage(code) {
+  if (code==='source_tool_annotation') return 'An experimental source conversion contains an unusable annotation. Its original data and warning are retained separately; original correction references remain available.';
   if (code==='import_failed') return 'An earlier import was interrupted. Saved rows were retained; refresh its current progress before resuming.';
   if (code==='parse_failed') return 'A source file could not be read in its documented format. Check that file or use raw-only import.';
   if (code==='mapping_failed') return 'A record could not be converted with the selected source dictionary. Review the documented binding; the original record is retained.';

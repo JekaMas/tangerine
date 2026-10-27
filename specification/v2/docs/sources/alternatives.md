@@ -16,7 +16,7 @@ Keep release/commit, exact file bytes, native field names, source partitions, al
 
 ## Native supplemental conversion meanings
 
-JFLEG raw source IDs are partition plus native line index. Keep all four correction texts as acceptable reference alternatives. Written corrected text can support future contextual LLM judgment and answer-matching examples, but applying a writing repair does not prove that its corresponding audio contains an audible target mutation. Derive source edit spans only against the unchanged native text using a separately recorded alignment method; ambiguous alignments stay explicit rather than becoming invented source annotations.
+JFLEG native import and consumers are specified in [the JFLEG contract](jfleg.md). JFLEG raw source IDs are partition plus native line index. Keep all four correction texts as acceptable reference alternatives. Written corrected text can support future contextual LLM judgment and answer-matching examples, but applying a writing repair does not prove that its corresponding audio contains an audible target mutation. Derive source edit spans only against the unchanged native text using a separately recorded alignment method; ambiguous alignments stay explicit rather than becoming invented source annotations.
 
 ELRD preserves complete dialogue identity, original audio and source JSONL turns. A source turn/speaker tag is a source identifier, not a teacher answer or a phonetic diagnosis. Keep ASR origin; retain pauses, repairs and uncertain text when present. Normalized teacher-error units require context-supported LLM mapping and actual final-audio evidence, as already defined for all sources.
 

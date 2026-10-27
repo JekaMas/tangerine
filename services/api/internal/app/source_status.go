@@ -8,7 +8,7 @@ import (
 
 func (s *Storage) SourceStatuses(ctx context.Context) ([]map[string]any, error) {
 	out := []map[string]any{}
-	for _, id := range source.IDs {
+	for _, id := range source.AllIDs() {
 		item := sourceStatusBase(id)
 		rows, e := s.DB.Query(ctx, "SELECT id,payload FROM source_release WHERE source_id=$1 ORDER BY created_at,id", id)
 		if e != nil {

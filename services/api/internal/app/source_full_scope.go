@@ -31,6 +31,34 @@ func (s *Storage) sourceFullMissing(ctx context.Context, release SourceRelease, 
 		missing = append(missing, label)
 	}
 	switch release.Source {
+	case "JFLEG":
+		for part, count := range map[string]int64{"dev": 754, "test": 747} {
+			for _, pair := range [][2]string{{"jfleg_source", ".src"}, {"jfleg_ref0", ".ref0"}, {"jfleg_ref1", ".ref1"}, {"jfleg_ref2", ".ref2"}, {"jfleg_ref3", ".ref3"}, {"jfleg_spellchecked", ".spellchecked.src"}} {
+				if e := requireRows(part+pair[1], pair[0], part+"/"+part+pair[1], count); e != nil {
+					return nil, e
+				}
+			}
+		}
+		for _, item := range []struct {
+			table, suffix string
+			count         int64
+		}{
+			{"sentences", "EACL_exp/m2converter/dev.ref.m2", 754},
+			{"edits", "EACL_exp/m2converter/dev.ref.m2", 11611},
+			{"sentences", "EACL_exp/m2converter/test.ref.m2", 747},
+			{"edits", "EACL_exp/m2converter/test.ref.m2", 10938},
+			{"records", "EACL_exp/manual_eval/coded_sentences.csv", 100},
+			{"records", "EACL_exp/mturk/pairwise.csv", 1629},
+			{"records", "EACL_exp/mturk/sample.csv", 4},
+		} {
+			label := item.suffix[strings.LastIndex(item.suffix, "/")+1:]
+			if item.table != "records" {
+				label += " " + item.table
+			}
+			if e := requireRows(label, item.table, item.suffix, item.count); e != nil {
+				return nil, e
+			}
+		}
 	case "FCE-2.1":
 		for suffix, count := range map[string]int64{"fce.train.gold.bea19.m2": 28350, "fce.dev.gold.bea19.m2": 2191, "fce.test.gold.bea19.m2": 2695} {
 			if e := requireRows(suffix, "sentences", suffix, count); e != nil {

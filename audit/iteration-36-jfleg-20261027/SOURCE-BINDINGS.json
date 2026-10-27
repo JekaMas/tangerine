@@ -1,0 +1,657 @@
+{
+  "path": "tests/native_source_test.go",
+  "entry_sha256": "e3fce70b6687f4e3158e0d57985404bc913458ad707b045a3b09f433f9c9a379",
+  "current_sha256": "92eb690d2573315965a7e5926b1f6060736823541d46bec579916bd4a2118eea",
+  "only_changed_function": "TestNativeSourceSourcesPositive",
+  "unchanged_remainder_verified": true,
+  "old_literal": "func TestNativeSourceSourcesPositive(t *testing.T) {\n\tf := sourceFixture(t)\n\tw := f.request(\"GET\", \"/api/v1/sources\", nil, \"\", \"\")\n\tsourceAssert(t, 200, w.Code)\n\tvar items []map[string]any\n\tsourceRequire(t, json.Unmarshal(w.Body.Bytes(), &items))\n\tsourceAssert(t, 11, len(items))\n\tfor _, s := range items {\n\t\t_, _, e := contracts.Validate(\"source-status\", \"2.0.0\", sourceBytes(s))\n\t\tsourceRequire(t, e)\n\t\tsourceAssert(t, \"not_acquired\", s[\"status\"])\n\t}\n\tf.upload(t, \"companion.csv\", \"writingID,SOC_scores\\na,0.5\\n\")\n\tf.register(t, \"EFCAMDAT-OKSUZ2025\", \"analysis_companion\")\n\tr := f.run(t, \"raw-only\", nil)\n\tsourceAssert(t, true, r.Report.RawComplete)\n\tsourceAssert(t, false, r.Report.Normalized)\n\tsourceAssert(t, \"1\", r.Report.RawOnly)\n}\n",
+  "current_literal": "func TestNativeSourceSourcesPositive(t *testing.T) {\n\tf := sourceFixture(t)\n\tw := f.request(\"GET\", \"/api/v1/sources\", nil, \"\", \"\")\n\tsourceAssert(t, 200, w.Code)\n\tvar items []map[string]any\n\tsourceRequire(t, json.Unmarshal(w.Body.Bytes(), &items))\n\tsourceAssert(t, 12, len(items))\n\tseen := map[string]bool{}\n\tfor _, item := range items {\n\t\tseen[item[\"source_id\"].(string)] = true\n\t}\n\tfor _, id := range source.IDs {\n\t\tsourceAssert(t, true, seen[id])\n\t}\n\tsourceAssert(t, true, seen[\"JFLEG\"])\n\tfor _, s := range items {\n\t\t_, _, e := contracts.Validate(\"source-status\", \"2.0.0\", sourceBytes(s))\n\t\tsourceRequire(t, e)\n\t\tsourceAssert(t, \"not_acquired\", s[\"status\"])\n\t}\n\tf.upload(t, \"companion.csv\", \"writingID,SOC_scores\\na,0.5\\n\")\n\tf.register(t, \"EFCAMDAT-OKSUZ2025\", \"analysis_companion\")\n\tr := f.run(t, \"raw-only\", nil)\n\tsourceAssert(t, true, r.Report.RawComplete)\n\tsourceAssert(t, false, r.Report.Normalized)\n\tsourceAssert(t, \"1\", r.Report.RawOnly)\n}\n",
+  "bindings": [
+    {
+      "case_id": "COR-01.P1.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceRightsPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "COR-01.P1.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceRightsNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "COR-02.P1.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceArchivePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "COR-02.P1.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceArchiveNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "SRC-01.P1.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceIntakePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "SRC-01.P1.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceIntakeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "V6-DATA-01.P1.S1.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceRightsPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "V6-DATA-01.P1.S1.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceRightsNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "V6-DATA-01.P1.S2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceReviewTermsPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "V6-DATA-01.P1.S2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceReviewTermsNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "V6-DATA-02.P1.S1.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "V6-DATA-02.P1.S1.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "V6-DATA-02.P1.S2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceHistoryPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "V6-DATA-02.P1.S2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceNativeImportNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "FULL-02.P1.S1.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceHistoryPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "FULL-02.P1.S1.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceRightsNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "FULL-02.P1.S2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceTransformationPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "FULL-02.P1.S2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceCountsNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-01.P1.S1.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceGoldPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-01.P1.S1.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceGoldNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-04.P1.S2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceFullScopeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-05.P1.S1.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceNativeImportNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-05.P1.S2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceFullScopeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-07.P1.S1.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-07.P1.S1.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-07.P1.S2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-07.P1.S2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "FULL-01.P1.S2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceGoldPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "FULL-01.P1.S2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceGoldNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-06.P1.S1.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceEfcamdatPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-06.P1.S1.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceEfcamdatNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-06.P1.S2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-06.P1.S2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-08.P1.S1.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-08.P1.S1.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-08.P1.S2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-08.P1.S2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-09.P1.S1.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-09.P1.S1.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-09.P1.S2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-09.P1.S2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-10.P1.S1.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-10.P1.S1.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-10.P1.S2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-10.P1.S2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-11.P1.S1.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-11.P1.S1.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-11.P1.S2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-11.P1.S2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "SPEC-039.P1.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceIntakePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "SPEC-039.P1.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceIntakeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "SPEC-039.P1.S2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceRightsPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "SPEC-039.P1.S2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceRightsNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "SPEC-039.P1.S3.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceTransformationPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "SPEC-039.P1.S3.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceTransformationNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "SPEC-039.P1.S4.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceCountsPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "SPEC-039.P1.S4.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceCountsNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "BUILD-03.P1.S1.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "BUILD-03.P1.S1.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "BUILD-03.P1.S2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "BUILD-03.P1.S2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "COR-01.P1.SET2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceTransformationPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "COR-01.P1.SET2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceReviewTermsNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "COR-02.P1.SET2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceNestedArchivePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "COR-02.P1.SET2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceNestedArchiveNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "SRC-01.P1.SET2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceHistoryPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "SRC-01.P1.SET2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceHistoryNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "V6-DATA-02.P1.SET2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceEfcamdatNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "FULL-01.P1.SET2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceFullScopeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "FULL-02.P1.SET2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceIntakeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "DATAFULL-02.P1.SET2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceRightsNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-01.P1.S2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceIntakePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-01.P1.S3.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceIntakeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-01.P1.S3.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceArchivePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-01.P1.S4.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceArchiveNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-01.P1.S4.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceNestedArchivePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-01.P1.S5.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceNestedArchiveNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-03.P1.S8.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-03.P1.S8.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceMappingNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-03.P1.S9.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-03.P1.S9.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourcePrivateScopeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-03.P1.S10.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceEfcamdatPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-03.P1.S10.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceEfcamdatNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-04.P1.S5.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceSourcesPositive",
+      "disposition": "Changed assertion reobserved in status.jsonl; exact test is also required by I36.P1."
+    },
+    {
+      "case_id": "I13-04.P1.S5.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceSourcesNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-04.P1.S6.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceFullScopeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-04.P1.S9.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceSpeechPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-04.P1.S10.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceSpeechNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-04.P1.S11.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceGoldPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-04.P1.S12.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceGoldNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-04.P1.S12.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceCountsPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-04.P1.S13.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceCountsNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S1.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceNativeImportPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S1.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceNativeImportNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceResumePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceResumeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S3.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceHistoryPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S3.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceHistoryNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S4.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceCancelPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S4.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceCancelNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S5.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceFailurePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S5.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceFailureNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S6.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceIssuesPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S6.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceIssuesNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S7.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceUpgradePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S7.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceUpgradeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S8.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceSequencePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S8.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceSequenceNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S9.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceTransformationPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S9.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceTransformationNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S10.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceOrderingPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S10.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceScopeCountNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S11.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceFrozenPermissionsNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S12.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceMissingBytesNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S11.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceProjectionBatchPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S13.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceProjectionBatchNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S12.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceAdmissionReplayPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-05.P1.S14.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceAdmissionReplayNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-06.P1.S2.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceRightsPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-06.P1.S2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceRightsNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-06.P1.S3.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceRemotePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-06.P1.S3.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceRemoteNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-06.P1.S4.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceRemoteResumePositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-06.P1.S4.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceRemoteConflictNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-06.P1.S5.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceConnectorPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-06.P1.S5.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceConnectorNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-06.P1.S6.POSITIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceReviewTermsPositive",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-06.P1.S6.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceReviewTermsNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    },
+    {
+      "case_id": "I13-08.P1.S2.NEGATIVE",
+      "test_id": "tangerine.local/api/internal/app::TestNativeSourceFullScopeNegative",
+      "disposition": "Shared file hash only; assertion and helper bytes are unchanged. Existing case receipts keep their original boundaries."
+    }
+  ],
+  "scope": "Registration repair, not a claim that every historical iteration was rerun. The actual changed native case passed; no stale pin is silently accepted."
+}

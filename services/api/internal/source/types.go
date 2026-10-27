@@ -15,8 +15,13 @@ const ParserVersion = "source-native-v1"
 
 var IDs = []string{"TET-GOLD-1", "SPEECHOCEAN762", "L2-ARCTIC", "WILOCNESS-2.1", "FCE-2.1", "EFCAMDAT-R2", "EFCAMDAT-SHATZ2020", "EFCAMDAT-OKSUZ2025", "DOUBAO-STUDY-RECORDS", "MOODRICK-DATA", "NIR-DATA"}
 
+// Supplemental sources never replace or inflate the original eleven scopes.
+var SupplementalIDs = []string{"JFLEG"}
+
+func AllIDs() []string { return append(append([]string{}, IDs...), SupplementalIDs...) }
+
 func Known(id string) bool {
-	for _, v := range IDs {
+	for _, v := range AllIDs() {
 		if id == v {
 			return true
 		}

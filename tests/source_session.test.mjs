@@ -205,3 +205,8 @@ test('legacy_cache_migration_positive',async()=>{
   assert.equal(f.state.release.id,'legacy');assert.equal(f.state.report.id,'old');
   assert.deepEqual(f.saved.at(-1),{source:'FCE-2.1',releaseId:'legacy',binding:'binding-old',importId:'old'});
 });
+
+// An optional unofficial conversion warning must not block primary references.
+test('tool_annotation_guidance_positive',()=>{
+  assert.equal(sourceIssueMessage('source_tool_annotation'),'An experimental source conversion contains an unusable annotation. Its original data and warning are retained separately; original correction references remain available.');
+});

@@ -1,0 +1,68 @@
+{
+  "iteration": 36,
+  "entry_revision": "b1eb6b5",
+  "source_id": "JFLEG",
+  "commit": "ee06ff806a208aba815ac45313f4e750a48330a5",
+  "archive": "/Users/jekamas/projects/0xatelerix/tangerine/data/corpora/jfleg/owner-ee06ff806a208aba815ac45313f4e750a48330a5.tar.gz",
+  "prior_admission": "audit/corpus-acquisition-20261009/jfleg-owner-snapshot-receipt.json",
+  "scope": "Complete29owner files plus original archive, native input/ref0..3/spellchecked and experimental views retained; original11scopes unchanged.",
+  "expected": {
+    "owner_files": 29,
+    "release_assets": 30,
+    "originals": 1501,
+    "partitions": {
+      "dev": 754,
+      "test": 747
+    },
+    "references": 6004,
+    "spellchecked": 1501,
+    "m2": {
+      "EACL_exp/m2converter/dev.ref.m2": {
+        "sentences": 754,
+        "annotations": 11611
+      },
+      "EACL_exp/m2converter/test.ref.m2": {
+        "sentences": 747,
+        "annotations": 10938
+      }
+    },
+    "csv_rows": {
+      "EACL_exp/manual_eval/coded_sentences.csv": 100,
+      "EACL_exp/mturk/pairwise.csv": 1629,
+      "EACL_exp/mturk/sample.csv": 4
+    }
+  },
+  "native_baseline": "data/iteration-36-jfleg-20261027/native-expected.json",
+  "owners": {
+    "registry": "services/api/internal/source/types.go",
+    "native": "services/api/internal/source/presets.go and new source/jfleg.go",
+    "projection": "new app/source_jfleg.go, hooked after native projection through source_mapping.go",
+    "durable": "source_import/source_storage/source_mapping_storage; existing write/checkpoint/commit only",
+    "readback": "new app/source_corrections.go; source HTTP existing handler family",
+    "examples": "new web Sources CorrectionExamples component",
+    "evaluation": "source correction dataset/evaluator, existing LabCommand; no model calls"
+  },
+  "lineage": "source_release -> source_import frozen parser/method/version -> source_row native/projection/transformation -> primary JFLEG example -> source-correction-dataset -> local native reference-evaluation report asset",
+  "completion": "Existing source import commit/publication; existing Sources readbacks and local Lab report asset owner. No migration or new runtime service.",
+  "decisions": [
+    "JFLEG is supplemental; keep original11IDs/scopes intact.",
+    "Native identity is source partition plus zero-based native line index within exact owner version. All four reference positions preserved even if equal.",
+    "Derived mapping is a coarse codepoint common-prefix/suffix replacement; not atomic linguistic alignment, category label, individual error count or acoustic gold.",
+    "Existing supplied spellchecked/M2 views are tool-derived. Manual experimental codes remain their native labels with dictionary/context.",
+    "Examples/datasets do not automatically condition generated exercises or dispatch inference. Local reference matching reports membership; out-of-set corrections remain semantically unknown."
+  ],
+  "preserve": [
+    "All122taxonomy/recipes",
+    "All42formulas",
+    "All11original source scopes",
+    "User app3000/data/settings/media/tabs",
+    "Canonical GAPS.md edit"
+  ],
+  "forbidden": [
+    "Purchased credits or overage",
+    "Provider/model calls",
+    "New corpus download or repeated integrity audit",
+    "Source scripts execution or installs",
+    "Deployment, publication, PBT or financial execution"
+  ]
+}

@@ -29,6 +29,8 @@ func (s *Storage) LabCommand(ctx context.Context, input io.Reader, output io.Wri
 	var result any
 	var err error
 	switch r.Action {
+	case "source-correction-evaluate":
+		result, err = s.EvaluateSourceCorrections(ctx, r.Payload)
 	case "development-prepare":
 		result, err = s.PrepareDevelopmentVerification(ctx, r.Payload)
 	case "diagnostic-save":
