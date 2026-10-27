@@ -11,8 +11,8 @@ have now passed.
 | Disposition | Original cases | Meaning |
 |---|---:|---|
 | Executable literal assertions | 234 | Original inputs and independently authored expectations are now bound to actual arithmetic, auxiliary-population, Unicode-span, mutation-admission/manifest or evidence-runner tests. Execution is recorded separately. |
-| Exact component reuse | 623 | Retained native context/recipe observations prove only the matched component. The complete original answer/audio/semantic scenario stays open. |
-| Complete literal observation not established | 1,050 | Successor implementations/tests exist, but no exact whole-packet observation is claimed. These are open verification obligations, not automatically missing features or inaccessible data. |
+| Exact component reuse | 618 | Retained native context/recipe observations prove only the matched component. The complete original answer/audio/semantic scenario stays open. |
+| Complete literal observation not established | 1,055 | Successor implementations/tests exist, but no exact whole-packet observation is claimed. These are open verification obligations, not automatically missing features or inaccessible data. |
 | Historical fixture conflict | 2 | The two public-ratio variants expect N/A for inconsistent `1/0`, whereas the existing public owner rejects it. The original expectations are preserved and not relabelled passed. |
 
 Every original case has an individual record in [LEDGER.json](LEDGER.json),
@@ -85,6 +85,23 @@ Graph, discovery and strict OpenSpec checks are structural. They establish
 registration/document consistency, not application behavior. Stable-batch Go
 checks apply only to the new test code. There are no production Go/Python/web,
 prompt, configuration, corpus-byte or runtime changes.
+
+The first clean new-native cohort at `7b490a4` passed50logical edges and failed13
+second-set auxiliary counterexamples because the new test adapter expected a
+missing-observation packet. Their actual packets supply valid inputs and a wrong
+proposed result. The adapter is repaired; original fixtures and production code
+are preserved. Keep the44independent physical passes, the original exit1 and
+original hashes. The directed repair selects only the13failed negatives and
+their parent, then the iteration gate requires actual resolved-sibling output
+and a bounded semantic source review. See REUSE-BOUNDARY.md. The failed whole
+cohort is never relabelled a passing command.
+
+After acceptance the dated ledger/source assertions read their accepted scope
+revision while their own code, ledger and observation packet remain unchanged.
+Later product work can complete original open cases without retroactively
+failing this historical reconciliation. Changing an I31-owned input selects
+the current scope for repair. This does not turn old runtime evidence into a
+new product-version claim.
 
 UI/UX: **not applicable**. No screen, action, navigation, message, request/retry
 owner or runtime boundary changes. Product typography: **not applicable**. No

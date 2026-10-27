@@ -52,7 +52,7 @@ def observer(method):
 
 def native(method, package="app"):
     return test("tangerine.local/api/internal/" + package + "::" + method,
-                "services/api/internal/" + package + "/historical_literals_test.go", "i31-go-literals",
+                "services/api/internal/" + package + "/historical_literals_test.go", "i31-aux-counterexamples" if package=="scoring" and ".SET2.NEGATIVE" in method else "i31-go-literals",
                 proof="Actual native owner on the original labelled constructed text/population; no model, actual participant or speech measurement.")
 
 
@@ -96,6 +96,8 @@ assert json.loads((ROOT / lf_receipt).read_text())["exit_code"] == 0
 
 
 def partials(b):
+    if b["action"] != r.CATEGORY_ACTION:
+        return []
     leaf = b["input"].get("leaf")
     if leaf not in lf_refs:
         return []
@@ -215,7 +217,8 @@ packet=dict(baseline_revision=r.BASELINE,scope="All 1909 original planned/blocke
 new_commands=[
  dict(id="completion-i31",runner="python-unittest",argv=["python3","-B","-m","unittest","-v","tests.test_completion_i31"],cwd=".",env={},timeout_seconds=180,authority="local"),
  dict(id="i31-arithmetic-literals",runner="python-unittest",argv=["python3","-B","-m","unittest","-v","tests.test_historical_literals"],cwd=".",env={},timeout_seconds=30,authority="local"),
- dict(id="i31-go-literals",runner="go-test-json",argv=["./tests/go-docker","test","-json","-race","-count=1","-run","^TestHistorical","./internal/app","./internal/scoring"],cwd=".",env={},timeout_seconds=1200,authority="local")]
+ dict(id="i31-go-literals",runner="go-test-json",argv=["./tests/go-docker","test","-json","-race","-count=1","-run",r"^TestHistorical(Unicode.*|Mutation.*|Auxiliary(Positive|Negative))$/^(AUX-[0-9]+\.P1(\.SET2)?\.POSITIVE|AUX-[0-9]+\.P1\.NEGATIVE)$","./internal/app","./internal/scoring"],cwd=".",env={},timeout_seconds=1200,authority="local"),
+ dict(id="i31-aux-counterexamples",runner="go-test-json",argv=["./tests/go-docker","test","-json","-race","-count=1","-run",r"^TestHistoricalAuxiliaryNegative$/^AUX-(01|02|03|04|05|06|07|08|09|12|13|14|15)\.P1\.SET2\.NEGATIVE$","./internal/scoring"],cwd=".",env={},timeout_seconds=1200,authority="local")]
 graph["commands"]=[x for x in graph["commands"] if x["id"] not in {x["id"] for x in new_commands}]+new_commands
 pending=next(x for x in graph["commands"] if x["id"]=="pending")
 pending["expected_markers"]=[c["test_id"] for c in graph["cases"] if c["command_id"]=="pending"]
@@ -226,7 +229,7 @@ selections=[
  (1,"TRACE31 Original population and independent expectations",["test_population_positive","test_population_omission_negative","test_expected_literal_change_negative","test_test_identity_negative","test_discovery_aliases_positive","test_retired_discovery_identity_negative"]),
  (2,"TRACE31 Typed observations and literal execution",["test_new_literal_observations_positive","test_counterfeit_observation_negative","test_ratio_pair_positive","test_ratio_pair_negative","test_unicode_pair_positive","test_unicode_pair_negative"]),
  (3,"TRACE31 Exact partial reuse without promotion",["test_retained_component_reuse_positive","test_missing_partial_receipt_negative","test_partial_promotion_negative"]),
- (4,"TRACE31 Unchanged product and accepted history",["test_product_sources_preserved_positive","test_prior_accepted_case_rewrite_negative","test_false_external_blocker_negative"]),
+ (4,"TRACE31 Unchanged product and accepted history",["test_product_sources_preserved_positive","test_prior_accepted_case_rewrite_negative","test_false_external_blocker_negative","test_historical_scope_positive","test_historical_scope_change_negative"]),
  (5,"TRACE31 Static validation is not execution",["test_unobserved_scope_positive","test_static_summary_not_execution_negative"])]
 for n,scenario,methods in selections:
  pid="TRACE31.P"+str(n)
@@ -257,6 +260,7 @@ discovery["scope"]["test_ids"]=list(dict.fromkeys(discovery["scope"]["test_ids"]
 discovery["scope"]["property_ids"]=list(dict.fromkeys(discovery["scope"]["property_ids"]+props))
 review=next(x for x in discovery["reviews"] if x["id"]=="iteration31-literal-reconciliation-20261027")
 review["test_ids"]=active
-review["searches"][0]["outcome"]="234 original literal edges materialized;623 exact native components retained without full promotion;1050 complete literal joins unestablished;2 conflicting ratio vectors remain open. The51 coarse conditional labels are constructed native fixtures and ordinary planned test work. All original accepted registrations and retired planned discovery identities are preserved."
+stats=r.counts(packet)
+review["searches"][0]["outcome"]=f"{stats['materialized_literal']} original literal edges materialized;{stats['partial_exact_reuse']} exact category-workflow components retained without full promotion;{stats['literal_observation_missing']} complete literal joins unestablished;{stats['fixture_conflict']} conflicting ratio vectors remain open. Shared leaf identifiers in unrelated operations are not component proof. The51 coarse conditional labels are constructed native fixtures and ordinary planned test work. All original accepted registrations and retired planned discovery identities are preserved."
 discovery_path.write_text(json.dumps(discovery,indent=2)+"\n")
 print(json.dumps(dict(original_cases=len(rows),properties=len(property_rows),dispositions=r.counts(packet),literal_case_edges=len(selection["retained_literal_case_ids"])),indent=2))

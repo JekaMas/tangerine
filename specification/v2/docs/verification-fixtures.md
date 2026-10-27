@@ -9,8 +9,8 @@ Current identities, implementations and actual observations are owned by the
 canonical `verification.json` and its retained native receipts.
 
 Iteration 31 individually reconciles all 1,909 entry-revision planned/blocked
-edges. It registers 234 literal bindings, retains 623 partial native component
-joins without promoting the complete scenario, and records 1,050 unestablished
+edges. It registers 234 literal bindings, retains 618 partial native component
+joins without promoting the complete scenario, and records 1,055 unestablished
 whole-packet observations and two contradictory public-ratio variants. See
 [the reconciliation report](../../../audit/iteration-31-reconciliation-20261027/REPORT.md)
 and its exact selection/acceptance record for execution status. Source fixtures

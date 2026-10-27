@@ -2,8 +2,8 @@
 
 Iteration 31 execution update: the [individual reconciliation](../../../audit/iteration-31-reconciliation-20261027/REPORT.md)
 now distinguishes all 1,909 historical entries. There are 234 executable literal
-bindings, 623 exact component joins that leave the original full scenario open,
-1,050 unestablished complete literal observations and two conflicting historical
+bindings, 618 exact component joins that leave the original full scenario open,
+1,055 unestablished complete literal observations and two conflicting historical
 ratio variants. Actual passing execution belongs to the selected native and
 committed-clean acceptance receipts, not these counts. The 51 coarse
 population/qualification labels refer to constructed test packets; they are

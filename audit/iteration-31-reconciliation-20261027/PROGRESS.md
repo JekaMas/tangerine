@@ -106,3 +106,52 @@ selection or valid old test command is rerun.
   execute new native literals once with the existing pinned Docker adapter.
   Export their typed output, commit that observation packet, run the full
   committed-clean I31 gate and record acceptance.
+
+## Native adapter repair checkpoint
+
+- First committed-native run at7b490a4:50logical passes,13failed second-set
+  negatives. Whole command exit1is preserved in NATIVE-FIRST.json and ignored
+  native-clean.json/raw outputs.44physical identities passed.
+- Cause is the NEW test adapter, not production: SET2 negative packets contain
+  actual declared inputs plus proposed_result, while the adapter assumed every
+  negative was inputs_missing=true. All13original packets have now been read.
+- Repaired only the proposed-result branch; verified the positive, population
+  and literal-reader function bodies unchanged against7b490a4. Missing-data
+  inputs still follow the original branch. No production/fixture changes.
+- Native source reuse keeps the original nonzero exit/hash and explicit
+  unaffected identities; the revised observer also requires actual passes for
+  every failed sibling, and rejects a missing/forged resolution.
+- Current next steps: regenerate registration once; commit repair; execute only
+  i31-aux-counterexamples --require-clean; preserve the44prior physical passes.
+  Capture source fingerprints and directed zero-exit output in OBSERVATIONS,
+  commit that packet, run full131-edge I31 --require-clean, commit acceptance.
+- Strict OpenSpec1.13.1, native discovery, Go formatting and Go vet passed at
+ 7b490a4. New scoring-test changes invalidate only its format/vet; application
+  vet and unchanged spec/discovery greens are retained unless routing changes.
+
+Final scope refinement: three coverage-count packets shared a leaf identifier
+with LF but did not perform category context/replay. Their partial links were
+removed, with a negative scope-alias test. Final counts return to620exact
+partial joins and1053unestablished complete literals;234materialized and2
+conflicting vectors unchanged. All51coarse external labels remain local planned
+test work. Next final selection is133edges/23physical reconciliation methods.
+
+## Stable directed-repair scope
+
+The action-level scope comparison removes ALL five unrelated leaf-ID-only links,
+not only the initial three. Final:234materialized,618partial,1055unobserved,
+2fixture conflicts. Discovery/report/active-document counts now use that exact
+population. The full I31 selection is133edges/23physical metadata methods.
+Two fixed Git-fixture cases check historical scope pinning and reactivation when
+I31-owned source changes, avoiding the earlier I17 moving-checkout status issue.
+
+Only the13failed AUX SET2 negative children are selected by the new
+i31-aux-counterexamples command; original schema/production/fixture content is
+unchanged. The old native command now selects the disjoint passing children for
+future execution; this apply retains its actual first broader output and exit1.
+The directed repair must also pass the old failed parent container.
+
+Next: commit this stable repair, run i31-aux-counterexamples --require-clean,
+then export OBSERVATIONS with the44prior independent passes/original hashes,
+actual directed14passes and explicit source reuse review. Commit that packet
+before full133-edge --commands completion-i31 --require-clean acceptance.

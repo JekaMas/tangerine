@@ -15,8 +15,36 @@ ROOT = Path(__file__).resolve().parents[2]
 CHANGE = "openspec/changes/implement-teacher-error-trainer"
 BASELINE = "ab91a998903f537c6c57e6875a85e5943d54a3b9"
 HERE = Path(__file__).resolve().parent
+CATEGORY_ACTION = "Replay the declared design mutation or request its declared acoustic transformation, then map a localized answer and clean control"
 sys.path.insert(0, str(ROOT / ".agents/workflow/scripts"))
 from requirement_tests import parse_go_events, parse_unittest_events
+
+
+@lru_cache(maxsize=1)
+def accepted_scope_revision():
+    """Keep this dated reconciliation historical after later product work.
+
+    A change to its own code/ledger/observations selects the current scope again.
+    Acceptance/report bookkeeping and unrelated product commits do not undo it.
+    """
+    path = HERE / "ACCEPTANCE.json"
+    if not path.is_file():
+        return None
+    revision = json.loads(path.read_text())["tested_revision"]
+    for relative in ["tests/test_completion_i31.py",
+                     "audit/iteration-31-reconciliation-20261027/reconcile.py",
+                     "audit/iteration-31-reconciliation-20261027/LEDGER.json",
+                     "audit/iteration-31-reconciliation-20261027/OBSERVATIONS.json"]:
+        observed = subprocess.check_output(["git", "show", revision + ":" + relative], cwd=ROOT)
+        if observed != (ROOT / relative).read_bytes():
+            return None
+    return revision
+
+
+def scope_source(path):
+    revision = accepted_scope_revision()
+    return (subprocess.check_output(["git", "show", revision + ":" + path], cwd=ROOT)
+            if revision else (ROOT / path).read_bytes())
 
 
 @lru_cache(maxsize=None)
@@ -89,6 +117,8 @@ def ledger_errors(packet, graph):
         else:
             errors.append(cid + " unknown disposition")
         for reuse in row.get("partial_evidence", []):
+            if binding["action"] != CATEGORY_ACTION:
+                errors.append(cid + " a shared category ID does not prove this unrelated operation")
             candidate = current.get(reuse.get("case_id"), {})
             if candidate.get("state") != "implemented" or not reuse.get("assertion"):
                 errors.append(cid + " unsupported partial assertion")
@@ -109,7 +139,8 @@ def ledger_errors(packet, graph):
 def observation_errors(record, expected_tests):
     """Actual typed observations, not report labels/counts, own a retained pass."""
     errors = []
-    if record.get("exit_code") != 0:
+    subset = record.get("retained_pass_subset", [])
+    if record.get("exit_code") != 0 and not (record.get("exit_code") == 1 and subset):
         errors.append("command did not exit zero")
     observed = record.get("observed_tests", {})
     for test in expected_tests:
@@ -124,13 +155,39 @@ def observation_errors(record, expected_tests):
         for test in expected_tests:
             if parsed.get(test) != "pass":
                 errors.append("retained native output does not observe " + test)
+        if record.get("exit_code") == 1 and subset:
+            failed = {test for test, status in parsed.items() if status != "pass"}
+            if set(record.get("failed_sibling_tests", [])) != failed or not failed:
+                errors.append("failed sibling accounting changed")
+            if not set(expected_tests) <= set(subset):
+                errors.append("unobserved failure promoted as an independent pass")
+            resolution = record.get("sibling_resolution", {})
+            path = ROOT / resolution.get("retained_output", "")
+            if resolution.get("exit_code") != 0 or not path.is_file():
+                errors.append("failed siblings remain unresolved")
+            else:
+                resolved = parse_go_events(path.read_text())
+                if any(resolved.get(test) != "pass" for test in failed):
+                    errors.append("directed repair did not pass every failed sibling")
     if not record.get("source_bindings"):
         errors.append("executed sources unbound")
     for binding in record.get("source_bindings", []):
         if not isinstance(binding, dict) or not binding.get("path") or not binding.get("sha256"):
             errors.append("executed source identity absent")
-        elif not (ROOT / binding["path"]).is_file() or source_digest(binding["path"]) != binding["sha256"]:
-            errors.append("executed source changed " + binding["path"])
+        elif not (ROOT / binding["path"]).is_file() and not accepted_scope_revision():
+            errors.append("executed source missing " + binding["path"])
+        elif source_digest(binding["path"]) != binding["sha256"]:
+            # A changed file is not automatically a changed tested path. Keep
+            # the ORIGINAL hash, the explicitly reviewed new hash, the exact
+            # unaffected identities and the source-diff explanation separately.
+            reviews = record.get("source_reuse_reviews", [])
+            matches = [v for v in reviews if v.get("path") == binding["path"]
+                       and v.get("tested_sha256") == binding["sha256"]
+                       and v.get("reviewed_current_sha256") == source_digest(binding["path"])
+                       and set(expected_tests) <= set(v.get("unchanged_test_ids", []))
+                       and v.get("reason") and (ROOT / v.get("reference", "")).is_file()]
+            if len(matches) != 1:
+                errors.append("executed source changed " + binding["path"])
     if record.get("new_provider_calls") != 0:
         errors.append("unselected provider execution")
     return errors
@@ -140,7 +197,7 @@ def observation_errors(record, expected_tests):
 def source_digest(path):
     # One source observation per development-check process; never application
     # reads, corpus reads or a repeated accepted-data boundary check.
-    return hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
+    return hashlib.sha256(scope_source(path)).hexdigest()
 
 
 def counts(packet):

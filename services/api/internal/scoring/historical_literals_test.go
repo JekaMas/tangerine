@@ -17,6 +17,7 @@ type historicalAuxiliary struct {
 		Inputs        map[string]any `json:"inputs"`
 		InputsMissing bool           `json:"inputs_missing"`
 		Invented      int64          `json:"invented_value"`
+		Proposed      string         `json:"proposed_result"`
 	} `json:"input"`
 	Expected struct {
 		Exact *string `json:"exact"`
@@ -142,7 +143,11 @@ func TestHistoricalAuxiliaryNegative(t *testing.T) {
 		}
 		seen++
 		t.Run(row.CaseID, func(t *testing.T) {
-			if !row.Input.InputsMissing || row.Input.Invented != 100 {
+			if !row.Input.InputsMissing {
+				historicalWrongProposal(t, row)
+				return
+			}
+			if row.Input.Invented != 100 {
 				t.Fatal("wrong historical input", row.CaseID)
 			}
 			populations := map[string]Population{}
@@ -161,5 +166,37 @@ func TestHistoricalAuxiliaryNegative(t *testing.T) {
 	}
 	if seen != 26 {
 		t.Fatal(seen)
+	}
+}
+
+func historicalWrongProposal(t *testing.T, row historicalAuxiliary) {
+	t.Helper()
+	if row.Input.Proposed == "" {
+		t.Fatal("missing original wrong proposed result", row.CaseID)
+	}
+	before, _ := json.Marshal(row.Input.Inputs)
+	out, err := Auxiliary(map[string]Population{row.Metric: historicalPopulation(row)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := out[row.Metric]
+	if row.Expected.Exact == nil {
+		if got.Exact != nil || got.Status != "not_observable" {
+			t.Fatal("invented teacher trait accepted", got)
+		}
+	} else {
+		want, _ := new(big.Rat).SetString(*row.Expected.Exact)
+		wrong, _ := new(big.Rat).SetString(row.Input.Proposed)
+		if got.Exact == nil || got.Status != "observed" {
+			t.Fatal(got)
+		}
+		actual, _ := new(big.Rat).SetString(got.Exact.Numerator + "/" + got.Exact.Denominator)
+		if actual.Cmp(want) != 0 || actual.Cmp(wrong) == 0 {
+			t.Fatal("wrong proposal accepted or correct original ratio lost", row.CaseID, got)
+		}
+	}
+	after, _ := json.Marshal(row.Input.Inputs)
+	if string(before) != string(after) {
+		t.Fatal("original literal inputs changed", row.CaseID)
 	}
 }

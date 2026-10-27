@@ -6,10 +6,12 @@ physical literal-test outputs; it never repeats those accepted executions.
 import copy
 from functools import lru_cache
 import json
+import os
 from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 HERE = ROOT / "audit/iteration-31-reconciliation-20261027"
@@ -20,6 +22,8 @@ from discovery_ledger import validate as validate_discovery, DiscoveryError
 
 
 def read(path):
+    if path in [reconcile.CHANGE + "/verification.json", reconcile.CHANGE + "/discovery.json"]:
+        return json.loads(reconcile.scope_source(path))
     return json.loads((ROOT / path).read_text())
 
 
@@ -119,9 +123,37 @@ class CompletionI31(unittest.TestCase):
         case["blocker"] = "Need a corpus, paid API or another product approval before this constructed fixture can run."
         self.assertTrue(reconcile.ledger_errors(packet, current))
 
+    def test_historical_scope_positive(self):
+        with historical_scope_fixture() as (root, here, revision, git):
+            (root / "unrelated-product.txt").write_text("a later independent change\n")
+            git("add", ".")
+            git("commit", "-qm", "Constructed later product revision")
+            with patch.object(reconcile, "ROOT", root), patch.object(reconcile, "HERE", here):
+                reconcile.accepted_scope_revision.cache_clear()
+                try:
+                    self.assertEqual(revision, reconcile.accepted_scope_revision())
+                    self.assertEqual(b"original\n", reconcile.scope_source("tests/test_completion_i31.py"))
+                finally:
+                    reconcile.accepted_scope_revision.cache_clear()
+
+    def test_historical_scope_change_negative(self):
+        with historical_scope_fixture() as (root, here, revision, git):
+            target = root / "tests/test_completion_i31.py"
+            target.write_text("changed owned assertion\n")
+            with patch.object(reconcile, "ROOT", root), patch.object(reconcile, "HERE", here):
+                reconcile.accepted_scope_revision.cache_clear()
+                try:
+                    self.assertIsNone(reconcile.accepted_scope_revision())
+                    self.assertEqual(b"changed owned assertion\n", reconcile.scope_source("tests/test_completion_i31.py"))
+                finally:
+                    reconcile.accepted_scope_revision.cache_clear()
+
     def test_product_sources_preserved_positive(self):
         import subprocess
-        changed = subprocess.check_output(["git", "diff", "--name-only", reconcile.BASELINE,
+        args = ["git", "diff", "--name-only", reconcile.BASELINE]
+        if reconcile.accepted_scope_revision():
+            args.append(reconcile.accepted_scope_revision())
+        changed = subprocess.check_output(args + [
                                            "--", "services", "domain", "specification/v2/domain",
                                            "specification/v2/contracts"], cwd=ROOT, text=True).splitlines()
         allowed = {"services/api/internal/app/historical_literals_test.go",
@@ -132,7 +164,7 @@ class CompletionI31(unittest.TestCase):
         # missing Azure/Qwen/source/browser observation by changing a checkbox.
         for path in ["audit/all-iterations-remaining-20261027/ITERATIONS.json",
                      "audit/all-iterations-remaining-20261027/CATEGORIES.json"]:
-            self.assertEqual(subprocess_text(path), (ROOT / path).read_text())
+            self.assertEqual(subprocess_text(path), current_source(path))
 
     def test_new_literal_observations_positive(self):
         packet = read("audit/iteration-31-reconciliation-20261027/OBSERVATIONS.json")
@@ -157,7 +189,7 @@ class CompletionI31(unittest.TestCase):
                 elif action == "wrong_identity":
                     altered["observed_tests"] = {"unrelated" + str(n): "pass" for n in range(len(expected))}
                 elif action == "exit":
-                    altered["exit_code"] = 1
+                    altered["exit_code"] = 2
                 elif action == "provider":
                     altered["new_provider_calls"] = 1
                 elif action == "source_drift":
@@ -166,6 +198,16 @@ class CompletionI31(unittest.TestCase):
                     altered["retained_output"] = "README.md"
                 with self.subTest(command=record["id"], action=action):
                     self.assertTrue(reconcile.observation_errors(altered, expected))
+            if record.get("retained_pass_subset"):
+                altered = copy.deepcopy(record)
+                altered["sibling_resolution"] = {}
+                self.assertTrue(reconcile.observation_errors(altered, expected))
+                altered = copy.deepcopy(record)
+                altered["failed_sibling_tests"].pop()
+                self.assertTrue(reconcile.observation_errors(altered, expected))
+                altered = copy.deepcopy(record)
+                altered["source_reuse_reviews"][0]["unchanged_test_ids"] = []
+                self.assertTrue(reconcile.observation_errors(altered, expected))
 
     def test_retained_component_reuse_positive(self):
         packet = ledger()
@@ -191,6 +233,10 @@ class CompletionI31(unittest.TestCase):
         packet = ledger()
         row = next(r for r in packet["cases"] if r["partial_evidence"])
         row["partial_evidence"][0]["receipt"] = None
+        self.assertTrue(reconcile.ledger_errors(packet, graph()))
+        packet = ledger()
+        unrelated = next(r for r in packet["cases"] if r["case_id"] == "COR-03.P1.POSITIVE")
+        unrelated["partial_evidence"] = copy.deepcopy(next(r for r in packet["cases"] if r["partial_evidence"])["partial_evidence"])
         self.assertTrue(reconcile.ledger_errors(packet, graph()))
 
     def test_unobserved_scope_positive(self):
@@ -262,7 +308,7 @@ def subprocess_text(path):
 
 @lru_cache(maxsize=None)
 def current_source(path):
-    return (ROOT / path).read_text()
+    return reconcile.scope_source(path).decode()
 
 
 class temporary_receipt:
@@ -271,6 +317,35 @@ class temporary_receipt:
         directory.mkdir(parents=True, exist_ok=True)
         self.tmp = tempfile.TemporaryDirectory(prefix="scope-", dir=directory)
         return Path(self.tmp.name) / "constructed-static-result.json"
+
+    def __exit__(self, *args):
+        self.tmp.cleanup()
+
+
+class historical_scope_fixture:
+    def __enter__(self):
+        import subprocess
+        directory = ROOT / "data/iteration-31-reconciliation-20261027"
+        directory.mkdir(parents=True, exist_ok=True)
+        self.tmp = tempfile.TemporaryDirectory(prefix="historical-", dir=directory)
+        root = Path(self.tmp.name)
+        env = {**os.environ, "GIT_CONFIG_GLOBAL": os.devnull, "GIT_CONFIG_NOSYSTEM": "1"}
+        def git(*args):
+            return subprocess.check_output(["git", "-c", "core.hooksPath=/dev/null", "-c", "commit.gpgsign=false",
+                                            "-c", "user.name=Constructed evidence test", "-c", "user.email=fixture@example.invalid", *args],
+                                           cwd=root, env=env, text=True).strip()
+        git("init", "-q", "-b", "fixture")
+        for name in ["tests/test_completion_i31.py", "audit/iteration-31-reconciliation-20261027/reconcile.py",
+                     "audit/iteration-31-reconciliation-20261027/LEDGER.json", "audit/iteration-31-reconciliation-20261027/OBSERVATIONS.json"]:
+            path = root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("original\n")
+        git("add", ".")
+        git("commit", "-qm", "Constructed original evidence revision")
+        revision = git("rev-parse", "HEAD")
+        here = root / "audit/iteration-31-reconciliation-20261027"
+        (here / "ACCEPTANCE.json").write_text(json.dumps({"tested_revision": revision}))
+        return root, here, revision, git
 
     def __exit__(self, *args):
         self.tmp.cleanup()

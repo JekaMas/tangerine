@@ -33,3 +33,29 @@ It supplies no original free-text interpretation, empirical frequency, observed
 phone, full audio-key mapping, optional-provider qualification or whole-category
 acceptance. Every such unmet assertion remains in the original ledger entry.
 No old evidence fingerprint is refreshed to hide a semantic source change.
+
+## Directed repair of the new auxiliary adapter
+
+The first new native run at clean `7b490a4` exited1:50selected edges passed
+and13second-set auxiliary negatives failed. The adapter incorrectly assumed
+every negative had missing observations. Those thirteen original packets supply
+valid inputs and a wrong proposed value (or an invented value for an unobservable
+teacher trait). The fixture data and production owner are unchanged.
+
+The repair adds the previously ignored `proposed_result` string and a branch
+used only when `inputs_missing` is false. It runs the actual population owner,
+compares the correct independent fraction with the proposed wrong value, keeps
+teacher traits null and compares original inputs before/after. The old
+missing-observation branch is unchanged for its actual `inputs_missing=true`,
+`invented_value=100` inputs. The positive function, population construction,
+reference JSON and application text tests are unchanged. The newly decoded
+field is not read on their paths.
+
+Retain the44actual passing physical identities (50logical edges) with the
+original nonzero command exit and original source hash. Record the explicitly
+reviewed current source hash and unaffected identities separately. Rerun only
+the13failed second-set negatives plus their parent container. Reconciliation
+must read every original failed identity and require its actual pass in that
+directed zero-exit repair; dropping a sibling or treating the first command as
+successful is not allowed. Neither metadata nor a refreshed file hash supplies
+a missing native observation.
