@@ -1562,6 +1562,16 @@ stopped. See audit/iteration-35-verification-20261027/ACCEPTANCE.json.
 
 ### Iteration36 — Available written-correction supplement
 
+Verification reopened the affected consumer UI after acceptance at9751fac. Native
+JFLEG import/mapping/evaluation receipts remain valid. Repairs and scope are in
+`audit/iteration-36-verification-20261027/REPORT.md`; the full selected iteration
+still needs its expanded committed-clean reconciliation.
+
+- [ ] I36.V1 Repair superseded correction-page results/errors/loading and the related issue-history ordering through their single state owners; preserve usable Refresh and existing source-row precedence.
+- [ ] I36.V2 Give explicit dataset exports independent progress/error ownership; verify actual held-download/Refresh behavior, safe failure/retry and all original/reference download strings.
+- [ ] I36.V3 Correct partial-reference wording and observe real committed partial/empty imports, keyboard/navigation, desktop/narrow typography, pictures and actual video.
+- [ ] I36.V4 Reconcile unchanged native greens plus all directly invalidated current UI/session observations, wire the eight literal regressions to I36 and accept only its complete committed-clean selection.
+
 - [x] I36.1 Admit the complete pinned JFLEG release and retain every owner member/container/document; add its supplemental identity without replacing any original source scope.
 - [x] I36.2 Implement native original/ref0–3/spellchecked pairing and preserve all1501originals/6004reference positions, exact text/line/provenance, unknown/missing and duplicate/unchanged siblings.
 - [x] I36.3 Provide documented coarse difference mappings and experimental native/tool-origin distinctions without invented linguistic alignment, taxonomy or simultaneous error labels.
@@ -1575,7 +1585,7 @@ TET-GOLD-1 release remain separate; this iteration does not claim their completi
 Anchors, independent native populations and evidence are in
 `audit/iteration-36-jfleg-20261027/PLAN.json` and PROGRESS.md.
 
-I36 accepted: all14 I36.P1–I36.P7 positive/negative cases passed --require-clean
+Earlier I36 apply acceptance: all14 I36.P1–I36.P7 positive/negative cases passed --require-clean
 on `9751facbda6bfed18fb183cc22cc93dc26f10488`. Actual full native JFLEG import retains30assets,
 34789accepted rows,1501originals and6004supplied reference positions. Sources
 examples, complete754/747dataset downloads and local input/report-retaining

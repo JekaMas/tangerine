@@ -7,14 +7,14 @@ NODE=Path.home()/'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/
 MODULE=NODE.parent.parent/'node_modules/playwright'
 
 def command(args):return subprocess.run(args,cwd=ROOT,text=True,capture_output=True,check=True).stdout.strip()
-def main():
- name=json.loads((OUT/'stack.json').read_text())['name'];fixture=json.loads((OUT/'fixture.json').read_text());visual='--visual-only' in sys.argv;folder=OUT/('browser-visual' if visual else 'browser');folder.mkdir(exist_ok=True)
+def main(program=None,folder=None,image='tangerine-i36-web'):
+ name=json.loads((OUT/'stack.json').read_text())['name'];fixture=json.loads((OUT/'fixture.json').read_text());visual='--visual-only' in sys.argv;folder=Path(folder) if folder else OUT/('browser-visual' if visual else 'browser');folder.mkdir(parents=True,exist_ok=True)
  if not fixture.get('import_id'):raise RuntimeError('Actual completed JFLEG fixture is required')
  # These are separate owned services. The user's localhost3000 containers remain running.
  subprocess.run(['docker','rm',name+'-api',name+'-web'],capture_output=True)
  command(['docker','run','--pull=never','-d','--name',name+'-api','--network',name,'--network-alias','api','--env-file',str(OUT/'private-runtime.env'),'-v',str(OUT)+':/evidence:ro','--entrypoint','/evidence/tangerine','tangerine-i28-go','serve'])
  if subprocess.run(['docker','network','inspect',name+'-ui'],capture_output=True).returncode:command(['docker','network','create',name+'-ui'])
- command(['docker','run','--pull=never','-d','--name',name+'-web','--network',name+'-ui','--env-file',str(OUT/'private-runtime.env'),'-e','API_INTERNAL_URL=http://api:8080','-p','127.0.0.1::3000','tangerine-i36-web'])
+ command(['docker','run','--pull=never','-d','--name',name+'-web','--network',name+'-ui','--env-file',str(OUT/'private-runtime.env'),'-e','API_INTERNAL_URL=http://api:8080','-p','127.0.0.1::3000',image])
  command(['docker','network','connect',name,name+'-web'])
  port=int(command(['docker','inspect','-f','{{(index (index .NetworkSettings.Ports "3000/tcp") 0).HostPort}}',name+'-web']))
  state={'mode':'normal','remaining':0};observed=[];lock=threading.Lock()
@@ -61,7 +61,7 @@ def main():
  result=None
  try:
   env={**os.environ,'TANGERINE_JFLEG_BROWSER_URL':url,'TANGERINE_JFLEG_EVIDENCE':str(folder),'TANGERINE_JFLEG_FIXTURE':str(OUT/'fixture.json'),'TANGERINE_PLAYWRIGHT_MODULE':str(MODULE)}
-  with (folder/'stdout.log').open('w') as stdout,(folder/'stderr.log').open('w') as stderr:result=subprocess.run([str(NODE),str(ROOT/('tests/jfleg_visual.cjs' if visual else 'tests/jfleg_browser.cjs'))],cwd=ROOT,env=env,stdout=stdout,stderr=stderr,timeout=180)
+  with (folder/'stdout.log').open('w') as stdout,(folder/'stderr.log').open('w') as stderr:result=subprocess.run([str(NODE),str(ROOT/(program or ('tests/jfleg_visual.cjs' if visual else 'tests/jfleg_browser.cjs')))],cwd=ROOT,env=env,stdout=stdout,stderr=stderr,timeout=180)
  finally:
   (folder/'requests.json').write_text(json.dumps(observed,indent=2)+'\n');server.shutdown();server.server_close();thread.join(timeout=5)
   for suffix in ['web','api']:command(['docker','stop',name+'-'+suffix])

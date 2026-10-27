@@ -7,6 +7,7 @@ const emptySelection=()=>({...emptyImport(),release:null,version:'',origin:'',sc
 // ignored, rather than mixing a previous release/report into the current view.
 export function createSourceSession({request,publish,remember=()=>{},source='SPEECHOCEAN762'}) {
   let generation=0;
+  let historyRead=0;
   let selection=null;
   let currentImport='';
   let selectedSource=source;
@@ -85,11 +86,12 @@ export function createSourceSession({request,publish,remember=()=>{},source='SPE
       } catch (failure) { error(failure,ticket); }
     },
     async history(id,cursor='',items=[]) {
-      const ticket=generation;
+      const ticket=generation,read=++historyRead;
+      const current=()=>ticket===generation&&id===currentImport&&read===historyRead;
       try {
         const {body}=await request('imports/'+id+'/issues'+(cursor?'?cursor='+encodeURIComponent(cursor):''));
-        if (ticket===generation&&id===currentImport) publish({history:[...items,...body.items],historyCursor:body.next_cursor,error:''});
-      } catch (failure) { error(failure,ticket); }
+        if (current()) publish({history:[...items,...body.items],historyCursor:body.next_cursor,error:''});
+      } catch (failure) { if(current())error(failure,ticket); }
     },
   };
 }

@@ -38,6 +38,8 @@ The full staging phase precedes reference projection. Load the parallel rows onc
 
 Sources shows a separate JFLEG card and, after opening an import, written examples. Each disclosure shows the original, every supplied reference, separate spellcheck and the derivation/provenance details. Refresh retains displayed examples after temporary failure. The shared request owner logs diagnostics, retries transient reads and then gives authored recovery guidance; backend payloads are not shown to the user. No JSON editing or source-qualification approval is needed to browse or download.
 
+Refresh stays available during reads and supersedes any older example-page response or error. A late page cannot append to a freshly reset list or clear a newer loading state. The same precedence applies within saved issue history. Dataset exports have their own progress and recovery state: refreshing examples does not cancel an explicitly requested export or prematurely enable another one. Leaving the selected import ignores late results. Partial imports describe only their actual references; no-reference/empty states retain working read/download controls without inventing examples.
+
 The existing authenticated local source API gains:
 
 - `GET /api/v1/imports/{id}/corrections?limit=20&cursor=<opaque cursor>&partition=dev|test` returns `{items, next_cursor}`. Empty partition reads both. The tuple cursor follows saved member/line order. Limits use the existing small-page convention (default 20, maximum 200).

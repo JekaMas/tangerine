@@ -5,7 +5,7 @@ const fs=require('node:fs');const path=require('node:path');
 const {chromium}=require(process.env.TANGERINE_PLAYWRIGHT_MODULE);
 const base=process.env.TANGERINE_JFLEG_BROWSER_URL,out=process.env.TANGERINE_JFLEG_EVIDENCE;
 const fixture=JSON.parse(fs.readFileSync(process.env.TANGERINE_JFLEG_FIXTURE));
-const expected=JSON.parse(fs.readFileSync(path.join(out,'../native-expected.json')));
+const expected=JSON.parse(fs.readFileSync(process.env.TANGERINE_JFLEG_NATIVE_EXPECTED||path.join(out,'../native-expected.json')));
 (async()=>{
  fs.mkdirSync(path.join(out,'video'),{recursive:true});fs.mkdirSync(path.join(out,'downloads'),{recursive:true});
  const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});
@@ -19,9 +19,11 @@ const expected=JSON.parse(fs.readFileSync(path.join(out,'../native-expected.json
   await page.goto(base+'/sources',{waitUntil:'networkidle'});
   assert.equal(await page.locator('[aria-label="Source status"] > li').count(),12);actual.source_cards=12;
   const card=page.locator('[aria-label="Source status"] > li').filter({has:page.getByRole('heading',{name:'JFLEG',exact:true})});
-  assert.match(await card.textContent(),/Complete source release retained/);actual.status='complete';
+  if(process.env.TANGERINE_JFLEG_VERIFY_FIXTURES){assert.match(await card.textContent(),/Saved release is incomplete/);actual.status='latest_constructed_partial';}
+  else{assert.match(await card.textContent(),/Complete source release retained/);actual.status='complete';}
   assert.equal(await page.getByRole('region',{name:'Written correction examples',exact:true}).count(),0);actual.no_example_before_selection=true;
   await card.getByRole('button',{name:'Open saved release '+fixture.release_id,exact:true}).click();
+  assert.match(await page.getByRole('region',{name:'Import report',exact:true}).textContent(),/Raw complete: true · normalized complete: true/);actual.selected_full_import_complete=true;
   const region=page.getByRole('region',{name:'Written correction examples',exact:true});
   await region.locator(':scope > details').first().waitFor();await page.waitForFunction(()=>document.querySelectorAll('[aria-label="Written correction examples"] > details').length===20);
   actual.initial_examples=20;

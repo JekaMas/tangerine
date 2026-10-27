@@ -6,10 +6,12 @@ Native test identities and independently fixed source strings/counts are checked
 import json
 from pathlib import Path
 import struct
+import re
 import unittest
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'data/iteration-36-jfleg-20261027'
+VERIFY=ROOT/'data/iteration-36-verification-20261027'
 
 class JFLEGAcceptance(unittest.TestCase):
     @classmethod
@@ -17,10 +19,17 @@ class JFLEGAcceptance(unittest.TestCase):
         cls.actual=cls.read('observations.json')
         cls.native_expected=cls.read('native-expected.json')
         cls.consumer=cls.read('consumer-observations.json')
-        cls.browser=cls.read('browser/observations.json')
+        cls.browser=cls.verified('browser-regression-fixed/observations.json')
         cls.datasets={p:cls.read('dataset-'+p+'.json') for p in ['dev','test']}
     @staticmethod
     def read(path):return json.loads((OUT/path).read_text())
+    @staticmethod
+    def verified(path):return json.loads((VERIFY/path).read_text())
+    def session_pass(self,*names):
+        text=(VERIFY/'sessions-green.tap').read_text()
+        self.assertEqual(0,int((VERIFY/'sessions-green-exit-code').read_text()))
+        self.assertNotRegex(text,r'(?m)^not ok ')
+        for name in names:self.assertRegex(text,r'(?m)^ok \d+ - '+re.escape(name)+r'\s*$')
     def native_pass(self,name,filename):
         rows=[json.loads(s) for s in (OUT/filename).read_text().splitlines()]
         self.assertTrue(any(r.get('Test')==name and r['Action']=='pass' for r in rows),name)
@@ -130,7 +139,7 @@ class JFLEGAcceptance(unittest.TestCase):
         self.assertEqual({'dev':754,'test':747},self.consumer['download_counts'])
         self.assertEqual({'pages':8,'distinct_examples':1501,'includes_dev_0':True,'includes_test_746':True},self.read('cursor-observations.json'))
         for part,count in [('dev',754),('test',747)]:
-            d=self.read(f'browser/downloads/jfleg-{part}-correction-references.json')
+            d=self.verified(f'browser-regression-fixed/downloads/jfleg-{part}-correction-references.json')
             self.assertEqual(count,len(d['examples']));self.assertEqual('CC-BY-NC-SA-4.0',d['licence'])
             self.assertEqual('ee06ff806a208aba815ac45313f4e750a48330a5',d['source_version'])
             self.assertEqual(part,d['source_partition'])
@@ -159,13 +168,13 @@ class JFLEGAcceptance(unittest.TestCase):
             self.assertEqual([],row['matched_reference_ids']);self.assertEqual('not_run',row['semantic_judgment'])
         self.assertEqual(0,r['report']['totals']['reference_matches'])
     def test_ui_positive(self):
-        self.assertEqual('0',(OUT/'browser/exit-code').read_text());self.assertEqual('0',(OUT/'browser-visual/exit-code').read_text())
+        self.assertEqual('0',(VERIFY/'browser-regression-fixed/exit-code').read_text());self.assertEqual('0',(VERIFY/'browser-visual/exit-code').read_text())
         b=self.browser;self.assertEqual(12,b['source_cards']);self.assertEqual(20,b['initial_examples']);self.assertEqual(40,b['paginated_examples'])
         self.assertTrue(b['keyboard_disclosure']);self.assertEqual({'focused':True,'outline':'solid','width':'3px'},b['focus'])
         self.assertEqual(self.native_expected['lines']['dev/dev.src'][0],b['visible_original'])
         self.assertEqual([self.native_expected['lines'][f'dev/dev.ref{i}'][0] for i in range(4)],b['visible_references'])
         self.assertTrue(b['spellcheck_separate']);self.assertTrue(b['provenance_disclosed'])
-        self.assertTrue(self.read('browser-visual/observations.json')['keyboard_download_focus'])
+        self.assertTrue(self.verified('browser-visual/observations.json')['keyboard_download_focus'])
         for layout in b['layouts']:
             self.assertTrue(layout['fonts_loaded']);self.assertEqual('17px',layout['font_size']);self.assertEqual('24.65px',layout['line_height'])
             self.assertGreaterEqual(layout['button_height'],44)
@@ -174,14 +183,59 @@ class JFLEGAcceptance(unittest.TestCase):
         self.assertEqual([],self.browser['page_errors']);self.assertEqual(['GET'],self.browser['application_methods']);self.assertTrue(self.browser['no_model_or_write_requests'])
         self.assertEqual([1280,390,320],[x['viewport'] for x in self.browser['layouts']])
         for row in self.browser['layouts']:self.assertEqual(row['viewport'],row['document_width'])
-        requests=self.read('browser/requests.json')
+        requests=self.verified('browser-regression-fixed/requests.json')
         self.assertEqual([503,503,503],[x['status'] for x in requests if x['scenario']=='unavailable'])
         self.assertTrue(all(r['method']=='GET' for r in requests))
-        media=self.read('media-observations.json');self.assertTrue(media['silent']);self.assertFalse(media['cut'])
+        media=self.verified('media-observations.json');self.assertTrue(media['silent']);self.assertFalse(media['cut'])
         self.assertGreater(float(media['probe']['format']['duration']),0)
         self.assertEqual({'video'},{s['codec_type'] for s in media['probe']['streams']})
         for part in ['1280','390','320']:
-            png=(OUT/f'browser-visual/all-references-{part}.png').read_bytes()
+            png=(VERIFY/f'browser-visual/all-references-{part}.png').read_bytes()
             self.assertEqual(b'\x89PNG\r\n\x1a\n',png[:8]);w,h=struct.unpack('>II',png[16:24]);self.assertGreater(w,200);self.assertGreater(h,400)
+    def test_read_order_positive(self):
+        self.session_pass('corrections_append_positive','corrections_failure_retains_then_recovers_positive')
+        actual=self.verified('browser-green/observations.json')
+        self.assertEqual(20,actual['after_superseded_more']);self.assertEqual(40,actual['current_more_after_refresh'])
+        self.assertEqual([],actual['page_errors'])
+    def test_read_order_negative(self):
+        self.session_pass('corrections_refresh_supersedes_more_negative','corrections_old_completion_preserves_loading_negative','corrections_old_error_is_ignored_negative','corrections_disposal_ignores_late_results_negative')
+        red=self.verified('browser-red/observations.json');self.assertEqual(40,red['after_superseded_more'])
+        green=self.verified('browser-green/observations.json');self.assertEqual(20,green['after_superseded_more']);self.assertEqual([],green['alerts'])
+        self.assertEqual('1',(VERIFY/'browser-red/exit-code').read_text());self.assertEqual('0',(VERIFY/'browser-green/exit-code').read_text())
+    def test_history_positive(self):
+        self.session_pass('history_append_positive','history_positive','history_recovery_negative')
+        self.assertIn('# pass 46',(VERIFY/'sessions-green.tap').read_text())
+    def test_history_negative(self):
+        self.session_pass('history_refresh_supersedes_more_negative','history_refresh_supersedes_error_negative','source_rows_refresh_supersedes_more_negative')
+        red=(VERIFY/'history-red.tap').read_text();self.assertRegex(red,r'(?m)^not ok \d+ - history_refresh_supersedes_more_negative')
+        self.assertRegex(red,r'(?m)^not ok \d+ - history_refresh_supersedes_error_negative');self.assertEqual(1,int((VERIFY/'history-red-exit-code').read_text()))
+    def test_export_recovery_positive(self):
+        self.session_pass('corrections_download_survives_refresh_positive')
+        actual=self.verified('browser-green/observations.json');self.assertTrue(actual['download_remains_pending_after_refresh'])
+        self.assertEqual(754,actual['development_download']);self.assertEqual(747,actual['test_download_recovered'])
+        self.assertEqual(1501,actual['downloaded_originals_checked']);self.assertEqual(6004,actual['downloaded_references_checked'])
+    def test_export_recovery_negative(self):
+        self.session_pass('corrections_download_failure_does_not_hide_examples_negative')
+        actual=self.verified('browser-green/observations.json');self.assertEqual(20,actual['download_failure_retains_examples'])
+        replies=self.verified('browser-green/requests.json')
+        self.assertEqual([503,503,503],[r['status'] for r in replies if r['scenario']=='unavailable' and 'format=dataset&partition=test' in r['path']])
+        self.assertEqual({r['method'] for r in replies},{'GET'})
+    def test_partial_ui_positive(self):
+        rows=[json.loads(line) for line in (VERIFY/'native.jsonl').read_text().splitlines()]
+        self.assertTrue(any(r.get('Test')=='TestNativeJFLEGVerifyUIFixtures' and r['Action']=='pass' for r in rows))
+        actual=self.verified('browser-green/observations.json')['constructed_views']['partial'];self.assertEqual({'examples':2,'reference_count':1,'refresh_enabled':True},actual)
+        example=self.verified('verify-ui-fixtures.json')['partial']['examples'][0]
+        self.assertEqual('They goes . ',example['original']['text']);self.assertEqual(['They go . '],[r['text'] for r in example['references']]);self.assertEqual('partial',example['reference_completeness'])
+        states=self.verified('browser-states/observations.json');self.assertTrue(states['mobile_navigation_works'])
+        self.assertEqual([1280,390,320],[r['width'] for r in states['views'] if r['kind']=='partial'])
+    def test_empty_ui_negative(self):
+        actual=self.verified('browser-green/observations.json')['constructed_views']['empty'];self.assertEqual({'examples':0,'reference_count':0,'refresh_enabled':True},actual)
+        self.assertEqual([],self.verified('verify-ui-fixtures.json')['empty']['examples'])
+        rows=[json.loads(line) for line in (VERIFY/'native-commit.jsonl').read_text().splitlines()]
+        self.assertTrue(any(r.get('Test')=='TestNativeJFLEGVerifyCommitFixtures' and r['Action']=='pass' for r in rows));self.assertTrue(self.verified('verify-fixtures-commit.json')['published'])
+        self.assertEqual('0',(VERIFY/'browser-states/exit-code').read_text())
+        states=self.verified('browser-states/observations.json')
+        self.assertEqual([1280,390,320],[r['width'] for r in states['views'] if r['kind']=='empty'])
+        for layout in states['views']:self.assertEqual(layout['width'],layout['document_width']);self.assertEqual(1,layout['sidebar_count'])
 
 if __name__=='__main__':unittest.main(verbosity=2)
