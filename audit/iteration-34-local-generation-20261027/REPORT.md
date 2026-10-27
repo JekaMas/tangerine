@@ -1,6 +1,6 @@
 # Iteration 34 — installed-local generation repair
 
-**Status: implementation and scoped observations complete; committed-clean acceptance pending.**
+**Accepted on committed-clean `30d415495c9bd102143e005e9020f280211c041d`:8/8 selected cases passed.**
 
 The selected product path is the existing Qwen 9B non-speculative profile with plain output and the repaired native projection.30 actual local calls across14 fixed preparation requests are retained, including every failed attempt. Four additional provider-boundary replays exercise the current mechanical projection and real persistence using retained actual Qwen replies, with blueprint identity rebound only. They are not new inference.
 
@@ -75,3 +75,5 @@ The [local setup](../../docs/local-llm-generation.md) records the exact generati
 This is self-review against independent literal expectations, not a second reviewer or corpus/human gold. UI/UX and typography follow the project procedure and the typography skill. No web rendering, interaction, error-presentation or font owner changed; actual I33 visual/playback evidence retains its original scope and was not rerun. Typography guidance was applied to the readable report tables and explicit units/N/A. No new screenshot/video, speech synthesis, answer-checking inference, deployment, publication, PBT or financial execution is claimed.
 
 Ollama documentation used for narrow capability research: [Responses compatibility and thinking aliases](https://docs.ollama.com/api/openai-compatibility), [structured output](https://docs.ollama.com/capabilities/structured-outputs). Actual runtime/model metadata and returned wires take precedence over generic documentation.
+
+Acceptance: [exact receipt and scope](ACCEPTANCE.json). The acceptance commit updates only this record, progress and the canonical checklist; it changes no runtime, test, prompt or verification manifest.

@@ -146,3 +146,7 @@ commit. No additional model/native behavior run is needed unless a semantic
 dependency changes. Keep the external MLX cache failure,27B deadline and exact
 wording deviation visible; this is finite repair acceptance, not universal model
 or all-category qualification.
+
+## Accepted
+
+I34 --require-clean passed8/8 at `30d415495c9bd102143e005e9020f280211c041d`. No failed/skipped/missing/planned selected cases. Native/model observations are reused on unchanged semantic inputs; final projection made0 new inference calls. Implementation commit:30d4154. Acceptance bookkeeping now records the receipt and checks only I34.1–I34.4. No further required implementation work remains in this finite iteration; the report preserves model/runtime limitations.
