@@ -11,7 +11,7 @@ export function createSourceSession({request,publish,remember=()=>{},source='SPE
   let currentImport='';
   let selectedSource=source;
   const save=()=>{
-    if (selection) remember({...selection,importId:currentImport||undefined});
+    if (selection) remember({source:selection.source,releaseId:selection.release.id,binding:selection.binding,importId:currentImport||undefined});
   };
   const error=(value,ticket)=>{
     if (ticket===generation) publish({error:requestError(value)});
@@ -36,6 +36,19 @@ export function createSourceSession({request,publish,remember=()=>{},source='SPE
     } catch (failure) { error(failure,ticket); }
     return ticket===generation?progress:null;
   }
+  async function openRelease(item,id,saved={}) {
+      const ticket=++generation;
+      try {
+        const {body:release}=await request('source-releases/'+id);
+        if (ticket!==generation) return null;
+        const binding=saved.binding||release.format_profile_id||'native';
+        selectedSource=item.source_id; selection={source:item.source_id,release,binding}; currentImport='';
+        publish({...emptySelection(),source:item.source_id,release,version:release.source_version,origin:release.origin_uri,scope:release.scope_kind||'partial_export',binding,permissionIds:release.permission_grant_ids,error:''});
+        const importId=saved.importId||item.release_import_report_ids?.[release.id]?.at(-1);
+        if (importId) return readImport(importId,ticket);
+        save(); return release;
+      } catch (failure) { error(failure,ticket); return null; }
+  }
   return {
     reset(source) { generation++; selectedSource=source; selection=null; currentImport=''; remember(null); publish({...emptySelection(),source,error:''}); },
     adopt(source,release,binding='native') {
@@ -44,22 +57,12 @@ export function createSourceSession({request,publish,remember=()=>{},source='SPE
       save();
     },
     async restore(saved) {
+      if (saved.releaseId) return openRelease({source_id:saved.source},saved.releaseId,saved);
+      // Existing small cached selections migrate to the same compact locator.
       this.adopt(saved.source,saved.release,saved.binding||'native');
       if (saved.importId) return this.loadImport(saved.importId);
     },
-    async open(item,id) {
-      const ticket=++generation;
-      try {
-        const {body:release}=await request('source-releases/'+id);
-        if (ticket!==generation) return null;
-        const binding=release.format_profile_id||'native';
-        selectedSource=item.source_id; selection={source:item.source_id,release,binding}; currentImport='';
-        publish({...emptySelection(),source:item.source_id,release,version:release.source_version,origin:release.origin_uri,scope:release.scope_kind||'partial_export',binding,permissionIds:release.permission_grant_ids,error:''});
-        const importId=item.release_import_report_ids?.[release.id]?.at(-1);
-        if (importId) return readImport(importId,ticket);
-        save(); return release;
-      } catch (failure) { error(failure,ticket); return null; }
-    },
+    open(item,id) { return openRelease(item,id); },
     loadImport(id) { return readImport(id,++generation); },
     changeBinding(binding) {
       generation++; currentImport='';

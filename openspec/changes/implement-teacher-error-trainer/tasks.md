@@ -1538,3 +1538,16 @@ explicitly unverified, without invented resampling/gold. v1 contracts and all
 full normalized import. The disposable database/storage are retained stopped
 for reuse. No new download, corpus rehash, inference/synthesis, paid use, user
 data change or publication. See audit/iteration-35-official-l2-20261027/ACCEPTANCE.json.
+
+
+### Iteration35 verify and repair
+
+- [x] I35.V1 Repair full-manifest browser cache overflow via the single Sources session owner; cover legacy cache, unimported bindings, failed restoration and superseded selections.
+- [x] I35.V2 Observe complete actual saved source status/report, original bytes, pagination, history, reload, controlled safe retry/error/recovery and keyboard activation; retain screenshot/video evidence.
+- [x] I35.V3 Inspect actual desktop/narrow Sources typography and media content; reconcile unchanged native import evidence and sibling coverage.
+- [ ] I35.V4 Complete the expanded I35 DAG on a stable committed-clean revision, strict OpenSpec/graph/discovery and preservation; commit verification acceptance.
+
+Current verify supersedes apply’s UI not-applicable disposition for the newly
+requested browser scope. The eight original native import cases retain valid
+receipts; source conversion, corpus bytes and accepted database rows are unchanged.
+See audit/iteration-35-verification-20261027/PROGRESS.md.

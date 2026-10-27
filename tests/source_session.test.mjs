@@ -25,7 +25,7 @@ test('selection_positive',async()=>{
   assert.deepEqual(calls,['source-releases/older','imports/old-import/progress','imports/old-import/records?limit=20']);
   assert.equal(f.state.release.id,'older');assert.equal(f.state.report.id,'old-import');
   assert.equal(f.state.binding,'binding-old-import');assert.deepEqual(f.state.permissionIds,['saved-notice-old-import']);
-  assert.deepEqual(f.saved.at(-1),{source:'FCE-2.1',release:release('older'),binding:'binding-old-import',importId:'old-import'});
+  assert.deepEqual(f.saved.at(-1),{source:'FCE-2.1',releaseId:'older',binding:'binding-old-import',importId:'old-import'});
 });
 test('refresh_recovery_positive',async()=>{
   let failed=true;const f=fixture(path=>failed?Promise.reject(userError('Saved progress is unavailable. Refresh to continue.')):nativeRead(path));
@@ -50,7 +50,7 @@ test('later_release_positive',async()=>{
   const first=deferred();const f=fixture(path=>path==='source-releases/old'?first.promise:Promise.resolve({body:release('new')}));
   const old=f.session.open({source_id:'FCE-2.1',release_import_report_ids:{}},'old');
   await f.session.open({source_id:'NIR-DATA',release_import_report_ids:{}},'new');first.resolve({body:release('old')});await old;
-  assert.equal(f.state.source,'NIR-DATA');assert.equal(f.state.release.id,'new');assert.equal(f.saved.at(-1).release.id,'new');
+  assert.equal(f.state.source,'NIR-DATA');assert.equal(f.state.release.id,'new');assert.equal(f.saved.at(-1).releaseId,'new');
 });
 test('superseded_failure_negative',async()=>{
   let reject;const pending=new Promise((_,r)=>reject=r);const f=fixture(()=>pending);
@@ -164,4 +164,44 @@ test('cache_positive',()=>{
 test('cache_unavailable_negative',()=>{
   const logs=[];const cache=createSourceCache({storage:()=>{throw new DOMException('private storage failure','SecurityError');},log:value=>logs.push(value)});
   assert.equal(cache.read('saved'),null);assert.doesNotThrow(()=>cache.write('saved',{id:'retained-on-server'}));assert.deepEqual(logs,[{kind:'SecurityError'},{kind:'SecurityError'}]);
+});
+
+// Full official releases exceed localStorage if their manifest is duplicated.
+// The DB owns that data. These literals exercise the shared session only.
+test('compact_selection_positive',()=>{
+  const large={...release('official'),files:Array.from({length:84296},(_,i)=>({relative_path:'ABA/wav/arctic_'+i+'.wav',sha256:'a'.repeat(64)}))};
+  assert.ok(JSON.stringify(large).length>5*1024*1024);
+  const f=fixture(nativeRead);f.session.adopt('L2-ARCTIC',large,'native');
+  assert.deepEqual(f.saved.at(-1),{source:'L2-ARCTIC',releaseId:'official',binding:'native',importId:undefined});
+  assert.ok(JSON.stringify(f.saved.at(-1)).length<200);
+  assert.equal(f.state.release,large); // Full manifest remains usable in memory.
+});
+test('compact_restore_positive',async()=>{
+  const calls=[];const f=fixture(async path=>{calls.push(path);return path==='source-releases/official'?{body:release('official')}:nativeRead(path);});
+  await f.session.restore({source:'L2-ARCTIC',releaseId:'official',binding:'native',importId:'retained'});
+  assert.deepEqual(calls,['source-releases/official','imports/retained/progress','imports/retained/records?limit=20']);
+  assert.equal(f.state.release.id,'official');assert.equal(f.state.report.id,'retained');assert.equal(f.state.binding,'binding-retained');
+  assert.deepEqual(f.saved.at(-1),{source:'L2-ARCTIC',releaseId:'official',binding:'binding-retained',importId:'retained'});
+});
+test('compact_unimported_negative',async()=>{
+  const calls=[];const f=fixture(async path=>{calls.push(path);return {body:release('raw')};});
+  await f.session.restore({source:'NIR-DATA',releaseId:'raw',binding:'raw-only'});
+  assert.deepEqual(calls,['source-releases/raw']);assert.equal(f.state.binding,'raw-only');assert.equal(f.state.report,null);assert.equal(f.state.importId,'');
+});
+test('compact_unavailable_negative',async()=>{
+  const calls=[];const f=fixture(async path=>{calls.push(path);throw userError('Source retained. Refresh to continue.');});
+  await f.session.restore({source:'L2-ARCTIC',releaseId:'official',binding:'native',importId:'retained'});
+  assert.deepEqual(calls,['source-releases/official']);assert.equal(f.state.error,'Source retained. Refresh to continue.');
+  assert.equal(f.state.release,undefined);assert.equal(f.state.report,undefined);assert.equal(f.saved.length,0);
+});
+test('compact_superseded_negative',async()=>{
+  const pending=deferred();const f=fixture(()=>pending.promise);
+  const restore=f.session.restore({source:'L2-ARCTIC',releaseId:'old',binding:'native',importId:'old-import'});
+  f.session.reset('MOODRICK-DATA');pending.resolve({body:release('old')});await restore;
+  assert.equal(f.state.source,'MOODRICK-DATA');assert.equal(f.state.release,null);assert.equal(f.state.report,null);assert.equal(f.saved.at(-1),null);
+});
+test('legacy_cache_migration_positive',async()=>{
+  const f=fixture(nativeRead);await f.session.restore({source:'FCE-2.1',release:release('legacy'),binding:'custom',importId:'old'});
+  assert.equal(f.state.release.id,'legacy');assert.equal(f.state.report.id,'old');
+  assert.deepEqual(f.saved.at(-1),{source:'FCE-2.1',releaseId:'legacy',binding:'binding-old',importId:'old'});
 });

@@ -18,3 +18,15 @@ The complete admitted official version5 archive SHALL be imported through produc
 #### Scenario: I35 Official source commit and application readback
 - **WHEN** full normalization is committed and read through source release/status/progress/record/media handlers
 - **THEN** actual full saved records and original audio are available with source rights/provenance and correct speaker/clock/layer associations, while missing suitcase automatic layers, unsupported precise pronunciations and model permissions are not invented and ordinary exercises gain no source qualification gate
+
+#### Scenario: I35 Compact saved selection and restoration
+- **WHEN** a full or partial saved source release is selected and the Sources page is reloaded
+- **THEN** only source/release/import identities and the selected binding are cached, the actual saved release/progress/rows are restored through existing reads without exceeding storage quota or starting work, old small cached selections migrate, and unavailable or superseded reads do not replace a later selection
+
+#### Scenario: I35 Nonblocking source browsing and recovery
+- **WHEN** the complete official import is opened, paginated, downloaded or refreshed through Sources, including a transient or unavailable read
+- **THEN** saved status/counts/native rows/original attachments refer to that release, safe reads retry before authored human guidance, retained data and Refresh remain usable, keyboard activation works, and backend diagnostics are never displayed as user errors
+
+#### Scenario: I35 Readable Sources evidence
+- **WHEN** Sources and its full official import report are inspected on desktop and narrow screens
+- **THEN** loaded body typography remains readable at17px with1.45line height, source/report/navigation controls reflow without page overflow, and actual screenshots/video preserve their record and controlled-failure proof boundaries without claiming synthesis, a fresh import or uninterrupted recording

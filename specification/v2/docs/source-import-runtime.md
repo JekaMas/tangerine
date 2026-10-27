@@ -69,3 +69,16 @@ accepted rows are not parsed or admitted again and no new durable-cursor gate is
 required. Current count findings report current named units and numeric expected
 values. Resolved count discrepancies remain in history, not active findings;
 a remaining discrepancy reports its latest actual population.
+
+### Saved Sources selection
+
+The browser remembers only the selected source ID, release ID, binding selector
+and optional import ID. The full release manifest remains in the application
+database and current page memory; it is not duplicated in browser storage. On
+reload, use existing release/progress/record reads to restore the selected view.
+A saved binding without an import remains unimported; restoration never starts
+import, generation, scoring or a provider call. Earlier small cached full-release
+selections migrate to this compact locator. Unavailable browser storage is a
+convenience limitation, not failure of the stored release. Existing safe read
+retry and human recovery guidance apply; superseded reads cannot replace a
+later selection. No second source admission, hash or schema audit is added.

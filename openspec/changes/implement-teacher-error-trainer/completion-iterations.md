@@ -184,3 +184,11 @@ The exact I35.P1–I35.P4 selection is
 `audit/iteration-35-official-l2-20261027/SELECTION.json`. `tasks.md` remains the
 single checklist. No provider calls, installs, source publication or user app
 changes are included; there is no web presentation change in this increment.
+
+The subsequent user-selected I35 verify includes actual Sources UI/UX and
+screenshot/video evidence. Its active selection is I35.P1–I35.P7 in
+`audit/iteration-35-verification-20261027/SELECTION.json` (14cases). Full-release
+browser quota overflow is repaired by caching a compact saved-data locator and
+restoring through existing reads. Native import code/data remain unchanged;
+original native receipts are reused. The prior four-property selection remains
+the historical apply boundary, not the complete renewed verify selection.
