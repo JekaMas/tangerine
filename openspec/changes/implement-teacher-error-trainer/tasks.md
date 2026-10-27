@@ -1430,8 +1430,8 @@ qualification.
 - [x] I33.2 Support explicit unresolved fixture expectations, correct future selected context/wording and preserve strong forms, accents, linking and legitimate question alternatives without coercing judge agreement.
 - [x] I33.3 Trace every original selected target/control/context/reply, inspect the actual pause PCM and retained F0 evidence, and preserve unresolved functional observations without relabelling old calls or changing learner scores.
 - [x] I33.4 Reconcile literal positive/negative tests and exact DAG/discovery bindings, relevant language/specification/preservation and local Lab readback; accept the complete selected iteration on committed-clean source with zero new inference/synthesis.
-- [ ] I33.V1 Verify/repair correct-control expectation isolation, unrecognized-status uncertainty and nonblocking saved-comparison display, including siblings, native red/green tests and retained unchanged evidence.
-- [ ] I33.V2 Inspect actual saved-player recovery, keyboard actions, typography, desktop/narrow screenshots and video; reconcile the expanded I33.P1–I33.P5 selection and zero-call Lab evidence on committed-clean source.
+- [x] I33.V1 Verify/repair correct-control expectation isolation, unrecognized-status uncertainty and nonblocking saved-comparison display, including siblings, native red/green tests and retained unchanged evidence.
+- [x] I33.V2 Inspect actual saved-player recovery, keyboard actions, typography, desktop/narrow screenshots and video; reconcile the expanded I33.P1–I33.P5 selection and zero-call Lab evidence on committed-clean source.
 
 ## Iteration 31 — Historical literal evidence reconciliation
 
@@ -1476,7 +1476,7 @@ Iteration 32 verification repairs:
 
 Iteration32 accepted: all39 selected case edges and39 physical current assertions passed with --require-clean at e05d673acfe260a2854974c52c28dcd8dab915c1. The native evidence includes210 distinct observed Go cases/subcases; directly dependent JS helpers52 pass. Four verify findings closed; actual local audio, UI pictures/videos and Lab readback retain their stated limits. No additional model calls or paid use occurred during verify. See audit/iteration-32-overlap-20261027/ACCEPTANCE.json.
 
-I33 acceptance:10/10 exact typed cases across four properties passed --require-clean
+I33 original apply receipt:10/10 exact typed cases across four properties passed --require-clean
 on `ab7407f5433714f51a9941eefbf55402283a88e7`. The gate reconciles580 actual native
 observations and nine actual Lab downloads without repeating inference or native
 tests.18 new regressions also pass under installed speech Python3.12. Five
@@ -1485,3 +1485,16 @@ pause-perception and intonation-function disagreements remain explicit mixed
 observations, as requested. See audit/iteration-33-diagnostics-20261027/ACCEPTANCE.json
 and REPORT.md. No paid use, new synthesis/provider call, user app restart or
 change to122categories/42formulas/11sources or canonical GAPS.md.
+
+I33 verification accepted:14/14 selected cases across I33.P1–I33.P5 passed
+--require-clean on `476c4d6be2080d4202cc68b9d8ec9da513d010da`, without failed,
+skipped or missing cases. Four verify findings and their siblings are repaired.
+The588-case native population reconciles532 reobserved changed-owner cases,
+eight new regressions and48 unchanged greens; all eight new regressions also pass
+under actual installed Python3.12. Real Chrome playback, failure/Refresh recovery,
+keyboard and1280/390/320 typography screenshots and a74-second silent video are
+retained, alongside original WAVs and12 actual Lab artifact downloads. Original
+weak-form/pause/intonation uncertainties remain explicit. No new inference,
+synthesis, paid use, deployment or user-data change. Latest acceptance:
+audit/iteration-33-diagnostics-20261027/VERIFY-ACCEPTANCE.json; review and limits:
+VERIFY-REPORT.md in the same directory. Original apply receipts remain historical.

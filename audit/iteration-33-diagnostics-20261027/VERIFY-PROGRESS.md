@@ -52,7 +52,9 @@ was reset. A close request targeted only the owned tab after a control reset;
 Chrome retained a stale open-tab entry, so no successful tab-close claim is made.
 User app/data/tabs and canonical GAPS.md were preserved. No inference or synthesis.
 
-Next: commit the scoped repair; run all14 exact I33 cases with --require-clean;
-record its actual revision/case results, check canonical tasks, and commit only
-acceptance bookkeeping. Unchanged native/model/UI observations must not be rerun
-for these final metadata/commit transitions.
+Complete: repair commit `476c4d6be2080d4202cc68b9d8ec9da513d010da` passed the
+entire14-case I33 selection with --require-clean. No failures, skips or missing
+cases. VERIFY-ACCEPTANCE.json records its actual receipt/manifest, current native,
+UI/Lab evidence and original unresolved observations. Canonical I33.V1/V2 are
+checked. Final commit contains acceptance bookkeeping only; no native/model/UI
+observation is repeated for that transition. No open I33 implementation finding.

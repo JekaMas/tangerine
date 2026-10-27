@@ -2,9 +2,10 @@
 
 Entry: clean `9efdb13a4a0c2a82dcffc90a9715f94d20359a5f`. This review extends the
 original apply's four-property/ten-case boundary with I33.P5 and actual saved-UI
-observations. The original apply report/receipt remains historical. The full
-expanded selection has passed 14/14 informationally; committed-clean acceptance
-is pending the stable repair commit and its exact gate.
+observations. The original apply report/receipt remains historical. The full expanded selection passed **14/14 with --require-clean** on
+`476c4d6be2080d4202cc68b9d8ec9da513d010da`, with zero failures, skips or missing
+cases. [VERIFY-ACCEPTANCE.json](VERIFY-ACCEPTANCE.json) retains the exact gate
+receipt, manifest and evidence boundary.
 
 ## Findings and repairs
 
