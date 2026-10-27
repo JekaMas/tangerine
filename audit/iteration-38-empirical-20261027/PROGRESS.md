@@ -1,10 +1,11 @@
 # Iteration 38 — empirical source reports
 
-Current: implementation and the selected16-case working gate pass.52 authentic
-source-view reports and their index are saved. Native frequency/relationship
-censuses, both real Chrome branches, screenshots/video and UI/typography review
-pass. Final source/evidence reconciliation, local code commit and the same full
-committed-clean selection remain to record. No in-scope finding remains.
+Current: complete. The full 16-case I38 selection passes with --require-clean
+on 553430a0fb6f91eb905b86b4533d91ef8284f20b. All 52 actual source-view reports,
+source-census oracles, source/coverage UI branches and media review pass.
+ACCEPTANCE.json records all nine addressed groups, proof boundaries and retained
+checks. No in-scope finding or product decision remains. Owned stores are retained
+stopped; the user’s six services are healthy.
 
 Entry: d70 f55 a495 c37 ab5 abd80 fe0 c481 b13 e594 f112 e, clean
 tangerine/iteration-16-release. User authorizes implementation, root/sibling

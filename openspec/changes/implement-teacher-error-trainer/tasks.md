@@ -1665,6 +1665,14 @@ audit/iteration-37-verification-20261027/ACCEPTANCE.json and REPORT.md.
 - [x] I38.5 Produce coverage for references, ratings and contextual supplements without inventing localized error frequencies.
 - [x] I38.6 Export separate exact native/mapped frequency and relationship measurements through the existing engine.
 - [x] I38.7 Verify immutable source/input/output lineage, saved readback, logged safe recovery and zero provider/paid execution.
-- [ ] I38.8 Verify readable ordinary creation/results/download, keyboard/reflow, screenshots/video, siblings, required checks and full committed-clean acceptance.
+- [x] I38.8 Verify readable ordinary creation/results/download, keyboard/reflow, screenshots/video, siblings, required checks and full committed-clean acceptance.
 
 Progress and source/evidence anchors: audit/iteration-38-empirical-20261027/PROGRESS.md.
+
+I38 acceptance: all 16 selected positive/negative cases pass with --require-clean
+on 553430a0fb6f91eb905b86b4533d91ef8284f20b. 52 actual source-view reports,
+independent M2/L2 native censuses, readable L2/JFLEG UI branches, 1280/390/320 layouts,
+screenshots/video and affected sibling checks pass. No remaining in-scope finding
+or product decision. Data/proof boundaries and retained checks are recorded in
+audit/iteration-38-empirical-20261027/ACCEPTANCE.json and REPORT.md. No provider,
+paid, deployment/postdeployment, PBT or financial execution.

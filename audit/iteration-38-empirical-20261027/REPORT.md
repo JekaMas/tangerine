@@ -1,7 +1,8 @@
 # Iteration 38 — imported-source empirical reports
 
-Implementation and working verification pass. The committed-clean acceptance
-receipt is recorded in ACCEPTANCE.json after the code commit. This is a
+Implementation and verification pass. All **16/16** selected cases passed with
+`--require-clean` on **553430a0fb6f91eb905b86b4533d91ef8284f20b**. The exact receipt
+and addressed findings are recorded in [ACCEPTANCE.json](ACCEPTANCE.json). This is a
 self-review against independent source counts, literal arithmetic expectations,
 real application storage/HTTP and actual Chrome observations.
 
