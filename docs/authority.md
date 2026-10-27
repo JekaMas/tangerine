@@ -1,3 +1,13 @@
+2026-10-27 iteration33 verify/repair: the actual user requests root-cause and
+sibling repairs through committed-clean acceptance, including actual local
+UI/UX/typography screenshots and video. Scoped diagnostic, saved-listening,
+test/specification/DAG repairs, zero-call Lab evidence and local commits are
+authorized. Reuse original model/audio observations and valid native greens.
+No new inference/synthesis, paid credits/overage, bulk judge campaign, installs,
+deployment/postdeployment, PBT, financial execution or publication. Preserve
+app3000, user data/settings/media/tabs and canonical GAPS.md. Diagnostic failures
+remain advisory; they must not hide other saved recordings or block practice.
+
 2026-10-27 iteration33 apply: the actual user selects QUAL-04's retained
 weak-form, linking, pause and intonation disagreements. Investigate existing
 recordings/measurements/model replies, repair demonstrated diagnostic/context/

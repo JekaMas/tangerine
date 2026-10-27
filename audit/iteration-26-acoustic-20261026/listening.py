@@ -21,7 +21,7 @@ observer=load('selected_probe_observer',HERE/'observe.py')
 # The existing saved-media owner supplies one read retry, safe HTTP responses
 # and the local font. No comparison-specific synthesis or insurance UI is used.
 media=load('saved_comparison_media',ROOT/'audit/iteration-25-qwen-20261026/player.py')
-LABELS={'clean':'Clean reference','mutated':'Requested mistake',
+LABELS={'clean':'Clean reference','mutated':'Candidate recording',
         'acceptable':'Valid contextual variant','misleading_metadata':'Clean control · false claim withheld'}
 CAPTIONS={'confirmed':'Confirmed in this model check',
           'not_realized':'The model did not confirm this target',
@@ -55,15 +55,33 @@ def selection_reader(output):
     return read
 
 
+def comparison_display(path):
+    """Project one saved observation for display; media is independently usable.
+
+    A partial/older observation can fail here just like a read. The existing
+    read owner logs, retries once and supplies local guidance. Accepted clips
+    and the admitted selection are not checked again.
+    """
+    result=json.loads(path.read_text())
+    try:
+        return dict(status=CAPTIONS[result.get('audio_confirmation','not_run')],
+                    error=bool(result.get('error')),false_alarms=result.get('false_alarms',0),
+                    physical_auditory_conflict=result.get('physical_auditory_conflict',False),
+                    reasons={case['role']:' '.join(f.get('reason') or f.get('description') or ''
+                              for f in case.get('findings',[])) for case in result.get('cases',[])})
+    except (AttributeError,KeyError,TypeError) as error:
+        raise ValueError('Saved listening observation unavailable') from error
+
+
 def page(rows):
     escape=lambda value:html.escape(str(value))
     cards=[]
     for row in rows:
         path=Path(row['comparison'])
-        result=media.read_saved(lambda:json.loads(path.read_text())) if path.exists() else None
+        result=media.read_saved(lambda:comparison_display(path)) if path.exists() else None
         contexts={c['unit_id']:c['public_context'] for c in row['probe']['clips']}
         private={c['role']:c for c in row['probe']['withheld']}
-        status=CAPTIONS[(result or {}).get('audio_confirmation','not_run')] if result is not None else 'Saved listening observation unavailable'
+        status=result['status'] if result is not None else 'Saved listening observation unavailable'
         notes=''
         if result is None:
             notes+='<p>The saved listening observation could not be loaded. Refresh saved observations to try again. The recordings remain available; no model call is needed to play them.</p>'
@@ -77,8 +95,7 @@ def page(rows):
         players=[]
         for role,label in LABELS.items():
             clip=private[role]
-            observation=next((c for c in (result or {}).get('cases',[]) if c['role']==role),None)
-            reason=' '.join(f.get('reason') or f.get('description') or '' for f in (observation or {}).get('findings',[]))
+            reason=(result or {}).get('reasons',{}).get(role,'')
             allowed='<p><strong>Allowed context:</strong> '+escape(contexts[clip['unit_id']])+'</p>' if role=='acceptable' else ''
             explanation='<details class="model-note"><summary>Saved listening observation</summary><p>'+escape(reason)+'</p></details>' if reason else ''
             source='/audio/'+row['id']+'/'+role+'.wav'
@@ -89,7 +106,8 @@ def page(rows):
         voice=row['probe']['binding']
         speaker={'af_heart':'Heart','bm_george':'George'}.get(voice.get('voice'),voice.get('voice'))
         locale={'en-US':'American English','en-GB':'British English'}.get(voice.get('locale'),voice.get('locale'))
-        cards.append('<section id="'+row['id']+'"><h2>'+escape(row['title'])+'</h2><p class="status">'+escape(status)+'</p>'+notes+'<p><strong>Target context:</strong> '+escape(contexts[private['clean']['unit_id']])+'</p><p class="source">Local Kokoro · '+escape(speaker)+' · '+escape(locale)+'</p><div class="players">'+''.join(players)+'</div>'+physical+'</section>')
+        research='<p>'+escape(row['research_note'])+'</p>' if row.get('research_note') else ''
+        cards.append('<section id="'+row['id']+'"><h2>'+escape(row['title'])+'</h2><p class="status">'+escape(status)+'</p>'+notes+research+'<p><strong>Target context:</strong> '+escape(contexts[private['clean']['unit_id']])+'</p><p class="source">Local Kokoro · '+escape(speaker)+' · '+escape(locale)+'</p><div class="players">'+''.join(players)+'</div>'+physical+'</section>')
     links=''.join('<a href="#'+r['id']+'">'+escape(r['title'])+'</a>' for r in rows)
     summary='Five selected saved examples, with their correct controls and actual listening observations.' if rows else 'No saved comparison is available yet. Existing Tangerine practice and recordings remain available; refresh after the local examples are available.'
     return '''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tangerine · Selected acoustic checks</title><style>

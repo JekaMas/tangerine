@@ -1430,6 +1430,8 @@ qualification.
 - [x] I33.2 Support explicit unresolved fixture expectations, correct future selected context/wording and preserve strong forms, accents, linking and legitimate question alternatives without coercing judge agreement.
 - [x] I33.3 Trace every original selected target/control/context/reply, inspect the actual pause PCM and retained F0 evidence, and preserve unresolved functional observations without relabelling old calls or changing learner scores.
 - [x] I33.4 Reconcile literal positive/negative tests and exact DAG/discovery bindings, relevant language/specification/preservation and local Lab readback; accept the complete selected iteration on committed-clean source with zero new inference/synthesis.
+- [ ] I33.V1 Verify/repair correct-control expectation isolation, unrecognized-status uncertainty and nonblocking saved-comparison display, including siblings, native red/green tests and retained unchanged evidence.
+- [ ] I33.V2 Inspect actual saved-player recovery, keyboard actions, typography, desktop/narrow screenshots and video; reconcile the expanded I33.P1–I33.P5 selection and zero-call Lab evidence on committed-clean source.
 
 ## Iteration 31 — Historical literal evidence reconciliation
 

@@ -15,12 +15,19 @@ their roles, taxonomy, expected labels and mutation key remain withheld. Existin
 capture retains the actual serialized request and raw response. Provider or
 decoder failures remain failures, without a hidden retry or provider switch.
 
-`make_probe` permits an optional authored `expected_by_role` override and an
-`expectation_note`, both withheld from the model. Omission retains the original
-category/control expectations. An `uncertain` or `not_applicable` expectation
+`make_probe` permits an optional authored `expected_by_role.mutated` override
+for an error candidate and an `expectation_note`, both withheld from the model.
+Correct clean, acceptable-context and misleading-metadata controls always expect
+defect absence. In an acceptable-variant fixture the candidate also expects
+defect absence. Copied candidate overrides cannot relabel these correct clips.
+Every defect-absent candidate also counts as a correct control for false-alarm
+reporting. A judge flagging it yields uncertainty, not a missing realization.
+Omission retains the original category/control expectations. An `uncertain` or `not_applicable` expectation
 remains uncertain regardless of a model's agreement; it cannot establish a heard
 error. Correct controls still require defect-absent judgments. A false alarm,
-conflicting/missing judgment or failed observation prevents confirmation. Existing
+conflicting/missing/unrecognized judgment or failed observation prevents
+confirmation; an unrecognized status is uncertainty, not an unheard mutation.
+Keep the actual raw findings. Existing
 `not_realized` is a historical model-comparison label meaning that the model did
 not confirm the authored target; it does not prove a requested waveform change
 was physically absent. Raw findings and original comparisons remain inspectable.
@@ -62,3 +69,20 @@ dispatch no inference or synthesis, and never repair a learner key or score.
 The existing explicit reconsideration flow owns an established key defect.
 Future changed-input functional observations, if requested, use a separate frozen
 experiment, retain contrary results and stop without retrying until favorable.
+
+The saved listening sheet labels the altered clip “Candidate recording”; intent
+is not heard correctness. Original model context, valid alternative context and
+current research conclusions are distinguishable. A missing, partial or unreadable
+saved comparison cannot remove independently playable clips or other observations.
+The existing file-read owner logs a failed display projection, retries once and
+then gives local human guidance with an enabled Refresh action. Refresh only
+reads saved results; it must not repeat a model call or synthesis. A failed clip
+similarly gets one local load retry and human guidance, while other clips remain
+usable. Once the file is available, Refresh restores the observation/player.
+Admitted selection and media are reused without repeated consistency checks.
+
+Verification inspects actual saved-audio playback and player switching, keyboard
+activation/visible focus, recovery without raw backend errors, readable loaded
+typography and narrow layouts. Retain screenshots, an actual screen recording
+and original WAV evidence. A rendered player, build or image count alone does not
+establish those interactions or acoustic correctness.

@@ -44,8 +44,11 @@ def make_probe(fixture, recordings, binding, seed):
             "unit_id": unit_id,
             "role": role,
             "audio_path": recordings[role],
-            "expected": fixture.get("expected_by_role", {}).get(
-                role, "supported" if role == "mutated" and not fixture["control"] else "contradicted"),
+            # Only a candidate error can have an ambiguous authored expectation.
+            # The other recordings (and every acceptable-variant fixture) are
+            # correct controls, regardless of copied candidate settings.
+            "expected": fixture.get("expected_by_role", {}).get(role, "supported")
+                        if role == "mutated" and not fixture["control"] else "contradicted",
             "claimed_mutation": role in ("mutated", "misleading_metadata"),
         })
     return {
@@ -79,12 +82,12 @@ def compare_probe(probe, observation):
             # An uncertain authored expectation cannot become true merely
             # because a judge agrees with the intended mutation. Keep the
             # actual reply and valid controls, without claiming a heard error.
-            outcome = ("uncertain" if expected["expected"] in ("uncertain", "not_applicable")
-                       or actual in ("uncertain", "not_applicable")
+            outcome = ("uncertain" if expected["expected"] not in ("supported", "contradicted")
+                       or actual not in ("supported", "contradicted")
                        else "passed" if actual == expected["expected"] else "failed")
         rows.append({**expected, "actual": actual, "outcome": outcome,
                      "findings": supplied})
-    controls = [r for r in rows if r["role"] != "mutated"]
+    controls = [r for r in rows if r["role"] != "mutated" or r["expected"] == "contradicted"]
     false_alarms = sum(r["outcome"] == "failed" and r["actual"] == "supported" for r in controls)
     physical = (observation or {}).get("physical", {})
     physical_ok = not probe["requires_physical"] or (physical.get("status") == "supported" and bool(physical.get("observations")))
@@ -99,7 +102,8 @@ def compare_probe(probe, observation):
     elif "uncertain" in statuses:
         confirmation = "uncertain"
     elif "failed" in statuses:
-        confirmation = "not_realized" if any(r["role"] == "mutated" and r["outcome"] == "failed" for r in rows) else "uncertain"
+        confirmation = "not_realized" if any(r["role"] == "mutated" and r["expected"] == "supported"
+                                           and r["outcome"] == "failed" for r in rows) else "uncertain"
     elif not physical_ok:
         confirmation = "uncertain"
     else:

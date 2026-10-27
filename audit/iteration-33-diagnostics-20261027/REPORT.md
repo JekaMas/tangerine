@@ -1,5 +1,10 @@
 # Iteration 33 — saved-audio diagnostics and ambiguous fixtures
 
+This is the original **apply** report. The expanded verify/repair review,
+including demonstrated siblings and actual UI/typography/video evidence, is in
+[VERIFY-REPORT.md](VERIFY-REPORT.md). Its current selection is I33.P1–I33.P5.
+The original ten-case receipt below retains its historical proof boundary.
+
 **Iteration33 is accepted:** the complete four-property selection passed10/10
 with --require-clean on `ab7407f5433714f51a9941eefbf55402283a88e7`.
 ACCEPTANCE.json binds the exact observed cases and retained native evidence.

@@ -9,7 +9,7 @@ The application SHALL use the same owned model-visible diagnostic projection for
 
 #### Scenario: I33 Ambiguous expectations and valid alternatives
 - **WHEN** a fixture cannot establish that a full form or contextual contour is incorrect
-- **THEN** its withheld expectation can remain uncertain even if a model supports the intended error; correct strong forms, accents, careful linking and legitimate question contours stay acceptable, false alarms prevent confirmation and a failed observation cannot become a successful contrast
+- **THEN** its withheld candidate expectation can remain uncertain even if a model supports the intended error; correct controls cannot be relabelled by copied candidate settings, correct strong forms, accents, careful linking and legitimate question contours stay acceptable, false alarms prevent confirmation and failed or unrecognized observations cannot become a successful or physically absent contrast
 
 #### Scenario: I33 Saved physical and contextual evidence
 - **WHEN** QUAL-04's five saved sets are inspected
@@ -18,3 +18,7 @@ The application SHALL use the same owned model-visible diagnostic projection for
 #### Scenario: I33 Zero-call reconciliation and preservation
 - **WHEN** iteration33 research is finalized
 - **THEN** directly affected literal tests, saved native inputs/outputs and local Lab export/readback are reconciled without new inference or synthesis; mixed observations remain visible and neither diagnostics nor fixture repair changes learner keys/scores, original categories/formulas/source scopes or user data
+
+#### Scenario: I33 Nonblocking saved listening and readable evidence
+- **WHEN** a saved comparison or clip is temporarily unreadable during inspection
+- **THEN** the existing read/player owner logs and retries once, retains other recordings and observations, shows human guidance with enabled Refresh, and recovers when the saved dependency is available; actual playback, player switching, keyboard focus, readable desktop/narrow typography, screenshots and video are observed without a provider call, raw backend error or learner gate
