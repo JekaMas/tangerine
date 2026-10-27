@@ -7,7 +7,7 @@ export async function reportRequest(path, options={}) {
   if (!response.ok) throw userError(response.status===404
     ? 'This saved item is no longer available. Choose another saved item or create a new one.'
     : response.status===400||response.status===422
-    ? 'Check the report or experiment fields. Your input is retained. Use the advanced definition for other workflows.'
+    ? 'Check your selections and try again. Your input and saved reports are retained.'
     : path==='lab/defaults'?'Configured experiment choices are unavailable. Retry or open Settings. Your input is retained.'
       : 'Reports are temporarily unavailable. Your inputs and saved observations are retained. Refresh to continue.');
   return response.json();

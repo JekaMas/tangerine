@@ -8,7 +8,7 @@ import {createReportsSession} from './session';
 export default function useReports() {
   const reports=useSavedList('/api/v1/reports/empirical',{unavailable:'Saved reports are unavailable. Refresh to retry.'});
   const experiments=useSavedList('/api/v1/lab/experiments',{unavailable:'Saved experiments are unavailable. Refresh to retry.'});
-  const [state,setState]=useState({report:null,run:null,comparisons:[],reportError:'',runError:'',actionError:'',comparisonError:'',notice:'',busy:false,loadingReport:false,loadingRun:false,loadingComparisons:false});
+  const [state,setState]=useState({report:null,run:null,comparisons:[],reportError:'',runError:'',actionError:'',actionOwner:'',comparisonError:'',notice:'',busy:false,loadingReport:false,loadingRun:false,loadingComparisons:false});
   const owner=useRef(null);
   if(!owner.current)owner.current=createReportsSession({request,onChange:setState,refreshReports:reports.refresh,refreshExperiments:experiments.refresh,
     remember:id=>localStorage.setItem('tangerine-quality-experiment',id)});

@@ -1,59 +1,63 @@
 'use client';
 import {useEffect,useRef,useState} from 'react';
-import {measurement,populationNotice,populationFields,difficultyReason,exclusionLabel,coverageSummary} from './empiricalPresentation';
+import {populationNotice,difficultyReason,coverageSummary} from './empiricalPresentation';
+import {count,readableMetric,nativeName,categoryName,sourceExclusion} from './sourcePresentation';
 
-function Measurement({value}) {
-  const shown=measurement(value);
-  return <><span>{shown.value}</span>{shown.counts&&<small className="measurement-counts">{shown.counts}</small>}</>;
-}
-function Exclusions({values}) {
-  const entries=Object.entries(values);
-  return entries.length?<ul>{entries.map(([reason,count])=><li key={reason}>{exclusionLabel(reason)}: {count}</li>)}</ul>:<p>No exclusions recorded.</p>;
+function Measurement({value,kind}) {const shown=readableMetric(value,kind);return <><span>{shown.value}</span><small className="measurement-counts">{shown.basis}</small></>;}
+function Pairs({pairs,label,name}) {
+  const [all,setAll]=useState(false);
+  return <><p>Two distinct mistakes must occur in the same fully annotated example. The figures describe this source view; they do not establish a cause.</p>
+    {!pairs.length?<p>Relationships are not measured here, or no pairs were observed within the annotated examples. This does not show that the categories are unrelated elsewhere.</p>:<>
+      <div className="report-table"><table tabIndex={0} aria-label={name}><thead><tr><th>First mistake</th><th>Second mistake</th><th>Examples with both</th><th>Share of examples</th><th>Second when first occurs</th><th>Association</th></tr></thead><tbody>{(all?pairs:pairs.slice(0,12)).map(pair=><tr key={pair.a+'/'+pair.b}><td>{label(pair.a)}</td><td>{label(pair.b)}</td><td>{count(pair.distinct_event_windows)}</td><td><Measurement value={pair.support}/></td><td><Measurement value={pair.conditional}/></td><td><Measurement value={pair.lift} kind="lift"/></td></tr>)}</tbody></table></div>
+      {pairs.length>12&&<button className="secondary" onClick={()=>setAll(!all)}>{all?'Show fewer relationships':'Show all '+count(pairs.length)+' relationships'}</button>}
+    </>}
+  </>;
 }
 
-// Presentation only: no recomputation, asset checks or model calls on read.
+// Saved reads only. All arithmetic, scope and lineage belong to the API owner.
 export default function EmpiricalResult({value,onDownload}) {
-  const [showAll,setShowAll]=useState(false);
+  const [showAll,setShowAll]=useState(false),[showNative,setShowNative]=useState(false);
   const article=useRef(null);
-  useEffect(()=>{
-    // A normal URL fragment can arrive before the asynchronous saved read.
-    if(window.location.hash==='#empirical-result'){
-      article.current?.focus({preventScroll:true});
-      article.current?.scrollIntoView({block:'start'});
-    }
-  },[value.id]);
-  const report=value.report,difficulty=value.difficulty,coverage=coverageSummary(report);
-  const leaves=report.leaves.filter(leaf=>showAll||report.annotated_leaf_ids?.includes(leaf.id)||leaf.events>0||leaf.controls>0||leaf.secondary_labels>0);
+  useEffect(()=>{article.current?.focus({preventScroll:true});article.current?.scrollIntoView({block:'start'});},[value.id]);
+  const r=value.report,d=value.difficulty,summary=value.source_summary,coverage=coverageSummary(r),labels=value.category_labels||{};
+  const native=r.native_population;
+  const leaves=r.leaves.filter(leaf=>showAll||r.annotated_leaf_ids?.includes(leaf.id)||leaf.events>0||leaf.controls>0||leaf.secondary_labels>0);
+  const sourceOnly=r.population.label_origin==='native_coverage_only';
   return <article ref={article} tabIndex={-1} id="empirical-result" className="empirical-result" aria-label="Selected empirical report">
     <h3>{value.title}</h3>
-    <div className="actions"><button onClick={()=>onDownload('empirical-'+value.id+'.json',value)}>Download report</button><a href={'/reports?report='+encodeURIComponent(value.id)+'#empirical-result'}>Open saved report</a></div>
-    <p className="population-notice">{populationNotice(report.population.label_origin)}</p>
-    <h4>Selected population</h4>
-    <dl className="population-fields">{populationFields(report.population).map(([label,text])=><div key={label}><dt>{label}</dt><dd>{text}</dd></div>)}</dl>
-    <p>{report.annotated_windows} fully inspected mapped windows; {report.unannotated_windows} unannotated or incompletely mapped. {report.source_annotated_windows} source-annotated windows; {report.mapping_incomplete_windows} have incomplete category mappings.</p>
-    <p>{report.eligible_events} distinct mapped mistakes; {report.unmapped_events} unmapped events. Inspected native tokens: {report.inspected_native_tokens??'Unknown'}.</p>
-    <p>Declared annotation scope: {coverage.declared} of {coverage.total} categories. Categories with mapped mistakes: {coverage.withEvents}. Absence measurements require fully inspected mapped windows. Categories outside the scope remain unknown, including pronunciation in writing-only data.</p>
-    <h4>Category measurements</h4>
-    <p className="field-help">Each value is an exact fraction, with its unreduced numerator / denominator below it. Token density multiplies the mistake count by 1,000. An unavailable measurement is not zero.</p>
-    <label><input type="checkbox" aria-label="Show unannotated categories" checked={showAll} onChange={event=>setShowAll(event.target.checked)}/> Show all categories, including those outside this report’s annotation scope</label>
-    <table tabIndex={0} aria-label="Empirical category measurements"><thead><tr><th>Category</th><th>Mistakes</th><th>Event share</th><th>Window prevalence</th><th>Opportunity rate</th><th>Per 1,000 tokens</th></tr></thead><tbody>{leaves.map(leaf=><tr key={leaf.id}><td>{leaf.id}</td><td>{leaf.events}<small className="measurement-counts">{leaf.controls} correct controls · {leaf.secondary_labels} secondary labels</small></td>{[leaf.event_share,leaf.window_prevalence,leaf.opportunity_rate,leaf.per_1000_tokens].map((metric,index)=><td key={index}><Measurement value={metric}/></td>)}</tr>)}</tbody></table>
-    {!leaves.length&&<p>No mapped or inspected categories in this population. Native labels and unknown coverage remain available below.</p>}
-    <h4>Learner outcomes and difficulty</h4>
-    <p>Difficulty: {difficulty.rating}. {difficulty.successes} successful outcomes / {difficulty.trials} eligible independent first answers. These outcomes are separate from source mistake frequencies.</p>
-    {difficultyReason(difficulty.missing_reason)&&<p>{difficultyReason(difficulty.missing_reason)}</p>}
-    {difficulty.lower_bound!=null&&difficulty.upper_bound!=null&&<p>95% Wilson success interval: {(Number(difficulty.lower_bound)*100).toFixed(1)}%–{(Number(difficulty.upper_bound)*100).toFixed(1)}% (rounded for display; full values are in the download).</p>}
-    <p>Paired follow-up success change: <Measurement value={difficulty.paired_success_change}/>. This is descriptive change in the selected pairs; it does not establish that recommendations caused improvement.</p>
-    <p className="field-help">Only observations declared genuine, with an identified participant and a recorded outcome, enter difficulty. A supplied origin label does not independently verify human participation. Constructed and model observations stay excluded.</p>
-    <Exclusions values={difficulty.excluded}/>
-    <details><summary>Native labels, relationships, confusion and exclusions</summary>
-      <h4>Native-label frequencies</h4><p>Native annotations and mapped project categories describe different label systems. Unmapped source labels are retained here.</p>
-      <table tabIndex={0} aria-label="Native label measurements"><thead><tr><th>Native label</th><th>Mistakes</th><th>Event share</th><th>Window prevalence</th></tr></thead><tbody>{report.native_frequencies.map(leaf=><tr key={leaf.id}><td>{leaf.id}</td><td>{leaf.events}</td><td><Measurement value={leaf.event_share}/></td><td><Measurement value={leaf.window_prevalence}/></td></tr>)}</tbody></table>
-      {!report.native_frequencies.length&&<p>No native error labels observed.</p>}
-      <h4>Distinct-event relationships</h4><p>Support uses fully inspected windows. Conditional frequency uses windows containing the first category; lift compares the two category frequencies. Multiple labels on one event do not form a pair. Unlisted pairs have zero observed windows only within a fully inspected population and its declared category scope. Without those observations, pair measurements remain unknown.</p>
-      {report.pairs.length?<table tabIndex={0} aria-label="Category relationships"><thead><tr><th>First category</th><th>Second category</th><th>Joint windows</th><th>Support</th><th>Conditional</th><th>Lift</th></tr></thead><tbody>{report.pairs.map(pair=><tr key={pair.a+'/'+pair.b}><td>{pair.a}</td><td>{pair.b}</td><td>{pair.distinct_event_windows}</td><td><Measurement value={pair.support}/></td><td><Measurement value={pair.conditional}/></td><td><Measurement value={pair.lift}/></td></tr>)}</tbody></table>:<p>No observed distinct-event pairs. This does not establish absence outside the inspected population.</p>}
-      <h4>Reference / prediction confusion</h4>{report.confusion.length?<table tabIndex={0} aria-label="Reference prediction confusion"><thead><tr><th>Reference</th><th>Prediction</th><th>Decisions</th><th>Within-reference proportion</th></tr></thead><tbody>{report.confusion.map(row=><tr key={row.reference+'/'+row.predicted}><td>{row.reference}</td><td>{row.predicted}</td><td>{row.count}</td><td><Measurement value={row.row_proportion}/></td></tr>)}</tbody></table>:<p>No reference / prediction decisions recorded. Model quality remains unknown.</p>}
-      <h4>Source exclusions</h4><Exclusions values={report.excluded}/>
-      <details><summary>Original saved measurements</summary><pre>{JSON.stringify({native:report.native_label_counts,pairs:report.pairs,confusion:report.confusion,excluded:report.excluded},null,2)}</pre></details>
+    <div className="actions"><button className="secondary" onClick={()=>onDownload('empirical-'+value.id+'.json',value)}>Download report</button><a href={'/reports?report='+encodeURIComponent(value.id)+'#empirical-result'}>Open saved report</a></div>
+    <p className="population-notice">{summary?summary.source_name+' · '+summary.view_label:populationNotice(r.population.label_origin)}</p>
+    <div className="report-overview"><div><strong>{count(r.observed_windows)}</strong><span>{summary?.unit||'examples'} in this view</span></div><div><strong>{sourceOnly?'Not measured':count(native?.eligible_events??r.eligible_events+r.unmapped_events)}</strong><span>original annotated mistakes</span></div><div><strong>{count(coverage.withEvents)} of {count(coverage.total)}</strong><span>categories with mapped examples</span></div></div>
+    {summary&&<details><summary>How this source was interpreted</summary><dl className="population-fields"><div><dt>Source</dt><dd>{summary.source_name}</dd></div><div><dt>View</dt><dd>{summary.view_label}</dd></div><div><dt>Examples counted</dt><dd>{summary.unit}</dd></div></dl>{summary.notes.map(note=><p key={note}>{note}</p>)}</details>}
+
+    {!!summary?.coverage.length&&<dl className="population-fields">{summary.coverage.map(row=><div key={row.label}><dt>{row.label}</dt><dd>{count(row.count)}</dd></div>)}</dl>}
+    <h4>What was counted?</h4><p>Frequencies describe this source view. They are not estimates for all English learners.</p>
+    {native&&<p>{count(native.annotated_windows)} of {count(native.observed_windows)} examples have usable original error annotations. {native.inspected_native_tokens==null?'A word-count exposure is not available.':count(native.inspected_native_tokens)+' words belong to those fully annotated examples.'}</p>}
+    <p>{count(r.eligible_events)} mistakes have a derived Tangerine category; {count(r.unmapped_events)} remain outside the resolved mapping. Category proportions use only the mapped mistakes. Original source measurements use their own annotations.</p>
+    <p>{coverage.declared?count(coverage.declared)+' categories have declared complete annotation coverage.':'No category has declared complete absence coverage.'} Categories without sufficient annotations are <strong>not measured</strong>, including pronunciation in writing-only data. Missing measurements never mean there are no mistakes.</p>
+    <h4>Original source measurements</h4>
+    {sourceOnly?<p>Not measured. This view contains examples or ratings without localized mistake labels.</p>:<>
+      <p>“Share of mistakes” uses all eligible original error events. “Examples affected” uses fully annotated examples in this one view. A sentence or utterance with several mistakes is counted once for each type it contains.</p>
+      <div className="report-table"><table tabIndex={0} aria-label="Native label measurements"><thead><tr><th>Mistake described by the source</th><th>Count</th><th>Share of mistakes</th><th>Examples affected</th></tr></thead><tbody>{(showNative?r.native_frequencies:r.native_frequencies.slice(0,12)).map(leaf=><tr key={leaf.id}><td>{nativeName(leaf.id)}</td><td>{count(leaf.events)}</td><td><Measurement value={leaf.event_share}/></td><td><Measurement value={leaf.window_prevalence}/></td></tr>)}</tbody></table></div>
+      {!r.native_frequencies.length&&<p>No original error labels were observed. This does not establish error-free language outside annotated examples.</p>}
+      {r.native_frequencies.length>12&&<button className="secondary" onClick={()=>setShowNative(!showNative)}>{showNative?'Show fewer source types':'Show all source types'}</button>}
+      <details><summary>Which source mistakes occur together?</summary><Pairs pairs={r.native_pairs||[]} label={nativeName} name="Source relationships"/></details>
+    </>}
+    <h4>Tangerine category coverage</h4>
+    <p>Mappings preserve source meanings. They do not supply complete annotation of every category or correct-use opportunity.</p>
+    <label><input type="checkbox" aria-label="Show unannotated categories" checked={showAll} onChange={event=>setShowAll(event.target.checked)}/> Show all {count(coverage.total)} categories, including those not measured</label>
+    <div className="report-table"><table tabIndex={0} aria-label="Empirical category measurements"><thead><tr><th>Category</th><th>Mapped mistakes</th><th>Share of mapped mistakes</th><th>Examples affected</th><th>Correct-use opportunity rate</th><th>Per 1,000 words</th></tr></thead><tbody>{leaves.map(leaf=><tr key={leaf.id}><td>{categoryName(leaf.id,labels)}</td><td>{count(leaf.events)}<small className="measurement-counts">{count(leaf.controls)} correct examples · {count(leaf.secondary_labels)} additional labels</small></td>{[leaf.event_share,leaf.window_prevalence,leaf.opportunity_rate,leaf.per_1000_tokens].map((metric,index)=><td key={index}><Measurement value={metric} kind={index===3?'density':'percent'}/></td>)}</tr>)}</tbody></table></div>
+    {!leaves.length&&<p>No resolved category examples in this view. Use “Show all categories” to see the missing coverage.</p>}
+    <details><summary>Category relationships and exclusions</summary><Pairs pairs={r.pairs} label={id=>categoryName(id,labels)} name="Category relationships"/><h4>Observations left out</h4>{Object.keys(r.excluded).length?<ul>{Object.entries(r.excluded).map(([reason,n])=><li key={reason}>{sourceExclusion(reason)}: {count(n)}</li>)}</ul>:<p>No source exclusions recorded.</p>}
+      <p>{count(r.confusion.length)} reference and prediction comparisons were supplied. These are separate from native source frequencies. Full comparison details and original source identifiers are preserved in the download.</p>
     </details>
+    <details><summary>Learner outcomes and difficulty</summary>
+      <p>{count(d.successes)} successful outcomes from {count(d.trials)} eligible independent first answers. Difficulty {d.rating==='unrated'?'has not been established.':'is '+d.rating+'.'} These observations are separate from source mistake counts.</p>
+      {difficultyReason(d.missing_reason)&&<p>{difficultyReason(d.missing_reason)}</p>}
+      {d.lower_bound!=null&&d.upper_bound!=null&&<p>Estimated success range: {(Number(d.lower_bound)*100).toFixed(1)}%–{(Number(d.upper_bound)*100).toFixed(1)}% at 95% confidence.</p>}
+      <p>Follow-up change: <Measurement value={d.paired_success_change}/>. This does not establish that recommendations caused improvement.</p>
+      <p>Only observations declared to be genuine independent learner attempts enter this measure. Constructed and model answers are excluded. Original exclusions and complete values are in the download.</p>
+    </details>
+    <p className="field-help">Displayed percentages are rounded. The download preserves exact counts, fractions, source locations and mapping rules. Saved reports do not change when new data are imported.</p>
   </article>;
 }

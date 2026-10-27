@@ -16,8 +16,9 @@ export function reportStarter(title, category) {
   ],decisions:[]},attempts:[]};
 }
 
-export function reportFromPopulation(title, submission) {
+export function reportFromPopulation(title, submission, inputAssetID=null) {
   if (!title.trim()) throw userError('Give the report a title.');
+  if(inputAssetID)return {title:title.trim(),reuse_input_asset_id:inputAssetID};
   return {...structuredClone(submission),title:title.trim()};
 }
 

@@ -73,6 +73,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/v1/lab/defaults", s.qualityDefaults)
 	mux.HandleFunc("GET /api/v1/lab/assets/{id}", s.qualityAsset)
 	mux.HandleFunc("GET /api/v1/reports/empirical", s.empiricalList)
+	mux.HandleFunc("GET /api/v1/reports/source-populations", s.empiricalPopulations)
 	mux.HandleFunc("POST /api/v1/reports/empirical", s.empiricalCreate)
 	mux.HandleFunc("GET /api/v1/reports/empirical/{id}", s.empiricalGet)
 	mux.HandleFunc("GET /api/v1/sources", s.sourcesGet)

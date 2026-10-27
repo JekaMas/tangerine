@@ -9,6 +9,9 @@ export function createSavedList({onChange, unavailable}) {
   const publish=change => {state={...state,...change};onChange(state);};
   return {
     async read(load, append=false) {
+	  // A button may pass its click event through a refresh callback. Only the
+	  // explicit pagination flag appends; Refresh always replaces the page.
+	  append=append===true;
       const request=++current, cursor=append?state.cursor:null;
       publish({loading:true,error:''});
       try {

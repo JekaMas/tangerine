@@ -6,17 +6,21 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"strconv"
+	"strings"
 	"tangerine.local/api/internal/empirical"
 	"tangerine.local/api/internal/source"
 )
 
 type EmpiricalSubmission struct {
-	Title    string              `json:"title"`
-	Input    empirical.Input     `json:"input"`
-	Attempts []empirical.Attempt `json:"attempts"`
-	Source   *EmpiricalSource    `json:"source"`
+	ReuseInput    string                  `json:"reuse_input_asset_id,omitempty"`
+	Title         string                  `json:"title"`
+	Input         empirical.Input         `json:"input"`
+	Attempts      []empirical.Attempt     `json:"attempts"`
+	Source        *EmpiricalSource        `json:"source"`
+	SourceSummary *EmpiricalSourceSummary `json:"source_summary,omitempty"`
 }
 type EmpiricalSource struct {
+	Basis           string            `json:"basis,omitempty"`
 	AnnotatedLeaves []string          `json:"annotated_leaf_ids"`
 	WindowPointer   string            `json:"window_pointer"`
 	Import          string            `json:"import_id"`
@@ -30,7 +34,26 @@ func (s *Storage) CreateEmpiricalReport(ctx context.Context, r EmpiricalSubmissi
 	if r.Title == "" {
 		return nil, ErrInput
 	}
-	if r.Source != nil {
+	var summary *EmpiricalSourceSummary
+	if r.ReuseInput != "" {
+		title, asset := r.Title, r.ReuseInput
+		raw, e := s.ReadAsset(ctx, asset)
+		if e != nil {
+			return nil, e
+		}
+		var saved EmpiricalSubmission
+		if e = json.Unmarshal(raw, &saved); e != nil {
+			return nil, e
+		}
+		r = saved
+		r.Title, r.ReuseInput, summary = title, asset, saved.SourceSummary
+	} else if r.Source != nil && r.Source.Basis != "" {
+		in, selected, e := s.empiricalImportedSource(ctx, *r.Source)
+		if e != nil {
+			return nil, e
+		}
+		r.Input, summary = in, &selected
+	} else if r.Source != nil {
 		in, e := s.empiricalSource(ctx, r.Input.Population, *r.Source)
 		if e != nil {
 			return nil, e
@@ -50,12 +73,25 @@ func (s *Storage) CreateEmpiricalReport(ctx context.Context, r EmpiricalSubmissi
 	if e != nil {
 		return nil, e
 	}
+	r.SourceSummary = summary
 	input, e := s.saveProviderBytes(ctx, sourceBytes(r), "provider_input")
 	if e != nil {
 		return nil, e
 	}
 	id := uuid.NewString()
 	out := map[string]any{"id": id, "title": r.Title, "source_input_asset_id": input.ID, "report": report, "difficulty": difficulty, "origin": "descriptive_selected_population", "effectiveness_claim": "paired change is descriptive; no causal claim"}
+	labels := map[string]string{}
+	categories, _, e := preparationCategories()
+	if e != nil {
+		return nil, e
+	}
+	for _, category := range categories {
+		labels[category.ID] = category.Label
+	}
+	out["category_labels"] = labels
+	if summary != nil {
+		out["source_summary"] = summary
+	}
 	asset, e := s.saveProviderBytes(ctx, sourceBytes(out), "export")
 	if e != nil {
 		return nil, e
@@ -210,6 +246,25 @@ func (s *Storage) empiricalSource(ctx context.Context, p empirical.Population, s
 			}
 			if leaf, ok := selects.LeafByEvent[event.ID]; ok {
 				event.Leaf = &leaf
+			}
+			if selects.Basis == "m2" && event.Excluded == "" {
+				before := ""
+				if tokens, ok := row["tokens"].([]any); ok {
+					start, sok := m["start"].(float64)
+					end, eok := m["end"].(float64)
+					if sok && eok && start >= 0 && end >= start && end <= float64(len(tokens)) {
+						parts := []string{}
+						for _, token := range tokens[int(start):int(end)] {
+							parts = append(parts, fmt.Sprint(token))
+						}
+						before = strings.Join(parts, " ")
+					}
+				}
+				leaf, rule := empirical.WritingMapping(event.Native, before, fmt.Sprint(m["correction"]))
+				event.Rule = rule
+				if leaf != "" {
+					event.Leaf = &leaf
+				}
 			}
 			w.Events = append(w.Events, event)
 		}

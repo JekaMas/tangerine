@@ -2,7 +2,7 @@ import {parseUserJSON,requestError} from '../requestError.js';
 
 // Selected identities and delivery live here; native owners freeze and calculate.
 export function createReportsSession({request,onChange,refreshReports,refreshExperiments,remember=()=>{}}) {
-  let state={report:null,run:null,comparisons:[],reportError:'',runError:'',actionError:'',comparisonError:'',notice:'',busy:false,loadingReport:false,loadingRun:false,loadingComparisons:false};
+  let state={report:null,run:null,comparisons:[],reportError:'',runError:'',actionError:'',actionOwner:'',comparisonError:'',notice:'',busy:false,loadingReport:false,loadingRun:false,loadingComparisons:false};
   let reportID=null,runID=null,reportVersion=0,runVersion=0,comparisonVersion=0,lifetime=0,actionVersion=0;
   const writes=new Set();
   const publish=change=>{state={...state,...change};onChange(state);};
@@ -42,7 +42,7 @@ export function createReportsSession({request,onChange,refreshReports,refreshExp
   }
   async function save(kind,definition) {
     const life=lifetime,action=++actionVersion,write=Symbol(kind);
-    writes.add(write);publish({busy:true,actionError:'',notice:''});
+    writes.add(write);publish({busy:true,actionError:'',actionOwner:kind,notice:''});
     try {
       parseUserJSON(definition,kind==='report'?'Report definition':'Experiment definition');
       const current=kind==='report'?++reportVersion:++runVersion;
@@ -64,7 +64,7 @@ export function createReportsSession({request,onChange,refreshReports,refreshExp
   async function runAction(kind) {
     if(!state.run)return;
     const id=state.run.id,selected=runVersion,life=lifetime,action=++actionVersion,write=Symbol(kind);
-    writes.add(write);publish({busy:true,actionError:'',notice:''});
+    writes.add(write);publish({busy:true,actionError:'',actionOwner:'experiment',notice:''});
     try {
       await request('lab/experiments/'+id+':'+kind,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
       if(life===lifetime&&selected===runVersion)return loadRun(id);

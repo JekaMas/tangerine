@@ -303,7 +303,22 @@ func TestNativeSavedReportExistingReplayPositive(t *testing.T) {
 	}
 	savedRequire(t, json.Unmarshal(raw, &old))
 	v := savedCreate(t, savedStore(t), old.Submission)
-	savedEqual(t, old.Report.Report, v["report"].(empirical.Report))
+	// The source snapshot predates I38's additive native denominators/pairs.
+	// Its original calculation fields must remain identical; new fields have
+	// independent literal expectations instead of rewriting the old receipt.
+	var legacy, current map[string]any
+	savedRequire(t, json.Unmarshal(sourceBytes(old.Report.Report), &legacy))
+	savedRequire(t, json.Unmarshal(sourceBytes(v["report"]), &current))
+	for _, key := range []string{"native_population", "native_pairs", "native_unlisted_pair_meaning"} {
+		delete(legacy, key)
+		delete(current, key)
+	}
+	savedEqual(t, legacy, current)
+	got := v["report"].(empirical.Report).NativePopulation
+	savedEqual(t, int64(2), got.Windows)
+	savedEqual(t, int64(2), got.Annotated)
+	savedEqual(t, int64(1), got.Events)
+	savedEqual(t, int64(8), *got.Tokens)
 	savedEqual(t, old.Report.Difficulty, v["difficulty"].(empirical.Difficulty))
 	savedEmit(t, "reproduced-existing-report.json", v)
 }

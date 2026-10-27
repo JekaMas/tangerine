@@ -1,0 +1,16 @@
+// Real complete JFLEG view through the ordinary form and saved-report reader.
+const {chromium}=require(process.env.TANGERINE_PLAYWRIGHT_MODULE),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+(async()=>{
+ const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});
+ const context=await browser.newContext({viewport:{width:1280,height:720},recordVideo:{dir:process.env.I38_BROWSER_EVIDENCE,size:{width:1280,height:720}}}),page=await context.newPage(),observed={layouts:[],pageErrors:[]};
+ page.on('pageerror',e=>observed.pageErrors.push(e.message));
+ try{
+  await page.goto(process.env.I38_URL+'/reports');const selector=page.getByLabel('Imported source and view',{exact:true});await selector.waitFor();await page.waitForFunction(()=>document.querySelector('select[aria-label="Imported source and view"]')?.options.length>1);
+  const selected=await selector.locator('option').evaluateAll(items=>items.find(o=>o.textContent.includes('JFLEG')&&o.textContent.includes('Test')&&!o.textContent.includes('Constructed')).value);await selector.selectOption(selected);
+  await page.getByLabel('Report name',{exact:true}).fill('JFLEG: alternative corrections');await page.getByRole('button',{name:'Create source report',exact:true}).click();await page.getByRole('heading',{name:'JFLEG: alternative corrections',exact:true}).waitFor();
+  const result=page.getByRole('article',{name:'Selected empirical report'});let text=await result.innerText();assert(text.includes('747'));assert(text.includes('2,988'));assert(text.includes('Not measured. This view contains examples or ratings without localized mistake labels.'));assert(!/\d+%/.test(text));
+  await page.getByLabel('Show unannotated categories',{exact:true}).check();assert.equal(await page.getByRole('table',{name:'Empirical category measurements',exact:true}).locator('tbody tr').count(),122);
+  for(const width of [1280,390,320]){await page.setViewportSize({width,height:width===1280?720:844});await page.getByRole('heading',{name:'JFLEG: alternative corrections',exact:true}).scrollIntoViewIfNeeded();const layout=await page.evaluate(()=>({width:innerWidth,documentWidth:document.documentElement.scrollWidth,size:getComputedStyle(document.body).fontSize,small:Math.min(...[...document.querySelectorAll('.measurement-counts')].map(e=>parseFloat(getComputedStyle(e).fontSize)))}));assert.equal(layout.width,layout.documentWidth);assert.equal(layout.size,'17px');assert(layout.small>=14);observed.layouts.push(layout);await page.screenshot({path:path.join(process.env.I38_BROWSER_EVIDENCE,'coverage-'+width+'.png')});}
+  await page.reload();await result.waitFor();text=await result.innerText();assert(text.includes('747'));assert(text.includes('2,988'));assert(!/I38_PRIVATE_DATABASE_CANARY|internal traceback|"numerator"|native-context-1/.test(text));assert.equal(observed.pageErrors.length,0);observed.completed=true;observed.originals=747;observed.alternatives=2988;observed.original_mistakes='Not measured';
+ }finally{fs.writeFileSync(path.join(process.env.I38_BROWSER_EVIDENCE,'observations.json'),JSON.stringify(observed,null,2)+'\n');await context.close();await browser.close();}
+})().catch(error=>{console.error(error);process.exitCode=1});

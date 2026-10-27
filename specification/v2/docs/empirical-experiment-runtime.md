@@ -16,7 +16,9 @@ annotated_leaf_ids explicitly names which project leaves were inspected for abse
 
 source selects `{import_id,member,table,annotator,leaf_by_event,annotated_leaf_ids,window_pointer}` from one accepted I13import. Native M2 uses table=sentences, exact member identity and one annotator per sentence. Omitted annotator selects the lowest integer annotator ID present per S-block, recorded as lowest_integer_per_sentence. An explicitly absent annotator supplies no annotations. Noop/invalid/UNK/Um counts are retained separately. leaf_by_event maps exact localized event IDs to actual project leaves, requires a named crosswalk_version and records operator_localized_mapping origin. Event IDs are `<import>/<member>/<row ordinal>/<edit ordinal>`. Native frequencies remain independent of project mappings.
 
-Other native/private formats use the existing deterministic import program to put a Window object in source_row.projection, then select it through window_pointer (RFC6901). No second transformation language or LLM guess is added. Missing projection creates an unannotated window with empirical_window_projection_absent. Exact source release/member/partition remain attached. An unknown member is an input error. An empty selected table remains an explicitly zero observed population, not complete corpus coverage.
+Named imported-source adapters and readable presentation are specified in
+[empirical-source-reports.md](empirical-source-reports.md). Other native/private
+formats without such an adapter use the existing deterministic import program to put a Window object in source_row.projection, then select it through window_pointer (RFC6901). No second transformation language or LLM guess is added. Missing projection creates an unannotated window with empirical_window_projection_absent. Exact source release/member/partition remain attached. An unknown member is an input error. An empty selected table remains an explicitly zero observed population, not complete corpus coverage.
 
 ## Exact empirical outputs
 
@@ -28,13 +30,13 @@ attempts contains explicit observation records `{id,participant_id,origin,case_v
 
 ## Saved-data continuation (iteration28)
 
-The Reports view shows the selected release, member/view, split, annotator,
-window, modality, taxonomy, crosswalk, label origin and available L1/level/task.
-It displays exact reduced fractions together with their original numerator and
-denominator, inspected category/window/token counts and unmapped/excluded data.
-Native labels, mapped categories, observed relationships and reference/prediction
-confusion have distinct readable sections; the original saved JSON remains
-available. Unknown observations are never displayed as measured zero.
+The Reports view uses readable source/view and category names, percentages and
+explicit denominator counts. Source identifiers, exact fractions, annotator,
+window, modality, taxonomy, crosswalk and optional L1/level/task remain in the
+complete download. Native labels and derived categories have separate sections.
+The iteration38 extension adds original source relationships and their own
+population denominators; it supersedes the earlier raw-fraction/identifier
+presentation. Unknown observations are never displayed as measured zero.
 Declared annotation scope is labelled separately from actual inspected windows.
 A declared category alone is no evidence that any absence observation occurred;
 an empty or incompletely mapped population cannot supply one or imply measured
@@ -51,7 +53,7 @@ origin labels are not independently certified human participation.
 The ordinary saved-report link `/reports?report=<id>#empirical-result` reopens the
 existing immutable snapshot through the current read owner. Selecting or saving
 a report updates that URL to the delivered saved ID, so reload retains the current
-selection. Explicit fragment navigation focuses the report after delivery. No recalculation,
+selection. Delivery focuses the selected report; explicit fragment links remain supported. No recalculation,
 source reacquisition, stored-data audit, inference or speech is performed by
 selection, Refresh, reopen or download. Saved planned quality datasets retain
 all122coverage rows and their original polarity counts; planned/failed/cancelled

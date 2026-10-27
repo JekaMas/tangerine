@@ -36,8 +36,7 @@ export default function StarterForms({kind,busy,onSave,list,onRefresh}) {
       if(kind==='report') {
         if(selected) {
           const saved=await reportRequest('reports/empirical/'+encodeURIComponent(selected));
-          const input=await reportRequest('lab/assets/'+encodeURIComponent(saved.source_input_asset_id));
-          value=reportFromPopulation(title,input);
+          value=reportFromPopulation(title,null,saved.source_input_asset_id);
         } else value=reportStarter(title,category);
       } else {
         const dataset=choices.find(item=>item.id===selected);
@@ -53,10 +52,10 @@ export default function StarterForms({kind,busy,onSave,list,onRefresh}) {
     <label>{kind==='report'?'Report data':'Experiment dataset'}<select aria-label={kind==='report'?'Report data':'Experiment dataset'} value={selected} onChange={e=>setSelected(e.target.value)}>
       <option value="">{kind==='report'?'Constructed example · two authored sentences':'New request · subject–verb agreement'}</option>
       {selected&&!choices.some(item=>item.id===selected)&&<option value={selected}>Previously selected data · unavailable</option>}
-      {choices.map(item=><option key={item.id} value={item.id}>{kind==='report'?item.title:'Saved generation dataset'} · {recordDate(item.created_at)} · {item.id.slice(-8)}</option>)}
+      {choices.map(item=><option key={item.id} value={item.id}>{kind==='report'?item.title:'Saved generation dataset'} · {recordDate(item.created_at)}</option>)}
     </select></label>
-    {selected&&<p className="field-help">Uses the saved {kind==='report'?'population, source selection and observation origins':'dataset and its original inputs and expectations'} unchanged. <span className="record-id">{selected}</span></p>}
-    {list?.loaded&&!list.error&&!choices.length&&<p className="field-help">{kind==='report'?<>No saved populations yet. Use the labelled example, or <a href="/sources">import source data</a> and retain a report through Advanced.</>:<>No saved generation datasets yet. Start with the request below. Advanced supports other experiment workflows.</>}</p>}
+    {selected&&<p className="field-help">Uses the saved {kind==='report'?'population, source selection and observation origins':'dataset and its original inputs and expectations'} unchanged. </p>}
+    {list?.loaded&&!list.error&&!choices.length&&<p className="field-help">{kind==='report'?<>No saved populations yet. Use the labelled example, or <a href="/sources">import source data</a> and choose it above.</>:<>No saved generation datasets yet. Start with the request below. Advanced supports other experiment workflows.</>}</p>}
     {kind==='report'?<>
       {!selected&&<><p>This constructed example has one mistake and one correct use. It demonstrates arithmetic, not real learner frequencies.</p><p className="field-help">{category==='lexis.collocation'?'Error: “We did a decision.” Correct control: “We made a decision.”':'Error: “The café open tomorrow.” Correct control: “The café opens tomorrow.”'}</p></>}
       <div className="guided-fields"><label>Report title<input required aria-label="Report title" value={title} onChange={e=>setTitle(e.target.value)}/></label>
@@ -66,9 +65,9 @@ export default function StarterForms({kind,busy,onSave,list,onRefresh}) {
       <p>Save a frozen experiment with your selected LLM configuration and current prompt bundle. Saving makes no model call. Run remains a separate action. This starter has no semantic judge; use Advanced for judged or answer-checking experiments.</p>
       <div className="guided-fields">
         {!selected&&<><label>Experiment topic<input required aria-label="Experiment topic" value={topic} onChange={e=>setTopic(e.target.value)}/></label><label>Experiment word count<input required aria-label="Experiment word count" type="number" min="1" step="1" value={words} onChange={e=>setWords(e.target.value)}/></label><label>Experiment English level<select aria-label="Experiment English level" value={level} onChange={e=>setLevel(e.target.value)}>{['A1','A2','B1','B2','C1','C2'].map(value=><option key={value}>{value}</option>)}</select></label></>}
-        <label>Configured LLM<select required aria-label="Experiment LLM profile" value={profile} onChange={e=>setProfile(e.target.value)}><option value="">Choose a configured profile</option>{profile&&!profiles.some(p=>p.id===profile)&&<option value={profile}>Previously selected profile · setup needed</option>}{profiles.map(p=><option key={p.id} value={p.id}>{p.model} · {p.billing_mode} · {p.id}</option>)}</select></label>
+        <label>Configured LLM<select required aria-label="Experiment LLM profile" value={profile} onChange={e=>setProfile(e.target.value)}><option value="">Choose a configured profile</option>{profile&&!profiles.some(p=>p.id===profile)&&<option value={profile}>Previously selected profile · setup needed</option>}{profiles.map(p=><option key={p.id} value={p.id}>{p.model} · {({local:'Local',subscription_included:'Included plan',free_tier:'Free allowance'})[p.billing_mode]||p.billing_mode.replaceAll('_',' ')}</option>)}</select></label>
       </div>
-      <p className="field-help">Prompt bundle: {defaults?.bundle.origin||(loading?'Loading current bundle…':'Unavailable')}. <a href="/settings">Manage configured providers</a>.</p>
+      <p className="field-help">Prompt bundle: {defaults?'Current saved prompts':loading?'Loading current prompts…':'Unavailable'}. <a href="/settings">Manage configured providers</a>.</p>
       {defaults&&!profiles.length&&<p>No generation model is configured. <a href="/settings">Choose an included, free or local model in Settings</a>, then refresh choices. Your request is retained.</p>}
       {loading&&<p role="status">Loading current configuration…</p>}
       <RefreshButton onClick={()=>{load();onRefresh?.();}}>{defaults?'Refresh experiment choices':'Retry experiment choices'}</RefreshButton>

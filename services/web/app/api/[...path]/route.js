@@ -1,6 +1,6 @@
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-const ALLOWED = new Set(['GET v1/sources', 'POST v1/source-files', 'POST v1/source-releases', 'POST v1/source-formats', 'POST v1/permissions', 'GET v1/library', 'POST v1/blueprints', 'POST v1/deletions', 'POST v1/candidates:generate', 'GET v1/reviews', 'POST v1/reviews', 'GET v1/attempts', 'POST v1/attempts', 'GET v1/health', 'GET v1/provider-connections', 'POST v1/provider-connections:action', 'GET v1/configuration', 'GET v1/preparations', 'GET v1/preparation-options', 'PUT v1/configuration']);
+const ALLOWED = new Set(['GET v1/sources', 'GET v1/reports/source-populations', 'POST v1/source-files', 'POST v1/source-releases', 'POST v1/source-formats', 'POST v1/permissions', 'GET v1/library', 'POST v1/blueprints', 'POST v1/deletions', 'POST v1/candidates:generate', 'GET v1/reviews', 'POST v1/reviews', 'GET v1/attempts', 'POST v1/attempts', 'GET v1/health', 'GET v1/provider-connections', 'POST v1/provider-connections:action', 'GET v1/configuration', 'GET v1/preparations', 'GET v1/preparation-options', 'PUT v1/configuration']);
 function failure(status, error) { return Response.json({ error }, { status, headers: { 'Cache-Control': 'no-store' } }); }
 async function proxy(request, context) {
   const { path } = await context.params;

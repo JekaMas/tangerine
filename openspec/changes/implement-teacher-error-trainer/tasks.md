@@ -1655,3 +1655,16 @@ OpenSpec1.13.1/Go receipts are retained. No in-scope finding remains; user app
 and data are untouched; private data retained stopped. No provider call, new
 acquisition/audit, paid usage, deployment, PBT or financial execution. See
 audit/iteration-37-verification-20261027/ACCEPTANCE.json and REPORT.md.
+
+### Iteration38 — Empirical reports from imported data
+
+- [x] I38.1 Select available saved source populations with separate version/view/annotator provenance and readable choices.
+- [x] I38.2 Produce complete selected native writing reports with independent sentence/token/edit denominators and honest exclusions.
+- [x] I38.3 Preserve a versioned conservative localized crosswalk, all122category coverage and unassigned/unknown mappings.
+- [x] I38.4 Produce official L2 manual-phone reports without automatic-alignment, silence or accent-as-error claims.
+- [x] I38.5 Produce coverage for references, ratings and contextual supplements without inventing localized error frequencies.
+- [x] I38.6 Export separate exact native/mapped frequency and relationship measurements through the existing engine.
+- [x] I38.7 Verify immutable source/input/output lineage, saved readback, logged safe recovery and zero provider/paid execution.
+- [ ] I38.8 Verify readable ordinary creation/results/download, keyboard/reflow, screenshots/video, siblings, required checks and full committed-clean acceptance.
+
+Progress and source/evidence anchors: audit/iteration-38-empirical-20261027/PROGRESS.md.

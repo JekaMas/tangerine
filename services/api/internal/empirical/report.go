@@ -73,6 +73,7 @@ type Event struct {
 	Secondary []string `json:"secondary_ids"`
 	Control   bool     `json:"control"`
 	Excluded  string   `json:"excluded_reason"`
+	Rule      string   `json:"mapping_rule,omitempty"`
 }
 type Window struct {
 	ID            string           `json:"id"`
@@ -122,6 +123,9 @@ type Report struct {
 	MappingIncomplete   int64            `json:"mapping_incomplete_windows"`
 	UnlistedPairMeaning string           `json:"unlisted_pair_meaning"`
 	NativeFrequencies   []Leaf           `json:"native_frequencies"`
+	NativePopulation    NativePopulation `json:"native_population"`
+	NativePairs         []Pair           `json:"native_pairs"`
+	NativePairMeaning   string           `json:"native_unlisted_pair_meaning"`
 	Population          Population       `json:"population"`
 	Windows             int64            `json:"observed_windows"`
 	Annotated           int64            `json:"annotated_windows"`
@@ -134,6 +138,16 @@ type Report struct {
 	Leaves              []Leaf           `json:"leaves"`
 	Pairs               []Pair           `json:"pairs"`
 	Confusion           []Confusion      `json:"confusion"`
+}
+
+// Native labels have their own observed population. An absent project mapping
+// must not hide source relationships or borrow a project denominator.
+type NativePopulation struct {
+	Windows     int64  `json:"observed_windows"`
+	Annotated   int64  `json:"annotated_windows"`
+	Unannotated int64  `json:"unannotated_windows"`
+	Tokens      *int64 `json:"inspected_native_tokens"`
+	Events      int64  `json:"eligible_events"`
 }
 
 // Build accepts a single explicit population. Different source/view/origin strata
@@ -158,7 +172,7 @@ func Build(in Input) (Report, error) {
 			}
 			event.Leaf = &label
 			native.Windows[i].Events[j] = event
-			if !seen[label] {
+			if event.Excluded == "" && !seen[label] {
 				seen[label] = true
 				native.Leaves = append(native.Leaves, label)
 			}
@@ -171,6 +185,12 @@ func Build(in Input) (Report, error) {
 		return r, e
 	}
 	r.NativeFrequencies = n.Leaves
+	r.NativePairs = n.Pairs
+	r.NativePairMeaning = n.UnlistedPairMeaning
+	r.NativePopulation = NativePopulation{n.Windows, n.Annotated, n.Unannotated, n.Tokens, n.Events}
+	if n.Annotated == 0 {
+		r.NativePopulation.Tokens = nil
+	}
 	return r, nil
 }
 func build(in Input) (Report, error) {
