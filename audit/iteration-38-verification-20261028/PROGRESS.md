@@ -69,5 +69,11 @@ traced directly. No semantic/IDE index proof or delegated review is claimed.
 
 ## Completion
 
-Pending fresh verdict, any repairs, complete selected committed-clean run and
-canonical task/acceptance reconciliation.
+Complete: four findings and siblings repaired; all16 selected positive/negative
+cases pass with --require-clean on f377c23e335d195dc9b2f62f9b367b9eb97812d0.
+The receipt has known clean Git state, eight properties, no nonpasses or
+substitution gaps. ACCEPTANCE.json and REPORT.md record the complete result.
+All source/import/calculation evidence whose inputs did not change is retained.
+Private I35/I36/I38 dependencies are stopped with data retained; all six user
+services remain healthy. Protected originals and unrelated canonical GAPS.md
+are preserved. Only acceptance/task metadata changes follow this receipt.

@@ -1682,7 +1682,9 @@ form-placement findings and their siblings are repaired through existing owners.
 Native HTTP, JS, actual L2/JFLEG Chrome paths, typography and structural checks
 pass. Source arithmetic, all52 saved source views and their independent censuses
 retain valid evidence. The original apply receipt does not cover these added
-counterexamples; the current expanded selection needs its own committed-clean
-receipt. See audit/iteration-38-verification-20261028/REPORT.md and PROGRESS.md.
+counterexamples. The complete expanded selection now passes16/16 cases with
+--require-clean on f377c23e335d195dc9b2f62f9b367b9eb97812d0, with eight properties and
+no failed/skipped/planned/blocked selected cases or substitution gaps. See
+audit/iteration-38-verification-20261028/ACCEPTANCE.json, REPORT.md and PROGRESS.md.
 
-- [ ] I38.9 Record the complete expanded I38 committed-clean verify acceptance and final preservation/state readback.
+- [x] I38.9 Record the complete expanded I38 committed-clean verify acceptance and final preservation/state readback.

@@ -2,9 +2,9 @@
 
 Fresh self-review of `4c46ba9` against all eight I38 properties. Four findings
 were demonstrated and repaired. Direct native, JS, real-browser and build checks
-pass. The full selected committed-clean receipt is recorded separately in
-ACCEPTANCE.json after the stable revision is committed; this document alone is
-not an acceptance receipt.
+pass. All **16/16** selected cases passed with **--require-clean** on
+**f377c23e335d195dc9b2f62f9b367b9eb97812d0**. [ACCEPTANCE.json](ACCEPTANCE.json) records the
+complete receipt and scope. No in-scope finding remains.
 
 This operation covers descriptive source reports, their saved observations and
 their usable UI. It does not qualify every linguistic category, perform a new
