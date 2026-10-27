@@ -164,6 +164,14 @@ class LocalGenerationAcceptance(unittest.TestCase):
         self.assertEqual(read(OUT/'lab-readback/comparison.json'),result)
         self.assertEqual((OUT/'lab-readback/source/specification/v2/prompts/generate-v1.txt').read_text(),(ROOT/'specification/v2/prompts/generate-v1.txt').read_text())
         self.assertEqual((OUT/'lab-readback/source/services/api/internal/app/mutation_correction_projection.go').read_text(),(ROOT/'services/api/internal/app/mutation_correction_projection.go').read_text())
+        review=ROOT/'data/iteration-34-verification-20261027'
+        lab_review=read(review/'lab.json')
+        self.assertEqual(lab_review['status'],'FINISHED');self.assertTrue(lab_review['readback'])
+        self.assertEqual(lab_review['new_inference_calls'],0);self.assertEqual(lab_review['new_synthesis_calls'],0)
+        # A fresh local Lab review retains the repaired evaluator. The eight
+        # original inference/replay runs and their historical artifacts stay intact.
+        relative='audit/iteration-34-local-generation-20261027/compare.py'
+        self.assertEqual((review/'lab-readback/compare.py').read_bytes(),(ROOT/relative).read_bytes())
 
     def test_no_fallback_negative(self):
         for directory in ['', 'repair', 'final', 'repaired', 'deadline-profile', 'qwen-repaired']:

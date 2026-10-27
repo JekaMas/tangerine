@@ -14,6 +14,29 @@ def rates(tp,fp,fn,tn):
                 recall=tp/(tp+fn) if tp+fn else None,
                 accuracy=(tp+tn)/(tp+fp+fn+tn) if tp+fp+fn+tn else None)
 
+def control_claimed(control, turns, units):
+    """A false alarm follows the selected heard span, including wider scopes.
+
+    TN is a distinct control type. Any claimed occurrence removes that type
+    from TN; an accepted variant or the same words in another turn does not.
+    This is assessment of retained packets, never another runtime admission.
+    """
+    for unit in units:
+        if unit.get('expected_judgment') != 'true_error':
+            continue
+        if unit.get('realization', {}).get('surface_text') == control:
+            return True
+        for span in unit.get('text_spans', []):
+            row = turns.get(span['utterance_id'])
+            if row is None:
+                continue
+            scope = span['span']
+            start, end = int(scope['start_cp']), int(scope['end_cp'])
+            for occurrence in re.finditer(re.escape(control), row['surface_text']):
+                if start < occurrence.end() and end > occurrence.start():
+                    return True
+    return False
+
 def quality(case, clean, candidate):
     """Literal authored contrasts own truth, not admission/model judgments."""
     if clean is None or candidate is None:
@@ -57,7 +80,7 @@ def quality(case, clean, candidate):
     for control in case['correct_controls']:
         clean_count=sum(t.count(control) for t in ct.values())
         surface_count=sum(t['surface_text'].count(control) for t in turns.values())
-        claimed=any(u.get('realization',{}).get('surface_text')==control for u in units)
+        claimed=control_claimed(control,turns,units)
         if clean_count!=1:construction_deviations.append(dict(control=control,requested_occurrences=1,actual_clean_occurrences=clean_count))
         # PLAN's TN is a distinct declared correct control preserved without
         # an error unit. Repeating correct text is not a linguistic false alarm.
