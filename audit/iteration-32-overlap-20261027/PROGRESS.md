@@ -92,3 +92,16 @@ Final390 structural assertions pass after one required vector refresh; strict
 1.13.1 and graph/discovery pass. Remaining: final lint/metadata readback, commit
 stable code/evidence, execute selected --require-clean, record acceptance and
 check canonical tasks, acceptance-only commit and final clean readback.
+
+ACCEPTED: selected --require-clean run passed39/39 at clean
+e05d673acfe260a2854974c52c28dcd8dab915c1, actual session36499 exit0,
+no missing/skipped/failed/substitution gaps. All four verify findings closed.
+Canonical I32.1–5, I32.V1–V3 and ALL-AUDIT.2 now complete. ACCEPTANCE.json
+retains the original tested revision and immutable receipt. Final stable language
+checks pass. Lab runfed5e5bee645468aa393857e60e67410 FINISHED,87files and
+12 exact download readbacks; export inference0. Test-owned browser tab, two web
+containers/images and loopback comparison/gateway stopped; existing local/I30
+services and user workspace preserved. Acceptance bookkeeping accompanies this final note. Final readback confirms
+all39 accepted results, the unchanged manifest/receipt, preserved GAPS and
+clean worktree. No remaining I32 work; no behavioral rerun is required for
+bookkeeping.

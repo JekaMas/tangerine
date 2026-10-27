@@ -1411,7 +1411,7 @@ L2 acquisition and main/publication evidence supersede only their exact earlier
 blockers. Existing acceptance boxes/receipts are not rewritten by this research.
 
 - [x] ALL-AUDIT.1 Reconcile every historical blocked/planned DAG literal with its actual successor assertion/receipt or exact unmet obligation, using TRACE-01 and GRAPH-TRIAGE.json. Candidate cohort links are not passing evidence; retain valid observations without duplicate execution or excluded model campaigns.
-- [ ] ALL-AUDIT.2 Implement the preserved simultaneous-masking turn-taking subtype through one timed PCM composition owner and concurrent source/final key projection, with exact sample arithmetic, obstructive/permitted-overlap controls and actual local audio evidence, as ENG-01 specifies. Existing CV-01.P1/CV-03.P1 and the original discourse.turn_taking coverage retain the unimplemented subtype until a future apply materializes it.
+- [x] ALL-AUDIT.2 Implement the preserved simultaneous-masking turn-taking subtype through one timed PCM composition owner and concurrent source/final key projection, with exact sample arithmetic, obstructive/permitted-overlap controls and actual local audio evidence, as ENG-01 specifies. Iteration32 supplies the production subtype and finite local evidence; original CV receipts retain their historical scope. Acceptance: audit/iteration-32-overlap-20261027/ACCEPTANCE.json.
 
 These two newly explicit follow-ups are plans, not application changes or new
 ordinary-use gates. I24/I25/I26/I27/I30 retain their separately stated missing
@@ -1446,16 +1446,18 @@ Iteration 31 superseding verify acceptance: `completion-i31 --require-clean`, 14
 
 ## Iteration 32 application — actual simultaneous speech and word masking
 
-- [ ] I32.1 Admit additive overlap intent once; carry it through the frozen mutation manifest/render plan, retaining the sequential default and correct cooperative control.
-- [ ] I32.2 Compose retained PCM at actual sample starts with explicit local gains and headroom; preserve unselected audio, both source clocks and later-turn scheduling.
-- [ ] I32.3 Persist resolved composition before mixing and project concurrent utterance/masked key intervals through existing preparation/resume/finalization owners.
-- [ ] I32.4 Materialize positive/negative arithmetic, provenance, invalid operand, recovery and scoring tests; retain actual local obstructive/backchannel recordings and inspect the audible/contextual contrast.
-- [ ] I32.5 Review changed owners and siblings, reconcile graph/discovery and valid retained evidence, pass selected committed-clean acceptance and commit.
+- [x] I32.1 Admit additive overlap intent once; carry it through the frozen mutation manifest/render plan, retaining the sequential default and correct cooperative control.
+- [x] I32.2 Compose retained PCM at actual sample starts with explicit local gains and headroom; preserve unselected audio, both source clocks and later-turn scheduling.
+- [x] I32.3 Persist resolved composition before mixing and project concurrent utterance/masked key intervals through existing preparation/resume/finalization owners.
+- [x] I32.4 Materialize positive/negative arithmetic, provenance, invalid operand, recovery and scoring tests; retain actual local obstructive/backchannel recordings and inspect the audible/contextual contrast.
+- [x] I32.5 Review changed owners and siblings, reconcile graph/discovery and valid retained evidence, pass selected committed-clean acceptance and commit.
 
 Resume record: audit/iteration-32-overlap-20261027/PROGRESS.md. Scope is ENG-01 / ALL-AUDIT.2.
 
 Iteration 32 verification repairs:
 
-- [ ] I32.V1 Establish exact native206/416 stored range evidence and ordinary Listen/results replay/retry observations without new inference.
-- [ ] I32.V2 Repair fixed frozen speech failure guidance/actions through one recovery owner; test Prepare/Audio, transient/setup/interruption siblings, responsive typography and keyboard paths with pictures/video.
-- [ ] I32.V3 Reconcile exact actual native/package dependency evidence, preserve original failures and scope limits, pass the full committed-clean I32 selection and commit acceptance.
+- [x] I32.V1 Establish exact native206/416 stored range evidence and ordinary Listen/results replay/retry observations without new inference.
+- [x] I32.V2 Repair fixed frozen speech failure guidance/actions through one recovery owner; test Prepare/Audio, transient/setup/interruption siblings, responsive typography and keyboard paths with pictures/video.
+- [x] I32.V3 Reconcile exact actual native/package dependency evidence, preserve original failures and scope limits, pass the full committed-clean I32 selection and commit acceptance.
+
+Iteration32 accepted: all39 selected case edges and39 physical current assertions passed with --require-clean at e05d673acfe260a2854974c52c28dcd8dab915c1. The native evidence includes210 distinct observed Go cases/subcases; directly dependent JS helpers52 pass. Four verify findings closed; actual local audio, UI pictures/videos and Lab readback retain their stated limits. No additional model calls or paid use occurred during verify. See audit/iteration-32-overlap-20261027/ACCEPTANCE.json.

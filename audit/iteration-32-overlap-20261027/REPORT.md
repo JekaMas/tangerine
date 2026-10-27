@@ -1,7 +1,9 @@
 # Iteration 32 — simultaneous speech and word masking
 
-Implementation and verification repairs are complete. Committed-clean acceptance
-is recorded in ACCEPTANCE.json after the selected final run.
+**Verified and accepted:** all 39 selected cases across all five I32 properties
+passed with `--require-clean` at `e05d673acfe260a2854974c52c28dcd8dab915c1`.
+All four findings are closed. [ACCEPTANCE.json](ACCEPTANCE.json) retains the exact
+original receipt, population, source bindings and proof limits.
 
 ## Result and ownership
 
@@ -148,5 +150,5 @@ unchanged; PRESERVATION.json records the entry bindings. The canonical GAPS edit
 app on port 3000, existing provider settings, records, media and pre-existing tabs
 are preserved. Disposable stacks and UI fixtures are separate. No deployment,
 postdeployment, PBT, financial operation, paid credit, overage, provider fallback,
-installation, acquisition or publication occurred. Other iteration/provider/source
+new host installation, acquisition or publication occurred. Other iteration/provider/source
 qualifications retain their original scope; this is the full I32 verdict.
