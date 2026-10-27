@@ -44,7 +44,8 @@ def make_probe(fixture, recordings, binding, seed):
             "unit_id": unit_id,
             "role": role,
             "audio_path": recordings[role],
-            "expected": "supported" if role == "mutated" and not fixture["control"] else "contradicted",
+            "expected": fixture.get("expected_by_role", {}).get(
+                role, "supported" if role == "mutated" and not fixture["control"] else "contradicted"),
             "claimed_mutation": role in ("mutated", "misleading_metadata"),
         })
     return {
@@ -54,6 +55,7 @@ def make_probe(fixture, recordings, binding, seed):
         "withheld": withheld,
         "requires_physical": fixture.get("requires_physical", False),
         "origin": "constructed_author_reference_not_corpus_or_perceptual_gold",
+        **({"expectation_note": fixture["expectation_note"]} if fixture.get("expectation_note") else {}),
     }
 
 
@@ -70,11 +72,15 @@ def compare_probe(probe, observation):
         reasons = [f.get("reason") or f.get("description") for f in supplied]
         if not dispatched:
             actual, outcome = None, "not_run"
-        elif len(judgments) != 1 or not reasons or not all(isinstance(r, str) and r.strip() for r in reasons):
+        elif observation.get("error") or len(judgments) != 1 or not reasons or not all(isinstance(r, str) and r.strip() for r in reasons):
             actual, outcome = None, "uncertain"
         else:
             actual = next(iter(judgments))
-            outcome = ("uncertain" if actual in ("uncertain", "not_applicable")
+            # An uncertain authored expectation cannot become true merely
+            # because a judge agrees with the intended mutation. Keep the
+            # actual reply and valid controls, without claiming a heard error.
+            outcome = ("uncertain" if expected["expected"] in ("uncertain", "not_applicable")
+                       or actual in ("uncertain", "not_applicable")
                        else "passed" if actual == expected["expected"] else "failed")
         rows.append({**expected, "actual": actual, "outcome": outcome,
                      "findings": supplied})
@@ -83,15 +89,18 @@ def compare_probe(probe, observation):
     physical = (observation or {}).get("physical", {})
     physical_ok = not probe["requires_physical"] or (physical.get("status") == "supported" and bool(physical.get("observations")))
     conflict = bool(probe["requires_physical"] and physical_ok and
-                    any(r["role"] == "mutated" and r["actual"] == "contradicted" for r in rows))
+                    any(r["role"] == "mutated" and r["expected"] == "supported"
+                        and r["actual"] == "contradicted" for r in rows))
     statuses = {r["outcome"] for r in rows}
     if "not_run" in statuses:
         confirmation = "not_run"
     elif conflict:
         confirmation = "uncertain"
+    elif "uncertain" in statuses:
+        confirmation = "uncertain"
     elif "failed" in statuses:
         confirmation = "not_realized" if any(r["role"] == "mutated" and r["outcome"] == "failed" for r in rows) else "uncertain"
-    elif "uncertain" in statuses or not physical_ok:
+    elif not physical_ok:
         confirmation = "uncertain"
     else:
         confirmation = "confirmed"

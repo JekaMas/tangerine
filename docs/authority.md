@@ -1,3 +1,14 @@
+2026-10-27 iteration33 apply: the actual user selects QUAL-04's retained
+weak-form, linking, pause and intonation disagreements. Investigate existing
+recordings/measurements/model replies, repair demonstrated diagnostic/context/
+fixture defects, preserve correct strong forms/accents/question contours and
+unresolved observations. Scoped code/spec/tests/DAG, zero-call saved-evidence
+Lab export/readback and local commits are authorized. No bulk judge campaign,
+paid credits/overage, new provider calls, synthesis, installs, deployment,
+publication, PBT or financial execution. Preserve app3000, its data/settings/media,
+pre-existing tabs and canonical GAPS.md. No new learner gate or repeated stored
+data qualification.
+
 2026-10-27 iteration32 apply: the actual user selects simultaneous speech and word masking through the production composer, correct source/final/key clocks and actual local obstructive/backchannel recordings. Scoped source/specification/tests/DAG changes, existing local synthesis and disposable native storage, retained-audio verification and local commits are authorized. No paid calls, purchases, overage, fallback, installation, deployment or publication. Preserve app3000, its records/settings/media, browser tabs and canonical GAPS.md. No learner review gate or repeated stored-data audit.
 
 2026-10-27 iteration31 verify/repair: the actual user requests full selected

@@ -41,7 +41,11 @@ inputs, WAVs, output, prompt, actual bindings and comparison in the selected loc
 Lab experiment. `confirmed` requires the mutated contrast and all three correct
 controls to match their expected judgments, with the required physical evidence.
 A missing/conflicting/uncertain reply stays `uncertain`. A contradicted actual
-mutation is `not_realized`. A false alarm on a correct control prevents confirmation
+mutation is labelled `not_realized` by the historical model comparison: the
+model did not confirm the authored target, which alone does not prove physical
+absence. An explicitly ambiguous authored expectation remains uncertain even if
+a model agrees. See saved-audio-diagnostics.md for the selected QUAL-04 repairs.
+A false alarm on a correct control prevents confirmation
 for that binding. Unknown/unselected/unsupported bindings remain visible as
 `not_run`, `uncertain` or unavailable, never pass. Judge agreement is explicitly
 model evidence on authored cases, not human gold or a calibrated accuracy rate.

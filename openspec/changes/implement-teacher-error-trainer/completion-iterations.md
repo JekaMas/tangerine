@@ -151,3 +151,14 @@ It reconciles199 actual retained native observations with independent literal
 waveform/key/scoring/recognition assertions. Canonical completion status and
 committed-clean acceptance remain in tasks.md and the iteration acceptance file.
 No later optional provider/source qualification is silently closed.
+
+## Iteration 33 — retained diagnostic repair
+
+The user-selected QUAL-04 follow-up repairs saved-audio diagnostic context and
+ambiguous fixtures. It reuses I26/connected-speech recordings, physical
+measurements and replies; it is not a new provider or bulk judge qualification.
+Select I33.P1–I33.P4 from SELECTION.json in the iteration audit. Typed unittest
+readers reconcile the complete exact native comparison/context/evidence closure
+through NATIVE-COVERAGE.json without repeating observed greens. The original CV
+commands, test identities and earlier receipts retain their original scope.
+See specification/v2/docs/saved-audio-diagnostics.md and the canonical I33 tasks.

@@ -1419,6 +1419,18 @@ observations/inputs. Source definitions, all 122 categories/recipes and all 42
 formulas remain preserved. No provider call, corpus download, installation,
 outreach, payment, deployment or publication is performed by this audit.
 
+## Iteration 33 — Saved-audio diagnostic and ambiguous fixture repair
+
+Scope: QUAL-04. Resume and ownership: audit/iteration-33-diagnostics-20261027/PROGRESS.md.
+Original I26/CV model observations remain historical, including their mixed
+outcomes; this iteration does not require a bulk campaign or universal acoustic
+qualification.
+
+- [ ] I33.1 Apply the same restricted ordinary diagnostic context to Gemini and local transports; prove private-key/answer/observation exclusion, actual wire preservation and failure/billing siblings.
+- [ ] I33.2 Support explicit unresolved fixture expectations, correct future selected context/wording and preserve strong forms, accents, linking and legitimate question alternatives without coercing judge agreement.
+- [ ] I33.3 Trace every original selected target/control/context/reply, inspect the actual pause PCM and retained F0 evidence, and preserve unresolved functional observations without relabelling old calls or changing learner scores.
+- [ ] I33.4 Reconcile literal positive/negative tests and exact DAG/discovery bindings, relevant language/specification/preservation and local Lab readback; accept the complete selected iteration on committed-clean source with zero new inference/synthesis.
+
 ## Iteration 31 — Historical literal evidence reconciliation
 
 The selected increment is TRACE-01 / ALL-AUDIT.1. Original unmatched product

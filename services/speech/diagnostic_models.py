@@ -78,13 +78,18 @@ def auditory_conversation(prompt,content,audio_paths,blind=False):
  parts.append({'type':'text','text':prompt})
  return [{'role':'system','content':[{'type':'text','text':'You are Qwen, a virtual human developed by the Qwen Team, Alibaba Group, capable of perceiving auditory and visual inputs, as well as generating text and speech.'}]},{'role':'user','content':parts}]
 
+def auditory_content(request):
+ # Both transports see the same owned projection. Full saved keys, learner
+ # answers and prior observations belong to storage, never this listening task.
+ return json.dumps(blind_input(request) if request.get('task')=='blind_category_probe'
+                   else project_audio_intent(request),ensure_ascii=False,sort_keys=True)
+
 def auditory(profile,prompt,input,clips,timeout=260,capture=lambda value:None):
  blind=input.get('task')=='blind_category_probe'
- content=json.dumps(blind_input(input) if blind else input,ensure_ascii=False,sort_keys=True)
  started=time.time()
  if profile['provider']=='local_qwen25_omni':
   if profile['billing_mode']!='local':raise ValueError('PAID_USE_FORBIDDEN')
-  content=json.dumps(blind_input(input) if blind else project_audio_intent(input),ensure_ascii=False,sort_keys=True)
+  content=auditory_content(input)
   selection='qwen25-omni-3b-audio-v1' if profile['model']=='Qwen/Qwen2.5-Omni-3B' else 'qwen25-omni-audio-v1'
   root,manifest=installed(selection)
   if manifest['repo']!=profile['model'] or manifest['revision']!=profile['revision']:raise ValueError('MODEL_BINDING_MISMATCH')
@@ -137,6 +142,7 @@ def auditory(profile,prompt,input,clips,timeout=260,capture=lambda value:None):
   if profile['billing_mode'] not in ['free_tier','included_subscription']:raise ValueError('PAID_USE_FORBIDDEN')
   key=os.environ.get('GEMINI_API_KEY')
   if not key:raise ValueError('MISSING_CREDENTIALS')
+  content=auditory_content(input)
   parts=[dict(type='text',text=content)]
   for i,clip in enumerate(clips):
    label='clip-'+str(i+1) if blind else 'Target audio' if i==0 else 'Reference audio'

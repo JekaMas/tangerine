@@ -1,6 +1,13 @@
 # Full local Teacher Error Trainer
 
-Current authorized increment: **iteration 31** reconciles the exact 1,909
+Current authorized increment: **iteration 33** repairs QUAL-04's saved-audio
+diagnostics and ambiguous fixtures. Use existing recordings, measurements and
+model replies; fix demonstrated context/projection/fixture defects and retain
+correct variants and unresolved observations. No new inference/synthesis,
+bulk campaign, paid use, installation, deployment or publication is included.
+See specification/v2/docs/saved-audio-diagnostics.md and the I33 task section.
+
+Earlier **iteration 31** reconciles the exact 1,909
 historical planned/blocked graph entries with original literal expectations,
 actual successor assertions and retained observations. Materialize missing
 in-scope deterministic assertions, register exact partial reuse, correct stale

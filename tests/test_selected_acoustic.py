@@ -38,7 +38,8 @@ class SelectedAcoustic(unittest.TestCase):
             self.assertEqual(by_role['clean']['audio_path'], by_role['misleading_metadata']['audio_path'])
             contexts = {c['unit_id']:c['public_context'] for c in frozen['packet']['input']['clips']}
             self.assertNotEqual(contexts[by_role['mutated']['unit_id']], contexts[by_role['acceptable']['unit_id']])
-            self.assertEqual(('supported','contradicted'), (by_role['mutated']['expected'],by_role['acceptable']['expected']))
+            self.assertEqual(('uncertain' if case=='weak-form' else 'supported','contradicted'),
+                             (by_role['mutated']['expected'],by_role['acceptable']['expected']))
 
     def test_blind_public_context_negative(self):
         for case in ['assimilation','weak-form','thought-group','intonation-function']:
@@ -56,12 +57,12 @@ class SelectedAcoustic(unittest.TestCase):
         self.assertEqual(14400, frozen['physical']['observations'][0]['actual']['additional_samples'])
 
     def test_selected_save_and_read_positive(self):
-        frozen = observer.prepare('weak-form')
+        frozen = observer.prepare('assimilation')
         calls=[]
         with tempfile.TemporaryDirectory() as tmp, patch.object(observer,'prepare',return_value=frozen):
-            result=observer.observe_case('weak-form',Path(tmp),lambda p:calls.append(copy.deepcopy(p)) or judged(frozen))
+            result=observer.observe_case('assimilation',Path(tmp),lambda p:calls.append(copy.deepcopy(p)) or judged(frozen))
             self.assertEqual('confirmed',result['audio_confirmation'])
-            again=observer.observe_case('weak-form',Path(tmp),lambda p:self.fail('A read dispatched'))
+            again=observer.observe_case('assimilation',Path(tmp),lambda p:self.fail('A read dispatched'))
             self.assertEqual(result,again)
             self.assertEqual([frozen['packet']],calls)
 

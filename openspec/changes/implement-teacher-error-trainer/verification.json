@@ -4345,6 +4345,12 @@
       "capability": "iteration-thirty-two-overlap",
       "title": "I32 Simultaneous speech and word masking",
       "fingerprint": "64833effd324a1ac6087549457c59759cd8fa83bfcc325ee54881fdd10648ec0"
+    },
+    {
+      "id": "I33",
+      "capability": "iteration-thirty-three-diagnostics",
+      "title": "I33 Saved-audio diagnostic and fixture repair",
+      "fingerprint": "7879a64cda23179f6ed7dd5cf30efac52afde213fc0aac37602ce0491bbf705d"
     }
   ],
   "properties": [
@@ -18739,6 +18745,110 @@
         "audit/iteration-32-overlap-20261027/**"
       ],
       "iteration": 32
+    },
+    {
+      "id": "I33.P1",
+      "requirement_id": "I33",
+      "statement": "Both auditory transports SHALL use the owned projection, retaining actual target/reference context while excluding private key/learner/prior-observation data.",
+      "scenarios": [
+        "I33 Equal restricted diagnostic context"
+      ],
+      "owner": "services/speech/diagnostic_models.py",
+      "oracle": "Literal independent context/expectation/transport assertions, original actual saved model bodies/audio and exact PCM arithmetic; native F0 observations remain scoped physical evidence, never pragmatic truth.",
+      "source_globs": [
+        "services/speech/diagnostic_models.py",
+        "services/speech/category_validation.py",
+        "audit/iteration-33-diagnostics-20261027/reconcile.py",
+        "audit/iteration-33-diagnostics-20261027/native_cases.py",
+        "services/speech/diagnostic_context.py",
+        "services/speech/diagnostic_audio.py",
+        "services/speech/diagnostic_runtime.py",
+        "audit/iteration-26-acoustic-20261026/selection.json",
+        "audit/iteration-26-acoustic-20261026/observe.py",
+        "specification/v2/prompts/audio-category-probe-v1.txt",
+        "specification/v2/prompts/audio-judge-v1.txt",
+        "tests/test_saved_audio*.py",
+        "audit/iteration-33-diagnostics-20261027/**"
+      ],
+      "iteration": 33
+    },
+    {
+      "id": "I33.P2",
+      "requirement_id": "I33",
+      "statement": "Authored ambiguous expectations SHALL remain uncertain and correct variants SHALL stay acceptable; failed observations and physical change alone cannot confirm an error.",
+      "scenarios": [
+        "I33 Ambiguous expectations and valid alternatives"
+      ],
+      "owner": "services/speech/category_validation.py",
+      "oracle": "Literal independent context/expectation/transport assertions, original actual saved model bodies/audio and exact PCM arithmetic; native F0 observations remain scoped physical evidence, never pragmatic truth.",
+      "source_globs": [
+        "services/speech/diagnostic_models.py",
+        "services/speech/category_validation.py",
+        "audit/iteration-33-diagnostics-20261027/reconcile.py",
+        "audit/iteration-33-diagnostics-20261027/native_cases.py",
+        "services/speech/diagnostic_context.py",
+        "services/speech/diagnostic_audio.py",
+        "services/speech/diagnostic_runtime.py",
+        "audit/iteration-26-acoustic-20261026/selection.json",
+        "audit/iteration-26-acoustic-20261026/observe.py",
+        "specification/v2/prompts/audio-category-probe-v1.txt",
+        "specification/v2/prompts/audio-judge-v1.txt",
+        "tests/test_saved_audio*.py",
+        "audit/iteration-33-diagnostics-20261027/**"
+      ],
+      "iteration": 33
+    },
+    {
+      "id": "I33.P3",
+      "requirement_id": "I33",
+      "statement": "The five selected saved sets SHALL retain original context/audio/replies and separate measured pause/F0 from correctness; future corrected contexts remain unobserved.",
+      "scenarios": [
+        "I33 Saved physical and contextual evidence"
+      ],
+      "owner": "audit/iteration-33-diagnostics-20261027/reconcile.py",
+      "oracle": "Literal independent context/expectation/transport assertions, original actual saved model bodies/audio and exact PCM arithmetic; native F0 observations remain scoped physical evidence, never pragmatic truth.",
+      "source_globs": [
+        "services/speech/diagnostic_models.py",
+        "services/speech/category_validation.py",
+        "audit/iteration-33-diagnostics-20261027/reconcile.py",
+        "audit/iteration-33-diagnostics-20261027/native_cases.py",
+        "services/speech/diagnostic_context.py",
+        "services/speech/diagnostic_audio.py",
+        "services/speech/diagnostic_runtime.py",
+        "audit/iteration-26-acoustic-20261026/selection.json",
+        "audit/iteration-26-acoustic-20261026/observe.py",
+        "specification/v2/prompts/audio-category-probe-v1.txt",
+        "specification/v2/prompts/audio-judge-v1.txt",
+        "tests/test_saved_audio*.py",
+        "audit/iteration-33-diagnostics-20261027/**"
+      ],
+      "iteration": 33
+    },
+    {
+      "id": "I33.P4",
+      "requirement_id": "I33",
+      "statement": "The selected iteration SHALL reconcile actual unchanged native observations, original scope and local Lab readback without inference, synthesis or learner key/score changes.",
+      "scenarios": [
+        "I33 Zero-call reconciliation and preservation"
+      ],
+      "owner": "audit/iteration-33-diagnostics-20261027/native_cases.py",
+      "oracle": "Literal independent context/expectation/transport assertions, original actual saved model bodies/audio and exact PCM arithmetic; native F0 observations remain scoped physical evidence, never pragmatic truth.",
+      "source_globs": [
+        "services/speech/diagnostic_models.py",
+        "services/speech/category_validation.py",
+        "audit/iteration-33-diagnostics-20261027/reconcile.py",
+        "audit/iteration-33-diagnostics-20261027/native_cases.py",
+        "services/speech/diagnostic_context.py",
+        "services/speech/diagnostic_audio.py",
+        "services/speech/diagnostic_runtime.py",
+        "audit/iteration-26-acoustic-20261026/selection.json",
+        "audit/iteration-26-acoustic-20261026/observe.py",
+        "specification/v2/prompts/audio-category-probe-v1.txt",
+        "specification/v2/prompts/audio-judge-v1.txt",
+        "tests/test_saved_audio*.py",
+        "audit/iteration-33-diagnostics-20261027/**"
+      ],
+      "iteration": 33
     }
   ],
   "cases": [
@@ -167484,9 +167594,9 @@
       "polarity": "positive",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_wer_positive and its independently fixed expected values.",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_wer_positive and its independently fixed expected values.",
       "setup": "Execute test_wer_positive through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_wer_positive\", \"literal_executable_fixture\": \"def test_wer_positive(self):\\n  r=wer('The caf\\u00e9 opens at nine.','The caf\\u00e9 open at ten.')\\n  self.assertEqual((r['substitutions'],r['deletions'],r['insertions'],r['reference_count']),(2,0,0,5))\\n  self.assertEqual(r['exact_ratio'],{'numerator':'2','denominator':'5'})\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_audio_diagnostics.py\", \"source_path\": \"tests/test_audio_diagnostics.py\", \"source_sha256\": \"1b30c1e3f9b55f76604e6d2226f6cfa4e1efcc769a7d041962f35f4d4dc9af81\"}",
-      "observable": "{\"independent_literal_assertions\": \"def test_wer_positive(self):\\n  r=wer('The caf\\u00e9 opens at nine.','The caf\\u00e9 open at ten.')\\n  self.assertEqual((r['substitutions'],r['deletions'],r['insertions'],r['reference_count']),(2,0,0,5))\\n  self.assertEqual(r['exact_ratio'],{'numerator':'2','denominator':'5'})\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
+      "observable": "{\"independent_literal_assertions\": \"def test_wer_positive(self):\\n  r=wer('The café opens at nine.','The café open at ten.')\\n  self.assertEqual((r['substitutions'],r['deletions'],r['insertions'],r['reference_count']),(2,0,0,5))\\n  self.assertEqual(r['exact_ratio'],{'numerator':'2','denominator':'5'})\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
       "green_expectation": "All independently expected observations pass with their stated origin and limits.",
       "test_id": "unittest::test_audio_diagnostics.AudioDiagnosticTests.test_wer_positive",
@@ -167566,9 +167676,9 @@
       "polarity": "positive",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_lexical_positive and its independently fixed expected values.",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_lexical_positive and its independently fixed expected values.",
       "setup": "Execute test_lexical_positive through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_lexical_positive\", \"literal_executable_fixture\": \"def test_lexical_positive(self):self.assertEqual(lexical(\\\"  \\u2018Caf\\u00e9\\u2019 don't well-known \\u2014 42. \\\"),['caf\\u00e9',\\\"don't\\\",'well-known','42'])\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_audio_diagnostics.py\", \"source_path\": \"tests/test_audio_diagnostics.py\", \"source_sha256\": \"1b30c1e3f9b55f76604e6d2226f6cfa4e1efcc769a7d041962f35f4d4dc9af81\"}",
-      "observable": "{\"independent_literal_assertions\": \"def test_lexical_positive(self):self.assertEqual(lexical(\\\"  \\u2018Caf\\u00e9\\u2019 don't well-known \\u2014 42. \\\"),['caf\\u00e9',\\\"don't\\\",'well-known','42'])\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
+      "observable": "{\"independent_literal_assertions\": \"def test_lexical_positive(self):self.assertEqual(lexical(\\\"  ‘Café’ don't well-known — 42. \\\"),['café',\\\"don't\\\",'well-known','42'])\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
       "green_expectation": "All independently expected observations pass with their stated origin and limits.",
       "test_id": "unittest::test_audio_diagnostics.AudioDiagnosticTests.test_lexical_positive",
@@ -167648,7 +167758,7 @@
       "polarity": "negative",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_no_reference_negative and its independently fixed expected values.",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_no_reference_negative and its independently fixed expected values.",
       "setup": "Execute test_no_reference_negative through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_no_reference_negative\", \"literal_executable_fixture\": \"def test_no_reference_negative(self):self.assertIsNone(wer('','invented words')['exact_ratio'])\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_audio_diagnostics.py\", \"source_path\": \"tests/test_audio_diagnostics.py\", \"source_sha256\": \"1b30c1e3f9b55f76604e6d2226f6cfa4e1efcc769a7d041962f35f4d4dc9af81\"}",
       "observable": "{\"independent_literal_assertions\": \"def test_no_reference_negative(self):self.assertIsNone(wer('','invented words')['exact_ratio'])\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
@@ -167730,7 +167840,7 @@
       "polarity": "negative",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_hypothesis_not_replaced_negative and its independently fixed expected values.",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_hypothesis_not_replaced_negative and its independently fixed expected values.",
       "setup": "Execute test_hypothesis_not_replaced_negative through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_hypothesis_not_replaced_negative\", \"literal_executable_fixture\": \"def test_hypothesis_not_replaced_negative(self):\\n  r=wer('opens','open extra');self.assertEqual(r['hypothesis_tokens'],['open','extra']);self.assertEqual(r['substitutions']+r['insertions'],2)\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_audio_diagnostics.py\", \"source_path\": \"tests/test_audio_diagnostics.py\", \"source_sha256\": \"1b30c1e3f9b55f76604e6d2226f6cfa4e1efcc769a7d041962f35f4d4dc9af81\"}",
       "observable": "{\"independent_literal_assertions\": \"def test_hypothesis_not_replaced_negative(self):\\n  r=wer('opens','open extra');self.assertEqual(r['hypothesis_tokens'],['open','extra']);self.assertEqual(r['substitutions']+r['insertions'],2)\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
@@ -167812,7 +167922,7 @@
       "polarity": "positive",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_windows_positive and its independently fixed expected values.",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_windows_positive and its independently fixed expected values.",
       "setup": "Execute test_windows_positive through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_windows_positive\", \"literal_executable_fixture\": \"def test_windows_positive(self):\\n  r=clip_windows([(48000,72000),(90000,120000),(300000,480000)],600000,240000)\\n  self.assertEqual(r,[(24000,144000),(276000,504000)])\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_audio_diagnostics.py\", \"source_path\": \"tests/test_audio_diagnostics.py\", \"source_sha256\": \"1b30c1e3f9b55f76604e6d2226f6cfa4e1efcc769a7d041962f35f4d4dc9af81\"}",
       "observable": "{\"independent_literal_assertions\": \"def test_windows_positive(self):\\n  r=clip_windows([(48000,72000),(90000,120000),(300000,480000)],600000,240000)\\n  self.assertEqual(r,[(24000,144000),(276000,504000)])\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
@@ -167894,7 +168004,7 @@
       "polarity": "negative",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_large_window_negative and its independently fixed expected values.",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_large_window_negative and its independently fixed expected values.",
       "setup": "Execute test_large_window_negative through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_large_window_negative\", \"literal_executable_fixture\": \"def test_large_window_negative(self):\\n  r=clip_windows([(0,480000)],480000,240000)\\n  self.assertEqual(r,[(0,240000),(240000,480000)])\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_audio_diagnostics.py\", \"source_path\": \"tests/test_audio_diagnostics.py\", \"source_sha256\": \"1b30c1e3f9b55f76604e6d2226f6cfa4e1efcc769a7d041962f35f4d4dc9af81\"}",
       "observable": "{\"independent_literal_assertions\": \"def test_large_window_negative(self):\\n  r=clip_windows([(0,480000)],480000,240000)\\n  self.assertEqual(r,[(0,240000),(240000,480000)])\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
@@ -167976,7 +168086,7 @@
       "polarity": "positive",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_judge_projection_positive and its independently fixed expected values.",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_judge_projection_positive and its independently fixed expected values.",
       "setup": "Execute test_judge_projection_positive through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_judge_projection_positive\", \"literal_executable_fixture\": \"def test_judge_projection_positive(self):\\n  row={'unit_id':'u','feature':'lexical_stress','status':'supported','clip_interval':{'start':240,'end':480},'reason':'Actual model finding','description':'First syllable','proposed_ipa':None}\\n  r=judge_measurements({'findings':[row]},'a'*64,'qwen25-omni-audio-v1','v1',{'start':24000,'end':48000},['raw'])\\n  self.assertEqual(r[0]['interval'],{'start':24240,'end':24480,'sample_rate_hz':24000});self.assertEqual(r[0]['categorical_value'],'model_supported');self.assertIsNone(r[0]['numeric_value'])\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_audio_diagnostics.py\", \"source_path\": \"tests/test_audio_diagnostics.py\", \"source_sha256\": \"1b30c1e3f9b55f76604e6d2226f6cfa4e1efcc769a7d041962f35f4d4dc9af81\"}",
       "observable": "{\"independent_literal_assertions\": \"def test_judge_projection_positive(self):\\n  row={'unit_id':'u','feature':'lexical_stress','status':'supported','clip_interval':{'start':240,'end':480},'reason':'Actual model finding','description':'First syllable','proposed_ipa':None}\\n  r=judge_measurements({'findings':[row]},'a'*64,'qwen25-omni-audio-v1','v1',{'start':24000,'end':48000},['raw'])\\n  self.assertEqual(r[0]['interval'],{'start':24240,'end':24480,'sample_rate_hz':24000});self.assertEqual(r[0]['categorical_value'],'model_supported');self.assertIsNone(r[0]['numeric_value'])\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
@@ -168058,7 +168168,7 @@
       "polarity": "negative",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_judge_uncertain_negative and its independently fixed expected values.",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_judge_uncertain_negative and its independently fixed expected values.",
       "setup": "Execute test_judge_uncertain_negative through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_judge_uncertain_negative\", \"literal_executable_fixture\": \"def test_judge_uncertain_negative(self):\\n  row={'unit_id':'u','feature':'stress','status':'uncertain','clip_interval':None,'reason':'Cannot hear enough','description':'uncertain','proposed_ipa':None}\\n  r=judge_measurements({'findings':[row]},'b'*64,'qwen25-omni-audio-v1','v1',{'start':0,'end':24000},[])\\n  self.assertEqual(r[0]['status'],'not_measurable');self.assertIsNone(r[0]['categorical_value']);self.assertEqual(r[0]['reason'],'Cannot hear enough')\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_audio_diagnostics.py\", \"source_path\": \"tests/test_audio_diagnostics.py\", \"source_sha256\": \"1b30c1e3f9b55f76604e6d2226f6cfa4e1efcc769a7d041962f35f4d4dc9af81\"}",
       "observable": "{\"independent_literal_assertions\": \"def test_judge_uncertain_negative(self):\\n  row={'unit_id':'u','feature':'stress','status':'uncertain','clip_interval':None,'reason':'Cannot hear enough','description':'uncertain','proposed_ipa':None}\\n  r=judge_measurements({'findings':[row]},'b'*64,'qwen25-omni-audio-v1','v1',{'start':0,'end':24000},[])\\n  self.assertEqual(r[0]['status'],'not_measurable');self.assertIsNone(r[0]['categorical_value']);self.assertEqual(r[0]['reason'],'Cannot hear enough')\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
@@ -168140,7 +168250,7 @@
       "polarity": "positive",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_transcription_completion_positive and its independently fixed expected values.",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_transcription_completion_positive and its independently fixed expected values.",
       "setup": "Execute test_transcription_completion_positive through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_transcription_completion_positive\", \"literal_executable_fixture\": \"def test_transcription_completion_positive(self):\\n  calls=[];consumed=[]\\n  class Model:\\n   def transcribe(self,path,**kwargs):\\n    calls.append((path,kwargs))\\n    def generator():\\n     consumed.append(True);yield types.SimpleNamespace(id=0,start=0.,end=1.,text=' open ',avg_logprob=-.1,words=[types.SimpleNamespace(start=0.,end=.5,word=' open',probability=.9)])\\n    return generator(),types.SimpleNamespace(language='en',language_probability=.99,duration=1.)\\n  r=transcribe_complete(Model(),'actual-private.wav')\\n  self.assertEqual(consumed,[True]);self.assertEqual(r['hypothesis'],' open ');self.assertEqual(r['segments'][0]['words'][0]['word'],' open')\\n  self.assertEqual(calls,[('actual-private.wav',dict(language='en',task='transcribe',beam_size=5,temperature=0,word_timestamps=True,initial_prompt=None,condition_on_previous_text=False,vad_filter=False))])\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_audio_diagnostics.py\", \"source_path\": \"tests/test_audio_diagnostics.py\", \"source_sha256\": \"1b30c1e3f9b55f76604e6d2226f6cfa4e1efcc769a7d041962f35f4d4dc9af81\"}",
       "observable": "{\"independent_literal_assertions\": \"def test_transcription_completion_positive(self):\\n  calls=[];consumed=[]\\n  class Model:\\n   def transcribe(self,path,**kwargs):\\n    calls.append((path,kwargs))\\n    def generator():\\n     consumed.append(True);yield types.SimpleNamespace(id=0,start=0.,end=1.,text=' open ',avg_logprob=-.1,words=[types.SimpleNamespace(start=0.,end=.5,word=' open',probability=.9)])\\n    return generator(),types.SimpleNamespace(language='en',language_probability=.99,duration=1.)\\n  r=transcribe_complete(Model(),'actual-private.wav')\\n  self.assertEqual(consumed,[True]);self.assertEqual(r['hypothesis'],' open ');self.assertEqual(r['segments'][0]['words'][0]['word'],' open')\\n  self.assertEqual(calls,[('actual-private.wav',dict(language='en',task='transcribe',beam_size=5,temperature=0,word_timestamps=True,initial_prompt=None,condition_on_previous_text=False,vad_filter=False))])\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
@@ -168222,7 +168332,7 @@
       "polarity": "negative",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_incomplete_generator_negative and its independently fixed expected values.",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_incomplete_generator_negative and its independently fixed expected values.",
       "setup": "Execute test_incomplete_generator_negative through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_incomplete_generator_negative\", \"literal_executable_fixture\": \"def test_incomplete_generator_negative(self):\\n  class Model:\\n   def transcribe(self,*args,**kwargs):\\n    def generator():raise RuntimeError('decoder interrupted');yield None\\n    return generator(),types.SimpleNamespace(language='en',language_probability=1,duration=1)\\n  with self.assertRaisesRegex(RuntimeError,'interrupted'):transcribe_complete(Model(),'actual-private.wav')\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_audio_diagnostics.py\", \"source_path\": \"tests/test_audio_diagnostics.py\", \"source_sha256\": \"1b30c1e3f9b55f76604e6d2226f6cfa4e1efcc769a7d041962f35f4d4dc9af81\"}",
       "observable": "{\"independent_literal_assertions\": \"def test_incomplete_generator_negative(self):\\n  class Model:\\n   def transcribe(self,*args,**kwargs):\\n    def generator():raise RuntimeError('decoder interrupted');yield None\\n    return generator(),types.SimpleNamespace(language='en',language_probability=1,duration=1)\\n  with self.assertRaisesRegex(RuntimeError,'interrupted'):transcribe_complete(Model(),'actual-private.wav')\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
@@ -168304,9 +168414,9 @@
       "polarity": "positive",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_judge_target_preservation_positive and its independently fixed expected values.",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_judge_target_preservation_positive and its independently fixed expected values.",
       "setup": "Execute test_judge_target_preservation_positive through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_judge_target_preservation_positive\", \"literal_executable_fixture\": \"def test_judge_target_preservation_positive(self):\\n  finding=dict(unit_id='u1',feature='speech_realization',status='supported',clip_interval=None,reason='Audible changed vowel.',description='The vowel differs.',proposed_ipa='p\\u025bn')\\n  request=dict(audio_sha256='a'*64,source_interval=dict(start=24000,end=48000),planned_units=[dict(id='u1',realization=dict(prosody=[]))])\\n  rows=complete_judge_measurements({'findings':[finding]},request,'qwen25-omni-audio-v1')\\n  self.assertEqual(len(rows),1);self.assertEqual(rows[0]['target_unit_id'],'u1');self.assertEqual(rows[0]['auditory_finding'],finding);self.assertEqual(rows[0]['categorical_value'],'model_supported')\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_audio_diagnostics.py\", \"source_path\": \"tests/test_audio_diagnostics.py\", \"source_sha256\": \"1b30c1e3f9b55f76604e6d2226f6cfa4e1efcc769a7d041962f35f4d4dc9af81\"}",
-      "observable": "{\"independent_literal_assertions\": \"def test_judge_target_preservation_positive(self):\\n  finding=dict(unit_id='u1',feature='speech_realization',status='supported',clip_interval=None,reason='Audible changed vowel.',description='The vowel differs.',proposed_ipa='p\\u025bn')\\n  request=dict(audio_sha256='a'*64,source_interval=dict(start=24000,end=48000),planned_units=[dict(id='u1',realization=dict(prosody=[]))])\\n  rows=complete_judge_measurements({'findings':[finding]},request,'qwen25-omni-audio-v1')\\n  self.assertEqual(len(rows),1);self.assertEqual(rows[0]['target_unit_id'],'u1');self.assertEqual(rows[0]['auditory_finding'],finding);self.assertEqual(rows[0]['categorical_value'],'model_supported')\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
+      "observable": "{\"independent_literal_assertions\": \"def test_judge_target_preservation_positive(self):\\n  finding=dict(unit_id='u1',feature='speech_realization',status='supported',clip_interval=None,reason='Audible changed vowel.',description='The vowel differs.',proposed_ipa='pɛn')\\n  request=dict(audio_sha256='a'*64,source_interval=dict(start=24000,end=48000),planned_units=[dict(id='u1',realization=dict(prosody=[]))])\\n  rows=complete_judge_measurements({'findings':[finding]},request,'qwen25-omni-audio-v1')\\n  self.assertEqual(len(rows),1);self.assertEqual(rows[0]['target_unit_id'],'u1');self.assertEqual(rows[0]['auditory_finding'],finding);self.assertEqual(rows[0]['categorical_value'],'model_supported')\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
       "green_expectation": "All independently expected observations pass with their stated origin and limits.",
       "test_id": "unittest::test_audio_diagnostics.AudioDiagnosticTests.test_judge_target_preservation_positive",
@@ -168386,7 +168496,7 @@
       "polarity": "negative",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_judge_omitted_targets_negative and its independently fixed expected values.",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_judge_omitted_targets_negative and its independently fixed expected values.",
       "setup": "Execute test_judge_omitted_targets_negative through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_judge_omitted_targets_negative\", \"literal_executable_fixture\": \"def test_judge_omitted_targets_negative(self):\\n  output={'findings':[]};request=dict(audio_sha256='a'*64,source_interval=dict(start=0,end=24000),planned_units=[dict(id='u1',realization=dict(prosody=[])),dict(id='u2',realization=dict(prosody=[dict(feature='lexical_stress')]))])\\n  rows=complete_judge_measurements(output,request,'qwen25-omni-audio-v1')\\n  self.assertEqual([(r['target_unit_id'],r['feature']) for r in rows],[('u1','speech_realization'),('u2','lexical_stress')]);self.assertEqual(output,{'findings':[]})\\n  self.assertTrue(all(r['status']=='not_measurable' and r['numeric_value'] is None and r['categorical_value'] is None and r['reason']=='model_omitted_target' and 'auditory_finding' not in r for r in rows))\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_audio_diagnostics.py\", \"source_path\": \"tests/test_audio_diagnostics.py\", \"source_sha256\": \"1b30c1e3f9b55f76604e6d2226f6cfa4e1efcc769a7d041962f35f4d4dc9af81\"}",
       "observable": "{\"independent_literal_assertions\": \"def test_judge_omitted_targets_negative(self):\\n  output={'findings':[]};request=dict(audio_sha256='a'*64,source_interval=dict(start=0,end=24000),planned_units=[dict(id='u1',realization=dict(prosody=[])),dict(id='u2',realization=dict(prosody=[dict(feature='lexical_stress')]))])\\n  rows=complete_judge_measurements(output,request,'qwen25-omni-audio-v1')\\n  self.assertEqual([(r['target_unit_id'],r['feature']) for r in rows],[('u1','speech_realization'),('u2','lexical_stress')]);self.assertEqual(output,{'findings':[]})\\n  self.assertTrue(all(r['status']=='not_measurable' and r['numeric_value'] is None and r['categorical_value'] is None and r['reason']=='model_omitted_target' and 'auditory_finding' not in r for r in rows))\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
@@ -169370,8 +169480,8 @@
       "polarity": "positive",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_completed_request_positive and its independently fixed expected values.",
-      "setup": "Execute test_completed_request_positive through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_completed_request_positive\", \"literal_executable_fixture\": \"def test_completed_request_positive(self):\\n  result,received,capture=self.invoke(json.dumps(self.result()).encode());self.assertEqual(len(received),1);request=received[0];self.assertEqual(request.full_url,'https://generativelanguage.googleapis.com/v1beta/interactions');body=json.loads(request.data);self.assertEqual({k:body[k] for k in ['store','stream','background','tools']},dict(store=False,stream=False,background=False,tools=[]));self.assertEqual(body['generation_config'],dict(max_output_tokens=512));self.assertEqual(result['output']['findings'][0]['status'],'uncertain');self.assertEqual(capture[-1]['http_status'],200);self.assertNotIn('test-owned-canary',json.dumps(capture))\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py\", \"source_path\": \"tests/test_auditory_protocol.py\", \"source_sha256\": \"9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7\"}",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_completed_request_positive and its independently fixed expected values.",
+      "setup": "Execute test_completed_request_positive through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_completed_request_positive\", \"literal_executable_fixture\": \"def test_completed_request_positive(self):\\n  result,received,capture=self.invoke(json.dumps(self.result()).encode());self.assertEqual(len(received),1);request=received[0];self.assertEqual(request.full_url,'https://generativelanguage.googleapis.com/v1beta/interactions');body=json.loads(request.data);self.assertEqual({k:body[k] for k in ['store','stream','background','tools']},dict(store=False,stream=False,background=False,tools=[]));self.assertEqual(body['generation_config'],dict(max_output_tokens=512));self.assertEqual(result['output']['findings'][0]['status'],'uncertain');self.assertEqual(capture[-1]['http_status'],200);self.assertNotIn('test-owned-canary',json.dumps(capture))\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py\", \"source_path\": \"tests/test_auditory_protocol.py\", \"source_sha256\": \"8ee03b51325a3691c9847d9f265d95972e0e54f61791bb1317efd0fc4df30e88\"}",
       "observable": "{\"independent_literal_assertions\": \"def test_completed_request_positive(self):\\n  result,received,capture=self.invoke(json.dumps(self.result()).encode());self.assertEqual(len(received),1);request=received[0];self.assertEqual(request.full_url,'https://generativelanguage.googleapis.com/v1beta/interactions');body=json.loads(request.data);self.assertEqual({k:body[k] for k in ['store','stream','background','tools']},dict(store=False,stream=False,background=False,tools=[]));self.assertEqual(body['generation_config'],dict(max_output_tokens=512));self.assertEqual(result['output']['findings'][0]['status'],'uncertain');self.assertEqual(capture[-1]['http_status'],200);self.assertNotIn('test-owned-canary',json.dumps(capture))\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
       "green_expectation": "All independently expected observations pass with their stated origin and limits.",
@@ -169379,7 +169489,7 @@
       "command_id": "iteration16-10-test_auditory_protocol",
       "state": "implemented",
       "source_path": "tests/test_auditory_protocol.py",
-      "source_sha256": "9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7",
+      "source_sha256": "8ee03b51325a3691c9847d9f265d95972e0e54f61791bb1317efd0fc4df30e88",
       "invalidation_dependencies": [
         "tests/test_auditory_protocol.py",
         "services/api/internal/app/audio_diagnostics.go",
@@ -169452,8 +169562,8 @@
       "polarity": "negative",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_incomplete_status_negative and its independently fixed expected values.",
-      "setup": "Execute test_incomplete_status_negative through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_incomplete_status_negative\", \"literal_executable_fixture\": \"def test_incomplete_status_negative(self):\\n  result,received,capture=self.invoke(json.dumps(self.result('in_progress')).encode());self.assertEqual(result['error'],'DIAGNOSTIC_PROVIDER_FAILED');self.assertEqual(result['wire']['response']['status'],'in_progress');self.assertEqual(len(received),1)\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py\", \"source_path\": \"tests/test_auditory_protocol.py\", \"source_sha256\": \"9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7\"}",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_incomplete_status_negative and its independently fixed expected values.",
+      "setup": "Execute test_incomplete_status_negative through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_incomplete_status_negative\", \"literal_executable_fixture\": \"def test_incomplete_status_negative(self):\\n  result,received,capture=self.invoke(json.dumps(self.result('in_progress')).encode());self.assertEqual(result['error'],'DIAGNOSTIC_PROVIDER_FAILED');self.assertEqual(result['wire']['response']['status'],'in_progress');self.assertEqual(len(received),1)\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py\", \"source_path\": \"tests/test_auditory_protocol.py\", \"source_sha256\": \"8ee03b51325a3691c9847d9f265d95972e0e54f61791bb1317efd0fc4df30e88\"}",
       "observable": "{\"independent_literal_assertions\": \"def test_incomplete_status_negative(self):\\n  result,received,capture=self.invoke(json.dumps(self.result('in_progress')).encode());self.assertEqual(result['error'],'DIAGNOSTIC_PROVIDER_FAILED');self.assertEqual(result['wire']['response']['status'],'in_progress');self.assertEqual(len(received),1)\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
       "green_expectation": "All independently expected observations pass with their stated origin and limits.",
@@ -169461,7 +169571,7 @@
       "command_id": "iteration16-10-test_auditory_protocol",
       "state": "implemented",
       "source_path": "tests/test_auditory_protocol.py",
-      "source_sha256": "9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7",
+      "source_sha256": "8ee03b51325a3691c9847d9f265d95972e0e54f61791bb1317efd0fc4df30e88",
       "invalidation_dependencies": [
         "tests/test_auditory_protocol.py",
         "services/api/internal/app/audio_diagnostics.go",
@@ -169534,8 +169644,8 @@
       "polarity": "negative",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_non_json_response_negative and its independently fixed expected values.",
-      "setup": "Execute test_non_json_response_negative through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_non_json_response_negative\", \"literal_executable_fixture\": \"def test_non_json_response_negative(self):\\n  result,_,capture=self.invoke(b'upstream unavailable',503);self.assertEqual(result['error'],'DIAGNOSTIC_PROVIDER_FAILED');self.assertEqual(result['wire']['response_text'],'upstream unavailable');self.assertEqual(capture[-1]['http_status'],503)\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py\", \"source_path\": \"tests/test_auditory_protocol.py\", \"source_sha256\": \"9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7\"}",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_non_json_response_negative and its independently fixed expected values.",
+      "setup": "Execute test_non_json_response_negative through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_non_json_response_negative\", \"literal_executable_fixture\": \"def test_non_json_response_negative(self):\\n  result,_,capture=self.invoke(b'upstream unavailable',503);self.assertEqual(result['error'],'DIAGNOSTIC_PROVIDER_FAILED');self.assertEqual(result['wire']['response_text'],'upstream unavailable');self.assertEqual(capture[-1]['http_status'],503)\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py\", \"source_path\": \"tests/test_auditory_protocol.py\", \"source_sha256\": \"8ee03b51325a3691c9847d9f265d95972e0e54f61791bb1317efd0fc4df30e88\"}",
       "observable": "{\"independent_literal_assertions\": \"def test_non_json_response_negative(self):\\n  result,_,capture=self.invoke(b'upstream unavailable',503);self.assertEqual(result['error'],'DIAGNOSTIC_PROVIDER_FAILED');self.assertEqual(result['wire']['response_text'],'upstream unavailable');self.assertEqual(capture[-1]['http_status'],503)\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
       "green_expectation": "All independently expected observations pass with their stated origin and limits.",
@@ -169543,7 +169653,7 @@
       "command_id": "iteration16-10-test_auditory_protocol",
       "state": "implemented",
       "source_path": "tests/test_auditory_protocol.py",
-      "source_sha256": "9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7",
+      "source_sha256": "8ee03b51325a3691c9847d9f265d95972e0e54f61791bb1317efd0fc4df30e88",
       "invalidation_dependencies": [
         "tests/test_auditory_protocol.py",
         "services/api/internal/app/audio_diagnostics.go",
@@ -169616,8 +169726,8 @@
       "polarity": "negative",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_invalid_model_text_retained_negative and its independently fixed expected values.",
-      "setup": "Execute test_invalid_model_text_retained_negative through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_invalid_model_text_retained_negative\", \"literal_executable_fixture\": \"def test_invalid_model_text_retained_negative(self):\\n  body=self.result();body['steps'][0]['content'][0]['text']='No structured findings were supplied.';result,_,capture=self.invoke(json.dumps(body).encode());self.assertEqual(result['error'],'DIAGNOSTIC_OUTPUT_INVALID');self.assertEqual(capture[-1]['response'],body);self.assertEqual(result['wire']['response'],body)\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py\", \"source_path\": \"tests/test_auditory_protocol.py\", \"source_sha256\": \"9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7\"}",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_invalid_model_text_retained_negative and its independently fixed expected values.",
+      "setup": "Execute test_invalid_model_text_retained_negative through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_invalid_model_text_retained_negative\", \"literal_executable_fixture\": \"def test_invalid_model_text_retained_negative(self):\\n  body=self.result();body['steps'][0]['content'][0]['text']='No structured findings were supplied.';result,_,capture=self.invoke(json.dumps(body).encode());self.assertEqual(result['error'],'DIAGNOSTIC_OUTPUT_INVALID');self.assertEqual(capture[-1]['response'],body);self.assertEqual(result['wire']['response'],body)\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py\", \"source_path\": \"tests/test_auditory_protocol.py\", \"source_sha256\": \"8ee03b51325a3691c9847d9f265d95972e0e54f61791bb1317efd0fc4df30e88\"}",
       "observable": "{\"independent_literal_assertions\": \"def test_invalid_model_text_retained_negative(self):\\n  body=self.result();body['steps'][0]['content'][0]['text']='No structured findings were supplied.';result,_,capture=self.invoke(json.dumps(body).encode());self.assertEqual(result['error'],'DIAGNOSTIC_OUTPUT_INVALID');self.assertEqual(capture[-1]['response'],body);self.assertEqual(result['wire']['response'],body)\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
       "green_expectation": "All independently expected observations pass with their stated origin and limits.",
@@ -169625,7 +169735,7 @@
       "command_id": "iteration16-10-test_auditory_protocol",
       "state": "implemented",
       "source_path": "tests/test_auditory_protocol.py",
-      "source_sha256": "9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7",
+      "source_sha256": "8ee03b51325a3691c9847d9f265d95972e0e54f61791bb1317efd0fc4df30e88",
       "invalidation_dependencies": [
         "tests/test_auditory_protocol.py",
         "services/api/internal/app/audio_diagnostics.go",
@@ -169698,8 +169808,8 @@
       "polarity": "negative",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_paid_before_transport_negative and its independently fixed expected values.",
-      "setup": "Execute test_paid_before_transport_negative through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_paid_before_transport_negative\", \"literal_executable_fixture\": \"def test_paid_before_transport_negative(self):\\n  with patch.object(models.urllib.request,'build_opener') as network,self.assertRaisesRegex(ValueError,'PAID_USE_FORBIDDEN'):models.auditory(self.profile('metered'),'prompt',{},[b'audio'])\\n  network.assert_not_called()\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py\", \"source_path\": \"tests/test_auditory_protocol.py\", \"source_sha256\": \"9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7\"}",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_paid_before_transport_negative and its independently fixed expected values.",
+      "setup": "Execute test_paid_before_transport_negative through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_paid_before_transport_negative\", \"literal_executable_fixture\": \"def test_paid_before_transport_negative(self):\\n  with patch.object(models.urllib.request,'build_opener') as network,self.assertRaisesRegex(ValueError,'PAID_USE_FORBIDDEN'):models.auditory(self.profile('metered'),'prompt',{},[b'audio'])\\n  network.assert_not_called()\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py\", \"source_path\": \"tests/test_auditory_protocol.py\", \"source_sha256\": \"8ee03b51325a3691c9847d9f265d95972e0e54f61791bb1317efd0fc4df30e88\"}",
       "observable": "{\"independent_literal_assertions\": \"def test_paid_before_transport_negative(self):\\n  with patch.object(models.urllib.request,'build_opener') as network,self.assertRaisesRegex(ValueError,'PAID_USE_FORBIDDEN'):models.auditory(self.profile('metered'),'prompt',{},[b'audio'])\\n  network.assert_not_called()\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
       "green_expectation": "All independently expected observations pass with their stated origin and limits.",
@@ -169707,7 +169817,7 @@
       "command_id": "iteration16-10-test_auditory_protocol",
       "state": "implemented",
       "source_path": "tests/test_auditory_protocol.py",
-      "source_sha256": "9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7",
+      "source_sha256": "8ee03b51325a3691c9847d9f265d95972e0e54f61791bb1317efd0fc4df30e88",
       "invalidation_dependencies": [
         "tests/test_auditory_protocol.py",
         "services/api/internal/app/audio_diagnostics.go",
@@ -169780,8 +169890,8 @@
       "polarity": "negative",
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
-      "distinct_reason": "Exact test_missing_key_negative and its independently fixed expected values.",
-      "setup": "Execute test_missing_key_negative through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_missing_key_negative\", \"literal_executable_fixture\": \"def test_missing_key_negative(self):\\n  with patch.dict(models.os.environ,{},clear=True),patch.object(models.urllib.request,'build_opener') as network,self.assertRaisesRegex(ValueError,'MISSING_CREDENTIALS'):models.auditory(self.profile(),'prompt',{},[b'audio'])\\n  network.assert_not_called()\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py\", \"source_path\": \"tests/test_auditory_protocol.py\", \"source_sha256\": \"9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7\"}",
+      "distinct_reason": "I16-03 Explicit saved-audio diagnostics: Exact test_missing_key_negative and its independently fixed expected values.",
+      "setup": "Execute test_missing_key_negative through services/api/internal/app/audio_diagnostics.go {\"exact_test\": \"test_missing_key_negative\", \"literal_executable_fixture\": \"def test_missing_key_negative(self):\\n  with patch.dict(models.os.environ,{},clear=True),patch.object(models.urllib.request,'build_opener') as network,self.assertRaisesRegex(ValueError,'MISSING_CREDENTIALS'):models.auditory(self.profile(),'prompt',{},[b'audio'])\\n  network.assert_not_called()\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py\", \"source_path\": \"tests/test_auditory_protocol.py\", \"source_sha256\": \"8ee03b51325a3691c9847d9f265d95972e0e54f61791bb1317efd0fc4df30e88\"}",
       "observable": "{\"independent_literal_assertions\": \"def test_missing_key_negative(self):\\n  with patch.dict(models.os.environ,{},clear=True),patch.object(models.urllib.request,'build_opener') as network,self.assertRaisesRegex(ValueError,'MISSING_CREDENTIALS'):models.auditory(self.profile(),'prompt',{},[b'audio'])\\n  network.assert_not_called()\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
       "green_expectation": "All independently expected observations pass with their stated origin and limits.",
@@ -169789,7 +169899,7 @@
       "command_id": "iteration16-10-test_auditory_protocol",
       "state": "implemented",
       "source_path": "tests/test_auditory_protocol.py",
-      "source_sha256": "9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7",
+      "source_sha256": "8ee03b51325a3691c9847d9f265d95972e0e54f61791bb1317efd0fc4df30e88",
       "invalidation_dependencies": [
         "tests/test_auditory_protocol.py",
         "services/api/internal/app/audio_diagnostics.go",
@@ -195526,7 +195636,7 @@
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
       "distinct_reason": "Scenario I16-03 Explicit saved-audio diagnostics: exact test_controlled_context_projection_positive and independent current source/precision/worker expectations.",
       "setup": "Execute test_controlled_context_projection_positive through tests/test_audio_diagnostics.py {\"exact_test\": \"test_controlled_context_projection_positive\", \"literal_executable_fixture\": \"def test_controlled_context_projection_positive(self):\\n  unit=dict(id='e1',realization=dict(mode='temporal_fluency',canonical_text='opens',surface_text='opens',canonical_ipa='o\\u028ap\\u0259nz',intended_ipa='o\\u028ap\\u0259nz',planned_pause_ms=2000,observed_pause_ms=None,prosody=[]),corrections=['Remove the pause.'],rationale='Scoring-only explanation.')\\n  request=dict(case_version_id='case',audio_sha256='a'*64,canonical_text='The caf\\u00e9 opens tomorrow.',surface_text='The caf\\u00e9 opens tomorrow.',task_target='Caf\\u00e9 opening.',source_interval=dict(start=0,end=98400),clip_duration_seconds=4.1,planned_units=[unit],acoustic_edits=[dict(unit_id='e1',controller='pause_insert',scope=dict(start=9,end=14),parameters=dict(pause_ms=2000,accepted_reference='Remove the pause.',phone_start=None))]);before=copy.deepcopy(request)\\n  actual=project_audio_intent(request)\\n  self.assertEqual(actual,dict(canonical_text='The caf\\u00e9 opens tomorrow.',surface_text='The caf\\u00e9 opens tomorrow.',task_target='Caf\\u00e9 opening.',source_interval=dict(start=0,end=98400),clip_duration_seconds=4.1,targets=[dict(unit_id='e1',features=['pause_insert'],realization=dict(mode='temporal_fluency',canonical_text='opens',surface_text='opens',planned_pause_ms=2000,prosody=[]),controllers=[dict(controller='pause_insert',text_scope_codepoints=dict(start=9,end=14),parameters=dict(pause_ms=2000))])]))\\n  self.assertEqual(request,before)\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_audio_diagnostics.py\", \"source_path\": \"tests/test_audio_diagnostics.py\", \"source_sha256\": \"1b30c1e3f9b55f76604e6d2226f6cfa4e1efcc769a7d041962f35f4d4dc9af81\"}",
-      "observable": "{\"independent_literal_assertions\": \"def test_controlled_context_projection_positive(self):\\n  unit=dict(id='e1',realization=dict(mode='temporal_fluency',canonical_text='opens',surface_text='opens',canonical_ipa='o\\u028ap\\u0259nz',intended_ipa='o\\u028ap\\u0259nz',planned_pause_ms=2000,observed_pause_ms=None,prosody=[]),corrections=['Remove the pause.'],rationale='Scoring-only explanation.')\\n  request=dict(case_version_id='case',audio_sha256='a'*64,canonical_text='The caf\\u00e9 opens tomorrow.',surface_text='The caf\\u00e9 opens tomorrow.',task_target='Caf\\u00e9 opening.',source_interval=dict(start=0,end=98400),clip_duration_seconds=4.1,planned_units=[unit],acoustic_edits=[dict(unit_id='e1',controller='pause_insert',scope=dict(start=9,end=14),parameters=dict(pause_ms=2000,accepted_reference='Remove the pause.',phone_start=None))]);before=copy.deepcopy(request)\\n  actual=project_audio_intent(request)\\n  self.assertEqual(actual,dict(canonical_text='The caf\\u00e9 opens tomorrow.',surface_text='The caf\\u00e9 opens tomorrow.',task_target='Caf\\u00e9 opening.',source_interval=dict(start=0,end=98400),clip_duration_seconds=4.1,targets=[dict(unit_id='e1',features=['pause_insert'],realization=dict(mode='temporal_fluency',canonical_text='opens',surface_text='opens',planned_pause_ms=2000,prosody=[]),controllers=[dict(controller='pause_insert',text_scope_codepoints=dict(start=9,end=14),parameters=dict(pause_ms=2000))])]))\\n  self.assertEqual(request,before)\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
+      "observable": "{\"independent_literal_assertions\": \"def test_controlled_context_projection_positive(self):\\n  unit=dict(id='e1',realization=dict(mode='temporal_fluency',canonical_text='opens',surface_text='opens',canonical_ipa='oʊpənz',intended_ipa='oʊpənz',planned_pause_ms=2000,observed_pause_ms=None,prosody=[]),corrections=['Remove the pause.'],rationale='Scoring-only explanation.')\\n  request=dict(case_version_id='case',audio_sha256='a'*64,canonical_text='The café opens tomorrow.',surface_text='The café opens tomorrow.',task_target='Café opening.',source_interval=dict(start=0,end=98400),clip_duration_seconds=4.1,planned_units=[unit],acoustic_edits=[dict(unit_id='e1',controller='pause_insert',scope=dict(start=9,end=14),parameters=dict(pause_ms=2000,accepted_reference='Remove the pause.',phone_start=None))]);before=copy.deepcopy(request)\\n  actual=project_audio_intent(request)\\n  self.assertEqual(actual,dict(canonical_text='The café opens tomorrow.',surface_text='The café opens tomorrow.',task_target='Café opening.',source_interval=dict(start=0,end=98400),clip_duration_seconds=4.1,targets=[dict(unit_id='e1',features=['pause_insert'],realization=dict(mode='temporal_fluency',canonical_text='opens',surface_text='opens',planned_pause_ms=2000,prosody=[]),controllers=[dict(controller='pause_insert',text_scope_codepoints=dict(start=9,end=14),parameters=dict(pause_ms=2000))])]))\\n  self.assertEqual(request,before)\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
       "green_expectation": "All independently expected observations pass with their stated origin and limits.",
       "test_id": "unittest::test_audio_diagnostics.AudioDiagnosticTests.test_controlled_context_projection_positive",
@@ -195613,7 +195723,7 @@
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
       "distinct_reason": "Scenario I16-03 Explicit saved-audio diagnostics: exact test_no_plan_context_preserved_negative and independent current source/precision/worker expectations.",
       "setup": "Execute test_no_plan_context_preserved_negative through tests/test_audio_diagnostics.py {\"exact_test\": \"test_no_plan_context_preserved_negative\", \"literal_executable_fixture\": \"def test_no_plan_context_preserved_negative(self):\\n  request=dict(planned_units=[dict(id='e1',rationale='A key is not proof.',realization=dict(mode='temporal_fluency',canonical_ipa='o\\u028ap\\u0259nz',intended_ipa='o\\u028ap\\u0259nz',planned_pause_ms=2000,prosody=[]))],acoustic_edits=[],features=['speech_realization'],clip_duration_seconds=2.1);before=copy.deepcopy(request)\\n  self.assertEqual(project_audio_intent(request),dict(clip_duration_seconds=2.1,targets=[dict(unit_id='e1',features=['speech_realization'],realization=dict(mode='temporal_fluency',planned_pause_ms=2000,prosody=[]),controllers=[],judgment_question='For speech_realization, assess the intended pause or speaking pace in realization. Word presence alone does not establish this timing target.')]));self.assertEqual(request,before)\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_audio_diagnostics.py\", \"source_path\": \"tests/test_audio_diagnostics.py\", \"source_sha256\": \"1b30c1e3f9b55f76604e6d2226f6cfa4e1efcc769a7d041962f35f4d4dc9af81\"}",
-      "observable": "{\"independent_literal_assertions\": \"def test_no_plan_context_preserved_negative(self):\\n  request=dict(planned_units=[dict(id='e1',rationale='A key is not proof.',realization=dict(mode='temporal_fluency',canonical_ipa='o\\u028ap\\u0259nz',intended_ipa='o\\u028ap\\u0259nz',planned_pause_ms=2000,prosody=[]))],acoustic_edits=[],features=['speech_realization'],clip_duration_seconds=2.1);before=copy.deepcopy(request)\\n  self.assertEqual(project_audio_intent(request),dict(clip_duration_seconds=2.1,targets=[dict(unit_id='e1',features=['speech_realization'],realization=dict(mode='temporal_fluency',planned_pause_ms=2000,prosody=[]),controllers=[],judgment_question='For speech_realization, assess the intended pause or speaking pace in realization. Word presence alone does not establish this timing target.')]));self.assertEqual(request,before)\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
+      "observable": "{\"independent_literal_assertions\": \"def test_no_plan_context_preserved_negative(self):\\n  request=dict(planned_units=[dict(id='e1',rationale='A key is not proof.',realization=dict(mode='temporal_fluency',canonical_ipa='oʊpənz',intended_ipa='oʊpənz',planned_pause_ms=2000,prosody=[]))],acoustic_edits=[],features=['speech_realization'],clip_duration_seconds=2.1);before=copy.deepcopy(request)\\n  self.assertEqual(project_audio_intent(request),dict(clip_duration_seconds=2.1,targets=[dict(unit_id='e1',features=['speech_realization'],realization=dict(mode='temporal_fluency',planned_pause_ms=2000,prosody=[]),controllers=[],judgment_question='For speech_realization, assess the intended pause or speaking pace in realization. Word presence alone does not establish this timing target.')]));self.assertEqual(request,before)\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
       "green_expectation": "All independently expected observations pass with their stated origin and limits.",
       "test_id": "unittest::test_audio_diagnostics.AudioDiagnosticTests.test_no_plan_context_preserved_negative",
@@ -196851,7 +196961,7 @@
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
       "distinct_reason": "Scenario I16-03 Explicit saved-audio diagnostics: exact proxy/tunnel counterexample test_configured_proxy_positive",
-      "setup": "Observe test_configured_proxy_positive through the actual proxy/tunnel owner with constructed transport only {\"exact_test\": \"test_configured_proxy_positive\", \"literal_executable_fixture\": \"def test_configured_proxy_positive(self):\\n  with patch.object(models.urllib.request,'getproxies',return_value={'https':'http://test-owned-proxy.invalid:3128'}):\\n   result,received,capture=self.invoke(json.dumps(self.result()).encode())\\n  handler=next(h for h in self.handlers if isinstance(h,models.urllib.request.ProxyHandler))\\n  self.assertEqual(handler.proxies,{'https':'http://test-owned-proxy.invalid:3128'});self.assertEqual(len(received),1);self.assertEqual(result['output']['findings'][0]['status'],'uncertain');self.assertNotIn('test-owned-proxy.invalid',json.dumps(capture))\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py\", \"source_path\": \"tests/test_auditory_protocol.py\", \"source_sha256\": \"9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7\"}",
+      "setup": "Observe test_configured_proxy_positive through the actual proxy/tunnel owner with constructed transport only {\"exact_test\": \"test_configured_proxy_positive\", \"literal_executable_fixture\": \"def test_configured_proxy_positive(self):\\n  with patch.object(models.urllib.request,'getproxies',return_value={'https':'http://test-owned-proxy.invalid:3128'}):\\n   result,received,capture=self.invoke(json.dumps(self.result()).encode())\\n  handler=next(h for h in self.handlers if isinstance(h,models.urllib.request.ProxyHandler))\\n  self.assertEqual(handler.proxies,{'https':'http://test-owned-proxy.invalid:3128'});self.assertEqual(len(received),1);self.assertEqual(result['output']['findings'][0]['status'],'uncertain');self.assertNotIn('test-owned-proxy.invalid',json.dumps(capture))\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py\", \"source_path\": \"tests/test_auditory_protocol.py\", \"source_sha256\": \"8ee03b51325a3691c9847d9f265d95972e0e54f61791bb1317efd0fc4df30e88\"}",
       "observable": "{\"independent_literal_assertions\": \"def test_configured_proxy_positive(self):\\n  with patch.object(models.urllib.request,'getproxies',return_value={'https':'http://test-owned-proxy.invalid:3128'}):\\n   result,received,capture=self.invoke(json.dumps(self.result()).encode())\\n  handler=next(h for h in self.handlers if isinstance(h,models.urllib.request.ProxyHandler))\\n  self.assertEqual(handler.proxies,{'https':'http://test-owned-proxy.invalid:3128'});self.assertEqual(len(received),1);self.assertEqual(result['output']['findings'][0]['status'],'uncertain');self.assertNotIn('test-owned-proxy.invalid',json.dumps(capture))\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
       "green_expectation": "All independently expected observations pass with their stated origin and limits.",
@@ -196859,7 +196969,7 @@
       "command_id": "iteration16-10-test_auditory_protocol",
       "state": "implemented",
       "source_path": "tests/test_auditory_protocol.py",
-      "source_sha256": "9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7",
+      "source_sha256": "8ee03b51325a3691c9847d9f265d95972e0e54f61791bb1317efd0fc4df30e88",
       "invalidation_dependencies": [
         "tests/test_auditory_protocol.py",
         "services/api/internal/app/audio_diagnostics.go",
@@ -196933,7 +197043,7 @@
       "scenario": "I16-03 Explicit saved-audio diagnostics",
       "scenario_fingerprint": "3a34ec4fccc986f9fb8198dca7729c97e4b1db6f959ca44c919d484c6659f351",
       "distinct_reason": "Scenario I16-03 Explicit saved-audio diagnostics: exact proxy/tunnel counterexample test_redirect_credential_negative",
-      "setup": "Observe test_redirect_credential_negative through the actual proxy/tunnel owner with constructed transport only {\"exact_test\": \"test_redirect_credential_negative\", \"literal_executable_fixture\": \"def test_redirect_credential_negative(self):\\n  _,received,_=self.invoke(json.dumps(self.result()).encode())\\n  handler=next(h for h in self.handlers if isinstance(h,models.urllib.request.HTTPRedirectHandler))\\n  self.assertIsNone(handler.redirect_request(received[0],None,302,'Redirected',{},'https://unapproved.example/receive-key'))\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py\", \"source_path\": \"tests/test_auditory_protocol.py\", \"source_sha256\": \"9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7\"}",
+      "setup": "Observe test_redirect_credential_negative through the actual proxy/tunnel owner with constructed transport only {\"exact_test\": \"test_redirect_credential_negative\", \"literal_executable_fixture\": \"def test_redirect_credential_negative(self):\\n  _,received,_=self.invoke(json.dumps(self.result()).encode())\\n  handler=next(h for h in self.handlers if isinstance(h,models.urllib.request.HTTPRedirectHandler))\\n  self.assertIsNone(handler.redirect_request(received[0],None,302,'Redirected',{},'https://unapproved.example/receive-key'))\", \"shared_fixture_library\": \"audit/iteration-16-release-20261021/FIXTURE-LIBRARY.json#tests/test_auditory_protocol.py\", \"source_path\": \"tests/test_auditory_protocol.py\", \"source_sha256\": \"8ee03b51325a3691c9847d9f265d95972e0e54f61791bb1317efd0fc4df30e88\"}",
       "observable": "{\"independent_literal_assertions\": \"def test_redirect_credential_negative(self):\\n  _,received,_=self.invoke(json.dumps(self.result()).encode())\\n  handler=next(h for h in self.handlers if isinstance(h,models.urllib.request.HTTPRedirectHandler))\\n  self.assertIsNone(handler.redirect_request(received[0],None,302,'Redirected',{},'https://unapproved.example/receive-key'))\", \"oracle\": \"Independent literal assertions in named executable test plus complete shared fixture source. Run explicitly selected native, unconditioned ASR or actual auditory diagnostics against saved audio, retain actual model/context/receipts and failed history, replay without inference, and freeze same-case reports for optional review without changing primary scores.\"}",
       "red_expectation": "Any wrong or missing observation, lost artifact or forbidden inference fails the named independent assertions.",
       "green_expectation": "All independently expected observations pass with their stated origin and limits.",
@@ -196941,7 +197051,7 @@
       "command_id": "iteration16-10-test_auditory_protocol",
       "state": "implemented",
       "source_path": "tests/test_auditory_protocol.py",
-      "source_sha256": "9caea6233479a1e7b21f6fc1d142ef60658f3c6cafc751fc7bdf3ceb70a26bd7",
+      "source_sha256": "8ee03b51325a3691c9847d9f265d95972e0e54f61791bb1317efd0fc4df30e88",
       "invalidation_dependencies": [
         "tests/test_auditory_protocol.py",
         "services/api/internal/app/audio_diagnostics.go",
@@ -254980,7 +255090,8 @@
           "Universal provider/linguistic/corpus correctness",
           "A real learner or empirical population from constructed fixtures"
         ]
-      }
+      },
+      "distinct_reason": "FIN-ACOUSTIC Observable behavior and counterexamples: Exact native unittest::tests.test_completion_i26.CompletionI26.test_acoustic_positive also proves this existing FIN-ACOUSTIC.P1 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-ACOUSTIC.P1.acoustic_negative",
@@ -255027,7 +255138,8 @@
           "Universal provider/linguistic/corpus correctness",
           "A real learner or empirical population from constructed fixtures"
         ]
-      }
+      },
+      "distinct_reason": "FIN-ACOUSTIC Observable behavior and counterexamples: Exact native unittest::tests.test_completion_i26.CompletionI26.test_acoustic_negative also proves this existing FIN-ACOUSTIC.P1 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-VERIFY.I17.review_positive",
@@ -297722,14 +297834,14 @@
       "scenario": "FIN-ACOUSTIC Observable behavior and counterexamples",
       "scenario_fingerprint": "5ec939298d4d7fb44f7df618c5745899a0b08a7440ec213dfe04a59e209598f8",
       "setup": "Literal selected native projection/persistence or read-only media fixture in tests/test_selected_acoustic.py:test_correct_control_projection_positive",
-      "observable": "def test_correct_control_projection_positive(self):\n        for case in ['weak-form', 'intonation-function']:\n            frozen = observer.prepare(case)\n            by_role = {c['role']:c for c in frozen['probe']['withheld']}\n            self.assertEqual(by_role['mutated']['audio_path'], by_role['acceptable']['audio_path'])\n            self.assertEqual(by_role['clean']['audio_path'], by_role['misleading_metadata']['audio_path'])\n            contexts = {c['unit_id']:c['public_context'] for c in frozen['packet']['input']['clips']}\n            self.assertNotEqual(contexts[by_role['mutated']['unit_id']], contexts[by_role['acceptable']['unit_id']])\n            self.assertEqual(('supported','contradicted'), (by_role['mutated']['expected'],by_role['acceptable']['expected']))",
+      "observable": "def test_correct_control_projection_positive(self):\n        for case in ['weak-form', 'intonation-function']:\n            frozen = observer.prepare(case)\n            by_role = {c['role']:c for c in frozen['probe']['withheld']}\n            self.assertEqual(by_role['mutated']['audio_path'], by_role['acceptable']['audio_path'])\n            self.assertEqual(by_role['clean']['audio_path'], by_role['misleading_metadata']['audio_path'])\n            contexts = {c['unit_id']:c['public_context'] for c in frozen['packet']['input']['clips']}\n            self.assertNotEqual(contexts[by_role['mutated']['unit_id']], contexts[by_role['acceptable']['unit_id']])\n            self.assertEqual(('uncertain' if case=='weak-form' else 'supported','contradicted'),\n                             (by_role['mutated']['expected'],by_role['acceptable']['expected']))",
       "red_expectation": "The independently specified context, role, receipt, saved-response or media-route expectation fails.",
       "green_expectation": "The literal independent assertions hold through the named owner within the recorded controlled boundary.",
       "test_id": "unittest::tests.test_selected_acoustic.SelectedAcoustic.test_correct_control_projection_positive",
       "command_id": "completion-i26-contracts",
       "state": "implemented",
       "source_path": "tests/test_selected_acoustic.py",
-      "source_sha256": "07bf51c5c21bbaa6a1ccd6e476bc6327c43762f8d716ea7aebf713053e1b8bfa",
+      "source_sha256": "66183783e938bd3eec7ef3659459c4fd90713f6a11f536799b389c9c914e00ac",
       "invalidation_dependencies": [
         "services/speech/",
         "specification/v2/docs/connected-speech-and-intonation.md",
@@ -297759,7 +297871,8 @@
           "Every pronunciation, voice or accent is confirmed",
           "Rendered HTML proves user activation"
         ]
-      }
+      },
+      "distinct_reason": "FIN-ACOUSTIC Observable behavior and counterexamples: Exact native unittest::tests.test_selected_acoustic.SelectedAcoustic.test_correct_control_projection_positive also proves this existing FIN-ACOUSTIC.P1 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-ACOUSTIC.P1.contract_blind_public_context_negative",
@@ -297775,7 +297888,7 @@
       "command_id": "completion-i26-contracts",
       "state": "implemented",
       "source_path": "tests/test_selected_acoustic.py",
-      "source_sha256": "07bf51c5c21bbaa6a1ccd6e476bc6327c43762f8d716ea7aebf713053e1b8bfa",
+      "source_sha256": "66183783e938bd3eec7ef3659459c4fd90713f6a11f536799b389c9c914e00ac",
       "invalidation_dependencies": [
         "services/speech/",
         "specification/v2/docs/connected-speech-and-intonation.md",
@@ -297805,7 +297918,8 @@
           "Every pronunciation, voice or accent is confirmed",
           "Rendered HTML proves user activation"
         ]
-      }
+      },
+      "distinct_reason": "FIN-ACOUSTIC Observable behavior and counterexamples: Exact native unittest::tests.test_selected_acoustic.SelectedAcoustic.test_blind_public_context_negative also proves this existing FIN-ACOUSTIC.P1 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-ACOUSTIC.P1.contract_boundary_context_repair_positive",
@@ -297821,7 +297935,7 @@
       "command_id": "completion-i26-contracts",
       "state": "implemented",
       "source_path": "tests/test_selected_acoustic.py",
-      "source_sha256": "07bf51c5c21bbaa6a1ccd6e476bc6327c43762f8d716ea7aebf713053e1b8bfa",
+      "source_sha256": "66183783e938bd3eec7ef3659459c4fd90713f6a11f536799b389c9c914e00ac",
       "invalidation_dependencies": [
         "services/speech/",
         "specification/v2/docs/connected-speech-and-intonation.md",
@@ -297851,7 +297965,8 @@
           "Every pronunciation, voice or accent is confirmed",
           "Rendered HTML proves user activation"
         ]
-      }
+      },
+      "distinct_reason": "FIN-ACOUSTIC Observable behavior and counterexamples: Exact native unittest::tests.test_selected_acoustic.SelectedAcoustic.test_boundary_context_repair_positive also proves this existing FIN-ACOUSTIC.P1 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-ACOUSTIC.P1.contract_selected_save_and_read_positive",
@@ -297860,14 +297975,14 @@
       "scenario": "FIN-ACOUSTIC Observable behavior and counterexamples",
       "scenario_fingerprint": "5ec939298d4d7fb44f7df618c5745899a0b08a7440ec213dfe04a59e209598f8",
       "setup": "Literal selected native projection/persistence or read-only media fixture in tests/test_selected_acoustic.py:test_selected_save_and_read_positive",
-      "observable": "def test_selected_save_and_read_positive(self):\n        frozen = observer.prepare('weak-form')\n        calls=[]\n        with tempfile.TemporaryDirectory() as tmp, patch.object(observer,'prepare',return_value=frozen):\n            result=observer.observe_case('weak-form',Path(tmp),lambda p:calls.append(copy.deepcopy(p)) or judged(frozen))\n            self.assertEqual('confirmed',result['audio_confirmation'])\n            again=observer.observe_case('weak-form',Path(tmp),lambda p:self.fail('A read dispatched'))\n            self.assertEqual(result,again)\n            self.assertEqual([frozen['packet']],calls)",
+      "observable": "def test_selected_save_and_read_positive(self):\n        frozen = observer.prepare('assimilation')\n        calls=[]\n        with tempfile.TemporaryDirectory() as tmp, patch.object(observer,'prepare',return_value=frozen):\n            result=observer.observe_case('assimilation',Path(tmp),lambda p:calls.append(copy.deepcopy(p)) or judged(frozen))\n            self.assertEqual('confirmed',result['audio_confirmation'])\n            again=observer.observe_case('assimilation',Path(tmp),lambda p:self.fail('A read dispatched'))\n            self.assertEqual(result,again)\n            self.assertEqual([frozen['packet']],calls)",
       "red_expectation": "The independently specified context, role, receipt, saved-response or media-route expectation fails.",
       "green_expectation": "The literal independent assertions hold through the named owner within the recorded controlled boundary.",
       "test_id": "unittest::tests.test_selected_acoustic.SelectedAcoustic.test_selected_save_and_read_positive",
       "command_id": "completion-i26-contracts",
       "state": "implemented",
       "source_path": "tests/test_selected_acoustic.py",
-      "source_sha256": "07bf51c5c21bbaa6a1ccd6e476bc6327c43762f8d716ea7aebf713053e1b8bfa",
+      "source_sha256": "66183783e938bd3eec7ef3659459c4fd90713f6a11f536799b389c9c914e00ac",
       "invalidation_dependencies": [
         "services/speech/",
         "specification/v2/docs/connected-speech-and-intonation.md",
@@ -297897,7 +298012,8 @@
           "Every pronunciation, voice or accent is confirmed",
           "Rendered HTML proves user activation"
         ]
-      }
+      },
+      "distinct_reason": "FIN-ACOUSTIC Observable behavior and counterexamples: Exact native unittest::tests.test_selected_acoustic.SelectedAcoustic.test_selected_save_and_read_positive also proves this existing FIN-ACOUSTIC.P1 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-ACOUSTIC.P1.contract_response_finalizer_recovery_positive",
@@ -297913,7 +298029,7 @@
       "command_id": "completion-i26-contracts",
       "state": "implemented",
       "source_path": "tests/test_selected_acoustic.py",
-      "source_sha256": "07bf51c5c21bbaa6a1ccd6e476bc6327c43762f8d716ea7aebf713053e1b8bfa",
+      "source_sha256": "66183783e938bd3eec7ef3659459c4fd90713f6a11f536799b389c9c914e00ac",
       "invalidation_dependencies": [
         "services/speech/",
         "specification/v2/docs/connected-speech-and-intonation.md",
@@ -297943,7 +298059,8 @@
           "Every pronunciation, voice or accent is confirmed",
           "Rendered HTML proves user activation"
         ]
-      }
+      },
+      "distinct_reason": "FIN-ACOUSTIC Observable behavior and counterexamples: Exact native unittest::tests.test_selected_acoustic.SelectedAcoustic.test_response_finalizer_recovery_positive also proves this existing FIN-ACOUSTIC.P1 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-ACOUSTIC.P1.contract_interrupted_request_negative",
@@ -297959,7 +298076,7 @@
       "command_id": "completion-i26-contracts",
       "state": "implemented",
       "source_path": "tests/test_selected_acoustic.py",
-      "source_sha256": "07bf51c5c21bbaa6a1ccd6e476bc6327c43762f8d716ea7aebf713053e1b8bfa",
+      "source_sha256": "66183783e938bd3eec7ef3659459c4fd90713f6a11f536799b389c9c914e00ac",
       "invalidation_dependencies": [
         "services/speech/",
         "specification/v2/docs/connected-speech-and-intonation.md",
@@ -297989,7 +298106,8 @@
           "Every pronunciation, voice or accent is confirmed",
           "Rendered HTML proves user activation"
         ]
-      }
+      },
+      "distinct_reason": "FIN-ACOUSTIC Observable behavior and counterexamples: Exact native unittest::tests.test_selected_acoustic.SelectedAcoustic.test_interrupted_request_negative also proves this existing FIN-ACOUSTIC.P1 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-ACOUSTIC.P1.contract_free_failure_preserved_negative",
@@ -298005,7 +298123,7 @@
       "command_id": "completion-i26-contracts",
       "state": "implemented",
       "source_path": "tests/test_selected_acoustic.py",
-      "source_sha256": "07bf51c5c21bbaa6a1ccd6e476bc6327c43762f8d716ea7aebf713053e1b8bfa",
+      "source_sha256": "66183783e938bd3eec7ef3659459c4fd90713f6a11f536799b389c9c914e00ac",
       "invalidation_dependencies": [
         "services/speech/",
         "specification/v2/docs/connected-speech-and-intonation.md",
@@ -298035,7 +298153,8 @@
           "Every pronunciation, voice or accent is confirmed",
           "Rendered HTML proves user activation"
         ]
-      }
+      },
+      "distinct_reason": "FIN-ACOUSTIC Observable behavior and counterexamples: Exact native unittest::tests.test_selected_acoustic.SelectedAcoustic.test_free_failure_preserved_negative also proves this existing FIN-ACOUSTIC.P1 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-ACOUSTIC.P1.contract_correct_variant_false_alarm_negative",
@@ -298051,7 +298170,7 @@
       "command_id": "completion-i26-contracts",
       "state": "implemented",
       "source_path": "tests/test_selected_acoustic.py",
-      "source_sha256": "07bf51c5c21bbaa6a1ccd6e476bc6327c43762f8d716ea7aebf713053e1b8bfa",
+      "source_sha256": "66183783e938bd3eec7ef3659459c4fd90713f6a11f536799b389c9c914e00ac",
       "invalidation_dependencies": [
         "services/speech/",
         "specification/v2/docs/connected-speech-and-intonation.md",
@@ -298081,7 +298200,8 @@
           "Every pronunciation, voice or accent is confirmed",
           "Rendered HTML proves user activation"
         ]
-      }
+      },
+      "distinct_reason": "FIN-ACOUSTIC Observable behavior and counterexamples: Exact native unittest::tests.test_selected_acoustic.SelectedAcoustic.test_correct_variant_false_alarm_negative also proves this existing FIN-ACOUSTIC.P1 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-ACOUSTIC.P1.contract_native_http_failure_retention_negative",
@@ -298097,7 +298217,7 @@
       "command_id": "completion-i26-contracts",
       "state": "implemented",
       "source_path": "tests/test_selected_acoustic.py",
-      "source_sha256": "07bf51c5c21bbaa6a1ccd6e476bc6327c43762f8d716ea7aebf713053e1b8bfa",
+      "source_sha256": "66183783e938bd3eec7ef3659459c4fd90713f6a11f536799b389c9c914e00ac",
       "invalidation_dependencies": [
         "services/speech/",
         "specification/v2/docs/connected-speech-and-intonation.md",
@@ -298127,7 +298247,8 @@
           "Every pronunciation, voice or accent is confirmed",
           "Rendered HTML proves user activation"
         ]
-      }
+      },
+      "distinct_reason": "FIN-ACOUSTIC Observable behavior and counterexamples: Exact native unittest::tests.test_selected_acoustic.SelectedAcoustic.test_native_http_failure_retention_negative also proves this existing FIN-ACOUSTIC.P1 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-ACOUSTIC.P1.contract_remote_endpoint_rejected_negative",
@@ -298143,7 +298264,7 @@
       "command_id": "completion-i26-contracts",
       "state": "implemented",
       "source_path": "tests/test_selected_acoustic.py",
-      "source_sha256": "07bf51c5c21bbaa6a1ccd6e476bc6327c43762f8d716ea7aebf713053e1b8bfa",
+      "source_sha256": "66183783e938bd3eec7ef3659459c4fd90713f6a11f536799b389c9c914e00ac",
       "invalidation_dependencies": [
         "services/speech/",
         "specification/v2/docs/connected-speech-and-intonation.md",
@@ -298173,7 +298294,8 @@
           "Every pronunciation, voice or accent is confirmed",
           "Rendered HTML proves user activation"
         ]
-      }
+      },
+      "distinct_reason": "FIN-ACOUSTIC Observable behavior and counterexamples: Exact native unittest::tests.test_selected_acoustic.SelectedAcoustic.test_remote_endpoint_rejected_negative also proves this existing FIN-ACOUSTIC.P1 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-VERIFY.I26.contract_gallery_contexts_and_playback_positive",
@@ -298189,7 +298311,7 @@
       "command_id": "completion-i26-contracts",
       "state": "implemented",
       "source_path": "tests/test_selected_acoustic.py",
-      "source_sha256": "07bf51c5c21bbaa6a1ccd6e476bc6327c43762f8d716ea7aebf713053e1b8bfa",
+      "source_sha256": "66183783e938bd3eec7ef3659459c4fd90713f6a11f536799b389c9c914e00ac",
       "invalidation_dependencies": [
         "services/speech/",
         "specification/v2/docs/connected-speech-and-intonation.md",
@@ -298218,7 +298340,8 @@
           "Every pronunciation, voice or accent is confirmed",
           "Rendered HTML proves user activation"
         ]
-      }
+      },
+      "distinct_reason": "FIN-VERIFY Iteration-specific review and evidence: Exact native unittest::tests.test_selected_acoustic.SelectedListening.test_gallery_contexts_and_playback_positive also proves this existing FIN-VERIFY.I26 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-VERIFY.I26.contract_pending_error_and_read_failure_nonblocking_negative",
@@ -298234,7 +298357,7 @@
       "command_id": "completion-i26-contracts",
       "state": "implemented",
       "source_path": "tests/test_selected_acoustic.py",
-      "source_sha256": "07bf51c5c21bbaa6a1ccd6e476bc6327c43762f8d716ea7aebf713053e1b8bfa",
+      "source_sha256": "66183783e938bd3eec7ef3659459c4fd90713f6a11f536799b389c9c914e00ac",
       "invalidation_dependencies": [
         "services/speech/",
         "specification/v2/docs/connected-speech-and-intonation.md",
@@ -298263,7 +298386,8 @@
           "Every pronunciation, voice or accent is confirmed",
           "Rendered HTML proves user activation"
         ]
-      }
+      },
+      "distinct_reason": "FIN-VERIFY Iteration-specific review and evidence: Exact native unittest::tests.test_selected_acoustic.SelectedListening.test_pending_error_and_read_failure_nonblocking_negative also proves this existing FIN-VERIFY.I26 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-VERIFY.I26.contract_read_and_refresh_do_not_infer_positive",
@@ -298279,7 +298403,7 @@
       "command_id": "completion-i26-contracts",
       "state": "implemented",
       "source_path": "tests/test_selected_acoustic.py",
-      "source_sha256": "07bf51c5c21bbaa6a1ccd6e476bc6327c43762f8d716ea7aebf713053e1b8bfa",
+      "source_sha256": "66183783e938bd3eec7ef3659459c4fd90713f6a11f536799b389c9c914e00ac",
       "invalidation_dependencies": [
         "services/speech/",
         "specification/v2/docs/connected-speech-and-intonation.md",
@@ -298308,7 +298432,8 @@
           "Every pronunciation, voice or accent is confirmed",
           "Rendered HTML proves user activation"
         ]
-      }
+      },
+      "distinct_reason": "FIN-VERIFY Iteration-specific review and evidence: Exact native unittest::tests.test_selected_acoustic.SelectedListening.test_read_and_refresh_do_not_infer_positive also proves this existing FIN-VERIFY.I26 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-VERIFY.I26.contract_media_relation_and_private_route_negative",
@@ -298324,7 +298449,7 @@
       "command_id": "completion-i26-contracts",
       "state": "implemented",
       "source_path": "tests/test_selected_acoustic.py",
-      "source_sha256": "07bf51c5c21bbaa6a1ccd6e476bc6327c43762f8d716ea7aebf713053e1b8bfa",
+      "source_sha256": "66183783e938bd3eec7ef3659459c4fd90713f6a11f536799b389c9c914e00ac",
       "invalidation_dependencies": [
         "services/speech/",
         "specification/v2/docs/connected-speech-and-intonation.md",
@@ -298353,7 +298478,8 @@
           "Every pronunciation, voice or accent is confirmed",
           "Rendered HTML proves user activation"
         ]
-      }
+      },
+      "distinct_reason": "FIN-VERIFY Iteration-specific review and evidence: Exact native unittest::tests.test_selected_acoustic.SelectedListening.test_media_relation_and_private_route_negative also proves this existing FIN-VERIFY.I26 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-VERIFY.I26.contract_initial_read_failure_recovers_on_refresh_positive",
@@ -298398,7 +298524,8 @@
           "Native HTTP requests prove pointer or keyboard activation",
           "New auditory inference or universal acoustic correctness"
         ]
-      }
+      },
+      "distinct_reason": "FIN-VERIFY Iteration-specific review and evidence: Exact native unittest::tests.test_selected_listening_recovery.SelectedListeningRecovery.test_initial_read_failure_recovers_on_refresh_positive also proves this existing FIN-VERIFY.I26 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-VERIFY.I26.contract_admitted_selection_reused_without_revalidation_positive",
@@ -298443,7 +298570,8 @@
           "Native HTTP requests prove pointer or keyboard activation",
           "New auditory inference or universal acoustic correctness"
         ]
-      }
+      },
+      "distinct_reason": "FIN-VERIFY Iteration-specific review and evidence: Exact native unittest::tests.test_selected_listening_recovery.SelectedListeningRecovery.test_admitted_selection_reused_without_revalidation_positive also proves this existing FIN-VERIFY.I26 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-VERIFY.I26.contract_unreadable_judgment_keeps_audio_and_guidance_negative",
@@ -298488,7 +298616,8 @@
           "Native HTTP requests prove pointer or keyboard activation",
           "New auditory inference or universal acoustic correctness"
         ]
-      }
+      },
+      "distinct_reason": "FIN-VERIFY Iteration-specific review and evidence: Exact native unittest::tests.test_selected_listening_recovery.SelectedListeningRecovery.test_unreadable_judgment_keeps_audio_and_guidance_negative also proves this existing FIN-VERIFY.I26 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-VERIFY.I26.contract_media_failure_keeps_other_recordings_usable_negative",
@@ -298533,7 +298662,8 @@
           "Native HTTP requests prove pointer or keyboard activation",
           "New auditory inference or universal acoustic correctness"
         ]
-      }
+      },
+      "distinct_reason": "FIN-VERIFY Iteration-specific review and evidence: Exact native unittest::tests.test_selected_listening_recovery.SelectedListeningRecovery.test_media_failure_keeps_other_recordings_usable_negative also proves this existing FIN-VERIFY.I26 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     },
     {
       "id": "FIN-SOURCES.P1.status_meaning_positive",
@@ -317798,6 +317928,466 @@
         "note": "Underlying canonical/mutation and semantic responses are constructed external-boundary fixtures; actual local speech, composition and storage are retained native observations. The current assertions read those originals without substituting a composer or pretending to dispatch a model."
       },
       "distinct_reason": "Read actual recorded waveforms and exact native contexts/keys/outputs; compare independently expected arithmetic and explicit forbidden counterexamples. test_backend_details_negative"
+    },
+    {
+      "id": "I33.P1.SavedAudioAcceptance.test_context_native_positive",
+      "property_id": "I33.P1",
+      "polarity": "positive",
+      "scenario": "I33 Equal restricted diagnostic context",
+      "scenario_fingerprint": "4307276be766101e10b7c8ebe9870ece89d94d878029b467f37bd620fdea7e6f",
+      "setup": "Typed unittest reader of exact actual native output on unchanged source inputs, original saved model/WAV contexts and actual local Lab readback. No native test, inference or synthesis is redispatched. tests/test_saved_audio_acceptance.py:test_context_native_positive",
+      "observable": "def test_context_native_positive(self):\n        self.observed_cases([\n            'tests.test_saved_audio_diagnostics.SavedAudioDiagnostics.test_native_diagnostic_context_positive',\n            'tests.test_saved_audio_diagnostics.SavedAudioDiagnostics.test_gemini_projected_context_positive',\n            'tests.test_saved_audio_diagnostics.SavedAudioDiagnostics.test_blind_context_and_audio_order_positive',\n            'tests.test_auditory_protocol.AuditoryProtocolTests.test_completed_request_positive',\n            'tests.test_auditory_protocol.AuditoryProtocolTests.test_configured_proxy_positive',\n            'tests.test_audio_diagnostics.AudioDiagnosticTests.test_controlled_context_projection_positive'])",
+      "red_expectation": "The literal independent expected projection, status, original context/audio, arithmetic, failure or readback assertion fails.",
+      "green_expectation": "All exact independent assertions hold through the named owner with the stated actual or constructed origin.",
+      "test_id": "unittest::tests.test_saved_audio_acceptance.SavedAudioAcceptance.test_context_native_positive",
+      "command_id": "iteration33-evidence",
+      "state": "implemented",
+      "source_path": "tests/test_saved_audio_acceptance.py",
+      "source_sha256": "fae666f69fed57145d70bec9fc6748666a203cdce8095f39b6f8e60a4340c6b3",
+      "invalidation_dependencies": [
+        "services/speech/diagnostic_models.py",
+        "services/speech/category_validation.py",
+        "audit/iteration-33-diagnostics-20261027/reconcile.py",
+        "audit/iteration-33-diagnostics-20261027/native_cases.py",
+        "services/speech/diagnostic_context.py",
+        "services/speech/diagnostic_audio.py",
+        "services/speech/diagnostic_runtime.py",
+        "audit/iteration-26-acoustic-20261026/selection.json",
+        "audit/iteration-26-acoustic-20261026/observe.py",
+        "specification/v2/prompts/audio-category-probe-v1.txt",
+        "specification/v2/prompts/audio-judge-v1.txt",
+        "tests/test_saved_audio_acceptance.py",
+        "data/iteration-33-diagnostics-20261027/native/category.*",
+        "data/iteration-33-diagnostics-20261027/native/category-evidence.*",
+        "data/iteration-33-diagnostics-20261027/native/diagnostic.*",
+        "data/iteration-33-diagnostics-20261027/lab-readback.json"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Only explicitly constructed model/transport or file-failure responses. The production serializer/comparison/native diagnostic, actual saved bodies/WAVs and readback owners execute.",
+        "allowed_proof": "Context exclusion/parity, comparison/fixture logic, exact saved input correspondence, PCM arithmetic and zero-call export. Existing model opinions remain limited to their original inputs.",
+        "forbidden_claims": [
+          "New hosted/local inference or improved model hearing",
+          "Human gold or universal English/accent qualification",
+          "Changed context was judged by the old reply",
+          "Full UI activation or whole-product acceptance"
+        ]
+      },
+      "distinct_reason": "I33 Equal restricted diagnostic context: Exact literal assertion; retained original output is replayed only on unchanged source inputs."
+    },
+    {
+      "id": "I33.P1.SavedAudioAcceptance.test_context_native_negative",
+      "property_id": "I33.P1",
+      "polarity": "negative",
+      "scenario": "I33 Equal restricted diagnostic context",
+      "scenario_fingerprint": "4307276be766101e10b7c8ebe9870ece89d94d878029b467f37bd620fdea7e6f",
+      "setup": "Typed unittest reader of exact actual native output on unchanged source inputs, original saved model/WAV contexts and actual local Lab readback. No native test, inference or synthesis is redispatched. tests/test_saved_audio_acceptance.py:test_context_native_negative",
+      "observable": "def test_context_native_negative(self):\n        self.observed_cases([\n            'tests.test_saved_audio_diagnostics.SavedAudioDiagnostics.test_private_key_cannot_bias_context_negative',\n            'tests.test_auditory_protocol.AuditoryProtocolTests.test_paid_before_transport_negative',\n            'tests.test_auditory_protocol.AuditoryProtocolTests.test_missing_key_negative',\n            'tests.test_auditory_protocol.AuditoryProtocolTests.test_non_json_response_negative',\n            'tests.test_auditory_protocol.AuditoryProtocolTests.test_invalid_model_text_retained_negative',\n            'tests.test_auditory_protocol.AuditoryProtocolTests.test_redirect_credential_negative',\n            'tests.test_audio_diagnostics.AudioDiagnosticTests.test_judge_omitted_targets_negative'])",
+      "red_expectation": "The literal independent expected projection, status, original context/audio, arithmetic, failure or readback assertion fails.",
+      "green_expectation": "All exact independent assertions hold through the named owner with the stated actual or constructed origin.",
+      "test_id": "unittest::tests.test_saved_audio_acceptance.SavedAudioAcceptance.test_context_native_negative",
+      "command_id": "iteration33-evidence",
+      "state": "implemented",
+      "source_path": "tests/test_saved_audio_acceptance.py",
+      "source_sha256": "fae666f69fed57145d70bec9fc6748666a203cdce8095f39b6f8e60a4340c6b3",
+      "invalidation_dependencies": [
+        "services/speech/diagnostic_models.py",
+        "services/speech/category_validation.py",
+        "audit/iteration-33-diagnostics-20261027/reconcile.py",
+        "audit/iteration-33-diagnostics-20261027/native_cases.py",
+        "services/speech/diagnostic_context.py",
+        "services/speech/diagnostic_audio.py",
+        "services/speech/diagnostic_runtime.py",
+        "audit/iteration-26-acoustic-20261026/selection.json",
+        "audit/iteration-26-acoustic-20261026/observe.py",
+        "specification/v2/prompts/audio-category-probe-v1.txt",
+        "specification/v2/prompts/audio-judge-v1.txt",
+        "tests/test_saved_audio_acceptance.py",
+        "data/iteration-33-diagnostics-20261027/native/category.*",
+        "data/iteration-33-diagnostics-20261027/native/category-evidence.*",
+        "data/iteration-33-diagnostics-20261027/native/diagnostic.*",
+        "data/iteration-33-diagnostics-20261027/lab-readback.json"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Only explicitly constructed model/transport or file-failure responses. The production serializer/comparison/native diagnostic, actual saved bodies/WAVs and readback owners execute.",
+        "allowed_proof": "Context exclusion/parity, comparison/fixture logic, exact saved input correspondence, PCM arithmetic and zero-call export. Existing model opinions remain limited to their original inputs.",
+        "forbidden_claims": [
+          "New hosted/local inference or improved model hearing",
+          "Human gold or universal English/accent qualification",
+          "Changed context was judged by the old reply",
+          "Full UI activation or whole-product acceptance"
+        ]
+      },
+      "distinct_reason": "I33 Equal restricted diagnostic context: Exact literal assertion; retained original output is replayed only on unchanged source inputs."
+    },
+    {
+      "id": "I33.P2.SavedAudioAcceptance.test_fixture_native_positive",
+      "property_id": "I33.P2",
+      "polarity": "positive",
+      "scenario": "I33 Ambiguous expectations and valid alternatives",
+      "scenario_fingerprint": "19b7064e0918f575fe1d0ddc55496039e17283b0e55a9a5db5056bc87d45c71d",
+      "setup": "Typed unittest reader of exact actual native output on unchanged source inputs, original saved model/WAV contexts and actual local Lab readback. No native test, inference or synthesis is redispatched. tests/test_saved_audio_acceptance.py:test_fixture_native_positive",
+      "observable": "def test_fixture_native_positive(self):\n        self.observed_cases([\n            'tests.test_saved_audio_diagnostics.SavedAudioDiagnostics.test_ambiguous_fixture_positive',\n            'tests.test_saved_audio_diagnostics.SavedAudioDiagnostics.test_correct_variants_positive',\n            'tests.test_selected_acoustic.SelectedAcoustic.test_correct_control_projection_positive',\n            'tests.test_selected_acoustic.SelectedAcoustic.test_boundary_context_repair_positive'])",
+      "red_expectation": "The literal independent expected projection, status, original context/audio, arithmetic, failure or readback assertion fails.",
+      "green_expectation": "All exact independent assertions hold through the named owner with the stated actual or constructed origin.",
+      "test_id": "unittest::tests.test_saved_audio_acceptance.SavedAudioAcceptance.test_fixture_native_positive",
+      "command_id": "iteration33-evidence",
+      "state": "implemented",
+      "source_path": "tests/test_saved_audio_acceptance.py",
+      "source_sha256": "fae666f69fed57145d70bec9fc6748666a203cdce8095f39b6f8e60a4340c6b3",
+      "invalidation_dependencies": [
+        "services/speech/diagnostic_models.py",
+        "services/speech/category_validation.py",
+        "audit/iteration-33-diagnostics-20261027/reconcile.py",
+        "audit/iteration-33-diagnostics-20261027/native_cases.py",
+        "services/speech/diagnostic_context.py",
+        "services/speech/diagnostic_audio.py",
+        "services/speech/diagnostic_runtime.py",
+        "audit/iteration-26-acoustic-20261026/selection.json",
+        "audit/iteration-26-acoustic-20261026/observe.py",
+        "specification/v2/prompts/audio-category-probe-v1.txt",
+        "specification/v2/prompts/audio-judge-v1.txt",
+        "tests/test_saved_audio_acceptance.py",
+        "data/iteration-33-diagnostics-20261027/native/category.*",
+        "data/iteration-33-diagnostics-20261027/native/category-evidence.*",
+        "data/iteration-33-diagnostics-20261027/native/diagnostic.*",
+        "data/iteration-33-diagnostics-20261027/lab-readback.json"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Only explicitly constructed model/transport or file-failure responses. The production serializer/comparison/native diagnostic, actual saved bodies/WAVs and readback owners execute.",
+        "allowed_proof": "Context exclusion/parity, comparison/fixture logic, exact saved input correspondence, PCM arithmetic and zero-call export. Existing model opinions remain limited to their original inputs.",
+        "forbidden_claims": [
+          "New hosted/local inference or improved model hearing",
+          "Human gold or universal English/accent qualification",
+          "Changed context was judged by the old reply",
+          "Full UI activation or whole-product acceptance"
+        ]
+      },
+      "distinct_reason": "I33 Ambiguous expectations and valid alternatives: Exact literal assertion; retained original output is replayed only on unchanged source inputs."
+    },
+    {
+      "id": "I33.P2.SavedAudioAcceptance.test_fixture_native_negative",
+      "property_id": "I33.P2",
+      "polarity": "negative",
+      "scenario": "I33 Ambiguous expectations and valid alternatives",
+      "scenario_fingerprint": "19b7064e0918f575fe1d0ddc55496039e17283b0e55a9a5db5056bc87d45c71d",
+      "setup": "Typed unittest reader of exact actual native output on unchanged source inputs, original saved model/WAV contexts and actual local Lab readback. No native test, inference or synthesis is redispatched. tests/test_saved_audio_acceptance.py:test_fixture_native_negative",
+      "observable": "def test_fixture_native_negative(self):\n        self.observed_cases([\n            'tests.test_saved_audio_diagnostics.SavedAudioDiagnostics.test_judge_support_cannot_resolve_ambiguous_fixture_negative',\n            'tests.test_saved_audio_diagnostics.SavedAudioDiagnostics.test_valid_question_false_alarm_negative',\n            'tests.test_saved_audio_diagnostics.SavedAudioDiagnostics.test_failed_observation_cannot_confirm_negative',\n            'tests.test_saved_audio_diagnostics.SavedAudioDiagnostics.test_physical_change_does_not_make_valid_contour_wrong_negative',\n            'tests.test_selected_acoustic.SelectedAcoustic.test_blind_public_context_negative',\n            'tests.test_selected_acoustic.SelectedAcoustic.test_correct_variant_false_alarm_negative'])",
+      "red_expectation": "The literal independent expected projection, status, original context/audio, arithmetic, failure or readback assertion fails.",
+      "green_expectation": "All exact independent assertions hold through the named owner with the stated actual or constructed origin.",
+      "test_id": "unittest::tests.test_saved_audio_acceptance.SavedAudioAcceptance.test_fixture_native_negative",
+      "command_id": "iteration33-evidence",
+      "state": "implemented",
+      "source_path": "tests/test_saved_audio_acceptance.py",
+      "source_sha256": "fae666f69fed57145d70bec9fc6748666a203cdce8095f39b6f8e60a4340c6b3",
+      "invalidation_dependencies": [
+        "services/speech/diagnostic_models.py",
+        "services/speech/category_validation.py",
+        "audit/iteration-33-diagnostics-20261027/reconcile.py",
+        "audit/iteration-33-diagnostics-20261027/native_cases.py",
+        "services/speech/diagnostic_context.py",
+        "services/speech/diagnostic_audio.py",
+        "services/speech/diagnostic_runtime.py",
+        "audit/iteration-26-acoustic-20261026/selection.json",
+        "audit/iteration-26-acoustic-20261026/observe.py",
+        "specification/v2/prompts/audio-category-probe-v1.txt",
+        "specification/v2/prompts/audio-judge-v1.txt",
+        "tests/test_saved_audio_acceptance.py",
+        "data/iteration-33-diagnostics-20261027/native/category.*",
+        "data/iteration-33-diagnostics-20261027/native/category-evidence.*",
+        "data/iteration-33-diagnostics-20261027/native/diagnostic.*",
+        "data/iteration-33-diagnostics-20261027/lab-readback.json"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Only explicitly constructed model/transport or file-failure responses. The production serializer/comparison/native diagnostic, actual saved bodies/WAVs and readback owners execute.",
+        "allowed_proof": "Context exclusion/parity, comparison/fixture logic, exact saved input correspondence, PCM arithmetic and zero-call export. Existing model opinions remain limited to their original inputs.",
+        "forbidden_claims": [
+          "New hosted/local inference or improved model hearing",
+          "Human gold or universal English/accent qualification",
+          "Changed context was judged by the old reply",
+          "Full UI activation or whole-product acceptance"
+        ]
+      },
+      "distinct_reason": "I33 Ambiguous expectations and valid alternatives: Exact literal assertion; retained original output is replayed only on unchanged source inputs."
+    },
+    {
+      "id": "I33.P3.SavedAudioAcceptance.test_saved_physical_native_positive",
+      "property_id": "I33.P3",
+      "polarity": "positive",
+      "scenario": "I33 Saved physical and contextual evidence",
+      "scenario_fingerprint": "85ca5fe9c1d4173f61d96c0f20cdf11dba6f895018a76ec09d3fcbe3b13e126d",
+      "setup": "Typed unittest reader of exact actual native output on unchanged source inputs, original saved model/WAV contexts and actual local Lab readback. No native test, inference or synthesis is redispatched. tests/test_saved_audio_acceptance.py:test_saved_physical_native_positive",
+      "observable": "def test_saved_physical_native_positive(self):\n        self.observed_cases([\n            'tests.test_saved_audio_diagnostics.RetainedAudioDiagnostics.test_original_context_and_three_controls_positive',\n            'tests.test_saved_audio_diagnostics.RetainedAudioDiagnostics.test_pause_actual_samples_positive',\n            'tests.test_saved_audio_diagnostics.RetainedAudioDiagnostics.test_retained_f0_and_valid_question_positive',\n            'tests.test_saved_audio_diagnostics.RetainedAudioDiagnostics.test_repair_preserves_audio_and_narrow_linking_positive',\n            'tests.test_completion_i26.CompletionI26.test_acoustic_positive'])",
+      "red_expectation": "The literal independent expected projection, status, original context/audio, arithmetic, failure or readback assertion fails.",
+      "green_expectation": "All exact independent assertions hold through the named owner with the stated actual or constructed origin.",
+      "test_id": "unittest::tests.test_saved_audio_acceptance.SavedAudioAcceptance.test_saved_physical_native_positive",
+      "command_id": "iteration33-evidence",
+      "state": "implemented",
+      "source_path": "tests/test_saved_audio_acceptance.py",
+      "source_sha256": "fae666f69fed57145d70bec9fc6748666a203cdce8095f39b6f8e60a4340c6b3",
+      "invalidation_dependencies": [
+        "services/speech/diagnostic_models.py",
+        "services/speech/category_validation.py",
+        "audit/iteration-33-diagnostics-20261027/reconcile.py",
+        "audit/iteration-33-diagnostics-20261027/native_cases.py",
+        "services/speech/diagnostic_context.py",
+        "services/speech/diagnostic_audio.py",
+        "services/speech/diagnostic_runtime.py",
+        "audit/iteration-26-acoustic-20261026/selection.json",
+        "audit/iteration-26-acoustic-20261026/observe.py",
+        "specification/v2/prompts/audio-category-probe-v1.txt",
+        "specification/v2/prompts/audio-judge-v1.txt",
+        "tests/test_saved_audio_acceptance.py",
+        "data/iteration-33-diagnostics-20261027/native/category.*",
+        "data/iteration-33-diagnostics-20261027/native/category-evidence.*",
+        "data/iteration-33-diagnostics-20261027/native/diagnostic.*",
+        "data/iteration-33-diagnostics-20261027/lab-readback.json"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Only explicitly constructed model/transport or file-failure responses. The production serializer/comparison/native diagnostic, actual saved bodies/WAVs and readback owners execute.",
+        "allowed_proof": "Context exclusion/parity, comparison/fixture logic, exact saved input correspondence, PCM arithmetic and zero-call export. Existing model opinions remain limited to their original inputs.",
+        "forbidden_claims": [
+          "New hosted/local inference or improved model hearing",
+          "Human gold or universal English/accent qualification",
+          "Changed context was judged by the old reply",
+          "Full UI activation or whole-product acceptance"
+        ]
+      },
+      "distinct_reason": "I33 Saved physical and contextual evidence: Exact literal assertion; retained original output is replayed only on unchanged source inputs."
+    },
+    {
+      "id": "I33.P3.SavedAudioAcceptance.test_saved_physical_native_negative",
+      "property_id": "I33.P3",
+      "polarity": "negative",
+      "scenario": "I33 Saved physical and contextual evidence",
+      "scenario_fingerprint": "85ca5fe9c1d4173f61d96c0f20cdf11dba6f895018a76ec09d3fcbe3b13e126d",
+      "setup": "Typed unittest reader of exact actual native output on unchanged source inputs, original saved model/WAV contexts and actual local Lab readback. No native test, inference or synthesis is redispatched. tests/test_saved_audio_acceptance.py:test_saved_physical_native_negative",
+      "observable": "def test_saved_physical_native_negative(self):\n        self.observed_cases([\n            'tests.test_saved_audio_diagnostics.RetainedAudioDiagnostics.test_requested_pause_cannot_replace_missing_samples_negative',\n            'tests.test_saved_audio_diagnostics.RetainedAudioDiagnostics.test_fixed_context_is_not_a_new_observation_negative',\n            'tests.test_saved_audio_diagnostics.RetainedAudioDiagnostics.test_full_form_is_not_absent_or_wrong_by_definition_negative',\n            'tests.test_completion_i26.CompletionI26.test_acoustic_negative'])",
+      "red_expectation": "The literal independent expected projection, status, original context/audio, arithmetic, failure or readback assertion fails.",
+      "green_expectation": "All exact independent assertions hold through the named owner with the stated actual or constructed origin.",
+      "test_id": "unittest::tests.test_saved_audio_acceptance.SavedAudioAcceptance.test_saved_physical_native_negative",
+      "command_id": "iteration33-evidence",
+      "state": "implemented",
+      "source_path": "tests/test_saved_audio_acceptance.py",
+      "source_sha256": "fae666f69fed57145d70bec9fc6748666a203cdce8095f39b6f8e60a4340c6b3",
+      "invalidation_dependencies": [
+        "services/speech/diagnostic_models.py",
+        "services/speech/category_validation.py",
+        "audit/iteration-33-diagnostics-20261027/reconcile.py",
+        "audit/iteration-33-diagnostics-20261027/native_cases.py",
+        "services/speech/diagnostic_context.py",
+        "services/speech/diagnostic_audio.py",
+        "services/speech/diagnostic_runtime.py",
+        "audit/iteration-26-acoustic-20261026/selection.json",
+        "audit/iteration-26-acoustic-20261026/observe.py",
+        "specification/v2/prompts/audio-category-probe-v1.txt",
+        "specification/v2/prompts/audio-judge-v1.txt",
+        "tests/test_saved_audio_acceptance.py",
+        "data/iteration-33-diagnostics-20261027/native/category.*",
+        "data/iteration-33-diagnostics-20261027/native/category-evidence.*",
+        "data/iteration-33-diagnostics-20261027/native/diagnostic.*",
+        "data/iteration-33-diagnostics-20261027/lab-readback.json"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Only explicitly constructed model/transport or file-failure responses. The production serializer/comparison/native diagnostic, actual saved bodies/WAVs and readback owners execute.",
+        "allowed_proof": "Context exclusion/parity, comparison/fixture logic, exact saved input correspondence, PCM arithmetic and zero-call export. Existing model opinions remain limited to their original inputs.",
+        "forbidden_claims": [
+          "New hosted/local inference or improved model hearing",
+          "Human gold or universal English/accent qualification",
+          "Changed context was judged by the old reply",
+          "Full UI activation or whole-product acceptance"
+        ]
+      },
+      "distinct_reason": "I33 Saved physical and contextual evidence: Exact literal assertion; retained original output is replayed only on unchanged source inputs."
+    },
+    {
+      "id": "I33.P4.SavedAudioAcceptance.test_original_scope_preserved_positive",
+      "property_id": "I33.P4",
+      "polarity": "positive",
+      "scenario": "I33 Zero-call reconciliation and preservation",
+      "scenario_fingerprint": "8ae2027c5293f4b7db9fe06c4a040a8faf470f0b05e7beda81f9cdf02ebf098f",
+      "setup": "Typed unittest reader of exact actual native output on unchanged source inputs, original saved model/WAV contexts and actual local Lab readback. No native test, inference or synthesis is redispatched. tests/test_saved_audio_acceptance.py:test_original_scope_preserved_positive",
+      "observable": "def test_original_scope_preserved_positive(self):\n        paths = ['specification/v2/domain/error-taxonomy.v1.yaml',\n                 'specification/v2/domain/mutation-recipes.v1.json',\n                 'specification/v2/domain/metrics.v1.yaml',\n                 'specification/v2/domain/providers.v1.yaml',\n                 'specification/v2/language/source-lock.json']\n        for path in paths:\n            with self.subTest(path=path):\n                original = subprocess.run(['git','show','60bb692:'+path],cwd=ROOT,\n                                          check=True,capture_output=True).stdout\n                self.assertEqual(original,(ROOT/path).read_bytes())",
+      "red_expectation": "The literal independent expected projection, status, original context/audio, arithmetic, failure or readback assertion fails.",
+      "green_expectation": "All exact independent assertions hold through the named owner with the stated actual or constructed origin.",
+      "test_id": "unittest::tests.test_saved_audio_acceptance.SavedAudioAcceptance.test_original_scope_preserved_positive",
+      "command_id": "iteration33-evidence",
+      "state": "implemented",
+      "source_path": "tests/test_saved_audio_acceptance.py",
+      "source_sha256": "fae666f69fed57145d70bec9fc6748666a203cdce8095f39b6f8e60a4340c6b3",
+      "invalidation_dependencies": [
+        "services/speech/diagnostic_models.py",
+        "services/speech/category_validation.py",
+        "audit/iteration-33-diagnostics-20261027/reconcile.py",
+        "audit/iteration-33-diagnostics-20261027/native_cases.py",
+        "services/speech/diagnostic_context.py",
+        "services/speech/diagnostic_audio.py",
+        "services/speech/diagnostic_runtime.py",
+        "audit/iteration-26-acoustic-20261026/selection.json",
+        "audit/iteration-26-acoustic-20261026/observe.py",
+        "specification/v2/prompts/audio-category-probe-v1.txt",
+        "specification/v2/prompts/audio-judge-v1.txt",
+        "tests/test_saved_audio_acceptance.py",
+        "data/iteration-33-diagnostics-20261027/native/category.*",
+        "data/iteration-33-diagnostics-20261027/native/category-evidence.*",
+        "data/iteration-33-diagnostics-20261027/native/diagnostic.*",
+        "data/iteration-33-diagnostics-20261027/lab-readback.json"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Only explicitly constructed model/transport or file-failure responses. The production serializer/comparison/native diagnostic, actual saved bodies/WAVs and readback owners execute.",
+        "allowed_proof": "Context exclusion/parity, comparison/fixture logic, exact saved input correspondence, PCM arithmetic and zero-call export. Existing model opinions remain limited to their original inputs.",
+        "forbidden_claims": [
+          "New hosted/local inference or improved model hearing",
+          "Human gold or universal English/accent qualification",
+          "Changed context was judged by the old reply",
+          "Full UI activation or whole-product acceptance"
+        ]
+      },
+      "distinct_reason": "I33 Zero-call reconciliation and preservation: Exact literal assertion; retained original output is replayed only on unchanged source inputs."
+    },
+    {
+      "id": "I33.P4.SavedAudioAcceptance.test_actual_lab_bytes_positive",
+      "property_id": "I33.P4",
+      "polarity": "positive",
+      "scenario": "I33 Zero-call reconciliation and preservation",
+      "scenario_fingerprint": "8ae2027c5293f4b7db9fe06c4a040a8faf470f0b05e7beda81f9cdf02ebf098f",
+      "setup": "Typed unittest reader of exact actual native output on unchanged source inputs, original saved model/WAV contexts and actual local Lab readback. No native test, inference or synthesis is redispatched. tests/test_saved_audio_acceptance.py:test_actual_lab_bytes_positive",
+      "observable": "def test_actual_lab_bytes_positive(self):\n        result = json.loads((OUT/'lab-readback.json').read_text())\n        self.assertEqual(('FINISHED',0,0,0),(result['status'],result['actual_new_model_calls'],\n                         result['actual_new_synthesis_calls'],result['export_inference_calls']))\n        self.assertEqual(9,len(result['checked']))\n        for name in result['checked']:\n            with self.subTest(name=name):\n                self.assertEqual((OUT/'lab-export'/name).read_bytes(),\n                                 (OUT/'lab-readback'/name).read_bytes())\n        source = 'source/services/speech/diagnostic_models.py'\n        self.assertEqual((ROOT/'services/speech/diagnostic_models.py').read_bytes(),\n                         (OUT/'lab-readback'/source).read_bytes())",
+      "red_expectation": "The literal independent expected projection, status, original context/audio, arithmetic, failure or readback assertion fails.",
+      "green_expectation": "All exact independent assertions hold through the named owner with the stated actual or constructed origin.",
+      "test_id": "unittest::tests.test_saved_audio_acceptance.SavedAudioAcceptance.test_actual_lab_bytes_positive",
+      "command_id": "iteration33-evidence",
+      "state": "implemented",
+      "source_path": "tests/test_saved_audio_acceptance.py",
+      "source_sha256": "fae666f69fed57145d70bec9fc6748666a203cdce8095f39b6f8e60a4340c6b3",
+      "invalidation_dependencies": [
+        "services/speech/diagnostic_models.py",
+        "services/speech/category_validation.py",
+        "audit/iteration-33-diagnostics-20261027/reconcile.py",
+        "audit/iteration-33-diagnostics-20261027/native_cases.py",
+        "services/speech/diagnostic_context.py",
+        "services/speech/diagnostic_audio.py",
+        "services/speech/diagnostic_runtime.py",
+        "audit/iteration-26-acoustic-20261026/selection.json",
+        "audit/iteration-26-acoustic-20261026/observe.py",
+        "specification/v2/prompts/audio-category-probe-v1.txt",
+        "specification/v2/prompts/audio-judge-v1.txt",
+        "tests/test_saved_audio_acceptance.py",
+        "data/iteration-33-diagnostics-20261027/native/category.*",
+        "data/iteration-33-diagnostics-20261027/native/category-evidence.*",
+        "data/iteration-33-diagnostics-20261027/native/diagnostic.*",
+        "data/iteration-33-diagnostics-20261027/lab-readback.json"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Only explicitly constructed model/transport or file-failure responses. The production serializer/comparison/native diagnostic, actual saved bodies/WAVs and readback owners execute.",
+        "allowed_proof": "Context exclusion/parity, comparison/fixture logic, exact saved input correspondence, PCM arithmetic and zero-call export. Existing model opinions remain limited to their original inputs.",
+        "forbidden_claims": [
+          "New hosted/local inference or improved model hearing",
+          "Human gold or universal English/accent qualification",
+          "Changed context was judged by the old reply",
+          "Full UI activation or whole-product acceptance"
+        ]
+      },
+      "distinct_reason": "I33 Zero-call reconciliation and preservation: Exact literal assertion; retained original output is replayed only on unchanged source inputs."
+    },
+    {
+      "id": "I33.P4.SavedAudioAcceptance.test_retained_native_cases_positive",
+      "property_id": "I33.P4",
+      "polarity": "positive",
+      "scenario": "I33 Zero-call reconciliation and preservation",
+      "scenario_fingerprint": "8ae2027c5293f4b7db9fe06c4a040a8faf470f0b05e7beda81f9cdf02ebf098f",
+      "setup": "Typed unittest reader of exact actual native output on unchanged source inputs, original saved model/WAV contexts and actual local Lab readback. No native test, inference or synthesis is redispatched. tests/test_saved_audio_acceptance.py:test_retained_native_cases_positive",
+      "observable": "def test_retained_native_cases_positive(self):\n        sys.path.insert(0,str(ROOT/'.agents/workflow/scripts'))\n        from requirement_tests import parse_unittest_events\n        module = self.native_owner()\n        for suite in ['category','category-evidence','diagnostic']:\n            packet = json.loads((OUT/'native'/(suite+'.json')).read_text())\n            self.assertEqual([],module.errors(packet))\n            self.assertEqual(packet['tests_run'],len(set(packet['test_ids'])))\n            self.assertEqual((0,0),(packet['new_inference_calls'],packet['new_synthesis_calls']))\n            observed = parse_unittest_events((ROOT/packet['stdout']).read_text())\n            self.assertEqual(set(packet['test_ids']),set(observed))\n            self.assertTrue(all(s=='pass' for s in observed.values()))",
+      "red_expectation": "The literal independent expected projection, status, original context/audio, arithmetic, failure or readback assertion fails.",
+      "green_expectation": "All exact independent assertions hold through the named owner with the stated actual or constructed origin.",
+      "test_id": "unittest::tests.test_saved_audio_acceptance.SavedAudioAcceptance.test_retained_native_cases_positive",
+      "command_id": "iteration33-evidence",
+      "state": "implemented",
+      "source_path": "tests/test_saved_audio_acceptance.py",
+      "source_sha256": "fae666f69fed57145d70bec9fc6748666a203cdce8095f39b6f8e60a4340c6b3",
+      "invalidation_dependencies": [
+        "services/speech/diagnostic_models.py",
+        "services/speech/category_validation.py",
+        "audit/iteration-33-diagnostics-20261027/reconcile.py",
+        "audit/iteration-33-diagnostics-20261027/native_cases.py",
+        "services/speech/diagnostic_context.py",
+        "services/speech/diagnostic_audio.py",
+        "services/speech/diagnostic_runtime.py",
+        "audit/iteration-26-acoustic-20261026/selection.json",
+        "audit/iteration-26-acoustic-20261026/observe.py",
+        "specification/v2/prompts/audio-category-probe-v1.txt",
+        "specification/v2/prompts/audio-judge-v1.txt",
+        "tests/test_saved_audio_acceptance.py",
+        "data/iteration-33-diagnostics-20261027/native/category.*",
+        "data/iteration-33-diagnostics-20261027/native/category-evidence.*",
+        "data/iteration-33-diagnostics-20261027/native/diagnostic.*",
+        "data/iteration-33-diagnostics-20261027/lab-readback.json"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Only explicitly constructed model/transport or file-failure responses. The production serializer/comparison/native diagnostic, actual saved bodies/WAVs and readback owners execute.",
+        "allowed_proof": "Context exclusion/parity, comparison/fixture logic, exact saved input correspondence, PCM arithmetic and zero-call export. Existing model opinions remain limited to their original inputs.",
+        "forbidden_claims": [
+          "New hosted/local inference or improved model hearing",
+          "Human gold or universal English/accent qualification",
+          "Changed context was judged by the old reply",
+          "Full UI activation or whole-product acceptance"
+        ]
+      },
+      "distinct_reason": "I33 Zero-call reconciliation and preservation: Exact literal assertion; retained original output is replayed only on unchanged source inputs."
+    },
+    {
+      "id": "I33.P4.SavedAudioAcceptance.test_stale_or_failed_receipt_cannot_be_reused_negative",
+      "property_id": "I33.P4",
+      "polarity": "negative",
+      "scenario": "I33 Zero-call reconciliation and preservation",
+      "scenario_fingerprint": "8ae2027c5293f4b7db9fe06c4a040a8faf470f0b05e7beda81f9cdf02ebf098f",
+      "setup": "Typed unittest reader of exact actual native output on unchanged source inputs, original saved model/WAV contexts and actual local Lab readback. No native test, inference or synthesis is redispatched. tests/test_saved_audio_acceptance.py:test_stale_or_failed_receipt_cannot_be_reused_negative",
+      "observable": "def test_stale_or_failed_receipt_cannot_be_reused_negative(self):\n        module = self.native_owner()\n        original = json.loads((OUT/'native/diagnostic.json').read_text())\n        changed = copy.deepcopy(original);changed['source_sha256']['services/speech/diagnostic_models.py']='0'*64\n        self.assertIn('Changed semantic input: services/speech/diagnostic_models.py',module.errors(changed))\n        changed = copy.deepcopy(original);changed['failures']=1\n        self.assertIn('Original native run failed or skipped cases',module.errors(changed))\n        changed = copy.deepcopy(original);changed['tests_run']-=1\n        self.assertIn('Original native run omitted an exact selected test',module.errors(changed))",
+      "red_expectation": "The literal independent expected projection, status, original context/audio, arithmetic, failure or readback assertion fails.",
+      "green_expectation": "All exact independent assertions hold through the named owner with the stated actual or constructed origin.",
+      "test_id": "unittest::tests.test_saved_audio_acceptance.SavedAudioAcceptance.test_stale_or_failed_receipt_cannot_be_reused_negative",
+      "command_id": "iteration33-evidence",
+      "state": "implemented",
+      "source_path": "tests/test_saved_audio_acceptance.py",
+      "source_sha256": "fae666f69fed57145d70bec9fc6748666a203cdce8095f39b6f8e60a4340c6b3",
+      "invalidation_dependencies": [
+        "services/speech/diagnostic_models.py",
+        "services/speech/category_validation.py",
+        "audit/iteration-33-diagnostics-20261027/reconcile.py",
+        "audit/iteration-33-diagnostics-20261027/native_cases.py",
+        "services/speech/diagnostic_context.py",
+        "services/speech/diagnostic_audio.py",
+        "services/speech/diagnostic_runtime.py",
+        "audit/iteration-26-acoustic-20261026/selection.json",
+        "audit/iteration-26-acoustic-20261026/observe.py",
+        "specification/v2/prompts/audio-category-probe-v1.txt",
+        "specification/v2/prompts/audio-judge-v1.txt",
+        "tests/test_saved_audio_acceptance.py",
+        "data/iteration-33-diagnostics-20261027/native/category.*",
+        "data/iteration-33-diagnostics-20261027/native/category-evidence.*",
+        "data/iteration-33-diagnostics-20261027/native/diagnostic.*",
+        "data/iteration-33-diagnostics-20261027/lab-readback.json"
+      ],
+      "substitution": {
+        "classification": "EXTERNAL_BOUNDARY",
+        "owner_replaced": "Only explicitly constructed model/transport or file-failure responses. The production serializer/comparison/native diagnostic, actual saved bodies/WAVs and readback owners execute.",
+        "allowed_proof": "Context exclusion/parity, comparison/fixture logic, exact saved input correspondence, PCM arithmetic and zero-call export. Existing model opinions remain limited to their original inputs.",
+        "forbidden_claims": [
+          "New hosted/local inference or improved model hearing",
+          "Human gold or universal English/accent qualification",
+          "Changed context was judged by the old reply",
+          "Full UI activation or whole-product acceptance"
+        ]
+      },
+      "distinct_reason": "I33 Zero-call reconciliation and preservation: Exact literal assertion; retained original output is replayed only on unchanged source inputs."
     }
   ],
   "commands": [
@@ -323156,6 +323746,22 @@
         "-v",
         "tests.test_overlap_evidence",
         "tests.test_overlap_recovery"
+      ],
+      "cwd": ".",
+      "env": {},
+      "timeout_seconds": 120,
+      "authority": "local"
+    },
+    {
+      "id": "iteration33-evidence",
+      "runner": "python-unittest",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_saved_audio_acceptance"
       ],
       "cwd": ".",
       "env": {},

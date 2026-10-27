@@ -37,6 +37,8 @@ def prepare(case_id):
     fixture = {**fixture, **record.get('fixture_override', {}),
                'context': case['context'], 'control_context': case['control_context'],
                'question': case['question'], 'control_question': case['question']}
+    for field in ('expected_by_role', 'expectation_note'):
+        if field in case:fixture[field] = case[field]
     paths = dict(record['paths'])
     if case.get('acceptable_from'):
         paths['acceptable'] = paths[case['acceptable_from']]

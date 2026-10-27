@@ -15,7 +15,7 @@ class AuditoryProtocolTests(unittest.TestCase):
    def open(self,request,timeout):received.append(request);return response
   self.handlers=[]
   with patch.dict(models.os.environ,{'GEMINI_API_KEY':'test-owned-canary'}),patch.object(models.urllib.request,'build_opener',side_effect=lambda *handlers:self.handlers.extend(handlers) or Opener()):
-   result=models.auditory(self.profile(),'Trusted prompt',{'units':['u1'],'features':['speech_realization']},[b'actual-fixture-audio',b'reference-fixture-audio'],capture=capture.append)
+   result=models.auditory(self.profile(),'Trusted prompt',{'planned_units':[dict(id='u1',realization=dict(prosody=[]))]},[b'actual-fixture-audio',b'reference-fixture-audio'],capture=capture.append)
   return result,received,capture
  def test_completed_request_positive(self):
   result,received,capture=self.invoke(json.dumps(self.result()).encode());self.assertEqual(len(received),1);request=received[0];self.assertEqual(request.full_url,'https://generativelanguage.googleapis.com/v1beta/interactions');body=json.loads(request.data);self.assertEqual({k:body[k] for k in ['store','stream','background','tools']},dict(store=False,stream=False,background=False,tools=[]));self.assertEqual(body['generation_config'],dict(max_output_tokens=512));self.assertEqual(result['output']['findings'][0]['status'],'uncertain');self.assertEqual(capture[-1]['http_status'],200);self.assertNotIn('test-owned-canary',json.dumps(capture))

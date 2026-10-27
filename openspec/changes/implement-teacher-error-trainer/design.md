@@ -1,5 +1,22 @@
 # Implementation design
 
+## Iteration 33 saved-audio diagnostic ownership
+
+The existing auditory transport shares one model-visible projection across
+local and Gemini routes. It strips private key/learner/prior-observation data
+before serialization and retains the actual wire through existing capture.
+The pure category comparison owner permits explicit uncertain authored labels;
+neither favorable model replies nor failed observations can confirm those
+targets. Default historical fixtures retain their original expectations.
+
+Future selected fixtures correct the recorded words and public context. Frozen
+requests/replies are immutable historical observations, never relabelled as new
+calls. The finite reconciliation owner reads those originals, measures the
+selected PCM insertion and references retained F0 windows without inferring
+pragmatic truth. Existing native diagnostic measurement/storage and explicit
+key reconsideration keep their responsibilities. No scoring/key mutation,
+automatic retry, new service or learner gate follows from this research.
+
 ## Iteration 31 historical evidence ownership
 
 The canonical graph retains original case identities, scenarios, polarities and
