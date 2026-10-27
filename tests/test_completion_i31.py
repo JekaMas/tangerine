@@ -79,6 +79,23 @@ class CompletionI31(unittest.TestCase):
         packet["cases"][0]["original_test_id"] = "a rewritten historical identity"
         self.assertTrue(reconcile.ledger_errors(packet, graph()))
 
+    def test_joint_literal_alias_negative(self):
+        # Both declarations agree, but neither agreement nor a passed sibling
+        # proves that this method exercises the original independent fixture.
+        for original, unrelated in [("AUX-01.P1.POSITIVE", "DOM-05.P1.POSITIVE"),
+                                    ("AUX-01.P1.SET2.POSITIVE", "AUX-02.P1.POSITIVE"),
+                                    ("MET-01.P1.SET2.NEGATIVE", "MET-01.P1.SET2.POSITIVE")]:
+            packet, current = ledger(), graph()
+            row = next(r for r in packet["cases"] if r["case_id"] == original)
+            wrong = next(r for r in packet["cases"] if r["case_id"] == unrelated)["literal_test"]
+            row["literal_test"] = copy.deepcopy(wrong)
+            edge = next(c for c in current["cases"] if c["id"] == original)
+            for key in ["test_id", "command_id", "source_path"]:
+                edge[key] = wrong[key]
+            with self.subTest(original=original, unrelated=unrelated):
+                self.assertTrue(any("unrelated original-literal binding" in e
+                                    for e in reconcile.ledger_errors(packet, current)))
+
     def test_discovery_aliases_positive(self):
         self.assertEqual("passed", validate_discovery(ROOT, "implement-teacher-error-trainer")["status"])
         current = read(reconcile.CHANGE + "/discovery.json")
@@ -88,6 +105,17 @@ class CompletionI31(unittest.TestCase):
         for before in [prior["scope"]] + prior["reviews"]:
             after = current["scope"] if "id" not in before else next(r for r in current["reviews"] if r["id"] == before["id"])
             self.assertFalse(set(before["test_ids"]) - set(after["test_ids"]) - set(after.get("historical_test_ids", [])))
+        prior = apply_discovery()
+        self.assertEqual([], reconcile.discovery_history_errors(current, prior))
+
+    def test_discovery_prior_rewrite_negative(self):
+        prior = apply_discovery()
+        current = read(reconcile.CHANGE + "/discovery.json")
+        before = next(r for r in prior["reviews"] if r["id"] == "iteration31-literal-reconciliation-20261027")
+        after = next(r for r in current["reviews"] if r["id"] == before["id"])
+        after["test_ids"].append("unittest::tests.test_completion_i31.CompletionI31.test_joint_literal_alias_negative")
+        self.assertEqual([before["id"] + " prior review rewritten"],
+                         reconcile.discovery_history_errors(current, prior))
 
     def test_retired_discovery_identity_negative(self):
         # Test-owned miniature registration, not a rewrite of the real change.
@@ -166,8 +194,49 @@ class CompletionI31(unittest.TestCase):
                      "audit/all-iterations-remaining-20261027/CATEGORIES.json"]:
             self.assertEqual(subprocess_text(path), current_source(path))
 
+    def test_browser_read_recovery_positive(self):
+        rows = read("data/iteration-31-verification-20261027/ui-observations.json")
+        by = {row["name"]: row for row in rows}
+        headings = {"library": "A better ear for English.", "prepare": "Prepare an exercise",
+                    "attempts": "Saved attempts", "audio": "Saved audio",
+                    "reviews": "Optional LLM review", "reports": "Reports and quality experiments",
+                    "sources": "Sources", "settings": "Your LLM connection",
+                    "recovery": "Recovery and local data", "cleanup": "Cleanup and deletion",
+                    "listen": "Listen and respond"}
+        for route, heading in headings.items():
+            self.assertEqual(heading, by[route + "-desktop"]["heading"])
+        for row in rows:
+            self.assertEqual(row["width"], row["pageWidth"], row["name"])
+            self.assertEqual(("17px", "24.65px"), (row["bodyPx"], row["line"]))
+            self.assertIn("Source Sans 3", row["font"])
+        expected = dict(topic="Review fixture: planning a neighbourhood book swap.",
+                        speakers="2", words="180", level="B2")
+        failed, recovered = by["read-exhausted-mobile"], by["keyboard-recovery-mobile"]
+        self.assertEqual(["Saved preparations are unavailable. Your input is retained. Refresh to retry."], failed["alerts"])
+        self.assertEqual([], recovered["alerts"])
+        for row in [failed, recovered]:
+            self.assertEqual(expected, row["inputs"])
+            for label in ["Generate exercise", "Refresh"]:
+                self.assertFalse(next(b["disabled"] for b in row["buttons"] if b["text"] == label))
+        self.assertEqual(dict(tag="BUTTON", text="Refresh", outline="3px"), recovered["focus"])
+
+    def test_browser_no_dispatch_negative(self):
+        directory = ROOT / "data/iteration-31-verification-20261027"
+        rows = [json.loads(x) for x in (directory / "requests.jsonl").read_text().splitlines()]
+        self.assertTrue(rows)
+        self.assertEqual({"GET"}, {row["method"] for row in rows})
+        expected = {"i31-transient-read": [503, 200], "i31-exhausted-read": [503, 503, 503],
+                    "i31-explicit-recovery": [200]}
+        for scenario, statuses in expected.items():
+            self.assertEqual(statuses, [r["status"] for r in rows if r["scenario"] == scenario
+                                       and r["path"].startswith("/api/v1/preparations?")])
+        for row in read("data/iteration-31-verification-20261027/ui-observations.json"):
+            self.assertNotIn("private backend canary", row["main"])
+            self.assertNotIn("test-owned dependency unavailable", row["main"])
+
     def test_new_literal_observations_positive(self):
         packet = read("audit/iteration-31-reconciliation-20261027/OBSERVATIONS.json")
+        self.assertEqual([], reconcile.observation_packet_errors(packet))
         required = packet["required_tests"]
         self.assertTrue(required)
         for record in packet["commands"]:
@@ -175,6 +244,40 @@ class CompletionI31(unittest.TestCase):
             with self.subTest(command=record["id"]):
                 self.assertEqual([], reconcile.observation_errors(record, expected))
         self.assertEqual(set(required), {r["id"] for r in packet["commands"]})
+
+    def test_missing_literal_population_negative(self):
+        original = read("audit/iteration-31-reconciliation-20261027/OBSERVATIONS.json")
+        for owner in original["required_tests"]:
+            packet = copy.deepcopy(original)
+            packet["required_tests"].pop(owner)
+            packet["commands"] = [r for r in packet["commands"] if r["id"] != owner]
+            with self.subTest(missing_owner=owner):
+                self.assertIn("original literal observation population omitted or substituted",
+                              reconcile.observation_packet_errors(packet))
+        packet = copy.deepcopy(original)
+        packet["required_tests"]["python-literals"] = [x for x in packet["required_tests"]["python-literals"] if "core_set2" not in x]
+        self.assertIn("original literal observation population omitted or substituted",
+                      reconcile.observation_packet_errors(packet))
+        packet = copy.deepcopy(original)
+        packet["commands"].append(copy.deepcopy(packet["commands"][0]))
+        self.assertIn("observation command association changed", reconcile.observation_packet_errors(packet))
+        packet = copy.deepcopy(original)
+        packet["required_tests"]["native-literals"].append("tangerine.local")
+        self.assertIn("original literal observation population omitted or substituted",
+                      reconcile.observation_packet_errors(packet))
+
+    def test_native_receipt_drift_negative(self):
+        packet = read("audit/iteration-31-reconciliation-20261027/OBSERVATIONS.json")
+        actual = next(r for r in packet["commands"] if r["id"] == "native-literals")
+        changes = {"exit_code": 0, "argv": ["a-different-command"],
+                   "observed_tests": {"unrelated-passing-test": "pass"},
+                   "tested_revision": "0" * 40, "dirty_at_execution": True,
+                   "retained_output": "README.md", "receipt_command_id": "unrelated"}
+        for key, value in changes.items():
+            record = copy.deepcopy(actual)
+            record[key] = value
+            with self.subTest(field=key):
+                self.assertTrue(reconcile.command_receipt_errors(record))
 
     def test_counterfeit_observation_negative(self):
         packet = read("audit/iteration-31-reconciliation-20261027/OBSERVATIONS.json")
@@ -238,6 +341,21 @@ class CompletionI31(unittest.TestCase):
         unrelated = next(r for r in packet["cases"] if r["case_id"] == "COR-03.P1.POSITIVE")
         unrelated["partial_evidence"] = copy.deepcopy(next(r for r in packet["cases"] if r["partial_evidence"])["partial_evidence"])
         self.assertTrue(reconcile.ledger_errors(packet, graph()))
+
+    def test_partial_leaf_alias_negative(self):
+        for action in ["leaf", "method", "command"]:
+            packet = ledger()
+            row = next(r for r in packet["cases"] if r["partial_evidence"])
+            if action == "leaf":
+                other = next(r for r in packet["cases"] if r["partial_evidence"] and
+                             r["partial_evidence"][0]["case_id"] != row["partial_evidence"][0]["case_id"])
+                row["partial_evidence"] = copy.deepcopy(other["partial_evidence"])
+            elif action == "method":
+                row["partial_evidence"][0]["test_id"] = "tangerine.local/api/internal/app::TestLinguisticSelectionNegative/grammar.determiners.article_omission"
+            else:
+                row["partial_evidence"][0]["command_receipt"] = "audit/iteration-31-reconciliation-20261027/NATIVE-FIRST.json"
+            with self.subTest(action=action):
+                self.assertTrue(reconcile.ledger_errors(packet, graph()))
 
     def test_unobserved_scope_positive(self):
         evidence_graph = EvidenceGraph(ROOT, "implement-teacher-error-trainer")
@@ -309,6 +427,12 @@ def subprocess_text(path):
 @lru_cache(maxsize=None)
 def current_source(path):
     return reconcile.scope_source(path).decode()
+
+
+def apply_discovery():
+    import subprocess
+    revision = read("audit/iteration-31-verification-20261027/APPLY-ACCEPTANCE.json")["tested_revision"]
+    return json.loads(subprocess.check_output(["git", "show", revision + ":" + reconcile.CHANGE + "/discovery.json"], cwd=ROOT))
 
 
 class temporary_receipt:

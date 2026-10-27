@@ -1,3 +1,11 @@
+2026-10-27 iteration31 verify/repair: the actual user requests full selected
+conformance, root-cause/sibling repair through clean acceptance, and actual local
+UI/UX/typography screenshots/video. Scoped reconciliation/test/DAG/document fixes,
+controlled test-owned browser failures/reads and local commits are authorized.
+No provider inference/synthesis, credits/overage, install, deployment/postdeployment,
+PBT, financial execution or publication. Preserve app3000, saved data/settings,
+canonical GAPS.md and pre-existing tabs. Evidence checks stay development-only.
+
 2026-10-27 iteration31 apply: the actual user selects reconciliation of every
 historical DAG placeholder with actual successor assertions and retained
 receipts, exact evidence reuse, correction of stale blocker descriptions and

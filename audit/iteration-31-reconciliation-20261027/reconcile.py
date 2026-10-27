@@ -65,6 +65,62 @@ def original_bindings():
         "specification/v2/domain/verification-fixtures.v1.json")["case_bindings"]}
 
 
+@lru_cache(maxsize=1)
+def auxiliary_literal_ids():
+    return {x["case_id"] for x in json.loads((ROOT / "services/api/internal/scoring/testdata/historical-auxiliary.json").read_text())}
+
+def _test_binding(method, source, command, *, proof):
+    return dict(test_id=method, source_path=source, command_id=command, proof=proof)
+
+
+def _py(method):
+    return _test_binding("unittest::tests.test_historical_literals.HistoricalLiterals." + method,
+                "tests/test_historical_literals.py", "i31-arithmetic-literals",
+                proof="Existing exact registry arithmetic over the original literal counters; no semantic, participant, acoustic or provider claim.")
+
+
+def _observer(method):
+    return _test_binding("unittest::tests.test_completion_i31.CompletionI31." + method,
+                "tests/test_completion_i31.py", "completion-i31",
+                proof="Exact union of unchanged independently observed literal components, or actual existing evidence-runner behavior; no new product execution.")
+
+
+def _native(method, package="app"):
+    return _test_binding("tangerine.local/api/internal/" + package + "::" + method,
+                "services/api/internal/" + package + "/historical_literals_test.go", "i31-aux-counterexamples" if package=="scoring" and ".SET2.NEGATIVE" in method else "i31-go-literals",
+                proof="Actual native owner on the original labelled constructed text/population; no model, actual participant or speech measurement.")
+
+
+def literal_binding(cid, b):
+    if cid in {f"MET-{n:02d}.P1.SET2.{p}" for n in range(1, 28) for p in ["POSITIVE", "NEGATIVE"]}:
+        return _py("test_core_set2_" + b["polarity"])
+    if cid in auxiliary_literal_ids():
+        return _native("TestHistoricalAuxiliary" + b["polarity"].title() + "/" + cid, "scoring")
+    if b["mode"] == "evidence_scope":
+        return _observer("test_unobserved_scope_positive" if b["polarity"] == "positive" else "test_static_summary_not_execution_negative")
+    fixture = b["fixture_id"]
+    if fixture in ["exact-ratio", "set2-DOM-05.P1-positive", "set2-DOM-05.P2-positive"]:
+        if b["mode"] == "contract_pair":
+            return _observer("test_ratio_pair_" + b["polarity"])
+        if b["input"] in [dict(numerator="1", denominator="3"), dict(numerator="3", denominator="4")]:
+            return _py("test_ratio_positive")
+        if b["input"] == dict(numerator=True, denominator=3.0):
+            return _observer("test_ratio_pair_positive") if b["polarity"] == "positive" else _py("test_ratio_invalid_negative")
+    if fixture == "unicode":
+        if b["mode"] == "contract_pair":
+            return _observer("test_unicode_pair_" + b["polarity"])
+        if b["input"] == dict(answer="🙂 work; work", target=dict(start_cp=8, end_cp=12, exact_text="work")):
+            return _native("TestHistoricalUnicodePositive")
+        if b["input"] == dict(answer="🙂 work; work", target=dict(start_cp=9, end_cp=13, exact_text="work")):
+            return _observer("test_unicode_pair_positive") if b["polarity"] == "positive" else _native("TestHistoricalUnicodeNegative")
+    if fixture == "mutation-replay":
+        if b["input"] == dict(canonical="She works here.", edits=[dict(start_cp=8,end_cp=9,exact_text="s",replacement="")]):
+            return _native("TestHistoricalMutationPositive")
+        if b["input"] == dict(canonical="She works here.", surface="She work there.", edits=[dict(start_cp=8,end_cp=9,exact_text="s",replacement="")]):
+            return _observer("test_mutation_rejection_positive") if b["polarity"] == "positive" else _native("TestHistoricalMutationNegative")
+    return None
+
+
 def ledger_errors(packet, graph):
     """Check the exact inspected population and declared proof joins only."""
     errors = []
@@ -96,6 +152,10 @@ def ledger_errors(packet, graph):
         disposition = row.get("disposition")
         if disposition == "materialized_literal":
             owner = row.get("literal_test", {})
+            expected = literal_binding(cid, binding)
+            if not expected or any(owner.get(k) != expected[k]
+                                   for k in ["test_id", "command_id", "source_path"]):
+                errors.append(cid + " unrelated original-literal binding")
             if not owner or now.get("state") != "implemented":
                 errors.append(cid + " missing literal implementation")
             for k in ["test_id", "command_id", "source_path"]:
@@ -120,12 +180,27 @@ def ledger_errors(packet, graph):
             if binding["action"] != CATEGORY_ACTION:
                 errors.append(cid + " a shared category ID does not prove this unrelated operation")
             candidate = current.get(reuse.get("case_id"), {})
+            leaf = binding["input"].get("leaf")
+            methods = {"LF-01.P1.TestLinguisticContextPositive.": "context",
+                       "LF-03.P1.TestLinguisticRecipePositive.": "recipe"}
+            kind = next((kind for prefix, kind in methods.items()
+                         if leaf and reuse.get("case_id") == prefix + leaf), None)
+            if not kind or reuse.get("test_id") != candidate.get("test_id"):
+                errors.append(cid + " unrelated category/operation component")
+            if kind == "recipe":
+                reference = linguistic_references().get(leaf, {})
+                if any(binding["input"].get(k) != reference.get(k)
+                       for k in ["canonical", "surface"]):
+                    errors.append(cid + " different original recipe text")
             if candidate.get("state") != "implemented" or not reuse.get("assertion"):
                 errors.append(cid + " unsupported partial assertion")
             if reuse.get("proves_entire_original_case") is not False:
                 errors.append(cid + " unproved whole-case reuse")
             if not reuse.get("receipt") or not reuse.get("test_id"):
                 errors.append(cid + " missing actual retained observation")
+            receipt_path = reuse.get("command_receipt")
+            if not receipt_path or not (ROOT / receipt_path).is_file() or command_receipt(receipt_path).get("exit_code") != 0:
+                errors.append(cid + " missing successful retained command")
         if not row.get("comparison") or not row.get("owner"):
             errors.append(cid + " comparison/owner absent")
     # Existing accepted physical tests/commands are untouched. Adding new edges
@@ -136,9 +211,80 @@ def ledger_errors(packet, graph):
     return errors
 
 
+@lru_cache(maxsize=1)
+def linguistic_references():
+    return {x["taxonomy_id"]: x for x in json.loads(scope_source(
+        "services/api/internal/app/testdata/linguistic-contrasts.json"))["examples"]}
+
+
+def observation_packet_errors(packet):
+    """The original literal obligations own the required observation population."""
+    # This diagnostic observes the two open contradictory fixtures. It never
+    # satisfies or closes them, but its retained result is part of I31's claim.
+    expected = {_py("test_ratio_historical_inconsistent_vector_negative")["test_id"]}
+    for cid in original_cases():
+        binding = literal_binding(cid, original_bindings()[cid])
+        if binding and binding["command_id"] != "completion-i31":
+            identity = binding["test_id"]
+            expected.add(identity)
+            namespace, method = identity.split("::", 1)
+            if "/" in method:
+                expected.add(namespace + "::" + method.split("/", 1)[0])
+    required = packet.get("required_tests", {})
+    declared = {test for tests in required.values() for test in tests}
+    errors = []
+    if declared != expected:
+        errors.append("original literal observation population omitted or substituted")
+    records = packet.get("commands", [])
+    ids = [record.get("id") for record in records]
+    if len(ids) != len(set(ids)) or set(ids) != set(required):
+        errors.append("observation command association changed")
+    for record in records:
+        tests = required.get(record.get("id"), [])
+        if not tests:
+            errors.append("empty physical observation scope")
+        errors.extend(observation_errors(record, tests))
+    return errors
+
+
+@lru_cache(maxsize=None)
+def command_receipt(path):
+    return json.loads((ROOT / path).read_text())
+
+
+def command_receipt_errors(record):
+    """Read the actual executed receipt once; packet labels cannot change it."""
+    path = record.get("command_receipt")
+    if not path or not (ROOT / path).is_file():
+        return ["actual command receipt unavailable"]
+    receipt = command_receipt(path)
+    if "commands" in receipt:
+        matches = [c for c in receipt["commands"]
+                   if c["id"] == record.get("receipt_command_id")]
+        if len(matches) != 1:
+            return ["actual command association changed"]
+        actual = matches[0]
+        actual_output = Path(actual["stdout_artifact"])
+        revision, dirty = receipt["git"]["head"], receipt["git"]["dirty"]
+    else:
+        # Original five-method Python tool transcript, explicitly dirty.
+        actual = receipt
+        actual_output = ROOT / actual["retained_output"]
+        revision, dirty = actual["tested_revision"], actual["dirty_at_execution"]
+    errors = []
+    for key in ["argv", "exit_code", "observed_tests"]:
+        if record.get(key) != actual.get(key):
+            errors.append("actual command " + key + " changed")
+    if (ROOT / record.get("retained_output", "")).resolve() != actual_output.resolve():
+        errors.append("actual command output replaced")
+    if (record.get("tested_revision"), record.get("dirty_at_execution")) != (revision, dirty):
+        errors.append("actual command execution provenance changed")
+    return errors
+
+
 def observation_errors(record, expected_tests):
     """Actual typed observations, not report labels/counts, own a retained pass."""
-    errors = []
+    errors = command_receipt_errors(record)
     subset = record.get("retained_pass_subset", [])
     if record.get("exit_code") != 0 and not (record.get("exit_code") == 1 and subset):
         errors.append("command did not exit zero")
@@ -202,3 +348,9 @@ def source_digest(path):
 
 def counts(packet):
     return dict(Counter(r["disposition"] for r in packet["cases"]))
+
+
+def discovery_history_errors(current, prior):
+    reviews = {review["id"]: review for review in current["reviews"]}
+    return [review["id"] + " prior review rewritten" for review in prior["reviews"]
+            if reviews.get(review["id"]) != review]

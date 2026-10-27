@@ -1434,3 +1434,9 @@ The exact selection and resume record are in
 - [x] I31.5 Validate the changed specification/DAG/discovery and complete the exact committed-clean iteration reconciliation selection using retained valid native greens, with explicit UI/UX and typography scope dispositions; commit the implementation and acceptance separately.
 
 Iteration 31 acceptance: `completion-i31 --require-clean`, 133/133 selected case edges and 23/23 actual reconciliation methods at clean `4ed6dbd13322f25d979d6723b526ba94d5a466f8`. See `audit/iteration-31-reconciliation-20261027/ACCEPTANCE.json`; incomplete original scenarios and historical fixture conflicts remain individually open in LEDGER.json.
+
+Iteration 31 verification repair (2026-10-27):
+
+- [ ] I31.V1 Reject jointly aliased literal/partial bindings, omitted physical populations and falsified native command outcomes through the single reconciliation owner; cover sibling counterexamples and retain actual valid observations.
+- [ ] I31.V2 Inspect current local UI/UX/typography and safe read failure/recovery with screenshots/video, preserving user state and making no provider calls.
+- [ ] I31.V3 Register and reconcile every updated iteration case on a committed-clean revision; retain prior acceptance/failures, record the superseding review and commit.

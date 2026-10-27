@@ -34,58 +34,6 @@ def digest(path):
     return source_hashes[path]
 
 
-def test(method, source, command, *, proof):
-    return dict(test_id=method, source_path=source, command_id=command, proof=proof)
-
-
-def py(method):
-    return test("unittest::tests.test_historical_literals.HistoricalLiterals." + method,
-                "tests/test_historical_literals.py", "i31-arithmetic-literals",
-                proof="Existing exact registry arithmetic over the original literal counters; no semantic, participant, acoustic or provider claim.")
-
-
-def observer(method):
-    return test("unittest::tests.test_completion_i31.CompletionI31." + method,
-                "tests/test_completion_i31.py", "completion-i31",
-                proof="Exact union of unchanged independently observed literal components, or actual existing evidence-runner behavior; no new product execution.")
-
-
-def native(method, package="app"):
-    return test("tangerine.local/api/internal/" + package + "::" + method,
-                "services/api/internal/" + package + "/historical_literals_test.go", "i31-aux-counterexamples" if package=="scoring" and ".SET2.NEGATIVE" in method else "i31-go-literals",
-                proof="Actual native owner on the original labelled constructed text/population; no model, actual participant or speech measurement.")
-
-
-def literal_binding(cid, b):
-    if cid in {f"MET-{n:02d}.P1.SET2.{p}" for n in range(1, 28) for p in ["POSITIVE", "NEGATIVE"]}:
-        return py("test_core_set2_" + b["polarity"])
-    auxiliary = {x["case_id"] for x in json.loads((ROOT / "services/api/internal/scoring/testdata/historical-auxiliary.json").read_text())}
-    if cid in auxiliary:
-        return native("TestHistoricalAuxiliary" + b["polarity"].title() + "/" + cid, "scoring")
-    if b["mode"] == "evidence_scope":
-        return observer("test_unobserved_scope_positive" if b["polarity"] == "positive" else "test_static_summary_not_execution_negative")
-    fixture = b["fixture_id"]
-    if fixture in ["exact-ratio", "set2-DOM-05.P1-positive", "set2-DOM-05.P2-positive"]:
-        if b["mode"] == "contract_pair":
-            return observer("test_ratio_pair_" + b["polarity"])
-        if b["input"] in [dict(numerator="1", denominator="3"), dict(numerator="3", denominator="4")]:
-            return py("test_ratio_positive")
-        if b["input"] == dict(numerator=True, denominator=3.0):
-            return observer("test_ratio_pair_positive") if b["polarity"] == "positive" else py("test_ratio_invalid_negative")
-    if fixture == "unicode":
-        if b["mode"] == "contract_pair":
-            return observer("test_unicode_pair_" + b["polarity"])
-        if b["input"] == dict(answer="🙂 work; work", target=dict(start_cp=8, end_cp=12, exact_text="work")):
-            return native("TestHistoricalUnicodePositive")
-        if b["input"] == dict(answer="🙂 work; work", target=dict(start_cp=9, end_cp=13, exact_text="work")):
-            return observer("test_unicode_pair_positive") if b["polarity"] == "positive" else native("TestHistoricalUnicodeNegative")
-    if fixture == "mutation-replay":
-        if b["input"] == dict(canonical="She works here.", edits=[dict(start_cp=8,end_cp=9,exact_text="s",replacement="")]):
-            return native("TestHistoricalMutationPositive")
-        if b["input"] == dict(canonical="She works here.", surface="She work there.", edits=[dict(start_cp=8,end_cp=9,exact_text="s",replacement="")]):
-            return observer("test_mutation_rejection_positive") if b["polarity"] == "positive" else native("TestHistoricalMutationNegative")
-    return None
-
 
 lf_recon = json.loads((ROOT / "audit/linguistic-fullness-20261023/RECONCILIATION.json").read_text())
 lf_refs = {x["taxonomy_id"]: x for x in json.loads((ROOT / "services/api/internal/app/testdata/linguistic-contrasts.json").read_text())["examples"]}
@@ -165,7 +113,7 @@ for pid in triage:
         old,b=original[cid],bindings[cid]
         c=copy.deepcopy(old)
         owner=old_props[pid]["owner"]
-        literal=literal_binding(cid,b)
+        literal=r.literal_binding(cid,b)
         retained=partials(b)
         disposition="literal_observation_missing"
         remainder=[dict(path="expected."+k,value=v) for k,v in b["expected"].items()]
@@ -226,18 +174,20 @@ spec=parse_delta_specs(BASE)[("evidence-reconciliation","TRACE31 Historical lite
 graph["requirements"]=[x for x in graph["requirements"] if x["id"]!="TRACE31"]+[dict(id="TRACE31",capability="evidence-reconciliation",title="TRACE31 Historical literal evidence reconciliation",fingerprint=spec["fingerprint"])]
 graph["properties"]=[x for x in graph["properties"] if x["requirement_id"]!="TRACE31"]
 selections=[
- (1,"TRACE31 Original population and independent expectations",["test_population_positive","test_population_omission_negative","test_expected_literal_change_negative","test_test_identity_negative","test_discovery_aliases_positive","test_retired_discovery_identity_negative"]),
- (2,"TRACE31 Typed observations and literal execution",["test_new_literal_observations_positive","test_counterfeit_observation_negative","test_ratio_pair_positive","test_ratio_pair_negative","test_unicode_pair_positive","test_unicode_pair_negative"]),
- (3,"TRACE31 Exact partial reuse without promotion",["test_retained_component_reuse_positive","test_missing_partial_receipt_negative","test_partial_promotion_negative"]),
- (4,"TRACE31 Unchanged product and accepted history",["test_product_sources_preserved_positive","test_prior_accepted_case_rewrite_negative","test_false_external_blocker_negative","test_historical_scope_positive","test_historical_scope_change_negative"]),
+ (1,"TRACE31 Original population and independent expectations",["test_population_positive","test_population_omission_negative","test_expected_literal_change_negative","test_test_identity_negative","test_discovery_aliases_positive","test_retired_discovery_identity_negative","test_joint_literal_alias_negative","test_discovery_prior_rewrite_negative"]),
+ (2,"TRACE31 Typed observations and literal execution",["test_new_literal_observations_positive","test_counterfeit_observation_negative","test_ratio_pair_positive","test_ratio_pair_negative","test_unicode_pair_positive","test_unicode_pair_negative","test_missing_literal_population_negative","test_native_receipt_drift_negative"]),
+ (3,"TRACE31 Exact partial reuse without promotion",["test_retained_component_reuse_positive","test_missing_partial_receipt_negative","test_partial_promotion_negative","test_partial_leaf_alias_negative"]),
+ (4,"TRACE31 Unchanged product and accepted history",["test_product_sources_preserved_positive","test_prior_accepted_case_rewrite_negative","test_false_external_blocker_negative","test_historical_scope_positive","test_historical_scope_change_negative","test_browser_read_recovery_positive","test_browser_no_dispatch_negative"]),
  (5,"TRACE31 Static validation is not execution",["test_unobserved_scope_positive","test_static_summary_not_execution_negative"])]
 for n,scenario,methods in selections:
  pid="TRACE31.P"+str(n)
- graph["properties"].append(dict(id=pid,requirement_id="TRACE31",statement=scenario+" through exact original fixtures, actual typed native outputs and unchanged source bindings; no optional population or unsupported behavior is promoted.",scenarios=[scenario],owner="audit/iteration-31-reconciliation-20261027/reconcile.py",oracle="Original frozen case IDs/expectations; actual exact typed native test observations, independently stated literal counters/spans/edits and contrary input cases.",source_globs=["audit/iteration-31-reconciliation-20261027/**","tests/test_completion_i31.py","tests/test_historical_literals.py","services/api/internal/app/historical_literals_test.go","services/api/internal/scoring/historical_literals_test.go"],iteration=31))
+ graph["properties"].append(dict(id=pid,requirement_id="TRACE31",statement=scenario+" through exact original fixtures, actual typed native outputs and unchanged source bindings; no optional population or unsupported behavior is promoted.",scenarios=[scenario],owner="audit/iteration-31-reconciliation-20261027/reconcile.py",oracle="Original frozen case IDs/expectations; actual exact typed native test observations, independently stated literal counters/spans/edits and contrary input cases.",source_globs=["audit/iteration-31-reconciliation-20261027/**","audit/iteration-31-verification-20261027/**","tests/test_completion_i31.py","tests/test_historical_literals.py","services/api/internal/app/historical_literals_test.go","services/api/internal/scoring/historical_literals_test.go"],iteration=31))
  for method in methods:
   graph["cases"].append(dict(id=pid+"."+method,property_id=pid,polarity="positive" if method.endswith("positive") else "negative",scenario=scenario,scenario_fingerprint=spec["scenario_fingerprints"][scenario],setup="Run the exact I31 reconciliation test on the frozen 1909-case population and actual retained native outputs; controlled forged metadata is confined to temporary development receipts.",observable=scenario+": "+method,red_expectation="A changed original fixture, incomplete/forged observation or unsupported full-case promotion violates the independently authored assertion.",green_expectation="The original exact identities/expectations and native observations hold; every counterexample is detected without provider dispatch or a product gate.",test_id="unittest::tests.test_completion_i31.CompletionI31."+method,command_id="completion-i31",state="implemented",source_path="tests/test_completion_i31.py",source_sha256=digest("tests/test_completion_i31.py"),invalidation_dependencies=["tests/test_completion_i31.py","audit/iteration-31-reconciliation-20261027/reconcile.py","audit/iteration-31-reconciliation-20261027/LEDGER.json","audit/iteration-31-reconciliation-20261027/OBSERVATIONS.json"],substitution=dict(classification="NO_TEST_DOUBLE",proof_claims=["Actual development reconciliation/runner and retained native test observations"],forbidden_claims=["Application UI/provider/linguistic or whole-release acceptance"]),distinct_reason=scenario+": this exact reconciliation assertion is owned by "+method+"; retained literal components are not reexecuted."))
   if "discovery" in method:
-   graph["cases"][-1]["invalidation_dependencies"] += ["openspec/changes/implement-teacher-error-trainer/discovery.json",".agents/workflow/scripts/discovery_ledger.py"]
+   graph["cases"][-1]["invalidation_dependencies"] += ["openspec/changes/implement-teacher-error-trainer/discovery.json",".agents/workflow/scripts/discovery_ledger.py","audit/iteration-31-verification-20261027/APPLY-ACCEPTANCE.json"]
+  if "browser" in method:
+   graph["cases"][-1]["invalidation_dependencies"] += ["services/web/app/**","services/web/public/fonts/SourceSans3.ttf","data/iteration-31-verification-20261027/ui-observations.json","data/iteration-31-verification-20261027/requests.jsonl"]
 
 (BASE/"verification.json").write_text(json.dumps(graph,indent=2)+"\n")
 props=["TRACE31.P"+str(n) for n in range(1,6)]
@@ -258,9 +208,18 @@ for scope in [discovery["scope"]]+discovery["reviews"]:
 active=list(dict.fromkeys(c["test_id"] for c in graph["cases"] if c["id"] in set(selected+selection["retained_literal_case_ids"])))
 discovery["scope"]["test_ids"]=list(dict.fromkeys(discovery["scope"]["test_ids"]+active))
 discovery["scope"]["property_ids"]=list(dict.fromkeys(discovery["scope"]["property_ids"]+props))
-review=next(x for x in discovery["reviews"] if x["id"]=="iteration31-literal-reconciliation-20261027")
+review=next((x for x in discovery["reviews"] if x["id"]=="iteration31-verification-20261027"),None)
+if review is None:
+ review=copy.deepcopy(next(x for x in discovery["reviews"] if x["id"]=="iteration31-literal-reconciliation-20261027"))
+ review["id"]="iteration31-verification-20261027"
+ discovery["reviews"].append(review)
+review["question"]="Verify I31 literal/partial identity, complete observation population, actual command outcomes, retained history and requested UI recovery evidence."
+review["rationale"]="Five fixed review counterexamples, exact original command receipts and browser GET-only failure/recovery observations. Preserve the prior apply review and its actual scope. No product/provider acceptance is inferred."
 review["test_ids"]=active
 stats=r.counts(packet)
 review["searches"][0]["outcome"]=f"{stats['materialized_literal']} original literal edges materialized;{stats['partial_exact_reuse']} exact category-workflow components retained without full promotion;{stats['literal_observation_missing']} complete literal joins unestablished;{stats['fixture_conflict']} conflicting ratio vectors remain open. Shared leaf identifiers in unrelated operations are not component proof. The51 coarse conditional labels are constructed native fixtures and ordinary planned test work. All original accepted registrations and retired planned discovery identities are preserved."
+review["searches"][0]["query"]="Actual fixture-to-method projection, all literal outputs/command receipts, missing/aliased/failed counterexamples, prior review preservation and read-only browser route/recovery observations."
+review["searches"][0]["results"] += [{"path":path,"classification":"interface_dependency","reason":"Current I31 verification/repair source or actual review evidence inspected."} for path in ["audit/iteration-31-reconciliation-20261027/reconcile.py","tests/test_completion_i31.py","audit/iteration-31-verification-20261027/REPORT.md"] if path not in {item["path"] for item in review["searches"][0]["results"]}]
+review["searches"][1]["query"]="jbcontext search: Where is the local browser review gateway which proxies the built frontend and injects controlled read failures while preventing provider calls?"
 discovery_path.write_text(json.dumps(discovery,indent=2)+"\n")
 print(json.dumps(dict(original_cases=len(rows),properties=len(property_rows),dispositions=r.counts(packet),literal_case_edges=len(selection["retained_literal_case_ids"])),indent=2))
