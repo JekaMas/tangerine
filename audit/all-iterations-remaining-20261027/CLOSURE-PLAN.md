@@ -239,6 +239,14 @@ Use valid retained greens and materialize only missing literal behavior. No paid
 
 **Classification:** `linguistic_fixture_or_diagnostic_qualification`; **status:** `mixed_observations`; **iterations:** 8, 26.
 
+**I33 engineering disposition.** [Iteration33 acceptance](../iteration-33-diagnostics-20261027/ACCEPTANCE.json)
+closes the demonstrated diagnostic/context/fixture defects on committed source.
+The full saved set and controls were inspected with zero new inference/synthesis.
+Strong forms and valid question contours remain acceptable; measured silence/F0
+and original contrary judgments stay separate. The three original mixed
+perceptual/contextual observations below remain unresolved, rather than a claim
+that the renderer failed or another mandatory judge campaign is needed.
+
 **Product use.** Avoid declaring legitimate strong forms or question contours wrong; distinguish physical realization from communicative meaning.
 
 **Already implemented/observed.** I26 retains selected assimilation confirmation, narrow linking confirmation, physical 600 ms boundary insertion and measured opposed F0 directions, with all original model replies.

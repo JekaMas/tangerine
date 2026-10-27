@@ -29,17 +29,17 @@ disagreements, their actual context/recordings/measurements/model replies.
 
 ## Findings and work
 
-- [ ] F1: demonstrate/fix Gemini's ordinary-diagnostic context projection;
+- [x] F1: demonstrate/fix Gemini's ordinary-diagnostic context projection;
   test the same boundary with target/reference, blind clips, private canaries,
   uncertain output, failure, no credentials and forbidden billing siblings.
-- [ ] F2: allow authored ambiguous expectations. Strong function words,
+- [x] F2: allow authored ambiguous expectations. Strong function words,
   careful/linking variants, accents and legitimate question contours remain
   acceptable; changed contexts do not retroactively become observed calls.
-- [ ] F3: reconcile every selected original clip/reply and physical observation.
+- [x] F3: reconcile every selected original clip/reply and physical observation.
   Preserve the missed 600 ms pause and intonation control false alarm. Acoustic
   direction is distinct from pragmatic correctness; no renderer repair follows
   from an unsupported judge opinion.
-- [ ] F4: literal tests, exact DAG/discovery registration, relevant native/spec
+- [x] F4: literal tests, exact DAG/discovery registration, relevant native/spec
   and language checks, evidence inspection, Lab readback and clean acceptance.
 
 ## Execution boundaries
@@ -83,3 +83,13 @@ provider call, synthesis, purchase or other external operation occurred.
 Next: commit this complete implementation/evidence registration, run the same
 four-property selection with --require-clean, then record acceptance and check
 the canonical I33 tasks. Task boxes remain unchecked until that clean result.
+
+## Accepted checkpoint
+
+Full selected --require-clean gate passed10/10 on `ab7407f5433714f51a9941eefbf55402283a88e7`.
+ACCEPTANCE.json records the exact scope,580 native observations,18 additional
+target-runtime regressions, local Lab readback and three unresolved original
+perceptual/contextual observations. All canonical I33 tasks are complete. No
+implementation work remains in this iteration; no later provider/source/model
+qualification is silently closed. Final commit records acceptance bookkeeping
+only; the accepted implementation and its original test receipts are unchanged.

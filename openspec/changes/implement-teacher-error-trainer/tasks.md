@@ -1426,10 +1426,10 @@ Original I26/CV model observations remain historical, including their mixed
 outcomes; this iteration does not require a bulk campaign or universal acoustic
 qualification.
 
-- [ ] I33.1 Apply the same restricted ordinary diagnostic context to Gemini and local transports; prove private-key/answer/observation exclusion, actual wire preservation and failure/billing siblings.
-- [ ] I33.2 Support explicit unresolved fixture expectations, correct future selected context/wording and preserve strong forms, accents, linking and legitimate question alternatives without coercing judge agreement.
-- [ ] I33.3 Trace every original selected target/control/context/reply, inspect the actual pause PCM and retained F0 evidence, and preserve unresolved functional observations without relabelling old calls or changing learner scores.
-- [ ] I33.4 Reconcile literal positive/negative tests and exact DAG/discovery bindings, relevant language/specification/preservation and local Lab readback; accept the complete selected iteration on committed-clean source with zero new inference/synthesis.
+- [x] I33.1 Apply the same restricted ordinary diagnostic context to Gemini and local transports; prove private-key/answer/observation exclusion, actual wire preservation and failure/billing siblings.
+- [x] I33.2 Support explicit unresolved fixture expectations, correct future selected context/wording and preserve strong forms, accents, linking and legitimate question alternatives without coercing judge agreement.
+- [x] I33.3 Trace every original selected target/control/context/reply, inspect the actual pause PCM and retained F0 evidence, and preserve unresolved functional observations without relabelling old calls or changing learner scores.
+- [x] I33.4 Reconcile literal positive/negative tests and exact DAG/discovery bindings, relevant language/specification/preservation and local Lab readback; accept the complete selected iteration on committed-clean source with zero new inference/synthesis.
 
 ## Iteration 31 — Historical literal evidence reconciliation
 
@@ -1473,3 +1473,13 @@ Iteration 32 verification repairs:
 - [x] I32.V3 Reconcile exact actual native/package dependency evidence, preserve original failures and scope limits, pass the full committed-clean I32 selection and commit acceptance.
 
 Iteration32 accepted: all39 selected case edges and39 physical current assertions passed with --require-clean at e05d673acfe260a2854974c52c28dcd8dab915c1. The native evidence includes210 distinct observed Go cases/subcases; directly dependent JS helpers52 pass. Four verify findings closed; actual local audio, UI pictures/videos and Lab readback retain their stated limits. No additional model calls or paid use occurred during verify. See audit/iteration-32-overlap-20261027/ACCEPTANCE.json.
+
+I33 acceptance:10/10 exact typed cases across four properties passed --require-clean
+on `ab7407f5433714f51a9941eefbf55402283a88e7`. The gate reconciles580 actual native
+observations and nine actual Lab downloads without repeating inference or native
+tests.18 new regressions also pass under installed speech Python3.12. Five
+demonstrated diagnostic/fixture defects are repaired; the original weak-form,
+pause-perception and intonation-function disagreements remain explicit mixed
+observations, as requested. See audit/iteration-33-diagnostics-20261027/ACCEPTANCE.json
+and REPORT.md. No paid use, new synthesis/provider call, user app restart or
+change to122categories/42formulas/11sources or canonical GAPS.md.

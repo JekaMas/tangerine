@@ -1,7 +1,8 @@
 # Iteration 33 — saved-audio diagnostics and ambiguous fixtures
 
-Implementation and informational verification are complete. Committed-clean
-acceptance is recorded separately in ACCEPTANCE.json after the selected gate.
+**Iteration33 is accepted:** the complete four-property selection passed10/10
+with --require-clean on `ab7407f5433714f51a9941eefbf55402283a88e7`.
+ACCEPTANCE.json binds the exact observed cases and retained native evidence.
 Entry source: `0dadf31d0aac7fc7502a9d63de909cfbb04aafbe`. Scope: QUAL-04, not a
 bulk judge campaign or universal acoustic qualification.
 
