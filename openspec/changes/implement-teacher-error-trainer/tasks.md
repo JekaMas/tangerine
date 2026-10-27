@@ -1562,15 +1562,30 @@ stopped. See audit/iteration-35-verification-20261027/ACCEPTANCE.json.
 
 ### Iteration36 — Available written-correction supplement
 
-- [ ] I36.1 Admit the complete pinned JFLEG release and retain every owner member/container/document; add its supplemental identity without replacing any original source scope.
-- [ ] I36.2 Implement native original/ref0–3/spellchecked pairing and preserve all1501originals/6004reference positions, exact text/line/provenance, unknown/missing and duplicate/unchanged siblings.
-- [ ] I36.3 Provide documented coarse difference mappings and experimental native/tool-origin distinctions without invented linguistic alignment, taxonomy or simultaneous error labels.
-- [ ] I36.4 Perform a complete actual disposable native import with interruption/reopen/resume, stale-revision/accepted-row protection, final counts and application readback.
-- [ ] I36.5 Make saved written-correction examples and separate development/test evaluation datasets usable through native readback and ordinary Sources controls.
-- [ ] I36.6 Connect deterministic reference-membership evaluation to the existing local Lab command, save its real report, and verify all supplied alternatives plus unknown/duplicate/control cases with zero model calls.
-- [ ] I36.7 Reconcile the complete positive/negative DAG, relevant language/structural/preservation checks and actual UI/typography evidence; self-review ownership, repair findings, commit and pass the full committed-clean I36 selection.
+- [x] I36.1 Admit the complete pinned JFLEG release and retain every owner member/container/document; add its supplemental identity without replacing any original source scope.
+- [x] I36.2 Implement native original/ref0–3/spellchecked pairing and preserve all1501originals/6004reference positions, exact text/line/provenance, unknown/missing and duplicate/unchanged siblings.
+- [x] I36.3 Provide documented coarse difference mappings and experimental native/tool-origin distinctions without invented linguistic alignment, taxonomy or simultaneous error labels.
+- [x] I36.4 Perform a complete actual disposable native import with interruption/reopen/resume, stale-revision/accepted-row protection, final counts and application readback.
+- [x] I36.5 Make saved written-correction examples and separate development/test evaluation datasets usable through native readback and ordinary Sources controls.
+- [x] I36.6 Connect deterministic reference-membership evaluation to the existing local Lab command, save its real report, and verify all supplied alternatives plus unknown/duplicate/control cases with zero model calls.
+- [x] I36.7 Reconcile the complete positive/negative DAG, relevant language/structural/preservation checks and actual UI/typography evidence; self-review ownership, repair findings, commit and pass the full committed-clean I36 selection.
 
 I36 is the JFLEG slice of SUP-04. Other supplements and the optional732-stimulus
 TET-GOLD-1 release remain separate; this iteration does not claim their completion.
 Anchors, independent native populations and evidence are in
 `audit/iteration-36-jfleg-20261027/PLAN.json` and PROGRESS.md.
+
+I36 accepted: all14 I36.P1–I36.P7 positive/negative cases passed --require-clean
+on `9751facbda6bfed18fb183cc22cc93dc26f10488`. Actual full native JFLEG import retains30assets,
+34789accepted rows,1501originals and6004supplied reference positions. Sources
+examples, complete754/747dataset downloads and local input/report-retaining
+reference evaluation have actual native/Chrome/Lab proof.33unique Go race cases
+and the authored JS warning case pass; strict pinned OpenSpec, graph/discovery,
+formatting/vet/build and original catalogue/GAPS preservation pass. Desktop/
+narrow typography, safe retry/recovery, screenshots and a silent actual source
+workflow video are retained. Experimental19bad M2 offsets across5sentences stay
+explicit source-tool metadata; no linguistic gold or semantic grading is
+invented. Imported private data are retained stopped; user app/data/settings
+remain untouched. No model/speech-provider/paid use, installs, deployment, PBT
+or publication. Other SUP-04 slices remain separate. See
+audit/iteration-36-jfleg-20261027/ACCEPTANCE.json and REPORT.md.

@@ -3,8 +3,8 @@
 Entry: clean `b1eb6b5` in the Tangerine iteration16 worktree. This is the selected
 JFLEG slice of SUP-04. The available pinned owner archive is imported, preserved
 and usable through the production native source, examples and local evaluation
-owners. The complete seven-property, fourteen-case I36 working selection passes;
-committed-clean acceptance is recorded separately in ACCEPTANCE.json.
+owners. The complete seven-property, fourteen-case I36 selection passed --require-clean
+on `9751facbda6bfed18fb183cc22cc93dc26f10488`. ACCEPTANCE.json records the exact receipt.
 
 ## Delivered data and use
 
