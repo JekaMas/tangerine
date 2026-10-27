@@ -1,6 +1,6 @@
 # Iteration 35 — Official L2-ARCTIC application import
 
-Status: full native application import and readback passed; final clean acceptance pending. Canonical
+Status: accepted; complete committed-clean I35 selection passed8/8 at47d171d. Canonical
 checklist: OpenSpec tasks.md, iteration35. Entry revision: eb6ac96.
 
 The actual user selected DATA-07: the complete official v5 archive already
@@ -59,8 +59,7 @@ copies official members through the real private asset owner and drives the real
 parser, staging, projection, commit and HTTP handlers against PostgreSQL/MinIO.
 No native row, normalized result, corpus license or model decision is substituted.
 Native tests retain actual positive and negative storage, parser, metadata,
-unknown/ambiguous context and clock behavior. Full execution/readback and exact counts passed. Final clean acceptance remains
-pending until its separate receipt is recorded.
+unknown/ambiguous context and clock behavior. Full execution/readback and exact counts passed. The complete committed-clean I35 receipt is recorded in ACCEPTANCE.json.
 
 The harness deliberately interrupts staging and mapping. Database reopen, stale
 revision/incomplete-commit rejection, unchanged accepted-row contents, explicit
@@ -109,7 +108,7 @@ No source code from that corpus or upstream project was executed.
 
 The final native test passed under Go1.26.5 race instrumentation. The eight
 positive/negative I35 reconciliation methods and complete selected working-tree
-DAG also passed. The required committed-clean receipt is still pending. Root failures and
+DAG also passed. The committed-clean receipt passed8/8 at47d171d. Root failures and
 intermediate observations remain in ignored evidence instead of being relabelled.
 
 Source-quality readback independently observes73 native interval extents outside
@@ -119,3 +118,17 @@ identified. The actual HKK mismatch is returned by the production record handler
 with its original1.201375s label and actual44,100Hz media clock. None is
 relabelled exact alignment or a new16k derivative. The v1 strict bound contract
 remains intact and its original source_contract_test.go is byte-identical.
+
+## Acceptance and retained data
+
+The complete selected I35 DAG passed8/8 with --require-clean at
+`47d171d5aa0845dbf2fbb1fb96848f92541f8c3e`. Pinned OpenSpec1.13.1 strict
+validation, graph/discovery, affected Go1.26.5 race/pure/native cases, relevant
+vet and catalogue/GAPS preservation passed. Unaffected earlier full-source
+imports and model observations were reused within their original scope.
+
+The disposable PostgreSQL and private MinIO containers are stopped with the
+complete imported data retained for reuse. Their private runtime state is in
+ignored data/iteration-35-official-l2-20261027/retention.json. No live user-stack
+data was populated or restarted. Acceptance bookkeeping follows the accepted
+code commit; no implementation/test/data inputs change during that bookkeeping.

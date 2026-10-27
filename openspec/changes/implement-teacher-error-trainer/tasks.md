@@ -1524,4 +1524,17 @@ Resume: audit/iteration-35-official-l2-20261027/PROGRESS.md. Full original v5 by
 - [x] I35.1 Reuse admitted original/member identities through the existing private storage owner; preserve every official file/container/document and native WAVE clocks without adding a public trusted-input bypass.
 - [x] I35.2 Perform full production native parsing/projection for all24 read and22 suitcase speakers, every transcript/manual/automatic tier, audio association and provenance; verify independent corrected operation totals and uncertainty preservation.
 - [x] I35.3 Interrupt an actual import, reopen persistent application storage and resume to completion with stable accepted rows/assets; prove stale-revision/incomplete-state siblings.
-- [ ] I35.4 Commit and read back actual full normalized records, metadata and stored media through application handlers; reconcile positive/negative DAG, relevant checks and unchanged evidence, review single ownership, commit and pass full committed-clean I35 acceptance.
+- [x] I35.4 Commit and read back actual full normalized records, metadata and stored media through application handlers; reconcile positive/negative DAG, relevant checks and unchanged evidence, review single ownership, commit and pass full committed-clean I35 acceptance.
+
+Iteration35 accepted: all8 I35.P1–I35.P4 positive/negative cases passed
+--require-clean at `47d171d5aa0845dbf2fbb1fb96848f92541f8c3e`. The full actual
+official v5 native import has84,296 linked release assets and1,574,840 accepted
+normalized rows, preserving24 speaker records,26,889 WAVE/transcript links and
+1,547,927 native intervals. All source layer/native operation/provenance counts
+and production API/media readback pass;11 saved foreground resume observations
+and accepted-row stability are retained.73 native extent differences remain
+explicitly unverified, without invented resampling/gold. v1 contracts and all
+122 categories/42 formulas/11 source scopes remain intact. DATA-07 is closed for
+full normalized import. The disposable database/storage are retained stopped
+for reuse. No new download, corpus rehash, inference/synthesis, paid use, user
+data change or publication. See audit/iteration-35-official-l2-20261027/ACCEPTANCE.json.
