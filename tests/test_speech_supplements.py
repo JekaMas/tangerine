@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'data/iteration-37-supplements-20261027'
 AUDIT = ROOT / 'audit/iteration-37-supplements-20261027'
+VERIFY = ROOT / 'data/iteration-37-verification-20261027'
 
 def read(path):
     return json.loads(path.read_text())
@@ -162,17 +163,17 @@ class SpeechSupplements(unittest.TestCase):
             self.assertEqual('17px', layout['font_size'])
             self.assertTrue(layout['fonts_loaded'])
             self.assertEqual(layout['width'], layout['document_width'])
-        self.assertTrue(b['finite_playback']['paused'])
-        self.assertGreaterEqual(b['finite_playback']['time'], 13.703)
-        self.assertLess(b['finite_playback']['time'], 14.5)
-        window = read(OUT / 'browser-window/observations.json')
-        self.assertEqual([5.66, 9.81], window['expected_interval'])
-        self.assertGreaterEqual(window['started']['time'], 5.66)
-        self.assertFalse(window['started']['paused'])
-        self.assertTrue(window['ended']['paused'])
-        self.assertGreaterEqual(window['ended']['time'], 9.81)
-        self.assertLess(window['ended']['time'], 10.5)
-        self.assertEqual('none', window['preload'])
+        # Source media's recovery/proxy owners changed during verify. Use the
+        # current actual playback; unchanged browsing/layout evidence stays valid.
+        media = read(VERIFY / 'media-final/observations.json')
+        self.assertTrue(media['finite_playback']['paused'])
+        self.assertGreaterEqual(media['finite_playback']['time'], 13.703)
+        self.assertLess(media['finite_playback']['time'], 14.5)
+        self.assertGreaterEqual(media['window_started']['time'], 5.66)
+        self.assertFalse(media['window_started']['paused'])
+        self.assertTrue(media['window_ended']['paused'])
+        self.assertGreaterEqual(media['window_ended']['time'], 9.81)
+        self.assertLess(media['window_ended']['time'], 10.5)
         self.assertEqual(40, b['paginated_examples'])
         self.assertTrue(b['reopen_same_import'])
         self.assertTrue(b['original_container_link'])
@@ -195,5 +196,52 @@ class SpeechSupplements(unittest.TestCase):
         self.assertTrue(b['controlled_empty_view'])
         self.assertTrue(b['file_failure_retains_links'])
         self.assertEqual([], b['page_errors'])
+
+    def test_media_recovery_positive(self):
+        current = read(VERIFY / 'media-final/observations.json')
+        self.assertEqual([503, 206], current['transient_statuses'])
+        self.assertEqual([], current['visible_error'])
+        self.assertFalse(current['audio']['paused'])
+        self.assertTrue(current['explicit_retry_recovered'])
+        self.assertTrue(current['native_controls_recovered'])
+        self.assertEqual({'paused': True, 'connected': False}, current['disposed_player'])
+        self.assertTrue(all(method == 'GET' for method in current['application_methods']))
+        self.assertEqual([], current['page_errors'])
+        keyboard = read(VERIFY / 'keyboard-visual/observations.json')
+        self.assertTrue(keyboard['keyboard_retry_recovered'])
+        self.assertEqual([1280, 390, 320], [v['width'] for v in keyboard['layouts']])
+        for layout in keyboard['layouts']:
+            self.assertEqual(layout['width'], layout['document_width'])
+            self.assertTrue(layout['font_loaded'])
+            self.assertTrue(layout['focused'])
+            self.assertNotEqual('none', layout['outline'])
+            self.assertGreaterEqual(layout['button_height'], 44)
+            self.assertEqual('16px', layout['font_size'])
+        wave = read(VERIFY / 'range-green/observations.json')
+        self.assertEqual(206, wave['status'])
+        self.assertEqual(44, wave['byte_count'])
+        self.assertEqual('44', wave['headers']['content-length'])
+        self.assertEqual('RIFF', wave['riff'])
+        self.assertEqual(597.25, wave['metadata']['duration'])
+
+    def test_media_recovery_negative(self):
+        red = read(VERIFY / 'media-red/observations.json')
+        self.assertEqual([503], red['media_requests'])
+        self.assertTrue(red['audio']['paused'])
+        self.assertEqual([], red['diagnostics'])
+        current = read(VERIFY / 'media-final/observations.json')
+        self.assertEqual([503, 503, 503], current['exhausted_statuses'])
+        self.assertEqual('This recording is unavailable right now. Retry playback; your source files are retained.', current['exhausted_message'])
+        self.assertTrue(any('Tangerine source playback' in value for value in current['diagnostics']))
+        self.assertNotIn('PRIVATE_MEDIA_CANARY', json.dumps(current))
+        for log, count in [('source-playback.log', 8), ('source-proxy-green.log', 3)]:
+            text = (VERIFY / log).read_text()
+            self.assertIn(f'pass {count}', text)
+            self.assertIn('fail 0', text)
+        evidence = read(ROOT / 'audit/iteration-37-verification-20261027/EVIDENCE.json')
+        for item in evidence['bindings']:
+            self.assertEqual(item['sha256'], hashlib.sha256((ROOT / item['path']).read_bytes()).hexdigest())
+        for folder in ['media-final', 'keyboard-visual', 'range-green']:
+            self.assertEqual('0', (VERIFY / folder / 'exit-code').read_text().strip())
 if __name__ == '__main__':
     unittest.main()

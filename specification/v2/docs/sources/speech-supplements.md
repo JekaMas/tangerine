@@ -134,3 +134,23 @@ PIR test views preserve the owner-specified order. Each first-PIR test row corre
 Saved examples are read through GET /api/v1/imports/{id}/examples using the existing (member, table, ordinal) cursor, limit 1–200 (default 50), items and next_cursor envelope. Optional view selects the exact native task name (DiPlomat) or recordings/fragments-short/fragments-long (DRAL); an absent view selects all saved examples and an unknown view returns an empty page. The ordinary Sources selector provides these named views. It selects saved source_example projections without re-parsing bytes, revalidating stored records or initiating models. Original WAVE bytes support ordinary HTTP byte ranges for local playback/seeking; other retained source assets remain inert downloads. Missing import IDs use the existing source-not-found response and the shared authored retry guidance.
 
 GET /api/v1/source-releases/{id}/files returns the already admitted source.Member list (relative_path, sha256, byte_count, component, partition, asset_id, optional media_metadata). It uses saved source_member/source_file data only. The ordinary Original files disclosure loads on demand, shows twenty members at a time, filters notices/media/archives, and provides original-byte links. It includes inert documents, scripts and containers which do not yield normalized rows. The selected supplied releases have 96/36/19/10,498/3,086 retained members respectively, including four original archive containers and the separate EdAcc licence.
+
+Stored source playback uses one recovery owner for EdAcc, ELRD and both DRAL
+releases. A temporary media read failure logs only safe diagnostic codes and
+retries the same saved asset, retaining the requested interval or ordinary seek
+position. At most three consecutive unsuccessful reads occur in a recovery cycle,
+with short160/480ms retry waits. Recovered playback clears temporary guidance. Exhausted recovery
+shows an authored message and an ordinary Retry recording control; source text,
+files, other examples and navigation remain available. Explicit retry starts a
+fresh read attempt, never generation, synthesis or import. Browser play-permission
+failures ask for a Play gesture rather than loop. Replacing a source player
+cancels pending recovery and stops its recording. Manual seeking cancels a finite
+range; recovered range replay still stops at its saved end. Preload remains none
+and browsing does not start playback.
+
+The ordinary web proxy preserves supplied Content-Length, Content-Range and
+Accept-Ranges alongside original recording bytes. An absent upstream length
+stays absent. This forwards transport metadata; it does not revalidate source
+files, remeasure corpus media or add a qualification gate. Iteration37 verify
+receipts and root/sibling dispositions are in
+audit/iteration-37-verification-20261027/.

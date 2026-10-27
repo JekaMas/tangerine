@@ -1637,3 +1637,9 @@ new download/install, source-script execution, paid use, deployment, PBT or
 publication. Private data/evidence retained; user app/data/settings unchanged.
 Broader external acquisition and unselected source scopes remain separately open.
 See audit/iteration-37-supplements-20261027/ACCEPTANCE.json and REPORT.md.
+
+- [ ] I37.V1 Repair demonstrated transient recording failure through a single saved-source playback owner; verify interval/native-control, permanent-failure/retry and lifecycle siblings with actual local bytes.
+- [ ] I37.V2 Preserve original media byte-range metadata through the web proxy; finish keyboard/typography/picture/video review and expanded committed-clean I37 acceptance, retaining valid native imports/evidence.
+
+Verify findings, invalidation reasons and current checkpoint:
+audit/iteration-37-verification-20261027/PROGRESS.md.

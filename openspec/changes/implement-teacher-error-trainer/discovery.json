@@ -7103,7 +7103,9 @@
       "unittest::tests.test_speech_supplements.SpeechSupplements.test_persistence_positive",
       "unittest::tests.test_speech_supplements.SpeechSupplements.test_persistence_negative",
       "unittest::tests.test_speech_supplements.SpeechSupplements.test_consumers_positive",
-      "unittest::tests.test_speech_supplements.SpeechSupplements.test_consumers_negative"
+      "unittest::tests.test_speech_supplements.SpeechSupplements.test_consumers_negative",
+      "unittest::tests.test_speech_supplements.SpeechSupplements.test_media_recovery_positive",
+      "unittest::tests.test_speech_supplements.SpeechSupplements.test_media_recovery_negative"
     ],
     "historical_test_ids": [
       "planned::AUX-01::negative",
@@ -32492,6 +32494,75 @@
           "query": "Native source normalization; exact owner and runtime tests.",
           "reason": "No PSI operation needed.",
           "outcome": "No IDE index evidence claimed.",
+          "results": []
+        }
+      ]
+    },
+    {
+      "id": "iteration37-verification",
+      "question": "Source playback recovery/lifetime and original media range metadata through the actual web proxy.",
+      "disposition": "current_change",
+      "rationale": "Reproduced F1 media-error finalization and F2 metadata omission; one source playback owner and one existing proxy owner repaired.",
+      "property_ids": [
+        "I37.P7"
+      ],
+      "test_ids": [
+        "unittest::tests.test_speech_supplements.SpeechSupplements.test_media_recovery_positive",
+        "unittest::tests.test_speech_supplements.SpeechSupplements.test_media_recovery_negative"
+      ],
+      "searches": [
+        {
+          "kind": "exact",
+          "status": "completed",
+          "query": "NativeExamples/createPassageReplay, sourceRequest/clientFetch, sourceFileGet, Next proxy and retained source/Chrome receipts.",
+          "outcome": "Known owners and sibling playback/read cases traced; exact native field/count/clock/group contracts reviewed.",
+          "results": [
+            {
+              "path": "services/web/app/sources/NativeExamples.js",
+              "classification": "interface_dependency",
+              "reason": "Actual producer/consumer owner inspected."
+            },
+            {
+              "path": "services/web/app/sources/sourcePlayback.js",
+              "classification": "interface_dependency",
+              "reason": "Actual producer/consumer owner inspected."
+            },
+            {
+              "path": "services/web/app/api/[...path]/route.js",
+              "classification": "interface_dependency",
+              "reason": "Actual producer/consumer owner inspected."
+            },
+            {
+              "path": "services/api/internal/app/source_supplements.go",
+              "classification": "interface_dependency",
+              "reason": "Actual producer/consumer owner inspected."
+            },
+            {
+              "path": "services/api/internal/app/source_supplements_dral.go",
+              "classification": "interface_dependency",
+              "reason": "Actual producer/consumer owner inspected."
+            },
+            {
+              "path": "services/api/internal/app/empirical_reports.go",
+              "classification": "interface_dependency",
+              "reason": "Actual producer/consumer owner inspected."
+            }
+          ]
+        },
+        {
+          "kind": "semantic",
+          "status": "unavailable",
+          "query": "Where do empirical source reports count populations and group source records to avoid duplicate overlapping task views or corpus versions?",
+          "reason": "Actual jbcontext query reports no index for github.com/jekamas/tangerine.",
+          "outcome": "Exact source group_ids and single-population consumer tracing used; no semantic claim.",
+          "results": []
+        },
+        {
+          "kind": "jetbrains-index",
+          "status": "not_applicable",
+          "query": "Known source normalization and media recovery owners.",
+          "reason": "No symbol refactor or PSI operation needed.",
+          "outcome": "No IDE/index evidence claimed.",
           "results": []
         }
       ]
