@@ -1545,9 +1545,17 @@ data change or publication. See audit/iteration-35-official-l2-20261027/ACCEPTAN
 - [x] I35.V1 Repair full-manifest browser cache overflow via the single Sources session owner; cover legacy cache, unimported bindings, failed restoration and superseded selections.
 - [x] I35.V2 Observe complete actual saved source status/report, original bytes, pagination, history, reload, controlled safe retry/error/recovery and keyboard activation; retain screenshot/video evidence.
 - [x] I35.V3 Inspect actual desktop/narrow Sources typography and media content; reconcile unchanged native import evidence and sibling coverage.
-- [ ] I35.V4 Complete the expanded I35 DAG on a stable committed-clean revision, strict OpenSpec/graph/discovery and preservation; commit verification acceptance.
+- [x] I35.V4 Complete the expanded I35 DAG on a stable committed-clean revision, strict OpenSpec/graph/discovery and preservation; commit verification acceptance.
 
 Current verify supersedes apply’s UI not-applicable disposition for the newly
 requested browser scope. The eight original native import cases retain valid
 receipts; source conversion, corpus bytes and accepted database rows are unchanged.
 See audit/iteration-35-verification-20261027/PROGRESS.md.
+
+I35 verify accepted: expanded I35.P1–I35.P7passed14/14with --require-clean on
+`221cc28b0e1e5cb0fbf22c688e2204f7b3e4fd4d`. Shared source selection/recovery
+assertions passed33/33; actual full-source browser, typography and media evidence
+are retained. All selected findings are closed;73native source extent differences
+remain explicitly unverified source observations. No new corpus audit/import,
+provider/paid use or user-stack change. Complete imported data are retained
+stopped. See audit/iteration-35-verification-20261027/ACCEPTANCE.json.

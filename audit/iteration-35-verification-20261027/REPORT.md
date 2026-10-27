@@ -1,8 +1,8 @@
 # I35 verification and repair
 
 Entry revision: f48d410; original accepted native code:47d171d. Current scope is
-I35.P1–I35.P7,14 literal positive/negative cases. Stable implementation/evidence
-review is complete; the committed-clean acceptance is recorded separately.
+I35.P1–I35.P7,14 literal positive/negative cases. Accepted:14/14cases passed --require-clean at221cc28b0e1e5cb0fbf22c688e2204f7b3e4fd4d.
+The exact native receipt and case statuses are in ACCEPTANCE.json.
 This is self-review against independent requirements, native populations and
 literal expectations, not a second reviewer or model approval.
 
@@ -89,3 +89,11 @@ cancelled; the normal build reused the existing dependency layer. No package,
 model or host installation, financial operation, paid quota/credits, deployment
 or publication occurred. All122categories/recipes,42formulas,11source scopes,
 canonical GAPS.md and the running user app/data/settings/media/tabs are preserved.
+
+## Acceptance and retention
+
+The complete expanded I35 selection passed14/14on clean committed code221cc28.
+All selected findings are closed. Acceptance bookkeeping does not change source,
+test or data inputs. The test-only browser gateway/API/web were removed; the
+complete original imported database/media containers are stopped and retained
+for explicit reuse. User app3000and all other stacks remain unchanged.
