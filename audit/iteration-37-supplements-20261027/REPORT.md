@@ -149,3 +149,12 @@ product decisions. I27's broader external-source task remains open.
 The implementation, tests, detailed conversion contract and canonical I37 task
 list are committed together. Final revision, full fourteen-case clean gate and
 required structural/language/preservation results are recorded in ACCEPTANCE.json.
+
+## Accepted revision
+
+The complete fourteen-case I37 selection passed with --require-clean on
+`798cc834363e455900f5fefae825fc45fb8319f3` (known revision, dirty=false).
+All seven canonical tasks are checked.51unique native Go race cases,3JS cases
+and the stated actual Chrome/media observations are reconciled. This concluding
+metadata update introduces no behavior change or new native/provider execution.
+See ACCEPTANCE.json for exact receipts and proof limits.

@@ -1615,12 +1615,25 @@ ACCEPTANCE.json and REPORT.md.
 
 ### Iteration37 — Acquired speech and dialogue supplements
 
-- [ ] I37.1 Preserve complete acquired members/notices/containers and add native supplemental identities without changing original scopes.
-- [ ] I37.2 Normalize complete EdAcc utterance/media/speaker/background/clock associations, separate ASR/filtered views and preserve correct varieties.
-- [ ] I37.3 Normalize every ELRD turn/media/speaker/clock and preserve ASR and separate source terms.
-- [ ] I37.4 Normalize every DiPlomat task/split/source field; preserve conservative overlapping-view groups and native label meanings.
-- [ ] I37.5 Normalize DRAL base/increment conversations/fragments/participants/languages/translations, media and version relationships without duplicate-population claims.
-- [ ] I37.6 Perform complete actual native imports with durable interruption/reopen/resume, commit and counts/application readback.
-- [ ] I37.7 Materialize positive/negative cases, native/UI evidence and required structural/language/preservation checks; inspect/repair and pass the complete committed-clean I37 selection.
+- [x] I37.1 Preserve complete acquired members/notices/containers and add native supplemental identities without changing original scopes.
+- [x] I37.2 Normalize complete EdAcc utterance/media/speaker/background/clock associations, separate ASR/filtered views and preserve correct varieties.
+- [x] I37.3 Normalize every ELRD turn/media/speaker/clock and preserve ASR and separate source terms.
+- [x] I37.4 Normalize every DiPlomat task/split/source field; preserve conservative overlapping-view groups and native label meanings.
+- [x] I37.5 Normalize DRAL base/increment conversations/fragments/participants/languages/translations, media and version relationships without duplicate-population claims.
+- [x] I37.6 Perform complete actual native imports with durable interruption/reopen/resume, commit and counts/application readback.
+- [x] I37.7 Materialize positive/negative cases, native/UI evidence and required structural/language/preservation checks; inspect/repair and pass the complete committed-clean I37 selection.
 
 Scope/anchors/progress: audit/iteration-37-supplements-20261027/PROGRESS.md.
+
+I37 apply accepted: all14positive/negative cases across seven properties passed
+--require-clean on `798cc834363e455900f5fefae825fc45fb8319f3`. Full acquired
+EdAcc/ELRD/DiPlomat/DRALbase+8imports retain all members, annotations, clocks,
+media and explicit overlapping views.51unique native Go race cases,3JS cases
+and actual five-scope Chrome/read/playback/recovery/keyboard/desktop/narrow
+evidence are reconciled. DiPlomat choice meanings/splits and30native DRAL
+recording windows are repaired. Strict pinned OpenSpec, graph/discovery,
+format/build/vet and catalogue/GAPS preservation pass. No model/provider call,
+new download/install, source-script execution, paid use, deployment, PBT or
+publication. Private data/evidence retained; user app/data/settings unchanged.
+Broader external acquisition and unselected source scopes remain separately open.
+See audit/iteration-37-supplements-20261027/ACCEPTANCE.json and REPORT.md.
