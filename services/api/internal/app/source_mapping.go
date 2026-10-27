@@ -27,6 +27,10 @@ func (s *Storage) projectSource(ctx context.Context, run *SourceRun, members []s
 	if e != nil {
 		return e
 	}
+	supplements, e := s.sourceSupplementContext(ctx, *run, members)
+	if e != nil {
+		return e
+	}
 	cursor := stagedSourceRow{Ordinal: -1}
 	for {
 		batch, e := s.sourceProjectionBatch(ctx, run.Report.ID, cursor)
@@ -74,6 +78,9 @@ func (s *Storage) projectSource(ctx context.Context, run *SourceRun, members []s
 				}
 				if run.Frozen.Release.Source == "L2-ARCTIC" {
 					sourceL2SpeakerProjection(&m, speakers, byName)
+				}
+				if source.SpeechSupplement(run.Frozen.Release.Source) {
+					sourceSupplementProjection(&m, *run, supplements)
 				}
 			case run.Frozen.Binding != nil:
 				m = source.LegacyRecord(run.Frozen.Release.Source, run.Report.Release, r.Member, r.Table, int(r.Ordinal), r.Row, run.Frozen.Binding)

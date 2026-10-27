@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"path"
 	"strconv"
 	"strings"
 	"tangerine.local/api/internal/contracts"
@@ -253,7 +254,12 @@ func (s *Server) sourceRowsGet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
-	rows, next, e := s.Store.SourceRows(r.Context(), id, r.URL.Query().Get("cursor"), limit)
+	examples := strings.HasSuffix(r.URL.Path, "/examples")
+	view := ""
+	if examples {
+		view = r.URL.Query().Get("view")
+	}
+	rows, next, e := s.Store.sourceRows(r.Context(), id, r.URL.Query().Get("cursor"), limit, examples, view)
 	if e != nil {
 		sourceHTTPError(w, e)
 		return
@@ -269,8 +275,8 @@ func (s *Server) sourceIssuesGet(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, 200, map[string]any{"items": items, "next_cursor": next})
 }
 func (s *Server) sourceFileGet(w http.ResponseWriter, r *http.Request) {
-	var key string
-	e := s.Store.DB.QueryRow(r.Context(), "SELECT a.storage_key FROM source_file f JOIN asset_location a ON a.asset_id=f.asset_id WHERE f.asset_id=$1 LIMIT 1", r.PathValue("id")).Scan(&key)
+	var key, name string
+	e := s.Store.DB.QueryRow(r.Context(), "SELECT a.storage_key,f.relative_path FROM source_file f JOIN asset_location a ON a.asset_id=f.asset_id WHERE f.asset_id=$1 LIMIT 1", r.PathValue("id")).Scan(&key, &name)
 	if e != nil {
 		sourceHTTPError(w, e)
 		return
@@ -281,6 +287,18 @@ func (s *Server) sourceFileGet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer object.Close()
+	if strings.EqualFold(path.Ext(name), ".wav") {
+		info, err := object.Stat()
+		if err != nil {
+			sourceHTTPError(w, err)
+			return
+		}
+		w.Header().Set("Content-Type", "audio/wav")
+		w.Header().Set("Content-Disposition", "inline")
+		w.Header().Set("Content-Security-Policy", "sandbox")
+		http.ServeContent(w, r, path.Base(name), info.LastModified, object)
+		return
+	}
 	first := make([]byte, 32768)
 	n, readErr := object.Read(first)
 	if readErr != nil && readErr != io.EOF {
@@ -294,4 +312,18 @@ func (s *Server) sourceFileGet(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write(first[:n])
 	}
 	_, _ = io.Copy(w, object)
+}
+
+func (s *Server) sourceFilesGet(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	if _, err := s.Store.SourceRelease(r.Context(), id); err != nil {
+		sourceHTTPError(w, err)
+		return
+	}
+	files, err := s.Store.sourceMembers(r.Context(), id)
+	if err != nil {
+		sourceHTTPError(w, err)
+		return
+	}
+	writeJSON(w, 200, files)
 }

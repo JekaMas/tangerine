@@ -1612,3 +1612,15 @@ remain unchanged. User app/data/settings are untouched; private test data are
 retained stopped. No inference, paid use, install, deployment/postdeployment, PBT,
 financial execution or publication. See audit/iteration-36-verification-20261027/
 ACCEPTANCE.json and REPORT.md.
+
+### Iteration37 — Acquired speech and dialogue supplements
+
+- [ ] I37.1 Preserve complete acquired members/notices/containers and add native supplemental identities without changing original scopes.
+- [ ] I37.2 Normalize complete EdAcc utterance/media/speaker/background/clock associations, separate ASR/filtered views and preserve correct varieties.
+- [ ] I37.3 Normalize every ELRD turn/media/speaker/clock and preserve ASR and separate source terms.
+- [ ] I37.4 Normalize every DiPlomat task/split/source field; preserve conservative overlapping-view groups and native label meanings.
+- [ ] I37.5 Normalize DRAL base/increment conversations/fragments/participants/languages/translations, media and version relationships without duplicate-population claims.
+- [ ] I37.6 Perform complete actual native imports with durable interruption/reopen/resume, commit and counts/application readback.
+- [ ] I37.7 Materialize positive/negative cases, native/UI evidence and required structural/language/preservation checks; inspect/repair and pass the complete committed-clean I37 selection.
+
+Scope/anchors/progress: audit/iteration-37-supplements-20261027/PROGRESS.md.

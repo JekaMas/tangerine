@@ -13,7 +13,7 @@ func TestJFLEGNativePlanPositive(t *testing.T) {
 			t.Fatalf("%s: %s %+v %v", file, actual, options, ok)
 		}
 	}
-	if !Known("JFLEG") || len(IDs) != 11 || len(AllIDs()) != 12 {
+	if !Known("JFLEG") || len(IDs) != 11 || len(AllIDs()) != 16 {
 		t.Fatal("supplement replaced original source scope")
 	}
 	copy := AllIDs()

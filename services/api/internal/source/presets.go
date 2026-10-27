@@ -12,6 +12,9 @@ func NativePlan(id string, m Member) (Options, string, bool) {
 	n := strings.ToLower(m.Path)
 	base := strings.ToLower(path.Base(m.Path))
 	o := Options{Encoding: "utf-8", Selector: "records"}
+	if SpeechSupplement(id) {
+		return SupplementPlan(id, m)
+	}
 	if id == "JFLEG" {
 		if _, table, ok := JFLEGFile(m.Path); ok {
 			o.Format = "lines"
@@ -276,6 +279,9 @@ func PhoneLabel(label string) (map[string]any, error) {
 // dictionaries may add their genuine component set; a public companion never
 // changes the identity or completeness of a missing original release.
 func MissingNative(id string, members []Member) []string {
+	if SpeechSupplement(id) {
+		return SupplementMissing(id, members)
+	}
 	names := []string{}
 	for _, m := range members {
 		names = append(names, strings.ToLower(m.Path))

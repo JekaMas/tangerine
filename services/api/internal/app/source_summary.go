@@ -117,6 +117,12 @@ func sourceKeys(m map[string]int64) []string {
 }
 func sortStrings(a []string) { sort.Strings(a) }
 func (s *Storage) SourceRows(ctx context.Context, id, cursor string, limit int) ([]map[string]any, string, error) {
+	return s.sourceRows(ctx, id, cursor, limit, false, "")
+}
+func (s *Storage) SourceExamples(ctx context.Context, id, cursor string, limit int) ([]map[string]any, string, error) {
+	return s.sourceRows(ctx, id, cursor, limit, true, "")
+}
+func (s *Storage) sourceRows(ctx context.Context, id, cursor string, limit int, examples bool, view string) ([]map[string]any, string, error) {
 	if limit < 1 || limit > 200 {
 		limit = 50
 	}
@@ -145,7 +151,7 @@ func (s *Storage) SourceRows(ctx context.Context, id, cursor string, limit int) 
 			return nil, "", ErrInput
 		}
 	}
-	rows, e := s.DB.Query(ctx, "SELECT member,table_name,ordinal,raw_record,corpus_record,projection,state,issues,transformation FROM source_row WHERE import_id=$1 AND (member,table_name,ordinal)>($2,$3,$4) ORDER BY member,table_name,ordinal LIMIT $5", id, members, table, ordinal, limit+1)
+	rows, e := s.DB.Query(ctx, "SELECT member,table_name,ordinal,raw_record,corpus_record,projection,state,issues,transformation FROM source_row WHERE import_id=$1 AND (member,table_name,ordinal)>($2,$3,$4) AND (NOT $6::boolean OR projection ? 'source_example') AND ($7='' OR coalesce(projection->'source_example'->>'task',projection->'source_example'->>'kind')=$7) ORDER BY member,table_name,ordinal LIMIT $5", id, members, table, ordinal, limit+1, examples, view)
 	if e != nil {
 		return nil, "", e
 	}

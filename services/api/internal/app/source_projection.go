@@ -25,6 +25,14 @@ func sourceCorpus(run SourceRun, m source.Mapped, member source.Member, cp, lice
 		}
 	}
 	split := "quarantine"
+	if run.Frozen.Native && run.Frozen.Release.Source == "DIPLOMAT" {
+		if native, ok := cp["native_partition"].(string); ok {
+			if native == "val" {
+				native = "dev"
+			}
+			member.Partition = &native
+		}
+	}
 	if member.Partition != nil {
 		switch *member.Partition {
 		case "train":

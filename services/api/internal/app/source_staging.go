@@ -62,7 +62,7 @@ func (s *Storage) stageSource(ctx context.Context, run *SourceRun, members []sou
 						return nil
 					}
 					table = plan.Name
-				} else if strings.HasPrefix(plan.Name, "jfleg_") || plan.Name == "essays" || plan.Name == "transcripts" || plan.Name == "withheld" || plan.Name == "scores.json" || plan.Name == "scores-detail.json" || plan.Name == "writings" {
+				} else if strings.HasPrefix(plan.Name, "sp_") || strings.HasPrefix(plan.Name, "jfleg_") || plan.Name == "essays" || plan.Name == "transcripts" || plan.Name == "withheld" || plan.Name == "scores.json" || plan.Name == "scores-detail.json" || plan.Name == "writings" {
 					table = plan.Name
 				}
 				ordinal := counters[table]

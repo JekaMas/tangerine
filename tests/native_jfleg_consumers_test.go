@@ -41,16 +41,34 @@ func TestNativeJFLEGConsumerPositive(t *testing.T) {
 	sourceAssert(t, 200, statuses.Code)
 	var items []map[string]any
 	sourceRequire(t, json.Unmarshal(statuses.Body.Bytes(), &items))
-	sourceAssert(t, 12, len(items))
+	sourceAssert(t, 16, len(items))
 	found := false
+	cardStatus := ""
 	for _, item := range items {
 		_, _, e := contracts.Validate("source-status", "2.0.0", sourceBytes(item))
 		sourceRequire(t, e)
 		if item["source_id"] == "JFLEG" {
 			found = true
-			sourceAssert(t, "complete", item["status"])
-			sourceAssert(t, true, item["normalized_complete"])
-			sourceAssert(t, []any{}, item["missing_component_names"])
+			cardStatus, _ = item["status"].(string)
+			// Later deliberately partial fixtures may be the latest release. The
+			// selected complete import remains independently readable and complete.
+			imports := item["release_import_report_ids"].(map[string]any)[fixture["release_id"]].([]any)
+			selected := false
+			for _, candidate := range imports {
+				selected = selected || candidate == id
+			}
+			sourceAssert(t, true, selected)
+			selectedRun, err := f.s.Store.SourceImport(ctx, id)
+			sourceRequire(t, err)
+			sourceAssert(t, "complete", selectedRun.Report.State)
+			sourceAssert(t, true, selectedRun.Report.Normalized)
+			sourceAssert(t, 0, len(selectedRun.Report.FullMissing))
+			releases := item["release_ids"].([]any)
+			if releases[len(releases)-1] == fixture["release_id"] {
+				sourceAssert(t, "complete", item["status"])
+				sourceAssert(t, true, item["normalized_complete"])
+				sourceAssert(t, []any{}, item["missing_component_names"])
+			}
 		}
 	}
 	if !found {
@@ -115,7 +133,7 @@ func TestNativeJFLEGConsumerPositive(t *testing.T) {
 	sourceAssert(t, "external_written", record["origin"])
 	sourceAssert(t, nil, record["normalized_case_version_id"])
 	sourceAssert(t, before, jflegScalar(t, f.s.Store, "SELECT count(*) FROM source_import"))
-	jflegSave(t, "consumer-observations.json", map[string]any{"source_cards": 12, "jfleg_status": "complete", "download_counts": counts, "all_examples": 1501, "originals_checked": 1501, "reference_positions_checked": 6004, "origins": origins, "tool_findings_retained": 24, "readback_without_media": true, "readback_import_count_unchanged": true, "corpus_origin": record["origin"]})
+	jflegSave(t, "consumer-observations.json", map[string]any{"source_cards": 16, "jfleg_status": cardStatus, "selected_full_import_status": "complete", "download_counts": counts, "all_examples": 1501, "originals_checked": 1501, "reference_positions_checked": 6004, "origins": origins, "tool_findings_retained": 24, "readback_without_media": true, "readback_import_count_unchanged": true, "corpus_origin": record["origin"]})
 }
 func TestNativeJFLEGCursorPositive(t *testing.T) {
 	f, fixture := jflegServer(t)

@@ -31,6 +31,21 @@ func (s *Storage) sourceFullMissing(ctx context.Context, release SourceRelease, 
 		missing = append(missing, label)
 	}
 	switch release.Source {
+	case "EDACC", "ELRD", "DIPLOMAT", "DRAL":
+		for _, entry := range supplementExpectedRows(release) {
+			if e := requireRows(entry.table, entry.table, entry.suffix, entry.count); e != nil {
+				return nil, e
+			}
+		}
+		if release.Source != "DIPLOMAT" {
+			var absent int64
+			if e := s.DB.QueryRow(ctx, "SELECT count(*) FROM source_row WHERE import_id=$1 AND projection ? 'source_example' AND (projection->'source_example'->'media' IS NULL OR projection->'source_example'->'media'='null'::jsonb)", importID).Scan(&absent); e != nil {
+				return nil, e
+			}
+			if absent > 0 {
+				missing = append(missing, fmt.Sprintf("Native example media, including compatible base dependencies: %d unresolved", absent))
+			}
+		}
 	case "JFLEG":
 		for part, count := range map[string]int64{"dev": 754, "test": 747} {
 			for _, pair := range [][2]string{{"jfleg_source", ".src"}, {"jfleg_ref0", ".ref0"}, {"jfleg_ref1", ".ref1"}, {"jfleg_ref2", ".ref2"}, {"jfleg_ref3", ".ref3"}, {"jfleg_spellchecked", ".spellchecked.src"}} {
