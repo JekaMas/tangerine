@@ -1,0 +1,33 @@
+{
+  "iteration": 34,
+  "origin": "Constructed independent functional requests, not corpus-derived or population gold",
+  "model": "tangerine-qwen35-9b-review-nospec-20261021",
+  "model_digest": "f53e68038d114252fc8c888a7dbd2f8e0fade74c0bea6649bb467ed3430ff9bd",
+  "common_profile": {"context_budget_tokens": 65536, "max_output_tokens": 8000, "temperature": 0.2, "reasoning_effort": "none", "auth_method": "local_none", "billing_mode": "local"},
+  "alternatives": [{"id": "plain", "structured_output": false}, {"id": "schema", "structured_output": true}],
+  "cases": [
+    {
+      "id": "two-errors",
+      "mutation_count": 2,
+      "topic": "Planning a neighbourhood book swap. Write about 90 words with two speakers. Use each exact phrase once in the clean dialogue: two books; make a decision; a book swap; help with the event. Keep these sentences short and ordinary. For the separate mutation phase only, change two books to two book and make a decision to do a decision, once each. Do not change a book swap or help with the event. The clean dialogue must contain only correct English; the two deliberately incorrect replacements belong only in the later mutated dialogue.",
+      "expected": [
+        {"canonical": "two books", "surface": "two book", "category_id": "grammar.nouns.number", "preferred_correction": "two books"},
+        {"canonical": "make a decision", "surface": "do a decision", "category_id": "lexis.collocation", "preferred_correction": "make a decision"}
+      ],
+      "correct_controls": ["a book swap", "help with the event"]
+    },
+    {
+      "id": "zero-errors",
+      "mutation_count": 0,
+      "topic": "Planning a neighbourhood book swap. Write about 90 words with two speakers. Use each exact phrase once: two books; make a decision; a book swap; help with the event. All of these are correct English. No mistakes are requested; preserve the complete clean dialogue unchanged in the mutation phase.",
+      "expected": [],
+      "correct_controls": ["two books", "make a decision", "a book swap", "help with the event"]
+    }
+  ],
+  "case_settings": {"speaker_count": 2, "text_length_words": 90, "english_level": "B1", "category_families": ["grammar", "lexis"], "category_ids": ["grammar.nouns.number", "lexis.collocation"], "severity_levels": ["minor"], "audio_backend": "local"},
+  "limits": {"foreground_seconds": 270, "canonical_seconds": 90, "mutation_seconds": 240, "max_semantic_repairs_per_stage": 1, "model_sweep": false, "new_installation": false, "hosted_fallback": false},
+  "selection_rule": "An alternative is functionally qualified only if both requests complete through native admission and the independent literal semantic expectations hold. Do not select by schema success alone. Preserve all failures; any subsequent demonstrated repair is a separately recorded variant with its invalidated cases.",
+  "quality": {"TP": "Expected erroneous target identified with the requested category and valid preferred correction", "FP": "Claimed error outside the two declared targets or on a correct control", "FN": "Declared expected target not correctly produced and keyed", "TN": "Declared correct control preserved without an error unit", "precision": "TP/(TP+FP), null when denominator zero", "recall": "TP/(TP+FN), null when denominator zero", "accuracy": "(TP+TN)/(TP+FP+FN+TN), null when denominator zero", "failure": "Unavailable output remains failed with coverage recorded; do not count it as a zero-error success or assign unobserved semantic rates"},
+  "cost": {"api_charge": 0, "currency": "USD", "electricity": "unmeasured", "latency": "Actual sequential wall time, including cold load where applicable; n=2 functional requests per alternative, no population statistics", "tokens": "Actual returned usage; missing remains null"},
+  "proof_limit": "Instruction-following functional repair on four fixed requests. No arbitrary 122-category generation, answer-checking model, speech or population accuracy qualification. Normal product use has no Lab/benchmark prerequisite."
+}

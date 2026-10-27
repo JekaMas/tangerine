@@ -1498,3 +1498,13 @@ weak-form/pause/intonation uncertainties remain explicit. No new inference,
 synthesis, paid use, deployment or user-data change. Latest acceptance:
 audit/iteration-33-diagnostics-20261027/VERIFY-ACCEPTANCE.json; review and limits:
 VERIFY-REPORT.md in the same directory. Original apply receipts remain historical.
+
+## Iteration 34 — Installed-local generation repair
+
+Scope: QUAL-05 plus the user's bounded comparison of repair alternatives.
+Resume: audit/iteration-34-local-generation-20261027/PROGRESS.md.
+
+- [ ] I34.1 Diagnose retained invalid mutations, MLX runner error and deadlines through their actual owners; preserve original failures and independently fixed expected targets before new local inference.
+- [ ] I34.2 Compare the preselected plain/schema-guided strategies using the same existing non-speculative Qwen9B profile and fixed positive/zero-error requests; repair demonstrated defects or explicitly select a suitable installed profile for new preparations without weakening admission or silently changing old settings.
+- [ ] I34.3 Observe saved clean/candidate/manifest readback and explicit failure/recovery siblings; retain every actual input/output/binding/native receipt, independent semantic quality and bounded latency/token/resource/cost measurements in local Lab.
+- [ ] I34.4 Reconcile exact positive/negative DAG cases, relevant language/specification/preservation and retained unaffected evidence; review single ownership, commit and pass the complete committed-clean iteration selection before recording acceptance.

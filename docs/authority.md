@@ -1,3 +1,15 @@
+2026-10-27 iteration34 apply: the actual user selects QUAL-05's installed-local
+generation failures and authorizes necessary actual local functional execution,
+root-cause repair, comparison of repair alternatives, quality/accuracy/precision,
+latency/token/resource/API-cost observations, native/context/Lab evidence and
+local commits through committed-clean acceptance. Use a small frozen common
+functional population and preselected repair strategies; this explicit bounded
+comparison supersedes the earlier blanket benchmark exclusion for this task.
+No model/parameter sweep, bulk judge campaign, new installation/model download,
+paid credits/overage, hosted call/fallback, deployment, publication, PBT or
+financial execution. Preserve app3000, user configuration/data/media/tabs and
+canonical GAPS.md. Do not relax admission or invent successful model quality.
+
 2026-10-27 iteration33 verify/repair: the actual user requests root-cause and
 sibling repairs through committed-clean acceptance, including actual local
 UI/UX/typography screenshots and video. Scoped diagnostic, saved-listening,

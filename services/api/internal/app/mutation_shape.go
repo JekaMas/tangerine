@@ -4,7 +4,9 @@ import "strings"
 
 // Omitted empty restrictions impose no additional condition. A sole correction
 // is the unambiguous preferred option. Do not choose among alternatives, invent
-// propositions, replace explicit flags or coerce malformed supplied values.
+// linguistic propositions or coerce malformed supplied values. Severity owns
+// an omitted numerical weight; the product owns optional-explanation support
+// for true errors, independently of whether the learner was asked to explain.
 func normalizeMutationOutput(value any) any {
 	root, ok := value.(map[string]any)
 	if !ok {
@@ -15,6 +17,31 @@ func normalizeMutationOutput(value any) any {
 		row, ok := v.(map[string]any)
 		if !ok {
 			continue
+		}
+		if _, exists := row["weight"]; !exists {
+			if severity, ok := row["severity"].(string); ok {
+				if weight, known := (map[string]float64{"minor": 1, "moderate": 2, "major": 3, "communication_breakdown": 4})[severity]; known {
+					row["weight"] = weight
+				}
+			}
+		}
+		if row["expected_judgment"] == "true_error" {
+			propositions, list := row["rationale_required_propositions"].([]any)
+			_, supplied := row["rationale_required_propositions"]
+			if !supplied || list && len(propositions) == 0 {
+				if text, ok := row["rationale"].(string); ok && strings.TrimSpace(text) != "" {
+					// A supplied display explanation is also a verbatim explanation
+					// proposition. No additional linguistic claim is generated.
+					propositions = []any{map[string]any{"id": "rationale-1", "description": text}}
+					row["rationale_required_propositions"] = propositions
+				}
+			}
+			if len(propositions) > 0 {
+				_, supplied := row["explanation_eligible"]
+				if _, boolean := row["explanation_eligible"].(bool); !supplied || boolean {
+					row["explanation_eligible"] = true
+				}
+			}
 		}
 		if _, exists := row["rationale_forbidden_propositions"]; !exists {
 			row["rationale_forbidden_propositions"] = []any{}
@@ -76,5 +103,5 @@ func normalizeMutationOutput(value any) any {
 			}
 		}
 	}
-	return normalizeMutationLocators(value)
+	return normalizeMutationCorrectionScopes(normalizeMutationLocators(value))
 }

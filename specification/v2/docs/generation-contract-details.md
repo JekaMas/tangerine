@@ -1,5 +1,31 @@
 # Ordinary generation: complete expansion and mutation records
 
+Iteration34 local-output projection clarification: the existing new-output
+normalizer may fill an omitted weight from the declared severity's fixed
+1/2/3/4 mapping. Explicit malformed/wrong weights remain admission errors.
+For a generated true error, a nonempty LLM-supplied display rationale may be
+projected verbatim as one explanation proposition if the proposition list is
+absent/empty. Supplied nonempty propositions are preserved. Explanation support
+is a product rule independent of the learner's optional explanation field:
+with supplied propositions, a missing/boolean eligibility flag becomes true.
+Null/malformed explicit fields and absent linguistic explanations are not
+invented or coerced. Acceptable controls are not relabelled. This occurs once
+before ordinary admission, preserves the original raw reply, and is never
+repeated on stored keys. Preferred textual corrections must match their quoted
+scope and preserve meaning; valid alternatives remain acceptable.
+
+If an ordinary single textual span explicitly supplies a unique final
+`surface_span` while its main quote is absent from the final text, that supplied
+final scope may be projected before Unicode coordinates are derived. Do not
+guess absent/repeated aliases, change a valid original scope or move acoustics.
+A preferred textual replacement may be trimmed to its quoted scope only when
+the complete supplied replacement uniquely matches saved canonical wording,
+contains the complete canonical scope, and all context outside that scope is
+unchanged. This removes duplicated unchanged context; it never invents missing
+corrective words or chooses another valid alternative. A wider supplied IPA is
+then unknown for the narrower scope and becomes null. This projection occurs
+before the same single admission and never changes an already saved key.
+
 The optional [recurring speaker contract](recurring-errors.md) is an explicit
 grouped-unit exception: one same-speaker context-conditioned rule may span several
 authored occurrences. It counts once, while its ledger retains every changed and

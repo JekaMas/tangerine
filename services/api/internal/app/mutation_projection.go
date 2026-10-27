@@ -55,6 +55,23 @@ func normalizeMutationLocators(value any) any {
 			if !ok || exact == "" {
 				continue
 			}
+			// A reply may retain the canonical locator in span while explicitly
+			// supplying the final locator as surface_span. Use that supplied
+			// scope only if the first quote is absent and the final quote unique.
+			if strings.Index(text, exact) < 0 {
+				if surface, ok := s["surface_span"].(map[string]any); ok {
+					quote, quoted := surface["exact_text"].(string)
+					_, start := surface["start_cp"].(float64)
+					_, end := surface["end_cp"].(float64)
+					_, oldStart := span["start_cp"].(float64)
+					_, oldEnd := span["end_cp"].(float64)
+					a := strings.Index(text, quote)
+					if quoted && quote != "" && start && end && oldStart && oldEnd && a >= 0 && a == strings.LastIndex(text, quote) {
+						span = map[string]any{"start_cp": surface["start_cp"], "end_cp": surface["end_cp"], "exact_text": quote}
+						s["span"], exact = span, quote
+					}
+				}
+			}
 			a := strings.Index(text, exact)
 			if a < 0 || a != strings.LastIndex(text, exact) {
 				continue
