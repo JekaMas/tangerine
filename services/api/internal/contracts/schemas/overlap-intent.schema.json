@@ -1,0 +1,81 @@
+{
+  "type": "object",
+  "properties": {
+    "unit_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Existing version-scoped identity."
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "obstructive",
+        "cooperative_backchannel"
+      ],
+      "description": "Contextual discourse contrast. Cooperation itself is not an error."
+    },
+    "target_utterance_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Existing version-scoped identity."
+    },
+    "overlapping_utterance_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+      "description": "Existing version-scoped identity."
+    },
+    "target_scope": {
+      "type": "object",
+      "properties": {
+        "start_cp": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named."
+        },
+        "end_cp": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named."
+        },
+        "exact_text": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Literal selected words in the final surface."
+        }
+      },
+      "required": [
+        "start_cp",
+        "end_cp",
+        "exact_text"
+      ],
+      "additionalProperties": false,
+      "description": "Nonempty exact Unicode scope; word timings are resolved from accepted local/native audio."
+    },
+    "target_gain": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 1,
+      "description": "Fixed linear PCM gain. No automatic normalization; unselected samples retain unity gain."
+    },
+    "overlapping_gain": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 1,
+      "description": "Fixed linear PCM gain. No automatic normalization; unselected samples retain unity gain."
+    }
+  },
+  "required": [
+    "unit_id",
+    "kind",
+    "target_utterance_id",
+    "overlapping_utterance_id",
+    "target_scope",
+    "target_gain",
+    "overlapping_gain"
+  ],
+  "additionalProperties": false,
+  "description": "On-demand overlap instruction. No predicted sample times or claimed audibility.",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/overlap-intent.schema.json",
+  "title": "overlap-intent"
+}

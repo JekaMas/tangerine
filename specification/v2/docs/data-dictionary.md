@@ -27,7 +27,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | cancel-request | schema hash | derived DTO or actual operation input/output receipt | 1 |
 | candidate-envelope | schema hash | document.payload | 5 |
 | capability-record | schema hash | document.payload | 13 |
-| case-candidate | 1.0.0 | document.payload | 81 |
+| case-candidate | 1.0.0 | document.payload | 82 |
 | case-head | schema hash | document.payload | 9 |
 | claim-extraction | 2.0.0 | document.payload | 46 |
 | common | schema hash | derived DTO or actual operation input/output receipt | 10 |
@@ -62,7 +62,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | ground-truth | 2.0.0 | document.payload | 119 |
 | health | schema hash | derived DTO or actual operation input/output receipt | 6 |
 | holdout-report | 2.0.0 | document.payload | 18 |
-| import-report | 2.0.0 | document.payload | 26 |
+| import-report | 2.0.0 | document.payload | 27 |
 | import-request | schema hash | derived DTO or actual operation input/output receipt | 4 |
 | judgment-issue | 2.0.0 | document.payload | 9 |
 | key-disclosure | schema hash | derived DTO or actual operation input/output receipt | 3 |
@@ -94,7 +94,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | raw-record | 2.0.0 | document.payload | 13 |
 | reconsider-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | render-constraint | schema hash | document.payload | 11 |
-| render-plan | 2.0.0 | document.payload | 60 |
+| render-plan | 2.0.0 | document.payload | 61 |
 | render-request | schema hash | derived DTO or actual operation input/output receipt | 3 |
 | resolve-dispute-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 8 |
 | restore-request | schema hash | derived DTO or actual operation input/output receipt | 2 |
@@ -109,7 +109,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | source-format-binding | 2.0.0 | document.payload | 20 |
 | source-release-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 26 |
 | source-release | 2.0.0 | document.payload | 32 |
-| source-status | schema hash | document.payload | 10 |
+| source-status | schema hash | document.payload | 11 |
 | speech-render-request | 2.0.0 | Derived DTO or actual operation/stage input/output receipt | 62 |
 | speech-render-result | schema hash | document.payload | 15 |
 | split-manifest | 2.0.0 | document.payload | 17 |
@@ -144,7 +144,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | llm-quality-judge-output | 2.0.0 | document.payload with linked private assets | 9 |
 
-| mutation-manifest | 2.0.0 | document.payload with linked private assets | 109 |
+| mutation-manifest | 2.0.0 | document.payload with linked private assets | 110 |
 
 | ai-development-run | 2.0.0 | document.payload with linked private assets | 96 |
 
@@ -175,11 +175,11 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 
 | audio-judge-profile | schema hash | derived DTO or actual operation input/output receipt | 21 |
 
-| render-progress | schema hash | derived DTO or actual operation input/output receipt | 39 |
+| render-progress | schema hash | derived DTO or actual operation input/output receipt | 45 |
 
 | source-mapping-program | schema hash | derived DTO or actual operation input/output receipt | 47 |
 
-| audio-sample-map | schema hash | derived DTO or actual operation input/output receipt | 17 |
+| audio-sample-map | schema hash | derived DTO or actual operation input/output receipt | 18 |
 
 | interpretation-checkpoint | 2.0.0 | private immutable document and linked stage assets | 17 |
 
@@ -224,3 +224,7 @@ Every active schema field/constraint/reference is indexed in language/field-inde
 | preparation-options | schema hash | derived DTO or actual operation input/output receipt | 15 |
 
 | recurring-error | schema hash | derived DTO or actual operation input/output receipt | 14 |
+
+| overlap-intent | schema hash | derived DTO or actual operation input/output receipt | 10 |
+
+| speech-composition | schema hash | derived DTO or actual operation input/output receipt | 19 |

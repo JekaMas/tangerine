@@ -251,6 +251,14 @@ func (s *Server) renderSpeech(ctx context.Context, p, settings map[string]any, o
 		piece["source_asset_id"] = asset.ID
 		piece["audio_sha256"] = asset.SHA
 		piece["sample_count"] = float64((len(audio) - 44) / 2)
+		if len(overlapIntents(plan)) > 0 {
+			native, _ := result["receipt"].(map[string]any)["native"].(map[string]any)
+			words := speechWords(native, requests[i].(map[string]any))
+			raw, _ := json.Marshal(words)
+			var value []any
+			_ = json.Unmarshal(raw, &value)
+			piece["word_intervals"] = value
+		}
 		piece["state"] = "complete"
 		piece["last_error_asset_id"] = nil
 		if e = s.saveSpeechProgress(ctx, p, progress, op.ID); e != nil {

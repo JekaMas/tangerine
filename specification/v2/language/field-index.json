@@ -1,6 +1,6 @@
 {
-  "schema_count": 173,
-  "field_count": 3804,
+  "schema_count": 175,
+  "field_count": 3845,
   "fields": [
     {
       "schema": "accept-candidate-request.schema.json",
@@ -3745,6 +3745,15 @@
       "description": "Mutation phase supplies all requested acoustic edits; canonical phase supplies an empty list. Historic absence means empty.",
       "schema_reference": null,
       "rule_sha256": "a1a87ad31ff67f9c3cbd0a6854122ab2701e4837676cd2e4ca0f93089317abcf"
+    },
+    {
+      "schema": "case-candidate.schema.json",
+      "name": "overlap_intents",
+      "pointer": "/properties/overlap_intents",
+      "required_in_parent": false,
+      "description": "Optional explicit simultaneous discourse events. Absent/empty preserves sequential delivery.",
+      "schema_reference": null,
+      "rule_sha256": "7af3618514ae050904e8129bfd4c25615e0e6286df338c954fcb5c98f45339d6"
     },
     {
       "schema": "case-candidate.schema.json",
@@ -11731,6 +11740,15 @@
     },
     {
       "schema": "import-report.schema.json",
+      "name": "full_release_missing_components",
+      "pointer": "/properties/full_release_missing_components",
+      "required_in_parent": false,
+      "description": "Named-source assessment saved at import completion. Empty means assessed with no missing components; absent/null is unassessed legacy or unfinished work. Reads trust the saved result and do not recount records.",
+      "schema_reference": null,
+      "rule_sha256": "722b773ead190e99b9f4130113f81585c8312c2b0687f16896d4ce814c96deaa"
+    },
+    {
+      "schema": "import-report.schema.json",
       "name": "component",
       "pointer": "/properties/component_counts/items/properties/component",
       "required_in_parent": true,
@@ -15157,6 +15175,15 @@
       "description": "Existing private typed asset; historic absent field means null, never an invented asset.",
       "schema_reference": null,
       "rule_sha256": "c0ae5efae829210d1fa84a05da22d127bc2c1244979197affb2d3b1ade0a0c09"
+    },
+    {
+      "schema": "render-plan.schema.json",
+      "name": "overlap_intents",
+      "pointer": "/properties/overlap_intents",
+      "required_in_parent": false,
+      "description": "Optional explicit simultaneous discourse events. Absent/empty preserves sequential delivery.",
+      "schema_reference": null,
+      "rule_sha256": "7af3618514ae050904e8129bfd4c25615e0e6286df338c954fcb5c98f45339d6"
     },
     {
       "schema": "render-plan.schema.json",
@@ -21873,6 +21900,15 @@
       "rule_sha256": "5eed6133eafc614314866b0b07714c4e68b1e0c995b5bd8a5a440e92d53c5d33"
     },
     {
+      "schema": "source-status.schema.json",
+      "name": "release_import_report_ids",
+      "pointer": "/properties/release_import_report_ids",
+      "required_in_parent": false,
+      "description": "Saved import IDs keyed by their actual release, in creation order. Selecting a release uses only its own reports; older responses without this projection do not imply a latest-release match.",
+      "schema_reference": null,
+      "rule_sha256": "d7408d50890144729f5349bee0d0e1c4177e88aaa5f207ea818ca7f4356fa3e9"
+    },
+    {
       "schema": "speech-render-request.schema.json",
       "name": "schema_version",
       "pointer": "/properties/schema_version",
@@ -27508,6 +27544,15 @@
     },
     {
       "schema": "mutation-manifest.schema.json",
+      "name": "overlap_intents",
+      "pointer": "/properties/overlap_intents",
+      "required_in_parent": false,
+      "description": "Optional explicit simultaneous discourse events. Absent/empty preserves sequential delivery.",
+      "schema_reference": null,
+      "rule_sha256": "7af3618514ae050904e8129bfd4c25615e0e6286df338c954fcb5c98f45339d6"
+    },
+    {
+      "schema": "mutation-manifest.schema.json",
       "name": "utterance_id",
       "pointer": "/properties/edits/items/properties/utterance_id",
       "required_in_parent": true,
@@ -31482,7 +31527,7 @@
       "required_in_parent": true,
       "description": "Ordered complete values.",
       "schema_reference": null,
-      "rule_sha256": "4e7cf12b9835f07a631d1e898783aae01d815066a3a4be3da4ac2b667e32adc6"
+      "rule_sha256": "a0a1cce0a3d5813f12dcfe741a5f07cc285686f7677445617febc0cc6eeda4b2"
     },
     {
       "schema": "render-progress.schema.json",
@@ -31519,6 +31564,15 @@
       "description": "Private assembly quality/pace diagnostic separate from the strict sample-map asset.",
       "schema_reference": null,
       "rule_sha256": "af9584d8e9dd38e61a104786b48ac1887f0fe5ccb9e6a9101a8b745418a3651e"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "composition",
+      "pointer": "/properties/composition",
+      "required_in_parent": false,
+      "description": "Durable admitted resolved schedule. Absent for historic sequential progress.",
+      "schema_reference": "speech-composition.schema.json",
+      "rule_sha256": "1f4e0ee2e4d3258c9f893f14c2e3b35d602595fba1df48efabba7f8f4e5275e5"
     },
     {
       "schema": "render-progress.schema.json",
@@ -31636,6 +31690,15 @@
       "description": "Actual scoped intervals in source order per unit, in piece-local24kHz samples; legacy single intervals remain readable. No character proportions.",
       "schema_reference": null,
       "rule_sha256": "507a54268b9c6d1e7efcf7d1dda76a14645f8843b66d08f5187094e7d3496eea"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "word_intervals",
+      "pointer": "/properties/pieces/items/properties/word_intervals",
+      "required_in_parent": false,
+      "description": "Accepted native timing for exact selected words; no proportional guess.",
+      "schema_reference": null,
+      "rule_sha256": "3a99811366e758888d053d12300b2b5e2655ccc401ee935f32d511a9aa5ed0a1"
     },
     {
       "schema": "render-progress.schema.json",
@@ -31771,6 +31834,42 @@
       "description": null,
       "schema_reference": null,
       "rule_sha256": "be5ac72348ac0f643845bd6d067291b863394c92680a17cba91f49f5e165e46c"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "start_cp",
+      "pointer": "/properties/pieces/items/properties/word_intervals/items/properties/start_cp",
+      "required_in_parent": true,
+      "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named.",
+      "schema_reference": null,
+      "rule_sha256": "533db7e75245d465cf5c5ecd2cc59f3e84a5ee0b5a49eff90cf288f50855b0f3"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "end_cp",
+      "pointer": "/properties/pieces/items/properties/word_intervals/items/properties/end_cp",
+      "required_in_parent": true,
+      "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named.",
+      "schema_reference": null,
+      "rule_sha256": "533db7e75245d465cf5c5ecd2cc59f3e84a5ee0b5a49eff90cf288f50855b0f3"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "start",
+      "pointer": "/properties/pieces/items/properties/word_intervals/items/properties/start",
+      "required_in_parent": true,
+      "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named.",
+      "schema_reference": null,
+      "rule_sha256": "533db7e75245d465cf5c5ecd2cc59f3e84a5ee0b5a49eff90cf288f50855b0f3"
+    },
+    {
+      "schema": "render-progress.schema.json",
+      "name": "end",
+      "pointer": "/properties/pieces/items/properties/word_intervals/items/properties/end",
+      "required_in_parent": true,
+      "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named.",
+      "schema_reference": null,
+      "rule_sha256": "533db7e75245d465cf5c5ecd2cc59f3e84a5ee0b5a49eff90cf288f50855b0f3"
     },
     {
       "schema": "source-mapping-program.schema.json",
@@ -32254,9 +32353,9 @@
       "name": "rows",
       "pointer": "/properties/rows",
       "required_in_parent": true,
-      "description": "Ordered complete actual clock coverage; crossfade overlap counted once.",
+      "description": "Independent actual source-to-final correspondences; concurrent rows preserve both sources and explicit gains.",
       "schema_reference": null,
-      "rule_sha256": "843657f5c648204d1d3481fa7303a413be890d18efc9e0542489d8c851708228"
+      "rule_sha256": "4f8bfedc105ec997f53c7deffc5d8fd4bfacebb69d201018b2a4d62202f06f4c"
     },
     {
       "schema": "audio-sample-map.schema.json",
@@ -32347,6 +32446,15 @@
       "description": "Null for no actual source/transform only.",
       "schema_reference": null,
       "rule_sha256": "10c5c6ca0d24746dd77f29cd0919c1633f8beee714bf71f8e2b0ae8b0fb4ffbb"
+    },
+    {
+      "schema": "audio-sample-map.schema.json",
+      "name": "mix_gain",
+      "pointer": "/properties/rows/items/properties/mix_gain",
+      "required_in_parent": false,
+      "description": "Fixed linear PCM gain. No automatic normalization; unselected samples retain unity gain.",
+      "schema_reference": null,
+      "rule_sha256": "fe6a9d038a21e762dc50edc5cef33ad775d5f9c72f9d077bbd3833bfea07bd72"
     },
     {
       "schema": "interpretation-checkpoint.schema.json",
@@ -34237,6 +34345,267 @@
       "description": null,
       "schema_reference": null,
       "rule_sha256": "00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96"
+    },
+    {
+      "schema": "overlap-intent.schema.json",
+      "name": "unit_id",
+      "pointer": "/properties/unit_id",
+      "required_in_parent": true,
+      "description": "Existing version-scoped identity.",
+      "schema_reference": null,
+      "rule_sha256": "ea644094876c765db97de533341ad9c0ffe64149a3812349d6f895c1251403b6"
+    },
+    {
+      "schema": "overlap-intent.schema.json",
+      "name": "kind",
+      "pointer": "/properties/kind",
+      "required_in_parent": true,
+      "description": "Contextual discourse contrast. Cooperation itself is not an error.",
+      "schema_reference": null,
+      "rule_sha256": "44b0043390b1610cd16584d42d1bdf7007ca6ec6f6a9a642502e979eed7e1e8c"
+    },
+    {
+      "schema": "overlap-intent.schema.json",
+      "name": "target_utterance_id",
+      "pointer": "/properties/target_utterance_id",
+      "required_in_parent": true,
+      "description": "Existing version-scoped identity.",
+      "schema_reference": null,
+      "rule_sha256": "ea644094876c765db97de533341ad9c0ffe64149a3812349d6f895c1251403b6"
+    },
+    {
+      "schema": "overlap-intent.schema.json",
+      "name": "overlapping_utterance_id",
+      "pointer": "/properties/overlapping_utterance_id",
+      "required_in_parent": true,
+      "description": "Existing version-scoped identity.",
+      "schema_reference": null,
+      "rule_sha256": "ea644094876c765db97de533341ad9c0ffe64149a3812349d6f895c1251403b6"
+    },
+    {
+      "schema": "overlap-intent.schema.json",
+      "name": "target_scope",
+      "pointer": "/properties/target_scope",
+      "required_in_parent": true,
+      "description": "Nonempty exact Unicode scope; word timings are resolved from accepted local/native audio.",
+      "schema_reference": null,
+      "rule_sha256": "1f88cfadb7f0ff1e99acced036e47099a8e835bc929c40394765749798c2a348"
+    },
+    {
+      "schema": "overlap-intent.schema.json",
+      "name": "target_gain",
+      "pointer": "/properties/target_gain",
+      "required_in_parent": true,
+      "description": "Fixed linear PCM gain. No automatic normalization; unselected samples retain unity gain.",
+      "schema_reference": null,
+      "rule_sha256": "fe6a9d038a21e762dc50edc5cef33ad775d5f9c72f9d077bbd3833bfea07bd72"
+    },
+    {
+      "schema": "overlap-intent.schema.json",
+      "name": "overlapping_gain",
+      "pointer": "/properties/overlapping_gain",
+      "required_in_parent": true,
+      "description": "Fixed linear PCM gain. No automatic normalization; unselected samples retain unity gain.",
+      "schema_reference": null,
+      "rule_sha256": "fe6a9d038a21e762dc50edc5cef33ad775d5f9c72f9d077bbd3833bfea07bd72"
+    },
+    {
+      "schema": "overlap-intent.schema.json",
+      "name": "start_cp",
+      "pointer": "/properties/target_scope/properties/start_cp",
+      "required_in_parent": true,
+      "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named.",
+      "schema_reference": null,
+      "rule_sha256": "533db7e75245d465cf5c5ecd2cc59f3e84a5ee0b5a49eff90cf288f50855b0f3"
+    },
+    {
+      "schema": "overlap-intent.schema.json",
+      "name": "end_cp",
+      "pointer": "/properties/target_scope/properties/end_cp",
+      "required_in_parent": true,
+      "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named.",
+      "schema_reference": null,
+      "rule_sha256": "533db7e75245d465cf5c5ecd2cc59f3e84a5ee0b5a49eff90cf288f50855b0f3"
+    },
+    {
+      "schema": "overlap-intent.schema.json",
+      "name": "exact_text",
+      "pointer": "/properties/target_scope/properties/exact_text",
+      "required_in_parent": true,
+      "description": "Literal selected words in the final surface.",
+      "schema_reference": null,
+      "rule_sha256": "239d561927c69c7a4b5b5e44ceca25ef5e3419cbfcd534522376f50317edb4f5"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "sample_count",
+      "pointer": "/properties/sample_count",
+      "required_in_parent": true,
+      "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named.",
+      "schema_reference": null,
+      "rule_sha256": "533db7e75245d465cf5c5ecd2cc59f3e84a5ee0b5a49eff90cf288f50855b0f3"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "pieces",
+      "pointer": "/properties/pieces",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "cbfc63253eb93dc75cbaea02467004f4f01bf8964f6cbf6d49831d4f39926887"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "tracks",
+      "pointer": "/properties/tracks",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "3ffd3608cec97ef3bb1e7a5d448310c537e04b38d50e345e4391c80c9f1d1c14"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "overlaps",
+      "pointer": "/properties/overlaps",
+      "required_in_parent": true,
+      "description": null,
+      "schema_reference": null,
+      "rule_sha256": "da0abdab6ab1968e7f02e67c33844091100a6bfad0fe9973fca25c8442a32819"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "piece_id",
+      "pointer": "/properties/pieces/items/properties/piece_id",
+      "required_in_parent": true,
+      "description": "Existing version-scoped identity.",
+      "schema_reference": null,
+      "rule_sha256": "ea644094876c765db97de533341ad9c0ffe64149a3812349d6f895c1251403b6"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "utterance_id",
+      "pointer": "/properties/pieces/items/properties/utterance_id",
+      "required_in_parent": true,
+      "description": "Existing version-scoped identity.",
+      "schema_reference": null,
+      "rule_sha256": "ea644094876c765db97de533341ad9c0ffe64149a3812349d6f895c1251403b6"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "final_start",
+      "pointer": "/properties/pieces/items/properties/final_start",
+      "required_in_parent": true,
+      "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named.",
+      "schema_reference": null,
+      "rule_sha256": "533db7e75245d465cf5c5ecd2cc59f3e84a5ee0b5a49eff90cf288f50855b0f3"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "final_end",
+      "pointer": "/properties/pieces/items/properties/final_end",
+      "required_in_parent": true,
+      "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named.",
+      "schema_reference": null,
+      "rule_sha256": "533db7e75245d465cf5c5ecd2cc59f3e84a5ee0b5a49eff90cf288f50855b0f3"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "piece_id",
+      "pointer": "/properties/tracks/items/properties/piece_id",
+      "required_in_parent": true,
+      "description": "Existing version-scoped identity.",
+      "schema_reference": null,
+      "rule_sha256": "ea644094876c765db97de533341ad9c0ffe64149a3812349d6f895c1251403b6"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "source_start",
+      "pointer": "/properties/tracks/items/properties/source_start",
+      "required_in_parent": true,
+      "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named.",
+      "schema_reference": null,
+      "rule_sha256": "533db7e75245d465cf5c5ecd2cc59f3e84a5ee0b5a49eff90cf288f50855b0f3"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "source_end",
+      "pointer": "/properties/tracks/items/properties/source_end",
+      "required_in_parent": true,
+      "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named.",
+      "schema_reference": null,
+      "rule_sha256": "533db7e75245d465cf5c5ecd2cc59f3e84a5ee0b5a49eff90cf288f50855b0f3"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "final_start",
+      "pointer": "/properties/tracks/items/properties/final_start",
+      "required_in_parent": true,
+      "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named.",
+      "schema_reference": null,
+      "rule_sha256": "533db7e75245d465cf5c5ecd2cc59f3e84a5ee0b5a49eff90cf288f50855b0f3"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "gain",
+      "pointer": "/properties/tracks/items/properties/gain",
+      "required_in_parent": true,
+      "description": "Fixed linear PCM gain. No automatic normalization; unselected samples retain unity gain.",
+      "schema_reference": null,
+      "rule_sha256": "fe6a9d038a21e762dc50edc5cef33ad775d5f9c72f9d077bbd3833bfea07bd72"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "unit_id",
+      "pointer": "/properties/overlaps/items/properties/unit_id",
+      "required_in_parent": true,
+      "description": "Existing version-scoped identity.",
+      "schema_reference": null,
+      "rule_sha256": "ea644094876c765db97de533341ad9c0ffe64149a3812349d6f895c1251403b6"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "kind",
+      "pointer": "/properties/overlaps/items/properties/kind",
+      "required_in_parent": true,
+      "description": "Contextual discourse contrast. Cooperation itself is not an error.",
+      "schema_reference": null,
+      "rule_sha256": "44b0043390b1610cd16584d42d1bdf7007ca6ec6f6a9a642502e979eed7e1e8c"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "target_utterance_id",
+      "pointer": "/properties/overlaps/items/properties/target_utterance_id",
+      "required_in_parent": true,
+      "description": "Existing version-scoped identity.",
+      "schema_reference": null,
+      "rule_sha256": "ea644094876c765db97de533341ad9c0ffe64149a3812349d6f895c1251403b6"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "overlapping_utterance_id",
+      "pointer": "/properties/overlaps/items/properties/overlapping_utterance_id",
+      "required_in_parent": true,
+      "description": "Existing version-scoped identity.",
+      "schema_reference": null,
+      "rule_sha256": "ea644094876c765db97de533341ad9c0ffe64149a3812349d6f895c1251403b6"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "final_start",
+      "pointer": "/properties/overlaps/items/properties/final_start",
+      "required_in_parent": true,
+      "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named.",
+      "schema_reference": null,
+      "rule_sha256": "533db7e75245d465cf5c5ecd2cc59f3e84a5ee0b5a49eff90cf288f50855b0f3"
+    },
+    {
+      "schema": "speech-composition.schema.json",
+      "name": "final_end",
+      "pointer": "/properties/overlaps/items/properties/final_end",
+      "required_in_parent": true,
+      "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named.",
+      "schema_reference": null,
+      "rule_sha256": "533db7e75245d465cf5c5ecd2cc59f3e84a5ee0b5a49eff90cf288f50855b0f3"
     }
   ]
 }

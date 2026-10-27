@@ -139,3 +139,15 @@ outputs instead of repeating accepted behavior. `tasks.md` is the sole checklist
 UI/UX and product typography have concrete not-applicable reasons because no
 runtime or presentation owner changes. Existing source/provider/platform needs
 and incomplete earlier acceptance scopes are preserved.
+
+
+### Iteration 32 — actual simultaneous speech and word masking
+
+ENG-01 / ALL-AUDIT.2 is implemented through the production timed PCM composer,
+frozen overlap intent, source/final/key clocks and existing resume/finalizer.
+The exact five-property/twenty-case selection is in
+[audit/iteration-32-overlap-20261027/SELECTION.json](../../../audit/iteration-32-overlap-20261027/SELECTION.json).
+It reconciles199 actual retained native observations with independent literal
+waveform/key/scoring/recognition assertions. Canonical completion status and
+committed-clean acceptance remain in tasks.md and the iteration acceptance file.
+No later optional provider/source qualification is silently closed.

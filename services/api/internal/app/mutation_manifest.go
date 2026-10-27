@@ -60,6 +60,9 @@ func mutationManifest(c map[string]any, canonicalID, canonicalSHA, mutatedID, mu
 		}
 	}
 	m := map[string]any{"schema_version": "2.0.0", "id": uuid.NewString(), "canonical_asset_id": canonicalID, "canonical_sha256": canonicalSHA, "mutated_asset_id": mutatedID, "mutated_sha256": mutatedSHA, "recipe_registry_sha256": recipeSHA, "recipe_ids": recipeIDs, "seed": seed, "method_version": "canonical-composite-codepoint-v1", "canonical_word_count": canonicalWords, "surface_word_count": surfaceWords, "edits": edits, "acoustic_intents": intents, "acoustic_edits": mutationAcousticEdits(c), "planned_units": c["planned_units"]}
+	if len(overlapIntents(c)) > 0 {
+		m["overlap_intents"] = overlapIntents(c)
+	}
 	m["manifest_sha256"] = lab.Hash(m)
 	return m
 }

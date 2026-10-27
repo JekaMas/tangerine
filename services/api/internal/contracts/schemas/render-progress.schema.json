@@ -268,6 +268,43 @@
               ]
             },
             "description": "Actual scoped intervals in source order per unit, in piece-local24kHz samples; legacy single intervals remain readable. No character proportions."
+          },
+          "word_intervals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "start_cp": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named."
+                },
+                "end_cp": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named."
+                },
+                "start": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named."
+                },
+                "end": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named."
+                }
+              },
+              "required": [
+                "start_cp",
+                "end_cp",
+                "start",
+                "end"
+              ],
+              "additionalProperties": false,
+              "description": "Decoder-derived codepoint/source sample association, not auditory confirmation."
+            },
+            "description": "Accepted native timing for exact selected words; no proportional guess."
           }
         },
         "required": [
@@ -328,6 +365,10 @@
     "diagnostic_asset_id": {
       "type": "string",
       "description": "Private assembly quality/pace diagnostic separate from the strict sample-map asset."
+    },
+    "composition": {
+      "$ref": "speech-composition.schema.json",
+      "description": "Durable admitted resolved schedule. Absent for historic sequential progress."
     }
   },
   "required": [

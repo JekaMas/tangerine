@@ -1,3 +1,5 @@
+2026-10-27 iteration32 apply: the actual user selects simultaneous speech and word masking through the production composer, correct source/final/key clocks and actual local obstructive/backchannel recordings. Scoped source/specification/tests/DAG changes, existing local synthesis and disposable native storage, retained-audio verification and local commits are authorized. No paid calls, purchases, overage, fallback, installation, deployment or publication. Preserve app3000, its records/settings/media, browser tabs and canonical GAPS.md. No learner review gate or repeated stored-data audit.
+
 2026-10-27 iteration31 verify/repair: the actual user requests full selected
 conformance, root-cause/sibling repair through clean acceptance, and actual local
 UI/UX/typography screenshots/video. Scoped reconciliation/test/DAG/document fixes,

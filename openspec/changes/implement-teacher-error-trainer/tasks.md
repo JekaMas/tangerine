@@ -1442,3 +1442,14 @@ Iteration 31 verification repair (2026-10-27):
 - [x] I31.V3 Register and reconcile every updated iteration case on a committed-clean revision; retain prior acceptance/failures, record the superseding review and commit.
 
 Iteration 31 superseding verify acceptance: `completion-i31 --require-clean`, 140/140 selected case edges and 30/30 physical reconciliation methods at clean `b7875a5b06414d711ef0ed2e94d54d3e87423411`. All five verification findings are closed; actual UI screenshots/video and retained native evidence are indexed in `audit/iteration-31-verification-20261027/ACCEPTANCE.json`. Genuine unmet original obligations remain open.
+
+
+## Iteration 32 application — actual simultaneous speech and word masking
+
+- [ ] I32.1 Admit additive overlap intent once; carry it through the frozen mutation manifest/render plan, retaining the sequential default and correct cooperative control.
+- [ ] I32.2 Compose retained PCM at actual sample starts with explicit local gains and headroom; preserve unselected audio, both source clocks and later-turn scheduling.
+- [ ] I32.3 Persist resolved composition before mixing and project concurrent utterance/masked key intervals through existing preparation/resume/finalization owners.
+- [ ] I32.4 Materialize positive/negative arithmetic, provenance, invalid operand, recovery and scoring tests; retain actual local obstructive/backchannel recordings and inspect the audible/contextual contrast.
+- [ ] I32.5 Review changed owners and siblings, reconcile graph/discovery and valid retained evidence, pass selected committed-clean acceptance and commit.
+
+Resume record: audit/iteration-32-overlap-20261027/PROGRESS.md. Scope is ENG-01 / ALL-AUDIT.2.

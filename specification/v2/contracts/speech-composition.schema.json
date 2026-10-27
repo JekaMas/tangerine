@@ -1,0 +1,151 @@
+{
+  "type": "object",
+  "properties": {
+    "sample_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named."
+    },
+    "pieces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "piece_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "Existing version-scoped identity."
+          },
+          "utterance_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "Existing version-scoped identity."
+          },
+          "final_start": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named."
+          },
+          "final_end": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named."
+          }
+        },
+        "required": [
+          "piece_id",
+          "utterance_id",
+          "final_start",
+          "final_end"
+        ],
+        "additionalProperties": false,
+        "description": "Actual whole-piece placement; multiple speakers may share final time."
+      }
+    },
+    "tracks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "piece_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "Existing version-scoped identity."
+          },
+          "source_start": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named."
+          },
+          "source_end": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named."
+          },
+          "final_start": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named."
+          },
+          "gain": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "description": "Fixed linear PCM gain. No automatic normalization; unselected samples retain unity gain."
+          }
+        },
+        "required": [
+          "piece_id",
+          "source_start",
+          "source_end",
+          "final_start",
+          "gain"
+        ],
+        "additionalProperties": false,
+        "description": "Retained source stream interval and explicit gain."
+      }
+    },
+    "overlaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "unit_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "Existing version-scoped identity."
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "obstructive",
+              "cooperative_backchannel"
+            ],
+            "description": "Contextual discourse contrast. Cooperation itself is not an error."
+          },
+          "target_utterance_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "Existing version-scoped identity."
+          },
+          "overlapping_utterance_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$",
+            "description": "Existing version-scoped identity."
+          },
+          "final_start": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named."
+          },
+          "final_end": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Half-open exact 24kHz sample or Unicode codepoint coordinate as named."
+          }
+        },
+        "required": [
+          "unit_id",
+          "kind",
+          "target_utterance_id",
+          "overlapping_utterance_id",
+          "final_start",
+          "final_end"
+        ],
+        "additionalProperties": false,
+        "description": "Actual intersection of the selected target passage with concurrent speech. A proposed obstruction is not a universal intelligibility claim."
+      }
+    }
+  },
+  "required": [
+    "sample_count",
+    "pieces",
+    "tracks",
+    "overlaps"
+  ],
+  "additionalProperties": false,
+  "description": "Resolved composition saved before mixing in the existing preparation progress. Trusted on resume.",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tangerine.invalid/schemas/speech-composition.schema.json",
+  "title": "speech-composition"
+}

@@ -16,6 +16,7 @@ func projectSpeechKey(settings, candidate, plan, progress map[string]any, audioI
 	blueprint := settings["blueprint"].(map[string]any)
 	intervals := map[string]map[string]any{}
 	acousticIntervals := map[string][]any{}
+	composition, concurrent := savedComposition(progress)
 	samples := 0
 	receipts := []any{}
 	for i, v := range progress["pieces"].([]any) {
@@ -23,6 +24,10 @@ func projectSpeechKey(settings, candidate, plan, progress map[string]any, audioI
 		turn := plan["pieces"].([]any)[i].(map[string]any)
 		start := samples
 		end := start + int(piece["sample_count"].(float64))
+		if concurrent {
+			start = composition.Pieces[i].Start
+			end = composition.Pieces[i].End
+		}
 		id := piece["utterance_id"].(string)
 		if intervals[id] == nil {
 			intervals[id] = map[string]any{"start_ms": start / 24, "end_ms": (end + 23) / 24}
@@ -55,6 +60,12 @@ func projectSpeechKey(settings, candidate, plan, progress map[string]any, audioI
 				a, b := start+int(row["start"].(float64)), start+int(row["end"].(float64))
 				acousticIntervals[id] = append(acousticIntervals[id], map[string]any{"start_ms": a / 24, "end_ms": (b + 23) / 24})
 			}
+		}
+	}
+	if concurrent {
+		samples = composition.SampleCount
+		for _, overlap := range composition.Overlaps {
+			acousticIntervals[overlap.UnitID] = []any{map[string]any{"start_ms": overlap.Start / 24, "end_ms": (overlap.End + 23) / 24}}
 		}
 	}
 	speakers := []any{}

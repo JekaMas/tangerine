@@ -216,6 +216,9 @@ func canonicalContent(raw []byte, blueprint map[string]any) (map[string]any, int
 	if ops, ok := c["acoustic_edits"].([]any); ok && len(ops) != 0 {
 		return nil, 0, &provider.OutputValidationError{Detail: "This clean canonical_text phase requires acoustic_edits empty; acoustic mutations belong to the next phase."}
 	}
+	if len(overlapIntents(c)) > 0 {
+		return nil, 0, &provider.OutputValidationError{Detail: "The clean canonical_text phase requires overlap_intents empty; simultaneous mutations belong to the next phase."}
+	}
 	expected := map[string]bool{}
 	for _, s := range blueprint["speakers"].([]any) {
 		expected[s.(map[string]any)["id"].(string)] = false

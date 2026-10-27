@@ -154,6 +154,9 @@ func compileSpeechPlan(preparation string, settings, candidate, profile map[stri
 	}
 	caseID := uuid.NewSHA1(uuid.NameSpaceOID, []byte(preparation+":speech-case")).String()
 	plan := map[string]any{"schema_version": "2.0.0", "id": uuid.NewSHA1(uuid.NameSpaceOID, []byte(preparation+":speech-plan")).String(), "case_version_id": caseID, "blueprint_sha256": lab.Hash(blueprint), "provider_profile_id": profile["id"], "profile_sha256": lab.Hash(profile), "required_capabilities": required, "turns": turns, "audio_format": "riff_pcm_s16le_24000_mono"}
+	if len(overlapIntents(candidate)) > 0 {
+		plan["overlap_intents"] = overlapIntents(candidate)
+	}
 	plan["plan_sha256"] = speechPlanHash(plan)
 	return plan, nil
 }

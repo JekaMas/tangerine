@@ -19,6 +19,13 @@ func mutationContent(raw []byte, blueprint, clean, taxonomy map[string]any) (map
 	if c["blueprint_id"] != blueprint["id"] || c["status"] != "candidate" || c["failure_reason"] != nil {
 		return nil, &provider.OutputValidationError{Detail: "Use candidate status, the saved blueprint_id and null failure_reason for a successful mutation. Recipe examples are illustrations, not required source text."}
 	}
+	if e := admitOverlapIntents(c); e != nil {
+		return nil, e
+	}
+	overlapUnits := map[string]bool{}
+	for _, v := range overlapIntents(c) {
+		overlapUnits[v.(map[string]any)["unit_id"].(string)] = true
+	}
 	turns := c["utterances"].([]any)
 	old := clean["utterances"].([]any)
 	if len(turns) != len(old) {
@@ -132,7 +139,7 @@ func mutationContent(raw []byte, blueprint, clean, taxonomy map[string]any) (map
 		}
 		r := u["realization"].(map[string]any)
 		acoustic := r["mode"] == "acoustic_segmental" || r["mode"] == "acoustic_suprasegmental" || r["mode"] == "temporal_fluency"
-		if u["expected_judgment"] == "true_error" && !acoustic && !changedScope {
+		if u["expected_judgment"] == "true_error" && !acoustic && !overlapUnits[id] && !changedScope {
 			return nil, &provider.OutputValidationError{Detail: "A textual true_error must point to its actual changed surface scope."}
 		}
 		if r["observed_ipa"] != nil || r["observed_pace_wpm"] != nil || r["observed_pause_ms"] != nil || u["difficulty"] != "unrated" {

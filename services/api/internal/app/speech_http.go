@@ -71,6 +71,9 @@ func speechSummary(p map[string]any) map[string]any {
 
 func speechPublicFailure(err error) (string, string) {
 	code, _ := provider.SafeError(err)
+	if code == "AUDIO_CLIPPING" {
+		return "PROVIDER_OUTPUT_INVALID", "The overlapping voices could not be combined clearly. Your saved text and audio are kept. Try a different voice or prepare a new version."
+	}
 	native := code
 	switch code {
 	case "PAID_USE_FORBIDDEN", "PROVIDER_QUOTA":
