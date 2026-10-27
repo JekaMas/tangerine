@@ -1638,8 +1638,20 @@ publication. Private data/evidence retained; user app/data/settings unchanged.
 Broader external acquisition and unselected source scopes remain separately open.
 See audit/iteration-37-supplements-20261027/ACCEPTANCE.json and REPORT.md.
 
-- [ ] I37.V1 Repair demonstrated transient recording failure through a single saved-source playback owner; verify interval/native-control, permanent-failure/retry and lifecycle siblings with actual local bytes.
-- [ ] I37.V2 Preserve original media byte-range metadata through the web proxy; finish keyboard/typography/picture/video review and expanded committed-clean I37 acceptance, retaining valid native imports/evidence.
+- [x] I37.V1 Repair demonstrated transient recording failure through a single saved-source playback owner; verify interval/native-control, permanent-failure/retry and lifecycle siblings with actual local bytes.
+- [x] I37.V2 Preserve original media byte-range metadata through the web proxy; finish keyboard/typography/picture/video review and expanded committed-clean I37 acceptance, retaining valid native imports/evidence.
 
 Verify findings, invalidation reasons and current checkpoint:
 audit/iteration-37-verification-20261027/PROGRESS.md.
+
+I37 verify accepted: all16positive/negative cases across seven properties pass
+--require-clean on `4b0069313acdab2c047dddd19d9a1f5ca862b09a`. F1source-playback
+recovery/lifetime and F2proxy byte-length omission are fixed with actual native
+Chrome red/green evidence,8new playback and3new proxy cases. All51native Go
+observations/imports and3source-session greens remain valid. UI/UX, keyboard,
+typography, screenshots and28.32second silent video were inspected. Current
+graph/discovery, web build/formatting and preservation pass; unchanged strict
+OpenSpec1.13.1/Go receipts are retained. No in-scope finding remains; user app
+and data are untouched; private data retained stopped. No provider call, new
+acquisition/audit, paid usage, deployment, PBT or financial execution. See
+audit/iteration-37-verification-20261027/ACCEPTANCE.json and REPORT.md.

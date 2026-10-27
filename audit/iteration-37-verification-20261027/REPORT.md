@@ -109,6 +109,16 @@ Exact tracing completed. An actual jbcontext query reports no index for
 github.com/jekamas/tangerine; no semantic/JetBrains proof is claimed. This is
 self-review using independent contracts and literal expectations.
 
+The conservative changed-path selector also matches1,020historical candidates
+through broad web/source globs. Its native selection is retained in
+changed-paths-selection.json. Actual semantic invalidation is the source player
+and supplied media-header forwarding; these and their siblings were reobserved.
+Unchanged parsing, normalization, SQL storage, route allowlists/authentication,
+JSON retry, generation/scoring and styles retain their original boundaries.
+The redundant CLI expansion of all historical candidate fingerprints was stopped;
+the exact nonempty I37 query, current structural validation and full16-case clean
+execution completed. No historical candidate or stopped diagnostic is called green.
+
 Native strict OpenSpec1.13.1, Go build/vet and source-session results retain their
 apply receipts: their consumed inputs did not change. Current graph/discovery,
 final web build, formatting and expanded selection are reconciled at the stable
@@ -119,4 +129,7 @@ call, acquisition/install, paid usage or publication occurred. User app3000,
 data/settings/media/tabs are untouched; private source data persist.
 
 No unresolved in-scope production finding or product decision remains. Acceptance
-still requires the full16-case --require-clean receipt on the committed repair.
+passed the full16-case --require-clean selection on repair revision
+`4b0069313acdab2c047dddd19d9a1f5ca862b09a` (known revision, dirty=false).
+Only acceptance/task/progress/report metadata changes afterward; behavior proof
+remains valid. See ACCEPTANCE.json and the original clean receipt.

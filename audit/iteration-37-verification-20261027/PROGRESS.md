@@ -79,3 +79,19 @@ retained. Next: repair commit, same16-case --require-clean run, acceptance metad
 Owned test stack `tangerine-i37-5143fdee` is retained stopped at entry. User app
 localhost3000, its data/settings/media/tabs and canonical GAPS.md are protected.
 Private new observations: `data/iteration-37-verification-20261027/`.
+
+## Verified acceptance
+
+Repair commit4b0069313acdab2c047dddd19d9a1f5ca862b09a passes the exact full16-case
+I37selection with --require-clean, known revision, dirty=false. Both canonical
+verify tasks are checked against the actual gate and evidence. No in-scope finding
+or product decision remains. Only acceptance/task/report/progress metadata follows.
+All owned services are stopped, data retained; all six user localhost3000stack
+containers remain healthy and untouched. No paid/external execution occurred.
+
+Changed-path closure note: native selector matches1,020conservative historical
+candidates through broad dependency globs. Saved its exact selection without
+expanding every historical fingerprint; that redundant diagnostic expansion was
+stopped. This does not invalidate unrelated native owners or require model calls.
+Actual I37/media/proxy semantic closure is fully observed and accepted. No stopped
+diagnostic or historical unexecuted case is relabelled passing.
