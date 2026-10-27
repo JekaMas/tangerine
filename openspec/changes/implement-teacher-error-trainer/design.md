@@ -1,5 +1,28 @@
 # Implementation design
 
+## Iteration 31 historical evidence ownership
+
+The canonical graph retains original case identities, scenarios, polarities and
+independent expectations. An iteration-local ledger links every entry-revision
+planned/blocked case to its fixture, inspected actual successor source and
+exact remaining obligation. Candidate routing carries no pass. Existing LF
+native receipts may prove their unchanged context or recipe component without
+proving the old full generated-audio/answer scenario.
+
+New literal arithmetic uses the existing speech metrics owner; auxiliary
+population tests use native scoring; span and edit tests use the native
+normalization, admission and manifest owners. Purely descriptive source IDs may
+be consistently associated, but original lexical text, counters, observations
+and expected values are never replaced to assert equivalence. Stateless paired
+accept/reject fixtures may reuse the exact union of their separately observed
+components. The existing evidence runner owns zero-observation/stale behavior.
+
+No production owner, prompt, runtime gate, accepted-data revalidation or new
+evidence database is introduced. Existing physical green tests are not rerun
+for new documentation or case associations. The iteration gate observes exact
+retained native output and tests reconciliation counterexamples. Original
+unmatched product claims retain their explicit open state and scope.
+
 ## Iteration 21 guided tool ownership
 
 Reuse the constructed report/generation starters, with normal labels and named

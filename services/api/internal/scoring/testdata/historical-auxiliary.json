@@ -1,0 +1,877 @@
+[
+  {
+    "case_id": "AUX-01.P1.POSITIVE",
+    "metric": "annotation.agreement",
+    "input": {
+      "metric": "annotation.agreement",
+      "formula": "agreements/N",
+      "inputs": {
+        "agreements": 5,
+        "N": 6
+      }
+    },
+    "expected": {
+      "exact": "5/6",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-01.P1.NEGATIVE",
+    "metric": "annotation.agreement",
+    "input": {
+      "inputs_missing": true,
+      "invented_value": 100
+    },
+    "expected": {
+      "value": null,
+      "unsupported_value_accepted": false
+    }
+  },
+  {
+    "case_id": "AUX-02.P1.POSITIVE",
+    "metric": "annotation.cohen_kappa",
+    "input": {
+      "metric": "annotation.cohen_kappa",
+      "formula": "(Po-Pe)/(1-Pe); Pe=sum_label(p_rater1(label)*p_rater2(label))",
+      "inputs": {
+        "Po": "5/6",
+        "Pe": "1/2",
+        "rater1_counts": {
+          "a": 3,
+          "b": 3
+        },
+        "rater2_counts": {
+          "a": 4,
+          "b": 2
+        },
+        "confusion": {
+          "a_a": 3,
+          "b_a": 1,
+          "b_b": 2,
+          "a_b": 0
+        }
+      }
+    },
+    "expected": {
+      "exact": "2/3",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-02.P1.NEGATIVE",
+    "metric": "annotation.cohen_kappa",
+    "input": {
+      "inputs_missing": true,
+      "invented_value": 100
+    },
+    "expected": {
+      "value": null,
+      "unsupported_value_accepted": false
+    }
+  },
+  {
+    "case_id": "AUX-03.P1.POSITIVE",
+    "metric": "verification.wer",
+    "input": {
+      "metric": "verification.wer",
+      "formula": "(substitutions+deletions+insertions)/reference_word_count",
+      "inputs": {
+        "substitutions": 1,
+        "deletions": 1,
+        "insertions": 1,
+        "reference_word_count": 10
+      }
+    },
+    "expected": {
+      "exact": "3/10",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-03.P1.NEGATIVE",
+    "metric": "verification.wer",
+    "input": {
+      "inputs_missing": true,
+      "invented_value": 100
+    },
+    "expected": {
+      "value": null,
+      "unsupported_value_accepted": false
+    }
+  },
+  {
+    "case_id": "AUX-04.P1.POSITIVE",
+    "metric": "audio.speech_rate_wpm",
+    "input": {
+      "metric": "audio.speech_rate_wpm",
+      "formula": "60*spoken_token_count/elapsed_speech_span_seconds",
+      "inputs": {
+        "spoken_token_count": 10,
+        "elapsed_speech_span_seconds": 5
+      }
+    },
+    "expected": {
+      "exact": "120/1",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-04.P1.NEGATIVE",
+    "metric": "audio.speech_rate_wpm",
+    "input": {
+      "inputs_missing": true,
+      "invented_value": 100
+    },
+    "expected": {
+      "value": null,
+      "unsupported_value_accepted": false
+    }
+  },
+  {
+    "case_id": "AUX-05.P1.POSITIVE",
+    "metric": "audio.articulation_rate_wpm",
+    "input": {
+      "metric": "audio.articulation_rate_wpm",
+      "formula": "60*spoken_token_count/active_speech_seconds",
+      "inputs": {
+        "spoken_token_count": 10,
+        "active_speech_seconds": 4
+      }
+    },
+    "expected": {
+      "exact": "150/1",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-05.P1.NEGATIVE",
+    "metric": "audio.articulation_rate_wpm",
+    "input": {
+      "inputs_missing": true,
+      "invented_value": 100
+    },
+    "expected": {
+      "value": null,
+      "unsupported_value_accepted": false
+    }
+  },
+  {
+    "case_id": "AUX-06.P1.POSITIVE",
+    "metric": "audio.pause_ratio",
+    "input": {
+      "metric": "audio.pause_ratio",
+      "formula": "internal_silent_seconds/elapsed_speech_span_seconds",
+      "inputs": {
+        "internal_silent_seconds": 1,
+        "elapsed_speech_span_seconds": 5
+      }
+    },
+    "expected": {
+      "exact": "1/5",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-06.P1.NEGATIVE",
+    "metric": "audio.pause_ratio",
+    "input": {
+      "inputs_missing": true,
+      "invented_value": 100
+    },
+    "expected": {
+      "value": null,
+      "unsupported_value_accepted": false
+    }
+  },
+  {
+    "case_id": "AUX-07.P1.POSITIVE",
+    "metric": "audio.disfluency_density",
+    "input": {
+      "metric": "audio.disfluency_density",
+      "formula": "100*reviewed_disfluency_events/spoken_token_count",
+      "inputs": {
+        "reviewed_disfluency_events": 2,
+        "spoken_token_count": 10
+      }
+    },
+    "expected": {
+      "exact": "20/1",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-07.P1.NEGATIVE",
+    "metric": "audio.disfluency_density",
+    "input": {
+      "inputs_missing": true,
+      "invented_value": 100
+    },
+    "expected": {
+      "value": null,
+      "unsupported_value_accepted": false
+    }
+  },
+  {
+    "case_id": "AUX-08.P1.POSITIVE",
+    "metric": "evaluation.coverage",
+    "input": {
+      "metric": "evaluation.coverage",
+      "formula": "resolved_decisions/eligible_decisions",
+      "inputs": {
+        "resolved_decisions": 4,
+        "eligible_decisions": 5
+      }
+    },
+    "expected": {
+      "exact": "4/5",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-08.P1.NEGATIVE",
+    "metric": "evaluation.coverage",
+    "input": {
+      "inputs_missing": true,
+      "invented_value": 100
+    },
+    "expected": {
+      "value": null,
+      "unsupported_value_accepted": false
+    }
+  },
+  {
+    "case_id": "AUX-09.P1.POSITIVE",
+    "metric": "evaluation.exact_mapping_agreement",
+    "input": {
+      "metric": "evaluation.exact_mapping_agreement",
+      "formula": "identical_claim_to_unit_decisions/eligible_gold_decisions",
+      "inputs": {
+        "identical_claim_to_unit_decisions": 3,
+        "eligible_gold_decisions": 5
+      }
+    },
+    "expected": {
+      "exact": "3/5",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-09.P1.NEGATIVE",
+    "metric": "evaluation.exact_mapping_agreement",
+    "input": {
+      "inputs_missing": true,
+      "invented_value": 100
+    },
+    "expected": {
+      "value": null,
+      "unsupported_value_accepted": false
+    }
+  },
+  {
+    "case_id": "AUX-12.P1.POSITIVE",
+    "metric": "teacher.talk_time",
+    "input": {
+      "metric": "teacher.talk_time",
+      "formula": null,
+      "inputs": {
+        "teacher_speech": null,
+        "real_students": null
+      }
+    },
+    "expected": {
+      "exact": null,
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-12.P1.NEGATIVE",
+    "metric": "teacher.talk_time",
+    "input": {
+      "inputs_missing": true,
+      "invented_value": 100
+    },
+    "expected": {
+      "value": null,
+      "unsupported_value_accepted": false
+    }
+  },
+  {
+    "case_id": "AUX-13.P1.POSITIVE",
+    "metric": "teacher.pronunciation",
+    "input": {
+      "metric": "teacher.pronunciation",
+      "formula": null,
+      "inputs": {
+        "teacher_speech": null,
+        "real_students": null
+      }
+    },
+    "expected": {
+      "exact": null,
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-13.P1.NEGATIVE",
+    "metric": "teacher.pronunciation",
+    "input": {
+      "inputs_missing": true,
+      "invented_value": 100
+    },
+    "expected": {
+      "value": null,
+      "unsupported_value_accepted": false
+    }
+  },
+  {
+    "case_id": "AUX-14.P1.POSITIVE",
+    "metric": "teacher.classroom_management",
+    "input": {
+      "metric": "teacher.classroom_management",
+      "formula": null,
+      "inputs": {
+        "teacher_speech": null,
+        "real_students": null
+      }
+    },
+    "expected": {
+      "exact": null,
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-14.P1.NEGATIVE",
+    "metric": "teacher.classroom_management",
+    "input": {
+      "inputs_missing": true,
+      "invented_value": 100
+    },
+    "expected": {
+      "value": null,
+      "unsupported_value_accepted": false
+    }
+  },
+  {
+    "case_id": "AUX-15.P1.POSITIVE",
+    "metric": "teacher.engagement",
+    "input": {
+      "metric": "teacher.engagement",
+      "formula": null,
+      "inputs": {
+        "teacher_speech": null,
+        "real_students": null
+      }
+    },
+    "expected": {
+      "exact": null,
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-15.P1.NEGATIVE",
+    "metric": "teacher.engagement",
+    "input": {
+      "inputs_missing": true,
+      "invented_value": 100
+    },
+    "expected": {
+      "value": null,
+      "unsupported_value_accepted": false
+    }
+  },
+  {
+    "case_id": "AUX-01.P1.SET2.POSITIVE",
+    "metric": "annotation.agreement",
+    "input": {
+      "metric": "annotation.agreement",
+      "formula": "agreements/N",
+      "inputs": {
+        "agreements": 10,
+        "N": 12
+      }
+    },
+    "expected": {
+      "exact": "5/6",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-01.P1.SET2.NEGATIVE",
+    "metric": "annotation.agreement",
+    "input": {
+      "metric": "annotation.agreement",
+      "formula": "agreements/N",
+      "inputs": {
+        "agreements": 5,
+        "N": 6
+      },
+      "proposed_result": "11/6"
+    },
+    "expected": {
+      "exact": "5/6",
+      "teacher_trait_inferred": false,
+      "proposed_result_accepted": false,
+      "original_inputs_retained": true
+    }
+  },
+  {
+    "case_id": "AUX-02.P1.SET2.POSITIVE",
+    "metric": "annotation.cohen_kappa",
+    "input": {
+      "metric": "annotation.cohen_kappa",
+      "formula": "(Po-Pe)/(1-Pe); Pe=sum_label(p_rater1(label)*p_rater2(label))",
+      "inputs": {
+        "Po": "5/6",
+        "Pe": "1/2",
+        "rater1_counts": {
+          "a": 6,
+          "b": 6
+        },
+        "rater2_counts": {
+          "a": 8,
+          "b": 4
+        },
+        "confusion": {
+          "a_a": 6,
+          "b_a": 2,
+          "b_b": 4,
+          "a_b": 0
+        }
+      }
+    },
+    "expected": {
+      "exact": "2/3",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-02.P1.SET2.NEGATIVE",
+    "metric": "annotation.cohen_kappa",
+    "input": {
+      "metric": "annotation.cohen_kappa",
+      "formula": "(Po-Pe)/(1-Pe); Pe=sum_label(p_rater1(label)*p_rater2(label))",
+      "inputs": {
+        "Po": "5/6",
+        "Pe": "1/2",
+        "rater1_counts": {
+          "a": 3,
+          "b": 3
+        },
+        "rater2_counts": {
+          "a": 4,
+          "b": 2
+        },
+        "confusion": {
+          "a_a": 3,
+          "b_a": 1,
+          "b_b": 2,
+          "a_b": 0
+        }
+      },
+      "proposed_result": "5/3"
+    },
+    "expected": {
+      "exact": "2/3",
+      "teacher_trait_inferred": false,
+      "proposed_result_accepted": false,
+      "original_inputs_retained": true
+    }
+  },
+  {
+    "case_id": "AUX-03.P1.SET2.POSITIVE",
+    "metric": "verification.wer",
+    "input": {
+      "metric": "verification.wer",
+      "formula": "(substitutions+deletions+insertions)/reference_word_count",
+      "inputs": {
+        "substitutions": 2,
+        "deletions": 2,
+        "insertions": 2,
+        "reference_word_count": 20
+      }
+    },
+    "expected": {
+      "exact": "3/10",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-03.P1.SET2.NEGATIVE",
+    "metric": "verification.wer",
+    "input": {
+      "metric": "verification.wer",
+      "formula": "(substitutions+deletions+insertions)/reference_word_count",
+      "inputs": {
+        "substitutions": 1,
+        "deletions": 1,
+        "insertions": 1,
+        "reference_word_count": 10
+      },
+      "proposed_result": "13/10"
+    },
+    "expected": {
+      "exact": "3/10",
+      "teacher_trait_inferred": false,
+      "proposed_result_accepted": false,
+      "original_inputs_retained": true
+    }
+  },
+  {
+    "case_id": "AUX-04.P1.SET2.POSITIVE",
+    "metric": "audio.speech_rate_wpm",
+    "input": {
+      "metric": "audio.speech_rate_wpm",
+      "formula": "60*spoken_token_count/elapsed_speech_span_seconds",
+      "inputs": {
+        "spoken_token_count": 20,
+        "elapsed_speech_span_seconds": 10
+      }
+    },
+    "expected": {
+      "exact": "120/1",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-04.P1.SET2.NEGATIVE",
+    "metric": "audio.speech_rate_wpm",
+    "input": {
+      "metric": "audio.speech_rate_wpm",
+      "formula": "60*spoken_token_count/elapsed_speech_span_seconds",
+      "inputs": {
+        "spoken_token_count": 10,
+        "elapsed_speech_span_seconds": 5
+      },
+      "proposed_result": "121"
+    },
+    "expected": {
+      "exact": "120/1",
+      "teacher_trait_inferred": false,
+      "proposed_result_accepted": false,
+      "original_inputs_retained": true
+    }
+  },
+  {
+    "case_id": "AUX-05.P1.SET2.POSITIVE",
+    "metric": "audio.articulation_rate_wpm",
+    "input": {
+      "metric": "audio.articulation_rate_wpm",
+      "formula": "60*spoken_token_count/active_speech_seconds",
+      "inputs": {
+        "spoken_token_count": 20,
+        "active_speech_seconds": 8
+      }
+    },
+    "expected": {
+      "exact": "150/1",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-05.P1.SET2.NEGATIVE",
+    "metric": "audio.articulation_rate_wpm",
+    "input": {
+      "metric": "audio.articulation_rate_wpm",
+      "formula": "60*spoken_token_count/active_speech_seconds",
+      "inputs": {
+        "spoken_token_count": 10,
+        "active_speech_seconds": 4
+      },
+      "proposed_result": "151"
+    },
+    "expected": {
+      "exact": "150/1",
+      "teacher_trait_inferred": false,
+      "proposed_result_accepted": false,
+      "original_inputs_retained": true
+    }
+  },
+  {
+    "case_id": "AUX-06.P1.SET2.POSITIVE",
+    "metric": "audio.pause_ratio",
+    "input": {
+      "metric": "audio.pause_ratio",
+      "formula": "internal_silent_seconds/elapsed_speech_span_seconds",
+      "inputs": {
+        "internal_silent_seconds": 2,
+        "elapsed_speech_span_seconds": 10
+      }
+    },
+    "expected": {
+      "exact": "1/5",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-06.P1.SET2.NEGATIVE",
+    "metric": "audio.pause_ratio",
+    "input": {
+      "metric": "audio.pause_ratio",
+      "formula": "internal_silent_seconds/elapsed_speech_span_seconds",
+      "inputs": {
+        "internal_silent_seconds": 1,
+        "elapsed_speech_span_seconds": 5
+      },
+      "proposed_result": "6/5"
+    },
+    "expected": {
+      "exact": "1/5",
+      "teacher_trait_inferred": false,
+      "proposed_result_accepted": false,
+      "original_inputs_retained": true
+    }
+  },
+  {
+    "case_id": "AUX-07.P1.SET2.POSITIVE",
+    "metric": "audio.disfluency_density",
+    "input": {
+      "metric": "audio.disfluency_density",
+      "formula": "100*reviewed_disfluency_events/spoken_token_count",
+      "inputs": {
+        "reviewed_disfluency_events": 4,
+        "spoken_token_count": 20
+      }
+    },
+    "expected": {
+      "exact": "20/1",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-07.P1.SET2.NEGATIVE",
+    "metric": "audio.disfluency_density",
+    "input": {
+      "metric": "audio.disfluency_density",
+      "formula": "100*reviewed_disfluency_events/spoken_token_count",
+      "inputs": {
+        "reviewed_disfluency_events": 2,
+        "spoken_token_count": 10
+      },
+      "proposed_result": "21"
+    },
+    "expected": {
+      "exact": "20/1",
+      "teacher_trait_inferred": false,
+      "proposed_result_accepted": false,
+      "original_inputs_retained": true
+    }
+  },
+  {
+    "case_id": "AUX-08.P1.SET2.POSITIVE",
+    "metric": "evaluation.coverage",
+    "input": {
+      "metric": "evaluation.coverage",
+      "formula": "resolved_decisions/eligible_decisions",
+      "inputs": {
+        "resolved_decisions": 8,
+        "eligible_decisions": 10
+      }
+    },
+    "expected": {
+      "exact": "4/5",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-08.P1.SET2.NEGATIVE",
+    "metric": "evaluation.coverage",
+    "input": {
+      "metric": "evaluation.coverage",
+      "formula": "resolved_decisions/eligible_decisions",
+      "inputs": {
+        "resolved_decisions": 4,
+        "eligible_decisions": 5
+      },
+      "proposed_result": "9/5"
+    },
+    "expected": {
+      "exact": "4/5",
+      "teacher_trait_inferred": false,
+      "proposed_result_accepted": false,
+      "original_inputs_retained": true
+    }
+  },
+  {
+    "case_id": "AUX-09.P1.SET2.POSITIVE",
+    "metric": "evaluation.exact_mapping_agreement",
+    "input": {
+      "metric": "evaluation.exact_mapping_agreement",
+      "formula": "identical_claim_to_unit_decisions/eligible_gold_decisions",
+      "inputs": {
+        "identical_claim_to_unit_decisions": 6,
+        "eligible_gold_decisions": 10
+      }
+    },
+    "expected": {
+      "exact": "3/5",
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-09.P1.SET2.NEGATIVE",
+    "metric": "evaluation.exact_mapping_agreement",
+    "input": {
+      "metric": "evaluation.exact_mapping_agreement",
+      "formula": "identical_claim_to_unit_decisions/eligible_gold_decisions",
+      "inputs": {
+        "identical_claim_to_unit_decisions": 3,
+        "eligible_gold_decisions": 5
+      },
+      "proposed_result": "8/5"
+    },
+    "expected": {
+      "exact": "3/5",
+      "teacher_trait_inferred": false,
+      "proposed_result_accepted": false,
+      "original_inputs_retained": true
+    }
+  },
+  {
+    "case_id": "AUX-12.P1.SET2.POSITIVE",
+    "metric": "teacher.talk_time",
+    "input": {
+      "metric": "teacher.talk_time",
+      "formula": null,
+      "inputs": {
+        "teacher_speech": null,
+        "real_students": null,
+        "listener_answer": "The agreement needs correction.",
+        "generated_exercise_audio": true
+      }
+    },
+    "expected": {
+      "exact": null,
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-12.P1.SET2.NEGATIVE",
+    "metric": "teacher.talk_time",
+    "input": {
+      "metric": "teacher.talk_time",
+      "formula": null,
+      "inputs": {
+        "teacher_speech": null,
+        "real_students": null
+      },
+      "proposed_result": "99/1"
+    },
+    "expected": {
+      "exact": null,
+      "teacher_trait_inferred": false,
+      "proposed_result_accepted": false,
+      "original_inputs_retained": true
+    }
+  },
+  {
+    "case_id": "AUX-13.P1.SET2.POSITIVE",
+    "metric": "teacher.pronunciation",
+    "input": {
+      "metric": "teacher.pronunciation",
+      "formula": null,
+      "inputs": {
+        "teacher_speech": null,
+        "real_students": null,
+        "listener_answer": "The agreement needs correction.",
+        "generated_exercise_audio": true
+      }
+    },
+    "expected": {
+      "exact": null,
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-13.P1.SET2.NEGATIVE",
+    "metric": "teacher.pronunciation",
+    "input": {
+      "metric": "teacher.pronunciation",
+      "formula": null,
+      "inputs": {
+        "teacher_speech": null,
+        "real_students": null
+      },
+      "proposed_result": "99/1"
+    },
+    "expected": {
+      "exact": null,
+      "teacher_trait_inferred": false,
+      "proposed_result_accepted": false,
+      "original_inputs_retained": true
+    }
+  },
+  {
+    "case_id": "AUX-14.P1.SET2.POSITIVE",
+    "metric": "teacher.classroom_management",
+    "input": {
+      "metric": "teacher.classroom_management",
+      "formula": null,
+      "inputs": {
+        "teacher_speech": null,
+        "real_students": null,
+        "listener_answer": "The agreement needs correction.",
+        "generated_exercise_audio": true
+      }
+    },
+    "expected": {
+      "exact": null,
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-14.P1.SET2.NEGATIVE",
+    "metric": "teacher.classroom_management",
+    "input": {
+      "metric": "teacher.classroom_management",
+      "formula": null,
+      "inputs": {
+        "teacher_speech": null,
+        "real_students": null
+      },
+      "proposed_result": "99/1"
+    },
+    "expected": {
+      "exact": null,
+      "teacher_trait_inferred": false,
+      "proposed_result_accepted": false,
+      "original_inputs_retained": true
+    }
+  },
+  {
+    "case_id": "AUX-15.P1.SET2.POSITIVE",
+    "metric": "teacher.engagement",
+    "input": {
+      "metric": "teacher.engagement",
+      "formula": null,
+      "inputs": {
+        "teacher_speech": null,
+        "real_students": null,
+        "listener_answer": "The agreement needs correction.",
+        "generated_exercise_audio": true
+      }
+    },
+    "expected": {
+      "exact": null,
+      "teacher_trait_inferred": false
+    }
+  },
+  {
+    "case_id": "AUX-15.P1.SET2.NEGATIVE",
+    "metric": "teacher.engagement",
+    "input": {
+      "metric": "teacher.engagement",
+      "formula": null,
+      "inputs": {
+        "teacher_speech": null,
+        "real_students": null
+      },
+      "proposed_result": "99/1"
+    },
+    "expected": {
+      "exact": null,
+      "teacher_trait_inferred": false,
+      "proposed_result_accepted": false,
+      "original_inputs_retained": true
+    }
+  }
+]

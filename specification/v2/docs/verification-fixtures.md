@@ -1,5 +1,29 @@
 # Concrete property and case plans
 
+## Current execution mapping — 2026-10-27
+
+The JSON collection preserves the original authored planning packets. Its
+`observation_state`, `existing_case_state` and introductory proof-boundary text
+describe that planning snapshot; they are not the current execution ledger.
+Current identities, implementations and actual observations are owned by the
+canonical `verification.json` and its retained native receipts.
+
+Iteration 31 individually reconciles all 1,909 entry-revision planned/blocked
+edges. It registers 234 literal bindings, retains 623 partial native component
+joins without promoting the complete scenario, and records 1,050 unestablished
+whole-packet observations and two contradictory public-ratio variants. See
+[the reconciliation report](../../../audit/iteration-31-reconciliation-20261027/REPORT.md)
+and its exact selection/acceptance record for execution status. Source fixtures
+are not silently rewritten to match a candidate result. Earlier source-level
+population dependencies do not block a test that explicitly uses constructed
+counts or verifies the absence of observations.
+
+The catalogue descriptions and counts below retain the original October 9–10
+planning context. Later implementation and provider observations are tracked
+separately; their absence is not inferred from an old `not_run` design field.
+
+## Original authored catalogue
+
 `domain/verification-fixtures.v1.json` binds all 407 requirements, 422 declared properties and 2,132 positive/negative DAG case edges. `domain/property-test-sets.v1.json` is the complete per-property index: each row names its owner, scenarios, exact case IDs and distinct packet counts. Every property has at least two distinct positive packets and two distinct negative packets. The 819 reusable and case-specific packets retain literal inputs, expected values/states/artifacts, failure behavior and independent oracle instructions. Repeating one packet under another scenario name does not increase its distinct coverage. Existing scenario coverage remains intact.
 
 The catalogue includes the preserved independent authored illustration and clean control for every one of the 122 categories, 42 manually stated original-equation results, 22 Lab diagnostic results and all 11 original full-source component inventories. Source records/examples are labelled constructed; they are not acquired native releases, participant answers, empirical frequencies or verified acoustic recordings. Acoustic recipes specify intended transformations and relevant evidence while actual realization remains unknown until the selected audio is observed. Context-bearing ordinary generation still follows self-contained-generation.md.

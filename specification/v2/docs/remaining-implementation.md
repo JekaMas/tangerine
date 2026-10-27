@@ -1,5 +1,17 @@
 # Current remaining implementation and qualification
 
+Iteration 31 execution update: the [individual reconciliation](../../../audit/iteration-31-reconciliation-20261027/REPORT.md)
+now distinguishes all 1,909 historical entries. There are 234 executable literal
+bindings, 623 exact component joins that leave the original full scenario open,
+1,050 unestablished complete literal observations and two conflicting historical
+ratio variants. Actual passing execution belongs to the selected native and
+committed-clean acceptance receipts, not these counts. The 51 coarse
+population/qualification labels refer to constructed test packets; they are
+planned test work, while authentic source/empirical consumers retain their
+separate external needs. No product gate or acquisition is added.
+
+The research snapshot below remains the dated input to this execution update.
+
 Research snapshot:2026-10-27, source324d8e7. The complete current closure inventory
 is [the all-iteration audit](../../../audit/all-iterations-remaining-20261027/REPORT.md).
 Its [iteration table](../../../audit/all-iterations-remaining-20261027/ITERATIONS.md)
@@ -17,11 +29,11 @@ and permitted-overlap controls. It preserves the current sequential default,
 all122category identities and existing source data. No new service or per-playback
 qualification is needed; this research does not implement the mixer.
 
-The historical DAG also needs exact literal reconciliation:1,895blocked and
-14plannedcase entries remain under old definitions/fixture aliases. These are
-not1,909missing product features. TRACE-01 requires matching each actual existing
-assertion/receipt before reuse, preserving any unmet behavior/data scope. A broad
-implementation label or an audit table cannot mark those entries passed.
+At that research snapshot,1,895blocked and14plannedcase entries needed exact
+literal reconciliation. Iteration31 now provides their individual current
+dispositions. They were not1,909missing product features. Unmatched assertions
+remain open; a broad implementation label or an audit table cannot mark them
+passed.
 
 Current incomplete selected continuation cohorts areI24AzureF0,I25Qwenpair,
 I26actual saved-media interaction,I27selected owner releases/Sourcesinteraction

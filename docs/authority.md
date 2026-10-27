@@ -1,3 +1,14 @@
+2026-10-27 iteration31 apply: the actual user selects reconciliation of every
+historical DAG placeholder with actual successor assertions and retained
+receipts, exact evidence reuse, correction of stale blocker descriptions and
+materialization of missing in-scope literal assertions. Scoped development
+tests, graph/discovery/specification registration and local commits are
+authorized. Genuine missing product behavior, populations, resources and
+observations stay open. No provider inference/synthesis, paid credits/overage,
+installation, acquisition, publication, deployment or change to the running
+user workspace is included. Keep all original product/data scopes and valid
+unchanged greens; add no learner check or repeated accepted-data audit.
+
 2026-10-27 all-iteration remaining-work audit: the actual user asks to inspect
 all iterations' optional, blocked, external and unimplemented scope, research how
 each can close, track progress and report. Repository/public-source research,

@@ -1418,3 +1418,17 @@ ordinary-use gates. I24/I25/I26/I27/I30 retain their separately stated missing
 observations/inputs. Source definitions, all 122 categories/recipes and all 42
 formulas remain preserved. No provider call, corpus download, installation,
 outreach, payment, deployment or publication is performed by this audit.
+
+## Iteration 31 — Historical literal evidence reconciliation
+
+The selected increment is TRACE-01 / ALL-AUDIT.1. Original unmatched product
+assertions remain open; completion of this iteration means complete and tested
+reconciliation, not completion of every original product/qualification scope.
+The exact selection and resume record are in
+`audit/iteration-31-reconciliation-20261027/SELECTION.json` and `PROGRESS.md`.
+
+- [ ] I31.1 Preserve and individually reconcile every one of the original 1,909 planned/blocked identities, original independent expectations and inspected actual successor assertions; expose missing literal observations separately from missing features.
+- [ ] I31.2 Register exact retained native component reuse with actual test/output/command associations; do not promote any unproved full semantic, acoustic, source or empirical scenario.
+- [ ] I31.3 Materialize the selected original arithmetic, auxiliary-population, Unicode and mutation-replay literals through existing owners; retain actual typed execution observations, counterexamples and the contradictory historical ratio vector without inventing a pass.
+- [ ] I31.4 Replace stale specification-only/approval blockers with the actual remaining assertion or conditional dependency; preserve accepted registrations, original runtime/data definitions, all category/formula/source scopes and earlier incomplete acceptance boundaries.
+- [ ] I31.5 Validate the changed specification/DAG/discovery and complete the exact committed-clean iteration reconciliation selection using retained valid native greens, with explicit UI/UX and typography scope dispositions; commit the implementation and acceptance separately.

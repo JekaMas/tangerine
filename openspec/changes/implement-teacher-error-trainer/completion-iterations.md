@@ -121,3 +121,21 @@ allowed without explicit personal approval for the individual case. All 122
 category/recipe identities, 42 formulas and 11 original full-source scopes stay
 intact. Ordinary use keeps the existing single-admission/trusted-storage policy;
 no human review or repeat stored-data consistency audit is added.
+
+## Iteration 31 — Historical requirements and exact evidence
+
+The user selected this continuation on 2026-10-27. It reconciles all 1,909
+entry-revision planned/blocked literals against actual successor source and
+retained observations, registers exact bounded reuse, materializes missing
+selected deterministic assertions and leaves genuine unmet original scope open.
+It does not implement the separately proposed iterations 32–38.
+
+The complete selector is `--commands completion-i31`; its exact original and
+I31-owned case edges, retained native dependencies and scope are in
+`audit/iteration-31-reconciliation-20261027/SELECTION.json`. The five owned
+properties are TRACE31.P1–TRACE31.P5. New native literals run once; the final
+committed-clean reconciliation selection reads their actual unchanged typed
+outputs instead of repeating accepted behavior. `tasks.md` is the sole checklist.
+UI/UX and product typography have concrete not-applicable reasons because no
+runtime or presentation owner changes. Existing source/provider/platform needs
+and incomplete earlier acceptance scopes are preserved.

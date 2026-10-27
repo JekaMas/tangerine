@@ -1,6 +1,15 @@
 # Full local Teacher Error Trainer
 
-Current authorized increment: **iteration 30** lands the verified release branch
+Current authorized increment: **iteration 31** reconciles the exact 1,909
+historical planned/blocked graph entries with original literal expectations,
+actual successor assertions and retained observations. Materialize missing
+in-scope deterministic assertions, register exact partial reuse, correct stale
+specification-only blocker descriptions, and leave genuinely unmet obligations
+open. This changes development tests/evidence registration, not product behavior
+or the separately proposed iterations 32–38. No provider call, paid use,
+installation, acquisition, deployment or publication is included.
+
+Earlier **iteration 30** lands the verified release branch
 into main, publishes to the actual authorized GitHub destination and verifies
 the real downloaded source ZIP using the Docker-only launcher, retained data
 through restart, native readback and fresh setup UI/typography. Preserve the
