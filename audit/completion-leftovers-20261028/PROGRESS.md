@@ -103,3 +103,24 @@ below as work proceeds. This document is a resume record, not a passing receipt.
 
 Stable assertion/owner registration and complete committed-clean selections are
 next. Current archive/publication proof is not replaced by the workspace UI run.
+
+- Committed80ea314. Complete clean I25=43/43 and I26=542/542 pass on that
+  revision. I27=50passes/one skip: only selected_owner_releases_positive, whose
+  six owner releases are genuinely unavailable. The new Sources interaction
+  gap is closed. No model/synthesis was repeated by these gate readers.
+- Canonical main fast-forwarded and public GitHub main/immutable ZIP both read
+  back80ea314. The existing unrelated GAPS edit remains byte/diff/status-identical.
+  A fresh unchanged source ZIP starts five healthy services with Docker only;
+  restart retains the exact configuration/workspace/volumes/private secret file.
+  User app3000 remains untouched. Native release observations include zero model
+  receipts before/after and actual fixed origin/public installation identity.
+- The first current-ZIP browser run completed every UI assertion but failed its
+  harness teardown while a final Library GET was still in flight. Retained in
+  browser-before-teardown-repair. Awaiting existing route completion repairs
+  the harness; explicit No exercises yet/zero-card assertions strengthen the
+  empty state oracle. The successful rerun and release restart are retained.
+  This changed only I30's test input. I25/I26 greens remain valid on80ea314;
+  no product/model dependency of those scopes changed.
+- RELEASE-REVIEW.json records actual UI/UX, typography and evidence passes for
+  the observed ZIP; it is not a substitute for the pending complete I30 clean
+  gate. Earlier17-pass/partial browser records remain historical.
