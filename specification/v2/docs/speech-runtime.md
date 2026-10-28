@@ -18,9 +18,10 @@ loaded model/codec placement are separate receipt facts, with unknown values
 remaining unknown. An unavailable selected device returns the existing
 capability failure and never falls back. This does not select a new ordinary
 provider, change the Docker-only application prerequisites or qualify arbitrary
-MPS model/voice combinations. The selected CustomVoice comparison still needs
-actual complete native/Lab/media observations; respelling is an approximation,
-and a short preview remains incomplete. See
+MPS model/voice combinations. The selected CustomVoice comparison now has complete native/Lab/media observations
+in audit/completion-leftovers-20261028:26pieces, two four-turn recordings and
+actual saved playback. Respelling remains an approximation, and a short preview
+remains incomplete. See
 `audit/iteration-25-qwen-20261026/README.md` for its exact scope and saved source.
 
 Iteration7 implements rendering of an existing on-demand preparation after its clean text and mutation phases. The foreground Go owner reads the accepted frozen settings and candidate; it never calls the text LLM during rendering. Controlled acoustic operations are implemented by iteration8 as defined in controlled-acoustic-runtime.md; source/native-import integration remains iteration13. Their contracts and features are preserved.

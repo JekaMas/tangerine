@@ -150,3 +150,17 @@ next. Current archive/publication proof is not replaced by the workspace UI run.
   driver now writes that actual readback record; the failed exact case passes
   after supplying it. The original non-green receipt remains retained. Full I30
   acceptance still awaits the repaired committed-clean gate.
+
+- The first post-commit reuse query correctly reported stale fingerprints for
+  new entries whose declared dependency lists included unrelated UI files and
+  the entire tracked follow-up audit folder. This was my registration mistake;
+  status-note edits are not behavioral invalidations. Ignored runtime/model
+  caches were not hashed by the runner. No old observed receipt was rewritten.
+- narrow_dependencies.py now owns precise per-scope declarations; both new
+  registrars call it so the repair persists.143case dependency declarations and
+  their property routing scopes are corrected, with the before/after trace in
+  DEPENDENCY-SCOPE-REPAIR.json. The518original CV declarations/observations are
+  unchanged. Observer bodies, original failures and application behavior remain
+  unchanged. The current source/clean-state gate is invalidated by this explicit
+  contract-scope repair; only zero-inference verification readers/fixtures rerun,
+  with no corpus import, synthesis, model/judge campaign or data integrity audit.
