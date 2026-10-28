@@ -20183,6 +20183,29 @@
         "audit/iteration-38-verification-20261028/*.py"
       ],
       "iteration": 38
+    },
+    {
+      "id": "FIN-ACOUSTIC.P2",
+      "requirement_id": "FIN-ACOUSTIC",
+      "statement": "A selected current-provider comparison preserves the actual source, speaker/model bindings, explicit versioned API settings, finite audio and original failures. Successful generation does not establish perceptual correctness or a production adapter.",
+      "scenarios": [
+        "FIN-ACOUSTIC Observable behavior and counterexamples"
+      ],
+      "owner": "audit/completion-leftovers-20261028/gemini_current_pair.py",
+      "oracle": "Literal expected outcomes in the paired cases, independent native arithmetic where relevant, actual browser/provider/storage/media observations and explicit missingness; no candidate-generated gold.",
+      "source_globs": [
+        "tests/test_provider_followup.py",
+        "services/speech/audio.py",
+        "audit/completion-leftovers-20261028/gemini_current_pair.py",
+        "audit/completion-leftovers-20261028/browser_gemini.py",
+        "audit/completion-leftovers-20261028/export_gemini.py",
+        "tests/completion_leftovers_gemini.cjs",
+        "specification/v2/docs/speech-service-selection.md",
+        "data/completion-leftovers-20261028/gemini-current-api",
+        "data/completion-leftovers-20261028/gemini-resume",
+        "data/completion-leftovers-20261028/gemini-browser",
+        "data/completion-leftovers-20261028/gemini-lab-readback.json"
+      ]
     }
   ],
   "cases": [
@@ -326977,6 +327000,174 @@
           "An upstream origin rewrite weakens production origin policy"
         ]
       }
+    },
+    {
+      "id": "FIN-ACOUSTIC.P2.context_positive",
+      "property_id": "FIN-ACOUSTIC.P2",
+      "polarity": "positive",
+      "scenario": "FIN-ACOUSTIC Observable behavior and counterexamples",
+      "scenario_fingerprint": "5ec939298d4d7fb44f7df618c5745899a0b08a7440ec213dfe04a59e209598f8",
+      "setup": "Actual retained Gemini Free requests/replies, native PCM, production normalization and Chrome/Lab observations with exact literal expectations in tests/test_provider_followup.py::test_context_positive",
+      "observable": "def test_context_positive(self):\n  original=json.loads((ROOT/'data/pronunciation-all-20261023/output/shared-material.json').read_text());plan=read('plan.json')\n  self.assertEqual(original,plan['source_material']);self.assertEqual((20,26),(len(original['turns']),len(original['targets'])))\n  voices=[dict(speaker='s1',voice='Kore'),dict(speaker='s2',voice='Puck')]\n  for variant in ['clean','mistakes']:\n   request=read('gemini-'+variant+'-request.json');body=request['body'];self.assertEqual('https://generativelanguage.googleapis.com/v1beta/interactions',request['url'])\n   self.assertEqual('gemini-3.8-flash-lite-tts',body['model']);self.assertEqual(dict(speakers=voices),body['generation_config']['speech_config'])\n   turns=body['input'][0]['content'];self.assertEqual([t['canonical_text'] for t in original['turns']],[t['text'] for t in turns])\n   self.assertEqual([t['speaker_id'] for t in original['turns']],[t['annotations'][0]['speaker'] for t in turns])\n   if variant=='mistakes':\n    for turn,source in zip(turns,original['turns']):\n     for target in source['targets']:self.assertIn(target['provider_hint'],turn['annotations'][0]['style'])\n   else:self.assertFalse(any('deliberate acoustic deviations' in t['annotations'][0]['style'] for t in turns))\n   response=read('gemini-'+variant+'.raw');self.assertEqual(('completed','gemini-3.8-flash-lite-tts'),(response['status'],response['model']));self.assertGreater(response['usage']['total_output_tokens'],0)\n   self.assertEqual(200,read('gemini-'+variant+'-receipt.json')['http_status'])\n  lab=json.loads((DATA/'gemini-lab-readback.json').read_text());self.assertTrue(lab['readback']);self.assertEqual((2,1,0),(lab['matched_successful_model_calls'],lab['failed_contract_requests'],lab['export_inference_calls']))",
+      "red_expectation": "Source/voice/model/context, PCM/container, legacy failure or actual saved interaction differs from the literal expectation.",
+      "green_expectation": "The exact finite observation matches; mode omission remains explicit and provider directions are not perceptual gold.",
+      "test_id": "unittest::tests.test_provider_followup.ProviderFollowup.test_context_positive",
+      "command_id": "completion-provider-followup",
+      "state": "implemented",
+      "source_path": "tests/test_provider_followup.py",
+      "source_sha256": "869ce1091d134ec50c6058893d9309cce6deb38e71597fa9629fc459641a5c8d",
+      "invalidation_dependencies": [
+        "tests/test_provider_followup.py",
+        "services/speech/audio.py",
+        "audit/completion-leftovers-20261028/gemini_current_pair.py",
+        "audit/completion-leftovers-20261028/browser_gemini.py",
+        "audit/completion-leftovers-20261028/export_gemini.py",
+        "tests/completion_leftovers_gemini.cjs",
+        "specification/v2/docs/speech-service-selection.md",
+        "data/completion-leftovers-20261028/gemini-current-api",
+        "data/completion-leftovers-20261028/gemini-resume",
+        "data/completion-leftovers-20261028/gemini-browser",
+        "data/completion-leftovers-20261028/gemini-lab-readback.json"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Actual two Free synthesis replies, original legacy400/429, production PCM projection and real saved playback; evidence readers dispatch zero inference."
+        ],
+        "forbidden_claims": [
+          "A successful synthesis proves every acoustic target",
+          "Mode-omitted cadence equals the legacy control",
+          "A standalone comparison qualifies a production Gemini speech adapter",
+          "Provider speech is independent linguistic correctness gold"
+        ]
+      },
+      "distinct_reason": "FIN-ACOUSTIC Observable behavior and counterexamples: Exact native unittest::tests.test_completion_i26.CompletionI26.test_acoustic_positive also proves this existing FIN-ACOUSTIC.P1 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
+    },
+    {
+      "id": "FIN-ACOUSTIC.P2.audio_and_playback_positive",
+      "property_id": "FIN-ACOUSTIC.P2",
+      "polarity": "positive",
+      "scenario": "FIN-ACOUSTIC Observable behavior and counterexamples",
+      "scenario_fingerprint": "5ec939298d4d7fb44f7df618c5745899a0b08a7440ec213dfe04a59e209598f8",
+      "setup": "Actual retained Gemini Free requests/replies, native PCM, production normalization and Chrome/Lab observations with exact literal expectations in tests/test_provider_followup.py::test_audio_and_playback_positive",
+      "observable": "def test_audio_and_playback_positive(self):\n  for variant in ['clean','mistakes']:\n   with wave.open(io.BytesIO(audio_output(read('gemini-'+variant+'.raw')))) as native:\n    self.assertEqual((1,2,24000),(native.getnchannels(),native.getsampwidth(),native.getframerate()));expected=native.readframes(native.getnframes())\n   projected=(PAIR/('gemini-'+variant+'.wav')).read_bytes();self.assertEqual(expected,admit(projected))\n   with wave.open(io.BytesIO(projected)) as audio:self.assertEqual(len(expected)//2,audio.getnframes())\n  facts=json.loads((DATA/'gemini-browser/browser-observations.json').read_text())\n  self.assertTrue(facts['actual_pair_playback_observed'] and facts['activation_observed'] and facts['keyboard_observed'] and facts['refresh_observed'] and facts['single_player_observed'])\n  self.assertEqual(26,facts['requested_targets']);self.assertEqual(['/gemini-clean.wav','/gemini-mistakes.wav'],[a['src'] for a in facts['audio']]);self.assertTrue(all(a['advanced_time']>0 and a['error'] is None for a in facts['audio']))\n  self.assertEqual([1280,390,320],[v['width'] for v in facts['layouts']]);self.assertTrue(all(v['width']==v['pageWidth'] and v['fontLoaded'] and v['size']=='17px' for v in facts['layouts']))\n  requests=json.loads((DATA/'gemini-browser/requests.json').read_text());self.assertTrue(all(r['method']=='GET' for r in requests))",
+      "red_expectation": "Source/voice/model/context, PCM/container, legacy failure or actual saved interaction differs from the literal expectation.",
+      "green_expectation": "The exact finite observation matches; mode omission remains explicit and provider directions are not perceptual gold.",
+      "test_id": "unittest::tests.test_provider_followup.ProviderFollowup.test_audio_and_playback_positive",
+      "command_id": "completion-provider-followup",
+      "state": "implemented",
+      "source_path": "tests/test_provider_followup.py",
+      "source_sha256": "869ce1091d134ec50c6058893d9309cce6deb38e71597fa9629fc459641a5c8d",
+      "invalidation_dependencies": [
+        "tests/test_provider_followup.py",
+        "services/speech/audio.py",
+        "audit/completion-leftovers-20261028/gemini_current_pair.py",
+        "audit/completion-leftovers-20261028/browser_gemini.py",
+        "audit/completion-leftovers-20261028/export_gemini.py",
+        "tests/completion_leftovers_gemini.cjs",
+        "specification/v2/docs/speech-service-selection.md",
+        "data/completion-leftovers-20261028/gemini-current-api",
+        "data/completion-leftovers-20261028/gemini-resume",
+        "data/completion-leftovers-20261028/gemini-browser",
+        "data/completion-leftovers-20261028/gemini-lab-readback.json"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Actual two Free synthesis replies, original legacy400/429, production PCM projection and real saved playback; evidence readers dispatch zero inference."
+        ],
+        "forbidden_claims": [
+          "A successful synthesis proves every acoustic target",
+          "Mode-omitted cadence equals the legacy control",
+          "A standalone comparison qualifies a production Gemini speech adapter",
+          "Provider speech is independent linguistic correctness gold"
+        ]
+      },
+      "distinct_reason": "FIN-ACOUSTIC Observable behavior and counterexamples: Exact native unittest::tests.test_completion_i26.CompletionI26.test_acoustic_positive also proves this existing FIN-ACOUSTIC.P1 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
+    },
+    {
+      "id": "FIN-ACOUSTIC.P2.legacy_mode_negative",
+      "property_id": "FIN-ACOUSTIC.P2",
+      "polarity": "negative",
+      "scenario": "FIN-ACOUSTIC Observable behavior and counterexamples",
+      "scenario_fingerprint": "5ec939298d4d7fb44f7df618c5745899a0b08a7440ec213dfe04a59e209598f8",
+      "setup": "Actual retained Gemini Free requests/replies, native PCM, production normalization and Chrome/Lab observations with exact literal expectations in tests/test_provider_followup.py::test_legacy_mode_negative",
+      "observable": "def test_legacy_mode_negative(self):\n  legacy=DATA/'gemini-resume';response=json.loads((legacy/'gemini-mistakes-3.raw').read_text());receipt=json.loads((legacy/'gemini-mistakes-3-receipt.json').read_text());request=json.loads((legacy/'gemini-mistakes-3-request.json').read_text())\n  self.assertEqual(400,receipt['http_status']);self.assertIn(\"Unknown parameter 'mode'\",response['error']['message']);self.assertEqual('conversational',request['body']['generation_config']['speech_config']['mode'])\n  old=json.loads((ROOT/'data/pronunciation-all-20261023/output/gemini-mistakes-3-receipt.json').read_text());self.assertEqual(429,old['http_status'])\n  for variant in ['clean','mistakes']:self.assertNotIn('mode',read('gemini-'+variant+'-request.json')['body']['generation_config']['speech_config'])",
+      "red_expectation": "Source/voice/model/context, PCM/container, legacy failure or actual saved interaction differs from the literal expectation.",
+      "green_expectation": "The exact finite observation matches; mode omission remains explicit and provider directions are not perceptual gold.",
+      "test_id": "unittest::tests.test_provider_followup.ProviderFollowup.test_legacy_mode_negative",
+      "command_id": "completion-provider-followup",
+      "state": "implemented",
+      "source_path": "tests/test_provider_followup.py",
+      "source_sha256": "869ce1091d134ec50c6058893d9309cce6deb38e71597fa9629fc459641a5c8d",
+      "invalidation_dependencies": [
+        "tests/test_provider_followup.py",
+        "services/speech/audio.py",
+        "audit/completion-leftovers-20261028/gemini_current_pair.py",
+        "audit/completion-leftovers-20261028/browser_gemini.py",
+        "audit/completion-leftovers-20261028/export_gemini.py",
+        "tests/completion_leftovers_gemini.cjs",
+        "specification/v2/docs/speech-service-selection.md",
+        "data/completion-leftovers-20261028/gemini-current-api",
+        "data/completion-leftovers-20261028/gemini-resume",
+        "data/completion-leftovers-20261028/gemini-browser",
+        "data/completion-leftovers-20261028/gemini-lab-readback.json"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Actual two Free synthesis replies, original legacy400/429, production PCM projection and real saved playback; evidence readers dispatch zero inference."
+        ],
+        "forbidden_claims": [
+          "A successful synthesis proves every acoustic target",
+          "Mode-omitted cadence equals the legacy control",
+          "A standalone comparison qualifies a production Gemini speech adapter",
+          "Provider speech is independent linguistic correctness gold"
+        ]
+      },
+      "distinct_reason": "FIN-ACOUSTIC Observable behavior and counterexamples: Exact native unittest::tests.test_completion_i26.CompletionI26.test_acoustic_positive also proves this existing FIN-ACOUSTIC.P1 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
+    },
+    {
+      "id": "FIN-ACOUSTIC.P2.streaming_container_negative",
+      "property_id": "FIN-ACOUSTIC.P2",
+      "polarity": "negative",
+      "scenario": "FIN-ACOUSTIC Observable behavior and counterexamples",
+      "scenario_fingerprint": "5ec939298d4d7fb44f7df618c5745899a0b08a7440ec213dfe04a59e209598f8",
+      "setup": "Actual retained Gemini Free requests/replies, native PCM, production normalization and Chrome/Lab observations with exact literal expectations in tests/test_provider_followup.py::test_streaming_container_negative",
+      "observable": "def test_streaming_container_negative(self):\n  for variant in ['clean','mistakes']:\n   bad=(PAIR/'container-projection-failure'/('gemini-'+variant+'.wav')).read_bytes()\n   with self.assertRaisesRegex(ValueError,'AUDIO_FORMAT_INVALID'):admit(bad)\n   # The provider reply and PCM are preserved. Fixing a container projection\n   # must not request a new generation or accept the false24-hour duration.\n   self.assertGreater(len(admit((PAIR/('gemini-'+variant+'.wav')).read_bytes())),0)\n  calls=read('dispatches.json');self.assertEqual(2,len(calls));self.assertTrue(all(c['outcome']=='complete' and c['http_status']==200 for c in calls))",
+      "red_expectation": "Source/voice/model/context, PCM/container, legacy failure or actual saved interaction differs from the literal expectation.",
+      "green_expectation": "The exact finite observation matches; mode omission remains explicit and provider directions are not perceptual gold.",
+      "test_id": "unittest::tests.test_provider_followup.ProviderFollowup.test_streaming_container_negative",
+      "command_id": "completion-provider-followup",
+      "state": "implemented",
+      "source_path": "tests/test_provider_followup.py",
+      "source_sha256": "869ce1091d134ec50c6058893d9309cce6deb38e71597fa9629fc459641a5c8d",
+      "invalidation_dependencies": [
+        "tests/test_provider_followup.py",
+        "services/speech/audio.py",
+        "audit/completion-leftovers-20261028/gemini_current_pair.py",
+        "audit/completion-leftovers-20261028/browser_gemini.py",
+        "audit/completion-leftovers-20261028/export_gemini.py",
+        "tests/completion_leftovers_gemini.cjs",
+        "specification/v2/docs/speech-service-selection.md",
+        "data/completion-leftovers-20261028/gemini-current-api",
+        "data/completion-leftovers-20261028/gemini-resume",
+        "data/completion-leftovers-20261028/gemini-browser",
+        "data/completion-leftovers-20261028/gemini-lab-readback.json"
+      ],
+      "substitution": {
+        "classification": "NO_TEST_DOUBLE",
+        "proof_claims": [
+          "Actual two Free synthesis replies, original legacy400/429, production PCM projection and real saved playback; evidence readers dispatch zero inference."
+        ],
+        "forbidden_claims": [
+          "A successful synthesis proves every acoustic target",
+          "Mode-omitted cadence equals the legacy control",
+          "A standalone comparison qualifies a production Gemini speech adapter",
+          "Provider speech is independent linguistic correctness gold"
+        ]
+      },
+      "distinct_reason": "FIN-ACOUSTIC Observable behavior and counterexamples: Exact native unittest::tests.test_completion_i26.CompletionI26.test_acoustic_positive also proves this existing FIN-ACOUSTIC.P1 assertion; I33 reuses that observation with its original scope rather than dispatching another test or model."
     }
   ],
   "commands": [
@@ -332468,6 +332659,22 @@
       "cwd": ".",
       "env": {},
       "timeout_seconds": 180,
+      "authority": "local"
+    },
+    {
+      "id": "completion-provider-followup",
+      "runner": "python-unittest",
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_provider_followup"
+      ],
+      "cwd": ".",
+      "env": {},
+      "timeout_seconds": 60,
       "authority": "local"
     }
   ]

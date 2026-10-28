@@ -26,8 +26,33 @@ universal phoneme correctness or throughput. No SDPA/MLX/model sweep, automatic
 fallback, hidden sampling clamp, larger deadline or hosted request was selected.
 
 ACCOUNT-OBSERVATIONS.json records the actual read-only provider account views.
-ElevenLabs' refreshed Free usage is8922/10000;1078remain. Gemini's project still
-shows Free tier, but its current model-specific TTS quota was not established.
+ElevenLabs' refreshed Free usage is8922/10000;1078remain. Gemini's expanded one-day model table subsequently showed0/10requests used,
+3RPM/10kinputTPM. These dated observations precede the resumed requests.
 Azure remains at its protected Microsoft passkey step. None is permission for
 paid use. Historical429,503 and subscription-policy blockers are kept distinct
 in REMAINING.md.
+
+## Current Gemini API compatibility
+
+The original mode-present Flash-Lite request returned HTTP400 rather than429.
+The actual error is Unknown parameter mode at structured_speech_config. The
+[official API reference](https://ai.google.dev/api/interactions-api) defines
+speaker configuration without mode. The
+[official speech guide](https://ai.google.dev/gemini-api/docs/speech-generation)
+still contains a conflicting REST example, while its SDK examples omit mode.
+The operation's actual rejection is retained; no undocumented replacement value
+or automatic transport fallback was tried.
+
+A new explicit whole-dialogue candidate omits mode in both variants and retains
+all20turns,26target directions, model and Kore/Puck voice bindings. Two actual
+Free requests completed and are exported to local Lab25/run
+04f7146f04fc46088b435e12395d6f99. Both full recordings have actual Chrome playback,
+keyboard/Refresh and three-width observations. This is not the old cadence setting
+or a production Gemini speech adapter, and no perceptual qualification is inferred.
+
+The first experimental container projection incorrectly retained FFmpeg's streaming
+unknown-size RIFF header, producing a false24-hour duration. The provider's native
+WAV/PCM and responses were already correct. Reusing the actual production
+normalization owner repairs the finite header and preserves every PCM sample.
+The malformed artifacts and original wrong result remain separately retained;
+no new model request was made for this repair. Final durations are207.12/223.56s.

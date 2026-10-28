@@ -124,3 +124,29 @@ next. Current archive/publication proof is not replaced by the workspace UI run.
 - RELEASE-REVIEW.json records actual UI/UX, typography and evidence passes for
   the observed ZIP; it is not a substitute for the pending complete I30 clean
   gate. Earlier17-pass/partial browser records remain historical.
+
+- Gemini's current expanded one-day table eventually resolved: Free0/10RPD,
+ 3RPM/10kinputTPM before calls. A bounded attempt to resume the original request
+  failed400because the provider now rejects mode=conversational. Official API
+  reference and SDK examples omit mode; the guide's old REST example conflicts.
+  The original429and new400are retained separately.
+- A new explicitly versioned mode-omitted whole-dialogue plan, same model/voices,
+  source20turns and26directions, completed with two Free requests. Recordings are
+  207.12s/223.56s. Chrome pointer playback, keyboard/pause/single-player/Refresh,
+ 26visible targets and1280/390/320layouts pass. Local Lab25/run
+ 04f7146f04fc46088b435e12395d6f99 retains actual context/output and reads back.
+  No production speech adapter or per-target hearing qualification is claimed.
+- The experimental helper initially bypassed production normalization and saved
+  FFmpeg's unknown-length streaming RIFF directly. Native provider WAV/PCM were
+  correct. Switching to the existing normalization owner fixes the header with
+  exact PCM preservation and zero additional requests. Original malformed WAVs
+  and the false-duration result remain in container-projection-failure.
+- Four independent actual-artifact tests pass. A separate FIN-ACOUSTIC.P2 property
+  registers these new observations; original accepted I26 selection/case IDs stay
+  unchanged. This is additional scoped comparison proof, not expanded universal
+  certification or a bulk judge campaign.
+- The first I30 full clean gate found one missing archive-readback metadata file:
+ 20passes/one failure. Both actual ZIP downloads already existed. The publication
+  driver now writes that actual readback record; the failed exact case passes
+  after supplying it. The original non-green receipt remains retained. Full I30
+  acceptance still awaits the repaired committed-clean gate.

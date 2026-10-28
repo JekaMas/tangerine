@@ -5,7 +5,7 @@ The starter uses local Kokoro, independent of ChatGPT or DeepSeek billing. For m
 | Backend | Useful input/control | Accent use | Acoustic mutation limit | Current access |
 |---|---|---|---|---|
 | Kokoro82M | Literal text, preset speaker voice, pace preference, local timed pauses | Registered US/GB voices | Plain-text baseline lacks phone control; kokoro-phonemes-v1 adds vocabulary-scoped phone/lexical-stress input; fine pitch remains unsupported | Local model; no account or usage bill |
-| Qwen3-TTS | VoiceDesign description; save synthetic reference; Base reuse per speaker | Described accent/style, not a verified L1 identity | Best effort; no documented arbitrary IPA guarantee | Local Apache model; actual hardware fit unknown |
+| Qwen3-TTS | VoiceDesign description; save synthetic reference; Base reuse per speaker | Described accent/style, not a verified L1 identity | Best effort; no documented arbitrary IPA guarantee | Local Apache model; selected CustomVoice0.6B Mac runtime observed below, other bindings unqualified |
 | ElevenLabs | Voice ID, model ID, voice settings; pinned English IPA/CMU pronunciation dictionary | Select catalogue voice/accent metadata, optionally voice design | Phoneme tags require a supporting model; other models ignore them | Included Free/Starter pool; no top-up or usage billing |
 | Azure standard neural | Existing typed SSML IPA/prosody/break compiler | Selected locale/voice, expanded available English locales only when configured | Exact sound still unobserved; don't assume HD voices support standard SSML | F0 neural allowance, currently500kcharacters/month; S0 excluded |
 | OpenAI gpt-4o-mini-tts | Text plus natural-language accent/style instructions | Prompted accent/style | Not a guaranteed IPA compiler | Separate API usage billing; excluded now |
@@ -38,6 +38,37 @@ Configured extensions are typed by speech-profile.schema.json in configuration.s
 ## Registration and generated-media terms
 
 Local Kokoro, Qwen3-TTS and eSpeak NG need no provider account. For the recommended optional cloud extension, prepare ElevenLabs Free signup using the selected existing Google identity; select no paid plan, top-up or usage billing. Its signup button accepts legal terms, so the browser tool requires confirmation at that step. Registration and API-key creation are distinct; a key is not needed merely to inspect the account plan. Do not create duplicate accounts or credentials in anticipation of an unimplemented adapter. Azure F0 is an alternative, not an additional starter registration requirement. Optional Gemini/Claude/Platform accounts are not required by this setup. Actual status is in [registration audit](../../../audit/provider-registration-20261009/REPORT.md).
+
+### Selected runtime and API observations, 2026-10-28
+
+The approved isolated Mac Qwen runtime completed the same four-turn clean and
+mutated CustomVoice0.6B pair:79.12s and63.52s. The explicit frozen selection is
+MPS/float32 generation plus CPU audio codec. The ordinary Docker default stays
+CPU; no device fallback or universal hardware/IPA claim follows from this finite
+comparison. Actual model inputs, outputs, failed earlier candidates, loaded
+placement and local Lab readback are retained in the completion follow-up audit.
+
+The existing unbilled Gemini project displayed Free TTS limits of3requests/minute
+and10/day, with0used in the selected one-day view before this follow-up. This is
+a dated account observation, not a future quota reservation. Resuming the legacy
+Flash-Lite request returned400 for `speech_config.mode=conversational`.
+The current [Interactions API reference](https://ai.google.dev/api/interactions-api)
+defines speaker configuration without that field, while the
+[speech guide](https://ai.google.dev/gemini-api/docs/speech-generation) still
+contains a conflicting REST example. Native failure is authoritative for this
+selected operation; do not retry the unsupported field or silently rewrite its
+saved plan.
+
+A new explicitly versioned comparison omits `mode` in both complete requests,
+keeping the same Flash-Lite model, Kore/Puck voices,20source turns and26target
+directions. Two Free requests completed; finite recordings are207.12s/223.56s.
+The default cadence is not the legacy conversational-mode control. Original
+mode-present recordings, quota failure and new400remain separate. Normalization
+uses the existing production audio owner, which rewrites streaming WAV headers
+to finite RIFF without new inference. This is a standalone provider comparison;
+it neither adds a production Gemini speech adapter nor proves every requested
+phone, accent or intonation was realized. Actual current allowance, model/context,
+saved playback and Lab observations remain scoped to these selected recordings.
 
 ElevenLabs Free-generated speech has non-commercial use terms. Public sharing requires the provider attribution specified by its current terms (currently elevenlabs.io or 11.ai in the title). A later paid upgrade does not retroactively grant commercial rights to earlier Free audio. Keep the generation-time provider/plan and terms reference with existing audio provenance/export information; Apache-2.0 covers Tangerine software, not every third-party recording. Local playback needs no publication ceremony. Commercial audio use can select the local default; no purchase or automatic plan upgrade is required. Source: [provider publication terms](https://help.elevenlabs.io/hc/en-us/articles/13313564601361-Can-I-publish-the-content-I-generate-on-the-platform).
 
