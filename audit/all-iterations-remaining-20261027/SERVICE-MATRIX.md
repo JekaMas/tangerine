@@ -1,5 +1,9 @@
 # Services: implemented, qualified and merely catalogued
 
+Latest local/free follow-up: [current Qwen/Gemini observations, allowance history
+and remaining access limits](../completion-leftovers-20261028/REPORT.md).
+The dated table below is a retained baseline, not a fresh allowance report.
+
 State is derived from retained records through baseline324d8e7, not a fresh account
 login or allowance read. Free allocations can change; inspect the selected actual
 allowance before a new permitted functional call. No service is activated here.

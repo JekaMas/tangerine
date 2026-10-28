@@ -1,5 +1,10 @@
 # All-iteration remaining implementation and external dependencies
 
+Current follow-up: [28 October completion, current dispositions and exact remaining
+scope](../completion-leftovers-20261028/REPORT.md). The dated baseline below stays
+unchanged: I32–38 and the later I25/I26/I30 closures supersede named original gaps;
+the historical assertions and genuine external inputs remain separately visible.
+
 Reviewed on 2026-10-27 against `324d8e7d378a21f4fe43d9f25231b62fe70320e3`,
 `tangerine/iteration-16-release`. The canonical checkout and public GitHub main
 also read back that revision before this documentation increment. The canonical

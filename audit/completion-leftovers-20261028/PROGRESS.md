@@ -164,3 +164,41 @@ next. Current archive/publication proof is not replaced by the workspace UI run.
   unchanged. The current source/clean-state gate is invalidated by this explicit
   contract-scope repair; only zero-inference verification readers/fixtures rerun,
   with no corpus import, synthesis, model/judge campaign or data integrity audit.
+
+## Final stable verification and delivery checkpoint
+
+- Full committed-clean selections on3695f1339e540daa819163457c5dd11fdd9ceb80:
+  I25=43/43, I26=542/542, I30=21/21 and separate Gemini current-API P2=4/4.
+  I27=50passes/one genuine owner-release skip. Total660passes/one skip/no failures.
+  Original non-green and successful receipts remain separate; no global all-case
+  acceptance is issued. I38 and other still-valid successor greens are retained.
+- Actual public main and immutable/unauthenticated source ZIPs read back3695f13.
+ 878runtime/build inputs are byte-identical to the actual started/restarted
+ 80ea314archive. Two changed speech documents are explicitly non-runtime inputs.
+  Native startup/restart/UI proof is reused; no redundant build or inference.
+- Final Gemini320/390/1280screenshots and converted screen-video frame were
+  inspected. The successful release video is release-green.mp4; the earlier
+  completed-assertion/failed-teardown video is retained but not presented as green.
+- Verification artifacts were appended under verification-3695f13to actual
+  QwenLab24, acousticLab17and GeminiLab25runs. All15selected files read back
+  byte-exactly, with zero inference. Original actual-call artifacts are unchanged.
+- Both owned I30disposable stacks/volumes were removed after preserving native
+  observations. All six running user services remain healthy; app3000readiness
+  is200. CanonicalGAPS.md retains its exact original hash/status. The approved
+  isolated Qwen runtime, admitted model cache, audio and private evidence remain.
+- Current I25/I26/I30acceptance, I27incomplete status and13canonical task closures
+  are reconciled.29unchecked rows remain historical/conditional/assurance scope,
+  not29missing features. All30baseline remaining-work entries have current
+  dispositions. TRACE-only local assertion debt and both ratio conflicts remain
+  explicit; neither source gaps nor quota are used to excuse those obligations.
+
+REPORT.md, ACCEPTANCE.json, REMAINING.md and WORK-ITEMS.json own the current
+scope and proof boundaries. Final metadata-only GitHub readback is retained in
+the ignored publication-final directory after committing these records.
+
+The final status/checklist edits change no production, test, fixture or contract
+input of the accepted selections. A redundant post-metadata fingerprint query
+was stopped rather than spending further CPU repeating that work; its cancellation
+record is retained and is not reported as a passing gate. The original committed-
+clean receipts remain the behavioral evidence. No shared workflow engine changes
+or new runtime checks were introduced.

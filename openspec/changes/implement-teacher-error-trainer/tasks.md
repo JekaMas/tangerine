@@ -40,7 +40,7 @@ Only the selected iteration is being accepted; future FIN cases remain planned.
 
 ## 5. Real provider integration
 
-- [ ] 5.1 Implement configurable versioned real adapters with the user-selected DeepSeek 4.1 fast development profile and preserved original baseline; retain prompt/schema/hash/usage/error receipts; verify successful/failed real calls without fallback. Five prompt/15 schema bodies recovered; DeepSeek credential reference found, but role qualification/live calls are not_run and linguistic_audit remains DEC-001-blocked. — I17 H010: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 5.1 Implement configurable versioned real adapters with the user-selected DeepSeek 4.1 fast development profile and preserved original baseline; retain prompt/schema/hash/usage/error receipts; verify successful/failed real calls without fallback. Five prompt/15 schema bodies recovered. DeepSeek-specific role qualification remains unperformed because included-only API entitlement is unproved; the old DEC-001/human-audit blocker is superseded by the accepted LLM-only flow. Other selected Pro/Gemini/local roles have their own actual receipts. — I17 H010: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 - [ ] 5.2 Run source-bound TTS capability cases and qualified listening review early; retain actual audio and DEC-007 evidence per target. — I17 H011: still required; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 - [x] 5.3 Bound ASR/PA advisory claims and en-US prosody; verify unsupported targets do not create numeric truth. — I17 H012: completed; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
@@ -52,7 +52,7 @@ Only the selected iteration is being accepted; future FIN cases remain planned.
 
 ## 7. Permitted corpus and empirical validation
 
-- [ ] 7.1 Acquire all authorized full named releases/components for all eight source profiles with legal receipts, safe quarantine/import and immutable provenance; inaccessible sources stay explicit blockers; verify unsafe/invalid source rejection. — I17 H014: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [ ] 7.1 Acquire all authorized full named releases/components for all eleven original source identities with actual source-use terms, safe quarantine/import and immutable provenance; inaccessible sources stay explicit blockers; verify unsafe/invalid source rejection. — I17 H014: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 - [ ] 7.2 Cover all 122 categories and controls under approved DEC-002 counting; verify real independent audio review and per-leaf denominators. — I17 H015: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 - [ ] 7.3 Collect real teacher answers and independent labels for every required claim class; verify absent classes are reported rather than fabricated. — I17 H016: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 - [x] 7.4 Freeze related-record splits, prompts and approved thresholds; measure mapping precision, coverage, correction agreement and repeatability with real denominators; verify leakage rejection. — I17 H017: superseded; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
@@ -484,7 +484,7 @@ Verification resume: all seven findings are repaired and closed on committed-cle
 - [x] Persist exact private context/request/reply/native receipt evidence and reconcile selected actual Lab observations without credential capture.
 - [x] Materialize every iteration property with distinct positive/negative packets; wire cases/discovery and observe native storage/browser/protocol behavior.
 - [x] Inspect and repair findings; complete affected language/specification/preservation/DAG checks and committed-clean full iteration acceptance. — I17 H095: superseded; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
-- [ ] Commit acceptance, restore preview and fast-forward canonical checkout while preserving unrelated user data. — I17 H096: still required; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [x] Commit acceptance, restore preview and fast-forward canonical checkout while preserving unrelated user data. — I17 H096: completed by the 2026-10-28 follow-up; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 Resume: baseline fe98b1b; scope and native protocol/storage/finalizer anchors recorded in audit/iteration-4-providers-20261010/PLAN.md. No provider credential or dispatch is borrowed from Codex.
 
@@ -907,7 +907,7 @@ Interactive usability acceptance: all26selected test identities are observed pas
 
 - [x] CMP.R1 Generate and retain four complete clean/mistake-directed pairs for the available local/free routes: Kokoro, ElevenLabs Flash v2, ElevenLabs v4 dialogue and Gemini TTS. Use the same four saved turns and four targets; expose a private local listening sheet, actual context/output and separate automated opinions. Preserve unavailable/failed routes and the original exercise. Evidence: audit/speech-comparison-20261022/REPORT.md.
 - [ ] CMP.R2 Complete the Azure comparison after the pending Microsoft sign-in and availability of an actual F0 resource/key. No trial, billing linkage, S0 or paid fallback is authorized. — I17 H100: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
-- [ ] CMP.R3 Obtain a complete Qwen clean/mutated pair on a usable local runtime. Current native float32 and 635-second int8 CPU probes did not produce a full pair; the genuine 5.6-second native preview is labelled partial. Production adapters remain unchanged. — I17 H101: optional/external; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
+- [x] CMP.R3 Obtain a complete Qwen clean/mutated pair on a usable local runtime. The approved isolated MPS float32 generator / explicit CPU codec completed the full 79.12 s / 63.52 s pair; actual native/context/Lab and Chrome evidence is recorded by I25. The old CPU failures and 5.6-second preview remain historical, not substitute full recordings. — I17 H101: completed by the 2026-10-28 follow-up; [scope and evidence](../../../audit/iteration-17-reconciliation-20261025/LEDGER.md).
 
 - [x] CMP.R4 Generate the full saved dialogue with targets covering all 26 pronunciation categories, preserve the same speakers/text and local/free-only boundary, expose actual listening/download artifacts and target-position controls, retain native/context/Lab/browser evidence, and disclose exact versus approximate/unavailable controls. Full Kokoro/Flash/GeminiFlash recordings and full v4 target track exist; v4 uses the explicitly labelled Flash clean reference. Flash-Lite partials/quota failure and local VOT/Praat limitations are retained. This is completion of the requested finite listening experiment, not certification of 26 audible deviations or production-adapter qualification. Evidence: audit/pronunciation-all-20261023/REPORT.md. CMP.R2/R3 remain open.
 
@@ -1101,6 +1101,8 @@ I24.1–I24.3/R1–R3 remain unchecked; no iteration acceptance is issued.
 
 ### Iteration 25 — Complete local Qwen comparison pair
 
+Current follow-up (2026-10-28): **43/43 accepted** on committed-clean `3695f13`. Both complete saved variants, actual Chrome controls and typography, and local Lab readback are complete. Explicit MPS float32 generation and CPU codec preserve the 270-second foreground deadline. Earlier blocked checkpoints below remain historical. See `audit/completion-leftovers-20261028/REPORT.md` and `audit/iteration-25-qwen-20261026/STATUS.json`.
+
 Apply checkpoint2026-10-26: actual cached pinned model and Mac MPS capability
 located. Explicit compute selection, native comparison/resume and read-only
 player are implemented with literal lifecycle/output tests (26 pass,2 skip on
@@ -1123,11 +1125,13 @@ cases. The complete iteration verdict remains incomplete.
 Depends on 17 and a usable local runtime. Properties: `FIN-QWEN.P1`,
 `FIN-VERIFY.I25`. Owns CMP.R3.
 
-- [ ] I25.1 Materialize full-pair completion and partial/cancel/deadline counterexamples; keep the existing foreground deadline and native ownership.
-- [ ] I25.2 Produce both saved dialogue variants on the practical selected runtime, retaining actual model/voice/compute/input/output; never substitute the 5.6-second preview.
-- [ ] I25.3 Verify complete playback versus truthful incomplete states, typography and evidence content; reconcile and commit without relaxing accepted contracts.
+- [x] I25.1 Materialize full-pair completion and partial/cancel/deadline counterexamples; keep the existing foreground deadline and native ownership.
+- [x] I25.2 Produce both saved dialogue variants on the practical selected runtime, retaining actual model/voice/compute/input/output; never substitute the 5.6-second preview.
+- [x] I25.3 Verify complete playback versus truthful incomplete states, typography and evidence content; reconcile and commit without relaxing accepted contracts.
 
 ### Iteration 26 — Selected acoustic evidence and correct variants
+
+Current follow-up (2026-10-28): **542/542 accepted** on committed-clean `3695f13`. Chrome pointer, keyboard, single-player, disclosure, Refresh and responsive typography are now observed for the 20 saved clips. The original 44/122 confirmed outcomes and all contrary/unavailable observations remain unchanged; no universal acoustic certification or bulk judge campaign. Earlier activation blockers below are superseded. See `audit/iteration-26-acoustic-20261026/STATUS.json`.
 
 Depends on 22; 24/25 are dependencies only if their output is selected.
 Properties: `FIN-ACOUSTIC.P1`, `FIN-VERIFY.I26`, and retained `CV-01.P1` through
@@ -1161,9 +1165,11 @@ recovery. Actual local Lab17 verification readback passed without new calls.
 
 - [x] I26.1 Reconcile and retain valid CV-01–CV-06 native/evidence receipts. Materialize only missing target/control/allowed-variant cases for selected uncertain linking, weak-form or connected-speech claims; do not automatically repeat the full observed population.
 - [x] I26.2 Reuse saved audio/measurements/judgments and obtain only necessary authorized selected observations within remaining limits. Repair supported defects, preserve correct variants/uncertainty and never request a bulk retry of unavailable judgments.
-- [ ] I26.3 Verify target-specific claims, listening UI/typography and native/Lab evidence without universal acoustic certification or a human review gate; reconcile and commit.
+- [x] I26.3 Verify target-specific claims, listening UI/typography and native/Lab evidence without universal acoustic certification or a human review gate; reconcile and commit.
 
 ### Iteration 27 — Complete selected original-source inputs
+
+Current follow-up (2026-10-28): **50 passed / 1 skipped**, incomplete, on committed-clean `3695f13`. Older/newer Sources selection, native record readback, keyboard Refresh, error recovery and 1280/390/320 px typography are complete. Only six unavailable original owner releases keep the selected case skipped. I35–37 complete official L2, JFLEG and selected supplement imports. Earlier browser blockers below are superseded; I27.2/I27.3 remain open for actual owner inputs. See `audit/iteration-27-sources-20261026/VERIFY-ACCEPTANCE.json`.
 
 Depends on 17 and source-owner access. Properties: `FIN-SOURCES.P1`,
 `FIN-VERIFY.I27`. Optional selected full-source scope; all eleven identities stay.
@@ -1274,18 +1280,20 @@ I29 final acceptance: **57/57 passed** at committed-clean `6fa76e0a5a34876028fe4
 
 ### Iteration 30 — Main and download-and-run release
 
+Current follow-up (2026-10-28): **21/21 accepted** on committed-clean `3695f13`. Public JekaMas/tangerine publication/readback, actual downloaded-source Docker-only startup/restart, Settings save/reopen, independent read failure/recovery and 320 px UI are complete. Archive `80ea314` runtime inputs remain identical in `3695f13`; final status-only publication retains that proof. The user app at port 3000 and unrelated GAPS.md edit are preserved. Earlier destination/browser/metadata blockers below are superseded. See `audit/iteration-30-release-20261027/VERIFY-STATUS.json` and `audit/completion-leftovers-20261028/REPORT.md`.
+
 Depends on 29 and the actual authorized destination; 23–28 apply only to
 selected/confirmed release claims. Properties:
 `FIN-DELIVERY.P1`, `FIN-VERIFY.I30`.
 
-- [ ] I30.1 Materialize landing/archive/start/restart and missing-remote/failed-push/omitted-build-input/protected-dirty-file counterexamples.
-- [ ] I30.2 Land intended work while preserving unrelated canonical GAPS.md edits; resolve the actual GitHub destination and publish only with publication authority.
-- [ ] I30.3 Download the published source ZIP into a disposable directory, prove documented Docker-only startup/persistence, inspect setup UI/typography and publication readback, then reconcile and commit delivery records.
+- [x] I30.1 Materialize landing/archive/start/restart and missing-remote/failed-push/omitted-build-input/protected-dirty-file counterexamples.
+- [x] I30.2 Land intended work while preserving unrelated canonical GAPS.md edits; resolve the actual GitHub destination and publish only with publication authority.
+- [x] I30.3 Download the published source ZIP into a disposable directory, prove documented Docker-only startup/persistence, inspect setup UI/typography and publication readback, then reconcile and commit delivery records.
 
-- [ ] I30.V1 Preserve the fixed product origin in the source-unchanged test isolation harness; retain the actual failed startup and successful recovery through the existing launcher.
-- [ ] I30.V2 Preserve readiness/configuration response headers through one shared transparent forwarder; reject a200response without the actual installation identity and retain native restart evidence.
-- [ ] I30.V3 Reject partial/omitted or mismatched review evidence explicitly, without adding any learner/runtime gate; register paired exact counterexamples.
-- [ ] I30.V4 Complete actual Settings save/reopen,320px layout and dependency-read failure/recovery UI observations, then finish the full committed-clean I30 gate and publish acceptance records.
+- [x] I30.V1 Preserve the fixed product origin in the source-unchanged test isolation harness; retain the actual failed startup and successful recovery through the existing launcher.
+- [x] I30.V2 Preserve readiness/configuration response headers through one shared transparent forwarder; reject a200response without the actual installation identity and retain native restart evidence.
+- [x] I30.V3 Reject partial/omitted or mismatched review evidence explicitly, without adding any learner/runtime gate; register paired exact counterexamples.
+- [x] I30.V4 Complete actual Settings save/reopen,320px layout and dependency-read failure/recovery UI observations, then finish the full committed-clean I30 gate and publish acceptance records.
 
 I30 verification checkpoint (2026-10-27) supersedes the earlier destination
 blocker below: public JekaMas/tangerine is created, main4558af1 is published and
@@ -1688,3 +1696,8 @@ no failed/skipped/planned/blocked selected cases or substitution gaps. See
 audit/iteration-38-verification-20261028/ACCEPTANCE.json, REPORT.md and PROGRESS.md.
 
 - [x] I38.9 Record the complete expanded I38 committed-clean verify acceptance and final preservation/state readback.
+
+
+## Completion follow-up — 2026-10-28
+
+Selected I25/I26/I30 and the separate current-API Gemini comparison are accepted; I27 has 50 passes and one external-source skip. Exact clean receipts total **660 passes, one skip and no failures** on `3695f13`. The 29 remaining unchecked rows include historical umbrellas and conditional external/empirical obligations; they are not 29 missing product features. I31 preserves 1,055 unestablished whole-packet observations and two conflicting ratio vectors, including 805 TRACE-only local obligations. No whole-change all-case acceptance or archive is issued. All 30 baseline remaining-work items are mapped in `audit/completion-leftovers-20261028/WORK-ITEMS.json`; actual allowance/balance history and closure steps are in its `REPORT.md` and `REMAINING.md`. No additional model campaign or paid call follows from these records.

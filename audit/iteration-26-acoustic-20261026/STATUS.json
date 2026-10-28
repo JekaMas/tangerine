@@ -1,120 +1,41 @@
 {
   "iteration": 26,
-  "operation": "verify with authorized repair",
-  "status": "blocked",
-  "iteration_complete": false,
-  "acceptance_issued": false,
-  "source_commit": "ec2407177693a9dcf95c0532d59b24d1ae59f7cc",
-  "previous_apply": {
-    "source_commit": "09874834f38bfe3d71b7736762c7efa394419790",
-    "receipt": "data/iteration-26-acoustic-20261026/clean.json",
-    "counts": {
-      "passed": 19,
-      "skip": 1
-    }
-  },
-  "selected_properties": [
-    "FIN-ACOUSTIC.P1",
-    "FIN-VERIFY.I26",
-    "CV-01.P1",
-    "CV-02.P1",
-    "CV-03.P1",
-    "CV-04.P1",
-    "CV-05.P1",
-    "CV-06.P1"
-  ],
+  "operation": "verify with retained native/audio evidence and actual browser activation",
+  "status": "accepted",
+  "iteration_complete": true,
+  "acceptance_issued": true,
+  "source_commit": "3695f1339e540daa819163457c5dd11fdd9ceb80",
   "full_selection": {
+    "status": "passed",
+    "source_revision": "3695f1339e540daa819163457c5dd11fdd9ceb80",
+    "git_clean": true,
+    "case_count": 542,
+    "counts": {
+      "passed": 542
+    },
+    "properties": [
+      "FIN-ACOUSTIC.P1",
+      "FIN-VERIFY.I26",
+      "CV-01.P1",
+      "CV-02.P1",
+      "CV-03.P1",
+      "CV-04.P1",
+      "CV-05.P1",
+      "CV-06.P1"
+    ],
+    "receipt": "data/completion-leftovers-20261028/gate-i26-final.json",
+    "unaccepted_cases": [],
+    "manifest_sha256": "bdb94f42ce3b8ea06a4c132ae1f709a081b4f9a30b4fd3ff311812b7a6f3fa32"
+  },
+  "previous_verify": {
+    "source_commit": "ec2407177693a9dcf95c0532d59b24d1ae59f7cc",
     "receipt": "data/iteration-26-verification-20261026/clean.json",
-    "committed_clean": true,
-    "runner_status": "incomplete",
-    "cases": 542,
     "counts": {
       "passed": 541,
       "skip": 1
     },
-    "nonpassing_cases": {
-      "FIN-VERIFY.I26.review_positive": "skip"
-    },
-    "commands": [
-      {
-        "id": "category-realization-evidence",
-        "exit_code": 0,
-        "observed_status_counts": {
-          "pass": 6
-        }
-      },
-      {
-        "id": "category-realization-native",
-        "exit_code": 0,
-        "observed_status_counts": {
-          "pass": 512
-        }
-      },
-      {
-        "id": "completion-i26",
-        "exit_code": 0,
-        "observed_status_counts": {
-          "pass": 5,
-          "skip": 1
-        }
-      },
-      {
-        "id": "completion-i26-contracts",
-        "exit_code": 0,
-        "observed_status_counts": {
-          "pass": 18
-        }
-      }
-    ],
-    "started_at": "2026-10-26T10:29:33.152306+00:00",
-    "finished_at": "2026-10-26T10:32:02.115500+00:00",
-    "scope": "Complete eight-property native iteration selection. Original model/audio observations reused, not rerun."
+    "record_at_revision": "3695f1339e540daa819163457c5dd11fdd9ceb80"
   },
-  "findings": [
-    {
-      "id": "I26-V1",
-      "kind": "defect",
-      "status": "fixed",
-      "owner": "audit/iteration-26-acoustic-20261026/listening.py:selection_reader",
-      "cause": "A failed startup read retained fallback empty rows forever.",
-      "repair": "Retry an uncompleted read on a later request; retain admitted metadata once in memory. Independent routes do not force metadata loading.",
-      "evidence": [
-        "recovery-red.log",
-        "recovery-green.log",
-        "recovery-siblings.log",
-        "font-sibling.log"
-      ]
-    },
-    {
-      "id": "I26-V2",
-      "kind": "defect",
-      "status": "fixed",
-      "owner": "audit/iteration-26-acoustic-20261026/listening.py:page",
-      "cause": "An unreadable saved judgment displayed the no-execution caption and omitted recovery guidance.",
-      "repair": "Show an unavailable-observation caption and authored guidance while preserving all media, independent judgments and Refresh.",
-      "evidence": [
-        "recovery-red.log",
-        "recovery-green.log",
-        "browser-observations.json",
-        "http-observations.json"
-      ]
-    },
-    {
-      "id": "I26-V3",
-      "kind": "missing evidence",
-      "status": "resolved",
-      "cause": "Apply had no complete committed-clean iteration run.",
-      "repair": "Executed the full542-case selected gate at committed-clean source;541passed, one actual interaction case skipped. This closes the execution-selection gap, not iteration acceptance."
-    },
-    {
-      "id": "I26-V4",
-      "kind": "external blocker",
-      "status": "unresolved",
-      "case": "FIN-VERIFY.I26.review_positive",
-      "cause": "The selected IAB loads media but does not activate pointer/keyboard actions. A new tab reproduces the failure; HTTP counts stay unchanged after Refresh click.",
-      "unblock": "Answer the current installed-Chrome selection question or restore authorized IAB input, then observe actual Play/time advancement, single-player behavior, keyboard and Refresh."
-    }
-  ],
   "actual_selected": {
     "linking": "retained model-confirmed narrow joining contrast; no exact universal phone claim",
     "assimilation": "new model-confirmed four-control voiced-joining drill",
@@ -131,26 +52,6 @@
     "original_unconfirmed": 78,
     "rerun_model_calls": 0
   },
-  "actual_new_model_calls": 0,
-  "actual_new_synthesis_calls": 0,
-  "retained_actual_i26_model_calls": 4,
-  "paid_use": false,
-  "bulk_or_performance_campaign": false,
-  "structural_checks": {
-    "openspec": "passed:pinned1.13.1",
-    "graph": "passed:542selected cases;518original CV edges unchanged",
-    "discovery": "passed after repairing an unsupported result classification in the new review row",
-    "python_syntax": "passed:7changed Python files",
-    "javascript_syntax": "retained unchanged rendered script receipt",
-    "preservation": "passed:original122categories/recipes,42formulas,11source scopes and migrations unchanged",
-    "whitespace": "passed:stable staged batch"
-  },
-  "reviews": {
-    "code": "pass:self-review with independently expected CLI/HTTP regressions; original failure receipts retained",
-    "ui_ux": "recovery passes; actual pointer/keyboard/Refresh/disclosure/single-player activation remains incomplete",
-    "typography": "pass:inspected1280x720,390x844,320x740 rendered recovery states; loaded17px/24.65px SourceSans3, wrapped labels, visible focus and no page overflow. Keyboard activation/expanded notes unobserved.",
-    "evidence": "complete native selection and local Lab readback; actual interaction remains unobserved. No universal acoustic correctness or product release acceptance."
-  },
   "lab": {
     "experiment_id": "17",
     "run_id": "1585a80aa1cf4ee08202ce41c450fa82",
@@ -162,32 +63,30 @@
     "new_model_calls": 0,
     "new_synthesis_calls": 0,
     "export_inference_calls": 0,
-    "qualification": "blocked: actual browser activation remains unobserved; all541 other cases passed",
     "checked_artifacts": 4,
-    "artifact_files": 21
+    "artifact_files": 21,
+    "qualification": "Original actual-call artifacts retained; current no-call verification is appended under verification-3695f13."
   },
-  "completed_tasks": [
-    "I26.1",
-    "I26.2"
-  ],
-  "unchecked_tasks": [
-    "I26.3"
-  ],
-  "verification_report": "audit/iteration-26-verification-20261026/VERIFY.md",
-  "cleanup": {
-    "controlled_browser_fixture_stopped": true,
-    "test_tab_closed": true,
-    "readonly_saved_audio_deliverable": "http://127.0.0.1:8772/",
-    "readonly_helper_refreshed_to_repaired_source": true,
-    "user_services_restarted": false,
-    "user_volumes_removed": false,
-    "user_app_ready_http": 200,
-    "user_data_settings_media_preserved": true,
-    "canonical_status": [
-      " M audit/spec-fullness-20261008/GAPS.md"
-    ],
-    "temporary_viewport_reset": true,
-    "user_tabs_and_azure_handoff_preserved": true
+  "verification_lab": {
+    "label": "acoustic",
+    "run_id": "1585a80aa1cf4ee08202ce41c450fa82",
+    "experiment_id": "17",
+    "artifact_prefix": "verification-3695f13",
+    "checked_files": 5,
+    "readback": true,
+    "export_inference_calls": 0
   },
-  "resume": "Resolve the browser selection/input blocker, retain current actual model results and all541 valid native passes, then observe the missing interaction and rerun its invalidated closure. Complete the committed-clean iteration contract before checking I26.3 or issuing acceptance."
+  "reviews": {
+    "ui_ux": "passed: actual pointer/keyboard playback, single-player/disclosure/Refresh for20saved clips",
+    "typography": "passed: inspected1280/390/320screenshots and video frame",
+    "evidence": "passed finite selection; original44/122confirmation and contrary observations remain"
+  },
+  "actual_new_model_calls": 0,
+  "actual_new_synthesis_calls": 0,
+  "retained_actual_i26_model_calls": 4,
+  "report": "../completion-leftovers-20261028/REPORT.md",
+  "paid_use": false,
+  "bulk_or_performance_campaign": false,
+  "unchecked_tasks": [],
+  "proof_boundary": "Selected tools, real saved interaction and reused CV evidence. Not universal acoustic certification."
 }
