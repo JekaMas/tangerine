@@ -99,6 +99,16 @@ class QwenComparison(unittest.TestCase):
                     self.assertEqual(expected, recording.readframes(recording.getnframes()))
             self.assertEqual('complete', json.loads((out/'state.json').read_text())['state'])
 
+    def test_plan_freezes_explicit_codec_positive(self):
+        selected=dict(device='mps',dtype='float32',codec_device='cpu')
+        plan=comparison.request_plan(json.loads(comparison.MATERIAL.read_text()),selected)
+        pieces=backends.plan(plan['profile'],dict(turns=plan['turns']))['pieces']
+        self.assertEqual(26,len(pieces))
+        self.assertTrue(all(p['qwen_runtime']==selected for p in pieces))
+        with patch.dict(os.environ,dict(TANGERINE_QWEN_DEVICE='cpu',TANGERINE_QWEN_DTYPE='float16')):
+            resumed=backends.plan(plan['profile'],dict(turns=pieces))['pieces']
+        self.assertEqual(pieces,resumed)
+
     def test_resume_saved_responses_positive(self):
         with tempfile.TemporaryDirectory() as tmp:
             out, plan = Path(tmp), self.plan()

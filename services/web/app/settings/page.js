@@ -8,10 +8,16 @@ export default function Settings() {
  const [connections,setConnections]=useState([]),[active,setActive]=useState(''),[credits,setCredits]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState(''),[busy,setBusy]=useState(false),[models,setModels]=useState([]),[configuration,setConfiguration]=useState(null),[etag,setEtag]=useState(''),[advanced,setAdvanced]=useState('');
  function requestBody(c){const {workspace_id,configuration_sha256,provider_access_policy,...request}=c;return request;}
  async function loadModels(c){if(!c?.models_asset_id){setModels([]);return;}const r=await fetch(`/api/v1/prepare/assets/${c.models_asset_id}/bytes`,{cache:'no-store'});if(!r.ok)throw userError('Saved model catalogue is unavailable. Refresh the connection.');const p=await r.json();setModels((p.models||[]).filter(x=>x.visibility==='list'));}
- async function refresh(){setError('');try{
-  const r=await fetch('/api/v1/provider-connections',{cache:'no-store'});if(!r.ok)throw userError('Provider settings are unavailable. Saved content is retained.');const rows=await r.json(),selected=r.headers.get('x-tangerine-active-connection')||'';setConnections(rows);setActive(selected);await loadModels(rows.find(x=>x.id===selected));
-  const c=await fetch('/api/v1/configuration',{cache:'no-store'});if(!c.ok)throw userError('Saved configuration is unavailable. Refresh to retry.');const v=await c.json();setConfiguration(v.configuration);setEtag(c.headers.get('etag'));setAdvanced(JSON.stringify(requestBody(v.configuration),null,2));
- }catch(e){setError(requestError(e))}}
+ async function refresh(){setError('');
+  const configurationRead=async()=>{
+   const c=await fetch('/api/v1/configuration',{cache:'no-store'});if(!c.ok)throw userError('Saved configuration is unavailable. Refresh to retry.');const v=await c.json();setConfiguration(v.configuration);setEtag(c.headers.get('etag'));setAdvanced(JSON.stringify(requestBody(v.configuration),null,2));
+  };
+  const connectionRead=async()=>{
+   const r=await fetch('/api/v1/provider-connections',{cache:'no-store'});if(!r.ok)throw userError('ChatGPT connection settings are temporarily unavailable. Other available settings remain usable. Refresh to retry.');const rows=await r.json(),selected=r.headers.get('x-tangerine-active-connection')||'';setConnections(rows);setActive(selected);await loadModels(rows.find(x=>x.id===selected));
+  };
+  const results=await Promise.allSettled([configurationRead(),connectionRead()]);
+  setError(results.filter(result=>result.status==='rejected').map(result=>requestError(result.reason)).join(' '));
+ }
  useEffect(()=>{refresh()},[]);
  async function action(name,id=null){setBusy(true);setError('');setNotice('');try{const r=await fetch('/api/v1/provider-connections:action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:name,connection_id:id,credits_after_plan_limit_disabled:credits?true:null})});if(!r.ok){const e=await r.json();throw userError(e.code==='LOCAL_BUDGET_EXCEEDED'?'Included usage is unavailable. Manage usage or retry after reset.':'The connection could not be completed. Your saved exercises are available. Refresh Settings or reconnect.');}const data=await r.json();if(data.authorization_url){window.location.assign(data.authorization_url);return;}await refresh();}catch(e){setError(requestError(e))}finally{setBusy(false)}}
  async function save(c){setBusy(true);setError('');setNotice('');try{const r=await fetch('/api/v1/configuration',{method:'PUT',headers:{'Content-Type':'application/json','If-Match':etag,'Idempotency-Key':crypto.randomUUID()},body:JSON.stringify(requestBody(c))});if(!r.ok){const v=await r.json();throw userError(v.code==='REVISION_STALE'?'Settings changed. Refresh before saving again.':'Settings were not saved. Check the profile and stage selections.');}const v=await r.json();setConfiguration(v.configuration);setEtag(r.headers.get('etag'));setAdvanced(JSON.stringify(requestBody(v.configuration),null,2));setNotice('Settings saved. Existing requests keep their frozen model and prompt bindings.');}catch(e){setError(requestError(e))}finally{setBusy(false)}}

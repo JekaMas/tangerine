@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import sys
 import unittest
+import types
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -79,7 +80,7 @@ class QwenNativeRuntime(unittest.TestCase):
                 with patch.dict(os.environ, dict(TANGERINE_QWEN_DEVICE=device, TANGERINE_QWEN_DTYPE=dtype)):
                     backends.qwen(self.profile(), self.turn())
         self.assertEqual(2, factory.call_count)
-        self.assertEqual({('/fixture-model', 'cpu', 'float32'), ('/fixture-model', 'mps', 'float16')}, set(backends.CACHE))
+        self.assertEqual({('/fixture-model', 'cpu', 'float32',None), ('/fixture-model', 'mps', 'float16',None)}, set(backends.CACHE))
 
     def test_native_unavailable_device_negative(self):
         import torch
@@ -108,6 +109,52 @@ class QwenNativeRuntime(unittest.TestCase):
         self.assertEqual('cpu', factory.call_args.kwargs['device_map'])
         self.assertEqual(torch.float32, factory.call_args.kwargs['dtype'])
         self.assertEqual('cpu', result['receipt']['native']['execution_parameters']['device'])
+
+    def test_explicit_cpu_codec_positive(self):
+        import torch
+        from qwen_tts import Qwen3TTSModel
+        model=self.model();moves=[]
+        class Codec:
+            def to(self,device):moves.append(str(device));return self
+        model.model.speech_tokenizer=types.SimpleNamespace(model=Codec(),device='mps')
+        model.device='mps';model.model.dtype=torch.float32
+        turn=self.turn();turn['qwen_runtime']=dict(device='mps',dtype='float32',codec_device='cpu')
+        with patch.object(torch.backends.mps,'is_available',return_value=True), \
+                patch.object(backends,'installed',return_value=(Path('/fixture-model'),dict(repo='constructed'))), \
+                patch.object(Qwen3TTSModel,'from_pretrained',return_value=model):
+            result=backends.render(self.profile(),turn)
+        self.assertEqual(['cpu'],moves)
+        execution=result['receipt']['native']['execution_parameters']
+        self.assertEqual(('mps','cpu'),(execution['model_device'],execution['codec_device']))
+        self.assertEqual(turn,result['receipt']['input']['turn'])
+
+    def test_unsupported_codec_negative(self):
+        import torch
+        from qwen_tts import Qwen3TTSModel
+        turn=self.turn();turn['qwen_runtime']=dict(device='mps',dtype='float32',codec_device='auto')
+        with patch.object(torch.backends.mps,'is_available',return_value=True), \
+                patch.object(Qwen3TTSModel,'from_pretrained') as factory:
+            result,status=backends.execute_packet(dict(profile=self.profile(),turn=turn))
+        self.assertEqual(({'error':'CAPABILITY_UNAVAILABLE'},1),(result,status))
+        factory.assert_not_called()
+
+    def test_codec_cache_separation_positive(self):
+        import torch
+        from qwen_tts import Qwen3TTSModel
+        def model(*args,**kwargs):
+            value=self.model()
+            value.model.speech_tokenizer=types.SimpleNamespace(
+                model=types.SimpleNamespace(to=lambda device:None),device='mps')
+            return value
+        with patch.object(torch.backends.mps,'is_available',return_value=True), \
+                patch.object(backends,'installed',return_value=(Path('/fixture-model'),dict(repo='constructed'))), \
+                patch.object(Qwen3TTSModel,'from_pretrained',side_effect=model) as factory:
+            for codec in [None,'cpu','cpu',None]:
+                turn=self.turn();turn['qwen_runtime']=dict(device='mps',dtype='float32')
+                if codec:turn['qwen_runtime']['codec_device']=codec
+                backends.render(self.profile(),turn)
+        self.assertEqual(2,factory.call_count)
+        self.assertEqual({('/fixture-model','mps','float32',None),('/fixture-model','mps','float32','cpu')},set(backends.CACHE))
 
 
 if __name__ == '__main__':

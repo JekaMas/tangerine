@@ -12,6 +12,7 @@ import wave
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT/'data/iteration-25-qwen-20261026'
+FOLLOWUP = ROOT/'data/completion-leftovers-20261028'
 AUDIT = ROOT/'audit/iteration-25-qwen-20261026'
 SOURCE = '9dbf8c95-51a3-4c0f-9395-b3a77a824d22'
 
@@ -45,15 +46,16 @@ def constructed_packet():
 
 class CompletionI25(unittest.TestCase):
     def test_qwen_positive(self):
-        out = DATA/'live'
+        out = FOLLOWUP/'qwen-mps-float32-cpu-codec'
         if not (out/'result.json').exists():
-            self.skipTest('No complete native Qwen pair has been retained. The selected CPU request hit the foreground deadline; alternate runtime setup remains pending.')
+            self.skipTest('The selected native runtime has not retained both complete Qwen variants.')
         result = json.loads((out/'result.json').read_text())
         plan = json.loads((out/'plan.json').read_text())
         self.assertEqual(('complete', SOURCE), (result['status'], result['source_preparation']))
         self.assertEqual(json.loads((ROOT/'audit/iteration-24-azure-20261026/material.json').read_text()), plan['source_material'])
         self.assertEqual(8, len(plan['turns']))
         self.assertEqual('local', plan['profile']['billing_mode'])
+        self.assertEqual(dict(device='mps',dtype='float32',codec_device='cpu'),plan['runtime'])
         self.assertGreater(len(plan['pieces']), 0)
         self.assertEqual(len(plan['pieces']), result['completed_pieces'])
         actual_calls = json.loads((out/'dispatches.json').read_text())
@@ -69,6 +71,7 @@ class CompletionI25(unittest.TestCase):
             self.assertEqual('85e237c12c027371202489a0ec509ded67b5e4b5', context['model_manifest']['revision'])
             self.assertEqual(plan['runtime']['device'], context['execution_parameters']['device'])
             self.assertEqual(plan['runtime']['dtype'], context['execution_parameters']['dtype'])
+            self.assertEqual(('cpu','cpu','mps:0'),tuple(context['execution_parameters'][key] for key in ['requested_codec_device','codec_device','model_device']))
             self.assertEqual('Ryan' if piece['speaker_id'] == 's1' else 'Aiden', context['speaker'])
             self.assertEqual(['_tokenize_texts', 'generate'], [c['method'] for c in context['model_visible_calls']])
             self.assertTrue(all(c['outcome'] == 'complete' for c in context['model_visible_calls']))
@@ -82,19 +85,23 @@ class CompletionI25(unittest.TestCase):
             with wave.open(str(out/('qwen-'+variant+'.wav'))) as audio:
                 self.assertEqual((1, 2, 24000), (audio.getnchannels(), audio.getsampwidth(), audio.getframerate()))
                 self.assertEqual(b''.join(expected), audio.readframes(audio.getnframes()))
-        lab = json.loads((DATA/'lab-readback.json').read_text())
+        lab = json.loads((FOLLOWUP/'qwen-lab-readback.json').read_text())
         self.assertTrue(lab['readback'])
         self.assertEqual(0, lab['export_inference_calls'])
         self.assertEqual(len(plan['pieces']), lab['matched_successful_model_calls'])
 
     def test_review_positive(self):
         self.assertEqual([], review_errors(constructed_packet()))
-        if not (AUDIT/'browser-observations.json').exists():
+        browser = FOLLOWUP/'qwen-browser/browser-observations.json'
+        if not browser.exists():
             self.skipTest('Actual selected comparison/player observations are not yet retained.')
-        facts = json.loads((AUDIT/'browser-observations.json').read_text())
+        facts = json.loads(browser.read_text())
         if not facts.get('actual_pair_playback_observed') or not facts.get('activation_observed'):
             self.skipTest('Actual pair playback/keyboard/click activation remains incomplete; controlled rendering is separate.')
         self.assertEqual(SOURCE, facts['source_preparation'])
+        self.assertEqual(['/qwen-clean.wav','/qwen-mistakes.wav'],[row['src'] for row in facts['audio']])
+        self.assertTrue(all(row['advanced_time']>0 and row['error'] is None for row in facts['audio']))
+        self.assertTrue(facts['keyboard_observed'] and facts['refresh_observed'] and facts['single_player_observed'])
         self.assertEqual([1280, 390, 320], [p['width'] for p in facts['layouts']])
         for layout in facts['layouts']:
             self.assertEqual(layout['width'], layout['pageWidth'])

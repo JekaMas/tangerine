@@ -11,7 +11,7 @@ import unittest
 
 ROOT=Path(__file__).resolve().parents[1]
 DATA=ROOT/'data/iteration-26-acoustic-20261026'
-REVIEW=ROOT/'data/iteration-26-verification-20261026'
+REVIEW=ROOT/'data/completion-leftovers-20261028/i26'
 sys.path.insert(0,str(ROOT/'services/speech'))
 from category_validation import compare_probe
 
@@ -86,7 +86,7 @@ class CompletionI26(unittest.TestCase):
         if not path.exists():self.skipTest('Selected listening UI observations not yet retained.')
         facts=json.loads(path.read_text())
         if not facts.get('interaction',{}).get('activation_observed'):
-            self.skipTest('Current authorized in-app browser focuses audio but does not deliver play/keyboard activation; the existing Chrome selection question is unanswered.')
+            self.skipTest('Actual playback, keyboard and Refresh observations are required; rendered controls alone are insufficient.')
         self.assertEqual([],review_gaps(facts))
         self.assertEqual([1280,390,320],[v['width'] for v in facts['layouts']])
         self.assertEqual(20,len(facts['audio']))

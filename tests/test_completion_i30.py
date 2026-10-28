@@ -14,8 +14,8 @@ import unittest
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / 'data/iteration-30-release-20261027'
-AUDIT = ROOT / 'audit/iteration-30-release-20261027'
+DATA = ROOT / 'data/completion-leftovers-20261028/release'
+AUDIT = ROOT / 'audit/completion-leftovers-20261028'
 REQUIRED = {
     'LICENSE', 'README.md', '.env.example', '.dockerignore', 'scripts/tangerine',
     'scripts/workspace-env', 'deploy/local/compose.yaml', 'deploy/local/minio.Dockerfile',
@@ -228,7 +228,7 @@ class CompletionI30(unittest.TestCase):
         self.assertTrue(set(before['user_containers']) <= set(after['running_containers']))
 
     def packet(self):
-        return json.loads((AUDIT / 'REVIEW.json').read_text())
+        return json.loads((AUDIT / 'RELEASE-REVIEW.json').read_text())
 
     def test_review_positive(self):
         self.assertEqual([], review_errors(self.packet(), read('publication.json')))
@@ -275,6 +275,22 @@ class CompletionI30(unittest.TestCase):
         errors = review_errors(packet, read('publication.json'))
         self.assertIn('ui_ux unverified', errors)
         self.assertIn('typography unverified', errors)
+
+    def test_independent_settings_recovery_positive(self):
+        facts=read('ui-observations.json')
+        self.assertEqual([
+            'Transient configuration read recovered automatically',
+            'Unavailable connection list leaves local settings usable',
+            'Failed refresh retains accepted configuration',
+            'Keyboard Refresh recovered settings'],facts['states'])
+        self.assertTrue(facts['original_profile_restored'])
+        self.assertEqual([],facts['pageErrors'])
+        calls=read('requests.json')
+        self.assertFalse([c for c in calls if c.get('forbidden')])
+        self.assertEqual(1,len([c for c in calls if c['mode']=='transient' and c['status']==503]))
+        self.assertEqual(3,len([c for c in calls if c['mode']=='provider-unavailable' and c['status']==503]))
+        self.assertEqual(3,len([c for c in calls if c['mode']=='configuration-unavailable' and c['status']==503]))
+        self.assertEqual([200,200],[c['status'] for c in calls if c['method']=='PUT'])
 
 
 if __name__ == '__main__':

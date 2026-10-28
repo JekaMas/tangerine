@@ -27,7 +27,10 @@ The native plan binds `qwen_runtime` per piece. The original CLI selection is
 frozen and remains the consumed selection after a native server environment change; direct
 legacy pieces without that binding keep the explicit environment/default route.
 Loaded model/codec placement is recorded separately from requested placement.
-The `--device` and `--dtype` flags select a new plan; they do not rewrite a saved
+The `--device`, `--dtype` and optional `--codec-device cpu` flags select a new
+plan. The last flag explicitly keeps audio decoding on CPU while the generator
+uses its selected device. This is declared compute placement, never a fallback
+after a failed operation. These flags do not rewrite a saved
 one on resume. Use a new output folder for a changed compute candidate, preserving
 the old plan and recordings.
 
@@ -65,6 +68,16 @@ the failure are retained; actual encoded model context is unavailable because
 the child was terminated before returning its receipt. This is a failed real
 qualification, not a benchmark or proof that every CPU configuration is unusable.
 See `VERIFY.md` for repairs, sibling cases and the remaining observation limits.
+
+Follow-up 2026-10-28: the user approved a separate project-only runtime using
+the admitted model cache. The isolated Python3.12 environment uses the existing
+dependency versions with macOS Torch/Torchaudio2.9.1. MPS/float16 failed at
+sampling with nonfinite probabilities. MPS/float32 reached the codec, whose
+convolution exceeds the MPS output-channel limit. Both failures remain intact.
+The separately frozen MPS/float32/CPU-codec candidate is observed under
+`data/completion-leftovers-20261028/qwen-mps-float32-cpu-codec`; its completion,
+native/Lab and actual playback status belong to the follow-up acceptance record.
+No global package or ordinary application setting is changed by this setup.
 
 The initial structural DAG/discovery proof is retained from
 `data/iteration-24-verify-20261026/graph.json`: the starting manifest has not

@@ -17,12 +17,12 @@ BROWSER_ORIGIN = os.environ.get('I30_BROWSER_ORIGIN', '')
 
 class Forward(BaseHTTPRequestHandler):
     def forward(self):
-        headers = {k: v for k, v in self.headers.items()
+        headers = {k.lower(): v for k, v in self.headers.items()
                    if k.lower() not in {'host', 'connection', 'content-length'}}
         if BROWSER:
-            headers['Host'] = 'localhost:3000'
-            if headers.get('Origin') == BROWSER_ORIGIN:
-                headers['Origin'] = 'http://localhost:3000'
+            headers['host'] = 'localhost:3000'
+            if headers.get('origin') == BROWSER_ORIGIN:
+                headers['origin'] = 'http://localhost:3000'
         data = self.rfile.read(int(self.headers.get('Content-Length', '0')))
         request = urllib.request.Request(TARGET + self.path, method=self.command,
                                          data=data if data else None, headers=headers)
@@ -51,4 +51,5 @@ class Forward(BaseHTTPRequestHandler):
         pass  # Do not log the private internal readiness header.
 
 
-ThreadingHTTPServer(('0.0.0.0', 8088) if BROWSER else ('127.0.0.1', 3000), Forward).serve_forever()
+if __name__ == '__main__':
+    ThreadingHTTPServer(('0.0.0.0', 8088) if BROWSER else ('127.0.0.1', 3000), Forward).serve_forever()

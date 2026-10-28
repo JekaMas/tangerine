@@ -4,7 +4,9 @@ import os
 
 def selection(frozen=None):
     if frozen is not None:
-        return dict(device=frozen['device'], dtype=frozen['dtype'])
+        value=dict(device=frozen['device'], dtype=frozen['dtype'])
+        if 'codec_device' in frozen:value['codec_device']=frozen['codec_device']
+        return value
     return dict(device=os.environ.get('TANGERINE_QWEN_DEVICE', 'cpu'),
                 dtype=os.environ.get('TANGERINE_QWEN_DTYPE', 'float32'))
 
@@ -16,4 +18,6 @@ def configuration(torch, frozen=None):
         raise ValueError('CAPABILITY_UNAVAILABLE')
     if device == 'mps' and not torch.backends.mps.is_available():
         raise ValueError('CAPABILITY_UNAVAILABLE')
-    return dict(device=device, dtype=dtype, attention_implementation='eager')
+    if 'codec_device' in selected and selected['codec_device']!='cpu':
+        raise ValueError('CAPABILITY_UNAVAILABLE')
+    return dict(**selected, attention_implementation='eager')

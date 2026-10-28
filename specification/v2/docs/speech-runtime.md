@@ -6,7 +6,11 @@ selected with `TANGERINE_QWEN_DEVICE=cpu|mps` and
 `TANGERINE_QWEN_DTYPE=float32|float16`; defaults stay CPU/float32. Actual compute,
 Torch version, tokenizer/generation input, pinned model and voice are saved in
 the existing receipt. Native planned pieces retain `qwen_runtime` with the
-selected device/dtype. That frozen selection is consumed by synthesis and wins
+selected device/dtype and optional `codec_device=cpu`. An explicitly selected
+CPU codec places only the audio tokenizer/decoder on CPU while the language
+generator keeps its selected device; absence preserves the model's original
+placement. The model cache separates these selections. No failed MPS operation
+automatically changes devices. That frozen selection is consumed by synthesis and wins
 over a later server environment; unbound legacy/direct pieces use the explicit
 environment/defaults. The comparison CLI carries its selected runtime into
 these pieces rather than merely labelling the result. Requested placement and

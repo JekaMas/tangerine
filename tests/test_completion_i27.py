@@ -11,19 +11,22 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT/'data/iteration-27-sources-20261026'
 REVIEW = ROOT/'data/iteration-27-verify-20261026'
+BROWSER = ROOT/'data/completion-leftovers-20261028/i27'
 IDS = ['TET-GOLD-1', 'SPEECHOCEAN762', 'L2-ARCTIC', 'WILOCNESS-2.1', 'FCE-2.1',
        'EFCAMDAT-R2', 'EFCAMDAT-SHATZ2020', 'EFCAMDAT-OKSUZ2025',
        'DOUBAO-STUDY-RECORDS', 'MOODRICK-DATA', 'NIR-DATA']
+CURRENT_IDS = IDS+['JFLEG','EDACC','ELRD','DIPLOMAT','DRAL']
 
 
 def read(path):
-    directory = REVIEW if str(path).startswith('browser/') else DATA
-    return json.loads((directory/path).read_text())
+    if str(path).startswith('browser/'):
+        return json.loads((BROWSER/str(path).removeprefix('browser/')).read_text())
+    return json.loads((DATA/path).read_text())
 
 
 def events(name):
-    directory = REVIEW if str(name).startswith('browser/') else DATA
-    return [json.loads(line) for line in (directory/name).read_text().splitlines()
+    path = BROWSER/str(name).removeprefix('browser/') if str(name).startswith('browser/') else DATA/name
+    return [json.loads(line) for line in path.read_text().splitlines()
             if line.startswith('{')]
 
 
@@ -53,10 +56,10 @@ def packet():
     return dict(release_id=fixture['older_release']['id'],
                 report_release_id=fixture['older_import']['release_id'],
                 claims_full_completion=False,
-                missing_inputs=['restricted owner releases', 'actual IAB activation'],
+                missing_inputs=['restricted owner releases'],
                 reference_origin='independently authored literal expectations',
                 requested_benchmark_calls=0,
-                ui_ux=dict(observations='Actual Sources rendering/reload/focus; input activation remains unobserved.'),
+                ui_ux=dict(observations='Actual selected release pointer activation, retained older import and keyboard Refresh recovery.'),
                 typography=dict(observations='Actual Source Sans3 17px/24.65px at1280/390/320; no overflow.'),
                 evidence=dict(observations='Actual native imports, explicit constructed private fixtures and dated source-access observations.'))
 
@@ -107,7 +110,7 @@ class CompletionI27(unittest.TestCase):
         responses = [e['response'] for e in events('browser/requests.jsonl')
                      if e['path'] == '/api/v1/sources' and e['status'] == 200]
         latest = responses[-1]
-        self.assertEqual(IDS, [item['source_id'] for item in latest])
+        self.assertEqual(CURRENT_IDS, [item['source_id'] for item in latest])
         item = next(item for item in latest if item['source_id'] == 'FCE-2.1')
         mapping = item['release_import_report_ids']
         self.assertEqual([fixture['older_import']['id']], mapping[fixture['older_release']['id']])
@@ -204,17 +207,18 @@ class CompletionI27(unittest.TestCase):
         self.assertEqual([], review_errors(packet()))
         facts = read('browser/observations.json')
         if not facts['activation_observed']:
-            self.skipTest('IAB inputs did not dispatch saved-release/Refresh reads; Chrome selection remains unanswered. Render/reload observations are separate.')
+            self.skipTest('Actual saved-release and Refresh input activation is required; rendered controls alone do not pass.')
         fixture = read('browser/fixture.json')
         self.assertEqual(fixture['older_release']['id'], facts['opened_release_id'])
         self.assertEqual(fixture['older_import']['id'], facts['opened_import_id'])
+        self.assertTrue(facts['keyboard_refresh_observed'])
 
     def test_layout_positive(self):
         facts = read('browser/observations.json')
         self.assertEqual([1280, 390, 320], [row['width'] for row in facts['layouts']])
         for row in facts['layouts']:
             self.assertEqual(row['width'], row['pageWidth'])
-            self.assertEqual(('17px', '24.65px', True, 11),
+            self.assertEqual(('17px', '24.65px', True, 16),
                              (row['size'], row['line'], row['fontLoaded'], row['cards']))
             self.assertIn('Source Sans 3', row['font'])
             self.assertTrue(all(int(button['fontSize'][:-2]) >= 13 for button in row['buttons']))
@@ -225,8 +229,8 @@ class CompletionI27(unittest.TestCase):
         self.assertEqual(['The source service is temporarily unavailable. Your files and progress are retained. Refresh to continue.'], error['alerts'])
         self.assertNotIn('internal diagnostic', error['main'])
         recovered = facts['states']['recovered']
-        self.assertEqual((11, []), (recovered['cards'], recovered['alerts']))
-        # Real page navigation/reload is observed; no button-activation claim.
+        self.assertEqual((16, []), (recovered['cards'], recovered['alerts']))
+        self.assertTrue(facts['keyboard_refresh_observed'])
 
     def test_zero_inference_negative(self):
         requests = events('browser/requests.jsonl')

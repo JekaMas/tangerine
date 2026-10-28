@@ -212,14 +212,17 @@ def main():
     parser.add_argument('--endpoint', default='http://127.0.0.1:8091')
     parser.add_argument('--device', choices=['cpu', 'mps'], required=True)
     parser.add_argument('--dtype', choices=['float32', 'float16'], default='float32')
+    parser.add_argument('--codec-device',choices=['cpu'],help='Explicit local codec placement; saved plans retain their own selection.')
     parser.add_argument('--max-pieces', type=int, default=1,
                         help='New pieces per foreground step (default: one); saved pieces are reused.')
     args = parser.parse_args()
     try:
         args.out.mkdir(parents=True, exist_ok=True)
         saved = args.out / 'plan.json'
+        runtime=dict(device=args.device,dtype=args.dtype)
+        if args.codec_device:runtime['codec_device']=args.codec_device
         plan = json.loads(saved.read_text()) if saved.exists() else request_plan(
-            json.loads(MATERIAL.read_text()), dict(device=args.device, dtype=args.dtype))
+            json.loads(MATERIAL.read_text()), runtime)
         if not saved.exists():
             save(saved, plan)
         token = os.environ['SPEECH_INTERNAL_TOKEN']

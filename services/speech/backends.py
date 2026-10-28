@@ -139,9 +139,15 @@ def qwen(profile,turn):
    prompt=torch.load(conditioning/'conditioning.pt',map_location='cpu',weights_only=False)
    conditioning_manifest=json.loads((conditioning/'manifest.json').read_text())
   except FileNotFoundError:raise ValueError('VOICE_SETUP_REQUIRED') from None
- key=(str(root),execution['device'],execution['dtype'])
- if key not in CACHE:CACHE[key]=Qwen3TTSModel.from_pretrained(str(root),device_map=execution['device'],dtype=getattr(torch,execution['dtype']),attn_implementation='eager',local_files_only=True)
+ key=(str(root),execution['device'],execution['dtype'],execution.get('codec_device'))
+ if key not in CACHE:
+  model=Qwen3TTSModel.from_pretrained(str(root),device_map=execution['device'],dtype=getattr(torch,execution['dtype']),attn_implementation='eager',local_files_only=True)
+  if execution.get('codec_device')=='cpu':
+   model.model.speech_tokenizer.model.to('cpu')
+   model.model.speech_tokenizer.device=torch.device('cpu')
+  CACHE[key]=model
  model=CACHE[key]
+ execution['requested_codec_device']=execution.get('codec_device')
  # Capture placement reported by the loaded model as distinct from the request.
  # Unknown fixture/library fields stay unknown; this adds no qualification gate.
  execution.update(
